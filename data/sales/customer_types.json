@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "customer_types": [
+    {
+      "id": "gladiator",
+      "name": "검투사",
+      "primary_reward": "reputation",
+      "result_system": "arena_match",
+      "loyalty_enabled": true
+    },
+    {
+      "id": "army",
+      "name": "군대",
+      "primary_reward": "gold",
+      "result_system": "defense_life",
+      "game_over_scope": "war_season"
+    },
+    {
+      "id": "adventurer",
+      "name": "모험가",
+      "primary_reward": "rare_material",
+      "result_system": "expedition"
+    }
+  ]
+}
