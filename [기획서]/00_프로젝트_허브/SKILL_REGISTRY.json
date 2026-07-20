@@ -6,7 +6,7 @@
   "skills": [
     {
       "skill_id": "blacksmith-game-design",
-      "status": "PLANNED",
+      "status": "ACTIVE",
       "discipline": "게임 디자인",
       "trigger_tags": [
         "crafting",
@@ -23,7 +23,7 @@
     },
     {
       "skill_id": "blacksmith-engineering",
-      "status": "PLANNED",
+      "status": "ACTIVE",
       "discipline": "개발·엔지니어링",
       "trigger_tags": [
         "godot",
@@ -39,7 +39,7 @@
     },
     {
       "skill_id": "blacksmith-qa",
-      "status": "PLANNED",
+      "status": "ACTIVE",
       "discipline": "QA",
       "trigger_tags": [
         "test",
