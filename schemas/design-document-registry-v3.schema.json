@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "design-document-registry-v3.schema.json",
+  "title": "Blacksmith Design Document Registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "project_name",
+    "documents"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 3
+    },
+    "project_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "document_id",
+          "source_path",
+          "source_format",
+          "status"
+        ]
+      }
+    }
+  },
+  "additionalProperties": true
+}
