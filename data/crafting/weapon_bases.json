@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "weapon_types": [
+    {
+      "id": "sword",
+      "name": "검",
+      "base_progress": 100,
+      "base_value": 100
+    },
+    {
+      "id": "spear",
+      "name": "창",
+      "base_progress": 115,
+      "base_value": 110
+    },
+    {
+      "id": "axe",
+      "name": "도끼",
+      "base_progress": 125,
+      "base_value": 120
+    }
+  ],
+  "naming_rule": "{primary_material_name}{weapon_type_name}",
+  "initial_affix_count": 0
+}
