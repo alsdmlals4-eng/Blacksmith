@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "milestones": [
+    {
+      "level": 5,
+      "effect": "ADD_AFFIX",
+      "slot": 1,
+      "tier_pool": [
+        1
+      ]
+    },
+    {
+      "level": 10,
+      "effect": "UPGRADE_AFFIX",
+      "slot": 1,
+      "tier_delta": 1
+    },
+    {
+      "level": 15,
+      "effect": "ADD_AFFIX",
+      "slot": 2,
+      "tier_pool": [
+        1,
+        2
+      ]
+    }
+  ],
+  "failure_policy": {
+    "destroy_weapon": false,
+    "require_repair": false,
+    "consume_materials": true,
+    "pity_bonus": "PLANNED"
+  },
+  "precision_work": {
+    "optional": true,
+    "applies_to": [
+      "finishing",
+      "enhancement"
+    ],
+    "perfect_adds_success_probability": true
+  }
+}
