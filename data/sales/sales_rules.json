@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "customer_visit": {
+    "request_type": "SITUATION",
+    "base_payment": "FIXED",
+    "weapon_selection": "PLAYER_CHOICE",
+    "bonus_timing": "AFTER_RESULT",
+    "bonus_factors": [
+      "weapon_fit",
+      "weapon_power",
+      "activity_result"
+    ]
+  },
+  "merchant_delivery": {
+    "request_type": "SPECIFIC_WEAPON",
+    "base_payment": "FIXED_BY_REQUEST",
+    "weapon_selection": "MATCH_REQUIREMENT",
+    "bonus_timing": "ON_DELIVERY",
+    "bonus_factors": [
+      "enhancement_level",
+      "affix_tier",
+      "rarity",
+      "hidden_weapon"
+    ]
+  },
+  "merchant_shop": {
+    "sells": [
+      "primary_material",
+      "secondary_material",
+      "catalyst",
+      "recipe_hint"
+    ],
+    "refresh_policy": "PLANNED"
+  }
+}
