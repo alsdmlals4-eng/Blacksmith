@@ -1,0 +1,29 @@
+# Godot
+.godot/
+.import/
+export.cfg
+export_credentials.cfg
+
+# Android signing and builds
+*.keystore
+*.jks
+*.aab
+*.apk
+android/build/
+builds/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated publications
+[기획서]/**/*.docx
+[기획서]/**/*.pdf
+[기획서]/**/*.assets/generated/
