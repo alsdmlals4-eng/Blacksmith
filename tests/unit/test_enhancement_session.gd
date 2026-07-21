@@ -183,7 +183,7 @@ func _test_level_one_hundred_completes_three_affixes() -> void:
 		50: "spirit_heart",
 	}
 	while session.enhancement_level < 100:
-		var target_level := session.enhancement_level + 1
+		var target_level: int = int(session.enhancement_level) + 1
 		if session.uses_materials_for_level(target_level) and material_by_level.has(target_level):
 			session.set_secondary_material(str(material_by_level[target_level]))
 		session.begin_attempt(0.0)
