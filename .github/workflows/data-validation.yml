@@ -15,13 +15,15 @@ jobs:
     steps:
       - name: Checkout Blacksmith
         uses: actions/checkout@v4
+        with:
+          path: project
 
       - name: Checkout pinned Base
         uses: actions/checkout@v4
         with:
           repository: alsdmlals4-eng/Base
           ref: ee265576da7f67d3278f8099dd97d4e714ef0651
-          path: external/Base
+          path: base
           persist-credentials: false
 
       - name: Set up Python
@@ -30,10 +32,11 @@ jobs:
           python-version: "3.12"
 
       - name: Validate JSON game data
+        working-directory: project
         run: python tools/validate_game_data.py
 
       - name: Validate pinned Base governance
-        working-directory: external/Base
+        working-directory: base
         run: |
           python tests/test_skill_package_integrity.py
           python tests/test_game_project_operating_system_structure.py
@@ -42,9 +45,10 @@ jobs:
           python tests/test_reference_freshness.py
 
       - name: Audit Base adoption and project references
+        working-directory: project
         run: |
           python tools/audit_project_operating_system.py \
-            --base-root external/Base \
+            --base-root ../base \
             --report artifacts/base-adoption-report.json
 
       - name: Upload Base adoption report
@@ -52,5 +56,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: base-adoption-report
-          path: artifacts/base-adoption-report.json
+          path: project/artifacts/base-adoption-report.json
           if-no-files-found: error
