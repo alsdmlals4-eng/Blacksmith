@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "project": "Blacksmith",
+  "load_all_skills": false,
+  "default_selection": "none",
+  "skills": [
+    {
+      "skill_id": "blacksmith-game-design",
+      "status": "ACTIVE",
+      "discipline": "게임 디자인",
+      "trigger_tags": [
+        "crafting",
+        "enhancement",
+        "affix",
+        "customer",
+        "economy",
+        "mvp"
+      ],
+      "path": "../../skills/game-design/SKILL.md",
+      "source_documents": [
+        "blacksmith-game-bible"
+      ]
+    },
+    {
+      "skill_id": "blacksmith-engineering",
+      "status": "ACTIVE",
+      "discipline": "개발·엔지니어링",
+      "trigger_tags": [
+        "godot",
+        "gdscript",
+        "android",
+        "save",
+        "data"
+      ],
+      "path": "../../skills/engineering/SKILL.md",
+      "source_documents": [
+        "blacksmith-game-bible"
+      ]
+    },
+    {
+      "skill_id": "blacksmith-qa",
+      "status": "ACTIVE",
+      "discipline": "QA",
+      "trigger_tags": [
+        "test",
+        "validation",
+        "android-device",
+        "regression"
+      ],
+      "path": "../../skills/qa/SKILL.md",
+      "source_documents": [
+        "blacksmith-game-bible"
+      ]
+    }
+  ],
+  "learning_log": "../../skills/SKILL_LEARNING_LOG.md"
+}

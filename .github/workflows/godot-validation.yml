@@ -1,0 +1,96 @@
+name: Godot validation
+
+on:
+  pull_request:
+    paths:
+      - "project.godot"
+      - "scenes/**"
+      - "scripts/**"
+      - "tests/**"
+      - "data/**"
+      - ".github/workflows/godot-validation.yml"
+  push:
+    branches: [main]
+
+jobs:
+  headless-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Godot 4.7.1
+        shell: bash
+        run: |
+          curl -L --fail --retry 3 \
+            -o godot.zip \
+            "https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7.1"
+          unzip -q godot.zip
+          mv Godot_v4.7.1-stable_linux.x86_64 godot
+          chmod +x godot
+          ./godot --version
+
+      - name: Import and parse project
+        run: ./godot --headless --editor --path . --quit
+
+      - name: Smoke test enhancement scene
+        run: ./godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
+
+      - name: Run model tests
+        id: model_tests
+        shell: bash
+        run: |
+          set +e
+          : > godot-test.log
+
+          echo "== ForgingSession ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/unit/test_forging_session.gd >> godot-test.log 2>&1
+          forging_status=$?
+
+          echo "== EnhancementSession ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/unit/test_enhancement_session.gd >> godot-test.log 2>&1
+          enhancement_status=$?
+
+          cat godot-test.log
+          status=0
+          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ]; then
+            status=1
+          fi
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Package Godot playtest project
+        shell: bash
+        run: |
+          zip -r blacksmith-godot-playtest.zip \
+            project.godot \
+            scenes \
+            scripts \
+            data \
+            tests \
+            docs/GODOT_PLAYTEST.md \
+            docs/MVP-001_SCOPE.md \
+            docs/MVP-002_SCOPE.md \
+            README.md \
+            -x ".godot/*" "*.import"
+
+      - name: Upload Godot playtest project
+        uses: actions/upload-artifact@v4
+        with:
+          name: blacksmith-godot-playtest
+          path: blacksmith-godot-playtest.zip
+          if-no-files-found: error
+
+      - name: Upload Godot test log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: godot-test-log
+          path: godot-test.log
+          if-no-files-found: error
+
+      - name: Fail when model tests fail
+        shell: bash
+        run: test "${{ steps.model_tests.outputs.status }}" -eq 0
+
+      - name: Validate JSON game data
+        run: python tools/validate_game_data.py

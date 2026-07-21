@@ -2,7 +2,43 @@
 
 Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커형 무기 제작·강화 게임 프로젝트입니다.
 
-플레이어는 대장장이가 되어 재료를 조합해 무기를 만들고, 광클과 피버타임으로 제작을 가속하며, 선택적 정밀작업으로 강화 성공률을 높입니다. 완성한 무기는 고객에게 직접 제공하거나 상인의 납품 의뢰로 판매합니다.
+플레이어는 대장장이가 되어 재료를 조합해 무기를 만들고, 광클과 피버타임으로 제작을 가속합니다. 일반 강화는 빠르게 원클릭으로 진행하고, +5 단위에서만 정밀 강화하며, 보조재료와 촉매는 +10 단위에서만 선택합니다.
+
+## 현재 구현
+
+### MVP-001 제작
+
+```text
+철 고정 → 광클·자동 작업 → 피버 → 선택적 정밀 마감 → 철검 완성
+```
+
+- 터치·자동 작업 진행
+- 빠른 연속 터치로 피버 발동
+- 피버 중 터치·자동 작업 배율
+- 정밀 마감 ON/OFF
+- 완벽·좋음·보통 마감 판정
+
+### +100 강화 테스트
+
+```text
+철검 → 4단계 원클릭 → +5 정밀 강화 → +10 재료 정밀 강화 → 반복 → +100
+```
+
+- 최대 강화: +100
+- +5·+15·+25·…·+95: 재료 없이 정밀 강화
+- +10·+20·+30·…·+100: 보조재료·촉매 선택 후 정밀 강화
+- 나머지 단계: 원클릭 즉시 성공·실패 판정
+- 실패 시 단계 유지·무기 파괴 없음
+- 실패당 다음 시도 성공률 보정
+- +10부터 +100까지 수식어 3개가 추가·강화되어 최종 4티어에 도달
+
+## Godot에서 바로 테스트
+
+1. Godot 4.7.1로 `project.godot`을 연다.
+2. `scenes/test/enhancement_test.tscn`을 연다.
+3. `F6`을 눌러 +0부터 +100까지 강화한다.
+
+전체 제작→강화 흐름은 `scenes/main/main.tscn`에서 확인한다. 상세 안내는 `docs/GODOT_PLAYTEST.md`에 있다.
 
 ## 기술 기준
 
@@ -10,11 +46,26 @@ Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커
 - Language: GDScript
 - Primary platform: Android mobile
 - Distribution: Google Play
-- Default orientation: Portrait
+- Default orientation: Portrait 720×1280
 - Store package: Android App Bundle (`.aab`)
 
 ## 시작 위치
 
-프로젝트 기획과 작업 상태는 저장소 루트의 `[기획서]/00_프로젝트_허브/START_HERE.md`에서 확인합니다.
+1. `AGENTS.md`
+2. `[기획서]/00_프로젝트_허브/START_HERE.md`
+3. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
+4. `docs/GODOT_PLAYTEST.md`
+5. `docs/MVP-001_SCOPE.md`
+6. `docs/MVP-002_SCOPE.md`
 
-현재 저장소는 프로젝트 운영체계와 초기 기획 구조를 설치하는 단계입니다.
+## 검증
+
+```bash
+python tools/validate_game_data.py
+godot --headless --editor --path . --quit
+godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
+godot --headless --path . --script res://tests/unit/test_forging_session.gd
+godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
+```
+
+자동 검증을 통과한 뒤 Godot 플레이테스트 ZIP을 GitHub Actions 아티팩트로 생성합니다. 실제 화면 렌더, 플레이 감각, Android 기기 터치와 AAB 배포는 별도 검증 대상입니다.

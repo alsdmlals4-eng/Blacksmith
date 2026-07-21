@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "materials": [
+    {
+      "id": "iron",
+      "name": "철",
+      "slot_types": [
+        "primary"
+      ],
+      "tags": [
+        "metal",
+        "common"
+      ],
+      "base_power": 10
+    },
+    {
+      "id": "silver",
+      "name": "은",
+      "slot_types": [
+        "primary"
+      ],
+      "tags": [
+        "metal",
+        "holy"
+      ],
+      "base_power": 18
+    },
+    {
+      "id": "meteor_iron",
+      "name": "운석철",
+      "slot_types": [
+        "primary"
+      ],
+      "tags": [
+        "metal",
+        "rare",
+        "cosmic"
+      ],
+      "base_power": 30
+    },
+    {
+      "id": "whetstone",
+      "name": "숫돌",
+      "slot_types": [
+        "secondary"
+      ],
+      "affix_tags": [
+        "sharp"
+      ],
+      "weight": 20
+    },
+    {
+      "id": "flame_stone",
+      "name": "화염석",
+      "slot_types": [
+        "secondary"
+      ],
+      "affix_tags": [
+        "fire"
+      ],
+      "weight": 25
+    },
+    {
+      "id": "spirit_heart",
+      "name": "정령의 심장",
+      "slot_types": [
+        "secondary"
+      ],
+      "affix_tags": [
+        "spirit"
+      ],
+      "weight": 35
+    },
+    {
+      "id": "salamander_core",
+      "name": "살라맨더의 핵",
+      "slot_types": [
+        "catalyst"
+      ],
+      "affix_tags": [
+        "fire",
+        "salamander"
+      ],
+      "success_bonus": 0.15
+    }
+  ]
+}

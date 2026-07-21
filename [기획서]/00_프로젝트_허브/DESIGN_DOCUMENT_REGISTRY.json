@@ -1,0 +1,47 @@
+{
+  "$schema": "../../schemas/design-document-registry-v3.schema.json",
+  "schema_version": 3,
+  "registry_role": "ai-design-document-router-and-publication-index",
+  "project_name": "Blacksmith",
+  "source_of_truth_policy": "Each document has exactly one Markdown or JSON source of truth. Runtime data lives in data/**/*.json.",
+  "required_responsibility_coverage": [
+    "프로젝트 전체",
+    "게임 디자인",
+    "UX·UI·접근성",
+    "개발·엔지니어링",
+    "QA",
+    "프로덕션·PM"
+  ],
+  "documents": [
+    {
+      "document_id": "blacksmith-game-bible",
+      "title": "Blacksmith 통합 게임 기획서",
+      "discipline": "게임 디자인",
+      "responsibility_coverage": [
+        "프로젝트 전체",
+        "게임 디자인",
+        "UX·UI·접근성",
+        "개발·엔지니어링",
+        "QA",
+        "프로덕션·PM"
+      ],
+      "status": "ACTIVE",
+      "source_path": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
+      "source_format": "markdown",
+      "source_role": "narrative_spec",
+      "publication_policy": "always_sync_when_toolchain_available",
+      "output_pdf": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.pdf",
+      "output_docx": null,
+      "asset_dir": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.assets",
+      "publication_manifest": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE_PUBLICATION_MANIFEST.json",
+      "publication_status": "NOT_RUN",
+      "actual_paths": [
+        "../../project.godot",
+        "../../data",
+        "../../scripts",
+        "../../scenes",
+        "../../tests"
+      ]
+    }
+  ]
+}

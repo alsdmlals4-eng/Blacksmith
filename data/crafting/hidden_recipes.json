@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "recipes": [
+    {
+      "id": "salamander_flame_sword",
+      "name": "살라맨더 화염검",
+      "input": {
+        "weapon_type": "sword",
+        "required_weapon_tags": [
+          "fire"
+        ],
+        "secondary_material": "spirit_heart",
+        "catalyst": "salamander_core"
+      },
+      "result": {
+        "weapon_id": "salamander_flame_sword",
+        "unique_effects": [
+          "burn_on_hit",
+          "fire_affix_amplification"
+        ]
+      },
+      "discovery": "HIDDEN_UNTIL_SUCCESS"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "document_id": "blacksmith-game-bible",
+  "source_path": "BLACKSMITH_GAME_BIBLE.md",
+  "publication_status": "NOT_RUN",
+  "reason": "Initial GitHub connector installation supports UTF-8 text files only; PDF/DOCX generation and upload have not been executed.",
+  "output_pdf": "BLACKSMITH_GAME_BIBLE.pdf",
+  "output_docx": null,
+  "human_visual_review": "NOT_RUN",
+  "last_updated": "2026-07-21"
+}
