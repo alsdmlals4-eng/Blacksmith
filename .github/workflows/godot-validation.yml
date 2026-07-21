@@ -32,6 +32,9 @@ jobs:
       - name: Import and parse project
         run: ./godot --headless --editor --path . --quit
 
+      - name: Smoke test enhancement scene
+        run: ./godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
+
       - name: Run model tests
         id: model_tests
         shell: bash
