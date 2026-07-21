@@ -5,46 +5,34 @@
       "id": "sharp",
       "name": "날카로운",
       "tiers": {
-        "1": {
-          "attack_percent": 0.08
-        },
-        "2": {
-          "attack_percent": 0.16
-        }
+        "1": {"attack_percent": 0.08},
+        "2": {"attack_percent": 0.16},
+        "3": {"attack_percent": 0.26},
+        "4": {"attack_percent": 0.40}
       },
-      "material_tags": [
-        "sharp"
-      ]
+      "material_tags": ["sharp"]
     },
     {
       "id": "flaming",
       "name": "불타는",
       "tiers": {
-        "1": {
-          "fire_damage": 5
-        },
-        "2": {
-          "fire_damage": 12
-        }
+        "1": {"fire_damage": 5},
+        "2": {"fire_damage": 12},
+        "3": {"fire_damage": 24},
+        "4": {"fire_damage": 42}
       },
-      "material_tags": [
-        "fire"
-      ]
+      "material_tags": ["fire"]
     },
     {
       "id": "spirit_bound",
       "name": "정령이 깃든",
       "tiers": {
-        "1": {
-          "special_trigger_chance": 0.05
-        },
-        "2": {
-          "special_trigger_chance": 0.12
-        }
+        "1": {"special_trigger_chance": 0.05},
+        "2": {"special_trigger_chance": 0.12},
+        "3": {"special_trigger_chance": 0.20},
+        "4": {"special_trigger_chance": 0.30}
       },
-      "material_tags": [
-        "spirit"
-      ]
+      "material_tags": ["spirit"]
     }
   ]
 }
