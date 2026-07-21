@@ -13,35 +13,26 @@ enum State {
 }
 
 const DEFAULT_CONFIG := {
-	"max_level": 20,
-	"base_success_by_target_level": {
-		"1": 1.0,
+	"max_level": 100,
+	"precision_interval": 5,
+	"material_interval": 10,
+	"base_success_by_target_level": {},
+	"base_success_pattern_by_cycle_position": {
+		"1": 0.98,
 		"2": 0.95,
-		"3": 0.90,
-		"4": 0.85,
-		"5": 0.70,
-		"6": 0.90,
-		"7": 0.87,
-		"8": 0.84,
-		"9": 0.81,
-		"10": 0.65,
-		"11": 0.85,
-		"12": 0.82,
-		"13": 0.79,
-		"14": 0.76,
-		"15": 0.60,
-		"16": 0.80,
-		"17": 0.77,
-		"18": 0.74,
-		"19": 0.71,
-		"20": 0.55,
+		"3": 0.92,
+		"4": 0.89,
+		"5": 0.76,
+		"6": 0.88,
+		"7": 0.85,
+		"8": 0.82,
+		"9": 0.79,
+		"10": 0.68,
 	},
-	"milestones": [
-		{"level": 5, "effect": "ADD_AFFIX", "slot": 1, "precision_required": true},
-		{"level": 10, "effect": "UPGRADE_AFFIX", "slot": 1, "precision_required": true},
-		{"level": 15, "effect": "ADD_AFFIX", "slot": 2, "precision_required": true},
-		{"level": 20, "effect": "UPGRADE_AFFIX", "slot": 2, "precision_required": true},
-	],
+	"decade_penalty": 0.02,
+	"max_decade_penalty": 0.18,
+	"minimum_base_success": 0.35,
+	"milestones": [],
 	"precision": {
 		"speed": 0.9,
 		"target": 0.5,
@@ -100,7 +91,9 @@ func _init(
 
 
 func set_secondary_material(material_id: String) -> bool:
-	if state != State.READY or not _material_supports_slot(material_id, "secondary"):
+	if state != State.READY or not uses_materials_for_level(enhancement_level + 1):
+		return false
+	if not _material_supports_slot(material_id, "secondary"):
 		return false
 	selected_secondary_id = material_id
 	_emit_changed()
@@ -108,7 +101,7 @@ func set_secondary_material(material_id: String) -> bool:
 
 
 func set_catalyst_material(material_id: String) -> bool:
-	if state != State.READY:
+	if state != State.READY or not uses_materials_for_level(enhancement_level + 1):
 		return false
 	if material_id != "" and not _material_supports_slot(material_id, "catalyst"):
 		return false
@@ -124,7 +117,8 @@ func begin_attempt(roll_override: float = -1.0) -> bool:
 	var target_level := enhancement_level + 1
 	total_attempts += 1
 	pending_roll_override = roll_override
-	_consume_material_traits()
+	if uses_materials_for_level(target_level):
+		_consume_material_traits()
 
 	if requires_precision_for_level(target_level):
 		state = State.PRECISION
@@ -140,7 +134,6 @@ func begin_attempt(roll_override: float = -1.0) -> bool:
 func advance(delta: float) -> void:
 	if delta <= 0.0 or state != State.PRECISION:
 		return
-
 	var precision: Dictionary = config["precision"]
 	precision_position += precision_direction * float(precision["speed"]) * delta
 	while precision_position > 1.0 or precision_position < 0.0:
@@ -156,13 +149,11 @@ func advance(delta: float) -> void:
 func finish_precision() -> Dictionary:
 	if state != State.PRECISION:
 		return {}
-
 	var precision: Dictionary = config["precision"]
 	var distance := absf(precision_position - float(precision["target"]))
 	var quality_id := "STANDARD"
 	var quality_label := "보통 정밀 강화"
 	var success_bonus := 0.0
-
 	if distance <= float(precision["perfect_radius"]):
 		quality_id = "PERFECT"
 		quality_label = "완벽한 정밀 강화"
@@ -171,21 +162,24 @@ func finish_precision() -> Dictionary:
 		quality_id = "GOOD"
 		quality_label = "좋은 정밀 강화"
 		success_bonus = float(precision["good_success_bonus"])
-
 	_resolve_attempt(quality_id, quality_label, success_bonus)
 	return last_attempt.duplicate(true)
 
 
 func requires_precision_for_level(target_level: int) -> bool:
-	var milestone := _milestone_for_level(target_level)
-	return not milestone.is_empty() and bool(milestone.get("precision_required", false))
+	var interval := maxi(int(config.get("precision_interval", 5)), 1)
+	return target_level > 0 and target_level % interval == 0
+
+
+func uses_materials_for_level(target_level: int) -> bool:
+	var interval := maxi(int(config.get("material_interval", 10)), 1)
+	return target_level > 0 and target_level % interval == 0
 
 
 func calculate_success_chance(precision_bonus: float = 0.0) -> float:
 	var target_level := enhancement_level + 1
-	var base_table: Dictionary = config["base_success_by_target_level"]
-	var base_chance := float(base_table.get(str(target_level), 0.0))
-	var catalyst_bonus := _selected_catalyst_bonus()
+	var base_chance := _base_success_chance(target_level)
+	var catalyst_bonus := _selected_catalyst_bonus() if uses_materials_for_level(target_level) else 0.0
 	var pity: Dictionary = config["pity"]
 	var pity_bonus := minf(
 		float(failure_streak) * float(pity["bonus_per_failure"]),
@@ -206,6 +200,7 @@ func snapshot() -> Dictionary:
 		"progress_ratio": float(enhancement_level) / float(config["max_level"]),
 		"target_level": target_level,
 		"requires_precision": requires_precision_for_level(target_level),
+		"uses_materials": uses_materials_for_level(target_level),
 		"selected_secondary_id": selected_secondary_id,
 		"selected_catalyst_id": selected_catalyst_id,
 		"precision_position": precision_position,
@@ -227,9 +222,7 @@ func get_display_name() -> String:
 	for index in range(affixes.size() - 1, -1, -1):
 		var affix: Dictionary = affixes[index]
 		names.append(str(affix.get("name", "")))
-	var prefix := ""
-	if not names.is_empty():
-		prefix = "%s " % " ".join(names)
+	var prefix := "%s " % " ".join(names) if not names.is_empty() else ""
 	return "%s%s +%d" % [prefix, base_weapon_name, enhancement_level]
 
 
@@ -240,12 +233,19 @@ func _resolve_attempt(precision_id: String, precision_label: String, precision_b
 	pending_roll_override = -1.0
 	var success := roll < success_chance
 	var milestone := _milestone_for_level(target_level)
+	var material_stage := uses_materials_for_level(target_level)
 
 	if success:
 		enhancement_level = target_level
 		failure_streak = 0
 		if not milestone.is_empty():
 			_apply_milestone(milestone)
+	elif material_stage:
+		# 실패한 +10 단위 시도는 재료 성질도 다시 선택할 수 있도록 되돌린다.
+		material_scores.clear()
+		last_secondary_tag = ""
+		failure_streak += 1
+		total_failures += 1
 	else:
 		failure_streak += 1
 		total_failures += 1
@@ -260,9 +260,10 @@ func _resolve_attempt(precision_id: String, precision_label: String, precision_b
 		"precision_label": precision_label,
 		"precision_bonus": precision_bonus,
 		"precision_required": requires_precision_for_level(target_level),
+		"uses_materials": material_stage,
 		"milestone": milestone.duplicate(true),
-		"secondary_material_id": selected_secondary_id,
-		"catalyst_material_id": selected_catalyst_id,
+		"secondary_material_id": selected_secondary_id if material_stage else "",
+		"catalyst_material_id": selected_catalyst_id if material_stage else "",
 		"affixes": affixes.duplicate(true),
 	}
 
@@ -281,8 +282,22 @@ func _resolve_attempt(precision_id: String, precision_label: String, precision_b
 		state = State.READY
 		state_changed.emit(state)
 		attempt_resolved.emit(last_attempt.duplicate(true))
-
 	_emit_changed()
+
+
+func _base_success_chance(target_level: int) -> float:
+	var explicit: Dictionary = config.get("base_success_by_target_level", {})
+	if explicit.has(str(target_level)):
+		return float(explicit[str(target_level)])
+	var pattern: Dictionary = config.get("base_success_pattern_by_cycle_position", {})
+	var cycle_position := ((target_level - 1) % 10) + 1
+	var base := float(pattern.get(str(cycle_position), 0.5))
+	var completed_decades := maxi((target_level - 1) / 10, 0)
+	var penalty := minf(
+		float(completed_decades) * float(config.get("decade_penalty", 0.02)),
+		float(config.get("max_decade_penalty", 0.18))
+	)
+	return maxf(base - penalty, float(config.get("minimum_base_success", 0.35)))
 
 
 func _consume_material_traits() -> void:
@@ -293,7 +308,6 @@ func _consume_material_traits() -> void:
 		_add_material_score(material_scores, tag, int(scoring["secondary_tag_weight"]))
 		_add_material_score(lifetime_material_scores, tag, int(scoring["secondary_tag_weight"]))
 		last_secondary_tag = tag
-
 	var catalyst := _material(selected_catalyst_id)
 	for tag_value in catalyst.get("affix_tags", []):
 		var tag := str(tag_value)
@@ -309,6 +323,9 @@ func _apply_milestone(milestone: Dictionary) -> void:
 			_add_affix_to_slot(slot)
 		"UPGRADE_AFFIX":
 			_upgrade_affix_slot(slot, int(milestone.get("tier_delta", 1)))
+		"ASCEND_ALL":
+			for affix_index in range(affixes.size()):
+				_upgrade_affix_slot(affix_index + 1, int(milestone.get("tier_delta", 1)))
 	material_scores.clear()
 	last_secondary_tag = ""
 
@@ -318,13 +335,11 @@ func _add_affix_to_slot(slot: int) -> void:
 	for affix_value in affixes:
 		var existing: Dictionary = affix_value
 		excluded_ids.append(str(existing.get("id", "")))
-
 	var preview := _get_leading_affix_preview(false, excluded_ids)
 	if preview.is_empty():
 		preview = _first_available_affix_preview(excluded_ids)
 	if preview.is_empty():
 		return
-
 	var new_affix := {
 		"id": preview["id"],
 		"name": preview["name"],
@@ -364,8 +379,7 @@ func _get_milestone_preview() -> Dictionary:
 	var effect := str(milestone.get("effect", ""))
 	var slot := int(milestone.get("slot", 1))
 	var preview := milestone.duplicate(true)
-	preview["label"] = "이정표"
-
+	preview["label"] = "재료 이정표"
 	if effect == "ADD_AFFIX":
 		var excluded_ids: Array[String] = []
 		for affix_value in affixes:
@@ -378,23 +392,20 @@ func _get_milestone_preview() -> Dictionary:
 		preview["label"] = "수식어 추가"
 	elif effect == "UPGRADE_AFFIX":
 		var index := slot - 1
-		var target_affix: Dictionary = affixes[index] if index >= 0 and index < affixes.size() else {}
-		preview["affix"] = target_affix.duplicate(true)
+		preview["affix"] = affixes[index].duplicate(true) if index >= 0 and index < affixes.size() else {}
 		preview["label"] = "수식어 강화"
+	elif effect == "ASCEND_ALL":
+		preview["label"] = "전체 수식어 최종 승급"
 	return preview
 
 
-func _get_leading_affix_preview(
-	include_current_selection: bool = true,
-	excluded_affix_ids: Array[String] = []
-) -> Dictionary:
+func _get_leading_affix_preview(include_current_selection: bool = true, excluded_affix_ids: Array[String] = []) -> Dictionary:
 	var scores := material_scores.duplicate(true)
 	if include_current_selection:
 		var secondary := _material(selected_secondary_id)
 		for tag_value in secondary.get("affix_tags", []):
 			var tag := str(tag_value)
 			scores[tag] = int(scores.get(tag, 0)) + 1
-
 	var best_tag := ""
 	var best_score := -1
 	for tag_value in scores:
@@ -406,10 +417,8 @@ func _get_leading_affix_preview(
 		if score > best_score or (score == best_score and tag == last_secondary_tag):
 			best_tag = tag
 			best_score = score
-
 	if best_tag == "":
-		var fallback_tag := _first_affix_tag_for_material(selected_secondary_id)
-		var fallback := _affix_preview_for_tag(fallback_tag)
+		var fallback := _affix_preview_for_tag(_first_affix_tag_for_material(selected_secondary_id))
 		if not fallback.is_empty() and str(fallback.get("id", "")) not in excluded_affix_ids:
 			return fallback
 		return {}
@@ -467,10 +476,7 @@ func _selected_catalyst_bonus() -> float:
 
 func _current_pity_bonus() -> float:
 	var pity: Dictionary = config["pity"]
-	return minf(
-		float(failure_streak) * float(pity["bonus_per_failure"]),
-		float(pity["max_bonus"])
-	)
+	return minf(float(failure_streak) * float(pity["bonus_per_failure"]), float(pity["max_bonus"]))
 
 
 func _add_material_score(target: Dictionary, tag: String, amount: int) -> void:
