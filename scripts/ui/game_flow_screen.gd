@@ -3,7 +3,7 @@ extends Control
 const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
 const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
-const VERSION_TEXT := "POC v0.4.0 · main · 2026.07.21.2"
+const VERSION_TEXT := "POC v0.5.0 · main · 2026.07.21.3"
 const INVENTORY_CAPACITY := 6
 
 var current_screen: Control
@@ -81,6 +81,7 @@ func _open_enhancement() -> void:
 	if forging_session == null:
 		return
 	var weapon_result: Dictionary = forging_session.result.duplicate(true)
+	weapon_result["base_attack"] = 10
 	var enhancement_screen = EnhancementScreenScript.new()
 	enhancement_screen.configure_weapon(weapon_result)
 	enhancement_screen.set_inventory_count(inventory.size(), INVENTORY_CAPACITY)
@@ -139,7 +140,7 @@ func _show_inventory() -> void:
 	header.add_child(title)
 	header.add_child(_label("%d / %d" % [inventory.size(), INVENTORY_CAPACITY], 24, Color("#f2c14e")))
 
-	var guide := _label("제작과 강화를 끝낸 무기를 보관하고 판매 준비 상태를 확인합니다.", 17, Color("#b7b0a3"))
+	var guide := _label("제작과 강화를 끝낸 무기의 판매가, 강화비, 손익과 촉매 기록을 확인합니다.", 17, Color("#b7b0a3"))
 	guide.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(guide)
 
@@ -175,14 +176,57 @@ func _weapon_card(weapon: Dictionary) -> PanelContainer:
 	top.add_child(_label("슬롯 %d" % int(weapon.get("slot", 0)), 16, Color("#b7b0a3")))
 
 	var base_attack := int(weapon.get("base_attack", 10))
-	var bonus := int(weapon.get("enhancement_bonus", 0))
-	var final_attack := int(weapon.get("final_attack", base_attack + bonus))
-	box.add_child(_label("기본 공격력 %d (+%d) · 강화 적용 %d" % [base_attack, bonus, final_attack], 19, Color("#f4f1e8")))
+	var progression_attack := int(weapon.get("progression_attack", base_attack))
+	var final_attack := int(weapon.get("final_attack", progression_attack))
+	box.add_child(_label(
+		"기본 공격력 %d · 강화 공격력 %d · 최종 공격력 %d" % [base_attack, progression_attack, final_attack],
+		19,
+		Color("#f4f1e8")
+	))
+
+	var sale_price := int(weapon.get("sale_price", 0))
+	var total_spent := int(weapon.get("total_spent", 0))
+	var profit := int(weapon.get("estimated_profit", sale_price - total_spent))
+	var profit_color := Color("#72b879") if profit >= 0 else Color("#e36c62")
+	box.add_child(_label(
+		"판매가 %sG · 누적 강화비 %sG · 예상 손익 %sG" % [
+			_money(sale_price),
+			_money(total_spent),
+			_money(profit),
+		],
+		18,
+		profit_color
+	))
+
 	var effect_label := _label("특수 강화 효과: %s" % str(weapon.get("special_effect_text", "없음")), 17, Color("#d9dde6"))
 	effect_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(effect_label)
+
+	var catalyst_label := _label(
+		"촉매 기록: %s" % _format_catalyst_history(weapon.get("catalyst_history", [])),
+		16,
+		Color("#b7b0a3")
+	)
+	catalyst_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	box.add_child(catalyst_label)
 	box.add_child(_label("마감: %s" % str(weapon.get("quality_label", "보통 마감")), 15, Color("#b7b0a3")))
 	return panel
+
+
+func _format_catalyst_history(history: Array) -> String:
+	if history.is_empty():
+		return "없음"
+	var parts: Array[String] = []
+	for value in history:
+		if value is not Dictionary:
+			continue
+		var entry: Dictionary = value
+		parts.append("+%d %s(%sG)" % [
+			int(entry.get("level", 0)),
+			str(entry.get("name", "촉매")),
+			_money(int(entry.get("price", 0))),
+		])
+	return " · ".join(parts) if not parts.is_empty() else "없음"
 
 
 func _close_inventory() -> void:
@@ -251,6 +295,17 @@ func _build_version_badge() -> void:
 	label.add_theme_color_override("font_color", Color("#d9dde6"))
 	version_badge.add_child(label)
 	add_child(version_badge)
+
+
+func _money(value: int) -> String:
+	var negative := value < 0
+	var digits := str(absi(value))
+	var chunks: Array[String] = []
+	while digits.length() > 3:
+		chunks.push_front(digits.right(3))
+		digits = digits.left(digits.length() - 3)
+	chunks.push_front(digits)
+	return "%s%s" % ["-" if negative else "", ",".join(chunks)]
 
 
 func _label(text_value: String, font_size: int, color: Color) -> Label:
