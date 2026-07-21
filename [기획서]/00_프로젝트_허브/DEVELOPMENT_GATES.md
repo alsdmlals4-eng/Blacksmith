@@ -8,9 +8,9 @@
 | Definition of Ready | PASS | MVP-001 목표·범위·제외·완료 기준 기록 |
 | Planning·Approval | PASS | 사용자의 진행 승인과 `docs/MVP-001_SCOPE.md` |
 | Implementation | PASS | 제작 모델·세로형 UI·타이밍 게이지·Main Scene 구현 |
-| Verification | CURRENT | Godot 모델 테스트, 화면 실행, Android 실기기 확인 |
-| Documentation | IN_PROGRESS | 상태·Roadmap·기획서 구현 연결 갱신 |
-| Integration·Completion | NOT_STARTED | PR 검토·검증·병합 필요 |
+| Verification | CURRENT | 자동 검증 PASS, 화면 실행·Android 실기기 확인 필요 |
+| Documentation | PASS | 상태·Roadmap·기획서 구현 연결 갱신 |
+| Integration·Completion | NOT_STARTED | PR 검토·시각/실기기 미검증 확인·병합 필요 |
 
 ## 제품 게이트
 
@@ -33,7 +33,7 @@
 - [x] 완벽·좋음·보통 마감 판정
 - [x] 다시 제작 초기화
 - [x] Godot 프로젝트 헤드리스 파싱
-- [ ] Godot 모델 테스트 최종 PASS
+- [x] Godot 모델 테스트 PASS
 - [ ] 실제 화면 렌더 시각 검수
 - [ ] Android 실기기 터치 검증
 
