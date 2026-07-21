@@ -16,7 +16,7 @@ func _initialize() -> void:
 	milestones = _read_json("res://data/crafting/enhancement_milestones.json").get("milestones", [])
 	_run_tests()
 	if failures.is_empty():
-		print("EnhancementSession tests PASSED (11 cases)")
+		print("EnhancementSession tests PASSED (12 cases)")
 		quit(0)
 	for failure in failures:
 		push_error(failure)
@@ -32,7 +32,8 @@ func _run_tests() -> void:
 	_test_downgrade()
 	_test_destruction()
 	_test_safeguard()
-	_test_overdrive_reward_and_risk()
+	_test_overdrive_leaps_two_levels()
+	_test_overdrive_is_blocked_near_special()
 	_test_level_ten_affix()
 	_test_level_one_hundred()
 
@@ -147,21 +148,25 @@ func _test_safeguard() -> void:
 	_expect(not session.destroyed, "보호 선택 시 무기가 파괴되면 안 됩니다.")
 
 
-func _test_overdrive_reward_and_risk() -> void:
-	var rates := _rates(29, 1.0)
-	rates["30"] = 0.30
-	var balanced = _new_session({"base_success_by_target_level": rates})
-	var overdrive = _new_session({"base_success_by_target_level": rates})
-	_advance_to(balanced, 29)
-	_advance_to(overdrive, 29)
-	overdrive.set_skill("overdrive")
-	var normal_preview: Dictionary = balanced.get_next_preview()
-	var risk_preview: Dictionary = overdrive.get_next_preview()
-	var normal_risk: Dictionary = balanced.calculate_outcome_probabilities()
-	var overdrive_risk: Dictionary = overdrive.calculate_outcome_probabilities()
-	_expect(int(risk_preview.get("growth_gain", 0)) > int(normal_preview.get("growth_gain", 0)), "폭주 단조는 공격력 보상이 더 커야 합니다.")
-	_expect(int(risk_preview.get("sale_price", 0)) > int(normal_preview.get("sale_price", 0)), "폭주 단조는 판매가 보상이 더 커야 합니다.")
-	_expect(float(overdrive_risk.get("destroy", 0.0)) > float(normal_risk.get("destroy", 0.0)), "폭주 단조는 파괴 위험도 더 커야 합니다.")
+func _test_overdrive_leaps_two_levels() -> void:
+	var session = _new_session({"base_success_by_target_level": _rates(100, 1.0)})
+	_advance_to(session, 5)
+	_expect(session.set_skill("overdrive"), "+5에서는 폭주 단조를 선택할 수 있어야 합니다.")
+	var preview: Dictionary = session.get_next_preview()
+	_expect(is_equal_approx(float(preview.get("leap_chance", 0.0)), 0.08), "폭주 도약 확률은 8%여야 합니다.")
+	session.begin_attempt(0.0, 0.0)
+	_expect(bool(session.last_attempt.get("leap_triggered", false)), "폭주 도약 판정이 성공해야 합니다.")
+	_expect(int(session.last_attempt.get("levels_gained", 0)) == 2, "폭주 도약 성공 시 총 2단계 상승해야 합니다.")
+	_expect(session.enhancement_level == 7, "+5에서 폭주 도약 성공 시 +7이 되어야 합니다.")
+
+
+func _test_overdrive_is_blocked_near_special() -> void:
+	var session = _new_session({"base_success_by_target_level": _rates(100, 1.0)})
+	_advance_to(session, 28)
+	_expect(not session.can_use_skill_for_level("overdrive", 29), "+28에서는 폭주 도약이 +30 특수 강화를 건너뛸 수 있어 사용 불가여야 합니다.")
+	_advance_to(session, 29)
+	_expect(not session.set_skill("overdrive"), "+29에서는 다음 +30 특수 강화 때문에 폭주 단조를 사용할 수 없어야 합니다.")
+	_expect(not session.can_use_skill_for_level("overdrive", 30), "특수 강화 자체에서도 폭주 단조를 사용할 수 없어야 합니다.")
 
 
 func _test_level_ten_affix() -> void:
@@ -193,7 +198,7 @@ func _test_level_one_hundred() -> void:
 
 func _advance_to(session, target_level: int) -> void:
 	while session.enhancement_level < target_level and not session.destroyed:
-		session.begin_attempt(0.0)
+		session.begin_attempt(0.0, 1.0)
 		if session.state == EnhancementSessionScript.State.PRECISION:
 			session.precision_position = float(session.config["precision"]["target"])
 			session.finish_precision()
