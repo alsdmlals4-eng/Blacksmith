@@ -1,83 +1,91 @@
 # Blacksmith
 
-Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커형 무기 제작·강화 게임 프로젝트입니다.
-
-플레이어는 대장장이가 되어 재료를 조합해 무기를 만들고, 광클과 피버타임으로 제작을 가속합니다. +1~+9는 원클릭 일반 강화로 진행하며, +10·+20·…·+100에서는 보조재료·촉매·정밀 판정을 사용하는 `[특수 강화]`를 수행합니다.
-
-## 현재 구현
-
-### MVP-001 제작
+Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커형 무기 제작·강화 게임입니다.
 
 ```text
-철 고정 → 광클·자동 작업 → 피버 → 선택적 정밀 마감 → 철검 완성
+재료 획득
+→ 광클·자동 작업·피버로 기본 무기 제작
+→ 빠른 일반 강화와 +10 단위 특수 강화
+→ 성장한 무기를 보관
+→ 고객 방문 또는 상인 납품으로 판매
+→ 골드·명성·희귀 재료로 대장간 성장
 ```
 
+## 현재 플레이 가능한 POC
+
+### 제작
+
+- 철검 한 사이클
 - 터치·자동 작업 진행
-- 빠른 연속 터치로 피버 발동
-- 피버 중 터치·자동 작업 배율
-- 정밀 마감 ON/OFF
-- 완벽·좋음·보통 마감 판정
+- 연속 터치 피버
+- 선택 가능한 정밀 마감
+- 완벽·좋음·보통 마감
+- 완성 철검을 강화 화면으로 전달
 
-### +100 강화 테스트
+### +100 강화
 
-```text
-철검 → +1~+9 원클릭 일반 강화 → +10 특수 강화 → 반복 → +100
-```
+- +10 단위가 아닌 단계: 원클릭 일반 강화
+- +10·+20·…·+100: 보조재료·촉매·정밀 판정을 사용하는 특수 강화
+- 강화 단계가 높아질수록 공격력 성장량·비용·판매가·위험 증가
+- +11부터 단계 하락 가능
+- +30부터 파괴 가능
+- 실패당 성공률 +4%p, 최대 +24%p
+- 안정 단조: 높은 비용으로 파괴 방지·하락 위험 감소
+- 폭주 단조: 성공 시 8% 확률로 총 2단계 상승
+- 폭주 단조는 특수 강화와 특수 강화를 건너뛸 수 있는 단계에서 사용 불가
+- +10부터 수식어를 추가·성장시켜 +100에서 세 수식어 4티어 달성
 
-- 최대 강화: +100
-- 일반 강화: +10 단위가 아닌 모든 단계, 원클릭 즉시 판정
-- 특수 강화: +10·+20·+30·…·+100
-- 특수 강화에서만 보조재료·촉매 선택과 정밀 판정 적용
-- 일반 강화에서는 이전에 선택했던 보조재료·촉매 효과가 적용되지 않음
-- 실패 시 단계 유지·무기 파괴 없음
-- 실패당 다음 시도 성공률 보정
-- 성공률은 10단계 패턴을 반복하며 높은 구간일수록 점진적으로 감소
+### 보관함·자동 단조
 
-### +100 수식어 성장
+- 메모리 기반 무기 보관함 6칸
+- 현재 공격력·다음 강화 효과·가격·비용·위험 표시
+- 목표 강화 단계까지 빠른 자동 진행
+- 목표 도달 시 자동 보관
+- 보관함이 찰 때까지 반복 생산
+- 지정한 보조재료·촉매 재고가 없으면 해당 재료 없이 계속 진행
+- 골드 부족·보관함 가득 참·수동 중지 시 종료
+- 저장·복귀는 아직 구현되지 않음
 
-- +10: 첫 수식어 1티어
-- +20: 첫 수식어 2티어
-- +30: 두 번째 수식어 1티어
-- +40: 두 번째 수식어 2티어
-- +50: 세 번째 수식어 1티어
-- +60: 세 번째 수식어 2티어
-- +70·+80·+90: 각 수식어 3티어
-- +100: 모든 수식어 4티어
+## 바로 실행
 
-## Godot에서 바로 테스트
+1. GitHub Desktop에서 `Fetch origin → Pull origin`
+2. Godot 4.7.1로 `project.godot` 열기
+3. `F5`
 
-1. GitHub Desktop에서 `Fetch origin` 후 `Pull origin`을 누른다.
-2. Godot 4.7.1로 `project.godot`을 연다.
-3. `scenes/test/enhancement_test.tscn`을 열고 `F6`을 눌러 +0부터 +100까지 강화한다.
-
-전체 제작→강화 흐름은 `scenes/main/main.tscn`에서 확인한다. 상세 안내는 `docs/GODOT_PLAYTEST.md`에 있다.
+`project.godot`의 기본 실행 Scene이 강화 테스트이므로 별도 Scene 파일을 만들거나 선택할 필요가 없습니다. 전체 제작→강화 흐름은 `scenes/main/main.tscn`을 현재 장면으로 실행해 확인합니다.
 
 ## 기술 기준
 
-- Engine: Godot 4.7.1
-- Language: GDScript
-- Primary platform: Android mobile
-- Distribution: Google Play
-- Default orientation: Portrait 720×1280
-- Store package: Android App Bundle (`.aab`)
+- Godot 4.7.1 / GDScript
+- Android portrait 720×1280
+- `canvas_items` + `expand`
+- Google Play / AAB
+- API 36 이상 준비
 
-## 시작 위치
+## 프로젝트 운영 시작점
 
-1. `AGENTS.md`
-2. `[기획서]/00_프로젝트_허브/START_HERE.md`
-3. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
-4. `docs/GODOT_PLAYTEST.md`
-5. `docs/MVP-001_SCOPE.md`
-6. `docs/MVP-002_SCOPE.md`
+```text
+AGENTS.md
+→ [기획서]/00_프로젝트_허브/START_HERE.md
+→ ACTIVE_CONTEXT.md
+→ DOCUMENTATION_MAP.md
+→ DEVELOPMENT_GATES.md
+→ DESIGN_DOCUMENT_REGISTRY.json
+→ SKILL_REGISTRY.json
+→ 실제 코드·데이터·테스트
+```
+
+공용 운영 기준은 `docs/BASE_RULES_VERSION.md`, 적용 감사 결과는 `docs/BASE_SYNC_AUDIT.md`에서 확인합니다.
 
 ## 검증
 
 ```bash
 python tools/validate_game_data.py
+python tools/check_project_governance.py
 godot --headless --editor --path . --quit
 godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 godot --headless --path . --script res://tests/unit/test_forging_session.gd
 godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
 ```
 
-자동 검증을 통과한 뒤 실제 화면 렌더, 플레이 감각, Android 기기 터치와 AAB 배포를 별도로 검증합니다.
+자동 검증과 실제 화면·플레이 감각·Android 실기기·AAB 검증은 별개입니다.
