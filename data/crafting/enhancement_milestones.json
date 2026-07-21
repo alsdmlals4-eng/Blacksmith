@@ -5,24 +5,29 @@
       "level": 5,
       "effect": "ADD_AFFIX",
       "slot": 1,
-      "tier_pool": [
-        1
-      ]
+      "tier_pool": [1],
+      "precision_required": true
     },
     {
       "level": 10,
       "effect": "UPGRADE_AFFIX",
       "slot": 1,
-      "tier_delta": 1
+      "tier_delta": 1,
+      "precision_required": true
     },
     {
       "level": 15,
       "effect": "ADD_AFFIX",
       "slot": 2,
-      "tier_pool": [
-        1,
-        2
-      ]
+      "tier_pool": [1],
+      "precision_required": true
+    },
+    {
+      "level": 20,
+      "effect": "UPGRADE_AFFIX",
+      "slot": 2,
+      "tier_delta": 1,
+      "precision_required": true
     }
   ],
   "failure_policy": {
@@ -31,18 +36,16 @@
     "require_repair": false,
     "consume_materials": true,
     "pity_bonus": {
-      "status": "IMPLEMENTED_TO_LEVEL_5",
+      "status": "IMPLEMENTED_TO_LEVEL_20",
       "bonus_per_failure": 0.05,
       "max_bonus": 0.2,
       "reset_on_success": true
     }
   },
   "precision_work": {
-    "optional": true,
-    "applies_to": [
-      "finishing",
-      "enhancement"
-    ],
+    "optional": false,
+    "applies_to_levels": [5, 10, 15, 20],
+    "normal_levels_resolve_on_click": true,
     "good_success_bonus": 0.1,
     "perfect_success_bonus": 0.2
   }
