@@ -71,7 +71,7 @@ func _run_tests() -> void:
 	_test_level_five_adds_material_affix()
 
 
-func _session(custom_config: Dictionary = {}) -> RefCounted:
+func _session(custom_config: Dictionary = {}):
 	return EnhancementSessionScript.new(
 		custom_config,
 		materials,
