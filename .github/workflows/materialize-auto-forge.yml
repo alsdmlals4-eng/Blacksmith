@@ -1,12 +1,12 @@
 name: Materialize auto forge
 
-# Triggered after registration on main.
-# PR synchronize retry 1.
 on:
-  push:
+  pull_request:
     branches:
-      - feat/auto-forging-overdrive-leap
+      - main
+    types: [opened, synchronize, reopened]
     paths:
+      - ".tmp_auto_forge/**"
       - ".github/workflows/materialize-auto-forge.yml"
 
 permissions:
@@ -14,20 +14,29 @@ permissions:
 
 jobs:
   materialize:
+    if: github.head_ref == 'feat/auto-forging-overdrive-leap'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout feature branch
         uses: actions/checkout@v4
         with:
-          ref: feat/auto-forging-overdrive-leap
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Apply compressed patch and clean transport files
+      - name: Apply compressed patch and verify exact files
         shell: bash
         run: |
           set -euo pipefail
           cat .tmp_auto_forge/auto_forge_patch.part*.b64 | base64 -d | gzip -d > /tmp/auto_forge.patch
           git apply --3way /tmp/auto_forge.patch
+
+          test "$(git hash-object data/crafting/enhancement_balance.json)" = "6ed77001d7f0590c46e226fa82fbff22d6299e29"
+          test "$(git hash-object scripts/enhancement/enhancement_session.gd)" = "921ee916d83d836a90b49c40689978dddcd6b967"
+          test "$(git hash-object scripts/ui/enhancement_screen.gd)" = "3bbc2031454c811b6895b5ef19226cecc025d55e"
+          test "$(git hash-object scripts/ui/enhancement_test_runner.gd)" = "57e27005ca666202179a3732e056964298ec0ce1"
+          test "$(git hash-object scripts/ui/game_flow_screen.gd)" = "c82ac27a5ca8afa739fa9310d9da46f827d6a7ba"
+          test "$(git hash-object tests/unit/test_enhancement_session.gd)" = "a8e3e2ea146cdb7e2d7a98e1cb7f74d449df16ae"
+
           rm -rf .tmp_auto_forge
           rm -f .github/workflows/materialize-auto-forge.yml
 
@@ -35,4 +44,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "폭주 2단계 도약과 자동 단조 추가"
-          git push origin HEAD:feat/auto-forging-overdrive-leap
+          git push origin HEAD:${{ github.head_ref }}
