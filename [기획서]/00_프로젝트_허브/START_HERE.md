@@ -38,7 +38,7 @@
 - JSON 제작 밸런스
 - Godot 헤드리스 파싱과 모델 테스트 워크플로
 
-상세 구현 범위: `../../../docs/MVP-001_SCOPE.md`
+상세 구현 범위: `../../docs/MVP-001_SCOPE.md`
 
 ## 현재 상태
 
@@ -57,8 +57,8 @@
 → `DEVELOPMENT_GATES.md`
 → `DESIGN_DOCUMENT_REGISTRY.json`
 → `../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
-→ `../../../docs/MVP-001_SCOPE.md`
-→ `data/`
+→ `../../docs/MVP-001_SCOPE.md`
+→ `../../data/`
 → 실제 코드·Scene·테스트
 
 ## 다음 작업
