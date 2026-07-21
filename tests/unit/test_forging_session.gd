@@ -51,7 +51,7 @@ func _test_rapid_taps_start_fever() -> void:
 	session.advance(0.1)
 	session.register_tap()
 	_expect(session.is_fever_active(), "빠른 연속 터치가 피버를 발동해야 합니다.")
-	var before := session.progress
+	var before: float = session.progress
 	session.register_tap()
 	_expect(is_equal_approx(session.progress - before, 20.0), "피버 중 터치 작업량에 배율이 적용되어야 합니다.")
 
