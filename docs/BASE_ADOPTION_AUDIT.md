@@ -12,9 +12,9 @@
 
 CI가 Base 고정 커밋 전체를 checkout하고 다음을 실행한다.
 
-1. Base의 텍스트형 파일을 전수 스캔한다.
+1. 의존성 설치 전 Base 원본의 텍스트형 파일을 전수 스캔한다.
 2. Base Skill Registry의 13개 ACTIVE Skill과 패키지 경로를 확인한다.
-3. Base의 Skill 패키지·운영체계·프로젝트 Skill Map·통합 reference·freshness 테스트를 실행한다.
+3. Base 공식 Linux 운영체계 회귀 테스트 전체를 실행한다.
 4. 13개 기능이 Blacksmith Profile에 빠짐없이 매핑됐는지 확인한다.
 5. Blacksmith의 Registry·Skill Mode·책임 원본·로컬 경로·stale 활성 설명·런타임 필수 경로를 검사한다.
 
@@ -54,7 +54,7 @@ CI가 Base 고정 커밋 전체를 checkout하고 다음을 실행한다.
 - 미확정 Base 버전 → 고정 commit과 재동기화 조건
 - 검투사 경기 관람·베팅 삭제 오해 → 후속 기능으로 명시적 보존
 
-게임 코드·데이터·Scene 동작은 이 운영체계 PR에서 변경하지 않는다.
+게임 코드·데이터·Scene 동작은 운영체계 PR에서 변경하지 않았다.
 
 ## 안전 정리
 
@@ -66,15 +66,16 @@ CI가 Base 고정 커밋 전체를 checkout하고 다음을 실행한다.
 
 ## 적대적 개선 루프 결과
 
-1. Base 테스트 의존성 누락을 발견해 고정 requirements 설치를 추가했다.
+1. Base 테스트 의존성 누락을 발견해 고정 requirements·LibreOffice·Poppler·pnpm 설치를 추가했다.
 2. Base와 Blacksmith checkout을 형제 디렉터리로 격리해 스캔 오염을 차단했다.
-3. 변경 목록 밖의 stale 소비자인 `tests/README.md`, `scripts/README.md`, `scenes/README.md`, `tests/SPECIAL_ENHANCEMENT_VALIDATION.md`를 찾아 갱신했다.
-4. 경기 베팅이 영구 삭제처럼 보이는 기능 손실 위험을 발견해 Game Bible과 Decision Log에 후속 기능으로 보존했다.
-5. 감사 실패 시에도 JSON 보고서를 업로드하도록 CI를 구성했다.
+3. 의존성의 `node_modules`가 파일 수를 부풀리는 문제를 발견해 원본 감사를 설치 전으로 이동했다.
+4. 변경 목록 밖의 stale 소비자인 `tests/README.md`, `scripts/README.md`, `scenes/README.md`, `tests/SPECIAL_ENHANCEMENT_VALIDATION.md`를 갱신했다.
+5. 경기 베팅이 영구 삭제처럼 보이는 기능 손실 위험을 발견해 Game Bible과 Decision Log에 후속 기능으로 보존했다.
+6. 감사 실패 시에도 JSON 보고서를 업로드하도록 CI를 구성했다.
 
-## PR 게이트
+## 최종 판정
 
-- [x] Base 고정본 자체 테스트 PASS
+- [x] Base 고정본 공식 Linux 회귀 테스트 전체 PASS
 - [x] Base 13개 기능 매핑 1:1 PASS
 - [x] Blacksmith Skill 3개와 Registry Mode 일치 PASS
 - [x] 로컬 경로·책임 원본·stale 활성 설명 감사 PASS
@@ -82,9 +83,12 @@ CI가 Base 고정 커밋 전체를 checkout하고 다음을 실행한다.
 - [x] Godot 4.7.1 import·parse PASS
 - [x] 강화 Scene 스모크 PASS
 - [x] 제작·강화 모델 테스트 PASS
-- [x] changed files 전수 patch 검토 PASS
+- [x] changed files 30개 patch 전수 검토 PASS
 - [x] untouched 소비자·삭제 참조 검토 PASS
 - [x] 감사 보고서 오류 0·경고 0
+- [x] PR #16 최종 리뷰와 미해결 스레드 확인
+- [x] PR #16 squash 병합: `41d6dad7c2e91a9eb21c543d73b323e07251e02c`
+- [x] main의 Profile·CI Workflow·Game Bible 핵심 내용 재확인
 - [x] Android·AAB·시각·접근성·성능·브랜치 보호는 `NOT_RUN` 또는 `UNVERIFIED`로 분리
 
-차단 finding은 없다. 최종 문서 갱신 후 같은 자동 검증을 한 번 더 통과해야 병합한다.
+차단 finding은 없으며 Base 적용·가지치기·기능 보존 작업은 완료됐다.
