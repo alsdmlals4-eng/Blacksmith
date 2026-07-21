@@ -36,6 +36,17 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Validate JSON game data
+        working-directory: project
+        run: python tools/validate_game_data.py
+
+      - name: Audit pristine Base adoption and project references
+        working-directory: project
+        run: |
+          python tools/audit_project_operating_system.py \
+            --base-root ../base \
+            --report artifacts/base-adoption-report.json
+
       - name: Install pinned Base regression dependencies
         run: |
           corepack enable
@@ -45,10 +56,6 @@ jobs:
           python -m pip install --disable-pip-version-check -r base/requirements-publication.txt
           cd base
           pnpm install --frozen-lockfile
-
-      - name: Validate JSON game data
-        working-directory: project
-        run: python tools/validate_game_data.py
 
       - name: Validate full pinned Base operating system
         working-directory: base
@@ -70,14 +77,6 @@ jobs:
             tests/test_ui_art_audit.py \
             tests/test_game_project_operating_system_structure.py \
             -v
-
-      - name: Audit Base adoption and project references
-        if: always()
-        working-directory: project
-        run: |
-          python tools/audit_project_operating_system.py \
-            --base-root ../base \
-            --report artifacts/base-adoption-report.json
 
       - name: Upload Base adoption report
         if: always()
