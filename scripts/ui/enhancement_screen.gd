@@ -27,10 +27,11 @@ var weapon_name_label: Label
 var milestone_preview_label: Label
 var progress_bar: ProgressBar
 var progress_label: Label
+var cadence_label: Label
+var material_panel: PanelContainer
 var secondary_select: OptionButton
 var catalyst_select: OptionButton
 var chance_label: Label
-var cadence_label: Label
 var attempt_button: Button
 var attempt_result_label: Label
 var precision_panel: PanelContainer
@@ -51,12 +52,7 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var data := _load_enhancement_data()
 	_build_interface()
-	session = EnhancementSessionScript.new(
-		data["config"],
-		data["materials"],
-		data["affixes"],
-		weapon_result
-	)
+	session = EnhancementSessionScript.new(data["config"], data["materials"], data["affixes"], weapon_result)
 	session.attempt_resolved.connect(_on_attempt_resolved)
 	_refresh(session.snapshot())
 	set_process(true)
@@ -154,8 +150,9 @@ func _build_interface() -> void:
 	weapon_panel.add_child(weapon_box)
 	weapon_name_label = _label("철검 +0", 28, GOLD)
 	weapon_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	weapon_name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	weapon_box.add_child(weapon_name_label)
-	milestone_preview_label = _label("+5 이정표: 첫 수식어 추가", 18, TEXT)
+	milestone_preview_label = _label("+10 재료 이정표: 첫 수식어 추가", 18, TEXT)
 	milestone_preview_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	milestone_preview_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	weapon_box.add_child(milestone_preview_label)
@@ -168,22 +165,30 @@ func _build_interface() -> void:
 	var progress_header := HBoxContainer.new()
 	progress_box.add_child(progress_header)
 	progress_header.add_child(_label("강화 단계", 18, TEXT))
-	progress_label = _label("0 / 20", 18, GOLD)
+	progress_label = _label("0 / 100", 18, GOLD)
 	progress_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	progress_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	progress_header.add_child(progress_label)
 	progress_bar = _progress_bar(ORANGE)
 	progress_box.add_child(progress_bar)
-	cadence_label = _label("+1~+4 원클릭 · +5 정밀 강화", 16, MUTED)
+	cadence_label = _label("4회 원클릭 → +5 정밀 → +10 재료 정밀", 16, MUTED)
 	cadence_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	cadence_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	progress_box.add_child(cadence_label)
 
-	var material_panel := _panel(PANEL_ALT)
+	material_panel = _panel(PANEL_ALT)
+	material_panel.visible = false
 	layout.add_child(material_panel)
 	var material_box := VBoxContainer.new()
 	material_box.add_theme_constant_override("separation", 10)
 	material_panel.add_child(material_box)
-	material_box.add_child(_label("강화 재료", 22, TEXT))
+	var material_title := _label("+10 단위 강화 재료", 22, GOLD)
+	material_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	material_box.add_child(material_title)
+	var material_info := _label("보조재료와 촉매는 +10·+20·…·+100에서만 선택하고 적용합니다.", 16, MUTED)
+	material_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	material_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	material_box.add_child(material_info)
 
 	var secondary_row := HBoxContainer.new()
 	secondary_row.add_theme_constant_override("separation", 12)
@@ -218,12 +223,12 @@ func _build_interface() -> void:
 	catalyst_select.item_selected.connect(_on_catalyst_selected)
 	catalyst_row.add_child(catalyst_select)
 
-	chance_label = _label("원클릭 강화 성공률 100%", 20, GOLD)
+	chance_label = _label("원클릭 강화 성공률 98%", 20, GOLD)
 	chance_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	chance_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	material_box.add_child(chance_label)
+	layout.add_child(chance_label)
 
-	attempt_result_label = _label("+1부터 +4까지는 버튼 한 번으로 즉시 판정됩니다.", 18, MUTED)
+	attempt_result_label = _label("+1부터 시작합니다.", 18, MUTED)
 	attempt_result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	attempt_result_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(attempt_result_label)
@@ -245,10 +250,10 @@ func _build_interface() -> void:
 	var precision_box := VBoxContainer.new()
 	precision_box.add_theme_constant_override("separation", 10)
 	precision_panel.add_child(precision_box)
-	var precision_title := _label("이정표 정밀 강화", 24, GOLD)
+	var precision_title := _label("정밀 강화", 24, GOLD)
 	precision_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	precision_box.add_child(precision_title)
-	var precision_instruction := _label("+5·+10·+15·+20에서는 황금 구간에 맞춰 타격하세요.", 17, MUTED)
+	var precision_instruction := _label("+5 단위에서 흰 포인터가 황금 구간에 들어왔을 때 타격하세요.", 17, MUTED)
 	precision_instruction.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	precision_instruction.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	precision_box.add_child(precision_instruction)
@@ -270,11 +275,11 @@ func _build_interface() -> void:
 	var complete_box := VBoxContainer.new()
 	complete_box.add_theme_constant_override("separation", 10)
 	complete_panel.add_child(complete_box)
-	complete_name_label = _label("불타는 날카로운 철검 +20", 29, GOLD)
+	complete_name_label = _label("철검 +100", 29, GOLD)
 	complete_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	complete_name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	complete_box.add_child(complete_name_label)
-	complete_affix_label = _label("수식어 이정표 완료", 21, TEXT)
+	complete_affix_label = _label("최대 강화 완료", 21, TEXT)
 	complete_affix_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	complete_affix_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	complete_box.add_child(complete_affix_label)
@@ -290,7 +295,7 @@ func _build_interface() -> void:
 	restart_button.pressed.connect(func() -> void: restart_requested.emit())
 	complete_box.add_child(restart_button)
 
-	helper_label = _label("일반 단계는 원클릭, 매 5번째 이정표만 정밀 강화입니다.", 16, MUTED)
+	helper_label = _label("+5 단위는 정밀 강화, +10 단위에서만 재료를 선택합니다.", 16, MUTED)
 	helper_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	helper_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	layout.add_child(helper_label)
@@ -322,11 +327,10 @@ func _on_precision_pressed() -> void:
 
 func _on_attempt_resolved(result: Dictionary) -> void:
 	var target_level := int(result.get("target_level", 0))
-	var milestone: Dictionary = result.get("milestone", {})
 	if bool(result.get("success", false)):
 		attempt_result_label.text = "강화 성공! %s" % str(session.get_display_name())
-		if not milestone.is_empty():
-			attempt_result_label.text += " · +%d 이정표 적용" % target_level
+		if bool(result.get("uses_materials", false)):
+			attempt_result_label.text += " · +%d 재료 이정표 적용" % target_level
 		attempt_result_label.add_theme_color_override("font_color", GREEN)
 	else:
 		attempt_result_label.text = "강화 실패 · 단계 유지 · 다음 시도 성공률 상승"
@@ -338,47 +342,53 @@ func _refresh(snapshot: Dictionary) -> void:
 	var max_level := int(snapshot["max_level"])
 	var target_level := int(snapshot["target_level"])
 	var requires_precision := bool(snapshot["requires_precision"])
+	var uses_materials := bool(snapshot["uses_materials"])
+	var current_state := int(snapshot["state"])
+
 	level_label.text = "+%d" % current_level
 	weapon_name_label.text = str(snapshot["display_name"])
 	progress_label.text = "%d / %d" % [current_level, max_level]
 	progress_bar.value = float(snapshot["progress_ratio"]) * 100.0
 	precision_gauge.set_pointer(float(snapshot["precision_position"]))
 	milestone_preview_label.text = _format_milestone_preview(snapshot["milestone_preview"])
+	material_panel.visible = uses_materials and current_state != EnhancementSessionScript.State.COMPLETE
 
 	var base_chance := float(snapshot["base_success_chance"])
 	if requires_precision:
 		var precision: Dictionary = session.config["precision"]
-		chance_label.text = "이정표 기본 %d%% · GOOD %d%% · PERFECT %d%%" % [
+		var prefix := "재료 이정표" if uses_materials else "정밀 강화"
+		chance_label.text = "%s 기본 %d%% · GOOD %d%% · PERFECT %d%%" % [
+			prefix,
 			int(round(base_chance * 100.0)),
 			int(round(session.calculate_success_chance(float(precision["good_success_bonus"])) * 100.0)),
 			int(round(session.calculate_success_chance(float(precision["perfect_success_bonus"])) * 100.0)),
 		]
-		attempt_button.text = "+%d 이정표 정밀 강화" % target_level
-		cadence_label.text = "+%d은 수식어 이정표 · 정밀 강화 필수" % target_level
+		attempt_button.text = "+%d 정밀 강화" % target_level
+		cadence_label.text = "+%d: %s" % [target_level, "재료 선택 + 정밀 강화" if uses_materials else "정밀 강화 · 재료 선택 없음"]
 	else:
 		chance_label.text = "원클릭 강화 성공률 %d%%" % int(round(base_chance * 100.0))
 		attempt_button.text = "+%d 원클릭 강화" % target_level
-		var next_milestone := int(ceil(float(target_level) / 5.0) * 5.0)
-		cadence_label.text = "+%d까지 원클릭 · +%d에서 정밀 강화" % [next_milestone - 1, next_milestone]
+		var next_precision := int(ceil(float(target_level) / 5.0) * 5.0)
+		cadence_label.text = "+%d까지 원클릭 · +%d에서 정밀 강화" % [next_precision - 1, next_precision]
 
 	if float(snapshot["pity_bonus"]) > 0.0:
 		chance_label.text += " · 실패 보정 +%d%%" % int(round(float(snapshot["pity_bonus"]) * 100.0))
 
-	var new_state := int(snapshot["state"])
-	if new_state != last_state:
-		last_state = new_state
-		_apply_state(new_state, snapshot)
+	if current_state != last_state:
+		last_state = current_state
+		_apply_state(current_state, snapshot)
 
 
 func _apply_state(new_state: int, snapshot: Dictionary) -> void:
+	var uses_materials := bool(snapshot["uses_materials"])
 	match new_state:
 		EnhancementSessionScript.State.READY:
-			secondary_select.disabled = false
-			catalyst_select.disabled = false
+			secondary_select.disabled = not uses_materials
+			catalyst_select.disabled = not uses_materials
 			attempt_button.visible = true
 			precision_panel.visible = false
 			complete_panel.visible = false
-			helper_label.text = "일반 단계는 버튼 한 번으로 즉시 판정됩니다. 실패해도 단계는 유지됩니다."
+			helper_label.text = "+10 단위에서는 재료를 고른 뒤 정밀 강화합니다." if uses_materials else "현재 단계에는 보조재료와 촉매가 적용되지 않습니다."
 		EnhancementSessionScript.State.PRECISION:
 			secondary_select.disabled = true
 			catalyst_select.disabled = true
@@ -386,60 +396,32 @@ func _apply_state(new_state: int, snapshot: Dictionary) -> void:
 			precision_panel.visible = true
 			complete_panel.visible = false
 			var precision: Dictionary = session.config["precision"]
-			precision_gauge.configure(
-				float(precision["target"]),
-				float(precision["perfect_radius"]),
-				float(precision["good_radius"])
-			)
-			helper_label.text = "이정표 정밀 판정은 성공률을 높이고 수식어 변화를 확정합니다."
+			precision_gauge.configure(float(precision["target"]), float(precision["perfect_radius"]), float(precision["good_radius"]))
+			helper_label.text = "선택한 재료는 이번 +10 단위 정밀 강화에만 적용됩니다." if uses_materials else "이번 +5 단위는 재료 없이 정밀 판정만 진행합니다."
 		EnhancementSessionScript.State.COMPLETE:
-			secondary_select.disabled = true
-			catalyst_select.disabled = true
+			material_panel.visible = false
 			attempt_button.visible = false
 			precision_panel.visible = false
 			complete_panel.visible = true
 			complete_name_label.text = str(snapshot["display_name"])
 			complete_affix_label.text = _format_affix_summary(snapshot["affixes"])
-			complete_stats_label.text = "강화 시도 %d회 · 실패 %d회" % [
-				int(snapshot["total_attempts"]),
-				int(snapshot["total_failures"]),
-			]
-			helper_label.text = "+5·+10·+15·+20 수식어 이정표를 모두 완료했습니다."
+			complete_stats_label.text = "강화 시도 %d회 · 실패 %d회" % [int(snapshot["total_attempts"]), int(snapshot["total_failures"])]
+			helper_label.text = "+100 최대 강화에 도달했습니다."
 
 
 func _format_milestone_preview(preview: Dictionary) -> String:
 	if preview.is_empty():
-		return "모든 강화 이정표 완료"
+		return "+100 최종 이정표 완료"
 	var level := int(preview.get("level", 0))
-	var label := str(preview.get("label", "이정표"))
+	var label := str(preview.get("label", "재료 이정표"))
+	var effect := str(preview.get("effect", ""))
+	if effect == "ASCEND_ALL":
+		return "+%d %s" % [level, label]
 	var affix: Dictionary = preview.get("affix", {})
 	var affix_name := str(affix.get("name", "미정"))
-	if str(preview.get("effect", "")) == "UPGRADE_AFFIX":
+	if effect == "UPGRADE_AFFIX":
 		return "+%d %s: %s 티어 상승" % [level, label, affix_name]
-	return "+%d %s: %s 후보 · %s" % [
-		level,
-		label,
-		affix_name,
-		_format_material_scores(session.material_scores if session != null else {}),
-	]
-
-
-func _format_material_scores(scores: Dictionary) -> String:
-	if scores.is_empty():
-		return "현재 재료부터 누적"
-	var labels := {
-		"sharp": "예리함",
-		"fire": "화염",
-		"spirit": "정령",
-		"salamander": "살라맨더",
-	}
-	var parts: Array[String] = []
-	for tag_value in scores:
-		var tag := str(tag_value)
-		if tag == "salamander":
-			continue
-		parts.append("%s %d" % [str(labels.get(tag, tag)), int(scores[tag])])
-	return " / ".join(parts) if not parts.is_empty() else "촉매 성질만 누적"
+	return "+%d %s: %s 후보" % [level, label, affix_name]
 
 
 func _format_affix_summary(affix_list: Array) -> String:
@@ -449,11 +431,7 @@ func _format_affix_summary(affix_list: Array) -> String:
 	for item_value in affix_list:
 		if item_value is Dictionary:
 			var item: Dictionary = item_value
-			parts.append("%s %d티어 · %s" % [
-				str(item.get("name", "수식어")),
-				int(item.get("tier", 1)),
-				_format_affix_effects(item.get("effects", {})),
-			])
+			parts.append("%s %d티어 · %s" % [str(item.get("name", "수식어")), int(item.get("tier", 1)), _format_affix_effects(item.get("effects", {}))])
 	return "\n".join(parts)
 
 
