@@ -1,34 +1,16 @@
 {
   "schema_version": 1,
   "milestones": [
-    {
-      "level": 5,
-      "effect": "ADD_AFFIX",
-      "slot": 1,
-      "tier_pool": [1],
-      "precision_required": true
-    },
-    {
-      "level": 10,
-      "effect": "UPGRADE_AFFIX",
-      "slot": 1,
-      "tier_delta": 1,
-      "precision_required": true
-    },
-    {
-      "level": 15,
-      "effect": "ADD_AFFIX",
-      "slot": 2,
-      "tier_pool": [1],
-      "precision_required": true
-    },
-    {
-      "level": 20,
-      "effect": "UPGRADE_AFFIX",
-      "slot": 2,
-      "tier_delta": 1,
-      "precision_required": true
-    }
+    {"level": 10, "effect": "ADD_AFFIX", "slot": 1, "tier_pool": [1], "material_selection": true},
+    {"level": 20, "effect": "UPGRADE_AFFIX", "slot": 1, "tier_delta": 1, "material_selection": true},
+    {"level": 30, "effect": "ADD_AFFIX", "slot": 2, "tier_pool": [1], "material_selection": true},
+    {"level": 40, "effect": "UPGRADE_AFFIX", "slot": 2, "tier_delta": 1, "material_selection": true},
+    {"level": 50, "effect": "ADD_AFFIX", "slot": 3, "tier_pool": [1], "material_selection": true},
+    {"level": 60, "effect": "UPGRADE_AFFIX", "slot": 3, "tier_delta": 1, "material_selection": true},
+    {"level": 70, "effect": "UPGRADE_AFFIX", "slot": 1, "tier_delta": 1, "material_selection": true},
+    {"level": 80, "effect": "UPGRADE_AFFIX", "slot": 2, "tier_delta": 1, "material_selection": true},
+    {"level": 90, "effect": "UPGRADE_AFFIX", "slot": 3, "tier_delta": 1, "material_selection": true},
+    {"level": 100, "effect": "ASCEND_ALL", "tier_delta": 1, "material_selection": true}
   ],
   "failure_policy": {
     "destroy_weapon": false,
@@ -36,7 +18,7 @@
     "require_repair": false,
     "consume_materials": true,
     "pity_bonus": {
-      "status": "IMPLEMENTED_TO_LEVEL_20",
+      "status": "IMPLEMENTED_TO_LEVEL_100",
       "bonus_per_failure": 0.05,
       "max_bonus": 0.2,
       "reset_on_success": true
@@ -44,9 +26,15 @@
   },
   "precision_work": {
     "optional": false,
-    "applies_to_levels": [5, 10, 15, 20],
+    "interval": 5,
+    "applies_to_levels": "EVERY_5_LEVELS_TO_100",
     "normal_levels_resolve_on_click": true,
     "good_success_bonus": 0.1,
     "perfect_success_bonus": 0.2
+  },
+  "material_selection": {
+    "interval": 10,
+    "applies_to_levels": "10_20_30_40_50_60_70_80_90_100",
+    "hidden_outside_milestones": true
   }
 }
