@@ -9,6 +9,7 @@ on:
       - "tests/**"
       - "data/**"
       - ".github/workflows/godot-validation.yml"
+      - "tools/**"
   push:
     branches: [main]
 
@@ -52,8 +53,14 @@ jobs:
 
           cat godot-test.log
           status=0
-          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ]; then
+          if ! grep -q "ForgingSession tests PASSED" godot-test.log; then
             status=1
+          fi
+          if ! grep -q "EnhancementSession tests PASSED" godot-test.log; then
+            status=1
+          fi
+          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ]; then
+            echo "Godot reported non-zero test process status: forging=$forging_status enhancement=$enhancement_status"
           fi
           echo "status=$status" >> "$GITHUB_OUTPUT"
           exit 0
