@@ -77,9 +77,9 @@ func _initialize() -> void:
 
 func _run_tests() -> void:
 	_test_normal_level_resolves_in_one_click()
-	_test_fifth_level_requires_precision_without_materials()
-	_test_tenth_level_enables_materials()
-	_test_catalyst_applies_only_at_ten_level_milestone()
+	_test_level_five_is_normal_one_click()
+	_test_level_ten_is_special_enhancement()
+	_test_catalyst_applies_only_to_special_enhancement()
 	_test_failure_preserves_level_and_adds_pity()
 	_test_level_ten_adds_selected_affix()
 	_test_level_twenty_upgrades_first_affix()
@@ -89,7 +89,7 @@ func _run_tests() -> void:
 func _session(custom_config: Dictionary = {}):
 	var merged := {
 		"max_level": 100,
-		"precision_interval": 5,
+		"precision_interval": 10,
 		"material_interval": 10,
 		"milestones": milestones,
 	}
@@ -111,28 +111,31 @@ func _test_normal_level_resolves_in_one_click() -> void:
 	_expect(str(session.last_attempt.get("precision_id", "")) == "ONE_CLICK", "일반 단계는 ONE_CLICK으로 기록되어야 합니다.")
 
 
-func _test_fifth_level_requires_precision_without_materials() -> void:
+func _test_level_five_is_normal_one_click() -> void:
 	var session = _session(_all_success_config())
 	_advance_to_level(session, 4)
-	_expect(not session.uses_materials_for_level(5), "+5에서는 재료를 사용하지 않아야 합니다.")
+	_expect(not session.uses_materials_for_level(5), "+5에서는 보조재료와 촉매를 사용하지 않아야 합니다.")
+	_expect(not session.requires_precision_for_level(5), "+5에서는 정밀 판정을 사용하지 않아야 합니다.")
 	_expect(not session.set_secondary_material("flame_stone"), "+5 직전에는 보조재료를 변경할 수 없어야 합니다.")
 	session.begin_attempt(0.0)
-	_expect(session.state == EnhancementSessionScript.State.PRECISION, "+5에서는 정밀 강화 상태로 전환되어야 합니다.")
-	_expect(session.material_scores.is_empty(), "+5 정밀 강화에는 재료 성질이 누적되면 안 됩니다.")
+	_expect(session.enhancement_level == 5, "+5는 원클릭으로 즉시 판정되어야 합니다.")
+	_expect(session.state == EnhancementSessionScript.State.READY, "+5 판정 후 정밀 강화 상태로 진입하면 안 됩니다.")
+	_expect(str(session.last_attempt.get("precision_id", "")) == "ONE_CLICK", "+5도 일반 강화로 기록되어야 합니다.")
 
 
-func _test_tenth_level_enables_materials() -> void:
+func _test_level_ten_is_special_enhancement() -> void:
 	var session = _session(_all_success_config())
 	_advance_to_level(session, 9)
-	_expect(session.uses_materials_for_level(10), "+10은 재료 선택 단계여야 합니다.")
+	_expect(session.uses_materials_for_level(10), "+10은 보조재료와 촉매를 사용하는 특수 강화여야 합니다.")
+	_expect(session.requires_precision_for_level(10), "+10 특수 강화는 정밀 판정을 사용해야 합니다.")
 	_expect(session.set_secondary_material("flame_stone"), "+10 직전에는 보조재료를 선택할 수 있어야 합니다.")
 	_expect(session.set_catalyst_material("salamander_core"), "+10 직전에는 촉매를 선택할 수 있어야 합니다.")
 	session.begin_attempt(0.0)
-	_expect(session.state == EnhancementSessionScript.State.PRECISION, "+10은 재료 선택 후 정밀 강화여야 합니다.")
-	_expect(int(session.material_scores.get("fire", 0)) > 0, "+10 시도에서 화염 재료 성질이 누적되어야 합니다.")
+	_expect(session.state == EnhancementSessionScript.State.PRECISION, "+10에서는 특수 강화 정밀 판정으로 전환되어야 합니다.")
+	_expect(int(session.material_scores.get("fire", 0)) > 0, "+10 특수 강화에서 화염 재료 성질이 누적되어야 합니다.")
 
 
-func _test_catalyst_applies_only_at_ten_level_milestone() -> void:
+func _test_catalyst_applies_only_to_special_enhancement() -> void:
 	var session = _session({
 		"base_success_by_target_level": {"5": 0.60, "10": 0.60},
 	})
@@ -140,11 +143,9 @@ func _test_catalyst_applies_only_at_ten_level_milestone() -> void:
 	_expect(not session.set_catalyst_material("salamander_core"), "+5 직전에는 촉매를 선택할 수 없어야 합니다.")
 	_expect(is_equal_approx(session.calculate_success_chance(), 0.60), "+5 성공률에는 촉매 보너스가 없어야 합니다.")
 	session.begin_attempt(0.0)
-	session.precision_position = float(session.config["precision"]["target"])
-	session.finish_precision()
 	_advance_to_level(session, 9)
 	session.set_catalyst_material("salamander_core")
-	_expect(is_equal_approx(session.calculate_success_chance(), 0.75), "+10 성공률에는 촉매 15%p가 적용되어야 합니다.")
+	_expect(is_equal_approx(session.calculate_success_chance(), 0.75), "+10 특수 강화 성공률에는 촉매 15%p가 적용되어야 합니다.")
 
 
 func _test_failure_preserves_level_and_adds_pity() -> void:
@@ -160,7 +161,7 @@ func _test_level_ten_adds_selected_affix() -> void:
 	_advance_to_level(session, 9)
 	session.set_secondary_material("flame_stone")
 	_advance_to_level(session, 10)
-	_expect(session.affixes.size() == 1, "+10에서 첫 수식어가 추가되어야 합니다.")
+	_expect(session.affixes.size() == 1, "+10 특수 강화에서 첫 수식어가 추가되어야 합니다.")
 	_expect(str(session.affixes[0]["id"]) == "flaming", "+10 화염석 선택 시 불타는 수식어가 붙어야 합니다.")
 	_expect(session.get_display_name() == "불타는 철검 +10", "첫 수식어와 +10 단계가 이름에 표시되어야 합니다.")
 
@@ -171,7 +172,7 @@ func _test_level_twenty_upgrades_first_affix() -> void:
 	session.set_secondary_material("flame_stone")
 	_advance_to_level(session, 20)
 	_expect(session.affixes.size() == 1, "+20까지 첫 수식어 슬롯 하나가 유지되어야 합니다.")
-	_expect(int(session.affixes[0]["tier"]) == 2, "+20에서 첫 수식어가 2티어가 되어야 합니다.")
+	_expect(int(session.affixes[0]["tier"]) == 2, "+20 특수 강화에서 첫 수식어가 2티어가 되어야 합니다.")
 	_expect(int(session.affixes[0]["effects"]["fire_damage"]) == 12, "+20 수식어 효과가 2티어 값이어야 합니다.")
 
 
@@ -190,7 +191,7 @@ func _test_level_one_hundred_completes_three_affixes() -> void:
 		if session.state == EnhancementSessionScript.State.PRECISION:
 			session.precision_position = float(session.config["precision"]["target"])
 			session.finish_precision()
-	_expect(session.state == EnhancementSessionScript.State.COMPLETE, "+100 성공 시 강화 세션이 완료되어야 합니다.")
+	_expect(session.state == EnhancementSessionScript.State.COMPLETE, "+100 특수 강화 성공 시 강화 세션이 완료되어야 합니다.")
 	_expect(session.enhancement_level == 100, "최대 강화 단계는 +100이어야 합니다.")
 	_expect(session.affixes.size() == 3, "+100에서 세 개의 수식어 슬롯이 완성되어야 합니다.")
 	for affix_value in session.affixes:
