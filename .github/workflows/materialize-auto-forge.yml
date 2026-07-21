@@ -1,6 +1,7 @@
 name: Materialize auto forge
 
 # Triggered after registration on main.
+# PR synchronize retry 1.
 on:
   push:
     branches:
