@@ -1,36 +1,39 @@
 # Tests
 
-현재 자동 검증은 JSON 데이터와 Godot 4.7.1 헤드리스 모델 테스트를 실행한다.
-
-## 데이터 검증
+## 자동 검증
 
 ```bash
 python tools/validate_game_data.py
+python tools/audit_project_operating_system.py --base-root <Base checkout>
+godot --headless --editor --path . --quit
+godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
+godot --headless --path . --script res://tests/unit/test_forging_session.gd
+godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
 ```
 
-## Godot 모델 테스트
+## 현재 범위
 
-```bash
-Godot --headless --path . --script res://tests/unit/test_forging_session.gd
-Godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
-```
+- 제작 진행도·피버·정밀 마감·초기화
+- 일반 강화와 +10 단위 특수 강화 분리
+- 재료·촉매·정밀 효과의 일반 단계 누출 방지
+- +10~+100 수식어 성장
+- 공격력·가격·비용의 점진 성장
+- 실패 유지·단계 하락·파괴·실패 보정
+- 안정·균형·폭주 단조
+- 폭주 성공 시 낮은 확률 총 2단계 상승과 이정표 차단
+- 촉매 비용·보호·위험 효과
+- 보관함 최대 6개와 파괴 무기 보관 차단
+- 자동 단조 목표·재료 fallback·자동 보관·반복·중지
+- Base 13개 기능 매핑·Registry·로컬 참조·stale 정본 감사
 
-현재 검증 범위:
+## 별도 검증
 
-- 제작 진행도와 피버 게이지
-- 정밀 마감 ON/OFF와 완벽 판정
-- 제작 세션 초기화
-- 강화 성공과 실패
-- 실패 시 단계 유지와 누적 성공 보정
-- 촉매·정밀 강화 성공률 합산
-- +5 재료 누적 수식어 생성
+자동 테스트만으로 다음을 통과 처리하지 않는다.
 
-후속 테스트:
-
-- 정밀작업 판정 경계값 전체
-- +10 수식어 강화와 +15 두 번째 수식어
-- 숨은 레시피 변환
-- 고객 방문 인센티브
-- 상인 납품 가격 계산
-- 저장·방치 복귀
-- Android 터치 입력과 화면 비율
+- 실제 화면·스크롤·시각 품질
+- Android 터치·안전 영역·태블릿·폴더블
+- AAB·Google Play
+- 접근성 사람 검수
+- 대표·최악 장면 성능 프로파일
+- 저장·복귀·방치 보상
+- 고객·상인 판매

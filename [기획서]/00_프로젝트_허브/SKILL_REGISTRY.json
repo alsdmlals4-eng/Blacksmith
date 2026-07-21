@@ -1,55 +1,164 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "registry_role": "blacksmith-project-skill-router",
   "project": "Blacksmith",
-  "load_all_skills": false,
-  "default_selection": "none",
+  "routing_policy": {
+    "load_all_skills": false,
+    "default_selection": "automatic-trigger-match",
+    "automatic_selection": true,
+    "user_skill_declaration_required": false,
+    "require_trigger_match": true,
+    "require_execution_report": true,
+    "work_modes": ["PLAN", "BUILD", "REVIEW"],
+    "max_primary_discipline_skills": 1,
+    "exclude_statuses": ["HOLD", "BACKUP", "REMOVAL_CANDIDATE"]
+  },
   "skills": [
     {
       "skill_id": "blacksmith-game-design",
+      "layer": "specialist",
       "status": "ACTIVE",
+      "load_by_default": false,
       "discipline": "게임 디자인",
+      "path": "../../skills/game-design/SKILL.md",
       "trigger_tags": [
         "crafting",
         "enhancement",
+        "special-enhancement",
         "affix",
+        "material",
+        "catalyst",
+        "auto-forging",
         "customer",
+        "merchant",
         "economy",
-        "mvp"
+        "balance",
+        "benchmark",
+        "player-research",
+        "playtest",
+        "poc",
+        "vertical-slice",
+        "art-brief",
+        "mvp",
+        "core-loop"
       ],
-      "path": "../../skills/game-design/SKILL.md",
-      "source_documents": [
-        "blacksmith-game-bible"
+      "use_when": [
+        "제작·강화·수식어·재료·고객·판매·경제·벤치마크·플레이테스트·PoC·Vertical Slice의 규칙과 경험을 변경하거나 검토한다."
+      ],
+      "do_not_use_when": [
+        "기획 결정에 영향 없는 Godot 문법 수정 또는 동일 입력의 테스트 재실행이다."
+      ],
+      "skill_modes": [
+        "frame",
+        "update-system",
+        "balance-review",
+        "benchmark-and-player-research",
+        "playtest-and-experiment",
+        "poc-check",
+        "vertical-slice-gate",
+        "art-brief"
+      ],
+      "source_documents": ["blacksmith-game-bible"],
+      "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
+      "review_triggers": [
+        "광클 재미 약화",
+        "일반·특수 강화 경계 혼동",
+        "재료 효과 비의도 전파",
+        "고위험 보상 불균형",
+        "판매 루프 역할 중복",
+        "벤치마크 기능 복사",
+        "플레이테스트 없는 확정",
+        "문서와 JSON 수치 중복"
       ]
     },
     {
       "skill_id": "blacksmith-engineering",
+      "layer": "specialist",
       "status": "ACTIVE",
+      "load_by_default": false,
       "discipline": "개발·엔지니어링",
+      "path": "../../skills/engineering/SKILL.md",
       "trigger_tags": [
         "godot",
         "gdscript",
+        "scene",
         "android",
         "save",
-        "data"
+        "data",
+        "json-schema",
+        "inventory",
+        "automation",
+        "runtime",
+        "build"
       ],
-      "path": "../../skills/engineering/SKILL.md",
-      "source_documents": [
-        "blacksmith-game-bible"
+      "use_when": [
+        "Godot Scene·GDScript·데이터·Android·저장·자동화 구현을 설계하거나 수정한다."
+      ],
+      "do_not_use_when": [
+        "코드·데이터·Scene에 영향 없는 기획 문장 편집 또는 검토만 수행한다."
+      ],
+      "skill_modes": ["plan-change", "implement", "data-migration", "runtime-check"],
+      "source_documents": ["blacksmith-game-bible"],
+      "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
+      "review_triggers": [
+        "Godot 파싱 실패",
+        "Scene 진입점 불일치",
+        "JSON과 런타임 기본값 drift",
+        "모바일 화면 회귀",
+        "저장 호환성 파손",
+        "자동 단조 무한 루프"
       ]
     },
     {
       "skill_id": "blacksmith-qa",
+      "layer": "specialist",
       "status": "ACTIVE",
+      "load_by_default": false,
       "discipline": "QA",
+      "path": "../../skills/qa/SKILL.md",
       "trigger_tags": [
         "test",
         "validation",
+        "contract-check",
+        "external-source-review",
+        "reference-freshness",
+        "static-validation",
+        "runtime-validation",
         "android-device",
-        "regression"
+        "accessibility",
+        "performance",
+        "ui-art-review",
+        "regression",
+        "pr-review",
+        "evidence-report"
       ],
-      "path": "../../skills/qa/SKILL.md",
-      "source_documents": [
-        "blacksmith-game-bible"
+      "use_when": [
+        "변경 계약·외부 결과·정본 참조·정적·런타임·접근성·성능·UI·회귀 증거를 적대적으로 검증하고 판정한다."
+      ],
+      "do_not_use_when": [
+        "검증 대상 변경이 없고 단순 아이디어 탐색만 수행한다."
+      ],
+      "skill_modes": [
+        "contract-check",
+        "external-source-review",
+        "reference-freshness",
+        "static",
+        "runtime",
+        "accessibility-review",
+        "performance-profile",
+        "ui-art-review",
+        "regression",
+        "evidence-report"
+      ],
+      "source_documents": ["blacksmith-game-bible"],
+      "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
+      "review_triggers": [
+        "실행하지 않은 검사 PASS 보고",
+        "문서 주장과 실제 구현 불일치",
+        "정상 경로만 테스트",
+        "Android 실기기 증거 누락",
+        "PR untouched 소비자 누락",
+        "Workflow 존재와 Required Check 강제 혼동"
       ]
     }
   ],
