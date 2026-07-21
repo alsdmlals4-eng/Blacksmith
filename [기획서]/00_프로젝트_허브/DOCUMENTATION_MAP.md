@@ -5,6 +5,7 @@
 | 게임의 핵심 경험과 시스템은 무엇인가? | `../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md` |
 | 현재 무엇이 확정·구현·검증됐는가? | `ACTIVE_CONTEXT.md` |
 | 다음 작업과 단계는 무엇인가? | `ROADMAP.md`, `DEVELOPMENT_GATES.md` |
+| 최근 변경은 무엇인가? | `CHANGELOG.md` |
 | 문서별 책임 원본은 어디인가? | `DESIGN_DOCUMENT_REGISTRY.json` |
 | 반복 작업에 어떤 스킬을 쓰는가? | `SKILL_REGISTRY.json` |
 | MVP-001 제작 범위는 무엇인가? | `../../../docs/MVP-001_SCOPE.md` |
