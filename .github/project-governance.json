@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "base_commit": "ee265576da7f67d3278f8099dd97d4e714ef0651",
+  "required_files": [
+    "AGENTS.md",
+    "README.md",
+    "project.godot",
+    "docs/BASE_RULES_VERSION.md",
+    "docs/BASE_SYNC_AUDIT.md",
+    "[기획서]/00_프로젝트_허브/START_HERE.md",
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+    "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+    "[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json",
+    "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+    "[기획서]/00_프로젝트_허브/DOCUMENT_UPDATE_MATRIX.md",
+    "[기획서]/00_프로젝트_허브/AI_WORKFLOW.md",
+    "[기획서]/00_프로젝트_허브/OPERATING_SYSTEM_HEALTH_REPORT.md",
+    "skills/SKILL_LEARNING_LOG.md",
+    "schemas/skill-registry-v3.schema.json"
+  ],
+  "current_docs": [
+    "README.md",
+    "docs/GODOT_PLAYTEST.md",
+    "docs/MVP-002_SCOPE.md",
+    "[기획서]/00_프로젝트_허브/START_HERE.md",
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+    "[기획서]/00_프로젝트_허브/ROADMAP.md",
+    "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
+  ],
+  "forbidden_current_tokens": [
+    "실패 시 단계 유지·무기 파괴 없음",
+    "파괴·수리 없음",
+    "실패당 +5%p",
+    "최대 +20%p",
+    "+0~+5 강화",
+    "+1~+5 단계별",
+    "강화 모델 5건",
+    "`F6`"
+  ],
+  "obsolete_paths": [".github/workflows/materialize-auto-forge.yml"],
+  "expected_main_scene": "res://scenes/test/enhancement_test.tscn"
+}

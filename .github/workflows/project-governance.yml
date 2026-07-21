@@ -1,0 +1,19 @@
+name: Project governance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check project operating system and canonical references
+        run: python tools/check_project_governance.py
+      - name: Validate game data
+        run: python tools/validate_game_data.py

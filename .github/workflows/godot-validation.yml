@@ -8,6 +8,8 @@ on:
       - "scripts/**"
       - "tests/**"
       - "data/**"
+      - "docs/**"
+      - "skills/**"
       - ".github/workflows/godot-validation.yml"
       - "tools/**"
   push:
@@ -33,7 +35,7 @@ jobs:
       - name: Import and parse project
         run: ./godot --headless --editor --path . --quit
 
-      - name: Smoke test enhancement scene
+      - name: Smoke test enhancement F5 scene
         run: ./godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 
       - name: Run model tests
@@ -53,32 +55,25 @@ jobs:
 
           cat godot-test.log
           status=0
-          if ! grep -q "ForgingSession tests PASSED" godot-test.log; then
-            status=1
-          fi
-          if ! grep -q "EnhancementSession tests PASSED" godot-test.log; then
-            status=1
-          fi
+          grep -q "ForgingSession tests PASSED" godot-test.log || status=1
+          grep -q "EnhancementSession tests PASSED (12 cases)" godot-test.log || status=1
           if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ]; then
-            echo "Godot reported non-zero test process status: forging=$forging_status enhancement=$enhancement_status"
+            echo "Godot reported non-zero process status: forging=$forging_status enhancement=$enhancement_status"
           fi
           echo "status=$status" >> "$GITHUB_OUTPUT"
           exit 0
+
+      - name: Validate governance and game data
+        run: |
+          python tools/check_project_governance.py
+          python tools/validate_game_data.py
 
       - name: Package Godot playtest project
         shell: bash
         run: |
           zip -r blacksmith-godot-playtest.zip \
-            project.godot \
-            scenes \
-            scripts \
-            data \
-            tests \
-            docs/GODOT_PLAYTEST.md \
-            docs/MVP-001_SCOPE.md \
-            docs/MVP-002_SCOPE.md \
-            README.md \
-            -x ".godot/*" "*.import"
+            project.godot scenes scripts data tests docs README.md AGENTS.md "[기획서]" skills \
+            -x ".godot/*" "*.import" "*.pdf"
 
       - name: Upload Godot playtest project
         uses: actions/upload-artifact@v4
@@ -96,8 +91,4 @@ jobs:
           if-no-files-found: error
 
       - name: Fail when model tests fail
-        shell: bash
         run: test "${{ steps.model_tests.outputs.status }}" -eq 0
-
-      - name: Validate JSON game data
-        run: python tools/validate_game_data.py
