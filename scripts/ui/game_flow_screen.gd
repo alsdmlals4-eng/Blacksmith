@@ -19,8 +19,12 @@ func _process(_delta: float) -> void:
 	if current_screen == null or not is_instance_valid(current_screen):
 		enhance_button.visible = false
 		return
-	if current_screen.get_script() == ForgingScreenScript and current_screen.session != null:
-		enhance_button.visible = current_screen.session.state == ForgingSessionScript.State.COMPLETE
+	if current_screen.get_script() == ForgingScreenScript:
+		var forging_session = current_screen.get("session")
+		enhance_button.visible = (
+			forging_session != null
+			and forging_session.state == ForgingSessionScript.State.COMPLETE
+		)
 	else:
 		enhance_button.visible = false
 
@@ -46,9 +50,12 @@ func _show_forging() -> void:
 
 
 func _open_enhancement() -> void:
-	if current_screen == null or current_screen.session == null:
+	if current_screen == null:
 		return
-	var weapon_result: Dictionary = current_screen.session.result.duplicate(true)
+	var forging_session = current_screen.get("session")
+	if forging_session == null:
+		return
+	var weapon_result: Dictionary = forging_session.result.duplicate(true)
 	var enhancement_screen = EnhancementScreenScript.new()
 	enhancement_screen.configure_weapon(weapon_result)
 	enhancement_screen.restart_requested.connect(_show_forging)
