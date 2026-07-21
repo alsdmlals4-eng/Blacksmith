@@ -5,12 +5,12 @@
 | 게이트 | 상태 | 종료 기준 |
 |---|---|---|
 | Intake·Context | PASS | 저장소·플랫폼·핵심 방향·Base 기준 커밋 확인 |
-| Definition of Ready | PASS | 제작·강화·보관·자동 단조의 목표·제외·완료 기준 기록 |
-| Planning·Approval | PASS | 사용자의 직접 구현 승인과 영향 범위 확인 |
-| Implementation | PASS | 제작, +100 강화, 위험 결과, 단조 방식, 보관함, 자동 단조 구현 |
-| Verification | CURRENT | 자동 검증 PASS 이력, 최신 PR 검증과 실제 Godot·Android 수동 확인 필요 |
-| Documentation | CURRENT | Base 운영체계·현재 상태·Roadmap·Registry 최신화 진행 |
-| Integration·Completion | NOT_STARTED | PR 적대적 검토·Required Checks·병합·main 재확인 |
+| Definition of Ready | PASS | 제작·강화·보관·자동 단조와 운영체계 적용 범위·완료 기준 기록 |
+| Planning·Approval | PASS | 사용자의 직접 적용·가지치기·적대적 검토 요청과 보호 범위 확인 |
+| Implementation | PASS | Base 기능 매핑·Skill 통합·정본 동기화·영구 감사 CI 구현 |
+| Verification | CURRENT | Base 전체 Linux 회귀·운영 감사·Godot 자동 검증 PASS, Android·시각·성능 수동 증거 필요 |
+| Documentation | PASS | 시작 문서·Context·Map·Gates·Registry·Bible·Scope·학습 기록 동기화 |
+| Integration·Completion | CURRENT | PR 최종 Head 검증·리뷰 기록·병합·main 재확인 |
 
 ## 제품 게이트
 
@@ -50,7 +50,7 @@
 - [x] 폭주 성공 시 소량 확률 총 2단계 상승
 - [x] 폭주 단조의 특수 강화·+9 끝자리 사용 제한
 - [x] 최대 6개 무기 보관과 상세 표시
-- [x] Godot 파싱·Scene 스모크·강화 모델 테스트 PASS 이력
+- [x] Godot 파싱·Scene 스모크·강화 모델 테스트 PASS
 - [ ] +100 실제 수동 완주와 피로도 관찰
 - [ ] 확률·효과·가격 곡선 장기 밸런스 검증
 - [ ] Android 특수 강화 타이밍·스크롤 검증
@@ -74,15 +74,31 @@
 ## 운영체계·문서 검증
 
 - [x] Base 기준 커밋 고정
+- [x] Base 공식 Linux 운영체계 회귀 테스트 전체 PASS
+- [x] Base 텍스트형 파일 223개 전수 스캔
+- [x] Base ACTIVE Skill 13개 기능 매핑
+- [x] 프로젝트 Skill 3개로 통합하고 Registry Mode 일치
 - [x] Work Mode·Skill 자동 라우팅 문서
-- [x] Skill Registry 자동 trigger 정책
-- [x] 프로젝트 Skill 입력·출력·실패·검증 계약
 - [x] Active Context·START_HERE·Documentation Map 상태 동기화
-- [x] Base 적용 감사표와 보존·제외 사유
-- [ ] Design Document Registry Schema·발행 정책 검증
-- [ ] 문서 로컬 참조 전수 검사
-- [ ] 새 작업자 콜드 스타트 재현
-- [ ] GitHub Workflow와 Required Check 강제 여부 확인
+- [x] Design Document Registry JSON·책임 경로·발행 상태 정적 검증
+- [x] 문서 로컬 참조·stale 활성 설명 전수 검사
+- [x] 변경 목록 밖의 tests·scripts·scenes 소비자 갱신
+- [x] 일회성 Workflow 삭제와 활성 참조 부재 확인
+- [x] 감사 보고서 오류 0·경고 0
+- [x] 시작 문서·책임 경로의 정적 콜드 스타트 검사
+- [ ] 새 작업자 또는 별도 AI의 실제 콜드 스타트 재현
+- [x] GitHub Workflow 실제 실행 PASS
+- [ ] Branch protection에서 Required Check 강제 여부 확인
+
+## 기능 보존 검증
+
+- [x] 기존 제작·강화·보관·자동 단조 코드·데이터·Scene 미변경
+- [x] 직원·무기 수리 제외 결정 유지
+- [x] 숨은 무기 후속 기능 보존
+- [x] 강화 피버 후속 기능 보존
+- [x] 검투사 경기 관람·게임 내 재화 베팅을 후속 기능으로 보존
+- [x] 과거 Changelog·Learning Log 보존
+- [x] Base 기능 삭제 없이 ADOPT·ADAPT·CONSOLIDATE·ROUTE_ON_DEMAND로 매핑
 
 ## 모바일 출시 게이트
 
