@@ -1,5 +1,5 @@
 {
-  "$schema": "../../../schemas/design-document-registry-v3.schema.json",
+  "$schema": "../../schemas/design-document-registry-v3.schema.json",
   "schema_version": 3,
   "registry_role": "ai-design-document-router-and-publication-index",
   "project_name": "Blacksmith",
@@ -36,11 +36,11 @@
       "publication_manifest": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE_PUBLICATION_MANIFEST.json",
       "publication_status": "NOT_RUN",
       "actual_paths": [
-        "../../../project.godot",
-        "../../../data",
-        "../../../scripts",
-        "../../../scenes",
-        "../../../tests"
+        "../../project.godot",
+        "../../data",
+        "../../scripts",
+        "../../scenes",
+        "../../tests"
       ]
     }
   ]
