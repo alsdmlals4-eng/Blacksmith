@@ -4,6 +4,7 @@ extends "res://scripts/ui/special_enhancement_screen.gd"
 
 signal store_requested(weapon: Dictionary)
 signal inventory_requested
+signal auto_forge_requested(options: Dictionary)
 
 const INVENTORY_CAPACITY := 6
 
@@ -32,6 +33,18 @@ var complete_title_label: Label
 var complete_value_label: Label
 var complete_effect_label: Label
 
+var available_gold: int = 0
+var material_stock: Dictionary = {}
+var auto_running: bool = false
+var auto_target_spins: Array[SpinBox] = []
+var auto_repeat_checks: Array[CheckButton] = []
+var auto_secondary_selectors: Array[OptionButton] = []
+var auto_catalyst_selectors: Array[OptionButton] = []
+var auto_skill_selectors: Array[OptionButton] = []
+var auto_start_buttons: Array[Button] = []
+var auto_status_labels: Array[Label] = []
+var auto_resource_labels: Array[Label] = []
+
 
 func _ready() -> void:
 	super._ready()
@@ -46,6 +59,43 @@ func _ready() -> void:
 func set_inventory_count(count: int, capacity: int = INVENTORY_CAPACITY) -> void:
 	inventory_count = maxi(count, 0)
 	inventory_capacity = maxi(capacity, 1)
+	_update_inventory_buttons()
+
+
+func set_auto_resources(gold: int, stock: Dictionary) -> void:
+	available_gold = maxi(gold, 0)
+	material_stock = stock.duplicate(true)
+	_update_auto_resource_labels()
+
+
+func set_auto_status(text_value: String) -> void:
+	for label in auto_status_labels:
+		if is_instance_valid(label):
+			label.text = text_value
+
+
+func set_auto_running(value: bool) -> void:
+	auto_running = value
+	for control in auto_target_spins:
+		if is_instance_valid(control):
+			control.editable = not value
+	for control in auto_repeat_checks:
+		if is_instance_valid(control):
+			control.disabled = value
+	for control in auto_secondary_selectors + auto_catalyst_selectors + auto_skill_selectors:
+		if is_instance_valid(control):
+			control.disabled = value
+	for button in auto_start_buttons:
+		if is_instance_valid(button):
+			button.text = "자동 단조 중지" if value else "자동 단조 시작"
+	if normal_button != null:
+		normal_button.disabled = value
+	if special_start_button != null:
+		special_start_button.disabled = value
+	if secondary_select != null:
+		secondary_select.disabled = value or session.state == EnhancementSessionScript.State.PRECISION
+	if catalyst_select != null:
+		catalyst_select.disabled = value or session.state == EnhancementSessionScript.State.PRECISION
 	_update_inventory_buttons()
 
 
@@ -104,6 +154,7 @@ func _attach_progression_panels() -> void:
 		normal_risk_label = _center_label("성공 / 유지 / 하락 / 파괴", 17, MUTED)
 		normal_risk_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		box.add_child(normal_risk_label)
+		normal_layout.add_child(_build_auto_panel())
 		_add_inventory_actions(normal_layout)
 
 	var special_layout := _layout_for(special_root)
@@ -135,6 +186,7 @@ func _attach_progression_panels() -> void:
 		special_risk_label = _center_label("성공 / 유지 / 하락 / 파괴", 17, RED)
 		special_risk_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		box.add_child(special_risk_label)
+		special_layout.add_child(_build_auto_panel())
 		_add_inventory_actions(special_layout)
 
 	var complete_layout := _layout_for(complete_root)
@@ -154,6 +206,150 @@ func _attach_progression_panels() -> void:
 		complete_effect_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		box.add_child(complete_effect_label)
 		_add_inventory_actions(complete_layout)
+
+
+func _build_auto_panel() -> PanelContainer:
+	var panel := _panel(PANEL)
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 9)
+	panel.add_child(box)
+	box.add_child(_center_label("자동 단조", 21, GOLD))
+
+	var resource_label := _center_label("보유 골드 0G", 16, TEXT)
+	resource_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	box.add_child(resource_label)
+	auto_resource_labels.append(resource_label)
+
+	var target_row := HBoxContainer.new()
+	target_row.add_theme_constant_override("separation", 10)
+	box.add_child(target_row)
+	var target_label := _label("목표 단계", 17, MUTED)
+	target_label.custom_minimum_size = Vector2(125.0, 0.0)
+	target_row.add_child(target_label)
+	var target_spin := SpinBox.new()
+	target_spin.min_value = 1.0
+	target_spin.max_value = 100.0
+	target_spin.step = 1.0
+	target_spin.value = 10.0
+	target_spin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	target_spin.custom_minimum_size = Vector2(0.0, 58.0)
+	target_spin.add_theme_font_size_override("font_size", 18)
+	target_row.add_child(target_spin)
+	auto_target_spins.append(target_spin)
+
+	var repeat_check := CheckButton.new()
+	repeat_check.text = "보관함이 찰 때까지 자동 반복"
+	repeat_check.add_theme_font_size_override("font_size", 17)
+	box.add_child(repeat_check)
+	auto_repeat_checks.append(repeat_check)
+
+	var secondary := _auto_option_row(box, "보조재료")
+	secondary.add_item("사용하지 않음")
+	secondary.set_item_metadata(0, "")
+	for item in secondary_materials:
+		secondary.add_item("%s · 보유 %d" % [str(item.get("name", "재료")), int(material_stock.get(str(item.get("id", "")), 0))])
+		secondary.set_item_metadata(secondary.item_count - 1, str(item.get("id", "")))
+	if secondary.item_count > 1:
+		secondary.select(1)
+	auto_secondary_selectors.append(secondary)
+
+	var catalyst := _auto_option_row(box, "촉매")
+	catalyst.add_item("사용하지 않음")
+	catalyst.set_item_metadata(0, "")
+	for item in catalyst_materials:
+		catalyst.add_item("%s · 보유 %d" % [str(item.get("name", "촉매")), int(material_stock.get(str(item.get("id", "")), 0))])
+		catalyst.set_item_metadata(catalyst.item_count - 1, str(item.get("id", "")))
+	auto_catalyst_selectors.append(catalyst)
+
+	var skill := _auto_option_row(box, "단조 방식")
+	var skills: Dictionary = session.config.get("skills", {}) if session != null else {}
+	for skill_id_value in skills:
+		var skill_id := str(skill_id_value)
+		var skill_data: Dictionary = skills[skill_id_value]
+		skill.add_item(str(skill_data.get("name", skill_id)))
+		skill.set_item_metadata(skill.item_count - 1, skill_id)
+	auto_skill_selectors.append(skill)
+
+	var helper := _center_label("특수 강화에서 지정 재료가 부족하면 해당 재료 없이 계속 진행합니다.", 15, MUTED)
+	helper.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	box.add_child(helper)
+
+	var status := _center_label("목표와 재료를 정한 뒤 시작하세요.", 16, MUTED)
+	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	box.add_child(status)
+	auto_status_labels.append(status)
+
+	var start_button := Button.new()
+	start_button.text = "자동 단조 시작"
+	start_button.custom_minimum_size = Vector2(0.0, 78.0)
+	start_button.add_theme_font_size_override("font_size", 21)
+	start_button.add_theme_stylebox_override("normal", _button_style(Color("#3d7045"), GREEN, 17))
+	start_button.pressed.connect(func() -> void: _on_auto_button_pressed(target_spin, repeat_check, secondary, catalyst, skill))
+	box.add_child(start_button)
+	auto_start_buttons.append(start_button)
+	return panel
+
+
+func _auto_option_row(parent: VBoxContainer, title: String) -> OptionButton:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 10)
+	parent.add_child(row)
+	var label := _label(title, 17, MUTED)
+	label.custom_minimum_size = Vector2(125.0, 0.0)
+	row.add_child(label)
+	var option := _option_button()
+	option.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(option)
+	return option
+
+
+func _on_auto_button_pressed(
+	target_spin: SpinBox,
+	repeat_check: CheckButton,
+	secondary: OptionButton,
+	catalyst: OptionButton,
+	skill: OptionButton
+) -> void:
+	if auto_running:
+		auto_forge_requested.emit({"stop": true})
+		return
+	var target_level := int(target_spin.value)
+	if session != null:
+		target_level = maxi(target_level, int(session.enhancement_level) + 1)
+	auto_forge_requested.emit({
+		"target_level": target_level,
+		"repeat_until_full": repeat_check.button_pressed,
+		"secondary_material_id": str(secondary.get_item_metadata(secondary.selected)),
+		"catalyst_material_id": str(catalyst.get_item_metadata(catalyst.selected)),
+		"skill_id": str(skill.get_item_metadata(skill.selected)),
+	})
+
+
+func _update_auto_resource_labels() -> void:
+	var parts: Array[String] = []
+	for item in secondary_materials + catalyst_materials:
+		var material_id := str(item.get("id", ""))
+		parts.append("%s %d" % [str(item.get("name", material_id)), int(material_stock.get(material_id, 0))])
+	var text_value := "보유 골드 %sG\n%s" % [_money(available_gold), " · ".join(parts)]
+	for label in auto_resource_labels:
+		if is_instance_valid(label):
+			label.text = text_value
+	for selector in auto_secondary_selectors + auto_catalyst_selectors:
+		if not is_instance_valid(selector):
+			continue
+		for index in range(selector.item_count):
+			var material_id := str(selector.get_item_metadata(index))
+			if material_id == "":
+				continue
+			var material_name := _material_display_name(material_id)
+			selector.set_item_text(index, "%s · 보유 %d" % [material_name, int(material_stock.get(material_id, 0))])
+
+
+func _material_display_name(material_id: String) -> String:
+	for item in secondary_materials + catalyst_materials:
+		if str(item.get("id", "")) == material_id:
+			return str(item.get("name", material_id))
+	return material_id
 
 
 func _build_skill_panel() -> PanelContainer:
@@ -206,13 +402,17 @@ func _on_skill_selected(source: OptionButton, index: int) -> void:
 func _sync_skill_selectors() -> void:
 	if session == null:
 		return
+	var target_level := int(session.enhancement_level) + 1
 	for selector in skill_selectors:
 		for index in range(selector.item_count):
-			if str(selector.get_item_metadata(index)) == str(session.selected_skill_id):
+			var skill_id := str(selector.get_item_metadata(index))
+			selector.set_item_disabled(index, not session.can_use_skill_for_level(skill_id, target_level))
+			if skill_id == str(session.selected_skill_id):
 				selector.select(index)
-				break
 	var skill: Dictionary = session.config.get("skills", {}).get(str(session.selected_skill_id), {})
 	var description := str(skill.get("description", ""))
+	if str(session.selected_skill_id) == "overdrive" and not session.can_use_skill_for_level("overdrive", target_level):
+		description += "\n현재 단계에서는 특수 강화를 건너뛸 수 있어 사용 불가"
 	for label in skill_description_labels:
 		if is_instance_valid(label):
 			label.text = description
@@ -273,11 +473,19 @@ func _on_attempt_resolved(result: Dictionary) -> void:
 	var outcome := str(result.get("outcome", "HOLD"))
 	match outcome:
 		"SUCCESS":
-			last_result_text = "강화 성공! +%d · 공격력 +%d · 비용 %dG" % [
-				target_level,
-				int(result.get("growth_gain", 0)),
-				int(result.get("attempt_cost", 0)),
-			]
+			if bool(result.get("leap_triggered", false)):
+				last_result_text = "폭주 도약 성공! +%d → +%d · 공격력 +%d · 비용 %dG" % [
+					int(result.get("previous_level", 0)),
+					int(result.get("result_level", target_level)),
+					int(result.get("growth_gain", 0)),
+					int(result.get("attempt_cost", 0)),
+				]
+			else:
+				last_result_text = "강화 성공! +%d · 공격력 +%d · 비용 %dG" % [
+					target_level,
+					int(result.get("growth_gain", 0)),
+					int(result.get("attempt_cost", 0)),
+				]
 			last_result_color = GREEN
 		"DOWNGRADE":
 			last_result_text = "강화 실패 · +%d → +%d · %d단계 하락" % [
@@ -318,6 +526,13 @@ func _on_session_snapshot_changed(snapshot: Dictionary) -> void:
 		current_attack,
 		next_attack,
 	]
+	var leap_chance := float(preview.get("leap_chance", 0.0))
+	if leap_chance > 0.0:
+		next_text += "\n폭주 도약 %d%% · 성공 시 +%d까지 · 공격력 %d" % [
+			int(round(leap_chance * 100.0)),
+			int(preview.get("leap_result_level", target_level)),
+			int(preview.get("leap_final_attack", next_attack)),
+		]
 	var price_text := "판매가 %sG → %sG (+%sG)" % [
 		_money(current_price),
 		_money(next_price),
@@ -371,6 +586,10 @@ func _on_session_snapshot_changed(snapshot: Dictionary) -> void:
 			if bool(snapshot.get("destroyed", false))
 			else "특수 강화 효과: %s" % _format_special_effects(snapshot.get("affixes", []))
 		)
+	for target_spin in auto_target_spins:
+		if is_instance_valid(target_spin):
+			target_spin.min_value = float(mini(int(snapshot.get("enhancement_level", 0)) + 1, int(snapshot.get("max_level", 100))))
+	_update_auto_resource_labels()
 	_update_inventory_buttons()
 
 
@@ -381,9 +600,11 @@ func _update_inventory_buttons() -> void:
 			button.text = "보관함 %d/%d" % [inventory_count, inventory_capacity]
 	for button in store_buttons:
 		if is_instance_valid(button):
-			button.disabled = inventory_count >= inventory_capacity or destroyed_now
+			button.disabled = inventory_count >= inventory_capacity or destroyed_now or auto_running
 			if destroyed_now:
 				button.text = "파괴된 무기"
+			elif auto_running:
+				button.text = "자동 단조 진행 중"
 			elif inventory_count >= inventory_capacity:
 				button.text = "보관함 가득 참"
 			else:

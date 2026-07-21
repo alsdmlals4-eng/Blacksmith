@@ -11,7 +11,7 @@
     "4": 0.89,
     "5": 0.86,
     "6": 0.83,
-    "7": 0.80,
+    "7": 0.8,
     "8": 0.77,
     "9": 0.74,
     "10": 0.68
@@ -24,8 +24,8 @@
     "target": 0.5,
     "perfect_radius": 0.07,
     "good_radius": 0.18,
-    "perfect_success_bonus": 0.20,
-    "good_success_bonus": 0.10
+    "perfect_success_bonus": 0.2,
+    "good_success_bonus": 0.1
   },
   "pity": {
     "bonus_per_failure": 0.04,
@@ -35,7 +35,7 @@
     "base_attack": 10,
     "normal_rate": 0.08,
     "normal_rate_per_decade": 0.01,
-    "special_rate": 0.20,
+    "special_rate": 0.2,
     "special_rate_per_decade": 0.02
   },
   "economy": {
@@ -55,28 +55,30 @@
     "special_downgrade_multiplier": 1.15,
     "special_destroy_multiplier": 1.25,
     "downgrade_ratio_by_decade": {
-      "0": 0.00,
+      "0": 0.0,
       "1": 0.25,
-      "2": 0.45,
-      "3": 0.50,
-      "4": 0.55,
-      "5": 0.60,
-      "6": 0.65,
-      "7": 0.70,
-      "8": 0.75,
-      "9": 0.80
+      "2": 0.35,
+      "3": 0.45,
+      "4": 0.5,
+      "5": 0.55,
+      "6": 0.6,
+      "7": 0.65,
+      "8": 0.7,
+      "9": 0.75,
+      "10": 0.8
     },
     "destroy_ratio_by_decade": {
-      "0": 0.00,
-      "1": 0.00,
+      "0": 0.0,
+      "1": 0.0,
       "2": 0.03,
       "3": 0.05,
       "4": 0.07,
       "5": 0.09,
       "6": 0.12,
       "7": 0.15,
-      "8": 0.18,
-      "9": 0.22
+      "8": 0.2,
+      "9": 0.24,
+      "10": 0.28
     },
     "downgrade_steps_by_decade": {
       "0": 0,
@@ -88,42 +90,45 @@
       "6": 3,
       "7": 4,
       "8": 5,
-      "9": 6
+      "9": 6,
+      "10": 7
     }
   },
   "skills": {
     "balanced": {
       "name": "균형 단조",
       "description": "추가 보정 없이 기본 확률·비용·위험을 사용합니다.",
-      "success_bonus": 0.00,
-      "cost_multiplier": 1.00,
-      "growth_multiplier": 1.00,
-      "sale_value_bonus": 0.00,
-      "downgrade_multiplier": 1.00,
-      "destroy_multiplier": 1.00,
-      "precision_bonus_multiplier": 1.00
+      "success_bonus": 0.0,
+      "cost_multiplier": 1.0,
+      "growth_multiplier": 1.0,
+      "sale_value_bonus": 0.0,
+      "downgrade_multiplier": 1.0,
+      "destroy_multiplier": 1.0,
+      "precision_bonus_multiplier": 1.0
     },
     "safeguard": {
       "name": "안정 단조",
       "description": "비용이 증가하지만 파괴를 막고 단계 하락 확률을 절반으로 줄입니다.",
-      "success_bonus": 0.00,
-      "cost_multiplier": 1.80,
+      "success_bonus": 0.0,
+      "cost_multiplier": 1.8,
       "growth_multiplier": 0.95,
-      "sale_value_bonus": 0.00,
-      "downgrade_multiplier": 0.50,
-      "destroy_multiplier": 0.00,
-      "precision_bonus_multiplier": 1.00
+      "sale_value_bonus": 0.0,
+      "downgrade_multiplier": 0.5,
+      "destroy_multiplier": 0.0,
+      "precision_bonus_multiplier": 1.0
     },
     "overdrive": {
       "name": "폭주 단조",
-      "description": "성공 효과와 가치가 커지지만 하락·파괴 위험도 함께 증가합니다.",
-      "success_bonus": 0.05,
+      "description": "성공 시 8% 확률로 총 2단계 상승합니다. 특수 강화와 특수 강화를 건너뛸 수 있는 구간에서는 사용할 수 없습니다.",
+      "success_bonus": 0.0,
       "cost_multiplier": 1.15,
-      "growth_multiplier": 1.15,
-      "sale_value_bonus": 0.12,
-      "downgrade_multiplier": 1.20,
-      "destroy_multiplier": 1.50,
-      "precision_bonus_multiplier": 1.15
+      "growth_multiplier": 1.0,
+      "sale_value_bonus": 0.0,
+      "downgrade_multiplier": 1.0,
+      "destroy_multiplier": 1.0,
+      "precision_bonus_multiplier": 1.0,
+      "leap_chance": 0.08,
+      "leap_levels": 2
     }
   },
   "material_scoring": {

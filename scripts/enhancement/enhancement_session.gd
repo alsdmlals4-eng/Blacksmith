@@ -115,6 +115,7 @@ var total_failures: int = 0
 var total_spent: int = 0
 var last_attempt: Dictionary = {}
 var pending_roll_override: float = -1.0
+var pending_leap_roll_override: float = -1.0
 var pending_attempt_cost: int = 0
 var destroyed: bool = false
 
@@ -148,12 +149,11 @@ func _init(
 func set_secondary_material(material_id: String) -> bool:
 	if state != State.READY or not uses_materials_for_level(enhancement_level + 1):
 		return false
-	if not _material_supports_slot(material_id, "secondary"):
+	if material_id != "" and not _material_supports_slot(material_id, "secondary"):
 		return false
 	selected_secondary_id = material_id
 	_emit_changed()
 	return true
-
 
 func set_catalyst_material(material_id: String) -> bool:
 	if state != State.READY or not uses_materials_for_level(enhancement_level + 1):
@@ -169,21 +169,23 @@ func set_skill(skill_id: String) -> bool:
 	if state != State.READY:
 		return false
 	var skills: Dictionary = config.get("skills", {})
-	if not skills.has(skill_id):
+	if not skills.has(skill_id) or not can_use_skill_for_level(skill_id):
 		return false
 	selected_skill_id = skill_id
 	_emit_changed()
 	return true
 
-
-func begin_attempt(roll_override: float = -1.0) -> bool:
+func begin_attempt(roll_override: float = -1.0, leap_roll_override: float = -1.0) -> bool:
 	if state != State.READY or enhancement_level >= int(config["max_level"]) or destroyed:
 		return false
 	var target_level := enhancement_level + 1
+	if not can_use_skill_for_level(selected_skill_id, target_level):
+		selected_skill_id = "balanced"
 	total_attempts += 1
 	pending_attempt_cost = calculate_attempt_cost()
 	total_spent += pending_attempt_cost
 	pending_roll_override = roll_override
+	pending_leap_roll_override = leap_roll_override
 	if uses_materials_for_level(target_level):
 		_consume_material_traits()
 	if requires_precision_for_level(target_level):
@@ -195,7 +197,6 @@ func begin_attempt(roll_override: float = -1.0) -> bool:
 	else:
 		_resolve_attempt("ONE_CLICK", "원클릭 강화", 0.0)
 	return true
-
 
 func advance(delta: float) -> void:
 	if delta <= 0.0 or state != State.PRECISION:
@@ -242,6 +243,31 @@ func uses_materials_for_level(target_level: int) -> bool:
 	return target_level > 0 and target_level % interval == 0
 
 
+func can_use_skill_for_level(skill_id: String, target_level: int = -1) -> bool:
+	if skill_id != "overdrive":
+		return true
+	if target_level < 0:
+		target_level = enhancement_level + 1
+	var skills: Dictionary = config.get("skills", {})
+	var skill: Dictionary = skills.get(skill_id, {})
+	if skill.is_empty() or target_level <= 0 or target_level > int(config.get("max_level", 100)):
+		return false
+	var leap_levels := maxi(int(skill.get("leap_levels", 2)), 2)
+	var final_level := mini(target_level + leap_levels - 1, int(config.get("max_level", 100)))
+	for level in range(target_level, final_level + 1):
+		if uses_materials_for_level(level):
+			return false
+	return true
+
+
+func get_overdrive_leap_chance(target_level: int = -1) -> float:
+	if target_level < 0:
+		target_level = enhancement_level + 1
+	if selected_skill_id != "overdrive" or not can_use_skill_for_level("overdrive", target_level):
+		return 0.0
+	return clampf(float(_selected_skill().get("leap_chance", 0.0)), 0.0, 1.0)
+
+
 func calculate_success_chance(precision_bonus: float = 0.0) -> float:
 	var target_level := enhancement_level + 1
 	var base_chance := _base_success_chance(target_level)
@@ -277,6 +303,10 @@ func calculate_outcome_probabilities(precision_bonus: float = 0.0) -> Dictionary
 func calculate_growth_gain(target_level: int = -1) -> int:
 	if target_level < 0:
 		target_level = enhancement_level + 1
+	return _calculate_growth_gain_for_attack(target_level, progression_attack)
+
+
+func _calculate_growth_gain_for_attack(target_level: int, attack_value: int) -> int:
 	var growth: Dictionary = config.get("growth", {})
 	var decade := maxi((target_level - 1) / 10, 0)
 	var is_special := uses_materials_for_level(target_level)
@@ -286,8 +316,7 @@ func calculate_growth_gain(target_level: int = -1) -> int:
 	var multiplier := float(_selected_skill().get("growth_multiplier", 1.0))
 	if is_special:
 		multiplier *= float(_selected_catalyst().get("growth_multiplier", 1.0))
-	return maxi(int(ceil(float(progression_attack) * rate * multiplier)), 1)
-
+	return maxi(int(ceil(float(attack_value) * rate * multiplier)), 1)
 
 func calculate_attempt_cost() -> int:
 	var target_level := enhancement_level + 1
@@ -316,7 +345,7 @@ func get_next_preview() -> Dictionary:
 	if destroyed or enhancement_level >= int(config["max_level"]):
 		return {}
 	var target_level := enhancement_level + 1
-	var gain := calculate_growth_gain(target_level)
+	var gain := _calculate_growth_gain_for_attack(target_level, progression_attack)
 	var next_progression_attack := progression_attack + gain
 	var next_affixes := _preview_affixes_after_success(target_level)
 	var next_final_attack := _apply_affix_attack(next_progression_attack, next_affixes)
@@ -325,6 +354,19 @@ func get_next_preview() -> Dictionary:
 		next_value_bonus += float(_selected_catalyst().get("sale_value_bonus", 0.0))
 		next_value_bonus += float(_selected_skill().get("sale_value_bonus", 0.0))
 	var next_price := _calculate_sale_price(target_level, next_final_attack, next_affixes, next_value_bonus)
+
+	var leap_chance := get_overdrive_leap_chance(target_level)
+	var leap_levels := maxi(int(_selected_skill().get("leap_levels", 2)), 2)
+	var leap_result_level := target_level
+	var leap_progression_attack := next_progression_attack
+	if leap_chance > 0.0:
+		leap_result_level = mini(target_level + leap_levels - 1, int(config["max_level"]))
+		for level in range(target_level + 1, leap_result_level + 1):
+			leap_progression_attack += _calculate_growth_gain_for_attack(level, leap_progression_attack)
+	var leap_affixes := _preview_affixes_after_success(leap_result_level)
+	var leap_final_attack := _apply_affix_attack(leap_progression_attack, leap_affixes)
+	var leap_price := _calculate_sale_price(leap_result_level, leap_final_attack, leap_affixes, next_value_bonus)
+
 	return {
 		"target_level": target_level,
 		"growth_gain": gain,
@@ -336,8 +378,12 @@ func get_next_preview() -> Dictionary:
 		"attempt_cost": calculate_attempt_cost(),
 		"affixes": next_affixes,
 		"value_bonus": next_value_bonus,
+		"leap_chance": leap_chance,
+		"leap_result_level": leap_result_level,
+		"leap_progression_attack": leap_progression_attack,
+		"leap_final_attack": leap_final_attack,
+		"leap_sale_price": leap_price,
 	}
-
 
 func snapshot() -> Dictionary:
 	var target_level := mini(enhancement_level + 1, int(config["max_level"]))
@@ -358,6 +404,8 @@ func snapshot() -> Dictionary:
 		"selected_secondary": _selected_secondary().duplicate(true),
 		"selected_catalyst": _selected_catalyst().duplicate(true),
 		"selected_skill": _selected_skill().duplicate(true),
+		"overdrive_available": can_use_skill_for_level("overdrive", target_level),
+		"overdrive_leap_chance": get_overdrive_leap_chance(target_level),
 		"precision_position": precision_position,
 		"base_success_chance": calculate_success_chance(),
 		"outcome_probabilities": calculate_outcome_probabilities(),
@@ -416,19 +464,33 @@ func _resolve_attempt(precision_id: String, precision_label: String, precision_b
 	var milestone := _milestone_for_level(target_level)
 	var material_stage := uses_materials_for_level(target_level)
 	var downgrade_steps := 0
+	var leap_triggered := false
+	var leap_roll := -1.0
+	var result_target_level := target_level
+	var leap_chance := get_overdrive_leap_chance(target_level)
+	if outcome == "SUCCESS" and leap_chance > 0.0:
+		leap_roll = pending_leap_roll_override if pending_leap_roll_override >= 0.0 else rng.randf()
+		if leap_roll < leap_chance:
+			leap_triggered = true
+			var leap_levels := maxi(int(_selected_skill().get("leap_levels", 2)), 2)
+			result_target_level = mini(target_level + leap_levels - 1, int(config["max_level"]))
+	pending_leap_roll_override = -1.0
 
 	match outcome:
 		"SUCCESS":
-			growth_gain = calculate_growth_gain(target_level)
-			progression_attack += growth_gain
-			enhancement_level = target_level
-			attack_history[str(enhancement_level)] = progression_attack
+			for reached_level in range(target_level, result_target_level + 1):
+				var level_gain := _calculate_growth_gain_for_attack(reached_level, progression_attack)
+				progression_attack += level_gain
+				growth_gain += level_gain
+				enhancement_level = reached_level
+				attack_history[str(enhancement_level)] = progression_attack
+				var reached_milestone := _milestone_for_level(reached_level)
+				if not reached_milestone.is_empty():
+					_apply_milestone(reached_milestone)
+				if uses_materials_for_level(reached_level):
+					_apply_success_value_bonus(reached_level)
+				value_bonus_history[str(enhancement_level)] = value_bonus_total
 			failure_streak = 0
-			if not milestone.is_empty():
-				_apply_milestone(milestone)
-			if material_stage:
-				_apply_success_value_bonus(target_level)
-			value_bonus_history[str(enhancement_level)] = value_bonus_total
 		"DOWNGRADE":
 			downgrade_steps = _downgrade_steps(target_level)
 			enhancement_level = maxi(enhancement_level - downgrade_steps, 0)
@@ -457,7 +519,11 @@ func _resolve_attempt(precision_id: String, precision_label: String, precision_b
 		"target_level": target_level,
 		"previous_level": previous_level,
 		"result_level": enhancement_level,
+		"levels_gained": maxi(enhancement_level - previous_level, 0),
 		"growth_gain": growth_gain,
+		"leap_triggered": leap_triggered,
+		"leap_chance": leap_chance,
+		"leap_roll": leap_roll,
 		"downgrade_steps": downgrade_steps,
 		"success_chance": float(probabilities["success"]),
 		"hold_chance": float(probabilities["hold"]),
@@ -494,10 +560,11 @@ func _resolve_attempt(precision_id: String, precision_label: String, precision_b
 		completed.emit(last_attempt["final_weapon"].duplicate(true))
 	else:
 		state = State.READY
+		if not can_use_skill_for_level(selected_skill_id, enhancement_level + 1):
+			selected_skill_id = "balanced"
 		state_changed.emit(state)
 		attempt_resolved.emit(last_attempt.duplicate(true))
 	_emit_changed()
-
 
 func _base_success_chance(target_level: int) -> float:
 	var explicit: Dictionary = config.get("base_success_by_target_level", {})
