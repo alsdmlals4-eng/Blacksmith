@@ -1,0 +1,7 @@
+Enhancement entrypoint compatibility validation.
+
+Expected behavior:
+- +1~+9 use the normal enhancement screen only.
+- +10, +20, ... +100 use the separate special enhancement screen.
+- Materials, catalyst, and precision UI exist only on the special screen.
+- Both legacy enhancement_screen.gd and current runners resolve to the same separated UI.
