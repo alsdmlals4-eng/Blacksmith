@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_ROOT = ROOT / "data"
+SUPPORTED_SCHEMA_VERSIONS = {1, 2}
 
 
 def load_json(path: Path) -> object:
@@ -33,8 +34,12 @@ def main() -> int:
             errors.append(f"{path.relative_to(ROOT)}: root must be an object")
             continue
 
-        if data.get("schema_version") != 1:
-            errors.append(f"{path.relative_to(ROOT)}: schema_version must be 1")
+        schema_version = data.get("schema_version")
+        if schema_version not in SUPPORTED_SCHEMA_VERSIONS:
+            supported = ", ".join(str(value) for value in sorted(SUPPORTED_SCHEMA_VERSIONS))
+            errors.append(
+                f"{path.relative_to(ROOT)}: schema_version must be one of [{supported}]"
+            )
 
     material_path = DATA_ROOT / "crafting" / "materials.json"
     recipe_path = DATA_ROOT / "crafting" / "hidden_recipes.json"
