@@ -16,7 +16,7 @@
         "economy",
         "mvp"
       ],
-      "path": "../../../skills/game-design/SKILL.md",
+      "path": "../../skills/game-design/SKILL.md",
       "source_documents": [
         "blacksmith-game-bible"
       ]
@@ -32,7 +32,7 @@
         "save",
         "data"
       ],
-      "path": "../../../skills/engineering/SKILL.md",
+      "path": "../../skills/engineering/SKILL.md",
       "source_documents": [
         "blacksmith-game-bible"
       ]
@@ -47,11 +47,11 @@
         "android-device",
         "regression"
       ],
-      "path": "../../../skills/qa/SKILL.md",
+      "path": "../../skills/qa/SKILL.md",
       "source_documents": [
         "blacksmith-game-bible"
       ]
     }
   ],
-  "learning_log": "../../../skills/SKILL_LEARNING_LOG.md"
+  "learning_log": "../../skills/SKILL_LEARNING_LOG.md"
 }
