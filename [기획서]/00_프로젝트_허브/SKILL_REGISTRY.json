@@ -1,57 +1,136 @@
 {
-  "schema_version": 1,
+  "$schema": "../../schemas/skill-registry-v3.schema.json",
+  "schema_version": 3,
+  "registry_role": "project-skill-router-and-learning-index",
   "project": "Blacksmith",
-  "load_all_skills": false,
-  "default_selection": "none",
+  "base_commit": "ee265576da7f67d3278f8099dd97d4e714ef0651",
+  "routing_policy": {
+    "load_all_skills": false,
+    "default_selection": "automatic-trigger-match",
+    "automatic_selection": true,
+    "user_skill_declaration_required": false,
+    "require_trigger_match": true,
+    "require_execution_report": true,
+    "work_modes": ["PLAN", "BUILD", "REVIEW"],
+    "max_primary_discipline_skills": 1,
+    "max_foundation_skills": 3,
+    "exclude_statuses": ["HOLD", "BACKUP", "REMOVAL_CANDIDATE"]
+  },
+  "human_presentation": {
+    "primary_reading_format": "PROJECT_SKILL_MAP.pdf",
+    "editable_derivative": null,
+    "diagram_directory": null,
+    "publication_manifest": "SKILL_MAP_PUBLICATION_MANIFEST.json",
+    "generator": "NOT_INSTALLED",
+    "source_of_truth": "SKILL_REGISTRY.json",
+    "markdown_summary": null,
+    "publication_status": "NOT_BUILT"
+  },
   "skills": [
     {
-      "skill_id": "blacksmith-game-design",
+      "skill_id": "blacksmith-project-operations",
+      "layer": "foundation",
+      "discipline": "project-operations",
+      "path": "../../skills/foundation/project-operations/SKILL.md",
       "status": "ACTIVE",
+      "load_by_default": false,
+      "trigger_tags": ["new-request", "cross-discipline", "work-contract", "base-sync", "operating-system-audit", "migration", "handoff", "execution-report"],
+      "use_when": ["요청을 PLAN·BUILD·REVIEW로 라우팅하고 운영체계 감사·보존형 마이그레이션·상태 갱신·실행 보고가 필요할 때."],
+      "do_not_use_when": ["오탈자, 입력이 같은 단일 검사 재실행, 운영체계와 무관한 명확한 L0 수정."],
+      "skill_modes": ["route", "contract", "audit", "migrate", "verify", "handoff", "execution-report"],
+      "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
+      "review_triggers": ["오라우팅", "승인 없는 구조 변경", "콜드 스타트 실패", "실행 보고 누락"],
+      "knowledge_state": "PATTERN"
+    },
+    {
+      "skill_id": "blacksmith-change-validation",
+      "layer": "foundation",
+      "discipline": "integrated-review",
+      "path": "../../skills/foundation/change-validation/SKILL.md",
+      "status": "ACTIVE",
+      "load_by_default": false,
+      "trigger_tags": ["change-review", "diff-review", "reference-freshness", "static-validation", "runtime-validation", "regression", "pr-review", "evidence-report"],
+      "use_when": ["코드·데이터·문서·Workflow 변경을 승인 범위, 실제 diff, 정본·참조, 테스트 증거와 대조할 때."],
+      "do_not_use_when": ["외부 소비자가 없는 단순 오탈자 또는 결과 판정이 필요 없는 설명."],
+      "skill_modes": ["contract-check", "reference-freshness", "static-validation", "runtime-validation", "regression", "evidence-report"],
+      "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
+      "review_triggers": ["stale reference", "untouched consumer", "회귀", "미실행을 PASS로 보고"],
+      "knowledge_state": "PATTERN"
+    },
+    {
+      "skill_id": "blacksmith-game-design",
+      "layer": "discipline",
       "discipline": "게임 디자인",
-      "trigger_tags": [
-        "crafting",
-        "enhancement",
-        "affix",
-        "customer",
-        "economy",
-        "mvp"
-      ],
       "path": "../../skills/game-design/SKILL.md",
-      "source_documents": [
-        "blacksmith-game-bible"
-      ]
+      "status": "ACTIVE",
+      "load_by_default": false,
+      "trigger_tags": ["crafting", "enhancement", "affix", "customer", "economy", "mvp", "balance", "reward-loop"],
+      "use_when": ["제작·강화·수식어·경제·고객 루프의 플레이 경험과 규칙을 설계·변경할 때."],
+      "do_not_use_when": ["규칙에 영향 없는 Godot 문법 수정 또는 순수 CI 편집."],
+      "skill_modes": ["analyze", "design", "update-spec", "poc-check"],
+      "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
+      "review_triggers": ["핵심 광클 재미 약화", "문서와 데이터 수치 충돌", "위험·보상 불명확"],
+      "knowledge_state": "HYPOTHESIS"
+    },
+    {
+      "skill_id": "blacksmith-mobile-ux",
+      "layer": "discipline",
+      "discipline": "UX·UI·접근성",
+      "path": "../../skills/mobile-ux/SKILL.md",
+      "status": "ACTIVE",
+      "load_by_default": false,
+      "trigger_tags": ["mobile-ui", "portrait", "touch", "scroll", "information-density", "accessibility", "precision-input", "safe-area"],
+      "use_when": ["720×1280 UI, 터치, 스크롤, 정밀 판정, 정보 전달과 접근성 장벽에 영향이 있을 때."],
+      "do_not_use_when": ["UI·입력·정보 전달에 영향 없는 데이터·도메인 변경."],
+      "skill_modes": ["flow-review", "touch-review", "accessibility-review", "visual-runtime-check"],
+      "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
+      "review_triggers": ["작은 터치 대상", "텍스트 겹침", "색만으로 위험 전달", "연타 피로"],
+      "knowledge_state": "HYPOTHESIS"
     },
     {
       "skill_id": "blacksmith-engineering",
-      "status": "ACTIVE",
+      "layer": "discipline",
       "discipline": "개발·엔지니어링",
-      "trigger_tags": [
-        "godot",
-        "gdscript",
-        "android",
-        "save",
-        "data"
-      ],
       "path": "../../skills/engineering/SKILL.md",
-      "source_documents": [
-        "blacksmith-game-bible"
-      ]
+      "status": "ACTIVE",
+      "load_by_default": false,
+      "trigger_tags": ["godot", "gdscript", "android", "save", "data", "architecture", "performance", "build"],
+      "use_when": ["Godot 모델·Scene·UI 연결, 데이터 로딩, 저장, Android 빌드 또는 성능 작업."],
+      "do_not_use_when": ["코드·데이터·빌드에 영향 없는 기획 문장 편집."],
+      "skill_modes": ["design-interface", "implement", "data-contract", "android-build", "profile"],
+      "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
+      "review_triggers": ["규칙이 UI에 중복", "JSON ID 하드코딩", "실기기 미검증", "저장 호환성"],
+      "knowledge_state": "PATTERN"
     },
     {
       "skill_id": "blacksmith-qa",
-      "status": "ACTIVE",
+      "layer": "discipline",
       "discipline": "QA",
-      "trigger_tags": [
-        "test",
-        "validation",
-        "android-device",
-        "regression"
-      ],
       "path": "../../skills/qa/SKILL.md",
-      "source_documents": [
-        "blacksmith-game-bible"
-      ]
+      "status": "ACTIVE",
+      "load_by_default": false,
+      "trigger_tags": ["test", "validation", "android-device", "regression", "boundary", "playtest", "release-readiness"],
+      "use_when": ["정상·실패·경계·회귀·Android 기기·출시 검증과 상태 판정이 필요할 때."],
+      "do_not_use_when": ["검증 결과를 요구하지 않는 순수 아이디어 대화."],
+      "skill_modes": ["static", "model", "runtime", "device", "regression", "evidence"],
+      "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
+      "review_triggers": ["테스트 수 문서 drift", "미실행 PASS", "파괴·하락 경계 누락"],
+      "knowledge_state": "PATTERN"
     }
   ],
+  "selected_disciplines": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "통합검수"],
+  "discipline_entrypoints": {
+    "설정·내러티브": [],
+    "게임 디자인": ["blacksmith-game-design"],
+    "UX·UI·접근성": ["blacksmith-mobile-ux"],
+    "개발·엔지니어링": ["blacksmith-engineering"],
+    "테크니컬 아트·파이프라인": [],
+    "아트": [],
+    "사운드": [],
+    "QA": ["blacksmith-qa"],
+    "프로덕션·PM": ["blacksmith-project-operations"],
+    "분석·유저리서치": [],
+    "통합검수": ["blacksmith-change-validation"]
+  },
   "learning_log": "../../skills/SKILL_LEARNING_LOG.md"
 }

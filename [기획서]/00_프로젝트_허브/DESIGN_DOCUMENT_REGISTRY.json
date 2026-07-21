@@ -3,7 +3,7 @@
   "schema_version": 3,
   "registry_role": "ai-design-document-router-and-publication-index",
   "project_name": "Blacksmith",
-  "source_of_truth_policy": "Each document has exactly one Markdown or JSON source of truth. Runtime data lives in data/**/*.json.",
+  "source_of_truth_policy": "Each question has one Markdown or JSON source of truth; runtime values live in data/**/*.json and implementation evidence lives in Godot files and tests.",
   "required_responsibility_coverage": [
     "프로젝트 전체",
     "게임 디자인",
@@ -17,31 +17,54 @@
       "document_id": "blacksmith-game-bible",
       "title": "Blacksmith 통합 게임 기획서",
       "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "responsibility_coverage": ["프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM"],
       "status": "ACTIVE",
       "source_path": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
       "source_format": "markdown",
       "source_role": "narrative_spec",
-      "publication_policy": "always_sync_when_toolchain_available",
+      "publication_policy": "milestone_sync",
       "output_pdf": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.pdf",
       "output_docx": null,
       "asset_dir": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.assets",
       "publication_manifest": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE_PUBLICATION_MANIFEST.json",
       "publication_status": "NOT_RUN",
-      "actual_paths": [
-        "../../project.godot",
-        "../../data",
-        "../../scripts",
-        "../../scenes",
-        "../../tests"
-      ]
+      "automated_render_review": "NOT_RUN",
+      "human_visual_review": "NOT_RUN",
+      "actual_paths": ["../../project.godot", "../../data", "../../scripts", "../../scenes", "../../tests"]
+    },
+    {
+      "document_id": "blacksmith-forging-poc",
+      "title": "MVP-001 제작 POC",
+      "discipline": "게임 디자인",
+      "responsibility_coverage": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA"],
+      "status": "ACTIVE",
+      "source_path": "../../docs/MVP-001_SCOPE.md",
+      "source_format": "markdown",
+      "source_role": "poc_scope",
+      "publication_policy": "source_only",
+      "output_pdf": null,
+      "output_docx": null,
+      "asset_dir": null,
+      "publication_manifest": null,
+      "publication_status": "SOURCE_ONLY",
+      "actual_paths": ["../../data/crafting/forging_balance.json", "../../scripts/forging", "../../scripts/ui/forging_screen.gd", "../../tests/unit/test_forging_session.gd"]
+    },
+    {
+      "document_id": "blacksmith-enhancement-poc",
+      "title": "MVP-002 강화·보관·자동 단조 POC",
+      "discipline": "게임 디자인",
+      "responsibility_coverage": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM"],
+      "status": "ACTIVE",
+      "source_path": "../../docs/MVP-002_SCOPE.md",
+      "source_format": "markdown",
+      "source_role": "poc_scope",
+      "publication_policy": "source_only",
+      "output_pdf": null,
+      "output_docx": null,
+      "asset_dir": null,
+      "publication_manifest": null,
+      "publication_status": "SOURCE_ONLY",
+      "actual_paths": ["../../data/crafting", "../../scripts/enhancement", "../../scripts/ui/enhancement_screen.gd", "../../scripts/ui/game_flow_screen.gd", "../../tests/unit/test_enhancement_session.gd"]
     }
   ]
 }

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "source_of_truth": "SKILL_REGISTRY.json",
+  "source_path": "SKILL_REGISTRY.json",
+  "generator": "NOT_INSTALLED",
+  "outputs": {
+    "pdf": "PROJECT_SKILL_MAP.pdf",
+    "markdown": null,
+    "docx": null,
+    "assets": null
+  },
+  "publication_status": "NOT_BUILT",
+  "automated_render_review": "NOT_RUN",
+  "human_visual_review": "NOT_RUN",
+  "reason": "Prototype 단계에서 Skill Registry와 자동 Governance를 우선하며 사람용 Skill Map 발행은 milestone 후속으로 둔다."
+}

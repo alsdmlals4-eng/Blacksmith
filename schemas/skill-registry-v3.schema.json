@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "skill-registry-v3.schema.json",
+  "title": "Blacksmith Project Skill Registry v3",
+  "type": "object",
+  "required": ["schema_version", "registry_role", "routing_policy", "human_presentation", "skills", "selected_disciplines", "discipline_entrypoints"],
+  "properties": {
+    "schema_version": {"const": 3},
+    "registry_role": {"const": "project-skill-router-and-learning-index"},
+    "routing_policy": {
+      "type": "object",
+      "required": ["load_all_skills", "default_selection", "automatic_selection", "require_trigger_match", "require_execution_report", "work_modes"]
+    },
+    "human_presentation": {
+      "type": "object",
+      "required": ["primary_reading_format", "publication_manifest", "generator", "source_of_truth"],
+      "properties": {
+        "primary_reading_format": {"const": "PROJECT_SKILL_MAP.pdf"},
+        "publication_manifest": {"const": "SKILL_MAP_PUBLICATION_MANIFEST.json"},
+        "source_of_truth": {"const": "SKILL_REGISTRY.json"}
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["skill_id", "layer", "discipline", "path", "status", "load_by_default", "trigger_tags", "use_when", "do_not_use_when", "learning_log", "review_triggers", "knowledge_state"]
+      }
+    },
+    "selected_disciplines": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "discipline_entrypoints": {"type": "object"}
+  },
+  "additionalProperties": true
+}
