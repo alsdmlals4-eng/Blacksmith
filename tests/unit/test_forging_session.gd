@@ -44,6 +44,7 @@ func _test_rapid_taps_start_fever() -> void:
 		"fever_gain_base": 50.0,
 		"fever_gain_rapid": 50.0,
 		"fever_charge_max": 100.0,
+		"fever_decay_per_second": 0.0,
 		"fever_multiplier": 2.0,
 	})
 	session.register_tap()
