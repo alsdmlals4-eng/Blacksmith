@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "max_level": 5,
+  "base_success_by_target_level": {
+    "1": 1.0,
+    "2": 0.9,
+    "3": 0.8,
+    "4": 0.7,
+    "5": 0.6
+  },
+  "precision": {
+    "speed": 0.9,
+    "target": 0.5,
+    "perfect_radius": 0.07,
+    "good_radius": 0.18,
+    "perfect_success_bonus": 0.2,
+    "good_success_bonus": 0.1
+  },
+  "pity": {
+    "bonus_per_failure": 0.05,
+    "max_bonus": 0.2
+  },
+  "material_scoring": {
+    "secondary_tag_weight": 2,
+    "catalyst_tag_weight": 1
+  },
+  "failure_policy": {
+    "destroy_weapon": false,
+    "decrease_level": false,
+    "require_repair": false,
+    "consume_materials": true
+  }
+}
