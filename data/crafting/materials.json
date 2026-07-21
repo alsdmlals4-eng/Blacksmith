@@ -50,6 +50,17 @@
       "weight": 20
     },
     {
+      "id": "flame_stone",
+      "name": "화염석",
+      "slot_types": [
+        "secondary"
+      ],
+      "affix_tags": [
+        "fire"
+      ],
+      "weight": 25
+    },
+    {
       "id": "spirit_heart",
       "name": "정령의 심장",
       "slot_types": [
