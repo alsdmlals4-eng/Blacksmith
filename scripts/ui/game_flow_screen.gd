@@ -1,7 +1,7 @@
 extends Control
 
 const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
-const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
+const EnhancementScreenScript = preload("res://scripts/ui/special_enhancement_screen.gd")
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
 
 var current_screen: Control
