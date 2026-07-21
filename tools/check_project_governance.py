@@ -81,11 +81,31 @@ def main() -> int:
             if token not in (ROOT / item).read_text(encoding="utf-8"):
                 errors.append(f"{item}: missing current rule token {token!r}")
 
+    game_bible = (ROOT / "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md").read_text(encoding="utf-8")
+    for token in config.get("required_game_bible_tokens", []):
+        checks += 1
+        if token not in game_bible:
+            errors.append(f"Game Bible lost preserved product detail {token!r}")
+
+    interview_path = ROOT / "[기획서]/00_프로젝트_허브/INTERVIEW_REGISTRY.json"
+    interview_registry = load_json(interview_path)
+    interview_ids = {entry.get("interview_id") for entry in interview_registry.get("interviews", [])}
+    for interview_id in config.get("preserved_interview_ids", []):
+        checks += 1
+        if interview_id not in interview_ids:
+            errors.append(f"INTERVIEW_REGISTRY lost preserved interview {interview_id}")
+    for entry in interview_registry.get("interviews", []):
+        record = entry.get("record_path")
+        if record:
+            checks += 1
+            if not (interview_path.parent / record).is_file():
+                errors.append(f"interview {entry.get('interview_id')}: missing record {record}")
+
     skill_path = ROOT / "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json"
-    registry = load_json(skill_path)
+    skill_registry = load_json(skill_path)
     checks += 6
-    policy = registry.get("routing_policy", {})
-    if registry.get("schema_version") != 3:
+    policy = skill_registry.get("routing_policy", {})
+    if skill_registry.get("schema_version") != 3:
         errors.append("SKILL_REGISTRY schema_version must be 3")
     if policy.get("default_selection") != "automatic-trigger-match":
         errors.append("SKILL_REGISTRY default_selection must be automatic-trigger-match")
@@ -95,13 +115,14 @@ def main() -> int:
         errors.append("SKILL_REGISTRY execution report must be required")
     if policy.get("work_modes") != ["PLAN", "BUILD", "REVIEW"]:
         errors.append("SKILL_REGISTRY work_modes mismatch")
-    ids = [entry.get("skill_id") for entry in registry.get("skills", [])]
-    if len(ids) != len(set(ids)):
+    skill_ids = [entry.get("skill_id") for entry in skill_registry.get("skills", [])]
+    if len(skill_ids) != len(set(skill_ids)):
         errors.append("SKILL_REGISTRY duplicate skill_id")
 
-    for entry in registry.get("skills", []):
+    known_skill_ids = set(skill_ids)
+    for entry in skill_registry.get("skills", []):
         skill_id = entry.get("skill_id", "<unknown>")
-        checks += 5
+        checks += 6
         if entry.get("status") == "ACTIVE" and entry.get("load_by_default") is not False:
             errors.append(f"{skill_id}: active skill must not load by default")
         for key in ("trigger_tags", "use_when", "do_not_use_when", "review_triggers"):
@@ -110,17 +131,48 @@ def main() -> int:
         path = (skill_path.parent / entry.get("path", "")).resolve()
         if not path.is_file():
             errors.append(f"{skill_id}: missing skill path {entry.get('path')}")
+        learning_log = (skill_path.parent / entry.get("learning_log", "")).resolve()
+        if not learning_log.is_file():
+            errors.append(f"{skill_id}: missing learning log {entry.get('learning_log')}")
+
+    for discipline, entrypoints in skill_registry.get("discipline_entrypoints", {}).items():
+        for skill_id in entrypoints:
+            checks += 1
+            if skill_id not in known_skill_ids:
+                errors.append(f"discipline {discipline}: unknown skill id {skill_id}")
+
+    presentation = skill_registry.get("human_presentation", {})
+    manifest_name = presentation.get("publication_manifest")
+    checks += 1
+    if not manifest_name or not (skill_path.parent / manifest_name).is_file():
+        errors.append("SKILL_REGISTRY publication manifest is missing")
 
     design_path = ROOT / "[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json"
     design_registry = load_json(design_path)
     allowed_policies = {"source_only", "milestone_sync", "always_sync"}
+    covered: set[str] = set()
     for document in design_registry.get("documents", []):
         checks += 2
+        covered.update(document.get("responsibility_coverage", []))
         source = (design_path.parent / document["source_path"]).resolve()
         if not source.is_file():
             errors.append(f"document {document['document_id']}: missing source {document['source_path']}")
         if document.get("publication_policy") not in allowed_policies:
             errors.append(f"document {document['document_id']}: invalid publication policy")
+        if document.get("publication_policy") != "source_only":
+            manifest = document.get("publication_manifest")
+            checks += 1
+            if not manifest or not (design_path.parent / manifest).resolve().is_file():
+                errors.append(f"document {document['document_id']}: publication manifest missing")
+        for actual_path in document.get("actual_paths", []):
+            checks += 1
+            if not (design_path.parent / actual_path).resolve().exists():
+                errors.append(f"document {document['document_id']}: missing actual path {actual_path}")
+
+    for responsibility in design_registry.get("required_responsibility_coverage", []):
+        checks += 1
+        if responsibility not in covered:
+            errors.append(f"DESIGN_DOCUMENT_REGISTRY uncovered responsibility {responsibility}")
 
     test_text = (ROOT / "tests/unit/test_enhancement_session.gd").read_text(encoding="utf-8")
     checks += 1

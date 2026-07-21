@@ -3,6 +3,17 @@
   "registry_role": "user-confirmation-and-execution-contract-index",
   "project": "Blacksmith",
   "active_interview_id": null,
+  "interviews": [
+    {
+      "interview_id": "INT-2026-001",
+      "title": "초기 게임 방향과 프로젝트 구조",
+      "status": "CONFIRMED",
+      "confirmation_source": "2026-07-21 사용자 대화",
+      "record_path": "INTERVIEWS/2026-07-21-initial-foundation.md",
+      "executable_prompt_path": null,
+      "scope": "모바일 프로젝트 초기 구조와 현재 확정 기획 기록"
+    }
+  ],
   "confirmed_requests": [
     {
       "request_id": "OPS-002",

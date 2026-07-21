@@ -7,6 +7,9 @@
     "project.godot",
     "docs/BASE_RULES_VERSION.md",
     "docs/BASE_SYNC_AUDIT.md",
+    "docs/GODOT_PLAYTEST.md",
+    "docs/MVP-001_SCOPE.md",
+    "docs/MVP-002_SCOPE.md",
     "tests/README.md",
     "tests/SPECIAL_ENHANCEMENT_VALIDATION.md",
     "[기획서]/00_프로젝트_허브/START_HERE.md",
@@ -15,9 +18,13 @@
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
     "[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json",
     "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+    "[기획서]/00_프로젝트_허브/SKILL_MAP_PUBLICATION_MANIFEST.json",
+    "[기획서]/00_프로젝트_허브/INTERVIEW_REGISTRY.json",
     "[기획서]/00_프로젝트_허브/DOCUMENT_UPDATE_MATRIX.md",
     "[기획서]/00_프로젝트_허브/AI_WORKFLOW.md",
+    "[기획서]/00_프로젝트_허브/HANDOFF.md",
     "[기획서]/00_프로젝트_허브/OPERATING_SYSTEM_HEALTH_REPORT.md",
+    "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
     "skills/SKILL_LEARNING_LOG.md",
     "schemas/skill-registry-v3.schema.json"
   ],
@@ -46,5 +53,7 @@
     "`F6`"
   ],
   "obsolete_paths": [".github/workflows/materialize-auto-forge.yml"],
-  "expected_main_scene": "res://scenes/test/enhancement_test.tscn"
+  "expected_main_scene": "res://scenes/test/enhancement_test.tscn",
+  "preserved_interview_ids": ["INT-2026-001"],
+  "required_game_bible_tokens": ["게임 내 재화로 결과 베팅", "방어 라이프가 0", "고급·희귀 재료"]
 }
