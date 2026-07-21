@@ -1,5 +1,6 @@
 name: Materialize auto forge
 
+# Triggered after registration on main.
 on:
   push:
     branches:
