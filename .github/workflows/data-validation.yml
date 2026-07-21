@@ -6,12 +6,23 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   validate-game-data:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Blacksmith
         uses: actions/checkout@v4
+
+      - name: Checkout pinned Base
+        uses: actions/checkout@v4
+        with:
+          repository: alsdmlals4-eng/Base
+          ref: ee265576da7f67d3278f8099dd97d4e714ef0651
+          path: external/Base
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -20,3 +31,26 @@ jobs:
 
       - name: Validate JSON game data
         run: python tools/validate_game_data.py
+
+      - name: Validate pinned Base governance
+        working-directory: external/Base
+        run: |
+          python tests/test_skill_package_integrity.py
+          python tests/test_game_project_operating_system_structure.py
+          python tests/test_project_skill_map_generation.py
+          python tests/test_consolidated_skill_references.py
+          python tests/test_reference_freshness.py
+
+      - name: Audit Base adoption and project references
+        run: |
+          python tools/audit_project_operating_system.py \
+            --base-root external/Base \
+            --report artifacts/base-adoption-report.json
+
+      - name: Upload Base adoption report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: base-adoption-report
+          path: artifacts/base-adoption-report.json
+          if-no-files-found: error
