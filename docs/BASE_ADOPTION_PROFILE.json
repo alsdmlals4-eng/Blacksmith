@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "base_repository": "alsdmlals4-eng/Base",
+  "base_commit": "ee265576da7f67d3278f8099dd97d4e714ef0651",
+  "strategy": "collapse-shared-capabilities-into-three-project-skills-without-dropping-triggers-or-validation",
+  "project_skill_count": 3,
+  "capabilities": [
+    {
+      "base_skill_id": "managing-project-intake-and-work-contract",
+      "disposition": "ADAPT",
+      "local_owner": "[기획서]/00_프로젝트_허브/WORK_MODE_AND_SKILL_ROUTING.md",
+      "local_skill_id": null,
+      "local_modes": ["route", "contract", "decompose-and-sequence", "execution-report"],
+      "activation": "L1 이상 신규 요청 또는 범위·의존성·완료 기준이 바뀌는 작업"
+    },
+    {
+      "base_skill_id": "managing-game-project-operating-system",
+      "disposition": "ADAPT",
+      "local_owner": "docs/BASE_ADOPTION_AUDIT.md",
+      "local_skill_id": null,
+      "local_modes": ["audit", "reconcile-legacy", "migrate", "verify"],
+      "activation": "Base 동기화, 구조 감사, 구형 파일 정리, 콜드 스타트 실패"
+    },
+    {
+      "base_skill_id": "evolving-project-discipline-skills",
+      "disposition": "ADAPT",
+      "local_owner": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+      "local_skill_id": null,
+      "local_modes": ["create", "consolidate", "learn", "verify"],
+      "activation": "반복 실패, 책임 충돌, 누락된 분야 절차, Skill 통합"
+    },
+    {
+      "base_skill_id": "managing-design-documents",
+      "disposition": "ADAPT",
+      "local_owner": "[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json",
+      "local_skill_id": null,
+      "local_modes": ["author", "update", "restructure", "publish", "validate"],
+      "activation": "기획 정본·책임 구조·발행 상태 변경"
+    },
+    {
+      "base_skill_id": "maintaining-project-context-and-handoff",
+      "disposition": "ADOPT",
+      "local_owner": "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+      "local_skill_id": null,
+      "local_modes": ["update-context", "handoff"],
+      "activation": "현재 상태·다음 작업·위험·브랜치 경계 변경"
+    },
+    {
+      "base_skill_id": "analyzing-and-refining-game-concepts",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "skills/game-design/SKILL.md",
+      "local_skill_id": "blacksmith-game-design",
+      "local_modes": ["frame", "update-system", "balance-review", "benchmark-and-player-research", "playtest-and-experiment", "poc-check"],
+      "activation": "핵심 재미·강화·경제·벤치마크·플레이테스트·PoC 결정"
+    },
+    {
+      "base_skill_id": "designing-vertical-slices",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "skills/game-design/SKILL.md",
+      "local_skill_id": "blacksmith-game-design",
+      "local_modes": ["vertical-slice-gate"],
+      "activation": "Prototype 이후 대표 플레이 구간의 품질·파이프라인·실기기 증거 검증"
+    },
+    {
+      "base_skill_id": "orchestrating-deepseek-worktrees",
+      "disposition": "ROUTE_ON_DEMAND",
+      "local_owner": "[기획서]/00_프로젝트_허브/WORK_MODE_AND_SKILL_ROUTING.md",
+      "local_skill_id": null,
+      "local_modes": ["external-ai-worktree"],
+      "activation": "외부 AI에 대량 초안·분류를 격리 위임할 때만"
+    },
+    {
+      "base_skill_id": "reviewing-and-validating-project-changes",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "skills/qa/SKILL.md",
+      "local_skill_id": "blacksmith-qa",
+      "local_modes": ["contract-check", "external-source-review", "static", "runtime", "accessibility-review", "performance-profile", "regression", "evidence-report"],
+      "activation": "코드·데이터·문서·자산 변경의 통합 검증"
+    },
+    {
+      "base_skill_id": "auditing-canonical-reference-freshness",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "tools/audit_project_operating_system.py",
+      "local_skill_id": "blacksmith-qa",
+      "local_modes": ["reference-freshness"],
+      "activation": "정본·경로·ID·Schema·정책·생성기 변경"
+    },
+    {
+      "base_skill_id": "designing-art-prompts-and-technique-cards",
+      "disposition": "ROUTE_ON_DEMAND",
+      "local_owner": "skills/game-design/SKILL.md",
+      "local_skill_id": "blacksmith-game-design",
+      "local_modes": ["art-brief"],
+      "activation": "승인된 아트 방향·생성·편집 프롬프트가 필요할 때만"
+    },
+    {
+      "base_skill_id": "auditing-and-refining-ui-art",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "skills/qa/SKILL.md",
+      "local_skill_id": "blacksmith-qa",
+      "local_modes": ["ui-art-review"],
+      "activation": "구현된 Godot UI의 실제 전후 렌더를 검수할 때"
+    },
+    {
+      "base_skill_id": "managing-base-change-proposals",
+      "disposition": "ADAPT",
+      "local_owner": "docs/BASE_RULES_VERSION.md",
+      "local_skill_id": null,
+      "local_modes": ["extract", "submit", "review", "implement", "verify"],
+      "activation": "Blacksmith에서 반복 검증된 공용 교훈을 Base에 승격할 때"
+    }
+  ],
+  "required_entrypoints": [
+    "AGENTS.md",
+    "README.md",
+    "[기획서]/00_프로젝트_허브/START_HERE.md",
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+    "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+    "[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json",
+    "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json"
+  ],
+  "forbidden_temporary_paths": [
+    ".github/workflows/materialize-auto-forge.yml",
+    ".tmp_auto_forge"
+  ]
+}
