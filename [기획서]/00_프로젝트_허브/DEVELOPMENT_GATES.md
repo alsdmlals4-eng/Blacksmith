@@ -10,7 +10,7 @@
 | Implementation | PASS | Base 기능 매핑·Skill 통합·정본 동기화·영구 감사 CI 구현 |
 | Verification | CURRENT | Base 전체 Linux 회귀·운영 감사·Godot 자동 검증 PASS, Android·시각·성능 수동 증거 필요 |
 | Documentation | PASS | 시작 문서·Context·Map·Gates·Registry·Bible·Scope·학습 기록 동기화 |
-| Integration·Completion | CURRENT | PR 최종 Head 검증·리뷰 기록·병합·main 재확인 |
+| Integration·Completion | PASS | PR #16 최종 Head 검증·리뷰·squash 병합과 main 핵심 파일 재확인 |
 
 ## 제품 게이트
 
