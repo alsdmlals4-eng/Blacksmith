@@ -1,15 +1,18 @@
 {
   "schema_version": 1,
+  "registry_role": "user-confirmation-and-execution-contract-index",
   "project": "Blacksmith",
-  "interviews": [
+  "active_interview_id": null,
+  "confirmed_requests": [
     {
-      "interview_id": "INT-2026-001",
-      "title": "초기 게임 방향과 프로젝트 구조",
+      "request_id": "OPS-002",
+      "source": "direct-user-request-and-github-issue-14",
       "status": "CONFIRMED",
-      "confirmation_source": "2026-07-21 사용자 대화",
-      "record_path": "INTERVIEWS/2026-07-21-initial-foundation.md",
-      "executable_prompt_path": null,
-      "scope": "모바일 프로젝트 초기 구조와 현재 확정 기획 기록"
+      "confirmed_at": "2026-07-21",
+      "summary": "Base를 상세 조사해 Blacksmith에 보존형으로 적용하고 PR을 빠짐없이 검수한다.",
+      "execution_contract": "https://github.com/alsdmlals4-eng/Blacksmith/issues/14",
+      "exception_reason": "사용자의 직접 실행 지시가 목표·대상 저장소·검수 요구를 명시해 추가 인터뷰가 필요하지 않음"
     }
-  ]
+  ],
+  "pending_decisions": []
 }
