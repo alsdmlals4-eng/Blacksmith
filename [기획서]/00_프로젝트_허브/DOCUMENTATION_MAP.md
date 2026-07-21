@@ -14,6 +14,7 @@
 | 고객·판매 실제 값은 무엇인가? | `../../data/sales/*.json` |
 | 제작 구현은 어디에 있는가? | `../../scripts/forging/`, `../../scripts/ui/forging_screen.gd` |
 | 강화 구현은 어디에 있는가? | `../../scripts/enhancement/`, `../../scripts/ui/enhancement_screen.gd`, `../../scripts/ui/game_flow_screen.gd` |
+| 제작→강화 진입점은 어디인가? | `../../scenes/main/main.tscn` |
 | 자동 검증은 무엇을 확인하는가? | `../../tests/README.md`, `../../tests/unit/`, `../../.github/workflows/godot-validation.yml` |
 | 모바일 기술 기준은 무엇인가? | `../../project.godot`, `../../docs/BASE_RULES_VERSION.md` |
 | 데이터가 유효한가? | `../../tools/validate_game_data.py` |
