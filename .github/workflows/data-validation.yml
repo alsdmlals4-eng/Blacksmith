@@ -31,6 +31,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install pinned Base test dependencies
+        run: python -m pip install --disable-pip-version-check -r base/requirements-publication.txt
+
       - name: Validate JSON game data
         working-directory: project
         run: python tools/validate_game_data.py
@@ -45,6 +48,7 @@ jobs:
           python tests/test_reference_freshness.py
 
       - name: Audit Base adoption and project references
+        if: always()
         working-directory: project
         run: |
           python tools/audit_project_operating_system.py \
