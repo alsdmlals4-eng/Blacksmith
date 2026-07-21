@@ -1,61 +1,53 @@
 ---
 name: blacksmith-game-design
-description: Blacksmith의 제작·강화·수식어·재료·고객·경제·PoC 규칙과 플레이 경험을 설계하고 검토한다.
+description: Blacksmith의 제작·강화·경제·벤치마크·플레이테스트·PoC·Vertical Slice를 하나의 게임 디자인 책임으로 다룬다.
 ---
 
-# Blacksmith Game Design Skill
+# Blacksmith Game Design
 
-## Skill Modes
+## Modes
 
-- `frame`: 현재 문제와 핵심 경험·제약·결정 질문을 고정한다.
-- `update-system`: 승인된 제작·강화·판매 규칙을 책임 원본과 데이터 계약에 반영한다.
-- `balance-review`: 성장·성공률·위험·가격·재료 선택의 곡선과 악용 가능성을 검토한다.
-- `poc-check`: 가장 위험한 가설, 최소 검증 범위, 성공·중단 기준을 정한다.
+- `frame`: 핵심 행동·감정·제약·결정 질문을 고정한다.
+- `update-system`: 승인된 제작·강화·판매 규칙을 정본과 데이터 계약에 반영한다.
+- `balance-review`: 성장·성공률·위험·가격·재료 선택과 악용 가능성을 검토한다.
+- `benchmark-and-player-research`: 제품 사실·플레이어 반응·행동 근거를 분리하고 `ADOPT / ADAPT / AVOID / TEST / IGNORE`로 판정한다.
+- `playtest-and-experiment`: 빌드·대상·과제·행동 이벤트·성공 기준을 고정한다.
+- `poc-check`: 가장 위험한 가설과 최소 검증·중단 기준을 정한다.
+- `vertical-slice-gate`: 대표 플레이 구간의 목표 품질·접근성·성능·제작 파이프라인·실제 플레이 증거를 판정한다.
+- `art-brief`: 승인된 아트 방향을 생성·편집 프롬프트와 기술 제약으로 변환한다.
 
-## Read first
+## Read
 
-- `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
-- `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
-- 관련 `docs/MVP-*_SCOPE.md`
-- 관련 `data/crafting/` 또는 `data/sales/`
-- 실제 구현과 테스트
+`ACTIVE_CONTEXT.md` → `BLACKSMITH_GAME_BIBLE.md` → 관련 MVP Scope → 관련 JSON → 실제 구현·테스트.
 
 ## Rules
 
-- 간단한 모바일 광클 경험을 최우선으로 둔다.
-- 직원과 수리 시스템을 승인 없이 추가하지 않는다.
+- 광클→즉시 피드백→피버→성장 선택이 핵심이다.
+- Base의 `DDD`는 `Digital Dopamine Design`이다. 첫 의미 있는 보상, 피드백 지연, Micro→Session→Meta 보상, 다음 행동, 피로·인플레이션을 검토한다.
 - 일반 강화와 +10 단위 특수 강화를 분리한다.
 - 보조재료·촉매·정밀 강화는 특수 강화에서만 적용한다.
-- 이전 선택이 일반 강화에 몰래 영향을 주지 않게 한다.
-- 고단계 보상 확대는 위험·비용·복구 수단과 함께 설계한다.
-- 설명 규칙과 실제 JSON 값을 중복 소유하지 않는다.
-- 기능 목록이 아니라 플레이어 행동→피드백→보상→다음 선택을 설명한다.
-- 외부 벤치마크는 `ADOPT / ADAPT / AVOID / TEST / IGNORE`로 결정에 연결한다.
+- 고단계 보상은 위험·비용·복구 선택과 함께 증가시킨다.
+- 직원·무기 수리는 승인 없이 추가하지 않는다.
+- 수치의 정본은 JSON, 구현 사실은 Script·Scene·Test다.
+- 벤치마크와 리뷰는 요구사항 정본이 아니라 개선 가설의 근거다.
+- 승인 이미지가 있으면 임의로 교체하지 않는다.
 
 ## Output
 
-- 변경할 책임 원본과 실제 데이터 필드
 - 유지·변경·제외 범위
+- 책임 원본과 데이터 필드
 - 정상·실패·경계 플레이 결과
-- 관찰 가능한 검증 기준
-- 미확정 가설과 다음 PoC
+- 검증 가능한 가설·지표·게이트
+- 미확정과 다음 결정
 
-## Validation
+## Failure
 
-- 고객 방문과 상인 납품의 역할이 겹치지 않는가?
-- 재료가 특수 강화 수식어와 가치에 실제로만 영향을 주는가?
-- 일반 강화에 촉매·정밀 효과가 누출되지 않는가?
-- 고단계 효과·가격·위험 증가가 같은 곡선을 반복하지 않고 의미 있는 선택을 만드는가?
-- 직접 플레이와 자동 단조가 서로를 무효화하지 않는가?
-- 문서 주장과 JSON·GDScript 구현이 일치하는가?
-
-## Failure conditions
-
-- 광클 핵심 경험보다 부가 시스템이 앞선다.
-- +10 특수 강화 경계를 건너뛴다.
-- 수치의 책임 원본이 Markdown과 JSON에 중복된다.
-- 플레이테스트 없이 자극 강화를 확정 규칙으로 승격한다.
+- 부가 시스템이 광클 핵심 경험을 가린다.
+- 특수 강화 경계나 재료 효과가 일반 강화로 누출된다.
+- 외부 인기 기능을 검증 없이 복사한다.
+- 여러 실험 변수를 동시에 바꾸거나 결과 후 성공 기준을 바꾼다.
+- 실제 플레이 증거 없이 Production·Vertical Slice 통과를 선언한다.
 
 ## Learning
 
-실패, 중요한 결정, 재사용 가능한 교훈, 실제 플레이·테스트 증거가 있을 때만 `skills/SKILL_LEARNING_LOG.md`에 기록한다.
+실패·중요 결정·반복 가능한 교훈·실제 플레이 증거만 `skills/SKILL_LEARNING_LOG.md`에 기록한다.
