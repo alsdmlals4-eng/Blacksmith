@@ -18,13 +18,20 @@
 - 미검증: 실제 화면 렌더와 Android 실기기 터치
 - 스킬 본문 변경: 한 번의 타입 추론 실패이므로 강제 규칙으로 승격하지 않고 Learning Log에만 기록
 
-## 2026-07-21 — MVP-002 +5 강화와 첫 수식어
+## 2026-07-21 — MVP-002 초기 강화
 
-- 결과: 강화 상태 모델, 보조재료·촉매 선택 UI, 정밀 강화, 실패 보정, +5 수식어 판정과 제작→강화 화면 전환 추가
-- 검증: Godot 4.7.1 프로젝트 파싱 PASS, 제작 모델 4건 PASS, 강화 모델 5건 PASS, JSON 검증 PASS
-- 유지 결정: 강화 확률·재료 누적·수식어 판정은 `EnhancementSession`이 소유하고 UI는 선택과 표시만 담당한다.
-- 경제 경계: MVP-002에서는 재료 선택과 사용 기록만 구현하고 실제 보유량 차감·구매는 후속 인벤토리·상인 범위로 남겼다.
-- UX 경계: 긴 강화 화면은 세로 스크롤을 허용하며 정밀 강화 OFF에서도 전체 진행이 가능하다.
-- 수식어 교훈: 완전 무작위 대신 보조재료 성질 누적을 사용하면 단순한 UI에서도 결과 예측과 선택 의미를 함께 제공할 수 있다.
-- 미검증: 실제 화면 배치, 스크롤 조작성, Android 실기기 정밀 타격
-- 다음 학습 트리거: 방문 검투사 판매에서 무기 적합성·경기 결과·인센티브 계산 책임이 충돌할 때
+- 결과: 강화 상태 모델, 보조재료·촉매 선택 UI, 정밀 강화, 실패 보정과 제작→강화 화면 전환 추가
+- 검증: Godot 4.7.1 프로젝트 파싱 PASS, 제작 모델 4건 PASS, 초기 강화 모델 5건 PASS, JSON 검증 PASS
+- 유지 결정: 강화 확률·재료·수식어 판정은 `EnhancementSession`이 소유하고 UI는 선택과 표시만 담당한다.
+- 교훈: 재료 성질로 결과 방향을 예측하게 하면 단순 UI에서도 선택 의미를 제공할 수 있다.
+- 미검증: 실제 화면 배치, Android 실기기 정밀 타격
+
+## 2026-07-22 — Base 운영체계 통합 감사
+
+- 요청: Base를 상세히 적용하되 구조를 가지치기·통합하고 기능 손실 없이 적대적으로 검토한다.
+- 결과: Base 13개 ACTIVE 기능을 운영 문서와 `blacksmith-game-design`, `blacksmith-engineering`, `blacksmith-qa` 세 Skill로 매핑했다.
+- 통합: 벤치마크·DDD·플레이테스트·PoC·Vertical Slice·아트 방향은 game-design Mode로, 외부 결과·reference-freshness·접근성·성능·UI 감사는 qa Mode로 합쳤다.
+- 자동화: Base 고정 commit 자체 테스트와 Blacksmith Registry·경로·stale 정본을 검사하는 `tools/audit_project_operating_system.py`를 CI에 연결했다.
+- 교훈: 공용 Skill 패키지를 복제하지 않아도 기능별 owner·trigger·Mode·검증을 기계적으로 매핑하면 프로젝트 구조를 작게 유지하면서 기능 손실을 탐지할 수 있다.
+- 보호: historical Changelog·Learning Log는 과거 증거로 유지하고 활성 정본만 stale 검사한다.
+- 미검증: Android 실기기·AAB·사람 시각·접근성·성능 프로파일·Branch protection 강제 여부
