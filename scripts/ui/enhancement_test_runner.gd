@@ -1,6 +1,6 @@
 extends Control
 
-const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
+const EnhancementScreenScript = preload("res://scripts/ui/special_enhancement_screen.gd")
 
 var current_screen: Control
 
