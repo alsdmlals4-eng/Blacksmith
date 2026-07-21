@@ -9,7 +9,7 @@
 - 제품 단계: Prototype
 - 작업 게이트: Verification
 - 구현 상태: 철검 제작 수직 프로토타입 구현
-- 자동 검증: JSON PASS, Godot 프로젝트 파싱 PASS, 모델 테스트 재검증 중
+- 자동 검증: JSON PASS, Godot 프로젝트 파싱 PASS, 제작 모델 테스트 PASS
 - 모바일 검증: Android 실기기 미실행
 
 ## 구현된 범위
@@ -33,9 +33,9 @@
 
 ## 다음 우선순위
 
-1. Godot 헤드리스 모델 테스트를 PASS로 만든다.
-2. 실제 Godot 화면을 실행해 배치·텍스트·상태 전환을 시각 검수한다.
-3. Android 기기에서 터치·세로 비율·안전 영역을 확인한다.
+1. 실제 Godot 화면을 실행해 배치·텍스트·상태 전환을 시각 검수한다.
+2. Android 기기에서 터치·세로 비율·안전 영역을 확인한다.
+3. 플레이 감각에 따라 `forging_balance.json`을 조정한다.
 4. `MVP-002 +5 강화 → 첫 수식어` 범위를 설계한다.
 
 ## 확인된 검증
@@ -43,10 +43,10 @@
 - `python tools/validate_game_data.py`: PASS
 - Godot 4.7.1 엔진 다운로드: PASS
 - `--headless --editor --path . --quit`: PASS — 프로젝트·Main Scene·참조 스크립트 파싱
+- `tests/unit/test_forging_session.gd`: PASS — 정밀 OFF, 피버 배율, 완벽 마감, 초기화 4건
 
 ## 미검증
 
-- 현재 모델 테스트 최종 PASS
 - 실제 화면 렌더와 플레이 감각
 - Android SDK/JDK 및 export template
 - API 36 대상 AAB 생성
