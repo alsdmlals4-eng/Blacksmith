@@ -53,6 +53,11 @@ for rel in [
     source = text(rel)
     require("×1.05" in source and "×1.12" in source, f"품질 공격력·가치 계약이 문서에 없습니다: {rel}")
 
+decisions = text("[기획서]/00_프로젝트_허브/DECISION_LOG.md")
+dec_016 = decisions.find("## DEC-016 ")
+dec_017 = decisions.find("## DEC-017 ")
+require(dec_016 >= 0 and dec_017 > dec_016, "Decision Log는 DEC-016 뒤에 DEC-017을 배치해야 합니다.")
+
 workflow = text(".github/workflows/godot-validation.yml")
 require("test_forging_quality_enhancement.gd" in workflow, "Godot Workflow에 제작 품질 통합 테스트가 없습니다.")
 require("check_forging_quality_contract.py" in workflow, "Godot Workflow에 품질 정적 계약 검사가 없습니다.")
