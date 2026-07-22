@@ -10,7 +10,7 @@
 | Implementation | PASS | 품질별 정수 공격력 20/21/22·가격 보정·테스트 러너 종료 흐름·도메인/UI/데이터/단위·통합·정적 테스트 구현 |
 | Verification | CURRENT | 자동 검증 PASS, 실제 화면·Android·장시간 성능 증거 필요 |
 | Documentation | PASS | Game Bible·Decision Log·Active Context·Roadmap·Scope·플레이테스트·README 동기화 |
-| Integration·Completion | CURRENT | PR #21에 최신 main의 Godot AI 통합까지 병합하고 CI·전체 patch·main 재확인 |
+| Integration·Completion | PASS | PR #21 squash 병합, 최종 CI·28개 patch·main 책임 파일 재확인 |
 
 ## 제품 게이트
 
