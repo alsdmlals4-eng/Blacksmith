@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/forging-fever-result-poc064
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -28,10 +31,8 @@ jobs:
           python tests/check_forging_quality_contract.py
           git diff --check
 
-      - name: Remove one-time materialization files
-        run: |
-          rm tools/apply_fever_bonus_patch.py
-          rm .github/workflows/materialize-fever-bonus.yml
+      - name: Remove one-time patch tool
+        run: rm tools/apply_fever_bonus_patch.py
 
       - name: Commit materialized changes
         run: |
