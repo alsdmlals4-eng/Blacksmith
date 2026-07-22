@@ -66,6 +66,16 @@ for rel in [
     require("POC v0.6.2 · main · 2026.07.22.2" in source, f"최신 버전 설명이 없습니다: {rel}")
     require("POC v0.6.1 · main · 2026.07.22.1" not in source, f"활성 문서가 구형 버전을 참조합니다: {rel}")
 
+for rel in [
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "[기획서]/00_프로젝트_허브/CHANGELOG.md",
+    "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+]:
+    require("통합 3건" in text(rel), f"제작 품질 통합 테스트 3건 기록이 최신이 아닙니다: {rel}")
+
+playtest = text("docs/GODOT_PLAYTEST.md")
+require("scenes/main/main.tscn" in playtest and "F6" in playtest, "제작 품질 수동 검증은 전체 흐름 Scene F6 진입을 안내해야 합니다.")
+
 decisions = text("[기획서]/00_프로젝트_허브/DECISION_LOG.md")
 dec_016 = decisions.find("## DEC-016 ")
 dec_017 = decisions.find("## DEC-017 ")
