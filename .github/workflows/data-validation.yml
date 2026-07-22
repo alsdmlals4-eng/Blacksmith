@@ -29,22 +29,27 @@ jobs:
             python tools/apply_forging_quality_patch.py > quality-patch-error.log 2>&1
             status=$?
             set -e
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             if [ "$status" -ne 0 ]; then
-              git add quality-patch-error.log
-              git commit -m "품질 패치 실패 위치 기록"
-              git push origin HEAD:${{ github.head_ref }}
               cat quality-patch-error.log
               exit "$status"
             fi
             rm -f quality-patch-error.log tools/apply_forging_quality_patch.py
             git fetch origin main
             git checkout origin/main -- .github/workflows/data-validation.yml
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add -A
             git commit -m "제작 마감 품질을 공격력과 가치에 연결"
             git push origin HEAD:${{ github.head_ref }}
           fi
+
+      - name: Upload quality patch error
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-patch-error
+          path: project/quality-patch-error.log
+          if-no-files-found: ignore
 
       - name: Checkout pinned Base
         uses: actions/checkout@v4
