@@ -69,4 +69,6 @@
 - 수정: 브랜치를 최신 main merge tree로 전진시키고, `addons/`를 벤더 참조 경계로 분리하되 `project.godot`의 플러그인·오토로드 선언과 핵심 런타임 진입점은 필수 계약으로 추가했다.
 - 문서화: README·Active Context·Development Gates·Decision Log·Documentation Map·Changelog에 Godot AI 연동과 환경 의존 미검증 범위를 반영했다.
 - 교훈: 외부 애드온을 프로젝트 정본과 같은 규칙으로 문서 경로 감사하면 upstream-only 참조를 결함으로 오판할 수 있다. 벤더 경계를 제외하는 대신 실제 통합 진입점과 엔진 파싱을 더 엄격히 검사한다.
+- 최종 증거: PR #21을 최신 main 위 단일 커밋·28개 파일로 정리하고 Base 전체 회귀·JSON·참조 감사·Godot 파싱·두 Scene·모델·통합 검증을 통과했다. 다섯 테스트 프로세스 종료코드는 모두 0이었다.
+- main 확정: squash 커밋 `48a227bf4e4da2499eac10a04b29b1290ff15866`
 - 미검증: 로컬 `uv`, MCP 서버 기동, Codex 등 클라이언트 실제 연결
