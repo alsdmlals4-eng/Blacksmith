@@ -27,7 +27,7 @@ func _test_manual_normal_uses_shared_resources() -> void:
 	await process_frame
 	_set_guaranteed_success(screen.session)
 	var cost := int(screen.session.calculate_attempt_cost())
-	var before_gold := resources.gold
+	var before_gold: int = int(resources.gold)
 	screen._on_normal_pressed()
 	_expect(screen.session.enhancement_level == 1, "수동 일반 강화 버튼이 실제 강화 세션을 진행해야 합니다.")
 	_expect(resources.gold == before_gold - cost, "수동 일반 강화 버튼이 공유 골드를 차감해야 합니다.")
@@ -49,7 +49,7 @@ func _test_manual_special_consumes_stock() -> void:
 	_expect(screen.session.enhancement_level == 9, "수동 일반 강화로 +9까지 진행되어야 합니다.")
 	_expect(screen.session.set_secondary_material("whetstone"), "+10에서 숫돌을 선택할 수 있어야 합니다.")
 	_expect(screen.session.set_catalyst_material("salamander_core"), "+10에서 촉매를 선택할 수 있어야 합니다.")
-	var before_gold := resources.gold
+	var before_gold: int = int(resources.gold)
 	var cost := int(screen.session.calculate_attempt_cost())
 	screen._on_special_start_pressed()
 	_expect(screen.session.state == 1, "수동 특수 강화 시작 후 정밀 판정 상태여야 합니다.")
