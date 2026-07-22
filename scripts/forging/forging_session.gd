@@ -24,6 +24,9 @@ const DEFAULT_CONFIG := {
 	"fever_decay_per_second": 10.0,
 	"fever_duration_seconds": 6.0,
 	"fever_multiplier": 2.5,
+	"fever_value_bonus_per_activation": 0.02,
+	"fever_completion_value_bonus": 0.03,
+	"fever_value_bonus_cap": 0.05,
 	"precision_speed": 0.85,
 	"precision_target": 0.5,
 	"precision_perfect_radius": 0.07,
@@ -48,6 +51,7 @@ var precision_direction: float = 1.0
 var time_since_tap: float = 999.0
 var tap_count: int = 0
 var fever_activation_count: int = 0
+var forging_completed_during_fever: bool = false
 var result: Dictionary = {}
 
 
@@ -73,6 +77,7 @@ func _reset_values() -> void:
 	time_since_tap = 999.0
 	tap_count = 0
 	fever_activation_count = 0
+	forging_completed_during_fever = false
 	result = {}
 
 
@@ -180,6 +185,8 @@ func snapshot() -> Dictionary:
 		"precision_position": precision_position,
 		"tap_count": tap_count,
 		"fever_activation_count": fever_activation_count,
+		"forging_completed_during_fever": forging_completed_during_fever,
+		"fever_value_bonus": _calculate_fever_value_bonus(),
 		"result": result.duplicate(true),
 	}
 
@@ -196,6 +203,7 @@ func _add_progress(amount: float) -> void:
 		return
 	progress = minf(progress + maxf(amount, 0.0), float(config["target_progress"]))
 	if progress >= float(config["target_progress"]):
+		forging_completed_during_fever = is_fever_active()
 		if precision_enabled:
 			state = State.FINISHING
 			precision_position = 0.0
@@ -230,6 +238,9 @@ func _complete(
 	state = State.COMPLETE
 	var raw_base_attack := maxi(int(config.get("weapon_base_attack", 10)), 1)
 	var applied_base_attack := maxi(int(round(float(raw_base_attack) * attack_multiplier)), 1)
+	var fever_value_bonus := _calculate_fever_value_bonus()
+	var fever_value_multiplier := 1.0 + fever_value_bonus
+	var crafting_value_multiplier := value_multiplier + fever_value_bonus
 	result = {
 		"weapon_id": "iron_sword",
 		"weapon_name": "철검",
@@ -239,12 +250,22 @@ func _complete(
 		"quality_label": quality_label,
 		"quality_attack_multiplier": attack_multiplier,
 		"quality_value_multiplier": value_multiplier,
+		"fever_value_bonus": fever_value_bonus,
+		"fever_value_multiplier": fever_value_multiplier,
+		"crafting_value_multiplier": crafting_value_multiplier,
+		"forging_completed_during_fever": forging_completed_during_fever,
 		"tap_count": tap_count,
 		"fever_activation_count": fever_activation_count,
 	}
 	state_changed.emit(state)
 	completed.emit(result.duplicate(true))
 	_emit_changed()
+
+
+func _calculate_fever_value_bonus() -> float:
+	var activation_bonus := float(fever_activation_count) * float(config.get("fever_value_bonus_per_activation", 0.02))
+	var completion_bonus := float(config.get("fever_completion_value_bonus", 0.03)) if forging_completed_during_fever else 0.0
+	return minf(activation_bonus + completion_bonus, float(config.get("fever_value_bonus_cap", 0.05)))
 
 
 func _emit_state() -> void:

@@ -304,10 +304,15 @@ func _apply_state(new_state: int, snapshot: Dictionary) -> void:
 			var finished: Dictionary = snapshot["result"]
 			result_name_label.text = "%s 완성!" % finished.get("weapon_name", "철검")
 			result_quality_label.text = str(finished.get("quality_label", "보통 마감"))
-			result_stats_label.text = "기본 공격력 %d → %d · 제작 가치 ×%.2f\n망치질 %d회 · 피버 %d회" % [
+			var fever_bonus_percent := int(round(float(finished.get("fever_value_bonus", 0.0)) * 100.0))
+			var fever_finish_text := " · 피버 중 완성" if bool(finished.get("forging_completed_during_fever", false)) else ""
+			result_stats_label.text = "기본 공격력 %d → %d · 제작 가치 ×%.2f\n마감 가치 ×%.2f · 피버 가치 +%d%%%s\n망치질 %d회 · 피버 %d회" % [
 				int(finished.get("raw_base_attack", 10)),
 				int(finished.get("base_attack", 10)),
+				float(finished.get("crafting_value_multiplier", finished.get("quality_value_multiplier", 1.0))),
 				float(finished.get("quality_value_multiplier", 1.0)),
+				fever_bonus_percent,
+				fever_finish_text,
 				int(finished.get("tap_count", 0)),
 				int(finished.get("fever_activation_count", 0)),
 			]

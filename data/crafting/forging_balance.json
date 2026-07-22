@@ -27,6 +27,9 @@
     "quality_good_attack_multiplier": 1.05,
     "quality_good_value_multiplier": 1.05,
     "quality_perfect_attack_multiplier": 1.1,
-    "quality_perfect_value_multiplier": 1.12
+    "quality_perfect_value_multiplier": 1.12,
+    "fever_value_bonus_per_activation": 0.02,
+    "fever_completion_value_bonus": 0.03,
+    "fever_value_bonus_cap": 0.05
   }
 }

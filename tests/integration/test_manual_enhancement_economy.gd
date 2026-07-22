@@ -85,6 +85,10 @@ func _new_screen(resources):
 		"quality_label": "테스트",
 		"quality_attack_multiplier": 1.0,
 		"quality_value_multiplier": 1.0,
+		"fever_value_bonus": 0.0,
+		"fever_value_multiplier": 1.0,
+		"crafting_value_multiplier": 1.0,
+		"forging_completed_during_fever": false,
 	})
 	screen.set_workshop_resources(resources)
 	get_root().add_child(screen)

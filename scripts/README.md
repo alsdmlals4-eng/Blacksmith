@@ -20,3 +20,10 @@ scripts/
 - 데이터 값은 `data/**/*.json`이 책임진다.
 - 수동·자동 UI는 자원을 직접 차감하지 않고 동일 `WorkshopResources.try_begin_attempt()`를 호출한다.
 - 저장·판매·고객·방치 시스템은 실제 구현할 때만 새 책임으로 확장한다.
+
+## 제작 결과 계약
+
+- `forging/forging_session.gd`가 정밀 마감 품질과 피버 가치 보너스를 계산한다.
+- 피버는 발동 1회당 제작 가치 +2%, 피버 중 제작 진행도 완료 +3%, 총 +5% 상한이다.
+- 피버는 공격력과 정밀 마감 판정을 변경하지 않는다.
+- `enhancement/`는 품질 가치와 피버 가치를 합산한 `crafting_value_multiplier`를 판매가 초기값으로 사용한다.

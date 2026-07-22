@@ -14,8 +14,11 @@ Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커
 
 - 터치·자동 작업 진행
 - 연속 터치 피버와 작업 배율
+- 피버 1회당 제작 가치 +2%, 피버 중 제작 완료 +3%, 총 +5% 상한
+- 피버 보너스는 공격력·정밀 마감 판정에 영향을 주지 않음
 - 정밀 마감 ON/OFF
 - 완벽·좋음·보통 마감
+- 마감 가치와 피버 가치를 합산한 최종 제작 가치
 - 보통 공격력/가치 ×1.00, 좋음 ×1.05/×1.05, 완벽 ×1.10/×1.12
 - 원본 공격력과 품질 적용 공격력을 강화·보관까지 유지
 
@@ -51,6 +54,10 @@ Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커
 - 목표 도달 자동 보관
 - 반복 설정 시 보관함이 찰 때까지 새 철검 진행
 - 골드 부족·보관함 가득 참·수동 중지·파괴 처리
+
+## 현재 버전
+
+`POC v0.6.3 · main · 2026.07.22.3`
 
 ## 실행
 
@@ -91,14 +98,14 @@ Base 적용 기준과 전수 대조:
 
 ```bash
 python tools/validate_game_data.py
-python tests/check_forging_quality_contract.py
+python tests/check_forging_result_contract.py
 godot --headless --editor --path . --quit
 godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 godot --headless --path . --script res://tests/unit/test_forging_session.gd
 godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
 godot --headless --path . --script res://tests/unit/test_workshop_resources.gd
 godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd
-godot --headless --path . --script res://tests/integration/test_forging_quality_enhancement.gd
+godot --headless --path . --script res://tests/integration/test_forging_result_enhancement.gd
 ```
 
 자동 검증과 실제 화면·Android·접근성·성능 검증을 구분합니다. 실행하지 않은 검사는 `NOT_RUN` 또는 `UNVERIFIED`입니다.

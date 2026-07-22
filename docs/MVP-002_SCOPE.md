@@ -45,6 +45,14 @@
 - 반복 자동 단조의 새 철검은 보통 마감으로 시작한다.
 - 실제 수치는 `data/crafting/forging_balance.json`이 책임진다.
 
+## 제작 결과 입력 계약
+
+- 정밀 마감 품질: STANDARD 공격력/가치 ×1.00, GOOD ×1.05/×1.05, PERFECT ×1.10/×1.12
+- 피버 1회 발동은 제작 가치 +2%, 피버 중 제작 진행도 완료는 추가 +3%, 총 피버 보너스는 +5% 상한
+- 품질 가치와 피버 가치는 합산해 강화 판매가의 초기 제작 가치가 된다.
+- 피버는 공격력과 정밀 마감 판정 범위를 변경하지 않는다.
+- 자동 작업만으로 완성하거나 자동 반복으로 생성된 새 철검은 피버 보너스가 없다.
+
 ## 점진 성장·가치
 
 - 제작의 품질 적용 기본 공격력이 강화 성장의 시작점이다.
@@ -165,8 +173,8 @@
 - 재료: `data/crafting/materials.json`
 - 수식어: `data/crafting/affixes.json`
 - 모델 테스트: `tests/unit/test_forging_session.gd`, `tests/unit/test_enhancement_session.gd`, `tests/unit/test_workshop_resources.gd`
-- 통합 테스트: `tests/integration/test_forging_quality_enhancement.gd`, `tests/integration/test_manual_enhancement_economy.gd`
-- 품질 계약 검사: `tests/check_forging_quality_contract.py`
+- 통합 테스트: `tests/integration/test_forging_result_enhancement.gd`, `tests/integration/test_manual_enhancement_economy.gd`
+- 품질 계약 검사: `tests/check_forging_result_contract.py`
 
 ## 제외
 
@@ -192,6 +200,8 @@
 - [x] 자동 단조 목표·반복·재료 fallback·자동 보관·중지 조건이 있다.
 - [x] 수동·자동 강화가 동일한 골드·재료 거래를 사용하고 부족 시 판정을 시작하지 않는다.
 - [x] 제작 품질의 공격력·가치 효과가 강화·보관까지 유지된다.
+- [x] 피버 +2%/+3%, 최대 +5% 제작 가치가 강화·하락 복원·보관까지 유지된다.
+- [x] 피버 보너스가 공격력·정밀 마감 판정에 누출되지 않는다.
 - [x] 반복 자동 단조의 새 철검은 보통 마감으로 시작한다.
 - [x] Godot 파싱·Scene·모델·JSON 자동 검증 PASS 이력이 있다.
 - [ ] 실제 Godot 화면에서 전체 흐름을 수동 검수한다.

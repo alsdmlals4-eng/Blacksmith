@@ -5,14 +5,16 @@
 ```bash
 python tools/validate_game_data.py
 python tools/audit_project_operating_system.py --base-root <Base checkout>
-python tests/check_forging_quality_contract.py
+python tests/check_forging_result_contract.py
 godot --headless --editor --path . --quit
 godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 godot --headless --path . --script res://tests/unit/test_forging_session.gd
 godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
 godot --headless --path . --script res://tests/unit/test_workshop_resources.gd
 godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd
-godot --headless --path . --script res://tests/integration/test_forging_quality_enhancement.gd
+godot --headless --path . --script res://tests/integration/test_forging_result_enhancement.gd
+python tests/check_forging_result_contract.py
+godot --headless --path . --script res://tests/integration/test_forging_result_enhancement.gd
 ```
 
 ## 현재 범위
@@ -44,3 +46,10 @@ godot --headless --path . --script res://tests/integration/test_forging_quality_
 - 대표·최악 장면 성능 프로파일
 - 저장·복귀·방치 보상
 - 고객·상인 판매
+
+## 제작 피버 결과
+
+- 피버 1회당 제작 가치 +2%, 피버 중 완료 +3%, 총 +5% 상한
+- 자동 작업만으로 완료하면 피버 가치 0%
+- 공격력·정밀 판정 비영향
+- 품질+피버 합산 가치의 강화·단계 하락 복원·보관 전달

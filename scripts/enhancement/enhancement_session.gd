@@ -123,6 +123,10 @@ var raw_base_attack: int = 10
 var base_attack: int = 10
 var quality_attack_multiplier: float = 1.0
 var quality_value_multiplier: float = 1.0
+var fever_value_bonus: float = 0.0
+var fever_value_multiplier: float = 1.0
+var crafting_value_multiplier: float = 1.0
+var forging_completed_during_fever: bool = false
 var progression_attack: int = 10
 var attack_history: Dictionary = {}
 var value_bonus_total: float = 0.0
@@ -145,9 +149,13 @@ func _init(
 	raw_base_attack = maxi(int(weapon.get("raw_base_attack", weapon.get("base_attack", config.get("growth", {}).get("base_attack", 10)))), 1)
 	quality_attack_multiplier = maxf(float(weapon.get("quality_attack_multiplier", 1.0)), 0.01)
 	quality_value_multiplier = maxf(float(weapon.get("quality_value_multiplier", 1.0)), 0.01)
+	fever_value_bonus = maxf(float(weapon.get("fever_value_bonus", 0.0)), 0.0)
+	fever_value_multiplier = 1.0 + fever_value_bonus
+	crafting_value_multiplier = quality_value_multiplier + fever_value_bonus
+	forging_completed_during_fever = bool(weapon.get("forging_completed_during_fever", false))
 	base_attack = maxi(int(weapon.get("base_attack", round(float(raw_base_attack) * quality_attack_multiplier))), 1)
 	progression_attack = base_attack
-	value_bonus_total = maxf(quality_value_multiplier - 1.0, 0.0)
+	value_bonus_total = maxf(crafting_value_multiplier - 1.0, 0.0)
 	attack_history["0"] = progression_attack
 	value_bonus_history["0"] = value_bonus_total
 	rng.randomize()
@@ -426,6 +434,10 @@ func snapshot() -> Dictionary:
 		"base_attack": base_attack,
 		"quality_attack_multiplier": quality_attack_multiplier,
 		"quality_value_multiplier": quality_value_multiplier,
+		"fever_value_bonus": fever_value_bonus,
+		"fever_value_multiplier": fever_value_multiplier,
+		"crafting_value_multiplier": crafting_value_multiplier,
+		"forging_completed_during_fever": forging_completed_during_fever,
 		"progression_attack": progression_attack,
 		"enhancement_bonus": progression_attack - base_attack,
 		"final_attack": get_current_final_attack(),

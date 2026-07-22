@@ -7,10 +7,10 @@
 | Intake·Context | PASS | 저장소·플랫폼·핵심 방향·Base 기준 커밋 확인 |
 | Definition of Ready | PASS | 제작·강화·보관·자동 단조와 단계별 정합성 개선 범위·완료 기준 기록 |
 | Planning·Approval | PASS | 사용자의 순차 개선·적대적 검토 요청과 보호 범위 확인 |
-| Implementation | PASS | 공유 경제와 제작 품질의 도메인·UI·데이터·단위/통합/정적 테스트 구현 |
+| Implementation | PASS | 공유 경제·제작 품질·피버 가치의 도메인·UI·데이터·단위/통합/정적 테스트 구현 |
 | Verification | CURRENT | 자동 검증 PASS, 실제 화면·Android·장시간 성능 증거 필요 |
 | Documentation | PASS | Game Bible·Decision Log·Active Context·Roadmap·Scope·플레이테스트·README 동기화 |
-| Integration·Completion | CURRENT | PR #20 전체 patch·CI·리뷰·병합과 main 재확인 |
+| Integration·Completion | CURRENT | 제작 품질 PR #20 병합 완료, 피버 가치 PR의 patch·CI·리뷰·병합과 main 재확인 |
 
 ## 제품 게이트
 
@@ -34,8 +34,11 @@
 - [x] 마감 품질의 실제 기본 공격력·판매 가치 반영
 - [x] 원본 공격력·품질 적용 공격력·가치 배율의 강화·보관 전달
 - [x] 반복 자동 단조의 새 철검 보통 마감 고정
-- [x] 제작 모델 5건·제작 품질 통합 3건·정적 품질 계약 검사
-- [ ] 피버가 최종 무기 결과에 남기는 보너스
+- [x] 제작 품질 PR #20 main 병합·재확인
+- [x] 피버 1회당 가치 +2%, 피버 중 완료 +3%, 총 +5% 상한 구현
+- [x] 피버 보너스의 공격력·정밀 마감 판정 비영향
+- [x] 자동 작업·자동 반복 새 무기의 피버 보너스 0%
+- [x] 제작 모델 9건·제작 결과 통합 4건·정적 결과 계약 검사 구성
 - [ ] 실제 화면 전후 렌더 시각 검수
 - [ ] Android 실제 기기 터치·세로 비율 검증
 
@@ -122,7 +125,7 @@
 - [x] 자동 단조의 재료 소진 fallback 유지
 - [x] 직원·무기 수리 제외 결정 유지
 - [x] 숨은 무기 후속 기능 보존
-- [x] 강화 피버 후속 기능 보존
+- [x] 제작 피버 결과 보너스 구현, 강화 피버는 별도 후속 기능으로 보존
 - [x] 검투사 경기 관람·게임 내 재화 베팅을 후속 기능으로 보존
 - [x] 과거 Changelog·Learning Log 보존
 - [x] Base 기능 삭제 없이 ADOPT·ADAPT·CONSOLIDATE·ROUTE_ON_DEMAND로 매핑

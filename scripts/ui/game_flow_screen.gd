@@ -4,7 +4,7 @@ const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
 const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
 const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
-const VERSION_TEXT := "POC v0.6.2 · main · 2026.07.22.2"
+const VERSION_TEXT := "POC v0.6.3 · main · 2026.07.22.3"
 const INVENTORY_CAPACITY := 6
 const STARTING_GOLD := 25000000
 const STARTING_MATERIAL_STOCK := {
@@ -239,6 +239,10 @@ func _show_auto_enhancement() -> void:
 		"quality_label": "자동 단조 · 보통 마감",
 		"quality_attack_multiplier": 1.0,
 		"quality_value_multiplier": 1.0,
+		"fever_value_bonus": 0.0,
+		"fever_value_multiplier": 1.0,
+		"crafting_value_multiplier": 1.0,
+		"forging_completed_during_fever": false,
 	}
 	_show_enhancement_screen(auto_weapon_template)
 
@@ -330,6 +334,8 @@ func _weapon_card(weapon: Dictionary) -> PanelContainer:
 	var final_attack := int(weapon.get("final_attack", progression_attack))
 	var quality_attack_multiplier := float(weapon.get("quality_attack_multiplier", 1.0))
 	var quality_value_multiplier := float(weapon.get("quality_value_multiplier", 1.0))
+	var fever_value_bonus := float(weapon.get("fever_value_bonus", 0.0))
+	var crafting_value_multiplier := float(weapon.get("crafting_value_multiplier", quality_value_multiplier + fever_value_bonus))
 	box.add_child(_label(
 		"원본 공격력 %d · 품질 적용 %d(×%.2f) · 강화 %d · 최종 %d" % [
 			raw_base_attack,
@@ -341,7 +347,17 @@ func _weapon_card(weapon: Dictionary) -> PanelContainer:
 		19,
 		Color("#f4f1e8")
 	))
-	box.add_child(_label("제작 가치 ×%.2f" % quality_value_multiplier, 16, Color("#b7b0a3")))
+	var fever_finish_text := " · 피버 중 완성" if bool(weapon.get("forging_completed_during_fever", false)) else ""
+	box.add_child(_label(
+		"제작 가치 ×%.2f · 마감 ×%.2f · 피버 +%d%%%s" % [
+			crafting_value_multiplier,
+			quality_value_multiplier,
+			int(round(fever_value_bonus * 100.0)),
+			fever_finish_text,
+		],
+		16,
+		Color("#b7b0a3")
+	))
 
 	var sale_price := int(weapon.get("sale_price", 0))
 	var total_spent := int(weapon.get("total_spent", 0))

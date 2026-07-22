@@ -2,16 +2,18 @@
 
 ## 현재 목표
 
-제작 마감 품질을 실제 무기 성능·가치에 연결하고 검증 중이며, 다음 단계는 제작 피버 결과 보너스다.
+제작 피버가 무기 결과에 남기는 가치 보너스를 구현·검증 중이며, 다음 단계는 강화 실패 정책 정본 통합과 데이터 의미 검증이다.
 
 ## 현재 상태
 
 - 제품 단계: Prototype
 - 작업 게이트: Verification
-- 버전 표시: `POC v0.6.2 · main · 2026.07.22.2`
+- 버전 표시: `POC v0.6.3 · main · 2026.07.22.3`
 - 제작: 광클·자동 작업·피버·선택적 정밀 마감 구현
 - 제작 품질: 보통 공격력/가치 ×1.00, 좋음 ×1.05/×1.05, 완벽 ×1.10/×1.12
 - 품질 전달: 원본 공격력·품질 적용 공격력·가치 배율을 강화와 보관까지 유지
+- 제작 피버 가치: 발동 1회당 +2%, 피버 중 제작 진행도 완료 +3%, 총 +5% 상한
+- 피버 경계: 공격력·정밀 마감 판정 범위에는 영향을 주지 않고 품질 가치와 합산
 - 자동 반복 품질: 새 철검은 보통 마감으로 시작해 최초 수동 품질을 복제하지 않음
 - 강화: +0~+100, 일반 강화와 +10 단위 특수 강화 분리
 - 성장: 현재 공격력 기준 점진적 증가, 고단계 효과·가격·비용 가속
@@ -27,11 +29,11 @@
 - 재료 선택 동기화: 정밀 판정 중 사용 재료 기록을 보존하고, 다음 특수 강화 진입 시 가용 재료로 UI·세션을 함께 갱신
 - 자동 중지: 골드 부족·보관함 가득 참·수동 중지. 파괴 시 반복 설정에 따라 재시작 또는 종료
 - 공유 경제 자동 검증: 단위 7건·실제 강화 UI 통합 2건 PASS
-- 제작 품질 자동 검증: 제작 모델 5건·제작→강화·보관 통합 3건·정적 계약 검사 PASS
+- 제작 결과 자동 검증: 제작 모델 9건·제작→강화·하락 복원·보관 통합 4건·정적 결과 계약 검사 예정
 - Godot 자동 검증: 4.7.1 import·parse, 강화·전체 흐름 Scene, 제작·강화·공유 경제·품질 모델, UI 통합, JSON PASS
 - Base 운영체계: 고정 Base의 13개 기능을 프로젝트 운영 문서와 Skill 3개로 통합
 - Base 자동 검증: 원본 감사와 공식 Linux 회귀 전체 PASS
-- 통합 완료: PR #18 squash 병합 `53cf5edacd5701ec5d412e233d45b35c6e3feb87`, main 핵심 코드 재확인
+- 통합 완료: 공유 경제 PR #18, 제작 품질 PR #20(`1a64e663b377daf4f7ac47f391154dfafe3dd24b`) main 병합·핵심 코드 재확인
 - Android 실기기·AAB·사람 시각·접근성·성능·Branch protection 강제: NOT_RUN 또는 UNVERIFIED
 
 ## 강화 분류
@@ -83,20 +85,19 @@
 - 공유 경제: `scripts/economy/workshop_resources.gd`
 - 강화 UI: `scripts/ui/enhancement_screen.gd`, `scripts/ui/enhancement_test_runner.gd`, `scripts/ui/game_flow_screen.gd`
 - 데이터: `data/crafting/enhancement_balance.json`, `enhancement_milestones.json`, `materials.json`, `affixes.json`
-- 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_forging_session.gd`, `tests/unit/test_workshop_resources.gd`, `tests/integration/test_manual_enhancement_economy.gd`, `tests/integration/test_forging_quality_enhancement.gd`, `tests/check_forging_quality_contract.py`
+- 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_forging_session.gd`, `tests/unit/test_workshop_resources.gd`, `tests/integration/test_manual_enhancement_economy.gd`, `tests/integration/test_forging_result_enhancement.gd`, `tests/check_forging_result_contract.py`
 
 ## 다음 우선순위
 
-1. 제작 마감 품질의 공격력·가치 반영을 PR 검증·병합하고 main을 재확인한다.
-2. 제작 피버가 무기 결과에 남기는 작은 보너스를 설계·검증한다.
-3. 강화 데이터의 중복 실패 정책을 제거하고 의미 검증을 강화한다.
-4. 위험·가격 곡선을 시뮬레이션으로 조정한다.
-5. 방문 검투사 판매를 구현한다.
+1. 제작 피버 가치 보너스를 PR 검증·병합하고 main을 재확인한다.
+2. 강화 데이터의 중복 실패 정책을 제거하고 의미 검증을 강화한다.
+3. 위험·가격 곡선을 시뮬레이션으로 조정한다.
+4. 방문 검투사 판매를 구현한다.
 
 ## 미검증·위험
 
 - 공유 경제 변경의 실제 사람 수동 화면 검수
-- 제작 품질 효과의 실제 사람 화면·체감 검수
+- 제작 품질·피버 가치 효과의 실제 사람 화면·체감 검수
 - Android APK·AAB와 실제 기기 입력
 - 저장·복귀·방치 보상
 - 고객·상인 판매 루프
