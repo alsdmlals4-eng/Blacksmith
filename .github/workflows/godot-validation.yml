@@ -19,6 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate forging quality contract
+        run: python tests/check_forging_quality_contract.py
+
       - name: Download Godot 4.7.1
         shell: bash
         run: |
@@ -35,6 +38,9 @@ jobs:
 
       - name: Smoke test enhancement scene
         run: ./godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
+
+      - name: Smoke test full forging flow scene
+        run: ./godot --headless --path . res://scenes/main/main.tscn --quit-after 2
 
       - name: Run model tests
         id: model_tests
@@ -59,6 +65,10 @@ jobs:
           ./godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd >> godot-test.log 2>&1
           manual_economy_status=$?
 
+          echo "== ForgingQualityEnhancement ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/integration/test_forging_quality_enhancement.gd >> godot-test.log 2>&1
+          forging_quality_status=$?
+
           cat godot-test.log
           status=0
           if ! grep -q "ForgingSession tests PASSED" godot-test.log; then
@@ -73,8 +83,11 @@ jobs:
           if ! grep -q "Manual enhancement economy integration tests PASSED" godot-test.log; then
             status=1
           fi
-          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ] || [ "$workshop_status" -ne 0 ] || [ "$manual_economy_status" -ne 0 ]; then
-            echo "Godot reported non-zero test process status: forging=$forging_status enhancement=$enhancement_status workshop=$workshop_status manual_economy=$manual_economy_status"
+          if ! grep -q "Forging quality enhancement integration tests PASSED" godot-test.log; then
+            status=1
+          fi
+          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ] || [ "$workshop_status" -ne 0 ] || [ "$manual_economy_status" -ne 0 ] || [ "$forging_quality_status" -ne 0 ]; then
+            echo "Godot reported non-zero test process status: forging=$forging_status enhancement=$enhancement_status workshop=$workshop_status manual_economy=$manual_economy_status forging_quality=$forging_quality_status"
           fi
           echo "status=$status" >> "$GITHUB_OUTPUT"
           exit 0
