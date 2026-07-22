@@ -43,6 +43,7 @@ Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커
 - 강화 무기 최대 6개 보관
 - 공격력·판매가·누적 비용·수식어·촉매·마감 품질 확인
 - 목표 강화 단계와 반복 여부 지정
+- 수동 강화와 자동 단조가 동일한 실제 골드·재료 재고를 소비
 - 자동 단조용 단조 방식·보조재료·촉매 지정
 - 특수 강화 재료가 없으면 해당 재료 없이 계속 진행
 - 목표 도달 자동 보관
@@ -92,6 +93,8 @@ godot --headless --editor --path . --quit
 godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 godot --headless --path . --script res://tests/unit/test_forging_session.gd
 godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
+godot --headless --path . --script res://tests/unit/test_workshop_resources.gd
+godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd
 ```
 
 자동 검증과 실제 화면·Android·접근성·성능 검증을 구분합니다. 실행하지 않은 검사는 `NOT_RUN` 또는 `UNVERIFIED`입니다.

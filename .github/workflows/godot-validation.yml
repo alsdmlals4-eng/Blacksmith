@@ -51,6 +51,14 @@ jobs:
           ./godot --headless --path . --script res://tests/unit/test_enhancement_session.gd >> godot-test.log 2>&1
           enhancement_status=$?
 
+          echo "== WorkshopResources ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/unit/test_workshop_resources.gd >> godot-test.log 2>&1
+          workshop_status=$?
+
+          echo "== ManualEnhancementEconomy ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd >> godot-test.log 2>&1
+          manual_economy_status=$?
+
           cat godot-test.log
           status=0
           if ! grep -q "ForgingSession tests PASSED" godot-test.log; then
@@ -59,8 +67,14 @@ jobs:
           if ! grep -q "EnhancementSession tests PASSED" godot-test.log; then
             status=1
           fi
-          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ]; then
-            echo "Godot reported non-zero test process status: forging=$forging_status enhancement=$enhancement_status"
+          if ! grep -q "WorkshopResources tests PASSED" godot-test.log; then
+            status=1
+          fi
+          if ! grep -q "Manual enhancement economy integration tests PASSED" godot-test.log; then
+            status=1
+          fi
+          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ] || [ "$workshop_status" -ne 0 ] || [ "$manual_economy_status" -ne 0 ]; then
+            echo "Godot reported non-zero test process status: forging=$forging_status enhancement=$enhancement_status workshop=$workshop_status manual_economy=$manual_economy_status"
           fi
           echo "status=$status" >> "$GITHUB_OUTPUT"
           exit 0

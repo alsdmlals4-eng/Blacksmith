@@ -9,6 +9,8 @@ godot --headless --editor --path . --quit
 godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 godot --headless --path . --script res://tests/unit/test_forging_session.gd
 godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
+godot --headless --path . --script res://tests/unit/test_workshop_resources.gd
+godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd
 ```
 
 ## 현재 범위
@@ -24,6 +26,7 @@ godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
 - 촉매 비용·보호·위험 효과
 - 보관함 최대 6개와 파괴 무기 보관 차단
 - 자동 단조 목표·재료 fallback·자동 보관·반복·중지
+- 수동·자동 강화의 동일 골드 차감·재료 소비·부족 차단·중복 결제 방지
 - Base 13개 기능 매핑·Registry·로컬 참조·stale 정본 감사
 
 ## 별도 검증

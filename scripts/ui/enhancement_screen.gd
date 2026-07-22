@@ -7,6 +7,7 @@ signal inventory_requested
 signal auto_forge_requested(options: Dictionary)
 
 const INVENTORY_CAPACITY := 6
+const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
 
 var inventory_count: int = 0
 var inventory_capacity: int = INVENTORY_CAPACITY
@@ -33,6 +34,7 @@ var complete_title_label: Label
 var complete_value_label: Label
 var complete_effect_label: Label
 
+var workshop_resources
 var available_gold: int = 0
 var material_stock: Dictionary = {}
 var auto_running: bool = false
@@ -53,6 +55,7 @@ func _ready() -> void:
 	if session != null:
 		session.changed.connect(_on_session_snapshot_changed)
 		_on_session_snapshot_changed(session.snapshot())
+	_bind_workshop_resources()
 	_update_inventory_buttons()
 
 
@@ -62,10 +65,32 @@ func set_inventory_count(count: int, capacity: int = INVENTORY_CAPACITY) -> void
 	_update_inventory_buttons()
 
 
-func set_auto_resources(gold: int, stock: Dictionary) -> void:
-	available_gold = maxi(gold, 0)
-	material_stock = stock.duplicate(true)
+func set_workshop_resources(resources) -> void:
+	if workshop_resources != null and workshop_resources.changed.is_connected(_on_workshop_resources_changed):
+		workshop_resources.changed.disconnect(_on_workshop_resources_changed)
+	workshop_resources = resources
+	_bind_workshop_resources()
+
+
+
+func _bind_workshop_resources() -> void:
+	if workshop_resources == null:
+		return
+	if not workshop_resources.changed.is_connected(_on_workshop_resources_changed):
+		workshop_resources.changed.connect(_on_workshop_resources_changed)
+	_on_workshop_resources_changed(workshop_resources.snapshot())
+
+
+func _on_workshop_resources_changed(resources_snapshot: Dictionary) -> void:
+	available_gold = maxi(int(resources_snapshot.get("gold", 0)), 0)
+	material_stock = resources_snapshot.get("material_stock", {}).duplicate(true)
+	_update_resource_controls()
+
+
+func _update_resource_controls() -> void:
 	_update_auto_resource_labels()
+	_update_manual_material_selectors()
+	_update_manual_attempt_buttons()
 
 
 func set_auto_status(text_value: String) -> void:
@@ -96,6 +121,7 @@ func set_auto_running(value: bool) -> void:
 		secondary_select.disabled = value or session.state == EnhancementSessionScript.State.PRECISION
 	if catalyst_select != null:
 		catalyst_select.disabled = value or session.state == EnhancementSessionScript.State.PRECISION
+	_update_manual_attempt_buttons()
 	_update_inventory_buttons()
 
 
@@ -352,6 +378,69 @@ func _material_display_name(material_id: String) -> String:
 	return material_id
 
 
+
+func _update_manual_material_selectors() -> void:
+	if session == null:
+		return
+	_sync_material_selector_stock(secondary_select, false)
+	_sync_material_selector_stock(catalyst_select, true)
+
+
+func _sync_material_selector_stock(selector: OptionButton, allow_empty: bool) -> void:
+	if selector == null or not is_instance_valid(selector):
+		return
+	var selected_id := str(session.selected_catalyst_id if allow_empty else session.selected_secondary_id)
+	var selected_index := -1
+	var first_available := 0 if allow_empty else -1
+	for index in range(selector.item_count):
+		var material_id := str(selector.get_item_metadata(index))
+		if material_id == "":
+			selector.set_item_disabled(index, false)
+			if selected_id == "":
+				selected_index = index
+			continue
+		var stock := int(material_stock.get(material_id, 0))
+		selector.set_item_text(index, "%s · 보유 %d" % [_material_display_name(material_id), stock])
+		selector.set_item_disabled(index, stock <= 0)
+		if material_id == selected_id:
+			selected_index = index
+		if stock > 0 and first_available < 0:
+			first_available = index
+	if selected_index >= 0:
+		selector.select(selected_index)
+	var target_level := int(session.enhancement_level) + 1
+	var can_change := (
+		session.state == EnhancementSessionScript.State.READY
+		and session.uses_materials_for_level(target_level)
+	)
+	if not can_change:
+		return
+	var selected_available := selected_id == "" and allow_empty
+	if selected_id != "" and selected_index >= 0:
+		selected_available = not selector.is_item_disabled(selected_index)
+	if selected_available or first_available < 0:
+		return
+	selector.select(first_available)
+	var fallback_id := str(selector.get_item_metadata(first_available))
+	if allow_empty:
+		session.set_catalyst_material(fallback_id)
+	else:
+		session.set_secondary_material(fallback_id)
+
+
+func _update_manual_attempt_buttons() -> void:
+	if session == null:
+		return
+	var transaction: Dictionary = {}
+	if workshop_resources != null:
+		transaction = workshop_resources.preview_attempt(session)
+	var can_start := workshop_resources != null and bool(transaction.get("ok", false)) and not auto_running
+	if normal_button != null and session.state == EnhancementSessionScript.State.READY and not session.uses_materials_for_level(session.enhancement_level + 1):
+		normal_button.disabled = not can_start
+	if special_start_button != null and session.state == EnhancementSessionScript.State.READY and session.uses_materials_for_level(session.enhancement_level + 1):
+		special_start_button.disabled = not can_start
+
+
 func _build_skill_panel() -> PanelContainer:
 	var panel := _panel(PANEL)
 	var box := VBoxContainer.new()
@@ -468,6 +557,53 @@ func _on_store_pressed() -> void:
 		store_requested.emit(record)
 
 
+
+func _on_normal_pressed() -> void:
+	if session == null or session.state != EnhancementSessionScript.State.READY:
+		return
+	if session.uses_materials_for_level(session.enhancement_level + 1):
+		return
+	_try_begin_paid_attempt()
+
+
+func _on_special_start_pressed() -> void:
+	if session == null or session.state != EnhancementSessionScript.State.READY:
+		return
+	if not session.uses_materials_for_level(session.enhancement_level + 1):
+		return
+	_try_begin_paid_attempt()
+
+
+func _try_begin_paid_attempt() -> void:
+	if workshop_resources == null:
+		last_result_text = "대장간 자원 상태를 찾지 못해 강화를 시작할 수 없습니다."
+		last_result_color = RED
+		_update_result_labels()
+		return
+	var transaction: Dictionary = workshop_resources.try_begin_attempt(session)
+	if not bool(transaction.get("ok", false)):
+		_show_transaction_failure(transaction)
+		return
+	_refresh(session.snapshot())
+
+
+func _show_transaction_failure(transaction: Dictionary) -> void:
+	match str(transaction.get("status", "")):
+		WorkshopResourcesScript.STATUS_NO_GOLD:
+			last_result_text = "골드 부족 · 필요 %sG / 보유 %sG" % [
+				_money(int(transaction.get("cost", 0))),
+				_money(int(transaction.get("available_gold", available_gold))),
+			]
+		WorkshopResourcesScript.STATUS_NO_MATERIAL:
+			var material_id := str(transaction.get("material_id", ""))
+			last_result_text = "재료 부족 · %s 재고가 없어 특수 강화를 시작할 수 없습니다." % _material_display_name(material_id)
+		_:
+			last_result_text = "현재 상태에서는 강화를 시작할 수 없습니다."
+	last_result_color = RED
+	_update_result_labels()
+	_update_manual_attempt_buttons()
+
+
 func _on_attempt_resolved(result: Dictionary) -> void:
 	var target_level := int(result.get("target_level", 0))
 	var outcome := str(result.get("outcome", "HOLD"))
@@ -538,7 +674,7 @@ func _on_session_snapshot_changed(snapshot: Dictionary) -> void:
 		_money(next_price),
 		_money(price_gain),
 	]
-	var cost_text := "시도 비용 %sG · 누적 사용 %sG" % [_money(attempt_cost), _money(total_spent)]
+	var cost_text := "시도 비용 %sG · 보유 %sG · 누적 사용 %sG" % [_money(attempt_cost), _money(available_gold), _money(total_spent)]
 	var risk_text := _format_risk(outcome)
 
 	if normal_current_label != null:
@@ -590,6 +726,8 @@ func _on_session_snapshot_changed(snapshot: Dictionary) -> void:
 		if is_instance_valid(target_spin):
 			target_spin.min_value = float(mini(int(snapshot.get("enhancement_level", 0)) + 1, int(snapshot.get("max_level", 100))))
 	_update_auto_resource_labels()
+	_update_manual_material_selectors()
+	_update_manual_attempt_buttons()
 	_update_inventory_buttons()
 
 

@@ -5,20 +5,20 @@
 | 게이트 | 상태 | 종료 기준 |
 |---|---|---|
 | Intake·Context | PASS | 저장소·플랫폼·핵심 방향·Base 기준 커밋 확인 |
-| Definition of Ready | PASS | 제작·강화·보관·자동 단조와 운영체계 적용 범위·완료 기준 기록 |
-| Planning·Approval | PASS | 사용자의 직접 적용·가지치기·적대적 검토 요청과 보호 범위 확인 |
-| Implementation | PASS | Base 기능 매핑·Skill 통합·정본 동기화·영구 감사 CI 구현 |
-| Verification | CURRENT | Base 전체 Linux 회귀·운영 감사·Godot 자동 검증 PASS, Android·시각·성능 수동 증거 필요 |
-| Documentation | PASS | 시작 문서·Context·Map·Gates·Registry·Bible·Scope·학습 기록 동기화 |
-| Integration·Completion | PASS | PR #16 최종 Head 검증·리뷰·squash 병합과 main 핵심 파일 재확인 |
+| Definition of Ready | PASS | 제작·강화·보관·자동 단조와 단계별 정합성 개선 범위·완료 기준 기록 |
+| Planning·Approval | PASS | 사용자의 순차 개선·적대적 검토 요청과 보호 범위 확인 |
+| Implementation | PASS | 공유 경제 거래·수동/자동 소비자·단위/통합 테스트·문서 구현 |
+| Verification | CURRENT | 자동 검증 PASS, 실제 화면·Android·장시간 성능 증거 필요 |
+| Documentation | PASS | Active Context·Roadmap·Scope·플레이테스트·스크립트/테스트 안내 동기화 |
+| Integration·Completion | CURRENT | PR #18 최종 patch·리뷰·병합과 main 재확인 |
 
 ## 제품 게이트
 
 | 단계 | 상태 | 다음 Greenlight |
 |---|---|---|
 | Concept | PASS | 핵심 약속·플랫폼·시스템 경계 유지 |
-| Prototype | CURRENT | 제작→강화→보관→자동 반복을 실제 Godot·Android에서 확인하고 첫 판매 구현 |
-| Graybox | NOT_STARTED | 고객·상인 판매, 재화·재료 재고, 저장·복귀 연결 |
+| Prototype | CURRENT | 정합성 개선→실제 Godot·Android 확인→첫 판매 구현 |
+| Graybox | NOT_STARTED | 고객·상인 판매, 재화·재료 획득, 저장·복귀 연결 |
 | First Playable | NOT_STARTED | 20~30분 초기 성장 세션과 실패·복구 흐름 완주 |
 | Vertical Slice | NOT_STARTED | 출시 목표 UI 품질·접근성·성능·외부 플레이·AAB 파이프라인 증명 |
 
@@ -31,6 +31,8 @@
 - [x] 완벽·좋음·보통 마감
 - [x] 완성 철검 강화 전달
 - [x] Godot 헤드리스 파싱·제작 모델 테스트
+- [ ] 마감 품질의 실제 기본 공격력·판매 가치 반영
+- [ ] 피버가 최종 무기 결과에 남기는 보너스
 - [ ] 실제 화면 전후 렌더 시각 검수
 - [ ] Android 실제 기기 터치·세로 비율 검증
 
@@ -55,13 +57,31 @@
 - [ ] 확률·효과·가격 곡선 장기 밸런스 검증
 - [ ] Android 특수 강화 타이밍·스크롤 검증
 
+## 공유 강화 경제 검증
+
+- [x] 수동·자동 강화가 동일 `WorkshopResources` 인스턴스를 사용
+- [x] 일반 강화 시 실제 골드 차감, 재료 미소비
+- [x] 수동 특수 강화 시 보조재료·선택 촉매 각각 1개 소비
+- [x] 수동 특수 강화의 보조재료 필수 정책
+- [x] 촉매 `사용하지 않음` 허용
+- [x] 골드 부족 시 무차감·무판정·시도 횟수 불변
+- [x] 선택 재료 부족 시 무차감·무판정
+- [x] 정밀 판정 중 중복 결제 차단
+- [x] 강화 시작 실패 시 골드·재료 복구
+- [x] 자동 단조의 빈 보조재료 fallback을 명시적 플래그로 허용
+- [x] 정밀 판정 중 사용 재료 기록 보존
+- [x] 다음 특수 강화 진입 시 소진 재료를 가용 재료로 UI·세션 동기화
+- [x] 공유 경제 단위 테스트 7건 PASS
+- [x] 실제 `EnhancementScreen` UI 통합 테스트 2건 PASS
+- [ ] 실제 사람 입력으로 골드·재료 표시 전후 수동 검수
+
 ## 자동 단조 검증
 
 - [x] 목표 강화 단계 지정
 - [x] 단조 방식 지정
 - [x] 특수 강화 보조재료·촉매 지정
-- [x] 골드·재료 소비
-- [x] 지정 재료 부족 시 해당 재료 없이 진행
+- [x] 수동과 동일 거래 경로로 골드·재료 소비
+- [x] 지정 재료 부족 시 빈 슬롯 fallback
 - [x] 목표 도달 자동 보관
 - [x] 보관함이 찰 때까지 반복
 - [x] 골드 부족·보관함 가득 참·수동 중지 처리
@@ -70,6 +90,7 @@
 - [ ] 장시간 반복 중 무한 루프·프레임 정지·메모리 증가 실측
 - [ ] 재화·재료 경제와 실제 재고 획득 루프 연결
 - [ ] 앱 중단·복귀 시 자동 작업 상태 저장 정책
+- [ ] 자동 정밀 판정과 수동 플레이 효율 분리
 
 ## 운영체계·문서 검증
 
@@ -86,13 +107,15 @@
 - [x] 일회성 Workflow 삭제와 활성 참조 부재 확인
 - [x] 감사 보고서 오류 0·경고 0
 - [x] 시작 문서·책임 경로의 정적 콜드 스타트 검사
+- [x] 운영 감사의 특정 POC 버전 번호 하드코딩 제거
 - [ ] 새 작업자 또는 별도 AI의 실제 콜드 스타트 재현
 - [x] GitHub Workflow 실제 실행 PASS
 - [ ] Branch protection에서 Required Check 강제 여부 확인
 
 ## 기능 보존 검증
 
-- [x] 기존 제작·강화·보관·자동 단조 코드·데이터·Scene 미변경
+- [x] 강화 성공률·성장·하락·파괴·수식어 규칙 미변경
+- [x] 자동 단조의 재료 소진 fallback 유지
 - [x] 직원·무기 수리 제외 결정 유지
 - [x] 숨은 무기 후속 기능 보존
 - [x] 강화 피버 후속 기능 보존

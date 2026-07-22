@@ -2,13 +2,13 @@
 
 ## 현재 목표
 
-`제작 → +100 강화 → 무기 보관 → 자동 단조 반복` Prototype을 실제 Godot·Android에서 검증하고, 보관 무기를 사용하는 방문 검투사 판매로 연결한다.
+수동·자동 강화 경제 통합을 완료하고, 다음 단계에서 제작 마감 품질을 실제 무기 성능·가치에 연결한다.
 
 ## 현재 상태
 
 - 제품 단계: Prototype
 - 작업 게이트: Verification
-- 버전 표시: `POC v0.6.0 · main · 2026.07.21.4`
+- 버전 표시: `POC v0.6.1 · main · 2026.07.22.1`
 - 제작: 광클·자동 작업·피버·선택적 정밀 마감 구현
 - 강화: +0~+100, 일반 강화와 +10 단위 특수 강화 분리
 - 성장: 현재 공격력 기준 점진적 증가, 고단계 효과·가격·비용 가속
@@ -16,13 +16,17 @@
 - 단조 방식: 균형·안정·폭주
 - 폭주 단조: 성공 시 소량 확률로 총 2단계 상승, 특수 강화와 +9 끝자리 구간 사용 불가
 - 보관함: 최대 6개, 강화 종료 후 저장·상세 확인
+- 공유 경제: 수동 강화와 자동 단조가 동일 `WorkshopResources`의 골드·재료 재고와 거래 명령을 사용
+- 수동 강화: 실제 비용과 선택 재료를 차감하며, 골드·보조재료 부족 시 무차감·무판정 차단
+- 수동 촉매: `사용하지 않음` 허용, 선택 촉매 재고 부족 시 차단
 - 자동 단조: 목표 단계·반복·단조 방식·특수 강화 재료 지정 후 자동 진행·보관
-- 재료 fallback: 지정 보조재료·촉매 재고가 없으면 해당 재료 없이 계속 진행
+- 자동 fallback: 지정 보조재료·촉매가 소진되면 빈 슬롯으로 동일 거래 경로를 사용
+- 재료 선택 동기화: 정밀 판정 중 사용 재료 기록을 보존하고, 다음 특수 강화 진입 시 가용 재료로 UI·세션을 함께 갱신
 - 자동 중지: 골드 부족·보관함 가득 참·수동 중지. 파괴 시 반복 설정에 따라 재시작 또는 종료
+- 공유 경제 자동 검증: 단위 7건·실제 강화 UI 통합 2건 PASS
+- Godot 자동 검증: 4.7.1 import·parse, 강화 Scene, 제작·강화·공유 경제 모델, UI 통합, JSON PASS
 - Base 운영체계: 고정 Base의 13개 기능을 프로젝트 운영 문서와 Skill 3개로 통합
-- Base 자동 감사: 223개 Base 텍스트형 파일, 13개 ACTIVE Skill, 59개 프로젝트 텍스트형 파일 검사
-- 자동 검증: Base 공식 Linux 회귀·프로젝트 감사·Godot 4.7.1 파싱·Scene·제작/강화 모델·JSON PASS
-- 감사 finding: 오류 0, 경고 0
+- Base 자동 검증: 원본 감사와 공식 Linux 회귀 전체 PASS
 - Android 실기기·AAB·사람 시각·접근성·성능·Branch protection 강제: NOT_RUN 또는 UNVERIFIED
 
 ## 강화 분류
@@ -32,15 +36,18 @@
 - +10 단위가 아닌 단계
 - 원클릭 즉시 판정
 - 보조재료·촉매·정밀 판정 미사용
+- 실제 보유 골드에서 시도 비용 차감
 - 이전 특수 강화 선택 효과가 누출되지 않음
 
 ### 특수 강화
 
 - +10·+20·…·+100
-- 보조재료·촉매 선택
+- 수동 보조재료 선택 필수
+- 촉매는 선택 또는 사용하지 않음
 - 정밀 판정
 - 수식어 추가·성장
-- 자동 단조에서는 지정 재료 재고가 있을 때만 소비
+- 수동 시 골드·선택 재료 부족이면 무차감 차단
+- 자동 단조에서는 지정 재료 재고가 있을 때만 소비하고, 없으면 명시적 fallback으로 빈 슬롯 진행
 
 ## 수식어 성장
 
@@ -68,20 +75,23 @@
 - 게임 전체: `../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
 - 테스트 진입: `scenes/test/enhancement_test.tscn`, `scenes/main/main.tscn`
 - 강화 모델: `scripts/enhancement/enhancement_session.gd`
+- 공유 경제: `scripts/economy/workshop_resources.gd`
 - 강화 UI: `scripts/ui/enhancement_screen.gd`, `scripts/ui/enhancement_test_runner.gd`, `scripts/ui/game_flow_screen.gd`
 - 데이터: `data/crafting/enhancement_balance.json`, `enhancement_milestones.json`, `materials.json`, `affixes.json`
-- 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_forging_session.gd`
+- 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_forging_session.gd`, `tests/unit/test_workshop_resources.gd`, `tests/integration/test_manual_enhancement_economy.gd`
 
 ## 다음 우선순위
 
-1. Godot에서 폭주 도약 제한과 자동 단조 목표·반복·재료 fallback을 수동 검수한다.
-2. +100 완주 피로도와 가격·효과·위험 곡선을 플레이 관찰로 조정한다.
-3. Android 실제 기기에서 세로 화면·스크롤·터치·안전 영역을 검증한다.
-4. 무기 보관함과 재화·재료 재고를 고객 판매 루프에 연결한다.
-5. MVP-003 방문 검투사 판매를 구현한다.
+1. PR #18을 최종 검토·병합하고 `main` 내용을 재확인한다.
+2. 제작의 좋은·완벽한 마감 품질을 실제 기본 공격력·판매 가치에 연결한다.
+3. 제작 피버가 무기 결과에 남기는 작은 보너스를 설계·검증한다.
+4. 강화 데이터의 중복 실패 정책을 제거하고 의미 검증을 강화한다.
+5. 위험·가격 곡선을 시뮬레이션으로 조정한 뒤 방문 검투사 판매를 구현한다.
 
 ## 미검증·위험
 
+- 공유 경제 변경의 실제 사람 수동 화면 검수
+- 제작 품질 배율의 실제 공격력·판매가 반영
 - Android APK·AAB와 실제 기기 입력
 - 저장·복귀·방치 보상
 - 고객·상인 판매 루프
