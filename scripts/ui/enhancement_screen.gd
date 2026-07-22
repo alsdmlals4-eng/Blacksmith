@@ -139,7 +139,10 @@ func build_weapon_record() -> Dictionary:
 		"base_weapon_name": str(snapshot.get("base_weapon_name", "철검")),
 		"weapon_name": str(snapshot.get("display_name", "철검 +0")),
 		"enhancement_level": int(snapshot.get("enhancement_level", 0)),
+		"raw_base_attack": int(snapshot.get("raw_base_attack", snapshot.get("base_attack", 10))),
 		"base_attack": int(snapshot.get("base_attack", 10)),
+		"quality_attack_multiplier": float(snapshot.get("quality_attack_multiplier", 1.0)),
+		"quality_value_multiplier": float(snapshot.get("quality_value_multiplier", 1.0)),
 		"progression_attack": int(snapshot.get("progression_attack", 10)),
 		"enhancement_bonus": int(snapshot.get("enhancement_bonus", 0)),
 		"final_attack": int(snapshot.get("final_attack", 10)),
@@ -151,7 +154,6 @@ func build_weapon_record() -> Dictionary:
 		"catalyst_history": snapshot.get("catalyst_history", []).duplicate(true),
 		"quality_id": str(weapon_result.get("quality_id", "STANDARD")),
 		"quality_label": str(weapon_result.get("quality_label", "보통 마감")),
-		"quality_multiplier": float(weapon_result.get("quality_multiplier", 1.0)),
 		"material_scores": snapshot.get("lifetime_material_scores", {}).duplicate(true),
 	}
 
@@ -409,7 +411,7 @@ func _sync_material_selector_stock(selector: OptionButton, allow_empty: bool) ->
 	if selected_index >= 0:
 		selector.select(selected_index)
 	var target_level := int(session.enhancement_level) + 1
-	var can_change := (
+	var can_change: bool = (
 		session.state == EnhancementSessionScript.State.READY
 		and session.uses_materials_for_level(target_level)
 	)

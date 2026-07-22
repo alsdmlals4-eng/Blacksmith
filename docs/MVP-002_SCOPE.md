@@ -33,8 +33,22 @@
 - 수식어 추가 또는 티어 성장
 - 자동 단조에서는 지정 재료 재고가 있을 때만 소비하고, 없으면 해당 재료 없이 진행
 
+## 제작 품질 입력 계약
+
+| 제작 품질 | 품질 적용 기본 공격력 | 제작 가치 |
+|---|---:|---:|
+| 보통 | 원본 ×1.00 | ×1.00 |
+| 좋음 | 원본 ×1.05 | ×1.05 |
+| 완벽 | 원본 ×1.10 | ×1.12 |
+
+- 원본 기본 공격력과 품질 적용 기본 공격력을 별도 필드로 전달한다.
+- 반복 자동 단조의 새 철검은 보통 마감으로 시작한다.
+- 실제 수치는 `data/crafting/forging_balance.json`이 책임진다.
+
 ## 점진 성장·가치
 
+- 제작의 품질 적용 기본 공격력이 강화 성장의 시작점이다.
+- 제작 가치 배율은 강화 후 판매가 계산에 유지된다.
 - 공격력 증가는 고정 덧셈이 아니라 현재 강화 적용 공격력과 목표 구간을 기준으로 계산한다.
 - 일반 강화보다 특수 강화의 성장률이 크다.
 - 고단계일수록 다음 공격력 증가량, 판매가, 강화 비용이 가속된다.
@@ -102,9 +116,8 @@
 - 최대 6개
 - 강화 도중 원하는 단계에서 수동 보관 가능
 - 목표 단계 도달 시 자동 단조가 자동 보관
-- 이름·강화 단계·기본/강화/최종 공격력·판매가·누적 비용·손익·수식어·촉매·마감 품질 표시
+- 이름·강화 단계·원본/품질 적용/강화/최종 공격력·제작 가치 배율·판매가·누적 비용·손익·수식어·촉매·마감 품질 표시
 - 파괴 무기는 보관 불가
-
 
 ## 공유 경제 거래
 
@@ -151,7 +164,9 @@
 - 이정표: `data/crafting/enhancement_milestones.json`
 - 재료: `data/crafting/materials.json`
 - 수식어: `data/crafting/affixes.json`
-- 모델 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_workshop_resources.gd`
+- 모델 테스트: `tests/unit/test_forging_session.gd`, `tests/unit/test_enhancement_session.gd`, `tests/unit/test_workshop_resources.gd`
+- 통합 테스트: `tests/integration/test_forging_quality_enhancement.gd`, `tests/integration/test_manual_enhancement_economy.gd`
+- 품질 계약 검사: `tests/check_forging_quality_contract.py`
 
 ## 제외
 
@@ -176,6 +191,8 @@
 - [x] 최대 6개 보관함과 무기 상세가 있다.
 - [x] 자동 단조 목표·반복·재료 fallback·자동 보관·중지 조건이 있다.
 - [x] 수동·자동 강화가 동일한 골드·재료 거래를 사용하고 부족 시 판정을 시작하지 않는다.
+- [x] 제작 품질의 공격력·가치 효과가 강화·보관까지 유지된다.
+- [x] 반복 자동 단조의 새 철검은 보통 마감으로 시작한다.
 - [x] Godot 파싱·Scene·모델·JSON 자동 검증 PASS 이력이 있다.
 - [ ] 실제 Godot 화면에서 전체 흐름을 수동 검수한다.
 - [ ] +100과 장시간 자동 반복의 피로·밸런스·성능을 검수한다.

@@ -119,7 +119,10 @@ var pending_leap_roll_override: float = -1.0
 var pending_attempt_cost: int = 0
 var destroyed: bool = false
 
+var raw_base_attack: int = 10
 var base_attack: int = 10
+var quality_attack_multiplier: float = 1.0
+var quality_value_multiplier: float = 1.0
 var progression_attack: int = 10
 var attack_history: Dictionary = {}
 var value_bonus_total: float = 0.0
@@ -139,10 +142,14 @@ func _init(
 	_index_affixes(affix_definitions)
 	weapon_id = str(weapon.get("weapon_id", "iron_sword"))
 	base_weapon_name = str(weapon.get("weapon_name", "철검"))
-	base_attack = int(weapon.get("base_attack", config.get("growth", {}).get("base_attack", 10)))
+	raw_base_attack = maxi(int(weapon.get("raw_base_attack", weapon.get("base_attack", config.get("growth", {}).get("base_attack", 10)))), 1)
+	quality_attack_multiplier = maxf(float(weapon.get("quality_attack_multiplier", 1.0)), 0.01)
+	quality_value_multiplier = maxf(float(weapon.get("quality_value_multiplier", 1.0)), 0.01)
+	base_attack = maxi(int(weapon.get("base_attack", round(float(raw_base_attack) * quality_attack_multiplier))), 1)
 	progression_attack = base_attack
+	value_bonus_total = maxf(quality_value_multiplier - 1.0, 0.0)
 	attack_history["0"] = progression_attack
-	value_bonus_history["0"] = 0.0
+	value_bonus_history["0"] = value_bonus_total
 	rng.randomize()
 
 
@@ -415,7 +422,10 @@ func snapshot() -> Dictionary:
 		"lifetime_material_scores": lifetime_material_scores.duplicate(true),
 		"milestone_preview": _get_milestone_preview(),
 		"affixes": affixes.duplicate(true),
+		"raw_base_attack": raw_base_attack,
 		"base_attack": base_attack,
+		"quality_attack_multiplier": quality_attack_multiplier,
+		"quality_value_multiplier": quality_value_multiplier,
 		"progression_attack": progression_attack,
 		"enhancement_bonus": progression_attack - base_attack,
 		"final_attack": get_current_final_attack(),

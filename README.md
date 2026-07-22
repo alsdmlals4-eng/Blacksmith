@@ -16,6 +16,8 @@ Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커
 - 연속 터치 피버와 작업 배율
 - 정밀 마감 ON/OFF
 - 완벽·좋음·보통 마감
+- 보통 공격력/가치 ×1.00, 좋음 ×1.05/×1.05, 완벽 ×1.10/×1.12
+- 원본 공격력과 품질 적용 공격력을 강화·보관까지 유지
 
 ### +100 강화·특수 강화
 
@@ -41,7 +43,7 @@ Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커
 ### 보관함·자동 단조
 
 - 강화 무기 최대 6개 보관
-- 공격력·판매가·누적 비용·수식어·촉매·마감 품질 확인
+- 원본/품질 적용/강화/최종 공격력·제작 가치·판매가·누적 비용·수식어·촉매·마감 품질 확인
 - 목표 강화 단계와 반복 여부 지정
 - 수동 강화와 자동 단조가 동일한 실제 골드·재료 재고를 소비
 - 자동 단조용 단조 방식·보조재료·촉매 지정
@@ -89,12 +91,14 @@ Base 적용 기준과 전수 대조:
 
 ```bash
 python tools/validate_game_data.py
+python tests/check_forging_quality_contract.py
 godot --headless --editor --path . --quit
 godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 godot --headless --path . --script res://tests/unit/test_forging_session.gd
 godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
 godot --headless --path . --script res://tests/unit/test_workshop_resources.gd
 godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd
+godot --headless --path . --script res://tests/integration/test_forging_quality_enhancement.gd
 ```
 
 자동 검증과 실제 화면·Android·접근성·성능 검증을 구분합니다. 실행하지 않은 검사는 `NOT_RUN` 또는 `UNVERIFIED`입니다.

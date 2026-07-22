@@ -79,10 +79,12 @@ func _new_screen(resources):
 	screen.configure_weapon({
 		"weapon_id": "iron_sword",
 		"weapon_name": "철검",
+		"raw_base_attack": 10,
 		"base_attack": 10,
 		"quality_id": "TEST",
 		"quality_label": "테스트",
-		"quality_multiplier": 1.0,
+		"quality_attack_multiplier": 1.0,
+		"quality_value_multiplier": 1.0,
 	})
 	screen.set_workshop_resources(resources)
 	get_root().add_child(screen)

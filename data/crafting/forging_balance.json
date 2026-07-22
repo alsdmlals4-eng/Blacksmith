@@ -20,6 +20,13 @@
     "precision_speed": 0.85,
     "precision_target": 0.5,
     "precision_perfect_radius": 0.07,
-    "precision_good_radius": 0.18
+    "precision_good_radius": 0.18,
+    "weapon_base_attack": 10,
+    "quality_standard_attack_multiplier": 1.0,
+    "quality_standard_value_multiplier": 1.0,
+    "quality_good_attack_multiplier": 1.05,
+    "quality_good_value_multiplier": 1.05,
+    "quality_perfect_attack_multiplier": 1.1,
+    "quality_perfect_value_multiplier": 1.12
   }
 }

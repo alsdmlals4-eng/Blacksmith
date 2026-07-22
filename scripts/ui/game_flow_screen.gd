@@ -4,7 +4,7 @@ const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
 const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
 const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
-const VERSION_TEXT := "POC v0.6.1 · main · 2026.07.22.1"
+const VERSION_TEXT := "POC v0.6.2 · main · 2026.07.22.2"
 const INVENTORY_CAPACITY := 6
 const STARTING_GOLD := 25000000
 const STARTING_MATERIAL_STOCK := {
@@ -94,7 +94,6 @@ func _open_enhancement() -> void:
 	if forging_session == null:
 		return
 	var weapon_result: Dictionary = forging_session.result.duplicate(true)
-	weapon_result["base_attack"] = 10
 	auto_weapon_template = weapon_result.duplicate(true)
 	_show_enhancement_screen(weapon_result)
 	enhance_button.visible = false
@@ -230,15 +229,17 @@ func _auto_enhance_current(screen, options: Dictionary) -> String:
 
 
 func _show_auto_enhancement() -> void:
-	if auto_weapon_template.is_empty():
-		auto_weapon_template = {
-			"weapon_id": "iron_sword",
-			"weapon_name": "철검",
-			"base_attack": 10,
-			"quality_id": "AUTO",
-			"quality_label": "자동 단조",
-			"quality_multiplier": 1.0,
-		}
+	# 반복 자동 단조는 최초 수동 제작의 GOOD/PERFECT 품질을 복제하지 않습니다.
+	auto_weapon_template = {
+		"weapon_id": "iron_sword",
+		"weapon_name": "철검",
+		"raw_base_attack": 10,
+		"base_attack": 10,
+		"quality_id": "AUTO",
+		"quality_label": "자동 단조 · 보통 마감",
+		"quality_attack_multiplier": 1.0,
+		"quality_value_multiplier": 1.0,
+	}
 	_show_enhancement_screen(auto_weapon_template)
 
 
@@ -323,14 +324,24 @@ func _weapon_card(weapon: Dictionary) -> PanelContainer:
 	top.add_child(name_label)
 	top.add_child(_label("슬롯 %d" % int(weapon.get("slot", 0)), 16, Color("#b7b0a3")))
 
-	var base_attack := int(weapon.get("base_attack", 10))
+	var raw_base_attack := int(weapon.get("raw_base_attack", weapon.get("base_attack", 10)))
+	var base_attack := int(weapon.get("base_attack", raw_base_attack))
 	var progression_attack := int(weapon.get("progression_attack", base_attack))
 	var final_attack := int(weapon.get("final_attack", progression_attack))
+	var quality_attack_multiplier := float(weapon.get("quality_attack_multiplier", 1.0))
+	var quality_value_multiplier := float(weapon.get("quality_value_multiplier", 1.0))
 	box.add_child(_label(
-		"기본 공격력 %d · 강화 공격력 %d · 최종 공격력 %d" % [base_attack, progression_attack, final_attack],
+		"원본 공격력 %d · 품질 적용 %d(×%.2f) · 강화 %d · 최종 %d" % [
+			raw_base_attack,
+			base_attack,
+			quality_attack_multiplier,
+			progression_attack,
+			final_attack,
+		],
 		19,
 		Color("#f4f1e8")
 	))
+	box.add_child(_label("제작 가치 ×%.2f" % quality_value_multiplier, 16, Color("#b7b0a3")))
 
 	var sale_price := int(weapon.get("sale_price", 0))
 	var total_spent := int(weapon.get("total_spent", 0))
