@@ -121,6 +121,11 @@ require("test_plugin_self_update_safety.py" in data_workflow, "Data Workflow에 
 require("docs/port-conflicts.md" in text("addons/godot_ai/mcp_dock.gd"), "Godot AI dock의 포트 충돌 안내 참조가 사라졌습니다.")
 require("test_plugin_self_update_safety.py" in text("addons/godot_ai/plugin.gd"), "Godot AI plugin의 자기 업데이트 안전성 테스트 참조가 사라졌습니다.")
 
+gates = text("[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md")
+require("제작 모델 9건·제작 결과 통합 4건·정적 결과 계약 검사 PASS" in gates, "제작 결과 검증 Gates가 PASS로 기록되지 않았습니다.")
+require("Godot AI 포트 충돌 안내의 로컬 참조 복원" in gates, "Godot AI 포트 문서 복원 증거가 Gates에 없습니다.")
+require("Godot AI 자기 업데이트 안전성 테스트와 Data Workflow 연결" in gates, "Godot AI 안전성 테스트 증거가 Gates에 없습니다.")
+
 if FAILURES:
     for failure in FAILURES:
         print(f"ERROR: {failure}")
