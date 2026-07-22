@@ -411,7 +411,7 @@ func _sync_material_selector_stock(selector: OptionButton, allow_empty: bool) ->
 	if selected_index >= 0:
 		selector.select(selected_index)
 	var target_level := int(session.enhancement_level) + 1
-	var can_change := (
+	var can_change: bool = (
 		session.state == EnhancementSessionScript.State.READY
 		and session.uses_materials_for_level(target_level)
 	)
