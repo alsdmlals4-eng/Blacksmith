@@ -12,7 +12,7 @@ func _initialize() -> void:
 
 func _run() -> void:
 	await _test_manual_normal_uses_shared_resources()
-	await _test_manual_special_consumes_stock()
+	await _test_manual_special_consumes_stock_and_resyncs_selection()
 	if failures.is_empty():
 		print("Manual enhancement economy integration tests PASSED (2 cases)")
 		quit(0)
@@ -36,9 +36,10 @@ func _test_manual_normal_uses_shared_resources() -> void:
 	await process_frame
 
 
-func _test_manual_special_consumes_stock() -> void:
+func _test_manual_special_consumes_stock_and_resyncs_selection() -> void:
 	var resources = WorkshopResourcesScript.new(1000000, {
 		"whetstone": 1,
+		"flame_stone": 1,
 		"salamander_core": 1,
 	})
 	var screen = _new_screen(resources)
@@ -56,6 +57,19 @@ func _test_manual_special_consumes_stock() -> void:
 	_expect(resources.gold == before_gold - cost, "수동 특수 강화가 공유 골드를 차감해야 합니다.")
 	_expect(resources.get_material_count("whetstone") == 0, "수동 특수 강화가 보조재료를 소비해야 합니다.")
 	_expect(resources.get_material_count("salamander_core") == 0, "수동 특수 강화가 촉매를 소비해야 합니다.")
+	_expect(str(screen.session.selected_secondary_id) == "whetstone", "정밀 판정 중 세션의 사용 재료 기록이 다른 재료로 바뀌면 안 됩니다.")
+
+	screen.session.precision_position = float(screen.session.config["precision"]["target"])
+	screen._on_precision_pressed()
+	for _level in range(9):
+		screen._on_normal_pressed()
+	_expect(screen.session.enhancement_level == 19, "+20 특수 강화 직전까지 진행되어야 합니다.")
+	_expect(str(screen.session.selected_secondary_id) == "flame_stone", "다음 특수 강화에서는 소진된 숫돌 대신 가용 화염석으로 선택을 동기화해야 합니다.")
+	_expect(str(screen.session.selected_catalyst_id) == "", "소진된 촉매는 다음 특수 강화에서 사용하지 않음으로 동기화해야 합니다.")
+	var selected_secondary := str(screen.secondary_select.get_item_metadata(screen.secondary_select.selected))
+	var selected_catalyst := str(screen.catalyst_select.get_item_metadata(screen.catalyst_select.selected))
+	_expect(selected_secondary == str(screen.session.selected_secondary_id), "보조재료 UI와 세션 선택이 일치해야 합니다.")
+	_expect(selected_catalyst == str(screen.session.selected_catalyst_id), "촉매 UI와 세션 선택이 일치해야 합니다.")
 	screen.queue_free()
 	await process_frame
 
