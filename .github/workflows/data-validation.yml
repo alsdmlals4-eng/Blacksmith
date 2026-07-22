@@ -27,13 +27,28 @@ jobs:
         shell: bash
         run: |
           status=0
-          if [ -f tools/apply_fever_result_patch.py ]; then
+          if [ -f tools/apply_fever_local_patch.py ] && [ -f tools/apply_fever_docs_patch.py ]; then
             set +e
-            python tools/apply_fever_result_patch.py 2>&1 | tee fever-patch.log
+            {
+              python tools/apply_fever_local_patch.py
+              game_status=$?
+              if [ "$game_status" -eq 0 ]; then
+                python tools/apply_fever_docs_patch.py
+                docs_status=$?
+              else
+                docs_status=1
+              fi
+              if [ "$game_status" -ne 0 ] || [ "$docs_status" -ne 0 ]; then
+                exit 1
+              fi
+            } 2>&1 | tee /tmp/fever-patch.log
             status=${PIPESTATUS[0]}
             set -e
             if [ "$status" -eq 0 ]; then
-              rm tools/apply_fever_result_patch.py
+              rm -f tools/apply_fever_local_patch.py
+              rm -f tools/apply_fever_docs_patch.py
+              rm -f tools/apply_fever_result_patch.py
+              rm -rf tools/fever_patch_chunks
               git config user.name "github-actions[bot]"
               git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
               git add -A
@@ -50,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: fever-patch-log
-          path: project/fever-patch.log
+          path: /tmp/fever-patch.log
           if-no-files-found: ignore
 
       - name: Fail when fever patch fails
