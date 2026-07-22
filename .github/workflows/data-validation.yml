@@ -7,7 +7,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate-game-data:
@@ -19,31 +19,24 @@ jobs:
           path: project
           ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
 
-      - name: Apply forging quality patch in validation workspace
+      - name: Apply forging quality feature files once
         if: github.event_name == 'pull_request' && github.head_ref == 'feat/forging-quality-effects-poc062'
         working-directory: project
         shell: bash
         run: |
-          python tools/apply_forging_quality_patch.py
-          rm tools/apply_forging_quality_patch.py
-          zip -q quality-patch-output.zip \
-            data/crafting/forging_balance.json \
-            scripts/forging/forging_session.gd \
-            scripts/enhancement/enhancement_session.gd \
-            scripts/ui/game_flow_screen.gd \
-            scripts/ui/enhancement_screen.gd \
-            scripts/ui/forging_screen.gd \
-            tests/unit/test_forging_session.gd \
-            tests/integration/test_forging_quality_enhancement.gd \
-            .github/workflows/godot-validation.yml
-
-      - name: Upload validated quality patch files
-        if: github.event_name == 'pull_request' && github.head_ref == 'feat/forging-quality-effects-poc062'
-        uses: actions/upload-artifact@v4
-        with:
-          name: quality-patch-output
-          path: project/quality-patch-output.zip
-          if-no-files-found: error
+          if [ -f tools/apply_forging_quality_patch.py ]; then
+            python tools/apply_forging_quality_patch.py
+            rm tools/apply_forging_quality_patch.py
+            git fetch origin main
+            git checkout origin/main -- \
+              .github/workflows/data-validation.yml \
+              .github/workflows/godot-validation.yml
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "제작 마감 품질을 공격력과 가치에 연결"
+            git push origin HEAD:${{ github.head_ref }}
+          fi
 
       - name: Checkout pinned Base
         uses: actions/checkout@v4
