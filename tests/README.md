@@ -4,6 +4,7 @@
 
 ```bash
 python tools/validate_game_data.py
+python -m unittest tests/unit/test_plugin_self_update_safety.py -v
 python tools/audit_project_operating_system.py --base-root <Base checkout>
 python tests/check_forging_result_contract.py
 godot --headless --editor --path . --quit
@@ -13,15 +14,17 @@ godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
 godot --headless --path . --script res://tests/unit/test_workshop_resources.gd
 godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd
 godot --headless --path . --script res://tests/integration/test_forging_result_enhancement.gd
-python tests/check_forging_result_contract.py
-godot --headless --path . --script res://tests/integration/test_forging_result_enhancement.gd
 ```
 
 ## 현재 범위
 
 - 제작 진행도·피버·정밀 마감·초기화
 - 보통·좋음·완벽 마감의 공격력·가치 배율과 제작→강화→보관 전달
-- 구형 단일 품질 배율·기본 공격력 덮어쓰기·옛 버전 재등장 차단
+- 피버 1회당 제작 가치 +2%, 피버 중 완료 +3%, 총 +5% 상한
+- 자동 작업만으로 완성한 무기의 피버 가치 0%
+- 피버 보너스의 공격력·정밀 마감 판정 비영향
+- 품질+피버 합산 가치의 강화·단계 하락 복원·보관 전달
+- 구형 단일 품질 배율·기본 공격력 덮어쓰기·옛 버전·구형 검사 경로 재등장 차단
 - 일반 강화와 +10 단위 특수 강화 분리
 - 재료·촉매·정밀 효과의 일반 단계 누출 방지
 - +10~+100 수식어 성장
@@ -33,6 +36,7 @@ godot --headless --path . --script res://tests/integration/test_forging_result_e
 - 보관함 최대 6개와 파괴 무기 보관 차단
 - 자동 단조 목표·재료 fallback·자동 보관·반복·중지
 - 수동·자동 강화의 동일 골드 차감·재료 소비·부족 차단·중복 결제 방지
+- Godot AI 자기 업데이트 backup suffix·untyped policy 정합성
 - Base 13개 기능 매핑·Registry·로컬 참조·stale 정본 감사
 
 ## 별도 검증
@@ -46,10 +50,3 @@ godot --headless --path . --script res://tests/integration/test_forging_result_e
 - 대표·최악 장면 성능 프로파일
 - 저장·복귀·방치 보상
 - 고객·상인 판매
-
-## 제작 피버 결과
-
-- 피버 1회당 제작 가치 +2%, 피버 중 완료 +3%, 총 +5% 상한
-- 자동 작업만으로 완료하면 피버 가치 0%
-- 공격력·정밀 판정 비영향
-- 품질+피버 합산 가치의 강화·단계 하락 복원·보관 전달
