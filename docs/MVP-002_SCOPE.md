@@ -105,6 +105,17 @@
 - 이름·강화 단계·기본/강화/최종 공격력·판매가·누적 비용·손익·수식어·촉매·마감 품질 표시
 - 파괴 무기는 보관 불가
 
+
+## 공유 경제 거래
+
+- 수동 강화와 자동 단조는 동일 `WorkshopResources` 인스턴스의 골드·재료 재고를 사용한다.
+- 강화 시작 전에 시도 비용과 선택 재료 재고를 검증한다.
+- 골드가 부족하면 강화 판정을 시작하지 않는다.
+- 수동 특수 강화에서 선택한 보조재료·촉매가 부족하면 골드와 재료를 소비하지 않고 차단한다.
+- 자동 단조는 지정 재료가 없으면 해당 슬롯을 비운 뒤 같은 거래 경로로 진행한다.
+- 결제 후 강화 시작이 실패하면 차감한 골드와 재료를 복구한다.
+- 세션의 `total_spent`와 실제 보유 골드 차감은 같은 시도 비용을 사용한다.
+
 ## 자동 단조
 
 설정:
@@ -129,6 +140,7 @@
 ## 구현 경로
 
 - 상태 모델: `scripts/enhancement/enhancement_session.gd`
+- 공유 경제 거래: `scripts/economy/workshop_resources.gd`
 - 강화 UI: `scripts/ui/enhancement_screen.gd`
 - 테스트·보관·자동 단조 UI: `scripts/ui/enhancement_test_runner.gd`
 - 제작→강화 흐름: `scripts/ui/game_flow_screen.gd`
@@ -139,7 +151,7 @@
 - 이정표: `data/crafting/enhancement_milestones.json`
 - 재료: `data/crafting/materials.json`
 - 수식어: `data/crafting/affixes.json`
-- 모델 테스트: `tests/unit/test_enhancement_session.gd`
+- 모델 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_workshop_resources.gd`
 
 ## 제외
 
@@ -163,6 +175,7 @@
 - [x] +100에서 세 수식어가 4티어다.
 - [x] 최대 6개 보관함과 무기 상세가 있다.
 - [x] 자동 단조 목표·반복·재료 fallback·자동 보관·중지 조건이 있다.
+- [x] 수동·자동 강화가 동일한 골드·재료 거래를 사용하고 부족 시 판정을 시작하지 않는다.
 - [x] Godot 파싱·Scene·모델·JSON 자동 검증 PASS 이력이 있다.
 - [ ] 실제 Godot 화면에서 전체 흐름을 수동 검수한다.
 - [ ] +100과 장시간 자동 반복의 피로·밸런스·성능을 검수한다.
