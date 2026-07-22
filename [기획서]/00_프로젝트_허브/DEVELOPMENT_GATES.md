@@ -10,7 +10,7 @@
 | Implementation | PASS | 피버 1회 한정 결과 보너스·가산 합성·자동 반복 미적용·도메인/UI/데이터/단위·통합·정적 테스트 구현 |
 | Verification | CURRENT | 자동 검증 PASS, 실제 화면·Android·장시간 성능 증거 필요 |
 | Documentation | PASS | Game Bible·Decision Log·Active Context·Roadmap·Scope·플레이테스트·README 동기화 |
-| Integration·Completion | CURRENT | PR #24 최종 CI·25개 patch 전수 검토 PASS, 병합 후 main 책임 파일 재확인 필요 |
+| Integration·Completion | PASS | PR #24 squash 병합 `4f1854e17d4f3ce70eef5327ae7528f5b1dbdab2`, 최종 CI·25개 patch·main 책임 파일 재확인 |
 
 ## 제품 게이트
 
