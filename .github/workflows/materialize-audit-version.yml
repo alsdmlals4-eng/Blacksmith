@@ -22,12 +22,22 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Apply version assertion patch
+      - name: Replace version-specific assertion
         shell: bash
         run: |
           set -euo pipefail
-          git apply --check .tmp_manual_economy/audit_version.patch
-          git apply .tmp_manual_economy/audit_version.patch
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("tools/audit_project_operating_system.py")
+          text = path.read_text(encoding="utf-8")
+          old = '("POC v0.6.0", "자동 단조", "+11", "+30")'
+          new = '("POC v", "자동 단조", "+11", "+30")'
+          if text.count(old) != 1:
+              raise SystemExit(f"expected exactly one old assertion, found {text.count(old)}")
+          path.write_text(text.replace(old, new), encoding="utf-8")
+          PY
+
           grep -F '("POC v", "자동 단조", "+11", "+30")' tools/audit_project_operating_system.py
           ! grep -F 'POC v0.6.0' tools/audit_project_operating_system.py
 
