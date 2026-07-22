@@ -44,6 +44,8 @@ require(not (ROOT / "tests/check_forging_quality_contract.py").exists(), "구형
 require(not (ROOT / "tests/integration/test_forging_quality_enhancement.gd").exists(), "구형 품질 전용 통합 테스트가 남아 있습니다.")
 require((ROOT / "tests/check_forging_result_contract.py").is_file(), "제작 결과 계약 검사가 없습니다.")
 require((ROOT / "tests/integration/test_forging_result_enhancement.gd").is_file(), "제작 결과 통합 테스트가 없습니다.")
+require((ROOT / "docs/port-conflicts.md").is_file(), "Godot AI 포트 충돌 안내가 없습니다.")
+require((ROOT / "tests/unit/test_plugin_self_update_safety.py").is_file(), "Godot AI 자기 업데이트 안전성 테스트가 없습니다.")
 
 source_files = list((ROOT / "scripts").rglob("*.gd")) + list((ROOT / "tests").rglob("*.gd"))
 for path in source_files:
@@ -113,6 +115,11 @@ require("test_forging_result_enhancement.gd" in workflow, "Godot Workflow에 제
 require("Forging result enhancement integration tests PASSED" in workflow, "Godot Workflow의 제작 결과 PASS 표식이 최신이 아닙니다.")
 require("check_forging_quality_contract.py" not in workflow, "Godot Workflow가 구형 품질 계약 검사를 참조합니다.")
 require("test_forging_quality_enhancement.gd" not in workflow, "Godot Workflow가 구형 품질 통합 테스트를 참조합니다.")
+
+data_workflow = text(".github/workflows/data-validation.yml")
+require("test_plugin_self_update_safety.py" in data_workflow, "Data Workflow에 Godot AI 자기 업데이트 안전성 테스트가 없습니다.")
+require("docs/port-conflicts.md" in text("addons/godot_ai/mcp_dock.gd"), "Godot AI dock의 포트 충돌 안내 참조가 사라졌습니다.")
+require("test_plugin_self_update_safety.py" in text("addons/godot_ai/plugin.gd"), "Godot AI plugin의 자기 업데이트 안전성 테스트 참조가 사라졌습니다.")
 
 if FAILURES:
     for failure in FAILURES:
