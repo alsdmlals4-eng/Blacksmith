@@ -32,8 +32,13 @@ expected = {
 for key, value in expected.items():
     require(session.get(key) == value, f"forging_balance.json {key}는 {value}여야 합니다.")
 
-source_files = list((ROOT / "scripts").rglob("*.gd")) + list((ROOT / "tests").rglob("*.gd"))
-for path in source_files:
+contract_files = (
+    list((ROOT / "scripts").rglob("*.gd"))
+    + list((ROOT / "tests").rglob("*.gd"))
+    + list((ROOT / "scenes").rglob("*.tscn"))
+    + list((ROOT / "data").rglob("*.json"))
+)
+for path in contract_files:
     source = path.read_text(encoding="utf-8")
     rel = path.relative_to(ROOT).as_posix()
     require('"quality_multiplier"' not in source, f"구형 단일 품질 배율 필드가 남아 있습니다: {rel}")
@@ -52,6 +57,14 @@ for rel in [
 ]:
     source = text(rel)
     require("×1.05" in source and "×1.12" in source, f"품질 공격력·가치 계약이 문서에 없습니다: {rel}")
+
+for rel in [
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "docs/GODOT_PLAYTEST.md",
+]:
+    source = text(rel)
+    require("POC v0.6.2 · main · 2026.07.22.2" in source, f"최신 버전 설명이 없습니다: {rel}")
+    require("POC v0.6.1 · main · 2026.07.22.1" not in source, f"활성 문서가 구형 버전을 참조합니다: {rel}")
 
 decisions = text("[기획서]/00_프로젝트_허브/DECISION_LOG.md")
 dec_016 = decisions.find("## DEC-016 ")
