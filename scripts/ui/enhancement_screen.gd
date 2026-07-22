@@ -154,7 +154,6 @@ func build_weapon_record() -> Dictionary:
 		"catalyst_history": snapshot.get("catalyst_history", []).duplicate(true),
 		"quality_id": str(weapon_result.get("quality_id", "STANDARD")),
 		"quality_label": str(weapon_result.get("quality_label", "보통 마감")),
-		"quality_multiplier": float(weapon_result.get("quality_multiplier", 1.0)),
 		"material_scores": snapshot.get("lifetime_material_scores", {}).duplicate(true),
 	}
 

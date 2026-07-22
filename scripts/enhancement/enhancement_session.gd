@@ -143,7 +143,7 @@ func _init(
 	weapon_id = str(weapon.get("weapon_id", "iron_sword"))
 	base_weapon_name = str(weapon.get("weapon_name", "철검"))
 	raw_base_attack = maxi(int(weapon.get("raw_base_attack", weapon.get("base_attack", config.get("growth", {}).get("base_attack", 10)))), 1)
-	quality_attack_multiplier = maxf(float(weapon.get("quality_attack_multiplier", weapon.get("quality_multiplier", 1.0))), 0.01)
+	quality_attack_multiplier = maxf(float(weapon.get("quality_attack_multiplier", 1.0)), 0.01)
 	quality_value_multiplier = maxf(float(weapon.get("quality_value_multiplier", 1.0)), 0.01)
 	base_attack = maxi(int(weapon.get("base_attack", round(float(raw_base_attack) * quality_attack_multiplier))), 1)
 	progression_attack = base_attack

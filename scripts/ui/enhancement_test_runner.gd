@@ -2,7 +2,7 @@ extends Control
 
 const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
 const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
-const VERSION_TEXT := "POC v0.6.1 · main · 2026.07.22.1"
+const VERSION_TEXT := "POC v0.6.2 · main · 2026.07.22.2"
 const INVENTORY_CAPACITY := 6
 const STARTING_GOLD := 25000000
 const STARTING_MATERIAL_STOCK := {
@@ -36,10 +36,12 @@ func _show_enhancement_test() -> void:
 	screen.configure_weapon({
 		"weapon_id": "iron_sword",
 		"weapon_name": "철검",
+		"raw_base_attack": 10,
 		"base_attack": 10,
 		"quality_id": "TEST",
 		"quality_label": "테스트용 철검",
-		"quality_multiplier": 1.0,
+		"quality_attack_multiplier": 1.0,
+		"quality_value_multiplier": 1.0,
 	})
 	screen.set_inventory_count(inventory.size(), INVENTORY_CAPACITY)
 	screen.restart_requested.connect(_show_enhancement_test)
@@ -259,14 +261,24 @@ func _weapon_card(weapon: Dictionary) -> PanelContainer:
 	top.add_child(name_label)
 	top.add_child(_label("슬롯 %d" % int(weapon.get("slot", 0)), 16, Color("#b7b0a3")))
 
-	var base_attack := int(weapon.get("base_attack", 10))
+	var raw_base_attack := int(weapon.get("raw_base_attack", weapon.get("base_attack", 10)))
+	var base_attack := int(weapon.get("base_attack", raw_base_attack))
 	var progression_attack := int(weapon.get("progression_attack", base_attack))
 	var final_attack := int(weapon.get("final_attack", progression_attack))
+	var quality_attack_multiplier := float(weapon.get("quality_attack_multiplier", 1.0))
+	var quality_value_multiplier := float(weapon.get("quality_value_multiplier", 1.0))
 	box.add_child(_label(
-		"기본 공격력 %d · 강화 공격력 %d · 최종 공격력 %d" % [base_attack, progression_attack, final_attack],
+		"원본 공격력 %d · 품질 적용 %d(×%.2f) · 강화 %d · 최종 %d" % [
+			raw_base_attack,
+			base_attack,
+			quality_attack_multiplier,
+			progression_attack,
+			final_attack,
+		],
 		19,
 		Color("#f4f1e8")
 	))
+	box.add_child(_label("제작 가치 ×%.2f" % quality_value_multiplier, 16, Color("#b7b0a3")))
 
 	var sale_price := int(weapon.get("sale_price", 0))
 	var total_spent := int(weapon.get("total_spent", 0))

@@ -237,7 +237,6 @@ func _complete(
 		"base_attack": applied_base_attack,
 		"quality_id": quality_id,
 		"quality_label": quality_label,
-		"quality_multiplier": attack_multiplier,
 		"quality_attack_multiplier": attack_multiplier,
 		"quality_value_multiplier": value_multiplier,
 		"tap_count": tap_count,

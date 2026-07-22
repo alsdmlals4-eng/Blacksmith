@@ -5,17 +5,21 @@
 ```bash
 python tools/validate_game_data.py
 python tools/audit_project_operating_system.py --base-root <Base checkout>
+python tests/check_forging_quality_contract.py
 godot --headless --editor --path . --quit
 godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 godot --headless --path . --script res://tests/unit/test_forging_session.gd
 godot --headless --path . --script res://tests/unit/test_enhancement_session.gd
 godot --headless --path . --script res://tests/unit/test_workshop_resources.gd
 godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd
+godot --headless --path . --script res://tests/integration/test_forging_quality_enhancement.gd
 ```
 
 ## 현재 범위
 
 - 제작 진행도·피버·정밀 마감·초기화
+- 보통·좋음·완벽 마감의 공격력·가치 배율과 제작→강화→보관 전달
+- 구형 단일 품질 배율·기본 공격력 덮어쓰기·옛 버전 재등장 차단
 - 일반 강화와 +10 단위 특수 강화 분리
 - 재료·촉매·정밀 효과의 일반 단계 누출 방지
 - +10~+100 수식어 성장
