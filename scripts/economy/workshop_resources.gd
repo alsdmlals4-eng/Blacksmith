@@ -43,7 +43,7 @@ func available_material_id(material_id: String) -> String:
 	return material_id if material_id != "" and has_material(material_id) else ""
 
 
-func preview_attempt(session) -> Dictionary:
+func preview_attempt(session, allow_empty_secondary: bool = false) -> Dictionary:
 	if session == null or not session.has_method("begin_attempt") or not session.has_method("calculate_attempt_cost"):
 		return {"ok": false, "status": STATUS_INVALID_SESSION}
 	if int(session.state) != 0 or bool(session.destroyed) or int(session.enhancement_level) >= int(session.config.get("max_level", 100)):
@@ -55,6 +55,15 @@ func preview_attempt(session) -> Dictionary:
 	var catalyst_id := str(session.selected_catalyst_id) if is_special else ""
 	var cost := maxi(int(session.calculate_attempt_cost()), 0)
 
+	if is_special and secondary_id == "" and not allow_empty_secondary:
+		return {
+			"ok": false,
+			"status": STATUS_NO_MATERIAL,
+			"slot": "secondary",
+			"material_id": "",
+			"reason": "SECONDARY_REQUIRED",
+			"cost": cost,
+		}
 	if secondary_id != "" and not has_material(secondary_id):
 		return {
 			"ok": false,
@@ -87,11 +96,17 @@ func preview_attempt(session) -> Dictionary:
 		"cost": cost,
 		"secondary_material_id": secondary_id,
 		"catalyst_material_id": catalyst_id,
+		"empty_secondary_fallback": is_special and secondary_id == "",
 	}
 
 
-func try_begin_attempt(session, roll_override: float = -1.0, leap_roll_override: float = -1.0) -> Dictionary:
-	var transaction := preview_attempt(session)
+func try_begin_attempt(
+	session,
+	roll_override: float = -1.0,
+	leap_roll_override: float = -1.0,
+	allow_empty_secondary: bool = false
+) -> Dictionary:
+	var transaction := preview_attempt(session, allow_empty_secondary)
 	if not bool(transaction.get("ok", false)):
 		return transaction
 
