@@ -7,10 +7,10 @@
 | Intake·Context | PASS | 저장소·플랫폼·핵심 방향·Base 기준 커밋 확인 |
 | Definition of Ready | PASS | 제작·강화·보관·자동 단조와 단계별 정합성 개선 범위·완료 기준 기록 |
 | Planning·Approval | PASS | 사용자의 순차 개선·적대적 검토 요청과 보호 범위 확인 |
-| Implementation | PASS | 공유 경제와 제작 품질의 도메인·UI·데이터·단위/통합/정적 테스트 구현 |
+| Implementation | PASS | 품질별 정수 공격력 20/21/22·가격 보정·테스트 러너 종료 흐름·도메인/UI/데이터/단위·통합·정적 테스트 구현 |
 | Verification | CURRENT | 자동 검증 PASS, 실제 화면·Android·장시간 성능 증거 필요 |
 | Documentation | PASS | Game Bible·Decision Log·Active Context·Roadmap·Scope·플레이테스트·README 동기화 |
-| Integration·Completion | CURRENT | PR #20 전체 patch·CI·리뷰·병합과 main 재확인 |
+| Integration·Completion | CURRENT | PR #21에 최신 main의 Godot AI 통합까지 병합하고 CI·전체 patch·main 재확인 |
 
 ## 제품 게이트
 
@@ -31,10 +31,11 @@
 - [x] 완벽·좋음·보통 마감
 - [x] 완성 철검 강화 전달
 - [x] Godot 헤드리스 파싱·제작 모델 테스트
-- [x] 마감 품질의 실제 기본 공격력·판매 가치 반영
+- [x] 성공한 테스트 러너의 `quit(0)` 뒤 즉시 `return`, 실패 시 `quit(1)` 계약
+- [x] 마감 품질의 실제 정수 공격력 20/21/22와 판매 가치 반영
 - [x] 원본 공격력·품질 적용 공격력·가치 배율의 강화·보관 전달
 - [x] 반복 자동 단조의 새 철검 보통 마감 고정
-- [x] 제작 모델 5건·제작 품질 통합 3건·정적 품질 계약 검사
+- [x] 제작 모델 5건·제작 품질 통합 4건·정적 품질 계약 검사
 - [ ] 피버가 최종 무기 결과에 남기는 보너스
 - [ ] 실제 화면 전후 렌더 시각 검수
 - [ ] Android 실제 기기 터치·세로 비율 검증
@@ -96,6 +97,16 @@
 - [ ] 앱 중단·복귀 시 자동 작업 상태 저장 정책
 - [ ] 자동 정밀 판정과 수동 플레이 효율 분리
 
+## 개발 도구 연동 검증
+
+- [x] `addons/godot_ai/` 벤더 소스 포함
+- [x] `project.godot`에서 Godot AI 에디터 플러그인 활성화
+- [x] `_mcp_game_helper` 오토로드 등록
+- [x] 운영 감사가 애드온 필수 진입점과 프로젝트 선언을 확인
+- [x] 벤더 소스의 upstream 전용 문서·테스트 경로를 프로젝트 로컬 참조에서 분리
+- [ ] 로컬 `uv` 설치와 Godot AI MCP 서버 실제 기동
+- [ ] Codex 등 MCP 클라이언트 실제 연결·도구 호출
+
 ## 운영체계·문서 검증
 
 - [x] Base 기준 커밋 고정
@@ -107,6 +118,7 @@
 - [x] Active Context·START_HERE·Documentation Map 상태 동기화
 - [x] Design Document Registry JSON·책임 경로·발행 상태 정적 검증
 - [x] 문서 로컬 참조·stale 활성 설명 전수 검사
+- [x] 프로젝트 문서와 벤더 애드온 upstream 참조의 감사 경계 분리
 - [x] 변경 목록 밖의 tests·scripts·scenes 소비자 갱신
 - [x] 일회성 Workflow 삭제와 활성 참조 부재 확인
 - [x] 감사 보고서 오류 0·경고 0

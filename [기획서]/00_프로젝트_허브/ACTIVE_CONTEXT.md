@@ -2,15 +2,15 @@
 
 ## 현재 목표
 
-제작 마감 품질을 실제 무기 성능·가치에 연결하고 검증 중이며, 다음 단계는 제작 피버 결과 보너스다.
+PR #20 병합 후 적대적 재검토에서 발견한 품질 정수 반올림과 CI 종료코드 거짓 양성을 PR #21에서 수정·검증한다. 동시에 최신 main의 Godot AI 개발 연동을 병합 기준에 포함해 운영 감사 경계를 갱신한다. 다음 제품 개선은 제작 피버 결과 보너스다.
 
 ## 현재 상태
 
 - 제품 단계: Prototype
 - 작업 게이트: Verification
-- 버전 표시: `POC v0.6.2 · main · 2026.07.22.2`
+- 버전 표시: `POC v0.6.3 · main · 2026.07.22.3`
 - 제작: 광클·자동 작업·피버·선택적 정밀 마감 구현
-- 제작 품질: 보통 공격력/가치 ×1.00, 좋음 ×1.05/×1.05, 완벽 ×1.10/×1.12
+- 제작 품질: 철검 원본 20 기준 보통 20/가치 ×1.00, 좋음 21/×1.05, 완벽 22/×1.12
 - 품질 전달: 원본 공격력·품질 적용 공격력·가치 배율을 강화와 보관까지 유지
 - 자동 반복 품질: 새 철검은 보통 마감으로 시작해 최초 수동 품질을 복제하지 않음
 - 강화: +0~+100, 일반 강화와 +10 단위 특수 강화 분리
@@ -27,11 +27,14 @@
 - 재료 선택 동기화: 정밀 판정 중 사용 재료 기록을 보존하고, 다음 특수 강화 진입 시 가용 재료로 UI·세션을 함께 갱신
 - 자동 중지: 골드 부족·보관함 가득 참·수동 중지. 파괴 시 반복 설정에 따라 재시작 또는 종료
 - 공유 경제 자동 검증: 단위 7건·실제 강화 UI 통합 2건 PASS
-- 제작 품질 자동 검증: 제작 모델 5건·제작→강화·보관 통합 3건·정적 계약 검사 PASS
-- Godot 자동 검증: 4.7.1 import·parse, 강화·전체 흐름 Scene, 제작·강화·공유 경제·품질 모델, UI 통합, JSON PASS
+- 제작 품질 자동 검증: 제작 모델 5건·제작→강화·보관 통합 4건·정적 계약 검사
+- Godot 자동 검증: import·parse·두 Scene·모델 PASS 표식을 확인했고, 네 테스트 러너의 `quit(0)` 뒤 `quit(1)` fallthrough를 `return`으로 차단해 실제 성공 종료코드 0 계약을 복원
 - Base 운영체계: 고정 Base의 13개 기능을 프로젝트 운영 문서와 Skill 3개로 통합
 - Base 자동 검증: 원본 감사와 공식 Linux 회귀 전체 PASS
-- 통합 완료: PR #18 squash 병합 `53cf5edacd5701ec5d412e233d45b35c6e3feb87`, main 핵심 코드 재확인
+- 통합 완료: PR #18 공유 경제와 PR #20 제작 품질 계약 main 병합
+- 후속 감사: PR #21에서 품질별 실제 정수 공격력 20/21/22, 테스트 러너 성공 종료 흐름, 비정상 종료 실패 승격을 함께 보강
+- Godot AI 개발 연동: `addons/godot_ai/` 벤더 소스, 에디터 플러그인, `_mcp_game_helper` 오토로드가 최신 main에 포함
+- Godot AI 검증: 필수 진입점·`project.godot` 선언·Godot 파싱은 자동 검증, 로컬 MCP 서버·클라이언트 실제 연결은 NOT_RUN
 - Android 실기기·AAB·사람 시각·접근성·성능·Branch protection 강제: NOT_RUN 또는 UNVERIFIED
 
 ## 강화 분류
@@ -84,10 +87,11 @@
 - 강화 UI: `scripts/ui/enhancement_screen.gd`, `scripts/ui/enhancement_test_runner.gd`, `scripts/ui/game_flow_screen.gd`
 - 데이터: `data/crafting/enhancement_balance.json`, `enhancement_milestones.json`, `materials.json`, `affixes.json`
 - 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_forging_session.gd`, `tests/unit/test_workshop_resources.gd`, `tests/integration/test_manual_enhancement_economy.gd`, `tests/integration/test_forging_quality_enhancement.gd`, `tests/check_forging_quality_contract.py`
+- Godot AI 연동: `project.godot`, `addons/godot_ai/plugin.cfg`, `addons/godot_ai/plugin.gd`, `addons/godot_ai/runtime/game_helper.gd`, `addons/godot_ai/README.md`
 
 ## 다음 우선순위
 
-1. 제작 마감 품질의 공격력·가치 반영을 PR 검증·병합하고 main을 재확인한다.
+1. PR #21의 품질 정수 구분·CI 종료코드 계약을 검증·병합하고 main을 재확인한다.
 2. 제작 피버가 무기 결과에 남기는 작은 보너스를 설계·검증한다.
 3. 강화 데이터의 중복 실패 정책을 제거하고 의미 검증을 강화한다.
 4. 위험·가격 곡선을 시뮬레이션으로 조정한다.
@@ -103,6 +107,7 @@
 - 자동 단조 장시간 반복의 밸런스·성능
 - 사람 시각·접근성·태블릿·폴더블·노치
 - GitHub Required Check 강제 여부
+- 로컬 `uv`·Godot AI MCP 서버·Codex 클라이언트 실제 연결
 
 ## 사용자 실행 경로
 

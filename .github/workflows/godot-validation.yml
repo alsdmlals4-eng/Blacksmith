@@ -113,8 +113,10 @@ jobs:
           if ! grep -q "Forging quality enhancement integration tests PASSED" godot-test.log; then
             status=1
           fi
+          echo "PROCESS_STATUS forging=$forging_status enhancement=$enhancement_status workshop=$workshop_status manual_economy=$manual_economy_status forging_quality=$forging_quality_status" | tee -a godot-test.log
           if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ] || [ "$workshop_status" -ne 0 ] || [ "$manual_economy_status" -ne 0 ] || [ "$forging_quality_status" -ne 0 ]; then
-            echo "Godot reported non-zero test process status after PASS output: forging=$forging_status enhancement=$enhancement_status workshop=$workshop_status manual_economy=$manual_economy_status forging_quality=$forging_quality_status"
+            echo "Godot reported non-zero test process status."
+            status=1
           fi
           if grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" godot-test.log; then
             echo "Godot test log contains script or runtime errors."

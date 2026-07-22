@@ -28,7 +28,7 @@ const DEFAULT_CONFIG := {
 	"precision_target": 0.5,
 	"precision_perfect_radius": 0.07,
 	"precision_good_radius": 0.18,
-	"weapon_base_attack": 10,
+	"weapon_base_attack": 20,
 	"quality_standard_attack_multiplier": 1.0,
 	"quality_standard_value_multiplier": 1.0,
 	"quality_good_attack_multiplier": 1.05,
@@ -228,7 +228,7 @@ func _complete(
 	value_multiplier: float
 ) -> void:
 	state = State.COMPLETE
-	var raw_base_attack := maxi(int(config.get("weapon_base_attack", 10)), 1)
+	var raw_base_attack := maxi(int(config.get("weapon_base_attack", 20)), 1)
 	var applied_base_attack := maxi(int(round(float(raw_base_attack) * attack_multiplier)), 1)
 	result = {
 		"weapon_id": "iron_sword",

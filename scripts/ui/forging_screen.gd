@@ -305,8 +305,8 @@ func _apply_state(new_state: int, snapshot: Dictionary) -> void:
 			result_name_label.text = "%s 완성!" % finished.get("weapon_name", "철검")
 			result_quality_label.text = str(finished.get("quality_label", "보통 마감"))
 			result_stats_label.text = "기본 공격력 %d → %d · 제작 가치 ×%.2f\n망치질 %d회 · 피버 %d회" % [
-				int(finished.get("raw_base_attack", 10)),
-				int(finished.get("base_attack", 10)),
+				int(finished.get("raw_base_attack", 20)),
+				int(finished.get("base_attack", 20)),
 				float(finished.get("quality_value_multiplier", 1.0)),
 				int(finished.get("tap_count", 0)),
 				int(finished.get("fever_activation_count", 0)),

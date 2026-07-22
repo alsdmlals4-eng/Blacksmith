@@ -16,6 +16,7 @@ func _run() -> void:
 	if failures.is_empty():
 		print("Manual enhancement economy integration tests PASSED (2 cases)")
 		quit(0)
+		return
 	for failure in failures:
 		push_error(failure)
 	quit(1)
@@ -79,8 +80,8 @@ func _new_screen(resources):
 	screen.configure_weapon({
 		"weapon_id": "iron_sword",
 		"weapon_name": "철검",
-		"raw_base_attack": 10,
-		"base_attack": 10,
+		"raw_base_attack": 20,
+		"base_attack": 20,
 		"quality_id": "TEST",
 		"quality_label": "테스트",
 		"quality_attack_multiplier": 1.0,
