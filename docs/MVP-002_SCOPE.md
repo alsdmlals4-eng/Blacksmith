@@ -174,7 +174,7 @@
 - 수식어: `data/crafting/affixes.json`
 - 모델 테스트: `tests/unit/test_forging_session.gd`, `tests/unit/test_enhancement_session.gd`, `tests/unit/test_workshop_resources.gd`
 - 통합 테스트: `tests/integration/test_forging_result_enhancement.gd`, `tests/integration/test_manual_enhancement_economy.gd`
-- 품질 계약 검사: `tests/check_forging_result_contract.py`
+- 제작 결과 계약 검사: `tests/check_forging_result_contract.py`
 
 ## 제외
 
