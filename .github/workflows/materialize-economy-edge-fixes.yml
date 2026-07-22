@@ -1,0 +1,119 @@
+name: Materialize economy edge fixes
+
+on:
+  pull_request:
+    branches: [main]
+    types: [synchronize, reopened]
+    paths:
+      - ".github/workflows/materialize-economy-edge-fixes.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.head_ref == 'fix/unify-manual-auto-economy'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Apply shared economy edge fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          enhancement_path = Path("scripts/ui/enhancement_screen.gd")
+          enhancement = enhancement_path.read_text(encoding="utf-8")
+          old = '''func _sync_material_selector_stock(selector: OptionButton, allow_empty: bool) -> void:
+          \tif selector == null or not is_instance_valid(selector):
+          \t\treturn
+          \tvar first_available := 0 if allow_empty else -1
+          \tfor index in range(selector.item_count):
+          \t\tvar material_id := str(selector.get_item_metadata(index))
+          \t\tif material_id == "":
+          \t\t\tselector.set_item_disabled(index, false)
+          \t\t\tcontinue
+          \t\tvar stock := int(material_stock.get(material_id, 0))
+          \t\tselector.set_item_text(index, "%s · 보유 %d" % [_material_display_name(material_id), stock])
+          \t\tselector.set_item_disabled(index, stock <= 0)
+          \t\tif stock > 0 and first_available < 0:
+          \t\t\tfirst_available = index
+          \tif selector.selected >= 0 and selector.is_item_disabled(selector.selected) and first_available >= 0:
+          \t\tselector.select(first_available)
+          \t\tvar selected_id := str(selector.get_item_metadata(first_available))
+          \t\tif allow_empty:
+          \t\t\tsession.set_catalyst_material(selected_id)
+          \t\telse:
+          \t\t\tsession.set_secondary_material(selected_id)
+          '''
+          new = '''func _sync_material_selector_stock(selector: OptionButton, allow_empty: bool) -> void:
+          \tif selector == null or not is_instance_valid(selector):
+          \t\treturn
+          \tvar selected_id := str(session.selected_catalyst_id if allow_empty else session.selected_secondary_id)
+          \tvar selected_index := -1
+          \tvar first_available := 0 if allow_empty else -1
+          \tfor index in range(selector.item_count):
+          \t\tvar material_id := str(selector.get_item_metadata(index))
+          \t\tif material_id == "":
+          \t\t\tselector.set_item_disabled(index, false)
+          \t\t\tif selected_id == "":
+          \t\t\t\tselected_index = index
+          \t\t\tcontinue
+          \t\tvar stock := int(material_stock.get(material_id, 0))
+          \t\tselector.set_item_text(index, "%s · 보유 %d" % [_material_display_name(material_id), stock])
+          \t\tselector.set_item_disabled(index, stock <= 0)
+          \t\tif material_id == selected_id:
+          \t\t\tselected_index = index
+          \t\tif stock > 0 and first_available < 0:
+          \t\t\tfirst_available = index
+          \tif selected_index >= 0:
+          \t\tselector.select(selected_index)
+          \tvar target_level := int(session.enhancement_level) + 1
+          \tvar can_change := (
+          \t\tsession.state == EnhancementSessionScript.State.READY
+          \t\tand session.uses_materials_for_level(target_level)
+          \t)
+          \tif not can_change:
+          \t\treturn
+          \tvar selected_available := selected_id == "" and allow_empty
+          \tif selected_id != "" and selected_index >= 0:
+          \t\tselected_available = not selector.is_item_disabled(selected_index)
+          \tif selected_available or first_available < 0:
+          \t\treturn
+          \tselector.select(first_available)
+          \tvar fallback_id := str(selector.get_item_metadata(first_available))
+          \tif allow_empty:
+          \t\tsession.set_catalyst_material(fallback_id)
+          \telse:
+          \t\tsession.set_secondary_material(fallback_id)
+          '''
+          if enhancement.count(old) != 1:
+              raise SystemExit(f"selector block count={enhancement.count(old)}")
+          enhancement_path.write_text(enhancement.replace(old, new), encoding="utf-8")
+
+          for relative in ("scripts/ui/game_flow_screen.gd", "scripts/ui/enhancement_test_runner.gd"):
+              path = Path(relative)
+              text = path.read_text(encoding="utf-8")
+              old_call = "workshop_resources.try_begin_attempt(session)"
+              new_call = "workshop_resources.try_begin_attempt(session, -1.0, -1.0, true)"
+              if text.count(old_call) != 1:
+                  raise SystemExit(f"{relative}: transaction call count={text.count(old_call)}")
+              path.write_text(text.replace(old_call, new_call), encoding="utf-8")
+          PY
+
+          grep -F 'try_begin_attempt(session, -1.0, -1.0, true)' scripts/ui/game_flow_screen.gd
+          grep -F 'try_begin_attempt(session, -1.0, -1.0, true)' scripts/ui/enhancement_test_runner.gd
+          grep -F 'var selected_id := str(session.selected_catalyst_id if allow_empty else session.selected_secondary_id)' scripts/ui/enhancement_screen.gd
+
+          rm -f .github/workflows/materialize-economy-edge-fixes.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "수동 재료 필수와 자동 fallback 경계 보강"
+          git push origin HEAD:${{ github.head_ref }}
