@@ -16,7 +16,7 @@ Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커
 - 연속 터치 피버와 작업 배율
 - 정밀 마감 ON/OFF
 - 완벽·좋음·보통 마감
-- 보통 공격력/가치 ×1.00, 좋음 ×1.05/×1.05, 완벽 ×1.10/×1.12
+- 철검 원본 20 기준 보통 공격력 20/가치 ×1.00, 좋음 21/×1.05, 완벽 22/×1.12
 - 원본 공격력과 품질 적용 공격력을 강화·보관까지 유지
 
 ### +100 강화·특수 강화
@@ -76,6 +76,16 @@ Base 적용 기준과 전수 대조:
 
 - `docs/BASE_RULES_VERSION.md`
 - `docs/BASE_ADOPTION_AUDIT.md`
+
+## Godot AI 개발 연동
+
+- `addons/godot_ai/`에 Godot AI 애드온 소스를 벤더링
+- `project.godot`에서 `res://addons/godot_ai/plugin.cfg`를 활성화
+- `_mcp_game_helper` 오토로드로 실행 중 게임 로그·검증 보조 기능 연결
+- 프로젝트 CI는 애드온 GDScript 파싱과 필수 진입점 존재를 검증
+- 로컬 `uv` 설치, MCP 서버 기동, Codex 등 실제 클라이언트 연결은 개발 PC별 수동 검증 항목
+
+애드온 사용 안내: `addons/godot_ai/README.md`
 
 ## 기술 기준
 

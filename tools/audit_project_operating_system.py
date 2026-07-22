@@ -13,6 +13,7 @@ from typing import Iterable
 
 
 TEXT_SUFFIXES = {".md", ".json", ".py", ".gd", ".tscn", ".yml", ".yaml", ".txt", ".toml"}
+VENDORED_REFERENCE_ROOTS = ("addons/",)
 LOCAL_PREFIXES = (
     "AGENTS.md",
     "README.md",
@@ -56,10 +57,11 @@ STALE_PATTERNS = {
 }
 
 REQUIRED_ASSERTIONS = {
-    "README.md": ("+100", "자동 단조", "단계 하락", "파괴"),
+    "README.md": ("+100", "자동 단조", "단계 하락", "파괴", "Godot AI"),
     "docs/MVP-002_SCOPE.md": ("+10 단위", "자동 단조", "폭주 단조", "+30"),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": ("POC v", "자동 단조", "+11", "+30"),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": ("+100", "자동 단조", "폭주 단조", "보관함"),
+    "project.godot": ("res://addons/godot_ai/plugin.cfg", "res://addons/godot_ai/runtime/game_helper.gd"),
 }
 
 
@@ -139,6 +141,11 @@ def normalize_candidate(raw: str) -> str | None:
     }:
         return value
     return None
+
+
+def is_vendored_reference_source(project_root: Path, source: Path) -> bool:
+    relative = source.relative_to(project_root).as_posix()
+    return relative.startswith(VENDORED_REFERENCE_ROOTS)
 
 
 def resolve_reference(project_root: Path, source: Path, candidate: str) -> Path:
@@ -281,6 +288,10 @@ def audit_project(project_root: Path, profile: dict, findings: list[Finding]) ->
 
     broken_refs: list[str] = []
     for source in text_files(project_root):
+        # Vendored add-ons may name upstream-only docs/tests in comments or remote URL builders.
+        # Their runtime contract is checked through project.godot, required entrypoints, and Godot parsing.
+        if is_vendored_reference_source(project_root, source):
+            continue
         text = source.read_text(encoding="utf-8", errors="replace")
         raw_refs = set(BACKTICK.findall(text)) | set(MARKDOWN_LINK.findall(text))
         for raw in raw_refs:
@@ -321,6 +332,9 @@ def audit_project(project_root: Path, profile: dict, findings: list[Finding]) ->
         "scripts/ui/game_flow_screen.gd",
         "tests/unit/test_enhancement_session.gd",
         "data/crafting/enhancement_balance.json",
+        "addons/godot_ai/plugin.cfg",
+        "addons/godot_ai/plugin.gd",
+        "addons/godot_ai/runtime/game_helper.gd",
     )
     for relative in required_runtime_paths:
         if not (project_root / relative).is_file():

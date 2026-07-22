@@ -19,6 +19,7 @@ func _initialize() -> void:
 	if failures.is_empty():
 		print("WorkshopResources tests PASSED (7 cases)")
 		quit(0)
+		return
 	for failure in failures:
 		push_error(failure)
 	quit(1)
@@ -45,7 +46,7 @@ func _new_session(success: float = 1.0):
 		config,
 		materials,
 		affixes,
-		{"weapon_id": "iron_sword", "weapon_name": "철검", "base_attack": 10}
+		{"weapon_id": "iron_sword", "weapon_name": "철검", "base_attack": 20}
 	)
 
 

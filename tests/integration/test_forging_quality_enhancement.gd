@@ -12,31 +12,57 @@ func _initialize() -> void:
 
 
 func _run() -> void:
+	await _test_quality_attack_tiers_are_distinct()
 	await _test_perfect_quality_reaches_enhancement_and_storage()
 	await _test_standard_quality_stays_baseline()
 	await _test_quality_value_survives_downgrade_restore()
 	if failures.is_empty():
-		print("Forging quality enhancement integration tests PASSED (3 cases)")
+		print("Forging quality enhancement integration tests PASSED (4 cases)")
 		quit(0)
+		return
 	for failure in failures:
 		push_error(failure)
 	quit(1)
 
 
-func _test_perfect_quality_reaches_enhancement_and_storage() -> void:
-	var perfect_screen = _new_screen(_forge_result(true))
-	var standard_screen = _new_screen(_forge_result(false))
+func _test_quality_attack_tiers_are_distinct() -> void:
+	var standard_screen = _new_screen(_forge_result("STANDARD"))
+	var good_screen = _new_screen(_forge_result("GOOD"))
+	var perfect_screen = _new_screen(_forge_result("PERFECT"))
 	await process_frame
-	_expect(int(perfect_screen.session.raw_base_attack) == 10, "원본 공격력 10을 보존해야 합니다.")
-	_expect(int(perfect_screen.session.base_attack) == 11, "완벽한 마감 공격력이 강화 세션에 전달되어야 합니다.")
+	_expect(int(standard_screen.session.base_attack) == 20, "보통 마감 공격력은 20이어야 합니다.")
+	_expect(int(good_screen.session.base_attack) == 21, "좋은 마감 공격력은 21이어야 합니다.")
+	_expect(int(perfect_screen.session.base_attack) == 22, "완벽한 마감 공격력은 22여야 합니다.")
+	_expect(standard_screen.session.base_attack < good_screen.session.base_attack, "좋은 마감은 보통 마감보다 실제 공격력이 높아야 합니다.")
+	_expect(good_screen.session.base_attack < perfect_screen.session.base_attack, "완벽한 마감은 좋은 마감보다 실제 공격력이 높아야 합니다.")
+	_set_guaranteed_success(standard_screen.session)
+	_set_guaranteed_success(good_screen.session)
+	_set_guaranteed_success(perfect_screen.session)
+	standard_screen._on_normal_pressed()
+	good_screen._on_normal_pressed()
+	perfect_screen._on_normal_pressed()
+	_expect(standard_screen.session.progression_attack < good_screen.session.progression_attack, "강화 후에도 좋은 마감이 보통보다 높아야 합니다.")
+	_expect(good_screen.session.progression_attack < perfect_screen.session.progression_attack, "강화 후에도 완벽한 마감이 좋은 마감보다 높아야 합니다.")
+	standard_screen.queue_free()
+	good_screen.queue_free()
+	perfect_screen.queue_free()
+	await process_frame
+
+
+func _test_perfect_quality_reaches_enhancement_and_storage() -> void:
+	var perfect_screen = _new_screen(_forge_result("PERFECT"))
+	var standard_screen = _new_screen(_forge_result("STANDARD"))
+	await process_frame
+	_expect(int(perfect_screen.session.raw_base_attack) == 20, "원본 공격력 20을 보존해야 합니다.")
+	_expect(int(perfect_screen.session.base_attack) == 22, "완벽한 마감 공격력 22가 강화 세션에 전달되어야 합니다.")
 	_expect(is_equal_approx(float(perfect_screen.session.value_bonus_total), 0.12), "완벽한 마감 가치 +12%가 판매가에 전달되어야 합니다.")
 	_expect(
 		int(perfect_screen.session.get_current_sale_price()) > int(standard_screen.session.get_current_sale_price()),
 		"완벽한 마감의 실제 판매가는 보통 마감보다 높아야 합니다."
 	)
 	var record: Dictionary = perfect_screen.build_weapon_record()
-	_expect(int(record.get("raw_base_attack", 0)) == 10, "보관 기록이 원본 공격력을 보존해야 합니다.")
-	_expect(int(record.get("base_attack", 0)) == 11, "보관 기록이 품질 적용 공격력을 보존해야 합니다.")
+	_expect(int(record.get("raw_base_attack", 0)) == 20, "보관 기록이 원본 공격력을 보존해야 합니다.")
+	_expect(int(record.get("base_attack", 0)) == 22, "보관 기록이 품질 적용 공격력을 보존해야 합니다.")
 	_expect(is_equal_approx(float(record.get("quality_attack_multiplier", 0.0)), 1.10), "보관 기록이 공격력 배율을 보존해야 합니다.")
 	_expect(is_equal_approx(float(record.get("quality_value_multiplier", 0.0)), 1.12), "보관 기록이 가치 배율을 보존해야 합니다.")
 	_expect(int(record.get("sale_price", 0)) == int(perfect_screen.session.get_current_sale_price()), "보관 판매가는 품질 적용 판매가와 같아야 합니다.")
@@ -46,10 +72,10 @@ func _test_perfect_quality_reaches_enhancement_and_storage() -> void:
 
 
 func _test_standard_quality_stays_baseline() -> void:
-	var screen = _new_screen(_forge_result(false))
+	var screen = _new_screen(_forge_result("STANDARD"))
 	await process_frame
-	_expect(int(screen.session.raw_base_attack) == 10, "자동 마감은 원본 공격력 10을 보존해야 합니다.")
-	_expect(int(screen.session.base_attack) == 10, "자동 마감은 공격력 10을 유지해야 합니다.")
+	_expect(int(screen.session.raw_base_attack) == 20, "자동 마감은 원본 공격력 20을 보존해야 합니다.")
+	_expect(int(screen.session.base_attack) == 20, "자동 마감은 공격력 20을 유지해야 합니다.")
 	_expect(is_zero_approx(float(screen.session.value_bonus_total)), "자동 마감은 가치 보너스를 만들면 안 됩니다.")
 	var record: Dictionary = screen.build_weapon_record()
 	_expect(is_equal_approx(float(record.get("quality_attack_multiplier", 0.0)), 1.0), "자동 마감 보관 기록의 공격력 배율은 1.0이어야 합니다.")
@@ -59,7 +85,7 @@ func _test_standard_quality_stays_baseline() -> void:
 
 
 func _test_quality_value_survives_downgrade_restore() -> void:
-	var screen = _new_screen(_forge_result(true))
+	var screen = _new_screen(_forge_result("PERFECT"))
 	await process_frame
 	_set_guaranteed_success(screen.session)
 	for _level in range(9):
@@ -79,19 +105,22 @@ func _test_quality_value_survives_downgrade_restore() -> void:
 	var transaction: Dictionary = screen.workshop_resources.try_begin_attempt(screen.session, 0.5)
 	_expect(bool(transaction.get("ok", false)), "+12 단계 하락 시도가 시작되어야 합니다.")
 	_expect(screen.session.enhancement_level == 10, "단계 하락 결과는 +10이어야 합니다.")
-	_expect(int(screen.session.base_attack) == 11, "단계 하락 후에도 완벽한 마감 기본 공격력을 유지해야 합니다.")
+	_expect(int(screen.session.base_attack) == 22, "단계 하락 후에도 완벽한 마감 기본 공격력을 유지해야 합니다.")
 	_expect(is_equal_approx(float(screen.session.value_bonus_total), 0.12), "단계 하락 복원 뒤에도 완벽한 마감 가치 +12%를 유지해야 합니다.")
 	screen.queue_free()
 	await process_frame
 
 
-func _forge_result(perfect: bool) -> Dictionary:
+func _forge_result(quality_id: String) -> Dictionary:
 	var session = ForgingSessionScript.new({"target_progress": 1.0, "tap_power": 1.0, "auto_work_per_second": 0.0})
-	if not perfect:
+	if quality_id == "STANDARD":
 		session.set_precision_enabled(false)
 	session.register_tap()
-	if perfect:
+	if quality_id == "PERFECT":
 		session.precision_position = float(session.config["precision_target"])
+		return session.finish_precision()
+	if quality_id == "GOOD":
+		session.precision_position = float(session.config["precision_target"]) + 0.10
 		return session.finish_precision()
 	return session.result.duplicate(true)
 

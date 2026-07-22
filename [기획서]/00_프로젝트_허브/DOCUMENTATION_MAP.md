@@ -34,6 +34,7 @@ AGENTS.md
 | 자동 검증은 무엇을 확인하는가? | `../../tests/README.md`, `../../tests/unit/`, `../../.github/workflows/godot-validation.yml` |
 | 데이터가 유효한가? | `../../tools/validate_game_data.py` |
 | 모바일 기술·출시 기준은 무엇인가? | `../../project.godot`, `../../docs/BASE_RULES_VERSION.md`, `DEVELOPMENT_GATES.md` |
+| Godot AI 개발 연동과 검증 경계는 어디인가? | `../../project.godot`, `../../addons/godot_ai/README.md`, `ACTIVE_CONTEXT.md`, `DEVELOPMENT_GATES.md` |
 | 사람용 PDF·DOCX·다이어그램 발행 상태는? | `DESIGN_DOCUMENT_REGISTRY.json`과 해당 Publication Manifest |
 
 ## 책임 원본 정책

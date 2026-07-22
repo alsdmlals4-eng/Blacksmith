@@ -139,13 +139,13 @@ func build_weapon_record() -> Dictionary:
 		"base_weapon_name": str(snapshot.get("base_weapon_name", "철검")),
 		"weapon_name": str(snapshot.get("display_name", "철검 +0")),
 		"enhancement_level": int(snapshot.get("enhancement_level", 0)),
-		"raw_base_attack": int(snapshot.get("raw_base_attack", snapshot.get("base_attack", 10))),
-		"base_attack": int(snapshot.get("base_attack", 10)),
+		"raw_base_attack": int(snapshot.get("raw_base_attack", snapshot.get("base_attack", 20))),
+		"base_attack": int(snapshot.get("base_attack", 20)),
 		"quality_attack_multiplier": float(snapshot.get("quality_attack_multiplier", 1.0)),
 		"quality_value_multiplier": float(snapshot.get("quality_value_multiplier", 1.0)),
-		"progression_attack": int(snapshot.get("progression_attack", 10)),
+		"progression_attack": int(snapshot.get("progression_attack", 20)),
 		"enhancement_bonus": int(snapshot.get("enhancement_bonus", 0)),
-		"final_attack": int(snapshot.get("final_attack", 10)),
+		"final_attack": int(snapshot.get("final_attack", snapshot.get("progression_attack", snapshot.get("base_attack", 20)))),
 		"sale_price": int(snapshot.get("sale_price", 0)),
 		"total_spent": int(snapshot.get("total_spent", 0)),
 		"estimated_profit": int(snapshot.get("sale_price", 0)) - int(snapshot.get("total_spent", 0)),
@@ -168,7 +168,7 @@ func _attach_progression_panels() -> void:
 		box.add_theme_constant_override("separation", 8)
 		panel.add_child(box)
 		box.add_child(_center_label("현재 / 다음 강화", 22, GOLD))
-		normal_current_label = _center_label("현재 공격력 10 · 가치 0G", 19, TEXT)
+		normal_current_label = _center_label("현재 공격력 20 · 가치 0G", 19, TEXT)
 		normal_current_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		box.add_child(normal_current_label)
 		normal_next_label = _center_label("다음 강화 효과", 19, GOLD)
@@ -194,7 +194,7 @@ func _attach_progression_panels() -> void:
 		box.add_theme_constant_override("separation", 8)
 		panel.add_child(box)
 		box.add_child(_center_label("특수 강화 결과 미리보기", 22, GOLD))
-		special_current_label = _center_label("현재 공격력 10 · 가치 0G", 18, TEXT)
+		special_current_label = _center_label("현재 공격력 20 · 가치 0G", 18, TEXT)
 		special_current_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		box.add_child(special_current_label)
 		special_next_label = _center_label("성공 시 공격력", 20, GOLD)

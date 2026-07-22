@@ -46,7 +46,7 @@ const DEFAULT_CONFIG := {
 		"max_bonus": 0.24,
 	},
 	"growth": {
-		"base_attack": 10,
+		"base_attack": 20,
 		"normal_rate": 0.08,
 		"normal_rate_per_decade": 0.01,
 		"special_rate": 0.20,
@@ -54,7 +54,7 @@ const DEFAULT_CONFIG := {
 	},
 	"economy": {
 		"base_weapon_price": 100,
-		"attack_price_scale": 12.0,
+		"attack_price_scale": 5.3,
 		"attack_price_exponent": 1.18,
 		"level_price_scale": 4.0,
 		"level_price_exponent": 1.65,
@@ -119,11 +119,11 @@ var pending_leap_roll_override: float = -1.0
 var pending_attempt_cost: int = 0
 var destroyed: bool = false
 
-var raw_base_attack: int = 10
-var base_attack: int = 10
+var raw_base_attack: int = 20
+var base_attack: int = 20
 var quality_attack_multiplier: float = 1.0
 var quality_value_multiplier: float = 1.0
-var progression_attack: int = 10
+var progression_attack: int = 20
 var attack_history: Dictionary = {}
 var value_bonus_total: float = 0.0
 var value_bonus_history: Dictionary = {}
@@ -142,7 +142,7 @@ func _init(
 	_index_affixes(affix_definitions)
 	weapon_id = str(weapon.get("weapon_id", "iron_sword"))
 	base_weapon_name = str(weapon.get("weapon_name", "철검"))
-	raw_base_attack = maxi(int(weapon.get("raw_base_attack", weapon.get("base_attack", config.get("growth", {}).get("base_attack", 10)))), 1)
+	raw_base_attack = maxi(int(weapon.get("raw_base_attack", weapon.get("base_attack", config.get("growth", {}).get("base_attack", 20)))), 1)
 	quality_attack_multiplier = maxf(float(weapon.get("quality_attack_multiplier", 1.0)), 0.01)
 	quality_value_multiplier = maxf(float(weapon.get("quality_value_multiplier", 1.0)), 0.01)
 	base_attack = maxi(int(weapon.get("base_attack", round(float(raw_base_attack) * quality_attack_multiplier))), 1)
@@ -633,7 +633,7 @@ func _calculate_sale_price(level: int, final_attack: int, affix_list: Array, val
 		return 0
 	var economy: Dictionary = config.get("economy", {})
 	var price := float(economy.get("base_weapon_price", 100))
-	price += pow(maxf(float(final_attack), 1.0), float(economy.get("attack_price_exponent", 1.18))) * float(economy.get("attack_price_scale", 12.0))
+	price += pow(maxf(float(final_attack), 1.0), float(economy.get("attack_price_exponent", 1.18))) * float(economy.get("attack_price_scale", 5.3))
 	price += pow(maxf(float(level), 0.0), float(economy.get("level_price_exponent", 1.65))) * float(economy.get("level_price_scale", 4.0))
 	price += _affix_flat_value(affix_list)
 	price *= 1.0 + maxf(value_bonus, 0.0)

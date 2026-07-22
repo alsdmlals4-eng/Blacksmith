@@ -4,7 +4,7 @@ const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
 const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
 const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
-const VERSION_TEXT := "POC v0.6.2 · main · 2026.07.22.2"
+const VERSION_TEXT := "POC v0.6.3 · main · 2026.07.22.3"
 const INVENTORY_CAPACITY := 6
 const STARTING_GOLD := 25000000
 const STARTING_MATERIAL_STOCK := {
@@ -233,8 +233,8 @@ func _show_auto_enhancement() -> void:
 	auto_weapon_template = {
 		"weapon_id": "iron_sword",
 		"weapon_name": "철검",
-		"raw_base_attack": 10,
-		"base_attack": 10,
+		"raw_base_attack": 20,
+		"base_attack": 20,
 		"quality_id": "AUTO",
 		"quality_label": "자동 단조 · 보통 마감",
 		"quality_attack_multiplier": 1.0,
@@ -324,7 +324,7 @@ func _weapon_card(weapon: Dictionary) -> PanelContainer:
 	top.add_child(name_label)
 	top.add_child(_label("슬롯 %d" % int(weapon.get("slot", 0)), 16, Color("#b7b0a3")))
 
-	var raw_base_attack := int(weapon.get("raw_base_attack", weapon.get("base_attack", 10)))
+	var raw_base_attack := int(weapon.get("raw_base_attack", weapon.get("base_attack", 20)))
 	var base_attack := int(weapon.get("base_attack", raw_base_attack))
 	var progression_attack := int(weapon.get("progression_attack", base_attack))
 	var final_attack := int(weapon.get("final_attack", progression_attack))
