@@ -7,10 +7,10 @@
 | Intake·Context | PASS | 저장소·플랫폼·핵심 방향·Base 기준 커밋 확인 |
 | Definition of Ready | PASS | 제작·강화·보관·자동 단조와 단계별 정합성 개선 범위·완료 기준 기록 |
 | Planning·Approval | PASS | 사용자의 순차 개선·적대적 검토 요청과 보호 범위 확인 |
-| Implementation | PASS | 품질별 정수 공격력 20/21/22·가격 보정·테스트 러너 종료 흐름·도메인/UI/데이터/단위·통합·정적 테스트 구현 |
+| Implementation | PASS | 피버 1회 한정 결과 보너스·가산 합성·자동 반복 미적용·도메인/UI/데이터/단위·통합·정적 테스트 구현 |
 | Verification | CURRENT | 자동 검증 PASS, 실제 화면·Android·장시간 성능 증거 필요 |
 | Documentation | PASS | Game Bible·Decision Log·Active Context·Roadmap·Scope·플레이테스트·README 동기화 |
-| Integration·Completion | PASS | PR #21 squash 병합, 최종 CI·28개 patch·main 책임 파일 재확인 |
+| Integration·Completion | CURRENT | PR #24 최종 CI·25개 patch 전수 검토 PASS, 병합 후 main 책임 파일 재확인 필요 |
 
 ## 제품 게이트
 
@@ -33,10 +33,11 @@
 - [x] Godot 헤드리스 파싱·제작 모델 테스트
 - [x] 성공한 테스트 러너의 `quit(0)` 뒤 즉시 `return`, 실패 시 `quit(1)` 계약
 - [x] 마감 품질의 실제 정수 공격력 20/21/22와 판매 가치 반영
-- [x] 원본 공격력·품질 적용 공격력·가치 배율의 강화·보관 전달
-- [x] 반복 자동 단조의 새 철검 보통 마감 고정
-- [x] 제작 모델 5건·제작 품질 통합 4건·정적 품질 계약 검사
-- [ ] 피버가 최종 무기 결과에 남기는 보너스
+- [x] 원본 공격력·마감·피버·합산 제작 배율의 강화·보관 전달
+- [x] 반복 자동 단조의 새 철검 보통 마감·피버 미적용 고정
+- [x] 제작 모델 7건·제작 결과 통합 6건·정적 제작 결과 계약 검사
+- [x] 피버 1회 이상 공격력 ×1.05·제작 가치 ×1.03
+- [x] 반복 발동 비중첩·자동 반복 미적용·강화/보관 전달
 - [ ] 실제 화면 전후 렌더 시각 검수
 - [ ] Android 실제 기기 터치·세로 비율 검증
 

@@ -15,9 +15,11 @@ func _run() -> void:
 	await _test_quality_attack_tiers_are_distinct()
 	await _test_perfect_quality_reaches_enhancement_and_storage()
 	await _test_standard_quality_stays_baseline()
+	await _test_fever_bonus_reaches_enhancement_and_storage()
+	await _test_quality_and_fever_combine_additively_and_cap()
 	await _test_quality_value_survives_downgrade_restore()
 	if failures.is_empty():
-		print("Forging quality enhancement integration tests PASSED (4 cases)")
+		print("Forging quality enhancement integration tests PASSED (6 cases)")
 		quit(0)
 		return
 	for failure in failures:
@@ -84,8 +86,40 @@ func _test_standard_quality_stays_baseline() -> void:
 	await process_frame
 
 
+func _test_fever_bonus_reaches_enhancement_and_storage() -> void:
+	var fever_screen = _new_screen(_forge_result("STANDARD", 1))
+	var baseline_screen = _new_screen(_forge_result("STANDARD"))
+	await process_frame
+	_expect(int(fever_screen.session.base_attack) == 21, "보통 마감+피버 공격력 21이 강화 세션에 전달되어야 합니다.")
+	_expect(is_equal_approx(float(fever_screen.session.value_bonus_total), 0.03), "피버 제작 가치 +3%가 판매가에 전달되어야 합니다.")
+	_expect(int(fever_screen.session.get_current_sale_price()) > int(baseline_screen.session.get_current_sale_price()), "피버 무기의 판매가는 기준 무기보다 높아야 합니다.")
+	var record: Dictionary = fever_screen.build_weapon_record()
+	_expect(bool(record.get("fever_bonus_applied", false)), "보관 기록이 피버 적용 여부를 보존해야 합니다.")
+	_expect(int(record.get("fever_activation_count", 0)) == 1, "보관 기록이 피버 발동 횟수를 보존해야 합니다.")
+	_expect(is_equal_approx(float(record.get("fever_attack_multiplier", 0.0)), 1.05), "보관 기록이 피버 공격력 배율을 보존해야 합니다.")
+	_expect(is_equal_approx(float(record.get("fever_value_multiplier", 0.0)), 1.03), "보관 기록이 피버 가치 배율을 보존해야 합니다.")
+	fever_screen.queue_free()
+	baseline_screen.queue_free()
+	await process_frame
+
+
+func _test_quality_and_fever_combine_additively_and_cap() -> void:
+	var screen = _new_screen(_forge_result("PERFECT", 3))
+	await process_frame
+	_expect(int(screen.session.base_attack) == 23, "완벽 마감+피버는 공격력 23이어야 합니다.")
+	_expect(is_equal_approx(float(screen.session.crafting_attack_multiplier), 1.15), "마감+피버 공격력은 가산 합성 ×1.15여야 합니다.")
+	_expect(is_equal_approx(float(screen.session.crafting_value_multiplier), 1.15), "마감+피버 가치는 가산 합성 ×1.15여야 합니다.")
+	_expect(is_equal_approx(float(screen.session.fever_attack_multiplier), 1.05), "피버 세 번도 공격력 보너스는 ×1.05여야 합니다.")
+	_expect(is_equal_approx(float(screen.session.fever_value_multiplier), 1.03), "피버 세 번도 가치 보너스는 ×1.03이어야 합니다.")
+	var record: Dictionary = screen.build_weapon_record()
+	_expect(int(record.get("fever_activation_count", 0)) == 3, "발동 횟수는 기록하되 보너스는 중첩하지 않아야 합니다.")
+	_expect(is_equal_approx(float(record.get("crafting_value_multiplier", 0.0)), 1.15), "보관 기록이 합산 제작 가치를 보존해야 합니다.")
+	screen.queue_free()
+	await process_frame
+
+
 func _test_quality_value_survives_downgrade_restore() -> void:
-	var screen = _new_screen(_forge_result("PERFECT"))
+	var screen = _new_screen(_forge_result("PERFECT", 1))
 	await process_frame
 	_set_guaranteed_success(screen.session)
 	for _level in range(9):
@@ -105,14 +139,15 @@ func _test_quality_value_survives_downgrade_restore() -> void:
 	var transaction: Dictionary = screen.workshop_resources.try_begin_attempt(screen.session, 0.5)
 	_expect(bool(transaction.get("ok", false)), "+12 단계 하락 시도가 시작되어야 합니다.")
 	_expect(screen.session.enhancement_level == 10, "단계 하락 결과는 +10이어야 합니다.")
-	_expect(int(screen.session.base_attack) == 22, "단계 하락 후에도 완벽한 마감 기본 공격력을 유지해야 합니다.")
-	_expect(is_equal_approx(float(screen.session.value_bonus_total), 0.12), "단계 하락 복원 뒤에도 완벽한 마감 가치 +12%를 유지해야 합니다.")
+	_expect(int(screen.session.base_attack) == 23, "단계 하락 후에도 완벽 마감+피버 기본 공격력을 유지해야 합니다.")
+	_expect(is_equal_approx(float(screen.session.value_bonus_total), 0.15), "단계 하락 복원 뒤에도 완벽 마감+피버 가치 +15%를 유지해야 합니다.")
 	screen.queue_free()
 	await process_frame
 
 
-func _forge_result(quality_id: String) -> Dictionary:
+func _forge_result(quality_id: String, fever_activations: int = 0) -> Dictionary:
 	var session = ForgingSessionScript.new({"target_progress": 1.0, "tap_power": 1.0, "auto_work_per_second": 0.0})
+	session.fever_activation_count = maxi(fever_activations, 0)
 	if quality_id == "STANDARD":
 		session.set_precision_enabled(false)
 	session.register_tap()

@@ -24,6 +24,9 @@ const DEFAULT_CONFIG := {
 	"fever_decay_per_second": 10.0,
 	"fever_duration_seconds": 6.0,
 	"fever_multiplier": 2.5,
+	"fever_result_required_activations": 1,
+	"fever_result_attack_multiplier": 1.05,
+	"fever_result_value_multiplier": 1.03,
 	"precision_speed": 0.85,
 	"precision_target": 0.5,
 	"precision_perfect_radius": 0.07,
@@ -229,7 +232,13 @@ func _complete(
 ) -> void:
 	state = State.COMPLETE
 	var raw_base_attack := maxi(int(config.get("weapon_base_attack", 20)), 1)
-	var applied_base_attack := maxi(int(round(float(raw_base_attack) * attack_multiplier)), 1)
+	var required_activations := maxi(int(config.get("fever_result_required_activations", 1)), 1)
+	var fever_bonus_applied := fever_activation_count >= required_activations
+	var fever_attack_multiplier := float(config.get("fever_result_attack_multiplier", 1.05)) if fever_bonus_applied else 1.0
+	var fever_value_multiplier := float(config.get("fever_result_value_multiplier", 1.03)) if fever_bonus_applied else 1.0
+	var crafting_attack_multiplier := maxf(attack_multiplier + fever_attack_multiplier - 1.0, 0.01)
+	var crafting_value_multiplier := maxf(value_multiplier + fever_value_multiplier - 1.0, 0.01)
+	var applied_base_attack := maxi(int(round(float(raw_base_attack) * crafting_attack_multiplier)), 1)
 	result = {
 		"weapon_id": "iron_sword",
 		"weapon_name": "철검",
@@ -239,6 +248,11 @@ func _complete(
 		"quality_label": quality_label,
 		"quality_attack_multiplier": attack_multiplier,
 		"quality_value_multiplier": value_multiplier,
+		"fever_bonus_applied": fever_bonus_applied,
+		"fever_attack_multiplier": fever_attack_multiplier,
+		"fever_value_multiplier": fever_value_multiplier,
+		"crafting_attack_multiplier": crafting_attack_multiplier,
+		"crafting_value_multiplier": crafting_value_multiplier,
 		"tap_count": tap_count,
 		"fever_activation_count": fever_activation_count,
 	}

@@ -304,14 +304,13 @@ func _apply_state(new_state: int, snapshot: Dictionary) -> void:
 			var finished: Dictionary = snapshot["result"]
 			result_name_label.text = "%s 완성!" % finished.get("weapon_name", "철검")
 			result_quality_label.text = str(finished.get("quality_label", "보통 마감"))
-			result_stats_label.text = "기본 공격력 %d → %d · 제작 가치 ×%.2f\n망치질 %d회 · 피버 %d회" % [
-				int(finished.get("raw_base_attack", 20)),
-				int(finished.get("base_attack", 20)),
-				float(finished.get("quality_value_multiplier", 1.0)),
-				int(finished.get("tap_count", 0)),
-				int(finished.get("fever_activation_count", 0)),
+			result_stats_label.text = "원본 공격력 %d → 제작 공격력 %d · 제작 가치 ×%.2f\n마감 공격력 ×%.2f · 피버 공격력 ×%.2f\n망치질 %d회 · 피버 %d회 · 결과 보너스 %s" % [
+				int(finished.get("raw_base_attack", 20)), int(finished.get("base_attack", 20)), float(finished.get("crafting_value_multiplier", 1.0)),
+				float(finished.get("quality_attack_multiplier", 1.0)), float(finished.get("fever_attack_multiplier", 1.0)),
+				int(finished.get("tap_count", 0)), int(finished.get("fever_activation_count", 0)),
+				"적용" if bool(finished.get("fever_bonus_applied", false)) else "미적용",
 			]
-			helper_label.text = "MVP-001에서는 완성까지 검증합니다. 강화와 판매는 다음 수직 범위입니다."
+			helper_label.text = "완성 무기의 마감·피버 제작 보너스는 강화와 보관까지 유지됩니다."
 
 
 func _label(text_value: String, font_size: int, color: Color) -> Label:

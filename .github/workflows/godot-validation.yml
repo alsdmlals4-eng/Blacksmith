@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate forging quality contract
+      - name: Validate forging result contract
         run: python tests/check_forging_quality_contract.py
 
       - name: Download Godot 4.7.1
