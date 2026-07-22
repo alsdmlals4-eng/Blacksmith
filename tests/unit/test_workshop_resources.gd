@@ -78,7 +78,7 @@ func _test_special_attempt_consumes_selected_stock() -> void:
 	})
 	_expect(session.set_secondary_material("whetstone"), "+10에서 숫돌을 선택할 수 있어야 합니다.")
 	_expect(session.set_catalyst_material("salamander_core"), "+10에서 촉매를 선택할 수 있어야 합니다.")
-	var before_gold := resources.gold
+	var before_gold: int = int(resources.gold)
 	var cost := int(session.calculate_attempt_cost())
 	var transaction: Dictionary = resources.try_begin_attempt(session, 0.0)
 	_expect(bool(transaction.get("ok", false)), "특수 강화는 골드와 재료가 충분하면 시작되어야 합니다.")
@@ -94,8 +94,8 @@ func _test_missing_material_blocks_without_spending() -> void:
 		session.begin_attempt(0.0)
 	var resources = WorkshopResourcesScript.new(100000, {"whetstone": 0})
 	session.set_secondary_material("whetstone")
-	var before_gold := resources.gold
-	var before_attempts := session.total_attempts
+	var before_gold: int = int(resources.gold)
+	var before_attempts: int = int(session.total_attempts)
 	var transaction: Dictionary = resources.try_begin_attempt(session, 0.0)
 	_expect(str(transaction.get("status", "")) == WorkshopResourcesScript.STATUS_NO_MATERIAL, "선택 재료가 없으면 재료 부족 상태를 반환해야 합니다.")
 	_expect(str(transaction.get("material_id", "")) == "whetstone", "부족한 재료 ID를 반환해야 합니다.")
@@ -123,8 +123,8 @@ func _test_invalid_state_does_not_charge_twice() -> void:
 	session.set_secondary_material("whetstone")
 	var first: Dictionary = resources.try_begin_attempt(session, 0.0)
 	_expect(bool(first.get("ok", false)), "첫 특수 강화 시도는 시작되어야 합니다.")
-	var after_first_gold := resources.gold
-	var after_first_stock := resources.get_material_count("whetstone")
+	var after_first_gold: int = int(resources.gold)
+	var after_first_stock: int = resources.get_material_count("whetstone")
 	var second: Dictionary = resources.try_begin_attempt(session, 0.0)
 	_expect(str(second.get("status", "")) == WorkshopResourcesScript.STATUS_INVALID_STATE, "정밀 판정 중 중복 시작을 차단해야 합니다.")
 	_expect(resources.gold == after_first_gold, "중복 시작 차단 시 골드를 추가 차감하면 안 됩니다.")
