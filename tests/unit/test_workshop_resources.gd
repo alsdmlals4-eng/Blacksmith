@@ -17,7 +17,7 @@ func _initialize() -> void:
 	milestones = _read_json("res://data/crafting/enhancement_milestones.json").get("milestones", [])
 	_run_tests()
 	if failures.is_empty():
-		print("WorkshopResources tests PASSED (6 cases)")
+		print("WorkshopResources tests PASSED (7 cases)")
 		quit(0)
 	for failure in failures:
 		push_error(failure)
@@ -29,6 +29,7 @@ func _run_tests() -> void:
 	_test_insufficient_gold_blocks_attempt()
 	_test_special_attempt_consumes_selected_stock()
 	_test_missing_material_blocks_without_spending()
+	_test_empty_secondary_blocks_manual_special()
 	_test_empty_special_slots_are_allowed_for_auto_fallback()
 	_test_invalid_state_does_not_charge_twice()
 
@@ -46,6 +47,11 @@ func _new_session(success: float = 1.0):
 		affixes,
 		{"weapon_id": "iron_sword", "weapon_name": "철검", "base_attack": 10}
 	)
+
+
+func _advance_to_nine(session) -> void:
+	for _level in range(9):
+		session.begin_attempt(0.0)
 
 
 func _test_normal_attempt_consumes_gold_only() -> void:
@@ -70,8 +76,7 @@ func _test_insufficient_gold_blocks_attempt() -> void:
 
 func _test_special_attempt_consumes_selected_stock() -> void:
 	var session = _new_session()
-	for _level in range(9):
-		session.begin_attempt(0.0)
+	_advance_to_nine(session)
 	var resources = WorkshopResourcesScript.new(100000, {
 		"whetstone": 1,
 		"salamander_core": 1,
@@ -90,8 +95,7 @@ func _test_special_attempt_consumes_selected_stock() -> void:
 
 func _test_missing_material_blocks_without_spending() -> void:
 	var session = _new_session()
-	for _level in range(9):
-		session.begin_attempt(0.0)
+	_advance_to_nine(session)
 	var resources = WorkshopResourcesScript.new(100000, {"whetstone": 0})
 	session.set_secondary_material("whetstone")
 	var before_gold: int = int(resources.gold)
@@ -103,22 +107,33 @@ func _test_missing_material_blocks_without_spending() -> void:
 	_expect(session.total_attempts == before_attempts, "재료 부족 시 강화 판정을 시작하면 안 됩니다.")
 
 
+func _test_empty_secondary_blocks_manual_special() -> void:
+	var session = _new_session()
+	_advance_to_nine(session)
+	var resources = WorkshopResourcesScript.new(100000, {})
+	session.set_secondary_material("")
+	var before_gold: int = int(resources.gold)
+	var transaction: Dictionary = resources.try_begin_attempt(session, 0.0)
+	_expect(str(transaction.get("status", "")) == WorkshopResourcesScript.STATUS_NO_MATERIAL, "수동 특수 강화는 빈 보조재료 슬롯을 차단해야 합니다.")
+	_expect(str(transaction.get("reason", "")) == "SECONDARY_REQUIRED", "빈 보조재료 차단 사유가 명확해야 합니다.")
+	_expect(resources.gold == before_gold and session.total_attempts == 9, "빈 보조재료 차단 시 자원과 시도 횟수가 변하면 안 됩니다.")
+
+
 func _test_empty_special_slots_are_allowed_for_auto_fallback() -> void:
 	var session = _new_session()
-	for _level in range(9):
-		session.begin_attempt(0.0)
+	_advance_to_nine(session)
 	var resources = WorkshopResourcesScript.new(100000, {})
 	_expect(session.set_secondary_material(""), "자동 fallback은 보조재료 슬롯을 비울 수 있어야 합니다.")
 	_expect(session.set_catalyst_material(""), "자동 fallback은 촉매 슬롯을 비울 수 있어야 합니다.")
-	var transaction: Dictionary = resources.try_begin_attempt(session, 0.0)
+	var transaction: Dictionary = resources.try_begin_attempt(session, 0.0, -1.0, true)
 	_expect(bool(transaction.get("ok", false)), "자동 fallback의 무재료 특수 강화를 허용해야 합니다.")
+	_expect(bool(transaction.get("empty_secondary_fallback", false)), "자동 무재료 진행이 fallback으로 기록되어야 합니다.")
 	_expect(str(transaction.get("secondary_material_id", "missing")) == "", "무재료 특수 강화 기록은 빈 보조재료 ID여야 합니다.")
 
 
 func _test_invalid_state_does_not_charge_twice() -> void:
 	var session = _new_session()
-	for _level in range(9):
-		session.begin_attempt(0.0)
+	_advance_to_nine(session)
 	var resources = WorkshopResourcesScript.new(100000, {"whetstone": 2})
 	session.set_secondary_material("whetstone")
 	var first: Dictionary = resources.try_begin_attempt(session, 0.0)
