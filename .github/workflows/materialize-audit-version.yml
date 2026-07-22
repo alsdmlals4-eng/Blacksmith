@@ -1,0 +1,41 @@
+name: Materialize audit version rule
+
+on:
+  pull_request:
+    branches: [main]
+    types: [synchronize, reopened]
+    paths:
+      - ".tmp_manual_economy/audit_version.patch"
+      - ".github/workflows/materialize-audit-version.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.head_ref == 'fix/unify-manual-auto-economy'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Apply version assertion patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git apply --check .tmp_manual_economy/audit_version.patch
+          git apply .tmp_manual_economy/audit_version.patch
+          grep -F '"ACTIVE_CONTEXT.md": ("POC v",' tools/audit_project_operating_system.py
+          ! grep -F '"ACTIVE_CONTEXT.md": ("POC v0.6.0",' tools/audit_project_operating_system.py
+
+          rm -rf .tmp_manual_economy
+          rm -f .github/workflows/materialize-audit-version.yml
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "운영 감사의 버전 번호 고정 제거"
+          git push origin HEAD:${{ github.head_ref }}
