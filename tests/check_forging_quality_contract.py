@@ -84,6 +84,10 @@ require(dec_016 >= 0 and dec_017 > dec_016, "Decision Log는 DEC-016 뒤에 DEC-
 workflow = text(".github/workflows/godot-validation.yml")
 require("test_forging_quality_enhancement.gd" in workflow, "Godot Workflow에 제작 품질 통합 테스트가 없습니다.")
 require("check_forging_quality_contract.py" in workflow, "Godot Workflow에 품질 정적 계약 검사가 없습니다.")
+require("godot_status=${PIPESTATUS[0]}" in workflow, "Godot Workflow가 Scene·파싱 프로세스 종료 코드를 수집해야 합니다.")
+require("status=1" in workflow, "Godot Workflow가 비정상 테스트 종료를 실패 상태로 승격해야 합니다.")
+require("SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" in workflow, "Godot Workflow가 오류 로그 패턴을 실패로 판정해야 합니다.")
+require("godot-validation-logs" in workflow, "Godot Workflow가 파싱·Scene·테스트 로그를 증거로 업로드해야 합니다.")
 
 if FAILURES:
     for failure in FAILURES:
