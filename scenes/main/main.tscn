@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://ctdm00l6et7v7"]
 
-[ext_resource type="Script" path="res://scripts/ui/game_flow_screen.gd" id="1_flow"]
+[ext_resource type="Script" uid="uid://bww4lcmbhqkbn" path="res://scripts/ui/game_flow_screen.gd" id="1_flow"]
 
-[node name="GameFlowScreen" type="Control"]
+[node name="GameFlowScreen" type="Control" unique_id=520180780]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
