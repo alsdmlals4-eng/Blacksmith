@@ -10,7 +10,7 @@
 | Implementation | PASS | 공유 경제 거래·수동/자동 소비자·단위/통합 테스트·문서 구현 |
 | Verification | CURRENT | 자동 검증 PASS, 실제 화면·Android·장시간 성능 증거 필요 |
 | Documentation | PASS | Active Context·Roadmap·Scope·플레이테스트·스크립트/테스트 안내 동기화 |
-| Integration·Completion | CURRENT | PR #18 최종 patch·리뷰·병합과 main 재확인 |
+| Integration·Completion | PASS | PR #18 최종 patch·리뷰·squash 병합과 main 핵심 파일 재확인 |
 
 ## 제품 게이트
 
@@ -73,6 +73,7 @@
 - [x] 다음 특수 강화 진입 시 소진 재료를 가용 재료로 UI·세션 동기화
 - [x] 공유 경제 단위 테스트 7건 PASS
 - [x] 실제 `EnhancementScreen` UI 통합 테스트 2건 PASS
+- [x] PR #18 squash 병합 `53cf5edacd5701ec5d412e233d45b35c6e3feb87`와 main 코드 재확인
 - [ ] 실제 사람 입력으로 골드·재료 표시 전후 수동 검수
 
 ## 자동 단조 검증
