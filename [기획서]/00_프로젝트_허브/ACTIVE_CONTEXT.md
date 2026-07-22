@@ -29,8 +29,9 @@
 - 재료 선택 동기화: 정밀 판정 중 사용 재료 기록을 보존하고, 다음 특수 강화 진입 시 가용 재료로 UI·세션을 함께 갱신
 - 자동 중지: 골드 부족·보관함 가득 참·수동 중지. 파괴 시 반복 설정에 따라 재시작 또는 종료
 - 공유 경제 자동 검증: 단위 7건·실제 강화 UI 통합 2건 PASS
-- 제작 결과 자동 검증: 제작 모델 9건·제작→강화·하락 복원·보관 통합 4건·정적 결과 계약 검사 예정
-- Godot 자동 검증: 4.7.1 import·parse, 강화·전체 흐름 Scene, 제작·강화·공유 경제·품질 모델, UI 통합, JSON PASS
+- 제작 결과 자동 검증: 제작 모델 9건·제작→강화·하락 복원·보관 통합 4건·정적 결과 계약 검사 PASS
+- Godot 자동 검증: 4.7.1 import·parse, 강화·전체 흐름 Scene, 제작·강화·공유 경제·제작 결과 모델, UI 통합, JSON PASS
+- Godot AI 검증: 포트 충돌 안내와 자기 업데이트 안전성 테스트를 복원하고 Data validation PASS
 - Base 운영체계: 고정 Base의 13개 기능을 프로젝트 운영 문서와 Skill 3개로 통합
 - Base 자동 검증: 원본 감사와 공식 Linux 회귀 전체 PASS
 - 통합 완료: 공유 경제 PR #18, 제작 품질 PR #20(`1a64e663b377daf4f7ac47f391154dfafe3dd24b`) main 병합·핵심 코드 재확인
@@ -85,7 +86,7 @@
 - 공유 경제: `scripts/economy/workshop_resources.gd`
 - 강화 UI: `scripts/ui/enhancement_screen.gd`, `scripts/ui/enhancement_test_runner.gd`, `scripts/ui/game_flow_screen.gd`
 - 데이터: `data/crafting/enhancement_balance.json`, `enhancement_milestones.json`, `materials.json`, `affixes.json`
-- 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_forging_session.gd`, `tests/unit/test_workshop_resources.gd`, `tests/integration/test_manual_enhancement_economy.gd`, `tests/integration/test_forging_result_enhancement.gd`, `tests/check_forging_result_contract.py`
+- 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_forging_session.gd`, `tests/unit/test_workshop_resources.gd`, `tests/unit/test_plugin_self_update_safety.py`, `tests/integration/test_manual_enhancement_economy.gd`, `tests/integration/test_forging_result_enhancement.gd`, `tests/check_forging_result_contract.py`
 
 ## 다음 우선순위
 
