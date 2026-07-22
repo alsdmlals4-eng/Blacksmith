@@ -10,7 +10,7 @@
 | Implementation | PASS | 피버 1회 한정 결과 보너스·가산 합성·자동 반복 미적용·도메인/UI/데이터/단위·통합·정적 테스트 구현 |
 | Verification | CURRENT | 자동 검증 PASS, 실제 화면·Android·장시간 성능 증거 필요 |
 | Documentation | PASS | Game Bible·Decision Log·Active Context·Roadmap·Scope·플레이테스트·README 동기화 |
-| Integration·Completion | PASS | PR #21 squash 병합, 최종 CI·28개 patch·main 책임 파일 재확인 |
+| Integration·Completion | CURRENT | PR #24 최종 CI·25개 patch 전수 검토 PASS, 병합 후 main 책임 파일 재확인 필요 |
 
 ## 제품 게이트
 
@@ -33,8 +33,8 @@
 - [x] Godot 헤드리스 파싱·제작 모델 테스트
 - [x] 성공한 테스트 러너의 `quit(0)` 뒤 즉시 `return`, 실패 시 `quit(1)` 계약
 - [x] 마감 품질의 실제 정수 공격력 20/21/22와 판매 가치 반영
-- [x] 원본 공격력·품질 적용 공격력·가치 배율의 강화·보관 전달
-- [x] 반복 자동 단조의 새 철검 보통 마감 고정
+- [x] 원본 공격력·마감·피버·합산 제작 배율의 강화·보관 전달
+- [x] 반복 자동 단조의 새 철검 보통 마감·피버 미적용 고정
 - [x] 제작 모델 7건·제작 결과 통합 6건·정적 제작 결과 계약 검사
 - [x] 피버 1회 이상 공격력 ×1.05·제작 가치 ×1.03
 - [x] 반복 발동 비중첩·자동 반복 미적용·강화/보관 전달
