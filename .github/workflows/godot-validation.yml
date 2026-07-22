@@ -13,8 +13,57 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
+  materialize-fever-bonus:
+    runs-on: ubuntu-latest
+    outputs:
+      applied: ${{ steps.detect.outputs.applied }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/forging-fever-result-poc064
+          fetch-depth: 0
+
+      - name: Detect one-time patch tool
+        id: detect
+        shell: bash
+        run: |
+          if [ -f tools/apply_fever_bonus_patch.py ]; then
+            echo "applied=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "applied=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Apply exact patch
+        if: steps.detect.outputs.applied == 'true'
+        run: python tools/apply_fever_bonus_patch.py
+
+      - name: Validate materialized patch
+        if: steps.detect.outputs.applied == 'true'
+        run: |
+          python -m py_compile tools/apply_fever_bonus_patch.py tests/check_forging_quality_contract.py
+          python tools/validate_game_data.py
+          python tests/check_forging_quality_contract.py
+          git diff --check
+
+      - name: Commit materialized files
+        if: steps.detect.outputs.applied == 'true'
+        shell: bash
+        run: |
+          rm tools/apply_fever_bonus_patch.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && { echo "No materialized changes"; exit 1; }
+          git commit -m "제작 피버 결과 보너스와 정본 계약 통합"
+          git push origin HEAD:agent/forging-fever-result-poc064
+
   headless-test:
+    needs: materialize-fever-bonus
+    if: needs.materialize-fever-bonus.outputs.applied != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
