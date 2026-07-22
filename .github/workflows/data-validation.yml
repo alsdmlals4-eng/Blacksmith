@@ -40,6 +40,10 @@ jobs:
         working-directory: project
         run: python tools/validate_game_data.py
 
+      - name: Validate Godot AI self-update safety
+        working-directory: project
+        run: python -m unittest tests/unit/test_plugin_self_update_safety.py -v
+
       - name: Audit pristine Base adoption and project references
         working-directory: project
         run: |
