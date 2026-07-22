@@ -123,6 +123,12 @@ var raw_base_attack: int = 20
 var base_attack: int = 20
 var quality_attack_multiplier: float = 1.0
 var quality_value_multiplier: float = 1.0
+var fever_activation_count: int = 0
+var fever_bonus_applied: bool = false
+var fever_attack_multiplier: float = 1.0
+var fever_value_multiplier: float = 1.0
+var crafting_attack_multiplier: float = 1.0
+var crafting_value_multiplier: float = 1.0
 var progression_attack: int = 20
 var attack_history: Dictionary = {}
 var value_bonus_total: float = 0.0
@@ -145,9 +151,15 @@ func _init(
 	raw_base_attack = maxi(int(weapon.get("raw_base_attack", weapon.get("base_attack", config.get("growth", {}).get("base_attack", 20)))), 1)
 	quality_attack_multiplier = maxf(float(weapon.get("quality_attack_multiplier", 1.0)), 0.01)
 	quality_value_multiplier = maxf(float(weapon.get("quality_value_multiplier", 1.0)), 0.01)
-	base_attack = maxi(int(weapon.get("base_attack", round(float(raw_base_attack) * quality_attack_multiplier))), 1)
+	fever_activation_count = maxi(int(weapon.get("fever_activation_count", 0)), 0)
+	fever_attack_multiplier = maxf(float(weapon.get("fever_attack_multiplier", 1.0)), 0.01)
+	fever_value_multiplier = maxf(float(weapon.get("fever_value_multiplier", 1.0)), 0.01)
+	fever_bonus_applied = bool(weapon.get("fever_bonus_applied", fever_activation_count > 0 and (fever_attack_multiplier > 1.0 or fever_value_multiplier > 1.0)))
+	crafting_attack_multiplier = maxf(float(weapon.get("crafting_attack_multiplier", quality_attack_multiplier + fever_attack_multiplier - 1.0)), 0.01)
+	crafting_value_multiplier = maxf(float(weapon.get("crafting_value_multiplier", quality_value_multiplier + fever_value_multiplier - 1.0)), 0.01)
+	base_attack = maxi(int(weapon.get("base_attack", round(float(raw_base_attack) * crafting_attack_multiplier))), 1)
 	progression_attack = base_attack
-	value_bonus_total = maxf(quality_value_multiplier - 1.0, 0.0)
+	value_bonus_total = maxf(crafting_value_multiplier - 1.0, 0.0)
 	attack_history["0"] = progression_attack
 	value_bonus_history["0"] = value_bonus_total
 	rng.randomize()
@@ -426,6 +438,12 @@ func snapshot() -> Dictionary:
 		"base_attack": base_attack,
 		"quality_attack_multiplier": quality_attack_multiplier,
 		"quality_value_multiplier": quality_value_multiplier,
+		"fever_activation_count": fever_activation_count,
+		"fever_bonus_applied": fever_bonus_applied,
+		"fever_attack_multiplier": fever_attack_multiplier,
+		"fever_value_multiplier": fever_value_multiplier,
+		"crafting_attack_multiplier": crafting_attack_multiplier,
+		"crafting_value_multiplier": crafting_value_multiplier,
 		"progression_attack": progression_attack,
 		"enhancement_bonus": progression_attack - base_attack,
 		"final_attack": get_current_final_attack(),
@@ -562,6 +580,16 @@ func _resolve_attempt(precision_id: String, precision_label: String, precision_b
 			"enhancement_level": enhancement_level,
 			"affixes": affixes.duplicate(true),
 			"destroyed": destroyed,
+			"raw_base_attack": raw_base_attack,
+			"base_attack": base_attack,
+			"quality_attack_multiplier": quality_attack_multiplier,
+			"quality_value_multiplier": quality_value_multiplier,
+			"fever_activation_count": fever_activation_count,
+			"fever_bonus_applied": fever_bonus_applied,
+			"fever_attack_multiplier": fever_attack_multiplier,
+			"fever_value_multiplier": fever_value_multiplier,
+			"crafting_attack_multiplier": crafting_attack_multiplier,
+			"crafting_value_multiplier": crafting_value_multiplier,
 			"final_attack": get_current_final_attack(),
 			"sale_price": get_current_sale_price(),
 		}
@@ -680,7 +708,7 @@ func _apply_success_value_bonus(level: int) -> void:
 
 func _restore_progress_to_level(level: int) -> void:
 	progression_attack = int(attack_history.get(str(level), base_attack))
-	value_bonus_total = float(value_bonus_history.get(str(level), 0.0))
+	value_bonus_total = float(value_bonus_history.get(str(level), maxf(crafting_value_multiplier - 1.0, 0.0)))
 	var attack_keys := attack_history.keys()
 	for key_value in attack_keys:
 		if int(key_value) > level:

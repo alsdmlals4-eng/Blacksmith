@@ -2,7 +2,7 @@ extends Control
 
 const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
 const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
-const VERSION_TEXT := "POC v0.6.3 · main · 2026.07.22.3"
+const VERSION_TEXT := "POC v0.6.4 · main · 2026.07.23.1"
 const INVENTORY_CAPACITY := 6
 const STARTING_GOLD := 25000000
 const STARTING_MATERIAL_STOCK := {

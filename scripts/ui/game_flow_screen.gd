@@ -4,7 +4,7 @@ const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
 const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
 const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
-const VERSION_TEXT := "POC v0.6.3 · main · 2026.07.22.3"
+const VERSION_TEXT := "POC v0.6.4 · main · 2026.07.23.1"
 const INVENTORY_CAPACITY := 6
 const STARTING_GOLD := 25000000
 const STARTING_MATERIAL_STOCK := {
@@ -239,6 +239,12 @@ func _show_auto_enhancement() -> void:
 		"quality_label": "자동 단조 · 보통 마감",
 		"quality_attack_multiplier": 1.0,
 		"quality_value_multiplier": 1.0,
+		"fever_activation_count": 0,
+		"fever_bonus_applied": false,
+		"fever_attack_multiplier": 1.0,
+		"fever_value_multiplier": 1.0,
+		"crafting_attack_multiplier": 1.0,
+		"crafting_value_multiplier": 1.0,
 	}
 	_show_enhancement_screen(auto_weapon_template)
 
@@ -330,18 +336,14 @@ func _weapon_card(weapon: Dictionary) -> PanelContainer:
 	var final_attack := int(weapon.get("final_attack", progression_attack))
 	var quality_attack_multiplier := float(weapon.get("quality_attack_multiplier", 1.0))
 	var quality_value_multiplier := float(weapon.get("quality_value_multiplier", 1.0))
-	box.add_child(_label(
-		"원본 공격력 %d · 품질 적용 %d(×%.2f) · 강화 %d · 최종 %d" % [
-			raw_base_attack,
-			base_attack,
-			quality_attack_multiplier,
-			progression_attack,
-			final_attack,
-		],
-		19,
-		Color("#f4f1e8")
-	))
-	box.add_child(_label("제작 가치 ×%.2f" % quality_value_multiplier, 16, Color("#b7b0a3")))
+	var fever_attack_multiplier := float(weapon.get("fever_attack_multiplier", 1.0))
+	var fever_value_multiplier := float(weapon.get("fever_value_multiplier", 1.0))
+	var crafting_attack_multiplier := float(weapon.get("crafting_attack_multiplier", quality_attack_multiplier + fever_attack_multiplier - 1.0))
+	var crafting_value_multiplier := float(weapon.get("crafting_value_multiplier", quality_value_multiplier + fever_value_multiplier - 1.0))
+	box.add_child(_label("원본 공격력 %d · 제작 적용 %d(×%.2f) · 강화 %d · 최종 %d" % [raw_base_attack, base_attack, crafting_attack_multiplier, progression_attack, final_attack], 19, Color("#f4f1e8")))
+	box.add_child(_label("마감 공격력 ×%.2f · 피버 공격력 ×%.2f" % [quality_attack_multiplier, fever_attack_multiplier], 16, Color("#b7b0a3")))
+	box.add_child(_label("제작 가치 ×%.2f (마감 ×%.2f · 피버 ×%.2f)" % [crafting_value_multiplier, quality_value_multiplier, fever_value_multiplier], 16, Color("#b7b0a3")))
+	box.add_child(_label("피버 결과 보너스: %s · 발동 %d회" % ["적용" if bool(weapon.get("fever_bonus_applied", false)) else "미적용", int(weapon.get("fever_activation_count", 0))], 15, Color("#b7b0a3")))
 
 	var sale_price := int(weapon.get("sale_price", 0))
 	var total_spent := int(weapon.get("total_spent", 0))

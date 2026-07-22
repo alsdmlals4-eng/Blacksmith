@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "prototype_id": "MVP-001",
   "weapon_result": {
     "weapon_id": "iron_sword",
@@ -17,6 +17,9 @@
     "fever_decay_per_second": 10.0,
     "fever_duration_seconds": 6.0,
     "fever_multiplier": 2.5,
+    "fever_result_required_activations": 1,
+    "fever_result_attack_multiplier": 1.05,
+    "fever_result_value_multiplier": 1.03,
     "precision_speed": 0.85,
     "precision_target": 0.5,
     "precision_perfect_radius": 0.07,
