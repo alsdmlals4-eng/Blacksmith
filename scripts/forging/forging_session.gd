@@ -28,6 +28,13 @@ const DEFAULT_CONFIG := {
 	"precision_target": 0.5,
 	"precision_perfect_radius": 0.07,
 	"precision_good_radius": 0.18,
+	"weapon_base_attack": 10,
+	"quality_standard_attack_multiplier": 1.0,
+	"quality_standard_value_multiplier": 1.0,
+	"quality_good_attack_multiplier": 1.05,
+	"quality_good_value_multiplier": 1.05,
+	"quality_perfect_attack_multiplier": 1.10,
+	"quality_perfect_value_multiplier": 1.12,
 }
 
 var config: Dictionary = {}
@@ -123,18 +130,21 @@ func finish_precision() -> Dictionary:
 	var distance := absf(precision_position - float(config["precision_target"]))
 	var quality_id := "STANDARD"
 	var quality_label := "보통 마감"
-	var quality_multiplier := 1.0
+	var attack_multiplier := float(config["quality_standard_attack_multiplier"])
+	var value_multiplier := float(config["quality_standard_value_multiplier"])
 
 	if distance <= float(config["precision_perfect_radius"]):
 		quality_id = "PERFECT"
 		quality_label = "완벽한 마감"
-		quality_multiplier = 1.2
+		attack_multiplier = float(config["quality_perfect_attack_multiplier"])
+		value_multiplier = float(config["quality_perfect_value_multiplier"])
 	elif distance <= float(config["precision_good_radius"]):
 		quality_id = "GOOD"
 		quality_label = "좋은 마감"
-		quality_multiplier = 1.1
+		attack_multiplier = float(config["quality_good_attack_multiplier"])
+		value_multiplier = float(config["quality_good_value_multiplier"])
 
-	_complete(quality_id, quality_label, quality_multiplier)
+	_complete(quality_id, quality_label, attack_multiplier, value_multiplier)
 	return result.duplicate(true)
 
 
@@ -192,7 +202,12 @@ func _add_progress(amount: float) -> void:
 			precision_direction = 1.0
 			state_changed.emit(state)
 		else:
-			_complete("STANDARD", "자동 마감", 1.0)
+			_complete(
+				"STANDARD",
+				"자동 마감",
+				float(config["quality_standard_attack_multiplier"]),
+				float(config["quality_standard_value_multiplier"])
+			)
 
 
 func _advance_precision(delta: float) -> void:
@@ -206,14 +221,25 @@ func _advance_precision(delta: float) -> void:
 			precision_direction = 1.0
 
 
-func _complete(quality_id: String, quality_label: String, quality_multiplier: float) -> void:
+func _complete(
+	quality_id: String,
+	quality_label: String,
+	attack_multiplier: float,
+	value_multiplier: float
+) -> void:
 	state = State.COMPLETE
+	var raw_base_attack := maxi(int(config.get("weapon_base_attack", 10)), 1)
+	var applied_base_attack := maxi(int(round(float(raw_base_attack) * attack_multiplier)), 1)
 	result = {
 		"weapon_id": "iron_sword",
 		"weapon_name": "철검",
+		"raw_base_attack": raw_base_attack,
+		"base_attack": applied_base_attack,
 		"quality_id": quality_id,
 		"quality_label": quality_label,
-		"quality_multiplier": quality_multiplier,
+		"quality_multiplier": attack_multiplier,
+		"quality_attack_multiplier": attack_multiplier,
+		"quality_value_multiplier": value_multiplier,
 		"tap_count": tap_count,
 		"fever_activation_count": fever_activation_count,
 	}

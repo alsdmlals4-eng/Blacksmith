@@ -8,7 +8,7 @@ var failures: Array[String] = []
 func _initialize() -> void:
 	_run_tests()
 	if failures.is_empty():
-		print("ForgingSession tests PASSED (4 cases)")
+		print("ForgingSession tests PASSED (5 cases)")
 		quit(0)
 	else:
 		for failure in failures:
@@ -20,6 +20,7 @@ func _run_tests() -> void:
 	_test_precision_off_completes()
 	_test_rapid_taps_start_fever()
 	_test_precision_perfect_result()
+	_test_quality_effect_values()
 	_test_reset_clears_session()
 
 
@@ -68,6 +69,25 @@ func _test_precision_perfect_result() -> void:
 	session.precision_position = float(session.config["precision_target"])
 	var result: Dictionary = session.finish_precision()
 	_expect(result.get("quality_id") == "PERFECT", "정중앙 마감은 PERFECT 결과여야 합니다.")
+
+
+func _test_quality_effect_values() -> void:
+	var good_session = ForgingSessionScript.new({"target_progress": 1.0, "tap_power": 1.0, "auto_work_per_second": 0.0})
+	good_session.register_tap()
+	good_session.precision_position = float(good_session.config["precision_target"]) + 0.10
+	var good: Dictionary = good_session.finish_precision()
+	_expect(good.get("quality_id") == "GOOD", "GOOD 범위는 좋은 마감이어야 합니다.")
+	_expect(is_equal_approx(float(good.get("quality_attack_multiplier", 0.0)), 1.05), "좋은 마감 공격력 배율은 1.05여야 합니다.")
+	_expect(is_equal_approx(float(good.get("quality_value_multiplier", 0.0)), 1.05), "좋은 마감 가치 배율은 1.05여야 합니다.")
+
+	var perfect_session = ForgingSessionScript.new({"target_progress": 1.0, "tap_power": 1.0, "auto_work_per_second": 0.0})
+	perfect_session.register_tap()
+	perfect_session.precision_position = float(perfect_session.config["precision_target"])
+	var perfect: Dictionary = perfect_session.finish_precision()
+	_expect(int(perfect.get("raw_base_attack", 0)) == 10, "완벽한 마감은 원본 공격력 10을 보존해야 합니다.")
+	_expect(int(perfect.get("base_attack", 0)) == 11, "완벽한 마감은 적용 공격력 11을 만들어야 합니다.")
+	_expect(is_equal_approx(float(perfect.get("quality_attack_multiplier", 0.0)), 1.10), "완벽한 마감 공격력 배율은 1.10이어야 합니다.")
+	_expect(is_equal_approx(float(perfect.get("quality_value_multiplier", 0.0)), 1.12), "완벽한 마감 가치 배율은 1.12여야 합니다.")
 
 
 func _test_reset_clears_session() -> void:

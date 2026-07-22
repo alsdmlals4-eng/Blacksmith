@@ -94,7 +94,6 @@ func _open_enhancement() -> void:
 	if forging_session == null:
 		return
 	var weapon_result: Dictionary = forging_session.result.duplicate(true)
-	weapon_result["base_attack"] = 10
 	auto_weapon_template = weapon_result.duplicate(true)
 	_show_enhancement_screen(weapon_result)
 	enhance_button.visible = false
@@ -230,15 +229,18 @@ func _auto_enhance_current(screen, options: Dictionary) -> String:
 
 
 func _show_auto_enhancement() -> void:
-	if auto_weapon_template.is_empty():
-		auto_weapon_template = {
-			"weapon_id": "iron_sword",
-			"weapon_name": "철검",
-			"base_attack": 10,
-			"quality_id": "AUTO",
-			"quality_label": "자동 단조",
-			"quality_multiplier": 1.0,
-		}
+	# 반복 자동 단조는 최초 수동 제작의 GOOD/PERFECT 품질을 복제하지 않습니다.
+	auto_weapon_template = {
+		"weapon_id": "iron_sword",
+		"weapon_name": "철검",
+		"raw_base_attack": 10,
+		"base_attack": 10,
+		"quality_id": "AUTO",
+		"quality_label": "자동 단조 · 보통 마감",
+		"quality_multiplier": 1.0,
+		"quality_attack_multiplier": 1.0,
+		"quality_value_multiplier": 1.0,
+	}
 	_show_enhancement_screen(auto_weapon_template)
 
 
