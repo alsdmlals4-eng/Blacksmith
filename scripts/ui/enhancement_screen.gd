@@ -389,24 +389,43 @@ func _update_manual_material_selectors() -> void:
 func _sync_material_selector_stock(selector: OptionButton, allow_empty: bool) -> void:
 	if selector == null or not is_instance_valid(selector):
 		return
+	var selected_id := str(session.selected_catalyst_id if allow_empty else session.selected_secondary_id)
+	var selected_index := -1
 	var first_available := 0 if allow_empty else -1
 	for index in range(selector.item_count):
 		var material_id := str(selector.get_item_metadata(index))
 		if material_id == "":
 			selector.set_item_disabled(index, false)
+			if selected_id == "":
+				selected_index = index
 			continue
 		var stock := int(material_stock.get(material_id, 0))
 		selector.set_item_text(index, "%s · 보유 %d" % [_material_display_name(material_id), stock])
 		selector.set_item_disabled(index, stock <= 0)
+		if material_id == selected_id:
+			selected_index = index
 		if stock > 0 and first_available < 0:
 			first_available = index
-	if selector.selected >= 0 and selector.is_item_disabled(selector.selected) and first_available >= 0:
-		selector.select(first_available)
-		var selected_id := str(selector.get_item_metadata(first_available))
-		if allow_empty:
-			session.set_catalyst_material(selected_id)
-		else:
-			session.set_secondary_material(selected_id)
+	if selected_index >= 0:
+		selector.select(selected_index)
+	var target_level := int(session.enhancement_level) + 1
+	var can_change := (
+		session.state == EnhancementSessionScript.State.READY
+		and session.uses_materials_for_level(target_level)
+	)
+	if not can_change:
+		return
+	var selected_available := selected_id == "" and allow_empty
+	if selected_id != "" and selected_index >= 0:
+		selected_available = not selector.is_item_disabled(selected_index)
+	if selected_available or first_available < 0:
+		return
+	selector.select(first_available)
+	var fallback_id := str(selector.get_item_metadata(first_available))
+	if allow_empty:
+		session.set_catalyst_material(fallback_id)
+	else:
+		session.set_secondary_material(fallback_id)
 
 
 func _update_manual_attempt_buttons() -> void:

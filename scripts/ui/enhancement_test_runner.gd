@@ -149,7 +149,7 @@ func _auto_enhance_current(screen, options: Dictionary) -> String:
 			session.set_secondary_material(used_secondary)
 			session.set_catalyst_material(used_catalyst)
 
-		var transaction: Dictionary = workshop_resources.try_begin_attempt(session)
+		var transaction: Dictionary = workshop_resources.try_begin_attempt(session, -1.0, -1.0, true)
 		if not bool(transaction.get("ok", false)):
 			if str(transaction.get("status", "")) == WorkshopResourcesScript.STATUS_NO_GOLD:
 				return "NO_GOLD"
