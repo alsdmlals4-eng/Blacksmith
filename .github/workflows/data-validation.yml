@@ -21,20 +21,41 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
 
       - name: Apply forging fever result feature once
+        id: apply_fever
         if: (github.event_name == 'pull_request' && github.head_ref == 'feat/forging-fever-result-bonus-poc063') || (github.event_name == 'push' && github.ref_name == 'feat/forging-fever-result-bonus-poc063')
         working-directory: project
         shell: bash
         run: |
+          status=0
           if [ -f tools/apply_fever_result_patch.py ]; then
-            python tools/apply_fever_result_patch.py
-            rm tools/apply_fever_result_patch.py
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add -A
-            git commit -m "제작 피버를 무기 가치 보너스로 연결"
-            target_branch="${{ github.head_ref || github.ref_name }}"
-            git push origin HEAD:"$target_branch"
+            set +e
+            python tools/apply_fever_result_patch.py 2>&1 | tee fever-patch.log
+            status=${PIPESTATUS[0]}
+            set -e
+            if [ "$status" -eq 0 ]; then
+              rm tools/apply_fever_result_patch.py
+              git config user.name "github-actions[bot]"
+              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+              git add -A
+              git commit -m "제작 피버를 무기 가치 보너스로 연결"
+              target_branch="${{ github.head_ref || github.ref_name }}"
+              git push origin HEAD:"$target_branch"
+            fi
           fi
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload fever patch log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fever-patch-log
+          path: project/fever-patch.log
+          if-no-files-found: ignore
+
+      - name: Fail when fever patch fails
+        if: steps.apply_fever.outputs.status != '0'
+        run: exit 1
 
       - name: Checkout pinned Base
         uses: actions/checkout@v4
