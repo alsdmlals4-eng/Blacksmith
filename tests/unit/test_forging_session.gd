@@ -34,6 +34,8 @@ func _test_precision_off_completes() -> void:
 	session.register_tap()
 	_expect(session.state == ForgingSessionScript.State.COMPLETE, "정밀작업 OFF에서 제작이 즉시 완료되어야 합니다.")
 	_expect(session.result.get("quality_id") == "STANDARD", "자동 마감은 STANDARD 결과여야 합니다.")
+	_expect(int(session.result.get("raw_base_attack", 0)) == 10, "자동 마감은 원본 공격력 10을 보존해야 합니다.")
+	_expect(int(session.result.get("base_attack", 0)) == 10, "자동 마감은 적용 공격력 10을 유지해야 합니다.")
 
 
 func _test_rapid_taps_start_fever() -> void:
@@ -77,6 +79,8 @@ func _test_quality_effect_values() -> void:
 	good_session.precision_position = float(good_session.config["precision_target"]) + 0.10
 	var good: Dictionary = good_session.finish_precision()
 	_expect(good.get("quality_id") == "GOOD", "GOOD 범위는 좋은 마감이어야 합니다.")
+	_expect(int(good.get("raw_base_attack", 0)) == 10, "좋은 마감은 원본 공격력 10을 보존해야 합니다.")
+	_expect(int(good.get("base_attack", 0)) == 11, "좋은 마감의 10.5 공격력은 11로 반올림되어야 합니다.")
 	_expect(is_equal_approx(float(good.get("quality_attack_multiplier", 0.0)), 1.05), "좋은 마감 공격력 배율은 1.05여야 합니다.")
 	_expect(is_equal_approx(float(good.get("quality_value_multiplier", 0.0)), 1.05), "좋은 마감 가치 배율은 1.05여야 합니다.")
 
