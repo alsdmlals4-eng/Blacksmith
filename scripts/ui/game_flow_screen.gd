@@ -2,8 +2,9 @@ extends Control
 
 const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
 const EnhancementScreenScript = preload("res://scripts/ui/enhancement_screen.gd")
+const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
-const VERSION_TEXT := "POC v0.6.0 · main · 2026.07.21.4"
+const VERSION_TEXT := "POC v0.6.1 · main · 2026.07.22.1"
 const INVENTORY_CAPACITY := 6
 const STARTING_GOLD := 25000000
 const STARTING_MATERIAL_STOCK := {
@@ -21,8 +22,7 @@ var inventory_button: Button
 var inventory_overlay: Control
 var version_badge: PanelContainer
 var inventory: Array[Dictionary] = []
-var available_gold: int = STARTING_GOLD
-var material_stock: Dictionary = STARTING_MATERIAL_STOCK.duplicate(true)
+var workshop_resources = WorkshopResourcesScript.new(STARTING_GOLD, STARTING_MATERIAL_STOCK)
 var auto_running: bool = false
 var auto_weapon_template: Dictionary = {}
 
@@ -108,7 +108,7 @@ func _show_enhancement_screen(weapon_result: Dictionary) -> void:
 	enhancement_screen.store_requested.connect(_on_store_requested)
 	enhancement_screen.inventory_requested.connect(_show_inventory)
 	enhancement_screen.auto_forge_requested.connect(_on_auto_forge_requested)
-	enhancement_screen.set_auto_resources(available_gold, material_stock)
+	enhancement_screen.set_workshop_resources(workshop_resources)
 	_replace_screen(enhancement_screen)
 
 
@@ -145,7 +145,6 @@ func _run_auto_forge(options: Dictionary) -> void:
 			final_status = "강화 화면을 찾지 못해 자동 단조를 중단했습니다."
 			break
 		screen.set_auto_running(true)
-		screen.set_auto_resources(available_gold, material_stock)
 		var result: String = await _auto_enhance_current(screen, options)
 		if result == "TARGET_REACHED":
 			var record: Dictionary = screen.build_weapon_record()
@@ -161,7 +160,7 @@ func _run_auto_forge(options: Dictionary) -> void:
 			continue
 		if result == "DESTROYED":
 			final_status = "자동 단조 중 무기가 파괴됐습니다."
-			if repeat_until_full and available_gold > 0 and inventory.size() < INVENTORY_CAPACITY:
+			if repeat_until_full and workshop_resources.gold > 0 and inventory.size() < INVENTORY_CAPACITY:
 				_show_auto_enhancement()
 				await get_tree().process_frame
 				continue
@@ -178,7 +177,6 @@ func _run_auto_forge(options: Dictionary) -> void:
 	auto_running = false
 	if current_screen != null and is_instance_valid(current_screen):
 		current_screen.set_auto_running(false)
-		current_screen.set_auto_resources(available_gold, material_stock)
 		current_screen.set_auto_status(final_status)
 	if not inventory.is_empty():
 		_show_inventory()
@@ -205,28 +203,23 @@ func _auto_enhance_current(screen, options: Dictionary) -> String:
 		var used_secondary := ""
 		var used_catalyst := ""
 		if session.uses_materials_for_level(next_level):
-			used_secondary = _available_material(str(options.get("secondary_material_id", "")))
-			used_catalyst = _available_material(str(options.get("catalyst_material_id", "")))
+			used_secondary = workshop_resources.available_material_id(str(options.get("secondary_material_id", "")))
+			used_catalyst = workshop_resources.available_material_id(str(options.get("catalyst_material_id", "")))
 			session.set_secondary_material(used_secondary)
 			session.set_catalyst_material(used_catalyst)
 
-		var cost := int(session.calculate_attempt_cost())
-		if available_gold < cost:
-			return "NO_GOLD"
-		var started := bool(session.begin_attempt())
-		if not started:
+		var transaction: Dictionary = workshop_resources.try_begin_attempt(session)
+		if not bool(transaction.get("ok", false)):
+			if str(transaction.get("status", "")) == WorkshopResourcesScript.STATUS_NO_GOLD:
+				return "NO_GOLD"
 			return "ERROR"
-		available_gold -= cost
-		_consume_material(used_secondary)
-		_consume_material(used_catalyst)
-		screen.set_auto_resources(available_gold, material_stock)
 		if int(session.state) == 1:
 			session.precision_position = session.rng.randf()
 			session.finish_precision()
 		screen.set_auto_status("자동 단조 진행 · 현재 +%d / 목표 +%d · 보유 %sG" % [
 			int(session.enhancement_level),
 			target_level,
-			_money(available_gold),
+			_money(workshop_resources.gold),
 		])
 		await get_tree().create_timer(0.04).timeout
 	if not auto_running:
@@ -256,18 +249,6 @@ func _store_auto_weapon(weapon: Dictionary) -> void:
 	stored["slot"] = inventory.size() + 1
 	inventory.append(stored)
 	_update_inventory_button()
-
-
-func _available_material(material_id: String) -> String:
-	if material_id == "":
-		return ""
-	return material_id if int(material_stock.get(material_id, 0)) > 0 else ""
-
-
-func _consume_material(material_id: String) -> void:
-	if material_id == "":
-		return
-	material_stock[material_id] = maxi(int(material_stock.get(material_id, 0)) - 1, 0)
 
 
 func _show_inventory() -> void:
