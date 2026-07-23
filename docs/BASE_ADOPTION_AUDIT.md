@@ -37,6 +37,10 @@ Base ACTIVE Skill: 25개 매핑 완료
 
 ## 최신 자동 검증
 
+### 역사 기준선
+
+- Data validation #389 PASS
+
 ### Red·중간 회귀
 
 - Data validation #391: 새 프로젝트 코어 정렬 검사에서 예상 FAIL. stale 시작 문서와 누락된 MVP-003 전파를 검출.
