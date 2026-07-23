@@ -65,7 +65,9 @@
   - `main`/nightly 전체 매트릭스 책임
   - 현재는 `workflow_dispatch`만 허용
 
-모든 Workflow는 다음 계약을 사용한다.
+## 동시 실행 취소 계약
+
+상위 PR와 full Workflow는 요청된 기본 키를 그대로 사용한다.
 
 ```yaml
 concurrency:
@@ -73,7 +75,21 @@ concurrency:
   cancel-in-progress: true
 ```
 
-새 커밋이 들어오면 같은 Workflow와 ref의 이전 실행을 취소한다.
+새 커밋이 들어오면 같은 상위 Workflow와 ref의 이전 실행을 취소한다.
+
+재사용 Workflow는 호출자의 `github.workflow` 값을 상속하므로 상위 Workflow와 동일한 group을 쓰면 호출자를 취소할 수 있다. 따라서 고유 suffix를 붙인다.
+
+```yaml
+# Python reusable
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}-${{ inputs.runner }}-${{ inputs.python-version }}-${{ inputs.scope }}
+  cancel-in-progress: true
+
+# Godot reusable
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}-godot-reusable
+  cancel-in-progress: true
+```
 
 ## Actions 사용 가능 후 활성화 절차
 
@@ -116,7 +132,8 @@ on:
 5. Godot 4.7.1 다운로드·import·Scene smoke·전체 테스트
 6. pinned Base LibreOffice·Node·pnpm 전체 회귀
 7. 새 커밋 push 시 `cancel-in-progress` 실제 취소 동작
-8. Branch protection의 Required Check 이름과 강제 여부
+8. 재사용 Workflow가 상위 Workflow를 취소하지 않는지 확인
+9. Branch protection의 Required Check 이름과 강제 여부
 
 ### 4. Required Check 정리
 
