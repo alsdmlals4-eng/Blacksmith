@@ -1,12 +1,13 @@
 # Active Context
 
 - 갱신일: 2026-07-24
-- Work Mode: `REVIEW → PLAN`
-- 현재 브랜치: `agent/propose-project-core-contract`
-- 현재 PR: #33 Draft
-- PR 스택: `#31 → #32 → #33`
+- Work Mode: `IMPLEMENT → VERIFY_PENDING`
+- 현재 브랜치: `agent/implement-equipment-lifecycle-poc`
+- 현재 PR: #35 Draft
+- 선행 PR: #31·#32·#33 `MERGED`
 - 현재 Issue·Goal: #34 `MVP-003: 장비 한 점의 생애 PoC 구현 및 플레이 검증`
-- 장비 생애 PoC 통합 상태: `SPEC_READY / IMPLEMENTATION_NOT_STARTED`
+- 장비 생애 PoC 통합 상태: `IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED`
+- GitHub Actions: `DEFERRED_UNTIL_ACTIONS_AVAILABLE`
 
 ## 1. 현재 판정
 
@@ -14,12 +15,16 @@
 |---|---|
 | 프로젝트 코어 | `CORE_CONFIRMED / CORE_RECORDED` |
 | 장비 생애 PoC 통합 명세 | `SPEC_READY` |
-| 장비 생애 PoC 구현 | `IMPLEMENTATION_NOT_STARTED` |
-| 현재 Prototype 자동 검증 | Data #418 PASS, Godot #345 PASS |
+| 장비 생애 PoC 구현 | `IMPLEMENTATION_CANDIDATE` |
+| 최신 head 자동 검증 | `NOT_RUN / VALIDATION_DEFERRED` |
+| 과거 Prototype 자동 검증 | Data #452 PASS, Godot #379 PASS |
 | Android 실기기 | `NOT_RUN` |
-| 접근성·성능 | `NOT_RUN` |
+| 접근성 사람 검토 | `NOT_RUN` |
+| 성능 | `NOT_RUN` |
 | 외부 플레이테스트 | `NOT_RUN` |
 | Production | `NOT_GREENLIT` |
+
+과거 #452/#379는 lifecycle 도메인 계층 일부까지의 증거다. 이후 UI·E2E·CI 최적화·정본 변경이 추가됐으므로 최신 head PASS를 대신하지 않는다.
 
 ## 2. 프로젝트 코어
 
@@ -46,11 +51,11 @@
 
 중요 장비의 선택형 복원은 승인된 후속 기획이며 첫 PoC에서는 제외한다.
 
-## 3. 현재 구현 사실
+## 3. 기존 Prototype 구현 사실
 
 현재 실행 배지: `POC v0.6.4 · main · 2026.07.23.1`
 
-현재 코드·데이터·Scene·테스트가 지원하는 범위:
+기존 코드·데이터·Scene·테스트가 지원하는 범위:
 
 - 철검 제작, 자동 작업, 광클 피버, 제작 정밀 마감
 - 일반 강화와 `+10` 단위 특수 강화
@@ -60,7 +65,7 @@
 - 공유 골드·재료 거래
 - 보관함과 자동 단조
 
-현재 제작 검증 기준:
+기존 제작 검증 기준:
 
 - 제작 모델 7건
 - 제작 결과 통합 6건
@@ -68,57 +73,66 @@
 - 피버 적용 공격력 21·22·23
 - 피버 공격력 ×1.05·제작 가치 ×1.03, 반복 비중첩
 
-현재 실패·보정·위험 수치의 단일 책임 원본은 `data/crafting/enhancement_balance.json`이다. `data/crafting/enhancement_milestones.json`은 `+10` 단위 특수 강화·수식어 이정표만 책임진다.
+## 4. PR #35 구현 후보
 
-아직 구현되지 않은 확정 설계:
+작성된 제품 코드·데이터·Scene·테스트:
 
-- 영구 완성도 5등급과 기존 정밀 결과의 분리
-- 피로도·날짜 진행
-- 검투사 의뢰와 +5/+10 납품 판단
-- 지연 경기 결과와 설명 가능한 기여 조건
-- 영구 세계 장비 기록과 재방문
-- PoC 행동 로그
+- lifecycle JSON 4종과 독립 validator
+- 영구 완성도 5등급과 정밀 결과 분리
+- legacy `quality_*`·AUTO 기록 변환
+- 피로도 20, 작업비, 수동 날짜와 50% 이월
+- 검투사 계약·+5/+10 판단·적합도 근거
+- DEFEAT/WIN/DECISIVE_WIN 결정적 결과
+- 영구 장비 Registry와 활동 상한 6
+- 제작·강화·납품 원자 거래와 중복 재시도 방지
+- 지연 보고·명성·관계·같은 검투사 재방문
+- 네트워크 없는 로컬 telemetry
+- 기존 Prototype 진입 버튼과 별도 세로 PoC Scene
+- 정밀 보조 GOOD 경로·느린 포인터·48dp 입력
+- 장비 생애 E2E와 경계 테스트
 
-## 4. 현행 책임 원본
+## 5. CI 비용 게이트
+
+자동 PR, `main` push, nightly 트리거는 사용자가 Actions 사용 가능 상태를 알릴 때까지 중지한다.
+
+최적화 구조:
+
+- 문서 전용: Ubuntu Python 3.12 + 문서 validator
+- 코드 PR: Ubuntu Python 전체 계약 + Ubuntu Godot 1회
+- main/nightly: Ubuntu·Windows × Python 3.11·3.12·3.13, Godot 1회, pinned Base 전체 suite 1회
+- 모든 Workflow `concurrency`와 `cancel-in-progress: true`
+- Python·Godot reusable Workflow 사용
+- 실패 로그만 artifact 업로드
+
+책임 원본: `docs/CI_EXECUTION_POLICY.md`
+
+## 6. 현행 책임 원본
 
 - 코어: `docs/superpowers/specs/2026-07-23-project-core-design.md`
 - 통합 명세: `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md`
 - MVP Scope: `docs/MVP-003_SCOPE.md`
 - 구현계획: `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md`
-- 최종 적대적 검토: `docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md`
+- CI 정책: `docs/CI_EXECUTION_POLICY.md`
 - 통합 게임 기획: `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
 - 상태·게이트: 이 문서, `ROADMAP.md`, `DEVELOPMENT_GATES.md`
 
-## 5. 최근 검증
+## 7. Actions 사용 가능 후 다음 작업
 
-- Data validation #389: 기존 기준선 PASS
-- 최종 검토 Red gate #391: 예상 실패. stale 시작 문서, 누락된 MVP Scope와 정본 전파 누락을 검출
-- Green 후보 #406·#412: 기존 문서 계약과 계획 미래 경로 오분류를 추가 검출
-- Data validation #418: Git conflict, JSON, 강화 실패, 시뮬레이터, core alignment, 계획 미래 경로 분류, Base adoption audit와 고정 Base 전체 회귀 PASS
-- Godot validation #345: 제작 계약, Godot 4.7.1 import·parse, enhancement/main Scene smoke, 모델·통합 테스트, 패키징과 JSON 검증 PASS
-- PR #31·#32·#33 review comment: 없음
-- Issue #29 기준선 시뮬레이션: 완료 후 닫음
-- Issue #14 구형 Base 마이그레이션: 현행 PR #31/#32로 대체 후 닫음
-- PDF 자동 검수: 15페이지, 200 DPI 전 페이지 PASS
-- PDF 사람 시각 검토: `NOT_RUN`
+1. PR 자동 검증 트리거 복원
+2. 최신 head Python 계약 실행
+3. Godot 4.7.1 import·main/PoC Scene smoke 실행
+4. 신규·기존 모델·통합·E2E 전체 실행
+5. 실패 수정과 재실행
+6. Windows Python 매트릭스와 cancellation 확인
+7. 실제 check 이름으로 Branch protection 갱신
+8. 코드 리뷰 후 PR #35 병합 판정
 
-#418/#345는 최종 보고서 본문과 운영 정본을 포함한 substantive head `f161200613522d0b9ded5e951b3c404d93dce527`의 증거다. 이후 증거 문구만 동기화한 head도 동일 Workflow로 재확인한다.
-
-## 6. 다음 작업
-
-1. 최종 증거 동기화 head의 Data·Godot Workflow를 재확인한다.
-2. PR #33 제목·본문·changed files·head 일치를 마감한다.
-3. 선행 PR #31·#32를 정리한 뒤 #33을 검토한다.
-4. Issue #34 구현은 별도 구현 PR에서 Task 1~9 순서로 수행한다.
-5. Android·접근성·성능·외부 플레이 증거를 수집한다.
-
-## 7. 완료 금지 조건
+## 8. 완료 금지 조건
 
 다음이 남아 있으면 프로젝트 구현 또는 MVP 완료로 선언하지 않는다.
 
-- Issue #34 제품 코드 미구현
+- 최신 head 전체 자동 회귀 `NOT_RUN`
 - Android·접근성·성능·외부 플레이 `NOT_RUN`
 - Branch protection Required Check 강제 상태 `UNVERIFIED`
-- PR #31·#32·#33 미병합
-- 사람의 최종 PDF 시각 확인 `NOT_RUN`
-- 저장소 PDF binary publication `NOT_RUN`
+- PR #35 미병합
+- 사람이 PDF를 포함한 주요 화면·문서 실제 열람 `NOT_RUN`
