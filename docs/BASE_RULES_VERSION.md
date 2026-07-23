@@ -1,8 +1,8 @@
 # Base 적용 기준
 
 - Base: `alsdmlals4-eng/Base`
-- 기준 커밋: `ee265576da7f67d3278f8099dd97d4e714ef0651`
-- 동기화일: 2026-07-22
+- 기준 커밋: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`
+- 동기화일: 2026-07-23
 - 대상: `alsdmlals4-eng/Blacksmith`
 - 상세 매핑: `docs/BASE_ADOPTION_PROFILE.json`
 - 감사 결과: `docs/BASE_ADOPTION_AUDIT.md`
@@ -12,7 +12,7 @@
 Base를 복제하지 않는다. 공용 기능은 Blacksmith의 실제 책임 원본과 프로젝트 Skill 3개에 통합한다.
 
 ```text
-Base 13개 활성 기능
+Base 25개 활성 기능
 → 프로젝트 운영 문서
 → blacksmith-game-design
 → blacksmith-engineering
@@ -30,6 +30,12 @@ Base 13개 활성 기능
 - Active Context·Map·Gates·Registry 연결
 - 구형 파일의 고유 정보·참조·복구·승인 보존
 - 정본·경로·ID·Schema의 untouched 소비자 감사
+- 프로젝트 코어 식별과 사용자 승인 기반 확정 분리
+- 적대적 검토 → 비판 검증 → 최소 승인 개선 → 회귀 재검토
+- 동작·인터페이스·데이터 호환성을 보존하는 리팩터링
+- Skill 본문은 상시 계약만 유지하고 조건부 상세는 reference로 분리
+- 죽은 자료·중복·오래된 참조는 기능과 복구 경계를 보존하며 정리
+- 장기 작업은 checkpoint·부분 산출물·정확한 재개 지점을 유지
 - 정적·런타임·회귀·증거 보고
 - 미실행은 `NOT_RUN`
 
@@ -40,6 +46,7 @@ Base 13개 활성 기능
 - 실제 수치는 `data/**/*.json`, 구현 사실은 Script·Scene·Test
 - PDF·DOCX·다이어그램·Asset Manifest는 실제 발행·승인 파이프라인이 생길 때 활성화
 - Android 실기기·AAB·접근성·성능은 증거 전까지 `NOT_RUN`
+- 이미지 생성은 사용자가 명시적으로 요청한 작업에서만 활성화
 
 ## Base 환류
 
