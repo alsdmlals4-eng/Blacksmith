@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools import validate_game_data
+from tools import validate_lifecycle_data
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,8 +32,8 @@ class LifecycleDataContractTests(unittest.TestCase):
             self._copy_lifecycle_data(data_root)
             if mutate is not None:
                 mutate(data_root)
-            errors = validate_game_data.ValidationErrors()
-            validate_game_data.validate_lifecycle_poc(errors, data_root)
+            errors = validate_lifecycle_data.ValidationErrors()
+            validate_lifecycle_data.validate_lifecycle_poc(errors, data_root)
             return errors.items
 
     @staticmethod
