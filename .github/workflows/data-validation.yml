@@ -46,6 +46,10 @@ jobs:
         working-directory: project
         run: python tools/validate_game_data.py
 
+      - name: Validate lifecycle data contract
+        working-directory: project
+        run: python -m unittest tests/test_lifecycle_data_contract.py
+
       - name: Validate enhancement failure contract
         working-directory: project
         run: python tests/check_enhancement_failure_contract.py
