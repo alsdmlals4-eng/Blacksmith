@@ -4,6 +4,9 @@
 
 ```bash
 python tools/validate_game_data.py
+python -m unittest tests/test_enhancement_balance_simulator.py
+python tests/check_enhancement_balance_simulator_contract.py
+python tools/simulate_enhancement_balance.py --trials 1000 --seed 29029 --output <temporary-result.json>
 python tools/audit_project_operating_system.py --base-root <Base checkout>
 python tests/check_forging_quality_contract.py
 python tests/check_enhancement_failure_contract.py
@@ -28,6 +31,7 @@ godot --headless --path . --script res://tests/integration/test_forging_quality_
 - 공격력·가격·비용의 점진 성장
 - 실패 유지·단계 하락·파괴·실패 보정
 - 실패 정책 단일 정본, 도달 가능한 decade, 이정표/위험표 의미 검증
+- 고정 roll 기반 강화 시뮬레이터의 유지·보정·하락·파괴·폭주 차단·특수 비용·판매가 경로
 - 안정·균형·폭주 단조
 - 폭주 성공 시 낮은 확률 총 2단계 상승과 이정표 차단
 - 촉매 비용·보호·위험 효과

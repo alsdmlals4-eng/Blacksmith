@@ -21,6 +21,8 @@ AGENTS.md
 | 게임의 핵심 경험과 전체 시스템은 무엇인가? | `../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md` |
 | 현재 무엇이 확정·구현·검증됐는가? | `ACTIVE_CONTEXT.md` |
 | 다음 작업과 제품·작업 게이트는 무엇인가? | `ROADMAP.md`, `DEVELOPMENT_GATES.md` |
+| 위험·가격 곡선 시뮬레이션의 입력·지표·판정·완료 기준은 무엇인가? | `../../docs/BALANCE_SIMULATION_SCOPE.md` |
+| 최신 위험·가격 곡선 기준선 결과와 해석은 무엇인가? | `../../docs/BALANCE_SIMULATION_REPORT.md` |
 | 최근 프로젝트 결정은 무엇인가? | `DECISION_LOG.md`, `CHANGELOG.md` |
 | 문서별 책임 원본과 발행 정책은 무엇인가? | `DESIGN_DOCUMENT_REGISTRY.json` |
 | Work Mode와 Skill을 어떻게 자동 선택하는가? | `WORK_MODE_AND_SKILL_ROUTING.md`, `SKILL_REGISTRY.json` |
@@ -43,6 +45,7 @@ AGENTS.md
 - ID·수치·관계·상태·게임 데이터: JSON
 - 구현 사실: 실제 Scene·GDScript
 - 완료 증거: 자동 테스트·Godot 실행·Android 기기·캡처·프로파일
+- 분석 범위·지표·판정 계약: 등록된 분석 Scope. 실제 수치와 런타임을 대체하지 않음
 - PDF·DOCX·다이어그램: 사람용 파생본. 생성·해시·시각 검수가 없으면 `NOT_RUN`
 - 과거 상태: Git 이력
 
@@ -51,6 +54,7 @@ AGENTS.md
 ## 선택적 읽기
 
 - 구형·중복 파일 정리: `../../docs/BASE_ADOPTION_AUDIT.md`와 Git 이력
+- 위험·가격 곡선 시뮬레이션: `../../docs/BALANCE_SIMULATION_SCOPE.md`, 관련 JSON·런타임·테스트
 - Android·AAB 검증: `DEVELOPMENT_GATES.md`, 관련 export 설정과 실제 기기 로그
 - 접근성·성능: 실제 대상 화면·빌드·기기·프로파일이 있을 때만 검수
 - 승인 아트: 승인 이미지와 Asset Manifest가 도입된 이후 읽기 경로에 추가

@@ -44,6 +44,12 @@ jobs:
         working-directory: project
         run: python tests/check_enhancement_failure_contract.py
 
+      - name: Validate enhancement balance simulator contract
+        working-directory: project
+        run: |
+          python -m unittest tests/test_enhancement_balance_simulator.py
+          python tests/check_enhancement_balance_simulator_contract.py
+
       - name: Audit pristine Base adoption and project references
         working-directory: project
         run: |

@@ -83,6 +83,35 @@
         "../../scenes/test/enhancement_test.tscn",
         "../../tests/unit/test_enhancement_session.gd"
       ]
+    },
+    {
+      "document_id": "balance-simulation-scope",
+      "title": "위험·가격 곡선 시뮬레이션 범위",
+      "discipline": "게임 디자인",
+      "responsibility_coverage": ["게임 디자인", "개발·엔지니어링", "QA", "프로덕션·PM"],
+      "status": "ACTIVE",
+      "source_path": "../../docs/BALANCE_SIMULATION_SCOPE.md",
+      "source_format": "markdown",
+      "source_role": "analysis_scope",
+      "publication_policy": "source_only",
+      "publication_status": "NOT_RUN",
+      "actual_paths": [
+        "../../data/crafting/enhancement_balance.json",
+        "../../data/crafting/enhancement_milestones.json",
+        "../../data/crafting/forging_balance.json",
+        "../../data/crafting/materials.json",
+        "../../data/crafting/affixes.json",
+        "../../scripts/enhancement/enhancement_session.gd",
+        "../../scripts/economy/workshop_resources.gd",
+        "../../scripts/ui/enhancement_screen.gd",
+        "../../scripts/ui/game_flow_screen.gd",
+        "../../tests/unit",
+        "../../tests/integration",
+        "../../tests/test_enhancement_balance_simulator.py",
+        "../../tests/check_enhancement_balance_simulator_contract.py",
+        "../../tools/simulate_enhancement_balance.py",
+        "../../docs/BALANCE_SIMULATION_REPORT.md"
+      ]
     }
   ]
 }
