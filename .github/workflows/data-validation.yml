@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: alsdmlals4-eng/Base
-          ref: ee265576da7f67d3278f8099dd97d4e714ef0651
+          ref: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
           path: base
           persist-credentials: false
 
@@ -87,6 +87,7 @@ jobs:
             tests/test_consolidated_skill_references.py \
             tests/test_reference_freshness.py \
             tests/test_skill_package_integrity.py \
+            tests/test_skill_system_coverage.py \
             tests/test_project_skill_map_generation.py \
             tests/test_base_change_proposals.py \
             tests/test_deep_interview_contract.py \

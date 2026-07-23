@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "base_repository": "alsdmlals4-eng/Base",
-  "base_commit": "ee265576da7f67d3278f8099dd97d4e714ef0651",
+  "base_commit": "41a20584dd2ee51d917e5c9d7cab6838e1ceba7e",
   "strategy": "collapse-shared-capabilities-into-three-project-skills-without-dropping-triggers-or-validation",
   "project_skill_count": 3,
   "capabilities": [
@@ -91,7 +91,7 @@
       "local_owner": "skills/game-design/SKILL.md",
       "local_skill_id": "blacksmith-game-design",
       "local_modes": ["art-brief"],
-      "activation": "승인된 아트 방향·생성·편집 프롬프트가 필요할 때만"
+      "activation": "사용자가 승인한 아트 방향·생성·편집 프롬프트가 필요할 때만"
     },
     {
       "base_skill_id": "auditing-and-refining-ui-art",
@@ -108,6 +108,102 @@
       "local_skill_id": null,
       "local_modes": ["extract", "submit", "review", "implement", "verify"],
       "activation": "Blacksmith에서 반복 검증된 공용 교훈을 Base에 승격할 때"
+    },
+    {
+      "base_skill_id": "identifying-project-core",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
+      "local_skill_id": "blacksmith-game-design",
+      "local_modes": ["identify-project-core", "classify-core-support"],
+      "activation": "기존 기능이 정체성·코어 루프·MVP 지원·콘텐츠·외피 중 어디에 속하는지 판정할 때"
+    },
+    {
+      "base_skill_id": "establishing-project-core",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "skills/game-design/SKILL.md",
+      "local_skill_id": "blacksmith-game-design",
+      "local_modes": ["propose-core-contract", "confirm-core-with-user", "reopen-core"],
+      "activation": "프로젝트 방향 재정의에서 코어 불변 조건을 제안하고 사용자 승인으로 확정할 때"
+    },
+    {
+      "base_skill_id": "running-adversarial-review-and-refinement",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "skills/qa/SKILL.md",
+      "local_skill_id": "blacksmith-qa",
+      "local_modes": ["adversarial-review", "critique-validation", "approved-refinement", "regression-recheck"],
+      "activation": "기획·계획·문서·코드·데이터의 실패 가정을 검증하고 최소 승인 개선을 재검토할 때"
+    },
+    {
+      "base_skill_id": "refactoring-with-contract-preservation",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "skills/engineering/SKILL.md",
+      "local_skill_id": "blacksmith-engineering",
+      "local_modes": ["contract-preserving-refactor"],
+      "activation": "동작·인터페이스·데이터 호환성을 유지하며 구조 중복과 복잡성을 줄일 때"
+    },
+    {
+      "base_skill_id": "simplifying-skill-bodies",
+      "disposition": "ADAPT",
+      "local_owner": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+      "local_skill_id": null,
+      "local_modes": ["compact-contract", "extract-conditional-reference", "cold-start-check"],
+      "activation": "SKILL.md가 비대해져 상시 계약과 조건부 상세를 분리할 때"
+    },
+    {
+      "base_skill_id": "pruning-stale-and-nonfunctional-material",
+      "disposition": "ADAPT",
+      "local_owner": "docs/BASE_ADOPTION_AUDIT.md",
+      "local_skill_id": null,
+      "local_modes": ["inventory", "classify", "prune-with-recovery", "verify-references"],
+      "activation": "중복·죽은 자료·오래된 경로·고립된 산출물을 기능과 복구 경계를 보존하며 정리할 때"
+    },
+    {
+      "base_skill_id": "synchronizing-local-and-github-state",
+      "disposition": "ADAPT",
+      "local_owner": "[기획서]/00_프로젝트_허브/WORK_MODE_AND_SKILL_ROUTING.md",
+      "local_skill_id": null,
+      "local_modes": ["compare-head", "publish-branch", "verify-remote-equivalence"],
+      "activation": "로컬·GitHub HEAD·diff·working tree의 불일치를 안전하게 대조하고 게시할 때"
+    },
+    {
+      "base_skill_id": "maintaining-long-running-task-continuity",
+      "disposition": "ADOPT",
+      "local_owner": "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+      "local_skill_id": null,
+      "local_modes": ["checkpoint", "partial-delivery", "resume-point"],
+      "activation": "다단계 작업에서 검증된 결과와 정확한 재개 지점을 유지해야 할 때"
+    },
+    {
+      "base_skill_id": "governing-game-user-research-coverage",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "skills/game-design/SKILL.md",
+      "local_skill_id": "blacksmith-game-design",
+      "local_modes": ["gur-coverage-audit", "research-evidence-map"],
+      "activation": "시장·경쟁·사용자·플레이테스트·UX·텔레메트리·밸런스 근거의 누락을 감사할 때"
+    },
+    {
+      "base_skill_id": "creating-user-learning-notes",
+      "disposition": "ADAPT",
+      "local_owner": "[기획서]/00_프로젝트_허브/START_HERE.md",
+      "local_skill_id": null,
+      "local_modes": ["explain-workflow", "project-learning-note"],
+      "activation": "완료한 작업의 개념·이유·실수·재사용 방법을 사용자 학습 자료로 정리할 때"
+    },
+    {
+      "base_skill_id": "building-project-visual-dashboards",
+      "disposition": "ADAPT",
+      "local_owner": "[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json",
+      "local_skill_id": null,
+      "local_modes": ["dashboard-route", "source-linked-status-view"],
+      "activation": "정본을 대체하지 않는 편집 가능한 HTML 시스템·MVP·상태 대시보드가 필요할 때"
+    },
+    {
+      "base_skill_id": "diagnosing-game-engine-runtime-failures",
+      "disposition": "CONSOLIDATE",
+      "local_owner": "skills/engineering/SKILL.md",
+      "local_skill_id": "blacksmith-engineering",
+      "local_modes": ["reproduce-runtime-failure", "isolate-cause", "minimal-fix", "rerun-engine-checks"],
+      "activation": "Godot 오류·충돌·Scene/Node/Signal·로딩·상태 문제를 재현하고 최소 수정할 때"
     }
   ],
   "required_entrypoints": [
