@@ -81,7 +81,7 @@ class LifecycleDataContractTests(unittest.TestCase):
             self._mutate_json(
                 root,
                 "world/gladiator_match_poc.json",
-                lambda payload: payload["result_bands"][1].__setitem__("minimum_score", 10),
+                lambda payload: payload["result_bands"][1].__setitem__("minimum_score", 0),
             )
 
         self.assertTrue(any("strictly increasing" in item for item in self._validate(mutate)))
