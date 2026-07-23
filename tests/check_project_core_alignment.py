@@ -12,19 +12,19 @@ REQUIRED_TEXT = {
     "README.md": (
         "장비의 출생·성장·소유·사건 기록",
         "장비 한 점의 생애 PoC",
-        "현재 구현",
-        "확정 설계·다음 구현",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "docs/CI_EXECUTION_POLICY.md",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "장비의 출생·성장·소유·사건 기록",
         "CORE_CONFIRMED",
-        "IMPLEMENTATION_NOT_STARTED",
-        "장비 한 점의 생애 PoC",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "#35 Draft",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "CORE_CONFIRMED / CORE_RECORDED",
-        "SPEC_READY / IMPLEMENTATION_NOT_STARTED",
-        "장비 한 점의 생애 PoC",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
         "docs/MVP-003_SCOPE.md",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
@@ -37,18 +37,19 @@ REQUIRED_TEXT = {
         "Project core confirmation",
         "Equipment lifecycle PoC specification",
         "Equipment lifecycle PoC implementation",
-        "NOT_STARTED",
+        "IMPLEMENTATION_CANDIDATE",
+        "VALIDATION_DEFERRED",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "장비 한 점의 생애 PoC — CURRENT",
-        "docs/MVP-003_SCOPE.md",
-        "구현 미시작",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "docs/CI_EXECUTION_POLICY.md",
     ),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
         "장비의 출생·성장·소유·사건 기록",
         "영구 완성도",
-        "피로도",
         "세계 장비 기록",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
     ),
     "[기획서]/00_프로젝트_허브/DECISION_LOG.md": (
         "DEC-023 프로젝트 코어 확정",
@@ -64,7 +65,14 @@ REQUIRED_TEXT = {
         "장비 한 점의 생애 PoC",
         "+5",
         "+10",
-        "IMPLEMENTATION_NOT_STARTED",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "전체 생애 E2E 테스트",
+    ),
+    "docs/CI_EXECUTION_POLICY.md": (
+        "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
+        "문서 전용 PR",
+        "코드·데이터·테스트·Workflow 변경 PR",
+        "cancel-in-progress: true",
     ),
     "docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md": (
         "PoC 임시 기준값",
@@ -82,15 +90,43 @@ REQUIRED_TEXT = {
         "원자적 납품",
         "정밀 입력 대안",
     ),
+    ".github/workflows/data-validation.yml": (
+        "ACTIONS_BUDGET_HOLD",
+        "scope=docs",
+        "scope=code",
+        "cancel-in-progress: true",
+    ),
+    ".github/workflows/godot-validation.yml": (
+        "workflow_call:",
+        "equipment_lifecycle_poc.tscn",
+        "test_equipment_lifecycle_poc.gd",
+        "cancel-in-progress: true",
+    ),
 }
 
 FORBIDDEN_TEXT = {
+    "[기획서]/00_프로젝트_허브/START_HERE.md": (
+        "IMPLEMENTATION_NOT_STARTED",
+        "#33 Draft, stacked",
+    ),
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
+        "SPEC_READY / IMPLEMENTATION_NOT_STARTED",
+        "agent/propose-project-core-contract",
+    ),
+    "[기획서]/00_프로젝트_허브/ROADMAP.md": (
+        "구현 미시작",
+        "IMPLEMENTATION_NOT_STARTED",
+    ),
+    "docs/MVP-003_SCOPE.md": (
+        "IMPLEMENTATION_NOT_STARTED",
+        "제품 구현은 시작되지 않았다",
+    ),
+    "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
+        "SPEC_READY / IMPLEMENTATION_NOT_STARTED",
+    ),
     "[기획서]/00_프로젝트_허브/DECISION_LOG.md": (
         "Base 기준 commit은 `ee265576da7f67d3278f8099dd97d4e714ef0651`",
         "상태: 범위 확정·실행 미착수",
-    ),
-    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
-        "다음 제품 작업은 한 변수군 후보안 비교와 자동 반복·실제 플레이 검증이다",
     ),
 }
 
