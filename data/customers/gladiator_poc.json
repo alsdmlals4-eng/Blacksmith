@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "contract_id": "gladiator_kyle_iron_sword",
+  "customer_id": "gladiator_kyle",
+  "customer_name": "카일",
+  "equipment_id": "iron_sword",
+  "required_level": 5,
+  "stretch_level": 10,
+  "preferred_affix_ids": ["sharp", "flaming"],
+  "deadline_days": 3,
+  "report_delay_days": 1,
+  "payment_gold": 500,
+  "immediate_fame": 1,
+  "follow_up_relationship": 1
+}
