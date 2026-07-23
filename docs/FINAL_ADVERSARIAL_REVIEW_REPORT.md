@@ -277,9 +277,9 @@
 | F4-03 | SHOULD_FIX | MEDIUM | 설계·계획 수정 |
 | F4-04 | SHOULD_FIX | MEDIUM | 설계·계획 수정 |
 | F5-01 | MUST_FIX | HIGH | 수정 |
-| F5-02 | MUST_FIX | HIGH | Red 생성, Green 최종 CI 필요 |
+| F5-02 | MUST_FIX | HIGH | 수정·Data #418 PASS |
 | F5-03 | UNVERIFIED | HIGH | 로컬 PDF PASS, 저장소 publication 미완료 |
-| F5-07 | MUST_FIX | HIGH | 감사 wrapper·단위 테스트 수정 |
+| F5-07 | MUST_FIX | HIGH | 수정·Data #418 PASS |
 | F5-04 | SHOULD_FIX | MEDIUM | Registry 재분류 |
 | F5-05 | UNVERIFIED | HIGH | 후속 확인 |
 | F5-06 | UNVERIFIED | HIGH | PR 순차 병합 필요 |
