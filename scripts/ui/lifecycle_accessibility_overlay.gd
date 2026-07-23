@@ -2,6 +2,7 @@ class_name LifecycleAccessibilityOverlay
 extends PanelContainer
 
 const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
+const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
 
 var precision_assist_enabled: bool = false
 var reduced_motion_enabled: bool = false
@@ -58,14 +59,11 @@ func _process(_delta: float) -> void:
 		var session = child.session
 		if session == null:
 			continue
-		if reduced_motion_enabled:
-			session.config["precision_speed"] = 0.55
-		else:
-			session.config["precision_speed"] = float(session.DEFAULT_CONFIG.get("precision_speed", 0.85))
+		session.config["precision_speed"] = 0.55 if reduced_motion_enabled else float(ForgingSessionScript.DEFAULT_CONFIG.get("precision_speed", 0.85))
 		if precision_assist_enabled:
 			# 모든 타이밍을 GOOD으로 처리하고 PERFECT 자동 보너스는 제거합니다.
 			session.config["precision_perfect_radius"] = 0.0
 			session.config["precision_good_radius"] = 1.0
 		else:
-			session.config["precision_perfect_radius"] = float(session.DEFAULT_CONFIG.get("precision_perfect_radius", 0.07))
-			session.config["precision_good_radius"] = float(session.DEFAULT_CONFIG.get("precision_good_radius", 0.18))
+			session.config["precision_perfect_radius"] = float(ForgingSessionScript.DEFAULT_CONFIG.get("precision_perfect_radius", 0.07))
+			session.config["precision_good_radius"] = float(ForgingSessionScript.DEFAULT_CONFIG.get("precision_good_radius", 0.18))
