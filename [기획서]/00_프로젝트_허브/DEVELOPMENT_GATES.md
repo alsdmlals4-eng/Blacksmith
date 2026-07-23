@@ -87,7 +87,17 @@
 
 ## Prototype regression — HISTORICAL_PASS
 
-현재 구현된 제작·강화·보관·자동 단조는 기존 테스트와 과거 Workflow PASS 이력이 있다. PR #33은 제품 코드를 변경하지 않지만 문서·검사 변경 후 최신 Data/Godot Workflow를 다시 확인한다.
+현재 구현된 제작·강화·보관·자동 단조는 기존 테스트와 과거 Workflow PASS 이력이 있다.
+
+- 제작 모델 7건
+- 제작 결과 통합 6건
+- EnhancementSession 12건
+- WorkshopResources 7건
+- 수동 강화 경제 통합 2건
+
+현재 Prototype의 피버 공격력 ×1.05·제작 가치 ×1.03은 한 번만 적용되며 반복 발동 시 중첩되지 않는다. 보통·좋음·완벽에 피버를 적용한 실제 공격력은 21·22·23이다.
+
+PR #33은 제품 코드를 변경하지 않지만 문서·검사 변경 후 최신 Data/Godot Workflow를 다시 확인한다.
 
 ## Documentation alignment — IN_PROGRESS
 
@@ -97,10 +107,15 @@ Red 증거:
 - 실패 단계: `Validate confirmed project core alignment`
 - 검출 대상: stale 시작 문서, 누락된 MVP-003 Scope, 정본·Registry 전파 누락
 
+Green 후보 #406은 기존 제작·강화 문서 계약 누락을 검출했다. 기존 구현 기준선 문구를 복원한 뒤 재실행한다.
+
 Green 조건:
 
 - `python tests/check_project_core_alignment.py` PASS
+- `python tests/check_enhancement_failure_contract.py` PASS
+- `python tests/check_forging_quality_contract.py` PASS
 - Data validation 전체 PASS
+- Godot validation 전체 PASS
 - Registry source·publication·Manifest 연결 PASS
 - PR 본문과 changed files·검증 결과 일치
 
