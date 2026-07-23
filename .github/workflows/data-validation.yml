@@ -36,6 +36,12 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Reject unresolved Git merge conflicts
+        working-directory: project
+        run: |
+          python -m unittest tests/test_no_merge_conflicts.py
+          python tests/check_no_merge_conflicts.py .
+
       - name: Validate JSON game data
         working-directory: project
         run: python tools/validate_game_data.py
