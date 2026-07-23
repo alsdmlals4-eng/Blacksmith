@@ -85,9 +85,11 @@ jobs:
           python -m unittest tests/test_no_merge_conflicts.py
           python tests/check_no_merge_conflicts.py .
 
-      - name: Validate document contracts
+      - name: Validate document and CI contracts
         working-directory: project
-        run: python tests/check_project_core_alignment.py
+        run: |
+          python tests/check_project_core_alignment.py
+          python -m unittest tests/test_ci_workflow_structure.py
 
       - name: Validate project operating audit wrapper
         if: inputs.include-operating-audit
