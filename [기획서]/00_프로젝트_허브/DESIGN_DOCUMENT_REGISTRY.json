@@ -4,17 +4,8 @@
   "registry_role": "ai-design-document-router-and-publication-index",
   "project_name": "Blacksmith",
   "source_of_truth_policy": "Each question has exactly one active Markdown or JSON source of truth. Runtime values live in data/**/*.json and implementation facts live in scenes/scripts/tests.",
-  "publication_status_policy": [
-    "CURRENT",
-    "STALE",
-    "NOT_RUN",
-    "FAILED"
-  ],
-  "publication_policies": [
-    "source_only",
-    "milestone_sync",
-    "always_sync"
-  ],
+  "publication_status_policy": ["CURRENT", "STALE", "NOT_RUN", "FAILED"],
+  "publication_policies": ["source_only", "milestone_sync", "always_sync"],
   "required_responsibility_coverage": [
     "프로젝트 전체",
     "게임 디자인",
@@ -28,14 +19,7 @@
       "document_id": "project-core-contract",
       "title": "Blacksmith 프로젝트 코어 확정 계약",
       "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "responsibility_coverage": ["프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM"],
       "status": "ACTIVE",
       "source_path": "../../docs/superpowers/specs/2026-07-23-project-core-design.md",
       "source_format": "markdown",
@@ -51,101 +35,120 @@
         "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
         "./ACTIVE_CONTEXT.md",
         "./DEVELOPMENT_GATES.md",
-        "../../data",
-        "../../scripts",
-        "../../scenes",
-        "../../tests"
+        "../../docs/MVP-003_SCOPE.md"
       ]
     },
     {
       "document_id": "project-core-review-report",
-      "title": "Blacksmith 프로젝트 코어 진단·벤치마킹·적대적 검토 보고서",
+      "title": "Blacksmith 프로젝트 코어 1차 진단·벤치마킹 보고서",
       "discipline": "QA",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "ACTIVE",
+      "responsibility_coverage": ["프로젝트 전체", "게임 디자인", "QA", "프로덕션·PM"],
+      "status": "HISTORICAL",
       "source_path": "../../docs/PROJECT_CORE_REVIEW_REPORT.md",
       "source_format": "markdown",
-      "source_role": "analysis_result",
+      "source_role": "historical_analysis_result",
       "publication_policy": "source_only",
-      "publication_status": "CURRENT",
+      "output_pdf": null,
+      "output_docx": null,
+      "asset_dir": null,
+      "publication_manifest": null,
+      "publication_status": "STALE",
       "human_visual_review": "PASS",
-      "actual_paths": [
-        "../../docs/superpowers/specs/2026-07-23-project-core-design.md",
-        "../../skills/game-design/SKILL.md",
-        "../../skills/qa/SKILL.md"
-      ]
+      "actual_paths": ["../../docs/superpowers/specs/2026-07-23-project-core-design.md"]
     },
     {
       "document_id": "equipment-lifecycle-poc-integrated-spec",
       "title": "Blacksmith 장비 한 점의 생애 PoC 통합 명세",
       "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "responsibility_coverage": ["프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM"],
       "status": "ACTIVE",
       "source_path": "../../docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md",
       "source_format": "markdown",
       "source_role": "integrated_spec",
       "publication_policy": "source_only",
+      "output_pdf": null,
+      "output_docx": null,
+      "asset_dir": null,
+      "publication_manifest": null,
       "publication_status": "CURRENT",
       "human_visual_review": "NOT_RUN",
       "actual_paths": [
-        "../../data",
-        "../../scripts",
-        "../../scenes",
-        "../../tests",
-        "../../tools/validate_game_data.py"
+        "../../docs/MVP-003_SCOPE.md",
+        "../../docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md",
+        "../../tests/check_project_core_alignment.py"
       ]
     },
     {
       "document_id": "equipment-lifecycle-poc-implementation-plan",
       "title": "Blacksmith 장비 한 점의 생애 PoC 구현계획",
       "discipline": "개발·엔지니어링",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "responsibility_coverage": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM"],
       "status": "ACTIVE",
       "source_path": "../../docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md",
       "source_format": "markdown",
       "source_role": "implementation_plan",
       "publication_policy": "source_only",
+      "output_pdf": null,
+      "output_docx": null,
+      "asset_dir": null,
+      "publication_manifest": null,
+      "publication_status": "CURRENT",
+      "human_visual_review": "NOT_RUN",
+      "actual_paths": [
+        "../../docs/MVP-003_SCOPE.md",
+        "../../docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md",
+        "../../.github/workflows/godot-validation.yml"
+      ]
+    },
+    {
+      "document_id": "mvp-003-equipment-lifecycle-scope",
+      "title": "MVP-003 장비 한 점의 생애 PoC 범위",
+      "discipline": "개발·엔지니어링",
+      "responsibility_coverage": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA"],
+      "status": "ACTIVE",
+      "source_path": "../../docs/MVP-003_SCOPE.md",
+      "source_format": "markdown",
+      "source_role": "implementation_scope",
+      "publication_policy": "source_only",
+      "output_pdf": null,
+      "output_docx": null,
+      "asset_dir": null,
+      "publication_manifest": null,
       "publication_status": "CURRENT",
       "human_visual_review": "NOT_RUN",
       "actual_paths": [
         "../../docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md",
-        "../../data",
-        "../../scripts",
-        "../../scenes",
-        "../../tests",
-        "../../.github/workflows/godot-validation.yml"
+        "../../docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md"
+      ]
+    },
+    {
+      "document_id": "final-adversarial-review-report",
+      "title": "Blacksmith 최종 적대적 검토 및 MVP 마감 보고서",
+      "discipline": "QA",
+      "responsibility_coverage": ["프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM"],
+      "status": "ACTIVE",
+      "source_path": "../../docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md",
+      "source_format": "markdown",
+      "source_role": "final_validation_report",
+      "publication_policy": "source_only",
+      "output_pdf": null,
+      "output_docx": null,
+      "asset_dir": null,
+      "publication_manifest": null,
+      "publication_status": "CURRENT",
+      "human_visual_review": "NOT_RUN",
+      "actual_paths": [
+        "./ACTIVE_CONTEXT.md",
+        "./DEVELOPMENT_GATES.md",
+        "../../tests/check_project_core_alignment.py",
+        "../../.github/workflows/data-validation.yml"
       ]
     },
     {
       "document_id": "blacksmith-game-bible",
       "title": "Blacksmith 통합 게임 기획서",
       "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "responsibility_coverage": ["프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM"],
       "status": "ACTIVE",
       "source_path": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
       "source_format": "markdown",
@@ -157,45 +160,26 @@
       "publication_manifest": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE_PUBLICATION_MANIFEST.json",
       "publication_status": "NOT_RUN",
       "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../project.godot",
-        "../../data",
-        "../../scripts",
-        "../../scenes",
-        "../../tests"
-      ]
+      "actual_paths": ["../../project.godot", "../../data", "../../scripts", "../../scenes", "../../tests"]
     },
     {
       "document_id": "mvp-001-forging-scope",
       "title": "MVP-001 제작 범위",
       "discipline": "개발·엔지니어링",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "개발·엔지니어링",
-        "QA"
-      ],
+      "responsibility_coverage": ["게임 디자인", "개발·엔지니어링", "QA"],
       "status": "ACTIVE",
       "source_path": "../../docs/MVP-001_SCOPE.md",
       "source_format": "markdown",
       "source_role": "implementation_scope",
       "publication_policy": "source_only",
       "publication_status": "NOT_RUN",
-      "actual_paths": [
-        "../../scripts/forging",
-        "../../scripts/ui/forging_screen.gd",
-        "../../tests/unit/test_forging_session.gd"
-      ]
+      "actual_paths": ["../../scripts/forging", "../../scripts/ui/forging_screen.gd", "../../tests/unit/test_forging_session.gd"]
     },
     {
       "document_id": "mvp-002-enhancement-scope",
       "title": "MVP-002 +100 강화·보관·자동 단조 범위",
       "discipline": "개발·엔지니어링",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA"
-      ],
+      "responsibility_coverage": ["게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA"],
       "status": "ACTIVE",
       "source_path": "../../docs/MVP-002_SCOPE.md",
       "source_format": "markdown",
@@ -206,7 +190,6 @@
         "../../data/crafting",
         "../../scripts/enhancement",
         "../../scripts/ui/enhancement_screen.gd",
-        "../../scripts/ui/enhancement_test_runner.gd",
         "../../scripts/ui/game_flow_screen.gd",
         "../../scenes/test/enhancement_test.tscn",
         "../../tests/unit/test_enhancement_session.gd"
@@ -216,12 +199,7 @@
       "document_id": "balance-simulation-scope",
       "title": "위험·가격 곡선 시뮬레이션 범위",
       "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "responsibility_coverage": ["게임 디자인", "개발·엔지니어링", "QA", "프로덕션·PM"],
       "status": "ACTIVE",
       "source_path": "../../docs/BALANCE_SIMULATION_SCOPE.md",
       "source_format": "markdown",
@@ -230,18 +208,8 @@
       "publication_status": "NOT_RUN",
       "actual_paths": [
         "../../data/crafting/enhancement_balance.json",
-        "../../data/crafting/enhancement_milestones.json",
-        "../../data/crafting/forging_balance.json",
-        "../../data/crafting/materials.json",
-        "../../data/crafting/affixes.json",
         "../../scripts/enhancement/enhancement_session.gd",
-        "../../scripts/economy/workshop_resources.gd",
-        "../../scripts/ui/enhancement_screen.gd",
-        "../../scripts/ui/game_flow_screen.gd",
-        "../../tests/unit",
-        "../../tests/integration",
         "../../tests/test_enhancement_balance_simulator.py",
-        "../../tests/check_enhancement_balance_simulator_contract.py",
         "../../tools/simulate_enhancement_balance.py"
       ]
     },
@@ -249,12 +217,7 @@
       "document_id": "balance-simulation-report",
       "title": "위험·가격 곡선 기준선 시뮬레이션 보고서",
       "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "responsibility_coverage": ["게임 디자인", "개발·엔지니어링", "QA", "프로덕션·PM"],
       "status": "ACTIVE",
       "source_path": "../../docs/BALANCE_SIMULATION_REPORT.md",
       "source_format": "markdown",
@@ -264,9 +227,7 @@
       "actual_paths": [
         "../../tools/simulate_enhancement_balance.py",
         "../../tests/test_enhancement_balance_simulator.py",
-        "../../tests/check_enhancement_balance_simulator_contract.py",
-        "../../data/crafting/enhancement_balance.json",
-        "../../data/crafting/enhancement_milestones.json"
+        "../../data/crafting/enhancement_balance.json"
       ]
     }
   ]
