@@ -1,26 +1,25 @@
-name: Godot validation
+name: Reusable Godot validation
 
+# This workflow no longer listens to pull_request or push directly. It is called
+# once by the PR router or the full validation workflow, preventing duplicate
+# Godot downloads and duplicate model-suite execution.
 on:
-  pull_request:
-    paths:
-      - "project.godot"
-      - "scenes/**"
-      - "scripts/**"
-      - "tests/**"
-      - "data/**"
-      - ".github/workflows/godot-validation.yml"
-      - "tools/**"
-  push:
-    branches: [main]
+  workflow_call:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   headless-test:
+    name: Godot 4.7.1 headless suite
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Validate forging result contract
-        run: python tests/check_forging_quality_contract.py
 
       - name: Download Godot 4.7.1
         shell: bash
@@ -45,165 +44,67 @@ jobs:
             exit 1
           fi
 
-      - name: Smoke test enhancement scene
+      - name: Smoke test existing scenes
         shell: bash
         run: |
-          set +e
-          ./godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2 2>&1 | tee godot-enhancement-smoke.log
-          godot_status=${PIPESTATUS[0]}
-          set -e
-          if [ "$godot_status" -ne 0 ] || grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" godot-enhancement-smoke.log; then
-            echo "Enhancement scene smoke test reported an error."
-            exit 1
-          fi
+          set -euo pipefail
+          for scene in \
+            res://scenes/test/enhancement_test.tscn \
+            res://scenes/main/main.tscn; do
+            log_name=$(basename "$scene" .tscn)
+            ./godot --headless --path . "$scene" --quit-after 2 2>&1 | tee "godot-${log_name}-smoke.log"
+            if grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" "godot-${log_name}-smoke.log"; then
+              echo "Scene smoke test failed: $scene"
+              exit 1
+            fi
+          done
 
-      - name: Smoke test full forging flow scene
-        shell: bash
-        run: |
-          set +e
-          ./godot --headless --path . res://scenes/main/main.tscn --quit-after 2 2>&1 | tee godot-main-smoke.log
-          godot_status=${PIPESTATUS[0]}
-          set -e
-          if [ "$godot_status" -ne 0 ] || grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" godot-main-smoke.log; then
-            echo "Full forging flow scene smoke test reported an error."
-            exit 1
-          fi
-
-      - name: Run model tests
-        id: model_tests
+      - name: Run Godot model and integration suites
         shell: bash
         run: |
           set +e
           : > godot-test.log
-
-          echo "== ForgingSession ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/unit/test_forging_session.gd >> godot-test.log 2>&1
-          forging_status=$?
-
-          echo "== EnhancementSession ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/unit/test_enhancement_session.gd >> godot-test.log 2>&1
-          enhancement_status=$?
-
-          echo "== WorkshopResources ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/unit/test_workshop_resources.gd >> godot-test.log 2>&1
-          workshop_status=$?
-
-          echo "== WorkshopCalendar ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/unit/test_workshop_calendar.gd >> godot-test.log 2>&1
-          calendar_status=$?
-
-          echo "== CraftsmanshipGradeResolver ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/unit/test_craftsmanship_grade_resolver.gd >> godot-test.log 2>&1
-          craftsmanship_status=$?
-
-          echo "== CustomerContract ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/unit/test_customer_contract.gd >> godot-test.log 2>&1
-          customer_status=$?
-
-          echo "== WorldActivityResolver ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/unit/test_world_activity_resolver.gd >> godot-test.log 2>&1
-          world_resolver_status=$?
-
-          echo "== EquipmentWorldRegistry ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/unit/test_equipment_world_registry.gd >> godot-test.log 2>&1
-          world_registry_status=$?
-
-          echo "== PocTelemetry ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/unit/test_poc_telemetry.gd >> godot-test.log 2>&1
-          telemetry_status=$?
-
-          echo "== ManualEnhancementEconomy ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd >> godot-test.log 2>&1
-          manual_economy_status=$?
-
-          echo "== ForgingQualityEnhancement ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/integration/test_forging_quality_enhancement.gd >> godot-test.log 2>&1
-          forging_quality_status=$?
-
-          echo "== WorkshopActionAtomicity ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/integration/test_workshop_action_atomicity.gd >> godot-test.log 2>&1
-          action_atomicity_status=$?
-
-          echo "== EquipmentLifecycleController ==" | tee -a godot-test.log
-          ./godot --headless --path . --script res://tests/integration/test_equipment_lifecycle_controller.gd >> godot-test.log 2>&1
-          lifecycle_controller_status=$?
-
-          cat godot-test.log
           status=0
-          for marker in \
-            "ForgingSession tests PASSED" \
-            "EnhancementSession tests PASSED" \
-            "WorkshopResources tests PASSED" \
-            "WorkshopCalendar tests PASSED" \
-            "CraftsmanshipGradeResolver tests PASSED" \
-            "CustomerContract tests PASSED" \
-            "WorldActivityResolver tests PASSED" \
-            "EquipmentWorldRegistry tests PASSED" \
-            "PocTelemetry tests PASSED" \
-            "Manual enhancement economy integration tests PASSED" \
-            "Forging quality enhancement integration tests PASSED" \
-            "Workshop action atomicity integration tests PASSED" \
-            "Equipment lifecycle controller integration tests PASSED"; do
-            if ! grep -q "$marker" godot-test.log; then
+
+          run_test() {
+            test_path="$1"
+            marker="$2"
+            echo "== $test_path ==" | tee -a godot-test.log
+            ./godot --headless --path . --script "$test_path" >> godot-test.log 2>&1
+            process_status=$?
+            if [ "$process_status" -ne 0 ] || ! grep -q "$marker" godot-test.log; then
+              echo "FAILED: $test_path (exit $process_status)" | tee -a godot-test.log
               status=1
             fi
-          done
-          echo "PROCESS_STATUS forging=$forging_status enhancement=$enhancement_status workshop=$workshop_status calendar=$calendar_status craftsmanship=$craftsmanship_status customer=$customer_status world_resolver=$world_resolver_status world_registry=$world_registry_status telemetry=$telemetry_status manual_economy=$manual_economy_status forging_quality=$forging_quality_status action_atomicity=$action_atomicity_status lifecycle_controller=$lifecycle_controller_status" | tee -a godot-test.log
-          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ] || [ "$workshop_status" -ne 0 ] || [ "$manual_economy_status" -ne 0 ] || [ "$forging_quality_status" -ne 0 ]; then
-            echo "Existing Godot model or integration test failed."
-            status=1
-          fi
-          if [ "$calendar_status" -ne 0 ] || [ "$craftsmanship_status" -ne 0 ] || [ "$customer_status" -ne 0 ] || [ "$world_resolver_status" -ne 0 ] || [ "$world_registry_status" -ne 0 ] || [ "$telemetry_status" -ne 0 ] || [ "$action_atomicity_status" -ne 0 ] || [ "$lifecycle_controller_status" -ne 0 ]; then
-            echo "Equipment lifecycle model or integration test failed."
-            status=1
-          fi
+          }
+
+          run_test res://tests/unit/test_forging_session.gd "ForgingSession tests PASSED"
+          run_test res://tests/unit/test_enhancement_session.gd "EnhancementSession tests PASSED"
+          run_test res://tests/unit/test_workshop_resources.gd "WorkshopResources tests PASSED"
+          run_test res://tests/unit/test_workshop_calendar.gd "WorkshopCalendar tests PASSED"
+          run_test res://tests/unit/test_craftsmanship_grade_resolver.gd "CraftsmanshipGradeResolver tests PASSED"
+          run_test res://tests/unit/test_customer_contract.gd "CustomerContract tests PASSED"
+          run_test res://tests/unit/test_world_activity_resolver.gd "WorldActivityResolver tests PASSED"
+          run_test res://tests/unit/test_equipment_world_registry.gd "EquipmentWorldRegistry tests PASSED"
+          run_test res://tests/unit/test_poc_telemetry.gd "PocTelemetry tests PASSED"
+          run_test res://tests/integration/test_manual_enhancement_economy.gd "Manual enhancement economy integration tests PASSED"
+          run_test res://tests/integration/test_forging_quality_enhancement.gd "Forging quality enhancement integration tests PASSED"
+          run_test res://tests/integration/test_workshop_action_atomicity.gd "Workshop action atomicity integration tests PASSED"
+          run_test res://tests/integration/test_equipment_lifecycle_controller.gd "Equipment lifecycle controller integration tests PASSED"
+
+          cat godot-test.log
           if grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" godot-test.log; then
-            echo "Godot test log contains script or runtime errors."
             status=1
           fi
-          echo "status=$status" >> "$GITHUB_OUTPUT"
-          exit 0
+          exit "$status"
 
-      - name: Package Godot playtest project
-        shell: bash
-        run: |
-          zip -r blacksmith-godot-playtest.zip \
-            project.godot \
-            scenes \
-            scripts \
-            data \
-            tests \
-            docs/GODOT_PLAYTEST.md \
-            docs/MVP-001_SCOPE.md \
-            docs/MVP-002_SCOPE.md \
-            docs/MVP-003_SCOPE.md \
-            README.md \
-            -x ".godot/*" "*.import"
-
-      - name: Upload Godot playtest project
+      - name: Upload failure logs only
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: blacksmith-godot-playtest
-          path: blacksmith-godot-playtest.zip
-          if-no-files-found: error
-
-      - name: Upload Godot validation logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: godot-validation-logs
+          name: godot-validation-failure-logs
           path: |
             godot-import.log
-            godot-enhancement-smoke.log
-            godot-main-smoke.log
+            godot-*-smoke.log
             godot-test.log
           if-no-files-found: warn
-
-      - name: Fail when model tests fail
-        shell: bash
-        run: test "${{ steps.model_tests.outputs.status }}" -eq 0
-
-      - name: Validate JSON game data
-        run: |
-          python tools/validate_game_data.py
-          python tools/validate_lifecycle_data.py
