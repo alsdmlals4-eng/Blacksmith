@@ -15,7 +15,7 @@
 | 프로젝트 코어 | `CORE_CONFIRMED / CORE_RECORDED` |
 | 장비 생애 PoC 통합 명세 | `SPEC_READY` |
 | 장비 생애 PoC 구현 | `IMPLEMENTATION_NOT_STARTED` |
-| 현재 Prototype 자동 검증 | 과거 PASS 이력, 최신 PR에서 재검증 중 |
+| 현재 Prototype 자동 검증 | Data #418 PASS, Godot #345 PASS |
 | Android 실기기 | `NOT_RUN` |
 | 접근성·성능 | `NOT_RUN` |
 | 외부 플레이테스트 | `NOT_RUN` |
@@ -91,22 +91,26 @@
 
 ## 5. 최근 검증
 
-- Data validation #389: PASS
-- 최종 검토 Red gate #391: 예상 실패. `check_project_core_alignment.py`가 stale 시작 문서, 누락된 MVP Scope와 정본 전파 누락을 검출
-- Green 후보 #406: 문서 갱신 과정에서 기존 제작·강화 문서 계약 누락을 검출, 수정 진행
+- Data validation #389: 기존 기준선 PASS
+- 최종 검토 Red gate #391: 예상 실패. stale 시작 문서, 누락된 MVP Scope와 정본 전파 누락을 검출
+- Green 후보 #406·#412: 기존 문서 계약과 계획 미래 경로 오분류를 추가 검출
+- Data validation #418: Git conflict, JSON, 강화 실패, 시뮬레이터, core alignment, 계획 미래 경로 분류, Base adoption audit와 고정 Base 전체 회귀 PASS
+- Godot validation #345: 제작 계약, Godot 4.7.1 import·parse, enhancement/main Scene smoke, 모델·통합 테스트, 패키징과 JSON 검증 PASS
 - PR #31·#32·#33 review comment: 없음
 - Issue #29 기준선 시뮬레이션: 완료 후 닫음
 - Issue #14 구형 Base 마이그레이션: 현행 PR #31/#32로 대체 후 닫음
+- PDF 자동 검수: 15페이지, 200 DPI 전 페이지 PASS
+- PDF 사람 시각 검토: `NOT_RUN`
 
-최종 Green CI 번호는 문서 수정과 PDF/Manifest 반영 뒤 기록한다.
+#418/#345는 최종 보고서 본문과 운영 정본을 포함한 substantive head `f161200613522d0b9ded5e951b3c404d93dce527`의 증거다. 이후 증거 문구만 동기화한 head도 동일 Workflow로 재확인한다.
 
 ## 6. 다음 작업
 
-1. 기존 제작·강화 정적 계약을 보존하면서 코어 정렬 검사를 Green으로 만든다.
-2. 최종 보고서·PDF·Manifest를 발행하고 전 페이지 렌더를 검수한다.
-3. PR #33 최신 diff와 Workflow를 재검토한다.
-4. 선행 PR #31·#32를 정리한 뒤 #33을 검토한다.
-5. 이후 Issue #34 구현은 별도 구현 PR에서 Task 1~9 순서로 수행한다.
+1. 최종 증거 동기화 head의 Data·Godot Workflow를 재확인한다.
+2. PR #33 제목·본문·changed files·head 일치를 마감한다.
+3. 선행 PR #31·#32를 정리한 뒤 #33을 검토한다.
+4. Issue #34 구현은 별도 구현 PR에서 Task 1~9 순서로 수행한다.
+5. Android·접근성·성능·외부 플레이 증거를 수집한다.
 
 ## 7. 완료 금지 조건
 
@@ -117,3 +121,4 @@
 - Branch protection Required Check 강제 상태 `UNVERIFIED`
 - PR #31·#32·#33 미병합
 - 사람의 최종 PDF 시각 확인 `NOT_RUN`
+- 저장소 PDF binary publication `NOT_RUN`
