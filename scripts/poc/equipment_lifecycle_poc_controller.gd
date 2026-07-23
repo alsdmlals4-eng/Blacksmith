@@ -46,6 +46,13 @@ func add_equipment(equipment: Dictionary) -> void:
 
 
 func deliver(equipment_uid: String, delivery_transaction_id: String, failure_stage: String = "") -> Dictionary:
+	if delivery_transaction_id != "" and registry.transaction_to_equipment.has(delivery_transaction_id):
+		var existing_uid := str(registry.transaction_to_equipment[delivery_transaction_id])
+		return {
+			"ok": true,
+			"status": "ALREADY_DELIVERED",
+			"record": Dictionary(registry.records.get(existing_uid, {})).duplicate(true),
+		}
 	var index := _find_inventory_index(equipment_uid)
 	if index < 0:
 		return {"ok": false, "status": "NOT_FOUND"}
@@ -160,7 +167,9 @@ func _transaction_snapshot() -> Dictionary:
 
 
 func _rollback(before: Dictionary) -> void:
-	inventory = Array(before.get("inventory", [])).duplicate(true)
+	inventory.clear()
+	for item in Array(before.get("inventory", [])):
+		inventory.append(Dictionary(item).duplicate(true))
 	resources.gold = int(before.get("gold", resources.gold))
 	fame = int(before.get("fame", fame))
 	relationship = int(before.get("relationship", relationship))
