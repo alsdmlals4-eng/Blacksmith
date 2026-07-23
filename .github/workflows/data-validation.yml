@@ -56,10 +56,15 @@ jobs:
           python -m unittest tests/test_enhancement_balance_simulator.py
           python tests/check_enhancement_balance_simulator_contract.py
 
+      - name: Validate confirmed project core alignment
+        working-directory: project
+        run: python tests/check_project_core_alignment.py
+
       - name: Audit pristine Base adoption and project references
         working-directory: project
         run: |
-          python tools/audit_project_operating_system.py \
+          python -m unittest tests/test_project_operating_system_audit_runner.py
+          python tools/run_project_operating_system_audit.py \
             --base-root ../base \
             --report artifacts/base-adoption-report.json
 

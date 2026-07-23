@@ -1,6 +1,13 @@
 # Documentation Map
 
-## 최초 읽기
+## 원칙
+
+- 한 질문에는 현행 책임 원본 하나만 둔다.
+- 구현 사실은 Script·Scene·Test, 수치는 `data/**/*.json`, 서술 기획은 등록된 Markdown이 책임진다.
+- PDF와 DOCX는 사람용 파생본이며 Markdown·JSON 책임 원본을 대체하지 않는다.
+- 현재 상태는 `ACTIVE_CONTEXT.md`, 작업 순서는 `ROADMAP.md`·Issue·Plan이 책임진다.
+
+## 시작 경로
 
 ```text
 AGENTS.md
@@ -9,52 +16,46 @@ AGENTS.md
 → DOCUMENTATION_MAP.md
 → DEVELOPMENT_GATES.md
 → DESIGN_DOCUMENT_REGISTRY.json
-→ SKILL_REGISTRY.json
-→ WORK_MODE_AND_SKILL_ROUTING.md
-→ 현재 책임 원본·실제 파일
+→ 현재 Issue·MVP Scope·Plan
+→ 실제 구현·데이터·테스트
 ```
 
-## 질문별 책임 원본
+## 책임별 정본
 
-| 질문 | 책임 원본 |
-|---|---|
-| 게임의 핵심 경험과 전체 시스템은 무엇인가? | `../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md` |
-| 현재 무엇이 확정·구현·검증됐는가? | `ACTIVE_CONTEXT.md` |
-| 다음 작업과 제품·작업 게이트는 무엇인가? | `ROADMAP.md`, `DEVELOPMENT_GATES.md` |
-| 위험·가격 곡선 시뮬레이션의 입력·지표·판정·완료 기준은 무엇인가? | `../../docs/BALANCE_SIMULATION_SCOPE.md` |
-| 최신 위험·가격 곡선 기준선 결과와 해석은 무엇인가? | `../../docs/BALANCE_SIMULATION_REPORT.md` |
-| 최근 프로젝트 결정은 무엇인가? | `DECISION_LOG.md`, `CHANGELOG.md` |
-| 문서별 책임 원본과 발행 정책은 무엇인가? | `DESIGN_DOCUMENT_REGISTRY.json` |
-| Work Mode와 Skill을 어떻게 자동 선택하는가? | `WORK_MODE_AND_SKILL_ROUTING.md`, `SKILL_REGISTRY.json` |
-| Base의 어느 버전을 어떻게 적용했는가? | `../../docs/BASE_RULES_VERSION.md`, `../../docs/BASE_ADOPTION_AUDIT.md` |
-| 반복 작업의 프로젝트 Skill 계약은 어디인가? | `../../skills/*/SKILL.md`, `../../skills/SKILL_LEARNING_LOG.md` |
-| 제작 범위와 구현은 어디인가? | `../../docs/MVP-001_SCOPE.md`, `../../scripts/forging/`, `../../scripts/ui/forging_screen.gd` |
-| 강화·보관·자동 단조 범위와 구현은 어디인가? | `../../docs/MVP-002_SCOPE.md`, `../../scripts/enhancement/`, `../../scripts/ui/enhancement_screen.gd`, `../../scripts/ui/enhancement_test_runner.gd`, `../../scripts/ui/game_flow_screen.gd` |
-| 제작→강화 기본 실행 진입점은 어디인가? | `../../project.godot`, `../../scenes/test/enhancement_test.tscn`, `../../scenes/main/main.tscn` |
-| 재료·강화·수식어 실제 값은 무엇인가? | `../../data/crafting/*.json` |
-| 고객·판매 실제 값은 무엇인가? | `../../data/sales/*.json` |
-| 자동 검증은 무엇을 확인하는가? | `../../tests/README.md`, `../../tests/unit/`, `../../.github/workflows/godot-validation.yml` |
-| 데이터가 유효한가? | `../../tools/validate_game_data.py` |
-| 모바일 기술·출시 기준은 무엇인가? | `../../project.godot`, `../../docs/BASE_RULES_VERSION.md`, `DEVELOPMENT_GATES.md` |
-| Godot AI 개발 연동과 검증 경계는 어디인가? | `../../project.godot`, `../../addons/godot_ai/README.md`, `ACTIVE_CONTEXT.md`, `DEVELOPMENT_GATES.md` |
-| 사람용 PDF·DOCX·다이어그램 발행 상태는? | `DESIGN_DOCUMENT_REGISTRY.json`과 해당 Publication Manifest |
+| 질문 | 현행 책임 원본 | 역할 |
+|---|---|---|
+| 프로젝트가 어떤 게임인가 | `docs/superpowers/specs/2026-07-23-project-core-design.md` | 확정 코어, 불변·변경·재승인·제외 경계 |
+| 통합 게임 구조는 무엇인가 | `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md` | 코어 기반 통합 시스템 설명, 구현/계획 분리 |
+| 현재 무엇이 구현됐고 다음은 무엇인가 | `ACTIVE_CONTEXT.md` | 현재 상태, 다음 작업, 위험, 검증 상태 |
+| 현재 개발 순서는 무엇인가 | `ROADMAP.md` | Prototype→PoC→확장 게이트 |
+| 통과·미실행·차단 상태는 무엇인가 | `DEVELOPMENT_GATES.md` | 게이트별 증거와 판정 |
+| 장비 생애 PoC의 상세 규칙은 무엇인가 | `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md` | 철검·검투사 첫 생애 통합 명세 |
+| MVP-003의 구현 경계는 무엇인가 | `docs/MVP-003_SCOPE.md` | Issue #34 포함·제외·완료 기준 |
+| 어떤 순서로 구현하는가 | `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md` | Task 1~9 TDD 구현계획 |
+| 최종 적대적 검토의 증거는 무엇인가 | `docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md` | 대화 원장, 5회 검토, finding, PR·검증 판정 |
+| 강화 수치와 위험은 무엇인가 | `data/crafting/enhancement_balance.json` | 성공·보정·위험·성장·가격 수치 |
+| 수식어 이정표는 무엇인가 | `data/crafting/enhancement_milestones.json` | `+10` 단위 수식어 성장 |
+| Base 기준은 무엇인가 | `docs/BASE_RULES_VERSION.md` | 고정 commit과 적용 정책 |
+| Base 적용 검증은 무엇인가 | `docs/BASE_ADOPTION_AUDIT.md` | 25 Skill 매핑과 CI 증거 |
+| 문서 발행 정책은 무엇인가 | `DESIGN_DOCUMENT_REGISTRY.json` | source, status, output, manifest, policy |
+| Skill 라우팅은 무엇인가 | `SKILL_REGISTRY.json` | trigger·mode·owner |
 
-## 책임 원본 정책
+## MVP 정본
 
-- 서술·의도·규칙: 등록된 Markdown
-- ID·수치·관계·상태·게임 데이터: JSON
-- 구현 사실: 실제 Scene·GDScript
-- 완료 증거: 자동 테스트·Godot 실행·Android 기기·캡처·프로파일
-- 분석 범위·지표·판정 계약: 등록된 분석 Scope. 실제 수치와 런타임을 대체하지 않음
-- PDF·DOCX·다이어그램: 사람용 파생본. 생성·해시·시각 검수가 없으면 `NOT_RUN`
-- 과거 상태: Git 이력
+| MVP | 책임 원본 | 상태 |
+|---|---|---|
+| MVP-001 제작 | `docs/MVP-001_SCOPE.md` | 구현·자동 검증 PASS 이력, 사람/Android 미검증 |
+| MVP-002 강화·보관·자동 단조 | `docs/MVP-002_SCOPE.md` | 구현·자동 검증 PASS 이력, 장기 플레이/Android 미검증 |
+| MVP-003 장비 한 점의 생애 | `docs/MVP-003_SCOPE.md` | `IMPLEMENTATION_NOT_STARTED` |
+| MVP-004 상인 납품 | Game Bible·Roadmap의 후속 항목 | MVP-003 행동 증거 전 `DEFERRED` |
 
-한 질문에 활성 책임 원본을 여러 개 만들지 않는다. 외부 벤치마크·리뷰·과거 대화는 기획·구현 정본을 대체하지 않는다.
+## 현재 Issue·PR
 
-## 선택적 읽기
+- 현재 Issue: #34
+- 완료된 과거 Issue: #29, #14
+- PR 스택: #31 → #32 → #33
+- PR #33은 코어·문서·계획·최종 검토만 다루며 제품 코드 구현은 별도 PR로 분리한다.
 
-- 구형·중복 파일 정리: `../../docs/BASE_ADOPTION_AUDIT.md`와 Git 이력
-- 위험·가격 곡선 시뮬레이션: `../../docs/BALANCE_SIMULATION_SCOPE.md`, 관련 JSON·런타임·테스트
-- Android·AAB 검증: `DEVELOPMENT_GATES.md`, 관련 export 설정과 실제 기기 로그
-- 접근성·성능: 실제 대상 화면·빌드·기기·프로파일이 있을 때만 검수
-- 승인 아트: 승인 이미지와 Asset Manifest가 도입된 이후 읽기 경로에 추가
+## 역사 문서
+
+`CHANGELOG.md`, 과거 Decision, 닫힌 Issue·PR은 당시 사실을 보존한다. 역사 표현은 현행 정본으로 사용하지 않으며, 활성 시작 문서가 역사 상태를 현재 상태처럼 가리키면 결함이다.
