@@ -2,7 +2,7 @@
 
 ## 현재 목표
 
-POC v0.6.4 제작 피버 결과 보너스와 마감·피버 합산 계약을 main 기준으로 확정했다. 다음 제품 개선은 강화 실패 정책 정본 통합과 데이터 의미 검증이다.
+POC v0.6.4 강화 실패 정책의 단일 정본과 데이터 의미 검증을 PR #26에서 구현·검증한다. 완료 후 다음 제품 개선은 위험·가격 곡선 시뮬레이션과 조정이다.
 
 ## 현재 상태
 
@@ -18,6 +18,10 @@ POC v0.6.4 제작 피버 결과 보너스와 마감·피버 합산 계약을 mai
 - 강화: +0~+100, 일반 강화와 +10 단위 특수 강화 분리
 - 성장: 현재 공격력 기준 점진적 증가, 고단계 효과·가격·비용 가속
 - 위험: +11부터 단계 하락 가능, +30부터 파괴 가능, 실패 보정 유지
+- 실패 정책 정본: 성공률·보정·하락·파괴·실패 처리 수치는 `data/crafting/enhancement_balance.json`만 소유
+- 이정표 정본: `data/crafting/enhancement_milestones.json`은 +10 단위 수식어·특수 강화 구조만 소유하며 실패 정책을 포함하지 않음
+- 실패 처리: 선택 재료는 시도 시작 시 소비, 성공 시 보정 초기화, 유지·하락 시 보정 누적, 파괴 시 세션 종료
+- 데이터 의미 검증: 성공률 패턴·보정 범위·위험 단조성·도달 가능 decade 0~9·이정표·재료·숨은 레시피 참조를 검사
 - 단조 방식: 균형·안정·폭주
 - 폭주 단조: 성공 시 소량 확률로 총 2단계 상승, 특수 강화와 +9 끝자리 구간 사용 불가
 - 보관함: 최대 6개, 강화 종료 후 저장·상세 확인
@@ -28,14 +32,15 @@ POC v0.6.4 제작 피버 결과 보너스와 마감·피버 합산 계약을 mai
 - 자동 fallback: 지정 보조재료·촉매가 소진되면 빈 슬롯으로 동일 거래 경로를 사용
 - 재료 선택 동기화: 정밀 판정 중 사용 재료 기록을 보존하고, 다음 특수 강화 진입 시 가용 재료로 UI·세션을 함께 갱신
 - 자동 중지: 골드 부족·보관함 가득 참·수동 중지. 파괴 시 반복 설정에 따라 재시작 또는 종료
-- 공유 경제 자동 검증: 단위 7건·실제 강화 UI 통합 2건 PASS
-- 제작 결과 자동 검증: 제작 모델 7건·제작→강화·보관 통합 6건·정적 계약 검사 PASS
-- Godot 자동 검증: 4.7.1 import·parse, 강화·전체 흐름 Scene, 제작 모델 7건·강화 12건·공유 자원 7건·수동 경제 2건·제작 결과 통합 6건 PASS
+- 공유 경제 자동 검증: 단위 7건·실제 강화 UI 통합 2건 PASS 이력
+- 제작 결과 자동 검증: 제작 모델 7건·제작→강화·보관 통합 6건·정적 계약 검사 PASS 이력
+- 강화 실패 정책 검증: 데이터 의미 검사와 런타임·정본 정적 계약 검사 로컬 PASS, GitHub Actions 최종 실행 대기
+- Godot 자동 검증: 4.7.1 import·parse, 강화·전체 흐름 Scene, 제작 모델 7건·강화 12건·공유 자원 7건·수동 경제 2건·제작 결과 통합 6건 PASS 이력
 - Godot 프로세스 종료코드: `forging=0 enhancement=0 workshop=0 manual_economy=0 forging_quality=0`
 - Base 운영체계: 고정 Base의 13개 기능을 프로젝트 운영 문서와 Skill 3개로 통합
-- Base 자동 검증: 원본 감사와 공식 Linux 회귀 전체 PASS
-- 통합 완료: PR #18 공유 경제, PR #20 제작 품질 계약, PR #21 품질 정수·CI 종료 흐름·Godot AI 감사 정합화 main 병합
-- PR #21 squash main 커밋: `48a227bf4e4da2499eac10a04b29b1290ff15866`
+- Base 자동 검증: 원본 감사와 공식 Linux 회귀 전체 PASS 이력
+- 통합 완료: PR #18 공유 경제, PR #20 제작 품질, PR #21 품질 정수·CI, PR #24 제작 피버, PR #25 상태 동기화 main 병합
+- 최신 main 커밋: PR #25 `519608176679399011203ec7609f232610796caa`
 - Godot AI 개발 연동: `addons/godot_ai/` 벤더 소스, 에디터 플러그인, `_mcp_game_helper` 오토로드가 최신 main에 포함
 - Godot AI 검증: 필수 진입점·`project.godot` 선언·Godot 파싱은 자동 검증, 로컬 MCP 서버·클라이언트 실제 연결은 NOT_RUN
 - Android 실기기·AAB·사람 시각·접근성·성능·Branch protection 강제: NOT_RUN 또는 UNVERIFIED
@@ -88,20 +93,26 @@ POC v0.6.4 제작 피버 결과 보너스와 마감·피버 합산 계약을 mai
 - 강화 모델: `scripts/enhancement/enhancement_session.gd`
 - 공유 경제: `scripts/economy/workshop_resources.gd`
 - 강화 UI: `scripts/ui/enhancement_screen.gd`, `scripts/ui/enhancement_test_runner.gd`, `scripts/ui/game_flow_screen.gd`
-- 데이터: `data/crafting/enhancement_balance.json`, `enhancement_milestones.json`, `materials.json`, `affixes.json`
-- 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_forging_session.gd`, `tests/unit/test_workshop_resources.gd`, `tests/integration/test_manual_enhancement_economy.gd`, `tests/integration/test_forging_quality_enhancement.gd`, `tests/check_forging_quality_contract.py`
+- 제작 데이터: `data/crafting/forging_balance.json`
+- 강화 실패·확률·위험 정본: `data/crafting/enhancement_balance.json`
+- 수식어 이정표 정본: `data/crafting/enhancement_milestones.json`
+- 재료·수식어: `data/crafting/materials.json`, `data/crafting/affixes.json`
+- 모델·통합 테스트: `tests/unit/test_enhancement_session.gd`, `tests/unit/test_forging_session.gd`, `tests/unit/test_workshop_resources.gd`, `tests/integration/test_manual_enhancement_economy.gd`, `tests/integration/test_forging_quality_enhancement.gd`
+- 정적 계약: `tests/check_forging_quality_contract.py`, `tests/check_enhancement_failure_contract.py`
+- 데이터 의미 검증: `tools/validate_game_data.py`
 - Godot AI 연동: `project.godot`, `addons/godot_ai/plugin.cfg`, `addons/godot_ai/plugin.gd`, `addons/godot_ai/runtime/game_helper.gd`, `addons/godot_ai/README.md`
 
 ## 다음 우선순위
 
-1. 강화 데이터의 중복 실패 정책을 제거하고 의미 검증을 강화한다.
-2. 위험·가격 곡선을 시뮬레이션으로 조정한다.
-3. 방문 검투사 판매를 구현한다.
+1. 위험·가격 곡선을 시뮬레이션으로 조정한다.
+2. 방문 검투사 판매를 구현한다.
 
 ## 미검증·위험
 
 - 공유 경제 변경의 실제 사람 수동 화면 검수
 - 제작 마감·피버 결과 효과의 실제 사람 화면·체감 검수
+- +100 실제 수동 완주와 실패·하락·파괴 피로도
+- 위험·가격 곡선 장기 밸런스
 - Android APK·AAB와 실제 기기 입력
 - 저장·복귀·방치 보상
 - 고객·상인 판매 루프

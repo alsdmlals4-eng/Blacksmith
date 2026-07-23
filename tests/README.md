@@ -6,6 +6,7 @@
 python tools/validate_game_data.py
 python tools/audit_project_operating_system.py --base-root <Base checkout>
 python tests/check_forging_quality_contract.py
+python tests/check_enhancement_failure_contract.py
 godot --headless --editor --path . --quit
 godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 godot --headless --path . --script res://tests/unit/test_forging_session.gd
@@ -26,6 +27,7 @@ godot --headless --path . --script res://tests/integration/test_forging_quality_
 - +10~+100 수식어 성장
 - 공격력·가격·비용의 점진 성장
 - 실패 유지·단계 하락·파괴·실패 보정
+- 실패 정책 단일 정본, 도달 가능한 decade, 이정표/위험표 의미 검증
 - 안정·균형·폭주 단조
 - 폭주 성공 시 낮은 확률 총 2단계 상승과 이정표 차단
 - 촉매 비용·보호·위험 효과
@@ -45,3 +47,5 @@ godot --headless --path . --script res://tests/integration/test_forging_quality_
 - 대표·최악 장면 성능 프로파일
 - 저장·복귀·방치 보상
 - 고객·상인 판매
+
+강화 실패 정책·확률·위험표의 유일한 정본은 `data/crafting/enhancement_balance.json`이며, `data/crafting/enhancement_milestones.json`은 수식어 이정표만 소유합니다.

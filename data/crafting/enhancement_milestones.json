@@ -1,29 +1,82 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "milestones": [
-    {"level": 10, "effect": "ADD_AFFIX", "slot": 1, "tier_pool": [1], "special_enhancement": true},
-    {"level": 20, "effect": "UPGRADE_AFFIX", "slot": 1, "tier_delta": 1, "special_enhancement": true},
-    {"level": 30, "effect": "ADD_AFFIX", "slot": 2, "tier_pool": [1], "special_enhancement": true},
-    {"level": 40, "effect": "UPGRADE_AFFIX", "slot": 2, "tier_delta": 1, "special_enhancement": true},
-    {"level": 50, "effect": "ADD_AFFIX", "slot": 3, "tier_pool": [1], "special_enhancement": true},
-    {"level": 60, "effect": "UPGRADE_AFFIX", "slot": 3, "tier_delta": 1, "special_enhancement": true},
-    {"level": 70, "effect": "UPGRADE_AFFIX", "slot": 1, "tier_delta": 1, "special_enhancement": true},
-    {"level": 80, "effect": "UPGRADE_AFFIX", "slot": 2, "tier_delta": 1, "special_enhancement": true},
-    {"level": 90, "effect": "UPGRADE_AFFIX", "slot": 3, "tier_delta": 1, "special_enhancement": true},
-    {"level": 100, "effect": "ASCEND_ALL", "tier_delta": 1, "special_enhancement": true}
-  ],
-  "failure_policy": {
-    "destroy_weapon": false,
-    "decrease_level": false,
-    "require_repair": false,
-    "consume_materials": true,
-    "pity_bonus": {
-      "status": "IMPLEMENTED_TO_LEVEL_100",
-      "bonus_per_failure": 0.05,
-      "max_bonus": 0.2,
-      "reset_on_success": true
+    {
+      "level": 10,
+      "effect": "ADD_AFFIX",
+      "slot": 1,
+      "tier_pool": [
+        1
+      ],
+      "special_enhancement": true
+    },
+    {
+      "level": 20,
+      "effect": "UPGRADE_AFFIX",
+      "slot": 1,
+      "tier_delta": 1,
+      "special_enhancement": true
+    },
+    {
+      "level": 30,
+      "effect": "ADD_AFFIX",
+      "slot": 2,
+      "tier_pool": [
+        1
+      ],
+      "special_enhancement": true
+    },
+    {
+      "level": 40,
+      "effect": "UPGRADE_AFFIX",
+      "slot": 2,
+      "tier_delta": 1,
+      "special_enhancement": true
+    },
+    {
+      "level": 50,
+      "effect": "ADD_AFFIX",
+      "slot": 3,
+      "tier_pool": [
+        1
+      ],
+      "special_enhancement": true
+    },
+    {
+      "level": 60,
+      "effect": "UPGRADE_AFFIX",
+      "slot": 3,
+      "tier_delta": 1,
+      "special_enhancement": true
+    },
+    {
+      "level": 70,
+      "effect": "UPGRADE_AFFIX",
+      "slot": 1,
+      "tier_delta": 1,
+      "special_enhancement": true
+    },
+    {
+      "level": 80,
+      "effect": "UPGRADE_AFFIX",
+      "slot": 2,
+      "tier_delta": 1,
+      "special_enhancement": true
+    },
+    {
+      "level": 90,
+      "effect": "UPGRADE_AFFIX",
+      "slot": 3,
+      "tier_delta": 1,
+      "special_enhancement": true
+    },
+    {
+      "level": 100,
+      "effect": "ASCEND_ALL",
+      "tier_delta": 1,
+      "special_enhancement": true
     }
-  },
+  ],
   "special_enhancement": {
     "interval": 10,
     "applies_to_levels": "10_20_30_40_50_60_70_80_90_100",

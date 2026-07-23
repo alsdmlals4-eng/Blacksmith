@@ -33,6 +33,7 @@ Google Play 출시를 목표로 하는 Android 모바일용 방치형·클리커
 - 다음 공격력·판매가·비용·성공/유지/하락/파괴 확률 표시
 - +11부터 단계 하락, +30부터 파괴 가능
 - 실패 보정과 안정 단조 보호
+- 실패 정책·확률·위험표는 `enhancement_balance.json`, 수식어 이정표는 `enhancement_milestones.json`이 각각 단독 소유
 - +100에서 수식어 3개가 모두 4티어
 
 ### 폭주 단조
@@ -103,6 +104,7 @@ Base 적용 기준과 전수 대조:
 ```bash
 python tools/validate_game_data.py
 python tests/check_forging_quality_contract.py
+python tests/check_enhancement_failure_contract.py
 godot --headless --editor --path . --quit
 godot --headless --path . res://scenes/test/enhancement_test.tscn --quit-after 2
 godot --headless --path . --script res://tests/unit/test_forging_session.gd

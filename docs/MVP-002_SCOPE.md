@@ -64,7 +64,11 @@
 - +30부터: 무기 파괴 가능
 - 높은 10단계 구간일수록 하락·파괴 위험과 하락 단계가 증가
 - 실패 보정은 실패 횟수에 따라 다음 성공률을 올리고 성공 시 초기화
-- 파괴된 무기는 보관할 수 없고 해당 강화 세션이 종료됨
+- 실패 정책·확률·위험표의 단일 정본은 `data/crafting/enhancement_balance.json`이다.
+- `data/crafting/enhancement_milestones.json`은 +10 단위 수식어·특수 강화 이정표만 소유한다.
+- 선택한 특수 강화 재료는 시도 시작 시 소비하며, 세션 시작 실패 시 거래 계층이 복구한다.
+- 단계 유지·하락 실패에서는 실패 보정을 누적하고, 성공 시 초기화한다.
+- 파괴된 무기는 보관할 수 없고 해당 강화 세션이 종료된다.
 
 ## 단조 방식
 
@@ -162,13 +166,14 @@
 - 특수 강화 기반 UI: `scripts/ui/special_enhancement_screen.gd`
 - 테스트 Scene: `scenes/test/enhancement_test.tscn`
 - 전체 흐름 Scene: `scenes/main/main.tscn`
-- 수치: `data/crafting/enhancement_balance.json`
-- 이정표: `data/crafting/enhancement_milestones.json`
+- 실패·확률·위험 수치: `data/crafting/enhancement_balance.json`
+- 수식어·특수 강화 이정표: `data/crafting/enhancement_milestones.json`
 - 재료: `data/crafting/materials.json`
 - 수식어: `data/crafting/affixes.json`
 - 모델 테스트: `tests/unit/test_forging_session.gd`, `tests/unit/test_enhancement_session.gd`, `tests/unit/test_workshop_resources.gd`
 - 통합 테스트: `tests/integration/test_forging_quality_enhancement.gd`, `tests/integration/test_manual_enhancement_economy.gd`
-- 품질 계약 검사: `tests/check_forging_quality_contract.py`
+- 제작 결과 계약 검사: `tests/check_forging_quality_contract.py`
+- 강화 실패 계약 검사: `tests/check_enhancement_failure_contract.py`
 
 ## 제외
 
@@ -187,6 +192,7 @@
 - [x] 다음 효과·가격·위험을 화면에서 확인한다.
 - [x] +11 단계 하락과 +30 파괴가 가능하다.
 - [x] 실패 보정과 안정 단조 보호가 적용된다.
+- [x] 중복 실패 정책과 도달 불가능 decade 10이 제거되고 데이터 의미 검증이 통과한다.
 - [x] 폭주 단조가 낮은 확률로 총 2단계 상승한다.
 - [x] 폭주 단조가 특수 강화와 +9 끝자리에서 차단된다.
 - [x] +100에서 세 수식어가 4티어다.

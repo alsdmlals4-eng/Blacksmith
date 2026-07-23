@@ -5,12 +5,12 @@
 | 게이트 | 상태 | 종료 기준 |
 |---|---|---|
 | Intake·Context | PASS | 저장소·플랫폼·핵심 방향·Base 기준 커밋 확인 |
-| Definition of Ready | PASS | 제작·강화·보관·자동 단조와 단계별 정합성 개선 범위·완료 기준 기록 |
-| Planning·Approval | PASS | 사용자의 순차 개선·적대적 검토 요청과 보호 범위 확인 |
-| Implementation | PASS | 피버 1회 한정 결과 보너스·가산 합성·자동 반복 미적용·도메인/UI/데이터/단위·통합·정적 테스트 구현 |
-| Verification | CURRENT | 자동 검증 PASS, 실제 화면·Android·장시간 성능 증거 필요 |
+| Definition of Ready | PASS | 강화 실패 정책 단일 정본·의미 검증·기능 보존 범위와 완료 기준 기록 |
+| Planning·Approval | PASS | 사용자의 순차 개선·적대적 검토·기획서 동기화·병합 요청 확인 |
+| Implementation | PASS | 중복 실패 정책·도달 불가능 위험 데이터 제거, Schema 갱신, 의미·정적 계약 검사 구현 |
+| Verification | CURRENT | 로컬 데이터 의미·정적 계약 PASS, GitHub Data/Godot Workflow 실행 대기, 실제 +100·Android 미검증 |
 | Documentation | PASS | Game Bible·Decision Log·Active Context·Roadmap·Scope·플레이테스트·README 동기화 |
-| Integration·Completion | PASS | PR #24 squash 병합 `4f1854e17d4f3ce70eef5327ae7528f5b1dbdab2`, 최종 CI·25개 patch·main 책임 파일 재확인 |
+| Integration·Completion | CURRENT | PR #26 변경 파일 전수 검토·최종 CI·병합 후 main 책임 파일 재확인 필요 |
 
 ## 제품 게이트
 
@@ -57,7 +57,12 @@
 - [x] 폭주 성공 시 소량 확률 총 2단계 상승
 - [x] 폭주 단조의 특수 강화·+9 끝자리 사용 제한
 - [x] 최대 6개 무기 보관과 상세 표시
-- [x] Godot 파싱·Scene 스모크·강화 모델 테스트 PASS
+- [x] 실패·확률·위험 수치의 단일 정본을 `enhancement_balance.json`으로 통합
+- [x] `enhancement_milestones.json`에서 구형 실패 정책 제거, 수식어 이정표만 유지
+- [x] 도달 가능한 위험 decade 0~9만 허용하고 decade 10 제거
+- [x] 성공률 패턴·보정·위험 단조성·이정표·재료 효과 의미 검증
+- [x] 기존 런타임의 시도 시작 재료 소비·성공 보정 초기화·유지/하락 보정 누적·파괴 종료 정적 계약
+- [x] Godot 파싱·Scene 스모크·강화 모델 테스트 PASS 이력
 - [ ] +100 실제 수동 완주와 피로도 관찰
 - [ ] 확률·효과·가격 곡선 장기 밸런스 검증
 - [ ] Android 특수 강화 타이밍·스크롤 검증
@@ -76,8 +81,8 @@
 - [x] 자동 단조의 빈 보조재료 fallback을 명시적 플래그로 허용
 - [x] 정밀 판정 중 사용 재료 기록 보존
 - [x] 다음 특수 강화 진입 시 소진 재료를 가용 재료로 UI·세션 동기화
-- [x] 공유 경제 단위 테스트 7건 PASS
-- [x] 실제 `EnhancementScreen` UI 통합 테스트 2건 PASS
+- [x] 공유 경제 단위 테스트 7건 PASS 이력
+- [x] 실제 `EnhancementScreen` UI 통합 테스트 2건 PASS 이력
 - [x] PR #18 squash 병합 `53cf5edacd5701ec5d412e233d45b35c6e3feb87`와 main 코드 재확인
 - [ ] 실제 사람 입력으로 골드·재료 표시 전후 수동 검수
 
@@ -111,7 +116,7 @@
 ## 운영체계·문서 검증
 
 - [x] Base 기준 커밋 고정
-- [x] Base 공식 Linux 운영체계 회귀 테스트 전체 PASS
+- [x] Base 공식 Linux 운영체계 회귀 테스트 전체 PASS 이력
 - [x] Base 텍스트형 파일 223개 전수 스캔
 - [x] Base ACTIVE Skill 13개 기능 매핑
 - [x] 프로젝트 Skill 3개로 통합하고 Registry Mode 일치
@@ -122,16 +127,18 @@
 - [x] 프로젝트 문서와 벤더 애드온 upstream 참조의 감사 경계 분리
 - [x] 변경 목록 밖의 tests·scripts·scenes 소비자 갱신
 - [x] 일회성 Workflow 삭제와 활성 참조 부재 확인
-- [x] 감사 보고서 오류 0·경고 0
+- [x] 감사 보고서 오류 0·경고 0 이력
 - [x] 시작 문서·책임 경로의 정적 콜드 스타트 검사
 - [x] 운영 감사의 특정 POC 버전 번호 하드코딩 제거
+- [x] JSON 파싱 검증을 강화 데이터 의미 검증으로 확대
+- [x] 강화 실패 정책 전용 정적 계약 검사와 Data Workflow 연결
 - [ ] 새 작업자 또는 별도 AI의 실제 콜드 스타트 재현
-- [x] GitHub Workflow 실제 실행 PASS
+- [ ] PR #26 GitHub Workflow 최종 실행 완료
 - [ ] Branch protection에서 Required Check 강제 여부 확인
 
 ## 기능 보존 검증
 
-- [x] 강화 성공률·성장·하락·파괴·수식어 규칙 미변경
+- [x] 강화 성공률·성장·하락·파괴·수식어 플레이 수치 미변경
 - [x] 자동 단조의 재료 소진 fallback 유지
 - [x] 직원·무기 수리 제외 결정 유지
 - [x] 숨은 무기 후속 기능 보존

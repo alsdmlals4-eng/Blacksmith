@@ -40,6 +40,10 @@ jobs:
         working-directory: project
         run: python tools/validate_game_data.py
 
+      - name: Validate enhancement failure contract
+        working-directory: project
+        run: python tests/check_enhancement_failure_contract.py
+
       - name: Audit pristine Base adoption and project references
         working-directory: project
         run: |

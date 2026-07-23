@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "max_level": 100,
   "precision_interval": 10,
   "material_interval": 10,
@@ -64,8 +64,7 @@
       "6": 0.6,
       "7": 0.65,
       "8": 0.7,
-      "9": 0.75,
-      "10": 0.8
+      "9": 0.75
     },
     "destroy_ratio_by_decade": {
       "0": 0.0,
@@ -77,8 +76,7 @@
       "6": 0.12,
       "7": 0.15,
       "8": 0.2,
-      "9": 0.24,
-      "10": 0.28
+      "9": 0.24
     },
     "downgrade_steps_by_decade": {
       "0": 0,
@@ -90,8 +88,7 @@
       "6": 3,
       "7": 4,
       "8": 5,
-      "9": 6,
-      "10": 7
+      "9": 6
     }
   },
   "skills": {
@@ -136,8 +133,8 @@
     "catalyst_tag_weight": 1
   },
   "failure_policy": {
-    "consume_materials": true,
-    "destroy_ends_session": true,
+    "consume_materials_on_attempt_start": true,
+    "pity_resets_on_success": true,
     "pity_survives_downgrade": true
   }
 }
