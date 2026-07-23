@@ -7,8 +7,10 @@ on:
   workflow_call:
   workflow_dispatch:
 
+# A called workflow sees the caller name in github.workflow. The suffix prevents
+# this reusable workflow from canceling its own caller when cancel-in-progress is true.
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}-godot-reusable
   cancel-in-progress: true
 
 permissions:
