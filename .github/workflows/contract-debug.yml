@@ -1,0 +1,43 @@
+name: Contract debug
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  capture-contract-errors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run forging contract
+        id: forging
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python tests/check_forging_quality_contract.py 2>&1 | tee forging-contract.log
+
+      - name: Run enhancement contract
+        id: enhancement
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          python tests/check_enhancement_failure_contract.py 2>&1 | tee enhancement-contract.log
+
+      - name: Upload contract logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: contract-debug-logs
+          path: |
+            forging-contract.log
+            enhancement-contract.log
+          if-no-files-found: error
+
+      - name: Fail on contract error
+        if: steps.forging.outcome != 'success' || steps.enhancement.outcome != 'success'
+        run: exit 1
