@@ -2,12 +2,12 @@
 
 ## 현재 목표
 
-POC v0.6.4 강화 실패 정책의 단일 정본과 데이터 의미 검증을 PR #26에서 구현·검증한다. 완료 후 다음 제품 개선은 위험·가격 곡선 시뮬레이션과 조정이다.
+POC v0.6.4 강화 실패 정책의 단일 정본과 데이터 의미 검증을 완료했다. 다음 제품 개선은 위험·가격 곡선 시뮬레이션과 조정이다.
 
 ## 현재 상태
 
 - 제품 단계: Prototype
-- 작업 게이트: Verification
+- 작업 게이트: Integration·Completion PASS
 - 버전 표시: `POC v0.6.4 · main · 2026.07.23.1`
 - 제작: 광클·자동 작업·피버·선택적 정밀 마감 구현
 - 제작 품질: 철검 원본 20 기준 보통 20/가치 ×1.00, 좋음 21/×1.05, 완벽 22/×1.12
@@ -34,13 +34,14 @@ POC v0.6.4 강화 실패 정책의 단일 정본과 데이터 의미 검증을 P
 - 자동 중지: 골드 부족·보관함 가득 참·수동 중지. 파괴 시 반복 설정에 따라 재시작 또는 종료
 - 공유 경제 자동 검증: 단위 7건·실제 강화 UI 통합 2건 PASS 이력
 - 제작 결과 자동 검증: 제작 모델 7건·제작→강화·보관 통합 6건·정적 계약 검사 PASS 이력
-- 강화 실패 정책 검증: 데이터 의미 검사와 런타임·정본 정적 계약 검사 로컬 PASS, GitHub Actions 최종 실행 대기
-- Godot 자동 검증: 4.7.1 import·parse, 강화·전체 흐름 Scene, 제작 모델 7건·강화 12건·공유 자원 7건·수동 경제 2건·제작 결과 통합 6건 PASS 이력
+- 강화 실패 정책 검증: 데이터 의미·정적 계약·운영체계 참조 감사·고정 Base 전체 회귀 PASS
+- Godot 자동 검증: 4.7.1 import·parse, 강화·전체 흐름 Scene, 제작 모델 7건·강화 12건·공유 자원 7건·수동 경제 2건·제작 결과 통합 6건 PASS
+- 공식 Workflow 증거: Data validation #352 PASS, Godot validation #310 PASS
 - Godot 프로세스 종료코드: `forging=0 enhancement=0 workshop=0 manual_economy=0 forging_quality=0`
 - Base 운영체계: 고정 Base의 13개 기능을 프로젝트 운영 문서와 Skill 3개로 통합
-- Base 자동 검증: 원본 감사와 공식 Linux 회귀 전체 PASS 이력
-- 통합 완료: PR #18 공유 경제, PR #20 제작 품질, PR #21 품질 정수·CI, PR #24 제작 피버, PR #25 상태 동기화 main 병합
-- 최신 main 커밋: PR #25 `519608176679399011203ec7609f232610796caa`
+- Base 자동 검증: 원본 감사와 공식 Linux 회귀 전체 PASS
+- 통합 완료: PR #18 공유 경제, PR #20 제작 품질, PR #21 품질 정수·CI, PR #24 제작 피버, PR #25 상태 동기화, PR #26 강화 실패 정책 정합성 main 병합
+- PR #26 squash main 커밋: `cce45542f0203d6c0b8dcf13826a5441275e4df5`
 - Godot AI 개발 연동: `addons/godot_ai/` 벤더 소스, 에디터 플러그인, `_mcp_game_helper` 오토로드가 최신 main에 포함
 - Godot AI 검증: 필수 진입점·`project.godot` 선언·Godot 파싱은 자동 검증, 로컬 MCP 서버·클라이언트 실제 연결은 NOT_RUN
 - Android 실기기·AAB·사람 시각·접근성·성능·Branch protection 강제: NOT_RUN 또는 UNVERIFIED

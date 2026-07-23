@@ -8,16 +8,16 @@
 | Definition of Ready | PASS | 강화 실패 정책 단일 정본·의미 검증·기능 보존 범위와 완료 기준 기록 |
 | Planning·Approval | PASS | 사용자의 순차 개선·적대적 검토·기획서 동기화·병합 요청 확인 |
 | Implementation | PASS | 중복 실패 정책·도달 불가능 위험 데이터 제거, Schema 갱신, 의미·정적 계약 검사 구현 |
-| Verification | CURRENT | 로컬 데이터 의미·정적 계약 PASS, GitHub Data/Godot Workflow 실행 대기, 실제 +100·Android 미검증 |
-| Documentation | PASS | Game Bible·Decision Log·Active Context·Roadmap·Scope·플레이테스트·README 동기화 |
-| Integration·Completion | CURRENT | PR #26 변경 파일 전수 검토·최종 CI·병합 후 main 책임 파일 재확인 필요 |
+| Verification | PASS | Data #352·Godot #310, 데이터 의미·정적 계약·참조 감사·고정 Base 전체 회귀·Godot 파싱·Scene·모델 테스트 통과 |
+| Documentation | PASS | Game Bible 재검토, Decision Log·Active Context·Roadmap·Scope·플레이테스트·README 동기화 |
+| Integration·Completion | PASS | PR #26 변경 파일 전수 검토·squash 병합·main 커밋 `cce45542f0203d6c0b8dcf13826a5441275e4df5` 재확인 |
 
 ## 제품 게이트
 
 | 단계 | 상태 | 다음 Greenlight |
 |---|---|---|
 | Concept | PASS | 핵심 약속·플랫폼·시스템 경계 유지 |
-| Prototype | CURRENT | 정합성 개선→실제 Godot·Android 확인→첫 판매 구현 |
+| Prototype | CURRENT | 위험·가격 곡선 조정→실제 Godot·Android 확인→첫 판매 구현 |
 | Graybox | NOT_STARTED | 고객·상인 판매, 재화·재료 획득, 저장·복귀 연결 |
 | First Playable | NOT_STARTED | 20~30분 초기 성장 세션과 실패·복구 흐름 완주 |
 | Vertical Slice | NOT_STARTED | 출시 목표 UI 품질·접근성·성능·외부 플레이·AAB 파이프라인 증명 |
@@ -132,8 +132,8 @@
 - [x] 운영 감사의 특정 POC 버전 번호 하드코딩 제거
 - [x] JSON 파싱 검증을 강화 데이터 의미 검증으로 확대
 - [x] 강화 실패 정책 전용 정적 계약 검사와 Data Workflow 연결
+- [x] PR #26 GitHub Workflow 최종 실행 완료
 - [ ] 새 작업자 또는 별도 AI의 실제 콜드 스타트 재현
-- [ ] PR #26 GitHub Workflow 최종 실행 완료
 - [ ] Branch protection에서 Required Check 강제 여부 확인
 
 ## 기능 보존 검증
