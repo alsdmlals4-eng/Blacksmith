@@ -7,26 +7,14 @@
   "publication_status_policy": ["CURRENT", "STALE", "NOT_RUN", "FAILED"],
   "publication_policies": ["source_only", "milestone_sync", "always_sync"],
   "required_responsibility_coverage": [
-    "프로젝트 전체",
-    "게임 디자인",
-    "UX·UI·접근성",
-    "개발·엔지니어링",
-    "QA",
-    "프로덕션·PM"
+    "프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM"
   ],
   "documents": [
     {
       "document_id": "blacksmith-game-bible",
       "title": "Blacksmith 통합 게임 기획서",
       "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "responsibility_coverage": ["프로젝트 전체", "게임 디자인", "UX·UI·접근성", "개발·엔지니어링", "QA", "프로덕션·PM"],
       "status": "ACTIVE",
       "source_path": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
       "source_format": "markdown",
@@ -38,13 +26,7 @@
       "publication_manifest": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE_PUBLICATION_MANIFEST.json",
       "publication_status": "NOT_RUN",
       "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../project.godot",
-        "../../data",
-        "../../scripts",
-        "../../scenes",
-        "../../tests"
-      ]
+      "actual_paths": ["../../project.godot", "../../data", "../../scripts", "../../scenes", "../../tests"]
     },
     {
       "document_id": "mvp-001-forging-scope",
@@ -57,11 +39,7 @@
       "source_role": "implementation_scope",
       "publication_policy": "source_only",
       "publication_status": "NOT_RUN",
-      "actual_paths": [
-        "../../scripts/forging",
-        "../../scripts/ui/forging_screen.gd",
-        "../../tests/unit/test_forging_session.gd"
-      ]
+      "actual_paths": ["../../scripts/forging", "../../scripts/ui/forging_screen.gd", "../../tests/unit/test_forging_session.gd"]
     },
     {
       "document_id": "mvp-002-enhancement-scope",
@@ -74,15 +52,7 @@
       "source_role": "implementation_scope",
       "publication_policy": "source_only",
       "publication_status": "NOT_RUN",
-      "actual_paths": [
-        "../../data/crafting",
-        "../../scripts/enhancement",
-        "../../scripts/ui/enhancement_screen.gd",
-        "../../scripts/ui/enhancement_test_runner.gd",
-        "../../scripts/ui/game_flow_screen.gd",
-        "../../scenes/test/enhancement_test.tscn",
-        "../../tests/unit/test_enhancement_session.gd"
-      ]
+      "actual_paths": ["../../data/crafting", "../../scripts/enhancement", "../../scripts/ui/enhancement_screen.gd", "../../scripts/ui/enhancement_test_runner.gd", "../../scripts/ui/game_flow_screen.gd", "../../scenes/test/enhancement_test.tscn", "../../tests/unit/test_enhancement_session.gd"]
     },
     {
       "document_id": "balance-simulation-scope",
@@ -109,8 +79,26 @@
         "../../tests/integration",
         "../../tests/test_enhancement_balance_simulator.py",
         "../../tests/check_enhancement_balance_simulator_contract.py",
+        "../../tools/simulate_enhancement_balance.py"
+      ]
+    },
+    {
+      "document_id": "balance-simulation-report",
+      "title": "위험·가격 곡선 기준선 시뮬레이션 보고서",
+      "discipline": "게임 디자인",
+      "responsibility_coverage": ["게임 디자인", "개발·엔지니어링", "QA", "프로덕션·PM"],
+      "status": "ACTIVE",
+      "source_path": "../../docs/BALANCE_SIMULATION_REPORT.md",
+      "source_format": "markdown",
+      "source_role": "analysis_result",
+      "publication_policy": "source_only",
+      "publication_status": "NOT_RUN",
+      "actual_paths": [
         "../../tools/simulate_enhancement_balance.py",
-        "../../docs/BALANCE_SIMULATION_REPORT.md"
+        "../../tests/test_enhancement_balance_simulator.py",
+        "../../tests/check_enhancement_balance_simulator_contract.py",
+        "../../data/crafting/enhancement_balance.json",
+        "../../data/crafting/enhancement_milestones.json"
       ]
     }
   ]
