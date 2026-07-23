@@ -46,12 +46,13 @@ jobs:
             exit 1
           fi
 
-      - name: Smoke test existing scenes
+      - name: Smoke test scenes
         shell: bash
         run: |
           set -euo pipefail
           for scene in \
             res://scenes/test/enhancement_test.tscn \
+            res://scenes/test/equipment_lifecycle_poc.tscn \
             res://scenes/main/main.tscn; do
             log_name=$(basename "$scene" .tscn)
             ./godot --headless --path . "$scene" --quit-after 2 2>&1 | tee "godot-${log_name}-smoke.log"
@@ -93,6 +94,7 @@ jobs:
           run_test res://tests/integration/test_forging_quality_enhancement.gd "Forging quality enhancement integration tests PASSED"
           run_test res://tests/integration/test_workshop_action_atomicity.gd "Workshop action atomicity integration tests PASSED"
           run_test res://tests/integration/test_equipment_lifecycle_controller.gd "Equipment lifecycle controller integration tests PASSED"
+          run_test res://tests/integration/test_equipment_lifecycle_poc.gd "Equipment lifecycle PoC integration tests PASSED"
 
           cat godot-test.log
           if grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" godot-test.log; then
