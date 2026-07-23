@@ -93,3 +93,14 @@
 - QA 강화: JSON 파싱을 성공률 패턴·보정 범위·위험 단조성·이정표 순서·재료 효과·숨은 레시피 참조 의미 검증으로 확대했다.
 - 교훈: 사용되지 않는 필드도 정본처럼 보이면 AI와 작업자가 구형 규칙을 재도입할 수 있으므로, 소비되지 않는 중복 정책은 보존이 아니라 제거 대상이다.
 - 미검증: 실제 +100 손실 피로·위험/가격 곡선·Android·장시간 자동 단조 성능
+
+## 2026-07-23 — 밸런스 시뮬레이션 Skill 통합 감사
+
+- 발견: Draft PR #28은 `SKILL_REGISTRY.json`과 game-design Skill 본문에 Mode만 추가해, 실제 작업자가 읽는 Work Mode 라우팅·Base 적용 프로필·분석 Scope·Design Registry·Active Context·Roadmap·Gates가 빠져 있었다.
+- 기준선 문제: PR #28은 PR #27 상태 동기화 전 main을 base로 사용해 최신 현재 상태와 다음 우선순위도 포함하지 못했다.
+- 수정: 최신 main에서 `balance-simulation` trigger·Mode·Skill 본문·라우팅·Base profile·문서 Registry·상태·게이트를 하나의 계약으로 동기화했다.
+- 정본: 시뮬레이션 수치 입력은 JSON, 판정 순서는 실제 Script·Test, 범위·지표·판정은 `docs/BALANCE_SIMULATION_SCOPE.md`가 책임진다.
+- QA 경계: 평균만으로 판정하지 않고 중앙값·분위·하락·파괴·복구·자원 병목을 확인하며, 한 실험에서 한 변수군만 변경한다.
+- stale 정리: PR #16·#24에 대체된 구형 PR #15·#22와 불완전 Draft PR #28을 닫아 폐기된 운영 구조와 수치가 다시 유입되는 경로를 차단했다.
+- 교훈: Skill Mode 추가는 Skill 본문과 Registry 두 파일로 끝나지 않는다. 자동 라우팅 문서, Base 기능 매핑, 책임 원본, 현재 맥락, Roadmap, Gate, Learning Log까지 동일 Mode와 상태로 연결해야 실제 재사용 가능하다.
+- 미검증: 시뮬레이터 구현·기준선 분포·수치 조정·실제 +100 체감·Android·장시간 자동 단조 성능

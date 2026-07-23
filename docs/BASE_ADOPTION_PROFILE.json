@@ -50,8 +50,8 @@
       "disposition": "CONSOLIDATE",
       "local_owner": "skills/game-design/SKILL.md",
       "local_skill_id": "blacksmith-game-design",
-      "local_modes": ["frame", "update-system", "balance-review", "benchmark-and-player-research", "playtest-and-experiment", "poc-check"],
-      "activation": "핵심 재미·강화·경제·벤치마크·플레이테스트·PoC 결정"
+      "local_modes": ["frame", "update-system", "balance-review", "balance-simulation", "benchmark-and-player-research", "playtest-and-experiment", "poc-check"],
+      "activation": "핵심 재미·강화·경제·확률·기대 비용·위험 곡선·벤치마크·플레이테스트·PoC 결정"
     },
     {
       "base_skill_id": "designing-vertical-slices",

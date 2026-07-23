@@ -24,11 +24,19 @@ Prompt
 
 | Skill | 책임 | Modes |
 |---|---|---|
-| `blacksmith-game-design` | 핵심 재미·제작·강화·경제·조사·플레이테스트·PoC·Vertical Slice·아트 방향 | `frame`, `update-system`, `balance-review`, `benchmark-and-player-research`, `playtest-and-experiment`, `poc-check`, `vertical-slice-gate`, `art-brief` |
+| `blacksmith-game-design` | 핵심 재미·제작·강화·경제·조사·플레이테스트·PoC·Vertical Slice·아트 방향 | `frame`, `update-system`, `balance-review`, `balance-simulation`, `benchmark-and-player-research`, `playtest-and-experiment`, `poc-check`, `vertical-slice-gate`, `art-brief` |
 | `blacksmith-engineering` | Godot·데이터·Android·저장·자동화 구현 | `plan-change`, `implement`, `data-migration`, `runtime-check` |
 | `blacksmith-qa` | 계약·외부 결과·참조·정적·런타임·접근성·성능·UI·회귀 | `contract-check`, `external-source-review`, `reference-freshness`, `static`, `runtime`, `accessibility-review`, `performance-profile`, `ui-art-review`, `regression`, `evidence-report` |
 
 Base의 13개 활성 기능은 `docs/BASE_ADOPTION_PROFILE.json`에서 이 3개 Skill과 프로젝트 운영 문서로 전부 매핑한다. Base Skill 패키지를 중복 복사하지 않는다.
+
+## Balance simulation 라우팅
+
+- `balance-simulation`, `simulation`, `expected-cost`, `risk-curve` 요청은 `PLAN`에서 `blacksmith-game-design: balance-simulation`을 주 Skill로 선택한다.
+- 코드·데이터를 변경하지 않는 범위 정의와 결과 해석에는 engineering을 사용하지 않는다.
+- 시뮬레이터·데이터 변환·런타임 재현을 구현할 때만 `blacksmith-engineering: plan-change / implement`를 영향 Skill로 추가한다.
+- 입력 정본·분포·반례·변경 전후 비교·미실행 항목 판정에는 `blacksmith-qa: contract-check / reference-freshness / static / regression / evidence-report`를 사용한다.
+- 실제 플레이 체감·Android·접근성·성능은 별도 증거가 없으면 `NOT_RUN`이다.
 
 ## Foundation 절차
 
