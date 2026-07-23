@@ -11,11 +11,12 @@
 
 | Gate | 상태 | 증거 | 차단 조건 |
 |---|---|---|---|
-| Project core confirmation | `PASS` | 사용자 승인, 코어 계약, 적대적 검토 | 코어 재승인 항목 변경 시 재검토 |
+| Project core confirmation | `PASS` | 사용자 승인, 코어 계약, 5회 적대적 검토 | 코어 재승인 항목 변경 시 재검토 |
 | Equipment lifecycle PoC specification | `PASS / SPEC_READY` | 통합 명세, MVP-003 Scope, 구현계획 | 논리·참조·검증 계약 drift |
 | Equipment lifecycle PoC implementation | `NOT_STARTED` | Issue #34 | 제품 코드·데이터·Scene·테스트 미구현 |
-| Prototype regression | `HISTORICAL_PASS / CURRENT_RECHECK_REQUIRED` | MVP-001/002, 과거 Workflow | 최종 PR head 회귀 미통과 |
-| Documentation alignment | `IN_PROGRESS` | `check_project_core_alignment.py` Red #391 | Green CI 미확인 |
+| Prototype regression | `PASS` | Data #418, Godot #345 | 제품 코드 변경 시 재실행 |
+| Documentation alignment | `PASS` | core alignment·Base audit·전체 Base 회귀 #418 | 책임 원본 변경 시 재실행 |
+| PDF automated publication check | `PASS_LOCAL_ONLY` | 15페이지, 200 DPI 자동 렌더 | 저장소 binary publication 미실행 |
 | Android device | `NOT_RUN` | 없음 | 실제 빌드·기기 증거 필요 |
 | Accessibility | `NOT_RUN` | 설계 가드레일만 존재 | 사람·기기 검증 필요 |
 | Performance | `NOT_RUN` | 없음 | 대표·최악 장면 측정 필요 |
@@ -85,10 +86,12 @@
 7. Godot import·main·PoC Scene smoke PASS
 8. 미실행 검증을 PASS로 표기하지 않음
 
-## Prototype regression — HISTORICAL_PASS
+## Prototype regression — PASS
 
-현재 구현된 제작·강화·보관·자동 단조는 기존 테스트와 과거 Workflow PASS 이력이 있다.
+현재 구현된 제작·강화·보관·자동 단조의 최신 substantive head 검증:
 
+- Data validation #418: Git conflict, JSON, 강화 실패, 시뮬레이터, core alignment, 계획 미래 경로 분류, Base audit·전체 Base 회귀 PASS
+- Godot validation #345: 제작 계약, Godot 4.7.1 import·parse, enhancement/main Scene smoke, 모델·통합 테스트, 패키징, JSON PASS
 - 제작 모델 7건
 - 제작 결과 통합 6건
 - EnhancementSession 12건
@@ -97,9 +100,7 @@
 
 현재 Prototype의 피버 공격력 ×1.05·제작 가치 ×1.03은 한 번만 적용되며 반복 발동 시 중첩되지 않는다. 보통·좋음·완벽에 피버를 적용한 실제 공격력은 21·22·23이다.
 
-PR #33은 제품 코드를 변경하지 않지만 문서·검사 변경 후 최신 Data/Godot Workflow를 다시 확인한다.
-
-## Documentation alignment — IN_PROGRESS
+## Documentation alignment — PASS
 
 Red 증거:
 
@@ -107,17 +108,21 @@ Red 증거:
 - 실패 단계: `Validate confirmed project core alignment`
 - 검출 대상: stale 시작 문서, 누락된 MVP-003 Scope, 정본·Registry 전파 누락
 
-Green 후보 #406은 기존 제작·강화 문서 계약 누락을 검출했다. 기존 구현 기준선 문구를 복원한 뒤 재실행한다.
+중간 회귀:
 
-Green 조건:
+- #406: 기존 제작·강화 문서 계약 누락 검출
+- #412: core alignment PASS 후 계획 미래 생성 경로의 깨진 참조 오분류 검출
+
+Green 증거:
 
 - `python tests/check_project_core_alignment.py` PASS
 - `python tests/check_enhancement_failure_contract.py` PASS
 - `python tests/check_forging_quality_contract.py` PASS
-- Data validation 전체 PASS
-- Godot validation 전체 PASS
-- Registry source·publication·Manifest 연결 PASS
-- PR 본문과 changed files·검증 결과 일치
+- 계획 미래 경로 분류 단위 테스트 PASS
+- Data validation #418 전체 PASS
+- Godot validation #345 전체 PASS
+
+Registry는 최종 보고서를 `source_only`로 등록했다. PDF는 로컬 파생본이므로 저장소 binary publication과 `always_sync` 전환은 `NOT_RUN`이다.
 
 ## 플랫폼·사람 검증
 
