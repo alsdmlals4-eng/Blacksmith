@@ -322,12 +322,12 @@
 - 코어 계약, 통합 설명, MVP 실행 범위, 구현계획과 상태 문서를 분리.
 - 구형 review report는 역사 자료로 유지.
 
-### Green 재검증 진행
+### Green 재검증 완료
 
-- Godot validation #338과 #339는 PASS했다.
-- Data validation #412는 JSON·강화 실패·시뮬레이터·코어 정렬까지 PASS했고, 운영 감사에서 구현계획의 미래 생성 경로와 아직 발행 전인 PDF·Manifest를 현재 깨진 참조로 분류해 FAIL했다.
-- 구현계획 미래 경로만 `PLANNED_PATH_NOT_YET_CREATED` 경고로 재분류하는 wrapper와 단위 테스트를 추가했다. 일반 활성 문서의 깨진 참조는 계속 ERROR다.
-- PDF·Manifest 로컬 생성 뒤 저장소 참조를 깨지 않도록 source-only 상태로 유지하고 최종 Data validation을 다시 실행한다.
+- Godot validation #345는 import·parse, enhancement/main Scene smoke, 모델·통합 테스트, 패키징과 JSON 검증까지 모두 PASS했다.
+- Data validation #418은 Git conflict, JSON, 강화 실패 계약, 밸런스 시뮬레이터 계약, core alignment, 계획 미래 경로 분류, Base adoption audit와 고정 Base 전체 회귀를 모두 PASS했다.
+- 구현계획 미래 경로만 `PLANNED_PATH_NOT_YET_CREATED` 경고로 재분류한다. 일반 활성 문서의 깨진 참조는 계속 ERROR다.
+- #418/#345는 보고서 본문과 운영 정본을 포함한 substantive head `f161200613522d0b9ded5e951b3c404d93dce527`의 검증 증거다. 이후 증거 문구만 동기화한 커밋도 동일 Workflow로 다시 확인한다.
 
 ## 15. GitHub 최신성·구형 참조 감사
 
@@ -365,14 +365,15 @@
 
 | 검증 | 결과 |
 |---|---|
-| 미해결 Git conflict | Data #412 PASS |
-| JSON game data | Data #412 PASS |
-| 강화 실패 계약 | Data #412 PASS |
-| 밸런스 시뮬레이터 계약 | Data #412 PASS |
-| Core alignment gate | Data #412 PASS |
-| Base adoption audit | Data #412 FAIL: 계획 미래 경로·발행 전 PDF 오분류; wrapper 수정 후 재실행 필요 |
-| Base 전체 회귀 | Data #412에서 audit 이후 skip; 최종 재실행 필요 |
-| Godot validation | #338 PASS, #339 PASS |
+| 미해결 Git conflict | Data #418 PASS |
+| JSON game data | Data #418 PASS |
+| 강화 실패 계약 | Data #418 PASS |
+| 밸런스 시뮬레이터 계약 | Data #418 PASS |
+| Core alignment gate | Data #418 PASS |
+| 계획 미래 경로 분류 단위 테스트 | Data #418 PASS |
+| Base adoption audit | Data #418 PASS |
+| Base 전체 회귀 | Data #418 PASS |
+| Godot validation | #345 PASS |
 | 제품 lifecycle runtime | NOT_RUN - 구현 미착수 |
 | Android | NOT_RUN |
 | 접근성 사람 검증 | NOT_RUN |
@@ -399,7 +400,8 @@
 - PR #33 review comments: 없음.
 - 병합 순서: #31→#32→#33.
 - Required Check 강제 설정: `UNVERIFIED`.
-- 최종 Workflow와 PR changed files는 발행 뒤 갱신한다.
+- substantive head 검증: Data #418 PASS, Godot #345 PASS.
+- 최종 증거 동기화 head의 Workflow와 changed files는 최종 응답 직전 재확인한다.
 
 ## 20. 커밋 목록과 목적
 
