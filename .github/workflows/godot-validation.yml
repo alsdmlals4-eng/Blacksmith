@@ -149,8 +149,12 @@ jobs:
             fi
           done
           echo "PROCESS_STATUS forging=$forging_status enhancement=$enhancement_status workshop=$workshop_status calendar=$calendar_status craftsmanship=$craftsmanship_status customer=$customer_status world_resolver=$world_resolver_status world_registry=$world_registry_status telemetry=$telemetry_status manual_economy=$manual_economy_status forging_quality=$forging_quality_status action_atomicity=$action_atomicity_status lifecycle_controller=$lifecycle_controller_status" | tee -a godot-test.log
-          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ] || [ "$workshop_status" -ne 0 ] || [ "$calendar_status" -ne 0 ] || [ "$craftsmanship_status" -ne 0 ] || [ "$customer_status" -ne 0 ] || [ "$world_resolver_status" -ne 0 ] || [ "$world_registry_status" -ne 0 ] || [ "$telemetry_status" -ne 0 ] || [ "$manual_economy_status" -ne 0 ] || [ "$forging_quality_status" -ne 0 ] || [ "$action_atomicity_status" -ne 0 ] || [ "$lifecycle_controller_status" -ne 0 ]; then
-            echo "Godot reported non-zero test process status."
+          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ] || [ "$workshop_status" -ne 0 ] || [ "$manual_economy_status" -ne 0 ] || [ "$forging_quality_status" -ne 0 ]; then
+            echo "Existing Godot model or integration test failed."
+            status=1
+          fi
+          if [ "$calendar_status" -ne 0 ] || [ "$craftsmanship_status" -ne 0 ] || [ "$customer_status" -ne 0 ] || [ "$world_resolver_status" -ne 0 ] || [ "$world_registry_status" -ne 0 ] || [ "$telemetry_status" -ne 0 ] || [ "$action_atomicity_status" -ne 0 ] || [ "$lifecycle_controller_status" -ne 0 ]; then
+            echo "Equipment lifecycle model or integration test failed."
             status=1
           fi
           if grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" godot-test.log; then
