@@ -6,6 +6,7 @@
 - 현재 PR: #33 Draft
 - PR 스택: `#31 → #32 → #33`
 - 현재 Issue·Goal: #34 `MVP-003: 장비 한 점의 생애 PoC 구현 및 플레이 검증`
+- 장비 생애 PoC 통합 상태: `SPEC_READY / IMPLEMENTATION_NOT_STARTED`
 
 ## 1. 현재 판정
 
