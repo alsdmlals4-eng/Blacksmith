@@ -22,6 +22,19 @@
 | First Playable | NOT_STARTED | 20~30분 초기 성장 세션과 실패·복구 흐름 완주 |
 | Vertical Slice | NOT_STARTED | 출시 목표 UI 품질·접근성·성능·외부 플레이·AAB 파이프라인 증명 |
 
+## 위험·가격 곡선 시뮬레이션 게이트
+
+| 단계 | 상태 | 종료 기준 |
+|---|---|---|
+| Scope·Routing | READY | `balance-simulation` Mode·trigger·Work Mode·Base profile·Design Registry·`docs/BALANCE_SIMULATION_SCOPE.md` 일치 |
+| Simulator implementation | NOT_STARTED | JSON 정본과 `EnhancementSession` 판정 순서·거래·자동 중지를 재현하고 고정 반례 통과 |
+| Baseline distribution | NOT_RUN | +10·+30·+50·+70·+100과 단조·재료·자동 반복 시나리오의 평균·중앙값·P90·P95·하락·파괴·복구 결과 생성 |
+| Candidate tuning | NOT_STARTED | 한 변수군만 변경하고 동일 시드 기준선과 비교해 `KEEP / TUNE / REJECT / TEST_IN_PLAY` 판정 |
+| Regression | NOT_RUN | 데이터 의미·정적 계약·Godot 파싱·Scene·모델·운영체계 회귀 통과 |
+| Human play evidence | NOT_RUN | +100 손실 피로·수동/자동 효율·보상 체감을 실제 플레이에서 확인 |
+
+Scope·Routing 준비 완료는 게임 수치·밸런스·사람 체감 PASS를 의미하지 않는다.
+
 ## 제작 검증
 
 - [x] 철검 제작 상태 모델
@@ -145,6 +158,8 @@
 - [x] JSON 파싱 검증을 강화 데이터 의미 검증으로 확대
 - [x] 강화 실패 정책 전용 정적 계약 검사와 Data Workflow 연결
 - [x] PR #26 GitHub Workflow 최종 실행 완료
+- [x] `balance-simulation` Mode·라우팅·Base profile·분석 Scope·Registry 연결
+- [ ] 시뮬레이터·기준선·후보 비교·결과 보고서 검증
 - [ ] 새 작업자 또는 별도 AI의 실제 콜드 스타트 재현
 - [ ] Branch protection에서 Required Check 강제 여부 확인
 
@@ -180,5 +195,6 @@
 - `PARTIAL`: 일부만 실행 또는 비차단 미확인 존재
 - `FAIL`: 차단 결함·계약 불일치
 - `NOT_RUN`: 환경·입력·권한이 없어 실행하지 않음
+- `READY`: 범위·입력·종료 기준은 준비됐으나 실행 증거는 아직 없음
 
 문서 존재와 실제 실행, Workflow 존재와 Required Check 강제를 구분한다.

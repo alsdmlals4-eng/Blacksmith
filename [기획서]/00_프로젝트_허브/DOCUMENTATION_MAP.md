@@ -22,7 +22,10 @@ AGENTS.md
 | 현재 무엇이 확정·구현·검증됐는가? | `ACTIVE_CONTEXT.md` |
 | 다음 작업과 제품·작업 게이트는 무엇인가? | `ROADMAP.md`, `DEVELOPMENT_GATES.md` |
 | 위험·가격 곡선 시뮬레이션의 입력·지표·판정·완료 기준은 무엇인가? | `../../docs/BALANCE_SIMULATION_SCOPE.md` |
+<<<<<<< HEAD
 | 최신 위험·가격 곡선 기준선 결과와 해석은 무엇인가? | `../../docs/BALANCE_SIMULATION_REPORT.md` |
+=======
+>>>>>>> 48a7cfc06fd727b3f28dafcb5ea34eb9e973e66e
 | 최근 프로젝트 결정은 무엇인가? | `DECISION_LOG.md`, `CHANGELOG.md` |
 | 문서별 책임 원본과 발행 정책은 무엇인가? | `DESIGN_DOCUMENT_REGISTRY.json` |
 | Work Mode와 Skill을 어떻게 자동 선택하는가? | `WORK_MODE_AND_SKILL_ROUTING.md`, `SKILL_REGISTRY.json` |
@@ -49,10 +52,11 @@ AGENTS.md
 - PDF·DOCX·다이어그램: 사람용 파생본. 생성·해시·시각 검수가 없으면 `NOT_RUN`
 - 과거 상태: Git 이력
 
-한 질문에 활성 책임 원본을 여러 개 만들지 않는다. 외부 벤치마크·리뷰·과거 대화는 기획·구현 정본을 대체하지 않는다.
+한 질문에 활성 책임 원본을 여러 개 만들지 않는다. 외부 벤치마크·리뷰·과거 대화·닫힌 PR은 기획·구현·분석 입력 정본을 대체하지 않는다.
 
 ## 선택적 읽기
 
+- 위험·가격 곡선 시뮬레이션: `../../docs/BALANCE_SIMULATION_SCOPE.md`, 관련 JSON·런타임·테스트
 - 구형·중복 파일 정리: `../../docs/BASE_ADOPTION_AUDIT.md`와 Git 이력
 - 위험·가격 곡선 시뮬레이션: `../../docs/BALANCE_SIMULATION_SCOPE.md`, 관련 JSON·런타임·테스트
 - Android·AAB 검증: `DEVELOPMENT_GATES.md`, 관련 export 설정과 실제 기기 로그

@@ -106,11 +106,15 @@
         "../../scripts/ui/enhancement_screen.gd",
         "../../scripts/ui/game_flow_screen.gd",
         "../../tests/unit",
+<<<<<<< HEAD
         "../../tests/integration",
         "../../tests/test_enhancement_balance_simulator.py",
         "../../tests/check_enhancement_balance_simulator_contract.py",
         "../../tools/simulate_enhancement_balance.py",
         "../../docs/BALANCE_SIMULATION_REPORT.md"
+=======
+        "../../tests/integration"
+>>>>>>> 48a7cfc06fd727b3f28dafcb5ea34eb9e973e66e
       ]
     }
   ]

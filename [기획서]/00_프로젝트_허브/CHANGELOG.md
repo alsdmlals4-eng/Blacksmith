@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-07-23 — 위험·가격 곡선 시뮬레이션 준비
+
+- `blacksmith-game-design`에 `balance-simulation` Mode와 자동 trigger를 추가
+- Skill Registry·Work Mode 라우팅·Base 적용 프로필의 Mode 목록과 활성 조건을 동일하게 동기화
+- `docs/BALANCE_SIMULATION_SCOPE.md`를 생성해 JSON·런타임 입력, 기준선 시나리오, 분포 지표, 단일 변수 실험, 판정·완료 기준을 확정
+- Design Document Registry·Documentation Map·Active Context·Roadmap·Development Gates·Decision Log에 분석 책임 원본과 다음 작업을 연결
+- 평균뿐 아니라 중앙값·P10·P90·P95·하락·파괴·복구·재료 병목·자동 중지 사유를 검토하도록 계약
+- 현재 게임 JSON·GDScript·Scene·플레이 수치는 변경하지 않음
+- 시뮬레이터 구현·기준선 실행·후보 조정·실제 플레이·Android는 NOT_RUN 또는 NOT_STARTED 유지
+- PR #16·#24에 대체된 구형 PR #15·#22와 최신 main 연결이 불완전한 Draft PR #28을 닫아 구형 운영 구조·피버 수치·불완전 Skill 반영의 재유입 경로를 제거
+
 ## 2026-07-23 — POC v0.6.4 강화 실패 정책 정합성 후속
 
 - `enhancement_milestones.json`의 폐기된 실패 정책을 제거하고 수식어·특수 강화 이정표만 유지
