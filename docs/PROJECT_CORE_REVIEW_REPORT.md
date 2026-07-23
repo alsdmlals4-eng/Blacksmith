@@ -27,7 +27,7 @@
 |---|---|---|---|
 | #31 | 운영 정본 충돌 복구 | Data validation #362, Godot validation #316 성공 | 선행 PR, 미병합 |
 | #32 | Base 25 Skill 재동기화 | Data validation #365 성공, 벤치마킹·코어·적대적 검토 Mode 프로젝트 Skill에 연결 | 선행 PR, 미병합 |
-| #33 | 프로젝트 코어 확정·검토 | Data validation #372 성공, 리뷰 댓글 없음, changed file 3개 전수 확인 | 본 개선 PR |
+| #33 | 프로젝트 코어 확정·검토 | 최종 head Data validation 성공, 리뷰 댓글 없음, changed file 3개 전수 확인 | 본 개선 PR |
 
 병합 순서는 `#31 → #32 → #33`이다. #33은 stacked draft PR이며 선행 PR이 정리되기 전 main으로 독립 병합하지 않는다.
 
@@ -235,7 +235,7 @@ PoC는 철검 1종·검투사 1명·3일 이내로 유지돼 범위가 증가하
 
 - PR #31 Data·Godot 성공
 - PR #32 Data 성공
-- PR #33 최종 문서·Registry Data validation #372 성공
+- PR #33 최종 head Data validation 성공
 - 변경 파일 패치 전수 확인
 - 프로젝트 Skill에서 벤치마킹·적대적 검토·회귀 재검토 Mode 확인
 - 공식 스토어·앱 페이지 기반 경쟁 사례 비교
