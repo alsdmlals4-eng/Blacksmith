@@ -31,7 +31,11 @@
 실행 범위:
 
 - Ubuntu Python 3.12 전체 프로젝트 계약
-- Ubuntu Godot 4.7.1 import, Scene smoke, 모델·통합 테스트
+- Ubuntu Godot 4.7.1 import
+- `res://scenes/main/main.tscn` smoke
+- `res://scenes/test/equipment_lifecycle_poc.tscn` smoke
+- 기존·신규 모델 및 통합 테스트
+- `res://tests/integration/test_equipment_lifecycle_poc.gd` 전체 생애 E2E
 
 실행하지 않는 항목:
 
@@ -129,11 +133,13 @@ on:
 2. 재사용 Python Workflow 호출과 job 이름
 3. 재사용 Godot Workflow 호출
 4. Ubuntu·Windows × Python 3.11·3.12·3.13 매트릭스
-5. Godot 4.7.1 다운로드·import·Scene smoke·전체 테스트
-6. pinned Base LibreOffice·Node·pnpm 전체 회귀
-7. 새 커밋 push 시 `cancel-in-progress` 실제 취소 동작
-8. 재사용 Workflow가 상위 Workflow를 취소하지 않는지 확인
-9. Branch protection의 Required Check 이름과 강제 여부
+5. Godot 4.7.1 다운로드·import
+6. `equipment_lifecycle_poc.tscn`과 `main.tscn` smoke
+7. `test_equipment_lifecycle_poc.gd`와 기존 전체 회귀
+8. pinned Base LibreOffice·Node·pnpm 전체 회귀
+9. 새 커밋 push 시 `cancel-in-progress` 실제 취소 동작
+10. 재사용 Workflow가 상위 Workflow를 취소하지 않는지 확인
+11. Branch protection의 Required Check 이름과 강제 여부
 
 ### 4. Required Check 정리
 
@@ -157,11 +163,16 @@ python tests/check_enhancement_balance_simulator_contract.py
 python tests/check_project_core_alignment.py
 ```
 
-Godot 4.7.1 실행 파일이 있는 개발 환경에서는 `.github/workflows/godot-validation.yml`에 열거된 Scene과 테스트를 같은 순서로 실행한다.
+Godot 4.7.1 실행 파일이 있는 개발 환경에서는 다음 핵심 명령과 `.github/workflows/godot-validation.yml`의 전체 목록을 실행한다.
+
+```bash
+./godot --headless --editor --path . --quit
+./godot --headless --path . res://scenes/main/main.tscn --quit-after 2
+./godot --headless --path . res://scenes/test/equipment_lifecycle_poc.tscn --quit-after 2
+./godot --headless --path . --script res://tests/integration/test_equipment_lifecycle_poc.gd
+```
 
 ## 완료 판정 제한
-
-다음 조건을 지킨다.
 
 - Workflow YAML과 정적 테스트 추가만으로 CI PASS를 선언하지 않는다.
 - Windows, GitHub event routing, cancellation, Required Check는 실제 Actions 증거 전까지 `NOT_RUN`이다.
