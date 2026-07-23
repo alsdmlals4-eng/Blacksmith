@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "base_fatigue": 20,
+  "carryover_ratio": 0.5,
+  "action_costs": {
+    "forge": 3,
+    "normal_enhance": 1,
+    "special_enhance": 3,
+    "restore": 5
+  }
+}
