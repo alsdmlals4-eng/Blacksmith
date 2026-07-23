@@ -1,15 +1,14 @@
 name: PR validation
 
-# ACTIONS_BUDGET_HOLD:
-# Automatic pull_request execution is intentionally disabled until the owner
-# confirms that GitHub Actions minutes are available again. At that point add
-# `pull_request:` beside `workflow_dispatch:`; the classifier below is already
-# prepared for automatic document-only versus code routing.
+# Automatic PR validation is active. The classifier routes document-only changes
+# to lightweight Python validators and code/data/test/workflow changes to the
+# Python contract suite plus one reusable Godot run.
 on:
+  pull_request:
   workflow_dispatch:
     inputs:
       scope:
-        description: Validation scope while automatic CI is paused
+        description: Validation scope for manual execution
         required: true
         default: code
         type: choice
