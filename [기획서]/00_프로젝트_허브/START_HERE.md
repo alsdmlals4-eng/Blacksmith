@@ -14,12 +14,13 @@
 |---|---|
 | 프로젝트 코어 | `CORE_CONFIRMED / CORE_RECORDED` |
 | 장비 한 점의 생애 PoC 명세 | `SPEC_READY` |
-| 장비 생애 PoC 구현 | `IMPLEMENTATION_NOT_STARTED` |
+| 장비 생애 PoC 구현 | `IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED` |
+| GitHub Actions | `DEFERRED_UNTIL_ACTIONS_AVAILABLE` |
 | 프로덕션 진입 | `NOT_GREENLIT` |
 | 현재 Issue | #34 |
-| 현재 PR | #33 Draft, stacked |
+| 현재 PR | #35 Draft |
 
-현재 Prototype의 실제 구현은 제작, +100 강화, 보관, 자동 단조까지다. 영구 완성도, 피로도·날짜, 검투사 납품, 지연 결과, 세계 장비 기록과 재방문은 확정 설계이지만 아직 제품 코드로 구현되지 않았다.
+현재 Prototype의 제작·강화·보관·자동 단조는 유지된다. PR #35에는 영구 완성도, 피로도·날짜, 검투사 납품, 지연 결과, 세계 장비 기록, 재방문과 세로 PoC Scene이 구현 후보로 추가됐다. 최신 head의 Godot import·Scene·E2E·전체 회귀는 Actions 비용 게이트 때문에 아직 실행되지 않았다.
 
 ## 처음 읽을 순서
 
@@ -34,7 +35,8 @@
 9. `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md`
 10. `docs/MVP-003_SCOPE.md`
 11. `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md`
-12. 관련 `data/`, `scripts/`, `scenes/`, `tests/`
+12. `docs/CI_EXECUTION_POLICY.md`
+13. 관련 `data/`, `scripts/`, `scenes/`, `tests/`
 
 ## 현행 코어 보호 경계
 
@@ -47,19 +49,20 @@
 - 직원, 직접 전투, 생산 대기열, 일상적 수리 관리를 승인 없이 추가하지 않는다.
 - `+100`은 현재 제품 목표이며 최종 상한은 후속 실험으로 재검토할 수 있다.
 
-## PR 스택
+## PR 이력
 
 ```text
-#31 운영 정본 복구
-→ #32 Base 25 Skill 재동기화
-→ #33 코어 확정·통합 명세·구현계획·최종 검토
+#31 운영 정본 복구 — merged
+→ #32 Base 25 Skill 재동기화 — merged
+→ #33 코어 확정·통합 명세·구현계획·최종 검토 — merged
+→ #35 MVP-003 구현 후보 — Draft
 ```
-
-선행 PR이 정리되기 전 #33을 독립 병합하지 않는다.
 
 ## 검증 상태 읽는 법
 
-- 문서가 있다는 것은 구현 완료가 아니다.
-- CI 성공은 Android·사람 시각·접근성·성능·플레이 재미 통과가 아니다.
-- 미실행 검사는 `NOT_RUN` 또는 `UNVERIFIED`로 유지한다.
-- MVP 전체 완료는 Issue #34 구현, 전체 Godot 회귀, 외부 플레이 행동 증거와 필요한 플랫폼 검증 뒤 별도 판정한다.
+- 코드가 작성됐다는 것은 실행 PASS가 아니다.
+- 과거 CI 성공은 최신 head의 회귀 PASS를 대신하지 않는다.
+- CI 성공도 Android·사람 시각·접근성·성능·플레이 재미 통과를 대신하지 않는다.
+- 미실행 검사는 `NOT_RUN`, `UNVERIFIED` 또는 `VALIDATION_DEFERRED`로 유지한다.
+- 사용자가 GitHub Actions 사용 가능 상태를 알리면 `docs/CI_EXECUTION_POLICY.md` 순서로 자동 트리거를 복원하고 최신 head를 검증한다.
+- MVP 전체 완료는 전체 Godot 회귀, Android·접근성·성능·외부 플레이 행동 증거 뒤 별도 판정한다.
