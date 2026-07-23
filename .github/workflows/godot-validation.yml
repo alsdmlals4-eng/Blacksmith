@@ -88,6 +88,30 @@ jobs:
           ./godot --headless --path . --script res://tests/unit/test_workshop_resources.gd >> godot-test.log 2>&1
           workshop_status=$?
 
+          echo "== WorkshopCalendar ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/unit/test_workshop_calendar.gd >> godot-test.log 2>&1
+          calendar_status=$?
+
+          echo "== CraftsmanshipGradeResolver ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/unit/test_craftsmanship_grade_resolver.gd >> godot-test.log 2>&1
+          craftsmanship_status=$?
+
+          echo "== CustomerContract ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/unit/test_customer_contract.gd >> godot-test.log 2>&1
+          customer_status=$?
+
+          echo "== WorldActivityResolver ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/unit/test_world_activity_resolver.gd >> godot-test.log 2>&1
+          world_resolver_status=$?
+
+          echo "== EquipmentWorldRegistry ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/unit/test_equipment_world_registry.gd >> godot-test.log 2>&1
+          world_registry_status=$?
+
+          echo "== PocTelemetry ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/unit/test_poc_telemetry.gd >> godot-test.log 2>&1
+          telemetry_status=$?
+
           echo "== ManualEnhancementEconomy ==" | tee -a godot-test.log
           ./godot --headless --path . --script res://tests/integration/test_manual_enhancement_economy.gd >> godot-test.log 2>&1
           manual_economy_status=$?
@@ -96,25 +120,36 @@ jobs:
           ./godot --headless --path . --script res://tests/integration/test_forging_quality_enhancement.gd >> godot-test.log 2>&1
           forging_quality_status=$?
 
+          echo "== WorkshopActionAtomicity ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/integration/test_workshop_action_atomicity.gd >> godot-test.log 2>&1
+          action_atomicity_status=$?
+
+          echo "== EquipmentLifecycleController ==" | tee -a godot-test.log
+          ./godot --headless --path . --script res://tests/integration/test_equipment_lifecycle_controller.gd >> godot-test.log 2>&1
+          lifecycle_controller_status=$?
+
           cat godot-test.log
           status=0
-          if ! grep -q "ForgingSession tests PASSED" godot-test.log; then
-            status=1
-          fi
-          if ! grep -q "EnhancementSession tests PASSED" godot-test.log; then
-            status=1
-          fi
-          if ! grep -q "WorkshopResources tests PASSED" godot-test.log; then
-            status=1
-          fi
-          if ! grep -q "Manual enhancement economy integration tests PASSED" godot-test.log; then
-            status=1
-          fi
-          if ! grep -q "Forging quality enhancement integration tests PASSED" godot-test.log; then
-            status=1
-          fi
-          echo "PROCESS_STATUS forging=$forging_status enhancement=$enhancement_status workshop=$workshop_status manual_economy=$manual_economy_status forging_quality=$forging_quality_status" | tee -a godot-test.log
-          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ] || [ "$workshop_status" -ne 0 ] || [ "$manual_economy_status" -ne 0 ] || [ "$forging_quality_status" -ne 0 ]; then
+          for marker in \
+            "ForgingSession tests PASSED" \
+            "EnhancementSession tests PASSED" \
+            "WorkshopResources tests PASSED" \
+            "WorkshopCalendar tests PASSED" \
+            "CraftsmanshipGradeResolver tests PASSED" \
+            "CustomerContract tests PASSED" \
+            "WorldActivityResolver tests PASSED" \
+            "EquipmentWorldRegistry tests PASSED" \
+            "PocTelemetry tests PASSED" \
+            "Manual enhancement economy integration tests PASSED" \
+            "Forging quality enhancement integration tests PASSED" \
+            "Workshop action atomicity integration tests PASSED" \
+            "Equipment lifecycle controller integration tests PASSED"; do
+            if ! grep -q "$marker" godot-test.log; then
+              status=1
+            fi
+          done
+          echo "PROCESS_STATUS forging=$forging_status enhancement=$enhancement_status workshop=$workshop_status calendar=$calendar_status craftsmanship=$craftsmanship_status customer=$customer_status world_resolver=$world_resolver_status world_registry=$world_registry_status telemetry=$telemetry_status manual_economy=$manual_economy_status forging_quality=$forging_quality_status action_atomicity=$action_atomicity_status lifecycle_controller=$lifecycle_controller_status" | tee -a godot-test.log
+          if [ "$forging_status" -ne 0 ] || [ "$enhancement_status" -ne 0 ] || [ "$workshop_status" -ne 0 ] || [ "$calendar_status" -ne 0 ] || [ "$craftsmanship_status" -ne 0 ] || [ "$customer_status" -ne 0 ] || [ "$world_resolver_status" -ne 0 ] || [ "$world_registry_status" -ne 0 ] || [ "$telemetry_status" -ne 0 ] || [ "$manual_economy_status" -ne 0 ] || [ "$forging_quality_status" -ne 0 ] || [ "$action_atomicity_status" -ne 0 ] || [ "$lifecycle_controller_status" -ne 0 ]; then
             echo "Godot reported non-zero test process status."
             status=1
           fi
@@ -137,6 +172,7 @@ jobs:
             docs/GODOT_PLAYTEST.md \
             docs/MVP-001_SCOPE.md \
             docs/MVP-002_SCOPE.md \
+            docs/MVP-003_SCOPE.md \
             README.md \
             -x ".godot/*" "*.import"
 
@@ -164,4 +200,6 @@ jobs:
         run: test "${{ steps.model_tests.outputs.status }}" -eq 0
 
       - name: Validate JSON game data
-        run: python tools/validate_game_data.py
+        run: |
+          python tools/validate_game_data.py
+          python tools/validate_lifecycle_data.py
