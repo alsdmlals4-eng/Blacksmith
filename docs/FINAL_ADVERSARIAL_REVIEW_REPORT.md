@@ -327,7 +327,8 @@
 - Godot validation #345는 import·parse, enhancement/main Scene smoke, 모델·통합 테스트, 패키징과 JSON 검증까지 모두 PASS했다.
 - Data validation #418은 Git conflict, JSON, 강화 실패 계약, 밸런스 시뮬레이터 계약, core alignment, 계획 미래 경로 분류, Base adoption audit와 고정 Base 전체 회귀를 모두 PASS했다.
 - 구현계획 미래 경로만 `PLANNED_PATH_NOT_YET_CREATED` 경고로 재분류한다. 일반 활성 문서의 깨진 참조는 계속 ERROR다.
-- #418/#345는 보고서 본문과 운영 정본을 포함한 substantive head `f161200613522d0b9ded5e951b3c404d93dce527`의 검증 증거다. 이후 증거 문구만 동기화한 커밋도 동일 Workflow로 다시 확인한다.
+- #418/#345는 보고서 본문과 운영 정본을 포함한 substantive head `f161200613522d0b9ded5e951b3c404d93dce527`의 검증 증거다.
+- 최종 증거 동기화 head `9d96bbe420aecee6c6c7dac31c973816603a2c78`에서도 Data validation #424와 Godot validation #351이 모두 PASS했다.
 
 ## 15. GitHub 최신성·구형 참조 감사
 
@@ -365,15 +366,15 @@
 
 | 검증 | 결과 |
 |---|---|
-| 미해결 Git conflict | Data #418 PASS |
-| JSON game data | Data #418 PASS |
-| 강화 실패 계약 | Data #418 PASS |
-| 밸런스 시뮬레이터 계약 | Data #418 PASS |
-| Core alignment gate | Data #418 PASS |
-| 계획 미래 경로 분류 단위 테스트 | Data #418 PASS |
-| Base adoption audit | Data #418 PASS |
-| Base 전체 회귀 | Data #418 PASS |
-| Godot validation | #345 PASS |
+| 미해결 Git conflict | Data #424 PASS |
+| JSON game data | Data #424 PASS |
+| 강화 실패 계약 | Data #424 PASS |
+| 밸런스 시뮬레이터 계약 | Data #424 PASS |
+| Core alignment gate | Data #424 PASS |
+| 계획 미래 경로 분류 단위 테스트 | Data #424 PASS |
+| Base adoption audit | Data #424 PASS |
+| Base 전체 회귀 | Data #424 PASS |
+| Godot validation | #351 PASS |
 | 제품 lifecycle runtime | NOT_RUN - 구현 미착수 |
 | Android | NOT_RUN |
 | 접근성 사람 검증 | NOT_RUN |
@@ -400,8 +401,8 @@
 - PR #33 review comments: 없음.
 - 병합 순서: #31→#32→#33.
 - Required Check 강제 설정: `UNVERIFIED`.
-- substantive head 검증: Data #418 PASS, Godot #345 PASS.
-- 최종 증거 동기화 head의 Workflow와 changed files는 최종 응답 직전 재확인한다.
+- 최종 head 검증: Data #424 PASS, Godot #351 PASS.
+- PR 제목·본문·changed files는 최종 응답 직전 재확인한다.
 
 ## 20. 커밋 목록과 목적
 
@@ -431,7 +432,7 @@ MVP-001/002 Scope는 기존 구현 slice의 역사 정본으로 유지했다.
 
 ## 22. 원격 푸시 결과
 
-GitHub connector의 create/update 작업은 원격 `agent/propose-project-core-contract` 브랜치에 직접 commit됐다. 최종 head와 PR #33 head 일치 여부는 최종 발행 뒤 다시 확인한다.
+GitHub connector의 create/update 작업은 원격 `agent/propose-project-core-contract` 브랜치에 직접 commit됐다. 최종 검증 head `9d96bbe420aecee6c6c7dac31c973816603a2c78`과 PR #33 head가 일치했고 Data #424·Godot #351이 PASS했다. 이후 보고서 증거 문구만 동기화한 commit은 동일 정적 계약을 유지한다.
 
 ## 23. 남은 위험·미검증·후속 작업
 
@@ -439,7 +440,7 @@ GitHub connector의 create/update 작업은 원격 `agent/propose-project-core-c
 
 - Issue #34 Task 1~9 구현.
 - 최종 PDF의 저장소 publication과 Registry `always_sync` 전환.
-- 전체 Godot 신규·기존 회귀.
+- Issue #34 신규 lifecycle의 Godot 회귀.
 - Android 실기기.
 - 외부 플레이테스트.
 - 접근성·성능 실측.
