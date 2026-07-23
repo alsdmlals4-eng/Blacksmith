@@ -72,77 +72,23 @@ jobs:
     name: Ubuntu Python document validators
     needs: classify
     if: needs.classify.outputs.scope == 'docs'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Blacksmith
-        uses: actions/checkout@v4
-        with:
-          path: project
-
-      - name: Checkout pinned Base
-        uses: actions/checkout@v4
-        with:
-          repository: alsdmlals4-eng/Base
-          ref: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
-          path: base
-          persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Validate document contracts
-        working-directory: project
-        run: |
-          python -m unittest tests/test_no_merge_conflicts.py
-          python tests/check_no_merge_conflicts.py .
-          python tests/check_project_core_alignment.py
-          python -m unittest tests/test_project_operating_system_audit_runner.py
-          python tools/run_project_operating_system_audit.py \
-            --base-root ../base \
-            --report artifacts/base-adoption-report.json
+    uses: ./.github/workflows/python-validation.yml
+    with:
+      scope: docs
+      runner: ubuntu-latest
+      python-version: "3.12"
+      include-operating-audit: true
 
   code-contracts:
     name: Ubuntu Python code contracts
     needs: classify
     if: needs.classify.outputs.scope == 'code'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Blacksmith
-        uses: actions/checkout@v4
-        with:
-          path: project
-
-      - name: Checkout pinned Base
-        uses: actions/checkout@v4
-        with:
-          repository: alsdmlals4-eng/Base
-          ref: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
-          path: base
-          persist-credentials: false
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Run project contracts
-        working-directory: project
-        run: |
-          python -m unittest tests/test_no_merge_conflicts.py
-          python tests/check_no_merge_conflicts.py .
-          python tools/validate_game_data.py
-          python tools/validate_lifecycle_data.py
-          python -m unittest tests/test_lifecycle_data_contract.py
-          python tests/check_enhancement_failure_contract.py
-          python -m unittest tests/test_enhancement_balance_simulator.py
-          python tests/check_enhancement_balance_simulator_contract.py
-          python tests/check_project_core_alignment.py
-          python -m unittest tests/test_project_operating_system_audit_runner.py
-          python tools/run_project_operating_system_audit.py \
-            --base-root ../base \
-            --report artifacts/base-adoption-report.json
+    uses: ./.github/workflows/python-validation.yml
+    with:
+      scope: code
+      runner: ubuntu-latest
+      python-version: "3.12"
+      include-operating-audit: true
 
   godot-validation:
     name: Ubuntu Godot contracts
