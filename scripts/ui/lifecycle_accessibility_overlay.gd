@@ -1,6 +1,8 @@
 class_name LifecycleAccessibilityOverlay
 extends PanelContainer
 
+const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
+
 var precision_assist_enabled: bool = false
 var reduced_motion_enabled: bool = false
 var assist_toggle: CheckButton
@@ -51,8 +53,10 @@ func _process(_delta: float) -> void:
 		if child.has_method("set_accessibility_options"):
 			child.set_accessibility_options(precision_assist_enabled, reduced_motion_enabled)
 			continue
-		var session = child.get("session")
-		if session == null or not session.config.has("precision_speed"):
+		if child.get_script() != ForgingScreenScript:
+			continue
+		var session = child.session
+		if session == null:
 			continue
 		if reduced_motion_enabled:
 			session.config["precision_speed"] = 0.55
