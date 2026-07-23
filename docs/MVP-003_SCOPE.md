@@ -1,10 +1,12 @@
 # MVP-003 장비 한 점의 생애 PoC
 
-- 상태: `SPEC_READY / IMPLEMENTATION_NOT_STARTED`
+- 상태: `IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED`
 - Issue: #34
+- 구현 PR: #35 Draft
 - 상위 코어: `docs/superpowers/specs/2026-07-23-project-core-design.md`
 - 상세 명세: `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md`
 - 구현계획: `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md`
+- CI 비용 게이트: `docs/CI_EXECUTION_POLICY.md`
 
 ## 목표
 
@@ -41,6 +43,8 @@
 - 영구 세계 장비 기록
 - 명성·관계·후속 의뢰
 - PoC 행동 로그
+- 세로 UI와 48dp 이상 주요 입력
+- 정밀 보조 GOOD 경로와 모션 감소
 
 ## 제외
 
@@ -62,22 +66,40 @@
 - 낮은 완성도도 모든 PoC 강화·수식어·납품에 접근한다.
 - 난수는 DEFEAT/WIN/DECISIVE_WIN 결과 밴드를 뒤집지 않는다.
 - 보고서는 효과 선택, 부족 조건, 사건, 추가 이력을 분리한다.
-- 정밀 입력에는 속도 완화 또는 비시간 압박 대안을 제공한다.
+- 정밀 입력에는 느린 포인터와 GOOD 범위 보조를 제공한다.
+- 정밀 보조는 PERFECT 희귀 보너스를 자동 제공하지 않는다.
 - 결과·위험은 색상 하나에만 의존하지 않는다.
 
-## 완료 기준
+## 구현된 항목
 
-- [ ] 철검 제작부터 재방문까지 E2E 완주
-- [ ] +5 납품과 +10 추가 도전이 모두 유효
-- [ ] DEFEAT, WIN, DECISIVE_WIN 대표 반례 도달
-- [ ] 사전조건 실패 시 모든 자원 무차감
-- [ ] 원자적 납품: 보관 제거·소유권·대금·즉시 명성·세계 기록이 전부 성공하거나 전부 불변
-- [ ] 납품 뒤 장비 기록과 이력 유지
-- [ ] 결과 기여·부족 조건 설명
-- [ ] 같은 검투사 재방문
+- [x] lifecycle JSON 4종과 도달 가능 결과 fixture
+- [x] 영구 완성도 resolver와 legacy `quality_*` 변환
+- [x] 피로도·날짜·50% 이월
+- [x] 검투사 계약·납품 적합도
+- [x] 세계 장비 Registry와 결정적 결과 Resolver
+- [x] 제작·강화·납품 원자 거래
+- [x] 지연 보고·명성·관계·재방문 Controller
+- [x] 로컬 행동 telemetry
+- [x] 계약·제작·강화·납품·보고·재방문 세로 UI
+- [x] 기존 Prototype에서 PoC로 진입하는 버튼
+- [x] 전체 생애 E2E 테스트와 세 결과 밴드 경계 테스트 작성
+- [x] 비용 최적화된 재사용 CI 구조 작성
+
+## 완료 기준과 현재 증거
+
+- [ ] 철검 제작부터 재방문까지 E2E 실행 PASS
+- [ ] +5 납품과 +10 추가 도전 실행 PASS
+- [ ] DEFEAT, WIN, DECISIVE_WIN 대표 반례 실행 PASS
+- [ ] 사전조건 실패 시 모든 자원 무차감 실행 PASS
+- [ ] 원자적 납품 실행 PASS
+- [ ] 납품 뒤 장비 기록과 이력 유지 실행 PASS
+- [ ] 결과 기여·부족 조건 설명 UI 사람 검토
+- [ ] 같은 검투사 재방문 실행 PASS
 - [ ] 신규 테스트와 기존 Godot 회귀 전체 PASS
 - [ ] Godot import·main·PoC Scene smoke PASS
 - [ ] Android·접근성·성능·외부 플레이 미실행을 PASS로 표시하지 않음
+
+GitHub Actions 비용 게이트 이후 추가된 코드·Scene·신규 테스트는 아직 GitHub-hosted runner에서 실행하지 않았다. 사용자가 Actions 재사용 가능 상태를 알리면 `docs/CI_EXECUTION_POLICY.md` 순서로 위 검증을 실행한다.
 
 ## 플레이테스트 통과 신호
 
@@ -92,4 +114,4 @@
 
 ## 현재 상태
 
-이 문서는 구현 범위를 확정했지만 제품 구현은 시작되지 않았다. 문서·계획·정적 검증 통과는 MVP 구현 완료가 아니다.
+제품 구현 후보는 PR #35에 작성됐다. 현재 차단 조건은 구현 누락이 아니라 **신규 head의 Godot import·Scene·E2E·전체 회귀 실행, Android·접근성·성능·외부 플레이 증거**다. GitHub Actions가 다시 사용 가능해질 때까지 PR은 Draft를 유지하고 MVP 완료를 선언하지 않는다.
