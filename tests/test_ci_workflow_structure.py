@@ -25,6 +25,18 @@ class CiWorkflowStructureTests(unittest.TestCase):
             self.assertIn("cancel-in-progress: true", source, name)
             self.assertIn("ci-${{ github.workflow }}-${{ github.ref }}", source, name)
 
+    def test_top_level_and_reusable_groups_do_not_self_cancel(self) -> None:
+        pr = read("data-validation.yml")
+        full = read("full-validation.yml")
+        python_workflow = read("python-validation.yml")
+        godot = read("godot-validation.yml")
+        exact = "group: ci-${{ github.workflow }}-${{ github.ref }}"
+        self.assertIn(exact, pr)
+        self.assertIn(exact, full)
+        self.assertIn("-${{ inputs.runner }}-${{ inputs.python-version }}-${{ inputs.scope }}", python_workflow)
+        self.assertIn("-godot-reusable", godot)
+        self.assertNotIn(f"{exact}\n", godot)
+
     def test_budget_hold_disables_automatic_triggers(self) -> None:
         pr = read("data-validation.yml")
         full = read("full-validation.yml")
@@ -78,6 +90,7 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("schedule", policy)
         self.assertIn("Windows", policy)
         self.assertIn("Required Check", policy)
+        self.assertIn("재사용 Workflow", policy)
 
 
 if __name__ == "__main__":
