@@ -10,6 +10,7 @@ var workshop_action_service
 var precision_assist_enabled: bool = false
 var reduced_motion_enabled: bool = false
 var lifecycle_status_label: Label
+var return_guard: Button
 
 
 func _ready() -> void:
@@ -17,9 +18,11 @@ func _ready() -> void:
 	if session != null:
 		session.config["max_level"] = POC_MAX_LEVEL
 	_build_lifecycle_status()
+	_build_return_guard()
 	_apply_accessibility_options()
 	if session != null:
 		_refresh(session.snapshot())
+	_update_lifecycle_status()
 
 
 func _process(delta: float) -> void:
@@ -72,12 +75,27 @@ func _build_lifecycle_status() -> void:
 	lifecycle_status_label.add_theme_color_override("font_color", Color("#f4f1e8"))
 	panel.add_child(lifecycle_status_label)
 	add_child(panel)
-	_update_lifecycle_status()
+
+
+func _build_return_guard() -> void:
+	return_guard = Button.new()
+	return_guard.text = "특수 강화 타격을 먼저 완료하세요"
+	return_guard.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	return_guard.position = Vector2(18.0, 18.0)
+	return_guard.size = Vector2(270.0, 58.0)
+	return_guard.z_index = 135
+	return_guard.disabled = true
+	return_guard.mouse_filter = Control.MOUSE_FILTER_STOP
+	return_guard.add_theme_font_size_override("font_size", 15)
+	return_guard.visible = false
+	add_child(return_guard)
 
 
 func _update_lifecycle_status() -> void:
 	if lifecycle_status_label == null:
 		return
+	if return_guard != null:
+		return_guard.visible = session != null and int(session.state) == 1
 	if workshop_action_service == null or workshop_action_service.calendar == null:
 		lifecycle_status_label.text = "PoC 상한 +10"
 		return
