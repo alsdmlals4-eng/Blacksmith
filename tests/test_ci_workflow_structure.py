@@ -59,12 +59,15 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertNotIn("libreoffice-writer", pr)
         self.assertNotIn("pnpm install", pr)
 
-    def test_godot_is_reusable_not_independently_triggered(self) -> None:
+    def test_godot_is_reusable_and_owns_lifecycle_regression(self) -> None:
         godot = read("godot-validation.yml")
         self.assertIn("workflow_call:", godot)
         self.assertNotIn("\n  pull_request:", godot)
         self.assertNotIn("\n  push:", godot)
         self.assertIn("test_equipment_lifecycle_controller.gd", godot)
+        self.assertIn("test_equipment_lifecycle_poc.gd", godot)
+        self.assertIn("equipment_lifecycle_poc.tscn", godot)
+        self.assertIn("scenes/main/main.tscn", godot)
         self.assertIn("Upload failure logs only", godot)
 
     def test_full_validation_owns_matrix_and_heavy_base_suite(self) -> None:
@@ -75,6 +78,7 @@ class CiWorkflowStructureTests(unittest.TestCase):
             self.assertIn(version, full)
         self.assertIn("Validate full pinned Base operating system once", full)
         self.assertIn("uses: ./.github/workflows/godot-validation.yml", full)
+        self.assertEqual(1, full.count("Validate full pinned Base operating system once"))
 
     def test_python_contracts_are_centralized(self) -> None:
         python_workflow = read("python-validation.yml")
@@ -82,6 +86,7 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("inputs.scope == 'code'", python_workflow)
         self.assertIn("check_forging_quality_contract.py", python_workflow)
         self.assertIn("test_lifecycle_data_contract.py", python_workflow)
+        self.assertIn("check_project_core_alignment.py", python_workflow)
 
     def test_activation_policy_is_recorded(self) -> None:
         policy = (ROOT / "docs" / "CI_EXECUTION_POLICY.md").read_text(encoding="utf-8")
@@ -91,6 +96,8 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("Windows", policy)
         self.assertIn("Required Check", policy)
         self.assertIn("재사용 Workflow", policy)
+        self.assertIn("test_equipment_lifecycle_poc.gd", policy)
+        self.assertIn("equipment_lifecycle_poc.tscn", policy)
 
 
 if __name__ == "__main__":
