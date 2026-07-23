@@ -463,7 +463,7 @@
 - 문서 라우팅: `[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json`
 - 개발 게이트: `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
 - 적대적 검토·벤치마킹 증거: `docs/PROJECT_CORE_REVIEW_REPORT.md`
-- 배포 PDF: `docs/BLACKSMITH_PROJECT_CORE_CONFIRMED_2026-07-23.pdf`
+- 배포 PDF: 본 대화에서 다운로드 가능한 별도 산출물로 제공
 
 문서 승인, 자동 테스트, 실제 렌더, Android 실기기, 접근성, 성능과 외부 플레이테스트는 별도 상태로 기록한다. 한 종류의 통과가 다른 검증의 통과를 의미하지 않는다.
 
