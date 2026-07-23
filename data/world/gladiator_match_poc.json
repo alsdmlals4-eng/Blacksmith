@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "activity_id": "gladiator_match_poc",
+  "active_record_limit": 6,
+  "score_weights": {
+    "required_level": 20,
+    "stretch_level": 15,
+    "preferred_affix": 25,
+    "attack_threshold": 20,
+    "attack": 10
+  },
+  "grade_scores": {
+    "APPRENTICE": 0,
+    "STANDARD": 5,
+    "REFINED": 10,
+    "MASTERWORK": 15,
+    "PERFECT": 20
+  },
+  "result_bands": [
+    {"id": "DEFEAT", "minimum_score": 0, "fame": 0, "relationship": 0},
+    {"id": "WIN", "minimum_score": 35, "fame": 2, "relationship": 1},
+    {"id": "DECISIVE_WIN", "minimum_score": 70, "fame": 5, "relationship": 2}
+  ],
+  "reachability_fixtures": [
+    {"id": "apprentice_plus5", "grade_id": "APPRENTICE", "level": 5, "affix_ids": [], "attack": 20, "expected_score": 30, "expected_band": "DEFEAT"},
+    {"id": "refined_plus5", "grade_id": "REFINED", "level": 5, "affix_ids": [], "attack": 20, "expected_score": 40, "expected_band": "WIN"},
+    {"id": "masterwork_plus10_preferred", "grade_id": "MASTERWORK", "level": 10, "affix_ids": ["sharp"], "attack": 20, "expected_score": 85, "expected_band": "DECISIVE_WIN"}
+  ]
+}
