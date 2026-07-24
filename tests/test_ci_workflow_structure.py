@@ -37,16 +37,18 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("-godot-reusable", godot)
         self.assertNotIn(f"{exact}\n", godot)
 
-    def test_budget_hold_disables_automatic_triggers(self) -> None:
+    def test_automatic_triggers_are_enabled_at_the_correct_tier(self) -> None:
         pr = read("data-validation.yml")
         full = read("full-validation.yml")
-        self.assertIn("ACTIONS_BUDGET_HOLD", pr)
+        self.assertIn("\n  pull_request:", pr)
         self.assertIn("workflow_dispatch:", pr)
-        self.assertNotIn("\n  pull_request:", pr)
-        self.assertIn("ACTIONS_BUDGET_HOLD", full)
+        self.assertNotIn("\n  push:", pr)
+        self.assertNotIn("\n  schedule:", pr)
+        self.assertIn("\n  push:", full)
+        self.assertIn("- main", full)
+        self.assertIn("\n  schedule:", full)
+        self.assertIn('cron: "17 18 * * *"', full)
         self.assertIn("workflow_dispatch:", full)
-        self.assertNotIn("\n  push:", full)
-        self.assertNotIn("\n  schedule:", full)
 
     def test_pr_router_runs_only_relevant_scope(self) -> None:
         pr = read("data-validation.yml")
@@ -90,7 +92,7 @@ class CiWorkflowStructureTests(unittest.TestCase):
 
     def test_activation_policy_is_recorded(self) -> None:
         policy = (ROOT / "docs" / "CI_EXECUTION_POLICY.md").read_text(encoding="utf-8")
-        self.assertIn("DEFERRED_UNTIL_ACTIONS_AVAILABLE", policy)
+        self.assertIn("ACTIONS_AVAILABLE", policy)
         self.assertIn("pull_request", policy)
         self.assertIn("schedule", policy)
         self.assertIn("Windows", policy)
