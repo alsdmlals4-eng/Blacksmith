@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://ctdm00l6et7v7"]
+[gd_scene load_steps=3 format=3 uid="uid://ctdm00l6et7v7"]
 
 [ext_resource type="Script" uid="uid://bww4lcmbhqkbn" path="res://scripts/ui/game_flow_screen.gd" id="1_flow"]
+[ext_resource type="Script" path="res://scripts/ui/poc_entry_button.gd" id="2_poc"]
 
 [node name="GameFlowScreen" type="Control" unique_id=520180780]
 layout_mode = 3
@@ -10,3 +11,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_flow")
+
+[node name="PocEntryButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 208.0
+offset_bottom = 72.0
+mouse_filter = 0
+z_index = 130
+script = ExtResource("2_poc")

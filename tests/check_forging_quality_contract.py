@@ -165,21 +165,19 @@ dec_020 = decisions.find("## DEC-020 ")
 require(dec_019 >= 0 and dec_020 > dec_019, "Decision Log는 DEC-019 뒤에 DEC-020을 배치해야 합니다.")
 require("## DEC-018 품질별 실제 정수 공격력과 검증 종료코드\n\n- 상태: 확정·구현\n" in decisions, "완료된 DEC-018이 구현 중 상태로 남으면 안 됩니다.")
 
-workflow = text(".github/workflows/godot-validation.yml")
-require("test_forging_quality_enhancement.gd" in workflow, "Godot Workflow에 제작 품질 통합 테스트가 없습니다.")
-require("check_forging_quality_contract.py" in workflow, "Godot Workflow에 품질 정적 계약 검사가 없습니다.")
-require("godot_status=${PIPESTATUS[0]}" in workflow, "Godot Workflow가 Scene·파싱 프로세스 종료 코드를 수집해야 합니다.")
-nonzero_exit_guard = re.search(
-    r'if \[ "\$forging_status".*?"\$forging_quality_status" -ne 0 \]; then\s+'
-    r'echo .*?\s+status=1\s+fi',
-    workflow,
-    re.DOTALL,
-)
-require(nonzero_exit_guard is not None, "Godot Workflow가 모델 테스트 비정상 종료를 실패 상태로 승격해야 합니다.")
+godot_workflow = text(".github/workflows/godot-validation.yml")
+python_workflow = text(".github/workflows/python-validation.yml")
+require("test_forging_quality_enhancement.gd" in godot_workflow, "Godot Workflow에 제작 품질 통합 테스트가 없습니다.")
+require("workflow_call:" in godot_workflow, "Godot Workflow는 재사용 호출 진입점을 제공해야 합니다.")
+require("pull_request:" not in godot_workflow and "push:" not in godot_workflow, "Godot Workflow가 독립 PR/push 실행으로 중복 검증하면 안 됩니다.")
+require("godot_status=${PIPESTATUS[0]}" in godot_workflow, "Godot Workflow가 Scene·파싱 프로세스 종료 코드를 수집해야 합니다.")
+require("process_status=$?" in godot_workflow and 'exit "$status"' in godot_workflow, "Godot Workflow가 모델 테스트 비정상 종료를 실패 상태로 승격해야 합니다.")
+require("check_forging_quality_contract.py" in python_workflow, "Python 계약 Workflow에 품질 정적 계약 검사가 없습니다.")
 require('economy.get("attack_price_scale", 5.3)' in text("scripts/enhancement/enhancement_session.gd"), "강화 가격 계산 fallback이 5.3이어야 합니다.")
 require('snapshot.get("base_attack", 20)' in text("scripts/ui/enhancement_screen.gd"), "보관 기록 최종 공격력 fallback이 최신 기본 공격력을 사용해야 합니다.")
-require("SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" in workflow, "Godot Workflow가 오류 로그 패턴을 실패로 판정해야 합니다.")
-require("godot-validation-logs" in workflow, "Godot Workflow가 파싱·Scene·테스트 로그를 증거로 업로드해야 합니다.")
+require("SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" in godot_workflow, "Godot Workflow가 오류 로그 패턴을 실패로 판정해야 합니다.")
+require("godot-validation-failure-logs" in godot_workflow, "Godot Workflow가 실패 로그만 증거로 업로드해야 합니다.")
+require("cancel-in-progress: true" in godot_workflow and "group: ci-${{ github.workflow }}-${{ github.ref }}" in godot_workflow, "Godot Workflow에 중복 실행 취소가 필요합니다.")
 
 if FAILURES:
     for failure in FAILURES:

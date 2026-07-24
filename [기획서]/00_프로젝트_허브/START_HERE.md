@@ -14,12 +14,16 @@
 |---|---|
 | 프로젝트 코어 | `CORE_CONFIRMED / CORE_RECORDED` |
 | 장비 한 점의 생애 PoC 명세 | `SPEC_READY` |
-| 장비 생애 PoC 구현 | `IMPLEMENTATION_NOT_STARTED` |
+| 장비 생애 PoC 구현 | `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING` |
+| GitHub Actions | `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED` |
+| 자동 검증 | PR validation #468 `PASS` |
 | 프로덕션 진입 | `NOT_GREENLIT` |
 | 현재 Issue | #34 |
-| 현재 PR | #33 Draft, stacked |
+| 현재 PR | #35 Draft · 자동 검증 PASS |
 
-현재 Prototype의 실제 구현은 제작, +100 강화, 보관, 자동 단조까지다. 영구 완성도, 피로도·날짜, 검투사 납품, 지연 결과, 세계 장비 기록과 재방문은 확정 설계이지만 아직 제품 코드로 구현되지 않았다.
+기존 Prototype의 제작·강화·보관·자동 단조는 유지된다. PR #35에는 영구 완성도, 피로도·날짜, 검투사 납품, 지연 결과, 세계 장비 기록, 재방문과 세로 PoC Scene이 추가됐다. 코드 기준 head `03c90bb063103e1c92885e7e21228f963cfe2775`에서 Python 계약, Godot import, main·PoC Scene smoke, 기존·신규 모델·통합·E2E가 통과했다.
+
+Android 실기기, 사람 접근성 검토, 성능과 외부 플레이테스트는 `NOT_RUN`이다.
 
 ## 처음 읽을 순서
 
@@ -33,8 +37,10 @@
 8. `docs/superpowers/specs/2026-07-23-project-core-design.md`
 9. `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md`
 10. `docs/MVP-003_SCOPE.md`
-11. `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md`
-12. 관련 `data/`, `scripts/`, `scenes/`, `tests/`
+11. `docs/MVP-003_IMPLEMENTATION_STATUS.md`
+12. `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md`
+13. `docs/CI_EXECUTION_POLICY.md`
+14. 관련 `data/`, `scripts/`, `scenes/`, `tests/`
 
 ## 현행 코어 보호 경계
 
@@ -47,19 +53,18 @@
 - 직원, 직접 전투, 생산 대기열, 일상적 수리 관리를 승인 없이 추가하지 않는다.
 - `+100`은 현재 제품 목표이며 최종 상한은 후속 실험으로 재검토할 수 있다.
 
-## PR 스택
+## PR 이력
 
 ```text
-#31 운영 정본 복구
-→ #32 Base 25 Skill 재동기화
-→ #33 코어 확정·통합 명세·구현계획·최종 검토
+#31 운영 정본 복구 — merged
+→ #32 Base 25 Skill 재동기화 — merged
+→ #33 코어 확정·통합 명세·구현계획·최종 검토 — merged
+→ #35 MVP-003 구현 — 자동 검증 PASS, 병합 검토 중
 ```
-
-선행 PR이 정리되기 전 #33을 독립 병합하지 않는다.
 
 ## 검증 상태 읽는 법
 
-- 문서가 있다는 것은 구현 완료가 아니다.
-- CI 성공은 Android·사람 시각·접근성·성능·플레이 재미 통과가 아니다.
+- 자동 검증 PASS는 코드·데이터·Scene·테스트 계약에 대한 증거다.
+- CI 성공도 Android·사람 시각·접근성·성능·플레이 재미 통과를 대신하지 않는다.
 - 미실행 검사는 `NOT_RUN` 또는 `UNVERIFIED`로 유지한다.
-- MVP 전체 완료는 Issue #34 구현, 전체 Godot 회귀, 외부 플레이 행동 증거와 필요한 플랫폼 검증 뒤 별도 판정한다.
+- MVP 전체 완료는 Android·접근성·성능·외부 플레이 행동 증거 뒤 별도 판정한다.

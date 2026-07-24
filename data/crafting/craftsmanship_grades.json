@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "grades": [
+    {"id": "APPRENTICE", "name": "미숙한", "score_bonus": 0, "attack_multiplier": 0.95, "value_multiplier": 0.90},
+    {"id": "STANDARD", "name": "평범한", "score_bonus": 5, "attack_multiplier": 1.00, "value_multiplier": 1.00},
+    {"id": "REFINED", "name": "정교한", "score_bonus": 10, "attack_multiplier": 1.03, "value_multiplier": 1.06},
+    {"id": "MASTERWORK", "name": "명품", "score_bonus": 15, "attack_multiplier": 1.06, "value_multiplier": 1.12},
+    {"id": "PERFECT", "name": "완벽한", "score_bonus": 20, "attack_multiplier": 1.10, "value_multiplier": 1.20}
+  ],
+  "precision_distributions": {
+    "AUTO": {"APPRENTICE": 0.25, "STANDARD": 0.55, "REFINED": 0.15, "MASTERWORK": 0.05, "PERFECT": 0.00},
+    "STANDARD": {"APPRENTICE": 0.25, "STANDARD": 0.45, "REFINED": 0.20, "MASTERWORK": 0.08, "PERFECT": 0.02},
+    "GOOD": {"APPRENTICE": 0.10, "STANDARD": 0.30, "REFINED": 0.35, "MASTERWORK": 0.20, "PERFECT": 0.05},
+    "PERFECT": {"APPRENTICE": 0.04, "STANDARD": 0.16, "REFINED": 0.30, "MASTERWORK": 0.35, "PERFECT": 0.15}
+  }
+}

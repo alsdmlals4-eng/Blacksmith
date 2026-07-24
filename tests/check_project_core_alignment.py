@@ -7,48 +7,57 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+VALIDATED_STATUS = "IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING"
+ACTIONS_STATUS = "ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED"
 
 REQUIRED_TEXT = {
     "README.md": (
         "장비의 출생·성장·소유·사건 기록",
         "장비 한 점의 생애 PoC",
-        "현재 구현",
-        "확정 설계·다음 구현",
+        VALIDATED_STATUS,
+        "PR validation #468",
+        "docs/CI_EXECUTION_POLICY.md",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "장비의 출생·성장·소유·사건 기록",
         "CORE_CONFIRMED",
-        "IMPLEMENTATION_NOT_STARTED",
-        "장비 한 점의 생애 PoC",
+        VALIDATED_STATUS,
+        ACTIONS_STATUS,
+        "#35",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "CORE_CONFIRMED / CORE_RECORDED",
-        "SPEC_READY / IMPLEMENTATION_NOT_STARTED",
-        "장비 한 점의 생애 PoC",
+        VALIDATED_STATUS,
+        ACTIONS_STATUS,
+        "PR validation #468",
         "docs/MVP-003_SCOPE.md",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "2026-07-23-project-core-design.md",
         "2026-07-23-equipment-lifecycle-poc-integrated-spec.md",
         "2026-07-23-equipment-lifecycle-poc-implementation.md",
-        "MVP-003_SCOPE.md",
+        VALIDATED_STATUS,
+        ACTIONS_STATUS,
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "Project core confirmation",
         "Equipment lifecycle PoC specification",
         "Equipment lifecycle PoC implementation",
-        "NOT_STARTED",
+        "PASS / IMPLEMENTATION_VALIDATED",
+        "PR validation #468",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "장비 한 점의 생애 PoC — CURRENT",
-        "docs/MVP-003_SCOPE.md",
-        "구현 미시작",
+        VALIDATED_STATUS,
+        "PR validation #468",
+        "docs/CI_EXECUTION_POLICY.md",
     ),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
         "장비의 출생·성장·소유·사건 기록",
         "영구 완성도",
-        "피로도",
         "세계 장비 기록",
+        VALIDATED_STATUS,
+        ACTIONS_STATUS,
     ),
     "[기획서]/00_프로젝트_허브/DECISION_LOG.md": (
         "DEC-023 프로젝트 코어 확정",
@@ -64,7 +73,21 @@ REQUIRED_TEXT = {
         "장비 한 점의 생애 PoC",
         "+5",
         "+10",
-        "IMPLEMENTATION_NOT_STARTED",
+        VALIDATED_STATUS,
+        "PR validation #468",
+        "전체 생애 E2E",
+    ),
+    "docs/MVP-003_IMPLEMENTATION_STATUS.md": (
+        VALIDATED_STATUS,
+        "PR validation #468",
+        "test_equipment_lifecycle_poc.gd",
+        ACTIONS_STATUS,
+    ),
+    "docs/CI_EXECUTION_POLICY.md": (
+        ACTIONS_STATUS,
+        "문서 전용 PR",
+        "코드·데이터·테스트·Workflow 변경 PR",
+        "cancel-in-progress: true",
     ),
     "docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md": (
         "PoC 임시 기준값",
@@ -82,15 +105,63 @@ REQUIRED_TEXT = {
         "원자적 납품",
         "정밀 입력 대안",
     ),
+    ".github/workflows/data-validation.yml": (
+        "pull_request:",
+        "scope=docs",
+        "scope=code",
+        "cancel-in-progress: true",
+    ),
+    ".github/workflows/godot-validation.yml": (
+        "workflow_call:",
+        "equipment_lifecycle_poc.tscn",
+        "test_equipment_lifecycle_poc.gd",
+        "cancel-in-progress: true",
+    ),
 }
 
 FORBIDDEN_TEXT = {
+    "README.md": (
+        "GitHub Actions 자동 실행은 현재 비용 문제로 중지",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+    ),
+    "[기획서]/00_프로젝트_허브/START_HERE.md": (
+        "IMPLEMENTATION_NOT_STARTED",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
+        "#33 Draft, stacked",
+    ),
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
+        "SPEC_READY / IMPLEMENTATION_NOT_STARTED",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
+        "agent/propose-project-core-contract",
+    ),
+    "[기획서]/00_프로젝트_허브/ROADMAP.md": (
+        "구현 미시작",
+        "IMPLEMENTATION_NOT_STARTED",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
+    ),
+    "docs/MVP-003_SCOPE.md": (
+        "IMPLEMENTATION_NOT_STARTED",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "제품 구현은 시작되지 않았다",
+    ),
+    "docs/MVP-003_IMPLEMENTATION_STATUS.md": (
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
+    ),
+    "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
+        "SPEC_READY / IMPLEMENTATION_NOT_STARTED",
+        "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
+        "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
+    ),
     "[기획서]/00_프로젝트_허브/DECISION_LOG.md": (
         "Base 기준 commit은 `ee265576da7f67d3278f8099dd97d4e714ef0651`",
         "상태: 범위 확정·실행 미착수",
     ),
-    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
-        "다음 제품 작업은 한 변수군 후보안 비교와 자동 반복·실제 플레이 검증이다",
+    ".github/workflows/data-validation.yml": (
+        "ACTIONS_BUDGET_HOLD",
     ),
 }
 
