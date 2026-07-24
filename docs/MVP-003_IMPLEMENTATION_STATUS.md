@@ -6,8 +6,9 @@
 - 브랜치: `agent/implement-equipment-lifecycle-poc`
 - 현재 판정: `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`
 - 코드 기준 head: `03c90bb063103e1c92885e7e21228f963cfe2775`
-- 최종 PR head: `0411c2c3b91a999d799b48301d11961156b5b7be`
-- 자동 검증: PR validation #478 `PASS`
+- 코드 기준 자동 검증: PR validation #468 `PASS`
+- 정본 기준 head: `0411c2c3b91a999d799b48301d11961156b5b7be`
+- 정본 기준 자동 검증: PR validation #478 `PASS`
 - GitHub Actions: `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`
 
 이 문서는 구현계획 Task 1~9의 **작성 여부, 자동 실행 증거, 사람·플랫폼 증거를 분리**한다.
@@ -91,7 +92,7 @@
 
 ## 자동 검증 증거
 
-PR validation #478:
+PR validation #468과 #478:
 
 - 변경 분류: code
 - Ubuntu Python 전체 계약: PASS
