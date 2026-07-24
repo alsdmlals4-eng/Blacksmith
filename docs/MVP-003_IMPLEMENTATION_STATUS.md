@@ -9,10 +9,10 @@
 - 코드 기준 자동 검증: PR validation #468 `PASS`
 - 정본 기준 head: `0411c2c3b91a999d799b48301d11961156b5b7be`
 - 정본 기준 자동 검증: PR validation #478 `PASS`
-- 최신 증거: PR validation #482 `PASS`
+- 최신 Green PR validation: `PASS` — 실제 최신 실행 번호는 PR 메타데이터가 책임
 - GitHub Actions: `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`
 
-이 문서는 구현계획 Task 1~9의 **작성 여부, 자동 실행 증거, 사람·플랫폼 증거를 분리**한다. 실행 번호는 GitHub PR 메타데이터가 최종 최신값을 책임지며, 이 문서는 자동 검증 계보를 보존한다.
+이 문서는 구현계획 Task 1~9의 **작성 여부, 자동 실행 증거, 사람·플랫폼 증거를 분리**한다. 실행 번호를 문서에 계속 고정하면 증거 기록 자체가 새 실행을 만드는 순환이 생기므로 최신 번호는 PR 메타데이터에만 기록한다.
 
 ## Task 상태
 
