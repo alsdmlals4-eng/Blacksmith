@@ -37,12 +37,13 @@
 ## 장비 한 점의 생애 PoC — CURRENT
 
 - Issue: #34
-- Draft PR: #35
+- PR: #35
 - Scope: `docs/MVP-003_SCOPE.md`
+- Status: `docs/MVP-003_IMPLEMENTATION_STATUS.md`
 - Spec: `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md`
 - Plan: `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md`
 - CI policy: `docs/CI_EXECUTION_POLICY.md`
-- 상태: `IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED`
+- 상태: `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`
 
 ```text
 검투사 의뢰
@@ -54,7 +55,7 @@
 → 같은 검투사 재방문
 ```
 
-### 구현 후보 완료
+### 구현·자동 검증 완료
 
 1. lifecycle 데이터 계약·검증기
 2. 날짜·피로도와 50% 이월
@@ -66,37 +67,43 @@
 8. 세로 UI·접근성 보조·기존 Prototype 진입점
 9. 전체 생애 E2E·CI 구조·정본 동기화
 
+코드 기준 head `03c90bb063103e1c92885e7e21228f963cfe2775`의 PR validation #468에서 다음이 통과했다.
+
+- Ubuntu Python 전체 프로젝트 계약
+- Godot 4.7.1 import·parse
+- `main.tscn`·`equipment_lifecycle_poc.tscn` Scene smoke
+- 기존·신규 모델·통합 테스트
+- 장비 생애 E2E와 DEFEAT/WIN/DECISIVE_WIN 경계
+
 ### 현재 검증 게이트
 
-- GitHub Actions 자동 실행: `DEFERRED_UNTIL_ACTIONS_AVAILABLE`
-- 신규 head Godot import·main/PoC Scene smoke: `NOT_RUN`
-- 신규·기존 Godot 전체 회귀: `NOT_RUN`
-- Ubuntu·Windows Python 매트릭스: `NOT_RUN`
-- Android·접근성·성능·외부 플레이: `NOT_RUN`
+- PR 최신 정본 head 재검증: 진행
+- `main` full-validation: PR 병합 뒤 실행
+- Ubuntu·Windows Python 3.11·3.12·3.13: PR 병합 뒤 실행
+- Branch protection Required Check: `UNVERIFIED`
+- Android·접근성 사람 검토·성능·외부 플레이: `NOT_RUN`
 
-### 종료 기준
+### 자동 종료 기준
 
-- 제작부터 재방문까지 E2E 완주 PASS
-- +5 납품과 +10 추가 도전이 모두 유효
-- DEFEAT/WIN/DECISIVE_WIN 반례가 모두 도달
-- 골드·재료·피로도 거래 원자성
-- 납품 후 장비 기록 보존과 결과 인과 설명
-- 신규 테스트와 기존 Godot 회귀 PASS
-- Android·접근성·성능·외부 플레이 미실행은 PASS로 표기하지 않음
+- [x] 제작부터 재방문까지 E2E 완주
+- [x] +5 납품과 +10 추가 도전 경계
+- [x] DEFEAT/WIN/DECISIVE_WIN 반례
+- [x] 골드·재료·피로도 거래 원자성
+- [x] 납품 후 장비 기록 보존과 결과 인과 설명 데이터
+- [x] 신규 테스트와 기존 Godot 회귀
+- [x] Godot import·main·PoC Scene smoke
 
-## Actions 재사용 가능 후 즉시 작업
+### 사람·플랫폼 종료 기준
 
-1. PR validation `pull_request` 트리거 복원
-2. 코드 범위 Ubuntu Python·Godot 실행
-3. 실패 수정 후 최신 head 전체 재실행
-4. `main`/nightly full validation 활성화
-5. Ubuntu·Windows × Python 매트릭스 실행
-6. 실제 check 이름으로 Branch protection 갱신
-7. PR #35 코드 리뷰와 병합 판정
+- [ ] 세로 UI 실제 가독성과 터치 동선
+- [ ] 정밀 보조·모션 감소 실제 사용성
+- [ ] Android 안전 영역·터치·AAB
+- [ ] 대표·최악 장면 성능
+- [ ] 외부 신규 플레이어 6명 권장 행동 검증
 
 ## 다음 게이트
 
-장비 생애 PoC 행동 증거가 통과한 뒤에만 다음을 순서대로 검토한다.
+장비 생애 PoC의 외부 플레이 행동 증거가 통과한 뒤에만 다음을 순서대로 검토한다.
 
 1. +30 위험 강화 PoC
 2. 흉갑·반지 공통 문법 전이
@@ -118,9 +125,8 @@
 
 ## Production 진입 차단 조건
 
-다음 증거 없이는 Production 또는 MVP 전체 완료로 표시하지 않는다.
+다음 증거 없이는 Production 또는 프로젝트 전체 MVP 완료로 표시하지 않는다.
 
-- 최신 head 전체 회귀
 - 실제 Android 빌드·기기 증거
 - 저장·복귀 계약
 - 외부 플레이 행동 증거
