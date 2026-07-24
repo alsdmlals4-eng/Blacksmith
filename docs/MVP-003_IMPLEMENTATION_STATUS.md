@@ -2,28 +2,30 @@
 
 - 갱신일: 2026-07-24
 - Issue: #34
-- Draft PR: #35
+- PR: #35
 - 브랜치: `agent/implement-equipment-lifecycle-poc`
-- 현재 판정: `IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED`
-- GitHub Actions: `DEFERRED_UNTIL_ACTIONS_AVAILABLE`
+- 현재 판정: `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`
+- 코드 기준 head: `03c90bb063103e1c92885e7e21228f963cfe2775`
+- 자동 검증: PR validation #468 `PASS`
+- GitHub Actions: `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`
 
-이 문서는 구현계획 Task 1~9의 **작성 여부와 실행 증거를 분리**한다. 코드·테스트가 작성됐다는 사실만으로 PASS를 선언하지 않는다.
+이 문서는 구현계획 Task 1~9의 **작성 여부, 자동 실행 증거, 사람·플랫폼 증거를 분리**한다.
 
 ## Task 상태
 
-| Task | 구현 산출물 | 작성 상태 | 실행 상태 |
+| Task | 구현 산출물 | 작성 상태 | 자동 실행 상태 |
 |---:|---|---|---|
-| 1 | lifecycle JSON 4종, validator, Python 계약 테스트 | 완료 후보 | 최신 head `NOT_RUN` |
-| 2 | `WorkshopCalendar`, 피로도·날짜 단위 테스트 | 완료 후보 | 최신 head `NOT_RUN` |
-| 3 | 영구 완성도 Resolver, legacy 변환 테스트 | 완료 후보 | 최신 head `NOT_RUN` |
-| 4 | 검투사 계약·적합도 모델과 테스트 | 완료 후보 | 최신 head `NOT_RUN` |
-| 5 | 세계 Registry·결정적 결과 Resolver와 테스트 | 완료 후보 | 최신 head `NOT_RUN` |
-| 6 | 제작·강화·납품 원자 거래, Controller 통합 테스트 | 완료 후보 | 최신 head `NOT_RUN` |
-| 7 | 로컬 PoC telemetry와 테스트 | 완료 후보 | 최신 head `NOT_RUN` |
-| 8 | 계약·HUD·제작·강화·보고·재방문 세로 UI, 접근성 보조 | 완료 후보 | Scene·사람 검토 `NOT_RUN` |
-| 9 | 전체 생애 E2E, CI 최적화, 정본 동기화 | 완료 후보 | 최신 E2E·전체 회귀 `NOT_RUN` |
+| 1 | lifecycle JSON 4종, validator, Python 계약 테스트 | 완료 | PASS #468 |
+| 2 | `WorkshopCalendar`, 피로도·날짜 단위 테스트 | 완료 | PASS #468 |
+| 3 | 영구 완성도 Resolver, legacy 변환 테스트 | 완료 | PASS #468 |
+| 4 | 검투사 계약·적합도 모델과 테스트 | 완료 | PASS #468 |
+| 5 | 세계 Registry·결정적 결과 Resolver와 테스트 | 완료 | PASS #468 |
+| 6 | 제작·강화·납품 원자 거래, Controller 통합 테스트 | 완료 | PASS #468 |
+| 7 | 로컬 PoC telemetry와 테스트 | 완료 | PASS #468 |
+| 8 | 계약·HUD·제작·강화·보고·재방문 세로 UI, 접근성 보조 | 완료 | Scene smoke PASS / 사람 검토 NOT_RUN |
+| 9 | 전체 생애 E2E, CI 최적화, 정본 동기화 | 완료 | E2E PASS / 정본 최종 재검증 진행 |
 
-## 구현 후보 파일군
+## 구현 파일군
 
 ### 데이터·검증
 
@@ -86,27 +88,31 @@
 - 같은 거래와 같은 세계 사건 재시도는 중복 보상을 만들지 않는다.
 - 정밀 보조는 GOOD 경로를 제공하며 PERFECT를 자동 제공하지 않는다.
 
-## 이전 증거와 한계
+## 자동 검증 증거
 
-과거 구현 중간 head에서 다음이 통과했다.
+PR validation #468:
 
-- Data validation #452: PASS
-- Godot validation #379: PASS
+- 변경 분류: code
+- Ubuntu Python 전체 계약: PASS
+- 프로젝트·Base 참조 감사: PASS
+- lifecycle 데이터와 결과 밴드 계약: PASS
+- 기존 제작·강화·시뮬레이터 계약: PASS
+- Godot 4.7.1 import·parse: PASS
+- `main.tscn` smoke: PASS
+- `equipment_lifecycle_poc.tscn` smoke: PASS
+- 기존·신규 단위·통합 테스트: PASS
+- `test_equipment_lifecycle_poc.gd`: PASS
 
-이후 UI, 전체 생애 E2E, 접근성, CI 구조와 정본 변경이 추가됐으므로 위 실행은 최신 PR head의 PASS 증거가 아니다.
+초기 실패에서 정본 게이트, CI 책임 분리, GDScript 명시 타입과 E2E 타입 오류를 수정한 뒤 동일 범위를 재실행해 Green으로 닫았다.
 
-## Actions 재개 후 필수 실행
+## CI 상태
 
-1. `data-validation.yml`의 `pull_request` 트리거 복원
-2. 최신 head Ubuntu Python 코드 계약 실행
-3. Godot 4.7.1 import·parse 실행
-4. `main.tscn`과 `equipment_lifecycle_poc.tscn` smoke 실행
-5. 기존·신규 Godot 단위·통합·E2E 전체 실행
-6. 실패 수정 후 같은 범위를 재실행
-7. `full-validation.yml`의 main/nightly 트리거 복원
-8. Ubuntu·Windows × Python 3.11·3.12·3.13 실행
-9. cancellation과 실제 Required Check 이름 확인
-10. PR #35 코드 리뷰와 병합 판정
+- PR 자동 분류·실행: 활성
+- 문서 전용: Ubuntu Python 문서 검사
+- 코드 변경: Ubuntu Python 전체 계약 + Godot 1회
+- main/nightly: Ubuntu·Windows Python 매트릭스 + Godot + pinned Base suite
+- `concurrency`와 `cancel-in-progress: true`: 적용
+- 실제 Required Check 강제: `UNVERIFIED`
 
 ## 사람·플랫폼 검증
 
@@ -120,4 +126,4 @@
 
 ## 완료 판정
 
-현재 구현계획의 Task 1~9에 해당하는 파일은 작성됐다. 그러나 최신 head의 자동·사람·플랫폼 증거가 없으므로 상태는 `IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED`이며 PR #35는 Draft를 유지한다.
+구현계획 Task 1~9의 코드·데이터·Scene·자동 테스트는 `IMPLEMENTATION_VALIDATED`다. 사람·플랫폼·플레이 재미 검증은 `HUMAN_VALIDATION_PENDING`이며, 이 상태에서 프로젝트 전체 MVP 또는 Production 완료를 선언하지 않는다.
