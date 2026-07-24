@@ -106,11 +106,22 @@ jobs:
           python tools/validate_lifecycle_data.py
           python -m unittest tests/test_lifecycle_data_contract.py
 
-      - name: Validate forging and enhancement contracts
+      - name: Validate forging quality contract
         if: inputs.scope == 'code'
         working-directory: project
-        run: |
-          python tests/check_forging_quality_contract.py
-          python tests/check_enhancement_failure_contract.py
-          python -m unittest tests/test_enhancement_balance_simulator.py
-          python tests/check_enhancement_balance_simulator_contract.py
+        run: python tests/check_forging_quality_contract.py
+
+      - name: Validate enhancement failure contract
+        if: inputs.scope == 'code'
+        working-directory: project
+        run: python tests/check_enhancement_failure_contract.py
+
+      - name: Validate enhancement balance simulator
+        if: inputs.scope == 'code'
+        working-directory: project
+        run: python -m unittest tests/test_enhancement_balance_simulator.py
+
+      - name: Validate enhancement balance simulator contract
+        if: inputs.scope == 'code'
+        working-directory: project
+        run: python tests/check_enhancement_balance_simulator_contract.py
