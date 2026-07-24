@@ -29,11 +29,13 @@
 - 피버 결과 제작 가치: ×1.03
 - 피버 발동 횟수는 기록하지만 결과 보너스는 한 번만 적용되어 비중첩
 
-### MVP-003 구현 후보
+### MVP-003 장비 생애 PoC
 
-상태: `IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED`
+상태: `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`
 
-PR #35에는 다음이 작성돼 있다.
+코드 기준 head `03c90bb063103e1c92885e7e21228f963cfe2775`의 PR validation #468에서 Python 전체 계약, Godot import, main·PoC Scene smoke, 기존·신규 모델·통합·E2E가 통과했다.
+
+구현·자동 검증 범위:
 
 - 영구 완성도 5등급
 - 피로도와 수동 날짜 진행
@@ -45,7 +47,7 @@ PR #35에는 다음이 작성돼 있다.
 - 정밀 보조와 모션 감소
 - 전체 생애 E2E 테스트
 
-GitHub Actions 비용 게이트 이후 최신 head는 실행 검증되지 않았다. 따라서 구현 후보이며 MVP PASS가 아니다.
+Android·사람 접근성·성능·외부 플레이는 `NOT_RUN`이다.
 
 ## 3. 핵심 설계 원칙
 
@@ -178,8 +180,6 @@ GitHub Actions 비용 게이트 이후 최신 head는 실행 검증되지 않았
 
 ## 9. 피로도와 날짜
 
-PoC 기준:
-
 | 작업 | 피로도 |
 |---|---:|
 | 철검 제작 시작 | 3 |
@@ -228,7 +228,7 @@ PoC 기준:
 - 장비 이력
 - 제작자 명성·관계 환류
 
-모든 기록이 계속 사건을 생성하지는 않는다. 제한된 장비만 `ACTIVE_OWNER / EVENT_ELIGIBLE`이며 나머지는 `DORMANT` 상태로 이력을 보존한다.
+제한된 장비만 `ACTIVE_OWNER / EVENT_ELIGIBLE`이며 나머지는 `DORMANT` 상태로 이력을 보존한다.
 
 중요 장비가 파손·분실됐을 때의 선택형 복원은 후속 범위다. 일상적 수리 관리 시스템은 사용하지 않는다.
 
@@ -282,11 +282,13 @@ PoC 기준:
 
 ### MVP-003 장비 한 점의 생애
 
-- 상태: `IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED`
+- 상태: `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`
 - Issue #34
-- Draft PR #35
+- PR #35
 - 책임: `docs/MVP-003_SCOPE.md`
+- 구현 증거: `docs/MVP-003_IMPLEMENTATION_STATUS.md`
 - Actions 정책: `docs/CI_EXECUTION_POLICY.md`
+- 자동 증거: PR validation #468
 
 ### MVP-004 상인 납품
 
@@ -318,18 +320,17 @@ PoC 기준:
 
 ## 17. 검증 원칙
 
-- 문서와 구현 작성, 자동 실행, 사람 검증 상태를 분리한다.
+- 문서와 구현, 자동 실행, 사람 검증 상태를 분리한다.
 - 정상·실패·최소·최대·중복·재시도 반례를 자동 검증한다.
 - 자원과 납품 거래는 실패 주입으로 원자성을 검증한다.
 - 결과 밴드 세 종류가 모두 도달 가능해야 한다.
 - legacy 기록과 자동 단조 template 호환을 회귀 검증한다.
 - Godot import, Scene smoke, 모델·통합·E2E 테스트를 확인한다.
 - Android·접근성·성능·외부 플레이는 미실행을 PASS로 표기하지 않는다.
-- 과거 CI PASS는 최신 head의 PASS를 대신하지 않는다.
 
 ## 18. CI 실행 정책
 
-현재 GitHub Actions 상태는 `DEFERRED_UNTIL_ACTIONS_AVAILABLE`이다.
+현재 GitHub Actions 상태는 `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`다.
 
 - 문서 전용 PR: Ubuntu Python 3.12 문서 validator
 - 코드 PR: Ubuntu Python 전체 계약 + Ubuntu Godot 1회
@@ -338,11 +339,8 @@ PoC 기준:
 - reusable Workflow로 Python·Godot 중복 실행 제거
 - 실패 로그만 artifact 업로드
 
-사용자가 Actions 사용 가능 상태를 알리면 `docs/CI_EXECUTION_POLICY.md`의 순서로 자동 트리거를 복원하고 최신 head를 검증한다.
-
 ## 19. Production 진입 조건
 
-- 장비 생애 PoC 최신 head 전체 회귀
 - 외부 플레이 행동 증거
 - Android 실제 기기
 - 저장·복귀
