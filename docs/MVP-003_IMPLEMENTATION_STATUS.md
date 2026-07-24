@@ -9,8 +9,8 @@
 - 코드 기준 자동 검증: PR validation #468 `PASS`
 - 정본 기준 head: `0411c2c3b91a999d799b48301d11961156b5b7be`
 - 정본 기준 자동 검증: PR validation #478 `PASS`
-- 최종 PR head: `79c17f85c217a5e80f7ca44e13563f786410c2f2`
-- 최종 자동 검증: PR validation #480 `PASS`
+- 최종 PR head: `8cef293cce4663a2c5b80a6a87ac66859a8354a8`
+- 최종 자동 검증: PR validation #481 `PASS`
 - GitHub Actions: `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`
 
 이 문서는 구현계획 Task 1~9의 **작성 여부, 자동 실행 증거, 사람·플랫폼 증거를 분리**한다.
@@ -19,15 +19,15 @@
 
 | Task | 구현 산출물 | 작성 상태 | 자동 실행 상태 |
 |---:|---|---|---|
-| 1 | lifecycle JSON 4종, validator, Python 계약 테스트 | 완료 | PASS #480 |
-| 2 | `WorkshopCalendar`, 피로도·날짜 단위 테스트 | 완료 | PASS #480 |
-| 3 | 영구 완성도 Resolver, legacy 변환 테스트 | 완료 | PASS #480 |
-| 4 | 검투사 계약·적합도 모델과 테스트 | 완료 | PASS #480 |
-| 5 | 세계 Registry·결정적 결과 Resolver와 테스트 | 완료 | PASS #480 |
-| 6 | 제작·강화·납품 원자 거래, Controller 통합 테스트 | 완료 | PASS #480 |
-| 7 | 로컬 PoC telemetry와 테스트 | 완료 | PASS #480 |
+| 1 | lifecycle JSON 4종, validator, Python 계약 테스트 | 완료 | PASS #481 |
+| 2 | `WorkshopCalendar`, 피로도·날짜 단위 테스트 | 완료 | PASS #481 |
+| 3 | 영구 완성도 Resolver, legacy 변환 테스트 | 완료 | PASS #481 |
+| 4 | 검투사 계약·적합도 모델과 테스트 | 완료 | PASS #481 |
+| 5 | 세계 Registry·결정적 결과 Resolver와 테스트 | 완료 | PASS #481 |
+| 6 | 제작·강화·납품 원자 거래, Controller 통합 테스트 | 완료 | PASS #481 |
+| 7 | 로컬 PoC telemetry와 테스트 | 완료 | PASS #481 |
 | 8 | 계약·HUD·제작·강화·보고·재방문 세로 UI, 접근성 보조 | 완료 | Scene smoke PASS / 사람 검토 NOT_RUN |
-| 9 | 전체 생애 E2E, CI 최적화, 정본 동기화 | 완료 | E2E·정본 PASS #480 |
+| 9 | 전체 생애 E2E, CI 최적화, 정본 동기화 | 완료 | E2E·정본 PASS #481 |
 
 ## 구현 파일군
 
@@ -94,7 +94,7 @@
 
 ## 자동 검증 증거
 
-PR validation #480:
+PR validation #481:
 
 - 변경 분류: code
 - Ubuntu Python 전체 계약: PASS
