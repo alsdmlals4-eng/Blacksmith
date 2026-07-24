@@ -69,7 +69,7 @@ REQUIRED_TEXT = {
         "전체 생애 E2E 테스트",
     ),
     "docs/CI_EXECUTION_POLICY.md": (
-        "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
+        "ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED",
         "문서 전용 PR",
         "코드·데이터·테스트·Workflow 변경 PR",
         "cancel-in-progress: true",
@@ -91,7 +91,7 @@ REQUIRED_TEXT = {
         "정밀 입력 대안",
     ),
     ".github/workflows/data-validation.yml": (
-        "ACTIONS_BUDGET_HOLD",
+        "pull_request:",
         "scope=docs",
         "scope=code",
         "cancel-in-progress: true",
@@ -127,6 +127,9 @@ FORBIDDEN_TEXT = {
     "[기획서]/00_프로젝트_허브/DECISION_LOG.md": (
         "Base 기준 commit은 `ee265576da7f67d3278f8099dd97d4e714ef0651`",
         "상태: 범위 확정·실행 미착수",
+    ),
+    ".github/workflows/data-validation.yml": (
+        "ACTIONS_BUDGET_HOLD",
     ),
 }
 
