@@ -97,8 +97,8 @@ func _test_delivery_retry_is_idempotent() -> void:
 	controller.accept_contract()
 	controller.add_equipment(_equipment("retry_sword", 5, "REFINED", [], 20))
 	var first: Dictionary = controller.deliver("retry_sword", "tx_retry")
-	var gold_after_first := resources.gold
-	var fame_after_first := controller.fame
+	var gold_after_first: int = int(resources.gold)
+	var fame_after_first: int = int(controller.fame)
 	var second: Dictionary = controller.deliver("retry_sword", "tx_retry")
 	_expect(bool(first.get("ok", false)) and bool(second.get("ok", false)), "같은 납품 transaction 재시도는 성공 응답이어야 합니다.")
 	_expect(str(second.get("status", "")) == "ALREADY_DELIVERED", "중복 납품은 ALREADY_DELIVERED여야 합니다.")
