@@ -121,15 +121,26 @@ for relative_path in ownership_documents:
         f"milestone owner is missing from {relative_path}",
     )
 
-workflow_source = read_text(".github/workflows/data-validation.yml")
+pr_workflow = read_text(".github/workflows/data-validation.yml")
+python_workflow = read_text(".github/workflows/python-validation.yml")
+full_workflow = read_text(".github/workflows/full-validation.yml")
 require(
-    "python tests/check_enhancement_failure_contract.py" in workflow_source,
-    "Data validation workflow does not run the enhancement failure contract",
+    "uses: ./.github/workflows/python-validation.yml" in pr_workflow,
+    "PR validation must route Python contracts through the reusable workflow",
 )
 require(
-    "tests/test_documentation_governance.py" in workflow_source
-    and "libreoffice-writer" in workflow_source,
-    "Data validation workflow must preserve the full Base regression contract",
+    "python tests/check_enhancement_failure_contract.py" in python_workflow,
+    "Reusable Python validation does not run the enhancement failure contract",
+)
+require(
+    "tests/test_documentation_governance.py" in full_workflow
+    and "libreoffice-writer" in full_workflow,
+    "Full validation must preserve the pinned Base regression contract",
+)
+require(
+    "tests/test_documentation_governance.py" not in pr_workflow
+    and "libreoffice-writer" not in pr_workflow,
+    "PR validation must not duplicate the heavy Base regression suite",
 )
 
 if failures:
