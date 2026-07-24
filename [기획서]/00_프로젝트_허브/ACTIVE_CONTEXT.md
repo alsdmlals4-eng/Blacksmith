@@ -73,6 +73,11 @@
 - 피버 적용 공격력 21·22·23
 - 피버 공격력 ×1.05·제작 가치 ×1.03, 반복 비중첩
 
+강화 수치 책임 원본:
+
+- 실패·보정·위험: `data/crafting/enhancement_balance.json`
+- `+10` 특수 강화·수식어 이정표: `data/crafting/enhancement_milestones.json`
+
 ## 4. PR #35 구현 후보
 
 작성된 제품 코드·데이터·Scene·테스트:
