@@ -1,11 +1,14 @@
 name: Full validation
 
-# ACTIONS_BUDGET_HOLD:
-# Keep this workflow manual-only until the owner confirms that GitHub Actions
-# minutes are available. Then enable `push` for main and the nightly schedule
-# documented in docs/CI_EXECUTION_POLICY.md.
+# Full cross-platform validation runs only after main updates, on the nightly
+# schedule, or by explicit manual dispatch. Pull requests use PR validation.
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "17 18 * * *"
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
