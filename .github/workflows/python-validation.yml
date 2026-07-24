@@ -114,7 +114,21 @@ jobs:
       - name: Validate enhancement failure contract
         if: inputs.scope == 'code'
         working-directory: project
-        run: python tests/check_enhancement_failure_contract.py
+        shell: bash
+        run: |
+          set +e
+          python tests/check_enhancement_failure_contract.py > enhancement-failure-contract.log 2>&1
+          status=$?
+          cat enhancement-failure-contract.log
+          exit "$status"
+
+      - name: Upload enhancement failure diagnostics
+        if: failure() && inputs.scope == 'code'
+        uses: actions/upload-artifact@v4
+        with:
+          name: enhancement-failure-contract-log
+          path: project/enhancement-failure-contract.log
+          if-no-files-found: ignore
 
       - name: Validate enhancement balance simulator
         if: inputs.scope == 'code'
