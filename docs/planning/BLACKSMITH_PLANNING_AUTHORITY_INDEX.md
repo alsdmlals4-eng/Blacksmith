@@ -28,7 +28,10 @@
    - 추가 결정 07에서 승인되거나 후순위로 이동한 항목은 최신 결정을 따름
 8. `BLACKSMITH_POC_PRIORITY_BASELINE_2026.md`
    - 통합 POC 선행 6개 항목, 임시 수치, 자동 검증 선행 순서의 최신 기준
-9. 최신 `BLACKSMITH_DECISION_LEDGER_ADDENDUM_*.md`
+9. `BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md`
+   - 시나리오 런처 배포 범위와 강화 확률·판매가 비교 근거
+   - 판매가 수정안은 사용자 승인 전까지 `PROPOSED_ONLY`
+10. 최신 `BLACKSMITH_DECISION_LEDGER_ADDENDUM_*.md`
    - 승인·폐기·대체 상태와 문서 충돌 해결 기록
 
 ## 2. 현재 명시적 최신 덮어쓰기
@@ -117,6 +120,47 @@
 - `BLACKSMITH_POC_PRIORITY_BASELINE_2026.md`
 - `BLACKSMITH_DECISION_LEDGER_ADDENDUM_07.md`
 
+### POC 시나리오 런처 배포
+
+최신 규칙:
+
+- 개발·POC 빌드에서만 접근 가능
+- 일반 출시 빌드에서는 메뉴와 진입 경로 제거
+- `POC_TOOLS_ENABLED` 런타임 게이트 사용
+- POC 전용 저장 프로필 사용
+- 일반 플레이 저장 데이터 기록 금지
+
+책임 문서:
+
+- `BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md`
+- `BLACKSMITH_DECISION_LEDGER_ADDENDUM_08.md`
+- `docs/planning/data/blacksmith_poc_priority_seed_2026.json`
+
+### 공개시장 강화 가격
+
+현재 적용값:
+
+- +0 1,000
+- +10 2,500
+- +20 6,500
+- +30 16,000
+- +40 40,000
+- +50 105,000
+- +60 275,000
+
+상태:
+
+- `POC_TUNABLE / CURRENT`
+- 외부 벤치마크와 내부 모의 비용에서 상승폭 부족 가능성이 확인됨
+- +0 1,000 / +10 4,000 / +20 12,000 / +30 36,000 / +40 110,000 / +50 330,000 / +60 1,000,000은 `PROPOSED_ONLY`
+- 사용자 승인 전에는 기존 JSON 값을 유지
+
+책임 문서:
+
+- 현재값: `docs/planning/data/blacksmith_poc_priority_seed_2026.json`
+- 비교·제안: `BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md`
+- 상태 원장: `BLACKSMITH_DECISION_LEDGER_ADDENDUM_08.md`
+
 ## 3. 상태 해석
 
 | 상태 | 의미 |
@@ -126,6 +170,8 @@
 | `CONFIRMED_SEQUENCE` | 구현·검증 순서 승인 |
 | `POC_CONFIRMED` | 통합 POC 구현·검증에 사용할 정확한 값 또는 규칙 |
 | `POC_TUNABLE` | 구조를 바꾸지 않고 데이터로 조정할 값 |
+| `BENCHMARK_CONFIRMED` | 비교·분석 결과는 확인됐으나 신규 수치 승인을 의미하지 않음 |
+| `REVIEW_REQUIRED` | 현재값에 문제 가능성이 있어 후속 결정을 요구함 |
 | `PROPOSED_ONLY` | 사용자 승인 전 임의 확정 금지 |
 | `SUPERSEDED` | 최신 문서로 대체됨 |
 | `REJECTED` | 사용하지 않음 |
@@ -138,7 +184,8 @@
 2. 최신 결정 원장에서 `REJECTED`·`SUPERSEDED` 규칙 제외
 3. `POC_CONFIRMED`와 출시 수치 분리
 4. POC 임시 데이터 JSON과 책임 기획 문서의 값 일치 확인
-5. Issue #34의 기존 구현·사람 검증 상태 확인
-6. `기획 완료`와 `검수 완료` 게이트 확인
+5. `PROPOSED_ONLY` 가격 후보를 런타임에 적용하지 않음
+6. Issue #34의 기존 구현·사람 검증 상태 확인
+7. `기획 완료`와 `검수 완료` 게이트 확인
 
 구형 마스터 문서나 벤치마크 후보 절만 읽고 구현을 시작하지 않는다.
