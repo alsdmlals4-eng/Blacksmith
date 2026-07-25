@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "adapter_role": "base-shared-skill-project-adapter",
+  "base": {
+    "repository": "alsdmlals4-eng/Base",
+    "commit": "c7c1103e4a69f8fdc9ee27aa382a21288605a7fb",
+    "adapter_contract": "docs/BASE_SHARED_SKILL_ADAPTER_CONTRACT.md"
+  },
+  "project": {
+    "repository": "alsdmlals4-eng/Blacksmith",
+    "layout_policy": "preserve-existing-canonical-paths"
+  },
+  "role_bindings": {
+    "project_agents": "AGENTS.md",
+    "project_start_here": "[기획서]/00_프로젝트_허브/START_HERE.md",
+    "documentation_map": "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+    "active_context": "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "development_gates": "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+    "design_document_registry": "[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json",
+    "skill_registry": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+    "base_rules_version": "docs/BASE_RULES_VERSION.md",
+    "archive_root": "docs/archive/",
+    "third_party_inventory": "[기획서]/00_프로젝트_허브/THIRD_PARTY_ASSET_AND_PLUGIN_INVENTORY.json",
+    "license_record": "[기획서]/00_프로젝트_허브/THIRD_PARTY_ASSET_AND_PLUGIN_INVENTORY.json"
+  },
+  "canonical_sources": [
+    "[기획서]/",
+    "data/",
+    "scripts/",
+    "scenes/",
+    "tests/"
+  ],
+  "legacy_search_roots": ["docs/", "[기획서]/", "skills/"],
+  "protected_paths": [
+    "data/**",
+    "scripts/**",
+    "scenes/**",
+    "assets/**",
+    "addons/**",
+    "project.godot"
+  ],
+  "engine": {
+    "name": "Godot",
+    "version": "4.7.1",
+    "language": "GDScript",
+    "renderer": "gl_compatibility",
+    "platforms": ["Android", "Google Play"],
+    "viewport": "720x1280 portrait",
+    "stretch": "canvas_items expand",
+    "project_root": ".",
+    "addon_root": "addons/",
+    "asset_roots": ["assets/", "scenes/", "data/"]
+  },
+  "existing_third_party": [
+    {
+      "path": "addons/godot_ai/",
+      "status": "EXISTING_REVIEW_REQUIRED",
+      "evidence": "project.godot editor_plugins and autoload"
+    }
+  ],
+  "validators": [
+    {
+      "id": "route-json",
+      "type": "static",
+      "command": "python -m json.tool \"[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ROUTES.json\"",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": "adapter-json",
+      "type": "static",
+      "command": "python -m json.tool \"[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json\"",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": "game-data",
+      "type": "static",
+      "command": "python tools/validate_game_data.py",
+      "status": "AVAILABLE"
+    },
+    {
+      "id": "godot-project-parse-and-scene-smoke",
+      "type": "runtime",
+      "command": null,
+      "status": "USE_EXISTING_PROJECT_WORKFLOW"
+    },
+    {
+      "id": "android-device",
+      "type": "runtime",
+      "command": null,
+      "status": "MANUAL_REQUIRED"
+    }
+  ],
+  "rollback_reference": "Git commit before adapter adoption",
+  "shared_skill_overrides": {
+    "governing-legacy-retention-and-archives": {
+      "archive_root": "docs/archive/",
+      "delete_requires_user_approval": true
+    },
+    "evaluating-godot-assets-and-plugins-before-creation": {
+      "search_before_creation": true,
+      "purchase_requires_user_approval": true,
+      "installation_requires_separate_scope": true,
+      "priority_categories": [
+        "Android Safe Area",
+        "mobile touch feedback",
+        "inventory and crafting data tools",
+        "Android build and store integration"
+      ],
+      "core_system_lock_in": "avoid"
+    }
+  }
+}
