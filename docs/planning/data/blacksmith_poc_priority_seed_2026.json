@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "status": "PLANNING_IN_PROGRESS",
   "scope": "POC_PRIORITY_BASELINE_2026",
   "value_classes": {
@@ -142,6 +142,26 @@
       "material": 20,
       "workload": 3
     },
+    "material_shadow_price": {
+      "craft_material": 50,
+      "enhancement_material": 50
+    },
+    "representative_craft_gold_equivalent": 1500,
+    "expected_cost_includes": [
+      "CRAFT_GOLD",
+      "CRAFT_MATERIAL_SHADOW_VALUE",
+      "ENHANCEMENT_GOLD",
+      "ENHANCEMENT_MATERIAL_SHADOW_VALUE",
+      "FAILED_RETRY_COST",
+      "DOWNGRADE_RECOVERY_COST",
+      "RECRAFT_AFTER_DESTROY"
+    ],
+    "expected_cost_excludes_optional": [
+      "CATALYST",
+      "PROTECTION_STONE",
+      "RECOVERY_STONE",
+      "SPECIAL_MATERIAL"
+    ],
     "enhancement_cost_bands": [
       {"min": 1, "max": 10, "gold": 100, "material": 2},
       {"min": 11, "max": 20, "gold": 250, "material": 3},
@@ -150,14 +170,41 @@
       {"min": 41, "max": 50, "gold": 2500, "material": 12},
       {"min": 51, "max": 60, "gold": 5000, "material": 18}
     ],
+    "open_market_price_status": "POC_TUNABLE_APPROVED_CURRENT",
+    "first_profitable_level": 5,
+    "open_market_price_interpolation": {
+      "explicit_until_level": 5,
+      "anchor_interval_after": 5,
+      "method": "LINEAR",
+      "round_to_gold": 100
+    },
     "open_market_prices": {
       "0": 1000,
-      "10": 2500,
-      "20": 6500,
-      "30": 16000,
-      "40": 40000,
-      "50": 105000,
-      "60": 275000
+      "1": 1300,
+      "2": 1550,
+      "3": 1800,
+      "4": 2200,
+      "5": 3000,
+      "10": 5000,
+      "15": 8500,
+      "20": 14000,
+      "25": 24000,
+      "30": 42000,
+      "35": 72000,
+      "40": 125000,
+      "45": 220000,
+      "50": 400000,
+      "55": 750000,
+      "60": 1500000
+    },
+    "profit_guardrails": {
+      "cost_metric": "MEAN_CUMULATIVE_EXPECTED_COST",
+      "levels_0_to_4_must_not_be_profitable": true,
+      "level_5_must_be_profitable": true,
+      "levels_5_to_60_must_be_profitable": true,
+      "expected_profit_must_not_decrease_after_level_5": true,
+      "price_must_not_decrease": true,
+      "report_percentiles": [50, 75, 90]
     },
     "channel_multipliers": {
       "VISITOR_MIN": 1.1,
