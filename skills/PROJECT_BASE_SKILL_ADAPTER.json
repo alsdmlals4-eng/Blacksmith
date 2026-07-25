@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "adapter_role": "base-shared-skill-project-adapter",
+  "base": {"repository": "alsdmlals4-eng/Base", "commit": "5c95c8cc4434acc2505957d3ea2385064da99143"},
+  "project": {"repository": "alsdmlals4-eng/Blacksmith", "layout_policy": "preserve-existing-canonical-paths"},
+  "role_bindings": {
+    "project_agents": "AGENTS.md",
+    "documentation_map": "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+    "active_context": "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "skill_registry": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json"
+  },
+  "canonical_sources": ["[기획서]/", "docs/BASE_ADOPTION_PROFILE.json", "project.godot"],
+  "protected_paths": ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
+  "engine": {"project_file": "project.godot", "addon_root": "addons/", "asset_roots": ["assets/"], "platforms": ["Android", "Windows PC"]},
+  "validators": ["python tools/audit_project_operating_system.py", "manual: Godot project parse/runtime check", "manual: Android device and safe-area check when applicable"],
+  "third_party_inventory": "docs/technical/ADOPTED_ASSETS.md",
+  "license_record": "docs/technical/THIRD_PARTY_LICENSES.md",
+  "shared_skill_overrides": {
+    "evaluating-godot-assets-and-plugins-before-creation": {
+      "search_focus": ["mobile UI", "safe area", "inventory", "crafting data", "Android build", "touch feedback"],
+      "core_systems_not_to_outsource": ["forging judgment", "customer response", "core economy loop"]
+    }
+  }
+}
