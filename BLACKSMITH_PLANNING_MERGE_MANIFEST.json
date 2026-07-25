@@ -3,45 +3,29 @@
   "repository": "alsdmlals4-eng/Blacksmith",
   "generated_at": "2026-07-26",
   "planning_status": "PLANNING_IN_PROGRESS",
-  "branch": "agent/lock-poc-completion-baseline",
+  "branch": "agent/add-genre-benchmark-review",
   "base_branch": "main",
   "remote_update_status": "BRANCH_UPDATED_AWAITING_VALIDATION",
   "latest_update": {
-    "scope": "precision-enhancement-and-integrated-poc-baseline",
+    "scope": "2026-genre-benchmark-review",
     "commits": [
       {
-        "sha": "836ea33a204912a47a51ae25b2e2bcb071a8d50b",
-        "message": "docs: define precision enhancement baseline"
+        "sha": "08ecedfea7da121b624d66cb15c2bdd77c129c18",
+        "message": "docs: add 2026 genre benchmark review"
       },
       {
-        "sha": "17bc08df58e311ddd160d1c2f3299f967e5d1a4e",
-        "message": "docs: define integrated POC completion baseline"
-      },
-      {
-        "sha": "36257f90ab1120d1b77e69d40ecc23b4c47d8382",
-        "message": "docs: record precision and integrated POC decisions"
-      },
-      {
-        "sha": "9592907487b4c365cb49aa501e407a56d97adb6b",
-        "message": "docs: add planning authority index"
+        "sha": "73c3bc8179218664143e44a52aef81f2b5356e83",
+        "message": "docs: record benchmark proposals and exclusions"
       }
     ],
     "files": [
       {
-        "path": "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
-        "role": "current planning precedence and supersession index"
+        "path": "docs/planning/BLACKSMITH_GENRE_BENCHMARK_2026.md",
+        "role": "external benchmark findings and scoped improvement candidates"
       },
       {
-        "path": "docs/planning/BLACKSMITH_PRECISION_ENHANCEMENT_BASELINE.md",
-        "role": "authoritative precision-enhancement structure and failure contract"
-      },
-      {
-        "path": "docs/planning/BLACKSMITH_INTEGRATED_POC_COMPLETION_BASELINE.md",
-        "role": "integrated POC scope, coverage matrix and acceptance criteria"
-      },
-      {
-        "path": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_05.md",
-        "role": "decision, supersession and POC-status ledger"
+        "path": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_06.md",
+        "role": "proposed-only benchmark decisions and explicit exclusions"
       },
       {
         "path": "BLACKSMITH_PLANNING_MERGE_MANIFEST.json",
@@ -50,11 +34,13 @@
     ]
   },
   "previous_merge": {
-    "branch": "agent/share-main-points-with-limit-breakthrough",
-    "merge_commit": "50582777f2efbdfd8cff2bbbce9cd5fce0a4e817",
+    "branch": "agent/lock-poc-completion-baseline",
+    "merge_commit": "ef5da362384ec28040d45cd701e103480c12bed7",
     "files": [
-      "docs/planning/BLACKSMITH_GROWTH_SYSTEM_ADDENDUM_04.md",
-      "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_04.md"
+      "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
+      "docs/planning/BLACKSMITH_PRECISION_ENHANCEMENT_BASELINE.md",
+      "docs/planning/BLACKSMITH_INTEGRATED_POC_COMPLETION_BASELINE.md",
+      "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_05.md"
     ]
   },
   "open_validation": {
@@ -63,20 +49,15 @@
     "status": "OPEN_MANUAL_VALIDATION_REQUIRED"
   },
   "planned_followup": {
-    "scope": "integrated-poc-implementation",
-    "status": "BLOCKED_UNTIL_PLANNING_AND_REVIEW_COMPLETE",
-    "required_commands": [
-      "기획 완료",
-      "검수 완료"
-    ]
+    "scope": "benchmark-proposal-decision",
+    "status": "AWAITING_USER_DECISION",
+    "decision": "approve or revise P1-P4 as integrated POC requirements"
   },
   "notes": [
-    "This update records planning only and does not change implementation code.",
-    "The authority index prevents stale master-plan sections from overriding later approved addenda.",
-    "The precision baseline fixes one grade track and two affix slots per item.",
-    "Precision-enhancement failures consume committed materials only and resolve the milestone.",
-    "The integrated POC must expose representative enhancement, lifecycle, market and world-system interactions.",
-    "POC_CONFIRMED values are test-slice values and are not production balance commitments.",
+    "This update records benchmark findings only and does not change implementation code.",
+    "The current Blacksmith structure remains the baseline.",
+    "All new benchmark-derived proposals P1-P8 remain PROPOSED_ONLY until explicit user approval.",
+    "The recommended POC bundle is scenario launcher, equipment chronicle card, risk/consequence preview, and one optional daily workshop goal.",
     "Planning remains PLANNING_IN_PROGRESS until the exact command 기획 완료."
   ]
 }
