@@ -20,9 +20,17 @@
       {
         "sha": "36257f90ab1120d1b77e69d40ecc23b4c47d8382",
         "message": "docs: record precision and integrated POC decisions"
+      },
+      {
+        "sha": "9592907487b4c365cb49aa501e407a56d97adb6b",
+        "message": "docs: add planning authority index"
       }
     ],
     "files": [
+      {
+        "path": "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
+        "role": "current planning precedence and supersession index"
+      },
       {
         "path": "docs/planning/BLACKSMITH_PRECISION_ENHANCEMENT_BASELINE.md",
         "role": "authoritative precision-enhancement structure and failure contract"
@@ -64,6 +72,7 @@
   },
   "notes": [
     "This update records planning only and does not change implementation code.",
+    "The authority index prevents stale master-plan sections from overriding later approved addenda.",
     "The precision baseline fixes one grade track and two affix slots per item.",
     "Precision-enhancement failures consume committed materials only and resolve the milestone.",
     "The integrated POC must expose representative enhancement, lifecycle, market and world-system interactions.",
