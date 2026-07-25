@@ -1,0 +1,39 @@
+{
+  "project": "Blacksmith",
+  "repository": "alsdmlals4-eng/Blacksmith",
+  "generated_at": "2026-07-25",
+  "planning_status": "PLANNING_IN_PROGRESS",
+  "branch": "agent/merge-current-game-design",
+  "base_branch": "main",
+  "remote_update_status": "BRANCH_UPDATED_AWAITING_REVIEW",
+  "commits": [
+    {
+      "sha": "af6289c44a89ed88b7afd07bec123f698def2a46",
+      "message": "docs: add current game design decision ledger"
+    },
+    {
+      "sha": "7d4011f179795f8d8b7323317a209288905db314",
+      "message": "docs: add merged reinforcement-first game design"
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/planning/BLACKSMITH_DECISION_LEDGER.md",
+      "bytes": 8886,
+      "lines": 111,
+      "sha256": "9a186d442cfed9428afaa0b6aaeef7083b900404bf7d1446e2a77d92d30192ed"
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_MASTER_GAME_DESIGN_PLANNING.md",
+      "bytes": 36633,
+      "lines": 1234,
+      "sha256": "70d762e2363a652fc17f7a99de3903043467823119da3363f8c76b810559b534"
+    }
+  ],
+  "notes": [
+    "This branch records the merged planning state without changing implementation code.",
+    "Exact balance values remain PROPOSED_ONLY unless explicitly marked confirmed.",
+    "Planning remains PLANNING_IN_PROGRESS until the exact command 기획 완료.",
+    "Legacy canonical documents still require a separate reconciliation pass after planning review."
+  ]
+}
