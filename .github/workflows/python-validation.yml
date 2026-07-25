@@ -91,6 +91,12 @@ jobs:
           python tests/check_project_core_alignment.py
           python -m unittest tests/test_ci_workflow_structure.py
 
+      - name: Validate archive retention governance
+        working-directory: project
+        run: |
+          python tools/check_archive_governance.py
+          python -m unittest tests.test_archive_retention_governance -v
+
       - name: Validate project operating audit wrapper
         if: inputs.include-operating-audit
         working-directory: project
