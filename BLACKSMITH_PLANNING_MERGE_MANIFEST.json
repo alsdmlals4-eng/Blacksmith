@@ -1,31 +1,39 @@
 {
   "project": "Blacksmith",
   "repository": "alsdmlals4-eng/Blacksmith",
-  "generated_at": "2026-07-25",
+  "generated_at": "2026-07-26",
   "planning_status": "PLANNING_IN_PROGRESS",
-  "branch": "agent/update-growth-system-planning",
+  "branch": "agent/lock-poc-completion-baseline",
   "base_branch": "main",
-  "remote_update_status": "BRANCH_UPDATED_AWAITING_REVIEW",
+  "remote_update_status": "BRANCH_UPDATED_AWAITING_VALIDATION",
   "latest_update": {
-    "scope": "growth-system-planning",
+    "scope": "precision-enhancement-and-integrated-poc-baseline",
     "commits": [
       {
-        "sha": "d84c59315afdaf1edc4d5711b128ad1f63e58247",
-        "message": "docs: add consolidated growth system planning"
+        "sha": "836ea33a204912a47a51ae25b2e2bcb071a8d50b",
+        "message": "docs: define precision enhancement baseline"
       },
       {
-        "sha": "772d3798c0ed75f0da17a1561d0a3ef784bcf311",
-        "message": "docs: update growth system decision ledger"
+        "sha": "17bc08df58e311ddd160d1c2f3299f967e5d1a4e",
+        "message": "docs: define integrated POC completion baseline"
+      },
+      {
+        "sha": "36257f90ab1120d1b77e69d40ecc23b4c47d8382",
+        "message": "docs: record precision and integrated POC decisions"
       }
     ],
     "files": [
       {
-        "path": "docs/planning/BLACKSMITH_GROWTH_SYSTEM_PLANNING.md",
-        "role": "authoritative growth-system planning addendum"
+        "path": "docs/planning/BLACKSMITH_PRECISION_ENHANCEMENT_BASELINE.md",
+        "role": "authoritative precision-enhancement structure and failure contract"
       },
       {
-        "path": "docs/planning/BLACKSMITH_DECISION_LEDGER.md",
-        "role": "updated decision and supersession ledger"
+        "path": "docs/planning/BLACKSMITH_INTEGRATED_POC_COMPLETION_BASELINE.md",
+        "role": "integrated POC scope, coverage matrix and acceptance criteria"
+      },
+      {
+        "path": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_05.md",
+        "role": "decision, supersession and POC-status ledger"
       },
       {
         "path": "BLACKSMITH_PLANNING_MERGE_MANIFEST.json",
@@ -34,11 +42,11 @@
     ]
   },
   "previous_merge": {
-    "branch": "agent/merge-current-game-design",
-    "merge_commit": "5d0393b57b61c6e4219311141d095145818d1c9e",
+    "branch": "agent/share-main-points-with-limit-breakthrough",
+    "merge_commit": "50582777f2efbdfd8cff2bbbce9cd5fce0a4e817",
     "files": [
-      "docs/planning/BLACKSMITH_MASTER_GAME_DESIGN_PLANNING.md",
-      "docs/planning/BLACKSMITH_DECISION_LEDGER.md"
+      "docs/planning/BLACKSMITH_GROWTH_SYSTEM_ADDENDUM_04.md",
+      "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_04.md"
     ]
   },
   "open_validation": {
@@ -46,11 +54,20 @@
     "title": "MVP-003: 장비 한 점의 생애 PoC 구현 및 플레이 검증",
     "status": "OPEN_MANUAL_VALIDATION_REQUIRED"
   },
+  "planned_followup": {
+    "scope": "integrated-poc-implementation",
+    "status": "BLOCKED_UNTIL_PLANNING_AND_REVIEW_COMPLETE",
+    "required_commands": [
+      "기획 완료",
+      "검수 완료"
+    ]
+  },
   "notes": [
     "This update records planning only and does not change implementation code.",
-    "The growth-system addendum supersedes conflicting legacy growth and breakthrough rules in the master planning document.",
-    "Exact balance values remain PROPOSED_ONLY unless explicitly marked confirmed.",
-    "Planning remains PLANNING_IN_PROGRESS until the exact command 기획 완료.",
-    "Approved planning batches should update an authoritative planning document and the decision ledger through a GitHub branch and pull request."
+    "The precision baseline fixes one grade track and two affix slots per item.",
+    "Precision-enhancement failures consume committed materials only and resolve the milestone.",
+    "The integrated POC must expose representative enhancement, lifecycle, market and world-system interactions.",
+    "POC_CONFIRMED values are test-slice values and are not production balance commitments.",
+    "Planning remains PLANNING_IN_PROGRESS until the exact command 기획 완료."
   ]
 }
