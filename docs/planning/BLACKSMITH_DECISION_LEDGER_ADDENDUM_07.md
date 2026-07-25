@@ -50,8 +50,8 @@ POC 시나리오 런처
 
 정확한 시나리오 ID와 임시 자원은 다음 책임 파일을 따른다.
 
-- `BLACKSMITH_POC_PRIORITY_BASELINE_2026.md`
-- `data/blacksmith_poc_priority_seed_2026.json`
+- `docs/planning/BLACKSMITH_POC_PRIORITY_BASELINE_2026.md`
+- `docs/planning/data/blacksmith_poc_priority_seed_2026.json`
 
 ---
 
