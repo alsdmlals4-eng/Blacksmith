@@ -3,45 +3,45 @@
   "repository": "alsdmlals4-eng/Blacksmith",
   "generated_at": "2026-07-26",
   "planning_status": "PLANNING_IN_PROGRESS",
-  "branch": "agent/benchmark-enhancement-value-curve",
+  "branch": "agent/approve-profitable-enhancement-curve",
   "base_branch": "main",
   "remote_update_status": "BRANCH_UPDATED_AWAITING_VALIDATION",
   "latest_update": {
-    "scope": "poc-launcher-deployment-and-enhancement-value-benchmark",
+    "scope": "approved-profitable-enhancement-sale-curve",
     "commits": [
       {
-        "sha": "06185a8aec71cd1bcd320353b880f37c53450bcc",
-        "message": "docs: benchmark enhancement value curve"
+        "sha": "99b22adff5a1f94edc7a0e7c5d0fb138fa4756ed",
+        "message": "docs: approve profitable enhancement sale curve"
       },
       {
-        "sha": "1743d60d801a4869699fd22679e192d0385cfb73",
-        "message": "docs: record launcher scope and value benchmark"
+        "sha": "612a8d60186bacf6135d7107a5469e85b79f40ce",
+        "message": "docs: record +5 profit conversion decision"
       },
       {
-        "sha": "aa236fdcc5f9270e9cee1e7cd22de9c4bcb93b1c",
-        "message": "docs: isolate POC launcher deployment"
+        "sha": "62641a10af466c1fab970080078fa844eb4cac17",
+        "message": "docs: apply +5 profitable POC price anchors"
       },
       {
-        "sha": "0f8c96ef88b94ae0b68a69dc34a6275ddf365c33",
-        "message": "docs: update authority for launcher and value benchmark"
+        "sha": "3d23fbe45bb39f8e57bfda269a887a81cbd99a91",
+        "message": "docs: make profit curve the current price authority"
       }
     ],
     "files": [
       {
-        "path": "docs/planning/BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md",
-        "role": "external enhancement probability and market-value benchmark with proposed POC price curves"
+        "path": "docs/planning/BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md",
+        "role": "current POC enhancement price, cost, profit and interpolation authority"
       },
       {
-        "path": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_08.md",
-        "role": "launcher deployment approval and proposed price-curve status ledger"
+        "path": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_09.md",
+        "role": "user approval and supersession ledger for the +5 profit conversion"
       },
       {
         "path": "docs/planning/data/blacksmith_poc_priority_seed_2026.json",
-        "role": "machine-readable POC launcher deployment and current tuning data"
+        "role": "machine-readable approved POC price anchors and profit guardrails"
       },
       {
         "path": "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
-        "role": "current planning precedence and price-proposal guard"
+        "role": "current planning precedence and price authority map"
       },
       {
         "path": "BLACKSMITH_PLANNING_MERGE_MANIFEST.json",
@@ -50,12 +50,12 @@
     ]
   },
   "previous_merge": {
-    "branch": "agent/approve-poc-six-priorities",
-    "merge_commit": "66f4e70ed12e17dac4455836f612171a418e1be9",
+    "branch": "agent/benchmark-enhancement-value-curve",
+    "merge_commit": "0d1a6c4ec543aa27ee21aebc6e6a7482ceca362d",
     "files": [
-      "docs/planning/BLACKSMITH_POC_PRIORITY_BASELINE_2026.md",
+      "docs/planning/BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md",
+      "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_08.md",
       "docs/planning/data/blacksmith_poc_priority_seed_2026.json",
-      "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_07.md",
       "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md"
     ]
   },
@@ -64,34 +64,59 @@
     "title": "MVP-003: 장비 한 점의 생애 PoC 구현 및 플레이 검증",
     "status": "OPEN_MANUAL_VALIDATION_REQUIRED"
   },
-  "planned_followup": {
-    "scope": "open-market-enhancement-price-decision",
-    "status": "AWAITING_USER_DECISION",
-    "current_prices": {
+  "approved_price_policy": {
+    "status": "POC_TUNABLE_APPROVED_CURRENT",
+    "cost_basis": "MEAN_CUMULATIVE_EXPECTED_COST_WITH_MATERIAL_SHADOW_VALUE",
+    "material_shadow_price": 50,
+    "representative_craft_cost": 1500,
+    "first_profitable_level": 5,
+    "profit_must_not_decrease_after_level": 5,
+    "prices": {
       "0": 1000,
-      "10": 2500,
-      "20": 6500,
-      "30": 16000,
-      "40": 40000,
-      "50": 105000,
-      "60": 275000
+      "1": 1300,
+      "2": 1550,
+      "3": 1800,
+      "4": 2200,
+      "5": 3000,
+      "10": 5000,
+      "15": 8500,
+      "20": 14000,
+      "25": 24000,
+      "30": 42000,
+      "35": 72000,
+      "40": 125000,
+      "45": 220000,
+      "50": 400000,
+      "55": 750000,
+      "60": 1500000
     },
-    "recommended_proposal": {
-      "status": "PROPOSED_ONLY",
-      "0": 1000,
-      "10": 4000,
-      "20": 12000,
-      "30": 36000,
-      "40": 110000,
-      "50": 330000,
-      "60": 1000000
+    "interpolation": {
+      "explicit_until_level": 5,
+      "method_after_level_5": "LINEAR_BETWEEN_5_LEVEL_ANCHORS",
+      "round_to_gold": 100
     }
   },
+  "planned_followup": {
+    "scope": "six-item-poc-implementation-planning",
+    "status": "BLOCKED_UNTIL_PLANNING_AND_REVIEW_COMPLETE",
+    "required_commands": [
+      "기획 완료",
+      "검수 완료"
+    ],
+    "required_economy_contracts": [
+      "LEVELS_0_TO_4_NOT_PROFITABLE_ON_MEAN_COST",
+      "LEVEL_5_FIRST_PROFITABLE",
+      "LEVELS_5_TO_60_PROFITABLE",
+      "EXPECTED_PROFIT_NON_DECREASING_AFTER_LEVEL_5",
+      "MATERIAL_AND_RECRAFT_COST_INCLUDED",
+      "OPTIONAL_PROTECTION_AND_CATALYST_COST_REPORTED_SEPARATELY"
+    ]
+  },
   "notes": [
-    "This update records planning, benchmark analysis, and POC launcher deployment metadata only; it does not change runtime implementation code.",
-    "The scenario launcher is approved for development and POC builds only and uses an isolated POC save profile.",
-    "The existing open-market price curve remains current until the user explicitly approves a replacement.",
-    "The recommended approximately three-times-per-decade price curve is PROPOSED_ONLY.",
+    "This update changes planning documents and POC tuning data only; it does not change runtime implementation code.",
+    "The old current price curve and the benchmark A/B/C candidates are superseded.",
+    "The approved POC curve makes +5 the first mean-cost profitable sale level and increases expected profit with enhancement level.",
+    "Channel multipliers remain unchanged for the first POC comparison.",
     "Issue #34 remains open.",
     "Planning remains PLANNING_IN_PROGRESS until the exact command 기획 완료."
   ]
