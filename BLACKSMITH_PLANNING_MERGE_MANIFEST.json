@@ -3,45 +3,45 @@
   "repository": "alsdmlals4-eng/Blacksmith",
   "generated_at": "2026-07-26",
   "planning_status": "PLANNING_IN_PROGRESS",
-  "branch": "agent/approve-poc-six-priorities",
+  "branch": "agent/benchmark-enhancement-value-curve",
   "base_branch": "main",
   "remote_update_status": "BRANCH_UPDATED_AWAITING_VALIDATION",
   "latest_update": {
-    "scope": "approved-six-item-poc-priority-baseline",
+    "scope": "poc-launcher-deployment-and-enhancement-value-benchmark",
     "commits": [
       {
-        "sha": "9379e20987f493925680e3433e37dc525b87025d",
-        "message": "docs: define six-item POC priority baseline"
+        "sha": "06185a8aec71cd1bcd320353b880f37c53450bcc",
+        "message": "docs: benchmark enhancement value curve"
       },
       {
-        "sha": "0a7d93c5035171baa767e32b1e3db8681b612005",
-        "message": "docs: add machine-readable POC seed data"
+        "sha": "1743d60d801a4869699fd22679e192d0385cfb73",
+        "message": "docs: record launcher scope and value benchmark"
       },
       {
-        "sha": "bc56ba8d87911b719e5b8a76de95b3b9e14e356a",
-        "message": "docs: record approval of six POC priorities"
+        "sha": "aa236fdcc5f9270e9cee1e7cd22de9c4bcb93b1c",
+        "message": "docs: isolate POC launcher deployment"
       },
       {
-        "sha": "aee599aece67406ee0ef08611b17db486dcfefca",
-        "message": "docs: update planning authority for six POC priorities"
+        "sha": "0f8c96ef88b94ae0b68a69dc34a6275ddf365c33",
+        "message": "docs: update authority for launcher and value benchmark"
       }
     ],
     "files": [
       {
-        "path": "docs/planning/BLACKSMITH_POC_PRIORITY_BASELINE_2026.md",
-        "role": "authoritative six-item POC priority and temporary balance baseline"
+        "path": "docs/planning/BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md",
+        "role": "external enhancement probability and market-value benchmark with proposed POC price curves"
+      },
+      {
+        "path": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_08.md",
+        "role": "launcher deployment approval and proposed price-curve status ledger"
       },
       {
         "path": "docs/planning/data/blacksmith_poc_priority_seed_2026.json",
-        "role": "machine-readable POC tuning and deterministic scenario seed data"
-      },
-      {
-        "path": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_07.md",
-        "role": "approval, supersession and validation-order ledger"
+        "role": "machine-readable POC launcher deployment and current tuning data"
       },
       {
         "path": "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
-        "role": "current planning precedence and implementation read order"
+        "role": "current planning precedence and price-proposal guard"
       },
       {
         "path": "BLACKSMITH_PLANNING_MERGE_MANIFEST.json",
@@ -50,11 +50,13 @@
     ]
   },
   "previous_merge": {
-    "branch": "agent/add-genre-benchmark-review",
-    "merge_commit": "1b815fa244a7e42051001f87fade9595c73f5e94",
+    "branch": "agent/approve-poc-six-priorities",
+    "merge_commit": "66f4e70ed12e17dac4455836f612171a418e1be9",
     "files": [
-      "docs/planning/BLACKSMITH_GENRE_BENCHMARK_2026.md",
-      "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_06.md"
+      "docs/planning/BLACKSMITH_POC_PRIORITY_BASELINE_2026.md",
+      "docs/planning/data/blacksmith_poc_priority_seed_2026.json",
+      "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_07.md",
+      "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md"
     ]
   },
   "open_validation": {
@@ -63,29 +65,34 @@
     "status": "OPEN_MANUAL_VALIDATION_REQUIRED"
   },
   "planned_followup": {
-    "scope": "six-item-poc-implementation-and-automation",
-    "status": "BLOCKED_UNTIL_PLANNING_AND_REVIEW_COMPLETE",
-    "priority_order": [
-      "scenario launcher",
-      "equipment chronicle card",
-      "risk and consequence preview",
-      "low-risk batch enhancement",
-      "special-strike failure bound",
-      "economy and growth tuning",
-      "automated integration validation",
-      "human play validation"
-    ],
-    "required_commands": [
-      "기획 완료",
-      "검수 완료"
-    ]
+    "scope": "open-market-enhancement-price-decision",
+    "status": "AWAITING_USER_DECISION",
+    "current_prices": {
+      "0": 1000,
+      "10": 2500,
+      "20": 6500,
+      "30": 16000,
+      "40": 40000,
+      "50": 105000,
+      "60": 275000
+    },
+    "recommended_proposal": {
+      "status": "PROPOSED_ONLY",
+      "0": 1000,
+      "10": 4000,
+      "20": 12000,
+      "30": 36000,
+      "40": 110000,
+      "50": 330000,
+      "60": 1000000
+    }
   },
   "notes": [
-    "This update records planning and machine-readable POC seed data only; it does not change runtime implementation code.",
-    "The six benchmark-derived priorities are approved for the integrated POC before human play validation.",
-    "POC_CONFIRMED values define the test-slice contract; POC_TUNABLE values may be adjusted without changing structure.",
-    "The optional daily workshop goal is postponed to POST_POC.",
-    "Issue #34 remains open and existing +10 POC evidence must remain separate from future +60 integrated POC evidence.",
+    "This update records planning, benchmark analysis, and POC launcher deployment metadata only; it does not change runtime implementation code.",
+    "The scenario launcher is approved for development and POC builds only and uses an isolated POC save profile.",
+    "The existing open-market price curve remains current until the user explicitly approves a replacement.",
+    "The recommended approximately three-times-per-decade price curve is PROPOSED_ONLY.",
+    "Issue #34 remains open.",
     "Planning remains PLANNING_IN_PROGRESS until the exact command 기획 완료."
   ]
 }
