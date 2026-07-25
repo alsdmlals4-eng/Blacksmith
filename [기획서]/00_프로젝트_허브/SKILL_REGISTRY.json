@@ -13,6 +13,21 @@
     "max_primary_discipline_skills": 1,
     "exclude_statuses": ["HOLD", "BACKUP", "REMOVAL_CANDIDATE"]
   },
+  "base_integration": {
+    "repository": "alsdmlals4-eng/Base",
+    "commit": "c7c1103e4a69f8fdc9ee27aa382a21288605a7fb",
+    "shared_route_registry": "[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ROUTES.json",
+    "project_adapter": "[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json",
+    "shared_skill_routes": {
+      "legacy_retention_archives": "governing-legacy-retention-and-archives",
+      "godot_asset_plugin_reuse_first": "evaluating-godot-assets-and-plugins-before-creation"
+    },
+    "policy": {
+      "base_shared_skills": "adapter-only",
+      "project_specific_skills": "local-only",
+      "duplicate_base_skill_bodies": false
+    }
+  },
   "skills": [
     {
       "skill_id": "blacksmith-game-design",
