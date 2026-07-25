@@ -1,31 +1,50 @@
 # Base 적용 기준
 
 - Base: `alsdmlals4-eng/Base`
-- 기준 커밋: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`
-- 동기화일: 2026-07-23
+- 기존 Base 기준 커밋: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`
+- 신규 adapter-only 공용 route 커밋: `c7c1103e4a69f8fdc9ee27aa382a21288605a7fb`
+- 동기화일: 2026-07-25
 - 대상: `alsdmlals4-eng/Blacksmith`
 - 상세 매핑: `docs/BASE_ADOPTION_PROFILE.json`
 - 감사 결과: `docs/BASE_ADOPTION_AUDIT.md`
+- 공용 route Registry: `[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ROUTES.json`
+- 프로젝트 어댑터: `[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json`
+- 제3자 자산·플러그인 기록: `[기획서]/00_프로젝트_허브/THIRD_PARTY_ASSET_AND_PLUGIN_INVENTORY.json`
 
 ## 적용 방식
 
-Base를 복제하지 않는다. 공용 기능은 Blacksmith의 실제 책임 원본과 프로젝트 Skill 3개에 통합한다.
+Base 공용 Skill 본문을 프로젝트에 복제하지 않는다. 기존 공용 운영 기능은 현재 동기화 구조를 유지하고, 신규·갱신되는 Base 공용 Skill은 route Registry와 프로젝트 어댑터로 연결한다. 프로젝트 로컬 Skill은 Blacksmith 고유 규칙과 구현·검증 책임에만 만든다.
 
 ```text
-Base 25개 활성 기능
-→ 프로젝트 운영 문서
+기존 Base 25개 활성 기능 @ 41a20584...
+→ 프로젝트 운영 문서와 기존 통합 구조
+
+신규 adapter-only 공용 Skill @ c7c1103e...
+→ BASE_SHARED_SKILL_ROUTES.json
+→ BASE_SHARED_SKILL_ADAPTER.json
+→ Blacksmith 경로·정본·검증기
+
+Blacksmith 고유 책임
 → blacksmith-game-design
 → blacksmith-engineering
 → blacksmith-qa
 ```
 
-각 기능의 보존 위치·호출 조건·통합 상태는 Profile이 책임지고, CI가 Base 고정 커밋의 Registry·Skill 무결성과 Blacksmith의 경로·정본·stale 설명을 검사한다.
+각 기능의 보존 위치·호출 조건·통합 상태는 Profile과 Registry가 책임지고, 신규 공용 route는 프로젝트 어댑터가 경로·정본·검증기를 제공한다.
+
+## 신규 공용 route
+
+- `governing-legacy-retention-and-archives`: 구형·중복 자료의 고유 정보·참조·복구·승인을 확인하고 통합·stub·아카이브·승인 삭제를 판정한다.
+- `evaluating-godot-assets-and-plugins-before-creation`: 새 Godot 기능·도구·자산을 만들기 전에 기본 기능, 공식 Store, 기존 Asset Library, GitHub, itch.io와 상용 후보를 조사한다.
+
+Godot 기능·에셋·플러그인은 검색과 평가를 먼저 수행한다. 구매·계정 연결·프로젝트 설치·Android 네이티브 플러그인 추가는 별도 사용자 승인 범위에서만 수행한다.
 
 ## 유지 계약
 
 - 사용자 지시 → 프로젝트 정본·구현 → 동기화된 Base 기준 순서
 - `PLAN / BUILD / REVIEW`
 - trigger 기반 최소 Skill 자동 선택
+- Base 공용 Skill은 adapter-only, 프로젝트 전용 Skill은 local-only
 - 단일 책임 원본과 Markdown / JSON / 구현 사실 분리
 - Active Context·Map·Gates·Registry 연결
 - 구형 파일의 고유 정보·참조·복구·승인 보존
@@ -42,11 +61,12 @@ Base 25개 활성 기능
 ## 프로젝트 차이
 
 - Godot 4.7.1 / GDScript / Android 세로형 720×1280
-- 프로젝트 Skill은 3개만 유지하되 Base 기능은 Mode와 운영 문서로 보존
+- 프로젝트 Skill은 3개만 유지하며 Blacksmith 고유 경험·데이터·구현·검증만 책임진다.
 - 실제 수치는 `data/**/*.json`, 구현 사실은 Script·Scene·Test
 - PDF·DOCX·다이어그램·Asset Manifest는 실제 발행·승인 파이프라인이 생길 때 활성화
 - Android 실기기·AAB·접근성·성능은 증거 전까지 `NOT_RUN`
 - 이미지 생성은 사용자가 명시적으로 요청한 작업에서만 활성화
+- 기존 `godot_ai` 애드온은 출처·버전·라이선스가 확인되기 전 `EXISTING_REVIEW_REQUIRED`
 
 ## Base 환류
 
@@ -56,11 +76,23 @@ Blacksmith 교훈을 Base에 직접 덮어쓰지 않는다.
 extract → submit → review → 사용자 승인 → 별도 implement PR → verify
 ```
 
-여러 작업에서 반복 검증된 공용 교훈만 제안한다.
+여러 작업에서 반복 검증된 공용 교훈만 제안한다. 프로젝트 전용 Skill에서 공용 절차가 확인되면 Base 승격 후 어댑터 route로 전환한다.
+
+## 검증
+
+```text
+python -m json.tool "[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ROUTES.json"
+python -m json.tool "[기획서]/00_프로젝트_허브/BASE_SHARED_SKILL_ADAPTER.json"
+python -m json.tool "[기획서]/00_프로젝트_허브/THIRD_PARTY_ASSET_AND_PLUGIN_INVENTORY.json"
+python tools/validate_game_data.py
+```
+
+운영 JSON과 문서만 변경한 이번 범위에서는 Godot 런타임·Android 실기기·AAB 검증을 자동 PASS로 표시하지 않는다.
 
 ## 재동기화 조건
 
-- Base Operating Model·Skill Registry·운영체계 Skill 변경
+- Base Operating Model·Skill Registry·공용 route Registry·어댑터 계약 변경
 - Blacksmith Registry·책임 구조·발행 정책 변경
+- Godot 버전·목표 Android API·`addons/`·제3자 라이선스 변경
 - 주요 제품 게이트 진입
 - 콜드 스타트 실패·stale 참조·감사 CI 실패
