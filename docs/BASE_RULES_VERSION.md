@@ -2,7 +2,7 @@
 
 - Base: `alsdmlals4-eng/Base`
 - 기존 Base 기준 커밋: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`
-- 신규 adapter-only 공용 route 커밋: `c7c1103e4a69f8fdc9ee27aa382a21288605a7fb`
+- 신규 adapter-only 공용 route 커밋: `a8218b454bcfd9e72c792f4bb8ed614a385e22d6`
 - 동기화일: 2026-07-25
 - 대상: `alsdmlals4-eng/Blacksmith`
 - 상세 매핑: `docs/BASE_ADOPTION_PROFILE.json`
@@ -19,7 +19,7 @@ Base 공용 Skill 본문을 프로젝트에 복제하지 않는다. 기존 공�
 기존 Base 25개 활성 기능 @ 41a20584...
 → 프로젝트 운영 문서와 기존 통합 구조
 
-신규 adapter-only 공용 Skill @ c7c1103e...
+신규 adapter-only 공용 Skill @ a8218b45...
 → BASE_SHARED_SKILL_ROUTES.json
 → BASE_SHARED_SKILL_ADAPTER.json
 → Blacksmith 경로·정본·검증기
