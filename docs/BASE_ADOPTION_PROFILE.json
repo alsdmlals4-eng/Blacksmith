@@ -2,6 +2,18 @@
   "schema_version": 1,
   "base_repository": "alsdmlals4-eng/Base",
   "base_commit": "41a20584dd2ee51d917e5c9d7cab6838e1ceba7e",
+  "shared_extension_repository": "alsdmlals4-eng/Base",
+  "shared_extension_commit": "6a224e450f9420223c00921f3c56e051612f92ad",
+  "shared_extension_registry": "skills/BASE_SHARED_SKILL_ROUTES.json",
+  "shared_extensions": [
+    {
+      "skill_id": "governing-legacy-retention-and-archives",
+      "disposition": "ADOPT_VIA_ADAPTER",
+      "adapter": "docs/archive/ARCHIVE_RETENTION_ADAPTER.json",
+      "manifest": "docs/archive/MANIFEST.json",
+      "activation": "현행·레거시 문서, 증거, 파생본과 branch를 원문·권한·복구 경계와 함께 보존하거나 정리할 때"
+    }
+  ],
   "strategy": "collapse-shared-capabilities-into-three-project-skills-without-dropping-triggers-or-validation",
   "project_skill_count": 3,
   "capabilities": [
