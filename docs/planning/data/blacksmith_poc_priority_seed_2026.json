@@ -18,6 +18,13 @@
   ],
   "scenario_launcher": {
     "base_seed": 20260726,
+    "deployment": {
+      "availability": ["DEVELOPMENT_BUILD", "POC_BUILD"],
+      "release_build_visible": false,
+      "runtime_gate": "POC_TOOLS_ENABLED",
+      "save_profile": "POC_ISOLATED",
+      "production_save_write_allowed": false
+    },
     "default_resources": {
       "gold": 120000,
       "enhancement_material": 600,
