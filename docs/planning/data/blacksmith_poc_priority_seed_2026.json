@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "status": "PLANNING_IN_PROGRESS",
+  "scope": "POC_PRIORITY_BASELINE_2026",
+  "value_classes": {
+    "structure": "POC_CONFIRMED",
+    "balance": "POC_TUNABLE"
+  },
+  "priority_order": [
+    "SCENARIO_LAUNCHER",
+    "EQUIPMENT_CHRONICLE_CARD",
+    "RISK_CONSEQUENCE_PREVIEW",
+    "LOW_RISK_BATCH_ENHANCEMENT",
+    "SPECIAL_STRIKE_FAILURE_BOUND",
+    "ECONOMY_GROWTH_TUNING",
+    "AUTOMATED_INTEGRATION_VALIDATION",
+    "HUMAN_PLAY_VALIDATION"
+  ],
+  "scenario_launcher": {
+    "base_seed": 20260726,
+    "default_resources": {
+      "gold": 120000,
+      "enhancement_material": 600,
+      "catalyst": 80,
+      "protection_stone": 8,
+      "recovery_stone": 8,
+      "special_material": 6,
+      "enhancement_main_points": 8
+    },
+    "scenarios": [
+      {"id": "CORE_LOOP", "seed": 2026072601},
+      {"id": "PRECISION_GRADE", "seed": 2026072602},
+      {"id": "PRECISION_AFFIX", "seed": 2026072603},
+      {"id": "LIMIT_BUILD", "seed": 2026072604},
+      {"id": "PROTECTION_DAMAGE", "seed": 2026072605},
+      {"id": "RECOVERY_WINDOW", "seed": 2026072606},
+      {"id": "LOW_RISK_BATCH", "seed": 2026072607},
+      {"id": "FAILURE_BOUND", "seed": 2026072608},
+      {"id": "LIFECYCLE_GLADIATOR", "seed": 2026072609},
+      {"id": "MILITARY_NATION", "seed": 2026072610},
+      {"id": "SMUGGLING", "seed": 2026072611},
+      {"id": "HISTORY_COLLECTOR", "seed": 2026072612}
+    ]
+  },
+  "chronicle_card": {
+    "summary_event_limit": 6,
+    "default_timeline_limit": 12,
+    "aggregate_low_importance_after": 3,
+    "summary_dimensions": ["ACTIVITY_VALUE", "TRADE_VALUE", "HISTORY_VALUE"],
+    "event_types": [
+      "CRAFTED",
+      "ENHANCEMENT_RUN",
+      "MILESTONE_REACHED",
+      "PRECISION_RESULT",
+      "FAILURE_MAJOR",
+      "DAMAGED",
+      "RECOVERED",
+      "OWNER_CHANGED",
+      "CUSTOMER_ACTIVITY",
+      "MILITARY_EVENT",
+      "SMUGGLING_EVENT",
+      "NATION_EVENT",
+      "EXHIBITED",
+      "SOLD"
+    ]
+  },
+  "risk_preview": {
+    "internal_score_min": 0,
+    "internal_score_max": 100,
+    "bands": [
+      {"id": "VERY_LOW", "min": 0, "max": 9},
+      {"id": "LOW", "min": 10, "max": 24},
+      {"id": "MEDIUM", "min": 25, "max": 49},
+      {"id": "HIGH", "min": 50, "max": 74},
+      {"id": "VERY_HIGH", "min": 75, "max": 100}
+    ],
+    "explicit_confirmation_from": "HIGH",
+    "show_exact_probability": false
+  },
+  "low_risk_batch": {
+    "manual_attempts_to_unlock": 15,
+    "minimum_enhancement": 1,
+    "maximum_enhancement": 20,
+    "maximum_attempts_per_batch": 10,
+    "allowed_risk_bands": ["VERY_LOW", "LOW"],
+    "stop_on": [
+      "FIRST_FAILURE",
+      "INSUFFICIENT_RESOURCE",
+      "TARGET_REACHED",
+      "PRECISION_MILESTONE_PENDING",
+      "RISK_BECOMES_MEDIUM_OR_HIGHER",
+      "EQUIPMENT_DAMAGED",
+      "MANUAL_PROTECTION_OR_SPECIAL_STRIKE_REQUIRED"
+    ]
+  },
+  "failure_bound_strike": {
+    "charge_max": 100,
+    "charge_gain": {
+      "LOW_RISK_FAILURE": 15,
+      "MEDIUM_RISK_FAILURE": 25,
+      "HIGH_RISK_FAILURE": 35,
+      "VERY_HIGH_RISK_FAILURE": 45,
+      "REINFORGE_AFTER_RECOVERY": 20,
+      "PERSONAL_BEST": 10
+    },
+    "low_risk_repeat_diminish_from_failure_count": 3,
+    "low_risk_repeat_multiplier": 0.5,
+    "consume_all_charge_on_use": true,
+    "success_rate_bonus": 0,
+    "consequence_cap": {
+      "DESTROYED": "DAMAGED",
+      "DAMAGED": "LEVEL_DOWN_2",
+      "LEVEL_DOWN_3_PLUS": "LEVEL_DOWN_1",
+      "LEVEL_DOWN_1_OR_2": "LEVEL_DOWN_1",
+      "MATERIAL_ONLY": "MATERIAL_ONLY"
+    },
+    "specialization_modifiers": {
+      "STABLE_STRIKE": {"maximum_level_down": 1},
+      "GAMBLERS_HAMMER": {"success_record_value_bonus": true},
+      "RECOVERY_FORGING": {"recovery_window_bonus_days": 1},
+      "EFFICIENT_REFINING": {"failure_material_refund_ratio": 0.3}
+    }
+  },
+  "economy": {
+    "natural_start": {
+      "gold": 20000,
+      "enhancement_material": 240,
+      "catalyst": 12,
+      "protection_stone": 1,
+      "recovery_stone": 1,
+      "enhancement_main_points": 3
+    },
+    "representative_craft": {
+      "gold": 500,
+      "material": 20,
+      "workload": 3
+    },
+    "enhancement_cost_bands": [
+      {"min": 1, "max": 10, "gold": 100, "material": 2},
+      {"min": 11, "max": 20, "gold": 250, "material": 3},
+      {"min": 21, "max": 30, "gold": 600, "material": 5},
+      {"min": 31, "max": 40, "gold": 1200, "material": 8},
+      {"min": 41, "max": 50, "gold": 2500, "material": 12},
+      {"min": 51, "max": 60, "gold": 5000, "material": 18}
+    ],
+    "open_market_prices": {
+      "0": 1000,
+      "10": 2500,
+      "20": 6500,
+      "30": 16000,
+      "40": 40000,
+      "50": 105000,
+      "60": 275000
+    },
+    "channel_multipliers": {
+      "VISITOR_MIN": 1.1,
+      "VISITOR_MAX": 1.25,
+      "MILITARY": 1.15,
+      "SMUGGLING": 1.35,
+      "COLLECTOR_MIN": 1.2,
+      "COLLECTOR_MAX": 1.8
+    },
+    "enhancement_main_point_levels": [2, 4, 6, 8, 10, 12, 14, 16],
+    "poc_total_enhancement_main_points": 8,
+    "limit_breakthrough_cost": {
+      "50": 2,
+      "60": 3
+    },
+    "low_reserve_warning_attempts": 2
+  },
+  "validation_order": {
+    "human_validation_after_all_six": true,
+    "issue_34_remains_open": true,
+    "implementation_blocked_until": ["기획 완료", "검수 완료"]
+  }
+}
