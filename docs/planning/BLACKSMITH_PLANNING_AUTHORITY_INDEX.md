@@ -23,7 +23,12 @@
    - 정밀 등급 1개, 수식어 2개, 네 행동, 재료만 손실하는 실패의 최신 기준
 6. `BLACKSMITH_INTEGRATED_POC_COMPLETION_BASELINE.md`
    - 통합 체험 POC 범위, POC 전용 수치, 자동·사람 검증 기준
-7. 최신 `BLACKSMITH_DECISION_LEDGER_ADDENDUM_*.md`
+7. `BLACKSMITH_GENRE_BENCHMARK_2026.md`
+   - 유사 장르 비교와 개선 후보의 근거
+   - 추가 결정 07에서 승인되거나 후순위로 이동한 항목은 최신 결정을 따름
+8. `BLACKSMITH_POC_PRIORITY_BASELINE_2026.md`
+   - 통합 POC 선행 6개 항목, 임시 수치, 자동 검증 선행 순서의 최신 기준
+9. 최신 `BLACKSMITH_DECISION_LEDGER_ADDENDUM_*.md`
    - 승인·폐기·대체 상태와 문서 충돌 해결 기록
 
 ## 2. 현재 명시적 최신 덮어쓰기
@@ -79,12 +84,38 @@
 
 - 기존 Issue #34는 사람·플랫폼 검증을 위해 유지
 - 후속 통합 POC는 +60 강화, 정밀강화, 한계 돌파, 보호·회복, 고객 2명, 거래·국가·밀수·역사·수집가 대표 경로를 체험 가능해야 함
-- `기획 완료`와 검수 완료 전에는 후속 구현을 시작하지 않음
+- `기획 완료`와 `검수 완료` 전에는 후속 구현을 시작하지 않음
 
 책임 문서:
 
 - `BLACKSMITH_INTEGRATED_POC_COMPLETION_BASELINE.md`
 - `BLACKSMITH_DECISION_LEDGER_ADDENDUM_05.md`
+
+### 통합 POC 선행 우선순위
+
+구형 문구:
+
+- 오늘의 대장간 목표를 사람 검증 전에 배치
+- 저위험 연속 강화와 실패 상한을 POC 이후 후보로 배치
+
+최신 규칙:
+
+1. POC 시나리오 런처
+2. 장비 연대기 요약 카드
+3. 위험·결과 사전 카드
+4. 저위험 연속 강화
+5. 기존 특수 타격을 이용한 실패 상한
+6. 경제·성장 수치 조정
+7. 통합 E2E·자동 검증
+8. Android·접근성·성능·외부 플레이 검증
+
+- 오늘의 대장간 목표는 `PROPOSED_ONLY / POST_POC`
+- 상세 임시 수치는 `docs/planning/data/blacksmith_poc_priority_seed_2026.json`을 따른다.
+
+책임 문서:
+
+- `BLACKSMITH_POC_PRIORITY_BASELINE_2026.md`
+- `BLACKSMITH_DECISION_LEDGER_ADDENDUM_07.md`
 
 ## 3. 상태 해석
 
@@ -92,7 +123,8 @@
 |---|---|
 | `CONFIRMED` | 구조와 행동 규칙 승인 |
 | `CONFIRMED_DIRECTION` | 출시 구조 방향 승인, 세부 수치는 조정 가능 |
-| `POC_CONFIRMED` | 통합 POC 구현·검증에 사용할 정확한 값 |
+| `CONFIRMED_SEQUENCE` | 구현·검증 순서 승인 |
+| `POC_CONFIRMED` | 통합 POC 구현·검증에 사용할 정확한 값 또는 규칙 |
 | `POC_TUNABLE` | 구조를 바꾸지 않고 데이터로 조정할 값 |
 | `PROPOSED_ONLY` | 사용자 승인 전 임의 확정 금지 |
 | `SUPERSEDED` | 최신 문서로 대체됨 |
@@ -105,7 +137,8 @@
 1. 이 색인에서 해당 시스템의 최신 책임 문서 확인
 2. 최신 결정 원장에서 `REJECTED`·`SUPERSEDED` 규칙 제외
 3. `POC_CONFIRMED`와 출시 수치 분리
-4. Issue #34의 기존 구현·사람 검증 상태 확인
-5. `기획 완료`와 검수 완료 게이트 확인
+4. POC 임시 데이터 JSON과 책임 기획 문서의 값 일치 확인
+5. Issue #34의 기존 구현·사람 검증 상태 확인
+6. `기획 완료`와 `검수 완료` 게이트 확인
 
-구형 마스터 문서의 개별 절만 읽고 구현을 시작하지 않는다.
+구형 마스터 문서나 벤치마크 후보 절만 읽고 구현을 시작하지 않는다.
