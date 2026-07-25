@@ -3,37 +3,54 @@
   "repository": "alsdmlals4-eng/Blacksmith",
   "generated_at": "2026-07-25",
   "planning_status": "PLANNING_IN_PROGRESS",
-  "branch": "agent/merge-current-game-design",
+  "branch": "agent/update-growth-system-planning",
   "base_branch": "main",
   "remote_update_status": "BRANCH_UPDATED_AWAITING_REVIEW",
-  "commits": [
-    {
-      "sha": "af6289c44a89ed88b7afd07bec123f698def2a46",
-      "message": "docs: add current game design decision ledger"
-    },
-    {
-      "sha": "7d4011f179795f8d8b7323317a209288905db314",
-      "message": "docs: add merged reinforcement-first game design"
-    }
-  ],
-  "files": [
-    {
-      "path": "docs/planning/BLACKSMITH_DECISION_LEDGER.md",
-      "bytes": 8886,
-      "lines": 111,
-      "sha256": "9a186d442cfed9428afaa0b6aaeef7083b900404bf7d1446e2a77d92d30192ed"
-    },
-    {
-      "path": "docs/planning/BLACKSMITH_MASTER_GAME_DESIGN_PLANNING.md",
-      "bytes": 36633,
-      "lines": 1234,
-      "sha256": "70d762e2363a652fc17f7a99de3903043467823119da3363f8c76b810559b534"
-    }
-  ],
+  "latest_update": {
+    "scope": "growth-system-planning",
+    "commits": [
+      {
+        "sha": "d84c59315afdaf1edc4d5711b128ad1f63e58247",
+        "message": "docs: add consolidated growth system planning"
+      },
+      {
+        "sha": "772d3798c0ed75f0da17a1561d0a3ef784bcf311",
+        "message": "docs: update growth system decision ledger"
+      }
+    ],
+    "files": [
+      {
+        "path": "docs/planning/BLACKSMITH_GROWTH_SYSTEM_PLANNING.md",
+        "role": "authoritative growth-system planning addendum"
+      },
+      {
+        "path": "docs/planning/BLACKSMITH_DECISION_LEDGER.md",
+        "role": "updated decision and supersession ledger"
+      },
+      {
+        "path": "BLACKSMITH_PLANNING_MERGE_MANIFEST.json",
+        "role": "planning update tracker"
+      }
+    ]
+  },
+  "previous_merge": {
+    "branch": "agent/merge-current-game-design",
+    "merge_commit": "5d0393b57b61c6e4219311141d095145818d1c9e",
+    "files": [
+      "docs/planning/BLACKSMITH_MASTER_GAME_DESIGN_PLANNING.md",
+      "docs/planning/BLACKSMITH_DECISION_LEDGER.md"
+    ]
+  },
+  "open_validation": {
+    "issue": 34,
+    "title": "MVP-003: 장비 한 점의 생애 PoC 구현 및 플레이 검증",
+    "status": "OPEN_MANUAL_VALIDATION_REQUIRED"
+  },
   "notes": [
-    "This branch records the merged planning state without changing implementation code.",
+    "This update records planning only and does not change implementation code.",
+    "The growth-system addendum supersedes conflicting legacy growth and breakthrough rules in the master planning document.",
     "Exact balance values remain PROPOSED_ONLY unless explicitly marked confirmed.",
     "Planning remains PLANNING_IN_PROGRESS until the exact command 기획 완료.",
-    "Legacy canonical documents still require a separate reconciliation pass after planning review."
+    "Approved planning batches should update an authoritative planning document and the decision ledger through a GitHub branch and pull request."
   ]
 }
