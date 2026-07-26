@@ -88,7 +88,7 @@
 ## 6. 책임 원본
 
 - 설명·판정 순서: `BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md`
-- 기계 판독 수치: `data/blacksmith_enhancement_risk_curve_2026.json`
+- 기계 판독 수치: `docs/planning/data/blacksmith_enhancement_risk_curve_2026.json`
 - 본 문서: 사용자 승인과 대체 상태 기록
 
 ## 7. 남은 결정
