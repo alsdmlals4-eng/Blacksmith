@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "status": "PLANNING_IN_PROGRESS",
   "scope": "ENHANCEMENT_RISK_CURVE_2026",
   "value_status": "POC_TUNABLE_APPROVED_CURRENT",
@@ -7,7 +7,7 @@
   "integrated_poc_target_enhancement": 60,
   "authority": {
     "planning_document": "docs/planning/BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md",
-    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_10.md",
+    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_11.md",
     "benchmark_document": "docs/planning/BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md"
   },
   "success_model": {
@@ -81,10 +81,52 @@
     "removed_risk_probability_destination": "KEEP",
     "applies_after_success_failure_split": true
   },
+  "destroy_model": {
+    "rate_scope": "CONDITIONAL_WITHIN_FAILED_ATTEMPT",
+    "destruction_starts_at_target_level": 30,
+    "bands": [
+      {"min_target": 1, "max_target": 29, "base_rate": 0.0},
+      {"min_target": 30, "max_target": 39, "base_rate": 0.03},
+      {"min_target": 40, "max_target": 49, "base_rate": 0.05},
+      {"min_target": 50, "max_target": 59, "base_rate": 0.08},
+      {"min_target": 60, "max_target": 69, "base_rate": 0.11},
+      {"min_target": 70, "max_target": 79, "base_rate": 0.14},
+      {"min_target": 80, "max_target": 89, "base_rate": 0.18},
+      {"min_target": 90, "max_target": 99, "base_rate": 0.22},
+      {"min_target": 100, "max_target": 100, "base_rate": 0.25}
+    ],
+    "mastery_operation": "MULTIPLY_BASE_RATE_BY_ONE_MINUS_RELATIVE_REDUCTION",
+    "maximum_mastery_rates": {
+      "30_TO_39": 0.027,
+      "40_TO_49": 0.045,
+      "50_TO_59": 0.072,
+      "60_TO_69": 0.099,
+      "70_TO_79": 0.126,
+      "80_TO_89": 0.162,
+      "90_TO_99": 0.198,
+      "100": 0.225
+    },
+    "per_attempt_formula": "PER_ATTEMPT_DESTROY_RESULT = (1 - FINAL_SUCCESS_RATE) * FINAL_FAILURE_INTERNAL_DESTROY_RATE",
+    "removed_destroy_mass_handling": {
+      "destination": "KEEP",
+      "formula": "DESTROY_REDUCTION_KEEP = FAILURE_RATE * BASE_DESTROY_RATE * RELATIVE_DESTROY_REDUCTION",
+      "excluded_from_downgrade_pool": true
+    },
+    "representative_examples": [
+      {"target": 30, "mastery": "BASE", "success_rate": 0.5, "failure_internal_destroy_rate": 0.03, "per_attempt_destroy_result": 0.015},
+      {"target": 30, "mastery": "MAX", "success_rate": 0.75, "failure_internal_destroy_rate": 0.027, "per_attempt_destroy_result": 0.00675},
+      {"target": 60, "mastery": "BASE", "success_rate": 0.2, "failure_internal_destroy_rate": 0.11, "per_attempt_destroy_result": 0.088},
+      {"target": 60, "mastery": "MAX", "success_rate": 0.3, "failure_internal_destroy_rate": 0.099, "per_attempt_destroy_result": 0.0693},
+      {"target": 100, "mastery": "BASE", "success_rate": 0.05, "failure_internal_destroy_rate": 0.25, "per_attempt_destroy_result": 0.2375},
+      {"target": 100, "mastery": "MAX", "success_rate": 0.075, "failure_internal_destroy_rate": 0.225, "per_attempt_destroy_result": 0.208125}
+    ]
+  },
   "outcome_order": [
     "SUCCESS",
+    "RESERVE_DESTROY_REDUCTION_AS_KEEP",
     "DESTROY_WITHIN_FAILURE",
-    "DOWNGRADE_WITHIN_NON_DESTROY_FAILURE",
+    "DOWNGRADE_WITHIN_BASE_NON_DESTROY_FAILURE",
+    "RESERVE_DOWNGRADE_REDUCTION_AS_KEEP",
     "KEEP"
   ],
   "approved_structural_rules": {
@@ -101,10 +143,10 @@
   "superseded_assumptions": [
     "FLAT_PLUS_10_PERCENTAGE_POINT_MAX_MASTERY_BONUS",
     "LEVEL_60_IS_DESIGN_MAXIMUM",
-    "LEVEL_60_USES_FINAL_STAGE_RISK_VALUES"
+    "LEVEL_60_USES_FINAL_STAGE_RISK_VALUES",
+    "LEVEL_60_FAILURE_INTERNAL_DESTROY_RATE_IS_25_PERCENT"
   ],
   "review_required": [
-    "DESTROY_RATE_CURVE_LEVELS_30_TO_100",
     "DOWNGRADE_OCCURRENCE_CURVE_LEVELS_61_TO_100",
     "MAX_DOWNGRADE_CURVE_LEVELS_61_TO_100",
     "PROTECTION_STONE_REQUIREMENT_LEVELS_60_TO_100",
