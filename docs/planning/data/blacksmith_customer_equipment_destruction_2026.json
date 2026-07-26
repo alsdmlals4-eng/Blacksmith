@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "status": "PLANNING_IN_PROGRESS",
+  "scope": "CUSTOMER_EQUIPMENT_DESTRUCTION_2026",
+  "structure_status": "POC_CONFIRMED_APPROVED_CURRENT",
+  "authority": {
+    "planning_document": "docs/planning/BLACKSMITH_CUSTOMER_EQUIPMENT_DESTRUCTION_2026.md",
+    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_18.md",
+    "risk_document": "docs/planning/BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md",
+    "full_protection_document": "docs/planning/BLACKSMITH_FULL_PROTECTION_ENDGAME_ECONOMY_2026.md"
+  },
+  "ownership_scope": {
+    "customer_owned_equipment_uses_common_enhancement_rules": true,
+    "customer_only_destroy_exception_exists": false,
+    "customer_only_protection_requirement_exists": false,
+    "unprotected_attempt_allowed": true
+  },
+  "destroy_resolution": {
+    "UNPROTECTED_DESTROY": "IMMEDIATE_PERMANENT_DELETION",
+    "ORDINARY_PROTECTION_DESTROY": "PROTECTED_BREAK_WITH_LEVEL_LOSS",
+    "FULL_PROTECTION_DESTROY": "KEEP",
+    "persistent_damaged_state": false,
+    "repair_path_exists": false,
+    "recovery_path_exists": false
+  },
+  "customer_lifecycle_after_destroy": {
+    "customer_deleted": false,
+    "relationship_deleted": false,
+    "advice_history_deleted": false,
+    "activity_history_deleted": false,
+    "replacement_equipment_allowed": true,
+    "replacement_creates_new_equipment_id": true,
+    "replacement_inherits_destroyed_equipment_history": false,
+    "trust_delta_defined_here": false
+  },
+  "destroyed_equipment_record": {
+    "inventory_object_retained": false,
+    "recoverable_item_retained": false,
+    "chronicle_terminal_record_retained": true,
+    "terminal_state": "DESTROYED",
+    "terminal_reason": "UNPROTECTED_ENHANCEMENT_DESTROY",
+    "record_fields": [
+      "EQUIPMENT_ID",
+      "FINAL_OWNER_CUSTOMER_ID",
+      "PRE_ATTEMPT_ENHANCEMENT",
+      "DESTROYED_AT_GAME_TIME",
+      "TERMINAL_REASON"
+    ],
+    "can_trade": false,
+    "can_display_as_item": false,
+    "can_enhance": false,
+    "can_restore": false
+  },
+  "warning_contract": {
+    "exact_destroy_probability_visible": true,
+    "immediate_permanent_deletion_text_required": true,
+    "customer_owned_label_visible": true,
+    "replacement_possible_text_allowed": true,
+    "warning_equivalent_to_other_high_value_equipment": true
+  },
+  "superseded_assumptions": [
+    "CUSTOMER_EQUIPMENT_DESTROY_CONVERTS_TO_DAMAGED",
+    "CUSTOMER_EQUIPMENT_RESTORATION_PATH",
+    "CUSTOMER_EQUIPMENT_MODIFIERS_AND_LEVELS_ALWAYS_SURVIVE_DESTROY",
+    "CUSTOMER_EQUIPMENT_REQUIRES_PROTECTION",
+    "CUSTOMER_EQUIPMENT_CANNOT_BE_ATTEMPTED_UNPROTECTED"
+  ],
+  "validation_contract": {
+    "customer_equipment_can_attempt_unprotected": true,
+    "unprotected_destroy_removes_equipment_object": true,
+    "damaged_repair_recovery_ui_absent": true,
+    "customer_lifecycle_survives_equipment_destroy": true,
+    "replacement_equipment_can_be_given": true,
+    "replacement_equipment_has_new_identity": true,
+    "terminal_chronicle_record_is_not_recoverable": true,
+    "protection_modes_match_common_equipment_rules": true,
+    "implementation_blocked_until": [
+      "기획 완료",
+      "검수 완료"
+    ]
+  }
+}
