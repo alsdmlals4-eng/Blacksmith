@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "status": "PLANNING_IN_PROGRESS",
+  "scope": "ENHANCEMENT_PROBABILITY_DISCLOSURE_2026",
+  "value_status": "POC_CONFIRMED_APPROVED_CURRENT",
+  "authority": {
+    "planning_document": "docs/planning/BLACKSMITH_ENHANCEMENT_PROBABILITY_DISCLOSURE_2026.md",
+    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_16.md",
+    "natural_probability_document": "docs/planning/BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md",
+    "natural_probability_data": "docs/planning/data/blacksmith_enhancement_risk_curve_2026.json",
+    "failure_bound_interaction_document": "docs/planning/BLACKSMITH_FAILURE_BOUND_PROTECTION_INTERACTION_2026.md",
+    "stable_strike_document": "docs/planning/BLACKSMITH_STABLE_STRIKE_SPECIALIZATION_2026.md"
+  },
+  "overrides": [
+    {
+      "source": "docs/planning/BLACKSMITH_POC_PRIORITY_BASELINE_2026.md",
+      "field": "risk preview exact probability hidden",
+      "replacement": "EXACT_PROBABILITY_VISIBLE_FOR_GENERAL_ENHANCEMENT_ONLY"
+    },
+    {
+      "source": "docs/planning/data/blacksmith_poc_priority_seed_2026.json",
+      "field": "risk_preview.show_exact_probability",
+      "old_value": false,
+      "replacement_scope": "NON_ENHANCEMENT_RISK_SYSTEMS_ONLY"
+    }
+  ],
+  "disclosure_scope": {
+    "exact_probability_visible": [
+      "GENERAL_ENHANCEMENT"
+    ],
+    "exact_probability_hidden": [
+      "SMUGGLING_DETECTION",
+      "VISITOR_NEGOTIATION",
+      "COLLECTOR_NEGOTIATION",
+      "NATION_EVENT",
+      "MILITARY_WORLD_CONSEQUENCE",
+      "INTERNAL_TRUST_VALUE"
+    ],
+    "additional_system_requires_separate_approval": true
+  },
+  "displayed_final_outcomes": [
+    "GREAT_SUCCESS",
+    "SUCCESS",
+    "KEEP",
+    "DOWNGRADE_1",
+    "DOWNGRADE_2",
+    "DESTROY_OR_PROTECTED_BREAK"
+  ],
+  "input_factors": [
+    "TARGET_ENHANCEMENT",
+    "SUCCESS_MASTERY",
+    "RISK_MASTERY",
+    "GREAT_SUCCESS_BAND",
+    "PROTECTION_STONE_SELECTED",
+    "FAILURE_BOUND_SELECTED",
+    "PROTECTION_AND_FAILURE_BOUND_INTERACTION",
+    "ANY_FUTURE_PROBABILITY_MODIFIER"
+  ],
+  "primary_display": {
+    "table_type": "CURRENT_FINAL_OUTCOME_TABLE",
+    "natural_outcome_table_available_as_details": true,
+    "natural_outcome_table_is_primary": false,
+    "show_equipment_survival": true,
+    "show_worst_outcome": true,
+    "show_required_protection_stones": true,
+    "show_failure_bound_charge_consumption": true,
+    "show_protected_break_expected_level_loss": true
+  },
+  "precision": {
+    "internal_probability_min_decimal_places": 4,
+    "display_unit_percent": 0.01,
+    "display_decimal_places": 2,
+    "display_sum_percent": 100.0,
+    "rounding_method": "LARGEST_REMAINDER_TO_BASIS_POINTS",
+    "nonzero_probability_minimum_display_percent": 0.01,
+    "preserve_internal_and_display_values_separately": true
+  },
+  "selection_transforms": {
+    "NONE": {
+      "DOWNGRADE_1": "DOWNGRADE_1",
+      "DOWNGRADE_2": "DOWNGRADE_2",
+      "DESTROY": "IMMEDIATE_PERMANENT_DELETION"
+    },
+    "FAILURE_BOUND_ONLY": {
+      "DOWNGRADE_1": "KEEP",
+      "DOWNGRADE_2": "DOWNGRADE_1",
+      "DESTROY": "IMMEDIATE_PERMANENT_DELETION"
+    },
+    "PROTECTION_ONLY": {
+      "DOWNGRADE_1": "KEEP",
+      "DOWNGRADE_2": "KEEP",
+      "DESTROY": "PROTECTED_BREAK_BASE_LEVEL_LOSS"
+    },
+    "PROTECTION_AND_FAILURE_BOUND": {
+      "DOWNGRADE_1": "KEEP",
+      "DOWNGRADE_2": "KEEP",
+      "DESTROY": "PROTECTED_BREAK_LEVEL_LOSS_MINUS_2_MINIMUM_3"
+    }
+  },
+  "semantic_guards": {
+    "protection_reduces_destroy_probability": false,
+    "protection_changes_destroy_consequence": true,
+    "failure_bound_changes_success_probability": false,
+    "failure_bound_changes_destroy_probability": false,
+    "great_success_hidden_inside_success": false,
+    "destroy_and_protected_break_share_probability_mass": true
+  },
+  "dynamic_update": {
+    "update_before_confirmation": true,
+    "update_on": [
+      "PROTECTION_TOGGLE",
+      "FAILURE_BOUND_TOGGLE",
+      "MASTERY_CHANGE",
+      "TARGET_CHANGE",
+      "OTHER_PROBABILITY_MODIFIER_CHANGE"
+    ],
+    "updated_fields": [
+      "OUTCOME_PROBABILITIES",
+      "OUTCOME_LABELS",
+      "EQUIPMENT_SURVIVAL",
+      "PROTECTED_BREAK_LEVEL_LOSS",
+      "PROTECTION_STONE_REQUIREMENT",
+      "FAILURE_BOUND_CHARGE_COST",
+      "WORST_OUTCOME_TEXT"
+    ],
+    "change_indicator_not_color_only": true
+  },
+  "great_success_display": {
+    "show_separate_from_success": true,
+    "disabled_targets": [
+      49,
+      50,
+      100
+    ],
+    "disabled_display_probability_percent": 0.0,
+    "show_disabled_reason": true,
+    "show_milestone_stop_level": true
+  },
+  "validation_contract": {
+    "display_sum_exact_percent": 100.0,
+    "natural_and_final_tables_must_not_be_confused": true,
+    "unprotected_destroy_warning_required": true,
+    "protected_break_probability_equal_to_transformed_destroy_probability": true,
+    "non_enhancement_exact_probabilities_remain_hidden": true,
+    "accessibility_requires_non_color_change_cues": true,
+    "implementation_blocked_until": [
+      "기획 완료",
+      "검수 완료"
+    ],
+    "report_metrics": [
+      "DISPLAY_INTERNAL_MAX_ERROR",
+      "DISPLAY_SUM_VIOLATION_COUNT",
+      "SELECTION_UPDATE_LATENCY",
+      "WORST_OUTCOME_MISMATCH_COUNT",
+      "PROTECTION_PROBABILITY_MISUNDERSTANDING_RATE",
+      "PLAYER_OUTCOME_EXPLANATION_ACCURACY"
+    ]
+  }
+}
