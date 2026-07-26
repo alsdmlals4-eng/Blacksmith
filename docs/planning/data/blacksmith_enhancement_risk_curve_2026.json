@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "status": "PLANNING_IN_PROGRESS",
+  "scope": "ENHANCEMENT_RISK_CURVE_2026",
+  "value_status": "POC_TUNABLE_APPROVED_CURRENT",
+  "design_max_enhancement": 100,
+  "integrated_poc_target_enhancement": 60,
+  "authority": {
+    "planning_document": "docs/planning/BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md",
+    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_10.md",
+    "benchmark_document": "docs/planning/BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md"
+  },
+  "success_model": {
+    "base_rate_unit": "PROBABILITY_0_TO_1",
+    "interpolation": {
+      "method": "PIECEWISE_LINEAR_BETWEEN_ANCHORS",
+      "calculation_precision_decimals": 4,
+      "ui_display_percent_decimals": 1
+    },
+    "base_success_rate_anchors": {
+      "1": 1.0,
+      "5": 0.9,
+      "10": 0.8,
+      "20": 0.65,
+      "30": 0.5,
+      "40": 0.38,
+      "50": 0.28,
+      "60": 0.2,
+      "70": 0.15,
+      "80": 0.1,
+      "90": 0.075,
+      "100": 0.05
+    },
+    "mastery_bonus": {
+      "operation": "MULTIPLY_BASE_RATE",
+      "formula": "FINAL_SUCCESS_RATE = MIN(STAGE_CAP, BASE_SUCCESS_RATE * (1 + RELATIVE_MASTERY_BONUS))",
+      "maximum_relative_increase": 0.5,
+      "growth_breakpoints": {
+        "0": 0.0,
+        "20": 0.05,
+        "40": 0.12,
+        "60": 0.22,
+        "80": 0.35,
+        "100": 0.5
+      },
+      "breakpoint_interpolation": "LINEAR",
+      "success_mastery_composite": {
+        "crafting_mastery_weight": 0.6,
+        "equipment_category_mastery_weight": 0.4
+      },
+      "common_blacksmith_rank_role": "CAP_APPLICABLE_MASTERY_BREAKPOINT",
+      "stage_caps": [
+        {"min_target": 1, "max_target": 5, "cap": 1.0},
+        {"min_target": 6, "max_target": 20, "cap": 0.95},
+        {"min_target": 21, "max_target": 100, "cap": 1.0}
+      ]
+    },
+    "maximum_mastery_examples": {
+      "1": 1.0,
+      "5": 1.0,
+      "10": 0.95,
+      "20": 0.95,
+      "30": 0.75,
+      "40": 0.57,
+      "50": 0.42,
+      "60": 0.3,
+      "70": 0.225,
+      "80": 0.15,
+      "90": 0.1125,
+      "100": 0.075
+    }
+  },
+  "risk_mastery_model": {
+    "risk_mastery_composite": {
+      "enhancement_mastery_weight": 0.6,
+      "equipment_category_mastery_weight": 0.4
+    },
+    "common_blacksmith_rank_role": "CAP_APPLICABLE_MASTERY_BREAKPOINT",
+    "maximum_relative_downgrade_reduction": 0.15,
+    "maximum_relative_destroy_reduction": 0.1,
+    "removed_risk_probability_destination": "KEEP",
+    "applies_after_success_failure_split": true
+  },
+  "outcome_order": [
+    "SUCCESS",
+    "DESTROY_WITHIN_FAILURE",
+    "DOWNGRADE_WITHIN_NON_DESTROY_FAILURE",
+    "KEEP"
+  ],
+  "approved_structural_rules": {
+    "destruction_starts_at_target_level": 30,
+    "unprotected_high_enhancement_allowed": true,
+    "protection_stone_success_bonus": 0.0,
+    "protection_stone_consumption_timing": "ON_VALID_ATTEMPT_START",
+    "protection_stone_consumed_on_all_results": true,
+    "protected_destroy_result": "DAMAGED",
+    "unprotected_destroy_result": "PERMANENTLY_DESTROYED",
+    "insufficient_protection_allows_unprotected_choice": true,
+    "high_enhancement_storage_supported": true
+  },
+  "superseded_assumptions": [
+    "FLAT_PLUS_10_PERCENTAGE_POINT_MAX_MASTERY_BONUS",
+    "LEVEL_60_IS_DESIGN_MAXIMUM",
+    "LEVEL_60_USES_FINAL_STAGE_RISK_VALUES"
+  ],
+  "review_required": [
+    "DESTROY_RATE_CURVE_LEVELS_30_TO_100",
+    "DOWNGRADE_OCCURRENCE_CURVE_LEVELS_61_TO_100",
+    "MAX_DOWNGRADE_CURVE_LEVELS_61_TO_100",
+    "PROTECTION_STONE_REQUIREMENT_LEVELS_60_TO_100",
+    "DAMAGED_RECOVERY_COST_AND_TIME_CURVE",
+    "PRICE_AND_EXPECTED_COST_CURVE_LEVELS_61_TO_100"
+  ],
+  "validation_contract": {
+    "simulation_required": true,
+    "do_not_use_mean_only": true,
+    "report_percentiles": [50, 75, 90, 95],
+    "report_metrics": [
+      "ATTEMPTS_TO_TARGET",
+      "CUMULATIVE_GOLD_COST",
+      "CUMULATIVE_MATERIAL_COST",
+      "DOWNGRADE_COUNT",
+      "DESTROY_COUNT",
+      "DAMAGED_COUNT_WITH_PROTECTION",
+      "PROTECTION_STONE_CONSUMPTION",
+      "RECOVERY_COST",
+      "STORAGE_PAUSE_FREQUENCY"
+    ],
+    "implementation_blocked_until": ["기획 완료", "검수 완료"]
+  }
+}
