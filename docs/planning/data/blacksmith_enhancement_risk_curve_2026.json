@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "status": "PLANNING_IN_PROGRESS",
   "scope": "ENHANCEMENT_RISK_CURVE_2026",
   "value_status": "POC_TUNABLE_APPROVED_CURRENT",
@@ -7,16 +7,19 @@
   "integrated_poc_target_enhancement": 60,
   "authority": {
     "planning_document": "docs/planning/BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md",
-    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_11.md",
+    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_12.md",
     "benchmark_document": "docs/planning/BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md"
   },
+  "outcome_types": [
+    "GREAT_SUCCESS",
+    "SUCCESS",
+    "KEEP",
+    "DOWNGRADE_1",
+    "DOWNGRADE_2",
+    "DESTROY"
+  ],
   "success_model": {
     "base_rate_unit": "PROBABILITY_0_TO_1",
-    "interpolation": {
-      "method": "PIECEWISE_LINEAR_BETWEEN_ANCHORS",
-      "calculation_precision_decimals": 4,
-      "ui_display_percent_decimals": 1
-    },
     "base_success_rate_anchors": {
       "1": 1.0,
       "5": 0.9,
@@ -31,59 +34,55 @@
       "90": 0.075,
       "100": 0.05
     },
-    "mastery_bonus": {
-      "operation": "MULTIPLY_BASE_RATE",
-      "formula": "FINAL_SUCCESS_RATE = MIN(STAGE_CAP, BASE_SUCCESS_RATE * (1 + RELATIVE_MASTERY_BONUS))",
-      "maximum_relative_increase": 0.5,
-      "growth_breakpoints": {
-        "0": 0.0,
-        "20": 0.05,
-        "40": 0.12,
-        "60": 0.22,
-        "80": 0.35,
-        "100": 0.5
-      },
-      "breakpoint_interpolation": "LINEAR",
-      "success_mastery_composite": {
-        "crafting_mastery_weight": 0.6,
-        "equipment_category_mastery_weight": 0.4
-      },
-      "common_blacksmith_rank_role": "CAP_APPLICABLE_MASTERY_BREAKPOINT",
-      "stage_caps": [
-        {"min_target": 1, "max_target": 5, "cap": 1.0},
-        {"min_target": 6, "max_target": 20, "cap": 0.95},
-        {"min_target": 21, "max_target": 100, "cap": 1.0}
-      ]
+    "interpolation": "PIECEWISE_LINEAR_BETWEEN_ANCHORS",
+    "mastery_formula": "FINAL_TOTAL_SUCCESS = MIN(STAGE_CAP, BASE_TOTAL_SUCCESS * (1 + RELATIVE_MASTERY_BONUS))",
+    "maximum_relative_increase": 0.5,
+    "growth_breakpoints": {
+      "0": 0.0,
+      "20": 0.05,
+      "40": 0.12,
+      "60": 0.22,
+      "80": 0.35,
+      "100": 0.5
     },
-    "maximum_mastery_examples": {
-      "1": 1.0,
-      "5": 1.0,
-      "10": 0.95,
-      "20": 0.95,
-      "30": 0.75,
-      "40": 0.57,
-      "50": 0.42,
-      "60": 0.3,
-      "70": 0.225,
-      "80": 0.15,
-      "90": 0.1125,
-      "100": 0.075
-    }
+    "success_mastery_weights": {
+      "crafting_mastery": 0.6,
+      "equipment_category_mastery": 0.4
+    },
+    "stage_caps": [
+      {"min_target": 1, "max_target": 5, "cap": 1.0},
+      {"min_target": 6, "max_target": 20, "cap": 0.95},
+      {"min_target": 21, "max_target": 100, "cap": 1.0}
+    ]
+  },
+  "great_success_model": {
+    "effect": "INCREASE_ENHANCEMENT_BY_2",
+    "contained_within_total_success_rate": true,
+    "does_not_add_success_probability": true,
+    "stop_at_precision_or_limit_milestone": true,
+    "disabled_targets": [49, 50, 100],
+    "share_of_total_success_bands": [
+      {"min_target": 1, "max_target": 20, "share": 0.1},
+      {"min_target": 21, "max_target": 40, "share": 0.07},
+      {"min_target": 41, "max_target": 48, "share": 0.05},
+      {"min_target": 49, "max_target": 50, "share": 0.0},
+      {"min_target": 51, "max_target": 80, "share": 0.03},
+      {"min_target": 81, "max_target": 99, "share": 0.02},
+      {"min_target": 100, "max_target": 100, "share": 0.0}
+    ]
   },
   "risk_mastery_model": {
-    "risk_mastery_composite": {
-      "enhancement_mastery_weight": 0.6,
-      "equipment_category_mastery_weight": 0.4
+    "risk_mastery_weights": {
+      "enhancement_mastery": 0.6,
+      "equipment_category_mastery": 0.4
     },
-    "common_blacksmith_rank_role": "CAP_APPLICABLE_MASTERY_BREAKPOINT",
-    "maximum_relative_downgrade_reduction": 0.15,
+    "maximum_relative_downgrade_1_reduction": 0.15,
+    "maximum_relative_downgrade_2_reduction": 0.15,
     "maximum_relative_destroy_reduction": 0.1,
-    "removed_risk_probability_destination": "KEEP",
-    "applies_after_success_failure_split": true
+    "removed_risk_probability_destination": "KEEP"
   },
   "destroy_model": {
     "rate_scope": "CONDITIONAL_WITHIN_FAILED_ATTEMPT",
-    "destruction_starts_at_target_level": 30,
     "bands": [
       {"min_target": 1, "max_target": 29, "base_rate": 0.0},
       {"min_target": 30, "max_target": 39, "base_rate": 0.03},
@@ -95,78 +94,91 @@
       {"min_target": 90, "max_target": 99, "base_rate": 0.22},
       {"min_target": 100, "max_target": 100, "base_rate": 0.25}
     ],
-    "mastery_operation": "MULTIPLY_BASE_RATE_BY_ONE_MINUS_RELATIVE_REDUCTION",
-    "maximum_mastery_rates": {
-      "30_TO_39": 0.027,
-      "40_TO_49": 0.045,
-      "50_TO_59": 0.072,
-      "60_TO_69": 0.099,
-      "70_TO_79": 0.126,
-      "80_TO_89": 0.162,
-      "90_TO_99": 0.198,
-      "100": 0.225
-    },
-    "per_attempt_formula": "PER_ATTEMPT_DESTROY_RESULT = (1 - FINAL_SUCCESS_RATE) * FINAL_FAILURE_INTERNAL_DESTROY_RATE",
-    "removed_destroy_mass_handling": {
-      "destination": "KEEP",
-      "formula": "DESTROY_REDUCTION_KEEP = FAILURE_RATE * BASE_DESTROY_RATE * RELATIVE_DESTROY_REDUCTION",
-      "excluded_from_downgrade_pool": true
-    },
-    "representative_examples": [
-      {"target": 30, "mastery": "BASE", "success_rate": 0.5, "failure_internal_destroy_rate": 0.03, "per_attempt_destroy_result": 0.015},
-      {"target": 30, "mastery": "MAX", "success_rate": 0.75, "failure_internal_destroy_rate": 0.027, "per_attempt_destroy_result": 0.00675},
-      {"target": 60, "mastery": "BASE", "success_rate": 0.2, "failure_internal_destroy_rate": 0.11, "per_attempt_destroy_result": 0.088},
-      {"target": 60, "mastery": "MAX", "success_rate": 0.3, "failure_internal_destroy_rate": 0.099, "per_attempt_destroy_result": 0.0693},
-      {"target": 100, "mastery": "BASE", "success_rate": 0.05, "failure_internal_destroy_rate": 0.25, "per_attempt_destroy_result": 0.2375},
-      {"target": 100, "mastery": "MAX", "success_rate": 0.075, "failure_internal_destroy_rate": 0.225, "per_attempt_destroy_result": 0.208125}
-    ]
+    "per_attempt_formula": "PER_ATTEMPT_DESTROY = (1 - FINAL_TOTAL_SUCCESS) * FINAL_FAILURE_INTERNAL_DESTROY_RATE"
   },
-  "outcome_order": [
-    "SUCCESS",
-    "RESERVE_DESTROY_REDUCTION_AS_KEEP",
-    "DESTROY_WITHIN_FAILURE",
-    "DOWNGRADE_WITHIN_BASE_NON_DESTROY_FAILURE",
-    "RESERVE_DOWNGRADE_REDUCTION_AS_KEEP",
-    "KEEP"
-  ],
-  "approved_structural_rules": {
-    "destruction_starts_at_target_level": 30,
-    "unprotected_high_enhancement_allowed": true,
-    "protection_stone_success_bonus": 0.0,
-    "protection_stone_consumption_timing": "ON_VALID_ATTEMPT_START",
-    "protection_stone_consumed_on_all_results": true,
+  "approved_base_outcome_anchors": {
+    "1": {"great_success": 0.1, "success": 0.9, "keep": 0.0, "downgrade_1": 0.0, "downgrade_2": 0.0, "destroy": 0.0},
+    "5": {"great_success": 0.09, "success": 0.81, "keep": 0.1, "downgrade_1": 0.0, "downgrade_2": 0.0, "destroy": 0.0},
+    "10": {"great_success": 0.08, "success": 0.72, "keep": 0.2, "downgrade_1": 0.0, "downgrade_2": 0.0, "destroy": 0.0},
+    "20": {"great_success": 0.065, "success": 0.585, "keep": 0.3, "downgrade_1": 0.05, "downgrade_2": 0.0, "destroy": 0.0},
+    "30": {"great_success": 0.035, "success": 0.465, "keep": 0.375, "downgrade_1": 0.095, "downgrade_2": 0.015, "destroy": 0.015},
+    "40": {"great_success": 0.0266, "success": 0.3534, "keep": 0.419, "downgrade_1": 0.14, "downgrade_2": 0.03, "destroy": 0.031},
+    "49": {"great_success": 0.0, "success": 0.29, "keep": 0.4595, "downgrade_1": 0.165, "downgrade_2": 0.05, "destroy": 0.0355},
+    "50": {"great_success": 0.0, "success": 0.28, "keep": 0.4424, "downgrade_1": 0.17, "downgrade_2": 0.05, "destroy": 0.0576},
+    "60": {"great_success": 0.006, "success": 0.194, "keep": 0.442, "downgrade_1": 0.2, "downgrade_2": 0.07, "destroy": 0.088},
+    "70": {"great_success": 0.0045, "success": 0.1455, "keep": 0.431, "downgrade_1": 0.21, "downgrade_2": 0.09, "destroy": 0.119},
+    "80": {"great_success": 0.003, "success": 0.097, "keep": 0.408, "downgrade_1": 0.22, "downgrade_2": 0.11, "destroy": 0.162},
+    "90": {"great_success": 0.0015, "success": 0.0735, "keep": 0.3715, "downgrade_1": 0.22, "downgrade_2": 0.13, "destroy": 0.2035},
+    "100": {"great_success": 0.0, "success": 0.05, "keep": 0.3425, "downgrade_1": 0.22, "downgrade_2": 0.15, "destroy": 0.2375}
+  },
+  "intermediate_outcome_rule": {
+    "method": "INTERPOLATE_COMPONENT_INPUTS_THEN_SOLVE_KEEP_AS_REMAINDER",
+    "probability_sum": 1.0,
+    "maximum_natural_downgrade_levels": 2
+  },
+  "protection_recovery_loop": {
+    "protection_consumption_timing": "ON_VALID_ATTEMPT_START",
+    "protection_consumed_on_all_results": true,
+    "protection_success_bonus": 0.0,
     "protected_destroy_result": "DAMAGED",
     "unprotected_destroy_result": "PERMANENTLY_DESTROYED",
-    "insufficient_protection_allows_unprotected_choice": true,
-    "high_enhancement_storage_supported": true
+    "recovery_record_days_poc": 3,
+    "latest_recovery_record_per_item": 1,
+    "base_storage_slots_poc": 1,
+    "storage_pauses_recovery_deadline": true,
+    "recovery_stone_restores_usable_state": true,
+    "recoverable_level_loss_rule_poc": "CEIL(LOSS / 2), CAPPED_AT_PRE_FAILURE_LEVEL",
+    "release_recovery_cost_curve_status": "REVIEW_REQUIRED"
   },
+  "maximum_mastery_with_protection_display_examples": {
+    "50": {"great_success": 0.0, "success": 0.42, "keep": 0.388, "downgrade_1": 0.116, "downgrade_2": 0.034, "damaged": 0.042},
+    "60": {"great_success": 0.009, "success": 0.291, "keep": 0.43, "downgrade_1": 0.149, "downgrade_2": 0.052, "damaged": 0.069},
+    "80": {"great_success": 0.005, "success": 0.145, "keep": 0.447, "downgrade_1": 0.177, "downgrade_2": 0.088, "damaged": 0.138},
+    "100": {"great_success": 0.0, "success": 0.075, "keep": 0.411, "downgrade_1": 0.182, "downgrade_2": 0.124, "damaged": 0.208}
+  },
+  "outcome_order": [
+    "CALCULATE_FINAL_TOTAL_SUCCESS",
+    "SPLIT_GREAT_SUCCESS_WITHIN_SUCCESS",
+    "ROLL_GREAT_SUCCESS_OR_SUCCESS",
+    "RESERVE_DESTROY_REDUCTION_AS_KEEP",
+    "ROLL_DESTROY_WITHIN_FAILURE",
+    "ROLL_DOWNGRADE_1_OR_DOWNGRADE_2",
+    "RESERVE_DOWNGRADE_REDUCTION_AS_KEEP",
+    "ROLL_KEEP",
+    "CONVERT_DESTROY_TO_DAMAGED_IF_PROTECTED"
+  ],
   "superseded_assumptions": [
     "FLAT_PLUS_10_PERCENTAGE_POINT_MAX_MASTERY_BONUS",
     "LEVEL_60_IS_DESIGN_MAXIMUM",
-    "LEVEL_60_USES_FINAL_STAGE_RISK_VALUES",
-    "LEVEL_60_FAILURE_INTERNAL_DESTROY_RATE_IS_25_PERCENT"
+    "NATURAL_DOWNGRADE_3_OR_MORE",
+    "VERY_HIGH_FAILURE_INTERNAL_DOWNGRADE_RATE",
+    "REDUCED_RISK_REALLOCATED_TO_OTHER_RISK"
   ],
   "review_required": [
-    "DOWNGRADE_OCCURRENCE_CURVE_LEVELS_61_TO_100",
-    "MAX_DOWNGRADE_CURVE_LEVELS_61_TO_100",
-    "PROTECTION_STONE_REQUIREMENT_LEVELS_60_TO_100",
-    "DAMAGED_RECOVERY_COST_AND_TIME_CURVE",
-    "PRICE_AND_EXPECTED_COST_CURVE_LEVELS_61_TO_100"
+    "PROTECTION_STONE_REQUIREMENT_AND_PRICE_LEVELS_30_TO_100",
+    "DAMAGED_LEVEL_LOSS_CURVE",
+    "RECOVERY_STONE_REQUIREMENT_PRICE_AND_TIME_CURVE",
+    "PRICE_AND_EXPECTED_COST_CURVE_LEVELS_61_TO_100",
+    "FAILURE_BOUND_STRIKE_SIMPLIFICATION_FOR_MAX_DOWNGRADE_2"
   ],
   "validation_contract": {
+    "probability_sum_exact": 1.0,
     "simulation_required": true,
-    "do_not_use_mean_only": true,
     "report_percentiles": [50, 75, 90, 95],
     "report_metrics": [
       "ATTEMPTS_TO_TARGET",
-      "CUMULATIVE_GOLD_COST",
-      "CUMULATIVE_MATERIAL_COST",
-      "DOWNGRADE_COUNT",
+      "GREAT_SUCCESS_COUNT",
+      "MILESTONE_STOP_COUNT",
+      "DOWNGRADE_1_COUNT",
+      "DOWNGRADE_2_COUNT",
       "DESTROY_COUNT",
       "DAMAGED_COUNT_WITH_PROTECTION",
       "PROTECTION_STONE_CONSUMPTION",
+      "RECOVERY_STONE_CONSUMPTION",
       "RECOVERY_COST",
-      "STORAGE_PAUSE_FREQUENCY"
+      "STORAGE_PAUSE_FREQUENCY",
+      "POST_SALE_RETRY_AFFORDABILITY",
+      "ECONOMY_SOFTLOCK_COUNT"
     ],
     "implementation_blocked_until": ["기획 완료", "검수 완료"]
   }
