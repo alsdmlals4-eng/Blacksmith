@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "status": "PLANNING_IN_PROGRESS",
   "scope": "ENHANCEMENT_RISK_CURVE_2026",
   "value_status": "POC_TUNABLE_APPROVED_CURRENT",
@@ -7,10 +7,10 @@
   "integrated_poc_target_enhancement": 60,
   "authority": {
     "planning_document": "docs/planning/BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md",
-    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_12.md",
+    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_13.md",
     "benchmark_document": "docs/planning/BLACKSMITH_ENHANCEMENT_VALUE_BENCHMARK_2026.md"
   },
-  "outcome_types": [
+  "natural_outcome_types": [
     "GREAT_SUCCESS",
     "SUCCESS",
     "KEEP",
@@ -50,9 +50,21 @@
       "equipment_category_mastery": 0.4
     },
     "stage_caps": [
-      {"min_target": 1, "max_target": 5, "cap": 1.0},
-      {"min_target": 6, "max_target": 20, "cap": 0.95},
-      {"min_target": 21, "max_target": 100, "cap": 1.0}
+      {
+        "min_target": 1,
+        "max_target": 5,
+        "cap": 1.0
+      },
+      {
+        "min_target": 6,
+        "max_target": 20,
+        "cap": 0.95
+      },
+      {
+        "min_target": 21,
+        "max_target": 100,
+        "cap": 1.0
+      }
     ]
   },
   "great_success_model": {
@@ -60,15 +72,47 @@
     "contained_within_total_success_rate": true,
     "does_not_add_success_probability": true,
     "stop_at_precision_or_limit_milestone": true,
-    "disabled_targets": [49, 50, 100],
+    "disabled_targets": [
+      49,
+      50,
+      100
+    ],
     "share_of_total_success_bands": [
-      {"min_target": 1, "max_target": 20, "share": 0.1},
-      {"min_target": 21, "max_target": 40, "share": 0.07},
-      {"min_target": 41, "max_target": 48, "share": 0.05},
-      {"min_target": 49, "max_target": 50, "share": 0.0},
-      {"min_target": 51, "max_target": 80, "share": 0.03},
-      {"min_target": 81, "max_target": 99, "share": 0.02},
-      {"min_target": 100, "max_target": 100, "share": 0.0}
+      {
+        "min_target": 1,
+        "max_target": 20,
+        "share": 0.1
+      },
+      {
+        "min_target": 21,
+        "max_target": 40,
+        "share": 0.07
+      },
+      {
+        "min_target": 41,
+        "max_target": 48,
+        "share": 0.05
+      },
+      {
+        "min_target": 49,
+        "max_target": 50,
+        "share": 0.0
+      },
+      {
+        "min_target": 51,
+        "max_target": 80,
+        "share": 0.03
+      },
+      {
+        "min_target": 81,
+        "max_target": 99,
+        "share": 0.02
+      },
+      {
+        "min_target": 100,
+        "max_target": 100,
+        "share": 0.0
+      }
     ]
   },
   "risk_mastery_model": {
@@ -84,57 +128,324 @@
   "destroy_model": {
     "rate_scope": "CONDITIONAL_WITHIN_FAILED_ATTEMPT",
     "bands": [
-      {"min_target": 1, "max_target": 29, "base_rate": 0.0},
-      {"min_target": 30, "max_target": 39, "base_rate": 0.03},
-      {"min_target": 40, "max_target": 49, "base_rate": 0.05},
-      {"min_target": 50, "max_target": 59, "base_rate": 0.08},
-      {"min_target": 60, "max_target": 69, "base_rate": 0.11},
-      {"min_target": 70, "max_target": 79, "base_rate": 0.14},
-      {"min_target": 80, "max_target": 89, "base_rate": 0.18},
-      {"min_target": 90, "max_target": 99, "base_rate": 0.22},
-      {"min_target": 100, "max_target": 100, "base_rate": 0.25}
+      {
+        "min_target": 1,
+        "max_target": 29,
+        "base_rate": 0.0
+      },
+      {
+        "min_target": 30,
+        "max_target": 39,
+        "base_rate": 0.03
+      },
+      {
+        "min_target": 40,
+        "max_target": 49,
+        "base_rate": 0.05
+      },
+      {
+        "min_target": 50,
+        "max_target": 59,
+        "base_rate": 0.08
+      },
+      {
+        "min_target": 60,
+        "max_target": 69,
+        "base_rate": 0.11
+      },
+      {
+        "min_target": 70,
+        "max_target": 79,
+        "base_rate": 0.14
+      },
+      {
+        "min_target": 80,
+        "max_target": 89,
+        "base_rate": 0.18
+      },
+      {
+        "min_target": 90,
+        "max_target": 99,
+        "base_rate": 0.22
+      },
+      {
+        "min_target": 100,
+        "max_target": 100,
+        "base_rate": 0.25
+      }
     ],
     "per_attempt_formula": "PER_ATTEMPT_DESTROY = (1 - FINAL_TOTAL_SUCCESS) * FINAL_FAILURE_INTERNAL_DESTROY_RATE"
   },
   "approved_base_outcome_anchors": {
-    "1": {"great_success": 0.1, "success": 0.9, "keep": 0.0, "downgrade_1": 0.0, "downgrade_2": 0.0, "destroy": 0.0},
-    "5": {"great_success": 0.09, "success": 0.81, "keep": 0.1, "downgrade_1": 0.0, "downgrade_2": 0.0, "destroy": 0.0},
-    "10": {"great_success": 0.08, "success": 0.72, "keep": 0.2, "downgrade_1": 0.0, "downgrade_2": 0.0, "destroy": 0.0},
-    "20": {"great_success": 0.065, "success": 0.585, "keep": 0.3, "downgrade_1": 0.05, "downgrade_2": 0.0, "destroy": 0.0},
-    "30": {"great_success": 0.035, "success": 0.465, "keep": 0.375, "downgrade_1": 0.095, "downgrade_2": 0.015, "destroy": 0.015},
-    "40": {"great_success": 0.0266, "success": 0.3534, "keep": 0.419, "downgrade_1": 0.14, "downgrade_2": 0.03, "destroy": 0.031},
-    "49": {"great_success": 0.0, "success": 0.29, "keep": 0.4595, "downgrade_1": 0.165, "downgrade_2": 0.05, "destroy": 0.0355},
-    "50": {"great_success": 0.0, "success": 0.28, "keep": 0.4424, "downgrade_1": 0.17, "downgrade_2": 0.05, "destroy": 0.0576},
-    "60": {"great_success": 0.006, "success": 0.194, "keep": 0.442, "downgrade_1": 0.2, "downgrade_2": 0.07, "destroy": 0.088},
-    "70": {"great_success": 0.0045, "success": 0.1455, "keep": 0.431, "downgrade_1": 0.21, "downgrade_2": 0.09, "destroy": 0.119},
-    "80": {"great_success": 0.003, "success": 0.097, "keep": 0.408, "downgrade_1": 0.22, "downgrade_2": 0.11, "destroy": 0.162},
-    "90": {"great_success": 0.0015, "success": 0.0735, "keep": 0.3715, "downgrade_1": 0.22, "downgrade_2": 0.13, "destroy": 0.2035},
-    "100": {"great_success": 0.0, "success": 0.05, "keep": 0.3425, "downgrade_1": 0.22, "downgrade_2": 0.15, "destroy": 0.2375}
+    "1": {
+      "great_success": 0.1,
+      "success": 0.9,
+      "keep": 0,
+      "downgrade_1": 0,
+      "downgrade_2": 0,
+      "destroy": 0
+    },
+    "5": {
+      "great_success": 0.09,
+      "success": 0.81,
+      "keep": 0.1,
+      "downgrade_1": 0,
+      "downgrade_2": 0,
+      "destroy": 0
+    },
+    "10": {
+      "great_success": 0.08,
+      "success": 0.72,
+      "keep": 0.2,
+      "downgrade_1": 0,
+      "downgrade_2": 0,
+      "destroy": 0
+    },
+    "20": {
+      "great_success": 0.065,
+      "success": 0.585,
+      "keep": 0.3,
+      "downgrade_1": 0.05,
+      "downgrade_2": 0,
+      "destroy": 0
+    },
+    "30": {
+      "great_success": 0.035,
+      "success": 0.465,
+      "keep": 0.375,
+      "downgrade_1": 0.095,
+      "downgrade_2": 0.015,
+      "destroy": 0.015
+    },
+    "40": {
+      "great_success": 0.0266,
+      "success": 0.3534,
+      "keep": 0.419,
+      "downgrade_1": 0.14,
+      "downgrade_2": 0.03,
+      "destroy": 0.031
+    },
+    "49": {
+      "great_success": 0,
+      "success": 0.29,
+      "keep": 0.4595,
+      "downgrade_1": 0.165,
+      "downgrade_2": 0.05,
+      "destroy": 0.0355
+    },
+    "50": {
+      "great_success": 0,
+      "success": 0.28,
+      "keep": 0.4424,
+      "downgrade_1": 0.17,
+      "downgrade_2": 0.05,
+      "destroy": 0.0576
+    },
+    "60": {
+      "great_success": 0.006,
+      "success": 0.194,
+      "keep": 0.442,
+      "downgrade_1": 0.2,
+      "downgrade_2": 0.07,
+      "destroy": 0.088
+    },
+    "70": {
+      "great_success": 0.0045,
+      "success": 0.1455,
+      "keep": 0.431,
+      "downgrade_1": 0.21,
+      "downgrade_2": 0.09,
+      "destroy": 0.119
+    },
+    "80": {
+      "great_success": 0.003,
+      "success": 0.097,
+      "keep": 0.408,
+      "downgrade_1": 0.22,
+      "downgrade_2": 0.11,
+      "destroy": 0.162
+    },
+    "90": {
+      "great_success": 0.0015,
+      "success": 0.0735,
+      "keep": 0.3715,
+      "downgrade_1": 0.22,
+      "downgrade_2": 0.13,
+      "destroy": 0.2035
+    },
+    "100": {
+      "great_success": 0,
+      "success": 0.05,
+      "keep": 0.3425,
+      "downgrade_1": 0.22,
+      "downgrade_2": 0.15,
+      "destroy": 0.2375
+    }
   },
   "intermediate_outcome_rule": {
     "method": "INTERPOLATE_COMPONENT_INPUTS_THEN_SOLVE_KEEP_AS_REMAINDER",
     "probability_sum": 1.0,
     "maximum_natural_downgrade_levels": 2
   },
-  "protection_recovery_loop": {
-    "protection_consumption_timing": "ON_VALID_ATTEMPT_START",
-    "protection_consumed_on_all_results": true,
-    "protection_success_bonus": 0.0,
-    "protected_destroy_result": "DAMAGED",
-    "unprotected_destroy_result": "PERMANENTLY_DESTROYED",
-    "recovery_record_days_poc": 3,
-    "latest_recovery_record_per_item": 1,
-    "base_storage_slots_poc": 1,
-    "storage_pauses_recovery_deadline": true,
-    "recovery_stone_restores_usable_state": true,
-    "recoverable_level_loss_rule_poc": "CEIL(LOSS / 2), CAPPED_AT_PRE_FAILURE_LEVEL",
-    "release_recovery_cost_curve_status": "REVIEW_REQUIRED"
+  "protection_stone_model": {
+    "item_grades": false,
+    "minimum_target_level": 11,
+    "unavailable_target_bands": [
+      {
+        "min_target": 1,
+        "max_target": 10
+      }
+    ],
+    "required_count_by_target_band": [
+      {
+        "min_target": 11,
+        "max_target": 20,
+        "count": 1
+      },
+      {
+        "min_target": 21,
+        "max_target": 29,
+        "count": 2
+      },
+      {
+        "min_target": 30,
+        "max_target": 39,
+        "count": 3
+      },
+      {
+        "min_target": 40,
+        "max_target": 49,
+        "count": 4
+      },
+      {
+        "min_target": 50,
+        "max_target": 59,
+        "count": 6
+      },
+      {
+        "min_target": 60,
+        "max_target": 69,
+        "count": 8
+      },
+      {
+        "min_target": 70,
+        "max_target": 79,
+        "count": 10
+      },
+      {
+        "min_target": 80,
+        "max_target": 89,
+        "count": 12
+      },
+      {
+        "min_target": 90,
+        "max_target": 99,
+        "count": 15
+      },
+      {
+        "min_target": 100,
+        "max_target": 100,
+        "count": 18
+      }
+    ],
+    "consumption_timing": "ON_VALID_ATTEMPT_START",
+    "consumed_on_all_results": true,
+    "success_bonus": 0.0,
+    "protected_downgrade_1_result": "KEEP",
+    "protected_downgrade_2_result": "KEEP",
+    "protected_destroy_result": "PROTECTED_BREAK",
+    "unprotected_destroy_result": "IMMEDIATE_PERMANENT_DELETION",
+    "insufficient_count_options": [
+      "ATTEMPT_UNPROTECTED",
+      "STORE_ITEM"
+    ],
+    "protected_break": {
+      "persistent_damaged_state": false,
+      "repair_required": false,
+      "recovery_stone_exists": false,
+      "result_equipment_state": "USABLE_IMMEDIATELY",
+      "level_loss_basis": "PRE_ATTEMPT_CURRENT_ENHANCEMENT",
+      "level_loss_formula": "MAX(3, FLOOR(PRE_ATTEMPT_CURRENT_ENHANCEMENT / 10))",
+      "minimum_level_loss": 3,
+      "maximum_level_loss": 9,
+      "bands": [
+        {
+          "min_current": 29,
+          "max_current": 39,
+          "level_loss": 3
+        },
+        {
+          "min_current": 40,
+          "max_current": 49,
+          "level_loss": 4
+        },
+        {
+          "min_current": 50,
+          "max_current": 59,
+          "level_loss": 5
+        },
+        {
+          "min_current": 60,
+          "max_current": 69,
+          "level_loss": 6
+        },
+        {
+          "min_current": 70,
+          "max_current": 79,
+          "level_loss": 7
+        },
+        {
+          "min_current": 80,
+          "max_current": 89,
+          "level_loss": 8
+        },
+        {
+          "min_current": 90,
+          "max_current": 99,
+          "level_loss": 9
+        }
+      ],
+      "examples": [
+        {
+          "pre_attempt_current": 51,
+          "result_level": 46
+        },
+        {
+          "pre_attempt_current": 60,
+          "result_level": 54
+        },
+        {
+          "pre_attempt_current": 99,
+          "result_level": 90
+        }
+      ]
+    }
   },
   "maximum_mastery_with_protection_display_examples": {
-    "50": {"great_success": 0.0, "success": 0.42, "keep": 0.388, "downgrade_1": 0.116, "downgrade_2": 0.034, "damaged": 0.042},
-    "60": {"great_success": 0.009, "success": 0.291, "keep": 0.43, "downgrade_1": 0.149, "downgrade_2": 0.052, "damaged": 0.069},
-    "80": {"great_success": 0.005, "success": 0.145, "keep": 0.447, "downgrade_1": 0.177, "downgrade_2": 0.088, "damaged": 0.138},
-    "100": {"great_success": 0.0, "success": 0.075, "keep": 0.411, "downgrade_1": 0.182, "downgrade_2": 0.124, "damaged": 0.208}
+    "50": {
+      "great_success": 0.0,
+      "success": 0.42,
+      "protected_keep": 0.538,
+      "protected_break": 0.042
+    },
+    "60": {
+      "great_success": 0.009,
+      "success": 0.291,
+      "protected_keep": 0.631,
+      "protected_break": 0.069
+    },
+    "80": {
+      "great_success": 0.005,
+      "success": 0.145,
+      "protected_keep": 0.712,
+      "protected_break": 0.138
+    },
+    "100": {
+      "great_success": 0.0,
+      "success": 0.075,
+      "protected_keep": 0.717,
+      "protected_break": 0.208
+    }
   },
   "outcome_order": [
     "CALCULATE_FINAL_TOTAL_SUCCESS",
@@ -145,41 +456,56 @@
     "ROLL_DOWNGRADE_1_OR_DOWNGRADE_2",
     "RESERVE_DOWNGRADE_REDUCTION_AS_KEEP",
     "ROLL_KEEP",
-    "CONVERT_DESTROY_TO_DAMAGED_IF_PROTECTED"
+    "IF_PROTECTED_CONVERT_DOWNGRADE_1_AND_2_TO_KEEP",
+    "IF_PROTECTED_CONVERT_DESTROY_TO_PROTECTED_BREAK_AND_APPLY_LEVEL_LOSS",
+    "IF_UNPROTECTED_DESTROY_DELETE_ITEM_IMMEDIATELY"
   ],
   "superseded_assumptions": [
     "FLAT_PLUS_10_PERCENTAGE_POINT_MAX_MASTERY_BONUS",
     "LEVEL_60_IS_DESIGN_MAXIMUM",
     "NATURAL_DOWNGRADE_3_OR_MORE",
     "VERY_HIGH_FAILURE_INTERNAL_DOWNGRADE_RATE",
-    "REDUCED_RISK_REALLOCATED_TO_OTHER_RISK"
+    "REDUCED_RISK_REALLOCATED_TO_OTHER_RISK",
+    "PROTECTION_ONLY_CONVERTS_DESTROY_TO_DAMAGED",
+    "PERSISTENT_DAMAGED_STATE",
+    "DAMAGED_REPAIR",
+    "RECOVERY_STONE",
+    "RECOVERY_WINDOW_AND_DEADLINE"
   ],
   "review_required": [
-    "PROTECTION_STONE_REQUIREMENT_AND_PRICE_LEVELS_30_TO_100",
-    "DAMAGED_LEVEL_LOSS_CURVE",
-    "RECOVERY_STONE_REQUIREMENT_PRICE_AND_TIME_CURVE",
+    "PROTECTION_STONE_PRICE_AND_ACQUISITION_CURVE",
     "PRICE_AND_EXPECTED_COST_CURVE_LEVELS_61_TO_100",
-    "FAILURE_BOUND_STRIKE_SIMPLIFICATION_FOR_MAX_DOWNGRADE_2"
+    "FAILURE_BOUND_STRIKE_INTERACTION_WITH_PROTECTED_BREAK"
   ],
   "validation_contract": {
     "probability_sum_exact": 1.0,
     "simulation_required": true,
-    "report_percentiles": [50, 75, 90, 95],
+    "report_percentiles": [
+      50,
+      75,
+      90,
+      95
+    ],
     "report_metrics": [
       "ATTEMPTS_TO_TARGET",
       "GREAT_SUCCESS_COUNT",
       "MILESTONE_STOP_COUNT",
       "DOWNGRADE_1_COUNT",
       "DOWNGRADE_2_COUNT",
-      "DESTROY_COUNT",
-      "DAMAGED_COUNT_WITH_PROTECTION",
+      "DESTROY_ROLL_COUNT",
+      "UNPROTECTED_IMMEDIATE_DELETION_COUNT",
+      "PROTECTION_PREVENTED_DOWNGRADE_1_COUNT",
+      "PROTECTION_PREVENTED_DOWNGRADE_2_COUNT",
+      "PROTECTED_BREAK_COUNT",
+      "PROTECTED_BREAK_LEVEL_LOSS",
       "PROTECTION_STONE_CONSUMPTION",
-      "RECOVERY_STONE_CONSUMPTION",
-      "RECOVERY_COST",
       "STORAGE_PAUSE_FREQUENCY",
       "POST_SALE_RETRY_AFFORDABILITY",
       "ECONOMY_SOFTLOCK_COUNT"
     ],
-    "implementation_blocked_until": ["기획 완료", "검수 완료"]
+    "implementation_blocked_until": [
+      "기획 완료",
+      "검수 완료"
+    ]
   }
 }
