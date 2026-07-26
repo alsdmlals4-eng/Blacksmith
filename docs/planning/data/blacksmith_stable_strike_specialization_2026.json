@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "status": "PLANNING_IN_PROGRESS",
+  "scope": "STABLE_STRIKE_SPECIALIZATION_2026",
+  "value_status": "POC_CONFIRMED_APPROVED_CURRENT",
+  "authority": {
+    "planning_document": "docs/planning/BLACKSMITH_STABLE_STRIKE_SPECIALIZATION_2026.md",
+    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_15.md",
+    "base_interaction_document": "docs/planning/BLACKSMITH_FAILURE_BOUND_PROTECTION_INTERACTION_2026.md",
+    "base_interaction_data": "docs/planning/data/blacksmith_failure_bound_protection_interaction_2026.json"
+  },
+  "specialization_id": "STABLE_STRIKE",
+  "identity": "REDUCE_FAILURE_BOUND_REUSE_GAP_WITHOUT_STRENGTHENING_OUTCOME",
+  "failure_bound_charge": {
+    "maximum": 100,
+    "activation_requirement": 100,
+    "normal_post_activation_charge": 0,
+    "stable_strike_post_activation_charge": 20,
+    "stable_strike_charge_floor_status": "POC_TUNABLE_APPROVED_CURRENT",
+    "immediate_reuse_allowed": false,
+    "result_charge_gain_applied_after_charge_floor": true,
+    "final_charge_cap": 100
+  },
+  "resolution_order": [
+    "VERIFY_FAILURE_BOUND_CHARGE_100",
+    "VERIFY_PROTECTION_AND_ATTEMPT_RESOURCES",
+    "START_VALID_ATTEMPT",
+    "CONSUME_FAILURE_BOUND_CHARGE",
+    "IF_STABLE_STRIKE_SET_CHARGE_TO_20",
+    "ROLL_NATURAL_ENHANCEMENT_RESULT",
+    "APPLY_FAILURE_BOUND_AND_PROTECTION_TRANSFORMS",
+    "ADD_RESULT_CHARGE_GAIN",
+    "CAP_FINAL_CHARGE_AT_100"
+  ],
+  "example": {
+    "starting_charge": 100,
+    "post_activation_charge": 20,
+    "result": "VERY_HIGH_RISK_FAILURE",
+    "result_charge_gain": 45,
+    "ending_charge": 65
+  },
+  "role_separation": {
+    "STABLE_STRIKE": "SHORTEN_FAILURE_BOUND_REUSE_CYCLE",
+    "GAMBLERS_HAMMER": "REWARD_SUCCESS_WITHOUT_FAILURE_BOUND",
+    "EFFICIENT_REFINING": "REDUCE_FAILED_MATERIAL_LOSS"
+  },
+  "does_not_modify": [
+    "SUCCESS_RATE",
+    "GREAT_SUCCESS_RATE",
+    "NATURAL_DOWNGRADE_RATE",
+    "NATURAL_DESTROY_RATE",
+    "UNPROTECTED_DESTROY_RESULT",
+    "PROTECTION_STONE_REQUIREMENT",
+    "PROTECTION_STONE_CONSUMPTION",
+    "PROTECTED_BREAK_LEVEL_LOSS",
+    "FAILED_MATERIAL_REFUND"
+  ],
+  "superseded_assumptions": [
+    "STABLE_STRIKE_REDUCES_DOWNGRADE_2_TO_DOWNGRADE_1_AS_AN_ADDITIONAL_SPECIALIZATION_EFFECT",
+    "STABLE_STRIKE_REPLACEMENT_EFFECT_REVIEW_REQUIRED",
+    "STABLE_STRIKE_HAS_NO_ADDITIONAL_EFFECT"
+  ],
+  "validation_contract": {
+    "normal_post_activation_charge": 0,
+    "stable_strike_post_activation_charge": 20,
+    "result_gain_after_floor": true,
+    "immediate_reuse_forbidden": true,
+    "unprotected_destroy_still_deletes_item": true,
+    "probability_model_unchanged": true,
+    "implementation_blocked_until": [
+      "기획 완료",
+      "검수 완료"
+    ],
+    "report_metrics": [
+      "FAILURE_BOUND_USE_COUNT_TO_TARGET",
+      "ATTEMPTS_BETWEEN_FAILURE_BOUND_USES_MEAN",
+      "ATTEMPTS_BETWEEN_FAILURE_BOUND_USES_P50",
+      "RECHARGE_ATTEMPTS_SAVED_BY_CHARGE_FLOOR",
+      "UNPROTECTED_IMMEDIATE_DELETION_COUNT",
+      "PROTECTION_STONE_CONSUMPTION",
+      "EXPECTED_COST_BY_SPECIALIZATION"
+    ]
+  }
+}
