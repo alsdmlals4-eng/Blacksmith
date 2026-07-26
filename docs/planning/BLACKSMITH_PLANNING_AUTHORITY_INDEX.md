@@ -23,6 +23,7 @@
    - 정밀 등급 1개, 수식어 2개, 네 행동, 재료만 손실하는 실패의 최신 기준
 6. `BLACKSMITH_INTEGRATED_POC_COMPLETION_BASELINE.md`
    - 통합 체험 POC 범위, POC 전용 수치, 자동·사람 검증 기준
+   - 보호·회복 관련 구형 절은 아래 강화 위험곡선이 대체함
 7. `BLACKSMITH_GENRE_BENCHMARK_2026.md`
    - 유사 장르 비교와 개선 후보의 근거
 8. `BLACKSMITH_POC_PRIORITY_BASELINE_2026.md`
@@ -33,7 +34,9 @@
    - A/B/C 가격 후보는 최신 사용자 결정으로 모두 대체됨
 10. `BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md`
     - 재료비 포함 원가, +5 최초 흑자, 고강화 이익 증가, 최신 공개시장 가격 앵커
-11. 최신 `BLACKSMITH_DECISION_LEDGER_ADDENDUM_*.md`
+11. `BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md`
+    - +100 성공률, 6결과 확률, 숙련, 보호석 요구량, 보호 파괴와 무보호 즉시 소멸의 최신 책임 원본
+12. 최신 `BLACKSMITH_DECISION_LEDGER_ADDENDUM_*.md`
     - 승인·폐기·대체 상태와 문서 충돌 해결 기록
 
 ## 2. 현재 명시적 최신 덮어쓰기
@@ -84,17 +87,21 @@
 구형 문구:
 
 - 검투사 장비 한 점의 +10 생애 경로만 구현된 POC
+- 회복석·DAMAGED 수리·3일 회복 창을 포함한 보호·회복 POC
 
 최신 확장 목표:
 
 - 기존 Issue #34는 사람·플랫폼 검증을 위해 유지
-- 후속 통합 POC는 +60 강화, 정밀강화, 한계 돌파, 보호·회복, 고객 2명, 거래·국가·밀수·역사·수집가 대표 경로를 체험 가능해야 함
+- 후속 통합 POC는 +60 강화, 정밀강화, 한계 돌파, 보호 파괴, 무보호 즉시 소멸, 고객 2명, 거래·국가·밀수·역사·수집가 대표 경로를 체험 가능해야 함
+- 회복석과 지속형 DAMAGED 상태는 사용하지 않음
 - `기획 완료`와 `검수 완료` 전에는 후속 구현을 시작하지 않음
 
 책임 문서:
 
 - `BLACKSMITH_INTEGRATED_POC_COMPLETION_BASELINE.md`
-- `BLACKSMITH_DECISION_LEDGER_ADDENDUM_05.md`
+- `BLACKSMITH_POC_PRIORITY_BASELINE_2026.md`
+- `BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md`
+- `BLACKSMITH_DECISION_LEDGER_ADDENDUM_13.md`
 
 ### 통합 POC 선행 우선순위
 
@@ -116,6 +123,7 @@
 
 - `BLACKSMITH_POC_PRIORITY_BASELINE_2026.md`
 - `BLACKSMITH_DECISION_LEDGER_ADDENDUM_07.md`
+- `BLACKSMITH_DECISION_LEDGER_ADDENDUM_13.md`
 
 ### POC 시나리오 런처 배포
 
@@ -133,6 +141,32 @@
 - `BLACKSMITH_DECISION_LEDGER_ADDENDUM_08.md`
 - `docs/planning/data/blacksmith_poc_priority_seed_2026.json`
 
+### 보호석·파괴 처리
+
+폐기된 규칙:
+
+- 보호석은 파괴만 `DAMAGED`로 변환
+- DAMAGED 장비는 수리 또는 회복석 사용 필요
+- 회복 기록 3일, 보관 중 기한 정지
+- 회복석으로 사용 가능 상태와 일부 단계를 복원
+- 보호석 등급 분리
+
+최신 규칙:
+
+- 보호석은 하락 1·2를 `유지`로 변환
+- 보호석은 파괴 시 장비 소멸을 막고 시도 직전 현재 단계의 십의 자리만큼 하락시킴
+- 보호 파괴 하락량은 `MAX(3, FLOOR(현재 강화 단계 / 10))`
+- 보호 파괴 장비는 별도 DAMAGED 상태나 수리 없이 즉시 사용 가능
+- 보호석이 없을 때 파괴는 장비 즉시 영구 소멸
+- 회복석은 존재하지 않음
+- 보호석은 등급 없는 단일 아이템이며 목표 단계별 요구 수량을 시도 시작 시 전량 소비
+
+책임 문서:
+
+- `BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md`
+- `docs/planning/data/blacksmith_enhancement_risk_curve_2026.json`
+- `BLACKSMITH_DECISION_LEDGER_ADDENDUM_13.md`
+
 ### 공개시장 강화 수익곡선
 
 폐기된 값:
@@ -148,7 +182,7 @@
 - +5가 최초 평균 흑자 단계
 - +5 이후 예상 순이익은 강화 단계가 올라갈수록 감소하지 않음
 - 하락·파괴·재제작 비용을 누적 기대원가에 포함
-- 선택형 촉매·보호석·회복석은 별도 지출로 기록
+- 선택형 촉매·보호석은 별도 지출로 기록
 
 최신 가격 앵커:
 
@@ -215,8 +249,9 @@
 3. `POC_CONFIRMED`와 출시 수치 분리
 4. POC 임시 데이터 JSON과 책임 기획 문서의 값 일치 확인
 5. 공개시장 가격은 `BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md`와 seed JSON만 사용
-6. +5 최초 흑자와 +5 이후 이익 비감소 자동 검증 포함
-7. Issue #34의 기존 구현·사람 검증 상태 확인
-8. `기획 완료`와 `검수 완료` 게이트 확인
+6. 강화 위험은 `BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md`와 risk JSON만 사용
+7. +5 최초 흑자와 +5 이후 이익 비감소 자동 검증 포함
+8. Issue #34의 기존 구현·사람 검증 상태 확인
+9. `기획 완료`와 `검수 완료` 게이트 확인
 
 구형 마스터 문서, POC 기준선의 과거 가격표, 벤치마크 후보 절만 읽고 구현을 시작하지 않는다.
