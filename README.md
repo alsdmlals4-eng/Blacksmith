@@ -1,3 +1,7 @@
+> [!IMPORTANT]
+> 이 저장소는 새 저장소 이전 작업 중입니다.
+> 이전 완료 전까지 새로운 코드, Issue, PR을 추가하지 않습니다.
+>
 # Blacksmith
 
 Android 모바일과 Google Play 출시를 목표로 하는 Godot 대장장이 게임 프로젝트입니다.
