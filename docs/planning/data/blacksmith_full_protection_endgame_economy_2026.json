@@ -1,0 +1,328 @@
+{
+  "schema_version": 1,
+  "status": "PLANNING_IN_PROGRESS",
+  "scope": "FULL_PROTECTION_ENDGAME_ECONOMY_2026",
+  "structure_status": "POC_CONFIRMED_APPROVED_CURRENT",
+  "value_status": "POC_TUNABLE_APPROVED_CURRENT",
+  "authority": {
+    "planning_document": "docs/planning/BLACKSMITH_FULL_PROTECTION_ENDGAME_ECONOMY_2026.md",
+    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_17.md",
+    "base_risk_document": "docs/planning/BLACKSMITH_ENHANCEMENT_RISK_CURVE_2026.md",
+    "base_risk_data": "docs/planning/data/blacksmith_enhancement_risk_curve_2026.json",
+    "failure_bound_document": "docs/planning/BLACKSMITH_FAILURE_BOUND_PROTECTION_INTERACTION_2026.md",
+    "profit_document": "docs/planning/BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md"
+  },
+  "full_protection": {
+    "minimum_target_level": 60,
+    "maximum_target_level": 100,
+    "protection_stone_requirement_multiplier": 2,
+    "consumption_timing": "ON_VALID_ATTEMPT_START",
+    "consumed_on_all_results": true,
+    "transforms": {
+      "DOWNGRADE_1": "KEEP",
+      "DOWNGRADE_2": "KEEP",
+      "DESTROY": "KEEP"
+    },
+    "does_not_modify": [
+      "GREAT_SUCCESS_PROBABILITY",
+      "SUCCESS_PROBABILITY",
+      "NATURAL_DOWNGRADE_PROBABILITY",
+      "NATURAL_DESTROY_PROBABILITY"
+    ],
+    "required_count_by_target_band": [
+      {
+        "min_target": 60,
+        "max_target": 69,
+        "ordinary_count": 8,
+        "full_count": 16
+      },
+      {
+        "min_target": 70,
+        "max_target": 79,
+        "ordinary_count": 10,
+        "full_count": 20
+      },
+      {
+        "min_target": 80,
+        "max_target": 89,
+        "ordinary_count": 12,
+        "full_count": 24
+      },
+      {
+        "min_target": 90,
+        "max_target": 99,
+        "ordinary_count": 15,
+        "full_count": 30
+      },
+      {
+        "min_target": 100,
+        "max_target": 100,
+        "ordinary_count": 18,
+        "full_count": 36
+      }
+    ],
+    "insufficient_count_options": [
+      "USE_ORDINARY_PROTECTION",
+      "ATTEMPT_UNPROTECTED",
+      "STORE_ITEM"
+    ],
+    "failure_bound_interaction": {
+      "simultaneous_selection_allowed": false,
+      "on_full_protection_selected": "AUTO_DESELECT_FAILURE_BOUND",
+      "failure_bound_charge_consumed_when_auto_deselected": false,
+      "ordinary_protection_interaction_unchanged": true,
+      "reason": "NO_ADDITIONAL_FINAL_OUTCOME_BENEFIT"
+    }
+  },
+  "protection_stone_economy": {
+    "item_grades": false,
+    "reference_shadow_price_gold": 500,
+    "vendor": {
+      "unit_price_gold": 550,
+      "purchase_limit": null,
+      "bundle_counts": [
+        1,
+        10,
+        50,
+        100
+      ]
+    },
+    "crafting": [
+      {
+        "recipe_id": "PROTECTION_STONE_SMALL_BATCH",
+        "output_count": 10,
+        "enhancement_material": 35,
+        "gold": 2500,
+        "workload": 2,
+        "gold_equivalent_total": 4250,
+        "gold_equivalent_per_stone": 425
+      },
+      {
+        "recipe_id": "PROTECTION_STONE_BULK_BATCH",
+        "output_count": 50,
+        "enhancement_material": 160,
+        "gold": 12000,
+        "workload": 8,
+        "gold_equivalent_total": 20000,
+        "gold_equivalent_per_stone": 400
+      }
+    ],
+    "supplemental_reward_bundles": {
+      "CUSTOMER_OR_WORKSHOP_CONTRACT": {
+        "min": 5,
+        "max": 20
+      },
+      "HIGH_ENHANCEMENT_OR_MILITARY_SUPPLY": {
+        "min": 25,
+        "max": 60
+      },
+      "NATION_OR_COLLECTOR_MILESTONE": {
+        "min": 50,
+        "max": 100
+      }
+    },
+    "softlock_guards": {
+      "vendor_always_available": true,
+      "repeatable_crafting_always_available": true,
+      "supplemental_rewards_required_for_progression": false,
+      "daily_wait_required": false
+    }
+  },
+  "enhancement_attempt_cost_bands": [
+    {
+      "min_target": 61,
+      "max_target": 70,
+      "gold": 9000,
+      "enhancement_material": 24,
+      "gold_equivalent_attempt_cost": 10200
+    },
+    {
+      "min_target": 71,
+      "max_target": 80,
+      "gold": 16000,
+      "enhancement_material": 32,
+      "gold_equivalent_attempt_cost": 17600
+    },
+    {
+      "min_target": 81,
+      "max_target": 90,
+      "gold": 30000,
+      "enhancement_material": 42,
+      "gold_equivalent_attempt_cost": 32100
+    },
+    {
+      "min_target": 91,
+      "max_target": 100,
+      "gold": 60000,
+      "enhancement_material": 55,
+      "gold_equivalent_attempt_cost": 62750
+    }
+  ],
+  "open_market": {
+    "reference_item": "REPRESENTATIVE_IRON_SWORD_NORMAL_QUALITY_NO_PRECISION_NO_HISTORY",
+    "price_status": "POC_TUNABLE_APPROVED_CURRENT",
+    "anchor_interval": 5,
+    "interpolation": "LINEAR_BETWEEN_ANCHORS",
+    "round_to_gold": 10000,
+    "anchors": {
+      "60": 1500000,
+      "65": 2400000,
+      "70": 3800000,
+      "75": 6000000,
+      "80": 9500000,
+      "85": 15000000,
+      "90": 24000000,
+      "95": 38000000,
+      "100": 60000000
+    }
+  },
+  "simulation_reference": {
+    "method": "MONTE_CARLO",
+    "runs_per_target": 50000,
+    "random_seed": 260726,
+    "start_level": 60,
+    "success_mastery_breakpoint": 80,
+    "relative_success_bonus": 0.35,
+    "protection_mode": "FULL_PROTECTION_ON_ALL_TARGETS_60_TO_100",
+    "great_success_model": "CURRENT_APPROVED_MODEL",
+    "protection_stone_reference_gold": 500,
+    "cumulative_expected_cost_to_level_60_gold": 565000,
+    "excluded_optional_effects": [
+      "CATALYST",
+      "FAILURE_BOUND_STRIKE",
+      "SPECIALIZATION_OPTIONAL_COST"
+    ],
+    "targets": {
+      "70": {
+        "attempts": {
+          "mean": 42.0,
+          "p50": 41,
+          "p75": 49,
+          "p90": 58,
+          "p95": 64
+        },
+        "protection_stones": {
+          "mean": 691,
+          "p50": 668,
+          "p75": 812,
+          "p90": 956,
+          "p95": 1056
+        },
+        "total_reference_cost_gold": {
+          "mean": 1339000,
+          "p50": 1315000,
+          "p75": 1475000,
+          "p90": 1637000,
+          "p95": 1746000
+        },
+        "open_market_price_gold": 3800000
+      },
+      "80": {
+        "attempts": {
+          "mean": 101.8,
+          "p50": 100,
+          "p75": 115,
+          "p90": 130,
+          "p95": 140
+        },
+        "protection_stones": {
+          "mean": 1916,
+          "p50": 1880,
+          "p75": 2176,
+          "p90": 2472,
+          "p95": 2664
+        },
+        "total_reference_cost_gold": {
+          "mean": 3004000,
+          "p50": 2957000,
+          "p75": 3344000,
+          "p90": 3732000,
+          "p95": 3980000
+        },
+        "open_market_price_gold": 9500000
+      },
+      "90": {
+        "attempts": {
+          "mean": 186.5,
+          "p50": 184,
+          "p75": 208,
+          "p90": 230,
+          "p95": 245
+        },
+        "protection_stones": {
+          "mean": 4006,
+          "p50": 3950,
+          "p75": 4482,
+          "p90": 5008,
+          "p95": 5346
+        },
+        "total_reference_cost_gold": {
+          "mean": 6768000,
+          "p50": 6667000,
+          "p75": 7554000,
+          "p90": 8435000,
+          "p95": 8997000
+        },
+        "open_market_price_gold": 24000000
+      },
+      "100": {
+        "attempts": {
+          "mean": 307.1,
+          "p50": 304,
+          "p75": 339,
+          "p90": 373,
+          "p95": 395
+        },
+        "protection_stones": {
+          "mean": 7712,
+          "p50": 7604,
+          "p75": 8586,
+          "p90": 9540,
+          "p95": 10160
+        },
+        "total_reference_cost_gold": {
+          "mean": 16187000,
+          "p50": 15906000,
+          "p75": 18162000,
+          "p90": 20408000,
+          "p95": 21875000
+        },
+        "open_market_price_gold": 60000000
+      }
+    }
+  },
+  "resolved_review_required": [
+    "PROTECTION_STONE_PRICE_AND_ACQUISITION_CURVE",
+    "PRICE_AND_EXPECTED_COST_CURVE_LEVELS_61_TO_100",
+    "FAILURE_BOUND_STRIKE_INTERACTION_WITH_PROTECTED_BREAK"
+  ],
+  "semantic_guards": {
+    "ordinary_protection_remains_available": true,
+    "unprotected_destroy_remains_permanent_deletion": true,
+    "full_protection_reduces_natural_destroy_probability": false,
+    "full_protection_changes_failure_consequence": true,
+    "persistent_damaged_state": false,
+    "repair_system": false,
+    "recovery_stone": false
+  },
+  "validation_contract": {
+    "full_protection_minimum_target": 60,
+    "full_requirement_exactly_double": true,
+    "all_failure_consequences_become_keep": true,
+    "probability_model_unchanged": true,
+    "failure_bound_auto_deselect_preserves_charge": true,
+    "vendor_has_no_purchase_limit": true,
+    "expected_profit_non_decreasing_levels_61_to_100": true,
+    "report_percentiles": [
+      50,
+      75,
+      90,
+      95
+    ],
+    "implementation_blocked_until": [
+      "기획 완료",
+      "검수 완료"
+    ],
+    "issue_34_remains_open": true
+  }
+}
