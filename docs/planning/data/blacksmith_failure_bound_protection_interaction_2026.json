@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "status": "PLANNING_IN_PROGRESS",
+  "scope": "FAILURE_BOUND_PROTECTION_INTERACTION_2026",
+  "value_status": "POC_CONFIRMED_APPROVED_CURRENT",
+  "authority": {
+    "planning_document": "docs/planning/BLACKSMITH_FAILURE_BOUND_PROTECTION_INTERACTION_2026.md",
+    "decision_ledger": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_14.md"
+  },
+  "overlay_precedence": "LATEST_DECISION_OVERLAY_WINS",
+  "supersedes": [
+    {
+      "file": "docs/planning/BLACKSMITH_POC_PRIORITY_BASELINE_2026.md",
+      "sections": [
+        "6.3",
+        "6.4_STABLE_STRIKE"
+      ]
+    },
+    {
+      "file": "docs/planning/data/blacksmith_poc_priority_seed_2026.json",
+      "json_paths": [
+        "failure_bound_strike.consequence_cap",
+        "failure_bound_strike.protection_interaction_order",
+        "failure_bound_strike.specialization_modifiers.STABLE_STRIKE"
+      ]
+    },
+    {
+      "file": "docs/planning/data/blacksmith_enhancement_risk_curve_2026.json",
+      "values": [
+        "review_required.FAILURE_BOUND_STRIKE_INTERACTION_WITH_PROTECTED_BREAK"
+      ]
+    }
+  ],
+  "failure_bound_strike": {
+    "selection_timing": "BEFORE_VALID_ATTEMPT",
+    "consume_all_charge_on_valid_attempt_start": true,
+    "consumed_on_all_results": true,
+    "success_rate_bonus": 0.0,
+    "prevents_unprotected_destroy": false,
+    "unprotected_result_transform": {
+      "GREAT_SUCCESS": "UNCHANGED",
+      "SUCCESS": "UNCHANGED",
+      "KEEP": "KEEP",
+      "DOWNGRADE_1": "KEEP",
+      "DOWNGRADE_2": "DOWNGRADE_1",
+      "DESTROY": "IMMEDIATE_PERMANENT_DELETION"
+    },
+    "protected_result_transform": {
+      "GREAT_SUCCESS": "UNCHANGED",
+      "SUCCESS": "UNCHANGED",
+      "KEEP": "KEEP",
+      "DOWNGRADE_1": "KEEP",
+      "DOWNGRADE_2": "KEEP",
+      "DESTROY": "BUFFERED_PROTECTED_BREAK"
+    }
+  },
+  "protected_break_interaction": {
+    "requires_protection_stone": true,
+    "base_level_loss_formula": "MAX(3, FLOOR(PRE_ATTEMPT_CURRENT_ENHANCEMENT / 10))",
+    "failure_bound_level_loss_reduction": 2,
+    "minimum_level_loss": 3,
+    "combined_level_loss_formula": "MAX(3, BASE_PROTECTED_BREAK_LEVEL_LOSS - 2)",
+    "result_equipment_state": "USABLE_IMMEDIATELY",
+    "persistent_damaged_state": false,
+    "repair_required": false,
+    "examples": [
+      {
+        "pre_attempt_current": 51,
+        "base_loss": 5,
+        "buffered_loss": 3,
+        "result_level": 48
+      },
+      {
+        "pre_attempt_current": 60,
+        "base_loss": 6,
+        "buffered_loss": 4,
+        "result_level": 56
+      },
+      {
+        "pre_attempt_current": 80,
+        "base_loss": 8,
+        "buffered_loss": 6,
+        "result_level": 74
+      },
+      {
+        "pre_attempt_current": 99,
+        "base_loss": 9,
+        "buffered_loss": 7,
+        "result_level": 92
+      }
+    ]
+  },
+  "resolution_order": [
+    "ROLL_NATURAL_RESULT",
+    "IF_FAILURE_BOUND_DOWNGRADE_1_TO_KEEP",
+    "IF_FAILURE_BOUND_DOWNGRADE_2_TO_DOWNGRADE_1",
+    "FAILURE_BOUND_DOES_NOT_CHANGE_DESTROY",
+    "IF_PROTECTED_CONVERT_REMAINING_DOWNGRADE_1_OR_2_TO_KEEP",
+    "IF_PROTECTED_CONVERT_DESTROY_TO_PROTECTED_BREAK",
+    "IF_PROTECTED_AND_FAILURE_BOUND_REDUCE_PROTECTED_BREAK_LOSS_BY_2_MINIMUM_3",
+    "IF_UNPROTECTED_DESTROY_DELETE_ITEM_IMMEDIATELY"
+  ],
+  "specialization_conflict": {
+    "specialization": "STABLE_STRIKE",
+    "old_effect": "FAILURE_BOUND_REDUCES_DOWNGRADE_2_TO_DOWNGRADE_1",
+    "old_effect_status": "SUPERSEDED_DUPLICATES_BASE_FAILURE_BOUND_EFFECT",
+    "specialization_status": "REVIEW_REQUIRED_REPLACEMENT_EFFECT",
+    "apply_additional_bonus_until_replacement_approved": false
+  },
+  "retained_specialization_modifiers": {
+    "GAMBLERS_HAMMER": {
+      "success_record_value_bonus": true
+    },
+    "EFFICIENT_REFINING": {
+      "failure_material_refund_ratio": 0.3
+    }
+  },
+  "validation_contract": {
+    "required_cases": [
+      "UNPROTECTED_FAILURE_BOUND_DOWNGRADE_1_BECOMES_KEEP",
+      "UNPROTECTED_FAILURE_BOUND_DOWNGRADE_2_BECOMES_DOWNGRADE_1",
+      "UNPROTECTED_FAILURE_BOUND_DESTROY_DELETES_IMMEDIATELY",
+      "PROTECTED_DOWNGRADE_1_AND_2_BECOME_KEEP",
+      "PROTECTED_DESTROY_USES_BASE_PROTECTED_BREAK_LOSS",
+      "PROTECTED_FAILURE_BOUND_DESTROY_REDUCES_BREAK_LOSS_BY_2_MINIMUM_3",
+      "PROTECTION_STONE_AND_FAILURE_BOUND_CHARGE_CONSUMED_ON_ALL_RESULTS",
+      "PROTECTED_BREAK_RESULT_USABLE_IMMEDIATELY"
+    ],
+    "report_metrics": [
+      "FAILURE_BOUND_DOWNGRADE_1_PREVENTED_COUNT",
+      "FAILURE_BOUND_DOWNGRADE_2_REDUCED_COUNT",
+      "FAILURE_BOUND_UNPROTECTED_DESTROY_COUNT",
+      "BUFFERED_PROTECTED_BREAK_COUNT",
+      "BUFFERED_PROTECTED_BREAK_LEVELS_SAVED",
+      "PROTECTION_AND_FAILURE_BOUND_COMBINED_CONSUMPTION_COUNT"
+    ],
+    "implementation_blocked_until": [
+      "기획 완료",
+      "검수 완료"
+    ]
+  }
+}
