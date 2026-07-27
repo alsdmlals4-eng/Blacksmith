@@ -197,6 +197,71 @@ HIGH_PRECISION_DISPLAY: GUARANTEED_SUCCESS_AND_HIGH_COST
 EXACT_UI_LAYOUT: UNRESOLVED
 ```
 
+## 강화 실행 확인 규칙
+
+강화 실행 확인은 **위험 조건부 확인**을 사용한다. 모든 강화마다 확인창을 띄우지 않고, 저위험 반복 강화는 입력 즉시 1회 판정한다.
+
+### 즉시 실행
+
+다음 조건을 모두 만족하는 일반 저위험 강화는 별도 확인 없이 즉시 실행한다.
+
+- 영구 파괴 가능성이 없음
+- 정밀강화가 아님
+- 보호 설정을 변경하지 않음
+- 운영 자금 안전 기준을 침범하지 않음
+- 잠금·관심·고가 장비가 아님
+- 활성 약속 또는 고객 지원용 자원을 침범하지 않음
+
+### 확인이 필요한 조건
+
+다음 중 하나라도 해당하면 최종 확인을 요구한다.
+
+- 영구 파괴 가능
+- 일반 정밀강화 진입
+- 고위 정밀강화 실행
+- 보호 사용 또는 보호 해제
+- 활성 약속·고객 지원에 필요한 자금을 침범할 수 있음
+- 플레이어가 설정한 고가 장비
+- 잠금 또는 관심 장비
+- 강화 후 운영 자금이 안전 기준 아래로 내려감
+
+### 확인창 정보
+
+확인창은 추상적인 `진행하시겠습니까?` 문구만 표시하지 않는다. 실제 손실과 선택 결과를 요약한다.
+
+- 성공률 또는 `확정 성공`
+- 총 소비 재료와 총비용
+- 실패 시 최대 단계 하락
+- 영구 파괴 가능 여부
+- 보호 사용 여부와 보호 효과
+- 시도 후 남는 운영 자금
+- 침범할 수 있는 활성 약속·지원 계획
+- 정밀강화 성공 시 획득하는 결과
+- 고위 정밀강화 후보와 확정 진화 결과
+
+```text
+저위험 일반 강화
+→ 입력 즉시 1회 판정
+
+위험 조건 충족
+→ 실제 손실·비용·보호 상태 확인
+→ 최종 확인 또는 길게 누르기
+→ 1회 판정
+```
+
+정확한 확인 방식은 모바일 UX 검증에서 결정한다. `최종 확인 버튼`과 `길게 누르기` 중 어느 방식이 더 적합한지는 아직 확정하지 않는다.
+
+```text
+ENHANCEMENT_CONFIRMATION_DEFAULT: IMMEDIATE_FOR_LOW_RISK
+ENHANCEMENT_CONFIRMATION_TRIGGER: RISK_CONDITIONAL
+DESTRUCTIBLE_ATTEMPT_CONFIRMATION: REQUIRED
+PRECISION_ATTEMPT_CONFIRMATION: REQUIRED
+HIGH_PRECISION_CONFIRMATION: REQUIRED
+PROTECTION_CHANGE_CONFIRMATION: REQUIRED
+PROMISE_AND_OPERATING_FUND_WARNING: REQUIRED
+EXACT_CONFIRM_GESTURE: UNRESOLVED
+```
+
 ## 감사 영향
 
 기존 `MUST_FIX-01`은 다음 오해를 전제로 했다.
