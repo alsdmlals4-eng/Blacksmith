@@ -4,7 +4,8 @@
 evidence_pack_id: BLACKSMITH-EVP-001
 project: Blacksmith
 baseline_branch: main
-baseline_commit: 639c33611c203581c8dcbc08c85425455b16991a
+baseline_commit: 5489e9f10c3f81166f502df5c6c65fb1ddc4faa4
+mvp_003_merge_evidence: 639c33611c203581c8dcbc08c85425455b16991a
 created_at: 2026-07-29
 work_mode: PLAN
 status: PILOT_RECOMMENDATION
