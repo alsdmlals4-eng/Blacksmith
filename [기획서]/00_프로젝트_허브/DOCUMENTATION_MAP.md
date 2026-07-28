@@ -31,7 +31,8 @@ AGENTS.md
 | 현재 개발 순서는 무엇인가 | `ROADMAP.md` | Prototype→PoC→확장 게이트 |
 | 통과·미실행·차단 상태는 무엇인가 | `DEVELOPMENT_GATES.md` | 게이트별 증거와 판정 |
 | 장비 생애 PoC의 상세 규칙은 무엇인가 | `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md` | 철검·검투사 첫 생애 통합 명세 |
-| `+5 납품 / +10 도전` 선택을 어떻게 사람 검증하는가 | `docs/planning/BLACKSMITH_PLUS5_PLUS10_EVIDENCE_PACK_PILOT_2026.md` | 애착·위험·투명성·모바일 선택의 `PLANNING_INPUT / NOT_CANON` |
+| `+5 납품 / +10 도전` 선택의 근거와 권장안은 무엇인가 | `docs/planning/BLACKSMITH_PLUS5_PLUS10_EVIDENCE_PACK_PILOT_2026.md` | 애착·위험·투명성·모바일 선택의 `PLANNING_INPUT / NOT_CANON` |
+| `+5 납품 / +10 도전`을 어떤 세션과 기준으로 실행하는가 | `docs/superpowers/plans/2026-07-29-plus5-plus10-human-validation-artifact.md` | 기존 장비 생애 PoC에 결합한 `HUMAN_VALIDATION_INPUT / NOT_CANON` |
 | MVP-003의 구현 경계는 무엇인가 | `docs/MVP-003_SCOPE.md` | Issue #34 포함·제외·완료 기준 |
 | 어떤 순서로 구현하는가 | `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md` | Task 1~9 TDD 구현계획 |
 | Task 1~9는 어디까지 작성·검증됐는가 | `docs/MVP-003_IMPLEMENTATION_STATUS.md` | 파일별 작성·자동·사람 검증 상태 |
