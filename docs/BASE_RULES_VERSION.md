@@ -1,8 +1,8 @@
 # Base 적용 기준
 
 - Base: `alsdmlals4-eng/Base`
-- 기준 커밋: `41a20584dd2ee51d917e5c9d7cab6838e1ceba7e`
-- 동기화일: 2026-07-23
+- 기준 커밋: `7072b9e2742a60d7548fd39df3328ad76a8dbad1`
+- 동기화일: 2026-07-28
 - 대상: `alsdmlals4-eng/Blacksmith`
 - 상세 매핑: `docs/BASE_ADOPTION_PROFILE.json`
 - 감사 결과: `docs/BASE_ADOPTION_AUDIT.md`
@@ -64,3 +64,10 @@ extract → submit → review → 사용자 승인 → 별도 implement PR → v
 - Blacksmith Registry·책임 구조·발행 정책 변경
 - 주요 제품 게이트 진입
 - 콜드 스타트 실패·stale 참조·감사 CI 실패
+
+## BCA v8 채택
+
+- 활성 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
+- Sheet: `NOT_CONFIGURED`; `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`.
+- GPT 이미지·목업: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`.
+- 생성 이미지는 검수·승인·실제 적용 전 최종 자산이 아니다.
