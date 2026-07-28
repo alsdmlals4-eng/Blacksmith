@@ -31,6 +31,7 @@ AGENTS.md
 | 현재 개발 순서는 무엇인가 | `ROADMAP.md` | Prototype→PoC→확장 게이트 |
 | 통과·미실행·차단 상태는 무엇인가 | `DEVELOPMENT_GATES.md` | 게이트별 증거와 판정 |
 | 장비 생애 PoC의 상세 규칙은 무엇인가 | `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md` | 철검·검투사 첫 생애 통합 명세 |
+| `+5 납품 / +10 도전` 선택을 어떻게 사람 검증하는가 | `docs/planning/BLACKSMITH_PLUS5_PLUS10_EVIDENCE_PACK_PILOT_2026.md` | 애착·위험·투명성·모바일 선택의 `PLANNING_INPUT / NOT_CANON` |
 | MVP-003의 구현 경계는 무엇인가 | `docs/MVP-003_SCOPE.md` | Issue #34 포함·제외·완료 기준 |
 | 어떤 순서로 구현하는가 | `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md` | Task 1~9 TDD 구현계획 |
 | Task 1~9는 어디까지 작성·검증됐는가 | `docs/MVP-003_IMPLEMENTATION_STATUS.md` | 파일별 작성·자동·사람 검증 상태 |
@@ -56,10 +57,10 @@ AGENTS.md
 ## 현재 Issue·PR
 
 - 현재 Issue: #34 · 사람·플랫폼·외부 플레이 검증까지 유지
-- 현재 구현 PR: #35 · 자동 검증 PASS, 병합 검토 중
-- 병합 완료: #31, #32, #33
+- MVP-003 구현 PR: #35 · `MERGED`, merge commit `639c33611c203581c8dcbc08c85425455b16991a`
+- 병합 완료: #31, #32, #33, #35
 - Actions 자동 실행: `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`
-- 코드 기준 증거: PR validation #468, head `03c90bb063103e1c92885e7e21228f963cfe2775`
+- 자동 구현 검증: PASS 이력, 사람·Android·성능·외부 플레이는 별도 `NOT_RUN`
 - 완료된 과거 Issue: #29, #14
 
 ## 역사 문서
