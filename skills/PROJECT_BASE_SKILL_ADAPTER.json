@@ -14,6 +14,7 @@
     "documentation_map": "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
     "active_context": "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "skill_registry": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+    "ux_ui_source": "docs/UX_UI_SYSTEM.md",
     "archive_root": "docs/archive",
     "archive_readme": "docs/archive/README.md",
     "archive_manifest": "docs/archive/MANIFEST.json",
@@ -21,6 +22,7 @@
   },
   "canonical_sources": [
     "[기획서]/",
+    "docs/UX_UI_SYSTEM.md",
     "docs/BASE_ADOPTION_PROFILE.json",
     "project.godot"
   ],
@@ -43,11 +45,36 @@
     "python -m unittest tests.test_archive_retention_governance -v",
     "python tools/audit_project_operating_system.py",
     "manual: Godot project parse/runtime check",
-    "manual: Android device and safe-area check when applicable"
+    "manual: Android device and safe-area check when applicable",
+    "manual: UX UI human understanding and accessibility review"
   ],
   "third_party_inventory": "docs/technical/ADOPTED_ASSETS.md",
   "license_record": "docs/technical/THIRD_PARTY_LICENSES.md",
   "shared_skill_overrides": {
+    "auditing-and-refining-ui-art": {
+      "base_main_commit": "0fd95f4513343e77fd664af2763a01b02f52545b",
+      "canonical_project_source": "docs/UX_UI_SYSTEM.md",
+      "modes": [
+        "experience-contract",
+        "flow-and-information-architecture",
+        "pattern-selection",
+        "design-system-contract",
+        "godot-ui-contract",
+        "accessibility-gate",
+        "playtest-contract",
+        "runtime-ui-audit"
+      ],
+      "project_focus": [
+        "portrait Android",
+        "one-hand touch",
+        "safe area",
+        "crafting and enhancement risk",
+        "item comparison",
+        "causal result recap"
+      ],
+      "runtime_status": "NOT_RUN",
+      "human_status": "HUMAN_NOT_RUN"
+    },
     "governing-legacy-retention-and-archives": {
       "adapter": "docs/archive/ARCHIVE_RETENTION_ADAPTER.json",
       "current_canon_priority": [
