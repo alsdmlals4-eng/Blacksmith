@@ -23,6 +23,7 @@ description: Blacksmith의 코어·제작·강화·경제·연구·플레이테�
 - `poc-check`: 가장 위험한 가설과 최소 검증·중단 기준을 정한다.
 - `vertical-slice-gate`: 대표 플레이 구간의 목표 품질·접근성·성능·제작 파이프라인·실제 플레이 증거를 판정한다.
 - `art-brief`: 승인된 아트 방향을 생성·편집 프롬프트와 기술 제약으로 변환한다.
+- `visual-brief`: 프로젝트 정본·화면 목적·정보 위계·해상도·유지/금지 요소를 이미지 기획 브리프로 연결한다.
 - `planning-visualization`: 기획 중 단조·강화·장비 생애주기·세로 UI 목업으로 구조와 모순을 비교한다.
 - `final-visual-candidate`: 기획 종료 후 Demo·Google Play·UI·캐릭터·장비 후보를 만든다.
 - `visual-qa-and-approval`: 실제 모바일 화면·구현·권리·오류·승인 상태를 검수한다.
