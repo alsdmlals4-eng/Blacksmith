@@ -33,6 +33,8 @@ AGENTS.md
 | 장비 생애 PoC의 상세 규칙은 무엇인가 | `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md` | 철검·검투사 첫 생애 통합 명세 |
 | `+5 납품 / +10 도전` 선택의 근거와 권장안은 무엇인가 | `docs/planning/BLACKSMITH_PLUS5_PLUS10_EVIDENCE_PACK_PILOT_2026.md` | 애착·위험·투명성·모바일 선택의 `PLANNING_INPUT / NOT_CANON` |
 | `+5 납품 / +10 도전`을 어떤 세션과 기준으로 실행하는가 | `docs/superpowers/plans/2026-07-29-plus5-plus10-human-validation-artifact.md` | 기존 장비 생애 PoC에 결합한 `HUMAN_VALIDATION_INPUT / NOT_CANON` |
+| 합성 테스터를 어떤 Skill·작업 구조로 적용하는가 | `docs/research/2026-07-29_SYNTHETIC_TESTER_STRUCTURE_ANALYSIS.md` | 현재 Registry·정본·보호 경로를 복원한 `T6_AI_INFERENCE / NOT_CANON` |
+| `+5 / +10` 선택의 합성 위험 판정은 무엇인가 | `docs/research/2026-07-29_PLUS5_PLUS10_SYNTHETIC_TESTER_REPORT.md` | 후견 문구·scripted failure·경제 지배 전략의 `AI_SIMULATION_COMPLETED / HUMAN_NOT_RUN` |
 | MVP-003의 구현 경계는 무엇인가 | `docs/MVP-003_SCOPE.md` | Issue #34 포함·제외·완료 기준 |
 | 어떤 순서로 구현하는가 | `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md` | Task 1~9 TDD 구현계획 |
 | Task 1~9는 어디까지 작성·검증됐는가 | `docs/MVP-003_IMPLEMENTATION_STATUS.md` | 파일별 작성·자동·사람 검증 상태 |
@@ -59,10 +61,9 @@ AGENTS.md
 
 - 현재 Issue: #34 · 사람·플랫폼·외부 플레이 검증까지 유지
 - MVP-003 구현 PR: #35 · `MERGED`, merge commit `639c33611c203581c8dcbc08c85425455b16991a`
-- 병합 완료: #31, #32, #33, #35
+- 합성 설계 검토: `AI_SIMULATION_COMPLETED / T6_AI_INFERENCE`
+- 사람·Android·성능·외부 플레이: `NOT_RUN`
 - Actions 자동 실행: `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`
-- 자동 구현 검증: PASS 이력, 사람·Android·성능·외부 플레이는 별도 `NOT_RUN`
-- 완료된 과거 Issue: #29, #14
 
 ## 역사 문서
 
