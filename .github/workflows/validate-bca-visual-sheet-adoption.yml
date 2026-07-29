@@ -1,0 +1,18 @@
+name: Validate Blacksmith BCA Adoption
+on:
+  pull_request:
+    branches: [main]
+    paths: ["README.md","AGENTS.md","docs/**","skills/**","[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json","tests/test_bca_visual_sheet_adoption.py",".github/workflows/validate-bca-visual-sheet-adoption.yml"]
+permissions: {contents: read}
+concurrency:
+  group: blacksmith-bca-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: python -m unittest tests.test_bca_visual_sheet_adoption -v
+      - run: git diff --check origin/main...HEAD

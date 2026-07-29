@@ -92,3 +92,11 @@ L1 이상 작업 완료 보고에는 실제 사용한 Work Mode·Skill·Skill Mo
 - 자동·수동·시각·Android·접근성·성능 검증이 분리돼 있다.
 - PR Required Checks와 파일별 재검토가 끝났다.
 - 새 작업자가 저장소만으로 현재 상태, 다음 작업, 위험, 검증 경로를 찾을 수 있다.
+
+## BCA Sheet·GPT 이미지 생성·검수
+
+- Base 기준은 `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`와 v8 통합 실행문이다.
+- 프로젝트 Sheet는 `PROJECT_SHEET_CONFIGURED`; URL 확인 전 신규 Sheet를 추정 생성하지 않는다.
+- 사용자가 승인한 BCA workflow 안에서 GPT가 기획 중 시각화와 기획 종료 후보 이미지를 생성할 수 있다.
+- 생성 이미지는 자동 최종 자산이 아니며 모바일 실제 화면·구현 가능성·권리·오류·Asset Ledger 검수 뒤 승인한다.
+- 각 단계 뒤 `repository-wide-audit`로 stale Prompt·untouched 소비자·승인 누락을 재검사한다.

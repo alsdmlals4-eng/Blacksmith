@@ -19,6 +19,11 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 - `accessibility-review`: 텍스트·입력·탐색·시간·모션·오류 복구의 실제 장벽을 검수한다.
 - `performance-profile`: Android 대표·최악 장면의 frame time·CPU·GPU·메모리·로딩을 baseline과 비교한다.
 - `ui-art-review`: 구현된 Godot UI를 실제 전후 렌더로 비교한다.
+- `image-mockup`: 승인된 브리프와 실제 화면 제약을 기준으로 생성 이미지·목업 후보의 기획 일치와 구현 가능성을 검수한다.
+- `image-approval`: 후보를 기획 일치·실제 화면 가독성·일관성·권리·유사성·런타임 증거로 판정하고 승인 원장을 갱신한다.
+- `visual-qa-and-approval`: 이미지·목업·실제 UI를 브리프, 화면 가독성, 권리, 구현 및 승인 상태 기준으로 통합 판정한다.
+- `repository-wide-audit`: 저장소 전체에서 stale 정본, 중복 책임, untouched 소비자, 미연결 Sheet·이미지 계약을 감사한다.
+- `bca-adoption-audit`: Base BCA 어댑터의 Skill Mode·Sheet 구조·이미지 lifecycle·검증 경로 연결을 전용 검사한다.
 - `regression`: 제작·강화·보관·자동 단조의 정상·실패·경계를 재검증한다.
 - `evidence-report`: `PASS / PARTIAL / FAIL / NOT_RUN`과 증거·위험·롤백을 기록한다.
 
@@ -38,6 +43,7 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 - 자동 단조 목표·비용·재료 fallback·자동 보관·반복·중지
 - 저장 변경 시 저장·불러오기·구버전 호환성
 - 세로 화면·스크롤·터치·안전 영역
+- 생성 이미지·목업은 승인된 브리프, 정확한 비율·해상도, 유지·금지 요소, 실제 Android 화면 가독성, 원출처·권리 상태를 함께 검수
 
 ## Review loop
 
@@ -51,6 +57,11 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 → Godot 파싱·Scene
 → 실패·경계·회귀
 → 필요 시 접근성·성능·UI 렌더
+→ image-mockup
+→ image-approval
+→ visual-qa-and-approval
+→ repository-wide-audit
+→ bca-adoption-audit
 → 문서·Registry·게이트
 → approved-refinement
 → regression-recheck
@@ -68,6 +79,7 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 - Workflow 존재·실행·Required Check 강제를 구분한다.
 - 정상 결과만이 아니라 실패·하락·파괴·재료 부족·보관함 가득 참을 확인한다.
 - Android·시각·접근성·성능 미실행은 `NOT_RUN`으로 남긴다.
+- 이미지 후보는 `IN_REVIEW / REVISION_REQUIRED / REJECTED / APPROVED_CANDIDATE / PROJECT_ASSET_APPROVED / APPLIED_AND_RUNTIME_VERIFIED` 상태를 구분하고 생성 사실만으로 승인하지 않는다.
 
 ## Failure
 
@@ -77,6 +89,7 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 - 자동 테스트만으로 Android·시각·접근성·성능을 통과 처리한다.
 - stale reference·untouched 소비자·원래 실패 반례를 무시한다.
 - 보류·기각한 개선을 몰래 반영하거나 개선 뒤 회귀 검토를 생략한다.
+- 생성 이미지를 자동 최종 자산으로 승인하거나 실제 화면 검증·권리 검토 없이 적용한다.
 
 ## Learning
 
