@@ -21,6 +21,9 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 - `ui-art-review`: 구현된 Godot UI를 실제 전후 렌더로 비교한다.
 - `image-mockup`: 승인된 브리프와 실제 화면 제약을 기준으로 생성 이미지·목업 후보의 기획 일치와 구현 가능성을 검수한다.
 - `image-approval`: 후보를 기획 일치·실제 화면 가독성·일관성·권리·유사성·런타임 증거로 판정하고 승인 원장을 갱신한다.
+- `visual-qa-and-approval`: 이미지·목업·실제 UI를 브리프, 화면 가독성, 권리, 구현 및 승인 상태 기준으로 통합 판정한다.
+- `repository-wide-audit`: 저장소 전체에서 stale 정본, 중복 책임, untouched 소비자, 미연결 Sheet·이미지 계약을 감사한다.
+- `bca-adoption-audit`: Base BCA 어댑터의 Skill Mode·Sheet 구조·이미지 lifecycle·검증 경로 연결을 전용 검사한다.
 - `regression`: 제작·강화·보관·자동 단조의 정상·실패·경계를 재검증한다.
 - `evidence-report`: `PASS / PARTIAL / FAIL / NOT_RUN`과 증거·위험·롤백을 기록한다.
 
@@ -56,6 +59,9 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 → 필요 시 접근성·성능·UI 렌더
 → image-mockup
 → image-approval
+→ visual-qa-and-approval
+→ repository-wide-audit
+→ bca-adoption-audit
 → 문서·Registry·게이트
 → approved-refinement
 → regression-recheck
