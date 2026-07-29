@@ -117,8 +117,8 @@ Android·접근성·성능·외부 플레이를 실행하지 않았다면 PASS�
 
 ## BCA v8 기획·이미지·Sheet 운영
 
-- Base: `alsdmlals4-eng/Base@7072b9e2742a60d7548fd39df3328ad76a8dbad1`
+- Base: `alsdmlals4-eng/Base@c987647d01ad2baa028a16e03d85ddfc1572a727`
 - 통합 실행문: `VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`
-- Sheet: `NOT_CONFIGURED`; `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`
+- Sheet: `PROJECT_SHEET_CONFIGURED`; `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`
 - GPT 이미지·검수: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`
 - 적대적 검토: `docs/BCA_VISUAL_SHEET_ADOPTION_AUDIT.md`

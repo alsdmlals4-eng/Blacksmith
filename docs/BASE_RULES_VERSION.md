@@ -1,7 +1,7 @@
 # Base 적용 기준
 
 - Base: `alsdmlals4-eng/Base`
-- 기준 커밋: `7072b9e2742a60d7548fd39df3328ad76a8dbad1`
+- 기준 커밋: `c987647d01ad2baa028a16e03d85ddfc1572a727`
 - 동기화일: 2026-07-28
 - 대상: `alsdmlals4-eng/Blacksmith`
 - 상세 매핑: `docs/BASE_ADOPTION_PROFILE.json`
@@ -68,6 +68,6 @@ extract → submit → review → 사용자 승인 → 별도 implement PR → v
 ## BCA v8 채택
 
 - 활성 통합 실행문: `templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md`.
-- Sheet: `NOT_CONFIGURED`; `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`.
+- Sheet: `PROJECT_SHEET_CONFIGURED`; `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md`.
 - GPT 이미지·목업: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md`.
 - 생성 이미지는 검수·승인·실제 적용 전 최종 자산이 아니다.

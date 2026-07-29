@@ -1,8 +1,8 @@
 # Blacksmith BCA v8 적용 적대적 검토
 
 ```yaml
-base_commit: 7072b9e2742a60d7548fd39df3328ad76a8dbad1
-project_sheet_status: NOT_CONFIGURED
+base_commit: c987647d01ad2baa028a16e03d85ddfc1572a727
+project_sheet_status: PROJECT_SHEET_CONFIGURED
 product_paths_changed: false
 final_status: CONFLICT_FIXED
 ```

@@ -247,26 +247,35 @@
   "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
   "base_integration": {
     "repository": "alsdmlals4-eng/Base",
-    "commit": "7072b9e2742a60d7548fd39df3328ad76a8dbad1",
-    "integrated_execution_prompt": "templates/prompts/VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md",
-    "project_sheet_status": "NOT_CONFIGURED",
-    "project_sheet_contract": "docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md",
-    "image_workflow": "docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md",
-    "copy_skill_bodies": false
+    "commit": "c987647d01ad2baa028a16e03d85ddfc1572a727",
+    "source_registry": "skills/SKILL_REGISTRY.json",
+    "project_sheet_status": "PROJECT_SHEET_CONFIGURED",
+    "project_sheet_url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit",
+    "project_sheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+    "project_sheet_role": "USER_FACING_GDD_WORKSPACE",
+    "project_sheet_edit_policy": "PROPOSED_SHEET_CHANGE",
+    "project_sheet_last_verified_at": "2026-07-29"
   },
   "bca_visual_sheet": {
-    "status": "ADOPTED",
+    "sheet_status": "PROJECT_SHEET_CONFIGURED",
+    "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit",
+    "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+    "workbook_role": "USER_FACING_GDD_WORKSPACE",
+    "sheet_edit_policy": "PROPOSED_SHEET_CHANGE",
+    "last_verified_at": "2026-07-29",
     "required_tabs": [
       "00_프로젝트_허브",
       "01_작업순서",
       "02_현재_확정결정",
       "03_근거_라이브러리",
       "04_누락_충돌_감사",
+      "05_GDD_요약",
       "10_제품방향",
       "11_세계관",
       "12_핵심루프",
       "13_주요인물",
       "14_조연_세력_관계",
+      "15_조작_게임규칙",
       "20_코어경험_데모목표",
       "30_데모범위_품질기준_제작기반",
       "40_핵심시스템_메인콘텐츠",
@@ -280,12 +289,6 @@
       "90_본제작_출시_사업",
       "98_Base_반영후보",
       "99_변경이력"
-    ],
-    "image_modes": [
-      "planning-visualization",
-      "final-visual-candidate",
-      "visual-qa-and-approval"
-    ],
-    "adversarial_mode": "repository-wide-audit"
+    ]
   }
 }

@@ -1,24 +1,31 @@
-# Blacksmith 프로젝트 Google Sheets Workbook
+# 블랙스미스 프로젝트 Google Sheets Workbook
 
 ```yaml
 project: Blacksmith
-sheet_status: NOT_CONFIGURED
-spreadsheet_url:
-base_commit: 7072b9e2742a60d7548fd39df3328ad76a8dbad1
+sheet_status: PROJECT_SHEET_CONFIGURED
+spreadsheet_url: https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit
+spreadsheet_id: 1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg
+workbook_role: USER_FACING_GDD_WORKSPACE
+sheet_edit_policy: PROPOSED_SHEET_CHANGE
+base_commit: c987647d01ad2baa028a16e03d85ddfc1572a727
+last_verified_at: 2026-07-29
 ```
 
-정확한 기존 Sheet URL·ID·권한을 확인하지 못했으므로 신규 Sheet를 만들지 않는다. 연결 시 기존 tab·수식·검증·사용자 편집을 보존하며 아래 의미 구조를 설치·병합한다.
+Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐름을 사용자가 확인·수정하고 AI가 GitHub 정본·실제 구현과 함께 읽는 GDD 작업면이다.
 
+## 검증된 탭
 - `00_프로젝트_허브`
 - `01_작업순서`
 - `02_현재_확정결정`
 - `03_근거_라이브러리`
 - `04_누락_충돌_감사`
+- `05_GDD_요약`
 - `10_제품방향`
 - `11_세계관`
 - `12_핵심루프`
 - `13_주요인물`
 - `14_조연_세력_관계`
+- `15_조작_게임규칙`
 - `20_코어경험_데모목표`
 - `30_데모범위_품질기준_제작기반`
 - `40_핵심시스템_메인콘텐츠`
@@ -33,11 +40,14 @@ base_commit: 7072b9e2742a60d7548fd39df3328ad76a8dbad1
 - `98_Base_반영후보`
 - `99_변경이력`
 
+## 프로젝트 책임 매핑
+
 | 의미 구조 | 프로젝트 책임 원본 |
 |---|---|
-| 세계관·주요인물·조연 | `BLACKSMITH_GAME_BIBLE.md`의 대장간·고객·상인·검투사·장비 소유자 |
-| 핵심루프 | 광클 단조 → 즉시 피드백 → 피버 → 성장·판매 선택 |
-| 핵심시스템·메인콘텐츠 | 제작·일반 강화·특수 강화·수식어·재료·촉매·판매·장비 생애주기 |
+| 핵심루프 | 단조→강화→+5 납품/+10 도전→고객·시장 환류 |
+| 핵심시스템 | `BLACKSMITH_GAME_BIBLE.md`, 강화·보호·장비 생애주기 결정 정본 |
+| 성장·경제 | 골드·보호석·완충 충전·고강화 시장 정본 |
+| 주요인물·관계 | 대장장이·고객4종·상인·검투사 기획 정본 |
 | 이미지 계획·검수 | `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md` |
 
-Sheet는 독립 정본이 아니라 Decision ID·GitHub 경로·상태를 연결한다.
+GitHub에 없는 사용자 수정은 `PROPOSED_SHEET_CHANGE`로 보존하고 승인 후 양쪽을 재조회한다.
