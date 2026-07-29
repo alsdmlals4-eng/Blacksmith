@@ -3,7 +3,7 @@
   "adapter_role": "base-shared-skill-project-adapter",
   "base": {
     "repository": "alsdmlals4-eng/Base",
-    "commit": "0fd95f4513343e77fd664af2763a01b02f52545b"
+    "commit": "6a224e450f9420223c00921f3c56e051612f92ad"
   },
   "project": {
     "repository": "alsdmlals4-eng/Blacksmith",
@@ -52,6 +52,7 @@
   "license_record": "docs/technical/THIRD_PARTY_LICENSES.md",
   "shared_skill_overrides": {
     "auditing-and-refining-ui-art": {
+      "base_main_commit": "0fd95f4513343e77fd664af2763a01b02f52545b",
       "canonical_project_source": "docs/UX_UI_SYSTEM.md",
       "modes": [
         "experience-contract",
