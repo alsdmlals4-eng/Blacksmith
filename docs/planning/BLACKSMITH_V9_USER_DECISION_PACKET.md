@@ -243,7 +243,48 @@ STATUS: ACCEPTED
 
 ---
 
-## 9. 일괄 승인 결과
+## 9. 결정 8 — 벤치마킹 선행 작업 원칙
+
+### 확정
+
+매 작업마다 대규모 조사를 반복하지 않는다.
+
+다만 다음 항목을 새로 설계하거나 핵심 계약을 변경할 때는 설계 전에 벤치마킹을 반드시 수행한다.
+
+- 새 시스템
+- 핵심 규칙
+- 콘텐츠 구조
+- 주요 UX 흐름
+- 경제·저장·서버·랭킹처럼 여러 소비자에 전파되는 규칙
+
+### 계약
+
+```text
+새 설계 질문 정의
+→ 관련 공식·1차 출처 조사
+→ 채택·변형·제외 분류
+→ Blacksmith 코어에 맞춘 추천안
+→ 전파 지도와 검증 기준 기록
+→ 기획 반영
+```
+
+- 이미 최근 조사한 동일 작업군은 관련 결과를 재사용할 수 있다.
+- 문장 정리·단순 동기화·승인 계약 내부의 미세 조정은 새 조사를 요구하지 않는다.
+- 다른 게임의 명칭·캐릭터·수치·카피·아트를 복제하지 않는다.
+- 상세 규칙은 `BLACKSMITH_BENCHMARK_FIRST_WORKING_PRINCIPLE.md`를 따른다.
+
+```text
+BENCHMARK_BEFORE_NEW_SYSTEM: REQUIRED
+BENCHMARK_BEFORE_CORE_RULE_CHANGE: REQUIRED
+BENCHMARK_BEFORE_CONTENT_STRUCTURE_CHANGE: REQUIRED
+BENCHMARK_BEFORE_MAJOR_UX_FLOW_CHANGE: REQUIRED
+REPEAT_FULL_RESEARCH_EVERY_TASK: FORBIDDEN
+STATUS: ACCEPTED
+```
+
+---
+
+## 10. 일괄 승인 결과
 
 ```text
 CRAFTSMANSHIP_GRADE: FIVE_TIERS
@@ -254,13 +295,14 @@ DURABILITY: NOT_PRESENT
 FATE_STATE: NARRATIVE_ONLY
 SECOND_CONTENT_SET: COLLECTOR
 FUTURE_ONLINE_NAME: 명작 전당
+BENCHMARK_FIRST_WORKING_PRINCIPLE: ACCEPTED
 USER_RECOMMENDATION_DECISIONS: ACCEPTED
 READY_FOR_기획_완료: NO
 READY_FOR_검수_완료: NO
 CODEX_IMPLEMENTATION: BLOCKED
 ```
 
-## 10. 다음 기획 대상
+## 11. 다음 기획 대상
 
 채택 결정 이후 다음 항목을 구체화한다.
 
@@ -273,4 +315,6 @@ CODEX_IMPLEMENTATION: BLOCKED
 7. 명작 전당의 공개 제작자명·삭제·시즌 정책
 8. Google Sheet 동기화 계획
 
-이 항목을 검토한 뒤에만 사용자 `기획 완료` 판정을 요청한다.
+1~7의 벤치마킹 기반 추천안은 `BLACKSMITH_P1_CONTENT_UX_BENCHMARK_AND_DESIGN_2026.md`에서 관리한다.
+
+이 항목의 전체 정합성을 검토한 뒤에만 사용자 `기획 완료` 판정을 요청한다.
