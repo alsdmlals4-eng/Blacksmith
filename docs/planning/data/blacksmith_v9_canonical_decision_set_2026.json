@@ -1,11 +1,13 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "project": "Blacksmith",
   "status": "USER_APPROVED_DECISIONS_CANONICAL_ID_INDEX",
   "as_of": "2026-07-31",
   "authority": {
+    "latest_reconciliation": "docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md",
     "master": "docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md",
     "user_decision_packet": "docs/planning/BLACKSMITH_V9_USER_DECISION_PACKET.md",
+    "decision_ledger_addendum": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_20.md",
     "decision_index": "docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md",
     "sync_contract": "docs/planning/BLACKSMITH_CANONICAL_SYNC_OPERATING_CONTRACT_2026.md"
   },
@@ -27,10 +29,11 @@
     {
       "decision_id": "BS-V9-20260731-03",
       "domain": "identity_milestones",
-      "decision": "GUARANTEED_CHOICE_AFTER_TEN_LEVEL_ENTRY_SUCCESS",
+      "decision": "GUARANTEED_CHOICE_AFTER_TEN_LEVEL_ENTRY_SUCCESS_WITH_PLUS50_ROUTE_EXCEPTION",
       "milestones": [10, 20, 30, 40, 50],
-      "second_failure_roll": false,
-      "status": "USER_APPROVED"
+      "second_failure_roll_after_success": false,
+      "clarified_by": "BS-ENH-20260731-01",
+      "status": "USER_APPROVED_CLARIFIED"
     },
     {
       "decision_id": "BS-V9-20260731-04",
@@ -50,12 +53,13 @@
     },
     {
       "decision_id": "BS-V9-20260731-06",
-      "domain": "second_content_set",
-      "decision": "COLLECTOR_DETERMINISTIC_PIPELINE_PROOF",
+      "domain": "representative_content_sets",
+      "decision": "CASSIA_REPRESENTATIVE_AND_ERSA_PIPELINE_PROOF",
       "representative_customer": "CASSIA_BELLAN",
       "proof_customer": "ERSA_ROEN",
       "customer_specific_core_engine": false,
-      "status": "USER_APPROVED"
+      "clarified_by": "BS-CUST-20260731-01",
+      "status": "USER_APPROVED_CLARIFIED"
     },
     {
       "decision_id": "BS-V9-20260731-07",
@@ -75,6 +79,54 @@
       "status": "USER_APPROVED"
     },
     {
+      "decision_id": "BS-CUST-20260731-01",
+      "domain": "customer_archetype_architecture",
+      "decision": "FOUR_CUSTOMER_TYPES_WITH_MULTIPLE_NAMED_CUSTOMERS_PER_TYPE",
+      "customer_types": ["COLLECTOR", "ADVENTURER", "GLADIATOR", "SOLDIER"],
+      "minimum_named_customers_per_type": 2,
+      "production_target_named_customers_per_type": 3,
+      "active_request_limit": 2,
+      "all_types_required_in_one_session": false,
+      "representative_customers": {
+        "GLADIATOR": "CASSIA_BELLAN",
+        "COLLECTOR": "ERSA_ROEN",
+        "ADVENTURER": "TBD",
+        "SOLDIER": "TBD"
+      },
+      "clarifies": "BS-V9-20260731-06",
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-ENH-20260731-01",
+      "domain": "plus_49_to_50_routes",
+      "decision": "GENERAL_PRECISION_OR_HIGH_PRECISION",
+      "routes": {
+        "GENERAL_PRECISION": {
+          "special_material_required": false,
+          "uses_existing_precision_risk": true,
+          "special_affix_granted": false,
+          "eligible_for_plus_51_and_masterworks_hall": true
+        },
+        "HIGH_PRECISION": {
+          "special_material_required": true,
+          "allowed_special_material_roles": ["CATALYST", "SPECIAL_AUXILIARY"],
+          "guaranteed_success": true,
+          "candidate_count_min": 2,
+          "candidate_count_max": 3,
+          "special_affix_granted": true,
+          "blank_result_allowed": false
+        }
+      },
+      "stored_fields": [
+        "enhancement_route_at_50",
+        "special_material_uses",
+        "special_affix_id",
+        "high_precision_evolution_id"
+      ],
+      "clarifies": "BS-V9-20260731-03",
+      "status": "USER_APPROVED"
+    },
+    {
       "decision_id": "BS-SYNC-20260731-01",
       "domain": "canonical_sync",
       "decision": "IMMEDIATE_SAME_ID_SYNC_ACROSS_GITHUB_PLANNING_DATA_AND_CONNECTED_SHEET",
@@ -87,30 +139,27 @@
   ],
   "sheet_binding": {
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
-    "decision_index_range": "02_현재_확정결정!A6:H14",
-    "audit_range": "04_누락_충돌_감사!A7:H7",
-    "change_history_range": "99_변경이력!A8:H8",
+    "decision_index_range": "02_현재_확정결정!A6:H16",
+    "audit_range": "04_누락_충돌_감사!A8:H8",
+    "change_history_range": "99_변경이력!A9:H9",
     "directly_affected_tabs": [
-      "00_프로젝트_허브",
-      "01_작업순서",
       "02_현재_확정결정",
       "04_누락_충돌_감사",
       "05_GDD_요약",
-      "12_핵심루프",
       "13_주요인물",
+      "14_조연_세력_관계",
       "20_코어경험_데모목표",
       "30_데모범위_품질기준_제작기반",
       "40_핵심시스템_메인콘텐츠",
+      "41_성장_경제",
       "50_메인콘텐츠",
       "60_UX_UI_접근성",
-      "70_아트_오디오_에셋",
       "80_데모_버티컬슬라이스_플레이테스트",
       "90_본제작_출시_사업",
       "99_변경이력"
     ],
-    "sync_status": "SYNCED_TO_DRAFT_PR81",
-    "cross_source_verification": "PASS",
-    "formula_error_recheck": "PASS_ON_DIRECTLY_AFFECTED_TABS"
+    "sync_status": "PENDING_NEW_DECISION_WRITE",
+    "cross_source_verification": "PENDING"
   },
   "main_merge": "NOT_RUN",
   "user_planning_complete": "NOT_DECLARED",
