@@ -142,7 +142,7 @@
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
-      "sha256": "216765e430662308109ea7107461e1a698b13db401f12da0957611d1b2068037"
+      "sha256": "e157f6d3d7f82dc98069ae1197d850d6a33a1ac2347dcf18998d308f8d3996e9"
     }
   },
   "validators": [
