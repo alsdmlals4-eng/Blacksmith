@@ -1,0 +1,101 @@
+{
+  "alias_resolutions": {},
+  "aliases": [],
+  "artifact_role": "PROJECT_SKILL_SNAPSHOT",
+  "base_registry": {
+    "hash_definition": "RAW_FILE_BYTES_SHA256",
+    "path": "skills/SKILL_REGISTRY.json",
+    "sha256": "e06003cb986e979aa46c06839de178c3fb9ff10bdf440e750712d90d6c5ae7bb"
+  },
+  "base_routes": [
+    {
+      "route_id": "auditing-and-refining-ui-art",
+      "skill_id": "auditing-and-refining-ui-art",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "skill_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "governing-legacy-retention-and-archives",
+      "skill_id": "governing-legacy-retention-and-archives",
+      "status": "ACTIVE"
+    }
+  ],
+  "effective_routes": {
+    "auditing-and-refining-ui-art": {
+      "route_id": "auditing-and-refining-ui-art",
+      "skill_id": "auditing-and-refining-ui-art",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "auditing-and-refining-ui-art"
+    },
+    "blacksmith-engineering": {
+      "route_id": "blacksmith-engineering",
+      "skill_id": "blacksmith-engineering",
+      "source": "PROJECT_LOCAL",
+      "status": "ACTIVE",
+      "target_route_id": "blacksmith-engineering"
+    },
+    "blacksmith-game-design": {
+      "route_id": "blacksmith-game-design",
+      "skill_id": "blacksmith-game-design",
+      "source": "PROJECT_LOCAL",
+      "status": "ACTIVE",
+      "target_route_id": "blacksmith-game-design"
+    },
+    "blacksmith-qa": {
+      "route_id": "blacksmith-qa",
+      "skill_id": "blacksmith-qa",
+      "source": "PROJECT_LOCAL",
+      "status": "ACTIVE",
+      "target_route_id": "blacksmith-qa"
+    },
+    "evaluating-godot-assets-and-plugins-before-creation": {
+      "route_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "skill_id": "evaluating-godot-assets-and-plugins-before-creation",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "evaluating-godot-assets-and-plugins-before-creation"
+    },
+    "governing-legacy-retention-and-archives": {
+      "route_id": "governing-legacy-retention-and-archives",
+      "skill_id": "governing-legacy-retention-and-archives",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "governing-legacy-retention-and-archives"
+    }
+  },
+  "generated": true,
+  "inactive_routes": [],
+  "project_registry": {
+    "hash_definition": "RAW_FILE_BYTES_SHA256",
+    "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+    "sha256": "216765e430662308109ea7107461e1a698b13db401f12da0957611d1b2068037"
+  },
+  "project_routes": [
+    {
+      "route_id": "blacksmith-engineering",
+      "skill_id": "blacksmith-engineering",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "blacksmith-game-design",
+      "skill_id": "blacksmith-game-design",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "blacksmith-qa",
+      "skill_id": "blacksmith-qa",
+      "status": "ACTIVE"
+    }
+  ],
+  "schema_version": 1,
+  "source_registry": {
+    "hash_definition": "RAW_FILE_BYTES_SHA256",
+    "path": "skills/PROJECT_BASE_ADAPTER.json",
+    "sha256": "fdcf3e3e29297617b1d9ea09b06fa192755f526a2e894cd265472f6b020fc18d"
+  }
+}
