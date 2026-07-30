@@ -2,18 +2,42 @@
 
 ```yaml
 project: Blacksmith
-sheet_status: PROJECT_SHEET_CONFIGURED
+sheet_status: SYNCED_TO_DRAFT_PR81
 spreadsheet_url: https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit
 spreadsheet_id: 1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg
 workbook_role: USER_FACING_GDD_WORKSPACE
-sheet_edit_policy: PROPOSED_SHEET_CHANGE
-base_commit: c987647d01ad2baa028a16e03d85ddfc1572a727
-last_verified_at: 2026-07-29
+sheet_edit_policy: IMMEDIATE_CANONICAL_SYNC_FOR_APPROVED_DECISIONS
+sync_contract_decision_id: BS-SYNC-20260731-01
+planning_pr: 81
+planning_branch: docs/blacksmith-v9-planning-audit
+project_main_commit_at_sync: 500a5a7960146ef229ae172cf9e127306d23f073
+base_v9_3_release_commit: 30ca6c7b5f93521f0eb0eed42d01437cd43c50ae
+last_verified_at: 2026-07-31
 ```
 
 Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐름을 사용자가 확인·수정하고 AI가 GitHub 정본·실제 구현과 함께 읽는 GDD 작업면이다.
 
+## 동기화 계약
+
+주요 변경사항과 사용자 승인 결정은 `BS-SYNC-20260731-01` 계약을 따른다.
+
+```text
+승인 결정
+→ GitHub 권위 Markdown·계획 JSON 커밋
+→ 같은 Decision ID로 Sheet 결정 인덱스·직접 영향 탭 갱신
+→ 감사·변경이력에 경로·범위·PR·커밋 기록
+→ 양쪽 재조회
+```
+
+상태 규칙:
+
+- 병합 전: `SYNCED_TO_DRAFT`와 PR·브랜치 commit을 기록
+- 병합 후: 같은 Decision ID를 `SYNCED_TO_MAIN`과 merge commit으로 갱신
+- 일부 실패: `PARTIAL_SYNC_BLOCKED`와 실패 범위를 기록
+- Draft를 main 정본으로 표시하지 않음
+
 ## 검증된 탭
+
 - `00_프로젝트_허브`
 - `01_작업순서`
 - `02_현재_확정결정`
@@ -44,10 +68,20 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐�
 
 | 의미 구조 | 프로젝트 책임 원본 |
 |---|---|
-| 핵심루프 | 단조→강화→+5 납품/+10 도전→고객·시장 환류 |
-| 핵심시스템 | `BLACKSMITH_GAME_BIBLE.md`, 강화·보호·장비 생애주기 결정 정본 |
-| 성장·경제 | 골드·보호석·완충 충전·고강화 시장 정본 |
-| 주요인물·관계 | 대장장이·고객4종·상인·검투사 기획 정본 |
+| 현행 통합 기획 | `docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md` |
+| 승인 결정 ID | `docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md`, 연결 JSON |
+| 정본 동기화 | `docs/planning/BLACKSMITH_CANONICAL_SYNC_OPERATING_CONTRACT_2026.md` |
+| 핵심루프 | 단조→강화→+5 완성/+10 도전→고객·세계 환류→+50 장기 명작 |
+| 핵심시스템 | 강화·보호·10단위 정체성·장비 생애주기 정본 |
+| 성장·경제 | +5 최초 평균 흑자, 골드·보호석·완충·고강화 미래 계약 |
+| 주요인물·관계 | 모닥·카시아 대표 세트·에르사 재사용 증명 세트 |
+| 첫 5분 UX | `docs/planning/BLACKSMITH_FIRST_FIVE_MINUTES_AND_MASTERWORKS_UX_2026.md` |
 | 이미지 계획·검수 | `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md` |
 
-GitHub에 없는 사용자 수정은 `PROPOSED_SHEET_CHANGE`로 보존하고 승인 후 양쪽을 재조회한다.
+## 편집 정책
+
+- GitHub에 없는 사용자 수정은 승인 전 `PROPOSED_SHEET_CHANGE`다.
+- 사용자가 승인하면 새 Decision ID를 부여하고 GitHub·Sheet 양쪽에 즉시 정본 동기화한다.
+- Sheet의 `+` 시작 문구는 문자열로 기록해 수식 오류를 방지한다.
+- 모든 쓰기 후 변경 범위를 재조회한다.
+- 사용자 `기획 완료` 전 제품 구현과 Codex Goal은 차단한다.
