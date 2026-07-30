@@ -90,7 +90,12 @@
     "decision_index_range": "02_현재_확정결정!A6:H14",
     "audit_range": "04_누락_충돌_감사!A7:H7",
     "change_history_range": "99_변경이력!A8:H8",
-    "sync_status": "PENDING_WRITE"
+    "directly_affected_tabs": ["00_프로젝트_허브", "01_작업순서", "02_현재_확정결정", "04_누락_충돌_감사", "05_GDD_요약", "12_핵심루프", "13_주요인물", "20_코어경험_데모목표", "30_데모범위_품질기준_제작기반", "40_핵심시스템_메인콘텐츠", "50_메인콘텐츠", "60_UX_UI_접근성", "70_아트_오디오_에셋", "80_데모_버티컬슬라이스_플레이테스트", "90_본제작_출시_사업", "99_변경이력"],
+    "sync_status": "SYNCED_TO_DRAFT_PR81",
+    "cross_source_verification": "PASS",
+    "formula_error_recheck": "PASS_ON_DIRECTLY_AFFECTED_TABS"
   },
+  "main_merge": "NOT_RUN",
+  "user_planning_complete": "NOT_DECLARED",
   "implementation_authorized": false
 }
