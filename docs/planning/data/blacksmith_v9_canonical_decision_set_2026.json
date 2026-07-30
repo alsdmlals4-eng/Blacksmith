@@ -158,8 +158,9 @@
       "90_본제작_출시_사업",
       "99_변경이력"
     ],
-    "sync_status": "PENDING_NEW_DECISION_WRITE",
-    "cross_source_verification": "PENDING"
+    "sync_status": "SYNCED_TO_DRAFT_PR81",
+    "cross_source_verification": "PASS",
+    "formula_error_recheck": "PASS_ON_DIRECTLY_AFFECTED_TABS"
   },
   "main_merge": "NOT_RUN",
   "user_planning_complete": "NOT_DECLARED",
