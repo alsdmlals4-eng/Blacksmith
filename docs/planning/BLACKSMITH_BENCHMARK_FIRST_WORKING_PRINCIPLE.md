@@ -1,6 +1,6 @@
 # Blacksmith 벤치마킹 선행 작업 원칙
 
-> 상태: `CURRENT_PROJECT_WORKING_PRINCIPLE`
+> 상태: `USER_ACCEPTED / CURRENT_PROJECT_WORKING_PRINCIPLE`
 >
 > 적용일: `2026-07-31`
 >
