@@ -1,0 +1,156 @@
+{
+  "artifact_role": "PROJECT_BASE_ADAPTER",
+  "base_release": {
+    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
+    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "repository": "alsdmlals4-eng/Base",
+    "version": "9.1.0"
+  },
+  "compatibility": {
+    "cycle": "ONE_CYCLE",
+    "legacy_inputs": {
+      "skills/BASE_V9_ADAPTER.json": "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",
+      "skills/PROJECT_BASE_SKILL_ADAPTER.json": "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json"
+    },
+    "views": [
+      "skills/BASE_V9_ADAPTER.json",
+      "skills/PROJECT_BASE_SKILL_ADAPTER.json"
+    ]
+  },
+  "gdd_sheet": {
+    "role": "USER_FACING_GDD_WORKSPACE",
+    "sync_status": "NOT_CONFIGURED"
+  },
+  "project": {
+    "engine": "Godot 4.7",
+    "repository": "alsdmlals4-eng/Blacksmith",
+    "root": "."
+  },
+  "protected_baseline": {
+    "authority_kind": "REMOTE_TRACKING_REF",
+    "authority_ref": "refs/remotes/origin/main",
+    "commit": "4b465ae92a48c1bd7e222b86234dafb507d242dc",
+    "policy_sha256": "1c36c4180b85d6bd97f4e7cdba908cc73298f529d368aa07e0dffde6e1e8ec52",
+    "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
+    "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
+    "protected_paths_pointer": "/protected_paths"
+  },
+  "protected_paths": [
+    "data/",
+    "scripts/",
+    "scenes/",
+    "assets/",
+    "addons/",
+    "project.godot"
+  ],
+  "routing": {
+    "aliases": [],
+    "base_routes": [
+      {
+        "route_id": "auditing-and-refining-ui-art",
+        "skill_id": "auditing-and-refining-ui-art",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "evaluating-godot-assets-and-plugins-before-creation",
+        "skill_id": "evaluating-godot-assets-and-plugins-before-creation",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "governing-legacy-retention-and-archives",
+        "skill_id": "governing-legacy-retention-and-archives",
+        "status": "ACTIVE"
+      }
+    ],
+    "inactive_routes": [],
+    "precedence": "PROJECT_LOCAL_THEN_BASE_SHARED",
+    "project_routes": [
+      {
+        "route_id": "blacksmith-engineering",
+        "skill_id": "blacksmith-engineering",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "blacksmith-game-design",
+        "skill_id": "blacksmith-game-design",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "blacksmith-qa",
+        "skill_id": "blacksmith-qa",
+        "status": "ACTIVE"
+      }
+    ]
+  },
+  "schema_version": 1,
+  "shared_overrides": {
+    "auditing-and-refining-ui-art": {
+      "base_main_commit": "0fd95f4513343e77fd664af2763a01b02f52545b",
+      "canonical_project_source": "docs/UX_UI_SYSTEM.md",
+      "human_status": "HUMAN_NOT_RUN",
+      "modes": [
+        "experience-contract",
+        "flow-and-information-architecture",
+        "pattern-selection",
+        "design-system-contract",
+        "godot-ui-contract",
+        "accessibility-gate",
+        "playtest-contract",
+        "runtime-ui-audit"
+      ],
+      "project_focus": [
+        "portrait Android",
+        "one-hand touch",
+        "safe area",
+        "crafting and enhancement risk",
+        "item comparison",
+        "causal result recap"
+      ],
+      "runtime_status": "NOT_RUN"
+    },
+    "evaluating-godot-assets-and-plugins-before-creation": {
+      "core_systems_not_to_outsource": [
+        "forging judgment",
+        "customer response",
+        "core economy loop"
+      ],
+      "search_focus": [
+        "mobile UI",
+        "safe area",
+        "inventory",
+        "crafting data",
+        "Android build",
+        "touch feedback"
+      ]
+    },
+    "governing-legacy-retention-and-archives": {
+      "adapter": "docs/archive/ARCHIVE_RETENTION_ADAPTER.json",
+      "current_canon_priority": [
+        "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+        "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+        "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
+      ],
+      "existing_legacy_migration": "NOT_IN_THIS_ADOPTION"
+    }
+  },
+  "skill_registry": {
+    "base": {
+      "hash_definition": "RAW_FILE_BYTES_SHA256",
+      "path": "skills/SKILL_REGISTRY.json",
+      "sha256": "e06003cb986e979aa46c06839de178c3fb9ff10bdf440e750712d90d6c5ae7bb"
+    },
+    "project": {
+      "hash_definition": "RAW_FILE_BYTES_SHA256",
+      "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+      "sha256": "216765e430662308109ea7107461e1a698b13db401f12da0957611d1b2068037"
+    }
+  },
+  "validators": [
+    "python tools/check_archive_governance.py",
+    "python -m unittest tests.test_archive_retention_governance -v",
+    "python tools/audit_project_operating_system.py",
+    "manual: Godot project parse/runtime check",
+    "manual: Android device and safe-area check when applicable",
+    "manual: UX UI human understanding and accessibility review"
+  ]
+}
