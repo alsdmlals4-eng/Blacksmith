@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "status": "USER_APPROVED_DECISIONS_CANONICAL_ID_INDEX",
+  "as_of": "2026-07-31",
+  "authority": {
+    "master": "docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md",
+    "user_decision_packet": "docs/planning/BLACKSMITH_V9_USER_DECISION_PACKET.md",
+    "decision_index": "docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md",
+    "sync_contract": "docs/planning/BLACKSMITH_CANONICAL_SYNC_OPERATING_CONTRACT_2026.md"
+  },
+  "sync_contract_decision_id": "BS-SYNC-20260731-01",
+  "decisions": [
+    {
+      "decision_id": "BS-V9-20260731-01",
+      "domain": "craftsmanship_grade",
+      "decision": "FIVE_TIERS_NORMAL_GOOD_SUPERIOR_MASTERPIECE_MASTERWORK",
+      "display_values_ko": ["보통", "양질", "우수", "명품", "걸작"],
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-V9-20260731-02",
+      "domain": "affix_model",
+      "decision": "ONE_LINEAGE_PLUS_TWO_SECONDARY",
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-V9-20260731-03",
+      "domain": "identity_milestones",
+      "decision": "GUARANTEED_CHOICE_AFTER_TEN_LEVEL_ENTRY_SUCCESS",
+      "milestones": [10, 20, 30, 40, 50],
+      "second_failure_roll": false,
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-V9-20260731-04",
+      "domain": "customer_eligibility_and_fit",
+      "decision": "CATEGORY_ELIGIBILITY_PLUS_DISCLOSED_FIT",
+      "hidden_requirement": false,
+      "auto_select": false,
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-V9-20260731-05",
+      "domain": "equipment_fate",
+      "decision": "NARRATIVE_FATE_WITHOUT_NUMERIC_DURABILITY",
+      "fate_states": ["NORMAL", "BATTLE_TRACE", "LOST", "RECOVERED", "DESTROYED"],
+      "repair_maintenance_loop": false,
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-V9-20260731-06",
+      "domain": "second_content_set",
+      "decision": "COLLECTOR_DETERMINISTIC_PIPELINE_PROOF",
+      "representative_customer": "CASSIA_BELLAN",
+      "proof_customer": "ERSA_ROEN",
+      "customer_specific_core_engine": false,
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-V9-20260731-07",
+      "domain": "future_masterworks_hall",
+      "decision": "VERIFIED_RANKING_AND_LEGACY_SHOWCASE",
+      "minimum_enhancement_level": 50,
+      "single_power_score": false,
+      "performance_rewards": false,
+      "status": "USER_APPROVED_FUTURE_PLANNING"
+    },
+    {
+      "decision_id": "BS-V9-20260731-08",
+      "domain": "benchmark_first",
+      "decision": "BENCHMARK_BEFORE_NEW_SYSTEM_CORE_RULE_CONTENT_STRUCTURE_OR_MAJOR_UX",
+      "repeat_full_research_every_task": false,
+      "reuse_recent_relevant_research": true,
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-SYNC-20260731-01",
+      "domain": "canonical_sync",
+      "decision": "IMMEDIATE_SAME_ID_SYNC_ACROSS_GITHUB_PLANNING_DATA_AND_CONNECTED_SHEET",
+      "record_change_locations": true,
+      "record_commit": true,
+      "pre_merge_status": "SYNCED_TO_DRAFT",
+      "post_merge_status": "SYNCED_TO_MAIN",
+      "status": "USER_APPROVED"
+    }
+  ],
+  "sheet_binding": {
+    "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+    "decision_index_range": "02_현재_확정결정!A6:H14",
+    "audit_range": "04_누락_충돌_감사!A7:H7",
+    "change_history_range": "99_변경이력!A8:H8",
+    "sync_status": "PENDING_WRITE"
+  },
+  "implementation_authorized": false
+}
