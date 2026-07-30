@@ -2,7 +2,7 @@
 
 ```yaml
 project: Blacksmith
-sheet_status: SYNC_UPDATE_REQUIRED_FOR_BS_CUST_AND_BS_ENH
+sheet_status: SYNCED_TO_DRAFT_PR81_CROSS_SOURCE_VERIFIED
 spreadsheet_url: https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit
 spreadsheet_id: 1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg
 workbook_role: USER_FACING_GDD_WORKSPACE
@@ -111,6 +111,18 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐�
 | 성장·경제 | +5 최초 평균 흑자, 골드·보호석·특수재료·고강화 미래 계약 |
 | 첫 5분 UX | `docs/planning/BLACKSMITH_FIRST_FIVE_MINUTES_AND_MASTERWORKS_UX_2026.md` |
 | 이미지 계획·검수 | `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md` |
+
+## 재검증 결과
+
+```text
+DECISION_ID_MATCH: PASS
+CUSTOMER_TYPE_COUNT: 4
+NAMED_CUSTOMER_MINIMUM_PER_TYPE: 2
+PLUS_50_ROUTE_COUNT: 2
+SPECIAL_MATERIAL_ROLES: CATALYST | SPECIAL_AUXILIARY
+DIRECTLY_AFFECTED_TABS_FORMULA_ERRORS: 0
+DRAFT_STATUS_DISCLOSED: PASS
+```
 
 ## 편집 정책
 
