@@ -178,7 +178,7 @@ P1 상세 설계에 앞서 다음 사례를 비교했다.
 
 상세 근거와 출처는 `BLACKSMITH_P1_CONTENT_UX_BENCHMARK_AND_DESIGN_2026.md`에서 관리한다.
 
-## 8. P1 추천 기본안
+## 8. P1 현행 기획 기본안
 
 ### 콘텐츠
 
@@ -223,7 +223,7 @@ Sheet는 사용자 `기획 완료` 후 마스터 기획에 맞춰 동기화한�
 
 ## 10. 남은 정합성 확인
 
-1. P1 추천 고유명·콘텐츠가 프로젝트 톤과 충돌하지 않는지
+1. P1 현행 고유명·콘텐츠가 프로젝트 톤과 충돌하지 않는지
 2. 초기 수식어 6+10개가 과도하거나 의미 중복인지
 3. +50 진화 후보가 특정 계보를 정답으로 만들지 않는지
 4. 카시아 경기 결과가 전투 시스템으로 확장되지 않는지
@@ -258,7 +258,7 @@ CONTRADICTION_AUDIT: COMPLETE
 USER_RECOMMENDATIONS: ACCEPTED
 BENCHMARK_FIRST_WORKING_PRINCIPLE: ACCEPTED
 P1_BENCHMARK: COMPLETE
-P1_RECOMMENDED_DEFAULTS: APPLIED_TO_PLANNING
+P1_PLANNING_DEFAULTS: INTEGRATED
 MASTER_V9_INTEGRATION: PARTIAL_PENDING_FINAL_CONSISTENCY
 GOOGLE_SHEET_SYNC: NOT_RUN
 READY_FOR_기획_완료: NO
