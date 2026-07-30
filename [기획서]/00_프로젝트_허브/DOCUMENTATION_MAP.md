@@ -27,6 +27,7 @@ AGENTS.md
 | 질문 | 현행 책임 원본 | 역할 |
 |---|---|---|
 | Blacksmith Vertical Slice v9의 현행 통합 기획은 무엇인가 | `docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md` | Base v9.3·Vertical Slice v9 기준 통합 기획 초안 |
+| 고객 4유형·유형별 복수 고객과 +50 일반/고위 정밀강화의 최신 결정은 무엇인가 | `docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md` | 벤치마킹·적대적 검토를 거친 최신 보완 권위 |
 | 사용자 승인 결정과 동일 ID 인덱스는 무엇인가 | `docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md`, `docs/planning/data/blacksmith_v9_canonical_decision_set_2026.json` | 승인 내용의 Markdown·기계 판독 정본 연결 |
 | 주요 변경·승인 결정을 어떻게 즉시 동기화하는가 | `docs/planning/BLACKSMITH_CANONICAL_SYNC_OPERATING_CONTRACT_2026.md` | Decision ID, GitHub·Sheet 쓰기 순서, 상태, 기록 의무 |
 | 남은 구조적 기획이 있는가 | `docs/planning/BLACKSMITH_REMAINING_PLANNING_STATUS_2026.md` | 구조적 미결정과 조정값·절차 분리 |
