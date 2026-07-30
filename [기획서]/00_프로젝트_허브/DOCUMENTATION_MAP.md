@@ -7,6 +7,7 @@
 - PDF와 DOCX는 사람용 파생본이며 Markdown·JSON 책임 원본을 대체하지 않는다.
 - 현재 상태는 `ACTIVE_CONTEXT.md`, 작업 순서는 `ROADMAP.md`·Issue·Plan이 책임진다.
 - 구현 작성·자동 실행·사람 검증 상태는 `docs/MVP-003_IMPLEMENTATION_STATUS.md`에서 분리한다.
+- 주요 변경·승인 결정은 같은 Decision ID로 GitHub 권위 문서·계획 데이터·연결 Google Sheet에 동기화한다.
 
 ## 시작 경로
 
@@ -25,6 +26,11 @@ AGENTS.md
 
 | 질문 | 현행 책임 원본 | 역할 |
 |---|---|---|
+| Blacksmith Vertical Slice v9의 현행 통합 기획은 무엇인가 | `docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md` | Base v9.3·Vertical Slice v9 기준 통합 기획 초안 |
+| 사용자 승인 결정과 동일 ID 인덱스는 무엇인가 | `docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md`, `docs/planning/data/blacksmith_v9_canonical_decision_set_2026.json` | 승인 내용의 Markdown·기계 판독 정본 연결 |
+| 주요 변경·승인 결정을 어떻게 즉시 동기화하는가 | `docs/planning/BLACKSMITH_CANONICAL_SYNC_OPERATING_CONTRACT_2026.md` | Decision ID, GitHub·Sheet 쓰기 순서, 상태, 기록 의무 |
+| 남은 구조적 기획이 있는가 | `docs/planning/BLACKSMITH_REMAINING_PLANNING_STATUS_2026.md` | 구조적 미결정과 조정값·절차 분리 |
+| 연결 Google Sheet의 책임·편집 정책은 무엇인가 | `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md` | Sheet ID, 탭 매핑, 즉시 동기화·검증 정책 |
 | 프로젝트가 어떤 게임인가 | `docs/superpowers/specs/2026-07-23-project-core-design.md` | 확정 코어, 불변·변경·재승인·제외 경계 |
 | 통합 게임 구조는 무엇인가 | `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md` | 코어 기반 통합 시스템 설명, 구현/계획 분리 |
 | 현재 무엇이 구현됐고 다음은 무엇인가 | `ACTIVE_CONTEXT.md` | 현재 상태, 다음 작업, 위험, 검증 상태 |
@@ -59,7 +65,9 @@ AGENTS.md
 
 ## 현재 Issue·PR
 
-- 현재 Issue: #34 · 사람·플랫폼·외부 플레이 검증까지 유지
+- 현재 기획 추적 Issue: #79
+- 현재 기획 Draft PR: #81 · `READY_FOR_USER_기획_완료_DECLARATION / NOT_MERGED`
+- 현재 구현 검증 Issue: #34 · 사람·플랫폼·외부 플레이 검증까지 유지
 - MVP-003 구현 PR: #35 · `MERGED`, merge commit `639c33611c203581c8dcbc08c85425455b16991a`
 - 합성 설계 검토: `AI_SIMULATION_COMPLETED / T6_AI_INFERENCE`
 - 사람·Android·성능·외부 플레이: `NOT_RUN`
