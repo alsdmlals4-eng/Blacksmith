@@ -10,13 +10,14 @@
 
 ## 목적
 
-사용자 승인 내용을 Decision ID로 정규화해 GitHub 권위 문서·계획 JSON·Google Sheet가 같은 결정을 참조하도록 한다.
+사용자 승인 내용을 Decision ID로 정규화해 GitHub 권위 문서·계획 JSON·Google Sheet가 같은 결정을 참조하도록 한다. 의미가 변경된 결정은 기존 ID를 덮어쓰지 않고 신규 ID로 대체 관계를 기록한다.
 
 ## 승인 결정 목록
 
 | Decision ID | 영역 | 승인 내용 | 상태 |
 |---|---|---|---|
-| `BS-V9-20260731-01` | 제작 등급 | 보통→양질→우수→명품→걸작 | USER_APPROVED |
+| `BS-V9-20260731-01` | 제작 등급 | 보통→양질→우수→명품→걸작 | `SUPERSEDED_BY_BS-GRADE-20260801-01` |
+| `BS-GRADE-20260801-01` | 제작 등급 | 보통→우수→명품→걸작 | USER_APPROVED |
 | `BS-V9-20260731-02` | 수식어 | 계보 1개 + 보조 최대 2개 | USER_APPROVED |
 | `BS-V9-20260731-03` | 이정표 | +10·20·30·40·50 성공 후 별도 실패 없이 정체성 선택 | USER_APPROVED_CLARIFIED |
 | `BS-V9-20260731-04` | 고객 거래 | 범주 거래 자격과 공개 적합도 분리 | USER_APPROVED |
@@ -34,12 +35,28 @@
 | `BS-SHELL-20260801-01` | 제품 화면 구조 | 단일 BlacksmithApp + View·Overlay 혼합 | USER_APPROVED |
 | `BS-SYNC-20260731-01` | 운영 | 승인 결정·감사 상태를 같은 ID로 GitHub·Sheet 즉시 동기화 | USER_APPROVED |
 
-## 핵심 결정 상세
+## 제작 등급 최신 정본
 
-### 제작·강화
+책임 원본:
+
+- `docs/planning/BLACKSMITH_CRAFTSMANSHIP_GRADE_CANON_2026-08-01.md`
+- `docs/planning/data/blacksmith_craftsmanship_grade_canon_2026-08-01.json`
 
 ```text
-제작 등급: 보통 → 양질 → 우수 → 명품 → 걸작
+보통 → 우수 → 명품 → 걸작
+```
+
+- 총 4단계다.
+- `양질`은 현행 등급에서 제거한다.
+- 제작 등급은 단조 완료 시 확정되는 영구 작품 정보다.
+- 강화 단계·계보·보조·+50 경로·운명 상태와 분리한다.
+- 네 등급 모두 강화·보관·판매 가능한 유효 완성품이다.
+- `전설`은 제작 등급이 아니다.
+- 내부 런타임 ID·구형 5개 ID의 변환표·확률·배율은 P0-2 마이그레이션 설계에서 별도 승인한다.
+
+## 제작·강화 나머지 계약
+
+```text
 작품 정체성: 계보 1개 + 보조 최대 2개
 ```
 
@@ -59,7 +76,7 @@
 
 일반 +50도 정상 완성품이며 +51 이상과 명작 전당 자격을 가진다.
 
-### 고객·장비 생애
+## 고객·장비 생애
 
 ```text
 고객 유형 = 수집가·모험가·검투사·군인
@@ -73,36 +90,20 @@
 - 적합도는 제작 등급·수식어·진화·연대기와 고객 가치관의 일치 이유를 공개한다.
 - 낮은 적합도도 판매 가능하며 자동 추천·자동 선택을 금지한다.
 
-### 비주얼
+## 비주얼·화면
 
 - 그림체: 스타일라이즈드 다크 포지
 - 장비가 화면의 시각적 주인공
 - 어두운 대장간·따뜻한 불빛·철·황동 UI
 - 모닥: 밝은 노랑·황금·주황 불꽃, 차분한 표정 7종, 비성장형 동반자
-- 모닥은 선택·확률·결과를 예측하거나 추천하지 않으며 장비·UI를 가리지 않는다.
-
-### 메인·제품 Shell
-
-```text
-앱 실행
-→ 별도 메인 화면
-→ 새 게임 또는 이어하기
-→ 단일 BlacksmithApp
-```
-
-- 메인 필수 메뉴: 이어하기·새 게임·설정
-- 저장 없을 때 이어하기 비활성
-- 새 게임 덮어쓰기 영향 명시
-- 메인 화면은 제품 Shell과 별도 Scene
-- 허브·단조·강화·고객·세계 결과는 같은 캠페인 상태 공유
-- 보관함·설정·ResultEnvelope는 Overlay 또는 내부 Screen
+- 별도 메인 화면 뒤 단일 `BlacksmithApp` 제품 Shell로 진입한다.
 - 화면 전환으로 상태를 재생성하거나 비가역 결과를 재추첨하지 않는다.
 
 ## 비주얼 작업안 경계
 
 `BS-VISUAL-20260731-01`은 `USER_ACCEPTED_WORKING_BASELINE`이며 최종 제품 에셋이 아니다.
 
-다음은 시안에 등장했지만 `PLACEHOLDER / NOT_CANON`이다.
+다음은 `PLACEHOLDER / NOT_CANON`이다.
 
 - 플레이어 레벨
 - 청색 보석·프리미엄 재화
@@ -118,17 +119,17 @@
 최신 기존 프로젝트 감사:
 
 - Audit ID: `BS-REPO-AUDIT-20260801-01`
-- 책임 원본: `BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md`, 연결 JSON
 - P0 10건 / P1 10건 / P2 6건
-- 방향 결정은 완료됐지만 실제 프로젝트 통합 Finding이 열려 있어 구현은 차단된다.
+- `BS-AUD-F04`의 목표 등급 구조는 `BS-GRADE-20260801-01`로 명확해졌지만 실제 main의 구형 5개 ID·분포·고객 점수·테스트 마이그레이션은 계속 열린 P0다.
 
 ## 권한
 
 ```text
 사용자 최신 결정
+→ BLACKSMITH_CRAFTSMANSHIP_GRADE_CANON_2026-08-01.md
 → BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md
 → BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md
-→ BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md
+→ BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md와 최신 Addendum
 → BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md
 → BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md
 → 본 ID 인덱스와 연결 계획 JSON
@@ -140,8 +141,7 @@
 ```text
 GITHUB_AUTHORITY: GITHUB_DRAFT_COMMITTED
 PLANNING_DATA: UPDATED
-GOOGLE_SHEET: SYNCED_TO_DRAFT_PR81
-CROSS_SOURCE_VERIFICATION: PASS
+GOOGLE_SHEET: SYNC_PENDING_THIS_DECISION
 MAIN_MERGE: NOT_RUN
 USER_기획_완료: NOT_DECLARED
 CODEX_IMPLEMENTATION: BLOCKED
