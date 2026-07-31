@@ -27,10 +27,11 @@ AGENTS.md
 | 질문 | 현행 책임 원본 | 역할 |
 |---|---|---|
 | Blacksmith Vertical Slice v9의 현행 통합 기획은 무엇인가 | `docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md` | Base v9.3·Vertical Slice v9 기준 통합 기획 초안 |
+| 기획 완료 전에 어떤 화면·상황 중간점검을 수행하는가 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md` | 필수 기준 화면 4종, 상황 P0~P3, P0 A~T Godot 구현 명세 작업 계약 |
 | 고객 4유형·유형별 복수 고객과 +50 일반/고위 정밀강화의 최신 결정은 무엇인가 | `docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md` | 벤치마킹·적대적 검토를 거친 최신 보완 권위 |
 | 사용자 승인 결정과 동일 ID 인덱스는 무엇인가 | `docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md`, `docs/planning/data/blacksmith_v9_canonical_decision_set_2026.json` | 승인 내용의 Markdown·기계 판독 정본 연결 |
 | 주요 변경·승인 결정을 어떻게 즉시 동기화하는가 | `docs/planning/BLACKSMITH_CANONICAL_SYNC_OPERATING_CONTRACT_2026.md` | Decision ID, GitHub·Sheet 쓰기 순서, 상태, 기록 의무 |
-| 남은 구조적 기획이 있는가 | `docs/planning/BLACKSMITH_REMAINING_PLANNING_STATUS_2026.md` | 구조적 미결정과 조정값·절차 분리 |
+| 남은 구조적 기획과 완료 전 Review Gate는 무엇인가 | `docs/planning/BLACKSMITH_REMAINING_PLANNING_STATUS_2026.md` | 구조적 미결정·조정값과 상황별 화면 중간점검 Gate 분리 |
 | 연결 Google Sheet의 책임·편집 정책은 무엇인가 | `docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md` | Sheet ID, 탭 매핑, 즉시 동기화·검증 정책 |
 | 프로젝트가 어떤 게임인가 | `docs/superpowers/specs/2026-07-23-project-core-design.md` | 확정 코어, 불변·변경·재승인·제외 경계 |
 | 통합 게임 구조는 무엇인가 | `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md` | 코어 기반 통합 시스템 설명, 구현/계획 분리 |
@@ -67,11 +68,12 @@ AGENTS.md
 ## 현재 Issue·PR
 
 - 현재 기획 추적 Issue: #79
-- 현재 기획 Draft PR: #81 · `READY_FOR_USER_기획_완료_DECLARATION / NOT_MERGED`
+- 현재 기획 Draft PR: #81 · `SITUATION_SCREEN_MID_CHECK_REQUIRED / NOT_MERGED`
 - 현재 구현 검증 Issue: #34 · 사람·플랫폼·외부 플레이 검증까지 유지
 - MVP-003 구현 PR: #35 · `MERGED`, merge commit `639c33611c203581c8dcbc08c85425455b16991a`
 - 합성 설계 검토: `AI_SIMULATION_COMPLETED / T6_AI_INFERENCE`
 - 사람·Android·성능·외부 플레이: `NOT_RUN`
+- Codex·제품 구현: `BLOCKED_UNTIL_기획완료_AND_검수완료`
 - Actions 자동 실행: `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`
 
 ## 역사 문서
