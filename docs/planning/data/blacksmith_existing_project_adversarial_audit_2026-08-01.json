@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "audit_id": "BS-REPO-AUDIT-20260801-01",
+  "status": "AUDIT_COMPLETE_FINDINGS_OPEN",
+  "as_of": "2026-08-01",
+  "main_commit": "500a5a7960146ef229ae172cf9e127306d23f073",
+  "authority_document": "docs/planning/BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md",
+  "scope": [
+    "OPERATING_DOCUMENTS",
+    "PROJECT_ENTRY",
+    "SCENES",
+    "SCRIPTS",
+    "RUNTIME_DATA",
+    "TESTS",
+    "SAVE_AND_ANDROID_BOUNDARIES",
+    "VISUAL_WORKING_BASELINE"
+  ],
+  "finding_counts": {
+    "P0": 10,
+    "P1": 10,
+    "P2": 6,
+    "TOTAL": 26,
+    "KEEP": 10
+  },
+  "findings": [
+    {"id":"BS-AUD-F01","priority":"P0","type":"CONFLICT","domain":"APP_ENTRY","summary":"Default run scene is enhancement test instead of approved separate main menu."},
+    {"id":"BS-AUD-F02","priority":"P0","type":"MISSING","domain":"SAVE","summary":"No persistent campaign save, continue metadata, or unresolved irreversible result recovery was found."},
+    {"id":"BS-AUD-F03","priority":"P0","type":"CONFLICT","domain":"STATE_OWNERSHIP","summary":"Enhancement test, game flow, and lifecycle PoC own separate in-memory state."},
+    {"id":"BS-AUD-F04","priority":"P0","type":"CONFLICT","domain":"CRAFTSMANSHIP_GRADE","summary":"Legacy grade ids and labels conflict with the approved five-tier grade canon."},
+    {"id":"BS-AUD-F05","priority":"P0","type":"CONFLICT","domain":"AFFIX_AND_PLUS50","summary":"Legacy three-slot decade milestones conflict with lineage plus two secondary affixes and the two +50 routes."},
+    {"id":"BS-AUD-F06","priority":"P0","type":"CONFLICT","domain":"AUTO_FORGE","summary":"Automation can cross identity and high-risk decisions with random precision and missing materials."},
+    {"id":"BS-AUD-F07","priority":"P0","type":"CONFLICT","domain":"CUSTOMERS","summary":"Customer and request flow is hardcoded to Kyle and an exact iron sword instead of four archetypes with multiple named customers and category requests."},
+    {"id":"BS-AUD-F08","priority":"P0","type":"CONFLICT","domain":"FATE_RELATIONSHIP_WORLD","summary":"Combined broken-or-lost state, global relationship, and gladiator-only outcomes cannot represent the approved model."},
+    {"id":"BS-AUD-F09","priority":"P0","type":"MISSING","domain":"RESULT_ENVELOPE","summary":"Irreversible results are fragmented and are not persisted before presentation."},
+    {"id":"BS-AUD-F10","priority":"P0","type":"IMPLIED_NOT_APPROVED","domain":"VISUAL_BOARD","summary":"The working visual board contains placeholder level, gem, shop, achievements, special crafting, inventory capacity, and location implications."},
+    {"id":"BS-AUD-F11","priority":"P1","type":"STALE","domain":"OPERATING_DOCS","summary":"Active start documents retain pre-merge PR #35 state."},
+    {"id":"BS-AUD-F12","priority":"P1","type":"CONFLICT_STALE","domain":"BASE_VERSION","summary":"Base v8, v9.1, and v9.3 references are simultaneously active."},
+    {"id":"BS-AUD-F13","priority":"P1","type":"MISSING","domain":"UI_ARCHITECTURE","summary":"Runtime-built GDScript UI lacks reusable Theme and visual Scene boundaries."},
+    {"id":"BS-AUD-F14","priority":"P1","type":"MISSING","domain":"RESPONSIVE_SAFE_AREA","summary":"Fixed widths and offsets are used and no product safe-area handling was found."},
+    {"id":"BS-AUD-F15","priority":"P1","type":"MISSING","domain":"SETTINGS","summary":"The visual settings panel is not implemented or persisted; only two PoC toggles exist."},
+    {"id":"BS-AUD-F16","priority":"P1","type":"MISSING","domain":"ANDROID_LIFECYCLE","summary":"Pause, background, process death, and Android back behavior are undefined."},
+    {"id":"BS-AUD-F17","priority":"P1","type":"CONFLICT_MISSING","domain":"STORAGE","summary":"Six-slot session storage and the placeholder 128/150 capacity do not support the approved equipment identity and ownership model."},
+    {"id":"BS-AUD-F18","priority":"P1","type":"MISSING","domain":"SALES_CHANNELS","summary":"General sale, visiting merchant, and named customer channels are not separated."},
+    {"id":"BS-AUD-F19","priority":"P1","type":"MISSING","domain":"CHRONICLE","summary":"Equipment history and per-customer relationship presentation are insufficient."},
+    {"id":"BS-AUD-F20","priority":"P1","type":"CONFLICT","domain":"TEST_MIGRATION","summary":"Current validators and tests strongly protect legacy customer, grade, and affix schemas."},
+    {"id":"BS-AUD-F21","priority":"P2","type":"PROPOSED_REVIEW","domain":"ANDROID_MAIN_MENU","summary":"The Android game exit button policy is unresolved."},
+    {"id":"BS-AUD-F22","priority":"P2","type":"PROPOSED_REVIEW","domain":"LOCATION_PRESENTATION","summary":"Market and arena images could incorrectly imply direct exploration or combat."},
+    {"id":"BS-AUD-F23","priority":"P2","type":"NOT_RUN","domain":"MODAK_VISUAL_QA","summary":"Mascot brightness, scale, and motion have not been validated on actual screens."},
+    {"id":"BS-AUD-F24","priority":"P2","type":"MISSING","domain":"ASSET_LICENSE","summary":"Final fonts, icons, art provenance, and Asset Ledger are not fixed."},
+    {"id":"BS-AUD-F25","priority":"P2","type":"MISSING","domain":"VISUAL_REGRESSION","summary":"No screenshot baseline or visual regression workflow exists for the four core screens and state variants."},
+    {"id":"BS-AUD-F26","priority":"P2","type":"MISSING","domain":"TELEMETRY","summary":"Telemetry does not cover main entry, continue, recovery, +50 routes, customer archetypes, or ResultEnvelope comprehension."}
+  ],
+  "keep_contracts": [
+    "ONE_RESULT_PER_ENHANCEMENT_INPUT",
+    "ATOMIC_RESOURCE_AND_DELIVERY_TRANSACTIONS",
+    "IDEMPOTENT_DELIVERY_AND_WORLD_EVENTS",
+    "MANUAL_IN_GAME_DAY_ADVANCE",
+    "NO_FATIGUE_PER_HAMMER_TAP",
+    "COLOR_INDEPENDENT_RESULT_EXPLANATION",
+    "PERSIST_EQUIPMENT_HISTORY_AFTER_TRANSFER",
+    "PORTRAIT_720_1280_EXPAND_BASELINE",
+    "ACCESSIBILITY_ASSIST_DOES_NOT_GRANT_PERFECT",
+    "NOT_RUN_IS_NOT_PASS"
+  ],
+  "approved_during_audit_context": [
+    "BS-MAIN-20260801-01",
+    "BS-SHELL-20260801-01"
+  ],
+  "visual_design_status": {
+    "design_id": "BS-VISUAL-20260731-01",
+    "status": "USER_ACCEPTED_WORKING_BASELINE",
+    "final_asset": false
+  },
+  "verification": {
+    "document_and_repository_read": "PASS",
+    "runtime": "NOT_RUN",
+    "android": "NOT_RUN",
+    "accessibility_human": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "external_playtest": "NOT_RUN"
+  },
+  "implementation_authorized": false,
+  "ready_for_user_planning_complete_declaration": false
+}
