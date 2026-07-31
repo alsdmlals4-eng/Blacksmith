@@ -1,10 +1,13 @@
 {
-  "schema_version": "1.2.0",
+  "schema_version": "1.3.0",
   "project": "Blacksmith",
   "status": "USER_APPROVED_DECISIONS_CANONICAL_ID_INDEX",
   "as_of": "2026-07-31",
   "authority": {
     "situation_screen_work_order": "docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md",
+    "visual_screen_work_order": "docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md",
+    "visual_design": "docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_DESIGN_V1_2026.md",
+    "art_style_and_mascot": "docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md",
     "latest_reconciliation": "docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md",
     "master": "docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md",
     "remaining_planning_status": "docs/planning/BLACKSMITH_REMAINING_PLANNING_STATUS_2026.md",
@@ -149,9 +152,42 @@
       },
       "situation_priority_levels": ["P0", "P1", "P2", "P3"],
       "p0_detail_template": "A_TO_T",
-      "mid_check_status": "REQUIRED_NOT_RUN",
+      "mid_check_status": "PASS_1_FINDINGS_OPEN",
       "base_promotion_candidate": true,
       "status": "USER_APPROVED_WORK_ORDER"
+    },
+    {
+      "decision_id": "BS-SCREEN-20260731-02",
+      "domain": "visual_situation_board_contract",
+      "decision": "VISUAL_LANGUAGE_THEN_FOUR_BASELINE_SCREENS_THEN_CORE_SEQUENCES_WITH_TECHNICAL_APPENDIX",
+      "work_order": "docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md",
+      "evidence_tags": ["CURRENT", "INFERRED", "PROPOSED", "PLACEHOLDER"],
+      "technical_appendix_decision_id": "BS-SCREEN-20260731-01",
+      "status": "USER_APPROVED_WORK_ORDER"
+    },
+    {
+      "decision_id": "BS-ART-20260731-01",
+      "domain": "project_art_style",
+      "decision": "STYLIZED_DARK_FORGE",
+      "visual_priority": "EQUIPMENT_AS_VISUAL_PROTAGONIST",
+      "lighting": "WARM_LOCAL_FIRELIGHT",
+      "character_rendering": "SIMPLIFIED_GAME_ILLUSTRATION",
+      "ui_material_language": ["IRON", "BRASS", "LIMITED_LEATHER", "LIMITED_PARCHMENT"],
+      "resolves": "DEC-VIS-03",
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-MODAK-20260731-01",
+      "domain": "mascot_visual_design",
+      "decision": "BRIGHT_FIRE_SPIRIT_WITH_C_STYLE_EXPRESSIONS",
+      "charcoal_shell": false,
+      "primary_body_colors": ["BRIGHT_YELLOW", "GOLD", "ORANGE"],
+      "dark_detail_limit_percent": 15,
+      "allowed_dark_details": ["HANDS", "FEET", "NECK_ORNAMENT", "SMALL_TRIM"],
+      "expression_set": ["CALM", "CURIOUS", "WORRIED", "JOYFUL", "SURPRISED", "SAD", "FOCUSED"],
+      "predicts_or_recommends_result": false,
+      "growth_or_buff_system": false,
+      "status": "USER_APPROVED"
     },
     {
       "decision_id": "BS-SYNC-20260731-01",
@@ -165,28 +201,25 @@
     }
   ],
   "review_gate": {
-    "gate_id": "BS-SCREEN-20260731-01",
-    "status": "REQUIRED_NOT_RUN",
+    "gate_id": "BS-MIDCHECK-20260731-01",
+    "status": "PASS_1_FINDINGS_OPEN",
+    "p0_screen_findings": 6,
+    "p1_screen_findings": 4,
+    "open_visual_decisions": ["DEC-VIS-01_APP_START", "DEC-VIS-02_PRODUCT_SHELL"],
+    "resolved_visual_decisions": ["DEC-VIS-03_ART_RENDERING_INTENSITY"],
     "ready_for_user_planning_complete_declaration": false,
     "implementation_authorized": false
   },
   "sheet_binding": {
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
-    "decision_index_range": "02_현재_확정결정!A6:H17",
-    "audit_range": "04_누락_충돌_감사!A9:H9",
-    "change_history_range": "99_변경이력!A10:H10",
-    "base_candidate_range": "98_Base_반영후보!A3:G3",
-    "directly_affected_tabs": [
-      "02_현재_확정결정",
-      "04_누락_충돌_감사",
-      "05_GDD_요약",
-      "90_본제작_출시_사업",
-      "98_Base_반영후보",
-      "99_변경이력"
-    ],
+    "decision_index_range": "02_현재_확정결정!A6:H20",
+    "art_summary_range": "05_GDD_요약!A6:H6",
+    "modak_character_range": "13_주요인물!A5:H5",
+    "ux_visual_range": "60_UX_UI_접근성!A11:H12",
+    "audit_range": "04_누락_충돌_감사!A13:H14",
+    "change_history_range": "99_변경이력!A14:H15",
     "sync_status": "SYNCED_TO_DRAFT_PR81",
-    "cross_source_verification": "PASS",
-    "formula_error_recheck": "PASS_ON_ALL_NEWLY_AFFECTED_TABS"
+    "cross_source_verification": "PENDING_FINAL_RECHECK"
   },
   "main_merge": "NOT_RUN",
   "user_planning_complete": "NOT_DECLARED",
