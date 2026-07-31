@@ -6,11 +6,12 @@ sheet_status: SYNCED_TO_DRAFT_PR81_CROSS_SOURCE_VERIFIED
 spreadsheet_url: https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit
 spreadsheet_id: 1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg
 workbook_role: USER_FACING_GDD_WORKSPACE
-sheet_edit_policy: IMMEDIATE_CANONICAL_SYNC_FOR_APPROVED_DECISIONS_AND_AUDIT_FINDINGS
+sheet_edit_policy: IMMEDIATE_CANONICAL_SYNC_FOR_APPROVED_DECISIONS_AND_SHARED_PLANNING_FINDINGS
 sync_contract_decision_id: BS-SYNC-20260731-01
 latest_customer_decision_id: BS-CUST-20260731-01
 latest_enhancement_decision_id: BS-ENH-20260731-01
-latest_screen_work_order_decision_id: BS-SCREEN-20260731-01
+latest_visual_work_order_decision_id: BS-SCREEN-20260731-02
+latest_visual_design_id: BS-VISUAL-20260731-01
 latest_screen_audit_id: BS-MIDCHECK-20260731-01
 planning_pr: 81
 planning_branch: docs/blacksmith-v9-planning-audit
@@ -19,16 +20,14 @@ base_v9_3_release_commit: 30ca6c7b5f93521f0eb0eed42d01437cd43c50ae
 last_verified_at: 2026-07-31
 ```
 
-Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐름을 사용자가 확인·수정하고 AI가 GitHub 정본·실제 구현과 함께 읽는 GDD 작업면이다.
+Google Sheets는 제작·강화·장비 연대기·고객·경제와 화면 기획의 전체 흐름을 사용자가 확인·수정하는 GDD 작업면이다.
 
 ## 동기화 계약
 
-주요 변경사항과 사용자 승인 결정은 `BS-SYNC-20260731-01` 계약을 따른다.
-
 ```text
-승인 결정 또는 공유할 감사 Finding
+승인 결정 또는 공유할 감사·설계 상태
 → GitHub 권위 Markdown·계획 JSON 커밋
-→ 같은 Decision ID 또는 Audit ID로 Sheet 결정·감사·직접 영향 탭 갱신
+→ 같은 Decision ID·Audit ID·Design ID로 Sheet 갱신
 → 변경이력에 경로·범위·PR·커밋 기록
 → 양쪽 재조회
 ```
@@ -39,9 +38,9 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐�
 - 병합 후: 같은 ID를 `SYNCED_TO_MAIN`과 merge commit으로 갱신
 - 일부 실패: `PARTIAL_SYNC_BLOCKED`와 실패 범위 기록
 - Draft를 main 정본으로 표시하지 않음
-- 승인 전 Finding은 Decision 원장이 아니라 Audit 원장에 기록
+- 승인 전 설계안은 `PROPOSED_REVIEW_REQUIRED`로 기록하고 확정 결정 원장과 분리
 
-## 최신 결정의 Sheet 전파 범위
+## 주요 ID의 Sheet 전파 범위
 
 ### BS-CUST-20260731-01
 
@@ -67,7 +66,7 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐�
 - `80_데모_버티컬슬라이스_플레이테스트`
 - `90_본제작_출시_사업`
 
-### BS-SCREEN-20260731-01
+### BS-SCREEN-20260731-01·02
 
 - `02_현재_확정결정`
 - `04_누락_충돌_감사`
@@ -83,12 +82,22 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐�
 - `90_본제작_출시_사업`
 - `99_변경이력`
 
+### BS-VISUAL-20260731-01
+
+- `04_누락_충돌_감사`: 설계 상태와 열린 시각 결정
+- `05_GDD_요약`: 필수 화면 4종·시퀀스·전환도 요약
+- `60_UX_UI_접근성`: 화면별 첫 3초 정보 위계와 상태 변형
+- `98_Base_반영후보`: 공통 비주얼 보드 템플릿 후보
+- `99_변경이력`: GitHub 경로·PR·commit·Sheet 범위
+
 ## 프로젝트 책임 매핑
 
 | 의미 구조 | 프로젝트 책임 원본 |
 |---|---|
-| 상황별 화면 작업 계약 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md` |
-| 상황별 화면 중간점검 결과 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_MID_CHECK_2026.md`, `docs/planning/data/blacksmith_situation_screen_mid_check_2026.json` |
+| 비주얼 중심 화면 작업 계약 | `docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md` |
+| 현재 비주얼 화면 설계안 | `docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_DESIGN_V1_2026.md`, 연결 JSON |
+| 기술 화면 작업 계약 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md` |
+| 실제 파일 중간점검 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_MID_CHECK_2026.md`, 연결 JSON |
 | 최신 고객·+50 정합화 | `docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md` |
 | 현행 통합 기획 | `docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md` |
 | 승인 결정 ID | `docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md`, 연결 JSON |
@@ -96,46 +105,34 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐�
 | 핵심루프 | 단조→강화→+5 완성/+10 도전→고객·세계 환류→+50 장기 명작 |
 | +50 강화 | 일반 정밀강화 또는 특수재료 기반 고위 정밀강화 |
 | 고객 구조 | 수집가·모험가·검투사·군인 4유형 × 유형별 복수 이름 고객 |
-| 기준 화면 | 대장간 허브 / 단조·강화 작업대 / 보관함·자원 관리 / 제작·강화·고객·세계 결과 |
-| 성장·경제 | +5 최초 평균 흑자, 골드·보호석·특수재료·고강화 미래 계약 |
+| 필수 화면 | 대장간 허브 / 단조·강화 작업대 / 보관함·자원 관리 / 결과·연대기 |
 | 첫 5분 UX | `docs/planning/BLACKSMITH_FIRST_FIVE_MINUTES_AND_MASTERWORKS_UX_2026.md` |
 | 이미지 계획·검수 | `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md` |
 
-## 중간점검 1차 결과
+## 현재 화면 기획 상태
 
 ```text
 SITUATION_SCREEN_MID_CHECK: PASS_1_FINDINGS_OPEN
+VISUAL_BOARD_DESIGN_DRAFT: COMPLETE
+VISUAL_BOARD_ADVERSARIAL_SELF_REVIEW: PASS
 P0_SCREEN_FINDINGS: 6
 P1_SCREEN_FINDINGS: 4
-USER_DECISIONS_REQUIRED: 2
+USER_VISUAL_DECISIONS_REQUIRED: 3
 READY_FOR_USER_기획_완료_DECLARATION: NO_FINDINGS_OPEN
 CODEX_IMPLEMENTATION: BLOCKED
 ```
 
-대표 실제 충돌:
+열린 시각 결정:
 
-- 기본 F5 진입은 제품 허브가 아니라 강화 테스트 Scene
-- 최신 +50 일반/고위 정밀강화와 구형 세 번째 수식어 슬롯 데이터 충돌
-- 고객·세계 결과가 카일·검투사에 하드코딩
-- 결과 화면과 저장·복귀 Shell이 제품 공통 계약으로 통합되지 않음
-
-## 재검증 결과
-
-```text
-DECISION_ID_MATCH: PASS
-AUDIT_ID_MATCH: PASS
-CUSTOMER_TYPE_COUNT: 4
-NAMED_CUSTOMER_MINIMUM_PER_TYPE: 2
-PLUS_50_ROUTE_COUNT: 2
-SPECIAL_MATERIAL_ROLES: CATALYST | SPECIAL_AUXILIARY
-DRAFT_STATUS_DISCLOSED: PASS
-```
+1. 저장 복구 후 대장간 허브 즉시 진입 여부
+2. 단일 App Shell + 상태 View·Overlay 혼합 여부
+3. 스타일라이즈드 2D 일러스트 기반 최종 아트 렌더링 강도
 
 ## 편집 정책
 
 - GitHub에 없는 사용자 수정은 승인 전 `PROPOSED_SHEET_CHANGE`다.
 - 사용자가 승인하면 새 Decision ID를 부여하고 GitHub·Sheet 양쪽에 즉시 정본 동기화한다.
-- 감사 Finding은 Audit ID로 기록하고, 사용자 승인 시 별도 Decision ID로 승격한다.
+- 감사 Finding은 Audit ID, 승인 전 설계안은 Design ID로 분리한다.
 - Sheet의 `+` 시작 문구는 문자열로 기록해 수식 오류를 방지한다.
 - 모든 쓰기 후 변경 범위를 재조회한다.
 - 사용자 `기획 완료` 전 제품 구현과 Codex Goal은 차단한다.
