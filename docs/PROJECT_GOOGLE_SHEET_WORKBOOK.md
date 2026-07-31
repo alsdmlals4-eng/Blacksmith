@@ -10,6 +10,7 @@ sheet_edit_policy: IMMEDIATE_CANONICAL_SYNC_FOR_APPROVED_DECISIONS
 sync_contract_decision_id: BS-SYNC-20260731-01
 latest_customer_decision_id: BS-CUST-20260731-01
 latest_enhancement_decision_id: BS-ENH-20260731-01
+latest_screen_work_order_decision_id: BS-SCREEN-20260731-01
 planning_pr: 81
 planning_branch: docs/blacksmith-v9-planning-audit
 project_main_commit_at_sync: 500a5a7960146ef229ae172cf9e127306d23f073
@@ -64,43 +65,25 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐�
 - `80_데모_버티컬슬라이스_플레이테스트`
 - `90_본제작_출시_사업`
 
+### BS-SCREEN-20260731-01
+
+- `02_현재_확정결정`
+- `04_누락_충돌_감사`
+- `05_GDD_요약`
+- `90_본제작_출시_사업`
+- `98_Base_반영후보`
+- `99_변경이력`
+
 공통 감사·이력:
 
 - `04_누락_충돌_감사`
-- `99_변경이력`
-
-## 검증된 탭
-
-- `00_프로젝트_허브`
-- `01_작업순서`
-- `02_현재_확정결정`
-- `03_근거_라이브러리`
-- `04_누락_충돌_감사`
-- `05_GDD_요약`
-- `10_제품방향`
-- `11_세계관`
-- `12_핵심루프`
-- `13_주요인물`
-- `14_조연_세력_관계`
-- `15_조작_게임규칙`
-- `20_코어경험_데모목표`
-- `30_데모범위_품질기준_제작기반`
-- `40_핵심시스템_메인콘텐츠`
-- `41_성장_경제`
-- `50_메인콘텐츠`
-- `60_UX_UI_접근성`
-- `70_아트_오디오_에셋`
-- `71_이미지기획_생성목록`
-- `72_이미지검수_승인로그`
-- `80_데모_버티컬슬라이스_플레이테스트`
-- `90_본제작_출시_사업`
-- `98_Base_반영후보`
 - `99_변경이력`
 
 ## 프로젝트 책임 매핑
 
 | 의미 구조 | 프로젝트 책임 원본 |
 |---|---|
+| 상황별 화면 중간점검 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md` |
 | 최신 고객·+50 정합화 | `docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md` |
 | 현행 통합 기획 | `docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md` |
 | 승인 결정 ID | `docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md`, 연결 JSON |
@@ -108,6 +91,7 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐�
 | 핵심루프 | 단조→강화→+5 완성/+10 도전→고객·세계 환류→+50 장기 명작 |
 | +50 강화 | 일반 정밀강화 또는 특수재료 기반 고위 정밀강화 |
 | 고객 구조 | 수집가·모험가·검투사·군인 4유형 × 유형별 복수 이름 고객 |
+| 기준 화면 초기 대응 | 대장간 허브 / 단조·강화 작업대 / 보관함·자원 관리 / 강화·고객·세계 결과 |
 | 성장·경제 | +5 최초 평균 흑자, 골드·보호석·특수재료·고강화 미래 계약 |
 | 첫 5분 UX | `docs/planning/BLACKSMITH_FIRST_FIVE_MINUTES_AND_MASTERWORKS_UX_2026.md` |
 | 이미지 계획·검수 | `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md` |
@@ -120,7 +104,8 @@ CUSTOMER_TYPE_COUNT: 4
 NAMED_CUSTOMER_MINIMUM_PER_TYPE: 2
 PLUS_50_ROUTE_COUNT: 2
 SPECIAL_MATERIAL_ROLES: CATALYST | SPECIAL_AUXILIARY
-DIRECTLY_AFFECTED_TABS_FORMULA_ERRORS: 0
+SITUATION_SCREEN_MID_CHECK: REQUIRED_NOT_RUN
+READY_FOR_USER_기획_완료_DECLARATION: NO_PENDING_MID_CHECK
 DRAFT_STATUS_DISCLOSED: PASS
 ```
 
@@ -131,3 +116,4 @@ DRAFT_STATUS_DISCLOSED: PASS
 - Sheet의 `+` 시작 문구는 문자열로 기록해 수식 오류를 방지한다.
 - 모든 쓰기 후 변경 범위를 재조회한다.
 - 사용자 `기획 완료` 전 제품 구현과 Codex Goal은 차단한다.
+- `BS-SCREEN-20260731-01` 중간점검 완료 전 `READY_FOR_USER_기획_완료_DECLARATION`으로 복귀하지 않는다.
