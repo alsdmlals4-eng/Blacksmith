@@ -1,6 +1,6 @@
 # Blacksmith 남은 기획 항목 판정
 
-> 상태: `CURRENT_PLANNING_STATUS / VISUAL_BOARD_DRAFT_COMPLETE / FINDINGS_OPEN`
+> 상태: `CURRENT_PLANNING_STATUS / ART_AND_MODAK_APPROVED / FINDINGS_OPEN`
 >
 > 기준일: `2026-07-31`
 >
@@ -20,16 +20,18 @@ GAME_RULE_P1_UNDECIDED: 0
 SCREEN_FLOW_P0_FINDINGS: 6
 SCREEN_FLOW_P1_FINDINGS: 4
 VISUAL_BOARD_DESIGN_DRAFT: COMPLETE
-VISUAL_DECISIONS_REQUIRED: 3
+ART_STYLE_DECISION: APPROVED
+MODAK_VISUAL_DECISION: APPROVED
+VISUAL_DECISIONS_REQUIRED: 2
 CODEX_IMPLEMENTATION: BLOCKED
 ```
 
-`BS-SCREEN-20260731-02`에 따라 비주얼 중심 화면 설계를 수행했고, 결과는 다음 문서가 책임진다.
+그림체와 모닥은 다음 정본이 책임진다.
 
-- `docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_DESIGN_V1_2026.md`
-- `docs/planning/data/blacksmith_visual_situation_board_design_v1_2026.json`
+- `docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`
+- `docs/planning/data/blacksmith_art_style_and_modak_canon_2026.json`
 
-현재는 화면 설계 초안과 적대적 자체 검토가 완료된 상태이며, 사용자 시각 결정 3건이 열려 있으므로 `기획 완료` 선언 가능 후보가 아니다.
+비주얼 화면 설계 초안은 완료됐으며, 앱 시작 방식과 제품 Shell 결정 2건이 열려 있으므로 아직 `기획 완료` 선언 가능 후보는 아니다.
 
 ## 2. 완료된 구조적 게임 기획
 
@@ -51,7 +53,34 @@ CODEX_IMPLEMENTATION: BLOCKED
 - 벤치마킹 선행 원칙
 - 승인 결정·공유 Finding의 즉시 정본 동기화 원칙
 
-## 3. 완료된 화면·비주얼 기획 범위
+## 3. 승인된 시각 방향
+
+### BS-ART-20260731-01
+
+프로젝트 그림체는 **스타일라이즈드 다크 포지**로 고정한다.
+
+- 어두운 대장간과 따뜻한 불빛
+- 장비가 화면의 시각적 주인공
+- 충분한 금속·목재·가죽 물성
+- 캐릭터는 단순화된 게임 일러스트
+- 철·황동 UI를 암시하되 가독성 우선
+- 밝은 캐주얼 공방풍·완전 반실사·일반 판타지 UI 제외
+
+### BS-MODAK-20260731-01
+
+모닥은 **C안의 차분한 표정 + 밝은 불 정령 몸체**로 고정한다.
+
+- 숯 껍질 몸체 폐기
+- 노랑·황금·주황 불꽃이 주재질
+- 어두운 색은 손·발·목 장식 등 15% 이하 보조 요소
+- 기본·호기심·걱정·기쁨·놀람·슬픔·집중 표정
+- 항상 웃는 유아형 캐릭터 금지
+- 확률·결과·선택을 예측하거나 추천하지 않음
+- 장비와 UI를 가리지 않는 비성장형 동반자
+
+대화에서 승인한 이미지는 방향 확인용 콘셉트 레퍼런스이며 최종 제품 에셋 제작은 아직 실행하지 않았다.
+
+## 4. 완료된 화면·비주얼 기획 범위
 
 ### 실제 파일 중간점검
 
@@ -77,7 +106,7 @@ CODEX_IMPLEMENTATION: BLOCKED
 
 모든 화면과 요소는 `CURRENT / INFERRED / PROPOSED / PLACEHOLDER`로 구분한다.
 
-## 4. 열린 P0 Finding
+## 5. 열린 P0 Finding
 
 1. `BS-SCR-F01` — F5 진입이 강화 테스트이며 제품 메인 허브가 없음
 2. `BS-SCR-F02` — 최신 +50 두 경로와 구형 10단위 특수 강화·세 번째 수식어 슬롯 충돌
@@ -86,16 +115,16 @@ CODEX_IMPLEMENTATION: BLOCKED
 5. `BS-SCR-F05` — 앱 종료·복귀·미확인 결과를 책임지는 영속 Save Shell이 실제 화면 경로에서 미확인
 6. `BS-SCR-F06` — 주요 UI가 런타임 GDScript 조립이라 Scene 재사용·시각 검수 경계가 불명확
 
-비주얼 설계 초안은 각 Finding의 목표 화면·상태 전환·공통 UI 방향을 제안했지만, 사용자 승인 전에는 Finding을 닫지 않는다.
+비주얼 설계 초안은 각 Finding의 목표 화면·상태 전환·공통 UI 방향을 제안했지만, 앱 시작·제품 Shell 승인 전에는 관련 Finding을 닫지 않는다.
 
-## 5. 열린 P1 Finding
+## 6. 열린 P1 Finding
 
 1. `BS-SCR-F07` — 보관함이 무기 6칸·세션 메모리 구조로 최신 작품·소유권·고객 비교를 표현하지 못함
 2. `BS-SCR-F08` — 접근성 Overlay의 실기기·포커스·노치 검증 미실행
 3. `BS-SCR-F09` — 4개 정보를 수평 배치한 Workshop HUD의 작은 폭·텍스트 확대 과밀 위험
 4. `BS-SCR-F10` — 구형 제작 등급·수식어·강화 데이터가 최신 정본과 다름
 
-## 6. 사용자 확인이 필요한 시각 결정
+## 7. 사용자 확인이 필요한 시각 결정
 
 ### DEC-VIS-01 — 앱 시작 방식
 
@@ -120,18 +149,12 @@ CODEX_IMPLEMENTATION: BLOCKED
 
 대안은 기능마다 완전한 별도 Scene으로 교체하는 방식이다.
 
-### DEC-VIS-03 — 최종 아트 렌더링 강도
+### 해결된 결정
 
-**권장안**
+- `DEC-VIS-03` 최종 아트 렌더링 강도 → `BS-ART-20260731-01`로 해결
+- 모닥 외형 → `BS-MODAK-20260731-01`로 해결
 
-- 배경·장비: 질감이 읽히는 스타일라이즈드 2D 일러스트
-- 고객: 과도한 반실사보다 단순화된 게임 일러스트 반신
-- 모닥: 작고 단순한 상징 마스코트
-- UI: 철·황동 재질을 암시하되 실제 금속 텍스처 과다 사용 금지
-
-실제 제품 아트가 없으므로 현재 상태는 `PROPOSED`다.
-
-## 7. 남아 있으나 구조 결정을 막지 않는 조정값
+## 8. 남아 있으나 구조 결정을 막지 않는 조정값
 
 ### 밸런스
 
@@ -148,7 +171,7 @@ CODEX_IMPLEMENTATION: BLOCKED
 - 유형별 두 번째 이상 이름 고객 프로필
 - 특수재료 이름·획득 서사
 - 최종 대사·연대기 문장 풀
-- 모닥·카시아·에르사와 장비 최종 아트 시트
+- 승인 방향에 따른 모닥·카시아·에르사·장비 최종 아트 시트 제작
 
 ### 플랫폼·운영
 
@@ -156,12 +179,12 @@ CODEX_IMPLEMENTATION: BLOCKED
 - 최소 OS·메모리·발열 기준
 - 미래 명작 전당 서버·시즌·신고·법무 정책
 
-## 8. 다음 절차
+## 9. 다음 절차
 
 ```text
-사용자 DEC-VIS-01·02·03 확인
+사용자 DEC-VIS-01·02 확인
 → 승인 Decision ID 발급·GitHub·계획 JSON·Sheet 즉시 동기화
-→ 비주얼 화면 명세 v1 확정본 갱신
+→ 비주얼 화면 명세 확정본 갱신
 → P0 Finding 대응 정본 연결
 → 적대적 검토 Pass 2
 → 화면 흐름 P0 Finding 0건 판정
@@ -173,17 +196,19 @@ CODEX_IMPLEMENTATION: BLOCKED
 → 별도 Codex Goal·구현 Issue
 ```
 
-## 9. 현재 Gate
+## 10. 현재 Gate
 
 ```text
 STRUCTURAL_GAME_PLANNING_REMAINING: NONE
 SITUATION_SCREEN_MID_CHECK: PASS_1_FINDINGS_OPEN
 VISUAL_BOARD_DESIGN_DRAFT: COMPLETE
 VISUAL_BOARD_ADVERSARIAL_SELF_REVIEW: PASS
+ART_STYLE_DECISION: USER_APPROVED
+MODAK_VISUAL_DECISION: USER_APPROVED
 P0_SCREEN_FINDINGS: 6
 P1_SCREEN_FINDINGS: 4
-USER_VISUAL_DECISIONS_REQUIRED: 3
-VISUAL_BOARD_IMAGE_PRODUCTION: NOT_RUN
+USER_VISUAL_DECISIONS_REQUIRED: 2
+FINAL_PRODUCT_ART_ASSETS: NOT_RUN
 READY_FOR_USER_기획_완료_DECLARATION: NO_FINDINGS_OPEN
 USER_기획_완료: NOT_DECLARED
 USER_검수_완료: NOT_DECLARED
