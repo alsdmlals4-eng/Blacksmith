@@ -2,7 +2,7 @@
 
 > Decision ID: `BS-GRADE-20260801-02`
 >
-> 상태: `USER_APPROVED / CANONICAL`
+> 상태: `USER_APPROVED / CANONICAL / CROSS_SOURCE_VERIFIED`
 >
 > 기준일: `2026-08-01`
 >
@@ -125,7 +125,19 @@ PERFECT     / 완벽한
 - 표시명만 바꾸고 고객 점수·테스트를 구형 ID에 남겨두는 부분 마이그레이션을 금지한다.
 - 구형 `PERFECT`를 신규 `전설`로 연결할지는 P0-2 변환표에서 명시적으로 승인한다.
 
-## 8. 현재 Gate
+## 8. 동기화 위치
+
+```text
+GitHub Draft PR: #81
+Google Sheet 결정: 02_현재_확정결정!A24:H24
+Google Sheet 감사: 04_누락_충돌_감사!A18:H18
+Google Sheet GDD: 05_GDD_요약!A4:H4
+Google Sheet 마이그레이션 Gate: 40_핵심시스템_메인콘텐츠!A8:H8
+Google Sheet 변경이력: 99_변경이력!A20:H20
+CROSS_SOURCE_VERIFICATION: PASS
+```
+
+## 9. 현재 Gate
 
 ```text
 GRADE_DISPLAY_MODEL: USER_APPROVED
