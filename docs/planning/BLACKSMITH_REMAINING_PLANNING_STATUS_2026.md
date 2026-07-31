@@ -16,7 +16,7 @@
 
 ```text
 GAME_RULE_P0_BLOCKER: 0
-GRADE_RULE_DECISION: RESOLVED_BY_BS-GRADE-20260801-01
+GRADE_RULE_DECISION: RESOLVED_BY_BS-GRADE-20260801-02
 GRADE_RUNTIME_MIGRATION: OPEN
 REPOSITORY_AUDIT: COMPLETE
 P0_FINDINGS: 10
@@ -49,7 +49,7 @@ CODEX_IMPLEMENTATION: BLOCKED
 - Android 세로형 대장간 제작·강화·장비 생애 RPG
 - 단조→강화→멈춤/도전→고객 인계→세계 결과→연대기
 - +5/+10 일상 작품 루프와 +50 장기 명작 루프
-- 제작 등급 4단계: 보통→우수→명품→걸작
+- 제작 등급 5단계: 보통→우수→명품→걸작→전설
 - 계보 1개 + 보조 최대 2개
 - +10·20·30·40 정체성 이정표
 - +49→+50 일반 정밀강화·고위 정밀강화 이원화
@@ -72,10 +72,13 @@ BS-V9-20260731-01: 보통→양질→우수→명품→걸작
 STATUS: SUPERSEDED
 
 BS-GRADE-20260801-01: 보통→우수→명품→걸작
+STATUS: SUPERSEDED
+
+BS-GRADE-20260801-02: 보통→우수→명품→걸작→전설
 STATUS: USER_APPROVED / CURRENT
 ```
 
-`양질`은 현행 제작 등급에서 제거됐다. 내부 런타임 ID와 구형 5개 ID의 변환표는 아직 승인 전이다.
+`양질`은 현행 제작 등급에서 제거됐고 `전설`은 최상위 제작 등급으로 추가됐다. 내부 런타임 ID와 구형 5개 ID의 변환표는 아직 승인 전이다.
 
 ## 3. 현재 비주얼 기준안 상태
 
@@ -108,7 +111,7 @@ STATUS: USER_APPROVED / CURRENT
 1. `BS-AUD-F01` — 기본 실행 Scene이 강화 테스트이며 별도 메인 화면이 없음
 2. `BS-AUD-F02` — 영속 세이브·이어하기·미확인 결과 복구 없음
 3. `BS-AUD-F03` — 강화 테스트·게임 흐름·장비 생애 PoC가 서로 다른 메모리 상태 소유
-4. `BS-AUD-F04` — 목표 등급은 4단계로 해결됐으나 구형 5개 런타임 ID·분포·고객 점수·저장·테스트 마이그레이션이 열림
+4. `BS-AUD-F04` — 목표 등급은 5단계로 해결됐으나 구형 5개 런타임 ID·표시명·분포·고객 점수·저장·테스트 마이그레이션이 열림
 5. `BS-AUD-F05` — 구형 3수식어 슬롯·10단위 특수 강화와 최신 계보·보조·+50 이원화 충돌
 6. `BS-AUD-F06` — 자동 단조가 정밀·재료·이정표·고위험 선택을 건너뜀
 7. `BS-AUD-F07` — 고객·요청·화면이 카일·철검에 하드코딩
@@ -116,7 +119,7 @@ STATUS: USER_APPROVED / CURRENT
 9. `BS-AUD-F09` — 공통 ResultEnvelope와 비가역 결과 영속 저장 없음
 10. `BS-AUD-F10` — 비주얼 시안의 미승인 시스템이 CURRENT처럼 오해될 위험
 
-`BS-AUD-F04`는 규칙 미결정이 아니라 **구현·데이터 이전 미설계** Finding이다. 따라서 P0 건수는 아직 줄지 않는다.
+`BS-AUD-F04`는 규칙 미결정이 아니라 **구형 5개 값과 신규 5개 값의 의미·표시·저장 이전 미설계** Finding이다. 따라서 P0 건수는 아직 줄지 않는다.
 
 ## 5. 열린 P1 Finding
 
@@ -150,13 +153,13 @@ STATUS: USER_APPROVED / CURRENT
 - 색상 외 문구·숫자·원인 표시
 - 판매 후 장비 기록 보존
 - 720×1280 세로형·Expand 기준
-- 접근성 보조가 PERFECT를 자동 제공하지 않는 경계
+- 접근성 보조가 최고 제작 등급을 자동 제공하지 않는 경계
 - 미실행 검사를 PASS로 표시하지 않는 원칙
 
 ## 8. 다음 기획 작업
 
 ```text
-현재: 제작 등급 4단계 정본 동기화
+현재: 제작 등급 5단계 정본 동기화
 → P0-1 세이브·이어하기·ResultEnvelope 계약
 → P0-2 신규 등급 ID·legacy 변환표·계보·보조·+50 데이터 마이그레이션 계약
 → P0-3 고객 4유형 공통 데이터·화면 계약
@@ -172,7 +175,8 @@ STATUS: USER_APPROVED / CURRENT
 ```text
 STRUCTURAL_GAME_DIRECTION: COMPLETE
 GRADE_RULE_DECISION: USER_APPROVED
-GRADE_TIER_COUNT: 4
+GRADE_TIER_COUNT: 5
+GRADE_ORDER: 보통 > 우수 > 명품 > 걸작 > 전설
 GRADE_RUNTIME_MIGRATION: USER_REVIEW_REQUIRED
 USER_VISUAL_DECISIONS_REQUIRED: 0
 REPOSITORY_ADVERSARIAL_AUDIT: COMPLETE
