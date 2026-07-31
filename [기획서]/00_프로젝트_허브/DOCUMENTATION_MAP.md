@@ -8,6 +8,7 @@
 - 현재 상태는 `ACTIVE_CONTEXT.md`, 작업 순서는 `ROADMAP.md`·Issue·Plan이 책임진다.
 - 구현 작성·자동 실행·사람 검증 상태는 `docs/MVP-003_IMPLEMENTATION_STATUS.md`에서 분리한다.
 - 주요 변경·승인 결정은 같은 Decision ID로 GitHub 권위 문서·계획 데이터·연결 Google Sheet에 동기화한다.
+- 기존 승인 의미가 바뀌면 기존 ID를 덮어쓰지 않고 신규 ID와 `supersedes` 관계를 기록한다.
 - 승인 전 설계는 Design ID, 감사 Finding은 Audit ID로 승인 결정과 분리한다.
 - 비주얼 보드의 이미지 예시는 시스템 정본이 아니며, 승인 문서가 명시한 항목만 CURRENT가 된다.
 
@@ -28,9 +29,11 @@ AGENTS.md
 
 | 질문 | 현행 책임 원본 | 역할 |
 |---|---|---|
-| Blacksmith Vertical Slice v9의 현행 통합 기획은 무엇인가 | `docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md` | Base v9.3·Vertical Slice v9 기준 통합 기획 초안 |
+| Blacksmith의 현행 제작 등급은 무엇인가 | `docs/planning/BLACKSMITH_CRAFTSMANSHIP_GRADE_CANON_2026-08-01.md`, 연결 JSON | `BS-GRADE-20260801-01`; 보통→우수→명품→걸작 4단계, 구형 5단계 결정 대체 |
+| Blacksmith Vertical Slice v9의 현행 통합 기획은 무엇인가 | `docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md` | Base v9.3·Vertical Slice v9 통합 초안. 제작 등급은 최신 별도 정본이 우선 |
 | 승인된 별도 메인 화면과 제품 Shell은 무엇인가 | `docs/planning/BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md`, 연결 JSON | `BS-MAIN-20260801-01`, `BS-SHELL-20260801-01`, 시각 보드 승인 범위와 Placeholder 경계 |
-| 기존 프로젝트 적대적 감사에서 무엇이 발견됐는가 | `docs/planning/BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md`, 연결 JSON | main 문서·Scene·Script·Data·Test 대조, P0 10·P1 10·P2 6 Finding |
+| 기존 프로젝트 적대적 감사에서 무엇이 발견됐는가 | `docs/planning/BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md`, 연결 JSON, 최신 Addendum | main 문서·Scene·Script·Data·Test 대조, P0 10·P1 10·P2 6 Finding |
+| 제작 등급 감사 목표가 어떻게 갱신됐는가 | `docs/planning/BLACKSMITH_EXISTING_PROJECT_AUDIT_ADDENDUM_GRADE_2026-08-01.md` | F04 목표를 4단계로 변경하되 실제 런타임·저장·테스트 마이그레이션은 계속 OPEN |
 | 비주얼 중심 화면 보드는 어떤 형식으로 작성하는가 | `docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md` | PART A~D, 필수 화면, 근거 태그, 적대적 검토 상위 계약 |
 | 현재 비주얼 화면 작업 기준은 무엇인가 | `docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_DESIGN_V1_2026.md`, 연결 JSON, `BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md` | 화면·시퀀스 설계와 `USER_ACCEPTED_WORKING_BASELINE` 승인 범위 연결 |
 | 프로젝트 그림체와 모닥의 승인된 최신 방향은 무엇인가 | `docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`, 연결 JSON | 스타일라이즈드 다크 포지와 밝은 불 정령 모닥의 사용자 승인 정본 |
@@ -51,8 +54,9 @@ AGENTS.md
 | 어떤 순서로 구현했는가 | `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md` | Task 1~9 구현계획 이력 |
 | Actions 비용·실행 정책은 무엇인가 | `docs/CI_EXECUTION_POLICY.md` | 변경 유형별 CI와 main/nightly 정책 |
 | 수동 Godot 검증 경로는 무엇인가 | `docs/GODOT_PLAYTEST.md` | 기존 Prototype·장비 생애 PoC 사람 검증 절차 |
-| 과거 최종 적대적 검토 증거는 무엇인가 | `docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md` | 당시 PoC 범위의 검토 이력. 최신 v9 감사는 `BS-REPO-AUDIT-20260801-01` 우선 |
+| 과거 최종 적대적 검토 증거는 무엇인가 | `docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md` | 당시 PoC 범위의 검토 이력. 최신 v9 감사가 우선 |
 | 현재 main 강화 수치와 위험은 무엇인가 | `data/crafting/enhancement_balance.json` | 구형 구현 수치. 최신 v9 마이그레이션 전까지 구현 사실만 책임 |
+| 현재 main 제작 등급 데이터는 무엇인가 | `data/crafting/craftsmanship_grades.json` | 구형 5개 런타임 ID 구현 사실. 현행 제품 목표는 `BS-GRADE-20260801-01`; `BS-AUD-F04`로 충돌 추적 |
 | 현재 main 수식어 이정표는 무엇인가 | `data/crafting/enhancement_milestones.json` | 구형 3슬롯 구현 데이터. `BS-AUD-F05`로 충돌 추적 |
 | Base 기준은 무엇인가 | `docs/BASE_RULES_VERSION.md`, `skills/PROJECT_BASE_ADAPTER.json` | 버전 표기 drift는 `BS-AUD-F12`로 추적하며 Draft 목표는 Base v9.3 |
 | Base 적용 검증은 무엇인가 | `docs/BASE_ADOPTION_AUDIT.md` | Base 기능 매핑과 CI 증거 |
@@ -73,6 +77,8 @@ AGENTS.md
 - 현재 기획 추적 Issue: #79
 - 현재 기획 Draft PR: #81 · `REPOSITORY_AUDIT_COMPLETE / FINDINGS_OPEN / NOT_MERGED`
 - 최신 감사: `BS-REPO-AUDIT-20260801-01` · P0 10·P1 10·P2 6
+- 최신 제작 등급: `BS-GRADE-20260801-01` · 보통→우수→명품→걸작
+- 구형 제작 등급 결정: `BS-V9-20260731-01 / SUPERSEDED`
 - 승인된 화면 결정: `BS-MAIN-20260801-01`, `BS-SHELL-20260801-01`
 - 승인된 시각 결정: `BS-ART-20260731-01`, `BS-MODAK-20260731-01`
 - 비주얼 보드: `BS-VISUAL-20260731-01 / USER_ACCEPTED_WORKING_BASELINE / FINAL_ASSET_NO`
@@ -83,4 +89,4 @@ AGENTS.md
 
 ## 역사 문서
 
-`CHANGELOG.md`, 과거 Decision, 닫힌 Issue·PR은 당시 사실을 보존한다. 역사 표현은 현행 정본으로 사용하지 않으며, 활성 시작 문서가 역사 상태를 현재 상태처럼 가리키면 `BS-AUD-F11` 결함이다.
+`CHANGELOG.md`, 과거 Decision, 닫힌 Issue·PR은 당시 사실을 보존한다. 역사 표현은 현행 정본으로 사용하지 않으며, 활성 시작 문서가 역사 상태를 현재 상태처럼 가리키면 `BS-AUD-F11` 결함이다. `BS-V9-20260731-01`의 5단계 제작 등급은 이력으로만 유지하고 현행 질문에는 `BS-GRADE-20260801-01`을 사용한다.
