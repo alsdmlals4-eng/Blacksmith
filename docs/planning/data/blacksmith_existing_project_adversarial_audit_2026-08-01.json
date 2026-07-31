@@ -1,11 +1,14 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "project": "Blacksmith",
   "audit_id": "BS-REPO-AUDIT-20260801-01",
   "status": "AUDIT_COMPLETE_FINDINGS_OPEN",
   "as_of": "2026-08-01",
   "main_commit": "500a5a7960146ef229ae172cf9e127306d23f073",
   "authority_document": "docs/planning/BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md",
+  "addenda": [
+    "docs/planning/BLACKSMITH_EXISTING_PROJECT_AUDIT_ADDENDUM_GRADE_2026-08-01.md"
+  ],
   "scope": [
     "OPERATING_DOCUMENTS",
     "PROJECT_ENTRY",
@@ -27,7 +30,7 @@
     {"id":"BS-AUD-F01","priority":"P0","type":"CONFLICT","domain":"APP_ENTRY","summary":"Default run scene is enhancement test instead of approved separate main menu."},
     {"id":"BS-AUD-F02","priority":"P0","type":"MISSING","domain":"SAVE","summary":"No persistent campaign save, continue metadata, or unresolved irreversible result recovery was found."},
     {"id":"BS-AUD-F03","priority":"P0","type":"CONFLICT","domain":"STATE_OWNERSHIP","summary":"Enhancement test, game flow, and lifecycle PoC own separate in-memory state."},
-    {"id":"BS-AUD-F04","priority":"P0","type":"CONFLICT","domain":"CRAFTSMANSHIP_GRADE","summary":"Legacy grade ids and labels conflict with the approved five-tier grade canon."},
+    {"id":"BS-AUD-F04","priority":"P0","type":"CONFLICT","domain":"CRAFTSMANSHIP_GRADE","summary":"Legacy five runtime grade ids and labels conflict with the approved four-tier grade canon.","planning_target":"RESOLVED_BY_BS-GRADE-20260801-01","runtime_migration":"OPEN","audit_addendum":"BS-REPO-AUDIT-20260801-01-GRADE-A1"},
     {"id":"BS-AUD-F05","priority":"P0","type":"CONFLICT","domain":"AFFIX_AND_PLUS50","summary":"Legacy three-slot decade milestones conflict with lineage plus two secondary affixes and the two +50 routes."},
     {"id":"BS-AUD-F06","priority":"P0","type":"CONFLICT","domain":"AUTO_FORGE","summary":"Automation can cross identity and high-risk decisions with random precision and missing materials."},
     {"id":"BS-AUD-F07","priority":"P0","type":"CONFLICT","domain":"CUSTOMERS","summary":"Customer and request flow is hardcoded to Kyle and an exact iron sword instead of four archetypes with multiple named customers and category requests."},
@@ -43,7 +46,7 @@
     {"id":"BS-AUD-F17","priority":"P1","type":"CONFLICT_MISSING","domain":"STORAGE","summary":"Six-slot session storage and the placeholder 128/150 capacity do not support the approved equipment identity and ownership model."},
     {"id":"BS-AUD-F18","priority":"P1","type":"MISSING","domain":"SALES_CHANNELS","summary":"General sale, visiting merchant, and named customer channels are not separated."},
     {"id":"BS-AUD-F19","priority":"P1","type":"MISSING","domain":"CHRONICLE","summary":"Equipment history and per-customer relationship presentation are insufficient."},
-    {"id":"BS-AUD-F20","priority":"P1","type":"CONFLICT","domain":"TEST_MIGRATION","summary":"Current validators and tests strongly protect legacy customer, grade, and affix schemas."},
+    {"id":"BS-AUD-F20","priority":"P1","type":"CONFLICT","domain":"TEST_MIGRATION","summary":"Current validators and tests strongly protect legacy customer, grade, and affix schemas.","grade_test_migration":"OPEN"},
     {"id":"BS-AUD-F21","priority":"P2","type":"PROPOSED_REVIEW","domain":"ANDROID_MAIN_MENU","summary":"The Android game exit button policy is unresolved."},
     {"id":"BS-AUD-F22","priority":"P2","type":"PROPOSED_REVIEW","domain":"LOCATION_PRESENTATION","summary":"Market and arena images could incorrectly imply direct exploration or combat."},
     {"id":"BS-AUD-F23","priority":"P2","type":"NOT_RUN","domain":"MODAK_VISUAL_QA","summary":"Mascot brightness, scale, and motion have not been validated on actual screens."},
@@ -65,7 +68,8 @@
   ],
   "approved_during_audit_context": [
     "BS-MAIN-20260801-01",
-    "BS-SHELL-20260801-01"
+    "BS-SHELL-20260801-01",
+    "BS-GRADE-20260801-01"
   ],
   "visual_design_status": {
     "design_id": "BS-VISUAL-20260731-01",
