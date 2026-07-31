@@ -1,10 +1,10 @@
 # Blacksmith 남은 기획 항목 판정
 
-> 상태: `CURRENT_PLANNING_STATUS / LATEST_DECISIONS_APPLIED`
+> 상태: `CURRENT_PLANNING_STATUS / MID_CHECK_REQUIRED`
 >
 > 기준일: `2026-07-31`
 >
-> Work Mode: `PLAN`
+> Work Mode: `PLAN / REVIEW`
 >
 > 구현 권한: `NONE`
 >
@@ -12,15 +12,16 @@
 
 ## 1. 결론
 
-고객 유형·개별 고객의 범위와 +50 강화 경로를 재개방해 벤치마킹·적대적 검토한 결과, 현재 **미해결 구조적 기획안은 다시 0건**이다.
+고객 유형·개별 고객의 범위와 +50 강화 경로를 재개방해 벤치마킹·적대적 검토한 결과, 현재 **미해결 구조적 기획안은 0건**이다.
 
 ```text
 P0 구조적 차단: 0
 P1 핵심 구조 미결정: 0
 P2 조정값·콘텐츠 제작값: 경계 정의 후 후속 단계 이관
+REVIEW_GATE: SITUATION_SCREEN_MID_CHECK_REQUIRED
 ```
 
-현재 상태는 `사용자 기획 완료 선언 가능 후보`다. 이 문서는 사용자 선언을 대신하지 않는다.
+사용자 최신 지시에 따라 `기획 완료` 선언 전에 `BS-SCREEN-20260731-01` 상황별 인게임 화면 중간점검을 수행한다. 따라서 현재 상태는 완료 후보가 아니라 **구조 기획 완료 후 화면·상황 정합성 검토 대기**다.
 
 ## 2. 완료된 구조적 기획
 
@@ -44,7 +45,32 @@ P2 조정값·콘텐츠 제작값: 경계 정의 후 후속 단계 이관
 - 벤치마킹 선행 원칙
 - 승인 결정 즉시 정본 동기화 원칙
 
-## 3. 남아 있지만 기획 완료를 막지 않는 항목
+## 3. 기획 완료 전 남은 중간점검
+
+책임 원본:
+
+- `docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md`
+- Decision ID: `BS-SCREEN-20260731-01`
+
+중간점검 범위:
+
+1. 실제 Scene·Script·Resource·데이터 기준 현재 UI 구현 감사
+2. 필수 기준 화면 4종 확인
+   - 대장간 허브
+   - 단조·강화 핵심 작업대
+   - 보관함·자원 관리
+   - 강화·판매·고객 세계 결과
+3. 기준 화면별 최초 진입·일반·선택·빈 상태·잠김·오류·전환 상태
+4. 전체 대표 상황 도출과 P0~P3 우선순위
+5. P0 상황의 A~T 구현 명세
+6. 화면·상황 전환도와 유지 데이터
+7. Godot Scene·Node·Resource·Signal·상태 머신 연결
+8. 테스트·예외·저장·Android 세로형 검증 기준
+9. Base 승격 후보와 Blacksmith 전용 항목 분리
+
+중간점검에서 구조적 누락이 발견되면 P0·P1을 다시 연다. 발견되지 않으면 사용자 `기획 완료` 선언 가능 후보로 복귀한다.
+
+## 4. 남아 있지만 중간점검 완료를 막지 않는 항목
 
 ### 밸런스 조정값
 
@@ -76,8 +102,9 @@ P2 조정값·콘텐츠 제작값: 경계 정의 후 후속 단계 이관
 - 서버·DB·API·인증 기술
 - 개인정보·신고·법무 운영 검토
 
-## 4. 기획이 아니라 남은 절차
+## 5. 중간점검 이후 남은 절차
 
+- 중간점검 Finding 해소 또는 승인
 - 사용자 `기획 완료` 선언
 - 구형 정본 전체 전파와 등록부 정리
 - PR #81 병합
@@ -87,7 +114,7 @@ P2 조정값·콘텐츠 제작값: 경계 정의 후 후속 단계 이관
 - 별도 Codex Goal·구현 Issue
 - 사람·Android·접근성·성능 검증
 
-## 5. 재개방 조건
+## 6. 재개방 조건
 
 다음이 발생하면 구조적 기획을 다시 연다.
 
@@ -99,20 +126,22 @@ P2 조정값·콘텐츠 제작값: 경계 정의 후 후속 단계 이관
 - 장비 정체성·강화·고객 결과 구조 변경
 - 주요 UX 흐름 변경
 - 서버·경제·저장 경계 변경
+- 상황별 화면 중간점검에서 핵심 흐름 단절 발견
 - 플레이테스트에서 구조적 실패 발견
 
 재개방 시 `BS-SYNC-20260731-01` 계약과 벤치마킹 선행 원칙을 적용한다.
 
-## 6. 현재 판정
+## 7. 현재 판정
 
 ```text
 STRUCTURAL_PLANNING_REMAINING: NONE
+SITUATION_SCREEN_MID_CHECK: REQUIRED_NOT_RUN
 TUNABLES_REMAINING: YES_WITH_DEFINED_BOUNDARIES
 CONTENT_PRODUCTION_REMAINING: YES
 CUSTOMER_PROFILE_PRODUCTION_REMAINING: YES
 PLATFORM_VALIDATION_REMAINING: YES
 CANONICAL_PROPAGATION_REMAINING: YES
-READY_FOR_USER_기획_완료_DECLARATION: YES
+READY_FOR_USER_기획_완료_DECLARATION: NO_PENDING_MID_CHECK
 USER_기획_완료: NOT_DECLARED
 USER_검수_완료: NOT_DECLARED
 CODEX_IMPLEMENTATION: BLOCKED
