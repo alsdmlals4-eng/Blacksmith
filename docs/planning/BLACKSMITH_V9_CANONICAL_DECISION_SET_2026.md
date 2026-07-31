@@ -2,9 +2,9 @@
 
 > 상태: `USER_APPROVED_DECISIONS / CANONICAL_ID_INDEX`
 >
-> 기준일: `2026-07-31`
+> 기준일: `2026-08-01`
 >
-> 원결정: `BLACKSMITH_V9_USER_DECISION_PACKET.md`, `BLACKSMITH_DECISION_LEDGER_ADDENDUM_20.md`, `BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`
+> 원결정: `BLACKSMITH_V9_USER_DECISION_PACKET.md`, `BLACKSMITH_DECISION_LEDGER_ADDENDUM_20.md`, `BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`, `BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md`
 >
 > 동기화 계약: `BLACKSMITH_CANONICAL_SYNC_OPERATING_CONTRACT_2026.md`
 
@@ -121,7 +121,6 @@
 - 화면을 정적 메뉴로 다루지 않고 `SCREEN → SIT` 상태 변형과 전체 상황 전환으로 연결한다.
 - P0 상황은 Godot Scene·Node·Resource·Signal·저장·예외·완료·테스트까지 A~T 형식으로 상세화한다.
 - P1~P3는 요약 후 필요 시 확장한다.
-- 작업 결과에서 확인된 승인 결정은 `BS-SYNC-20260731-01`로 즉시 동기화한다.
 - 공통 절차는 Base 승격 후보이며 Blacksmith 고유 화면·시스템은 프로젝트에 유지한다.
 
 ### BS-SCREEN-20260731-02 — 비주얼 중심 화면 보드 상위 계약
@@ -157,6 +156,26 @@ C안의 차분한 표정 + 밝은 노랑·주황 불꽃 몸체
 - 플레이어 선택·확률·결과를 예측하거나 추천하지 않음
 - 장비·확률표·버튼을 가리지 않는 작은 비성장형 동반자
 
+### BS-MAIN-20260801-01 — 별도 메인 화면
+
+```text
+앱 실행 → 별도 메인 화면 → 새 게임 또는 이어하기 → 제품 Shell
+```
+
+- 필수 메뉴는 이어하기·새 게임·설정
+- 저장이 없으면 이어하기 비활성
+- 새 게임이 기존 저장에 영향을 주면 명시적 확인 필요
+- 도감·가이드·크레딧·게임 종료는 별도 검토 전 `PROPOSED`
+- `resolves: DEC-VIS-01`
+
+### BS-SHELL-20260801-01 — 단일 제품 Shell + View·Overlay 혼합
+
+- 메인 화면은 제품 Shell과 별도 Scene
+- 허브·단조·강화·고객·세계 결과는 한 캠페인 상태를 공유
+- 보관함·설정·ResultEnvelope는 Overlay 또는 내부 Screen 사용
+- 화면 전환으로 도메인 상태를 재생성하거나 비가역 결과를 재추첨하지 않음
+- `resolves: DEC-VIS-02`
+
 ### BS-SYNC-20260731-01 — 기획 정본 즉시 동기화
 
 - 주요 변경과 승인 내용은 GitHub 권위 문서·계획 데이터·연결 Sheet에 즉시 반영
@@ -164,14 +183,23 @@ C안의 차분한 표정 + 밝은 노랑·주황 불꽃 몸체
 - 변경 위치·PR·커밋·Sheet 범위·검증 상태 기록
 - 병합 전 `SYNCED_TO_DRAFT`, 병합 후 `SYNCED_TO_MAIN`
 
+## 시각 설계 상태
+
+`BS-VISUAL-20260731-01`은 `USER_ACCEPTED_WORKING_BASELINE`이다.
+
+- 최종 제품 에셋이 아님
+- 플레이어 레벨·청색 보석·업적·상점·특수 제작·128/150 보관함·직접 시장/경기장 플레이는 `PLACEHOLDER / NOT_CANON`
+- 승인된 항목은 별도 메인, 단일 제품 Shell, 스타일라이즈드 다크 포지, 밝은 모닥, 장비 중심 정보 위계다.
+
 ## 권한
 
-충돌 시 권한 순서:
+충돌 시 다음 순서를 따른다.
 
 ```text
 사용자 최신 결정
-→ BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md (그림체·모닥)
-→ BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md (화면·상황 중간점검 범위)
+→ BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md
+→ BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md
+→ BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md
 → BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md
 → BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md
 → BLACKSMITH_V9_USER_DECISION_PACKET.md·Decision Ledger Addenda
@@ -184,8 +212,8 @@ C안의 차분한 표정 + 밝은 노랑·주황 불꽃 몸체
 ```text
 GITHUB_AUTHORITY: GITHUB_DRAFT_COMMITTED
 PLANNING_DATA: UPDATED
-GOOGLE_SHEET: SYNCED_TO_DRAFT_PR81
-CROSS_SOURCE_VERIFICATION: PASS_PENDING_FINAL_RECHECK
+GOOGLE_SHEET: UPDATE_REQUIRED_FOR_20260801_DECISIONS_AND_AUDIT
+CROSS_SOURCE_VERIFICATION: PENDING
 MAIN_MERGE: NOT_RUN
 USER_기획_완료: NOT_DECLARED
 ```
