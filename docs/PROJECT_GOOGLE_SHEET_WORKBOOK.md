@@ -2,7 +2,7 @@
 
 ```yaml
 project: Blacksmith
-sheet_status: SYNC_PENDING_BS-GRADE-20260801-01
+sheet_status: SYNCED_TO_DRAFT_PR81_CROSS_SOURCE_VERIFIED
 spreadsheet_url: https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit
 spreadsheet_id: 1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg
 workbook_role: USER_FACING_GDD_WORKSPACE
@@ -77,7 +77,7 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제와 화면 기�
 | `BS-SHELL-20260801-01` | 02·04·05·60·90·99 |
 | `BS-REPO-AUDIT-20260801-01` | 04·05·30·40·50·60·80·90·99 |
 
-## 제작 등급 동기화 계획
+## 제작 등급 동기화 위치
 
 | 목적 | 범위 |
 |---|---|
@@ -126,7 +126,7 @@ P1_FINDINGS: 10
 P2_FINDINGS: 6
 TOTAL_FINDINGS: 26
 
-CROSS_SOURCE_VERIFICATION: PENDING_BS-GRADE-20260801-01
+CROSS_SOURCE_VERIFICATION: PASS
 MAIN_MERGE: NOT_RUN
 READY_FOR_USER_기획_완료_DECLARATION: NO_FINDINGS_OPEN
 CODEX_IMPLEMENTATION: BLOCKED
