@@ -13,14 +13,17 @@
 > 현행 마스터: `BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md`
 >
 > 정합성 판정: `BLACKSMITH_P1_CONSISTENCY_AND_ADVERSARIAL_REVIEW_2026.md`
+>
+> 그림체·모닥 최신 권위: `BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`
 
 ## 1. 문서 역할
 
 이 문서는 P1 콘텐츠·UX 설계 전에 수행한 벤치마킹의 질문, 출처, 채택·변형·제외 근거를 보존한다.
 
-구체적인 현재 규칙은 마스터 v9와 정합성 검토가 우선한다. 이 문서의 초기 후보와 충돌할 경우 다음을 따른다.
+구체적인 현재 규칙은 마스터 v9와 정합성 검토가 우선한다. 그림체·모닥은 승인 정본이 우선한다.
 
 ```text
+BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md (그림체·모닥)
 BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md
 → BLACKSMITH_P1_CONSISTENCY_AND_ADVERSARIAL_REVIEW_2026.md
 → 본 벤치마킹 근거
@@ -107,7 +110,9 @@ BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md
 ### 불씨 정령 모닥
 
 - 비성장형 상징 동반자
-- 검은 숯 껍질과 주황빛 핵
+- `BS-MODAK-20260731-01`: C안의 차분한 표정과 밝은 노랑·주황 불꽃 몸체
+- 숯 껍질 몸체는 사용하지 않음
+- 어두운 디테일은 손·발·목 장식 등에만 제한
 - 한 번에 한 문장의 짧은 안내
 - 확률·정답·결과 예측 금지
 - 성장·재화·능력 보정 없음
@@ -260,8 +265,8 @@ BENCHMARK_COMPLETED: YES
 BENCHMARK_SCOPE: STANDARD
 ADOPT_ADAPT_AVOID_LEDGER: COMPLETE
 INITIAL_CANDIDATE_CONFLICTS: RECONCILED
-CURRENT_RULE_AUTHORITY: MASTER_V9_AND_CONSISTENCY_REVIEW
-GOOGLE_SHEET_SYNC: NOT_RUN
+CURRENT_RULE_AUTHORITY: MASTER_V9_CONSISTENCY_REVIEW_AND_ART_MODAK_CANON
+GOOGLE_SHEET_SYNC: SYNCED_TO_DRAFT_PR81
 READY_FOR_기획_완료: NO
 READY_FOR_검수_완료: NO
 CODEX_IMPLEMENTATION: BLOCKED
