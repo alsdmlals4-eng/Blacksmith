@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "status": "USER_APPROVED_CANONICAL_VISUAL_DIRECTION",
+  "as_of": "2026-07-31",
+  "authority_document": "docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md",
+  "decisions": [
+    {
+      "decision_id": "BS-ART-20260731-01",
+      "domain": "project_art_style",
+      "decision": "STYLIZED_DARK_FORGE",
+      "rendering": {
+        "format": "STYLIZED_2D",
+        "background": "DARK_FORGE_WITH_CHARCOAL_IRON_WOOD_LEATHER",
+        "lighting": "WARM_LOCAL_FIRELIGHT",
+        "equipment_priority": "VISUAL_PROTAGONIST",
+        "character_rendering": "SIMPLIFIED_GAME_ILLUSTRATION",
+        "ui_material_language": ["IRON", "BRASS", "LIMITED_LEATHER_AND_PARCHMENT"],
+        "full_semi_realism": false,
+        "bright_casual_workshop": false,
+        "sd_character_dominant_style": false
+      },
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-MODAK-20260731-01",
+      "domain": "mascot_visual_design",
+      "decision": "BRIGHT_FIRE_SPIRIT_WITH_C_STYLE_EXPRESSIONS",
+      "body": {
+        "primary_material": "BRIGHT_YELLOW_ORANGE_FLAME",
+        "charcoal_shell": false,
+        "dark_detail_limit_percent": 15,
+        "allowed_dark_details": ["HANDS", "FEET", "NECK_ORNAMENT", "SMALL_TRIM"],
+        "silhouette": "LARGE_HEAD_SMALL_BODY_ASYMMETRIC_FLAME_CROWN"
+      },
+      "expression_set": [
+        "CALM",
+        "CURIOUS",
+        "WORRIED",
+        "JOYFUL",
+        "SURPRISED",
+        "SAD",
+        "FOCUSED"
+      ],
+      "behavior_boundaries": {
+        "predicts_outcome": false,
+        "recommends_choice": false,
+        "blocks_equipment_or_ui": false,
+        "growth_or_buff_system": false,
+        "max_dialogue_sentences_at_once": 1
+      },
+      "reference_image_status": "APPROVED_CONCEPT_REFERENCE_NOT_REPOSITORY_PRODUCT_ASSET",
+      "status": "USER_APPROVED"
+    }
+  ],
+  "supersedes": [
+    "CHARCOAL_SHELL_MODAK_BASE_DESIGN",
+    "PROPOSED_DEC_VIS_03_ART_RENDERING_INTENSITY"
+  ],
+  "implementation_authorized": false,
+  "user_planning_complete": "NOT_DECLARED",
+  "user_review_complete": "NOT_DECLARED"
+}
