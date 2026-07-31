@@ -12,6 +12,8 @@ latest_customer_decision_id: BS-CUST-20260731-01
 latest_enhancement_decision_id: BS-ENH-20260731-01
 latest_visual_work_order_decision_id: BS-SCREEN-20260731-02
 latest_visual_design_id: BS-VISUAL-20260731-01
+latest_art_style_decision_id: BS-ART-20260731-01
+latest_mascot_decision_id: BS-MODAK-20260731-01
 latest_screen_audit_id: BS-MIDCHECK-20260731-01
 planning_pr: 81
 planning_branch: docs/blacksmith-v9-planning-audit
@@ -90,12 +92,30 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제와 화면 기�
 - `98_Base_반영후보`: 공통 비주얼 보드 템플릿 후보
 - `99_변경이력`: GitHub 경로·PR·commit·Sheet 범위
 
+### BS-ART-20260731-01
+
+- `02_현재_확정결정`: 스타일라이즈드 다크 포지 승인
+- `04_누락_충돌_감사`: DEC-VIS-03 해결 기록
+- `05_GDD_요약`: 아트·사운드 방향
+- `60_UX_UI_접근성`: 화면 재질·정보 가독성 규칙
+- `99_변경이력`: GitHub 경로·PR·commit·Sheet 범위
+
+### BS-MODAK-20260731-01
+
+- `02_현재_확정결정`: 밝은 불 정령 모닥 승인
+- `04_누락_충돌_감사`: 숯 껍질 구형안 대체 기록
+- `05_GDD_요약`: 상징 요소·마스코트 방향
+- `13_주요인물`: 모닥 외형·표정·기능 경계
+- `60_UX_UI_접근성`: UI 비가림·상태 반응 규칙
+- `99_변경이력`: GitHub 경로·PR·commit·Sheet 범위
+
 ## 프로젝트 책임 매핑
 
 | 의미 구조 | 프로젝트 책임 원본 |
 |---|---|
 | 비주얼 중심 화면 작업 계약 | `docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md` |
 | 현재 비주얼 화면 설계안 | `docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_DESIGN_V1_2026.md`, 연결 JSON |
+| 승인된 그림체·모닥 | `docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`, 연결 JSON |
 | 기술 화면 작업 계약 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md` |
 | 실제 파일 중간점검 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_MID_CHECK_2026.md`, 연결 JSON |
 | 최신 고객·+50 정합화 | `docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md` |
@@ -105,6 +125,8 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제와 화면 기�
 | 핵심루프 | 단조→강화→+5 완성/+10 도전→고객·세계 환류→+50 장기 명작 |
 | +50 강화 | 일반 정밀강화 또는 특수재료 기반 고위 정밀강화 |
 | 고객 구조 | 수집가·모험가·검투사·군인 4유형 × 유형별 복수 이름 고객 |
+| 그림체 | 스타일라이즈드 다크 포지 |
+| 모닥 | C안 표정 기반 밝은 불 정령, 숯 껍질 미사용 |
 | 필수 화면 | 대장간 허브 / 단조·강화 작업대 / 보관함·자원 관리 / 결과·연대기 |
 | 첫 5분 UX | `docs/planning/BLACKSMITH_FIRST_FIVE_MINUTES_AND_MASTERWORKS_UX_2026.md` |
 | 이미지 계획·검수 | `docs/GPT_IMAGE_GENERATION_AND_REVIEW_WORKFLOW.md` |
@@ -115,9 +137,11 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제와 화면 기�
 SITUATION_SCREEN_MID_CHECK: PASS_1_FINDINGS_OPEN
 VISUAL_BOARD_DESIGN_DRAFT: COMPLETE
 VISUAL_BOARD_ADVERSARIAL_SELF_REVIEW: PASS
+ART_STYLE_DECISION: USER_APPROVED
+MODAK_VISUAL_DECISION: USER_APPROVED
 P0_SCREEN_FINDINGS: 6
 P1_SCREEN_FINDINGS: 4
-USER_VISUAL_DECISIONS_REQUIRED: 3
+USER_VISUAL_DECISIONS_REQUIRED: 2
 READY_FOR_USER_기획_완료_DECLARATION: NO_FINDINGS_OPEN
 CODEX_IMPLEMENTATION: BLOCKED
 ```
@@ -126,7 +150,11 @@ CODEX_IMPLEMENTATION: BLOCKED
 
 1. 저장 복구 후 대장간 허브 즉시 진입 여부
 2. 단일 App Shell + 상태 View·Overlay 혼합 여부
-3. 스타일라이즈드 2D 일러스트 기반 최종 아트 렌더링 강도
+
+해결된 시각 결정:
+
+- 최종 아트 렌더링 강도 → `BS-ART-20260731-01`
+- 모닥 외형·표정 → `BS-MODAK-20260731-01`
 
 ## 편집 정책
 
