@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "design_id": "BS-VISUAL-20260731-01",
+  "status": "PROPOSED_REVIEW_REQUIRED",
+  "as_of": "2026-07-31",
+  "authority": {
+    "work_order": "docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md",
+    "design_document": "docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_DESIGN_V1_2026.md",
+    "technical_appendix_contract": "docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md",
+    "actual_file_audit": "docs/planning/BLACKSMITH_SITUATION_SCREEN_MID_CHECK_2026.md"
+  },
+  "evidence_tags": ["CURRENT", "INFERRED", "PROPOSED", "PLACEHOLDER"],
+  "board_set": [
+    "BOARD_A_VISUAL_LANGUAGE",
+    "BOARD_B1_FORGE_HUB",
+    "BOARD_B2_CORE_WORKBENCH",
+    "BOARD_B3_STORAGE_AND_RESOURCES",
+    "BOARD_B4_RESULT_AND_CHRONICLE",
+    "BOARD_C1_FIRST_FORGING_SEQUENCE",
+    "BOARD_C2_GENERAL_ENHANCEMENT_SEQUENCE",
+    "BOARD_C3_PLUS50_ROUTE_SEQUENCE",
+    "BOARD_C4_NAMED_CUSTOMER_SEQUENCE",
+    "BOARD_C5_WORLD_RESULT_SEQUENCE",
+    "BOARD_D_IMPLEMENTATION_APPENDIX"
+  ],
+  "baseline_screens": [
+    {
+      "screen_id": "SCREEN-01",
+      "name": "FORGE_HUB_AND_RETURN",
+      "evidence": ["INFERRED", "PROPOSED"],
+      "implementation_status": "PRODUCT_SCREEN_NOT_IMPLEMENTED",
+      "top_information": ["CURRENT_WORKPIECE", "UNREAD_CUSTOMER_OR_WORLD_RESULT", "PRIMARY_NEXT_ACTION"]
+    },
+    {
+      "screen_id": "SCREEN-02",
+      "name": "FORGING_AND_ENHANCEMENT_WORKBENCH",
+      "evidence": ["CURRENT", "PROPOSED"],
+      "implementation_status": "POC_PRESENT_LATEST_PLUS50_UI_NOT_IMPLEMENTED",
+      "top_information": ["WORKPIECE_AND_LEVEL", "FULL_OUTCOME_TABLE", "COST_PROTECTION_AND_MATERIALS"]
+    },
+    {
+      "screen_id": "SCREEN-03",
+      "name": "STORAGE_AND_RESOURCE_MANAGEMENT",
+      "evidence": ["CURRENT", "PROPOSED"],
+      "implementation_status": "SIX_SLOT_SESSION_POC",
+      "top_information": ["ITEM_IDENTITY", "LINEAGE_AFFIX_AND_FATE", "CAPACITY_AND_RESOURCES"]
+    },
+    {
+      "screen_id": "SCREEN-04",
+      "name": "RESULT_AND_CHRONICLE",
+      "evidence": ["CURRENT", "PROPOSED"],
+      "implementation_status": "MULTIPLE_RESULT_FORMS_WITHOUT_COMMON_ENVELOPE",
+      "top_information": ["WHAT_HAPPENED", "WHAT_CHANGED", "WHAT_TO_DO_NEXT"]
+    }
+  ],
+  "p0_sequences": [
+    "SIT-001_FIRST_WORKPIECE_FORGING",
+    "SIT-002_GENERAL_ENHANCEMENT_DECISION",
+    "SIT-003_PLUS49_TO_PLUS50_ROUTE_SELECTION",
+    "SIT-004_NAMED_CUSTOMER_REQUEST_AND_ITEM_COMPARISON",
+    "SIT-005_WORLD_RESULT_AND_CHRONICLE_RETURN"
+  ],
+  "visual_language": {
+    "core_statement": "THE_WORKPIECE_IS_THE_VISUAL_PROTAGONIST",
+    "layers": ["WORK_ACTION", "PLAYER_JUDGMENT", "WORKPIECE_MEMORY"],
+    "current_palette": {
+      "background": "#17191f",
+      "primary_panel": "#252932",
+      "secondary_panel": "#303641",
+      "primary_action": "#d7772e",
+      "highlight": "#f2c14e",
+      "safe": "#72b879",
+      "danger": "#e36c62",
+      "body_text": "#f4f1e8",
+      "secondary_text": "#b7b0a3"
+    },
+    "proposed_material_language": ["CHARCOAL_IRON", "BRASS_ACCENTS", "LIMITED_PARCHMENT_FOR_CHRONICLE"],
+    "mascot_rule": "MODAK_MUST_NOT_COVER_WORKPIECE_OR_DECISION_INFORMATION",
+    "generic_fantasy_ui_forbidden": true
+  },
+  "plus50_ui": {
+    "layout": "VERTICAL_STACKED_ROUTE_CARDS",
+    "routes": ["GENERAL_PRECISION", "HIGH_PRECISION"],
+    "general_route_must_not_look_like_failure": true,
+    "high_precision_candidate_count_min": 2,
+    "high_precision_candidate_count_max": 3
+  },
+  "customer_ui": {
+    "customer_types": ["COLLECTOR", "ADVENTURER", "GLADIATOR", "SOLDIER"],
+    "multiple_named_customers_per_type": true,
+    "simultaneous_fixed_four_customers": false,
+    "comparison_item_limit": 2,
+    "show_fit_reasons": true
+  },
+  "recommended_shell": {
+    "status": "PROPOSED_USER_CONFIRMATION_REQUIRED",
+    "app_start": "RESTORE_SAVE_THEN_SHOW_UNCONFIRMED_IRREVERSIBLE_RESULT_THEN_FORGE_HUB",
+    "shell": "SINGLE_APP_SHELL_WITH_STATE_VIEWS_AND_OVERLAYS"
+  },
+  "open_visual_decisions": [
+    "DEC-VIS-01_APP_START",
+    "DEC-VIS-02_PRODUCT_SHELL",
+    "DEC-VIS-03_FINAL_ART_RENDERING_INTENSITY"
+  ],
+  "adversarial_review": {
+    "screen_first": "PASS",
+    "four_baseline_screens_visible": "PASS",
+    "sequence_clarity": "PASS",
+    "evidence_tag_separation": "PASS",
+    "project_specificity": "PASS",
+    "readability": "PASS",
+    "reuse_separation": "PASS"
+  },
+  "implementation_authorized": false,
+  "user_planning_complete": "NOT_DECLARED",
+  "user_review_complete": "NOT_DECLARED"
+}
