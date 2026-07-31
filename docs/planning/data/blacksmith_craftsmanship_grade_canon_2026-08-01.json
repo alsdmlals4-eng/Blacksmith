@@ -1,19 +1,23 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "project": "Blacksmith",
-  "decision_id": "BS-GRADE-20260801-01",
+  "decision_id": "BS-GRADE-20260801-02",
   "status": "USER_APPROVED_CANONICAL",
   "as_of": "2026-08-01",
-  "supersedes": "BS-V9-20260731-01",
-  "grade_count": 4,
+  "supersedes": "BS-GRADE-20260801-01",
+  "grade_count": 5,
   "grade_order_ko": [
     "보통",
     "우수",
     "명품",
-    "걸작"
+    "걸작",
+    "전설"
   ],
   "removed_current_grade_labels": [
     "양질"
+  ],
+  "added_current_grade_labels": [
+    "전설"
   ],
   "invariants": {
     "fixed_at_forging_completion": true,
@@ -25,8 +29,19 @@
     "all_grades_can_be_enhanced": true,
     "all_grades_can_be_stored": true,
     "all_grades_can_be_sold": true,
-    "legend_is_not_a_grade": true
+    "legend_is_top_craftsmanship_grade": true,
+    "legend_alone_does_not_unlock_other_systems": true
   },
+  "superseded_decisions": [
+    {
+      "decision_id": "BS-V9-20260731-01",
+      "grade_order_ko": ["보통", "양질", "우수", "명품", "걸작"]
+    },
+    {
+      "decision_id": "BS-GRADE-20260801-01",
+      "grade_order_ko": ["보통", "우수", "명품", "걸작"]
+    }
+  ],
   "runtime_migration": {
     "status": "USER_REVIEW_REQUIRED",
     "new_runtime_ids": "NOT_DECIDED_IN_THIS_DECISION",
@@ -46,7 +61,8 @@
       "PRESERVE_ITEM_ID_OWNER_ENHANCEMENT_AND_CHRONICLE",
       "IDEMPOTENT_MIGRATION",
       "DO_NOT_OVERWRITE_SOURCE_SAVE_ON_FAILURE",
-      "NO_PARTIAL_LABEL_ONLY_MIGRATION"
+      "NO_PARTIAL_LABEL_ONLY_MIGRATION",
+      "PERFECT_TO_LEGEND_MAPPING_REQUIRES_EXPLICIT_P0_2_APPROVAL"
     ]
   },
   "implementation_authorized": false
