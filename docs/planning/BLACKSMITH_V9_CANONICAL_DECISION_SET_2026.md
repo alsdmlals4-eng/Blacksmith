@@ -16,8 +16,9 @@
 
 | Decision ID | 영역 | 승인 내용 | 상태 |
 |---|---|---|---|
-| `BS-V9-20260731-01` | 제작 등급 | 보통→양질→우수→명품→걸작 | `SUPERSEDED_BY_BS-GRADE-20260801-01` |
-| `BS-GRADE-20260801-01` | 제작 등급 | 보통→우수→명품→걸작 | USER_APPROVED |
+| `BS-V9-20260731-01` | 제작 등급 | 보통→양질→우수→명품→걸작 | `SUPERSEDED` |
+| `BS-GRADE-20260801-01` | 제작 등급 | 보통→우수→명품→걸작 | `SUPERSEDED_BY_BS-GRADE-20260801-02` |
+| `BS-GRADE-20260801-02` | 제작 등급 | 보통→우수→명품→걸작→전설 | USER_APPROVED |
 | `BS-V9-20260731-02` | 수식어 | 계보 1개 + 보조 최대 2개 | USER_APPROVED |
 | `BS-V9-20260731-03` | 이정표 | +10·20·30·40·50 성공 후 별도 실패 없이 정체성 선택 | USER_APPROVED_CLARIFIED |
 | `BS-V9-20260731-04` | 고객 거래 | 범주 거래 자격과 공개 적합도 분리 | USER_APPROVED |
@@ -43,15 +44,16 @@
 - `docs/planning/data/blacksmith_craftsmanship_grade_canon_2026-08-01.json`
 
 ```text
-보통 → 우수 → 명품 → 걸작
+보통 → 우수 → 명품 → 걸작 → 전설
 ```
 
-- 총 4단계다.
+- 총 5단계다.
 - `양질`은 현행 등급에서 제거한다.
+- `전설`은 제작 등급의 최상위 단계다.
 - 제작 등급은 단조 완료 시 확정되는 영구 작품 정보다.
 - 강화 단계·계보·보조·+50 경로·운명 상태와 분리한다.
-- 네 등급 모두 강화·보관·판매 가능한 유효 완성품이다.
-- `전설`은 제작 등급이 아니다.
+- 다섯 등급 모두 강화·보관·판매 가능한 유효 완성품이다.
+- 전설 등급만으로 +50·특수 수식어·명작 전당 등록을 자동 보장하지 않는다.
 - 내부 런타임 ID·구형 5개 ID의 변환표·확률·배율은 P0-2 마이그레이션 설계에서 별도 승인한다.
 
 ## 제작·강화 나머지 계약
@@ -120,7 +122,8 @@
 
 - Audit ID: `BS-REPO-AUDIT-20260801-01`
 - P0 10건 / P1 10건 / P2 6건
-- `BS-AUD-F04`의 목표 등급 구조는 `BS-GRADE-20260801-01`로 명확해졌지만 실제 main의 구형 5개 ID·분포·고객 점수·테스트 마이그레이션은 계속 열린 P0다.
+- `BS-AUD-F04`의 목표 등급 구조는 `BS-GRADE-20260801-02`로 확정됐다.
+- 실제 main의 구형 5개 ID·표시명·분포·고객 점수·테스트 마이그레이션은 계속 열린 P0다.
 
 ## 권한
 
@@ -141,8 +144,8 @@
 ```text
 GITHUB_AUTHORITY: GITHUB_DRAFT_COMMITTED
 PLANNING_DATA: UPDATED
-GOOGLE_SHEET: SYNCED_TO_DRAFT_PR81
-CROSS_SOURCE_VERIFICATION: PASS
+GOOGLE_SHEET: SYNC_PENDING_FINAL_HEAD
+CROSS_SOURCE_VERIFICATION: PENDING
 MAIN_MERGE: NOT_RUN
 USER_기획_완료: NOT_DECLARED
 CODEX_IMPLEMENTATION: BLOCKED
