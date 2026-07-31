@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-GRADE-20260801-01",
+  "status": "USER_APPROVED_CANONICAL",
+  "as_of": "2026-08-01",
+  "supersedes": "BS-V9-20260731-01",
+  "grade_count": 4,
+  "grade_order_ko": [
+    "보통",
+    "우수",
+    "명품",
+    "걸작"
+  ],
+  "removed_current_grade_labels": [
+    "양질"
+  ],
+  "invariants": {
+    "fixed_at_forging_completion": true,
+    "separate_from_enhancement_level": true,
+    "separate_from_affixes": true,
+    "separate_from_plus50_route": true,
+    "separate_from_fate_state": true,
+    "all_grades_are_valid_completed_items": true,
+    "all_grades_can_be_enhanced": true,
+    "all_grades_can_be_stored": true,
+    "all_grades_can_be_sold": true,
+    "legend_is_not_a_grade": true
+  },
+  "runtime_migration": {
+    "status": "USER_REVIEW_REQUIRED",
+    "new_runtime_ids": "NOT_DECIDED_IN_THIS_DECISION",
+    "legacy_mapping": "NOT_DECIDED_IN_THIS_DECISION",
+    "probabilities": "BALANCE_TUNING_NOT_FIXED",
+    "attack_multipliers": "BALANCE_TUNING_NOT_FIXED",
+    "value_multipliers": "BALANCE_TUNING_NOT_FIXED",
+    "legacy_runtime_ids": [
+      "APPRENTICE",
+      "STANDARD",
+      "REFINED",
+      "MASTERWORK",
+      "PERFECT"
+    ],
+    "safety_rules": [
+      "NO_RANDOM_REROLL_OF_EXISTING_ITEM_GRADE",
+      "PRESERVE_ITEM_ID_OWNER_ENHANCEMENT_AND_CHRONICLE",
+      "IDEMPOTENT_MIGRATION",
+      "DO_NOT_OVERWRITE_SOURCE_SAVE_ON_FAILURE",
+      "NO_PARTIAL_LABEL_ONLY_MIGRATION"
+    ]
+  },
+  "implementation_authorized": false
+}
