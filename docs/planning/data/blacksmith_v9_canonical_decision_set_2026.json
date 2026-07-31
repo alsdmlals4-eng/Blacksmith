@@ -1,11 +1,13 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "project": "Blacksmith",
   "status": "USER_APPROVED_DECISIONS_CANONICAL_ID_INDEX",
   "as_of": "2026-07-31",
   "authority": {
+    "situation_screen_work_order": "docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md",
     "latest_reconciliation": "docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md",
     "master": "docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md",
+    "remaining_planning_status": "docs/planning/BLACKSMITH_REMAINING_PLANNING_STATUS_2026.md",
     "user_decision_packet": "docs/planning/BLACKSMITH_V9_USER_DECISION_PACKET.md",
     "decision_ledger_addendum": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_20.md",
     "decision_index": "docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md",
@@ -127,6 +129,31 @@
       "status": "USER_APPROVED"
     },
     {
+      "decision_id": "BS-SCREEN-20260731-01",
+      "domain": "situation_based_ingame_screen_specification",
+      "decision": "MANDATORY_FOUR_BASELINE_SCREENS_THEN_PRIORITY_SITUATIONS_AND_P0_GODOT_SPEC",
+      "work_order": "docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md",
+      "implementation_allowed": false,
+      "required_before_user_planning_complete": true,
+      "baseline_screens": [
+        "MAIN_OR_PROJECT_HUB",
+        "COMBAT_OR_CORE_PLAY",
+        "INVENTORY_OR_RESOURCE_MANAGEMENT",
+        "RESULT"
+      ],
+      "blacksmith_initial_mapping": {
+        "MAIN_OR_PROJECT_HUB": "FORGE_HUB_AND_BUSINESS_DAY_ENTRY",
+        "COMBAT_OR_CORE_PLAY": "FORGING_AND_ENHANCEMENT_WORKBENCH",
+        "INVENTORY_OR_RESOURCE_MANAGEMENT": "STORAGE_AND_RESOURCES",
+        "RESULT": "FORGING_ENHANCEMENT_CUSTOMER_AND_WORLD_RESULT"
+      },
+      "situation_priority_levels": ["P0", "P1", "P2", "P3"],
+      "p0_detail_template": "A_TO_T",
+      "mid_check_status": "REQUIRED_NOT_RUN",
+      "base_promotion_candidate": true,
+      "status": "USER_APPROVED_WORK_ORDER"
+    },
+    {
       "decision_id": "BS-SYNC-20260731-01",
       "domain": "canonical_sync",
       "decision": "IMMEDIATE_SAME_ID_SYNC_ACROSS_GITHUB_PLANNING_DATA_AND_CONNECTED_SHEET",
@@ -137,30 +164,29 @@
       "status": "USER_APPROVED"
     }
   ],
+  "review_gate": {
+    "gate_id": "BS-SCREEN-20260731-01",
+    "status": "REQUIRED_NOT_RUN",
+    "ready_for_user_planning_complete_declaration": false,
+    "implementation_authorized": false
+  },
   "sheet_binding": {
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
-    "decision_index_range": "02_현재_확정결정!A6:H16",
-    "audit_range": "04_누락_충돌_감사!A8:H8",
-    "change_history_range": "99_변경이력!A9:H9",
+    "decision_index_range": "02_현재_확정결정!A6:H17",
+    "audit_range": "04_누락_충돌_감사!A9:H9",
+    "change_history_range": "99_변경이력!A10:H10",
+    "base_candidate_range": "98_Base_반영후보!A3:G3",
     "directly_affected_tabs": [
       "02_현재_확정결정",
       "04_누락_충돌_감사",
       "05_GDD_요약",
-      "13_주요인물",
-      "14_조연_세력_관계",
-      "20_코어경험_데모목표",
-      "30_데모범위_품질기준_제작기반",
-      "40_핵심시스템_메인콘텐츠",
-      "41_성장_경제",
-      "50_메인콘텐츠",
-      "60_UX_UI_접근성",
-      "80_데모_버티컬슬라이스_플레이테스트",
       "90_본제작_출시_사업",
+      "98_Base_반영후보",
       "99_변경이력"
     ],
     "sync_status": "SYNCED_TO_DRAFT_PR81",
     "cross_source_verification": "PASS",
-    "formula_error_recheck": "PASS_ON_DIRECTLY_AFFECTED_TABS"
+    "formula_error_recheck": "PASS_ON_ALL_NEWLY_AFFECTED_TABS"
   },
   "main_merge": "NOT_RUN",
   "user_planning_complete": "NOT_DECLARED",
