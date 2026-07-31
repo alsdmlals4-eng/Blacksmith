@@ -1,18 +1,19 @@
 {
-  "schema_version": "1.3.0",
+  "schema_version": "1.4.0",
   "project": "Blacksmith",
   "status": "USER_APPROVED_DECISIONS_CANONICAL_ID_INDEX",
-  "as_of": "2026-07-31",
+  "as_of": "2026-08-01",
   "authority": {
     "situation_screen_work_order": "docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md",
     "visual_screen_work_order": "docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md",
     "visual_design": "docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_DESIGN_V1_2026.md",
+    "main_menu_and_app_shell": "docs/planning/BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md",
     "art_style_and_mascot": "docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md",
+    "existing_project_audit": "docs/planning/BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md",
     "latest_reconciliation": "docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md",
     "master": "docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md",
     "remaining_planning_status": "docs/planning/BLACKSMITH_REMAINING_PLANNING_STATUS_2026.md",
     "user_decision_packet": "docs/planning/BLACKSMITH_V9_USER_DECISION_PACKET.md",
-    "decision_ledger_addendum": "docs/planning/BLACKSMITH_DECISION_LEDGER_ADDENDUM_20.md",
     "decision_index": "docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md",
     "sync_contract": "docs/planning/BLACKSMITH_CANONICAL_SYNC_OPERATING_CONTRACT_2026.md"
   },
@@ -122,12 +123,7 @@
           "blank_result_allowed": false
         }
       },
-      "stored_fields": [
-        "enhancement_route_at_50",
-        "special_material_uses",
-        "special_affix_id",
-        "high_precision_evolution_id"
-      ],
+      "stored_fields": ["enhancement_route_at_50", "special_material_uses", "special_affix_id", "high_precision_evolution_id"],
       "clarifies": "BS-V9-20260731-03",
       "status": "USER_APPROVED"
     },
@@ -138,22 +134,9 @@
       "work_order": "docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md",
       "implementation_allowed": false,
       "required_before_user_planning_complete": true,
-      "baseline_screens": [
-        "MAIN_OR_PROJECT_HUB",
-        "COMBAT_OR_CORE_PLAY",
-        "INVENTORY_OR_RESOURCE_MANAGEMENT",
-        "RESULT"
-      ],
-      "blacksmith_initial_mapping": {
-        "MAIN_OR_PROJECT_HUB": "FORGE_HUB_AND_BUSINESS_DAY_ENTRY",
-        "COMBAT_OR_CORE_PLAY": "FORGING_AND_ENHANCEMENT_WORKBENCH",
-        "INVENTORY_OR_RESOURCE_MANAGEMENT": "STORAGE_AND_RESOURCES",
-        "RESULT": "FORGING_ENHANCEMENT_CUSTOMER_AND_WORLD_RESULT"
-      },
+      "baseline_screens": ["MAIN_OR_PROJECT_HUB", "COMBAT_OR_CORE_PLAY", "INVENTORY_OR_RESOURCE_MANAGEMENT", "RESULT"],
       "situation_priority_levels": ["P0", "P1", "P2", "P3"],
       "p0_detail_template": "A_TO_T",
-      "mid_check_status": "PASS_1_FINDINGS_OPEN",
-      "base_promotion_candidate": true,
       "status": "USER_APPROVED_WORK_ORDER"
     },
     {
@@ -183,10 +166,30 @@
       "charcoal_shell": false,
       "primary_body_colors": ["BRIGHT_YELLOW", "GOLD", "ORANGE"],
       "dark_detail_limit_percent": 15,
-      "allowed_dark_details": ["HANDS", "FEET", "NECK_ORNAMENT", "SMALL_TRIM"],
       "expression_set": ["CALM", "CURIOUS", "WORRIED", "JOYFUL", "SURPRISED", "SAD", "FOCUSED"],
       "predicts_or_recommends_result": false,
       "growth_or_buff_system": false,
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-MAIN-20260801-01",
+      "domain": "application_entry",
+      "decision": "SEPARATE_MAIN_MENU_SCENE",
+      "required_actions": ["CONTINUE", "NEW_GAME", "SETTINGS"],
+      "continue_enabled_only_when_save_exists": true,
+      "new_game_overwrite_warning_required": true,
+      "optional_unapproved_actions": ["GUIDE_OR_CODEX", "CREDITS", "EXIT"],
+      "resolves": "DEC-VIS-01",
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-SHELL-20260801-01",
+      "domain": "product_screen_architecture",
+      "decision": "SINGLE_BLACKSMITH_APP_WITH_VIEW_AND_OVERLAY_MIX",
+      "main_menu_is_separate_scene": true,
+      "screen_transition_must_not_recreate_domain_state": true,
+      "screen_transition_must_not_reroll_irreversible_result": true,
+      "resolves": "DEC-VIS-02",
       "status": "USER_APPROVED"
     },
     {
@@ -200,26 +203,37 @@
       "status": "USER_APPROVED"
     }
   ],
+  "visual_design": {
+    "design_id": "BS-VISUAL-20260731-01",
+    "status": "USER_ACCEPTED_WORKING_BASELINE",
+    "final_product_asset": false,
+    "placeholder_or_unapproved": [
+      "PLAYER_LEVEL",
+      "BLUE_GEM_OR_PREMIUM_CURRENCY",
+      "ACHIEVEMENTS",
+      "SHOP",
+      "DETAILED_CODEX_OR_GUIDE",
+      "SPECIAL_CRAFTING_AS_NEW_SYSTEM",
+      "INVENTORY_128_OF_150",
+      "DIRECT_MARKET_OR_ARENA_EXPLORATION",
+      "IMAGE_NUMERIC_VALUES"
+    ]
+  },
   "review_gate": {
-    "gate_id": "BS-MIDCHECK-20260731-01",
-    "status": "PASS_1_FINDINGS_OPEN",
-    "p0_screen_findings": 6,
-    "p1_screen_findings": 4,
-    "open_visual_decisions": ["DEC-VIS-01_APP_START", "DEC-VIS-02_PRODUCT_SHELL"],
-    "resolved_visual_decisions": ["DEC-VIS-03_ART_RENDERING_INTENSITY"],
+    "gate_id": "BS-REPO-AUDIT-20260801-01",
+    "status": "AUDIT_COMPLETE_FINDINGS_OPEN",
+    "p0_findings": 10,
+    "p1_findings": 10,
+    "p2_findings": 6,
+    "open_visual_decisions": [],
+    "resolved_visual_decisions": ["DEC-VIS-01", "DEC-VIS-02", "DEC-VIS-03", "MODAK_VISUAL"],
     "ready_for_user_planning_complete_declaration": false,
     "implementation_authorized": false
   },
   "sheet_binding": {
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
-    "decision_index_range": "02_현재_확정결정!A6:H20",
-    "art_summary_range": "05_GDD_요약!A6:H6",
-    "modak_character_range": "13_주요인물!A5:H5",
-    "ux_visual_range": "60_UX_UI_접근성!A11:H12",
-    "audit_range": "04_누락_충돌_감사!A13:H14",
-    "change_history_range": "99_변경이력!A14:H15",
-    "sync_status": "SYNCED_TO_DRAFT_PR81",
-    "cross_source_verification": "PENDING_FINAL_RECHECK"
+    "sync_status": "UPDATE_REQUIRED_FOR_20260801_DECISIONS_AND_AUDIT",
+    "cross_source_verification": "PENDING"
   },
   "main_merge": "NOT_RUN",
   "user_planning_complete": "NOT_DECLARED",
