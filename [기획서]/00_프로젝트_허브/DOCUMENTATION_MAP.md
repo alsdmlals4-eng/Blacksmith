@@ -30,6 +30,7 @@ AGENTS.md
 | Blacksmith Vertical Slice v9의 현행 통합 기획은 무엇인가 | `docs/planning/BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md` | Base v9.3·Vertical Slice v9 기준 통합 기획 초안 |
 | 비주얼 중심 화면 보드는 어떤 형식으로 작성하는가 | `docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md` | PART A~D, 필수 화면 4종, 근거 태그, 적대적 검토를 정의하는 상위 시각 계약 |
 | 현재 비주얼 화면 설계 초안은 무엇인가 | `docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_DESIGN_V1_2026.md`, `docs/planning/data/blacksmith_visual_situation_board_design_v1_2026.json` | 화면 4종·핵심 시퀀스 5종·전환도·최소 구현 부록의 Design ID 기반 초안 |
+| 프로젝트 그림체와 모닥의 승인된 최신 방향은 무엇인가 | `docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`, `docs/planning/data/blacksmith_art_style_and_modak_canon_2026.json` | 스타일라이즈드 다크 포지와 밝은 불 정령 모닥의 사용자 승인 정본 |
 | 기획 완료 전에 어떤 기술 화면·상황 중간점검을 수행하는가 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md` | 필수 기준 화면 4종, 상황 P0~P3, P0 A~T Godot 구현 명세 하위 계약 |
 | 화면·상황 중간점검에서 무엇이 확인됐는가 | `docs/planning/BLACKSMITH_SITUATION_SCREEN_MID_CHECK_2026.md`, `docs/planning/data/blacksmith_situation_screen_mid_check_2026.json` | 실제 Scene·Script·데이터 감사, P0/P1 Finding, 상황 명세, 화면 연결 |
 | 고객 4유형·유형별 복수 고객과 +50 일반/고위 정밀강화의 최신 결정은 무엇인가 | `docs/planning/BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md` | 벤치마킹·적대적 검토를 거친 최신 보완 권위 |
@@ -72,9 +73,10 @@ AGENTS.md
 ## 현재 Issue·PR
 
 - 현재 기획 추적 Issue: #79
-- 현재 기획 Draft PR: #81 · `VISUAL_BOARD_DRAFT_COMPLETE / FINDINGS_OPEN / NOT_MERGED`
+- 현재 기획 Draft PR: #81 · `ART_AND_MODAK_APPROVED / FINDINGS_OPEN / NOT_MERGED`
 - 화면 중간점검: P0 Finding 6건, P1 Finding 4건
-- 사용자 시각 결정: 3건
+- 사용자 시각 결정: 2건
+- 승인된 시각 결정: `BS-ART-20260731-01`, `BS-MODAK-20260731-01`
 - 현재 구현 검증 Issue: #34 · 사람·플랫폼·외부 플레이 검증까지 유지
 - MVP-003 구현 PR: #35 · `MERGED`, merge commit `639c33611c203581c8dcbc08c85425455b16991a`
 - 사람·Android·성능·외부 플레이: `NOT_RUN`
