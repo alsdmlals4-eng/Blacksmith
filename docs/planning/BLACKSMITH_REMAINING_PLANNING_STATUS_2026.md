@@ -16,7 +16,8 @@
 
 ```text
 GAME_RULE_P0_BLOCKER: 0
-GAME_RULE_P1_UNDECIDED: 0
+GRADE_RULE_DECISION: RESOLVED_BY_BS-GRADE-20260801-01
+GRADE_RUNTIME_MIGRATION: OPEN
 REPOSITORY_AUDIT: COMPLETE
 P0_FINDINGS: 10
 P1_FINDINGS: 10
@@ -35,9 +36,11 @@ CODEX_IMPLEMENTATION: BLOCKED
 
 현행 책임 원본:
 
+- 제작 등급: `docs/planning/BLACKSMITH_CRAFTSMANSHIP_GRADE_CANON_2026-08-01.md`, 연결 JSON
 - 메인·제품 Shell: `docs/planning/BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md`
 - 그림체·모닥: `docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`
 - 저장소 적대적 감사: `docs/planning/BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md`
+- 제작 등급 감사 보완: `docs/planning/BLACKSMITH_EXISTING_PROJECT_AUDIT_ADDENDUM_GRADE_2026-08-01.md`
 - 기계 판독 감사: `docs/planning/data/blacksmith_existing_project_adversarial_audit_2026-08-01.json`
 - 비주얼 작업 기준: `docs/planning/data/blacksmith_visual_situation_board_design_v1_2026.json`
 
@@ -46,7 +49,7 @@ CODEX_IMPLEMENTATION: BLOCKED
 - Android 세로형 대장간 제작·강화·장비 생애 RPG
 - 단조→강화→멈춤/도전→고객 인계→세계 결과→연대기
 - +5/+10 일상 작품 루프와 +50 장기 명작 루프
-- 제작 등급 5단계
+- 제작 등급 4단계: 보통→우수→명품→걸작
 - 계보 1개 + 보조 최대 2개
 - +10·20·30·40 정체성 이정표
 - +49→+50 일반 정밀강화·고위 정밀강화 이원화
@@ -61,6 +64,18 @@ CODEX_IMPLEMENTATION: BLOCKED
 - 첫 5분 UX·접근성 경계
 - 미래 명작 전당 경계
 - 벤치마킹 선행 및 승인 결정 즉시 동기화 원칙
+
+### 제작 등급 변경 이력
+
+```text
+BS-V9-20260731-01: 보통→양질→우수→명품→걸작
+STATUS: SUPERSEDED
+
+BS-GRADE-20260801-01: 보통→우수→명품→걸작
+STATUS: USER_APPROVED / CURRENT
+```
+
+`양질`은 현행 제작 등급에서 제거됐다. 내부 런타임 ID와 구형 5개 ID의 변환표는 아직 승인 전이다.
 
 ## 3. 현재 비주얼 기준안 상태
 
@@ -93,13 +108,15 @@ CODEX_IMPLEMENTATION: BLOCKED
 1. `BS-AUD-F01` — 기본 실행 Scene이 강화 테스트이며 별도 메인 화면이 없음
 2. `BS-AUD-F02` — 영속 세이브·이어하기·미확인 결과 복구 없음
 3. `BS-AUD-F03` — 강화 테스트·게임 흐름·장비 생애 PoC가 서로 다른 메모리 상태 소유
-4. `BS-AUD-F04` — 구형 제작 등급 ID·표시명과 승인 5등급 충돌
+4. `BS-AUD-F04` — 목표 등급은 4단계로 해결됐으나 구형 5개 런타임 ID·분포·고객 점수·저장·테스트 마이그레이션이 열림
 5. `BS-AUD-F05` — 구형 3수식어 슬롯·10단위 특수 강화와 최신 계보·보조·+50 이원화 충돌
 6. `BS-AUD-F06` — 자동 단조가 정밀·재료·이정표·고위험 선택을 건너뜀
 7. `BS-AUD-F07` — 고객·요청·화면이 카일·철검에 하드코딩
 8. `BS-AUD-F08` — 운명·관계·세계 결과가 단일 검투사 PoC 모델에 묶임
 9. `BS-AUD-F09` — 공통 ResultEnvelope와 비가역 결과 영속 저장 없음
 10. `BS-AUD-F10` — 비주얼 시안의 미승인 시스템이 CURRENT처럼 오해될 위험
+
+`BS-AUD-F04`는 규칙 미결정이 아니라 **구현·데이터 이전 미설계** Finding이다. 따라서 P0 건수는 아직 줄지 않는다.
 
 ## 5. 열린 P1 Finding
 
@@ -112,7 +129,7 @@ CODEX_IMPLEMENTATION: BLOCKED
 7. `BS-AUD-F17` — 6칸 세션 보관함과 최신 작품·소유권·연대기 모델 불일치
 8. `BS-AUD-F18` — 일반 판매·방문 상인·이름 고객 채널 미분리
 9. `BS-AUD-F19` — 장비별 연대기와 고객별 관계 UI 부족
-10. `BS-AUD-F20` — 기존 validator·fixture·테스트가 구형 스키마를 강하게 보호
+10. `BS-AUD-F20` — 기존 validator·fixture·테스트가 구형 등급·고객·수식어 스키마를 강하게 보호
 
 ## 6. 열린 P2 Finding
 
@@ -139,8 +156,9 @@ CODEX_IMPLEMENTATION: BLOCKED
 ## 8. 다음 기획 작업
 
 ```text
-P0-1 세이브·이어하기·ResultEnvelope 계약
-→ P0-2 제작 등급·계보·보조·+50 데이터 마이그레이션 계약
+현재: 제작 등급 4단계 정본 동기화
+→ P0-1 세이브·이어하기·ResultEnvelope 계약
+→ P0-2 신규 등급 ID·legacy 변환표·계보·보조·+50 데이터 마이그레이션 계약
 → P0-3 고객 4유형 공통 데이터·화면 계약
 → P0-4 자동 단조 정지 경계
 → P0-5 비주얼 시안 Placeholder 정리
@@ -153,6 +171,9 @@ P0-1 세이브·이어하기·ResultEnvelope 계약
 
 ```text
 STRUCTURAL_GAME_DIRECTION: COMPLETE
+GRADE_RULE_DECISION: USER_APPROVED
+GRADE_TIER_COUNT: 4
+GRADE_RUNTIME_MIGRATION: USER_REVIEW_REQUIRED
 USER_VISUAL_DECISIONS_REQUIRED: 0
 REPOSITORY_ADVERSARIAL_AUDIT: COMPLETE
 AUDIT_FINDINGS: OPEN
