@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.5.1",
+  "schema_version": "1.6.0",
   "project": "Blacksmith",
   "status": "USER_APPROVED_DECISIONS_CANONICAL_ID_INDEX",
   "as_of": "2026-08-01",
@@ -23,21 +23,30 @@
     {
       "decision_id": "BS-V9-20260731-01",
       "domain": "craftsmanship_grade",
-      "decision": "FIVE_TIERS_NORMAL_GOOD_SUPERIOR_MASTERPIECE_MASTERWORK",
       "display_values_ko": ["보통", "양질", "우수", "명품", "걸작"],
-      "status": "SUPERSEDED",
-      "superseded_by": "BS-GRADE-20260801-01"
+      "status": "SUPERSEDED"
     },
     {
       "decision_id": "BS-GRADE-20260801-01",
       "domain": "craftsmanship_grade",
-      "decision": "FOUR_TIERS_NORMAL_SUPERIOR_MASTERPIECE_MASTERWORK",
       "display_values_ko": ["보통", "우수", "명품", "걸작"],
       "grade_count": 4,
+      "status": "SUPERSEDED",
+      "superseded_by": "BS-GRADE-20260801-02"
+    },
+    {
+      "decision_id": "BS-GRADE-20260801-02",
+      "domain": "craftsmanship_grade",
+      "decision": "FIVE_TIERS_NORMAL_SUPERIOR_FINE_MASTERPIECE_LEGEND",
+      "display_values_ko": ["보통", "우수", "명품", "걸작", "전설"],
+      "grade_count": 5,
       "removed_current_grade_labels": ["양질"],
+      "added_current_grade_labels": ["전설"],
+      "legend_is_top_craftsmanship_grade": true,
+      "legend_alone_unlocks_other_systems": false,
       "runtime_ids": "USER_REVIEW_REQUIRED",
       "legacy_mapping": "USER_REVIEW_REQUIRED",
-      "supersedes": "BS-V9-20260731-01",
+      "supersedes": "BS-GRADE-20260801-01",
       "status": "USER_APPROVED"
     },
     {"decision_id":"BS-V9-20260731-02","domain":"affix_model","decision":"ONE_LINEAGE_PLUS_TWO_SECONDARY","status":"USER_APPROVED"},
@@ -69,7 +78,7 @@
     "p0_findings": 10,
     "p1_findings": 10,
     "p2_findings": 6,
-    "grade_rule_decision": "RESOLVED_BY_BS-GRADE-20260801-01",
+    "grade_rule_decision": "RESOLVED_BY_BS-GRADE-20260801-02",
     "grade_runtime_migration": "OPEN",
     "open_visual_decisions": [],
     "resolved_visual_decisions": ["DEC-VIS-01","DEC-VIS-02","DEC-VIS-03","MODAK_VISUAL"],
@@ -78,13 +87,13 @@
   },
   "sheet_binding": {
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
-    "grade_decision_ranges": ["02_현재_확정결정!D6:H6", "02_현재_확정결정!A23:H23"],
+    "grade_decision_ranges": ["02_현재_확정결정!D6:H6", "02_현재_확정결정!A23:H23", "02_현재_확정결정!A24:H24"],
     "grade_audit_range": "04_누락_충돌_감사!A18:H18",
     "grade_gdd_range": "05_GDD_요약!A4:H4",
     "grade_migration_range": "40_핵심시스템_메인콘텐츠!A8:H8",
-    "grade_change_history_range": "99_변경이력!A19:H19",
-    "sync_status": "SYNCED_TO_DRAFT_PR81",
-    "cross_source_verification": "PASS"
+    "grade_change_history_range": "99_변경이력!A20:H20",
+    "sync_status": "PENDING_FINAL_HEAD",
+    "cross_source_verification": "PENDING"
   },
   "main_merge": "NOT_RUN",
   "user_planning_complete": "NOT_DECLARED",
