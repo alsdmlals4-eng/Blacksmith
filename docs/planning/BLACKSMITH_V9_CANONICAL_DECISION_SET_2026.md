@@ -112,6 +112,18 @@
 - +50 경로와 특수재료 역할을 별도 데이터로 저장한다.
 - `clarifies: BS-V9-20260731-03`
 
+### BS-SCREEN-20260731-01 — 상황별 인게임 화면 설계·구현 명세 작업지시문
+
+- 중간점검은 `docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md`를 따른다.
+- 실제 코드를 작성하지 않고 문서·실제 구현·해석·가정·제안을 분리한다.
+- 대표 상황 도출 전에 메인, 핵심 플레이, 보유 자원 관리, 결과 화면을 필수 기준 화면으로 감사한다.
+- Blacksmith 초기 대응 화면은 대장간 허브, 단조·강화 작업대, 보관함·자원 관리, 강화·고객·세계 결과다.
+- 화면을 정적 메뉴로 다루지 않고 `SCREEN → SIT` 상태 변형과 전체 상황 전환으로 연결한다.
+- P0 상황은 Godot Scene·Node·Resource·Signal·저장·예외·완료·테스트까지 A~T 형식으로 상세화한다.
+- P1~P3는 요약 후 필요 시 확장한다.
+- 작업 결과에서 확인된 승인 결정은 `BS-SYNC-20260731-01`로 즉시 동기화한다.
+- 공통 절차는 Base 승격 후보이며 Blacksmith 고유 화면·시스템은 프로젝트에 유지한다.
+
 ### BS-SYNC-20260731-01 — 기획 정본 즉시 동기화
 
 - 주요 변경과 승인 내용은 GitHub 권위 문서·계획 데이터·연결 Sheet에 즉시 반영
@@ -125,6 +137,7 @@
 
 ```text
 사용자 최신 결정
+→ BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md (화면·상황 중간점검 범위)
 → BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md
 → BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md
 → BLACKSMITH_V9_USER_DECISION_PACKET.md·Decision Ledger Addenda
@@ -136,10 +149,10 @@
 
 ```text
 GITHUB_AUTHORITY: GITHUB_DRAFT_COMMITTED
-PLANNING_DATA: GITHUB_DRAFT_COMMITTED
-GOOGLE_SHEET: SYNCED_TO_DRAFT_PR81
-CROSS_SOURCE_VERIFICATION: PASS
-FORMULA_ERROR_RECHECK: PASS_ON_DIRECTLY_AFFECTED_TABS
+PLANNING_DATA: UPDATE_IN_PROGRESS
+GOOGLE_SHEET: UPDATE_REQUIRED_FOR_BS-SCREEN-20260731-01
+CROSS_SOURCE_VERIFICATION: PENDING
+FORMULA_ERROR_RECHECK: REQUIRED_ON_98_BASE_CANDIDATE
 MAIN_MERGE: NOT_RUN
 USER_기획_완료: NOT_DECLARED
 ```
