@@ -4,7 +4,7 @@
 >
 > 기준일: `2026-08-01`
 >
-> 상태: `USER_APPROVED / SYNCED_TO_DRAFT`
+> 상태: `USER_APPROVED / SYNCED_TO_DRAFT / CROSS_SOURCE_VERIFIED`
 >
 > 추적: Issue #79 / Draft PR #81
 
@@ -45,3 +45,14 @@ BS-GRADE-20260801-02: CURRENT
 - 고객 적합도 점수
 - 저장 마이그레이션
 - fixture·validator·회귀 테스트
+
+## 동기화 위치
+
+```text
+02_현재_확정결정!A24:H24
+04_누락_충돌_감사!A18:H18
+05_GDD_요약!A4:H4
+40_핵심시스템_메인콘텐츠!A8:H8
+99_변경이력!A20:H20
+CROSS_SOURCE_VERIFICATION: PASS
+```
