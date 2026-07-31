@@ -4,7 +4,7 @@
 >
 > 기준일: `2026-07-31`
 >
-> 원결정: `BLACKSMITH_V9_USER_DECISION_PACKET.md`, `BLACKSMITH_DECISION_LEDGER_ADDENDUM_20.md`
+> 원결정: `BLACKSMITH_V9_USER_DECISION_PACKET.md`, `BLACKSMITH_DECISION_LEDGER_ADDENDUM_20.md`, `BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`
 >
 > 동기화 계약: `BLACKSMITH_CANONICAL_SYNC_OPERATING_CONTRACT_2026.md`
 
@@ -124,6 +124,39 @@
 - 작업 결과에서 확인된 승인 결정은 `BS-SYNC-20260731-01`로 즉시 동기화한다.
 - 공통 절차는 Base 승격 후보이며 Blacksmith 고유 화면·시스템은 프로젝트에 유지한다.
 
+### BS-SCREEN-20260731-02 — 비주얼 중심 화면 보드 상위 계약
+
+- 메인 산출물은 비주얼 기준·필수 화면 4종·핵심 상황 시퀀스다.
+- 기술 구조는 `BS-SCREEN-20260731-01` 기반 PART D 부록으로 분리한다.
+- 모든 화면은 `CURRENT / INFERRED / PROPOSED / PLACEHOLDER`를 구분한다.
+- 화면 판독성을 우선하고 기술 보고서형 보드를 금지한다.
+
+### BS-ART-20260731-01 — 프로젝트 그림체
+
+```text
+스타일라이즈드 다크 포지
+```
+
+- 어두운 대장간의 무게감, 선명한 장비, 따뜻한 불빛을 결합한 스타일라이즈드 2D
+- 장비가 화면의 시각적 주인공
+- 캐릭터는 반실사보다 단순화된 게임 일러스트
+- UI는 철·황동 재질을 암시하되 가독성을 우선
+- 밝은 캐주얼 공방풍·완전 반실사·일반 모바일 판타지 UI 제외
+- `resolves: DEC-VIS-03`
+
+### BS-MODAK-20260731-01 — 모닥 디자인
+
+```text
+C안의 차분한 표정 + 밝은 노랑·주황 불꽃 몸체
+```
+
+- 숯 껍질 몸체 폐기
+- 검은색·숯색은 손·발·목 장식·작은 테두리에만 제한
+- 기본·호기심·걱정·기쁨·놀람·슬픔·집중 표정 사용
+- 항상 웃는 유아형 마스코트 금지
+- 플레이어 선택·확률·결과를 예측하거나 추천하지 않음
+- 장비·확률표·버튼을 가리지 않는 작은 비성장형 동반자
+
 ### BS-SYNC-20260731-01 — 기획 정본 즉시 동기화
 
 - 주요 변경과 승인 내용은 GitHub 권위 문서·계획 데이터·연결 Sheet에 즉시 반영
@@ -137,6 +170,7 @@
 
 ```text
 사용자 최신 결정
+→ BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md (그림체·모닥)
 → BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md (화면·상황 중간점검 범위)
 → BLACKSMITH_CUSTOMER_ARCHETYPES_AND_PLUS50_RECONCILIATION_2026.md
 → BLACKSMITH_VERTICAL_SLICE_MASTER_V9_DRAFT.md
@@ -149,10 +183,9 @@
 
 ```text
 GITHUB_AUTHORITY: GITHUB_DRAFT_COMMITTED
-PLANNING_DATA: UPDATE_IN_PROGRESS
-GOOGLE_SHEET: UPDATE_REQUIRED_FOR_BS-SCREEN-20260731-01
-CROSS_SOURCE_VERIFICATION: PENDING
-FORMULA_ERROR_RECHECK: REQUIRED_ON_98_BASE_CANDIDATE
+PLANNING_DATA: UPDATED
+GOOGLE_SHEET: SYNCED_TO_DRAFT_PR81
+CROSS_SOURCE_VERIFICATION: PASS_PENDING_FINAL_RECHECK
 MAIN_MERGE: NOT_RUN
 USER_기획_완료: NOT_DECLARED
 ```
