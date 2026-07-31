@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "project": "Blacksmith",
   "audit_id": "BS-REPO-AUDIT-20260801-01",
   "status": "AUDIT_COMPLETE_FINDINGS_OPEN",
@@ -30,7 +30,7 @@
     {"id":"BS-AUD-F01","priority":"P0","type":"CONFLICT","domain":"APP_ENTRY","summary":"Default run scene is enhancement test instead of approved separate main menu."},
     {"id":"BS-AUD-F02","priority":"P0","type":"MISSING","domain":"SAVE","summary":"No persistent campaign save, continue metadata, or unresolved irreversible result recovery was found."},
     {"id":"BS-AUD-F03","priority":"P0","type":"CONFLICT","domain":"STATE_OWNERSHIP","summary":"Enhancement test, game flow, and lifecycle PoC own separate in-memory state."},
-    {"id":"BS-AUD-F04","priority":"P0","type":"CONFLICT","domain":"CRAFTSMANSHIP_GRADE","summary":"Legacy five runtime grade ids and labels conflict with the approved four-tier grade canon.","planning_target":"RESOLVED_BY_BS-GRADE-20260801-01","runtime_migration":"OPEN","audit_addendum":"BS-REPO-AUDIT-20260801-01-GRADE-A1"},
+    {"id":"BS-AUD-F04","priority":"P0","type":"CONFLICT","domain":"CRAFTSMANSHIP_GRADE","summary":"Legacy five runtime grade ids and labels conflict with the approved five-tier grade canon: 보통, 우수, 명품, 걸작, 전설.","planning_target":"RESOLVED_BY_BS-GRADE-20260801-02","runtime_migration":"OPEN","audit_addendum":"BS-REPO-AUDIT-20260801-01-GRADE-A2"},
     {"id":"BS-AUD-F05","priority":"P0","type":"CONFLICT","domain":"AFFIX_AND_PLUS50","summary":"Legacy three-slot decade milestones conflict with lineage plus two secondary affixes and the two +50 routes."},
     {"id":"BS-AUD-F06","priority":"P0","type":"CONFLICT","domain":"AUTO_FORGE","summary":"Automation can cross identity and high-risk decisions with random precision and missing materials."},
     {"id":"BS-AUD-F07","priority":"P0","type":"CONFLICT","domain":"CUSTOMERS","summary":"Customer and request flow is hardcoded to Kyle and an exact iron sword instead of four archetypes with multiple named customers and category requests."},
@@ -63,13 +63,13 @@
     "COLOR_INDEPENDENT_RESULT_EXPLANATION",
     "PERSIST_EQUIPMENT_HISTORY_AFTER_TRANSFER",
     "PORTRAIT_720_1280_EXPAND_BASELINE",
-    "ACCESSIBILITY_ASSIST_DOES_NOT_GRANT_PERFECT",
+    "ACCESSIBILITY_ASSIST_DOES_NOT_GRANT_TOP_CRAFTSMANSHIP_GRADE",
     "NOT_RUN_IS_NOT_PASS"
   ],
   "approved_during_audit_context": [
     "BS-MAIN-20260801-01",
     "BS-SHELL-20260801-01",
-    "BS-GRADE-20260801-01"
+    "BS-GRADE-20260801-02"
   ],
   "visual_design_status": {
     "design_id": "BS-VISUAL-20260731-01",
