@@ -8,6 +8,7 @@ spreadsheet_id: 1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg
 workbook_role: USER_FACING_GDD_WORKSPACE
 sheet_edit_policy: IMMEDIATE_CANONICAL_SYNC_FOR_APPROVED_DECISIONS_AND_SHARED_PLANNING_FINDINGS
 sync_contract_decision_id: BS-SYNC-20260731-01
+latest_save_decision_id: BS-SAVE-20260801-01
 latest_grade_decision_id: BS-GRADE-20260801-02
 superseded_grade_decision_ids:
   - BS-V9-20260731-01
@@ -51,6 +52,7 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제와 화면 기�
 
 | 의미 | GitHub 책임 원본 |
 |---|---|
+| 세이브·이어하기·ResultEnvelope | `docs/planning/BLACKSMITH_SAVE_CONTINUE_RESULT_ENVELOPE_CANON_2026.md`, 연결 JSON, 구현계획 |
 | 제작 등급 5단계 | `docs/planning/BLACKSMITH_CRAFTSMANSHIP_GRADE_CANON_2026-08-01.md`, 연결 JSON |
 | 별도 메인·제품 Shell | `docs/planning/BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md`, 연결 JSON |
 | 기존 프로젝트 적대적 감사 | `docs/planning/BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md`, 연결 JSON, 최신 Addendum |
@@ -68,6 +70,7 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제와 화면 기�
 
 | ID | 주요 Sheet 탭 |
 |---|---|
+| `BS-SAVE-20260801-01` | 02·04·05·30·40·60·80·90·99 |
 | `BS-GRADE-20260801-02` | 02·04·05·40·99 |
 | `BS-CUST-20260731-01` | 02·05·13·14·20·30·50·80·90 |
 | `BS-ENH-20260731-01` | 02·05·30·40·41·50·60·80·90 |
@@ -78,6 +81,20 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제와 화면 기�
 | `BS-MAIN-20260801-01` | 02·04·05·60·90·99 |
 | `BS-SHELL-20260801-01` | 02·04·05·60·90·99 |
 | `BS-REPO-AUDIT-20260801-01` | 04·05·30·40·50·60·80·90·99 |
+
+## 세이브·복구 동기화 위치
+
+| 목적 | 범위 |
+|---|---|
+| 승인 결정 | `02_현재_확정결정!A25:H25` |
+| 감사 Addendum | `04_누락_충돌_감사!A19:H19` |
+| GDD 문서 개요·로드맵·저장 | `05_GDD_요약!A2:H2,A7:H7,A10:H10` |
+| Demo 저장·복귀 | `30_데모범위_품질기준_제작기반!A3:H3` |
+| 핵심 시스템 | `40_핵심시스템_메인콘텐츠!A9:H9` |
+| UX | `60_UX_UI_접근성!A16:H16` |
+| 테스트 | `80_데모_버티컬슬라이스_플레이테스트!A8:H8` |
+| 구현 마일스톤 | `90_본제작_출시_사업!A5:H5` |
+| 변경이력 | `99_변경이력!A21:H21` |
 
 ## 제작 등급 동기화 위치
 
@@ -99,16 +116,20 @@ Google Sheets는 제작·강화·장비 연대기·고객·경제와 화면 기�
 | App Shell 결정 | `02_현재_확정결정!A22:H22` |
 | 비주얼 작업안 상태 | `04_누락_충돌_감사!A12:H12` |
 | 메인·Shell·감사 원장 | `04_누락_충돌_감사!A15:H17` |
-| GDD·로드맵 요약 | `05_GDD_요약!A2:H2,A7:H7` |
-| Demo·저장·정합화 | `30_데모범위_품질기준_제작기반!A2:H4` |
+| 비주얼·프로젝트 GDD | `05_GDD_요약` 관련 행 |
 | PoC 콘텐츠 정합화 | `50_메인콘텐츠!A9:H9` |
-| 메인·Shell·Placeholder UX | `60_UX_UI_접근성!A13:H15` |
-| 신규 플레이테스트 | `80_데모_버티컬슬라이스_플레이테스트!A7:H7` |
-| 제작·출시 Gate | `90_본제작_출시_사업!A2:H3` |
 
 ## 현재 판정
 
 ```text
+SAVE_MODEL: SINGLE_CAMPAIGN_WITH_TWO_AUTOMATIC_BACKUPS
+MANUAL_SAVE_LOAD: DISALLOWED
+ATTEMPT_INTENT: APPROVED
+RESULT_ENVELOPE: APPROVED
+SAVE_IMPLEMENTATION_PLAN: COMPLETE
+SAVE_RUNTIME_IMPLEMENTATION: OPEN
+SAVE_AUTOMATED_ANDROID_HUMAN_TESTS: NOT_RUN
+
 CRAFTSMANSHIP_GRADE: 보통 > 우수 > 명품 > 걸작 > 전설
 GRADE_COUNT: 5
 QUALITY_GRADE_LABEL_양질: REMOVED
