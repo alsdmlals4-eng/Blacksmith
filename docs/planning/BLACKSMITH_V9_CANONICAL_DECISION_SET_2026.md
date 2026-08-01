@@ -85,6 +85,7 @@
 
 - `docs/planning/BLACKSMITH_SAVE_CONTINUE_RESULT_ENVELOPE_CANON_2026.md`
 - `docs/planning/data/blacksmith_save_continue_result_envelope_canon_2026.json`
+- `docs/superpowers/plans/2026-08-01-save-continue-result-envelope-implementation.md`
 
 ```text
 campaign.save
@@ -102,6 +103,7 @@ settings.cfg
 - 재실행·화면 전환·뒤로가기로 결과를 재추첨하거나 이중 적용하지 않는다.
 - 기존 캠페인이 있는 새 게임은 신규 캠페인 검증 성공 후에만 교체한다.
 - 저장 손상은 사용자 고지 후 가장 최신 정상 백업으로 복구하며 백업 선택·결과 재시도는 허용하지 않는다.
+- 구현계획은 11개 TDD Task로 작성됐으나 전체 기획·검수 완료 전 실행하지 않는다.
 
 ## 고객·장비 생애
 
@@ -152,6 +154,18 @@ settings.cfg
 - 실제 SaveCoordinator·AppState·마이그레이션·Android 테스트가 없으므로 Finding 건수는 유지한다.
 - `BS-AUD-F04`의 목표 등급 구조는 `BS-GRADE-20260801-02`로 확정됐으나 런타임 마이그레이션은 열려 있다.
 
+## Sheet 연결
+
+- 결정: `02_현재_확정결정!A25:H25`
+- 감사: `04_누락_충돌_감사!A19:H19`
+- GDD: `05_GDD_요약!A2:H2,A7:H7,A10:H10`
+- Demo: `30_데모범위_품질기준_제작기반!A3:H3`
+- 시스템: `40_핵심시스템_메인콘텐츠!A9:H9`
+- UX: `60_UX_UI_접근성!A16:H16`
+- 테스트: `80_데모_버티컬슬라이스_플레이테스트!A8:H8`
+- 구현 Gate: `90_본제작_출시_사업!A5:H5`
+- 변경이력: `99_변경이력!A21:H21`
+
 ## 권한
 
 ```text
@@ -172,8 +186,8 @@ settings.cfg
 ```text
 GITHUB_AUTHORITY: GITHUB_DRAFT_COMMITTED
 PLANNING_DATA: UPDATED
-GOOGLE_SHEET: SYNC_PENDING_FOR_BS-SAVE-20260801-01
-CROSS_SOURCE_VERIFICATION: PENDING
+GOOGLE_SHEET: SYNCED_TO_DRAFT_PR81
+CROSS_SOURCE_VERIFICATION: PASS
 MAIN_MERGE: NOT_RUN
 USER_기획_완료: NOT_DECLARED
 CODEX_IMPLEMENTATION: BLOCKED
