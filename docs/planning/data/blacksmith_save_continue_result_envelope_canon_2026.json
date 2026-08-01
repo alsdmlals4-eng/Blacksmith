@@ -1,0 +1,195 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-SAVE-20260801-01",
+  "status": "USER_APPROVED_CANONICAL_DESIGN_COMPLETE",
+  "as_of": "2026-08-01",
+  "implementation_authorized": false,
+  "save_model": {
+    "campaign_slot_count": 1,
+    "manual_save_load": false,
+    "automatic_backup_count": 2,
+    "files": {
+      "primary": "user://campaign.save",
+      "backup_1": "user://campaign.backup1",
+      "backup_2": "user://campaign.backup2",
+      "temporary": "user://campaign.save.tmp",
+      "settings": "user://settings.cfg",
+      "corrupt_quarantine_pattern": "user://campaign.corrupt.<timestamp>"
+    }
+  },
+  "ownership": {
+    "campaign_state_owner": "AppStateCoordinator",
+    "file_writer": "SaveCoordinator",
+    "screen_router_may_create_domain_state": false,
+    "result_view_may_reroll": false
+  },
+  "campaign_snapshot_required_fields": [
+    "schema_version",
+    "save_revision",
+    "campaign_id",
+    "created_at_utc",
+    "saved_at_utc",
+    "game_day",
+    "current_route",
+    "last_safe_view",
+    "workshop_resources",
+    "workshop_calendar",
+    "equipment_storage",
+    "active_forging",
+    "active_enhancement",
+    "active_attempt_intent",
+    "customers_and_contracts",
+    "customer_relationships",
+    "equipment_world_registry",
+    "pending_result_envelopes",
+    "integrity_metadata"
+  ],
+  "integrity": {
+    "payload_hash_required": true,
+    "writer_version_required": true,
+    "save_revision_monotonic": true,
+    "runtime_scene_objects_serialized": false,
+    "invalid_primary_may_rotate_into_backup": false,
+    "temporary_file_must_be_read_back_and_validated": true
+  },
+  "save_statuses": [
+    "NO_SAVE",
+    "VALID_PRIMARY",
+    "RECOVERABLE_BACKUP",
+    "MIGRATION_REQUIRED",
+    "MIGRATION_FAILED",
+    "UNSUPPORTED_VERSION",
+    "UNRECOVERABLE_CORRUPTION"
+  ],
+  "main_menu_metadata": [
+    "saved_at_utc",
+    "game_day",
+    "last_safe_view",
+    "owned_equipment_count",
+    "has_unacknowledged_result",
+    "schema_version"
+  ],
+  "autosave": {
+    "required_events": [
+      "NEW_CAMPAIGN_CREATED",
+      "FORGING_COMPLETED",
+      "ATTEMPT_PREPARED",
+      "ATTEMPT_RESOLVED",
+      "SALE_OR_DELIVERY_COMPLETED",
+      "WORLD_RESULT_APPLIED",
+      "DAY_ENDED",
+      "RESULT_ACKNOWLEDGED",
+      "RETURN_TO_MAIN_MENU",
+      "APPLICATION_PAUSE_OR_BACKGROUND"
+    ],
+    "active_work_checkpoint_seconds_max": 30,
+    "save_on_each_tap": false,
+    "save_on_each_frame": false,
+    "overlapping_requests_serialized": true
+  },
+  "recovery": {
+    "automatic_file_inspection": true,
+    "user_confirmation_before_backup_restore": true,
+    "backup_selection_by_user": false,
+    "result_retry_via_backup": false,
+    "auto_new_game_on_corruption": false,
+    "priority": [
+      "UNACKNOWLEDGED_RESULT_ENVELOPE",
+      "PREPARED_ATTEMPT_ROLLBACK",
+      "SAFE_ACTIVE_WORK",
+      "LAST_SAFE_VIEW",
+      "FORGE_HUB"
+    ]
+  },
+  "new_game_replacement": {
+    "requires_warning_when_existing_campaign": true,
+    "confirmation_label_ko": "기존 기록을 교체하고 새 게임",
+    "create_and_validate_new_campaign_before_replacing_old": true,
+    "preserve_old_campaign_when_creation_fails": true,
+    "manual_recovery_of_replaced_campaign": false
+  },
+  "attempt_intent": {
+    "states": ["PREPARED", "RESOLVED", "CANCELLED"],
+    "required_fields": [
+      "intent_id",
+      "action_type",
+      "equipment_uid",
+      "target_level",
+      "before_snapshot",
+      "consumed_gold",
+      "consumed_materials",
+      "deterministic_rng_state_or_commitment",
+      "created_revision",
+      "state"
+    ],
+    "prepared_crash_behavior": "RESTORE_BEFORE_SNAPSHOT_WITHOUT_DOUBLE_COST",
+    "resolved_crash_behavior": "REUSE_STORED_RESULT_WITHOUT_REROLL",
+    "idempotency_required": true
+  },
+  "result_envelope": {
+    "states": ["CREATED", "APPLIED", "PRESENTED", "ACKNOWLEDGED"],
+    "required_fields": [
+      "envelope_id",
+      "intent_id",
+      "result_type",
+      "subject_type",
+      "subject_id",
+      "source_action",
+      "previous_snapshot_digest",
+      "resulting_snapshot_digest",
+      "outcome",
+      "resource_changes",
+      "ownership_changes",
+      "relationship_changes",
+      "fate_changes",
+      "chronology_entries",
+      "created_revision",
+      "applied_revision",
+      "presentation_route",
+      "state"
+    ],
+    "domain_change_and_applied_envelope_same_revision": true,
+    "present_before_applied_save": false,
+    "reroll_on_restart": false,
+    "double_apply": false,
+    "queue_order": "APPLIED_REVISION_ASCENDING"
+  },
+  "settings": {
+    "separate_from_campaign": true,
+    "categories": [
+      "MUSIC_VOLUME",
+      "SFX_VOLUME",
+      "VIBRATION",
+      "REDUCED_MOTION",
+      "PRECISION_ASSIST",
+      "TEXT_SIZE",
+      "ACCESSIBILITY_DISPLAY_OPTIONS"
+    ],
+    "corruption_behavior": "RECREATE_DEFAULTS_WITH_NOTICE_WITHOUT_CAMPAIGN_IMPACT"
+  },
+  "test_gates": {
+    "automatic_contract_test_count_min": 18,
+    "android_process_death_required": true,
+    "human_test_participants_min": 6,
+    "zero_tolerance_metrics": [
+      "SAVE_STATE_DUPLICATION",
+      "RESULT_REROLL_ON_RESTART",
+      "RESULT_DOUBLE_APPLY",
+      "RESOURCE_LOSS_WITHOUT_RESULT",
+      "CORRUPT_PRIMARY_BACKUP_POISONING",
+      "NEW_GAME_FAILURE_DATA_LOSS",
+      "MIGRATION_FAILURE_SOURCE_OVERWRITE"
+    ]
+  },
+  "audit_resolution": {
+    "BS-AUD-F02": "PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F09": "PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F16": "PAUSE_AND_PROCESS_DEATH_PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "p0_finding_count_reduced": false
+  },
+  "product_code_change": "NOT_RUN",
+  "runtime_verification": "NOT_RUN",
+  "android_verification": "NOT_RUN",
+  "human_playtest": "NOT_RUN"
+}
