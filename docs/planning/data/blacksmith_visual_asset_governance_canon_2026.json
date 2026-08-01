@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-VISUAL-ASSET-GOV-20260801-01",
+  "status": "USER_PREAPPROVED_RECOMMENDED_CANONICAL_DESIGN_COMPLETE",
+  "as_of": "2026-08-01",
+  "implementation_authorized": false,
+  "approved_direction": [
+    "STYLIZED_DARK_FORGE",
+    "EQUIPMENT_AS_VISUAL_PROTAGONIST",
+    "DARK_FORGE_WITH_WARM_LOCAL_FIRELIGHT",
+    "IRON_AND_BRASS_UI_LANGUAGE",
+    "BRIGHT_FIRE_SPIRIT_MODAK_WITH_C_STYLE_EXPRESSIONS",
+    "SEPARATE_MAIN_MENU",
+    "SINGLE_APP_SHELL_VIEW_OVERLAY_MIX"
+  ],
+  "not_yet_approved_as_product_assets": [
+    "FINAL_LOGO",
+    "FINAL_ENVIRONMENT_BACKGROUND",
+    "FINAL_EQUIPMENT_ART",
+    "FINAL_CHARACTER_ART",
+    "FINAL_ICONS",
+    "FINAL_FONTS",
+    "FINAL_THEME_RESOURCE",
+    "FINAL_AUDIO",
+    "EXTERNAL_ASSET_LICENSE_USE"
+  ],
+  "placeholder_not_canon": [
+    "PLAYER_LEVEL",
+    "BLUE_GEM_OR_PREMIUM_CURRENCY",
+    "ENERGY_COUNTER",
+    "ACHIEVEMENTS",
+    "SHOP",
+    "DETAILED_CODEX_OR_GUIDE",
+    "SPECIAL_CRAFTING_AS_SEPARATE_SYSTEM",
+    "INVENTORY_128_OF_150",
+    "DIRECT_MARKET_EXPLORATION",
+    "DIRECT_ARENA_EXPLORATION_OR_COMBAT",
+    "IMAGE_DISPLAYED_PROBABILITIES",
+    "IMAGE_DISPLAYED_GOLD_MATERIAL_EQUIPMENT_VALUES"
+  ],
+  "asset_statuses": [
+    "PROPOSED",
+    "CONCEPT_DIRECTION_APPROVED",
+    "PRODUCTION_CANDIDATE",
+    "SOURCE_AND_LICENSE_VERIFIED",
+    "VISUAL_REVIEW_PASS",
+    "RUNTIME_INTEGRATED",
+    "DEVICE_VERIFIED",
+    "RELEASE_APPROVED",
+    "REJECTED",
+    "HISTORICAL",
+    "REPLACED"
+  ],
+  "current_asset_status": {
+    "art_style":"CONCEPT_DIRECTION_APPROVED",
+    "modak":"CONCEPT_DIRECTION_APPROVED",
+    "visual_board_v1":"CONCEPT_DIRECTION_APPROVED_WORKING_BASELINE",
+    "final_product_art":"NOT_CREATED_OR_NOT_REGISTERED",
+    "runtime_integration":"NOT_RUN",
+    "device_validation":"NOT_RUN",
+    "license_review":"NOT_RUN"
+  },
+  "asset_manifest_required_fields": [
+    "asset_id","asset_type","display_name","status","canonical_decision_ids","source_type","source_reference","creator_or_provider","created_or_acquired_at","local_path","file_format","dimensions_or_duration","intended_usage","platform_scope","version","checksum","license_entry_id","modification_notes","review_evidence_ids","replacement_of"
+  ],
+  "source_types": ["ORIGINAL_HANDMADE","AI_GENERATED_OR_EDITED","PURCHASED_ASSET","OPEN_SOURCE_ASSET","FONT","REFERENCE_ONLY_NOT_SHIPPED"],
+  "license_ledger_required_fields": [
+    "license_entry_id","asset_id_or_asset_family","source_url_or_purchase_record","provider","license_name","license_version","commercial_use_allowed","modification_allowed","attribution_required","redistribution_restrictions","ai_training_or_generation_terms_reviewed","proof_location","reviewer","reviewed_at","status","notes"
+  ],
+  "license_statuses": ["UNREVIEWED","REVIEW_REQUIRED","VERIFIED_FOR_PROJECT_USE","ATTRIBUTION_REQUIRED","BLOCKED","EXPIRED_OR_REPLACED"],
+  "modak_layout_limits_720x1280": {
+    "main_or_hub_max_box":"160x160",
+    "forge_enhance_customer_max_box":"112x112",
+    "result_recovery_warning_max_box":"96x96",
+    "may_shrink_for_safe_area_or_text":true
+  },
+  "modak_disallowed_overlap": ["PRIMARY_CTA","EQUIPMENT_CENTRAL_SILHOUETTE","PROBABILITY_TABLE","COST_AND_STOP_REASON","RESULT_CHANGE_SUMMARY"],
+  "screenshot_baselines": [
+    "MAIN_NO_SAVE","MAIN_CONTINUE","SAVE_RECOVERY","FORGE_HUB","FORGING_AND_FINISH","ENHANCEMENT_AND_PLUS50","AUTO_ENHANCE","STORAGE_EQUIPMENT_CHRONOLOGY","CUSTOMER_BOARD_DELIVERY","RESULT_ENVELOPE","SETTINGS_ACCESSIBILITY","ERROR_OFFLINE_SAVE_FAILURE"
+  ],
+  "review_resolutions": ["720x1280","1080x2400","SAFE_INSETS","TEXT_SCALE","REDUCED_MOTION"],
+  "zero_tolerance_gates": [
+    "P0_INFORMATION_OCCLUSION",
+    "CORE_TOUCH_TARGET_BELOW_48DP",
+    "COLOR_ONLY_CORE_STATE",
+    "PLACEHOLDER_NOT_CANON_IN_PRODUCT",
+    "UNREGISTERED_RUNTIME_ASSET",
+    "UNREVIEWED_OR_BLOCKED_RELEASE_LICENSE",
+    "MODAK_OCCLUDES_EQUIPMENT_OR_DECISION"
+  ],
+  "ai_generated_asset_rules": {
+    "conversation_image_is_product_asset_by_default":false,
+    "manifest_registration_required":true,
+    "prompt_summary_and_edit_history_required":true,
+    "source_resolution_and_postprocess_required_for_candidate":true,
+    "direct_replication_of_living_or_specific_artist_style_as_product_standard":false
+  },
+  "sheet_roles": {
+    "70_아트_오디오_에셋":"DIRECTION_AND_ASSET_FAMILIES",
+    "71_이미지기획_생성목록":"PRODUCTION_QUEUE",
+    "72_이미지검수_승인로그":"REVIEW_LOG",
+    "github_manifest_and_license_ledger":"DETAILED_AUTHORITY"
+  },
+  "audit_resolution": {
+    "BS-AUD-F10":"PLACEHOLDER_TARGET_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F23":"MODAK_VALIDATION_CONTRACT_RESOLVED_EXECUTION_OPEN",
+    "BS-AUD-F24":"ASSET_LICENSE_STRUCTURE_RESOLVED_CONTENT_OPEN",
+    "BS-AUD-F25":"SCREENSHOT_BASELINE_CONTRACT_RESOLVED_EXECUTION_OPEN",
+    "finding_counts_reduced":false
+  },
+  "final_product_assets":"NOT_RUN",
+  "license_review":"NOT_RUN",
+  "visual_regression":"NOT_RUN",
+  "device_validation":"NOT_RUN",
+  "codex_implementation":"BLOCKED"
+}
