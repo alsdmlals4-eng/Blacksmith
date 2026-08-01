@@ -18,6 +18,9 @@
 GAME_RULE_P0_BLOCKER: 0
 GRADE_RULE_DECISION: RESOLVED_BY_BS-GRADE-20260801-02
 GRADE_RUNTIME_MIGRATION: OPEN
+SAVE_RULE_DECISION: RESOLVED_BY_BS-SAVE-20260801-01
+SAVE_RUNTIME_IMPLEMENTATION: OPEN
+RESULT_ENVELOPE_RULE_DECISION: RESOLVED_BY_BS-SAVE-20260801-01
 REPOSITORY_AUDIT: COMPLETE
 P0_FINDINGS: 10
 P1_FINDINGS: 10
@@ -36,10 +39,12 @@ CODEX_IMPLEMENTATION: BLOCKED
 
 현행 책임 원본:
 
+- 저장·이어하기·ResultEnvelope: `docs/planning/BLACKSMITH_SAVE_CONTINUE_RESULT_ENVELOPE_CANON_2026.md`, 연결 JSON
 - 제작 등급: `docs/planning/BLACKSMITH_CRAFTSMANSHIP_GRADE_CANON_2026-08-01.md`, 연결 JSON
 - 메인·제품 Shell: `docs/planning/BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md`
 - 그림체·모닥: `docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`
 - 저장소 적대적 감사: `docs/planning/BLACKSMITH_EXISTING_PROJECT_ADVERSARIAL_AUDIT_2026-08-01.md`
+- 저장 감사 보완: `docs/planning/BLACKSMITH_EXISTING_PROJECT_AUDIT_ADDENDUM_SAVE_2026-08-01.md`
 - 제작 등급 감사 보완: `docs/planning/BLACKSMITH_EXISTING_PROJECT_AUDIT_ADDENDUM_GRADE_2026-08-01.md`
 - 기계 판독 감사: `docs/planning/data/blacksmith_existing_project_adversarial_audit_2026-08-01.json`
 - 비주얼 작업 기준: `docs/planning/data/blacksmith_visual_situation_board_design_v1_2026.json`
@@ -61,6 +66,10 @@ CODEX_IMPLEMENTATION: BLOCKED
 - C안 표정 기반 밝은 불 정령 모닥
 - 별도 메인 화면
 - 단일 `BlacksmithApp` Shell + View·Overlay 혼합
+- 단일 캠페인 + 자동 백업 2개
+- `SaveStatus` 기반 이어하기·손상 복구·새 게임 교체
+- `AttemptIntent PREPARED/RESOLVED`
+- `ResultEnvelope CREATED/APPLIED/PRESENTED/ACKNOWLEDGED`
 - 첫 5분 UX·접근성 경계
 - 미래 명작 전당 경계
 - 벤치마킹 선행 및 승인 결정 즉시 동기화 원칙
@@ -79,6 +88,23 @@ STATUS: USER_APPROVED / CURRENT
 ```
 
 `양질`은 현행 제작 등급에서 제거됐고 `전설`은 최상위 제작 등급으로 추가됐다. 내부 런타임 ID와 구형 5개 ID의 변환표는 아직 승인 전이다.
+
+### 저장·복구 정본
+
+```text
+BS-SAVE-20260801-01
+campaign.save + backup1 + backup2
+manual load: NO
+result reroll: NO
+result double apply: NO
+```
+
+- 정상 검증된 primary만 백업으로 회전한다.
+- 비가역 행동은 `AttemptIntent PREPARED` 저장 뒤 실행한다.
+- 결과는 변경 상태와 `ResultEnvelope APPLIED`를 같은 revision에 저장한 뒤 표시한다.
+- 새 게임은 신규 캠페인 검증 성공 후 기존 캠페인을 교체한다.
+- 저장 손상은 사용자 고지 후 최신 정상 백업으로 복구한다.
+- 자동 계약·Android 프로세스 종료·최소 6명 사람 검증이 필요하다.
 
 ## 3. 현재 비주얼 기준안 상태
 
@@ -109,17 +135,17 @@ STATUS: USER_APPROVED / CURRENT
 ## 4. 열린 P0 Finding
 
 1. `BS-AUD-F01` — 기본 실행 Scene이 강화 테스트이며 별도 메인 화면이 없음
-2. `BS-AUD-F02` — 영속 세이브·이어하기·미확인 결과 복구 없음
+2. `BS-AUD-F02` — 영속 세이브·이어하기·미확인 결과 복구 런타임 없음; 기획 목표는 `BS-SAVE-20260801-01`로 해결
 3. `BS-AUD-F03` — 강화 테스트·게임 흐름·장비 생애 PoC가 서로 다른 메모리 상태 소유
 4. `BS-AUD-F04` — 목표 등급은 5단계로 해결됐으나 구형 5개 런타임 ID·표시명·분포·고객 점수·저장·테스트 마이그레이션이 열림
 5. `BS-AUD-F05` — 구형 3수식어 슬롯·10단위 특수 강화와 최신 계보·보조·+50 이원화 충돌
 6. `BS-AUD-F06` — 자동 단조가 정밀·재료·이정표·고위험 선택을 건너뜀
 7. `BS-AUD-F07` — 고객·요청·화면이 카일·철검에 하드코딩
 8. `BS-AUD-F08` — 운명·관계·세계 결과가 단일 검투사 PoC 모델에 묶임
-9. `BS-AUD-F09` — 공통 ResultEnvelope와 비가역 결과 영속 저장 없음
+9. `BS-AUD-F09` — 공통 ResultEnvelope 런타임 없음; 기획 목표는 `BS-SAVE-20260801-01`로 해결
 10. `BS-AUD-F10` — 비주얼 시안의 미승인 시스템이 CURRENT처럼 오해될 위험
 
-`BS-AUD-F04`는 규칙 미결정이 아니라 **구형 5개 값과 신규 5개 값의 의미·표시·저장 이전 미설계** Finding이다. 따라서 P0 건수는 아직 줄지 않는다.
+기획 목표가 해결된 Finding도 제품 구현·마이그레이션·테스트 전에는 닫지 않는다.
 
 ## 5. 열린 P1 Finding
 
@@ -128,7 +154,7 @@ STATUS: USER_APPROVED / CURRENT
 3. `BS-AUD-F13` — 주요 UI가 런타임 GDScript 조립이며 공통 Theme·재사용 Scene 경계 없음
 4. `BS-AUD-F14` — 고정 폭·오프셋 사용과 제품 안전 영역 처리 부재
 5. `BS-AUD-F15` — 시안의 설정 화면과 설정 영속성 미구현
-6. `BS-AUD-F16` — Android 일시중지·백그라운드·뒤로가기·중단 복구 미정
+6. `BS-AUD-F16` — Android 일시중지·프로세스 종료 복구 목표는 `BS-SAVE-20260801-01`로 해결됐으나 런타임·뒤로가기·실기기 검증이 열림
 7. `BS-AUD-F17` — 6칸 세션 보관함과 최신 작품·소유권·연대기 모델 불일치
 8. `BS-AUD-F18` — 일반 판매·방문 상인·이름 고객 채널 미분리
 9. `BS-AUD-F19` — 장비별 연대기와 고객별 관계 UI 부족
@@ -159,8 +185,9 @@ STATUS: USER_APPROVED / CURRENT
 ## 8. 다음 기획 작업
 
 ```text
-현재: 제작 등급 5단계 정본 동기화
-→ P0-1 세이브·이어하기·ResultEnvelope 계약
+완료: P0-1 세이브·이어하기·ResultEnvelope 계약
+→ Base 저장소 전체 스킬·작업 구조 재분석
+→ Blacksmith GitHub·Google Sheet 전체 진행도 재감사
 → P0-2 신규 등급 ID·legacy 변환표·계보·보조·+50 데이터 마이그레이션 계약
 → P0-3 고객 4유형 공통 데이터·화면 계약
 → P0-4 자동 단조 정지 경계
@@ -177,7 +204,10 @@ STRUCTURAL_GAME_DIRECTION: COMPLETE
 GRADE_RULE_DECISION: USER_APPROVED
 GRADE_TIER_COUNT: 5
 GRADE_ORDER: 보통 > 우수 > 명품 > 걸작 > 전설
-GRADE_RUNTIME_MIGRATION: USER_REVIEW_REQUIRED
+GRADE_RUNTIME_MIGRATION: OPEN
+SAVE_RULE_DECISION: USER_APPROVED
+SAVE_IMPLEMENTATION_PLAN: TO_BE_WRITTEN / EXECUTION_BLOCKED
+SAVE_RUNTIME_IMPLEMENTATION: OPEN
 USER_VISUAL_DECISIONS_REQUIRED: 0
 REPOSITORY_ADVERSARIAL_AUDIT: COMPLETE
 AUDIT_FINDINGS: OPEN
