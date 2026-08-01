@@ -19,6 +19,7 @@ GAME_RULE_P0_BLOCKER: 0
 GRADE_RULE_DECISION: RESOLVED_BY_BS-GRADE-20260801-02
 GRADE_RUNTIME_MIGRATION: OPEN
 SAVE_RULE_DECISION: RESOLVED_BY_BS-SAVE-20260801-01
+SAVE_IMPLEMENTATION_PLAN: COMPLETE_EXECUTION_BLOCKED
 SAVE_RUNTIME_IMPLEMENTATION: OPEN
 RESULT_ENVELOPE_RULE_DECISION: RESOLVED_BY_BS-SAVE-20260801-01
 REPOSITORY_AUDIT: COMPLETE
@@ -34,12 +35,14 @@ SEPARATE_MAIN_MENU: APPROVED
 APP_SHELL_VIEW_OVERLAY_MIX: APPROVED
 OPEN_VISUAL_DECISIONS: 0
 
+CROSS_SOURCE_VERIFICATION: PASS
 CODEX_IMPLEMENTATION: BLOCKED
 ```
 
 현행 책임 원본:
 
 - 저장·이어하기·ResultEnvelope: `docs/planning/BLACKSMITH_SAVE_CONTINUE_RESULT_ENVELOPE_CANON_2026.md`, 연결 JSON
+- 저장 미래 구현계획: `docs/superpowers/plans/2026-08-01-save-continue-result-envelope-implementation.md`
 - 제작 등급: `docs/planning/BLACKSMITH_CRAFTSMANSHIP_GRADE_CANON_2026-08-01.md`, 연결 JSON
 - 메인·제품 Shell: `docs/planning/BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md`
 - 그림체·모닥: `docs/planning/BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md`
@@ -70,6 +73,7 @@ CODEX_IMPLEMENTATION: BLOCKED
 - `SaveStatus` 기반 이어하기·손상 복구·새 게임 교체
 - `AttemptIntent PREPARED/RESOLVED`
 - `ResultEnvelope CREATED/APPLIED/PRESENTED/ACKNOWLEDGED`
+- 저장·복구 11개 Task 미래 구현계획
 - 첫 5분 UX·접근성 경계
 - 미래 명작 전당 경계
 - 벤치마킹 선행 및 승인 결정 즉시 동기화 원칙
@@ -97,6 +101,7 @@ campaign.save + backup1 + backup2
 manual load: NO
 result reroll: NO
 result double apply: NO
+implementation plan: COMPLETE / EXECUTION BLOCKED
 ```
 
 - 정상 검증된 primary만 백업으로 회전한다.
@@ -185,7 +190,7 @@ result double apply: NO
 ## 8. 다음 기획 작업
 
 ```text
-완료: P0-1 세이브·이어하기·ResultEnvelope 계약
+완료: P0-1 세이브·이어하기·ResultEnvelope 계약·미래 구현계획
 → Base 저장소 전체 스킬·작업 구조 재분석
 → Blacksmith GitHub·Google Sheet 전체 진행도 재감사
 → P0-2 신규 등급 ID·legacy 변환표·계보·보조·+50 데이터 마이그레이션 계약
@@ -206,7 +211,7 @@ GRADE_TIER_COUNT: 5
 GRADE_ORDER: 보통 > 우수 > 명품 > 걸작 > 전설
 GRADE_RUNTIME_MIGRATION: OPEN
 SAVE_RULE_DECISION: USER_APPROVED
-SAVE_IMPLEMENTATION_PLAN: TO_BE_WRITTEN / EXECUTION_BLOCKED
+SAVE_IMPLEMENTATION_PLAN: COMPLETE / EXECUTION_BLOCKED
 SAVE_RUNTIME_IMPLEMENTATION: OPEN
 USER_VISUAL_DECISIONS_REQUIRED: 0
 REPOSITORY_ADVERSARIAL_AUDIT: COMPLETE
