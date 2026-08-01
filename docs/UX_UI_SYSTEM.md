@@ -1,7 +1,7 @@
 # Blacksmith UX/UI 시스템
 
 > Base 공용 기준: `alsdmlals4-eng/Base`의 `auditing-and-refining-ui-art`  
-> Base content commit: `0fd95f4513343e77fd664af2763a01b02f52545b`  
+> Base content commit: `a728712cb776ec98f4875914a580fcf7d0156593`  
 > 프로젝트 상태: `DESIGN_CONTRACT_ADOPTED`  
 > 런타임·실기기·사람 검증: `NOT_RUN`
 
@@ -100,6 +100,18 @@
 - 작업 연출을 줄이거나 건너뛰어도 결과와 다음 행동이 남는다.
 - 긴 한국어·최대 수치·작은 화면·safe area에서 잘림과 오입력을 검증한다.
 - 이미지 누락 시 기본 도형·이름·수치로 제작과 장착 기능을 유지한다.
+
+## 7A. UI 모션·중단·반복 계약
+
+```text
+입력 접수 → 처리 중 → 도메인 결과 확정 → 결과 표현
+```
+
+- 반복 클릭·제작·강화·보상 수령은 중복 지급·중복 소비·transform drift 없이 재진입해야 한다.
+- 모션은 중단과 즉시 완료 경로를 가지며, 취소·건너뛰기 후에도 도메인 상태와 결과 카드가 동일해야 한다.
+- `AnimationPlayer`·`Tween` 완료 signal은 제작 성공·재료 소비·보상·저장 권위 시점이 아니다.
+- `Reduced Motion`, `mute`, `haptic-off`에서도 결과·위험·다음 행동을 텍스트·아이콘으로 보존한다.
+- Android 반복 피로·기기 성능·사람 이해는 `NOT_RUN` 또는 `HUMAN_NOT_RUN`으로 유지한다.
 
 ## 8. 검증 매트릭스
 

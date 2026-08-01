@@ -129,3 +129,9 @@ PR validation #468에서 Ubuntu Python 전체 계약, Godot 4.7.1 import, `main.
 - Android·접근성·성능·외부 플레이 `NOT_RUN`
 - Branch protection Required Check 강제 상태 `UNVERIFIED`
 - 외부 플레이 행동 기준 미검증
+
+## Base v9.4 운영 계약
+
+- Base `9.4.0` payload/evidence를 adapter에 적용했다.
+- 범위는 운영 계약과 UI 검증 계약이며 제품 코드·데이터·Scene·자산·저장은 변경하지 않는다.
+- Godot·Android·사람·provider 비용 증거는 `NOT_RUN` 또는 `HUMAN_NOT_RUN`이다.

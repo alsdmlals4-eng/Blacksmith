@@ -1,10 +1,10 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
   "base_release": {
-    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
-    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
+    "release_evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.1.0"
+    "version": "9.4.0"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
@@ -29,7 +29,7 @@
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "4b465ae92a48c1bd7e222b86234dafb507d242dc",
+    "commit": "500a5a7960146ef229ae172cf9e127306d23f073",
     "policy_sha256": "1c36c4180b85d6bd97f4e7cdba908cc73298f529d368aa07e0dffde6e1e8ec52",
     "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
     "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
@@ -59,6 +59,11 @@
       {
         "route_id": "governing-legacy-retention-and-archives",
         "skill_id": "governing-legacy-retention-and-archives",
+        "status": "ACTIVE"
+      },
+      {
+        "route_id": "optimizing-ai-model-and-prompt-costs",
+        "skill_id": "optimizing-ai-model-and-prompt-costs",
         "status": "ACTIVE"
       }
     ],
@@ -131,13 +136,23 @@
         "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
       ],
       "existing_legacy_migration": "NOT_IN_THIS_ADOPTION"
+    },
+    "optimizing-ai-model-and-prompt-costs": {
+      "modes": [
+        "route-model-and-effort",
+        "design-cacheable-prefix",
+        "estimate-cost",
+        "measure-actual-usage",
+        "recalibrate"
+      ],
+      "provider_measurement_status": "NOT_RUN"
     }
   },
   "skill_registry": {
     "base": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "skills/SKILL_REGISTRY.json",
-      "sha256": "e06003cb986e979aa46c06839de178c3fb9ff10bdf440e750712d90d6c5ae7bb"
+      "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
     },
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",

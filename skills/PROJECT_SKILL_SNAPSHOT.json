@@ -5,7 +5,7 @@
   "base_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "skills/SKILL_REGISTRY.json",
-    "sha256": "e06003cb986e979aa46c06839de178c3fb9ff10bdf440e750712d90d6c5ae7bb"
+    "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
   },
   "base_routes": [
     {
@@ -21,6 +21,11 @@
     {
       "route_id": "governing-legacy-retention-and-archives",
       "skill_id": "governing-legacy-retention-and-archives",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "optimizing-ai-model-and-prompt-costs",
+      "skill_id": "optimizing-ai-model-and-prompt-costs",
       "status": "ACTIVE"
     }
   ],
@@ -66,6 +71,13 @@
       "source": "BASE_SHARED",
       "status": "ACTIVE",
       "target_route_id": "governing-legacy-retention-and-archives"
+    },
+    "optimizing-ai-model-and-prompt-costs": {
+      "route_id": "optimizing-ai-model-and-prompt-costs",
+      "skill_id": "optimizing-ai-model-and-prompt-costs",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "optimizing-ai-model-and-prompt-costs"
     }
   },
   "generated": true,
@@ -96,6 +108,6 @@
   "source_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "skills/PROJECT_BASE_ADAPTER.json",
-    "sha256": "da158895b02071531532f813586a048a32841d5300f388fa44926e70a886f6a1"
+    "sha256": "1477957d9322e76bca45aaf07bdafd5bcb3a01a1d78dc9f17816f9e332161be4"
   }
 }

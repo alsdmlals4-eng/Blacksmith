@@ -44,6 +44,8 @@ AGENTS.md
 | 강화 수치와 위험은 무엇인가 | `data/crafting/enhancement_balance.json` | 성공·보정·위험·성장·가격 수치 |
 | 수식어 이정표는 무엇인가 | `data/crafting/enhancement_milestones.json` | `+10` 단위 수식어 성장 |
 | Base 기준은 무엇인가 | `docs/BASE_RULES_VERSION.md` | 고정 commit과 적용 정책 |
+| AI 모델·지시·Context 작업 흐름은 무엇인가 | `AI_WORKFLOW.md` | Base v9.4 모델 추천·지시 권위·Context·증거 상한 |
+| Base v9.4 적용·보호 감사는 무엇인가 | `docs/reviews/2026-08-01_BASE_V9_4_ADOPTION_AUDIT.md` | payload·evidence·route·제품 보호 경계 |
 | Base 적용 검증은 무엇인가 | `docs/BASE_ADOPTION_AUDIT.md` | 25 Skill 매핑과 CI 증거 |
 | 문서 발행 정책은 무엇인가 | `DESIGN_DOCUMENT_REGISTRY.json` | source, status, output, manifest, policy |
 | Skill 라우팅은 무엇인가 | `SKILL_REGISTRY.json` | trigger·mode·owner |
