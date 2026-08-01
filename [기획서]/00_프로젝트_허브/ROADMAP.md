@@ -1,135 +1,151 @@
-# Roadmap
+# Blacksmith Roadmap
 
-## Concept — PASS
+> 상태: `PLANNING_REMEDIATION_IN_PROGRESS`
+>
+> 갱신일: `2026-08-01`
+>
+> 제품 구현: `BLOCKED`
 
-- 프로젝트 코어: `CORE_CONFIRMED / CORE_RECORDED`
-- 한 명의 대장장이, 직접 제작, 영구 완성도, 강화 선택, 세계 장비 이력과 명성 환류
+## 1. 보존 기준선
+
+### 프로젝트 코어 — PASS / KEEP
+
+- 한 명의 대장장이
+- 직접 제작
+- 작품의 영구 제작 등급
+- 강화 위험과 장비 정체성 선택
+- 판매·인계 후 장비 UID·소유권·연대기 보존
+- 세계 결과·명성·다음 의뢰 환류
 - 직원·직접 전투·작업 예약·일상적 수리 관리 제외
-- 정확한 `+100`은 현재 제품 목표이며 코어 불변값은 아님
 
-책임 원본: `docs/superpowers/specs/2026-07-23-project-core-design.md`
+### 기존 PoC — HISTORICAL IMPLEMENTATION BASELINE
 
-## Prototype 구현 기준선 — 유지
+MVP-001~003에서 다음 구현과 자동 검증 이력을 보존한다.
 
-### MVP-001 제작
+- 제작·피버·정밀 마감
+- 강화·실패 보정·하락·파괴
+- 자원 거래 원자성
+- 6칸 보관함·자동 단조
+- 카일 검투사 납품·지연 결과·장비 Registry
+- Python·Godot·E2E PASS 이력
 
-- 철검 제작, 광클·자동 작업, 피버, 제작 정밀 마감
-- 제작 결과가 강화·보관으로 전달됨
-- 자동 검증 PASS 이력
-- 실제 화면·Android: `NOT_RUN`
+이 기준선은 최신 제품 정본이 아니다. 최신 v9와 충돌하는 구형 등급·수식어·고객·자동화는 마이그레이션한다.
 
-### MVP-002 강화·보관·자동 단조
+## 2. 완료된 현행 기획
 
-- 일반/특수 강화, +11 하락, +30 파괴, 실패 보정
-- 균형·안정·폭주 단조
-- +100 수식어 성장 목표
-- 공유 골드·재료 거래, 보관함, 자동 단조
-- 자동 검증 PASS 이력
-- 장기 플레이·성능·Android: `NOT_RUN`
+### 방향·비주얼
 
-### 위험·가격 기준선 시뮬레이션
+- 별도 메인 화면
+- 단일 `BlacksmithApp` + View·Overlay
+- 스타일라이즈드 다크 포지
+- 밝은 불 정령 모닥
+- 비주얼 보드 `USER_ACCEPTED_WORKING_BASELINE`
 
-- Issue #29 기준선 15개 조합 × 1,000회 실행 완료
-- Scope·Report·Registry·CI 증거 보존
-- 추가 수치 조정은 장비 생애 PoC의 경제 입력이 확인될 때 재개
-- 상태: `DEFERRED / TEST_IN_PLAY`
+### 게임 규칙
 
-## 장비 한 점의 생애 PoC — CURRENT
+- 제작 등급: 보통→우수→명품→걸작→전설
+- 계보 1개 + 보조 최대 2개
+- +10·20·30·40 정체성 이정표
+- +49→+50 일반 정밀강화 / 고위 정밀강화
+- 고객 4유형 × 유형별 복수 이름 고객
+- 장비 운명·소유권·연대기
 
-- Issue: #34
-- PR: #35
-- Scope: `docs/MVP-003_SCOPE.md`
-- Status: `docs/MVP-003_IMPLEMENTATION_STATUS.md`
-- Spec: `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md`
-- Plan: `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md`
-- CI policy: `docs/CI_EXECUTION_POLICY.md`
-- 상태: `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`
+### 저장·마이그레이션
+
+- `BS-SAVE-20260801-01`: 단일 캠페인·자동 백업2·AttemptIntent·ResultEnvelope
+- 저장 구현계획: 11개 TDD Task
+- `BS-MIGRATION-20260801-01`: 구형 데이터 결정론적 이전
+- 마이그레이션 구현계획: 7개 TDD Task
+
+위 계획은 전체 기획·최종 검수 전 실행하지 않는다.
+
+## 3. 운영체계 현재 상태
+
+- Base current 구조 분석: 완료
+- 적용 목표: released Base v9.3
+- canonical adapter: v9.1 구형
+- protected baseline·Sheet binding·provenance·Snapshot·Router·Health: 정합화 필요
+- latest Base main·미출시 v9.4 직접 pin: 금지
+- local Base generator·validator: NOT_RUN
+
+## 4. 현재 단계 — Canonical Remediation
+
+- [x] P0-1 세이브·이어하기·ResultEnvelope 기획
+- [x] P0-2 제작 등급·수식어·+50 마이그레이션 기획
+- [x] Base Skill·작업 구조 분석
+- [x] GitHub·Sheet 적대적 검토 Pass 2
+- [ ] 시작 문서·Design Registry·Sheet CURRENT/History 정리
+- [ ] Base v9.3 adapter migration 실행 준비·검증
+- [ ] P0-3 고객 공통 계약
+- [ ] P0-4 자동 단조 정지 경계
+- [ ] P0-5 비주얼 Placeholder·Asset/License 구조
+- [ ] P1 Theme·안전 영역·설정·Android lifecycle
+- [ ] 최신 validator·fixture·E2E·시각 회귀 계획
+- [ ] 적대적 검토 Pass 3
+
+## 5. P0-3 고객 공통 계약
+
+필수 완료 기준:
+
+- 수집가·모험가·검투사·군인 공통 데이터 구조
+- 유형별 최소 2명 이름 고객
+- 모험가·군인 대표 확정
+- 범주 요청·공개 적합도·관계·소유권 이전
+- 유형별 세계 결과 Resolver
+- 카시아 대표·에르사 재사용·추가 고객 비하드코딩 fixture
+- 공통 ResultEnvelope·CampaignSnapshot 연결
+
+## 6. P0-4 자동 단조 경계
+
+필수 완료 기준:
+
+- +5 완성 판단 전 정지
+- +10/+20/+30/+40 선택 전 정지
+- +49→+50 경로 선택 전 정지
+- 판매·고객 인계·비가역 결과 전 정지
+- 정밀 게이지 임의 난수 자동 판정 금지
+- 특수재료 빈 fallback으로 이정표 우회 금지
+- 파괴 뒤 무제한 새 장비 반복의 기본값 금지
+
+## 7. P0-5·P1
+
+### 비주얼·자산
+
+- 시안 Placeholder와 시스템 정본 분리
+- 최종 화면 에셋 Manifest
+- 외부 에셋·폰트·아이콘 License Ledger
+- 모닥 실제 화면 크기·밝기·가림 검증
+- 핵심 화면 Screenshot Baseline
+
+### UI·플랫폼
+
+- 공통 Theme Resource·재사용 UI Scene
+- 720×1280 외 안전 영역·태블릿·폴더블 대응
+- 음악·효과음·진동·모션 감소·텍스트 크기 설정 저장
+- Android 뒤로가기·pause·process-death
+- 접근성·성능·외부 플레이
+
+## 8. 구현 Gate
+
+다음이 모두 충족되기 전 Codex BUILD를 열지 않는다.
 
 ```text
-검투사 의뢰
-→ 철검 제작·영구 완성도
-→ +5 납품 또는 +10 추가 도전
-→ 수동 하루 종료
-→ 지연 경기 결과
-→ 영구 장비 이력·명성·관계
-→ 같은 검투사 재방문
+P0 planning findings = 0
+P1 implementation-contract findings = 0 또는 명시적 defer
+Base adapter operating integrity = PASS
+GitHub canon ↔ Sheet = CROSS_SOURCE_VERIFIED
+User 기획 완료 = DECLARED
+Adversarial final review = PASS
+User 검수 완료 = DECLARED
 ```
 
-### 구현·자동 검증 완료
+## 9. Production Gate
 
-1. lifecycle 데이터 계약·검증기
-2. 날짜·피로도와 50% 이월
-3. 정밀 결과·영구 완성도 분리와 legacy 호환
-4. 고객 의뢰·납품 적합도
-5. 세계 기록·결정적 결과 판정
-6. 원자 거래·생애 컨트롤러
-7. 로컬 행동 로그
-8. 세로 UI·접근성 보조·기존 Prototype 진입점
-9. 전체 생애 E2E·CI 구조·정본 동기화
-
-코드 기준 head `03c90bb063103e1c92885e7e21228f963cfe2775`의 PR validation #468에서 다음이 통과했다.
-
-- Ubuntu Python 전체 프로젝트 계약
-- Godot 4.7.1 import·parse
-- `main.tscn`·`equipment_lifecycle_poc.tscn` Scene smoke
-- 기존·신규 모델·통합 테스트
-- 장비 생애 E2E와 DEFEAT/WIN/DECISIVE_WIN 경계
-
-### 현재 검증 게이트
-
-- PR 최신 정본 head 재검증: 진행
-- `main` full-validation: PR 병합 뒤 실행
-- Ubuntu·Windows Python 3.11·3.12·3.13: PR 병합 뒤 실행
-- Branch protection Required Check: `UNVERIFIED`
-- Android·접근성 사람 검토·성능·외부 플레이: `NOT_RUN`
-
-### 자동 종료 기준
-
-- [x] 제작부터 재방문까지 E2E 완주
-- [x] +5 납품과 +10 추가 도전 경계
-- [x] DEFEAT/WIN/DECISIVE_WIN 반례
-- [x] 골드·재료·피로도 거래 원자성
-- [x] 납품 후 장비 기록 보존과 결과 인과 설명 데이터
-- [x] 신규 테스트와 기존 Godot 회귀
-- [x] Godot import·main·PoC Scene smoke
-
-### 사람·플랫폼 종료 기준
-
-- [ ] 세로 UI 실제 가독성과 터치 동선
-- [ ] 정밀 보조·모션 감소 실제 사용성
-- [ ] Android 안전 영역·터치·AAB
-- [ ] 대표·최악 장면 성능
-- [ ] 외부 신규 플레이어 6명 권장 행동 검증
-
-## 다음 게이트
-
-장비 생애 PoC의 외부 플레이 행동 증거가 통과한 뒤에만 다음을 순서대로 검토한다.
-
-1. +30 위험 강화 PoC
-2. 흉갑·반지 공통 문법 전이
-3. 제한된 세계 활동 장비 파이프라인
-4. 토너먼트 일정과 선택적 관전
-5. 전쟁·대표작·선택형 복원
-6. 최종 강화 상한과 +100 유지·감량 판정
-7. SWOT·VRIO 기반 Production Greenlight
-
-## 현재 보류
-
-- MVP-004 상인 납품
-- 방어구·악세서리 수량 확정
-- 다수 고객·세력·시장
-- 전쟁·관전·베팅
-- 대표작·복원 구현
-- 저장·방치 복귀
-- 범용 이벤트 버스·퀘스트 프레임워크
-
-## Production 진입 차단 조건
-
-다음 증거 없이는 Production 또는 프로젝트 전체 MVP 완료로 표시하지 않는다.
-
-- 실제 Android 빌드·기기 증거
-- 저장·복귀 계약
-- 외부 플레이 행동 증거
-- 접근성 장벽 검수
-- 대표·최악 장면 성능 측정
-- PR Required Check 강제 상태 확인
+- 최신 제품 자동 계약·Godot E2E Green
+- Android 실제 빌드·기기 증거
+- 안전 영역·뒤로가기·중단 복구 증거
+- 접근성 사람 검토
+- 대표·최악 장면 성능
+- 신규 플레이어 최소 6명 행동 검증
+- 자산·라이선스 원장 완료
+- 스토어 QA와 사업 범위 승인
