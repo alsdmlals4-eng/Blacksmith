@@ -6,13 +6,13 @@
     "repository": "alsdmlals4-eng/Base"
   },
   "base_release": {
-    "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
-    "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+    "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
+    "release_evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.1.0"
+    "version": "9.4.0"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "da158895b02071531532f813586a048a32841d5300f388fa44926e70a886f6a1",
+  "canonical_source_sha256": "1477957d9322e76bca45aaf07bdafd5bcb3a01a1d78dc9f17816f9e332161be4",
   "canonical_sources": [
     "[기획서]/",
     "docs/UX_UI_SYSTEM.md",
@@ -110,7 +110,8 @@
         "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
       ],
       "existing_legacy_migration": "NOT_IN_THIS_ADOPTION"
-    }
+    },
+    "optimizing-ai-model-and-prompt-costs": {}
   },
   "third_party_inventory": "docs/technical/ADOPTED_ASSETS.md",
   "validators": [
