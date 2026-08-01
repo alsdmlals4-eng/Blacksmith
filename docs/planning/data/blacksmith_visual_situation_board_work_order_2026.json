@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-SCREEN-20260731-02",
+  "status": "USER_APPROVED_VISUAL_FIRST_WORK_ORDER",
+  "authority_markdown": "docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md",
+  "extends": "BS-SCREEN-20260731-01",
+  "priority": {
+    "primary": [
+      "PROJECT_VISUAL_STANDARD_BOARD",
+      "FOUR_BASELINE_SCREEN_BOARDS",
+      "CORE_SITUATION_SCREEN_SEQUENCES"
+    ],
+    "appendix": [
+      "SCENE_NODE_RESOURCE_SIGNAL",
+      "STATE_MACHINE",
+      "SAVE_RETURN",
+      "EXCEPTIONS_TESTS"
+    ]
+  },
+  "parts": [
+    "PART_A_VISUAL_STANDARD",
+    "PART_B_FOUR_BASELINE_SCREENS",
+    "PART_C_CORE_SITUATION_SEQUENCES",
+    "PART_D_IMPLEMENTATION_APPENDIX"
+  ],
+  "evidence_tags": ["CURRENT", "INFERRED", "PROPOSED", "PLACEHOLDER"],
+  "baseline_screens": [
+    "MAIN_OR_PROJECT_HUB",
+    "COMBAT_OR_CORE_PLAY",
+    "INVENTORY_OR_RESOURCE_MANAGEMENT",
+    "RESULT"
+  ],
+  "blacksmith_mapping": {
+    "MAIN_OR_PROJECT_HUB": "FORGE_HUB_AND_RETURN",
+    "COMBAT_OR_CORE_PLAY": "FORGING_ENHANCEMENT_PRECISION_WORKBENCH",
+    "INVENTORY_OR_RESOURCE_MANAGEMENT": "STORAGE_MATERIAL_GOLD_PROTECTION_SPECIAL_MATERIAL",
+    "RESULT": "CRAFT_ENHANCEMENT_CUSTOMER_WORLD_CHRONICLE_RESULT"
+  },
+  "adversarial_review": [
+    "SCREEN_FIRST_NOT_TECH_REPORT",
+    "FOUR_SCREENS_AND_SEQUENCES_VISIBLE",
+    "EVIDENCE_LEVELS_SEPARATED",
+    "PROJECT_IDENTITY_VISIBLE",
+    "READABILITY_AND_FIRST_THREE_SECONDS",
+    "COMMON_TEMPLATE_VS_PROJECT_SPECIFIC"
+  ],
+  "completion_requires_all_review_pass": true,
+  "implementation_allowed": false,
+  "base_promotion_candidate": true
+}

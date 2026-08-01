@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "audit_id": "BS-MIDCHECK-20260731-01",
+  "work_order_decision_id": "BS-SCREEN-20260731-01",
+  "status": "MID_CHECK_PASS_1_FINDINGS_OPEN",
+  "as_of": "2026-07-31",
+  "work_mode": "PLAN_REVIEW",
+  "implementation_authorized": false,
+  "authority": {
+    "report": "docs/planning/BLACKSMITH_SITUATION_SCREEN_MID_CHECK_2026.md",
+    "work_order": "docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md",
+    "remaining_planning_status": "docs/planning/BLACKSMITH_REMAINING_PLANNING_STATUS_2026.md"
+  },
+  "baseline_screens": [
+    {
+      "screen_id": "SCREEN-01",
+      "name": "대장간 허브·복귀 화면",
+      "actual_status": "PRODUCT_HUB_NOT_IMPLEMENTED_DEFAULT_F5_IS_ENHANCEMENT_TEST",
+      "priority": "P0"
+    },
+    {
+      "screen_id": "SCREEN-02",
+      "name": "단조·강화 핵심 작업대",
+      "actual_status": "POC_IMPLEMENTED_LATEST_PLUS50_ROUTE_NOT_IMPLEMENTED",
+      "priority": "P0"
+    },
+    {
+      "screen_id": "SCREEN-03",
+      "name": "보관함·자원 관리",
+      "actual_status": "IN_MEMORY_SIX_SLOT_WEAPON_OVERLAY",
+      "priority": "P1"
+    },
+    {
+      "screen_id": "SCREEN-04",
+      "name": "결과·세계 환류·연대기",
+      "actual_status": "FRAGMENTED_RESULTS_GLADIATOR_ONLY_WORLD_REPORT",
+      "priority": "P0"
+    }
+  ],
+  "p0_situations": [
+    "SIT-001 대장간 첫 진입·복귀",
+    "SIT-002 첫 작품 단조·정밀 마감",
+    "SIT-003 일반 강화 위험 판단·결과 반복",
+    "SIT-004 +49 일반/고위 정밀강화 선택",
+    "SIT-005 방문 고객 요청과 작품 비교",
+    "SIT-006 세계 결과·연대기 귀환"
+  ],
+  "findings": [
+    {
+      "finding_id": "BS-SCR-F01",
+      "severity": "P0",
+      "finding": "F5 진입이 강화 테스트이며 제품 메인 허브가 없음"
+    },
+    {
+      "finding_id": "BS-SCR-F02",
+      "severity": "P0",
+      "finding": "최신 +50 두 경로와 구형 10단위 특수 강화·세 번째 수식어 슬롯 충돌"
+    },
+    {
+      "finding_id": "BS-SCR-F03",
+      "severity": "P0",
+      "finding": "고객 요청·세계 결과가 카일·검투사에 하드코딩"
+    },
+    {
+      "finding_id": "BS-SCR-F04",
+      "severity": "P0",
+      "finding": "제작·강화·세계 결과가 공통 결과 계약 없이 분산"
+    },
+    {
+      "finding_id": "BS-SCR-F05",
+      "severity": "P0",
+      "finding": "앱 종료·복귀·미확인 결과를 책임지는 영속 Save Shell이 실제 화면 경로에서 미확인"
+    },
+    {
+      "finding_id": "BS-SCR-F06",
+      "severity": "P0",
+      "finding": "주요 UI가 런타임 GDScript 조립이라 Scene 재사용·시각 검수 경계가 불명확"
+    },
+    {
+      "finding_id": "BS-SCR-F07",
+      "severity": "P1",
+      "finding": "보관함이 무기 6칸·세션 메모리 구조로 최신 작품·소유권·고객 비교를 표현하지 못함"
+    },
+    {
+      "finding_id": "BS-SCR-F08",
+      "severity": "P1",
+      "finding": "접근성 Overlay의 실기기·포커스·노치 검증 미실행"
+    },
+    {
+      "finding_id": "BS-SCR-F09",
+      "severity": "P1",
+      "finding": "수평 Workshop HUD의 작은 폭·텍스트 확대 과밀 위험"
+    },
+    {
+      "finding_id": "BS-SCR-F10",
+      "severity": "P1",
+      "finding": "구형 제작 등급·수식어·강화 데이터가 최신 정본과 다름"
+    }
+  ],
+  "user_decisions_required": [
+    {
+      "decision_key": "APP_START_MODE",
+      "recommended": "RESTORE_SAVE_AND_ENTER_FORGE_HUB_IMMEDIATELY",
+      "alternative": "TITLE_CONTINUE_SETTINGS_THEN_FORGE_HUB"
+    },
+    {
+      "decision_key": "PRODUCT_SHELL_TRANSITION",
+      "recommended": "SINGLE_APP_SHELL_WITH_STATE_VIEWS_AND_STORAGE_RESULT_OVERLAYS",
+      "alternative": "FULL_SCENE_REPLACEMENT_PER_FEATURE"
+    }
+  ],
+  "gate": {
+    "ready_for_user_planning_complete_declaration": false,
+    "reason": "P0_SCREEN_FINDINGS_AND_USER_DECISIONS_OPEN",
+    "codex_implementation": "BLOCKED"
+  }
+}

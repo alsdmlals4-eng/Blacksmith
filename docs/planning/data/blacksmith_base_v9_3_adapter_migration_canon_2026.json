@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-BASE-MIGRATION-20260801-01",
+  "status": "USER_PREAPPROVED_RECOMMENDED_DESIGN_COMPLETE_EXECUTION_BLOCKED_BY_LOCAL_VALIDATION_ENVIRONMENT",
+  "as_of": "2026-08-01",
+  "implementation_authorized": false,
+  "base_target": {
+    "version":"9.3.0",
+    "release_commit":"30ca6c7b5f93521f0eb0eed42d01437cd43c50ae",
+    "release_evidence_commit":"462a86db192d23d0f386281a1eb54b0a8cbad62e",
+    "registry_sha256":"9847bb2b225c776ad7916930f0f48c490bc2a898bea8e02ea1fdd0e6caac60c1",
+    "latest_main_as_pin_allowed":false,
+    "unreleased_v9_4_as_pin_allowed":false
+  },
+  "generation_rules": {
+    "canonical_adapter":"skills/PROJECT_BASE_ADAPTER.json",
+    "manual_edit_generated_files":false,
+    "use_base_generator_only":true,
+    "copy_base_shared_skill_bodies_into_project":false,
+    "preserve_project_local_skills":true,
+    "product_paths_may_change":false
+  },
+  "execution_freeze_inputs": [
+    "ORIGIN_MAIN_HEAD",
+    "OPEN_PR_81_HEAD",
+    "CURRENT_CONFIRMED_DECISIONS",
+    "CANONICAL_DECISION_JSON",
+    "GDD_SHEET_BINDING",
+    "LOCAL_SKILL_REGISTRY",
+    "CURRENT_ADAPTER_SNAPSHOT_ROUTER_HEALTH",
+    "PROTECTED_PATH_INVENTORY",
+    "CLEAN_WORKING_TREE"
+  ],
+  "protected_baseline_policy":"EXECUTION_TIME_VERIFIED_ORIGIN_MAIN_HEAD_NOT_PLANNING_BRANCH",
+  "project_identity": {
+    "repository":"alsdmlals4-eng/Blacksmith",
+    "engine":"Godot",
+    "engine_version":"4.7.1",
+    "language":"GDScript",
+    "platform":"Android portrait"
+  },
+  "gdd_sheet_target": {
+    "role":"USER_FACING_GDD_WORKSPACE",
+    "configured":true,
+    "spreadsheet_id":"1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+    "current_decisions_tab":"02_현재_확정결정",
+    "history_tab":"99_변경이력",
+    "sync_policy":"SAME_DECISION_ID_IMMEDIATE_SYNC",
+    "current_decision_entrypoint":"CURRENT_CONFIRMED_DECISIONS.md"
+  },
+  "local_skill_registry": {
+    "path":"[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+    "expected_project_skill_count":3
+  },
+  "generated_outputs": [
+    "skills/PROJECT_BASE_ADAPTER.json",
+    "skills/PROJECT_SKILL_SNAPSHOT.json",
+    ".agents/skills/blacksmith-workflow-router/SKILL.md",
+    "docs/PROJECT_OPERATING_HEALTH.json",
+    "BASE_COMPATIBILITY_ADAPTER_VIEWS",
+    "OPTIONAL_GENERATED_OPERATING_DASHBOARD"
+  ],
+  "human_link_documents": [
+    "docs/BASE_RULES_VERSION.md",
+    "docs/BASE_ADOPTION_PROFILE.json",
+    "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+    "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+    "CURRENT_CONFIRMED_DECISIONS.md",
+    "docs/PROJECT_GOOGLE_SHEET_WORKBOOK.md"
+  ],
+  "minimum_protected_paths": [
+    "project.godot","scenes/**","scripts/**","data/**","tests/**","assets/**","CURRENT_CONFIRMED_DECISIONS.md","APPROVED_PLANNING_CANON_AND_DATA","PROJECT_LOCAL_SKILL_REGISTRY_AND_BODIES"
+  ],
+  "validation_sequence": [
+    "VERIFY_RELEASE_AND_EVIDENCE_COMMITS",
+    "VERIFY_REGISTRY_RAW_BYTE_HASH",
+    "FREEZE_ORIGIN_MAIN_WORKTREE_AND_PR",
+    "DIFF_EXISTING_ADAPTER_AND_DERIVATIVES",
+    "CHECK_GENERATOR_OUTPUT_SCOPE",
+    "GENERATE_CANONICAL_ADAPTER",
+    "REGENERATE_SNAPSHOT_ROUTER_HEALTH_AND_COMPAT_VIEWS",
+    "UPDATE_HUMAN_LINK_DOCS_AND_REGISTRY_PROVENANCE",
+    "RUN_OPERATING_CONTRACT_VALIDATOR",
+    "RUN_REFERENCE_FRESHNESS_AND_DUPLICATE_ACTIVE_SOURCE_CHECK",
+    "RUN_COLD_START_ROUTE_CHECK",
+    "VERIFY_SHEET_AND_DECISION_CROSS_SOURCE_BINDING",
+    "VERIFY_GIT_DIFF_BOUNDARY",
+    "RUN_ADVERSARIAL_REVIEW"
+  ],
+  "pass_criteria": {
+    "base_release_pin_match":true,
+    "registry_hash_match":true,
+    "protected_baseline_equals_execution_origin_main":true,
+    "canonical_adapter_count":1,
+    "conflicting_base_pins":0,
+    "conflicting_sheet_status":0,
+    "generated_derivative_drift":0,
+    "local_skill_loss":0,
+    "product_path_changes":0,
+    "current_decision_entrypoint_discoverable":true,
+    "operating_validator":"PASS",
+    "reference_freshness":"PASS",
+    "cold_start":"PASS"
+  },
+  "failure_policy": {
+    "hash_mismatch":"ABORT",
+    "generator_schema_mismatch":"ABORT_NO_MANUAL_JSON_FIX",
+    "protected_path_change":"DISCARD_OUTPUT",
+    "local_skill_loss":"DISCARD_OUTPUT_AND_FIX_INPUT",
+    "sheet_binding_missing":"NO_PASS",
+    "validator_failure":"KEEP_PREVIOUS_ADAPTER_AND_REPORT",
+    "partial_generation":"NO_COMMIT"
+  },
+  "finding_targets": {
+    "BASE-F01":"V9_3_SINGLE_PIN",
+    "BASE-F02":"EXECUTION_ORIGIN_MAIN_BASELINE",
+    "BASE-F03":"CONFIGURED_SHEET_SINGLE_STATE",
+    "BASE-F04":"CURRENT_BASE_RULES",
+    "BASE-F05":"DUPLICATE_PIN_REMOVED_OR_HISTORICAL",
+    "BASE-F06":"LOCAL_REGISTRY_PROVENANCE_MATCH",
+    "BASE-F07":"REGENERATED_SNAPSHOT_ROUTER",
+    "BASE-F08":"CURRENT_DECISION_ENTRYPOINT_BOUND",
+    "BASE-F09":"REGENERATED_HEALTH_WITH_REAL_EVIDENCE",
+    "BASE-F10":"SHEET_CURRENT_HISTORY_RECONCILED",
+    "BASE-F11":"NO_DIRECT_MAIN_PIN"
+  },
+  "local_base_checkout":"UNAVAILABLE_DNS",
+  "generator_execution":"NOT_RUN",
+  "validator":"NOT_RUN",
+  "cold_start_recheck":"NOT_RUN",
+  "product_path_change":"NOT_RUN",
+  "codex_implementation":"BLOCKED"
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "audit_id": "BS-REPO-AUDIT-20260801-02",
+  "status": "PASS2_COMPLETE_REMEDIATION_IN_PROGRESS",
+  "as_of": "2026-08-01",
+  "main_commit_reviewed": "500a5a7960146ef229ae172cf9e127306d23f073",
+  "planning_pr": 81,
+  "scope": {
+    "github": ["START_AND_AUTHORITY_DOCS","PLANNING_CANON_AND_DATA","GODOT_SCENES_SCRIPTS_DATA_TESTS_CI","BASE_ADAPTER_AND_DERIVATIVES"],
+    "google_sheet_tabs_reviewed": 25,
+    "product_code_changed": false
+  },
+  "progress": {
+    "core_direction":"COMPLETE",
+    "visual_direction":"COMPLETE",
+    "save_design":"COMPLETE",
+    "save_implementation_plan":"COMPLETE_EXECUTION_BLOCKED",
+    "v9_migration_design":"COMPLETE",
+    "v9_migration_implementation_plan":"COMPLETE_EXECUTION_BLOCKED",
+    "base_analysis":"COMPLETE",
+    "base_adapter_migration":"REQUIRED",
+    "customer_common_contract":"PARTIAL",
+    "auto_forge_boundary":"OPEN",
+    "visual_placeholder_reconciliation":"IN_PROGRESS",
+    "theme_safe_area_settings_android":"OPEN",
+    "asset_license_structure":"OPEN",
+    "current_v9_automated_tests":"NOT_RUN",
+    "android_human_validation":"NOT_RUN"
+  },
+  "evidence": {
+    "product_main_scene":"res://scenes/test/enhancement_test.tscn",
+    "legacy_grade_ids":["APPRENTICE","STANDARD","REFINED","MASTERWORK","PERFECT"],
+    "target_grade_ids":["NORMAL","SUPERIOR","EXQUISITE","MASTERPIECE","LEGENDARY"],
+    "legacy_milestone_model":"THREE_AFFIX_SLOTS_SPECIAL_EVERY_10_TO_100",
+    "target_identity_model":"ONE_LINEAGE_TWO_SECONDARY_PLUS_SEPARATE_HIGH_PRECISION_SPECIAL",
+    "auto_forge_behaviors":["RANDOM_PRECISION_POSITION","EMPTY_SECONDARY_FALLBACK","REPEAT_AFTER_DESTRUCTION","REPEAT_UNTIL_STORAGE_FULL"],
+    "legacy_customer_default":"gladiator_kyle",
+    "legacy_world_event_prefix":"gladiator_match"
+  },
+  "sheet_findings": [
+    {"id":"SHEET-F01","severity":"MUST_FIX","summary":"Hub, work order and product direction show stale ready/gate states"},
+    {"id":"SHEET-F02","severity":"MUST_FIX_WITH_HISTORY_PRESERVATION","summary":"CURRENT decision ledger contains superseded grade decisions"},
+    {"id":"SHEET-F03","severity":"MUST_FIX","summary":"Formula-like +5 text produces errors in evidence and image planning"},
+    {"id":"SHEET-F04","severity":"MUST_FIX","summary":"Art tab retains charcoal ember Modak language"},
+    {"id":"SHEET-F05","severity":"P0_PLANNING_OPEN","summary":"Adventurer and Soldier representative customer content remains undefined"},
+    {"id":"SHEET-F06","severity":"SHOULD_FIX","summary":"Legacy economy numbers lack explicit legacy/tuning evidence status"},
+    {"id":"SHEET-F07","severity":"KEEP_NOT_RUN_ADD_DIRECTION_LOG","summary":"Image review log lacks current art and mascot direction entries"},
+    {"id":"SHEET-F08","severity":"P2_OPEN","summary":"No actual asset manifest or license ledger"},
+    {"id":"SHEET-F09","severity":"PROPAGATION_AUDIT_REQUIRED","summary":"CURRENT, PROPOSED, LEGACY and PLACEHOLDER tags are inconsistent"}
+  ],
+  "registry_findings": {
+    "latest_canons_missing": [
+      "BS-SAVE-20260801-01",
+      "BS-MIGRATION-20260801-01",
+      "BS-BASE-AUDIT-20260801-01",
+      "BS-REPO-AUDIT-20260801-02"
+    ],
+    "historical_reports_presented_as_current": true,
+    "must_update": true
+  },
+  "existing_finding_updates": {
+    "BS-AUD-F01":"OPEN_RUNTIME_MAIN_SCENE",
+    "BS-AUD-F02":"PLANNING_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F04":"PLANNING_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F05":"MIGRATION_PLANNING_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F06":"PLANNING_OPEN",
+    "BS-AUD-F07":"PLANNING_PARTIAL_RUNTIME_OPEN",
+    "BS-AUD-F08":"PLANNING_PARTIAL_RUNTIME_OPEN",
+    "BS-AUD-F09":"PLANNING_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F10":"REMEDIATION_IN_PROGRESS",
+    "BS-AUD-F11":"MUST_FIX_STALE_START_DOCS",
+    "BS-AUD-F12":"EXPANDED_BY_BS-BASE-AUDIT-20260801-01",
+    "BS-AUD-F20":"MIGRATION_TEST_PLAN_RESOLVED_EXECUTION_OPEN",
+    "BS-AUD-F24":"OPEN_ASSET_LICENSE_LEDGER"
+  },
+  "safe_immediate_remediation": [
+    "FIX_SHEET_00_01_10_GATES",
+    "FIX_SHEET_03_71_FORMULA_ERRORS",
+    "FIX_SHEET_70_MODAK_DESCRIPTION",
+    "REMOVE_SUPERSEDED_ROWS_FROM_SHEET_02_AFTER_HISTORY_VERIFICATION",
+    "TAG_SHEET_41_LEGACY_ECONOMY_BASELINE",
+    "ADD_ART_AND_MODAK_DIRECTION_LOG_TO_SHEET_72",
+    "UPDATE_DESIGN_DOCUMENT_REGISTRY",
+    "UPDATE_START_HERE_ACTIVE_CONTEXT_ROADMAP_DEVELOPMENT_GATES"
+  ],
+  "next_sequence": [
+    "CANON_AND_SHEET_REMEDIATION",
+    "BASE_V9_3_ADAPTER_MIGRATION_PREPARATION",
+    "P0_3_CUSTOMER_COMMON_CONTRACT",
+    "P0_4_AUTO_FORGE_BOUNDARY",
+    "P0_5_VISUAL_ASSET_LICENSE_RECONCILIATION",
+    "P1_THEME_SAFE_AREA_SETTINGS_ANDROID",
+    "CURRENT_VALIDATORS_FIXTURES_E2E_VISUAL_REGRESSION",
+    "ADVERSARIAL_REVIEW_PASS_3"
+  ],
+  "current_gate": {
+    "ready_for_planning_complete": false,
+    "codex_implementation": "BLOCKED",
+    "runtime_verification": "NOT_RUN",
+    "android_verification": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  }
+}

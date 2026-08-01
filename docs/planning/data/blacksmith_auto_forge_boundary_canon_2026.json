@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-AUTOFORGE-20260801-01",
+  "status": "USER_PREAPPROVED_RECOMMENDED_CANONICAL_DESIGN_COMPLETE",
+  "as_of": "2026-08-01",
+  "implementation_authorized": false,
+  "product_name_ko": "자동 강화",
+  "legacy_name_ko": "자동 단조",
+  "scope": "REPEAT_NON_DECISION_NORMAL_ENHANCEMENT_ON_ONE_EXISTING_EQUIPMENT",
+  "disallowed": [
+    "AUTO_CREATE_NEW_EQUIPMENT",
+    "AUTO_FORGING_OR_FINISHING",
+    "AUTO_CRAFTSMANSHIP_GRADE_ROLL",
+    "AUTO_IDENTITY_CHOICE",
+    "AUTO_PRECISION_INPUT",
+    "AUTO_PLUS50_ROUTE_OR_MATERIAL_CHOICE",
+    "AUTO_SALE_OR_DELIVERY",
+    "AUTO_WORLD_RESULT_ACKNOWLEDGEMENT",
+    "AUTO_RESTART_AFTER_DESTRUCTION"
+  ],
+  "start_requirements": [
+    "PLAYER_OWNED_COMPLETED_EQUIPMENT",
+    "ENHANCEMENT_READY_STATE",
+    "NO_UNACKNOWLEDGED_RESULT_ENVELOPE",
+    "NO_UNRESOLVED_ATTEMPT_INTENT",
+    "TARGET_ABOVE_CURRENT_LEVEL",
+    "TARGET_NOT_BEYOND_NEXT_UNRESOLVED_DECISION_BOUNDARY",
+    "MAX_ATTEMPTS_1_TO_100",
+    "MAX_SPEND_OR_MINIMUM_RESERVE_CONFIGURED",
+    "SAVE_STORAGE_PREFLIGHT_PASS"
+  ],
+  "policy_fields": [
+    "equipment_uid",
+    "requested_target_level",
+    "max_attempts",
+    "max_gold_spend",
+    "minimum_gold_reserve",
+    "allowed_normal_skill_id",
+    "stop_on_hold",
+    "stop_on_downgrade",
+    "policy_created_revision"
+  ],
+  "defaults": {
+    "max_attempts": 10,
+    "minimum_gold_reserve": 0,
+    "stop_on_hold": false,
+    "stop_on_downgrade": true,
+    "stop_on_destroy": true,
+    "stop_on_target_reached": true,
+    "all_limits_unbounded_allowed": false
+  },
+  "mandatory_stop_boundaries": [
+    {"before_level":5,"reason":"WORK_COMPLETION_DECISION"},
+    {"before_level":10,"reason":"LINEAGE_CHOICE"},
+    {"before_level":20,"reason":"SECONDARY_1_CHOICE"},
+    {"before_level":30,"reason":"LINEAGE_BRANCH_CHOICE"},
+    {"before_level":40,"reason":"SECONDARY_2_CHOICE"},
+    {"before_level":50,"reason":"PLUS50_ROUTE_MATERIAL_AND_PRECISION_CHOICE"},
+    {"data_driven_flag":"requires_player_choice","reason":"LATE_IDENTITY_DEEPENING_CHOICE"},
+    {"action":"SALE_OR_CUSTOMER_DELIVERY","reason":"OWNERSHIP_DECISION"},
+    {"action":"WORLD_RESULT_OR_FATE_CHANGE","reason":"IRREVERSIBLE_RESULT"}
+  ],
+  "precision": {
+    "auto_input": false,
+    "random_position": false,
+    "rng_calls": 0,
+    "stop_reason": "PRECISION_INPUT_REQUIRED",
+    "accessibility_assist_may_skip_input": false,
+    "accessibility_assist_may_guarantee_perfect": false
+  },
+  "materials": {
+    "allow_empty_required_secondary": false,
+    "auto_select_cheapest_or_best": false,
+    "repeat_preapproved_normal_material": true,
+    "high_precision_material_auto_select": false,
+    "special_affix_candidate_auto_select": false
+  },
+  "outcome_behavior": {
+    "SUCCESS":"CONTINUE_AFTER_POLICY_RECHECK",
+    "HOLD":"CONTINUE_OR_STOP_BY_POLICY",
+    "DOWNGRADE":"STOP_BY_DEFAULT_CONTINUE_ONLY_IF_PRECONFIGURED",
+    "DESTROY":"ALWAYS_STOP",
+    "SAVE_FAILED":"STOP_WITHOUT_NEXT_ATTEMPT",
+    "RESULT_ERROR":"STOP_REUSE_COMMITMENT_NO_REROLL"
+  },
+  "stop_reasons": [
+    "TARGET_REACHED",
+    "MAX_ATTEMPTS_REACHED",
+    "MAX_GOLD_SPEND_REACHED",
+    "MINIMUM_GOLD_RESERVE_REACHED",
+    "PLAYER_CHOICE_REQUIRED",
+    "PRECISION_INPUT_REQUIRED",
+    "REQUIRED_MATERIAL_MISSING",
+    "DOWNGRADE_OCCURRED",
+    "DESTROYED",
+    "STORAGE_OR_SAVE_UNAVAILABLE",
+    "UNACKNOWLEDGED_RESULT",
+    "USER_STOPPED",
+    "INVALID_POLICY",
+    "RESULT_ERROR"
+  ],
+  "transaction_order": [
+    "STOP_CONDITION_PREFLIGHT",
+    "ATTEMPT_INTENT_PREPARED_SAVE",
+    "CONSUME_COST_AND_RESOLVE_FROM_COMMITTED_RANDOMNESS",
+    "SAVE_DOMAIN_CHANGE_AND_APPLIED_RESULT_ENVELOPE_SAME_REVISION",
+    "RECHECK_BOUNDARY_BUDGET_AND_LIMIT_BEFORE_NEXT_ATTEMPT"
+  ],
+  "legacy_removals": [
+    "repeat_until_full",
+    "RECREATE_AFTER_DESTRUCTION",
+    "RANDOMIZE_PRECISION_POSITION",
+    "allow_empty_secondary_true",
+    "AUTO_IRON_SWORD_TEMPLATE",
+    "REPEAT_UNTIL_STORAGE_FULL"
+  ],
+  "legacy_keeps": [
+    "STOP_AFTER_CURRENT_ATTEMPT",
+    "ATTEMPT_SAFETY_LIMIT",
+    "EXPLICIT_NO_GOLD_AND_ERROR_STOP",
+    "VISIBLE_PROGRESS_STATUS"
+  ],
+  "test_gates": {
+    "random_precision_rng_calls":0,
+    "empty_required_material_fallback":0,
+    "new_equipment_after_destroy":0,
+    "auto_identity_or_plus50_choice":0,
+    "auto_sale_or_delivery":0,
+    "reroll_after_restart":0,
+    "attempt_after_save_failure":0
+  },
+  "audit_resolution": {
+    "BS-AUD-F06":"PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "p0_finding_count_reduced":false
+  },
+  "product_code_change":"NOT_RUN",
+  "automated_tests":"NOT_RUN",
+  "codex_implementation":"BLOCKED"
+}

@@ -1,150 +1,135 @@
-# Development Gates
+# Blacksmith Development Gates
+
+> 갱신일: `2026-08-01`
+>
+> 현재 단계: `PLANNING_REMEDIATION_IN_PROGRESS`
+>
+> 제품 구현 권한: `NONE`
 
 ## 판정 원칙
 
-- 문서 승인, 구현, 자동 테스트, 실제 렌더, Android, 접근성, 성능, 외부 플레이는 독립 상태다.
-- 미실행 검사는 `NOT_RUN` 또는 `UNVERIFIED`다.
-- 과거 PASS 이력은 현재 변경의 회귀 PASS를 대신하지 않는다.
-- 프로젝트 코어 확정과 자동 구현 검증은 Production 또는 프로젝트 전체 MVP 완료가 아니다.
+- 승인 결정, 설계, 구현계획, 제품 구현, 자동 테스트, 실제 렌더, Android, 접근성, 성능, 외부 플레이는 독립 상태다.
+- 미실행 검사는 `NOT_RUN` 또는 `UNVERIFIED`로 유지한다.
+- 과거 PoC PASS는 최신 v9 정본의 회귀 PASS를 대신하지 않는다.
+- GitHub 정본·계획 데이터·Sheet가 같은 ID로 재조회돼야 동기화 PASS다.
+- Base 생성 파생물은 generator·validator 실행 없이 수동 PASS 처리하지 않는다.
 
-## Gate summary
+## Gate Summary
 
-| Gate | 상태 | 증거 | 차단 조건 |
+| Gate | 현재 상태 | 증거 | 차단 조건 |
 |---|---|---|---|
-| Project core confirmation | `PASS` | 사용자 승인, 코어 계약, 5회 적대적 검토 | 코어 재승인 항목 변경 시 재검토 |
-| Equipment lifecycle PoC specification | `PASS / SPEC_READY` | 통합 명세, MVP-003 Scope, 구현계획 | 논리·참조·검증 계약 drift |
-| Equipment lifecycle PoC implementation | `PASS / IMPLEMENTATION_VALIDATED` | PR validation #468, code head `03c90bb...` | 제품 코드 변경 시 재실행 |
-| Lifecycle automated validation | `PASS` | Python, Godot import, Scene smoke, 모델·통합·E2E | 최신 정본 head 재검증·main 회귀 |
-| Documentation alignment | `PASS_AT_CODE_HEAD` | core alignment·CI 구조 검사 #468 | 정본 변경 뒤 재실행 |
-| Main full validation | `PENDING_MERGE` | 없음 | PR 병합 뒤 matrix·Base suite 실행 |
-| Android device | `NOT_RUN` | 없음 | 실제 빌드·기기 증거 필요 |
-| Accessibility | `IMPLEMENTED / NOT_REVIEWED` | 정밀 보조·모션 감소·48dp 코드 | 사람·기기 검증 필요 |
-| Performance | `NOT_RUN` | 없음 | 대표·최악 장면 측정 필요 |
-| External playtest | `NOT_RUN` | 플레이테스트 계약만 존재 | 신규 플레이어 행동 증거 필요 |
-| Branch protection | `UNVERIFIED` | 조회 경로 없음 | Required Check 강제 확인 |
-| Production greenlight | `BLOCKED` | SWOT·VRIO는 가설 단계 | 플레이·플랫폼·성능 증거 필요 |
+| Project core | `PASS / KEEP` | 코어 계약·사용자 승인 | 코어 불변 변경 |
+| Current decision discovery | `PASS` | `CURRENT_CONFIRMED_DECISIONS.md` | 정본 인덱스 drift |
+| Art·Modak·screen direction | `PASS / WORKING_BASELINE` | 승인 정본·비주얼 보드 | 최종 에셋·사람 검수는 별도 |
+| Grade rule | `PASS` | `BS-GRADE-20260801-02` | 표시·순서 변경 |
+| Save·ResultEnvelope design | `PASS / DESIGN_COMPLETE` | `BS-SAVE-20260801-01`, 11 Task plan | 런타임·테스트 없음 |
+| v9 legacy migration design | `PASS / DESIGN_COMPLETE` | `BS-MIGRATION-20260801-01`, 7 Task plan | 데이터·SaveMigrator·fixture 없음 |
+| Base structure analysis | `PASS / ANALYSIS_COMPLETE` | `BS-BASE-AUDIT-20260801-01` | local inventory·validator NOT_RUN |
+| Base v9.3 project migration | `BLOCKED / REQUIRED` | adapter v9.1·baseline·Sheet drift | generator·validator·cold-start PASS 필요 |
+| GitHub·Sheet review Pass2 | `PASS / REMEDIATION_IN_PROGRESS` | `BS-REPO-AUDIT-20260801-02` | safe fixes·P0/P1 open |
+| Customer common contract | `PARTIAL` | 4유형 방향·카시아·에르사 | 모험가·군인·공통 Resolver 미정 |
+| Auto-forge boundary | `OPEN` | 구형 runtime만 존재 | 핵심 선택 우회 |
+| Theme·safe area·settings | `OPEN` | 방향 일부 | 공통 계약·실기기 없음 |
+| Current v9 automated validation | `NOT_RUN` | 계획만 존재 | 최신 fixture·CI 실행 필요 |
+| Android device | `NOT_RUN` | 없음 | 실제 빌드·기기 증거 |
+| Accessibility human review | `NOT_RUN` | 코드·방향 일부 | 사람·기기 검증 |
+| Performance | `NOT_RUN` | 없음 | 대표·최악 장면 측정 |
+| External playtest | `NOT_RUN` | 계약 일부 | 신규 플레이어 행동 증거 |
+| Planning complete | `BLOCKED` | P0 10·P1 10·Base drift | P0/P1 계약 종료 |
+| Codex BUILD | `BLOCKED` | 사용자 기획·검수 미완료 | 모든 선행 Gate |
+| Production greenlight | `BLOCKED` | 제품 증거 없음 | 구현·플랫폼·사람·사업 증거 |
 
-## Project core confirmation — PASS
+## PoC 증거의 사용 범위
 
-보호 경계:
+과거 PR #35와 validation #468의 Python·Godot·E2E PASS는 다음을 증명한다.
 
-- 단일 대장장이
-- 직접 제작과 영구 완성도
-- 일반 강화 버튼 입력당 판정 1회
-- `+10` 특수 강화와 수식어 선택
-- 판매 장비의 영구 이력과 세계 환류
-- 피로도 기반 일일 우선순위와 수동 날짜 진행
+- 구형 제작·강화·자원 거래 모델이 당시 계약대로 동작
+- 카일 검투사 장비 생애 PoC가 결정론적으로 완주
+- 기존 원자 rollback·event ID 멱등성·장비 Registry 패턴 사용 가능
 
-재승인 필요:
+다음을 증명하지 않는다.
 
-- 직원·복수 대장장이
-- 직접 전투
-- 영구 완성도 재추첨
-- 판매 장비 기록·세계 환류 제거
-- 피로도·날짜 제거
-- 자동 단조가 특수 강화와 고위험 판단을 완전히 대체
+- 별도 메인·SaveCoordinator·App Shell
+- 최신 제작 등급 ID
+- 계보+보조2·+50 이원화
+- 고객 4유형 공통 파이프라인
+- 최신 자동 단조 경계
+- Android 중단 복구
+- 현재 v9 재미·가독성·성능
 
-## Equipment lifecycle PoC specification — PASS / SPEC_READY
+## 현재 P0 기획 Gate
 
-책임 원본:
+| Finding | 기획 목표 | 런타임·검증 |
+|---|---|---|
+| F01 제품 진입 | 승인됨 | OPEN |
+| F02 저장·이어하기 | `BS-SAVE-20260801-01` 해결 | OPEN |
+| F03 단일 AppState | Shell·Save 설계 연결 | OPEN |
+| F04 제작 등급 | `BS-MIGRATION-20260801-01` 해결 | OPEN |
+| F05 수식어·+50 | migration target 해결 | OPEN |
+| F06 자동 단조 | OPEN | OPEN |
+| F07 고객 하드코딩 | PARTIAL | OPEN |
+| F08 운명·관계·유형별 결과 | PARTIAL | OPEN |
+| F09 ResultEnvelope | `BS-SAVE-20260801-01` 해결 | OPEN |
+| F10 비주얼 Placeholder | REMEDIATION IN PROGRESS | 최종 에셋 NOT_RUN |
 
-- `docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md`
-- `docs/MVP-003_SCOPE.md`
-- `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md`
-- Issue #34
+제품 구현 전 기획 목표가 모두 해결돼야 한다. 제품 구현 뒤에는 같은 Finding을 런타임·자동·플랫폼 증거로 다시 닫는다.
 
-필수 계약:
+## Base Operating Gate
 
-- 철검 1종·검투사 1명
-- +5 납품 또는 +10 추가 도전
-- 피로도 20, 50% 이월, 작업 예약 없음
-- DEFEAT/WIN/DECISIVE_WIN 도달 가능 반례
-- 원자적 골드·재료·피로도·납품 처리
-- 영구 장비 기록, 지연 결과, 재방문
-- 정밀 입력 대안과 색상 비의존 정보
+필수 순서:
 
-## Equipment lifecycle PoC implementation — PASS / IMPLEMENTATION_VALIDATED
+```text
+released Base v9.3 pin·evidence·Registry hash 검증
+→ PROJECT_BASE_ADAPTER migration
+→ Snapshot·Router·Health·compatibility views generator 재생성
+→ configured Sheet·current decision entrypoint binding
+→ operating-contract validator
+→ reference freshness
+→ cold-start recheck
+```
 
-구현 범위:
+latest Base main과 미출시 v9.4 제안을 직접 pin하지 않는다.
 
-- 완성도 데이터·판정기
-- 날짜·피로도 모델
-- 고객 의뢰·납품
-- 세계 장비 Registry·결과 Resolver
-- 원자 거래 Controller
-- PoC telemetry
-- 계약·HUD·제작·강화·보고·재방문 UI
-- 기존 Prototype 진입점과 별도 PoC Scene
-- 정밀 보조 GOOD 경로·모션 감소
-- 전체 생애 E2E와 경계 테스트
-- 비용 최적화 CI 구조
+## Planning Complete Gate
 
-코드 기준 head: `03c90bb063103e1c92885e7e21228f963cfe2775`
+다음이 모두 충족돼야 사용자 `기획 완료` 선언 후보가 된다.
 
-PR validation #468 증거:
+- P0 기획 Finding 0
+- P1 중 구현 전 필요한 계약 0
+- Base operating integrity PASS
+- CURRENT·SUPERSEDED·LEGACY·PLACEHOLDER 전파 정리
+- Design Document Registry 최신화
+- GitHub·Sheet cross-source verification PASS
+- 적대적 검토 Pass 3에서 P0/P1 신규 발견 0
 
-1. Ubuntu Python 문서·CI·데이터·강화·시뮬레이터 계약 PASS
-2. Godot 4.7.1 import·parse PASS
-3. `main.tscn`·`equipment_lifecycle_poc.tscn` smoke PASS
-4. 기존 제작·강화·경제 모델·통합 테스트 PASS
-5. 신규 피로도·완성도·고객·세계 기록·telemetry 테스트 PASS
-6. 원자 거래·생애 Controller 통합 테스트 PASS
-7. 장비 생애 E2E와 세 결과 밴드 경계 PASS
+## Codex BUILD Gate
 
-## CI execution — ACTIVE / OPTIMIZED
+```text
+User 기획 완료
+→ adversarial final review PASS
+→ User 검수 완료
+→ approved implementation plan and exact branch
+→ Codex PLAN read-only review
+→ GPT package review
+→ READY_FOR_BUILD
+```
 
-책임 원본: `docs/CI_EXECUTION_POLICY.md`
+## Product Validation Gate
 
-- PR `pull_request` 자동 실행 활성화
-- 문서 전용 PR: Ubuntu Python 3.12 문서 validator만 실행
-- 코드 PR: Ubuntu Python 전체 계약과 Godot 1회 실행
-- main/nightly: Ubuntu·Windows Python 매트릭스, Godot 1회, pinned Base suite 1회
-- 모든 Workflow에 `concurrency`와 `cancel-in-progress: true`
-- reusable Python·Godot Workflow로 중복 실행 방지
-- 실패 로그만 artifact 업로드
+자동:
 
-실제 PR classifier가 코드 범위를 선택하고 Python 1회·Godot 1회를 실행한 것은 #468에서 확인됐다. cancellation과 Required Check 강제 여부는 별도 확인한다.
+- 최신 v9 데이터 validator
+- save/migration/customer/auto-forge contract tests
+- Godot import·Scene smoke·E2E
+- result reroll/double apply/resource loss 0
+- legacy migration loss 0
 
-## Prototype regression — PASS
+외부:
 
-PR validation #468은 기존 Prototype 회귀를 신규 lifecycle 회귀와 함께 실행했다.
+- Android process death·safe area·back button
+- 접근성 사람 검토
+- 대표·최악 장면 성능
+- 외부 최소 6명 행동 검증
+- 최종 에셋·라이선스·화면 시각 검수
 
-- 제작 모델 7건
-- 제작 결과 통합 6건
-- EnhancementSession 12건
-- WorkshopResources 7건
-- 수동 강화 경제 통합 2건
-
-현재 Prototype의 피버 공격력 ×1.05·제작 가치 ×1.03은 한 번만 적용되며 반복 발동 시 중첩되지 않는다. 보통·좋음·완벽에 피버를 적용한 실제 공격력은 21·22·23이다.
-
-실패·보정·위험 책임 원본은 `data/crafting/enhancement_balance.json`, 수식어 이정표 책임 원본은 `data/crafting/enhancement_milestones.json`이다.
-
-## Documentation alignment — PASS_AT_CODE_HEAD
-
-PR validation #468에서 다음이 통과했다.
-
-- core alignment
-- CI Workflow 구조
-- 프로젝트 운영 감사 wrapper
-- lifecycle 데이터 계약
-- 기존 제작·강화 문서 계약
-
-이후 상태 문서 동기화 커밋은 최종 PR head에서 다시 검증한다.
-
-## 플랫폼·사람 검증
-
-다음은 코드 또는 설계 적용 대상이지만 실행 증거가 없어 `NOT_RUN`이다.
-
-- Android 세로 화면, 안전 영역, 터치
-- 정밀 입력 대안과 모션 감소 실제 사용성
-- 색상 비의존 위험·결과 전달
-- 장시간 반복 성능·메모리
-- 외부 6명 권장 플레이테스트
-- PDF와 주요 화면 사람 시각 확인
-
-## 최종 판정 규칙
-
-- 자동 검증 PASS는 MVP-003 코드 구현에 대한 판정이다.
-- Android·사람 접근성·외부 플레이 미실행은 프로젝트 전체 MVP PASS가 아니다.
-- `main` full-validation은 PR 병합 뒤 별도 확인한다.
-- Required Check 강제 여부가 확인되지 않으면 해당 항목은 `UNVERIFIED`로 유지한다.
+외부 검증은 실행 증거 전까지 `NOT_RUN`이다.

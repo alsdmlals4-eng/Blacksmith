@@ -1,0 +1,163 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-EQUIPMENT-LIFECYCLE-20260801-01",
+  "status": "USER_PREAPPROVED_RECOMMENDED_CANONICAL_DESIGN_COMPLETE",
+  "as_of": "2026-08-01",
+  "implementation_authorized": false,
+  "storage_zones": ["WORKSHOP_STORAGE", "RECOVERY_HOLDING", "EQUIPMENT_ARCHIVE"],
+  "capacity": {
+    "vertical_slice_workshop_storage": 12,
+    "production_final_capacity": "PLAYTEST_REQUIRED",
+    "recovery_holding_lossless": true,
+    "archive_gameplay_limited": false,
+    "legacy_six_slots": "HISTORICAL_POC",
+    "visual_128_of_150": "PLACEHOLDER_NOT_CANON",
+    "premium_currency_expansion_in_scope": false
+  },
+  "forge_output_reservation": {
+    "required_before_forging": true,
+    "states": ["RESERVED", "CONSUMED", "RELEASED"],
+    "same_revision_with_equipment_creation_and_storage_placement": true,
+    "partial_slot_or_ghost_equipment_allowed": false
+  },
+  "ownership_states": [
+    "PLAYER_WORKSHOP",
+    "MARKET_SOLD",
+    "VISITING_MERCHANT_SOLD",
+    "NAMED_CUSTOMER_OWNED",
+    "LOST",
+    "RECOVERED_PENDING_STORAGE",
+    "DESTROYED",
+    "HISTORICAL"
+  ],
+  "ownership_and_fate_separate": true,
+  "sale_channels": {
+    "GENERAL_MARKET": {
+      "instant": true,
+      "public_base_price": true,
+      "customer_relationship": false,
+      "delayed_world_result": false,
+      "ownership_state": "MARKET_SOLD"
+    },
+    "VISITING_MERCHANT": {
+      "limited_offer": true,
+      "public_category_grade_tag_conditions": true,
+      "public_price_modifier_reasons": true,
+      "customer_relationship": false,
+      "delayed_world_result": false,
+      "bargaining_minigame": false,
+      "hidden_price": false,
+      "ownership_state": "VISITING_MERCHANT_SOLD"
+    },
+    "NAMED_CUSTOMER": {
+      "uses_decision_id": "BS-CUSTOMER-PIPELINE-20260801-01",
+      "relationship": true,
+      "delayed_world_result": true,
+      "ownership_state": "NAMED_CUSTOMER_OWNED"
+    }
+  },
+  "common_channel_prohibitions": [
+    "SELL_NON_OWNED_EQUIPMENT",
+    "SELL_INCOMPLETE_NON_SELLABLE_OR_RESERVED_EQUIPMENT",
+    "DUPLICATE_TRANSACTION_REWARD",
+    "AUTO_ENHANCE_SELECTS_OR_EXECUTES_SALE",
+    "HIDDEN_CORRECT_CHANNEL_RECOMMENDATION",
+    "DELETE_UID_OR_CHRONOLOGY_AFTER_SALE",
+    "RESELL_NAMED_CUSTOMER_EQUIPMENT",
+    "RECOMPUTE_TRANSACTION_RESULT_ON_RESULT_VIEW"
+  ],
+  "equipment_record_fields": [
+    "equipment_uid",
+    "record_schema_version",
+    "creation_snapshot",
+    "craftsmanship_grade_id",
+    "identity_snapshot",
+    "enhancement_summary",
+    "current_owner",
+    "ownership_state",
+    "fate_state",
+    "saleability_state",
+    "active_storage_location",
+    "chronology",
+    "applied_transaction_ids",
+    "applied_event_ids",
+    "last_updated_revision"
+  ],
+  "chronology_entry_fields": [
+    "chronology_entry_id",
+    "equipment_uid",
+    "event_type",
+    "game_day",
+    "source_action",
+    "actor_id",
+    "previous_owner",
+    "new_owner",
+    "previous_fate",
+    "new_fate",
+    "summary_key",
+    "summary_parameters",
+    "related_transaction_or_event_id",
+    "save_revision"
+  ],
+  "chronology_event_types": [
+    "CRAFTING_STARTED",
+    "CRAFTING_COMPLETED",
+    "CRAFTSMANSHIP_GRADE_ASSIGNED",
+    "ENHANCEMENT_SUCCESS",
+    "ENHANCEMENT_HOLD",
+    "ENHANCEMENT_DOWNGRADE",
+    "ENHANCEMENT_DESTROYED",
+    "IDENTITY_CHOSEN",
+    "PLUS50_ROUTE_CHOSEN",
+    "SOLD_GENERAL_MARKET",
+    "SOLD_VISITING_MERCHANT",
+    "DELIVERED_TO_CUSTOMER",
+    "WORLD_RESULT_APPLIED",
+    "BATTLE_TRACE_GAINED",
+    "LOST",
+    "RECOVERED",
+    "PERMANENTLY_DESTROYED",
+    "LEGACY_MIGRATED"
+  ],
+  "storage_ui": {
+    "filters": ["EQUIPMENT_CATEGORY", "CRAFTSMANSHIP_GRADE", "ENHANCEMENT_BAND", "SELLABLE", "CUSTOMER_ELIGIBLE"],
+    "sorts": ["RECENT_ACTIVITY", "NAME", "CREATED_DAY", "ENHANCEMENT_LEVEL", "MARKET_VALUE"],
+    "default_sort": "RECENT_ACTIVITY",
+    "auto_optimal_recommendation": false,
+    "display_capacity_example": "활성 보관함 7 / 12; 회수 대기 1; 전체 작품 기록 43"
+  },
+  "full_storage_behavior": {
+    "block_new_forging_before_start": true,
+    "offer_actions": ["OPEN_STORAGE", "GENERAL_MARKET", "ACTIVE_CUSTOMER_REQUESTS", "CANCEL"],
+    "recovered_equipment_destination": "RECOVERY_HOLDING",
+    "auto_sell_or_delete_recovered": false
+  },
+  "transactions": {
+    "sale_intent_prepared": true,
+    "sale_changes_and_applied_envelope_same_revision": true,
+    "recovery_changes_and_applied_envelope_same_revision": true,
+    "duplicate_transaction_or_event_apply": false
+  },
+  "test_gates": {
+    "active_capacity_vertical_slice": 12,
+    "slot_duplication": 0,
+    "ghost_equipment": 0,
+    "duplicate_sale_or_delivery_reward": 0,
+    "uid_or_history_loss_after_sale_or_destroy": 0,
+    "recovery_loss_when_full": 0,
+    "auto_sell_or_delete_recovery": 0,
+    "visual_placeholder_128_150_in_product": 0,
+    "auto_enhance_sale_or_delivery": 0
+  },
+  "audit_resolution": {
+    "BS-AUD-F17": "PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F18": "PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F19": "PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "p1_finding_count_reduced": false
+  },
+  "runtime_storage_sales_archive": "NOT_RUN",
+  "economy_capacity_tuning": "NOT_RUN",
+  "automated_tests": "NOT_RUN",
+  "codex_implementation": "BLOCKED"
+}

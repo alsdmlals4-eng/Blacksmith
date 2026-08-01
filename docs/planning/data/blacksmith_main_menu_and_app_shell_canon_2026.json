@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "status": "USER_APPROVED_CANONICAL_SCREEN_SHELL_DIRECTION",
+  "as_of": "2026-08-01",
+  "authority_document": "docs/planning/BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md",
+  "decisions": [
+    {
+      "decision_id": "BS-MAIN-20260801-01",
+      "domain": "application_entry",
+      "decision": "SEPARATE_MAIN_MENU_SCENE",
+      "required_actions": ["CONTINUE", "NEW_GAME", "SETTINGS"],
+      "optional_unapproved_actions": ["GUIDE_OR_CODEX", "CREDITS", "EXIT"],
+      "continue_enabled_only_when_save_exists": true,
+      "new_game_overwrite_warning_required": true,
+      "android_exit_button_required": false,
+      "status": "USER_APPROVED"
+    },
+    {
+      "decision_id": "BS-SHELL-20260801-01",
+      "domain": "product_screen_architecture",
+      "decision": "SINGLE_BLACKSMITH_APP_WITH_VIEW_AND_OVERLAY_MIX",
+      "main_menu_is_separate_scene": true,
+      "persistent_campaign_state_owner": "BLACKSMITH_APP_AND_SAVE_COORDINATOR",
+      "views": ["FORGE_HUB", "CORE_WORKBENCH", "CUSTOMER_AND_WORLD"],
+      "overlay_or_internal_screens": ["STORAGE", "SETTINGS", "RESULT_ENVELOPE"],
+      "screen_transition_must_not_recreate_domain_state": true,
+      "screen_transition_must_not_reroll_irreversible_result": true,
+      "status": "USER_APPROVED"
+    }
+  ],
+  "visual_baseline": {
+    "design_id": "BS-VISUAL-20260731-01",
+    "status": "USER_ACCEPTED_WORKING_BASELINE",
+    "final_product_asset": false,
+    "accepted": [
+      "STYLIZED_DARK_FORGE",
+      "SEPARATE_MAIN_MENU",
+      "PORTRAIT_MOBILE_LAYOUT",
+      "VIEW_OVERLAY_MIX",
+      "EQUIPMENT_FIRST_INFORMATION_HIERARCHY",
+      "BRIGHT_FIRE_SPIRIT_MODAK",
+      "IRON_BRASS_UI_LANGUAGE"
+    ],
+    "placeholder_or_unapproved": [
+      "PLAYER_LEVEL",
+      "BLUE_GEM_OR_PREMIUM_CURRENCY",
+      "ACHIEVEMENTS",
+      "SHOP",
+      "DETAILED_CODEX_OR_GUIDE",
+      "SPECIAL_CRAFTING_AS_NEW_SYSTEM",
+      "INVENTORY_128_OF_150",
+      "DIRECT_MARKET_OR_ARENA_EXPLORATION",
+      "IMAGE_NUMERIC_VALUES"
+    ]
+  },
+  "implementation_authorized": false,
+  "user_planning_complete": "NOT_DECLARED",
+  "user_review_complete": "NOT_DECLARED"
+}

@@ -1,0 +1,191 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "audit_id": "BS-BASE-AUDIT-20260801-01",
+  "status": "BASE_ANALYSIS_COMPLETE_PROJECT_INTEGRITY_CONFLICTS_OPEN",
+  "as_of": "2026-08-01",
+  "work_modes": ["PLAN", "BUILD", "REVIEW"],
+  "analysis_scope": {
+    "base_repository": "alsdmlals4-eng/Base",
+    "blacksmith_repository": "alsdmlals4-eng/Blacksmith",
+    "base_latest_main_observed": "90ec6f33953f80f607d4e79f58cc2174eb178f73",
+    "blacksmith_main_observed": "500a5a7960146ef229ae172cf9e127306d23f073",
+    "tracked_inventory_complete": false,
+    "local_clone": "FAILED_DNS",
+    "local_validator": "NOT_RUN",
+    "method": "GITHUB_CONNECTOR_AUTHORITY_AND_TRIGGER_SCOPED_REVIEW"
+  },
+  "base_release_layers": {
+    "immutable_v9_release": {
+      "version": "9.0.0",
+      "release_commit": "585a53a25be1b04c543196f5901551deb49c7691"
+    },
+    "latest_released_project_adapter": {
+      "version": "9.3.0",
+      "release_commit": "30ca6c7b5f93521f0eb0eed42d01437cd43c50ae",
+      "release_evidence_commit": "462a86db192d23d0f386281a1eb54b0a8cbad62e",
+      "registry_sha256": "9847bb2b225c776ad7916930f0f48c490bc2a898bea8e02ea1fdd0e6caac60c1",
+      "release_state": "BASE_RELEASED"
+    },
+    "latest_main": {
+      "commit": "90ec6f33953f80f607d4e79f58cc2174eb178f73",
+      "contains_unreleased_v9_4_proposals": true,
+      "safe_as_project_pin": false
+    }
+  },
+  "base_operating_model": {
+    "automatic_skill_routing": true,
+    "load_all_skills": false,
+    "max_primary_discipline_skills": 1,
+    "active_skill_count_current_main": 27,
+    "common_loop": [
+      "BASELINE_RECOVERY",
+      "DUPLICATE_OMISSION_CONFLICT_AUDIT",
+      "EVIDENCE_PACK",
+      "APPROVAL_BUNDLE",
+      "CANONICAL_UPDATE",
+      "PROPAGATION_AUDIT",
+      "VALIDATION",
+      "GATE_CLOSE"
+    ],
+    "gpt_codex_flow": [
+      "GPT_PLAN_AND_CONTRACT",
+      "CODEX_PLAN_READ_ONLY",
+      "GPT_PACKAGE_APPROVAL",
+      "CODEX_BUILD_ON_DESIGNATED_BRANCH",
+      "GPT_REVIEW",
+      "AGENT_MERGE_AFTER_GATES"
+    ],
+    "project_sheet_role": "USER_FACING_GDD_WORKSPACE",
+    "sheet_only_change_status": "PROPOSED_SHEET_CHANGE",
+    "html_dashboard_default": false
+  },
+  "active_skills_current_main": [
+    "managing-project-intake-and-work-contract",
+    "managing-game-project-operating-system",
+    "evolving-project-discipline-skills",
+    "managing-design-documents",
+    "maintaining-project-context-and-handoff",
+    "analyzing-and-refining-game-concepts",
+    "designing-vertical-slices",
+    "orchestrating-deepseek-worktrees",
+    "reviewing-and-validating-project-changes",
+    "auditing-canonical-reference-freshness",
+    "designing-art-prompts-and-technique-cards",
+    "auditing-and-refining-ui-art",
+    "managing-base-change-proposals",
+    "identifying-project-core",
+    "establishing-project-core",
+    "running-adversarial-review-and-refinement",
+    "refactoring-with-contract-preservation",
+    "simplifying-skill-bodies",
+    "pruning-stale-and-nonfunctional-material",
+    "synchronizing-local-and-github-state",
+    "maintaining-long-running-task-continuity",
+    "governing-game-user-research-coverage",
+    "creating-user-learning-notes",
+    "building-project-visual-dashboards",
+    "diagnosing-game-engine-runtime-failures",
+    "governing-legacy-retention-and-archives",
+    "evaluating-godot-assets-and-plugins-before-creation"
+  ],
+  "skills_used_for_this_audit": [
+    {"skill_id":"managing-project-intake-and-work-contract","modes":["route","contract","execution-report"]},
+    {"skill_id":"managing-game-project-operating-system","modes":["audit"]},
+    {"skill_id":"managing-design-documents","modes":["update"]},
+    {"skill_id":"running-adversarial-review-and-refinement","modes":["repository-wide-audit","validate-critique"]},
+    {"skill_id":"auditing-canonical-reference-freshness","modes":["impact-map","content-drift","propagation-gap"]},
+    {"skill_id":"reviewing-and-validating-project-changes","modes":["contract-check","reference-freshness","evidence-report"]}
+  ],
+  "blacksmith_observed_state": {
+    "canonical_adapter": {
+      "path": "skills/PROJECT_BASE_ADAPTER.json",
+      "version": "9.1.0",
+      "release_commit": "3c158f52cfdad889970aef4d6ce6650a6fea0645",
+      "release_evidence_commit": "dd20ad3852e264d7e337e34d2cb963f71053a6cb",
+      "protected_baseline_commit": "4b465ae92a48c1bd7e222b86234dafb507d242dc",
+      "sheet_sync_status": "NOT_CONFIGURED"
+    },
+    "generated_snapshot": {
+      "path": "skills/PROJECT_SKILL_SNAPSHOT.json",
+      "adapter_line": "9.1.0"
+    },
+    "generated_router": {
+      "path": ".agents/skills/blacksmith-workflow-router/SKILL.md",
+      "declared_line": "v9.1"
+    },
+    "base_rules_document": {
+      "path": "docs/BASE_RULES_VERSION.md",
+      "base_commit": "c987647d01ad2baa028a16e03d85ddfc1572a727",
+      "claimed_active_feature_count": 25,
+      "claimed_prompt": "VERTICAL_SLICE_INTEGRATED_EXECUTION_PROMPT_v8.md"
+    },
+    "adoption_profile": {
+      "path": "docs/BASE_ADOPTION_PROFILE.json",
+      "base_commit": "41a20584dd2ee51d917e5c9d7cab6838e1ceba7e",
+      "shared_extension_commit": "6a224e450f9420223c00921f3c56e051612f92ad"
+    },
+    "local_registry": {
+      "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+      "project_skill_count": 3,
+      "base_integration_commit": "c987647d01ad2baa028a16e03d85ddfc1572a727",
+      "sheet_status": "PROJECT_SHEET_CONFIGURED"
+    },
+    "operating_health": {
+      "path": "docs/PROJECT_OPERATING_HEALTH.json",
+      "integrity_verdict": "PASS_WITH_NOT_RUN_GATES",
+      "operating_maturity": "OM-L0",
+      "product_evidence_maturity": "PE-0",
+      "evidence_empty": true,
+      "regeneration_required": true
+    },
+    "current_confirmed_decisions_entrypoint": "MISSING_STANDARD_PATH",
+    "functional_decision_index": "docs/planning/BLACKSMITH_V9_CANONICAL_DECISION_SET_2026.md"
+  },
+  "findings": [
+    {"finding_id":"BASE-F01","severity":"MUST_FIX","type":"CONFLICTING_SOURCE","summary":"Canonical adapter remains v9.1 while planning documents declare v9.3 target","blocks_shared_route_execution":true},
+    {"finding_id":"BASE-F02","severity":"MUST_FIX","type":"STALE_PROTECTED_BASELINE","summary":"Adapter protected baseline differs from observed Blacksmith main","blocks_shared_route_execution":true,"validator_status":"NOT_RUN"},
+    {"finding_id":"BASE-F03","severity":"MUST_FIX","type":"CONFLICTING_SOURCE","summary":"Canonical adapter says Sheet NOT_CONFIGURED while Registry and actual project use configured Sheet","blocks_application_binding":true},
+    {"finding_id":"BASE-F04","severity":"MUST_FIX","type":"STALE_REFERENCE","summary":"Base rules document retains old commit, 25-feature statement and v8 prompt"},
+    {"finding_id":"BASE-F05","severity":"MUST_FIX","type":"DUPLICATE_ACTIVE_SOURCE","summary":"Adoption profile retains separate Base and shared-extension pins"},
+    {"finding_id":"BASE-F06","severity":"MUST_FIX","type":"MISSING_PROPAGATION","summary":"Project Registry Base provenance differs from canonical adapter and target release"},
+    {"finding_id":"BASE-F07","severity":"MUST_FIX","type":"DERIVATIVE_STALE","summary":"Generated snapshot and router remain on v9.1 relative to approved v9.3 target","must_regenerate_not_hand_edit":true},
+    {"finding_id":"BASE-F08","severity":"SHOULD_FIX","type":"COLD_START_DISCOVERABILITY","summary":"Stable CURRENT_CONFIRMED_DECISIONS entrypoint or explicit adapter binding is absent"},
+    {"finding_id":"BASE-F09","severity":"MUST_FIX","type":"DERIVATIVE_STALE","summary":"Operating health PASS artifact does not reflect current adapter, baseline and Sheet drift"},
+    {"finding_id":"BASE-F10","severity":"SHOULD_FIX","type":"LEGACY_RECONCILIATION_REQUIRED","summary":"Sheet CURRENT decision ledger contains SUPERSEDED entries; history should be preserved in change log"},
+    {"finding_id":"BASE-F11","severity":"KEEP_GUARDRAIL","type":"NO_DIRECT_MAIN_PIN","summary":"Latest Base main and unreleased v9.4 proposals must not be used as a project release pin"}
+  ],
+  "existing_audit_binding": {
+    "parent_finding_id": "BS-AUD-F12",
+    "interpretation": "BASE-F01_THROUGH_F09_EXPAND_EXISTING_BASE_VERSION_AND_OPERATING_INTEGRITY_DRIFT",
+    "new_game_design_finding_count_added": 0
+  },
+  "recommended_target": {
+    "version": "9.3.0",
+    "release_commit": "30ca6c7b5f93521f0eb0eed42d01437cd43c50ae",
+    "release_evidence_commit": "462a86db192d23d0f386281a1eb54b0a8cbad62e",
+    "registry_sha256": "9847bb2b225c776ad7916930f0f48c490bc2a898bea8e02ea1fdd0e6caac60c1",
+    "latest_main_pin_allowed": false
+  },
+  "recommended_migration_sequence": [
+    "FREEZE_BLACKSMITH_MAIN_OPEN_PR_AND_SHEET_STATE",
+    "VERIFY_V9_3_RELEASE_EVIDENCE_AND_REGISTRY_HASH",
+    "INVENTORY_ADAPTER_LEGACY_INPUTS_AND_PROTECTED_PATHS",
+    "GENERATE_V9_3_PROJECT_BASE_ADAPTER_MIGRATION_INPUT",
+    "RUN_PROJECT_OPERATING_CONTRACT_GENERATOR",
+    "REGENERATE_SNAPSHOT_ROUTER_HEALTH_AND_COMPATIBILITY_VIEWS",
+    "UPDATE_BASE_RULES_ADOPTION_PROFILE_LOCAL_REGISTRY_AND_DOCUMENTATION_MAP",
+    "BIND_CONFIGURED_SHEET_AND_CURRENT_DECISION_ENTRYPOINT",
+    "RUN_OPERATING_CONTRACT_REFERENCE_FRESHNESS_AND_TESTS",
+    "RUN_ADVERSARIAL_AND_COLD_START_RECHECK"
+  ],
+  "current_gate": {
+    "base_analysis": "COMPLETE",
+    "project_base_migration_design": "REQUIRED",
+    "project_base_migration_execution": "NOT_RUN",
+    "shared_route_execution_ready": false,
+    "local_validator": "NOT_RUN",
+    "product_code_change": "NOT_RUN",
+    "codex_implementation": "BLOCKED"
+  }
+}
