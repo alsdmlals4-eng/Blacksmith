@@ -23,6 +23,20 @@ jobs:
           python-version: "3.12"
       - name: Apply deterministic migration
         run: python tools/apply_base_v9_4_adoption.py
+      - name: Record explicit evidence-state labels
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('[기획서]/00_프로젝트_허브/AI_WORKFLOW.md')
+          text = path.read_text(encoding='utf-8')
+          old = '- 화면·Schema·Fixture는 실제 Android 런타임·사람 이해·성능을 자동 증명하지 않는다.'
+          new = old + ' 실행하지 않은 Android·provider 검증은 `NOT_RUN`, 사람 이해·반복 피로는 `HUMAN_NOT_RUN`이다.'
+          if new not in text:
+              if old not in text:
+                  raise SystemExit('evidence-limit source sentence missing')
+              path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
       - name: Run focused contracts
         run: |
           python -m unittest \
