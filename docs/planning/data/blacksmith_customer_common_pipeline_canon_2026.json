@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-CUSTOMER-PIPELINE-20260801-01",
+  "status": "USER_PREAPPROVED_RECOMMENDED_CANONICAL_DESIGN_COMPLETE",
+  "as_of": "2026-08-01",
+  "implementation_authorized": false,
+  "customer_types": ["COLLECTOR", "ADVENTURER", "GLADIATOR", "SOLDIER"],
+  "active_contract_limit": 2,
+  "default_request_duration_business_days": 2,
+  "named_customers": [
+    {"customer_id":"ERSA_ROEN","display_name_ko":"에르사 로엔","customer_type_id":"COLLECTOR","role_ko":"이동 전시 감정인","representative":true},
+    {"customer_id":"SEDRIC_VAEL","display_name_ko":"세드릭 바엘","customer_type_id":"COLLECTOR","role_ko":"귀족 기록 보관가","representative":false},
+    {"customer_id":"NADIA_VENN","display_name_ko":"나디아 벤","customer_type_id":"ADVENTURER","role_ko":"유적 탐사대장","representative":true},
+    {"customer_id":"TOREN_MARCH","display_name_ko":"토렌 마치","customer_type_id":"ADVENTURER","role_ko":"장거리 길잡이","representative":false},
+    {"customer_id":"CASSIA_BELLAN","display_name_ko":"카시아 벨란","customer_type_id":"GLADIATOR","role_ko":"투기장 대표 검투사","representative":true},
+    {"customer_id":"KYLE_VAREN","display_name_ko":"카일 바렌","customer_type_id":"GLADIATOR","role_ko":"실전형 검투사","representative":false,"legacy_ids":["gladiator_kyle"]},
+    {"customer_id":"MAREK_OLDEN","display_name_ko":"마레크 올덴","customer_type_id":"SOLDIER","role_ko":"변경 수비대 병참장교","representative":true},
+    {"customer_id":"LIANA_BERG","display_name_ko":"리아나 베르크","customer_type_id":"SOLDIER","role_ko":"전선 지휘관","representative":false}
+  ],
+  "common_models": [
+    "CustomerTypeDefinition",
+    "NamedCustomerDefinition",
+    "RequestTemplate",
+    "CustomerContract",
+    "CustomerRelationship",
+    "DeliveryIntent",
+    "WorldOutcomeProfile"
+  ],
+  "contract_states": ["OFFERED","ACCEPTED","READY_FOR_DELIVERY","DELIVERED","RESULT_PENDING","RESULT_READY","CLOSED","EXPIRED","CANCELLED","FAILED"],
+  "eligibility": {
+    "requires_player_ownership": true,
+    "requires_crafting_complete": true,
+    "requires_sellable_state": true,
+    "uses_equipment_category": true,
+    "exact_item_id_required": false,
+    "required_public_conditions": true
+  },
+  "fit": {
+    "score_min": 0,
+    "score_max": 100,
+    "inputs": ["craftsmanship_grade","lineage_affix","secondary_affixes","special_affix_or_evolution","enhancement_level","chronology_or_fate","customer_value_tags"],
+    "positive_and_negative_reasons_required": true,
+    "low_fit_can_sell_when_eligible": true,
+    "auto_recommend": false,
+    "auto_select": false,
+    "hidden_correct_answer": false
+  },
+  "delivery_transaction": {
+    "intent_state_prepared_before_mutation": true,
+    "idempotency_by_delivery_transaction_id": true,
+    "ownership_reward_relationship_registry_same_save_revision": true,
+    "result_envelope_required": true,
+    "partial_apply_allowed": false
+  },
+  "world_outcome_profiles": {
+    "COLLECTOR":["EXHIBITION_SUCCESS","APPRAISAL_INCREASE","RECORD_DISCOVERED","PRESERVATION_DAMAGE","LOST_OR_RECOVERED"],
+    "ADVENTURER":["EXPEDITION_SUCCESS","RARE_RESOURCE_FOUND","HAZARD_ESCAPE","BATTLE_TRACE","LOST_OR_RECOVERED"],
+    "GLADIATOR":["MATCH_WIN_OR_LOSS","CROWD_REACTION","RIVAL_EVENT","BATTLE_TRACE_OR_BREAK","PERSONAL_MASTERPIECE"],
+    "SOLDIER":["MISSION_SUCCESS_OR_FAILURE","UNIT_SURVIVAL","SUPPLY_EVALUATION","COMMENDATION_OR_DISCIPLINE","LOST_RECOVERED_OR_DESTROYED"]
+  },
+  "world_result_states": ["NONE","PENDING","RESULT_READY","PRESENTED","ACKNOWLEDGED","RESULT_ERROR"],
+  "resolver_rules": {
+    "common_engine": true,
+    "customer_name_switch_in_core_engine": false,
+    "profile_data_only": true,
+    "event_id_idempotency": true,
+    "reroll_on_result_view": false,
+    "result_error_reuses_same_commitment": true
+  },
+  "campaign_snapshot_fields": ["customer_def_version","active_contracts","contract_history","customer_relationships_by_id","customer_offer_rotation_state","world_result_commitments"],
+  "legacy_customer_mapping": {"gladiator_kyle":"KYLE_VAREN"},
+  "vertical_slice_representatives": ["CASSIA_BELLAN","ERSA_ROEN","NADIA_VENN","MAREK_OLDEN"],
+  "vertical_slice_secondary_fixture_customers": ["SEDRIC_VAEL","TOREN_MARCH","KYLE_VAREN","LIANA_BERG"],
+  "test_gates": {
+    "customer_id_unique_count":8,
+    "minimum_named_customers_per_type":2,
+    "same_pipeline_for_representatives":true,
+    "duplicate_delivery_reward":0,
+    "duplicate_world_result_apply":0,
+    "result_reroll_after_error_or_restart":0,
+    "legacy_kyle_history_loss":0,
+    "partial_save_revision":0
+  },
+  "audit_resolution": {
+    "BS-AUD-F07":"PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F08":"PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F09":"CUSTOMER_INTEGRATION_TARGET_RESOLVED_RUNTIME_OPEN",
+    "SHEET-F05":"RESOLVED_BY_NAMED_CUSTOMERS",
+    "p0_finding_count_reduced":false
+  },
+  "product_code_change":"NOT_RUN",
+  "content_fixtures":"NOT_RUN",
+  "automated_tests":"NOT_RUN",
+  "codex_implementation":"BLOCKED"
+}
