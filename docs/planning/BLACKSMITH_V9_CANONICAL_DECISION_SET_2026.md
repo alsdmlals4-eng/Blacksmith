@@ -34,6 +34,7 @@
 | `BS-MODAK-20260731-01` | 마스코트 | C안 표정 기반 밝은 불 정령 모닥, 숯 껍질 없음 | USER_APPROVED |
 | `BS-MAIN-20260801-01` | 앱 진입 | 별도 메인 화면, 이어하기·새 게임·설정 | USER_APPROVED |
 | `BS-SHELL-20260801-01` | 제품 화면 구조 | 단일 BlacksmithApp + View·Overlay 혼합 | USER_APPROVED |
+| `BS-SAVE-20260801-01` | 저장·복구 | 단일 캠페인·자동 백업 2개·AttemptIntent·ResultEnvelope | USER_APPROVED_DESIGN_COMPLETE |
 | `BS-SYNC-20260731-01` | 운영 | 승인 결정·감사 상태를 같은 ID로 GitHub·Sheet 즉시 동기화 | USER_APPROVED |
 
 ## 제작 등급 최신 정본
@@ -77,6 +78,30 @@
 ```
 
 일반 +50도 정상 완성품이며 +51 이상과 명작 전당 자격을 가진다.
+
+## 저장·이어하기·ResultEnvelope
+
+책임 원본:
+
+- `docs/planning/BLACKSMITH_SAVE_CONTINUE_RESULT_ENVELOPE_CANON_2026.md`
+- `docs/planning/data/blacksmith_save_continue_result_envelope_canon_2026.json`
+
+```text
+campaign.save
+campaign.backup1
+campaign.backup2
+settings.cfg
+```
+
+- 단일 캠페인과 자동 백업 2개를 사용한다.
+- 수동 저장·수동 불러오기·다중 슬롯은 사용하지 않는다.
+- 정상 검증된 정본만 백업으로 회전한다.
+- `SaveCoordinator`만 실제 파일을 기록한다.
+- 비가역 행동은 `AttemptIntent PREPARED` 저장 후 실행한다.
+- 결과는 도메인 변경과 `ResultEnvelope APPLIED`를 같은 revision에 저장한 뒤 표시한다.
+- 재실행·화면 전환·뒤로가기로 결과를 재추첨하거나 이중 적용하지 않는다.
+- 기존 캠페인이 있는 새 게임은 신규 캠페인 검증 성공 후에만 교체한다.
+- 저장 손상은 사용자 고지 후 가장 최신 정상 백업으로 복구하며 백업 선택·결과 재시도는 허용하지 않는다.
 
 ## 고객·장비 생애
 
@@ -122,13 +147,16 @@
 
 - Audit ID: `BS-REPO-AUDIT-20260801-01`
 - P0 10건 / P1 10건 / P2 6건
-- `BS-AUD-F04`의 목표 등급 구조는 `BS-GRADE-20260801-02`로 확정됐다.
-- 실제 main의 구형 5개 ID·표시명·분포·고객 점수·테스트 마이그레이션은 계속 열린 P0다.
+- `BS-AUD-F02`와 `BS-AUD-F09`의 기획 목표는 `BS-SAVE-20260801-01`로 해결됐다.
+- `BS-AUD-F16`의 pause/process-death 기획 목표도 같은 결정으로 부분 해결됐다.
+- 실제 SaveCoordinator·AppState·마이그레이션·Android 테스트가 없으므로 Finding 건수는 유지한다.
+- `BS-AUD-F04`의 목표 등급 구조는 `BS-GRADE-20260801-02`로 확정됐으나 런타임 마이그레이션은 열려 있다.
 
 ## 권한
 
 ```text
 사용자 최신 결정
+→ BLACKSMITH_SAVE_CONTINUE_RESULT_ENVELOPE_CANON_2026.md
 → BLACKSMITH_CRAFTSMANSHIP_GRADE_CANON_2026-08-01.md
 → BLACKSMITH_MAIN_MENU_AND_APP_SHELL_CANON_2026.md
 → BLACKSMITH_ART_STYLE_AND_MODAK_CANON_2026.md
@@ -144,8 +172,8 @@
 ```text
 GITHUB_AUTHORITY: GITHUB_DRAFT_COMMITTED
 PLANNING_DATA: UPDATED
-GOOGLE_SHEET: SYNCED_TO_DRAFT_PR81
-CROSS_SOURCE_VERIFICATION: PASS
+GOOGLE_SHEET: SYNC_PENDING_FOR_BS-SAVE-20260801-01
+CROSS_SOURCE_VERIFICATION: PENDING
 MAIN_MERGE: NOT_RUN
 USER_기획_완료: NOT_DECLARED
 CODEX_IMPLEMENTATION: BLOCKED
