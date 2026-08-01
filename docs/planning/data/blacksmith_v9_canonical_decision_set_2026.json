@@ -1,10 +1,11 @@
 {
-  "schema_version": "1.7.0",
+  "schema_version": "1.7.1",
   "project": "Blacksmith",
   "status": "USER_APPROVED_DECISIONS_CANONICAL_ID_INDEX",
   "as_of": "2026-08-01",
   "authority": {
     "save_continue_result_envelope": "docs/planning/BLACKSMITH_SAVE_CONTINUE_RESULT_ENVELOPE_CANON_2026.md",
+    "save_implementation_plan": "docs/superpowers/plans/2026-08-01-save-continue-result-envelope-implementation.md",
     "craftsmanship_grade": "docs/planning/BLACKSMITH_CRAFTSMANSHIP_GRADE_CANON_2026-08-01.md",
     "situation_screen_work_order": "docs/planning/BLACKSMITH_SITUATION_SCREEN_SPEC_WORK_ORDER_2026.md",
     "visual_screen_work_order": "docs/planning/BLACKSMITH_VISUAL_SITUATION_BOARD_WORK_ORDER_2026.md",
@@ -39,23 +40,33 @@
     {"decision_id":"BS-MODAK-20260731-01","domain":"mascot_visual_design","decision":"BRIGHT_FIRE_SPIRIT_WITH_C_STYLE_EXPRESSIONS","charcoal_shell":false,"primary_body_colors":["BRIGHT_YELLOW","GOLD","ORANGE"],"dark_detail_limit_percent":15,"expression_set":["CALM","CURIOUS","WORRIED","JOYFUL","SURPRISED","SAD","FOCUSED"],"predicts_or_recommends_result":false,"growth_or_buff_system":false,"status":"USER_APPROVED"},
     {"decision_id":"BS-MAIN-20260801-01","domain":"application_entry","decision":"SEPARATE_MAIN_MENU_SCENE","required_actions":["CONTINUE","NEW_GAME","SETTINGS"],"continue_enabled_only_when_save_exists":true,"new_game_overwrite_warning_required":true,"optional_unapproved_actions":["GUIDE_OR_CODEX","CREDITS","EXIT"],"resolves":"DEC-VIS-01","status":"USER_APPROVED"},
     {"decision_id":"BS-SHELL-20260801-01","domain":"product_screen_architecture","decision":"SINGLE_BLACKSMITH_APP_WITH_VIEW_AND_OVERLAY_MIX","main_menu_is_separate_scene":true,"screen_transition_must_not_recreate_domain_state":true,"screen_transition_must_not_reroll_irreversible_result":true,"resolves":"DEC-VIS-02","status":"USER_APPROVED"},
-    {"decision_id":"BS-SAVE-20260801-01","domain":"save_continue_recovery_and_result_envelope","decision":"SINGLE_CAMPAIGN_TWO_AUTOMATIC_BACKUPS_WITH_ATTEMPT_INTENT_AND_RESULT_ENVELOPE","manual_save_load":false,"campaign_slot_count":1,"automatic_backup_count":2,"normal_primary_only_rotates_to_backup":true,"continue_statuses":["NO_SAVE","VALID_PRIMARY","RECOVERABLE_BACKUP","MIGRATION_REQUIRED","MIGRATION_FAILED","UNSUPPORTED_VERSION","UNRECOVERABLE_CORRUPTION"],"attempt_intent_states":["PREPARED","RESOLVED","CANCELLED"],"result_envelope_states":["CREATED","APPLIED","PRESENTED","ACKNOWLEDGED"],"result_reroll_on_restart":false,"result_double_apply":false,"new_campaign_must_validate_before_replacement":true,"runtime_implementation":"OPEN","status":"USER_APPROVED_DESIGN_COMPLETE"},
+    {"decision_id":"BS-SAVE-20260801-01","domain":"save_continue_recovery_and_result_envelope","decision":"SINGLE_CAMPAIGN_TWO_AUTOMATIC_BACKUPS_WITH_ATTEMPT_INTENT_AND_RESULT_ENVELOPE","manual_save_load":false,"campaign_slot_count":1,"automatic_backup_count":2,"normal_primary_only_rotates_to_backup":true,"continue_statuses":["NO_SAVE","VALID_PRIMARY","RECOVERABLE_BACKUP","MIGRATION_REQUIRED","MIGRATION_FAILED","UNSUPPORTED_VERSION","UNRECOVERABLE_CORRUPTION"],"attempt_intent_states":["PREPARED","RESOLVED","CANCELLED"],"result_envelope_states":["CREATED","APPLIED","PRESENTED","ACKNOWLEDGED"],"result_reroll_on_restart":false,"result_double_apply":false,"new_campaign_must_validate_before_replacement":true,"implementation_plan_tasks":11,"runtime_implementation":"OPEN","status":"USER_APPROVED_DESIGN_COMPLETE"},
     {"decision_id":"BS-SYNC-20260731-01","domain":"canonical_sync","decision":"IMMEDIATE_SAME_ID_SYNC_ACROSS_GITHUB_PLANNING_DATA_AND_CONNECTED_SHEET","record_change_locations":true,"record_commit":true,"pre_merge_status":"SYNCED_TO_DRAFT","post_merge_status":"SYNCED_TO_MAIN","status":"USER_APPROVED"}
   ],
   "visual_design": {"design_id":"BS-VISUAL-20260731-01","status":"USER_ACCEPTED_WORKING_BASELINE","final_product_asset":false,"placeholder_or_unapproved":["PLAYER_LEVEL","BLUE_GEM_OR_PREMIUM_CURRENCY","ACHIEVEMENTS","SHOP","DETAILED_CODEX_OR_GUIDE","SPECIAL_CRAFTING_AS_NEW_SYSTEM","INVENTORY_128_OF_150","DIRECT_MARKET_OR_ARENA_EXPLORATION","IMAGE_NUMERIC_VALUES"]},
-  "review_gate": {"gate_id":"BS-REPO-AUDIT-20260801-01","status":"AUDIT_COMPLETE_FINDINGS_OPEN","p0_findings":10,"p1_findings":10,"p2_findings":6,"save_planning_target":"RESOLVED_BY_BS-SAVE-20260801-01","save_runtime_implementation":"OPEN","result_envelope_planning_target":"RESOLVED_BY_BS-SAVE-20260801-01","grade_rule_decision":"RESOLVED_BY_BS-GRADE-20260801-02","grade_runtime_migration":"OPEN","open_visual_decisions":[],"resolved_visual_decisions":["DEC-VIS-01","DEC-VIS-02","DEC-VIS-03","MODAK_VISUAL"],"ready_for_user_planning_complete_declaration":false,"implementation_authorized":false},
+  "review_gate": {"gate_id":"BS-REPO-AUDIT-20260801-01","status":"AUDIT_COMPLETE_FINDINGS_OPEN","p0_findings":10,"p1_findings":10,"p2_findings":6,"save_planning_target":"RESOLVED_BY_BS-SAVE-20260801-01","save_implementation_plan":"COMPLETE_EXECUTION_BLOCKED","save_runtime_implementation":"OPEN","result_envelope_planning_target":"RESOLVED_BY_BS-SAVE-20260801-01","grade_rule_decision":"RESOLVED_BY_BS-GRADE-20260801-02","grade_runtime_migration":"OPEN","open_visual_decisions":[],"resolved_visual_decisions":["DEC-VIS-01","DEC-VIS-02","DEC-VIS-03","MODAK_VISUAL"],"ready_for_user_planning_complete_declaration":false,"implementation_authorized":false},
   "sheet_binding": {
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
-    "save_decision_range": "PENDING",
-    "save_audit_range": "PENDING",
-    "save_direct_impact_ranges": [],
+    "save_decision_range": "02_현재_확정결정!A25:H25",
+    "save_audit_range": "04_누락_충돌_감사!A19:H19",
+    "save_direct_impact_ranges": [
+      "05_GDD_요약!A2:H2",
+      "05_GDD_요약!A7:H7",
+      "05_GDD_요약!A10:H10",
+      "30_데모범위_품질기준_제작기반!A3:H3",
+      "40_핵심시스템_메인콘텐츠!A9:H9",
+      "60_UX_UI_접근성!A16:H16",
+      "80_데모_버티컬슬라이스_플레이테스트!A8:H8",
+      "90_본제작_출시_사업!A5:H5",
+      "99_변경이력!A21:H21"
+    ],
     "grade_decision_ranges": ["02_현재_확정결정!D6:H6", "02_현재_확정결정!D23:H23", "02_현재_확정결정!A24:H24"],
     "grade_audit_range": "04_누락_충돌_감사!A18:H18",
     "grade_gdd_range": "05_GDD_요약!A4:H4",
     "grade_migration_range": "40_핵심시스템_메인콘텐츠!A8:H8",
     "grade_change_history_range": "99_변경이력!A20:H20",
-    "sync_status": "PARTIAL_SYNC_PENDING_BS-SAVE-20260801-01",
-    "cross_source_verification": "PENDING"
+    "sync_status": "SYNCED_TO_DRAFT_PR81",
+    "cross_source_verification": "PASS"
   },
   "main_merge": "NOT_RUN",
   "user_planning_complete": "NOT_DECLARED",
