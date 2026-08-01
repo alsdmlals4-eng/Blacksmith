@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-VALIDATION-20260801-01",
+  "status": "USER_PREAPPROVED_RECOMMENDED_CANONICAL_DESIGN_COMPLETE",
+  "as_of": "2026-08-01",
+  "implementation_authorized": false,
+  "evidence_maturity": [
+    "E0_DESIGN_ONLY",
+    "E1_STATIC_CONTRACT_VALIDATED",
+    "E2_AUTOMATED_UNIT_PASS",
+    "E3_HEADLESS_INTEGRATION_PASS",
+    "E4_RENDERED_SCENE_PASS",
+    "E5_ANDROID_DEVICE_PASS",
+    "E6_ACCESSIBILITY_AND_HUMAN_PASS",
+    "E7_EXTERNAL_PLAYTEST_PASS",
+    "E8_RELEASE_EVIDENCE_COMPLETE"
+  ],
+  "rules": {
+    "higher_level_requires_lower_evidence": true,
+    "document_or_plan_is_e0": true,
+    "test_file_exists_is_not_pass": true,
+    "other_commit_ci_is_current_head_pass": false,
+    "android_human_performance_replaceable_by_automation": false,
+    "allowed_statuses": ["NOT_RUN", "FAILED", "BLOCKED", "PASS"]
+  },
+  "validation_lanes": {
+    "A_AUTHORITY_DATA_STATIC": ["JSON_MARKDOWN", "DECISION_IDS", "GITHUB_SHEET_BINDING", "BASE_PIN_HASH", "PLACEHOLDER_ASSET_LICENSE", "REFERENCE_SCHEMAS"],
+    "B_DOMAIN_UNIT": ["CRAFTING_GRADE", "ENHANCEMENT", "SAVE_STATUS", "MIGRATION", "CUSTOMER", "AUTO_ENHANCE", "STORAGE_SALES", "SETTINGS_BACK"],
+    "C_TRANSACTION_INTEGRATION": ["FORGE_RESERVATION", "ATTEMPT_PREPARED_APPLIED", "SALES_DELIVERY", "WORLD_RESULT", "RECOVERY", "ROLLBACK", "IDEMPOTENCY"],
+    "D_PRODUCT_FLOW_HEADLESS": ["BOOT_MAIN_CONTINUE", "FORGE_GRADE_ENHANCE", "IDENTITY_PLUS50", "STORAGE_SALE_CUSTOMER", "WORLD_RESULT_CHRONOLOGY", "SAVE_RESTART_RECOVERY"],
+    "E_RENDERED_UI_VISUAL": ["SCREENSHOT_12", "VIEWPORT_5", "TEXT_REDUCED_MOTION_ASSIST", "FOCUS_BACK", "MODAK_OCCLUSION", "LONG_KOREAN_COLOR_INDEPENDENCE"],
+    "F_ANDROID_DEVICE": ["APK_AAB", "NOTCH_GESTURE_BUTTON_NAV", "PROCESS_KILL", "VIBRATION_AUDIO_FOCUS", "STORAGE_FAILURE_OFFLINE", "PERFORMANCE"],
+    "G_HUMAN_PLAYTEST": ["FIRST_ACTION", "SAVE_TRUST", "RISK_AUTO_STOP", "CUSTOMER_FIT_OWNERSHIP", "CHRONOLOGY_VALUE", "ACCESSIBILITY"]
+  },
+  "historical_poc_evidence_status": "HISTORICAL_POC_BASELINE",
+  "historical_poc_does_not_prove": ["CURRENT_GRADES", "SAVE_APP_SHELL", "CUSTOMER_8_PIPELINE", "AUTO_ENHANCE_BOUNDARIES", "STORAGE_12_AND_SALES_CHANNELS", "THEME_ANDROID_LIFECYCLE"],
+  "required_decision_validation_links": [
+    "BS-SAVE-20260801-01",
+    "BS-MIGRATION-20260801-01",
+    "BS-CUSTOMER-PIPELINE-20260801-01",
+    "BS-AUTOFORGE-20260801-01",
+    "BS-EQUIPMENT-LIFECYCLE-20260801-01",
+    "BS-VISUAL-ASSET-GOV-20260801-01",
+    "BS-UI-PLATFORM-20260801-01",
+    "BS-BASE-MIGRATION-20260801-01"
+  ],
+  "fixture_registry_fields": ["fixture_id", "schema_version", "purpose", "source_decision_ids", "initial_campaign_snapshot", "committed_random_values", "actions", "expected_state_digests", "expected_result_envelopes", "expected_chronology", "expected_stop_or_error", "legacy_source_reference"],
+  "fixture_families": [
+    "NEW_CONTINUE_RECOVERY",
+    "PREPARED_RESOLVED_PROCESS_DEATH",
+    "LEGACY_GRADE_AFFIX_LEVEL_MIGRATION",
+    "CUSTOMER_8_AND_LEGACY_KYLE",
+    "AUTO_ENHANCE_BOUNDARIES",
+    "STORAGE_0_TO_12_FULL_RECOVERY_SALES",
+    "UI_VIEWPORT_TEXT_SAFE_INSET_BACK",
+    "ERROR_OFFLINE_STORAGE_FAILURE"
+  ],
+  "ci_required_pr_lanes": ["static_contracts", "python_unit", "Godot_import_and_unit", "Godot_integration", "product_flow_headless", "protected_path_and_placeholder"],
+  "manual_or_scheduled_lanes": ["visual_baseline", "Android_build_and_device", "performance_capture", "accessibility_human_review", "external_playtest", "license_release_audit"],
+  "evidence_report_required_fields": ["evidence_id", "evidence_type", "decision_ids", "repository", "branch", "commit_sha", "command_or_procedure", "started_at_utc", "finished_at_utc", "environment", "exit_code", "result", "summary", "artifact_paths_or_urls", "known_limitations", "reviewer"],
+  "telemetry": {
+    "network_upload": false,
+    "stable_device_identifier": false,
+    "personal_data": false,
+    "raw_text_or_user_content": false,
+    "manual_export_only": true,
+    "build_defaults": {
+      "DEVELOPMENT_INTERNAL_QA": "LOCAL_ON_MANUAL_EXPORT",
+      "EXTERNAL_PLAYTEST": "EXPLICIT_CONSENT_LOCAL_ON_MANUAL_EXPORT",
+      "GENERAL_RELEASE": "OFF_UNLESS_USER_EXPORTS_DIAGNOSTICS"
+    },
+    "allowed_events": [
+      "app_session_started", "main_menu_action", "save_status_detected", "continue_started", "backup_recovery_offered", "backup_recovery_completed", "backup_recovery_failed", "save_failed", "process_death_recovery_completed",
+      "forging_started", "forging_completed", "craftsmanship_grade_assigned", "enhancement_attempt_resolved", "identity_boundary_reached", "identity_boundary_chosen", "plus50_route_chosen", "auto_enhance_started", "auto_enhance_stopped",
+      "storage_full_encountered", "equipment_sold", "customer_contract_offered", "customer_contract_accepted", "customer_contract_delivered", "customer_fit_viewed", "world_result_presented", "world_result_acknowledged", "chronology_opened",
+      "screen_opened", "blocking_error_shown", "settings_changed", "back_action_handled", "frame_time_summary", "memory_summary"
+    ],
+    "forbidden_data": ["NAME", "EMAIL", "CONTACT", "ACCOUNT", "PERSONAL_CONNECTOR_URL_OR_TOKEN", "RAW_FREE_TEXT", "RAW_FILE_PATH", "STABLE_DEVICE_ID", "ADVERTISING_ID", "PHONE", "PRECISE_LOCATION", "IP_OR_NETWORK_ID", "FULL_SAVE", "USER_NAMED_EQUIPMENT_TEXT"],
+    "schema_fields": ["telemetry_schema_version", "event_id", "event_name", "session_id_random", "event_sequence", "build_version", "commit_short", "platform_class", "screen_or_system", "coarse_game_day", "event_payload_allowlisted", "created_at_monotonic_or_coarse_utc"],
+    "storage_path": "user://diagnostics/telemetry.jsonl",
+    "retention_sessions_max": 20,
+    "retention_days_max": 30,
+    "user_delete_supported": true,
+    "export_shows_categories_period_size": true
+  },
+  "planning_complete_gate": ["ALL_P0_P1_PLANNING_TARGETS_RESOLVED", "BASE_MIGRATION_EXECUTION_PLAN_EXISTS", "CURRENT_HISTORY_PLACEHOLDER_PROPAGATION_PASS", "DECISION_VALIDATION_MATRIX_COMPLETE", "PASS3_NEW_P0_P1_ZERO"],
+  "implementation_complete_gate": ["REQUIRED_CI_SAME_HEAD_PASS", "P0_P1_RUNTIME_ZERO", "ANDROID_DEVICE_PASS", "ACCESSIBILITY_HUMAN_PASS", "ASSET_LICENSE_RELEASE_PASS", "KNOWN_LIMITATIONS_ACCEPTED"],
+  "audit_resolution": {
+    "BS-AUD-F20": "VALIDATION_TARGET_RESOLVED_EXECUTION_OPEN",
+    "BS-AUD-F26": "TELEMETRY_TARGET_RESOLVED_EXECUTION_OPEN",
+    "finding_counts_reduced": false
+  },
+  "current_v9_execution": "NOT_RUN",
+  "android_human_performance": "NOT_RUN",
+  "codex_implementation": "BLOCKED"
+}
