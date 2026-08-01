@@ -1,0 +1,146 @@
+{
+  "schema_version": "1.0.0",
+  "project": "Blacksmith",
+  "decision_id": "BS-MIGRATION-20260801-01",
+  "status": "USER_PREAPPROVED_RECOMMENDED_CANONICAL_DESIGN_COMPLETE",
+  "as_of": "2026-08-01",
+  "implementation_authorized": false,
+  "invariants": {
+    "equipment_uid_preserved": true,
+    "grade_rank_preserved": true,
+    "stored_numeric_values_preserved": true,
+    "enhancement_level_preserved": true,
+    "affix_id_tier_effect_preserved": true,
+    "ownership_relationship_chronology_preserved": true,
+    "rng_calls_during_migration": 0,
+    "retroactive_high_precision_reward": false,
+    "source_overwrite_on_failure": false,
+    "partial_campaign_commit": false,
+    "idempotency_required": true
+  },
+  "target_grade_ids": [
+    {"rank":1,"id":"NORMAL","display_name_ko":"보통"},
+    {"rank":2,"id":"SUPERIOR","display_name_ko":"우수"},
+    {"rank":3,"id":"EXQUISITE","display_name_ko":"명품"},
+    {"rank":4,"id":"MASTERPIECE","display_name_ko":"걸작"},
+    {"rank":5,"id":"LEGENDARY","display_name_ko":"전설"}
+  ],
+  "legacy_grade_mapping": {
+    "APPRENTICE":"NORMAL",
+    "STANDARD":"SUPERIOR",
+    "REFINED":"EXQUISITE",
+    "MASTERWORK":"MASTERPIECE",
+    "PERFECT":"LEGENDARY"
+  },
+  "numeric_compatibility": {
+    "copy_score_bonus": true,
+    "copy_attack_multiplier": true,
+    "copy_value_multiplier": true,
+    "remap_precision_distribution_keys_one_to_one": true,
+    "balance_recalibration_in_same_migration": false,
+    "reroll_stored_grade": false
+  },
+  "finish_and_grade_separation": {
+    "finish_result_field":"crafting_finish_result_id",
+    "finish_result_ids":["AUTO","STANDARD","GOOD","PERFECT"],
+    "grade_field":"craftsmanship_grade_id",
+    "missing_grade_with_sufficient_inputs":"DETERMINISTIC_RESOLVER_ONCE",
+    "missing_grade_with_insufficient_inputs":"MIGRATION_REVIEW_REQUIRED"
+  },
+  "target_affix_roles": {
+    "lineage_affix_max":1,
+    "secondary_affixes_max":2,
+    "special_affix_max":1,
+    "special_affix_source":"HIGH_PRECISION_ONLY"
+  },
+  "legacy_affix_mapping": {
+    "slot_1":"lineage_affix",
+    "slot_2":"secondary_affixes[0]",
+    "slot_3":"secondary_affixes[1]",
+    "preserve_duplicate_affixes":true,
+    "fill_empty_slots":false,
+    "merge_or_delete_legacy_affixes":false,
+    "provenance_fields":["source_schema","source_affix_id","source_slot","source_tier","migrated_role","migration_decision_id"]
+  },
+  "legacy_milestone_mapping": {
+    "10":"LINEAGE_ACQUIRED",
+    "20":"LINEAGE_UPGRADED",
+    "30":"SECONDARY_1_ACQUIRED",
+    "40":"SECONDARY_1_UPGRADED",
+    "50":"SECONDARY_2_ACQUIRED",
+    "60":"SECONDARY_2_DEEPENED",
+    "70":"LINEAGE_DEEPENED",
+    "80":"SECONDARY_1_DEEPENED",
+    "90":"SECONDARY_2_DEEPENED",
+    "100":"LEGACY_ALL_ROLES_ASCENDED"
+  },
+  "legacy_plus50": {
+    "equipment_level_50_or_higher_route":"LEGACY_GENERAL_PRECISION",
+    "special_material_uses_at_50":[],
+    "special_affix_id":"",
+    "high_precision_evolution_id":"",
+    "old_slot_3_role":"SECONDARY_2",
+    "eligible_for_plus_51":true,
+    "eligible_for_masterworks_hall":true,
+    "retroactive_high_precision_reward":false,
+    "level_49_or_lower_uses_new_route_on_next_attempt":true
+  },
+  "target_schema_versions": {
+    "craftsmanship_grades_json":2,
+    "enhancement_milestones_json":3,
+    "equipment_identity_record":1,
+    "equipment_world_registry_record":2,
+    "campaign_snapshot":1
+  },
+  "migration_pipeline": [
+    "READ_AND_QUARANTINE_SOURCE_BYTES",
+    "VALIDATE_SOURCE_SCHEMA",
+    "INVENTORY_EQUIPMENT_UIDS_AND_REFERENCES",
+    "MAP_GRADE_IDS_ONE_TO_ONE",
+    "MAP_AFFIX_ROLES",
+    "ASSIGN_PLUS50_ROUTE_PROVENANCE",
+    "RESTORE_OWNERSHIP_RELATIONSHIP_CHRONOLOGY_REFERENCES",
+    "VALIDATE_TARGET_SCHEMA",
+    "COMPUTE_DETERMINISTIC_SNAPSHOT_HASH",
+    "WRITE_AND_REVALIDATE_TEMPORARY",
+    "PRESERVE_SOURCE_AND_ATOMICALLY_PROMOTE"
+  ],
+  "migration_id_pattern":"BS-MIGRATION-20260801-01:<campaign_id>:<source_revision>",
+  "failure_policy": {
+    "unknown_grade_id":"MIGRATION_REVIEW_REQUIRED",
+    "missing_affix_definition":"PRESERVE_EQUIPMENT_WITH_UNRESOLVED_REFERENCE",
+    "duplicate_equipment_uid":"ABORT_PROMOTION",
+    "missing_owner_or_customer":"PRESERVE_WITH_UNRESOLVED_OWNERSHIP",
+    "hash_or_validator_failure":"DISCARD_TEMP_KEEP_SOURCE",
+    "partial_success":"ABORT_WHOLE_CAMPAIGN"
+  },
+  "minimum_fixtures": [
+    "EACH_LEGACY_GRADE",
+    "AFFIX_COUNT_0_1_2_3",
+    "LEVEL_0_10_20_30_40_49_50_60_100",
+    "DESTROYED_SOLD_WORLD_RESULT_PENDING",
+    "DUPLICATE_UID_UNKNOWN_GRADE_MISSING_AFFIX_FAILURE",
+    "IDEMPOTENT_DOUBLE_MIGRATION"
+  ],
+  "zero_tolerance_metrics": [
+    "EQUIPMENT_UID_CHANGED",
+    "GRADE_RANK_CHANGED",
+    "STORED_NUMERIC_VALUE_CHANGED",
+    "AFFIX_LOSS",
+    "RNG_CALLS_DURING_MIGRATION",
+    "FREE_HIGH_PRECISION_REWARD",
+    "DUPLICATE_MIGRATION",
+    "SOURCE_OVERWRITE_ON_FAILURE",
+    "PARTIAL_CAMPAIGN_COMMIT"
+  ],
+  "audit_resolution": {
+    "BS-AUD-F04":"PLANNING_TARGET_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F05":"MIGRATION_TARGET_RESOLVED_RUNTIME_OPEN",
+    "BS-AUD-F20":"MIGRATION_TEST_TARGET_RESOLVED_RUNTIME_OPEN",
+    "p0_finding_count_reduced":false
+  },
+  "product_data_change":"NOT_RUN",
+  "save_migrator_implementation":"NOT_RUN",
+  "automated_tests":"NOT_RUN",
+  "codex_implementation":"BLOCKED"
+}
