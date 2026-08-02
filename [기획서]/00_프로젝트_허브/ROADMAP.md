@@ -3,16 +3,15 @@
 ## 현재 운영 상태
 
 ```yaml
-CURRENT_OPERATING_DECISIONS:
-  - BS-OPS-20260802-01
-  - BS-OPS-20260802-02
 CURRENT_WORK_MODE: TOTAL_PLANNING
 CURRENT_STAGE: R1_PROJECT_CORE_AND_PLAYER_PROMISE
-CURRENT_STAGE_STATUS: IN_PROGRESS / GRILL_BATCH_01_MERGED / NEW_COUNTER_0_OF_10
-LAST_MERGED_PR: 84
-BATCH_01_MERGE_SHA: bd68c2dbf20592e84c1bebfdc83c4c925d010dbf
+CURRENT_STAGE_STATUS: CANON_CONFLICTS_RESOLVED / AUTHORITY_ALIGNMENT_IN_PROGRESS
+LAST_MERGED_PR: 93
+CURRENT_MAIN_SHA: b3a852cbb35de73a4b2da32151f845ddd61e1921
+CURRENT_DRAFT_PR: 94
+CURRENT_DRAFT_HEAD: b54a2f5c6a5eb7a946629cd12620e4339daad35e
 PRODUCT_IMPLEMENTATION: BLOCKED
-NEXT_ACTIVITY: CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE
+NEXT_ACTIVITY: ALIGN_CANON_DOCS_AND_SHEET_THEN_ADVERSARIAL_AUDIT
 ```
 
 문서 병합은 승인 기획을 main에 보존하는 작업이며 제품 구현 승인과 다르다.
@@ -21,90 +20,90 @@ NEXT_ACTIVITY: CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE
 
 상태: `PASS / MERGED_TO_MAIN`.
 
-- current main 기준 진입 문서·Decision 원장·Base Adapter 복구
-- PR #81 전체 병합 대신 승인 기획 선별 승격
-- GitHub·Sheet 동일 Decision ID 동기화
-- Issue·PR 권위 관계 정리
-- 보호 제품 경로 변경 0 확인
-- PR #84 squash 병합
+- GitHub·Google Sheet 동일 Decision ID 동기화
+- 권위 진입 문서·Registry·Hub 복구
+- 승인 기획을 배치별로 적대적 감사 후 squash 병합
+- 제품 구현 경로 변경 0 확인
+
+완료된 승인 배치:
+
+- 배치 001 — PR #87 / `f0c2d65196750d39d4d2db3bfe6f387a61226f4a`
+- 배치 002 — PR #89 / `6a570a52eb9dea95895e7478bf892fc5adfa9262`
+- 배치 003 — PR #91 / `eac7af22726587d5451d1b130c38d8afc6af6633`
+- 배치 004 — PR #93 / `b3a852cbb35de73a4b2da32151f845ddd61e1921`
 
 ## R1 — 프로젝트 코어·플레이어 약속
 
-상태: `IN_PROGRESS / APPROVED_BATCH_01_MERGED`.
+상태: `CORE_DECISIONS_APPROVED / CANON_ALIGNMENT_IN_PROGRESS`.
 
-병합된 배치:
-
-- `BS-CORE-20260802-01`: 피로도·날짜 진행 핵심 불변
-- `BS-CORE-20260802-02`: 강화 메인 + 고객·세계 역사 환류
-- `BS-SET-20260802-01`: 다양한 작품 제작 동기와 세트
-- `BS-SET-20260802-02`: 사건 연대기 기반 동적 세트
-- `BS-SET-20260802-03`: 범용 보정 + 상황 태그 + 역사 기록
-- `BS-SET-20260802-04`: 실패 사건도 실제 기여 시 세트 성립
+### 확정된 프로젝트 코어
 
 ```text
 직접 제작
 → 강화 성공·실패와 멈춤·추가 도전
-→ 피로도에 따른 하루 우선순위
-→ 고객 판매·납품
-→ 짧은 세계 사건 결과
-→ 작품의 소유·운명·연대기·세트
-→ 새로운 작품과 더 높은 강화
+→ 피로도에 따른 하루 작업 우선순위
+→ 방문 고객에게 납품
+→ 즉시 인과 결과
+→ 날짜·세계일정
+→ 같은 UID의 결과·손상·복원·계승·재방문
+→ 다음 강화·제작 목표
 ```
 
-남은 R1:
+핵심 재미:
 
-- 타깃·비타깃 플레이어
-- 플레이 상황과 세션 약속
-- 세일즈포인트 최대 3개
-- 비타협 조건·변경 가능한 외피·제외 범위
-- 성공·반증·실패 기준
-- +50 대표 경험 위치
-- 즉시 세계 결과와 지연 기록 경계
+- 즉각 동력: 강화의 결과와 멈춤·추가 도전 판단
+- 장기 의미: 작품 생애와 세계 환류
 
-## Grill Me 병합 운영
+### R1 승인 결정 묶음
 
-```text
-새 승인 누적
-→ 10/10
-→ GitHub·Sheet Decision 동기화
-→ changed files·리뷰·CI·충돌·금지 경로 감사
-→ P0/P1 0 확인
-→ squash 병합
-→ main SHA·Sheet 재동기화
-→ 카운터 0/10
-```
+- 피로도·날짜를 핵심 우선순위 축으로 유지
+- 강화가 주 행동이며 고객·세계 사건은 작품 역사를 돌려주는 환류 구간
+- 사건 연대기 기반 세트와 실제 기여 보상
+- 플레이어가 선택한 작품 한 점을 `+50`까지 진행하는 데모
+- 방문 고객 인계 후 생애 활성화
+- 손상·대파 시 단계 하락, 수식어 잠금·복원, 완전 파괴는 명시적 선택만 허용
+- 일반 수식어 A·B 두 개
+- 활성 사건·연대기 수식어 한 개와 진화 이력 보존
+- 경제 구조는 정본, 정확한 수치는 버전형 테스트 프리셋
+- 행동 증거와 회상 인터뷰를 결합한 코어 재미 검증 Gate
+- 수집가는 플레이어 제작·납품·처분 작품 재회용 보조 콘텐츠
+- 명예의 전당은 비경쟁 아카이브 방향만 승인하고 `FUTURE_CONTENT_HOLD`
 
-완료 배치 01은 사용자 지시에 따라 질문 5건으로 병합했다. 현재 신규 카운터는 `0/10`이다.
+### 현재 R1 정리 작업
 
-## Historical PoC alignment
-
-### 장비 한 점의 생애 PoC — CURRENT
-
-이 문자열은 기존 CI 정렬 계약의 역사 토큰이다. 현행 권위 분류는 `REFERENCE_IMPLEMENTATION`이며 최신 R1 기획 정본을 덮어쓰지 않는다.
-
-- 과거 상태: `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`
-- 과거 CI 증거: `PR validation #468`
-- CI 운영 계약: `docs/CI_EXECUTION_POLICY.md`
-- PR #84 final validation: run #838 `SUCCESS`
-- 현재 최신 R1 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
+- [x] 장기 강화 상한: 현재 검증 `+50`, 최종 상한 `DEFERRED`
+- [x] 일반 수식어 슬롯: A·B 두 개
+- [x] 사건 수식어: 활성 한 개와 진화 이력
+- [x] 첫 코어 버티컬 슬라이스: 한 작품 `+50` 생애 왕복
+- [x] 경제 수치 권위: 버전형 테스트 프리셋
+- [x] 코어 재미 검증: 행동 증거 + 회상 인터뷰
+- [ ] Game Bible·Roadmap·MVP Scope·Hub·Sheet 표현 일치
+- [ ] PR #94 적대적 감사
+- [ ] 사용자 최종 R1 정본 검수
 
 ## R2 — Core·Session·Meta Loop
 
-시작 조건: `R1_APPROVED`.
+시작 조건:
+
+- R1 정본 문서·Sheet 일치
+- PR #94 적대적 감사 P0/P1 0
+- 사용자 R1 검수 승인
 
 범위:
 
-- 제작→강화→멈춤/도전→피로도→판매·납품→사건→성장
-- 즉시·세션·장기 보상
-- 실패·재도전·복귀
-- +5/+10 일상 루프와 +50 장기 하이라이트
+- 제작→강화→멈춤/도전→피로도→납품→결과→재방문
+- 즉시·세션·장기 보상 위계
+- 실패·손상·복원·재도전·복귀
+- 한 작품 `+50` 생애 왕복의 실제 세션 구조
 - 온보딩과 정보 공개
 
-검토:
+검토 질문:
 
-- 피로도·날짜 넘기기가 대기벽이나 최적 스킵이 되지 않는가
-- 세계 결과가 강화 코어를 강화하는가
-- 자동화가 핵심 판단을 우회하지 않는가
+- `+10~+50`이 선택 없는 긴 클릭 구간이 되지 않는가
+- 피로도·날짜가 대기벽이나 최적 스킵이 되지 않는가
+- 고객 결과가 강화 선택의 인과를 설명하는가
+- 같은 UID 재방문이 다음 행동을 자발적으로 만들 수 있는가
+- 자동화가 중요 판단을 우회하지 않는가
 
 ## R3 — 제작·강화·작품 정체성·실패·저장
 
@@ -112,30 +111,43 @@ NEXT_ACTIVITY: CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE
 
 범위:
 
-- 제작 입력·완성도·등급·수식어
-- 강화 하락·파괴·보호·완충
-- 장비 UID와 불변 정체성
-- EventChronicle·ChronicleSet·ChronicleModifier·SituationTag
-- 실패·부분 성공·성공 기여 판정
+- 제작 입력·영구 완성도·정밀 등급
+- 일반 수식어 A·B
+- 활성 사건·연대기 수식어 한 개와 진화 이력
+- 강화 단계 하락·손상·대파·잠금·복원
+- 완전 파괴의 명시적 선택 계약
+- 작품 UID와 불변 역사
+- EventChronicle·ChronicleSet·SituationTag
 - SaveStatus·AttemptIntent·ResultEnvelope
 - migration·호환성
 
-확률·비용·용량·시간·태그 유사도는 `RECOMMENDED_DEFAULT / TEST_VALUE`로 시작한다.
+금지:
 
-## R4 — 고객·세계 일정·사건·장비 연대기
+- 일반 수식어 세 번째 기본 슬롯
+- 사건 수식어 무제한 누적
+- 일반 실패의 즉시 UID·연대기 삭제
+- 같은 이정표 보상 중복 획득
+
+## R4 — 고객·세계일정·사건·작품 연대기
 
 시작 조건: `R3_APPROVED`.
 
 범위:
 
-- 고객 직접 방문과 상인 납품
-- 세계 일정·마감·필요 역할
-- 예정 세트→기여 작품→연대기 세트
-- 성공·부분 성공·실패·참패 결과 장면
-- 상황 태그 기반 추가 정보·선택지·전용 장면
+- 방문 고객 목적·환경·조건 대화
+- 원자적 납품과 생애 활성화
+- 즉시 인과 결과와 지연된 세계 결과
+- 성공·부분 성공·실패·손상·대파 결과
 - 재방문·관계·명성·복원·계승 의뢰
+- 지원 자원 즉시 소비와 결과 기여 표시
+- 세트·사건 수식어의 실제 UID 기여 검증
 
-직접 전투 범위 팽창, 사건 RNG 우위, 과도한 필수 대화·이벤트를 차단한다.
+차단:
+
+- 직접 전투 범위 팽창
+- 사건 RNG가 작품 선택을 압도
+- 과도한 필수 대화·이벤트
+- 고객의 임의 거짓말과 숨은 랜덤 처벌
 
 ## R5 — 경제·피로도·성장·장기 목표
 
@@ -145,11 +157,14 @@ NEXT_ACTIVITY: CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE
 
 - 골드·재료 Source/Sink
 - 피로도 소비·회복·날짜 전환
-- 장비·세트 가치·명성·관계
-- 연대기 보정·누적 상한·점감
-- 실패 연대기 파밍 방지
-- +50 이후 성장
-- 악용·무한 루프·소프트락·복구
+- 작품·세트 가치·명성·관계
+- 손상·복원 경제와 소프트락 방지
+- 버전형 테스트 프리셋
+- `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET / EXPERIMENT_VARIANT / CURRENT_VALIDATED`
+- 단일 변수 중심 밸런스 실험
+- `+50` 이후 성장 필요성 검증
+
+정확한 비용·확률·용량·시간은 사람 플레이 증거 전까지 제품 확정값이 아니다.
 
 ## R6 — 모바일 UX·접근성·아트·오디오
 
@@ -157,33 +172,73 @@ NEXT_ACTIVITY: CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE
 
 범위:
 
-- Main Menu와 BlacksmithApp 정보 구조
 - Android portrait·safe area·one-hand flow
-- 위험·확률·소유권·결과 설명
-- 예정 세트·기여 작품·상황 태그·3줄 역사 요약
-- 스타일라이즈드 다크 포지와 밝은 모닥
+- 한 화면의 중요한 판단 하나
+- 위험·확률·소유권·자원 소비 사전 표시
+- 일반 수식어 A·B와 사건 수식어 계층 구분
+- 작품 연대기·손상·복원·재방문 가독성
 - 비색상 정보·텍스트·모션 감소
+- 접근성용 제한적 자동 작업
 
-## R7 — 버티컬 슬라이스·데이터·검증·제작 계획
+## R7 — 코어 버티컬 슬라이스·데이터·검증·제작 계획
 
 시작 조건: `R6_APPROVED`.
 
-- 15~25분 대표 세션
-- 포함 시스템·대표 콘텐츠·명시적 제외
-- 기존 구현 보호·재사용 경계
+### 본체 범위
+
+```text
+플레이어 선택 작품 한 점
+→ 제작
+→ +10/+20/+30/+40/+50 정밀 이정표
+→ 방문 고객 납품
+→ 즉시 결과
+→ 날짜·세계일정
+→ 같은 UID 재방문
+→ 복원·재강화·후속 판단
+```
+
+다른 작품군은 플레이 가능한 병렬 루프가 아니라 종료 화면·제작법 카드 등의 제한된 비플레이 미리보기로만 제시한다.
+
+### 검증 Gate
+
+행동 증거:
+
+- 강화 지속·중단 고민
+- 일반 수식어 A·B와 주요 선택 기억
+- 결과 인과 설명
+- 재방문 후 자발적 다음 행동
+- 피로도·날짜 우선순위 사용
+- 손상·복원의 생애 의미 이해
+
+회상 인터뷰:
+
+- 작품의 차이
+- 강화 지속·중단 이유
+- 결과에 기여한 선택
+- 세계 결과 후 다음 의도
+- 같은 작품 재방문 감정
+- 피로도·날짜 우선순위
+
+행동과 인터뷰가 충돌하면 통과를 보류하고 최소 수정 후 재검증한다. 정확한 표본 수·통과 비율·반복 횟수는 테스트 프리셋으로 관리한다.
+
+### 산출물
+
+- 포함·제외 범위
 - Schema·ID·저장·migration
-- 자동 테스트·Godot·Android·접근성·성능·사람 플레이
+- 테스트 프리셋 버전과 행동 가설
+- 관찰 로그·인터뷰·진행자 개입 기록 계약
+- 자동 테스트·Godot·Android·접근성·성능·사람 플레이 계획
 - Codex 실행 Packet 초안
 
 ## R8 — 최종 적대적 검수·사용자 검수
 
 - 플레이어 약속 ↔ 반복 행동
-- 강화 코어 ↔ 피로도·세계 일정·세트
-- 경제·성장 ↔ 장기 동기
+- 강화 코어 ↔ 피로도·날짜·세계 환류
+- 작품 애착 ↔ 손상·복원·재방문
+- 경제 수치 ↔ 행동 가설과 프리셋
 - 복잡도 ↔ 모바일 온보딩
-- 작품 애착 ↔ 파괴·실패·복구·판매
-- 세계 환류 ↔ 직접 전투·범위 팽창
-- GitHub 정본 ↔ Sheet ↔ 실제 구현
+- GitHub 정본 ↔ Google Sheet ↔ 실제 구현
+- 리뷰·스레드·댓글·CI·금지 경로·no-op·드리프트 감사
 
 미해결 MUST_FIX, 미동기화 Decision, 미확정 중요 선택이 있으면 완료하지 않는다.
 
@@ -191,8 +246,39 @@ NEXT_ACTIVITY: CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE
 
 현재 `BLOCKED`.
 
-승인 Decision, exact baseline, 범위·제외, 보호 동작, TDD, 저장·migration, Android·접근성·성능, 테스트, 동기화 위치와 rollback이 필요하다.
+필요 조건:
+
+- 전체 기획 승인
+- 최종 사용자 검수 승인
+- exact baseline 프리셋 버전
+- 범위·제외·보호 동작
+- TDD·저장·migration·rollback
+- Android·접근성·성능·사람 플레이 계획
+- GitHub·Sheet 동기화 위치
+
+## 후속 콘텐츠 Hold
+
+### 명예의 전당
+
+상태: `FUTURE_CONTENT_HOLD`.
+
+- 경쟁·랭킹·점수·시즌 보상 없음
+- 플레이어·외부 작품 비경쟁 아카이브
+- 테마 전시관·검색·필터
+- 기획된 테마와 공개 규칙 기반 자동 포함
+
+현재 코어 슬라이스·R2~R7 구현 범위에 포함하지 않는다.
 
 ## Production Greenlight
 
-승인 전체 기획, 제품 구현, 회귀 테스트, 저장·복구, Android, 접근성, 성능, 외부 플레이, GitHub·Sheet·실제 구현 일치 전에는 Production·Demo Ready를 주장하지 않는다.
+다음 전에는 Production·Demo Ready를 주장하지 않는다.
+
+- 전체 기획·최종 사용자 검수
+- 제품 구현·회귀 테스트
+- 한 작품 `+50` 생애 왕복 행동 증거
+- 저장·복구·마이그레이션
+- Android 실기기
+- 접근성·성능
+- 외부 플레이
+- GitHub·Sheet·실제 구현 일치
+- 최종 적대적 감사 P0/P1 0
