@@ -16,8 +16,11 @@ WORK_MODE: TOTAL_PLANNING
 CURRENT_STAGE: R1_PROJECT_CORE_AND_PLAYER_PROMISE
 R1_STATUS: IN_PROGRESS / GRILL_BATCH_01_MERGED / NEW_COUNTER_0_OF_10
 CORE_STATUS: CORE_CONFIRMED / R1_BATCH_01_MERGED
-MAIN_BATCH_01_SHA: bd68c2dbf20592e84c1bebfdc83c4c925d010dbf
-LAST_MERGED_PR: 84
+PLANNING_BATCH_PR: 84
+PLANNING_BATCH_MERGE_SHA: bd68c2dbf20592e84c1bebfdc83c4c925d010dbf
+POSTMERGE_SYNC_PR: 85
+POSTMERGE_SYNC_SHA: 338d256c7ffbf976473d04712ff9426f1e450d2c
+EXACT_CURRENT_MAIN_SHA_AUTHORITY: GOOGLE_SHEET_AND_ISSUE_79
 PRODUCT_IMPLEMENTATION: BLOCKED
 NEXT_ACTIVITY: CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE
 ```
@@ -63,6 +66,7 @@ R1 전체 완료는 아니다. 타깃 플레이어·세일즈포인트·성공/�
 ## Grill Me 병합 운영
 
 - 배치 01의 승인 질문 5건은 PR #84로 squash 병합 완료했다.
+- postmerge 진입점 동기화는 PR #85로 병합 완료했다.
 - 현재 신규 승인 카운터는 `0/10`이다.
 - 이후 새 승인 10건마다 GitHub·Sheet·PR·리뷰·CI·충돌·금지 경로를 다시 감사한다.
 - P0/P1 문제가 있으면 병합하지 않는다.
@@ -82,6 +86,7 @@ project.godot
 
 - Issue #79: 총기획 Umbrella
 - PR #84: `MERGED / R0_RECOVERY_AND_R1_BATCH_01_CANON`
+- PR #85: `MERGED / POSTMERGE_STATE_SYNC`
 - PR #81: `REFERENCE_ONLY / SUPERSEDED_AS_MERGE_UNIT`
 - Issue #60과 PR #35: 역사 자료
 
@@ -92,10 +97,10 @@ project.godot
 - `CORE_CONFIRMED`: R1 코어 승인 배치가 기록됐다는 뜻이며 R1 전체 완료가 아니다.
 - `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`: 과거 장비 생애 PoC HEAD에만 적용된 역사 상태. 최신 R1 runtime은 `NOT_RUN`이다.
 - `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`: 과거 CI·PR 운영 기능의 증거 토큰.
-- `#35`: 구형 PR 진입점의 역사 참조이며 최근 병합 PR은 #84다.
+- `#35`: 구형 PR 진입점의 역사 참조다.
 
 ## 다음 작업
 
-1. postmerge sync PR을 검증·병합해 현재 상태를 main에 고정한다.
-2. 신규 Grill Me 카운터 `0/10`에서 R1의 남은 기획을 계속한다.
+1. 신규 Grill Me 카운터 `0/10`에서 R1의 남은 프로젝트 코어·플레이어 약속을 계속한다.
+2. 새 중요 충돌이 승인되면 카운터를 증가시키고 같은 Decision ID로 GitHub·Sheet를 동기화한다.
 3. 제품 구현은 계속 차단한다.
