@@ -7,9 +7,11 @@
     "BS-OPS-20260802-02"
   ],
   "current_stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
-  "stage_status": "IN_PROGRESS_GRILL_BATCH_01_PREMERGE_AUDIT",
+  "stage_status": "IN_PROGRESS_GRILL_BATCH_01_MERGED_NEW_COUNTER_0_OF_10",
   "product_implementation": "BLOCKED",
-  "authority_policy": "This overlay is the current R1 routing index. DESIGN_DOCUMENT_REGISTRY.json remains the broad R0 publication index; where its stage metadata differs, CURRENT_CONFIRMED_DECISIONS.md and this overlay take precedence.",
+  "authority_policy": "This overlay is the current R1 routing index. DESIGN_DOCUMENT_REGISTRY.json remains the broad R0 publication index; where stage metadata differs, CURRENT_CONFIRMED_DECISIONS.md and this overlay take precedence.",
+  "last_merged_pr": 84,
+  "batch_01_merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
   "documents": [
     {
       "id": "current-confirmed-decisions",
@@ -28,7 +30,7 @@
         "BS-SET-20260802-02",
         "BS-SET-20260802-03"
       ],
-      "status": "CURRENT"
+      "status": "CURRENT_MERGED"
     },
     {
       "id": "event-chronicle-set-canon",
@@ -38,7 +40,7 @@
         "BS-SET-20260802-02",
         "BS-SET-20260802-03"
       ],
-      "status": "CURRENT"
+      "status": "CURRENT_MERGED"
     },
     {
       "id": "grillme-batch-01-and-merge-policy",
@@ -48,7 +50,7 @@
         "BS-SET-20260802-04",
         "BS-OPS-20260802-02"
       ],
-      "status": "CURRENT"
+      "status": "CURRENT_MERGED"
     },
     {
       "id": "active-context",
@@ -80,18 +82,22 @@
     "BS-SET-20260802-04"
   ],
   "grill_me_batch": {
-    "batch_id": "BS-GRILL-BATCH-20260802-01",
-    "approved_questions": 5,
-    "merge_instruction": "MERGE_NOW_AFTER_PREMERGE_AUDIT",
-    "post_merge_counter": "0/10",
+    "completed_batch_id": "BS-GRILL-BATCH-20260802-01",
+    "completed_approved_questions": 5,
+    "completed_merge_pr": 84,
+    "completed_merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
+    "current_new_approval_counter": "0/10",
     "future_batch_size": 10,
-    "merge_method": "SQUASH"
+    "merge_method": "SQUASH",
+    "premerge_adversarial_audit_required": true
   },
   "validation": {
-    "github_sheet_readback": "PENDING_FINAL_PREMERGE_RECHECK",
-    "pr_review_and_ci": "PENDING_FINAL_PREMERGE_RECHECK",
+    "premerge_github_sheet_readback": "PASS",
+    "premerge_pr_review_and_ci": "PASS",
+    "postmerge_github_sheet_readback": "PENDING_SYNC_PR_MERGE",
     "product_paths_changed": 0,
-    "runtime": "NOT_RUN",
+    "existing_reference_godot_contracts": "PASS_AT_PR84_HEAD",
+    "new_r1_product_runtime": "NOT_RUN",
     "android": "NOT_RUN",
     "accessibility": "NOT_RUN",
     "performance": "NOT_RUN",
