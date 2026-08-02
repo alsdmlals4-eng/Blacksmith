@@ -2,18 +2,18 @@
   "artifact_role": "PROJECT_OPERATING_HEALTH",
   "schema_version": 1,
   "current_operating_decision": "BS-OPS-20260802-01",
-  "current_stage": "CANONICAL_RECOVERY_IN_PROGRESS",
-  "integrity_verdict": "INCOMPLETE_NOT_RUN_GATES",
-  "operating_maturity": "OM-L1_RECOVERY_IN_PROGRESS",
+  "current_stage": "R0_RECOVERY_PASS_R1_NOT_STARTED",
+  "integrity_verdict": "OPERATING_RECOVERY_PASS_PRODUCT_GATES_INCOMPLETE",
+  "operating_maturity": "OM-L2_CANON_RECOVERED",
   "product_evidence_maturity": "PE-0",
   "critical_gates": {
-    "canonical_recovery": "IN_PROGRESS",
-    "decision_authority": "IN_PROGRESS",
-    "decision_sync": "IN_PROGRESS",
-    "planning_coverage": "NOT_STARTED",
+    "canonical_recovery": "PASS",
+    "decision_authority": "PASS",
+    "decision_sync": "PASS",
+    "planning_coverage": "R1_NOT_STARTED",
     "planning_and_review_complete": "BLOCKED",
     "codex_implementation": "BLOCKED",
-    "static": "NOT_RUN",
+    "static": "BLOCKED_UNVERIFIED",
     "runtime": "NOT_RUN",
     "device": "NOT_RUN",
     "accessibility": "NOT_RUN",
@@ -45,14 +45,49 @@
         "commit": "4856a50c666155fafb1475f60031ca45b749f4a1",
         "scope": "current main, entrypoints, adapter, health, Issue/PR authority, target Sheet operating ranges",
         "result": "PASS_FOR_RECORDED_FACTS_ONLY"
+      },
+      {
+        "evidence_id": "BS-OPS-20260802-01-FINAL",
+        "type": "CANONICAL_RECOVERY_REPORT",
+        "path": "docs/operations/BS-OPS-20260802-01_FINAL_REPORT.md",
+        "commit": "568fdb63e2837a112031a9b087b8647fb8814674",
+        "scope": "cross-source readback, authority reconciliation, adversarial review, protected-path check, cold-start answers",
+        "result": "PASS_FOR_DRAFT_PR"
       }
     ],
     "sheet": [
       {
-        "evidence_id": "BS-OPS-20260802-01-SHEET-READ",
+        "evidence_id": "BS-OPS-20260802-01-SHEET-READ-WRITE",
         "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
-        "scope": "00, 01, 02, 04, 05, 90, 99 bounded operating ranges",
-        "result": "READ_COMPLETE / WRITE_AND_READBACK_PENDING"
+        "scope": "00, 01, 02, 04, 05, 90, 99 bounded recovery ranges",
+        "result": "PASS",
+        "verified_fields": [
+          "decision_id",
+          "decision_meaning",
+          "approval_proposal_history_class",
+          "pr_number",
+          "github_locations",
+          "product_implementation_block",
+          "not_run_product_gates"
+        ]
+      }
+    ],
+    "authority": [
+      {
+        "evidence_id": "BS-OPS-20260802-01-AUTHORITY",
+        "scope": "Issue 79, Issue 60, PR 81, PR 84",
+        "result": "PASS",
+        "current": "Issue 79 and PR 84",
+        "reference": "PR 81",
+        "history_candidate": "Issue 60"
+      }
+    ],
+    "protected_paths": [
+      {
+        "evidence_id": "BS-OPS-20260802-01-DIFF",
+        "base_commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
+        "result": "PASS",
+        "changed_product_paths": 0
       }
     ],
     "product": [],
@@ -66,14 +101,13 @@
     }
   },
   "known_gaps": [
-    "Google Sheet same-ID write and readback pending",
-    "Issue and PR authority comments pending",
-    "local repository validators not executed in connector-only session",
+    "local repository validators blocked because gh is unavailable and github.com DNS cannot be resolved from the container",
     "Godot runtime against latest planning not executed",
     "Android device validation not executed",
     "accessibility human review not executed",
     "performance profiling not executed",
-    "current external human playtest not executed"
+    "current external human playtest not executed",
+    "R1 through R8 planning coverage not yet completed"
   ],
-  "interpretation": "Operating documents have approved recovery evidence, but the operating system is not complete and no product validation gate has run. No aggregate PASS is permitted."
+  "interpretation": "The planning and operating authority has been recovered and synchronized at Draft-PR level. Product evidence maturity remains PE-0, and no product, demo, build, or release PASS is permitted."
 }
