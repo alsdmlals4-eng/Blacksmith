@@ -143,6 +143,15 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 
 판정: `DIRECTION_APPROVED / IMPLEMENTATION_DEFERRED`.
 
+## Historical Forging Baseline Gate
+
+- 역사 구현 기준선: `POC v0.6.4 · main · 2026.07.23.1`
+- 자동 검증 기록: `제작 모델 7건`, `통합 6건`
+- 위 수치와 테스트 개수는 현재 제품 재미 Gate가 아니라 `REFERENCE_IMPLEMENTATION / HISTORICAL_POC` 증거다.
+- 정확한 피버·품질 수치는 `LEGACY_IMPLEMENTED_VALUE`이며 새 버티컬 슬라이스에서 재사용하면 별도 `BASELINE_TEST_PRESET` 버전이 필요하다.
+
+판정: `HISTORICAL_AUTOMATED_EVIDENCE_PRESERVED / LATEST_HUMAN_VALIDATION_NOT_RUN`.
+
 ## Authority Repair Gate
 
 - [x] 핵심 시스템·PR 적대적 검토 보고서
@@ -152,8 +161,8 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 - [x] MVP-003 역사 PoC 재분류
 - [x] 루트 Decision·R1 Registry 갱신
 - [x] START_HERE·ACTIVE_CONTEXT 갱신
-- [ ] DEVELOPMENT_GATES readback
-- [ ] Google Sheet 구형 표현 정렬
+- [x] DEVELOPMENT_GATES readback
+- [x] Google Sheet 구형 표현 정렬
 - [ ] PR #94 changed files·리뷰·스레드·댓글·CI·금지 경로·no-op·드리프트 감사
 - [ ] expected HEAD squash merge
 - [ ] main SHA·Sheet 최종 동기화
@@ -205,6 +214,6 @@ MVP-003의 `+5/+10` 흐름과 과거 표본·통과 비율은 최신 `+50` 슬�
 
 ```yaml
 AUTHORITY_REPAIR_PR: PR94
-NEXT_ACTIVITY: SHEET_ALIGNMENT_AND_PR94_ADVERSARIAL_AUDIT
+NEXT_ACTIVITY: PR94_ADVERSARIAL_AUDIT_AND_EXPECTED_HEAD_MERGE
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
