@@ -1,0 +1,11 @@
+# Historical PR #81 reference pointer
+
+- Role: `HISTORY_ONLY / NON_AUTHORITATIVE_COMPATIBILITY_POINTER`
+- Source PR: `#81`
+- Historical commit: `12c336f41f6bbbba57c31395db996481086850de`
+- Original planning reference label: `blacksmith-v9-planning-audit`
+- Current authority: `CURRENT_CONFIRMED_DECISIONS.md` and `docs/planning/CURRENT_R1_CANON_REGISTRY.json`
+
+이 파일은 `docs/operations/BS-OPS-20260802-01_BASELINE.md`에 보존된 과거 참조가 로컬 경로 감사에서 깨지지 않도록 제공하는 호환 포인터다.
+
+PR #81 전체를 현행 정본이나 안전한 병합 단위로 승격하지 않는다. 필요한 승인 증거와 기획만 current R1 canon으로 선별 승격한다.
