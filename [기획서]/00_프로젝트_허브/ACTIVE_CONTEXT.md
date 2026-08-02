@@ -69,10 +69,13 @@
 
 ## 과거 PoC 필수 사실 — 분류된 호환 증거
 
-아래 문자열은 Base 운영 감사가 요구하는 과거 구현 계약이다. 현행 R1 설계의 수치 확정이나 최신 구현 완료를 뜻하지 않는다.
+아래 문자열은 Base 운영·제작 품질 감사가 요구하는 과거 구현 계약이다. 현행 R1 설계의 수치 확정이나 최신 구현 완료를 뜻하지 않는다.
 
+- 최신 역사 PoC 배지: `POC v0.6.4 · main · 2026.07.23.1`.
+- 제작 품질 단위 검증 기록: `제작 모델 7건`.
+- 제작 결과·강화 연계 검증 기록: `통합 6건`.
 - `POC v`: 기존 장비 한 점의 생애 PoC 버전 계열을 가리키는 역사 토큰.
-- `자동 단조`: 기존 PoC에 구현·검증된 반복 보조 기능이며, 현행 R1에서는 피로도·날짜·강화 판단을 우회하지 않도록 R3/R5에서 재검토한다.
+- `자동 단조`: 기존 PoC 반복 보조 기능. 현행 R1에서는 피로도·날짜·강화 판단 우회 여부를 R3/R5에서 재검토한다.
 - `+11`: 과거 강화 경계·회귀 검사의 대표 구간 토큰.
 - `+30`: 과거 장기 강화 경계·회귀 검사의 대표 구간 토큰.
 - `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`: 과거 PoC HEAD에만 적용. 최신 R1 runtime은 `NOT_RUN`.
@@ -106,17 +109,18 @@ project.godot
 
 수정 완료:
 
-- Root·Hub의 stale `R1 NOT_STARTED` 상태
+- Root·Hub의 stale R1 상태
 - Current R1 canon overlay 부재
 - PR 본문 최신 Decision 누락
 - core alignment exact-token 누락
 - QA Registry mode와 Skill 본문 불일치
-- 과거 PoC 필수 assertion 분류 누락
+- 과거 PoC 필수 assertion·제작 품질 증거 분류 누락
+- PR #81 역사 경로 포인터 누락
 
 잔여 확인:
 
-- 운영 감사 재실행
-- Godot 다운로드·검증 재실행
+- 새 HEAD 운영·제작 품질 감사
+- Godot headless suite
 - Sheet 최신 HEAD bounded readback
 - 리뷰·mergeability·expected HEAD
 
@@ -124,7 +128,7 @@ project.godot
 
 - local checkout/static validator: `BLOCKED_UNVERIFIED` — container DNS 실패
 - GitHub Actions: 현재 HEAD별로 별도 검증
-- Godot runtime·Android·접근성·성능·사람 플레이: `NOT_RUN` 또는 제품 구현 전 `NOT_APPLICABLE_TO_THIS_PR`
+- 최신 R1 기능 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 
 ## 다음 작업
 
