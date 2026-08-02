@@ -1,9 +1,11 @@
 # Active Context
 
-- 갱신일: `2026-08-02 15:38 KST`
+- 갱신일: `2026-08-02 15:53 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 현재 운영 Decisions: `BS-OPS-20260802-01`, `BS-OPS-20260802-02`
-- 최근 main 병합: PR `#84`, SHA `bd68c2dbf20592e84c1bebfdc83c4c925d010dbf`
+- 기획 배치 병합: PR `#84`, SHA `bd68c2dbf20592e84c1bebfdc83c4c925d010dbf`
+- postmerge 동기화: PR `#85`, SHA `338d256c7ffbf976473d04712ff9426f1e450d2c`
+- 정확한 현재 main SHA: 연결된 Google Sheet와 Issue `#79`
 - 현재 단계: `R1_PROJECT_CORE_AND_PLAYER_PROMISE`
 - 현재 상태: `CORE_CONFIRMED / CORE_RECORDED / GRILL_BATCH_01_MERGED / NEW_COUNTER_0_OF_10 / R1_IN_PROGRESS`
 - 제품 구현: `BLOCKED`
@@ -15,9 +17,10 @@
 | R0 정본 복구 | `MERGED_TO_MAIN` |
 | R1 승인 배치 01 | `5 APPROVED / MERGED` |
 | 신규 Grill Me 카운터 | `0/10` |
-| Root·R1 Registry·Hub | `POSTMERGE_SYNC` |
+| Root·R1 Registry·Hub | `SYNCED / POSTMERGE_READBACK_PASS` |
 | PR #84 사전 감사 | `PASS / P0 0 / P1 0` |
-| 기존 Reference Godot contracts | `PASS_AT_PR84_HEAD` |
+| PR #85 postmerge sync | `PASS / MERGED` |
+| 기존 Reference Godot contracts | `PASS_AT_PR84_AND_PR85_HEADS` |
 | 최신 R1 제품 기능 Runtime | `NOT_RUN` |
 | Android·접근성·성능·사람 플레이 | `NOT_RUN` |
 
@@ -77,17 +80,18 @@
 - `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`
 - `PR validation #468`
 
-PR #84의 실제 최종 검증은 Base v9 adoption run #247과 PR validation run #838에서 성공했다.
+PR #84와 PR #85의 실제 CI는 각 정확한 HEAD에서 성공했다.
 
 ## 병합 운영
 
 `BS-OPS-20260802-02`:
 
 1. 배치 01은 PR #84로 squash 병합 완료.
-2. 현재 신규 승인 카운터 `0/10`.
-3. 이후 새 승인 10건마다 GitHub·Sheet·PR·리뷰·CI·충돌·금지 경로를 적대적으로 감사.
-4. P0/P1 발견 시 병합 중단.
-5. 통과 시 squash 병합하고 main SHA를 재동기화.
+2. postmerge 동기화는 PR #85로 병합 완료.
+3. 현재 신규 승인 카운터 `0/10`.
+4. 이후 새 승인 10건마다 GitHub·Sheet·PR·리뷰·CI·충돌·금지 경로를 적대적으로 감사.
+5. P0/P1 발견 시 병합 중단.
+6. 통과 시 squash 병합하고 정확한 main SHA를 Sheet와 Issue #79에 기록.
 
 ## 보호 경로
 
@@ -100,10 +104,10 @@ addons/
 project.godot
 ```
 
-PR #84의 보호 제품 경로 변경은 `0`이었다.
+배치 01과 postmerge 동기화에서 보호 제품 경로 변경은 `0`이었다.
 
 ## 다음 작업
 
-1. postmerge sync PR #85를 검증·병합하고 최종 main SHA를 Sheet에 기록한다.
-2. 신규 카운터 `0/10`에서 R1의 남은 프로젝트 코어·플레이어 약속을 계속 기획한다.
+1. 신규 카운터 `0/10`에서 R1의 남은 프로젝트 코어·플레이어 약속을 계속 기획한다.
+2. 새 중요 충돌이 승인되면 Decision ID와 카운터를 GitHub·Sheet에 동기화한다.
 3. 제품 구현은 계속 차단한다.
