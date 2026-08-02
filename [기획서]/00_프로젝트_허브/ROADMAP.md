@@ -8,31 +8,31 @@ CURRENT_OPERATING_DECISIONS:
   - BS-OPS-20260802-02
 CURRENT_WORK_MODE: TOTAL_PLANNING
 CURRENT_STAGE: R1_PROJECT_CORE_AND_PLAYER_PROMISE
-CURRENT_STAGE_STATUS: IN_PROGRESS / GRILL_BATCH_01_PREMERGE_AUDIT
-CURRENT_DRAFT_PR: 84
+CURRENT_STAGE_STATUS: IN_PROGRESS / GRILL_BATCH_01_MERGED / NEW_COUNTER_0_OF_10
+LAST_MERGED_PR: 84
+BATCH_01_MERGE_SHA: bd68c2dbf20592e84c1bebfdc83c4c925d010dbf
 PRODUCT_IMPLEMENTATION: BLOCKED
-NEXT_ACTIVITY: MERGE_BATCH_01_THEN_CONTINUE_R1
+NEXT_ACTIVITY: CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE
 ```
 
 문서 병합은 승인 기획을 main에 보존하는 작업이며 제품 구현 승인과 다르다.
 
 ## R0 — 운영·정본 복구
 
-상태: `PASS_FOR_DRAFT_PR`.
+상태: `PASS / MERGED_TO_MAIN`.
 
 - current main 기준 진입 문서·Decision 원장·Base Adapter 복구
 - PR #81 전체 병합 대신 승인 기획 선별 승격
 - GitHub·Sheet 동일 Decision ID 동기화
 - Issue·PR 권위 관계 정리
 - 보호 제품 경로 변경 0 확인
-
-local validator는 container DNS 제한으로 `BLOCKED_UNVERIFIED`였으며 Godot·Android·접근성·성능·사람 플레이는 최신 기획 기준 `NOT_RUN`이다.
+- PR #84 squash 병합
 
 ## R1 — 프로젝트 코어·플레이어 약속
 
-상태: `IN_PROGRESS / APPROVED_BATCH_01`.
+상태: `IN_PROGRESS / APPROVED_BATCH_01_MERGED`.
 
-승인 배치:
+병합된 배치:
 
 - `BS-CORE-20260802-01`: 피로도·날짜 진행 핵심 불변
 - `BS-CORE-20260802-02`: 강화 메인 + 고객·세계 역사 환류
@@ -61,8 +61,6 @@ local validator는 container DNS 제한으로 `BLOCKED_UNVERIFIED`였으며 Godo
 - +50 대표 경험 위치
 - 즉시 세계 결과와 지연 기록 경계
 
-PR #84 병합 후에도 R1은 계속 진행한다.
-
 ## Grill Me 병합 운영
 
 ```text
@@ -76,7 +74,7 @@ PR #84 병합 후에도 R1은 계속 진행한다.
 → 카운터 0/10
 ```
 
-이번 최초 배치는 사용자 지시에 따라 승인 질문 5건으로 병합한다.
+완료 배치 01은 사용자 지시에 따라 질문 5건으로 병합했다. 현재 신규 카운터는 `0/10`이다.
 
 ## Historical PoC alignment
 
@@ -87,6 +85,7 @@ PR #84 병합 후에도 R1은 계속 진행한다.
 - 과거 상태: `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`
 - 과거 CI 증거: `PR validation #468`
 - CI 운영 계약: `docs/CI_EXECUTION_POLICY.md`
+- PR #84 final validation: run #838 `SUCCESS`
 - 현재 최신 R1 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 
 ## R2 — Core·Session·Meta Loop
