@@ -1,9 +1,9 @@
 # Blacksmith Grill Me 승인 배치 002 — R1 결정 원장
 
 - Batch ID: `BS-GRILL-BATCH-20260802-002`
-- 현재 승인 수: `8 / 10`
+- 현재 승인 수: `10 / 10`
 - Work Mode: `TOTAL_PLANNING / R1_PROJECT_CORE_AND_PLAYER_PROMISE`
-- 상태: `IN_PROGRESS / USER_APPROVED_DECISIONS_SYNCED`
+- 상태: `READY_FOR_ADVERSARIAL_PREMERGE_AUDIT`
 - 제품 구현 권한: `NONE`
 - 제품 코드·Scene·런타임 데이터·에셋 변경: `PROHIBITED`
 - 추적 Issue: `#79`
@@ -482,7 +482,7 @@
 
 ## 배치 운영
 
-- 신규 승인 카운터: `8 / 10`
+- 신규 승인 카운터: `10 / 10`
 - 승인 결정은 GitHub 정본과 Google Sheet에 즉시 같은 Decision ID로 동기화한다.
 - 10번째 승인 후 병합 직전 GitHub·Sheet·PR changed files·reviews·CI·충돌을 적대적으로 재검토한다.
 - 차단 결함이 없을 때만 expected HEAD SHA를 고정해 squash 병합한다.
