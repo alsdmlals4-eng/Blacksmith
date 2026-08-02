@@ -127,6 +127,11 @@
         "route_id": "optimizing-ai-model-and-prompt-costs",
         "skill_id": "optimizing-ai-model-and-prompt-costs",
         "status": "ACTIVE"
+      },
+      {
+        "route_id": "orchestrating-deepseek-worktrees",
+        "skill_id": "orchestrating-deepseek-worktrees",
+        "status": "ACTIVE"
       }
     ],
     "inactive_routes": [],
@@ -208,6 +213,20 @@
       "existing_legacy_migration": "NOT_IN_THIS_RECOVERY",
       "pr81_status": "REFERENCE_ONLY_SUPERSEDED_AS_MERGE_UNIT"
     },
+    "orchestrating-deepseek-worktrees": {
+      "base_contract_source": "skills/orchestrating-deepseek-worktrees/SKILL.md",
+      "work_package_source": "templates/ai/DEEPSEEK_WORK_PACKAGE.md",
+      "worktree_parent": ".worktrees/",
+      "task_branch_prefix": "ai/deepseek-",
+      "draft_root": "drafts/external-ai/",
+      "allowed_write_roots": [
+        "drafts/external-ai/**"
+      ],
+      "protected_paths_source": "skills/PROJECT_BASE_ADAPTER.json#/protected_paths",
+      "result_state": "REVIEW_PENDING",
+      "integration_policy": "LOCAL_REVIEW_REQUIRED_BEFORE_CANON",
+      "base_validator_adoption": "DEFER_UNTIL_NEXT_RELEASED_BASE_PIN"
+    },
     "optimizing-ai-model-and-prompt-costs": {
       "modes": [
         "route-model-and-effort",
@@ -237,6 +256,7 @@
     "python tools/check_archive_governance.py",
     "python -m unittest tests.test_archive_retention_governance -v",
     "python tools/audit_project_operating_system.py",
+    "python tests/test_base_shared_external_ai_adapter.py",
     "manual: GitHub PR and Sheet premerge adversarial audit",
     "manual: Godot project parse/runtime check",
     "manual: Android device and safe-area check when applicable",
