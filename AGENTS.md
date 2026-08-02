@@ -10,9 +10,10 @@ CURRENT_OPERATING_DECISIONS:
   - BS-OPS-20260802-01
   - BS-OPS-20260802-02
 CURRENT_STAGE: R1_PROJECT_CORE_AND_PLAYER_PROMISE
-CURRENT_STAGE_STATUS: IN_PROGRESS / GRILL_BATCH_01_PREMERGE_AUDIT
-CURRENT_BRANCH: agent/blacksmith-planning-canon-recovery
-CURRENT_DRAFT_PR: 84
+CURRENT_STAGE_STATUS: IN_PROGRESS / GRILL_BATCH_01_MERGED / NEW_COUNTER_0_OF_10
+CURRENT_BRANCH: main
+LAST_MERGED_PR: 84
+BATCH_01_MERGE_SHA: bd68c2dbf20592e84c1bebfdc83c4c925d010dbf
 PRODUCT_IMPLEMENTATION: BLOCKED
 PRIMARY_PLATFORM: ANDROID_PORTRAIT_MOBILE
 PC: FUTURE_PLATFORM_CONSIDERATION
@@ -51,7 +52,7 @@ AGENTS.md
 → 필요한 실제 구현·데이터·테스트
 ```
 
-PR #81은 `REFERENCE_ONLY / SUPERSEDED_AS_MERGE_UNIT`다. 전체 병합하거나 PR #81의 `CURRENT` 표기를 자동 승인으로 사용하지 않는다.
+PR #81은 `REFERENCE_ONLY / SUPERSEDED_AS_MERGE_UNIT`다. PR #84는 `MERGED / BATCH_01_CANON`이다.
 
 ## 4. Work Mode와 Skill
 
@@ -94,8 +95,8 @@ Grill Me는 다음에만 한 질문씩 사용한다.
 
 병합 규칙 `BS-OPS-20260802-02`:
 
-1. 이번 Grill Me 1~5는 PR #84에서 즉시 병합한다.
-2. 병합 후 신규 승인 카운터를 `0/10`으로 초기화한다.
+1. Grill Me 배치 01의 승인 질문 5건은 PR #84로 squash 병합 완료했다.
+2. 현재 신규 승인 카운터는 `0/10`이다.
 3. 이후 새 승인 10건마다 한 배치로 묶는다.
 4. 10번째 승인 직후 GitHub·Sheet·PR changed files·리뷰·CI·충돌·금지 경로를 적대적으로 재검증한다.
 5. P0/P1 문제 발생 시 병합을 중단한다.
@@ -187,18 +188,11 @@ Decision ID 생성 또는 재사용
 
 ## 11. 검증 상태
 
-검증은 독립적으로 기록한다.
-
-- 문서·계약
-- 정적·포맷
-- 자동 테스트
-- Godot import·런타임
-- Android 실기기
-- 접근성 사람 검토
-- 성능
-- 외부 플레이
-- GitHub·Sheet readback
-
-실행하지 못한 항목은 `NOT_RUN` 또는 `BLOCKED_UNVERIFIED`다. 하나의 PASS를 다른 계층으로 확대하지 않는다.
+- PR #84 premerge adversarial audit: `PASS`
+- Base v9 adoption: `PASS`
+- Python contracts: `PASS`
+- Godot 4.7.1 headless import·parse·smoke·model·integration: `PASS_FOR_EXISTING_REFERENCE_IMPLEMENTATION`
+- 최신 R1 제품 기능 구현: `BLOCKED`
+- Android 실기기·접근성 사람 검토·성능·외부 플레이: `NOT_RUN`
 
 현재 전체 기획 완료와 Codex 준비는 `BLOCKED`다.
