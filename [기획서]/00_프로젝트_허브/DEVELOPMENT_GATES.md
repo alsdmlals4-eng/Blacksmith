@@ -16,16 +16,17 @@ CURRENT_OPERATING_DECISIONS:
   - BS-OPS-20260802-02
 CURRENT_STAGE: R1_PROJECT_CORE_AND_PLAYER_PROMISE
 CANONICAL_RECOVERY_GATE: PASS
-DECISION_AUTHORITY_GATE: PREMERGE_RECHECK
-DECISION_SYNC_GATE: PREMERGE_RECHECK
+DECISION_AUTHORITY_GATE: PASS
+PREMERGE_ADVERSARIAL_AUDIT_GATE: PASS
+PR_84_MERGE_GATE: PASS
+DECISION_SYNC_GATE: POSTMERGE_SYNC_IN_PROGRESS
 PLANNING_COVERAGE_GATE: R1_IN_PROGRESS
-GRILL_ME_DECISION_GATE: BATCH_01_APPROVED
-PREMERGE_ADVERSARIAL_AUDIT_GATE: IN_PROGRESS
+GRILL_ME_DECISION_GATE: NEW_COUNTER_0_OF_10
 USER_PLANNING_COMPLETE_GATE: BLOCKED
 CODEX_IMPLEMENTATION_GATE: BLOCKED
 FATIGUE_DATE_RUNTIME_GATE: NOT_IMPLEMENTED
 EVENT_CHRONICLE_SET_RUNTIME_GATE: NOT_IMPLEMENTED
-LATEST_RUNTIME_VALIDATION_GATE: NOT_RUN
+LATEST_R1_RUNTIME_VALIDATION_GATE: NOT_RUN
 ANDROID_DEVICE_GATE: NOT_RUN
 ACCESSIBILITY_GATE: NOT_RUN
 PERFORMANCE_GATE: NOT_RUN
@@ -34,22 +35,18 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 
 ## 3. R0 Canonical Recovery Gate
 
-상태: `PASS_FOR_DRAFT_PR`.
+상태: `PASS / MERGED_TO_MAIN`.
 
 - [x] Root Decision 원장과 Hub 복구
 - [x] Base v9.4 Adapter·Health 복구
 - [x] Google Sheet 동기화와 bounded readback
 - [x] PR #81·Issue 권위 정리
 - [x] 보호 제품 경로 변경 0
+- [x] PR #84 squash 병합
 
-제한:
-
-- local validator: `BLOCKED_UNVERIFIED` — container GitHub DNS 실패
-- Godot runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
+배치 01 main 병합 SHA: `bd68c2dbf20592e84c1bebfdc83c4c925d010dbf`.
 
 ## 4. R1 Approval Batch 01 Gate
-
-승인:
 
 - [x] `BS-CORE-20260802-01`
 - [x] `BS-CORE-20260802-02`
@@ -58,6 +55,12 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 - [x] `BS-SET-20260802-03`
 - [x] `BS-SET-20260802-04`
 - [x] `BS-OPS-20260802-02`
+- [x] GitHub·Sheet premerge readback
+- [x] Base v9 adoption check
+- [x] Python contracts
+- [x] Godot 4.7.1 headless contracts
+- [x] 리뷰·스레드·충돌·금지 경로 감사
+- [x] PR #84 squash merge
 
 정본:
 
@@ -66,53 +69,35 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 - `docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md`
 - `docs/planning/CURRENT_R1_CANON_REGISTRY.json`
 
-현재: `PREMERGE_AUDIT_IN_PROGRESS`. R1 전체 Gate는 아직 닫히지 않았다.
+R1 전체 Gate는 아직 닫히지 않았다.
 
-## 5. Decision Authority and Sync Gates
+## 5. Premerge Adversarial Audit Result
 
-통과 조건:
+- [x] PR open·mergeable, expected HEAD 불변
+- [x] main behind 0, merge conflict 없음
+- [x] changed files 전체 허용 범위
+- [x] `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, `project.godot` 변경 0
+- [x] Root·Hub·R1 canon Decision과 단계 일치
+- [x] Sheet Decision·의미·경로·Commit·상태 readback
+- [x] PR 본문 최신 Decision·Sheet 위치 반영
+- [x] 미해결 리뷰·REQUEST_CHANGES 0
+- [x] 필수 check 실패 0
+- [x] `NOT_RUN`을 PASS로 과장하지 않음
+- [x] P0/P1 누락·충돌 0
 
-```text
-Root에 최신 Decision ID
-+ 각 질문의 단일 상세 정본
-+ Draft·승인·구현·검증 분리
-+ Sheet 동일 ID·의미·경로·Commit
-+ GitHub와 Sheet fresh readback
-```
+감사 판정: `PASS`.
 
-현재 대상:
+## 6. Grill Me Batch Gate
 
-- `BS-OPS-20260802-01~02`
-- `BS-CORE-20260802-01~02`
-- `BS-SET-20260802-01~04`
-
-최종 판정은 병합 직전 readback 후 기록한다.
-
-## 6. Premerge Adversarial Audit Gate
-
-- [ ] PR open·mergeable, expected HEAD 불변
-- [ ] main behind 0, merge conflict 없음
-- [ ] changed files 전체 허용 범위
-- [ ] `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, `project.godot` 변경 0
-- [ ] Root·Hub·R1 canon Decision과 단계 일치
-- [ ] Sheet Decision·의미·경로·Commit·상태 readback
-- [ ] PR 본문 최신 Decision·Sheet 위치 반영
-- [ ] 미해결 리뷰·REQUEST_CHANGES 0
-- [ ] 필수 check 실패 0
-- [ ] `NOT_RUN`을 PASS로 과장하지 않음
-- [ ] P0/P1 누락·충돌 0
-
-하나라도 실패하면 병합하지 않는다.
-
-## 7. Grill Me Batch Gate
-
-- 이번 배치: 승인 질문 `5/5`, 즉시 병합 지시
-- 병합 후 신규 카운터: `0/10`
-- 다음 배치: 신규 승인 `10/10`
+- 완료 배치: `BS-GRILL-BATCH-20260802-01`
+- 완료 질문 수: `5`
+- 병합 PR: `#84`
 - 병합 방식: `SQUASH`
-- 병합 전 감사와 병합 후 main SHA·Sheet 재동기화: 필수
+- 신규 승인 카운터: `0/10`
+- 다음 배치 조건: 신규 승인 `10/10`
+- 다음 병합 전 감사: 필수
 
-## 8. Planning Coverage Gate
+## 7. Planning Coverage Gate
 
 1. R1 프로젝트 코어·플레이어 약속 — `IN_PROGRESS`
 2. R2 Core·Session·Meta Loop
@@ -123,9 +108,9 @@ Root에 최신 Decision ID
 7. R7 버티컬 슬라이스·data·migration·검증
 8. R8 최종 적대적 검토·사용자 검수
 
-R1 batch 01 병합은 R1 전체 완료가 아니다.
+배치 01 병합은 R1 전체 완료가 아니다.
 
-## 9. Historical PoC and CI compatibility gates
+## 8. Historical PoC and CI compatibility gates
 
 아래 제목과 토큰은 과거 장비 생애 PoC 및 정적 검사 계약을 보존한다. 최신 R1 제품 상태로 확대하지 않는다.
 
@@ -145,11 +130,11 @@ R1 batch 01 병합은 R1 전체 완료가 아니다.
 - 역사 결과 토큰: `PASS / IMPLEMENTATION_VALIDATED`.
 - 제작 품질 단위 검증의 역사 기록: `제작 모델 7건`.
 - 제작 결과·강화 연계 검증의 역사 기록: `통합 6건`.
-- 위 테스트 개수는 과거 PoC 검증 계약이며 새 R1 기능의 구현·사람 검증 완료를 뜻하지 않는다.
 - 과거 CI 증거: `PR validation #468`.
+- PR #84 최종 CI: Base v9 adoption run #247 `SUCCESS`, PR validation run #838 `SUCCESS`.
 - 최신 R1 runtime은 `NOT_RUN`이다.
 
-## 10. Product Implementation Gate
+## 9. Product Implementation Gate
 
 다음이 모두 닫혀야 Codex 구현 계약을 만든다.
 
@@ -163,30 +148,26 @@ R1 batch 01 병합은 R1 전체 완료가 아니다.
 
 현재: `BLOCKED`.
 
-## 11. Product and Platform Validation
+## 10. Product and Platform Validation
 
 | Gate | 상태 |
 |---|---|
-| current-head static/contract | `GITHUB_ACTIONS_RECHECK_REQUIRED` |
-| Godot import/parse | `NOT_RUN_FOR_LATEST_PLANNING` |
-| fatigue·date | `NOT_IMPLEMENTED` |
-| EventChronicle·ChronicleSet | `NOT_IMPLEMENTED` |
+| PR #84 document/static contracts | `PASS` |
+| existing reference Godot import·parse·smoke·model·integration | `PASS_AT_PR84_HEAD` |
+| fatigue·date R1 runtime | `NOT_IMPLEMENTED` |
+| EventChronicle·ChronicleSet runtime | `NOT_IMPLEMENTED` |
 | Android device | `NOT_RUN` |
 | Accessibility | `NOT_RUN` |
 | Performance | `NOT_RUN` |
 | Human playtest | `NOT_RUN` |
 | Build/package | `NOT_RUN` |
 
-## 12. Completion Rules
-
-이번 병합 완료 조건:
+## 11. Current Next Gate
 
 ```yaml
-PREMERGE_ADVERSARIAL_AUDIT_GATE: PASS
-PR_84_MERGED: true
-MERGE_METHOD: SQUASH
-MAIN_SHA_RECORDED: true
-SHEET_POSTMERGE_READBACK: PASS
+POSTMERGE_SYNC_PR: IN_PROGRESS
+SHEET_POSTMERGE_READBACK: PENDING
 GRILL_ME_NEW_COUNTER: 0/10
+R1_NEXT_DESIGN_ACTIVITY: CONTINUE_AFTER_SYNC
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```

@@ -30,9 +30,9 @@ AGENTS.md
 
 | 질문 | 현행 책임 원본 | 상태 |
 |---|---|---|
-| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT` |
-| 현재 R1 정본 | `docs/planning/CURRENT_R1_CANON_REGISTRY.json` | `CURRENT` |
-| 현재 단계·Branch·PR | `ACTIVE_CONTEXT.md` | `CURRENT` |
+| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / BATCH_01_MERGED` |
+| 현재 R1 정본 | `docs/planning/CURRENT_R1_CANON_REGISTRY.json` | `CURRENT / COUNTER_0_OF_10` |
+| 현재 단계·최근 병합·다음 작업 | `ACTIVE_CONTEXT.md` | `CURRENT` |
 | 처음 읽을 문서 | `START_HERE.md` | `CURRENT` |
 | 작업·보호·병합 규칙 | `AGENTS.md` | `CURRENT` |
 | Gate 상태 | `DEVELOPMENT_GATES.md` | `CURRENT` |
@@ -43,12 +43,12 @@ AGENTS.md
 
 ## 4. 현재 R1 책임 원본
 
-| 질문 | 책임 원본 | Decision IDs |
-|---|---|---|
-| R1 승인 코어·세트 원장 | `docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md` | `BS-CORE-20260802-01~02`, `BS-SET-20260802-01~03` |
-| 사건 연대기 세트 생성·보상 | `docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md` | `BS-SET-20260802-02~03` |
-| 실패 세트·10건 병합 운영 | `docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md` | `BS-SET-20260802-04`, `BS-OPS-20260802-02` |
-| R1 문서 라우팅 | `docs/planning/CURRENT_R1_CANON_REGISTRY.json` | 현재 R1 전체 |
+| 질문 | 책임 원본 | Decision IDs | 상태 |
+|---|---|---|---|
+| R1 승인 코어·세트 원장 | `docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md` | `BS-CORE-20260802-01~02`, `BS-SET-20260802-01~03` | `MERGED` |
+| 사건 연대기 세트 생성·보상 | `docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md` | `BS-SET-20260802-02~03` | `MERGED` |
+| 실패 세트·10건 병합 운영 | `docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md` | `BS-SET-20260802-04`, `BS-OPS-20260802-02` | `MERGED / ACTIVE_POLICY` |
+| R1 문서 라우팅 | `docs/planning/CURRENT_R1_CANON_REGISTRY.json` | 현재 R1 전체 | `CURRENT` |
 
 ## 5. 현재 승인된 R1 방향
 
@@ -59,7 +59,7 @@ AGENTS.md
 - `BS-SET-20260802-03`: 범용 보정 + 상황 태그 + 역사 기록.
 - `BS-SET-20260802-04`: 실패·참패도 실제 기여 시 세트 성립.
 
-R1 전체 완료는 아니다.
+R1 전체 완료는 아니다. 신규 Grill Me 승인 카운터는 `0/10`이다.
 
 ## 6. 승인 증거가 확인된 기존 제품 기획
 
@@ -95,41 +95,40 @@ R1 전체 완료는 아니다.
 | Surface | 역할 | 상태 |
 |---|---|---|
 | Issue #79 | 총기획 Umbrella | `ACTIVE` |
-| PR #84 | R0 복구 + R1 승인 배치 01 | `ACTIVE_DRAFT / PREMERGE_AUDIT` |
+| PR #84 | R0 복구 + R1 승인 배치 01 | `MERGED / SQUASH` |
+| postmerge sync PR | main 진입 상태와 Sheet 최종화 | `IN_PROGRESS` |
 | PR #81 | 기획·승인 Evidence | `REFERENCE_ONLY / SUPERSEDED_AS_MERGE_UNIT` |
 | Issue #60 | 과거 Base v6 재기획 | `HISTORY_ONLY_CANDIDATE` |
-| Google Sheet | GDD·Decision·Audit·History | `PREMERGE_RECHECK` |
+| Google Sheet | GDD·Decision·Audit·History | `POSTMERGE_FINALIZATION` |
 
 ## 9. Grill Me 병합 책임
 
 `BS-OPS-20260802-02`:
 
-- 이번 질문 5건은 PR #84 감사 후 squash 병합.
-- 병합 후 신규 카운터 `0/10`.
+- 배치 01 질문 5건은 PR #84로 squash 병합 완료.
+- 현재 신규 카운터 `0/10`.
 - 이후 새 승인 10건마다 같은 감사·병합 절차 반복.
 - P0/P1 발견 시 병합 중단.
 - 병합 후 main SHA를 Sheet와 다음 진입점에 기록.
 
 ## 10. Historical CI compatibility evidence
 
-아래 토큰은 과거 PoC·Actions 계약을 보존하는 분류된 증거이며 최신 R1 구현 상태가 아니다.
-
 - `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`: 과거 장비 생애 PoC에 한정. 최신 R1 runtime은 `NOT_RUN`.
-- `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`: 과거 CI 운영 기능 증거. 현재 check는 HEAD별로 별도 판정.
+- `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`: 과거 CI 운영 기능 증거.
+- PR #84 Base adoption run #247 and PR validation run #838: `SUCCESS`.
 
 ## 11. 검증 경계
 
-- GitHub PR metadata·diff·changed filenames·mergeability: 현재 확인 가능.
-- Google Sheet bounded readback: 현재 확인 가능.
-- local checkout/static validators: `BLOCKED_UNVERIFIED` — container DNS 실패.
-- Godot runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`.
+- PR #84 문서·정적·Godot reference contracts: `PASS`.
+- 최신 R1 제품 기능 runtime: `NOT_RUN`.
+- Android·접근성·성능·사람 플레이: `NOT_RUN`.
 
 ## 12. 콜드 스타트 질문
 
 1. 현재 단계와 운영 Decision은 무엇인가?
-2. 승인된 R1 결정과 정본은 무엇인가?
+2. 승인·병합된 R1 결정과 정본은 무엇인가?
 3. 실패 사건도 세트가 되는가?
-4. Grill Me는 언제 병합하는가?
+4. 현재 Grill Me 카운터와 다음 병합 조건은 무엇인가?
 5. 무엇을 수정하면 안 되는가?
 6. PR #81과 과거 PoC 문서는 어떤 역할인가?
 7. 어떤 검증이 `NOT_RUN`인가?
