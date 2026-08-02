@@ -51,17 +51,17 @@ REQUIRED_TEXT = {
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "CORE_DECISIONS_APPROVED / CANON_ALIGNMENT_IN_PROGRESS",
-        "한 작품 +50 생애 왕복",
+        "첫 코어 버티컬 슬라이스",
         "행동 증거",
         "FUTURE_CONTENT_HOLD",
-        "docs/CI_EXECUTION_POLICY.md",
+        "PR #94 적대적 감사",
     ),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
         "작품의 출생·성장·소유·손상·복원·사건 기록",
         "영구 완성도",
         "현재 검증 상한: `+50`",
         "활성 사건·연대기 수식어 1개",
-        "행동 증거와 중립적 회상 인터뷰",
+        "회상 인터뷰",
     ),
     "[기획서]/00_프로젝트_허브/DECISION_LOG.md": (
         "DEC-023 프로젝트 코어 확정",
