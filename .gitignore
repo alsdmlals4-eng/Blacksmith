@@ -23,6 +23,9 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# Isolated worktrees
+.worktrees/
+
 # Generated publications
 [기획서]/**/*.docx
 [기획서]/**/*.pdf
