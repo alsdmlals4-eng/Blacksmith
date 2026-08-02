@@ -55,6 +55,7 @@
 ## 실제 구현과 책임 원본
 
 - 현재 실행 진입: `res://scenes/test/enhancement_test.tscn`
+- 기존 장비 생애 PoC 범위: `docs/MVP-003_SCOPE.md`
 - 기존 장비 생애 PoC: `REFERENCE_IMPLEMENTATION`
 - 강화 실패·하락·파괴·재료 소비·연속 실패 보정: `data/crafting/enhancement_balance.json`
 - +10 단위 이정표·특수 강화·수식어 성장: `data/crafting/enhancement_milestones.json`
