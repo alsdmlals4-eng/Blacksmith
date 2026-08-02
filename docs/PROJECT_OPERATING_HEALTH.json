@@ -6,21 +6,24 @@
     "BS-OPS-20260802-02"
   ],
   "current_stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
-  "stage_status": "IN_PROGRESS_GRILL_BATCH_01_PREMERGE_AUDIT",
-  "integrity_verdict": "R0_RECOVERY_PASS_R1_BATCH_01_AUTHORITY_RECHECK_IN_PROGRESS_PRODUCT_GATES_INCOMPLETE",
-  "operating_maturity": "OM-L3_CANON_RECOVERED_AND_APPROVAL_BATCHED",
+  "stage_status": "IN_PROGRESS_GRILL_BATCH_01_MERGED_NEW_COUNTER_0_OF_10",
+  "integrity_verdict": "R0_RECOVERY_AND_R1_BATCH_01_MERGED_PRODUCT_GATES_INCOMPLETE",
+  "operating_maturity": "OM-L3_CANON_RECOVERED_APPROVAL_BATCHED_AND_MERGED",
   "product_evidence_maturity": "PE-0",
+  "last_merged_pr": 84,
+  "batch_01_merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
   "critical_gates": {
     "canonical_recovery": "PASS",
-    "decision_authority": "PREMERGE_RECHECK",
-    "decision_sync": "PREMERGE_RECHECK",
+    "decision_authority": "PASS",
+    "premerge_adversarial_audit": "PASS",
+    "pr_84_merge": "PASS",
+    "decision_sync": "POSTMERGE_FINALIZATION",
     "planning_coverage": "R1_IN_PROGRESS",
-    "grill_me_batch_01": "5_APPROVED_MERGE_REQUESTED",
-    "premerge_adversarial_audit": "IN_PROGRESS",
+    "grill_me_new_counter": "0/10",
     "planning_and_review_complete": "BLOCKED",
     "codex_implementation": "BLOCKED",
-    "static": "BLOCKED_UNVERIFIED",
-    "runtime": "NOT_RUN",
+    "existing_reference_static_and_godot_contracts": "PASS_AT_PR84_HEAD",
+    "new_r1_runtime": "NOT_RUN",
     "device": "NOT_RUN",
     "accessibility": "NOT_RUN",
     "performance": "NOT_RUN",
@@ -53,17 +56,13 @@
         "result": "PASS"
       },
       {
-        "evidence_id": "BS-OPS-20260802-01-FINAL",
-        "type": "CANONICAL_RECOVERY_REPORT",
-        "path": "docs/operations/BS-OPS-20260802-01_FINAL_REPORT.md",
-        "result": "PASS_FOR_DRAFT_PR"
-      },
-      {
         "evidence_id": "BS-GRILL-BATCH-20260802-01",
         "type": "USER_APPROVED_R1_DECISION_BATCH",
         "path": "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md",
         "scope": "five approved Grill Me decisions and future ten-decision merge cadence",
-        "result": "PREMERGE_AUDIT_IN_PROGRESS"
+        "result": "MERGED_TO_MAIN",
+        "merge_pr": 84,
+        "merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf"
       }
     ],
     "sheet": [
@@ -77,55 +76,55 @@
         "evidence_id": "BS-GRILL-BATCH-20260802-01-SHEET",
         "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
         "scope": "02 current decisions, 05 GDD summary, 99 history, 00 hub, 04 audit",
-        "result": "PREMERGE_READBACK_REQUIRED"
+        "result": "PREMERGE_READBACK_PASS_POSTMERGE_FINALIZATION_PENDING"
       }
     ],
     "authority": [
       {
-        "evidence_id": "BS-OPS-20260802-01-AUTHORITY",
-        "scope": "Issue 79, Issue 60, PR 81, PR 84",
+        "evidence_id": "BS-GRILL-BATCH-20260802-01-AUTHORITY",
+        "scope": "Root, R1 registry, Hub, PR 84, Issue 79",
+        "result": "PASS"
+      }
+    ],
+    "ci": [
+      {
+        "evidence_id": "PR84-BASE-V9-247",
+        "result": "PASS"
+      },
+      {
+        "evidence_id": "PR84-VALIDATION-838",
         "result": "PASS",
-        "current": "Issue 79 and PR 84",
-        "reference": "PR 81",
-        "history_candidate": "Issue 60"
+        "scope": "Python contracts and Godot 4.7.1 headless contracts"
       }
     ],
     "protected_paths": [
       {
         "evidence_id": "BS-GRILL-BATCH-20260802-01-DIFF",
         "base_commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
-        "result": "PASS_AT_CURRENT_CHECKPOINT",
+        "result": "PASS",
         "changed_product_paths": 0
       }
     ],
-    "product": [],
-    "gates": {
-      "static": [],
-      "runtime": [],
-      "device": [],
-      "accessibility": [],
-      "performance": [],
-      "human": []
-    }
+    "product": []
   },
   "grill_me_merge_policy": {
     "decision_id": "BS-OPS-20260802-02",
-    "current_batch": "BS-GRILL-BATCH-20260802-01",
-    "current_approved_count": 5,
-    "merge_after_current_audit": true,
-    "post_merge_counter": "0/10",
+    "completed_batch": "BS-GRILL-BATCH-20260802-01",
+    "completed_approved_count": 5,
+    "completed_merge_pr": 84,
+    "completed_merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
+    "current_new_approval_counter": "0/10",
     "future_batch_size": 10,
     "premerge_audit_required": true,
     "merge_method": "SQUASH"
   },
   "known_gaps": [
-    "local repository validators blocked because github.com DNS cannot be resolved from the container",
     "R1 planning coverage remains incomplete after batch 01",
-    "Godot runtime against latest planning not executed",
+    "new R1 fatigue/date/event chronicle runtime not implemented",
     "Android device validation not executed",
     "accessibility human review not executed",
     "performance profiling not executed",
     "current external human playtest not executed"
   ],
-  "interpretation": "R0 authority is recovered and R1 approved decisions are being consolidated for a planning-only merge. Product evidence remains PE-0; no product, demo, build, or release PASS is permitted."
+  "interpretation": "R0 authority and R1 approval batch 01 are merged. Product evidence remains PE-0 for new R1 features; no product, demo, build, or release PASS is permitted."
 }
