@@ -67,6 +67,14 @@
 - 기존 제작·강화·보관·장비 생애 PoC는 `REFERENCE_IMPLEMENTATION`이다.
 - 최신 피로도·날짜·연대기 세트·Main/Shell/Save는 아직 구현되지 않았다.
 
+### 과거 강화 데이터 책임 원본
+
+다음 경로는 기존 강화 PoC 구현 데이터의 책임 원본이다. 현행 R1에서 수치가 승인됐다는 뜻은 아니며 R3/R5에서 재검토한다.
+
+- 강화 실패·하락·파괴·재료 소비·연속 실패 보정과 위험 분포: `data/crafting/enhancement_balance.json`
+- +10 단위 이정표·특수 강화·수식어 성장 구간: `data/crafting/enhancement_milestones.json`
+- `enhancement_milestones.json`은 실패 정책을 소유하지 않으며 실패·위험 계약은 `enhancement_balance.json`이 소유한다.
+
 ## 과거 PoC 필수 사실 — 분류된 호환 증거
 
 아래 문자열은 Base 운영·제작 품질 감사가 요구하는 과거 구현 계약이다. 현행 R1 설계의 수치 확정이나 최신 구현 완료를 뜻하지 않는다.
@@ -115,12 +123,12 @@ project.godot
 - core alignment exact-token 누락
 - QA Registry mode와 Skill 본문 불일치
 - 과거 PoC 필수 assertion·제작 품질 증거 분류 누락
+- 강화 실패·위험과 이정표 책임 원본 표기 누락
 - PR #81 역사 경로 포인터 누락
 
 잔여 확인:
 
-- 새 HEAD 운영·제작 품질 감사
-- Godot headless suite
+- 새 HEAD 전체 CI
 - Sheet 최신 HEAD bounded readback
 - 리뷰·mergeability·expected HEAD
 
