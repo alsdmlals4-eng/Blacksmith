@@ -1,26 +1,79 @@
 {
   "artifact_role": "PROJECT_OPERATING_HEALTH",
+  "schema_version": 1,
+  "current_operating_decision": "BS-OPS-20260802-01",
+  "current_stage": "CANONICAL_RECOVERY_IN_PROGRESS",
+  "integrity_verdict": "INCOMPLETE_NOT_RUN_GATES",
+  "operating_maturity": "OM-L1_RECOVERY_IN_PROGRESS",
+  "product_evidence_maturity": "PE-0",
   "critical_gates": {
-    "accessibility": "NOT_RUN",
-    "device": "NOT_RUN",
-    "human": "NOT_RUN",
+    "canonical_recovery": "IN_PROGRESS",
+    "decision_authority": "IN_PROGRESS",
+    "decision_sync": "IN_PROGRESS",
+    "planning_coverage": "NOT_STARTED",
+    "planning_and_review_complete": "BLOCKED",
+    "codex_implementation": "BLOCKED",
+    "static": "NOT_RUN",
     "runtime": "NOT_RUN",
-    "static": "NOT_RUN"
+    "device": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human": "NOT_RUN"
   },
   "evidence": {
-    "gates": {
-      "accessibility": [],
-      "device": [],
-      "human": [],
-      "runtime": [],
-      "static": []
-    },
-    "operating": [],
+    "operating": [
+      {
+        "evidence_id": "BS-OPS-20260802-01-DESIGN",
+        "type": "USER_APPROVED_DESIGN",
+        "path": "docs/superpowers/specs/2026-08-02-planning-canon-recovery-design.md",
+        "commit": "8b7956e1961e711d70a9f3df5f5cc48c055101a8",
+        "scope": "planning-first recovery, detailed-value policy, Grill Me boundary, protected paths",
+        "result": "PASS"
+      },
+      {
+        "evidence_id": "BS-OPS-20260802-01-PLAN",
+        "type": "WRITTEN_EXECUTION_PLAN",
+        "path": "docs/superpowers/plans/2026-08-02-blacksmith-planning-canon-recovery.md",
+        "commit": "f719890547c09bf78a09cea6ea8b1bce8497caee",
+        "scope": "R0 recovery tasks and verification contract",
+        "result": "PASS"
+      },
+      {
+        "evidence_id": "BS-OPS-20260802-01-BASELINE",
+        "type": "BOUNDED_REPOSITORY_AND_SHEET_AUDIT",
+        "path": "docs/operations/BS-OPS-20260802-01_BASELINE.md",
+        "commit": "4856a50c666155fafb1475f60031ca45b749f4a1",
+        "scope": "current main, entrypoints, adapter, health, Issue/PR authority, target Sheet operating ranges",
+        "result": "PASS_FOR_RECORDED_FACTS_ONLY"
+      }
+    ],
+    "sheet": [
+      {
+        "evidence_id": "BS-OPS-20260802-01-SHEET-READ",
+        "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+        "scope": "00, 01, 02, 04, 05, 90, 99 bounded operating ranges",
+        "result": "READ_COMPLETE / WRITE_AND_READBACK_PENDING"
+      }
+    ],
     "product": [],
-    "sheet": []
+    "gates": {
+      "static": [],
+      "runtime": [],
+      "device": [],
+      "accessibility": [],
+      "performance": [],
+      "human": []
+    }
   },
-  "integrity_verdict": "PASS_WITH_NOT_RUN_GATES",
-  "operating_maturity": "OM-L0",
-  "product_evidence_maturity": "PE-0",
-  "schema_version": 1
+  "known_gaps": [
+    "Google Sheet same-ID write and readback pending",
+    "Issue and PR authority comments pending",
+    "local repository validators not executed in connector-only session",
+    "Godot runtime against latest planning not executed",
+    "Android device validation not executed",
+    "accessibility human review not executed",
+    "performance profiling not executed",
+    "current external human playtest not executed"
+  ],
+  "interpretation": "Operating documents have approved recovery evidence, but the operating system is not complete and no product validation gate has run. No aggregate PASS is permitted."
 }
