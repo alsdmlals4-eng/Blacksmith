@@ -1,0 +1,100 @@
+{
+  "artifact_role": "CURRENT_R1_CANON_REGISTRY",
+  "schema_version": 1,
+  "project": "Blacksmith",
+  "current_operating_decisions": [
+    "BS-OPS-20260802-01",
+    "BS-OPS-20260802-02"
+  ],
+  "current_stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
+  "stage_status": "IN_PROGRESS_GRILL_BATCH_01_PREMERGE_AUDIT",
+  "product_implementation": "BLOCKED",
+  "authority_policy": "This overlay is the current R1 routing index. DESIGN_DOCUMENT_REGISTRY.json remains the broad R0 publication index; where its stage metadata differs, CURRENT_CONFIRMED_DECISIONS.md and this overlay take precedence.",
+  "documents": [
+    {
+      "id": "current-confirmed-decisions",
+      "path": "../../CURRENT_CONFIRMED_DECISIONS.md",
+      "role": "root_current_decision_entrypoint",
+      "status": "CURRENT"
+    },
+    {
+      "id": "r1-approved-core-decisions",
+      "path": "BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md",
+      "role": "approved_r1_core_decision_ledger",
+      "decision_ids": [
+        "BS-CORE-20260802-01",
+        "BS-CORE-20260802-02",
+        "BS-SET-20260802-01",
+        "BS-SET-20260802-02",
+        "BS-SET-20260802-03"
+      ],
+      "status": "CURRENT"
+    },
+    {
+      "id": "event-chronicle-set-canon",
+      "path": "BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md",
+      "role": "event_chronicle_dynamic_set_and_reward_canon",
+      "decision_ids": [
+        "BS-SET-20260802-02",
+        "BS-SET-20260802-03"
+      ],
+      "status": "CURRENT"
+    },
+    {
+      "id": "grillme-batch-01-and-merge-policy",
+      "path": "BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md",
+      "role": "failed_event_chronicle_and_ten_decision_merge_policy",
+      "decision_ids": [
+        "BS-SET-20260802-04",
+        "BS-OPS-20260802-02"
+      ],
+      "status": "CURRENT"
+    },
+    {
+      "id": "active-context",
+      "path": "../../[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+      "role": "current_work_context",
+      "status": "CURRENT"
+    },
+    {
+      "id": "development-gates",
+      "path": "../../[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+      "role": "planning_and_product_gate_status",
+      "status": "CURRENT"
+    },
+    {
+      "id": "roadmap",
+      "path": "../../[기획서]/00_프로젝트_허브/ROADMAP.md",
+      "role": "r1_to_r9_sequence",
+      "status": "CURRENT"
+    }
+  ],
+  "current_decision_ids": [
+    "BS-OPS-20260802-01",
+    "BS-OPS-20260802-02",
+    "BS-CORE-20260802-01",
+    "BS-CORE-20260802-02",
+    "BS-SET-20260802-01",
+    "BS-SET-20260802-02",
+    "BS-SET-20260802-03",
+    "BS-SET-20260802-04"
+  ],
+  "grill_me_batch": {
+    "batch_id": "BS-GRILL-BATCH-20260802-01",
+    "approved_questions": 5,
+    "merge_instruction": "MERGE_NOW_AFTER_PREMERGE_AUDIT",
+    "post_merge_counter": "0/10",
+    "future_batch_size": 10,
+    "merge_method": "SQUASH"
+  },
+  "validation": {
+    "github_sheet_readback": "PENDING_FINAL_PREMERGE_RECHECK",
+    "pr_review_and_ci": "PENDING_FINAL_PREMERGE_RECHECK",
+    "product_paths_changed": 0,
+    "runtime": "NOT_RUN",
+    "android": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human_playtest": "NOT_RUN"
+  }
+}
