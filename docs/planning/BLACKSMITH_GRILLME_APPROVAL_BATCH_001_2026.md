@@ -3,7 +3,7 @@
 - Batch ID: `BS-GRILL-BATCH-20260802-001`
 - 운영 결정: `BS-OPS-20260802-02`
 - 포함 승인 수: `5`
-- 상태: `APPROVED / READY_FOR_PREMERGE_AUDIT`
+- 상태: `APPROVED / PREMERGE_AUDIT_IN_PROGRESS`
 - 대상 Draft PR: `#84`
 - 구현 권한: `NONE`
 - 제품 코드·Scene·런타임 데이터·에셋 변경: `PROHIBITED`
