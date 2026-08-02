@@ -10,8 +10,11 @@
   "stage_status": "IN_PROGRESS_GRILL_BATCH_01_MERGED_NEW_COUNTER_0_OF_10",
   "product_implementation": "BLOCKED",
   "authority_policy": "This overlay is the current R1 routing index. DESIGN_DOCUMENT_REGISTRY.json remains the broad R0 publication index; where stage metadata differs, CURRENT_CONFIRMED_DECISIONS.md and this overlay take precedence.",
-  "last_merged_pr": 84,
-  "batch_01_merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
+  "planning_batch_pr": 84,
+  "planning_batch_merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
+  "postmerge_sync_pr": 85,
+  "postmerge_sync_sha": "338d256c7ffbf976473d04712ff9426f1e450d2c",
+  "exact_current_main_sha_authority": "GOOGLE_SHEET_AND_ISSUE_79",
   "documents": [
     {
       "id": "current-confirmed-decisions",
@@ -50,7 +53,7 @@
         "BS-SET-20260802-04",
         "BS-OPS-20260802-02"
       ],
-      "status": "CURRENT_MERGED"
+      "status": "CURRENT_MERGED_ACTIVE_POLICY"
     },
     {
       "id": "active-context",
@@ -94,13 +97,15 @@
   "validation": {
     "premerge_github_sheet_readback": "PASS",
     "premerge_pr_review_and_ci": "PASS",
-    "postmerge_github_sheet_readback": "PENDING_SYNC_PR_MERGE",
+    "postmerge_github_sheet_readback": "PASS",
+    "postmerge_sync_pr": "PASS",
     "product_paths_changed": 0,
-    "existing_reference_godot_contracts": "PASS_AT_PR84_HEAD",
+    "existing_reference_godot_contracts": "PASS_AT_PR84_AND_PR85_HEADS",
     "new_r1_product_runtime": "NOT_RUN",
     "android": "NOT_RUN",
     "accessibility": "NOT_RUN",
     "performance": "NOT_RUN",
     "human_playtest": "NOT_RUN"
-  }
+  },
+  "next_activity": "CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE"
 }
