@@ -94,32 +94,34 @@ R1 전체 완료는 아니다. 신규 Grill Me 승인 카운터는 `0/10`이다.
 
 | Surface | 역할 | 상태 |
 |---|---|---|
-| Issue #79 | 총기획 Umbrella | `ACTIVE` |
+| Issue #79 | 총기획 Umbrella·정확한 current main SHA 외부 원장 | `ACTIVE` |
 | PR #84 | R0 복구 + R1 승인 배치 01 | `MERGED / SQUASH` |
-| postmerge sync PR | main 진입 상태와 Sheet 최종화 | `IN_PROGRESS` |
+| PR #85 | postmerge main 진입 상태 동기화 | `MERGED / SQUASH` |
 | PR #81 | 기획·승인 Evidence | `REFERENCE_ONLY / SUPERSEDED_AS_MERGE_UNIT` |
 | Issue #60 | 과거 Base v6 재기획 | `HISTORY_ONLY_CANDIDATE` |
-| Google Sheet | GDD·Decision·Audit·History | `POSTMERGE_FINALIZATION` |
+| Google Sheet | GDD·Decision·Audit·History·정확한 current main SHA | `POSTMERGE_READBACK_PASS` |
 
 ## 9. Grill Me 병합 책임
 
 `BS-OPS-20260802-02`:
 
 - 배치 01 질문 5건은 PR #84로 squash 병합 완료.
+- postmerge 동기화는 PR #85로 병합 완료.
 - 현재 신규 카운터 `0/10`.
 - 이후 새 승인 10건마다 같은 감사·병합 절차 반복.
 - P0/P1 발견 시 병합 중단.
-- 병합 후 main SHA를 Sheet와 다음 진입점에 기록.
+- 병합 후 main SHA를 Sheet와 Issue #79에 기록.
 
 ## 10. Historical CI compatibility evidence
 
 - `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`: 과거 장비 생애 PoC에 한정. 최신 R1 runtime은 `NOT_RUN`.
 - `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`: 과거 CI 운영 기능 증거.
-- PR #84 Base adoption run #247 and PR validation run #838: `SUCCESS`.
+- PR #84·#85의 정확한 HEAD에서 Base·Python·Godot 계약 검증이 성공했다.
 
 ## 11. 검증 경계
 
-- PR #84 문서·정적·Godot reference contracts: `PASS`.
+- PR #84·#85 문서·정적·기존 Godot reference contracts: `PASS`.
+- GitHub·Sheet postmerge readback: `PASS`.
 - 최신 R1 제품 기능 runtime: `NOT_RUN`.
 - Android·접근성·성능·사람 플레이: `NOT_RUN`.
 
