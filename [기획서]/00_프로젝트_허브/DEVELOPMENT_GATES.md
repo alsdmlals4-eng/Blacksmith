@@ -18,8 +18,9 @@ CURRENT_STAGE: R1_PROJECT_CORE_AND_PLAYER_PROMISE
 CANONICAL_RECOVERY_GATE: PASS
 DECISION_AUTHORITY_GATE: PASS
 PREMERGE_ADVERSARIAL_AUDIT_GATE: PASS
-PR_84_MERGE_GATE: PASS
-DECISION_SYNC_GATE: POSTMERGE_SYNC_IN_PROGRESS
+BATCH_01_MERGE_GATE: PASS
+POSTMERGE_SYNC_GATE: PASS
+DECISION_SYNC_GATE: PASS
 PLANNING_COVERAGE_GATE: R1_IN_PROGRESS
 GRILL_ME_DECISION_GATE: NEW_COUNTER_0_OF_10
 USER_PLANNING_COMPLETE_GATE: BLOCKED
@@ -43,8 +44,11 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 - [x] PR #81·Issue 권위 정리
 - [x] 보호 제품 경로 변경 0
 - [x] PR #84 squash 병합
+- [x] PR #85 postmerge sync 병합
 
-배치 01 main 병합 SHA: `bd68c2dbf20592e84c1bebfdc83c4c925d010dbf`.
+기획 배치 SHA: `bd68c2dbf20592e84c1bebfdc83c4c925d010dbf`.
+postmerge sync SHA: `338d256c7ffbf976473d04712ff9426f1e450d2c`.
+정확한 현재 main SHA는 연결된 Sheet와 Issue #79가 추적한다.
 
 ## 4. R1 Approval Batch 01 Gate
 
@@ -61,6 +65,8 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 - [x] Godot 4.7.1 headless contracts
 - [x] 리뷰·스레드·충돌·금지 경로 감사
 - [x] PR #84 squash merge
+- [x] PR #85 postmerge sync
+- [x] Sheet postmerge bounded readback
 
 정본:
 
@@ -91,7 +97,8 @@ R1 전체 Gate는 아직 닫히지 않았다.
 
 - 완료 배치: `BS-GRILL-BATCH-20260802-01`
 - 완료 질문 수: `5`
-- 병합 PR: `#84`
+- 기획 병합 PR: `#84`
+- postmerge sync PR: `#85`
 - 병합 방식: `SQUASH`
 - 신규 승인 카운터: `0/10`
 - 다음 배치 조건: 신규 승인 `10/10`
@@ -131,7 +138,7 @@ R1 전체 Gate는 아직 닫히지 않았다.
 - 제작 품질 단위 검증의 역사 기록: `제작 모델 7건`.
 - 제작 결과·강화 연계 검증의 역사 기록: `통합 6건`.
 - 과거 CI 증거: `PR validation #468`.
-- PR #84 최종 CI: Base v9 adoption run #247 `SUCCESS`, PR validation run #838 `SUCCESS`.
+- PR #84·#85의 정확한 HEAD에서 Base·Python·Godot 계약 검증이 성공했다.
 - 최신 R1 runtime은 `NOT_RUN`이다.
 
 ## 9. Product Implementation Gate
@@ -152,8 +159,8 @@ R1 전체 Gate는 아직 닫히지 않았다.
 
 | Gate | 상태 |
 |---|---|
-| PR #84 document/static contracts | `PASS` |
-| existing reference Godot import·parse·smoke·model·integration | `PASS_AT_PR84_HEAD` |
+| PR #84·#85 document/static contracts | `PASS` |
+| existing reference Godot import·parse·smoke·model·integration | `PASS_AT_EXACT_PR_HEADS` |
 | fatigue·date R1 runtime | `NOT_IMPLEMENTED` |
 | EventChronicle·ChronicleSet runtime | `NOT_IMPLEMENTED` |
 | Android device | `NOT_RUN` |
@@ -165,9 +172,9 @@ R1 전체 Gate는 아직 닫히지 않았다.
 ## 11. Current Next Gate
 
 ```yaml
-POSTMERGE_SYNC_PR: IN_PROGRESS
-SHEET_POSTMERGE_READBACK: PENDING
+POSTMERGE_SYNC_GATE: PASS
+SHEET_POSTMERGE_READBACK: PASS
 GRILL_ME_NEW_COUNTER: 0/10
-R1_NEXT_DESIGN_ACTIVITY: CONTINUE_AFTER_SYNC
+R1_NEXT_DESIGN_ACTIVITY: CONTINUE_R1_PROJECT_CORE_AND_PLAYER_PROMISE
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
