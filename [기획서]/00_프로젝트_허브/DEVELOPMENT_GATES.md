@@ -127,7 +127,7 @@ R1 batch 01 병합은 R1 전체 완료가 아니다.
 
 ## 9. Historical PoC and CI compatibility gates
 
-아래 제목과 토큰은 과거 장비 생애 PoC 및 `check_project_core_alignment.py` 계약을 보존한다. 최신 R1 제품 상태로 확대하지 않는다.
+아래 제목과 토큰은 과거 장비 생애 PoC 및 정적 검사 계약을 보존한다. 최신 R1 제품 상태로 확대하지 않는다.
 
 ### Project core confirmation
 
@@ -143,9 +143,11 @@ R1 batch 01 병합은 R1 전체 완료가 아니다.
 
 - 역사 계획: `docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md`
 - 역사 결과 토큰: `PASS / IMPLEMENTATION_VALIDATED`.
-- 이는 과거 PoC HEAD에만 적용되고 최신 R1 runtime은 `NOT_RUN`이다.
-
-- `PR validation #468`: 과거 CI 증거 참조. 현재 PR #84의 check는 현재 HEAD에서 별도 판정한다.
+- 제작 품질 단위 검증의 역사 기록: `제작 모델 7건`.
+- 제작 결과·강화 연계 검증의 역사 기록: `통합 6건`.
+- 위 테스트 개수는 과거 PoC 검증 계약이며 새 R1 기능의 구현·사람 검증 완료를 뜻하지 않는다.
+- 과거 CI 증거: `PR validation #468`.
+- 최신 R1 runtime은 `NOT_RUN`이다.
 
 ## 10. Product Implementation Gate
 
