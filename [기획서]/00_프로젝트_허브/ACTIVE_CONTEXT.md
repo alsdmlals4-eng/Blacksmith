@@ -1,29 +1,30 @@
 # Active Context
 
-- 갱신일: `2026-08-02 KST`
+- 갱신일: `2026-08-02 15:06 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 현재 Decision: `BS-OPS-20260802-01`
+- 현재 운영 Decisions: `BS-OPS-20260802-01`, `BS-OPS-20260802-02`
 - 기준 main: `ac120fb146cea29bb5f8876682809f76779d86ad`
 - 현재 브랜치: `agent/blacksmith-planning-canon-recovery`
 - 현재 Draft PR: `#84`
 - 기획 Umbrella: Issue `#79`
-- R0 운영·정본 복구: `PASS_FOR_DRAFT_PR`
+- 현재 단계: `R1_PROJECT_CORE_AND_PLAYER_PROMISE`
+- 현재 상태: `IN_PROGRESS / GRILL_BATCH_01_PREMERGE_AUDIT`
 - 제품 구현: `BLOCKED`
-- 다음 Bundle: `R1 Project Core and Player Promise`
 
 ## 현재 판정
 
 | 영역 | 상태 |
 |---|---|
 | Base release adoption | `9.4.0 / COMPLETE` |
-| GitHub 운영 정본 | `RECOVERED` |
-| Root current decisions | `RECOVERED` |
-| Google Sheet binding/readback | `PASS` |
+| R0 운영·정본 복구 | `PASS_FOR_DRAFT_PR` |
+| Root current decisions | `UPDATED_FOR_R1_BATCH_01` |
+| Current R1 canon overlay | `CREATED` |
+| Google Sheet binding/readback | `PREMERGE_RECHECK` |
 | Issue·PR authority | `PASS` |
 | PR #81 | `REFERENCE_ONLY / SUPERSEDED_AS_MERGE_UNIT` |
-| Issue #60 | `HISTORY_ONLY / SUPERSEDED` 후보 |
-| 기획 Coverage | `R1 NOT_STARTED` |
-| verified Grill Me question | `0` |
+| 기획 Coverage | `R1 IN_PROGRESS` |
+| Grill Me batch 01 | `5 APPROVED / MERGE_REQUESTED` |
+| 다음 Grill Me counter | `0/10 AFTER_MERGE` |
 | Codex 구현 | `BLOCKED_BY_PLANNING_GATE` |
 | Runtime against latest planning | `NOT_RUN` |
 | Android 실기기 | `NOT_RUN` |
@@ -31,24 +32,59 @@
 | 성능 | `NOT_RUN` |
 | 외부 플레이테스트 | `NOT_RUN` |
 
-## 프로젝트 보호 방향
+## 프로젝트 코어
 
-> 한 명의 대장장이가 장비 한 점을 직접 만들고 강화의 위험 앞에서 멈출지 도전할지 선택하며, 그 작품이 다른 이의 손에서 쌓은 역사와 세계의 반응을 돌려받는 Android 세로형 제작 게임.
+> 한 명의 대장장이가 제한된 하루 안에서 작품을 직접 만들고, 강화의 위험 앞에서 멈출지 도전할지 선택하며, 그 작품이 고객과 세계 사건에서 남긴 역사와 반응을 돌려받는 Android 세로형 제작 게임.
 
-R1은 이 방향을 더 명확히 정본화한다. 전면 초기화나 승인 결정 폐기가 목적이 아니다.
+현재 승인된 위계:
 
-보호할 강점:
+```text
+직접 제작
+→ 강화 성공·실패와 멈춤·추가 도전
+→ 피로도에 따른 오늘의 작업 우선순위
+→ 고객 판매·납품
+→ 짧은 세계 사건 결과
+→ 작품의 소유·운명·연대기·세트 확인
+→ 새로운 작품과 더 높은 강화에 도전
+```
 
-- 한 명의 대장장이와 장비 한 점 중심 경험
-- 직접 제작과 강화 위험 선택
-- 일반 강화 버튼 입력당 결과 1회
-- 장비 UID·작품 정체성·소유권·운명·연대기
-- 판매·납품 이후 지연된 세계 결과
-- 모바일에서 기억·비교 가능한 정보량
-- 스타일라이즈드 다크 포지와 밝은 불 정령 모닥
-- 미실행 검증을 PASS로 표시하지 않는 원칙
+## R1 승인 배치 01
 
-## 승인 증거가 확인된 기획
+| Decision | 확정 내용 |
+|---|---|
+| `BS-CORE-20260802-01` | 피로도·날짜 진행은 핵심 불변 |
+| `BS-CORE-20260802-02` | 강화가 메인, 고객·세계 환류는 휴식과 장기 약속 |
+| `BS-SET-20260802-01` | 고객·일정·사건이 다양한 작품과 세트 제작 동기 제공 |
+| `BS-SET-20260802-02` | 동일 사건에 실제 기여한 작품이 연대기 세트 성립 |
+| `BS-SET-20260802-03` | 범용 보정 + 상황 태그 선택·장면 + 역사 기록 |
+| `BS-SET-20260802-04` | 실패·참패도 실제 기여가 있으면 연대기 세트 성립 |
+
+상세 정본:
+
+- `docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md`
+- `docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md`
+- `docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md`
+- `docs/planning/CURRENT_R1_CANON_REGISTRY.json`
+
+## 사건 연대기 세트
+
+```text
+세계 일정 공개
+→ 역할 확인
+→ 고유 작품 제작·강화·납품
+→ 사건 결과와 실제 기여 확인
+→ 공통 사건 연대기 ID
+→ 연대기 세트 성립
+→ 범용 보정·상황 태그·역사 요약
+→ 유사한 새 사건의 추가 선택지·전용 장면·후속 의뢰
+```
+
+- 동일한 세계 일정은 반복되지 않는다.
+- 성공 여부와 세트 성립은 분리한다.
+- 실패해도 실제 기여가 있으면 기록과 세트가 남는다.
+- 보정 수치·누적 상한·태그 유사도·기여 임계치는 `RECOMMENDED_DEFAULT / TEST_VALUE`다.
+
+## 승인 증거가 확인된 기존 제품 기획
 
 - `BS-ART-20260731-01`
 - `BS-MODAK-20260731-01`
@@ -57,7 +93,7 @@ R1은 이 방향을 더 명확히 정본화한다. 전면 초기화나 승인 �
 - `BS-GRADE-20260801-02`
 - `BS-SAVE-20260801-01`
 
-이들은 승인된 기획이며 제품 구현·런타임·기기 검증 완료가 아니다. 상세 계약은 R3 또는 R6에서 PR #81로부터 선별 승격한다.
+이들은 승인 기획이며 제품 구현·런타임·기기 검증 완료가 아니다.
 
 ## 실제 구현 사실
 
@@ -67,60 +103,9 @@ R1은 이 방향을 더 명확히 정본화한다. 전면 초기화나 승인 �
 run/main_scene="res://scenes/test/enhancement_test.tscn"
 ```
 
-따라서 승인된 별도 Main Menu와 단일 App Shell은 아직 실제 제품 진입이 아니다.
-
-기존 제작·강화·보관·장비 생애 PoC는 실제 구현과 회귀 기준선으로만 사용한다. 과거 PASS를 최신 기획·Android·접근성·성능·사람 플레이 PASS로 확대하지 않는다.
-
-## R0 적대적 검토 결과
-
-해결된 운영 Finding:
-
-1. PR #35·Issue #34 구형 진입 경로
-2. Base v8·v9.1·v9.3·v9.4 권위 혼재
-3. PR #81 전체 병합 위험
-4. Root Decision entrypoint 누락
-5. Sheet CURRENT 원장 추적성 부족
-6. Issue #60·#79, PR #81·#84 중복 권위
-7. Draft/Sheet 승인 표기 팽창
-8. 모든 중요 Gate NOT_RUN 상태의 false-PASS 표현
-9. 제품 Test Scene과 승인 Main/Shell 간 상태 미표시
-10. 상세 시험값과 중요 기획 Decision 혼합
-
-현재 확인된 Grill Me 대상: `0`. 위 항목은 사용자 취향이 아닌 사실·경로·상태 오류였으므로 자동 교정했다.
-
-## PR·Issue 권위
-
-| Surface | 역할 |
-|---|---|
-| Issue #79 | 현재 총기획 Umbrella |
-| PR #84 | 현재 운영·정본 복구 Draft |
-| PR #81 | 기획·승인 Evidence Source, 전체 병합 금지 |
-| Issue #60 | 과거 Base v6 전면 재기획, history 후보 |
-
-각 Surface에 동일한 역할 설명 Comment를 남겼다.
-
-## 상세 데이터와 Grill Me 경계
-
-상세 기술값·초기 밸런스·간격·시간·확률·용량 기본값은 방향을 바꾸지 않는 범위에서 GPT 권장안을 사용한다.
-
-```text
-RECOMMENDED_DEFAULT
-또는
-TEST_VALUE
-```
-
-다음만 검증 후 Grill Me로 올린다.
-
-- 코어·플레이어 판타지·뾰족한 재미 변경
-- 주요 시스템·UX 원칙의 양립 불가능한 충돌
-- 버티컬 슬라이스·본제작 범위 선택
-- 주요 실패·파괴·복구·보상 의미
-- 승인 Decision 대체
-- 플레이 경험·제작 비용이 실질적으로 다른 대안
+기존 제작·강화·보관·장비 생애 PoC는 `REFERENCE_IMPLEMENTATION`이다. 최신 피로도·날짜·연대기 세트·Main/Shell/Save 계약의 구현 완료를 의미하지 않는다.
 
 ## 보호 경로
-
-총기획 중 다음을 변경하지 않는다.
 
 ```text
 data/
@@ -131,47 +116,49 @@ addons/
 project.godot
 ```
 
-main과 recovery branch 비교 결과 보호 경로 변경은 `0`이다.
+현재 PR changed files 기준 보호 제품 경로 변경은 `0`이다.
 
-## Google Sheet 동기화
+## Grill Me 병합 운영
 
-- Spreadsheet ID: `1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg`
-- 반영 탭: `00·01·02·04·05·90·99`
-- 같은 Decision ID, 의미, PR, 상태, GitHub 위치 readback: `PASS`
-- 수정 범위 이동·수식 오류: 관찰되지 않음
-- exact final Draft HEAD: Sheet `99_변경이력`과 PR metadata가 기록
+`BS-OPS-20260802-02`:
 
-## 현재 다음 작업
+1. 이번 누적 5건은 PR #84에서 즉시 병합한다.
+2. 병합 후 신규 승인 카운터 `0/10`.
+3. 이후 새 승인 10건마다 GitHub·Sheet·PR·리뷰·CI·충돌·금지 경로를 재검증한다.
+4. P0/P1 문제가 있으면 병합하지 않는다.
+5. 통과 시 squash 병합하고 main SHA를 재동기화한다.
 
-`R1 Project Core and Player Promise`.
+## 현재 사전 감사
 
-R1 산출물:
+확인 완료:
 
-- 타깃 플레이어·플레이 상황
-- 한 문장 플레이어 약속
-- 뾰족한 재미와 핵심 고민
-- 비타협 조건·변경 가능한 외피
-- 제외 범위
-- 성공·실패 기준
-- 벤치마크·Evidence·반증
-- 검증된 중요 충돌이 있을 때만 한 건의 Grill Me
+- PR open·mergeable
+- branch behind `0`
+- changed files는 운영·기획·문서·어댑터 범위
+- 보호 제품 경로 변경 `0`
+- PR conversation comment `0`
+
+수정 중 발견 사항:
+
+- 루트와 Hub 문서의 `R1 NOT_STARTED` 상태가 최신 승인과 충돌
+- PR 본문에 최신 두 Decision 누락
+- Current R1 분야 정본의 별도 Registry 필요
+
+위 항목을 정합화한 뒤 Sheet·PR·CI·리뷰를 다시 읽고 병합 판정을 내린다.
 
 ## 검증 상한
 
-운영 복구 검증:
-
-- GitHub entrypoint/readback: `PASS_FOR_DRAFT_PR`
-- Sheet bounded write/readback: `PASS`
-- Issue/PR authority: `PASS`
-- product protected-path diff: `PASS`
-
-실행하지 못한 검증:
-
-- local Python validators: `BLOCKED_UNVERIFIED` (`gh` 없음, container GitHub DNS 실패)
+- 로컬 GitHub checkout/static validator: `BLOCKED_UNVERIFIED` — container DNS 실패
 - Godot runtime: `NOT_RUN`
 - Android: `NOT_RUN`
 - accessibility human: `NOT_RUN`
 - performance: `NOT_RUN`
 - external playtest: `NOT_RUN`
 
-제품 구현과 전체 기획 완료는 계속 `BLOCKED`다.
+## 다음 작업
+
+1. current-facing 문서와 Sheet의 최신 Decision·HEAD를 정합화한다.
+2. PR changed files·전체 diff·리뷰·CI·mergeability를 재검증한다.
+3. P0/P1이 0이면 PR #84를 squash 병합한다.
+4. main SHA와 Sheet를 동기화하고 Grill Me 카운터를 `0/10`으로 확정한다.
+5. 제품 구현 없이 R1의 남은 기획을 계속한다.
