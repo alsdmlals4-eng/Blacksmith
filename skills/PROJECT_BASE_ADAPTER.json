@@ -15,16 +15,17 @@
   "project_operating_state": {
     "work_mode": "TOTAL_PLANNING",
     "stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
-    "stage_status": "IN_PROGRESS_GRILL_BATCH_01_PREMERGE_AUDIT",
+    "stage_status": "IN_PROGRESS_GRILL_BATCH_01_MERGED_NEW_COUNTER_0_OF_10",
     "recovery_base_commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
-    "recovery_branch": "agent/blacksmith-planning-canon-recovery",
-    "draft_pr": 84,
-    "canonical_recovery": "PASS_FOR_DRAFT_PR",
+    "batch_01_merge_commit": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
+    "last_merged_pr": 84,
+    "canonical_recovery": "MERGED_TO_MAIN",
     "planning_coverage": "R1_IN_PROGRESS",
-    "approved_grill_me_questions": 5,
-    "post_merge_grill_me_counter": "0/10",
+    "approved_grill_me_questions_in_completed_batch": 5,
+    "current_new_grill_me_counter": "0/10",
     "product_implementation": "BLOCKED",
-    "runtime_validation_against_latest_planning": "NOT_RUN",
+    "existing_reference_contract_validation": "PASS_AT_PR84_HEAD",
+    "new_r1_runtime_validation": "NOT_RUN",
     "android_device_validation": "NOT_RUN",
     "accessibility_human_review": "NOT_RUN",
     "performance_profile": "NOT_RUN",
@@ -66,7 +67,7 @@
       "BS-SET-20260802-03",
       "BS-SET-20260802-04"
     ],
-    "sync_status": "PREMERGE_RECHECK",
+    "sync_status": "POSTMERGE_FINALIZATION",
     "target_tabs": [
       "00_프로젝트_허브",
       "01_작업순서",
@@ -76,7 +77,7 @@
       "90_본제작_출시_사업",
       "99_변경이력"
     ],
-    "readback_status": "PREMERGE_RECHECK",
+    "readback_status": "PREMERGE_PASS_POSTMERGE_SYNC_PENDING",
     "exact_head_record_policy": "PR_METADATA_AND_SHEET_HISTORY_AVOID_SELF_REFERENTIAL_COMMIT"
   },
   "project": {
@@ -89,7 +90,7 @@
   "protected_baseline": {
     "authority_kind": "GITHUB_MAIN_COMMIT",
     "authority_ref": "refs/heads/main",
-    "commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
+    "commit": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
     "policy_sha256": null,
     "policy_hash_status": "RECALCULATION_NOT_RUN",
     "policy_source_path": "AGENTS.md",
@@ -242,9 +243,12 @@
     "manual: UX UI human understanding and accessibility review"
   ],
   "validation_status": {
-    "static_repository_validators": "BLOCKED_UNVERIFIED_GITHUB_DNS_FAILURE",
-    "premerge_github_sheet_pr_audit": "IN_PROGRESS",
-    "godot_runtime": "NOT_RUN",
+    "pr_84_premerge_github_sheet_pr_audit": "PASS",
+    "pr_84_base_v9_adoption": "PASS",
+    "pr_84_python_contracts": "PASS",
+    "pr_84_existing_reference_godot_contracts": "PASS",
+    "postmerge_sync_pr": "IN_PROGRESS",
+    "new_r1_godot_runtime": "NOT_RUN",
     "android_device": "NOT_RUN",
     "accessibility_human": "NOT_RUN",
     "performance": "NOT_RUN",
