@@ -47,7 +47,7 @@
 | Decision | 확정 내용 |
 |---|---|
 | `BS-CORE-20260802-01` | 피로도·날짜 진행 핵심 불변 |
-| `BS-CORE-20260802-02` | 강화 메인, 고객·세계 환류는 휴식과 장기 약속 |
+| `BS-CORE-20260802-02` | 강화가 메인, 고객·세계 환류는 휴식과 장기 약속 |
 | `BS-SET-20260802-01` | 다양한 작품과 세트 제작 동기 |
 | `BS-SET-20260802-02` | 실제 기여 작품의 사건 연대기 세트 |
 | `BS-SET-20260802-03` | 범용 보정 + 상황 태그 + 역사 기록 |
@@ -66,6 +66,18 @@
 - 기존 장비 생애 PoC 범위: `docs/MVP-003_SCOPE.md`
 - 기존 제작·강화·보관·장비 생애 PoC는 `REFERENCE_IMPLEMENTATION`이다.
 - 최신 피로도·날짜·연대기 세트·Main/Shell/Save는 아직 구현되지 않았다.
+
+## 과거 PoC 필수 사실 — 분류된 호환 증거
+
+아래 문자열은 Base 운영 감사가 요구하는 과거 구현 계약이다. 현행 R1 설계의 수치 확정이나 최신 구현 완료를 뜻하지 않는다.
+
+- `POC v`: 기존 장비 한 점의 생애 PoC 버전 계열을 가리키는 역사 토큰.
+- `자동 단조`: 기존 PoC에 구현·검증된 반복 보조 기능이며, 현행 R1에서는 피로도·날짜·강화 판단을 우회하지 않도록 R3/R5에서 재검토한다.
+- `+11`: 과거 강화 경계·회귀 검사의 대표 구간 토큰.
+- `+30`: 과거 장기 강화 경계·회귀 검사의 대표 구간 토큰.
+- `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`: 과거 PoC HEAD에만 적용. 최신 R1 runtime은 `NOT_RUN`.
+- `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`: 과거 Actions·자동 PR 기능 증거. 현재 check 결과는 HEAD별로 별도 조회한다.
+- `PR validation #468`: 과거 검증 실행 참조. 현재 PR #84 check와 동일하지 않다.
 
 ## Grill Me 병합 운영
 
@@ -92,38 +104,31 @@ project.godot
 
 ## 병합 전 감사 현황
 
-확인 또는 수정 완료:
+수정 완료:
 
-- PR open·mergeable, branch behind 0
-- changed files는 운영·기획·문서·어댑터 범위
-- 보호 제품 경로 변경 0
-- Root·Hub 문서의 R1 상태 정합화
-- Current R1 canon overlay 생성
+- Root·Hub의 stale `R1 NOT_STARTED` 상태
+- Current R1 canon overlay 부재
+- PR 본문 최신 Decision 누락
+- core alignment exact-token 누락
+- QA Registry mode와 Skill 본문 불일치
+- 과거 PoC 필수 assertion 분류 누락
 
 잔여 확인:
 
+- 운영 감사 재실행
+- Godot 다운로드·검증 재실행
 - Sheet 최신 HEAD bounded readback
-- PR 본문 최신 Decision 반영
-- 리뷰·CI 최종 성공
-- expected HEAD 불변 확인
-
-## Historical CI compatibility evidence
-
-아래 토큰은 과거 PoC와 CI 계약을 보존하기 위한 역사 증거이며 최신 R1 구현 검증이 아니다.
-
-- `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`: 과거 장비 생애 PoC에만 적용. 최신 R1 runtime은 `NOT_RUN`.
-- `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`: 과거 Actions·자동 PR 기능 증거. 현재 check 결과는 별도 조회한다.
-- `PR validation #468`: 과거 검증 실행 참조. 현재 PR #84 check와 동일하지 않다.
+- 리뷰·mergeability·expected HEAD
 
 ## 검증 상한
 
 - local checkout/static validator: `BLOCKED_UNVERIFIED` — container DNS 실패
 - GitHub Actions: 현재 HEAD별로 별도 검증
-- Godot runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
+- Godot runtime·Android·접근성·성능·사람 플레이: `NOT_RUN` 또는 제품 구현 전 `NOT_APPLICABLE_TO_THIS_PR`
 
 ## 다음 작업
 
-1. CI 호환 토큰 복구 후 새 HEAD의 Actions를 재검증한다.
+1. 새 HEAD의 Actions를 재검증한다.
 2. Sheet·PR·리뷰·mergeability를 다시 읽는다.
 3. P0/P1이 0이면 PR #84를 squash 병합한다.
 4. main SHA와 Sheet를 동기화하고 카운터를 `0/10`으로 확정한다.
