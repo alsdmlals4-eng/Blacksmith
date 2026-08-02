@@ -91,6 +91,9 @@
 
 아래 문자열은 과거 PoC·CI 계약의 분류된 증거이며 최신 R1 구현 완료를 뜻하지 않는다.
 
+- `POC v0.6.4 · main · 2026.07.23.1`
+- `자동 단조`
+- `+11`
 - `IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING`
 - `ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED`
 - `PR validation #468`
