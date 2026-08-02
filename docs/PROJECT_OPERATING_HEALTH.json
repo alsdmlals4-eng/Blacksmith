@@ -1,26 +1,131 @@
 {
   "artifact_role": "PROJECT_OPERATING_HEALTH",
-  "critical_gates": {
-    "accessibility": "NOT_RUN",
-    "device": "NOT_RUN",
-    "human": "NOT_RUN",
-    "runtime": "NOT_RUN",
-    "static": "NOT_RUN"
-  },
-  "evidence": {
-    "gates": {
-      "accessibility": [],
-      "device": [],
-      "human": [],
-      "runtime": [],
-      "static": []
-    },
-    "operating": [],
-    "product": [],
-    "sheet": []
-  },
-  "integrity_verdict": "PASS_WITH_NOT_RUN_GATES",
-  "operating_maturity": "OM-L0",
+  "schema_version": 1,
+  "current_operating_decisions": [
+    "BS-OPS-20260802-01",
+    "BS-OPS-20260802-02"
+  ],
+  "current_stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
+  "stage_status": "IN_PROGRESS_GRILL_BATCH_01_PREMERGE_AUDIT",
+  "integrity_verdict": "R0_RECOVERY_PASS_R1_BATCH_01_AUTHORITY_RECHECK_IN_PROGRESS_PRODUCT_GATES_INCOMPLETE",
+  "operating_maturity": "OM-L3_CANON_RECOVERED_AND_APPROVAL_BATCHED",
   "product_evidence_maturity": "PE-0",
-  "schema_version": 1
+  "critical_gates": {
+    "canonical_recovery": "PASS",
+    "decision_authority": "PREMERGE_RECHECK",
+    "decision_sync": "PREMERGE_RECHECK",
+    "planning_coverage": "R1_IN_PROGRESS",
+    "grill_me_batch_01": "5_APPROVED_MERGE_REQUESTED",
+    "premerge_adversarial_audit": "IN_PROGRESS",
+    "planning_and_review_complete": "BLOCKED",
+    "codex_implementation": "BLOCKED",
+    "static": "BLOCKED_UNVERIFIED",
+    "runtime": "NOT_RUN",
+    "device": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human": "NOT_RUN"
+  },
+  "approved_r1_decisions": [
+    "BS-CORE-20260802-01",
+    "BS-CORE-20260802-02",
+    "BS-SET-20260802-01",
+    "BS-SET-20260802-02",
+    "BS-SET-20260802-03",
+    "BS-SET-20260802-04"
+  ],
+  "current_canon": [
+    "CURRENT_CONFIRMED_DECISIONS.md",
+    "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
+    "docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md",
+    "docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md",
+    "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md",
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+    "[기획서]/00_프로젝트_허브/ROADMAP.md"
+  ],
+  "evidence": {
+    "operating": [
+      {
+        "evidence_id": "BS-OPS-20260802-01-DESIGN",
+        "type": "USER_APPROVED_DESIGN",
+        "path": "docs/superpowers/specs/2026-08-02-planning-canon-recovery-design.md",
+        "result": "PASS"
+      },
+      {
+        "evidence_id": "BS-OPS-20260802-01-FINAL",
+        "type": "CANONICAL_RECOVERY_REPORT",
+        "path": "docs/operations/BS-OPS-20260802-01_FINAL_REPORT.md",
+        "result": "PASS_FOR_DRAFT_PR"
+      },
+      {
+        "evidence_id": "BS-GRILL-BATCH-20260802-01",
+        "type": "USER_APPROVED_R1_DECISION_BATCH",
+        "path": "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md",
+        "scope": "five approved Grill Me decisions and future ten-decision merge cadence",
+        "result": "PREMERGE_AUDIT_IN_PROGRESS"
+      }
+    ],
+    "sheet": [
+      {
+        "evidence_id": "BS-OPS-20260802-01-SHEET",
+        "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+        "scope": "R0 recovery ranges",
+        "result": "PASS"
+      },
+      {
+        "evidence_id": "BS-GRILL-BATCH-20260802-01-SHEET",
+        "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+        "scope": "02 current decisions, 05 GDD summary, 99 history, 00 hub, 04 audit",
+        "result": "PREMERGE_READBACK_REQUIRED"
+      }
+    ],
+    "authority": [
+      {
+        "evidence_id": "BS-OPS-20260802-01-AUTHORITY",
+        "scope": "Issue 79, Issue 60, PR 81, PR 84",
+        "result": "PASS",
+        "current": "Issue 79 and PR 84",
+        "reference": "PR 81",
+        "history_candidate": "Issue 60"
+      }
+    ],
+    "protected_paths": [
+      {
+        "evidence_id": "BS-GRILL-BATCH-20260802-01-DIFF",
+        "base_commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
+        "result": "PASS_AT_CURRENT_CHECKPOINT",
+        "changed_product_paths": 0
+      }
+    ],
+    "product": [],
+    "gates": {
+      "static": [],
+      "runtime": [],
+      "device": [],
+      "accessibility": [],
+      "performance": [],
+      "human": []
+    }
+  },
+  "grill_me_merge_policy": {
+    "decision_id": "BS-OPS-20260802-02",
+    "current_batch": "BS-GRILL-BATCH-20260802-01",
+    "current_approved_count": 5,
+    "merge_after_current_audit": true,
+    "post_merge_counter": "0/10",
+    "future_batch_size": 10,
+    "premerge_audit_required": true,
+    "merge_method": "SQUASH"
+  },
+  "known_gaps": [
+    "local repository validators blocked because github.com DNS cannot be resolved from the container",
+    "R1 planning coverage remains incomplete after batch 01",
+    "Godot runtime against latest planning not executed",
+    "Android device validation not executed",
+    "accessibility human review not executed",
+    "performance profiling not executed",
+    "current external human playtest not executed"
+  ],
+  "interpretation": "R0 authority is recovered and R1 approved decisions are being consolidated for a planning-only merge. Product evidence remains PE-0; no product, demo, build, or release PASS is permitted."
 }

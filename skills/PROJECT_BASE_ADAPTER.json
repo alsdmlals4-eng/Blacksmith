@@ -1,10 +1,41 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
+  "schema_version": 1,
+  "current_operating_decisions": [
+    "BS-OPS-20260802-01",
+    "BS-OPS-20260802-02"
+  ],
   "base_release": {
     "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
     "release_evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.4.0"
+    "version": "9.4.0",
+    "adoption_status": "RELEASE_ADOPTED"
+  },
+  "project_operating_state": {
+    "work_mode": "TOTAL_PLANNING",
+    "stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
+    "stage_status": "IN_PROGRESS_GRILL_BATCH_01_PREMERGE_AUDIT",
+    "recovery_base_commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
+    "recovery_branch": "agent/blacksmith-planning-canon-recovery",
+    "draft_pr": 84,
+    "canonical_recovery": "PASS_FOR_DRAFT_PR",
+    "planning_coverage": "R1_IN_PROGRESS",
+    "approved_grill_me_questions": 5,
+    "post_merge_grill_me_counter": "0/10",
+    "product_implementation": "BLOCKED",
+    "runtime_validation_against_latest_planning": "NOT_RUN",
+    "android_device_validation": "NOT_RUN",
+    "accessibility_human_review": "NOT_RUN",
+    "performance_profile": "NOT_RUN",
+    "human_playtest": "NOT_RUN"
+  },
+  "current_r1_canon": {
+    "registry": "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
+    "root_decisions": "CURRENT_CONFIRMED_DECISIONS.md",
+    "approved_core_ledger": "docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md",
+    "event_chronicle_set": "docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md",
+    "batch_and_merge_policy": "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
@@ -15,24 +46,54 @@
     "views": [
       "skills/BASE_V9_ADAPTER.json",
       "skills/PROJECT_BASE_SKILL_ADAPTER.json"
-    ]
+    ],
+    "view_generation_status": "NOT_RUN_IN_CONNECTOR_ONLY_SESSION",
+    "view_freshness": "BLOCKED_UNVERIFIED",
+    "manual_edit_policy": "DO_NOT_HAND_EDIT_GENERATED_COMPATIBILITY_VIEWS"
   },
   "gdd_sheet": {
     "role": "USER_FACING_GDD_WORKSPACE",
-    "sync_status": "NOT_CONFIGURED"
+    "url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit",
+    "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+    "authoritative_source": "GITHUB_CANON",
+    "sync_decision_ids": [
+      "BS-OPS-20260802-01",
+      "BS-OPS-20260802-02",
+      "BS-CORE-20260802-01",
+      "BS-CORE-20260802-02",
+      "BS-SET-20260802-01",
+      "BS-SET-20260802-02",
+      "BS-SET-20260802-03",
+      "BS-SET-20260802-04"
+    ],
+    "sync_status": "PREMERGE_RECHECK",
+    "target_tabs": [
+      "00_프로젝트_허브",
+      "01_작업순서",
+      "02_현재_확정결정",
+      "04_누락_충돌_감사",
+      "05_GDD_요약",
+      "90_본제작_출시_사업",
+      "99_변경이력"
+    ],
+    "readback_status": "PREMERGE_RECHECK",
+    "exact_head_record_policy": "PR_METADATA_AND_SHEET_HISTORY_AVOID_SELF_REFERENTIAL_COMMIT"
   },
   "project": {
     "engine": "Godot 4.7",
     "repository": "alsdmlals4-eng/Blacksmith",
-    "root": "."
+    "root": ".",
+    "primary_platform": "ANDROID_PORTRAIT_MOBILE",
+    "pc_status": "FUTURE_PLATFORM_CONSIDERATION"
   },
   "protected_baseline": {
-    "authority_kind": "REMOTE_TRACKING_REF",
-    "authority_ref": "refs/remotes/origin/main",
-    "commit": "500a5a7960146ef229ae172cf9e127306d23f073",
-    "policy_sha256": "1c36c4180b85d6bd97f4e7cdba908cc73298f529d368aa07e0dffde6e1e8ec52",
-    "policy_source_path": "skills/PROJECT_BASE_SKILL_ADAPTER.json",
-    "policy_source_type": "FIRST_MIGRATION_LEGACY_SOURCE",
+    "authority_kind": "GITHUB_MAIN_COMMIT",
+    "authority_ref": "refs/heads/main",
+    "commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
+    "policy_sha256": null,
+    "policy_hash_status": "RECALCULATION_NOT_RUN",
+    "policy_source_path": "AGENTS.md",
+    "policy_source_type": "CURRENT_PROJECT_OPERATING_POLICY",
     "protected_paths_pointer": "/protected_paths"
   },
   "protected_paths": [
@@ -69,11 +130,13 @@
     ],
     "inactive_routes": [],
     "precedence": "PROJECT_LOCAL_THEN_BASE_SHARED",
+    "selection_policy": "AUTOMATIC_TRIGGER_MATCH_MINIMUM_SET",
+    "load_all_skills": false,
     "project_routes": [
       {
         "route_id": "blacksmith-engineering",
         "skill_id": "blacksmith-engineering",
-        "status": "ACTIVE"
+        "status": "ACTIVE_BUT_IMPLEMENTATION_GATE_BLOCKED"
       },
       {
         "route_id": "blacksmith-game-design",
@@ -87,7 +150,6 @@
       }
     ]
   },
-  "schema_version": 1,
   "shared_overrides": {
     "auditing-and-refining-ui-art": {
       "base_main_commit": "0fd95f4513343e77fd664af2763a01b02f52545b",
@@ -108,6 +170,8 @@
         "one-hand touch",
         "safe area",
         "crafting and enhancement risk",
+        "fatigue and date priority",
+        "event chronicle sets",
         "item comparison",
         "causal result recap"
       ],
@@ -116,6 +180,9 @@
     "evaluating-godot-assets-and-plugins-before-creation": {
       "core_systems_not_to_outsource": [
         "forging judgment",
+        "enhancement stop-or-push judgment",
+        "fatigue and date priority",
+        "event chronicle set causality",
         "customer response",
         "core economy loop"
       ],
@@ -131,11 +198,14 @@
     "governing-legacy-retention-and-archives": {
       "adapter": "docs/archive/ARCHIVE_RETENTION_ADAPTER.json",
       "current_canon_priority": [
-        "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+        "CURRENT_CONFIRMED_DECISIONS.md",
+        "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
         "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+        "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
         "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
       ],
-      "existing_legacy_migration": "NOT_IN_THIS_ADOPTION"
+      "existing_legacy_migration": "NOT_IN_THIS_RECOVERY",
+      "pr81_status": "REFERENCE_ONLY_SUPERSEDED_AS_MERGE_UNIT"
     },
     "optimizing-ai-model-and-prompt-costs": {
       "modes": [
@@ -152,20 +222,32 @@
     "base": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "skills/SKILL_REGISTRY.json",
-      "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
+      "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59",
+      "hash_status": "ADOPTION_EVIDENCE_VALUE"
     },
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
-      "sha256": "e157f6d3d7f82dc98069ae1197d850d6a33a1ac2347dcf18998d308f8d3996e9"
+      "sha256": null,
+      "hash_status": "RECALCULATION_NOT_RUN_AFTER_R1_EDIT"
     }
   },
   "validators": [
     "python tools/check_archive_governance.py",
     "python -m unittest tests.test_archive_retention_governance -v",
     "python tools/audit_project_operating_system.py",
+    "manual: GitHub PR and Sheet premerge adversarial audit",
     "manual: Godot project parse/runtime check",
     "manual: Android device and safe-area check when applicable",
     "manual: UX UI human understanding and accessibility review"
-  ]
+  ],
+  "validation_status": {
+    "static_repository_validators": "BLOCKED_UNVERIFIED_GITHUB_DNS_FAILURE",
+    "premerge_github_sheet_pr_audit": "IN_PROGRESS",
+    "godot_runtime": "NOT_RUN",
+    "android_device": "NOT_RUN",
+    "accessibility_human": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human_playtest": "NOT_RUN"
+  }
 }

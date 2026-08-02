@@ -2,6 +2,8 @@
   "schema_version": 2,
   "registry_role": "blacksmith-project-skill-router",
   "project": "Blacksmith",
+  "current_operating_decision": "BS-OPS-20260802-01",
+  "current_work_mode": "TOTAL_PLANNING",
   "routing_policy": {
     "load_all_skills": false,
     "default_selection": "automatic-trigger-match",
@@ -10,8 +12,15 @@
     "require_trigger_match": true,
     "require_execution_report": true,
     "work_modes": [
+      "TOTAL_PLANNING",
       "PLAN",
       "BUILD",
+      "REVIEW"
+    ],
+    "total_planning_lifecycle": [
+      "REVIEW",
+      "PLAN",
+      "APPROVED_PLANNING_DOCUMENT_BUILD",
       "REVIEW"
     ],
     "max_primary_discipline_skills": 1,
@@ -21,6 +30,63 @@
       "REMOVAL_CANDIDATE"
     ]
   },
+  "foundation_routes": [
+    {
+      "responsibility": "project-intake-and-work-contract",
+      "base_skill": "managing-project-intake-and-work-contract",
+      "use_when": "a new planning bundle or approval contract begins"
+    },
+    {
+      "responsibility": "adversarial-review",
+      "base_skill": "running-adversarial-review-and-refinement",
+      "use_when": "every major planning bundle and recovery checkpoint"
+    },
+    {
+      "responsibility": "project-change-review",
+      "base_skill": "reviewing-and-validating-project-changes",
+      "use_when": "canon, registry, adapter, Sheet, or implementation claims change"
+    },
+    {
+      "responsibility": "reference-freshness",
+      "base_skill": "auditing-canonical-reference-freshness",
+      "use_when": "stale path, version, Issue, PR, Decision, or consumer risk exists"
+    },
+    {
+      "responsibility": "handoff-and-context",
+      "base_skill": "maintaining-project-context-and-handoff",
+      "use_when": "a bundle or PR checkpoint ends"
+    }
+  ],
+  "superpowers_routes": [
+    {
+      "skill": "using-superpowers",
+      "use_when": "before selecting any applicable process skill"
+    },
+    {
+      "skill": "brainstorming",
+      "use_when": "before creating or materially changing planning behavior"
+    },
+    {
+      "skill": "writing-plans",
+      "use_when": "before a multi-step approved change"
+    },
+    {
+      "skill": "executing-plans",
+      "use_when": "when executing an approved plan with checkpoints"
+    },
+    {
+      "skill": "systematic-debugging",
+      "use_when": "when a failure cause is unclear"
+    },
+    {
+      "skill": "verification-before-completion",
+      "use_when": "before any completion claim"
+    },
+    {
+      "skill": "requesting-code-review",
+      "use_when": "before a major PR is considered ready"
+    }
+  ],
   "skills": [
     {
       "skill_id": "blacksmith-game-design",
@@ -31,45 +97,36 @@
       "path": "../../skills/game-design/SKILL.md",
       "trigger_tags": [
         "project-core",
+        "player-promise",
+        "sharp-fun",
         "core-loop",
-        "core-classification",
+        "session-loop",
+        "meta-loop",
         "crafting",
         "enhancement",
-        "special-enhancement",
         "affix",
-        "material",
-        "catalyst",
-        "auto-forging",
+        "equipment-identity",
+        "failure-recovery",
         "customer",
-        "merchant",
+        "world-feedback",
+        "chronicle",
         "economy",
+        "progression",
         "balance",
-        "balance-simulation",
-        "simulation",
-        "expected-cost",
-        "risk-curve",
         "benchmark",
         "player-research",
-        "research-coverage",
         "playtest",
         "poc",
         "vertical-slice",
         "art-brief",
-        "mvp",
-        "worldbuilding",
-        "main-characters",
-        "supporting-characters",
-        "core-systems",
-        "main-content",
-        "planning-visualization",
-        "final-visual-candidate",
-        "image-mockup"
+        "planning-visualization"
       ],
       "use_when": [
-        "프로젝트 코어·제작·강화·수식어·재료·고객·판매·경제·연구·플레이테스트·PoC·Vertical Slice의 규칙과 경험을 변경하거나 검토한다."
+        "프로젝트 코어·플레이어 약속·제작·강화·작품 정체성·고객·세계 환류·경제·연구·플레이테스트·Vertical Slice 기획을 작성하거나 검토한다."
       ],
       "do_not_use_when": [
-        "기획 결정에 영향 없는 Godot 문법 수정 또는 동일 입력의 테스트 재실행이다."
+        "기획 결정에 영향 없는 경로·상태·포맷 교정만 수행한다.",
+        "제품 코드·Scene 구현은 현재 BS-OPS-20260802-01 범위에서 금지된다."
       ],
       "skill_modes": [
         "frame",
@@ -82,37 +139,32 @@
         "balance-review",
         "balance-simulation",
         "benchmark-and-player-research",
-        "gur-coverage-audit",
         "research-evidence-map",
         "playtest-and-experiment",
         "poc-check",
         "vertical-slice-gate",
         "art-brief",
-        "planning-visualization",
-        "final-visual-candidate",
-        "visual-brief"
+        "planning-visualization"
       ],
       "source_documents": [
+        "current-confirmed-decisions",
         "blacksmith-game-bible",
+        "project-core-contract",
         "balance-simulation-scope",
         "balance-simulation-report"
       ],
       "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
       "review_triggers": [
-        "광클 재미 약화",
         "승인 없는 코어 확정",
-        "코어·MVP 지원 혼동",
-        "일반·특수 강화 경계 혼동",
-        "재료 효과 비의도 전파",
-        "고위험 보상 불균형",
-        "평균값만으로 위험 곡선 확정",
-        "여러 밸런스 변수를 한 번에 변경",
-        "판매 루프 역할 중복",
+        "사용자 결정을 AI가 대신함",
+        "상세 시험값을 확정 기획으로 승격",
+        "플레이어 약속과 Core Loop 불일치",
+        "장비 애착과 파괴·판매 충돌",
+        "자동화가 핵심 선택을 우회",
         "벤치마크 기능 복사",
-        "연구 표본·버전 누락",
-        "플레이테스트 없는 확정",
-        "문서와 JSON 수치 중복",
-        "이미지 단계·브리프·승인 로그 없는 생성"
+        "플레이테스트 없는 재미 확정",
+        "모바일 정보량 초과",
+        "이미지·문서 존재를 제품 구현으로 오인"
       ]
     },
     {
@@ -130,19 +182,17 @@
         "save",
         "data",
         "json-schema",
-        "inventory",
-        "automation",
+        "migration",
         "runtime",
-        "runtime-failure",
         "refactor",
-        "contract-preservation",
         "build"
       ],
       "use_when": [
-        "Godot Scene·GDScript·데이터·Android·저장·자동화 구현, 계약 보존 리팩터링, 런타임 오류 진단을 설계하거나 수정한다."
+        "승인된 기획 이후 Godot Scene·GDScript·데이터·Android·저장·migration·자동화 구현 계약을 설계하거나 실행한다."
       ],
       "do_not_use_when": [
-        "코드·데이터·Scene에 영향 없는 기획 문장 편집 또는 검토만 수행한다."
+        "현재 작업이 기획 문서·정본·Sheet 복구에 한정된다.",
+        "PLANNING_AND_REVIEW_COMPLETE_GATE 또는 CODEX_IMPLEMENTATION_GATE가 BLOCKED다."
       ],
       "skill_modes": [
         "plan-change",
@@ -156,17 +206,18 @@
         "rerun-engine-checks"
       ],
       "source_documents": [
+        "current-confirmed-decisions",
         "blacksmith-game-bible"
       ],
       "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
       "review_triggers": [
+        "기획 Gate 전 제품 구현",
         "Godot 파싱 실패",
         "Scene 진입점 불일치",
         "JSON과 런타임 기본값 drift",
-        "모바일 화면 회귀",
         "저장 호환성 파손",
+        "ResultEnvelope 이중 적용",
         "자동 단조 무한 루프",
-        "재현 없는 추측 수정",
         "리팩터링과 기능 변경 혼합"
       ]
     },
@@ -178,38 +229,31 @@
       "discipline": "QA",
       "path": "../../skills/qa/SKILL.md",
       "trigger_tags": [
-        "test",
-        "validation",
         "contract-check",
-        "external-source-review",
         "reference-freshness",
         "adversarial-review",
         "critique-validation",
         "static-validation",
-        "merge-conflict",
         "runtime-validation",
         "android-device",
         "accessibility",
         "performance",
-        "ui-art-review",
         "regression",
         "pr-review",
         "evidence-report",
         "sheet-structure",
-        "image-approval",
-        "visual-qa",
-        "stale-prompt",
-        "bca-adoption"
+        "decision-sync",
+        "cold-start",
+        "repository-wide-audit"
       ],
       "use_when": [
-        "변경 계약·외부 결과·정본 참조·적대적 검토·정적·런타임·접근성·성능·UI·회귀 증거를 검증하고 판정한다."
+        "변경 계약·정본·Sheet·참조·적대적 검토·정적·런타임·접근성·성능·회귀 증거를 검증하고 판정한다."
       ],
       "do_not_use_when": [
-        "검증 대상 변경이 없고 단순 아이디어 탐색만 수행한다."
+        "검증 대상 변경이나 판정 질문이 없는 순수 아이디어 탐색만 수행한다."
       ],
       "skill_modes": [
         "contract-check",
-        "external-source-review",
         "reference-freshness",
         "adversarial-review",
         "critique-validation",
@@ -219,14 +263,15 @@
         "runtime",
         "accessibility-review",
         "performance-profile",
-        "ui-art-review",
-        "regression",
         "evidence-report",
         "visual-qa-and-approval",
         "repository-wide-audit",
-        "bca-adoption-audit"
+        "decision-sync-readback",
+        "cold-start-validation"
       ],
       "source_documents": [
+        "current-confirmed-decisions",
+        "bs-ops-20260802-01-baseline",
         "blacksmith-game-bible",
         "balance-simulation-scope",
         "balance-simulation-report"
@@ -235,34 +280,38 @@
       "review_triggers": [
         "실행하지 않은 검사 PASS 보고",
         "문서 주장과 실제 구현 불일치",
+        "Draft CURRENT를 사용자 승인으로 오인",
+        "GitHub와 Sheet Decision ID·Commit 불일치",
         "정상 경로만 테스트",
         "Android 실기기 증거 누락",
-        "PR untouched 소비자 누락",
-        "Workflow 존재와 Required Check 강제 혼동",
+        "untouched 소비자 누락",
         "레드팀 지적 무검증 수용",
-        "미해결 Git 충돌 블록"
+        "미해결 Git 충돌"
       ]
     }
   ],
   "learning_log": "../../skills/SKILL_LEARNING_LOG.md",
   "base_integration": {
     "repository": "alsdmlals4-eng/Base",
-    "commit": "c987647d01ad2baa028a16e03d85ddfc1572a727",
+    "released_version": "9.4.0",
+    "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
+    "evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
     "source_registry": "skills/SKILL_REGISTRY.json",
-    "project_sheet_status": "PROJECT_SHEET_CONFIGURED",
+    "routing_policy": "SELECTIVE_AUTOMATIC_TRIGGER_MATCH",
+    "project_sheet_status": "SYNC_IN_PROGRESS_BS-OPS-20260802-01",
     "project_sheet_url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit",
     "project_sheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
     "project_sheet_role": "USER_FACING_GDD_WORKSPACE",
-    "project_sheet_edit_policy": "PROPOSED_SHEET_CHANGE",
-    "project_sheet_last_verified_at": "2026-07-29"
+    "project_sheet_edit_policy": "APPROVED_DECISION_AND_SAFE_PLANNING_FIXES",
+    "project_sheet_last_verified_at": "2026-08-02"
   },
   "bca_visual_sheet": {
-    "sheet_status": "PROJECT_SHEET_CONFIGURED",
+    "sheet_status": "SYNC_IN_PROGRESS_BS-OPS-20260802-01",
     "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit",
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
     "workbook_role": "USER_FACING_GDD_WORKSPACE",
-    "sheet_edit_policy": "PROPOSED_SHEET_CHANGE",
-    "last_verified_at": "2026-07-29",
+    "sheet_edit_policy": "APPROVED_DECISION_AND_SAFE_PLANNING_FIXES",
+    "last_verified_at": "2026-08-02",
     "required_tabs": [
       "00_프로젝트_허브",
       "01_작업순서",

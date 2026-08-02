@@ -10,6 +10,8 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 - `contract-check`: 요구·보호 대상·완료 기준과 실제 diff를 대조한다.
 - `external-source-review`: 외부 AI·벤치마크·리뷰 결과를 정본이 아닌 검수 대기 입력으로 확인한다.
 - `reference-freshness`: 경로·ID·Schema·정본·정책 변경이 untouched 소비자까지 전파됐는지 확인한다.
+- `decision-sync-readback`: 승인 Decision ID·의미·상태·GitHub 경로·Commit이 연결된 Google Sheet 범위와 일치하는지 양쪽을 재조회한다.
+- `cold-start-validation`: 새 작업자가 Root·Registry·Hub만 읽어 현재 단계·권위·금지 경로·다음 작업을 충돌 없이 복원할 수 있는지 검증한다.
 - `adversarial-review`: 작업물이 실패했다고 가정하고 코어 훼손·누락·모순·거짓 통과를 공격적으로 찾는다.
 - `critique-validation`: 지적을 증거·재현성·계약 영향으로 재검증하고 취향·오탐을 분리한다.
 - `approved-refinement`: 유효하고 승인된 문제만 최소 범위로 수정한다.
@@ -43,6 +45,7 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 - 자동 단조 목표·비용·재료 fallback·자동 보관·반복·중지
 - 저장 변경 시 저장·불러오기·구버전 호환성
 - 세로 화면·스크롤·터치·안전 영역
+- 승인 Decision의 GitHub·Sheet readback과 cold-start 진입점 일치
 - 생성 이미지·목업은 승인된 브리프, 정확한 비율·해상도, 유지·금지 요소, 실제 Android 화면 가독성, 원출처·권리 상태를 함께 검수
 
 ## Review loop
@@ -52,6 +55,8 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 → adversarial-review
 → critique-validation
 → reference-freshness
+→ decision-sync-readback
+→ cold-start-validation
 → 정적 검사
 → 모델 테스트
 → Godot 파싱·Scene
@@ -88,6 +93,8 @@ description: Blacksmith 변경의 계약·외부 결과·정본 참조·정적·
 - 문서 주장이나 외부 결과를 실제 구현보다 우선한다.
 - 자동 테스트만으로 Android·시각·접근성·성능을 통과 처리한다.
 - stale reference·untouched 소비자·원래 실패 반례를 무시한다.
+- Decision ID와 Sheet readback 없이 동기화 완료를 주장한다.
+- cold-start 진입점이 서로 다른 단계를 가리키는데 병합한다.
 - 보류·기각한 개선을 몰래 반영하거나 개선 뒤 회귀 검토를 생략한다.
 - 생성 이미지를 자동 최종 자산으로 승인하거나 실제 화면 검증·권리 검토 없이 적용한다.
 
