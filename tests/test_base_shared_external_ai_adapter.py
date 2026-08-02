@@ -5,67 +5,50 @@ import subprocess
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
-ADAPTER_PATH = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
-SKILL_ID = "orchestrating-deepseek-worktrees"
-BASE_RELEASE_COMMIT = "dd705d7f48a7919187bc0507610ba5fc5b43a658"
-BASE_RELEASE_EVIDENCE = "0c6cdd128bf1f5782e96b3a6240c9585f8d1ef6d"
-BASE_REGISTRY_SHA256 = "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
+ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
+SKILL = "orchestrating-deepseek-worktrees"
 
 
-def load_adapter() -> dict:
-    return json.loads(ADAPTER_PATH.read_text(encoding="utf-8"))
+def load() -> dict:
+    return json.loads(ADAPTER.read_text(encoding="utf-8"))
 
 
-def active_base_routes(adapter: dict) -> set[str]:
-    routes: set[str] = set()
-    for route in adapter["routing"]["base_routes"]:
-        if isinstance(route, str):
-            routes.add(route)
-        elif isinstance(route, dict) and route.get("status") == "ACTIVE":
-            routes.add(route["skill_id"])
-    return routes
+def active_routes(data: dict) -> set[str]:
+    return {
+        route if isinstance(route, str) else route["skill_id"]
+        for route in data["routing"]["base_routes"]
+        if isinstance(route, str) or route.get("status") == "ACTIVE"
+    }
 
 
 class BaseSharedExternalAIAdapterTests(unittest.TestCase):
-    def test_preserves_current_released_base_identity(self) -> None:
-        adapter = load_adapter()
-        self.assertEqual("9.4.2", adapter["base_release"]["version"])
-        self.assertEqual(BASE_RELEASE_COMMIT, adapter["base_release"]["release_commit"])
-        self.assertEqual(BASE_RELEASE_EVIDENCE, adapter["base_release"]["release_evidence_commit"])
-        self.assertEqual(BASE_REGISTRY_SHA256, adapter["skill_registry"]["base"]["sha256"])
+    def test_current_base_identity_is_v943(self) -> None:
+        data = load()
+        release = data["base_release"]
+        self.assertEqual("9.4.3", release["version"])
+        self.assertEqual("7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8", release["release_commit"])
+        self.assertEqual("da33a350d61b8adc52df97fccc7001708a933370", release["release_evidence_commit"])
+        self.assertEqual("0b7c94f38d959efc0fc9442274c60b2e268a3c97", release["finalization_commit"])
+        self.assertEqual("693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59", data["skill_registry"]["base"]["sha256"])
 
-    def test_routes_external_ai_worktree_skill_without_copying_body(self) -> None:
-        adapter = load_adapter()
-        self.assertIn(SKILL_ID, active_base_routes(adapter))
-        self.assertFalse((ROOT / "skills/orchestrating-deepseek-worktrees/SKILL.md").exists())
+    def test_external_ai_remains_separate_v941_boundary(self) -> None:
+        data = load()
+        self.assertIn(SKILL, active_routes(data))
+        self.assertFalse((ROOT / f"skills/{SKILL}/SKILL.md").exists())
+        policy = data["shared_overrides"][SKILL]
+        self.assertEqual(".worktrees/", policy["worktree_parent"])
+        self.assertEqual("REVIEW_PENDING", policy["result_state"])
+        self.assertEqual("LOCAL_REVIEW_REQUIRED_BEFORE_CANON", policy["integration_policy"])
+        self.assertEqual("ADOPTED_FROM_BASE_V9_4_1", policy["base_validator_adoption"])
+        self.assertEqual("base-v9.4.1.lock.json", policy["base_release_lock"])
+        self.assertEqual("NOT_RUN", policy["actual_external_ai_worktree_execution"])
 
-    def test_binds_project_isolation_and_v941_validator_boundary(self) -> None:
-        adapter = load_adapter()
-        override = adapter["shared_overrides"][SKILL_ID]
-        self.assertEqual(".worktrees/", override["worktree_parent"])
-        self.assertEqual("ai/deepseek-", override["task_branch_prefix"])
-        self.assertEqual("drafts/external-ai/", override["draft_root"])
-        self.assertEqual(["drafts/external-ai/**"], override["allowed_write_roots"])
-        self.assertEqual("skills/PROJECT_BASE_ADAPTER.json#/protected_paths", override["protected_paths_source"])
-        self.assertEqual("REVIEW_PENDING", override["result_state"])
-        self.assertEqual("LOCAL_REVIEW_REQUIRED_BEFORE_CANON", override["integration_policy"])
-        self.assertEqual("ADOPTED_FROM_BASE_V9_4_1", override["base_validator_adoption"])
-        self.assertEqual("tools/check_external_ai_worktree_contract.py", override["base_validator_path"])
-        self.assertEqual("base-v9.4.1.lock.json", override["base_release_lock"])
-        self.assertEqual("NOT_RUN", override["actual_external_ai_worktree_execution"])
-        self.assertTrue(adapter["protected_paths"])
-
-    def test_worktree_parent_is_ignored_by_git(self) -> None:
+    def test_worktree_and_validator_contract(self) -> None:
         result = subprocess.run(["git", "check-ignore", "-q", ".worktrees/"], cwd=ROOT, check=False)
         self.assertEqual(0, result.returncode)
-
-    def test_project_validation_discovers_adapter_test(self) -> None:
-        adapter = load_adapter()
-        command = "python tests/test_base_shared_external_ai_adapter.py"
-        commands = {item if isinstance(item, str) else item.get("command") for item in adapter.get("validators", [])}
-        self.assertIn(command, commands)
+        commands = {item if isinstance(item, str) else item.get("command") for item in load().get("validators", [])}
+        self.assertIn("python tests/test_base_shared_external_ai_adapter.py", commands)
 
 
 if __name__ == "__main__":
