@@ -11,11 +11,12 @@
   },
   "project_operating_state": {
     "work_mode": "TOTAL_PLANNING",
-    "stage": "CANONICAL_RECOVERY_IN_PROGRESS",
+    "stage": "R0_RECOVERY_PASS_R1_NOT_STARTED",
     "recovery_base_commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
     "recovery_branch": "agent/blacksmith-planning-canon-recovery",
     "draft_pr": 84,
-    "planning_coverage": "NOT_STARTED_AFTER_RECOVERY",
+    "canonical_recovery": "PASS_FOR_DRAFT_PR",
+    "planning_coverage": "R1_NOT_STARTED",
     "product_implementation": "BLOCKED",
     "runtime_validation_against_latest_planning": "NOT_RUN",
     "android_device_validation": "NOT_RUN",
@@ -43,7 +44,7 @@
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
     "authoritative_source": "GITHUB_CANON",
     "sync_decision_id": "BS-OPS-20260802-01",
-    "sync_status": "SYNC_IN_PROGRESS_BS-OPS-20260802-01",
+    "sync_status": "SYNCED_FOR_DRAFT_PR",
     "target_tabs": [
       "00_프로젝트_허브",
       "01_작업순서",
@@ -53,7 +54,8 @@
       "90_본제작_출시_사업",
       "99_변경이력"
     ],
-    "readback_status": "PENDING"
+    "readback_status": "PASS",
+    "exact_head_record_policy": "PR_METADATA_AND_SHEET_HISTORY_AVOID_SELF_REFERENTIAL_COMMIT"
   },
   "project": {
     "engine": "Godot 4.7",
@@ -211,7 +213,7 @@
     "manual: UX UI human understanding and accessibility review"
   ],
   "validation_status": {
-    "static_repository_validators": "NOT_RUN_IN_CONNECTOR_ONLY_SESSION",
+    "static_repository_validators": "BLOCKED_UNVERIFIED_GH_MISSING_AND_GITHUB_DNS_FAILURE",
     "godot_runtime": "NOT_RUN",
     "android_device": "NOT_RUN",
     "accessibility_human": "NOT_RUN",
