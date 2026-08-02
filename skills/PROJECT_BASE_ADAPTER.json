@@ -1,7 +1,10 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
   "schema_version": 1,
-  "current_operating_decision": "BS-OPS-20260802-01",
+  "current_operating_decisions": [
+    "BS-OPS-20260802-01",
+    "BS-OPS-20260802-02"
+  ],
   "base_release": {
     "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
     "release_evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
@@ -11,18 +14,28 @@
   },
   "project_operating_state": {
     "work_mode": "TOTAL_PLANNING",
-    "stage": "R0_RECOVERY_PASS_R1_NOT_STARTED",
+    "stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
+    "stage_status": "IN_PROGRESS_GRILL_BATCH_01_PREMERGE_AUDIT",
     "recovery_base_commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
     "recovery_branch": "agent/blacksmith-planning-canon-recovery",
     "draft_pr": 84,
     "canonical_recovery": "PASS_FOR_DRAFT_PR",
-    "planning_coverage": "R1_NOT_STARTED",
+    "planning_coverage": "R1_IN_PROGRESS",
+    "approved_grill_me_questions": 5,
+    "post_merge_grill_me_counter": "0/10",
     "product_implementation": "BLOCKED",
     "runtime_validation_against_latest_planning": "NOT_RUN",
     "android_device_validation": "NOT_RUN",
     "accessibility_human_review": "NOT_RUN",
     "performance_profile": "NOT_RUN",
     "human_playtest": "NOT_RUN"
+  },
+  "current_r1_canon": {
+    "registry": "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
+    "root_decisions": "CURRENT_CONFIRMED_DECISIONS.md",
+    "approved_core_ledger": "docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md",
+    "event_chronicle_set": "docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md",
+    "batch_and_merge_policy": "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
@@ -43,8 +56,17 @@
     "url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit",
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
     "authoritative_source": "GITHUB_CANON",
-    "sync_decision_id": "BS-OPS-20260802-01",
-    "sync_status": "SYNCED_FOR_DRAFT_PR",
+    "sync_decision_ids": [
+      "BS-OPS-20260802-01",
+      "BS-OPS-20260802-02",
+      "BS-CORE-20260802-01",
+      "BS-CORE-20260802-02",
+      "BS-SET-20260802-01",
+      "BS-SET-20260802-02",
+      "BS-SET-20260802-03",
+      "BS-SET-20260802-04"
+    ],
+    "sync_status": "PREMERGE_RECHECK",
     "target_tabs": [
       "00_프로젝트_허브",
       "01_작업순서",
@@ -54,7 +76,7 @@
       "90_본제작_출시_사업",
       "99_변경이력"
     ],
-    "readback_status": "PASS",
+    "readback_status": "PREMERGE_RECHECK",
     "exact_head_record_policy": "PR_METADATA_AND_SHEET_HISTORY_AVOID_SELF_REFERENTIAL_COMMIT"
   },
   "project": {
@@ -148,6 +170,8 @@
         "one-hand touch",
         "safe area",
         "crafting and enhancement risk",
+        "fatigue and date priority",
+        "event chronicle sets",
         "item comparison",
         "causal result recap"
       ],
@@ -156,6 +180,9 @@
     "evaluating-godot-assets-and-plugins-before-creation": {
       "core_systems_not_to_outsource": [
         "forging judgment",
+        "enhancement stop-or-push judgment",
+        "fatigue and date priority",
+        "event chronicle set causality",
         "customer response",
         "core economy loop"
       ],
@@ -172,8 +199,9 @@
       "adapter": "docs/archive/ARCHIVE_RETENTION_ADAPTER.json",
       "current_canon_priority": [
         "CURRENT_CONFIRMED_DECISIONS.md",
-        "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+        "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
         "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+        "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
         "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
       ],
       "existing_legacy_migration": "NOT_IN_THIS_RECOVERY",
@@ -201,19 +229,21 @@
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
       "sha256": null,
-      "hash_status": "RECALCULATION_NOT_RUN_AFTER_RECOVERY_EDIT"
+      "hash_status": "RECALCULATION_NOT_RUN_AFTER_R1_EDIT"
     }
   },
   "validators": [
     "python tools/check_archive_governance.py",
     "python -m unittest tests.test_archive_retention_governance -v",
     "python tools/audit_project_operating_system.py",
+    "manual: GitHub PR and Sheet premerge adversarial audit",
     "manual: Godot project parse/runtime check",
     "manual: Android device and safe-area check when applicable",
     "manual: UX UI human understanding and accessibility review"
   ],
   "validation_status": {
-    "static_repository_validators": "BLOCKED_UNVERIFIED_GH_MISSING_AND_GITHUB_DNS_FAILURE",
+    "static_repository_validators": "BLOCKED_UNVERIFIED_GITHUB_DNS_FAILURE",
+    "premerge_github_sheet_pr_audit": "IN_PROGRESS",
     "godot_runtime": "NOT_RUN",
     "android_device": "NOT_RUN",
     "accessibility_human": "NOT_RUN",
