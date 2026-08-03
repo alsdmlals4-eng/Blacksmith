@@ -152,6 +152,68 @@
       }
     },
     {
+      "id": "BS-CONTENT-20260804-02",
+      "title": "방문고객 유형과 초기 콘텐츠 가족·귀족 예술 사치 수요",
+      "status": "USER_APPROVED_PENDING_MERGE",
+      "canon": "docs/planning/BLACKSMITH_R2_VISITOR_ARCHETYPES_AND_INITIAL_CONTENT_FAMILIES_CANON_2026.md",
+      "refines": "BS-CONTENT-20260804-01",
+      "contract": {
+        "visitor_archetypes": [
+          "GLADIATOR",
+          "ADVENTURER",
+          "SOLDIER",
+          "NOBLE"
+        ],
+        "schedule_requires_primary_visitor_fit": true,
+        "personal_content_families": [
+          "COMPETITION_AND_RIVALRY",
+          "EXPLORATION_AND_FRONTIER",
+          "PROTECTION_AND_DUTY",
+          "HUNTING_AND_THREAT_RESPONSE",
+          "ARTISTRY_PRESTIGE_AND_PATRONAGE"
+        ],
+        "world_content_families": [
+          "GRAND_TOURNAMENT_SEASON",
+          "GREAT_RUIN_EXPEDITION",
+          "KINGDOM_CRISIS",
+          "ROYAL_CEREMONY_AND_MASTERWORK_EXPOSITION"
+        ],
+        "noble_request_focus": [
+          "ARTISTRY",
+          "LUXURY",
+          "RARITY",
+          "HOUSE_PRESTIGE",
+          "PATRONAGE",
+          "GIFTING",
+          "COLLECTION",
+          "CEREMONY",
+          "INHERITANCE"
+        ],
+        "noble_item_scope": [
+          "CEREMONIAL_WEAPONS_AND_ARMOR",
+          "HOUSE_CRESTS_AND_SEALS",
+          "METAL_JEWELRY_AND_ORNAMENTS",
+          "DIPLOMATIC_AND_CEREMONIAL_GIFTS",
+          "HEIRLOOM_RESTORATION",
+          "EXHIBITION_MASTERWORKS"
+        ],
+        "noble_primary_stat": "JUDGMENT",
+        "noble_optional_secondary_stat": "SKILL",
+        "new_customer_stats_added": false,
+        "noncombat_item_legacy": [
+          "HOUSE_OWNERSHIP",
+          "CREST_OR_INSCRIPTION",
+          "EXHIBITION_OR_AWARD",
+          "GIFT_OR_INHERITANCE",
+          "APPRAISAL",
+          "PATRON_AND_CRAFTSMAN_REPUTATION"
+        ],
+        "noble_is_expensive_combat_reskin": false,
+        "general_non_metal_luxury_goods_in_scope": false,
+        "exact_counts_and_numeric_weights": "FOLLOW_UP_TEST_PRESET"
+      }
+    },
+    {
       "id": "BS-OPS-20260804-01",
       "title": "GPT 논의 역할 경계",
       "status": "USER_DIRECTIVE_OPERATING_BOUNDARY_NON_BATCH",
@@ -198,6 +260,14 @@
       "current_player_display_scale": "INTEGER_1_TO_10",
       "unknown_variable_notice": false,
       "detailed_pre_sale_reason_list_required": false
+    },
+    {
+      "decision": "BS-CONTENT-20260804-01",
+      "refined_by": "BS-CONTENT-20260804-02",
+      "scope": "INITIAL_VISITOR_ARCHETYPES_CONTENT_FAMILIES_AND_NOBLE_LUXURY_DIRECTION",
+      "initial_personal_families": 5,
+      "initial_world_families": 4,
+      "primary_visitor_fit_required": true
     }
   ],
   "resolution_formula_structure": {
@@ -232,6 +302,13 @@
     "CUSTOMER_MOTIVATION_MUST_AFFECT_STAKES_OR_RESULT",
     "MANDATORY_LONG_QUEST_CHAIN_PROHIBITED",
     "WORLD_RESULT_MUST_PRESERVE_CUSTOMER_AND_ITEM_FOLLOW_UP",
+    "SCHEDULE_MUST_FIT_PRIMARY_VISITOR_ARCHETYPE",
+    "NOBLE_MUST_NOT_BE_EXPENSIVE_GLADIATOR_OR_SOLDIER_RESKIN",
+    "NOBLE_CONTENT_MUST_CREATE_ARTISTRY_LUXURY_PROVENANCE_OR_CEREMONIAL_DECISIONS",
+    "NOBLE_CONTENT_MUST_REMAIN_IN_METALWORK_FORGING_LIFECYCLE",
+    "NONCOMBAT_EXHIBITION_GIFT_AND_INHERITANCE_LEGACY_MUST_PERSIST_BY_ITEM_UID",
+    "NO_NEW_NOBLE_ONLY_CUSTOMER_STATS_AT_THIS_GATE",
+    "NOBLE_VISUAL_IDENTITY_MUST_NOT_REDUCE_TO_GOLD_AND_GEMS",
     "GPT_SCOPE_MUST_REMAIN_DESIGN_CONTENT_AND_ART_FOCUSED"
   ],
   "checkpoint": {
@@ -256,14 +333,15 @@
   },
   "active_batch": {
     "id": "R2_BATCH_003",
-    "approved_decisions": 3,
+    "approved_decisions": 4,
     "max_batch_size": 10,
-    "counter": "3/10",
+    "counter": "4/10",
     "state": "APPROVED_PENDING_MERGE",
     "decisions": [
       "BS-CUSTOMER-20260803-02",
       "BS-SCHEDULE-20260804-01",
-      "BS-CONTENT-20260804-01"
+      "BS-CONTENT-20260804-01",
+      "BS-CONTENT-20260804-02"
     ],
     "non_batch_operating_directives": [
       "BS-OPS-20260804-01"
@@ -273,5 +351,5 @@
     "current_validation": "PENDING_FOR_CURRENT_HEAD",
     "product_paths_changed": false
   },
-  "next_activity": "DEFINE_INITIAL_PERSONAL_AND_WORLD_EVENT_FAMILIES_AND_VISUAL_IDENTITIES"
+  "next_activity": "DEFINE_NOBLE_ARTISTRY_LUXURY_AND_HOUSE_FIT_CRAFTING_AXES"
 }
