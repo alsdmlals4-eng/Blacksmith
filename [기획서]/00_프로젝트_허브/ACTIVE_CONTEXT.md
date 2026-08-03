@@ -154,9 +154,16 @@ vs 일정 난이도
 ## 역사 구현·보조 기능 추적
 
 - `POC v0.6.4 · main · 2026.07.23.1`: 제작 품질 역사 구현 기준선
+- 자동 검증 기록: `제작 모델 7건`, `통합 6건`
 - MVP-001~003: `REFERENCE_IMPLEMENTATION / HISTORICAL_POC`
 - 과거 `+11` 단계 하락·`+30` 파괴·단일 고객 계약·단일 날짜 결과: `LEGACY_IMPLEMENTED_VALUE`
 - 최신 R2 고객 능력·일정 판정 runtime: `NOT_RUN`
+
+## 강화 데이터 권위
+
+- `data/crafting/enhancement_balance.json`: 현재 구현의 비용·확률·실패·위험·단계 하락·파괴 비율과 소비 정책
+- `data/crafting/enhancement_milestones.json`: 현재 구현의 정밀강화 이정표·보상 정의
+- 기획 의미는 최신 Decision과 Game Bible이 소유하며, 정확한 구현값은 data·tests의 역사 증거 또는 테스트 프리셋으로 분류한다.
 
 ## 정본 진입점
 
