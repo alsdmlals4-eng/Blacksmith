@@ -324,6 +324,8 @@ GPT에서는 다음 영역을 중심으로 논의한다.
 ## 역사 구현·보조 기능 추적
 
 - `POC v0.6.4 · main · 2026.07.23.1`: 제작 품질 역사 구현 기준선
+- 자동 검증 기록: `제작 모델 7건`
+- 자동 검증 기록: `통합 6건`
 - MVP-001~003: `REFERENCE_IMPLEMENTATION / HISTORICAL_POC`
 - 과거 `+11` 단계 하락·`+30` 파괴·단일 고객 계약·단일 날짜 결과: `LEGACY_IMPLEMENTED_VALUE`
 - 최신 R2 고객 능력·일정·예술성·재료 역할 runtime: `NOT_RUN`
