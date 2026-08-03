@@ -1,6 +1,6 @@
 {
   "artifact_role": "CURRENT_R2_CANON_REGISTRY",
-  "schema_version": 3,
+  "schema_version": 4,
   "project": "Blacksmith",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "stage_status": "R2_CHECKPOINT_002_MERGED_MAIN_CANON_READBACK_PASS",
@@ -50,7 +50,8 @@
           "ENDURANCE",
           "JUDGMENT"
         ],
-        "display_scale": "1_TO_5",
+        "display_scale": "1_TO_5_HISTORICAL_PRESET",
+        "display_scale_status": "SUPERSEDED_FOR_PLAYER_DISPLAY_BY_BS-CUSTOMER-20260803-02",
         "schedule_stat_usage": "ONE_PRIMARY_PLUS_AT_MOST_ONE_SECONDARY",
         "traits_max": 2,
         "weaknesses_max": 1,
@@ -73,16 +74,13 @@
       "refines": "BS-CUSTOMER-20260803-01",
       "contract": {
         "public_fields": [
-          "EVENT_RISK_TIER",
+          "EVENT_RISK_SCORE",
           "CUSTOMER_CORE_STATS",
           "APPROXIMATE_SUCCESS_CHANCE"
         ],
-        "event_risk_tiers": [
-          "LOW",
-          "MEDIUM",
-          "HIGH",
-          "VERY_HIGH"
-        ],
+        "event_risk_display_scale": "INTEGER_1_TO_10",
+        "customer_stat_display_scale": "INTEGER_1_TO_10",
+        "display_decimals": false,
         "success_display": "APPROXIMATE_PERCENT_ROUNDED_TO_NEAREST_10",
         "success_display_min_percent": 5,
         "success_display_max_percent": 95,
@@ -116,8 +114,10 @@
     {
       "decision": "BS-CUSTOMER-20260803-01",
       "refined_by": "BS-CUSTOMER-20260803-02",
-      "scope": "PRE_SALE_INFORMATION_DISCLOSURE",
-      "new_primary_display": "EVENT_RISK_PLUS_CORE_STATS_PLUS_APPROXIMATE_PERCENT",
+      "scope": "PRE_SALE_INFORMATION_DISCLOSURE_AND_PLAYER_DISPLAY_SCALE",
+      "new_primary_display": "EVENT_RISK_1_TO_10_PLUS_CORE_STATS_1_TO_10_PLUS_APPROXIMATE_PERCENT",
+      "previous_display_scale": "1_TO_5_HISTORICAL_PRESET",
+      "current_player_display_scale": "INTEGER_1_TO_10",
       "unknown_variable_notice": false,
       "detailed_pre_sale_reason_list_required": false
     }
@@ -138,6 +138,8 @@
   "adversarial_guards": [
     "CUSTOMER_STATS_MUST_NOT_INVALIDATE_EQUIPMENT_CHOICE",
     "EVENT_RNG_MUST_NOT_OVERWHELM_PREPARATION",
+    "ONE_TO_TEN_DISPLAY_MUST_USE_INTEGERS_WITHOUT_DECIMALS",
+    "ONE_TO_TEN_DISPLAY_MUST_NOT_BE_TREATED_AS_INTERNAL_MODIFIER_VALUES",
     "APPROXIMATE_PERCENT_MUST_NOT_IMPLY_CERTAINTY",
     "DISPLAYED_ESTIMATE_MUST_BE_CALIBRATED_TO_OUTCOMES",
     "NO_SEPARATE_UNKNOWN_VARIABLE_WARNING_IN_PRE_SALE_UI",
