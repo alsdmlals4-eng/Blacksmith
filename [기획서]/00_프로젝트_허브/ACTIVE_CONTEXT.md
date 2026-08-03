@@ -1,12 +1,11 @@
 # Active Context
 
-- 갱신: `2026-08-03 08:30 KST`
+- 갱신: `2026-08-03 09:25 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R1_PROJECT_CORE_AND_PLAYER_PROMISE / CANON_ALIGNMENT_AND_PR_AUDIT`
-- 최근 main: PR `#93`, `b3a852cbb35de73a4b2da32151f845ddd61e1921`
-- 현재 권위 Draft: PR `#94`
-- 승인 배치: `001~004 MERGED / SHEET_READBACK_PASS`
-- 핵심 충돌: `RESOLVED`
+- 단계: `R1_PROJECT_CORE_AND_PLAYER_PROMISE / USER_FINAL_REVIEW_PENDING`
+- R1 정본 기준 병합: PR `#94`
+- R1 정본 기준 SHA: `8a0956d6c8b4cf3db545a17d0bd002ba8354d568`
+- R1 감사: `BS-OPS-20260803-02 / P0=0 / P1=0`
 - 명예의 전당: `FUTURE_CONTENT_HOLD / NONCOMPETITIVE_ARCHIVE`
 - 제품 구현: `BLOCKED`
 
@@ -55,9 +54,9 @@
 
 ## 강화 데이터 권위
 
-- `data/crafting/enhancement_balance.json`: 현재 구현의 강화 비용·확률·실패·위험·단계 하락·파괴 비율과 시도 소비 정책을 소유한다. 정확한 값은 `LEGACY_IMPLEMENTED_VALUE` 또는 버전형 테스트 프리셋이며 최신 기획 불변 규칙과 구분한다.
-- `data/crafting/enhancement_milestones.json`: 현재 구현의 정밀강화 이정표·보상 정의를 소유한다. 최신 제품 방향은 `+10/+20/+30/+40/+50`이며 실제 데이터 정렬은 제품 구현 승인 뒤 별도 수행한다.
-- 실패·위험 규칙의 기획 의미는 최신 Decision과 Game Bible이 소유하고, 실제 구현값은 위 data 파일과 tests가 증명한다.
+- `data/crafting/enhancement_balance.json`: 현재 구현의 비용·확률·실패·위험·단계 하락·파괴 비율과 소비 정책
+- `data/crafting/enhancement_milestones.json`: 현재 구현의 정밀강화 이정표·보상 정의
+- 기획 의미는 최신 Decision과 Game Bible이 소유하며, 정확한 구현값은 data·tests의 역사 증거 또는 테스트 프리셋으로 분류한다.
 
 ## 첫 코어 버티컬 슬라이스
 
@@ -88,41 +87,32 @@
 
 ## 역사 구현·보조 기능 추적
 
-- `POC v0.6.4 · main · 2026.07.23.1`은 현재 저장소의 제작 품질 구현 기준선 버전이다. 최신 제품 기획 버전 번호가 아니라 `REFERENCE_IMPLEMENTATION / HISTORICAL_POC` 증거다.
-- 해당 기준선의 자동 검증 기록은 `제작 모델 7건`, `통합 6건`이다. 최신 +50 생애 슬라이스의 사람 검증을 대신하지 않는다.
-- `POC v` 계열 문서는 MVP-001~003의 역사 구현 기준선이며 현재 제품 범위를 소유하지 않는다.
-- 과거 `+11` 단계 하락과 `+30` 파괴 경계는 `LEGACY_IMPLEMENTED_VALUE`이며 최신 손상·대파·복원 정본이 우선한다.
-- `자동 단조`는 반복 편의용 보조 시스템으로 유지하되 `+10` 정밀 이정표·위험·소유권·날짜 판단을 자동으로 통과하지 않는다.
+- `POC v0.6.4 · main · 2026.07.23.1`: 제작 품질 역사 구현 기준선
+- 자동 검증 기록: `제작 모델 7건`, `통합 6건`
+- MVP-001~003: `REFERENCE_IMPLEMENTATION / HISTORICAL_POC`
+- 과거 `+11` 단계 하락·`+30` 파괴: `LEGACY_IMPLEMENTED_VALUE`
+- `자동 단조`: 저위험 반복 편의 기능이며 중요 판단을 자동 통과하지 않음
 
-## 현재 정본
+## 정본·PR 상태
 
 - `CURRENT_CONFIRMED_DECISIONS.md`
 - `docs/planning/CURRENT_R1_CANON_REGISTRY.json`
 - `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
 - `[기획서]/00_프로젝트_허브/ROADMAP.md`
-- `docs/planning/BLACKSMITH_GRILLME_APPROVAL_BATCH_001_2026.md`
-- `docs/planning/BLACKSMITH_GRILLME_APPROVAL_BATCH_002_2026.md`
-- `docs/planning/BLACKSMITH_GRILLME_APPROVAL_BATCH_003_2026.md`
-- `docs/planning/BLACKSMITH_GRILLME_BATCH_04_R1_DECISIONS_2026.md`
-- `docs/planning/BLACKSMITH_CORE_CANON_RESOLUTION_01_2026.md` ~ `06_2026.md`
-
-## 열린 PR
-
-- `#94`: `CURRENT_AUTHORITY_REPAIR / DRAFT`
-- `#95`: `SUPERSEDED / CLOSED_WITHOUT_MERGE`
-- `#86`: `SUPERSEDED / CLOSE_WITHOUT_MERGE`
-- `#61`: `HISTORY_ONLY / CLOSE_WITHOUT_MERGE`
-- `#81`: `REFERENCE_ASSET / DO_NOT_MERGE_AS_UNIT`
+- Core Resolution `01~06`
+- PR #94: `MERGED_CANON_BASELINE`
+- PR #81: `REFERENCE_ASSET / OPEN_DRAFT / DO_NOT_MERGE_AS_UNIT`
+- PR #95·#86·#61: 종료 또는 역사 전용
 
 ## 실제 검증 상태
 
-- MVP-003: `REFERENCE_IMPLEMENTATION / HISTORICAL_POC`
+- PR #94 Base CI: `PASS`
+- PR #94 PR validation: `PASS`
 - 최신 R1 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 
 ## 다음 작업
 
-1. Sheet 구형 표현 정렬
-2. PR #94 changed files·리뷰·스레드·댓글·CI·금지 경로·드리프트 감사
-3. 차단 결함 0이면 expected HEAD squash merge
-4. main SHA·Sheet 재동기화
-5. 사용자 R1 정본 최종 검수
+1. Google Sheet를 PR #94 병합 SHA로 최종화
+2. 사용자 R1 정본 최종 검수
+3. 승인 후 R2 기획
+4. 제품 구현은 계속 `BLOCKED`
