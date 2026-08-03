@@ -10,7 +10,11 @@
 >
 > 고객 능력·성공 예측: `BS-CUSTOMER-20260803-01 / USER_APPROVED`
 >
-> 고객 정보 최소 공개: `BS-CUSTOMER-20260803-02 / USER_APPROVED / DISPLAY_SCALE_1_TO_10 / R2_BATCH_003_1_OF_10 / APPROVED_PENDING_MERGE`
+> 고객 정보 최소 공개: `BS-CUSTOMER-20260803-02 / USER_APPROVED / DISPLAY_SCALE_1_TO_10 / R2_BATCH_003 / APPROVED_PENDING_MERGE`
+>
+> 다중 일정 표시·알림: `BS-SCHEDULE-20260804-01 / USER_APPROVED / R2_BATCH_003_2_OF_10 / APPROVED_PENDING_MERGE`
+>
+> GPT 역할 경계: `BS-OPS-20260804-01 / USER_DIRECTIVE / NON_BATCH`
 >
 > R2 체크포인트 002: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / MERGED_PR101 / MAIN_CANON / READBACK_PASS`
 >
@@ -18,7 +22,7 @@
 >
 > 현재 단계: `R2_CORE_SESSION_META_LOOP / PLANNING_ACTIVE`
 >
-> 상태: `R1_USER_APPROVED / R2_CHECKPOINT_002_CANON / NEXT_GRILL_ME_COUNTER_0_OF_10 / R2_BATCH_003_1_OF_10_APPROVED_PENDING_MERGE / PRODUCT_BLOCKED`
+> 상태: `R1_USER_APPROVED / R2_CHECKPOINT_002_CANON / R2_BATCH_003_2_OF_10_APPROVED_PENDING_MERGE / PRODUCT_BLOCKED`
 
 ## 1. 권위 규칙
 
@@ -40,6 +44,10 @@
 - `BS-OPS-20260803-06`: R2 체크포인트 001과 Base 어댑터 드리프트 봉합
 - `BS-OPS-20260803-07`: 승인 2/10이지만 기존 세계일정 범위 교정을 위한 조기 체크포인트
 - `BS-CUSTOMER-20260803-02`: 판매 전 공개 정보를 사건 위험도 1~10·고객 능력치 1~10·대략적 예상 성공률로 제한
+- `BS-SCHEDULE-20260804-01`: 가장 가까운 세계 일정·중요 소식·일반 일정 요약·일정 장부의 정보 계층 확정
+- `BS-OPS-20260804-01`: GPT 논의는 핵심 재미·콘텐츠 기획·이미지·아트 방향과 적대적 설계 검토를 기본 범위로 함
+
+`BS-OPS-20260804-01`은 운영 경계이므로 R2 설계 승인 10건 카운터에는 포함하지 않는다. 제품 구현·코드 소유·저수준 기술 실행은 GPT의 기본 논의 범위가 아니며, 설계·아트 실현 가능성을 보호하는 제약만 다루고 구현은 Codex 또는 구현 단계로 넘긴다.
 
 제품 구현은 R1~R8 전체 기획과 최종 사용자 검수 전까지 `BLOCKED`다.
 
@@ -54,7 +62,7 @@
 → 조언·작품·도구 판매
 → 고객 개인 일정 또는 세계 일정 준비 활성화
 → 날짜 종료 판정과 예정된 세계 사건
-→ 같은 UID 작품의 기여·손상·재방문
+→ 중요한 결과와 같은 UID 작품의 기여·손상·재방문
 → 복원·재강화·다음 제작 목표
 ```
 
@@ -74,8 +82,9 @@
 8. 고객 개인 일정의 날짜 종료 진행 판정
 9. 특정 날짜를 예고하는 대규모 세계 일정
 10. 고객 능력·특기·약점, 사건 위험도와 대략적 예상 성공률
-11. 피로도·날짜 우선순위
-12. 버전형 경제·판정·기간 테스트 프리셋
+11. 세계 일정 고정·중요 소식·일반 일정 요약·일정 장부
+12. 피로도·날짜 우선순위
+13. 버전형 경제·판정·기간 테스트 프리셋
 
 ## 5. R1에서 상속하는 불변 규칙
 
@@ -188,7 +197,34 @@ vs 일정 난이도
 
 기존 `BS-CUSTOMER-20260803-01`의 고객 능력 종류·장비 적합성·결과 인과 원칙은 유지한다. 판매 전 표시 척도와 상세 이유 목록을 해석하는 부분은 `BS-CUSTOMER-20260803-02`가 세분화한다.
 
-## 10. 이전 세계일정 결정 재분류
+## 10. 다중 일정 표시·알림 우선순위
+
+`BS-SCHEDULE-20260804-01`은 개인 일정이 늘어나도 제작·강화 흐름을 보호하기 위한 정보 계층을 확정한다.
+
+```text
+가장 가까운 주요 세계 일정 하나 고정
++ 오늘의 중요 소식 최대 3건
++ 일반 개인 일정은 하루 종료 묶음 요약
++ 결정·완료·중대 결과만 즉시 알림
++ 관심 개인 일정 하나 선택 추적
++ 전체 기록은 일정 장부에서 확인
+```
+
+중요 소식 우선순위:
+
+1. 오늘 플레이어 결정이 필요한 일정
+2. 오늘 예정된 세계 일정 또는 준비 체크포인트
+3. 완료된 일정
+4. 고객의 중대한 상태 변화
+5. 작품의 중대한 손상·분실
+6. 후속 의뢰 또는 재방문
+7. 일반 개인 일정 진행
+
+단순 진행·경미한 부상·소규모 보상은 개별 팝업을 띄우지 않는다. 완료·중대 결과·재방문은 일반 요약에서 반드시 승격한다. 초과 항목과 전체 진행 이력은 작품 UID가 연결된 일정 장부에 보존한다.
+
+플레이어가 선택한 추적 일정은 편의 기능이며 중요한 세계 일정이나 중대 알림을 숨기지 않는다. `최대 3건`, `추적 1건`과 세부 동점 정렬은 `BASELINE_TEST_PRESET`이다.
+
+## 11. 이전 세계일정 결정 재분류
 
 `BS-WORLD-20260803-02`의 고정된 `납품 당일→1일차→2일차→3일차 결과→4일차 재방문` 구조는 다음으로 재분류한다.
 
@@ -202,11 +238,12 @@ vs 일정 난이도
 
 - `docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R2_CUSTOMER_DISCLOSURE_MINIMUM_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R2_MULTI_SCHEDULE_DISPLAY_AND_ALERT_CANON_2026.md`
 - `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 - `docs/planning/CURRENT_R1_CANON_REGISTRY.json`
 - `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
 
-## 11. 적대적 보호 조건
+## 12. 적대적 보호 조건
 
 - 좋은 고객만 고르면 작품 품질이 무의미해지는 구조 금지
 - 사건 RNG가 고객·작품·준비를 압도하는 구조 금지
@@ -217,26 +254,30 @@ vs 일정 난이도
 - 대략적 확률을 확정 결과처럼 보이게 하는 0%·100% 표시 금지
 - 표시 성공률과 실제 결과 분포가 반복적으로 어긋나는 구조 금지
 - 별도의 숨은 위험 경고를 판매 UI에 다시 추가하지 않음
-- 개인 일정 로그가 강화보다 긴 필수 콘텐츠가 되는 구조 금지
+- 일반 일정 진행이 제작·강화 흐름을 반복적으로 중단하는 구조 금지
+- 추적 설정이 중요 알림을 숨기는 구조 금지
+- 일정 장부에서 축약된 작품 생애 이력이 사라지는 구조 금지
+- GPT 논의가 구현·코드 실행 중심으로 이탈해 핵심 재미·콘텐츠·아트 설계를 약화하는 범위 이탈 금지
 
-## 12. 감사·검증 상태
+## 13. 감사·검증 상태
 
 - 체크포인트 병합: PR `#101` / `a81cbe5de685e2900070d9a32db56556538e0a6f`
 - post-merge 폐쇄: PR `#102` / main `d8ef47a6702c3afac4eb1a10439df974a2d259df`
-- 신규 승인: `BS-CUSTOMER-20260803-02 / R2_BATCH_003_1_OF_10 / APPROVED_PENDING_MERGE`
+- 배치 003 승인: `BS-CUSTOMER-20260803-02 / BS-SCHEDULE-20260804-01 / 2_OF_10 / APPROVED_PENDING_MERGE`
+- 비배치 운영 지시: `BS-OPS-20260804-01 / USER_DIRECTIVE`
 - 조기 체크포인트: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / CLOSED`
-- 적대적 감사: `P0_0 / P1_0`
+- 현재 변경 적대적 감사: `P0_0 / P1_0`
 - 이전 자동 검증: `BASE_V9_ADOPTION_PASS / PLANNING_FIRST_PASS / PR_VALIDATION_PASS`
 - 이전 PR validation 상세: `PYTHON_FULL_CONTRACTS_PASS / GODOT_4_7_1_HEADLESS_PASS`
-- 이전 PR 상태: `COMMENTS_0 / INLINE_THREADS_0 / EXACT_HEAD_SQUASH_MERGED`
-- GitHub·Google Sheet 체크포인트 002: `MAIN_CANON / READBACK_PASS`
 - 제품 코드·Scene·runtime data·asset 변경: `0`
 - 최신 제품 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
 
-## 13. 다음 Gate
+## 14. 다음 Gate
 
-1. 여러 개인 일정과 세계 일정의 동시 표시·알림 과밀 방지
-2. 예상 성공률 반올림·상한·능력치 보정은 GPT 권장 테스트 프리셋으로 검증
-3. 새 승인 카운터는 `1/10`
-4. 제품 구현은 계속 `BLOCKED`
+1. 개인 일정과 세계 일정의 콘텐츠 유형·사건군 설계
+2. 핵심 재미와 작품 생애 환류를 강화하는 콘텐츠 우선순위 검토
+3. 이미지·아트 방향이 필요한 사건군의 시각 컨셉 논의
+4. 예상 성공률 보정·알림 표시 개수는 검증용 테스트 프리셋으로 유지
+5. 활성 배치 승인 카운터 `2/10`
+6. 제품 구현은 계속 `BLOCKED`
