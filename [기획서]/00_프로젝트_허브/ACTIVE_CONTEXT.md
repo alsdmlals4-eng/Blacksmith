@@ -185,6 +185,7 @@ EMPTY
 ## 역사 구현·보조 기능 추적
 
 - `POC v0.6.4 · main · 2026.07.23.1`: 제작 품질 역사 구현 기준선
+- 과거 일반 강화 실패 기준선: `+11` 단계 하락은 `LEGACY_IMPLEMENTED_VALUE`
 - 자동 검증 기록: `제작 모델 7건`
 - 자동 검증 기록: `통합 6건`
 - MVP-001~003: `REFERENCE_IMPLEMENTATION / HISTORICAL_POC`
