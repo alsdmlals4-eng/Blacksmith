@@ -52,11 +52,23 @@ require(
 
 fever_attack = float(session["fever_result_attack_multiplier"])
 fever_value = float(session["fever_result_value_multiplier"])
-fever_attacks = {quality: round(float(session["weapon_base_attack"]) * (float(session[f"quality_{quality}_attack_multiplier"]) + fever_attack - 1.0)) for quality in ("standard", "good", "perfect")}
-fever_values = {quality: round(float(session[f"quality_{quality}_value_multiplier"]) + fever_value - 1.0, 2) for quality in ("standard", "good", "perfect")}
+fever_attacks = {
+    quality: round(
+        float(session["weapon_base_attack"])
+        * (float(session[f"quality_{quality}_attack_multiplier"]) + fever_attack - 1.0)
+    )
+    for quality in ("standard", "good", "perfect")
+}
+fever_values = {
+    quality: round(float(session[f"quality_{quality}_value_multiplier"]) + fever_value - 1.0, 2)
+    for quality in ("standard", "good", "perfect")
+}
 require(fever_attacks == {"standard": 21, "good": 22, "perfect": 23}, f"피버 적용 공격력이 21/22/23이어야 합니다: {fever_attacks}")
 require(fever_values == {"standard": 1.03, "good": 1.08, "perfect": 1.15}, f"피버 적용 제작 가치가 1.03/1.08/1.15여야 합니다: {fever_values}")
-require(round(float(session["quality_perfect_value_multiplier"]) * fever_value, 4) != fever_values["perfect"], "마감·피버 가치는 곱연산이 아니라 가산 합성이어야 합니다.")
+require(
+    round(float(session["quality_perfect_value_multiplier"]) * fever_value, 4) != fever_values["perfect"],
+    "마감·피버 가치는 곱연산이 아니라 가산 합성이어야 합니다.",
+)
 
 enhancement_balance = json.loads(text("data/crafting/enhancement_balance.json"))
 require(enhancement_balance.get("growth", {}).get("base_attack") == 20, "강화 기본 공격력 fallback은 20이어야 합니다.")
@@ -87,8 +99,10 @@ for rel in ["scripts/ui/game_flow_screen.gd", "scripts/ui/enhancement_test_runne
     require('POC v0.6.4 · main · 2026.07.23.1' in source, f"최신 버전 배지가 없습니다: {rel}")
     require('POC v0.6.3 · main · 2026.07.22.3' not in source, f"구형 버전 배지가 남아 있습니다: {rel}")
 
+# Exact historical numbers remain verified in data, runtime code, and dedicated
+# implementation/playtest records. The active Game Bible only needs to retain
+# their authority classification so legacy values do not become product canon.
 for rel in [
-    "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
     "docs/MVP-001_SCOPE.md",
     "docs/MVP-002_SCOPE.md",
     "docs/GODOT_PLAYTEST.md",
@@ -97,6 +111,10 @@ for rel in [
     require("×1.05" in source and "×1.03" in source, f"피버 결과 공격력·가치 계약이 문서에 없습니다: {rel}")
     require("비중첩" in source or "중첩되지" in source or "한 번만" in source, f"피버 반복 비중첩 계약이 문서에 없습니다: {rel}")
     require("21" in source and "22" in source and "23" in source, f"피버 적용 공격력 21/22/23이 문서에 없습니다: {rel}")
+
+game_bible = text("[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md")
+require("폭주 단조" in game_bible and "제작 피버" in game_bible, "Game Bible에 과거 피버 구현명과 현재 용어의 관계가 없습니다.")
+require("LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET" in game_bible, "Game Bible에 피버 정확 수치의 권위 분류가 없습니다.")
 
 for rel in [
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
@@ -145,9 +163,20 @@ for rel, marker in runner_contracts.items():
     require(success_flow is not None, f"성공한 Godot 테스트 러너가 quit(0) 뒤 즉시 return해야 합니다: {rel}")
     require("quit(1)" in source, f"실패한 Godot 테스트 러너가 종료코드 1을 반환해야 합니다: {rel}")
 
-for rel in ["scripts/forging/forging_session.gd", "scripts/enhancement/enhancement_session.gd", "scripts/ui/enhancement_screen.gd", "scripts/ui/game_flow_screen.gd"]:
+for rel in [
+    "scripts/forging/forging_session.gd",
+    "scripts/enhancement/enhancement_session.gd",
+    "scripts/ui/enhancement_screen.gd",
+    "scripts/ui/game_flow_screen.gd",
+]:
     source = text(rel)
-    for field in ("fever_bonus_applied", "fever_attack_multiplier", "fever_value_multiplier", "crafting_attack_multiplier", "crafting_value_multiplier"):
+    for field in (
+        "fever_bonus_applied",
+        "fever_attack_multiplier",
+        "fever_value_multiplier",
+        "crafting_attack_multiplier",
+        "crafting_value_multiplier",
+    ):
         require(field in source, f"피버 결과 필드 소비 누락: {rel} / {field}")
 require("fever_activation_count >= required_activations" in text("scripts/forging/forging_session.gd"), "피버 결과 보너스가 최소 발동 여부로 제한되어야 합니다.")
 require('"fever_activation_count": 0' in text("scripts/ui/game_flow_screen.gd"), "자동 단조는 피버 0회여야 합니다.")
@@ -163,7 +192,10 @@ decisions = text("[기획서]/00_프로젝트_허브/DECISION_LOG.md")
 dec_019 = decisions.find("## DEC-019 ")
 dec_020 = decisions.find("## DEC-020 ")
 require(dec_019 >= 0 and dec_020 > dec_019, "Decision Log는 DEC-019 뒤에 DEC-020을 배치해야 합니다.")
-require("## DEC-018 품질별 실제 정수 공격력과 검증 종료코드\n\n- 상태: 확정·구현\n" in decisions, "완료된 DEC-018이 구현 중 상태로 남으면 안 됩니다.")
+require(
+    "## DEC-018 품질별 실제 정수 공격력과 검증 종료코드\n\n- 상태: 확정·구현\n" in decisions,
+    "완료된 DEC-018이 구현 중 상태로 남으면 안 됩니다.",
+)
 
 godot_workflow = text(".github/workflows/godot-validation.yml")
 python_workflow = text(".github/workflows/python-validation.yml")
@@ -177,7 +209,11 @@ require('economy.get("attack_price_scale", 5.3)' in text("scripts/enhancement/en
 require('snapshot.get("base_attack", 20)' in text("scripts/ui/enhancement_screen.gd"), "보관 기록 최종 공격력 fallback이 최신 기본 공격력을 사용해야 합니다.")
 require("SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" in godot_workflow, "Godot Workflow가 오류 로그 패턴을 실패로 판정해야 합니다.")
 require("godot-validation-failure-logs" in godot_workflow, "Godot Workflow가 실패 로그만 증거로 업로드해야 합니다.")
-require("cancel-in-progress: true" in godot_workflow and "group: ci-${{ github.workflow }}-${{ github.ref }}" in godot_workflow, "Godot Workflow에 중복 실행 취소가 필요합니다.")
+require(
+    "cancel-in-progress: true" in godot_workflow
+    and "group: ci-${{ github.workflow }}-${{ github.ref }}" in godot_workflow,
+    "Godot Workflow에 중복 실행 취소가 필요합니다.",
+)
 
 if FAILURES:
     for failure in FAILURES:

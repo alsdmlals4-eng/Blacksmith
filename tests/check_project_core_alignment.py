@@ -10,6 +10,9 @@ ROOT = Path(__file__).resolve().parents[1]
 VALIDATED_STATUS = "IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING"
 ACTIONS_STATUS = "ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED"
 
+# Active authority documents validate the current R1 canon. Historical PoC
+# evidence remains required in the dedicated MVP/implementation records rather
+# than being copied back into every current entrypoint.
 REQUIRED_TEXT = {
     "README.md": (
         "장비의 출생·성장·소유·사건 기록",
@@ -19,18 +22,18 @@ REQUIRED_TEXT = {
         "docs/CI_EXECUTION_POLICY.md",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
-        "장비의 출생·성장·소유·사건 기록",
-        "CORE_CONFIRMED",
-        VALIDATED_STATUS,
-        ACTIONS_STATUS,
-        "#35",
+        "R1_STATUS: CORE_CONFLICTS_RESOLVED / CANON_ALIGNMENT_AND_PR_AUDIT",
+        "+10/+20/+30/+40/+50",
+        "REFERENCE_IMPLEMENTATION / HISTORICAL_POC",
+        "PRODUCT_IMPLEMENTATION: BLOCKED",
+        "#94",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
-        "CORE_CONFIRMED / CORE_RECORDED",
-        VALIDATED_STATUS,
-        ACTIONS_STATUS,
-        "PR validation #468",
-        "docs/MVP-003_SCOPE.md",
+        "CANON_ALIGNMENT_AND_PR_AUDIT",
+        "+10/+20/+30/+40/+50",
+        "REFERENCE_IMPLEMENTATION / HISTORICAL_POC",
+        "행동 증거",
+        "CURRENT_AUTHORITY_REPAIR / DRAFT",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "2026-07-23-project-core-design.md",
@@ -40,24 +43,25 @@ REQUIRED_TEXT = {
         ACTIONS_STATUS,
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
-        "Project core confirmation",
-        "Equipment lifecycle PoC specification",
-        "Equipment lifecycle PoC implementation",
-        "PASS / IMPLEMENTATION_VALIDATED",
-        "PR validation #468",
+        "CORE_CONFLICT_DECISION_GATE: PASS",
+        "Core Vertical Slice Gate",
+        "Core Fun Validation Gate",
+        "REFERENCE_IMPLEMENTATION",
+        "PR #94",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
-        "장비 한 점의 생애 PoC — CURRENT",
-        VALIDATED_STATUS,
-        "PR validation #468",
-        "docs/CI_EXECUTION_POLICY.md",
+        "CORE_DECISIONS_APPROVED / CANON_ALIGNMENT_IN_PROGRESS",
+        "첫 코어 버티컬 슬라이스",
+        "행동 증거",
+        "FUTURE_CONTENT_HOLD",
+        "PR #94 적대적 감사",
     ),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
-        "장비의 출생·성장·소유·사건 기록",
+        "작품의 출생·성장·소유·손상·복원·사건 기록",
         "영구 완성도",
-        "세계 장비 기록",
-        VALIDATED_STATUS,
-        ACTIONS_STATUS,
+        "현재 검증 상한: `+50`",
+        "활성 사건·연대기 수식어 1개",
+        "회상 인터뷰",
     ),
     "[기획서]/00_프로젝트_허브/DECISION_LOG.md": (
         "DEC-023 프로젝트 코어 확정",
@@ -75,7 +79,8 @@ REQUIRED_TEXT = {
         "+10",
         VALIDATED_STATUS,
         "PR validation #468",
-        "전체 생애 E2E",
+        "REFERENCE_IMPLEMENTATION / HISTORICAL_POC",
+        "E2E",
     ),
     "docs/MVP-003_IMPLEMENTATION_STATUS.md": (
         VALIDATED_STATUS,
