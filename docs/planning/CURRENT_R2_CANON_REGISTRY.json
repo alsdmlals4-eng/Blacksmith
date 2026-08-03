@@ -45,23 +45,13 @@
       "status": "USER_APPROVED_MERGED_PR101",
       "canon": "docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md",
       "contract": {
-        "core_stats": [
-          "SKILL",
-          "ENDURANCE",
-          "JUDGMENT"
-        ],
+        "core_stats": ["SKILL", "ENDURANCE", "JUDGMENT"],
         "display_scale": "1_TO_5_HISTORICAL_PRESET",
         "display_scale_status": "SUPERSEDED_FOR_PLAYER_DISPLAY_BY_BS-CUSTOMER-20260803-02",
         "schedule_stat_usage": "ONE_PRIMARY_PLUS_AT_MOST_ONE_SECONDARY",
         "traits_max": 2,
         "weaknesses_max": 1,
-        "success_forecast": [
-          "VERY_LOW",
-          "LOW",
-          "MEDIUM",
-          "HIGH",
-          "VERY_HIGH"
-        ],
+        "success_forecast": ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"],
         "forecast_reasons_required": true,
         "exact_modifiers": "BASELINE_TEST_PRESET"
       }
@@ -73,11 +63,7 @@
       "canon": "docs/planning/BLACKSMITH_R2_CUSTOMER_DISCLOSURE_MINIMUM_CANON_2026.md",
       "refines": "BS-CUSTOMER-20260803-01",
       "contract": {
-        "public_fields": [
-          "EVENT_RISK_SCORE",
-          "CUSTOMER_CORE_STATS",
-          "APPROXIMATE_SUCCESS_CHANCE"
-        ],
+        "public_fields": ["EVENT_RISK_SCORE", "CUSTOMER_CORE_STATS", "APPROXIMATE_SUCCESS_CHANCE"],
         "event_risk_display_scale": "INTEGER_1_TO_10",
         "customer_stat_display_scale": "INTEGER_1_TO_10",
         "display_decimals": false,
@@ -140,11 +126,7 @@
           "WORLD_AFTERMATH",
           "CUSTOMER_AND_ITEM_FOLLOW_UP"
         ],
-        "mandatory_result_outputs": [
-          "CUSTOMER_RESULT",
-          "ITEM_UID_STATE_OR_LEGACY",
-          "NEXT_CRAFTING_OR_REPAIR_DECISION"
-        ],
+        "mandatory_result_outputs": ["CUSTOMER_RESULT", "ITEM_UID_STATE_OR_LEGACY", "NEXT_CRAFTING_OR_REPAIR_DECISION"],
         "activity_name_and_reward_only_is_distinct_content": false,
         "mandatory_long_form_quest": false,
         "world_result_requires_customer_and_item_follow_up": true,
@@ -158,12 +140,7 @@
       "canon": "docs/planning/BLACKSMITH_R2_VISITOR_ARCHETYPES_AND_INITIAL_CONTENT_FAMILIES_CANON_2026.md",
       "refines": "BS-CONTENT-20260804-01",
       "contract": {
-        "visitor_archetypes": [
-          "GLADIATOR",
-          "ADVENTURER",
-          "SOLDIER",
-          "NOBLE"
-        ],
+        "visitor_archetypes": ["GLADIATOR", "ADVENTURER", "SOLDIER", "NOBLE"],
         "schedule_requires_primary_visitor_fit": true,
         "personal_content_families": [
           "COMPETITION_AND_RIVALRY",
@@ -178,17 +155,7 @@
           "KINGDOM_CRISIS",
           "ROYAL_CEREMONY_AND_MASTERWORK_EXPOSITION"
         ],
-        "noble_request_focus": [
-          "ARTISTRY",
-          "LUXURY",
-          "RARITY",
-          "HOUSE_PRESTIGE",
-          "PATRONAGE",
-          "GIFTING",
-          "COLLECTION",
-          "CEREMONY",
-          "INHERITANCE"
-        ],
+        "noble_request_focus": ["ARTISTRY", "LUXURY", "RARITY", "HOUSE_PRESTIGE", "PATRONAGE", "GIFTING", "COLLECTION", "CEREMONY", "INHERITANCE"],
         "noble_item_scope": [
           "CEREMONIAL_WEAPONS_AND_ARMOR",
           "HOUSE_CRESTS_AND_SEALS",
@@ -200,14 +167,7 @@
         "noble_primary_stat": "JUDGMENT",
         "noble_optional_secondary_stat": "SKILL",
         "new_customer_stats_added": false,
-        "noncombat_item_legacy": [
-          "HOUSE_OWNERSHIP",
-          "CREST_OR_INSCRIPTION",
-          "EXHIBITION_OR_AWARD",
-          "GIFT_OR_INHERITANCE",
-          "APPRAISAL",
-          "PATRON_AND_CRAFTSMAN_REPUTATION"
-        ],
+        "noncombat_item_legacy": ["HOUSE_OWNERSHIP", "CREST_OR_INSCRIPTION", "EXHIBITION_OR_AWARD", "GIFT_OR_INHERITANCE", "APPRAISAL", "PATRON_AND_CRAFTSMAN_REPUTATION"],
         "noble_is_expensive_combat_reskin": false,
         "general_non_metal_luxury_goods_in_scope": false,
         "exact_counts_and_numeric_weights": "FOLLOW_UP_TEST_PRESET"
@@ -222,52 +182,16 @@
       "contract": {
         "new_item_value_stat": "ARTISTRY_ONLY",
         "new_practicality_stat_added": false,
-        "artistry_sources": [
-          "ITEM_GRADE",
-          "AUXILIARY_MATERIALS",
-          "CATALYSTS",
-          "ENHANCEMENT_RESULTS",
-          "ARTISTRY_ORIENTED_AFFIXES"
-        ],
-        "utility_representation": [
-          "ATTACK_OR_DEFENSE",
-          "DURABILITY",
-          "HANDLING_AND_STABILITY",
-          "FIT_AND_ENVIRONMENT_RESPONSE"
-        ],
-        "pre_craft_preview_required": [
-          "EXPECTED_UTILITY_DIRECTION",
-          "EXPECTED_ARTISTRY_DIRECTION",
-          "EXPECTED_PRICE_DIRECTION",
-          "EXPECTED_ENHANCEMENT_AND_AFFIX_BIAS"
-        ],
+        "artistry_sources": ["ITEM_GRADE", "AUXILIARY_MATERIALS", "CATALYSTS", "ENHANCEMENT_RESULTS", "ARTISTRY_ORIENTED_AFFIXES"],
+        "utility_representation": ["ATTACK_OR_DEFENSE", "DURABILITY", "HANDLING_AND_STABILITY", "FIT_AND_ENVIRONMENT_RESPONSE"],
+        "pre_craft_preview_required": ["EXPECTED_UTILITY_DIRECTION", "EXPECTED_ARTISTRY_DIRECTION", "EXPECTED_PRICE_DIRECTION", "EXPECTED_ENHANCEMENT_AND_AFFIX_BIAS"],
         "crafting_choice": "UTILITY_ORIENTED_VS_ARTISTRY_VALUE_ORIENTED_WITH_HYBRIDS_ALLOWED",
         "separate_artistry_upgrade_loop": false,
         "enhancement_remains_primary_loop": true,
         "affix_differentiation": "WEIGHTED_BY_MATERIAL_CATALYST_AND_CURRENT_ITEM_ORIENTATION",
-        "utility_affix_families": [
-          "COMBAT_POWER",
-          "DEFENSE",
-          "DURABILITY",
-          "HANDLING",
-          "STABILITY",
-          "ENVIRONMENT_RESPONSE"
-        ],
-        "artistry_affix_families": [
-          "ARTISTRY",
-          "VALUE",
-          "PRESTIGE",
-          "MASTERWORK",
-          "RARITY",
-          "APPRAISAL_VALUE"
-        ],
-        "price_inputs": [
-          "ITEM_GRADE",
-          "UTILITY_PERFORMANCE",
-          "ARTISTRY",
-          "RARE_AUXILIARY_MATERIALS_AND_CATALYSTS",
-          "ITEM_LEGACY_AND_REPUTATION"
-        ],
+        "utility_affix_families": ["COMBAT_POWER", "DEFENSE", "DURABILITY", "HANDLING", "STABILITY", "ENVIRONMENT_RESPONSE"],
+        "artistry_affix_families": ["ARTISTRY", "VALUE", "PRESTIGE", "MASTERWORK", "RARITY", "APPRAISAL_VALUE"],
+        "price_inputs": ["ITEM_GRADE", "UTILITY_PERFORMANCE", "ARTISTRY", "RARE_AUXILIARY_MATERIALS_AND_CATALYSTS", "ITEM_LEGACY_AND_REPUTATION"],
         "visual_quality_scales_with_artistry": true,
         "visual_readability_must_be_preserved": true,
         "exact_artistry_scale_price_formula_affix_weights_and_visual_tiers": "REFINED_BY_BS-CRAFT-20260804-02"
@@ -286,43 +210,18 @@
         "artistry_max": 10,
         "item_grade_influences_but_does_not_determine_artistry": true,
         "enhancement_level_alone_raises_artistry": false,
-        "material_catalyst_preview_levels": [
-          "LOW",
-          "MEDIUM",
-          "HIGH"
-        ],
-        "preview_fields": [
-          "UTILITY_DIRECTION",
-          "ARTISTRY_DIRECTION",
-          "PRICE_DIRECTION",
-          "ENHANCEMENT_AND_AFFIX_BIAS"
-        ],
+        "material_catalyst_preview_levels": ["LOW", "MEDIUM", "HIGH"],
+        "preview_fields": ["UTILITY_DIRECTION", "ARTISTRY_DIRECTION", "PRICE_DIRECTION", "ENHANCEMENT_AND_AFFIX_BIAS"],
         "preview_text_required": true,
         "color_icon_arrow_only_preview_allowed": false,
         "price_structure": {
-          "base_value": [
-            "ITEM_GRADE",
-            "UTILITY_PERFORMANCE"
-          ],
-          "additional_value": [
-            "ARTISTRY_PREMIUM",
-            "RARE_AUXILIARY_MATERIAL_AND_CATALYST_PREMIUM",
-            "ITEM_LEGACY_REPUTATION_AND_APPRAISAL_PREMIUM"
-          ],
+          "base_value": ["ITEM_GRADE", "UTILITY_PERFORMANCE"],
+          "additional_value": ["ARTISTRY_PREMIUM", "RARE_AUXILIARY_MATERIAL_AND_CATALYST_PREMIUM", "ITEM_LEGACY_REPUTATION_AND_APPRAISAL_PREMIUM"],
           "customer_demand_can_modify_final_offer": true,
           "exact_coefficients": "BASELINE_TEST_PRESET"
         },
-        "utility_affix_families_minimum": [
-          "OFFENSE_AND_PRECISION",
-          "DEFENSE_AND_DURABILITY",
-          "HANDLING_AND_STABILITY",
-          "ENVIRONMENT_AND_SPECIALIZATION"
-        ],
-        "artistry_affix_families_minimum": [
-          "FINISH_AND_CRAFTSMANSHIP",
-          "PRESTIGE_AND_RARITY",
-          "APPRAISAL_AND_VALUE"
-        ],
+        "utility_affix_families_minimum": ["OFFENSE_AND_PRECISION", "DEFENSE_AND_DURABILITY", "HANDLING_AND_STABILITY", "ENVIRONMENT_AND_SPECIALIZATION"],
+        "artistry_affix_families_minimum": ["FINISH_AND_CRAFTSMANSHIP", "PRESTIGE_AND_RARITY", "APPRAISAL_AND_VALUE"],
         "affix_bias_by_orientation": {
           "UTILITY_ORIENTED": "UTILITY_HIGH_ARTISTRY_LOW_TO_MEDIUM",
           "ARTISTRY_ORIENTED": "ARTISTRY_HIGH_UTILITY_LOW_TO_MEDIUM",
@@ -330,27 +229,57 @@
         },
         "affix_pools_are_exclusive": false,
         "visual_tiers": [
-          {
-            "id": "BASIC",
-            "artistry_range": "1_TO_2"
-          },
-          {
-            "id": "REFINED",
-            "artistry_range": "3_TO_5"
-          },
-          {
-            "id": "MASTERWORK",
-            "artistry_range": "6_TO_8"
-          },
-          {
-            "id": "MASTERPIECE",
-            "artistry_range": "9_TO_10"
-          }
+          {"id": "BASIC", "artistry_range": "1_TO_2"},
+          {"id": "REFINED", "artistry_range": "3_TO_5"},
+          {"id": "MASTERWORK", "artistry_range": "6_TO_8"},
+          {"id": "MASTERPIECE", "artistry_range": "9_TO_10"}
         ],
         "visual_tier_count": 4,
         "visual_tier_preserves_silhouette_and_function_readability": true,
         "gold_gems_and_glow_only_progression": false,
-        "exact_material_values_price_weights_affix_probabilities": "FOLLOW_UP_BASELINE_TEST_PRESET"
+        "exact_material_values_price_weights_affix_probabilities": "REFINED_IN_ROLE_SCOPE_BY_BS-CRAFT-20260804-03_NUMERICS_STILL_DEFERRED"
+      }
+    },
+    {
+      "id": "BS-CRAFT-20260804-03",
+      "title": "주재료·보조재료·촉매 역할과 대표 조합",
+      "status": "USER_APPROVED_PENDING_MERGE",
+      "canon": "docs/planning/BLACKSMITH_R2_MATERIAL_CATALYST_ROLE_AND_REPRESENTATIVE_COMBINATIONS_CANON_2026.md",
+      "refines": "BS-CRAFT-20260804-02",
+      "contract": {
+        "material_slots": ["PRIMARY_MATERIAL", "AUXILIARY_MATERIAL", "CATALYST"],
+        "primary_material_role": [
+          "BASE_ITEM_MATERIAL_NAME",
+          "BASE_PERFORMANCE_ENVELOPE",
+          "BASE_VALUE_AND_CRAFT_DIFFICULTY_DIRECTION",
+          "MATERIAL_VISUAL_IDENTITY",
+          "UTILITY_AND_ARTISTRY_STARTING_POTENTIAL"
+        ],
+        "auxiliary_material_role": [
+          "ONE_DOMINANT_DIRECTIONAL_ADJUSTMENT",
+          "ONE_EXPLICIT_TRADEOFF",
+          "AFFIX_FAMILY_BIAS",
+          "MUST_NOT_OVERRIDE_PRIMARY_IDENTITY"
+        ],
+        "catalyst_role": [
+          "ENHANCEMENT_STABILITY_OR_RISK_DIRECTION",
+          "ENHANCEMENT_EFFECT_AND_AFFIX_WEIGHTING",
+          "ARTISTRY_FINISH_DIRECTION",
+          "SPECIALIZATION_REACTION_DIRECTION"
+        ],
+        "first_completion_has_affix": false,
+        "affixes_are_added_by_enhancement_milestones_and_results": true,
+        "auxiliary_or_catalyst_auto_name_affix": false,
+        "hidden_combinations_allowed": true,
+        "representative_combinations_are_exhaustive_catalog": false,
+        "primary_material_archetypes": ["IRON", "STEEL", "SILVER_ALLOY", "METEORIC_IRON"],
+        "auxiliary_material_archetypes": ["EDGE_REINFORCEMENT", "SHOCK_ABSORPTION", "LIGHTWEIGHT_ALLOY", "ENVIRONMENTAL_TREATMENT", "SILVER_INLAY", "HERALDIC_METAL"],
+        "catalyst_archetypes": ["TEMPERING_SALT", "HIGH_HEAT_QUENCH", "STABILIZING_OIL", "ANTI_CORROSION_AGENT", "FINE_POLISHING_POWDER", "HERALDIC_FIXATIVE", "STAR_RESIDUE"],
+        "representative_combination_count": 8,
+        "representative_combinations": ["IRON_BALANCED", "STEEL_ARENA", "STEEL_GUARD", "STEEL_EXPEDITION", "SILVER_CEREMONIAL", "STEEL_HERALDIC_HYBRID", "METEORIC_HUNTER", "METEORIC_MASTERWORK_HYBRID"],
+        "pre_craft_preview_adds_explicit_tradeoff": true,
+        "rare_material_is_universal_best": false,
+        "exact_material_values_costs_probabilities_and_final_names": "FOLLOW_UP_BASELINE_TEST_AND_CONTENT_NAMING_GATE"
       }
     },
     {
@@ -358,17 +287,8 @@
       "title": "GPT 논의 역할 경계",
       "status": "USER_DIRECTIVE_OPERATING_BOUNDARY_NON_BATCH",
       "contract": {
-        "gpt_primary_scope": [
-          "CORE_FUN",
-          "CONTENT_PLANNING",
-          "IMAGE_AND_ART_DIRECTION",
-          "ADVERSARIAL_DESIGN_REVIEW"
-        ],
-        "default_excluded_scope": [
-          "PRODUCT_IMPLEMENTATION",
-          "CODE_OWNERSHIP",
-          "LOW_LEVEL_TECHNICAL_EXECUTION"
-        ],
+        "gpt_primary_scope": ["CORE_FUN", "CONTENT_PLANNING", "IMAGE_AND_ART_DIRECTION", "ADVERSARIAL_DESIGN_REVIEW"],
+        "default_excluded_scope": ["PRODUCT_IMPLEMENTATION", "CODE_OWNERSHIP", "LOW_LEVEL_TECHNICAL_EXECUTION"],
         "technical_constraints_allowed": "ONLY_WHEN_REQUIRED_TO_PROTECT_DESIGN_OR_ART_FEASIBILITY",
         "implementation_handoff": "CODEX_OR_IMPLEMENTATION_PHASE"
       }
@@ -425,18 +345,21 @@
       "preview_levels": "LOW_MEDIUM_HIGH",
       "visual_tiers": 4,
       "exact_economic_coefficients": "FOLLOW_UP_BASELINE_TEST_PRESET"
+    },
+    {
+      "decision": "BS-CRAFT-20260804-02",
+      "refined_by": "BS-CRAFT-20260804-03",
+      "scope": "MATERIAL_SLOT_RESPONSIBILITIES_REPRESENTATIVE_COMBINATIONS_AND_NAMING_AFFIX_BOUNDARY",
+      "primary_material_archetypes": 4,
+      "auxiliary_material_archetypes": 6,
+      "catalyst_archetypes": 7,
+      "representative_combinations": 8,
+      "exact_numeric_values": "FOLLOW_UP_BASELINE_TEST_PRESET"
     }
   ],
   "resolution_formula_structure": {
     "roll": "1D100",
-    "contributors": [
-      "CUSTOMER_ABILITY_MODIFIER",
-      "EQUIPMENT_PERFORMANCE_AND_FIT_MODIFIER",
-      "TOOL_AND_CONSUMABLE_MODIFIER",
-      "PLAYER_ADVICE_AND_PREPARATION_MODIFIER",
-      "ACCUMULATED_PROGRESS_STATE",
-      "EXPLAINABLE_EVENT_MODIFIER"
-    ],
+    "contributors": ["CUSTOMER_ABILITY_MODIFIER", "EQUIPMENT_PERFORMANCE_AND_FIT_MODIFIER", "TOOL_AND_CONSUMABLE_MODIFIER", "PLAYER_ADVICE_AND_PREPARATION_MODIFIER", "ACCUMULATED_PROGRESS_STATE", "EXPLAINABLE_EVENT_MODIFIER"],
     "target": "SCHEDULE_DIFFICULTY",
     "numeric_authority": "VERSIONED_TEST_PRESETS"
   },
@@ -444,44 +367,43 @@
     "CUSTOMER_STATS_MUST_NOT_INVALIDATE_EQUIPMENT_CHOICE",
     "EVENT_RNG_MUST_NOT_OVERWHELM_PREPARATION",
     "ONE_TO_TEN_DISPLAY_MUST_USE_INTEGERS_WITHOUT_DECIMALS",
-    "ONE_TO_TEN_DISPLAY_MUST_NOT_BE_TREATED_AS_INTERNAL_MODIFIER_VALUES",
     "APPROXIMATE_PERCENT_MUST_NOT_IMPLY_CERTAINTY",
-    "DISPLAYED_ESTIMATE_MUST_BE_CALIBRATED_TO_OUTCOMES",
     "NO_SEPARATE_UNKNOWN_VARIABLE_WARNING_IN_PRE_SALE_UI",
-    "CUSTOMER_PROFILE_MUST_NOT_EXPAND_INTO_MANDATORY_TRAINING_RPG",
     "PERSONAL_AND_WORLD_SCHEDULES_MUST_KEEP_DISTINCT_TRIGGERS",
     "ROUTINE_SCHEDULE_PROGRESS_MUST_NOT_INTERRUPT_FORGING_FLOW",
-    "CRITICAL_ALERTS_MUST_NOT_BE_HIDDEN_BY_TRACKING_PREFERENCE",
     "SCHEDULE_LEDGER_MUST_PRESERVE_FULL_READBACK",
     "CONTENT_MUST_COMBINE_ACTIVITY_MOTIVATION_ITEM_OUTCOME_AND_FOLLOW_UP",
     "CONTENT_MUST_RETURN_TO_NEXT_CRAFTING_DECISION",
     "ACTIVITY_NAME_AND_REWARD_ONLY_RESKINS_PROHIBITED",
-    "CUSTOMER_MOTIVATION_MUST_AFFECT_STAKES_OR_RESULT",
     "MANDATORY_LONG_QUEST_CHAIN_PROHIBITED",
     "WORLD_RESULT_MUST_PRESERVE_CUSTOMER_AND_ITEM_FOLLOW_UP",
-    "SCHEDULE_MUST_FIT_PRIMARY_VISITOR_ARCHETYPE",
     "NOBLE_MUST_NOT_BE_EXPENSIVE_GLADIATOR_OR_SOLDIER_RESKIN",
-    "NOBLE_CONTENT_MUST_CREATE_ARTISTRY_LUXURY_PROVENANCE_OR_CEREMONIAL_DECISIONS",
     "NOBLE_CONTENT_MUST_REMAIN_IN_METALWORK_FORGING_LIFECYCLE",
     "NONCOMBAT_EXHIBITION_GIFT_AND_INHERITANCE_LEGACY_MUST_PERSIST_BY_ITEM_UID",
-    "NO_NEW_NOBLE_ONLY_CUSTOMER_STATS_AT_THIS_GATE",
     "ONLY_ONE_NEW_ITEM_VALUE_STAT_ARTISTRY",
     "NO_SEPARATE_PRACTICALITY_STAT",
     "ARTISTRY_MUST_REMAIN_INSIDE_EXISTING_CRAFTING_AND_ENHANCEMENT_LOOP",
     "MATERIAL_AND_CATALYST_PREVIEW_MUST_MATCH_ACTUAL_DIRECTION",
-    "UTILITY_AND_ARTISTRY_AFFIX_BIAS_MUST_PRESERVE_CRAFTING_CHOICE",
     "NO_SINGLE_ITEM_AUTOMATICALLY_MAXIMIZES_UTILITY_ARTISTRY_AND_PRICE",
     "ARTISTRY_DISPLAY_MUST_USE_INTEGER_ONE_TO_TEN_WITHOUT_DECIMALS",
     "ITEM_GRADE_MUST_NOT_AUTOMATICALLY_DETERMINE_ARTISTRY",
     "ENHANCEMENT_LEVEL_ALONE_MUST_NOT_AUTOMATICALLY_RAISE_ARTISTRY",
     "MATERIAL_PREVIEW_MUST_USE_TEXT_LOW_MEDIUM_HIGH_LABELS",
     "COLOR_ICON_OR_ARROW_ONLY_PREVIEW_PROHIBITED",
-    "ARTISTRY_PREMIUM_MUST_NOT_REPLACE_GRADE_OR_UTILITY_BASE_VALUE",
     "CUSTOMER_DEMAND_MUST_PREVENT_UNIVERSAL_ARTISTRY_PROFIT_DOMINANCE",
     "UTILITY_AND_ARTISTRY_AFFIX_POOLS_MUST_NOT_BE_FULLY_EXCLUSIVE",
-    "ARTISTRY_VISUAL_TIERS_MUST_REMAIN_FOUR_MINIMUM_LEVELS",
     "ARTISTRY_VISUAL_SCALING_MUST_PRESERVE_SILHOUETTE_AND_READABILITY",
     "ARTISTRY_VISUAL_IDENTITY_MUST_NOT_REDUCE_TO_GOLD_GEMS_AND_GLOW",
+    "PRIMARY_AUXILIARY_AND_CATALYST_ROLES_MUST_REMAIN_DISTINCT",
+    "PRIMARY_MATERIAL_MUST_DEFINE_BASE_NAME_AND_PERFORMANCE_IDENTITY",
+    "FIRST_COMPLETION_MUST_NOT_GAIN_AFFIX_FROM_AUXILIARY_OR_CATALYST",
+    "AFFIXES_MUST_REMAIN_ENHANCEMENT_MILESTONE_OR_RESULT_OUTPUTS",
+    "AUXILIARY_MATERIAL_MUST_HAVE_ONE_DOMINANT_BENEFIT_AND_ONE_TRADEOFF",
+    "CATALYST_MUST_BIAS_ENHANCEMENT_WITHOUT_DETERMINING_RESULTS",
+    "RARE_PRIMARY_MATERIAL_MUST_NOT_BE_UNIVERSAL_BEST",
+    "LOWER_TIER_MATERIAL_COMBINATIONS_MUST_REMAIN_MEANINGFUL",
+    "REPRESENTATIVE_COMBINATIONS_MUST_NOT_BE_TREATED_AS_EXHAUSTIVE_CATALOG",
+    "HIDDEN_COMBINATIONS_MUST_HAVE_DISCOVERABLE_CLUES",
     "GPT_SCOPE_MUST_REMAIN_DESIGN_CONTENT_AND_ART_FOCUSED"
   ],
   "checkpoint": {
@@ -506,9 +428,9 @@
   },
   "active_batch": {
     "id": "R2_BATCH_003",
-    "approved_decisions": 6,
+    "approved_decisions": 7,
     "max_batch_size": 10,
-    "counter": "6/10",
+    "counter": "7/10",
     "state": "APPROVED_PENDING_MERGE",
     "decisions": [
       "BS-CUSTOMER-20260803-02",
@@ -516,15 +438,14 @@
       "BS-CONTENT-20260804-01",
       "BS-CONTENT-20260804-02",
       "BS-CRAFT-20260804-01",
-      "BS-CRAFT-20260804-02"
+      "BS-CRAFT-20260804-02",
+      "BS-CRAFT-20260804-03"
     ],
-    "non_batch_operating_directives": [
-      "BS-OPS-20260804-01"
-    ],
+    "non_batch_operating_directives": ["BS-OPS-20260804-01"],
     "base_main": "d8ef47a6702c3afac4eb1a10439df974a2d259df",
     "draft_pr": 103,
     "current_validation": "PENDING_FOR_CURRENT_HEAD",
     "product_paths_changed": false
   },
-  "next_activity": "DEFINE_ARTISTRY_MATERIAL_VALUES_PRICE_COEFFICIENTS_AFFIX_PROBABILITIES_AND_VISUAL_MOCKUPS"
+  "next_activity": "DEFINE_MATERIAL_NUMERIC_VALUES_COSTS_ENHANCEMENT_RISK_AFFIX_PROBABILITIES_AND_HIDDEN_COMBINATION_CLUES"
 }
