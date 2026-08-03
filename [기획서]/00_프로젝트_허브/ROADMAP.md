@@ -4,13 +4,15 @@
 
 ```yaml
 CURRENT_WORK_MODE: TOTAL_PLANNING
-CURRENT_STAGE: R1_PROJECT_CORE_AND_PLAYER_PROMISE
-CURRENT_STAGE_STATUS: R1_CANON_ALIGNED / USER_FINAL_REVIEW_PENDING
+CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
+CURRENT_STAGE_STATUS: R1_USER_APPROVED / R2_PLANNING_ACTIVE
+R1_FINAL_APPROVAL: BS-OPS-20260803-05
+WORLD_SCHEDULE_DECISION: BS-WORLD-20260803-01
 CANON_BASELINE_PR: 94
 CANON_BASELINE_SHA: 8a0956d6c8b4cf3db545a17d0bd002ba8354d568
-SHEET_SYNC: COMPLETE / BS-OPS-20260803-03 / READBACK_PASS
+SHEET_SYNC_BASELINE: COMPLETE / BS-OPS-20260803-04 / READBACK_PASS
 PRODUCT_IMPLEMENTATION: BLOCKED
-NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
+NEXT_ACTIVITY: PLAN_R2_CORE_SESSION_META_LOOP
 ```
 
 문서 병합은 승인 기획을 main에 보존하는 작업이며 제품 구현 승인과 다르다.
@@ -32,20 +34,27 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 - 배치 004 — PR #93
 - R1 정본 정렬·감사 — PR #94 / Audit `BS-OPS-20260803-02`
 - post-merge 권위 최종화 — PR #96 / `BS-OPS-20260803-03`
-- PR #94 병합 SHA와 Sheet 최종 동기화: `COMPLETE / READBACK_PASS`
+- Sheet 동기화 Gate 종료 — PR #97 / `BS-OPS-20260803-04`
+- GitHub·Sheet 정본: `COMPLETE / READBACK_PASS`
 
 ## R1 — 프로젝트 코어·플레이어 약속
 
-상태: `CANON_ALIGNED / USER_FINAL_REVIEW_PENDING`.
+상태: `USER_APPROVED / CANON_COMPLETE`.
+
+최종 승인:
+
+- Decision: `BS-OPS-20260803-05`
+- 사용자 승인: `최종 승인`
 
 ```text
 직접 제작
 → 강화 성공·실패와 멈춤·추가 도전
 → 피로도에 따른 하루 작업 우선순위
 → 방문 고객에게 납품
-→ 즉시 인과 결과
-→ 날짜·세계일정
-→ 같은 UID의 결과·손상·복원·계승·재방문
+→ 즉시 사용 계획·초기 인과 피드백
+→ 날짜마다 세계일정 진행
+→ 별도 날짜의 최종 결과
+→ 같은 UID의 손상·복원·계승·재방문
 → 다음 강화·제작 목표
 ```
 
@@ -63,32 +72,57 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 - 구조 정본·정확한 숫자 테스트 프리셋
 - 한 작품 `+50` 생애 왕복 첫 코어 버티컬 슬라이스
 - 행동 증거+중립적 회상 인터뷰 검증 Gate
+- 세계일정 날짜별 단계 진행·규모별 기간 증가
 - 명예의 전당 `FUTURE_CONTENT_HOLD`
 
-남은 Gate:
+Gate:
 
-- [x] PR #94·#96 병합과 Sheet main canon 동기화
-- [ ] 사용자 R1 정본 최종 검수
+- [x] PR #94·#96·#97 병합과 Sheet main canon 동기화
+- [x] 사용자 R1 정본 최종 검수
+- [x] R2 기획 Gate 개방
 
 ## R2 — Core·Session·Meta Loop
 
-시작 조건: 사용자 R1 정본 승인.
+상태: `PLANNING_ACTIVE`.
 
 범위:
 
-- 제작→강화→멈춤/도전→피로도→납품→결과→재방문
+- 제작→강화→멈춤/도전→피로도→납품→날짜별 세계일정→최종 결과→재방문
 - 즉시·세션·장기 보상 위계
 - 실패·손상·복원·재도전·복귀
 - 한 작품 `+50` 생애 왕복의 실제 세션 구조
 - 온보딩과 정보 공개
+- 세계일정 규모·단계·기간·날짜별 업데이트·플레이어 개입
+
+세계일정 정본 경계:
+
+- 발생 당일 또는 첫 날짜 진행 한 번으로 최종 해결하지 않음
+- 하루 종료 한 번당 최대 한 단계 또는 한 개 진행 단위 전진
+- 최종 결과 전에 최소 하나의 중간 상태 제공
+- 규모가 클수록 단계와 게임 날짜 증가
+- 상대 기간: `LOCAL/PERSONAL < REGIONAL/FACTION < REALM/NATIONAL < WAR/CATASTROPHE`
+- 정확한 기간·단계 수는 테스트 프리셋
+- 빈 대기 로그·필수 장문 대화·날짜 스킵 최적화 금지
 
 검토 질문:
 
 - `+10~+50`이 선택 없는 긴 클릭 구간이 되지 않는가
 - 피로도·날짜가 대기벽이나 최적 스킵이 되지 않는가
 - 고객 결과가 강화 선택의 인과를 설명하는가
+- 날짜별 세계일정 업데이트가 실제 변화와 다음 판단을 제공하는가
+- 작은 일정도 충분한 기대를 만들면서 불필요하게 늘어지지 않는가
+- 대형 일정이 긴 대기 또는 항상 최우선인 최적해가 되지 않는가
 - 같은 UID 재방문이 다음 행동을 자발적으로 만드는가
 - 자동화가 중요 판단을 우회하지 않는가
+
+R2 우선 Decision 영역:
+
+1. 첫 코어 슬라이스 세계일정의 규모와 기본 단계
+2. 날짜별 진행 화면의 정보량
+3. 플레이어가 개입하는 날과 관찰만 하는 날
+4. 여러 일정의 동시 진행과 우선순위
+5. 일정 진행과 피로도·하루 종료의 악용 방지
+6. 즉시·세션·장기 보상 위계
 
 ## R3 — 제작·강화·작품 정체성·실패·저장
 
@@ -102,6 +136,7 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 - 단계 하락·손상·대파·잠금·복원
 - 완전 파괴의 명시적 선택 계약
 - UID·불변 역사·저장·migration
+- 세계일정 날짜·단계·작품 기여 이력 저장
 
 금지:
 
@@ -109,6 +144,7 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 - 사건 수식어 무제한 누적
 - 일반 실패의 즉시 UID·연대기 삭제
 - 이정표 보상 중복 획득
+- 동일 날짜 중복 진행·단계 건너뛰기·로드를 이용한 일정 재굴림
 
 ## R4 — 고객·세계일정·사건·작품 연대기
 
@@ -118,10 +154,13 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 
 - 방문 고객 목적·환경·조건 대화
 - 원자적 납품과 생애 활성화
-- 즉시 인과 결과와 지연 세계 결과
-- 성공·부분 성공·실패·손상·대파
+- 즉시 사용 계획·초기 인과 피드백
+- 날짜별 준비·진행·변수·전환점
+- 별도 날짜의 성공·부분 성공·실패·손상·대파
 - 재방문·관계·명성·복원·계승
 - 지원 자원 소비와 결과 기여 표시
+- 일정 규모 분류·기간 프리셋·분기 합류
+- 날짜별 기록과 사건 수식어 인과 판정
 
 차단:
 
@@ -129,6 +168,9 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 - 사건 RNG가 작품 선택을 압도
 - 과도한 필수 대화·이벤트
 - 임의 거짓말과 숨은 랜덤 처벌
+- 기간만 늘리고 의미 있는 변화가 없는 빈 대기
+- 하루 넘기기 반복이 최적의 진행 방식이 되는 구조
+- 날짜 경과만으로 사건 수식어 자동 성장
 
 ## R5 — 경제·피로도·성장·장기 목표
 
@@ -138,12 +180,13 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 
 - 골드·재료 Source/Sink
 - 피로도 소비·회복·날짜 전환
+- 세계일정 규모별 기간과 보상·위험 관계
 - 손상·복원 경제와 소프트락 방지
 - 버전형 테스트 프리셋
 - 단일 변수 중심 실험
 - `+50` 이후 성장 필요성 검증
 
-정확한 비용·확률·용량·시간은 사람 플레이 증거 전까지 제품 확정값이 아니다.
+정확한 비용·확률·용량·시간·세계일정 기간은 사람 플레이 증거 전까지 제품 확정값이 아니다.
 
 ## R6 — 모바일 UX·접근성·아트·오디오
 
@@ -155,6 +198,7 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 - 한 화면의 중요한 판단 하나
 - 위험·확률·소유권·자원 소비 사전 표시
 - 일반 수식어와 사건 계층 구분
+- 세계일정 현재 단계·경과 날짜·다음 갱신 가독성
 - 작품 연대기·손상·복원·재방문 가독성
 - 비색상 정보·모션 감소·제한적 자동 작업
 
@@ -169,8 +213,10 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 → 제작
 → +10/+20/+30/+40/+50
 → 방문 고객 납품
-→ 즉시 결과
-→ 날짜·세계일정
+→ 즉시 사용 계획·초기 인과 피드백
+→ 날짜 1: 준비·초기 진행
+→ 날짜 2+: 중간 변화·전환점
+→ 별도 날짜: 최종 세계 결과
 → 같은 UID 재방문
 → 복원·재강화·후속 판단
 ```
@@ -182,6 +228,8 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 - 강화 지속·중단 고민
 - 일반 수식어 A·B와 주요 선택 기억
 - 결과 인과 설명
+- 세계일정 현재 단계와 다음 진행 이해
+- 일정 규모와 기간 차이 납득
 - 재방문 후 자발적 다음 행동
 - 피로도·날짜 우선순위 사용
 - 손상·복원의 생애 의미 이해
@@ -192,6 +240,7 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 
 - 포함·제외 범위
 - Schema·ID·저장·migration
+- 세계일정 상태 머신·규모·기간 프리셋
 - 테스트 프리셋·행동 가설
 - 관찰 로그·인터뷰·진행자 개입 계약
 - 자동 테스트·Godot·Android·접근성·성능·사람 플레이 계획
@@ -201,8 +250,9 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 
 - 플레이어 약속 ↔ 반복 행동
 - 강화 코어 ↔ 피로도·날짜·세계 환류
-- 작품 애착 ↔ 손상·복원·재방문
+- 작품 애착 ↔ 다일 세계일정·손상·복원·재방문
 - 경제 수치 ↔ 행동 가설과 프리셋
+- 세계일정 규모 ↔ 기간·정보·보상·개입 기회
 - 복잡도 ↔ 모바일 온보딩
 - GitHub 정본 ↔ Sheet ↔ 실제 구현
 - 리뷰·스레드·댓글·CI·금지 경로·드리프트 감사
@@ -234,6 +284,11 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 
 현재 코어 슬라이스·R2~R7 범위에 포함하지 않는다.
 
+### 대규모 실제 세계 콘텐츠
+
+- 전쟁·국가·대재앙급 일정의 `기간이 더 길다`는 구조는 정본이다.
+- 실제 전쟁·국가·대재앙 콘텐츠 제작과 다작품·다세력 시뮬레이션은 후속 보류다.
+
 ## Production Greenlight
 
 다음 전에는 Production·Demo Ready를 주장하지 않는다.
@@ -241,6 +296,7 @@ NEXT_ACTIVITY: REQUEST_USER_R1_FINAL_REVIEW
 - 전체 기획·최종 사용자 검수
 - 제품 구현·회귀 테스트
 - 한 작품 `+50` 생애 왕복 행동 증거
+- 세계일정 날짜별 진행·규모별 기간·저장 복구 증거
 - 저장·복구·마이그레이션
 - Android 실기기
 - 접근성·성능
