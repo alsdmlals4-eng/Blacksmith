@@ -1,0 +1,102 @@
+{
+  "artifact_role": "CURRENT_R2_CANON_REGISTRY",
+  "schema_version": 1,
+  "project": "Blacksmith",
+  "current_stage": "R2_CORE_SESSION_META_LOOP",
+  "stage_status": "R2_CHECKPOINT_002_APPROVED_PENDING_MERGE",
+  "product_implementation": "BLOCKED",
+  "authority_precedence": [
+    "CURRENT_CONFIRMED_DECISIONS.md",
+    "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
+    "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
+    "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
+    "historical drafts and PoC evidence"
+  ],
+  "baseline": {
+    "main_before_checkpoint": "53793be4f613e26279611d12f1ee738d2b989276",
+    "r1_registry": "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
+    "r2_checkpoint_001_decisions": [
+      "BS-WORLD-20260803-02",
+      "BS-OPS-20260803-06"
+    ]
+  },
+  "current_decisions": [
+    {
+      "id": "BS-WORLD-20260803-03",
+      "title": "고객 개인 일정과 예고형 세계 일정의 분리",
+      "status": "USER_APPROVED",
+      "canon": "docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md",
+      "contract": {
+        "personal_schedule_activation": "CUSTOMER_VISIT_PLUS_SALE_OR_DELIVERY",
+        "personal_schedule_progression": "ONE_END_OF_DAY_CHECK_MAXIMUM_WHILE_ACTIVE",
+        "repeat_visit_required_for_progress": false,
+        "world_schedule_activation": "ANNOUNCED_FIXED_DATE_MAJOR_EVENT",
+        "world_schedule_progression": "PREPARATION_CHECKPOINTS_PLUS_SCHEDULED_EVENT_DATE",
+        "customer_visits_before_world_event": "ACCUMULATE_PREPARATION_CONTRIBUTIONS"
+      }
+    },
+    {
+      "id": "BS-CUSTOMER-20260803-01",
+      "title": "고객의 간단한 능력치와 성공 가능성 예측",
+      "status": "USER_APPROVED",
+      "canon": "docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md",
+      "contract": {
+        "core_stats": ["SKILL", "ENDURANCE", "JUDGMENT"],
+        "display_scale": "1_TO_5",
+        "schedule_stat_usage": "ONE_PRIMARY_PLUS_AT_MOST_ONE_SECONDARY",
+        "traits_max": 2,
+        "weaknesses_max": 1,
+        "success_forecast": ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"],
+        "forecast_reasons_required": true,
+        "exact_modifiers": "BASELINE_TEST_PRESET"
+      }
+    },
+    {
+      "id": "BS-OPS-20260803-07",
+      "title": "R2 승인 2/10 정본 교정 조기 체크포인트",
+      "status": "EARLY_CHECKPOINT_APPROVED_PENDING_MERGE",
+      "reason": "PREVIOUS_WORLD_SCHEDULE_SCOPE_CORRECTION"
+    }
+  ],
+  "supersession": [
+    {
+      "decision": "BS-WORLD-20260803-02",
+      "status": "SUPERSEDED_IN_SCOPE_BY_BS-WORLD-20260803-03",
+      "retained_role": "HISTORICAL_BASELINE_EXAMPLE_FOR_ONE_PERSONAL_SCHEDULE",
+      "prohibited_interpretation": "UNIVERSAL_WORLD_SCHEDULE_STATE_MACHINE"
+    }
+  ],
+  "resolution_formula_structure": {
+    "roll": "1D100",
+    "contributors": [
+      "CUSTOMER_ABILITY_MODIFIER",
+      "EQUIPMENT_PERFORMANCE_AND_FIT_MODIFIER",
+      "TOOL_AND_CONSUMABLE_MODIFIER",
+      "PLAYER_ADVICE_AND_PREPARATION_MODIFIER",
+      "ACCUMULATED_PROGRESS_STATE",
+      "EXPLAINABLE_EVENT_MODIFIER"
+    ],
+    "target": "SCHEDULE_DIFFICULTY",
+    "numeric_authority": "VERSIONED_TEST_PRESETS"
+  },
+  "adversarial_guards": [
+    "CUSTOMER_STATS_MUST_NOT_INVALIDATE_EQUIPMENT_CHOICE",
+    "EVENT_RNG_MUST_NOT_OVERWHELM_PREPARATION",
+    "FORECAST_MUST_SHOW_REASONS_AND_AVOID_FALSE_PRECISION",
+    "CUSTOMER_PROFILE_MUST_NOT_EXPAND_INTO_MANDATORY_TRAINING_RPG",
+    "PERSONAL_AND_WORLD_SCHEDULES_MUST_KEEP_DISTINCT_TRIGGERS"
+  ],
+  "checkpoint": {
+    "approved_decisions_in_checkpoint": 2,
+    "max_batch_size": 10,
+    "early_checkpoint": true,
+    "next_counter_after_merge": "0/10",
+    "product_paths_changed": false,
+    "runtime_validation": "NOT_RUN",
+    "android_validation": "NOT_RUN",
+    "accessibility_validation": "NOT_RUN",
+    "performance_validation": "NOT_RUN",
+    "human_playtest": "NOT_RUN"
+  },
+  "next_activity": "DEFINE_CUSTOMER_DIALOGUE_INFORMATION_DISCLOSURE_AND_RISK_TRANSPARENCY"
+}
