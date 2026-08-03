@@ -13,6 +13,7 @@ VISITOR_CANON = ROOT / "docs/planning/BLACKSMITH_R2_VISITOR_ARCHETYPES_AND_INITI
 ARTISTRY_CANON = ROOT / "docs/planning/BLACKSMITH_R2_ARTISTRY_VALUE_AND_UTILITY_CRAFTING_CANON_2026.md"
 ARTISTRY_PRESET_CANON = ROOT / "docs/planning/BLACKSMITH_R2_ARTISTRY_MINIMUM_SCALE_PRICE_AFFIX_VISUAL_PRESET_CANON_2026.md"
 MATERIAL_CANON = ROOT / "docs/planning/BLACKSMITH_R2_MATERIAL_CATALYST_ROLE_AND_REPRESENTATIVE_COMBINATIONS_CANON_2026.md"
+PRECISION_METHOD_CANON = ROOT / "docs/planning/BLACKSMITH_R2_PRECISION_ENHANCEMENT_METHOD_AND_CATALYST_STRUCTURE_CANON_2026.md"
 ROOT_DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 
@@ -64,11 +65,13 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertFalse(artistry["new_practicality_stat_added"])
         self.assertFalse(artistry["separate_artistry_upgrade_loop"])
         self.assertTrue(artistry["enhancement_remains_primary_loop"])
+        self.assertNotIn("AUXILIARY_MATERIALS", artistry["artistry_sources"])
+        self.assertIn("ENHANCEMENT_METHODS", artistry["artistry_sources"])
         self.assertEqual("INTEGER_1_TO_10", preset["artistry_display_scale"])
         self.assertEqual((1, 10), (preset["artistry_min"], preset["artistry_max"]))
         self.assertFalse(preset["display_decimals"])
         self.assertFalse(preset["enhancement_level_alone_raises_artistry"])
-        self.assertEqual(["LOW", "MEDIUM", "HIGH"], preset["material_catalyst_preview_levels"])
+        self.assertEqual(["LOW", "MEDIUM", "HIGH"], preset["precision_input_preview_levels"])
         self.assertTrue(preset["preview_text_required"])
         self.assertFalse(preset["color_icon_arrow_only_preview_allowed"])
         self.assertEqual(4, len(preset["utility_affix_families_minimum"]))
@@ -77,52 +80,76 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertEqual(4, preset["visual_tier_count"])
         self.assertFalse(preset["gold_gems_and_glow_only_progression"])
 
-    def test_material_slot_role_and_naming_boundary(self) -> None:
-        decision = self.decisions["BS-CRAFT-20260804-03"]
+    def test_previous_material_structure_is_superseded(self) -> None:
+        previous = self.decisions["BS-CRAFT-20260804-03"]
+        self.assertEqual("SUPERSEDED_IN_STRUCTURE_BY_BS-CRAFT-20260804-04", previous["status"])
+        self.assertEqual("HISTORICAL_DESIGN_EXPLORATION_ONLY", previous["retained_role"])
+        self.assertEqual("BS-CRAFT-20260804-04", previous["superseded_by"])
+
+    def test_precision_enhancement_method_and_catalyst_structure(self) -> None:
+        decision = self.decisions["BS-CRAFT-20260804-04"]
         contract = decision["contract"]
         self.assertEqual("USER_APPROVED_PENDING_MERGE", decision["status"])
-        self.assertEqual("BS-CRAFT-20260804-02", decision["refines"])
-        self.assertEqual(["PRIMARY_MATERIAL", "AUXILIARY_MATERIAL", "CATALYST"], contract["material_slots"])
-        self.assertIn("BASE_ITEM_MATERIAL_NAME", contract["primary_material_role"])
-        self.assertIn("ONE_EXPLICIT_TRADEOFF", contract["auxiliary_material_role"])
-        self.assertIn("ENHANCEMENT_EFFECT_AND_AFFIX_WEIGHTING", contract["catalyst_role"])
+        self.assertEqual("BS-CRAFT-20260804-03", decision["supersedes"])
+        self.assertEqual(
+            ["PRIMARY_MATERIAL_CONTEXT", "ENHANCEMENT_METHOD", "CATALYST_OR_ADDITIONAL_MATERIAL"],
+            contract["precision_enhancement_inputs"],
+        )
+        self.assertFalse(contract["auxiliary_material_slot_exists"])
+        self.assertEqual("PRECISION_MILESTONES_ONLY", contract["method_selection_timing"])
+        self.assertFalse(contract["normal_enhancement_requires_method_selection"])
+        self.assertFalse(contract["primary_material_overwrites_base_item_name"])
+        self.assertEqual(
+            [
+                "EDGE_REINFORCEMENT",
+                "SHOCK_ABSORPTION",
+                "LIGHTWEIGHTING",
+                "BALANCE_TUNING",
+                "ARTISTIC_FINISH",
+                "ENVIRONMENTAL_TREATMENT",
+            ],
+            contract["enhancement_methods"],
+        )
+        targets = contract["method_primary_stat_targets"]
+        self.assertEqual(["ATTACK", "PRECISION"], targets["EDGE_REINFORCEMENT"])
+        self.assertEqual(["DEFENSE", "DURABILITY"], targets["SHOCK_ABSORPTION"])
+        self.assertEqual(["WEIGHT_REDUCTION", "HANDLING"], targets["LIGHTWEIGHTING"])
+        self.assertEqual(["HANDLING", "STABILITY"], targets["BALANCE_TUNING"])
+        self.assertEqual(["ARTISTRY", "VALUE"], targets["ARTISTIC_FINISH"])
+        self.assertEqual(["ENVIRONMENT_RESPONSE", "SPECIALIZATION"], targets["ENVIRONMENTAL_TREATMENT"])
+        self.assertTrue(contract["method_requires_primary_benefit_and_tradeoff"])
+        self.assertTrue(contract["method_applicability_depends_on_item_type"])
+        self.assertTrue(contract["successful_result_respects_selected_method_direction"])
+        self.assertTrue(contract["exact_gain_and_side_effect_are_variable"])
+        self.assertTrue(contract["catalyst_is_secondary_modifier_not_direction_owner"])
+        self.assertFalse(contract["catalyst_guarantees_success_or_affix"])
         self.assertFalse(contract["first_completion_has_affix"])
-        self.assertTrue(contract["affixes_are_added_by_enhancement_milestones_and_results"])
-        self.assertFalse(contract["auxiliary_or_catalyst_auto_name_affix"])
-        self.assertTrue(contract["hidden_combinations_allowed"])
-        self.assertFalse(contract["representative_combinations_are_exhaustive_catalog"])
-        self.assertEqual(["IRON", "STEEL", "SILVER_ALLOY", "METEORIC_IRON"], contract["primary_material_archetypes"])
-        self.assertEqual(6, len(contract["auxiliary_material_archetypes"]))
-        self.assertEqual(7, len(contract["catalyst_archetypes"]))
-        self.assertEqual(8, contract["representative_combination_count"])
-        self.assertEqual(8, len(contract["representative_combinations"]))
-        self.assertIn("STEEL_ARENA", contract["representative_combinations"])
-        self.assertIn("METEORIC_MASTERWORK_HYBRID", contract["representative_combinations"])
-        self.assertTrue(contract["pre_craft_preview_adds_explicit_tradeoff"])
-        self.assertFalse(contract["rare_material_is_universal_best"])
-        self.assertEqual("FOLLOW_UP_BASELINE_TEST_AND_CONTENT_NAMING_GATE", contract["exact_material_values_costs_probabilities_and_final_names"])
+        self.assertTrue(contract["precision_result_can_add_or_upgrade_affix"])
+        self.assertEqual("BASELINE_TEST_PRESET", contract["exact_values_costs_risks_and_probabilities"])
 
-    def test_material_adversarial_guards(self) -> None:
+    def test_precision_enhancement_adversarial_guards(self) -> None:
         guards = set(self.registry["adversarial_guards"])
         for guard in (
-            "PRIMARY_AUXILIARY_AND_CATALYST_ROLES_MUST_REMAIN_DISTINCT",
-            "PRIMARY_MATERIAL_MUST_DEFINE_BASE_NAME_AND_PERFORMANCE_IDENTITY",
-            "FIRST_COMPLETION_MUST_NOT_GAIN_AFFIX_FROM_AUXILIARY_OR_CATALYST",
-            "AFFIXES_MUST_REMAIN_ENHANCEMENT_MILESTONE_OR_RESULT_OUTPUTS",
-            "AUXILIARY_MATERIAL_MUST_HAVE_ONE_DOMINANT_BENEFIT_AND_ONE_TRADEOFF",
-            "CATALYST_MUST_BIAS_ENHANCEMENT_WITHOUT_DETERMINING_RESULTS",
+            "AUXILIARY_MATERIAL_SLOT_MUST_NOT_EXIST",
+            "ENHANCEMENT_METHOD_MUST_OWN_STAT_DIRECTION",
+            "METHOD_SELECTION_MUST_OCCUR_ONLY_AT_PRECISION_MILESTONES",
+            "NORMAL_ENHANCEMENT_MUST_REMAIN_ONE_INPUT_ONE_RESULT",
+            "PRIMARY_MATERIAL_CONTEXT_MUST_NOT_RENAME_EXISTING_ITEM",
+            "METHOD_MUST_HAVE_PRIMARY_BENEFIT_AND_TRADEOFF",
+            "METHOD_APPLICABILITY_MUST_RESPECT_ITEM_TYPE",
+            "CATALYST_MUST_MODIFY_METHOD_WITHOUT_OWNING_DIRECTION",
+            "CATALYST_MUST_NOT_GUARANTEE_SUCCESS_OR_AFFIX",
+            "SELECTED_METHOD_DIRECTION_MUST_MATCH_SUCCESSFUL_RESULT",
             "RARE_PRIMARY_MATERIAL_MUST_NOT_BE_UNIVERSAL_BEST",
-            "LOWER_TIER_MATERIAL_COMBINATIONS_MUST_REMAIN_MEANINGFUL",
-            "REPRESENTATIVE_COMBINATIONS_MUST_NOT_BE_TREATED_AS_EXHAUSTIVE_CATALOG",
-            "HIDDEN_COMBINATIONS_MUST_HAVE_DISCOVERABLE_CLUES",
+            "GPT_SCOPE_MUST_REMAIN_DESIGN_CONTENT_AND_ART_FOCUSED",
         ):
             self.assertIn(guard, guards)
 
     def test_batch_counter_and_product_gate(self) -> None:
         batch = self.registry["active_batch"]
         self.assertEqual("R2_BATCH_003", batch["id"])
-        self.assertEqual(7, batch["approved_decisions"])
-        self.assertEqual("7/10", batch["counter"])
+        self.assertEqual(8, batch["approved_decisions"])
+        self.assertEqual("8/10", batch["counter"])
         self.assertEqual("APPROVED_PENDING_MERGE", batch["state"])
         self.assertEqual([
             "BS-CUSTOMER-20260803-02",
@@ -132,13 +159,14 @@ class R2Batch003Tests(unittest.TestCase):
             "BS-CRAFT-20260804-01",
             "BS-CRAFT-20260804-02",
             "BS-CRAFT-20260804-03",
+            "BS-CRAFT-20260804-04",
         ], batch["decisions"])
         self.assertEqual(103, batch["draft_pr"])
         self.assertEqual("PENDING_FOR_CURRENT_HEAD", batch["current_validation"])
         self.assertFalse(batch["product_paths_changed"])
         self.assertEqual("BLOCKED", self.registry["product_implementation"])
         self.assertEqual(
-            "DEFINE_MATERIAL_NUMERIC_VALUES_COSTS_ENHANCEMENT_RISK_AFFIX_PROBABILITIES_AND_HIDDEN_COMBINATION_CLUES",
+            "DEFINE_PRECISION_METHOD_STAT_PACKAGES_CATALYST_INTERACTIONS_COSTS_RISKS_AND_VISUAL_FEEDBACK",
             self.registry["next_activity"],
         )
 
@@ -151,6 +179,7 @@ class R2Batch003Tests(unittest.TestCase):
             "artistry": ARTISTRY_CANON.read_text(encoding="utf-8"),
             "preset": ARTISTRY_PRESET_CANON.read_text(encoding="utf-8"),
             "material": MATERIAL_CANON.read_text(encoding="utf-8"),
+            "precision": PRECISION_METHOD_CANON.read_text(encoding="utf-8"),
             "root": ROOT_DECISIONS.read_text(encoding="utf-8"),
             "active": ACTIVE_CONTEXT.read_text(encoding="utf-8"),
         }
@@ -161,22 +190,24 @@ class R2Batch003Tests(unittest.TestCase):
             "visitor": ("BS-CONTENT-20260804-02", "검투사 / 모험가 / 군인 / 귀족", "왕실 의례·명품 박람회"),
             "artistry": ("BS-CRAFT-20260804-01", "작품에는 `예술성` 단일 수치만 추가", "별도 강화 버튼이나 장식 미니게임"),
             "preset": ("BS-CRAFT-20260804-02", "예술성: 정수 1~10", "MASTERPIECE / 걸작"),
-            "material": (
-                "BS-CRAFT-20260804-03",
-                "주재료·보조재료·촉매",
-                "수식어 없는 1차 완성품",
-                "대표 조합 8종",
-                "철제 균형형",
-                "운철 걸작 혼합형",
-                "보조재료·촉매 이름을 자동 접두사·접미사로 붙이지 않는다",
+            "material": ("BS-CRAFT-20260804-03", "BS-CRAFT-20260804-04", "SUPERSEDED"),
+            "precision": (
+                "BS-CRAFT-20260804-04",
+                "보조재료 슬롯은 사용하지 않는다",
+                "주재료 맥락 + 강화 방식 + 촉매·추가재료",
+                "날 보강",
+                "충격 흡수",
+                "경량화",
+                "예술 마감",
+                "일반 강화는 한 입력 한 결과",
                 "제품 구현은 계속 `BLOCKED`",
             ),
             "root": (
-                "R2_BATCH_003_7_OF_10",
-                "BS-CRAFT-20260804-03",
-                "주재료·보조재료·촉매 3계층 역할",
-                "제작 직후 1차 완성품에는 수식어가 없다",
-                "활성 배치 승인 카운터 `7/10`",
+                "R2_BATCH_003_8_OF_10",
+                "BS-CRAFT-20260804-04",
+                "보조재료 슬롯을 제거",
+                "정밀강화에서 주재료·강화 방식·촉매",
+                "활성 배치 승인 카운터 `8/10`",
             ),
             "active": (
                 "R1 최종 승인",
@@ -184,9 +215,9 @@ class R2Batch003Tests(unittest.TestCase):
                 "REFERENCE_IMPLEMENTATION / HISTORICAL_POC",
                 "세계일정 진행 계약",
                 "행동 증거",
-                "BS-CRAFT-20260804-03",
-                "대표 조합 8종",
-                "현재 배치: `R2_BATCH_003 / 7_OF_10 / APPROVED_PENDING_MERGE`",
+                "BS-CRAFT-20260804-04",
+                "보조재료 슬롯 없음",
+                "현재 배치: `R2_BATCH_003 / 8_OF_10 / APPROVED_PENDING_MERGE`",
             ),
         }
         for document_name, tokens in expected_tokens.items():
