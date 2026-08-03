@@ -270,7 +270,87 @@
         ],
         "visual_quality_scales_with_artistry": true,
         "visual_readability_must_be_preserved": true,
-        "exact_artistry_scale_price_formula_affix_weights_and_visual_tiers": "FOLLOW_UP_TEST_AND_ART_GATE"
+        "exact_artistry_scale_price_formula_affix_weights_and_visual_tiers": "REFINED_BY_BS-CRAFT-20260804-02"
+      }
+    },
+    {
+      "id": "BS-CRAFT-20260804-02",
+      "title": "예술성 최소 표시·가격·수식어·시각 프리셋",
+      "status": "USER_APPROVED_PENDING_MERGE",
+      "canon": "docs/planning/BLACKSMITH_R2_ARTISTRY_MINIMUM_SCALE_PRICE_AFFIX_VISUAL_PRESET_CANON_2026.md",
+      "refines": "BS-CRAFT-20260804-01",
+      "contract": {
+        "artistry_display_scale": "INTEGER_1_TO_10",
+        "display_decimals": false,
+        "artistry_min": 1,
+        "artistry_max": 10,
+        "item_grade_influences_but_does_not_determine_artistry": true,
+        "enhancement_level_alone_raises_artistry": false,
+        "material_catalyst_preview_levels": [
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ],
+        "preview_fields": [
+          "UTILITY_DIRECTION",
+          "ARTISTRY_DIRECTION",
+          "PRICE_DIRECTION",
+          "ENHANCEMENT_AND_AFFIX_BIAS"
+        ],
+        "preview_text_required": true,
+        "color_icon_arrow_only_preview_allowed": false,
+        "price_structure": {
+          "base_value": [
+            "ITEM_GRADE",
+            "UTILITY_PERFORMANCE"
+          ],
+          "additional_value": [
+            "ARTISTRY_PREMIUM",
+            "RARE_AUXILIARY_MATERIAL_AND_CATALYST_PREMIUM",
+            "ITEM_LEGACY_REPUTATION_AND_APPRAISAL_PREMIUM"
+          ],
+          "customer_demand_can_modify_final_offer": true,
+          "exact_coefficients": "BASELINE_TEST_PRESET"
+        },
+        "utility_affix_families_minimum": [
+          "OFFENSE_AND_PRECISION",
+          "DEFENSE_AND_DURABILITY",
+          "HANDLING_AND_STABILITY",
+          "ENVIRONMENT_AND_SPECIALIZATION"
+        ],
+        "artistry_affix_families_minimum": [
+          "FINISH_AND_CRAFTSMANSHIP",
+          "PRESTIGE_AND_RARITY",
+          "APPRAISAL_AND_VALUE"
+        ],
+        "affix_bias_by_orientation": {
+          "UTILITY_ORIENTED": "UTILITY_HIGH_ARTISTRY_LOW_TO_MEDIUM",
+          "ARTISTRY_ORIENTED": "ARTISTRY_HIGH_UTILITY_LOW_TO_MEDIUM",
+          "HYBRID": "BOTH_MEDIUM"
+        },
+        "affix_pools_are_exclusive": false,
+        "visual_tiers": [
+          {
+            "id": "BASIC",
+            "artistry_range": "1_TO_2"
+          },
+          {
+            "id": "REFINED",
+            "artistry_range": "3_TO_5"
+          },
+          {
+            "id": "MASTERWORK",
+            "artistry_range": "6_TO_8"
+          },
+          {
+            "id": "MASTERPIECE",
+            "artistry_range": "9_TO_10"
+          }
+        ],
+        "visual_tier_count": 4,
+        "visual_tier_preserves_silhouette_and_function_readability": true,
+        "gold_gems_and_glow_only_progression": false,
+        "exact_material_values_price_weights_affix_probabilities": "FOLLOW_UP_BASELINE_TEST_PRESET"
       }
     },
     {
@@ -336,6 +416,15 @@
       "new_item_stat": "ARTISTRY_ONLY",
       "new_practicality_stat_added": false,
       "separate_artistry_minigame": false
+    },
+    {
+      "decision": "BS-CRAFT-20260804-01",
+      "refined_by": "BS-CRAFT-20260804-02",
+      "scope": "MINIMUM_ARTISTRY_DISPLAY_PRICE_AFFIX_AND_VISUAL_PRESET",
+      "display_scale": "INTEGER_1_TO_10",
+      "preview_levels": "LOW_MEDIUM_HIGH",
+      "visual_tiers": 4,
+      "exact_economic_coefficients": "FOLLOW_UP_BASELINE_TEST_PRESET"
     }
   ],
   "resolution_formula_structure": {
@@ -382,6 +471,15 @@
     "MATERIAL_AND_CATALYST_PREVIEW_MUST_MATCH_ACTUAL_DIRECTION",
     "UTILITY_AND_ARTISTRY_AFFIX_BIAS_MUST_PRESERVE_CRAFTING_CHOICE",
     "NO_SINGLE_ITEM_AUTOMATICALLY_MAXIMIZES_UTILITY_ARTISTRY_AND_PRICE",
+    "ARTISTRY_DISPLAY_MUST_USE_INTEGER_ONE_TO_TEN_WITHOUT_DECIMALS",
+    "ITEM_GRADE_MUST_NOT_AUTOMATICALLY_DETERMINE_ARTISTRY",
+    "ENHANCEMENT_LEVEL_ALONE_MUST_NOT_AUTOMATICALLY_RAISE_ARTISTRY",
+    "MATERIAL_PREVIEW_MUST_USE_TEXT_LOW_MEDIUM_HIGH_LABELS",
+    "COLOR_ICON_OR_ARROW_ONLY_PREVIEW_PROHIBITED",
+    "ARTISTRY_PREMIUM_MUST_NOT_REPLACE_GRADE_OR_UTILITY_BASE_VALUE",
+    "CUSTOMER_DEMAND_MUST_PREVENT_UNIVERSAL_ARTISTRY_PROFIT_DOMINANCE",
+    "UTILITY_AND_ARTISTRY_AFFIX_POOLS_MUST_NOT_BE_FULLY_EXCLUSIVE",
+    "ARTISTRY_VISUAL_TIERS_MUST_REMAIN_FOUR_MINIMUM_LEVELS",
     "ARTISTRY_VISUAL_SCALING_MUST_PRESERVE_SILHOUETTE_AND_READABILITY",
     "ARTISTRY_VISUAL_IDENTITY_MUST_NOT_REDUCE_TO_GOLD_GEMS_AND_GLOW",
     "GPT_SCOPE_MUST_REMAIN_DESIGN_CONTENT_AND_ART_FOCUSED"
@@ -408,16 +506,17 @@
   },
   "active_batch": {
     "id": "R2_BATCH_003",
-    "approved_decisions": 5,
+    "approved_decisions": 6,
     "max_batch_size": 10,
-    "counter": "5/10",
+    "counter": "6/10",
     "state": "APPROVED_PENDING_MERGE",
     "decisions": [
       "BS-CUSTOMER-20260803-02",
       "BS-SCHEDULE-20260804-01",
       "BS-CONTENT-20260804-01",
       "BS-CONTENT-20260804-02",
-      "BS-CRAFT-20260804-01"
+      "BS-CRAFT-20260804-01",
+      "BS-CRAFT-20260804-02"
     ],
     "non_batch_operating_directives": [
       "BS-OPS-20260804-01"
@@ -427,5 +526,5 @@
     "current_validation": "PENDING_FOR_CURRENT_HEAD",
     "product_paths_changed": false
   },
-  "next_activity": "DEFINE_ARTISTRY_SCALE_PRICE_FORMULA_MATERIAL_CATALYST_PREVIEWS_AFFIX_WEIGHTS_AND_VISUAL_TIERS"
+  "next_activity": "DEFINE_ARTISTRY_MATERIAL_VALUES_PRICE_COEFFICIENTS_AFFIX_PROBABILITIES_AND_VISUAL_MOCKUPS"
 }
