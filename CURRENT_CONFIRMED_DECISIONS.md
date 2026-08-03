@@ -10,11 +10,13 @@
 >
 > 고객 능력·성공 예측: `BS-CUSTOMER-20260803-01 / USER_APPROVED`
 >
-> R2 체크포인트 002: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / APPROVED_PENDING_MERGE`
+> R2 체크포인트 002: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / MERGED_PR101 / MAIN_CANON / READBACK_PASS`
+>
+> R2 체크포인트 002 main SHA: `a81cbe5de685e2900070d9a32db56556538e0a6f`
 >
 > 현재 단계: `R2_CORE_SESSION_META_LOOP / PLANNING_ACTIVE`
 >
-> 상태: `R1_USER_APPROVED / R2_CHECKPOINT_002_PENDING_MERGE / PRODUCT_BLOCKED`
+> 상태: `R1_USER_APPROVED / R2_CHECKPOINT_002_CANON / NEXT_GRILL_ME_COUNTER_0_OF_10 / PRODUCT_BLOCKED`
 
 ## 1. 권위 규칙
 
@@ -190,9 +192,14 @@ vs 일정 난이도
 
 ## 12. 감사·검증 상태
 
-- 기준 main: `53793be4f613e26279611d12f1ee738d2b989276`
+- 체크포인트 병합: PR `#101` / `a81cbe5de685e2900070d9a32db56556538e0a6f`
 - 신규 승인: `BS-WORLD-20260803-03`, `BS-CUSTOMER-20260803-01`
-- 조기 체크포인트: `BS-OPS-20260803-07 / 2_OF_10`
+- 조기 체크포인트: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / CLOSED`
+- 적대적 감사: `P0_0 / P1_0`
+- 자동 검증: `BASE_V9_ADOPTION_PASS / PLANNING_FIRST_PASS / PR_VALIDATION_PASS`
+- PR validation 상세: `PYTHON_FULL_CONTRACTS_PASS / GODOT_4_7_1_HEADLESS_PASS`
+- PR 상태: `COMMENTS_0 / INLINE_THREADS_0 / EXACT_HEAD_SQUASH_MERGED`
+- GitHub·Google Sheet: `MAIN_CANON / READBACK_PASS`
 - 제품 코드·Scene·runtime data·asset 변경: `0`
 - 최신 제품 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
@@ -202,4 +209,5 @@ vs 일정 난이도
 1. 판매 전 짧은 대화에서 일정 난이도·위험·미지 정보를 어디까지 공개할지 확정
 2. 능력치 1~5의 보정 변환과 5단계 성공 구간 경계는 GPT 권장 테스트 프리셋으로 설계
 3. 여러 개인 일정과 세계 일정의 동시 표시·알림 과밀 방지
-4. 제품 구현은 계속 `BLOCKED`
+4. 새 승인 카운터는 `0/10`에서 시작
+5. 제품 구현은 계속 `BLOCKED`
