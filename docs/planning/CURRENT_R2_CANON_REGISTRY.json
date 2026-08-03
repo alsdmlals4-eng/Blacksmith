@@ -177,7 +177,7 @@
     ],
     "base_main": "d8ef47a6702c3afac4eb1a10439df974a2d259df",
     "draft_pr": 103,
-    "amended_head": "0c9a7b17247b9de18b10645246b1520d493fb740",
+    "validation_target": "CURRENT_PR_HEAD",
     "current_validation": "PENDING_FOR_AMENDED_HEAD",
     "product_paths_changed": false
   },
