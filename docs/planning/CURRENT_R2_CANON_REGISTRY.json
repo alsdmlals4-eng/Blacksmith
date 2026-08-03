@@ -214,6 +214,66 @@
       }
     },
     {
+      "id": "BS-CRAFT-20260804-01",
+      "title": "예술성 단일 수치와 실용·예술 제작 선택",
+      "status": "USER_APPROVED_PENDING_MERGE",
+      "canon": "docs/planning/BLACKSMITH_R2_ARTISTRY_VALUE_AND_UTILITY_CRAFTING_CANON_2026.md",
+      "refines": "BS-CONTENT-20260804-02",
+      "contract": {
+        "new_item_value_stat": "ARTISTRY_ONLY",
+        "new_practicality_stat_added": false,
+        "artistry_sources": [
+          "ITEM_GRADE",
+          "AUXILIARY_MATERIALS",
+          "CATALYSTS",
+          "ENHANCEMENT_RESULTS",
+          "ARTISTRY_ORIENTED_AFFIXES"
+        ],
+        "utility_representation": [
+          "ATTACK_OR_DEFENSE",
+          "DURABILITY",
+          "HANDLING_AND_STABILITY",
+          "FIT_AND_ENVIRONMENT_RESPONSE"
+        ],
+        "pre_craft_preview_required": [
+          "EXPECTED_UTILITY_DIRECTION",
+          "EXPECTED_ARTISTRY_DIRECTION",
+          "EXPECTED_PRICE_DIRECTION",
+          "EXPECTED_ENHANCEMENT_AND_AFFIX_BIAS"
+        ],
+        "crafting_choice": "UTILITY_ORIENTED_VS_ARTISTRY_VALUE_ORIENTED_WITH_HYBRIDS_ALLOWED",
+        "separate_artistry_upgrade_loop": false,
+        "enhancement_remains_primary_loop": true,
+        "affix_differentiation": "WEIGHTED_BY_MATERIAL_CATALYST_AND_CURRENT_ITEM_ORIENTATION",
+        "utility_affix_families": [
+          "COMBAT_POWER",
+          "DEFENSE",
+          "DURABILITY",
+          "HANDLING",
+          "STABILITY",
+          "ENVIRONMENT_RESPONSE"
+        ],
+        "artistry_affix_families": [
+          "ARTISTRY",
+          "VALUE",
+          "PRESTIGE",
+          "MASTERWORK",
+          "RARITY",
+          "APPRAISAL_VALUE"
+        ],
+        "price_inputs": [
+          "ITEM_GRADE",
+          "UTILITY_PERFORMANCE",
+          "ARTISTRY",
+          "RARE_AUXILIARY_MATERIALS_AND_CATALYSTS",
+          "ITEM_LEGACY_AND_REPUTATION"
+        ],
+        "visual_quality_scales_with_artistry": true,
+        "visual_readability_must_be_preserved": true,
+        "exact_artistry_scale_price_formula_affix_weights_and_visual_tiers": "FOLLOW_UP_TEST_AND_ART_GATE"
+      }
+    },
+    {
       "id": "BS-OPS-20260804-01",
       "title": "GPT 논의 역할 경계",
       "status": "USER_DIRECTIVE_OPERATING_BOUNDARY_NON_BATCH",
@@ -268,6 +328,14 @@
       "initial_personal_families": 5,
       "initial_world_families": 4,
       "primary_visitor_fit_required": true
+    },
+    {
+      "decision": "BS-CONTENT-20260804-02",
+      "refined_by": "BS-CRAFT-20260804-01",
+      "scope": "NOBLE_ARTISTRY_IMPLEMENTED_AS_SINGLE_ITEM_VALUE_STAT_INSIDE_EXISTING_CRAFTING_AND_ENHANCEMENT_LOOP",
+      "new_item_stat": "ARTISTRY_ONLY",
+      "new_practicality_stat_added": false,
+      "separate_artistry_minigame": false
     }
   ],
   "resolution_formula_structure": {
@@ -308,7 +376,14 @@
     "NOBLE_CONTENT_MUST_REMAIN_IN_METALWORK_FORGING_LIFECYCLE",
     "NONCOMBAT_EXHIBITION_GIFT_AND_INHERITANCE_LEGACY_MUST_PERSIST_BY_ITEM_UID",
     "NO_NEW_NOBLE_ONLY_CUSTOMER_STATS_AT_THIS_GATE",
-    "NOBLE_VISUAL_IDENTITY_MUST_NOT_REDUCE_TO_GOLD_AND_GEMS",
+    "ONLY_ONE_NEW_ITEM_VALUE_STAT_ARTISTRY",
+    "NO_SEPARATE_PRACTICALITY_STAT",
+    "ARTISTRY_MUST_REMAIN_INSIDE_EXISTING_CRAFTING_AND_ENHANCEMENT_LOOP",
+    "MATERIAL_AND_CATALYST_PREVIEW_MUST_MATCH_ACTUAL_DIRECTION",
+    "UTILITY_AND_ARTISTRY_AFFIX_BIAS_MUST_PRESERVE_CRAFTING_CHOICE",
+    "NO_SINGLE_ITEM_AUTOMATICALLY_MAXIMIZES_UTILITY_ARTISTRY_AND_PRICE",
+    "ARTISTRY_VISUAL_SCALING_MUST_PRESERVE_SILHOUETTE_AND_READABILITY",
+    "ARTISTRY_VISUAL_IDENTITY_MUST_NOT_REDUCE_TO_GOLD_GEMS_AND_GLOW",
     "GPT_SCOPE_MUST_REMAIN_DESIGN_CONTENT_AND_ART_FOCUSED"
   ],
   "checkpoint": {
@@ -333,15 +408,16 @@
   },
   "active_batch": {
     "id": "R2_BATCH_003",
-    "approved_decisions": 4,
+    "approved_decisions": 5,
     "max_batch_size": 10,
-    "counter": "4/10",
+    "counter": "5/10",
     "state": "APPROVED_PENDING_MERGE",
     "decisions": [
       "BS-CUSTOMER-20260803-02",
       "BS-SCHEDULE-20260804-01",
       "BS-CONTENT-20260804-01",
-      "BS-CONTENT-20260804-02"
+      "BS-CONTENT-20260804-02",
+      "BS-CRAFT-20260804-01"
     ],
     "non_batch_operating_directives": [
       "BS-OPS-20260804-01"
@@ -351,5 +427,5 @@
     "current_validation": "PENDING_FOR_CURRENT_HEAD",
     "product_paths_changed": false
   },
-  "next_activity": "DEFINE_NOBLE_ARTISTRY_LUXURY_AND_HOUSE_FIT_CRAFTING_AXES"
+  "next_activity": "DEFINE_ARTISTRY_SCALE_PRICE_FORMULA_MATERIAL_CATALYST_PREVIEWS_AFFIX_WEIGHTS_AND_VISUAL_TIERS"
 }
