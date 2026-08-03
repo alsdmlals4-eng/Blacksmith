@@ -10,6 +10,7 @@ CUSTOMER_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CUSTOMER_DISCLOSURE_MINIMUM
 SCHEDULE_CANON = ROOT / "docs/planning/BLACKSMITH_R2_MULTI_SCHEDULE_DISPLAY_AND_ALERT_CANON_2026.md"
 CONTENT_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CONTENT_COMPOSITION_AND_ITEM_LEGACY_CANON_2026.md"
 VISITOR_CANON = ROOT / "docs/planning/BLACKSMITH_R2_VISITOR_ARCHETYPES_AND_INITIAL_CONTENT_FAMILIES_CANON_2026.md"
+ARTISTRY_CANON = ROOT / "docs/planning/BLACKSMITH_R2_ARTISTRY_VALUE_AND_UTILITY_CRAFTING_CANON_2026.md"
 ROOT_DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 
@@ -126,6 +127,56 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertFalse(contract["general_non_metal_luxury_goods_in_scope"])
         self.assertEqual("FOLLOW_UP_TEST_PRESET", contract["exact_counts_and_numeric_weights"])
 
+    def test_artistry_and_utility_crafting_contract(self) -> None:
+        registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        decisions = {item["id"]: item for item in registry["current_decisions"]}
+        decision = decisions["BS-CRAFT-20260804-01"]
+        contract = decision["contract"]
+
+        self.assertEqual("USER_APPROVED_PENDING_MERGE", decision["status"])
+        self.assertEqual("BS-CONTENT-20260804-02", decision["refines"])
+        self.assertEqual("ARTISTRY_ONLY", contract["new_item_value_stat"])
+        self.assertFalse(contract["new_practicality_stat_added"])
+        self.assertEqual(
+            [
+                "ITEM_GRADE",
+                "AUXILIARY_MATERIALS",
+                "CATALYSTS",
+                "ENHANCEMENT_RESULTS",
+                "ARTISTRY_ORIENTED_AFFIXES",
+            ],
+            contract["artistry_sources"],
+        )
+        self.assertIn("DURABILITY", contract["utility_representation"])
+        self.assertEqual(
+            [
+                "EXPECTED_UTILITY_DIRECTION",
+                "EXPECTED_ARTISTRY_DIRECTION",
+                "EXPECTED_PRICE_DIRECTION",
+                "EXPECTED_ENHANCEMENT_AND_AFFIX_BIAS",
+            ],
+            contract["pre_craft_preview_required"],
+        )
+        self.assertEqual(
+            "UTILITY_ORIENTED_VS_ARTISTRY_VALUE_ORIENTED_WITH_HYBRIDS_ALLOWED",
+            contract["crafting_choice"],
+        )
+        self.assertFalse(contract["separate_artistry_upgrade_loop"])
+        self.assertTrue(contract["enhancement_remains_primary_loop"])
+        self.assertEqual(
+            "WEIGHTED_BY_MATERIAL_CATALYST_AND_CURRENT_ITEM_ORIENTATION",
+            contract["affix_differentiation"],
+        )
+        self.assertIn("DURABILITY", contract["utility_affix_families"])
+        self.assertIn("MASTERWORK", contract["artistry_affix_families"])
+        self.assertIn("ARTISTRY", contract["price_inputs"])
+        self.assertTrue(contract["visual_quality_scales_with_artistry"])
+        self.assertTrue(contract["visual_readability_must_be_preserved"])
+        self.assertEqual(
+            "FOLLOW_UP_TEST_AND_ART_GATE",
+            contract["exact_artistry_scale_price_formula_affix_weights_and_visual_tiers"],
+        )
+
     def test_gpt_role_boundary_is_non_batch(self) -> None:
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         decisions = {item["id"]: item for item in registry["current_decisions"]}
@@ -144,8 +195,8 @@ class R2Batch003Tests(unittest.TestCase):
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         active_batch = registry["active_batch"]
         self.assertEqual("R2_BATCH_003", active_batch["id"])
-        self.assertEqual(4, active_batch["approved_decisions"])
-        self.assertEqual("4/10", active_batch["counter"])
+        self.assertEqual(5, active_batch["approved_decisions"])
+        self.assertEqual("5/10", active_batch["counter"])
         self.assertEqual("APPROVED_PENDING_MERGE", active_batch["state"])
         self.assertEqual(
             [
@@ -153,6 +204,7 @@ class R2Batch003Tests(unittest.TestCase):
                 "BS-SCHEDULE-20260804-01",
                 "BS-CONTENT-20260804-01",
                 "BS-CONTENT-20260804-02",
+                "BS-CRAFT-20260804-01",
             ],
             active_batch["decisions"],
         )
@@ -162,7 +214,7 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertFalse(active_batch["product_paths_changed"])
         self.assertEqual("BLOCKED", registry["product_implementation"])
         self.assertEqual(
-            "DEFINE_NOBLE_ARTISTRY_LUXURY_AND_HOUSE_FIT_CRAFTING_AXES",
+            "DEFINE_ARTISTRY_SCALE_PRICE_FORMULA_MATERIAL_CATALYST_PREVIEWS_AFFIX_WEIGHTS_AND_VISUAL_TIERS",
             registry["next_activity"],
         )
 
@@ -171,6 +223,7 @@ class R2Batch003Tests(unittest.TestCase):
         schedule = SCHEDULE_CANON.read_text(encoding="utf-8")
         content = CONTENT_CANON.read_text(encoding="utf-8")
         visitor = VISITOR_CANON.read_text(encoding="utf-8")
+        artistry = ARTISTRY_CANON.read_text(encoding="utf-8")
         root = ROOT_DECISIONS.read_text(encoding="utf-8")
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
 
@@ -228,16 +281,32 @@ class R2Batch003Tests(unittest.TestCase):
             self.assertIn(token, visitor)
 
         for token in (
+            "BS-CRAFT-20260804-01",
+            "작품에는 `예술성` 단일 수치만 추가",
+            "별도의 `실용성` 수치는 추가하지 않는다",
+            "실전 성능 예상 방향",
+            "예술성 예상 방향",
+            "강화 시 붙기 쉬운 효과·수식어 성향",
+            "실용형 작품",
+            "예술형 작품",
+            "혼합형 작품",
+            "별도 강화 버튼이나 장식 미니게임",
+            "예술성이 높을수록 작품 외형과 연출이 더 정교",
+            "제품 구현: `BLOCKED`",
+        ):
+            self.assertIn(token, artistry)
+
+        for token in (
             "BS-CUSTOMER-20260803-02",
             "BS-SCHEDULE-20260804-01",
             "BS-CONTENT-20260804-01",
             "BS-CONTENT-20260804-02",
+            "BS-CRAFT-20260804-01",
             "BS-OPS-20260804-01",
-            "R2_BATCH_003_4_OF_10",
+            "R2_BATCH_003_5_OF_10",
             "APPROVED_PENDING_MERGE",
-            "검투사 / 모험가 / 군인 / 귀족",
-            "예술·위신·후원",
-            "왕실 의례·명품 박람회",
+            "예술성 단일 수치와 실용·예술 제작 선택",
+            "강화 효과·수식어 성향",
             "GPT 논의는 핵심 재미·콘텐츠 기획·이미지·아트 방향",
         ):
             self.assertIn(token, root)
@@ -247,15 +316,17 @@ class R2Batch003Tests(unittest.TestCase):
             "BS-SCHEDULE-20260804-01",
             "BS-CONTENT-20260804-01",
             "BS-CONTENT-20260804-02",
+            "BS-CRAFT-20260804-01",
             "BS-OPS-20260804-01",
             "사건 위험도: 정수 `1~10`",
             "오늘의 중요 소식 최대 3건",
             "콘텐츠 조합·작품 생애 환류 계약",
             "검투사 / 모험가 / 군인 / 귀족",
-            "귀족 예술·사치 방향",
-            "전시·감정·증여·상속",
-            "GPT에서는 다음 영역을 중심으로 논의한다",
-            "승인 카운터: `4/10`",
+            "제작 전 재료·촉매 예상 효과 계약",
+            "예술성·가치와 실용 제작 선택",
+            "실용형 작품",
+            "예술형 작품",
+            "승인 카운터: `5/10`",
             "세계일정 진행 계약",
             "행동 증거",
             "자동 단조",
