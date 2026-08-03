@@ -21,10 +21,12 @@ class CustomerDisclosureBatch003Tests(unittest.TestCase):
         self.assertEqual("USER_APPROVED_PENDING_MERGE", decision["status"])
         self.assertEqual("BS-CUSTOMER-20260803-01", decision["refines"])
         self.assertEqual(
-            ["EVENT_RISK_TIER", "CUSTOMER_CORE_STATS", "APPROXIMATE_SUCCESS_CHANCE"],
+            ["EVENT_RISK_SCORE", "CUSTOMER_CORE_STATS", "APPROXIMATE_SUCCESS_CHANCE"],
             contract["public_fields"],
         )
-        self.assertEqual(["LOW", "MEDIUM", "HIGH", "VERY_HIGH"], contract["event_risk_tiers"])
+        self.assertEqual("INTEGER_1_TO_10", contract["event_risk_display_scale"])
+        self.assertEqual("INTEGER_1_TO_10", contract["customer_stat_display_scale"])
+        self.assertFalse(contract["display_decimals"])
         self.assertEqual("APPROXIMATE_PERCENT_ROUNDED_TO_NEAREST_10", contract["success_display"])
         self.assertEqual(5, contract["success_display_min_percent"])
         self.assertEqual(95, contract["success_display_max_percent"])
@@ -33,6 +35,13 @@ class CustomerDisclosureBatch003Tests(unittest.TestCase):
         self.assertFalse(contract["pre_sale_modifier_breakdown"])
         self.assertTrue(contract["result_causes_explained"])
         self.assertEqual("BASELINE_TEST_PRESET", contract["numeric_authority"])
+
+        previous = decisions["BS-CUSTOMER-20260803-01"]["contract"]
+        self.assertEqual("1_TO_5_HISTORICAL_PRESET", previous["display_scale"])
+        self.assertEqual(
+            "SUPERSEDED_FOR_PLAYER_DISPLAY_BY_BS-CUSTOMER-20260803-02",
+            previous["display_scale_status"],
+        )
 
     def test_batch_counter_and_product_gate(self) -> None:
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
@@ -52,10 +61,12 @@ class CustomerDisclosureBatch003Tests(unittest.TestCase):
 
         for token in (
             "BS-CUSTOMER-20260803-02",
-            "낮음 / 보통 / 높음 / 매우 높음",
+            "사건 위험도: 7/10",
+            "기량 8/10 / 체력 6/10 / 판단력 7/10",
             "예상 성공률: 약 60%",
             "최소 5%, 최대 95%",
             "별도 경고는 표시하지 않는다",
+            "1~5 표시는 병합 당시의 역사적 표시 프리셋",
             "제품 구현: `BLOCKED`",
         ):
             self.assertIn(token, canon)
@@ -64,13 +75,15 @@ class CustomerDisclosureBatch003Tests(unittest.TestCase):
             "BS-CUSTOMER-20260803-02",
             "R2_BATCH_003_1_OF_10",
             "APPROVED_PENDING_MERGE",
-            "대략적 예상 성공률",
+            "사건 위험도: `1~10`",
+            "고객 핵심 능력치: `기량 / 체력 / 판단력` 각 `1~10`",
         ):
             self.assertIn(token, root)
 
         for token in (
             "BS-CUSTOMER-20260803-02",
-            "사건 위험도",
+            "사건 위험도: 정수 `1~10`",
+            "고객 능력: `기량 / 체력 / 판단력` 각 정수 `1~10`",
             "약 10% 단위",
             "승인 카운터: `1/10`",
         ):
