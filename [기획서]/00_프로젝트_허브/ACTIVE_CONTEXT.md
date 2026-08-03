@@ -1,6 +1,6 @@
 # Active Context
 
-- 갱신: `2026-08-03 23:54 KST`
+- 갱신: `2026-08-04 00:28 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R2_CORE_SESSION_META_LOOP / PLANNING_ACTIVE`
 - R1 최종 승인: `BS-OPS-20260803-05 / USER_APPROVED / CANON_COMPLETE`
@@ -8,12 +8,25 @@
 - 일정 구조 교정: `BS-WORLD-20260803-03 / USER_APPROVED`
 - 고객 능력·성공 예측: `BS-CUSTOMER-20260803-01 / USER_APPROVED`
 - 고객 정보 최소 공개: `BS-CUSTOMER-20260803-02 / USER_APPROVED / DISPLAY_SCALE_1_TO_10 / APPROVED_PENDING_MERGE`
+- 다중 일정 표시·알림: `BS-SCHEDULE-20260804-01 / USER_APPROVED / APPROVED_PENDING_MERGE`
+- GPT 역할 경계: `BS-OPS-20260804-01 / USER_DIRECTIVE / NON_BATCH`
 - 현재 체크포인트: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / MERGED_PR101 / MAIN_CANON / READBACK_PASS`
 - 체크포인트 main: `a81cbe5de685e2900070d9a32db56556538e0a6f`
 - 현재 main: `d8ef47a6702c3afac4eb1a10439df974a2d259df`
-- 승인 카운터: `1/10`
+- 승인 카운터: `2/10`
 - 활성 배치: `R2_BATCH_003 / APPROVED_PENDING_MERGE`
 - 제품 구현: `BLOCKED`
+
+## GPT 역할 경계
+
+GPT에서는 다음 영역을 중심으로 논의한다.
+
+- 핵심 재미와 플레이 동기
+- 콘텐츠 구조와 사건·고객·세계 일정 기획
+- 이미지·아트 방향, 시각 컨셉과 표현 검토
+- 위 항목의 벤치마킹·적대적 설계 검토
+
+제품 구현·코드 소유·저수준 기술 실행은 기본 논의 범위가 아니다. 설계나 아트의 실현 가능성을 보호하는 데 필요한 기술 제약만 다루며 구현은 Codex 또는 구현 단계로 넘긴다.
 
 ## 프로젝트 코어
 
@@ -28,7 +41,7 @@
 → 조언·작품·도구 판매
 → 개인 일정 또는 세계 일정 준비 활성화
 → 날짜 종료 판정·예정된 세계 사건
-→ 같은 UID 작품의 기여·손상·재방문
+→ 중요한 결과와 같은 UID 작품의 기여·손상·재방문
 → 복원·재강화·다음 목표
 ```
 
@@ -48,8 +61,9 @@
 8. 고객 개인 일정의 날짜 종료 진행 판정
 9. 특정 날짜가 예고되는 대규모 세계 일정
 10. 고객 능력·특기·약점, 사건 위험도와 대략적 예상 성공률
-11. 피로도·날짜 우선순위
-12. 버전형 경제·판정·기간 테스트 프리셋
+11. 세계 일정 고정·중요 소식·일반 일정 요약·일정 장부
+12. 피로도·날짜 우선순위
+13. 버전형 경제·판정·기간 테스트 프리셋
 
 ## 고객 방문 흐름
 
@@ -113,6 +127,31 @@
 - 판매 당일 최종 결과를 내지 않으며, 결과는 고객 능력·작품 적합성·준비·사건 변수를 설명 가능하게 반영한다.
 - 개인 일정과 세계 일정에 동일한 고정 날짜 상태 머신을 강제하지 않는다.
 
+## 다중 일정 표시·알림 계약
+
+```text
+가장 가까운 주요 세계 일정 하나 고정
++ 오늘의 중요 소식 최대 3건
++ 일반 개인 일정은 하루 종료 묶음 요약
++ 결정·완료·중대 결과만 즉시 알림
++ 관심 개인 일정 하나 선택 추적
++ 전체 기록은 일정 장부에서 확인
+```
+
+중요 소식 우선순위:
+
+1. 오늘 플레이어 결정이 필요한 일정
+2. 오늘 예정된 세계 일정 또는 준비 체크포인트
+3. 완료된 일정
+4. 고객의 중대한 상태 변화
+5. 작품의 중대한 손상·분실
+6. 후속 의뢰 또는 재방문
+7. 일반 진행
+
+단순 진행·경미한 부상·소규모 보상은 개별 팝업 없이 하루 종료 요약에 묶는다. 완료·중대 결과·재방문은 반드시 중요 소식으로 승격한다. 초과 항목과 전체 이력은 작품 UID가 연결된 일정 장부에 보존한다.
+
+선택 추적은 편의 기능이며 중요한 세계 일정이나 중대 알림을 숨기지 않는다. 정확한 `중요 소식 3건`, `추적 1건`은 `BASELINE_TEST_PRESET`이다.
+
 ## 고객 능력과 성공 예측
 
 고객은 다음 최소 프로필을 가진다.
@@ -148,8 +187,10 @@ vs 일정 난이도
 - 작품·도구를 바꿨을 때 예상 성공률의 상승·하락 방향을 이해한다.
 - 고객 능력만이 아니라 작품 적합성과 준비를 고려해 판매 대상을 선택한다.
 - 개인 일정과 특정 날짜의 세계 일정을 서로 다른 구조로 이해한다.
-- 하루 종료 후 진행 결과에서 고객·작품·도구·조언의 주요 기여를 회상한다.
-- 세계 일정 예고를 다음 제작·강화 목표로 사용한다.
+- 가장 가까운 세계 일정을 다음 제작·강화 목표로 사용한다.
+- 일반 일정 여러 건이 있어도 하루 종료 보고를 빠르게 넘긴다.
+- 결정·완료·중대 결과를 놓치지 않고 축약된 진행을 일정 장부에서 다시 찾는다.
+- 일정 보고보다 제작·강화 판단을 핵심 플레이로 회상한다.
 - `약 60%`를 확정 성공으로 오해하지 않는다.
 - 1~10 숫자를 정확한 내부 보정치로 오해하지 않는다.
 - 숨은 위험 경고가 없어도 결과를 반복적으로 불공정하다고 느끼지 않는다.
@@ -184,10 +225,13 @@ vs 일정 난이도
 - 배치 003 현재 P1: `0`
 - 해결: 개인 일정·세계 일정 혼합 해석을 `BS-WORLD-20260803-03`으로 교정
 - 해결: R1 상속 불변 규칙과 Active Context 검증 표식을 복원
+- 해결: 일반 일정 진행을 묶고 중요 결과만 승격해 알림 과밀 위험을 봉합
 - 고객 능력 보호: 고객·작품·도구·조언 기여를 분리하고 능력 보정 상한을 테스트
 - 표시 척도 보호: 1~10 정수만 사용하고 소수점·내부 보정치 동일시 금지
 - 성공률 보호: 10% 단위 반올림·5~95% 제한·실제 결과 분포 보정
-- 남은 설계 위험: 일정 알림 과밀, 고객 관리 RPG 범위 팽창, 성공률 보정 불일치
+- 일정 보호: 요약으로 사라진 정보는 작품 UID가 연결된 일정 장부에 보존
+- 역할 보호: GPT 논의는 핵심 재미·콘텐츠·이미지·아트 방향 중심
+- 남은 설계 위험: 고객 관리 RPG 범위 팽창, 성공률 보정 불일치, 일정 콘텐츠 유형의 반복성
 
 ## 역사 구현·보조 기능 추적
 
@@ -209,6 +253,7 @@ vs 일정 난이도
 - `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 - `docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R2_CUSTOMER_DISCLOSURE_MINIMUM_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R2_MULTI_SCHEDULE_DISPLAY_AND_ALERT_CANON_2026.md`
 - `docs/planning/CURRENT_R1_CANON_REGISTRY.json`
 - `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
 
@@ -216,18 +261,19 @@ vs 일정 난이도
 
 - PR #101: `EXACT_HEAD_SQUASH_MERGED / a81cbe5de685e2900070d9a32db56556538e0a6f`
 - PR #102: `POSTMERGE_CLOSURE_MERGED / d8ef47a6702c3afac4eb1a10439df974a2d259df`
-- 자동 검증: `BASE_V9_ADOPTION_PASS / PLANNING_FIRST_PASS / PR_VALIDATION_PASS`
-- PR validation: `PYTHON_FULL_CONTRACTS_PASS / GODOT_4_7_1_HEADLESS_PASS`
-- 리뷰: `COMMENTS_0 / INLINE_THREADS_0 / P0_0 / P1_0`
-- GitHub·Google Sheet: `MAIN_CANON / READBACK_PASS`
-- 현재 배치: `R2_BATCH_003 / 1_OF_10 / APPROVED_PENDING_MERGE`
+- 이전 자동 검증: `BASE_V9_ADOPTION_PASS / PLANNING_FIRST_PASS / PR_VALIDATION_PASS`
+- 이전 PR validation: `PYTHON_FULL_CONTRACTS_PASS / GODOT_4_7_1_HEADLESS_PASS`
+- 현재 배치: `R2_BATCH_003 / 2_OF_10 / APPROVED_PENDING_MERGE`
+- 비배치 운영 지시: `BS-OPS-20260804-01 / USER_DIRECTIVE`
 - 제품 코드·Scene·runtime data·asset 변경: `0`
 - 최신 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
 
 ## 다음 작업
 
-1. 여러 개인 일정과 세계 일정의 동시 표시·알림 과밀 방지 Grill Me
-2. 능력치 보정과 예상 성공률 반올림·상한은 GPT 권장 테스트 프리셋으로 설계
-3. 활성 배치 승인 카운터 `1/10`
-4. 제품 구현은 계속 `BLOCKED`
+1. 개인 일정과 세계 일정의 콘텐츠 유형·사건군 설계
+2. 핵심 재미와 작품 생애 환류를 강화하는 콘텐츠 우선순위 검토
+3. 이미지·아트 방향이 필요한 사건군의 시각 컨셉 논의
+4. 능력치 보정·성공률·알림 개수는 테스트 프리셋으로 유지
+5. 활성 배치 승인 카운터 `2/10`
+6. 제품 구현은 계속 `BLOCKED`
