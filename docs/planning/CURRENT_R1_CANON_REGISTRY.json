@@ -41,25 +41,25 @@
       "id": "current-confirmed-decisions",
       "path": "../../CURRENT_CONFIRMED_DECISIONS.md",
       "role": "root_current_decision_entrypoint",
-      "status": "CURRENT_CANON_PENDING_MERGE"
+      "status": "CURRENT_APPROVED_CANON"
     },
     {
       "id": "blacksmith-game-bible",
       "path": "../../[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
       "role": "integrated_current_game_design_canon",
-      "status": "CURRENT_CANON_PENDING_MERGE"
+      "status": "CURRENT_APPROVED_CANON"
     },
     {
       "id": "roadmap",
       "path": "../../[기획서]/00_프로젝트_허브/ROADMAP.md",
       "role": "current_stage_and_gate_plan",
-      "status": "CURRENT_CANON_PENDING_MERGE"
+      "status": "CURRENT_APPROVED_CANON"
     },
     {
       "id": "r1-final-approval-world-schedule",
       "path": "BLACKSMITH_R1_FINAL_APPROVAL_AND_WORLD_SCHEDULE_PROGRESS_2026.md",
       "role": "r1_user_final_approval_and_daily_world_schedule_progress_canon",
-      "status": "USER_APPROVED_PENDING_MERGE"
+      "status": "USER_APPROVED_CANON"
     },
     {
       "id": "grillme-approval-batch-001",
@@ -137,13 +137,13 @@
       "id": "active-context",
       "path": "../../[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
       "role": "current_work_context",
-      "status": "CURRENT_CANON_PENDING_MERGE"
+      "status": "CURRENT_APPROVED_CANON"
     },
     {
       "id": "development-gates",
       "path": "../../[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
       "role": "planning_and_product_gate_status",
-      "status": "CURRENT_CANON_PENDING_MERGE"
+      "status": "CURRENT_APPROVED_CANON"
     }
   ],
   "approved_batches": [
@@ -244,7 +244,7 @@
     "pr97_base_validation": "PASS",
     "pr97_pr_validation": "PASS",
     "sheet_main_canon_sync_baseline": "PASS_READBACK",
-    "authority_drift": "RESOLVED_PENDING_CURRENT_PR_MERGE",
+    "authority_drift": "RESOLVED",
     "latest_product_runtime": "NOT_RUN",
     "android": "NOT_RUN",
     "accessibility": "NOT_RUN",
