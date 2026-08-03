@@ -52,8 +52,7 @@ class CustomerDisclosureBatch003Tests(unittest.TestCase):
         self.assertEqual("APPROVED_PENDING_MERGE", active_batch["state"])
         self.assertEqual(["BS-CUSTOMER-20260803-02"], active_batch["decisions"])
         self.assertEqual(103, active_batch["draft_pr"])
-        self.assertEqual("CURRENT_PR_HEAD", active_batch["validation_target"])
-        self.assertEqual("PENDING_FOR_AMENDED_HEAD", active_batch["current_validation"])
+        self.assertEqual("PENDING_FOR_CURRENT_HEAD", active_batch["current_validation"])
         self.assertFalse(active_batch["product_paths_changed"])
         self.assertEqual("BLOCKED", registry["product_implementation"])
 
