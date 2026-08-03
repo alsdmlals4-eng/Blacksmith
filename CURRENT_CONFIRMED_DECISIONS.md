@@ -8,9 +8,13 @@
 >
 > R1 최종 사용자 승인: `BS-OPS-20260803-05 / USER_APPROVED`
 >
+> R2 첫 승인 Decision: `BS-WORLD-20260803-02 / USER_APPROVED / BASELINE_TEST_PRESET`
+>
+> R2 체크포인트: `BS-OPS-20260803-06 / EARLY_CHECKPOINT_1_OF_10`
+>
 > 현재 단계: `R2_CORE_SESSION_META_LOOP / PLANNING_ACTIVE`
 >
-> 상태: `R1_USER_APPROVED / R2_PLANNING_ACTIVE / PRODUCT_BLOCKED`
+> 상태: `R1_USER_APPROVED / R2_CHECKPOINT_001_CANON / NEXT_GRILL_ME_COUNTER_0_OF_10 / PRODUCT_BLOCKED`
 
 ## 1. 권위 규칙
 
@@ -32,10 +36,11 @@
 - `BS-OPS-20260803-02`: PR #94 적대적 감사·병합, P0/P1 0
 - `BS-OPS-20260803-03~04`: PR #96·#97 post-merge 상태와 Sheet 동기화 Gate 최종화
 - `BS-OPS-20260803-05`: 사용자 R1 정본 최종 승인, R2 기획 Gate 개방
+- `BS-OPS-20260803-06`: R2 승인 1/10 조기 체크포인트와 프로젝트 Base 어댑터 권위 드리프트 봉합
 
 제품 구현은 R1~R8 전체 기획과 최종 사용자 검수 전까지 `BLOCKED`다.
 
-## 3. R1 승인 결정
+## 3. R1·R2 승인 결정
 
 - `BS-CORE-20260802-03`: 현재 검증 상한 `+50`, 매 `+10` 이정표, 최종 상한 `DEFERRED`
 - `BS-CORE-20260802-04`: 일반 수식어 A·B 두 개, 세계일정 성질은 별도 계층
@@ -44,10 +49,12 @@
 - `BS-CORE-20260803-03`: 구조는 정본, 정확한 숫자는 버전형 테스트 프리셋
 - `BS-CORE-20260803-04`: 행동 증거+중립적 회상 인터뷰 검증 Gate
 - `BS-WORLD-20260803-01`: 세계일정은 날짜마다 단계적으로 진행하며 규모가 클수록 더 오래 걸림
+- `BS-WORLD-20260803-02`: 첫 코어 슬라이스는 납품 당일 준비, 1일차 초기 사용, 2일차 변수·전환점, 3일차 최종 결과, 4일차 같은 UID 재방문을 기준 프리셋으로 사용
 
 통합 정본:
 
 - `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
+- `docs/planning/BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md`
 - `docs/planning/BLACKSMITH_R1_FINAL_APPROVAL_AND_WORLD_SCHEDULE_PROGRESS_2026.md`
 - `docs/planning/BLACKSMITH_R1_CANON_ALIGNMENT_AND_PR94_AUDIT_2026.md`
 
@@ -88,22 +95,23 @@
 플레이어가 선택한 작품 한 점 제작
 → +10/+20/+30/+40/+50 정밀 이정표
 → 방문 고객 납품
-→ 즉시 사용 계획·초기 인과 피드백
-→ 날짜 1: 준비·초기 진행
-→ 날짜 2+: 중간 변화·전환점
-→ 별도 날짜의 최종 세계 결과
-→ 같은 UID 재방문
+→ 납품 당일: 사용 계획·준비·예상 기여
+→ 1일차: 출발·초기 사용·초기 접촉
+→ 2일차: 변수·위험·기회·전환점
+→ 3일차: 최종 세계 결과
+→ 4일차: 같은 UID 재방문
 → 손상·복원·재강화·후속 판단
 → 작품 생애가 다음 강화 이유로 환류
 ```
 
-`+50` 도달만으로 완료하지 않는다. 세계일정은 최소 한 번의 중간 진행을 거치며 다른 작품군은 제한된 비플레이 미리보기로만 제시한다.
+`+50` 도달만으로 완료하지 않는다. 세계일정은 최소 한 번의 중간 진행을 거치며 다른 작품군은 제한된 비플레이 미리보기로만 제시한다. 정확한 3일 결과·4일차 재방문은 `BASELINE_TEST_PRESET`이며 사람 플레이에 따라 조정한다.
 
 ## 7. 세계일정 진행 권위
 
 - 납품 당일의 피드백은 사용 계획·초기 반응·예상 기여이며 최종 결과가 아니다.
 - 하루 종료 한 번당 세계일정은 최대 한 단계 또는 한 개의 명시적 진행 단위만 전진한다.
 - 모든 일정은 발생 상태, 하나 이상의 중간 상태, 별도 날짜의 최종 상태를 가진다.
+- 첫 코어 슬라이스 기준 프리셋은 `납품 당일 준비 → 1일차 초기 사용 → 2일차 변수·전환점 → 3일차 최종 결과 → 4일차 재방문`이다.
 - 기간 상대 관계는 `LOCAL/PERSONAL < REGIONAL/FACTION < REALM/NATIONAL < WAR/CATASTROPHE`를 따른다.
 - 정확한 날짜·단계 수·분기 수는 `BASELINE_TEST_PRESET`이다.
 - 날짜 경과만으로 사건 수식어가 자동 성장하지 않으며 실제 사용·기여·인과가 필요하다.
@@ -133,21 +141,24 @@
 - MVP-001·002·003: 과거 구현·자동 검증 기준선
 - MVP-003: `REFERENCE_IMPLEMENTATION / HISTORICAL_POC`
 - `+5/+10` 판단과 단일 날짜 결과: 역사 연구 체크포인트이며 최신 데모 종료 구조가 아님
-- 과거 PASS: 최신 R1 제품 PASS가 아님
+- 과거 PASS: 최신 R2 제품 PASS가 아님
 
 ## 10. 감사·동기화 상태
 
 - PR #94: R1 canon baseline squash merged
 - PR #96·#97: post-merge authority·Sheet sync state squash merged
+- PR #98: R1 최종 승인·세계일정 구조 squash merged
 - R1 정본 감사: P0 `0`, P1 `0`
-- PR #94·#96·#97 CI: `Validate Base v9 adoption` 성공, `PR validation` 성공
-- GitHub·Google Sheet 정본 정렬: `COMPLETE / READBACK_PASS`
+- R2 체크포인트 001 감사: P0 `0`, P1 어댑터 권위 드리프트 `RESOLVED_IN_CANON_CHECKPOINT`
+- GitHub·Google Sheet 정본 정렬: `CHECKPOINT_SYNC_REQUIRED`
 - 사용자 R1 최종 검수: `APPROVED / BS-OPS-20260803-05`
+- R2 첫 기간 프리셋: `APPROVED / BS-WORLD-20260803-02`
 - 최신 제품 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
 
 ## 11. 다음 Gate
 
-1. R2 `Core·Session·Meta Loop` 기획 진행
-2. 첫 세계일정의 규모·단계·날짜별 정보·개입 시점을 Grill Me로 확정
-3. 제품 구현은 R1~R8과 최종 사용자 검수 전까지 시작하지 않음
+1. R2 Grill Me 2 — 날짜별 진행 화면에서 개입 가능일과 관찰일을 구분
+2. 날짜별 정보량·작품 기여·위험·다음 갱신·대응 선택 계약 확정
+3. 새 승인 카운터는 `0/10`에서 시작
+4. 제품 구현은 R1~R8과 최종 사용자 검수 전까지 시작하지 않음
