@@ -177,7 +177,7 @@
     ],
     "base_main": "d8ef47a6702c3afac4eb1a10439df974a2d259df",
     "draft_pr": 103,
-    "current_validation": "PENDING_FOR_CURRENT_HEAD",
+    "current_validation": "PENDING_CURRENT_PR_HEAD",
     "product_paths_changed": false
   },
   "next_activity": "DEFINE_MULTI_SCHEDULE_DISPLAY_AND_ALERT_PRIORITY"
