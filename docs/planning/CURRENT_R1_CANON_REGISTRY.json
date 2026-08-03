@@ -1,16 +1,20 @@
 {
   "artifact_role": "CURRENT_R1_CANON_REGISTRY",
-  "schema_version": 5,
+  "schema_version": 6,
   "project": "Blacksmith",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
-  "stage_status": "R1_USER_APPROVED_R2_PLANNING_ACTIVE",
+  "stage_status": "R1_USER_APPROVED_R2_CHECKPOINT_001_CANON",
   "product_implementation": "BLOCKED",
   "canon_baseline_merge_pr": 94,
   "canon_baseline_merge_sha": "8a0956d6c8b4cf3db545a17d0bd002ba8354d568",
   "post_merge_finalization_pr": 96,
   "sheet_sync_closure_pr": 97,
+  "r1_final_approval_merge_pr": 98,
+  "r1_final_approval_merge_sha": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
   "r1_final_approval_decision": "BS-OPS-20260803-05",
   "world_schedule_decision": "BS-WORLD-20260803-01",
+  "r2_world_schedule_baseline_decision": "BS-WORLD-20260803-02",
+  "r2_checkpoint_decision": "BS-OPS-20260803-06",
   "sheet_sync_baseline_decision": "BS-OPS-20260803-04",
   "sheet_sync_baseline_status": "MAIN_CANON_READBACK_PASS",
   "current_operating_decisions": [
@@ -24,7 +28,8 @@
     "BS-OPS-20260803-02",
     "BS-OPS-20260803-03",
     "BS-OPS-20260803-04",
-    "BS-OPS-20260803-05"
+    "BS-OPS-20260803-05",
+    "BS-OPS-20260803-06"
   ],
   "current_core_resolution_decisions": [
     "BS-CORE-20260802-03",
@@ -33,7 +38,8 @@
     "BS-CORE-20260803-02",
     "BS-CORE-20260803-03",
     "BS-CORE-20260803-04",
-    "BS-WORLD-20260803-01"
+    "BS-WORLD-20260803-01",
+    "BS-WORLD-20260803-02"
   ],
   "authority_policy": "Latest approved Decision and merged final canon override older drafts, historical PoC documents, stale Sheet wording, and legacy implemented values. Unvalidated exact numbers and durations are versioned test presets, not product canon.",
   "documents": [
@@ -54,6 +60,12 @@
       "path": "../../[기획서]/00_프로젝트_허브/ROADMAP.md",
       "role": "current_stage_and_gate_plan",
       "status": "CURRENT_APPROVED_CANON"
+    },
+    {
+      "id": "r2-world-schedule-checkpoint-001",
+      "path": "BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md",
+      "role": "r2_first_slice_world_schedule_baseline_and_early_authority_checkpoint",
+      "status": "USER_APPROVED_CANON"
     },
     {
       "id": "r1-final-approval-world-schedule",
@@ -185,6 +197,18 @@
       "merge_pr": 97,
       "merge_sha": "fb99b700e89d9816c098fcbd3970081189bec20f",
       "decision_id": "BS-OPS-20260803-04"
+    },
+    {
+      "id": "BS-R1-FINAL-APPROVAL-WORLD-SCHEDULE-20260803",
+      "merge_pr": 98,
+      "merge_sha": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
+      "decision_ids": ["BS-OPS-20260803-05", "BS-WORLD-20260803-01"]
+    },
+    {
+      "id": "BS-R2-CHECKPOINT-001-20260803",
+      "decision_ids": ["BS-WORLD-20260803-02", "BS-OPS-20260803-06"],
+      "closure": "EARLY_CHECKPOINT_1_OF_10_AUTHORITY_DRIFT",
+      "status": "CANON_SYNC_IN_PROGRESS"
     }
   ],
   "current_core_contract": {
@@ -199,12 +223,21 @@
     "world_schedule_progression": "ONE_EXPLICIT_STEP_PER_GAME_DAY_MAXIMUM",
     "world_schedule_minimum_intermediate_states": 1,
     "world_schedule_same_day_resolution": false,
-    "world_schedule_scale_duration_relation": "MONOTONIC_INCREASE"
+    "world_schedule_scale_duration_relation": "MONOTONIC_INCREASE",
+    "first_slice_world_schedule_baseline": "DELIVERY_PREP_DAY1_INITIAL_DAY2_TURNING_DAY3_RESULT_DAY4_REVISIT"
   },
   "world_schedule_contract": {
     "required_states": ["SCHEDULED_OR_PREPARATION", "AT_LEAST_ONE_INTERMEDIATE", "RESOLVED_ON_SEPARATE_DAY"],
     "scale_order": ["LOCAL_PERSONAL", "REGIONAL_FACTION", "REALM_NATIONAL", "WAR_CATASTROPHE"],
     "exact_durations": "BASELINE_TEST_PRESET",
+    "first_slice_preset": {
+      "delivery_day": "USE_PLAN_PREPARATION_EXPECTED_CONTRIBUTION",
+      "day_1": "DEPARTURE_INITIAL_USE_INITIAL_CONTACT",
+      "day_2": "VARIABLE_RISK_OPPORTUNITY_TURNING_POINT",
+      "day_3": "FINAL_RESULT",
+      "day_4": "SAME_UID_REVISIT_AND_NEXT_ACTION",
+      "authority": "USER_APPROVED_BASELINE_TEST_PRESET"
+    },
     "date_pass_only_modifier_growth": "PROHIBITED",
     "empty_wait_updates": "PROHIBITED"
   },
@@ -217,6 +250,7 @@
     {"number": 94, "status": "MERGED_CANON_BASELINE"},
     {"number": 96, "status": "MERGED_POST_MERGE_FINALIZATION"},
     {"number": 97, "status": "MERGED_SHEET_SYNC_GATE_CLOSURE"},
+    {"number": 98, "status": "MERGED_R1_FINAL_APPROVAL_WORLD_SCHEDULE"},
     {"number": 95, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
     {"number": 86, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
     {"number": 61, "status": "HISTORY_ONLY_CLOSED_WITHOUT_MERGE"},
@@ -225,10 +259,12 @@
   "next_activity": {
     "id": "R2_CORE_SESSION_META_LOOP_PLANNING",
     "status": "ACTIVE",
+    "approved_counter": "0/10",
     "steps": [
-      "define first vertical-slice world schedule scale and stages",
-      "define daily update information and player intervention points",
+      "define intervention days versus observation-only days",
+      "define daily update information and player response options",
       "define simultaneous schedule and day-skip protection",
+      "define immediate session and long-term reward hierarchy",
       "continue R2 planning without product implementation"
     ]
   },
@@ -243,8 +279,12 @@
     "pr96_pr_validation": "PASS",
     "pr97_base_validation": "PASS",
     "pr97_pr_validation": "PASS",
-    "sheet_main_canon_sync_baseline": "PASS_READBACK",
-    "authority_drift": "RESOLVED",
+    "pr98_base_validation": "PASS",
+    "pr98_pr_validation": "PASS",
+    "pr98_sheet_readback": "PASS",
+    "r2_checkpoint_001_adversarial_audit": "P0_0_P1_ADAPTER_AUTHORITY_DRIFT_REPAIRED",
+    "r2_checkpoint_001_sheet_sync": "IN_PROGRESS",
+    "authority_drift": "REPAIRED_IN_CHECKPOINT_001",
     "latest_product_runtime": "NOT_RUN",
     "android": "NOT_RUN",
     "accessibility": "NOT_RUN",

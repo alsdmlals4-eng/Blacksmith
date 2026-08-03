@@ -1,15 +1,18 @@
 # Active Context
 
-- 갱신: `2026-08-03 21:22 KST`
+- 갱신: `2026-08-03 22:03 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R2_CORE_SESSION_META_LOOP / PLANNING_ACTIVE`
 - R1 최종 승인: `BS-OPS-20260803-05 / USER_APPROVED / CANON_COMPLETE`
+- R2 첫 승인: `BS-WORLD-20260803-02 / USER_APPROVED / BASELINE_TEST_PRESET`
+- R2 체크포인트: `BS-OPS-20260803-06 / EARLY_CHECKPOINT_1_OF_10 / NEXT_COUNTER_0_OF_10`
 - R1 정본 기준 병합: PR `#94`
 - R1 정본 기준 SHA: `8a0956d6c8b4cf3db545a17d0bd002ba8354d568`
-- post-merge 상태 최종화: PR `#96/#97`
+- R1 최종 승인·세계일정 구조 병합: PR `#98` / `8df4a10241bfa0c07211402d7c8c0e3e1f1e1249`
 - Sheet 동기화 기준: `BS-OPS-20260803-04 / MAIN_CANON / READBACK_PASS`
 - R1 감사: `BS-OPS-20260803-02 / P0=0 / P1=0`
-- 세계일정: `BS-WORLD-20260803-01 / DAILY_STAGED_PROGRESS / SCALE_INCREASES_DURATION`
+- 세계일정 구조: `BS-WORLD-20260803-01 / DAILY_STAGED_PROGRESS / SCALE_INCREASES_DURATION`
+- 첫 슬라이스 기간 프리셋: `BS-WORLD-20260803-02 / DAY3_RESULT / DAY4_REVISIT`
 - 명예의 전당: `FUTURE_CONTENT_HOLD / NONCOMPETITIVE_ARCHIVE`
 - 제품 구현: `BLOCKED`
 
@@ -46,6 +49,16 @@
 9. 피로도·날짜 우선순위
 10. 버전형 경제·세계일정 기간 테스트 프리셋
 
+## 보조 시스템
+
+- 사건 연대기 세트·수집가·작품 포트폴리오
+- 고객 관계·명성·후속 의뢰
+- 손상·복원·계승 기록
+- 저위험 반복 편의 자동화
+- 비경쟁 명예의 전당: `FUTURE_CONTENT_HOLD`
+
+보조 시스템은 강화 판단과 같은 UID 작품 생애 환류를 강화해야 하며, 별도 장르나 필수 반복 업무가 되어서는 안 된다.
+
 ## 확정된 경계
 
 - 현재 검증 상한은 `+50`; 최종 상한은 `DEFERRED`다.
@@ -72,24 +85,25 @@
 플레이어 선택 작품 한 점 제작
 → +10/+20/+30/+40/+50
 → 방문 고객 납품
-→ 즉시 사용 계획·초기 피드백
-→ 날짜 1: 준비·초기 진행
-→ 날짜 2+: 중간 변화·전환점
-→ 별도 날짜: 최종 결과
-→ 같은 UID 재방문
+→ 납품 당일: 사용 계획·준비·예상 기여
+→ 1일차: 출발·초기 사용·초기 접촉
+→ 2일차: 변수·위험·기회·전환점
+→ 3일차: 최종 결과
+→ 4일차: 같은 UID 재방문
 → 손상·복원·재강화 판단
 ```
 
-다른 작품군은 제한된 비플레이 미리보기로만 제공한다.
+다른 작품군은 제한된 비플레이 미리보기로만 제공한다. 정확한 3일 결과·4일차 재방문은 `BASELINE_TEST_PRESET`이며 사람 플레이 이후 조정할 수 있다.
 
 ## 세계일정 진행 계약
 
 - 하루 종료 한 번당 최대 한 단계 또는 한 개의 명시적 진행 단위만 전진한다.
 - 발생 상태·하나 이상의 중간 상태·별도 날짜의 최종 상태가 필수다.
 - 상대 기간은 `LOCAL/PERSONAL < REGIONAL/FACTION < REALM/NATIONAL < WAR/CATASTROPHE`다.
+- 첫 슬라이스 기준 프리셋은 `납품 당일 준비 → 1일차 초기 사용 → 2일차 전환점 → 3일차 결과 → 4일차 재방문`이다.
 - 날짜별 진행은 현재 단계·경과 날짜·다음 갱신·작품 기여·새 위험·대응 가능성을 보여준다.
 - 빈 대기 로그·필수 장문 대화·날짜 넘기기 최적화를 금지한다.
-- 정확한 기간·단계·동시 진행 수·분기는 R2~R4에서 확정한다.
+- 정확한 기간·단계·동시 진행 수·분기는 R2~R4에서 검증한다.
 
 ## 코어 재미 검증
 
@@ -105,6 +119,14 @@
 
 직후 중립적 회상 인터뷰가 행동과 충돌하면 통과를 보류하고 최소 수정 후 재검증한다.
 
+## 적대적 검토 상태
+
+- 프로젝트 코어·핵심 재미·첫 슬라이스 방향: `VALID`
+- P0: `0`
+- P1: 프로젝트 Base 어댑터가 PR #84/R1 진행 상태를 가리키던 권위 드리프트 발견
+- 조치: `BS-OPS-20260803-06` 체크포인트에서 R2·PR #98·Sheet readback 상태로 복구
+- 남은 주요 위험: 빈 대기·날짜 스킵 최적화, 관찰일의 거짓 선택지, 재방문 반복 업무화, 여러 일정 과밀
+
 ## 역사 구현·보조 기능 추적
 
 - `POC v0.6.4 · main · 2026.07.23.1`: 제작 품질 역사 구현 기준선
@@ -118,24 +140,27 @@
 - `CURRENT_CONFIRMED_DECISIONS.md`
 - `docs/planning/CURRENT_R1_CANON_REGISTRY.json`
 - `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
+- `docs/planning/BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md`
 - `docs/planning/BLACKSMITH_R1_FINAL_APPROVAL_AND_WORLD_SCHEDULE_PROGRESS_2026.md`
 - `[기획서]/00_프로젝트_허브/ROADMAP.md`
 - Core Resolution `01~06`
 - PR #94: `MERGED_CANON_BASELINE`
 - PR #96: `MERGED_POST_MERGE_FINALIZATION`
 - PR #97: `MERGED_SHEET_SYNC_GATE_CLOSURE`
+- PR #98: `MERGED_R1_FINAL_APPROVAL_WORLD_SCHEDULE`
 - PR #81: `REFERENCE_ASSET / OPEN_DRAFT / DO_NOT_MERGE_AS_UNIT`
 - PR #95·#86·#61: 종료 또는 역사 전용
 
 ## 실제 검증 상태
 
-- PR #94·#96·#97 Base CI: `PASS`
-- PR #94·#96·#97 PR validation: `PASS`
-- GitHub·Google Sheet 정본 동기화: `COMPLETE / READBACK_PASS`
+- PR #94·#96·#97·#98 Base/PR CI: `PASS`
+- GitHub·Google Sheet R1 정본 동기화: `COMPLETE / READBACK_PASS`
+- R2 체크포인트 001 GitHub·Sheet 동기화: `IN_PROGRESS`
 - 최신 R2 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 
 ## 다음 작업
 
-1. R2 `Core·Session·Meta Loop` 기획
-2. 첫 세계일정의 규모·기간·단계·날짜별 UI·개입 규칙 확정
-3. 제품 구현은 계속 `BLOCKED`
+1. R2 Grill Me 2 — 개입 가능일과 관찰일 구분
+2. 날짜별 정보량·작품 기여·위험·다음 갱신·대응 계약 확정
+3. 여러 일정 동시 진행·날짜 스킵 방지
+4. 제품 구현은 계속 `BLOCKED`

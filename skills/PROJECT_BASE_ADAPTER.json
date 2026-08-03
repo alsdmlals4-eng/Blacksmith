@@ -3,7 +3,11 @@
   "schema_version": 1,
   "current_operating_decisions": [
     "BS-OPS-20260802-01",
-    "BS-OPS-20260802-02"
+    "BS-OPS-20260802-02",
+    "BS-OPS-20260803-03",
+    "BS-OPS-20260803-04",
+    "BS-OPS-20260803-05",
+    "BS-OPS-20260803-06"
   ],
   "base_release": {
     "finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
@@ -15,18 +19,20 @@
   },
   "project_operating_state": {
     "work_mode": "TOTAL_PLANNING",
-    "stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
-    "stage_status": "IN_PROGRESS_GRILL_BATCH_01_MERGED_NEW_COUNTER_0_OF_10",
-    "recovery_base_commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
-    "batch_01_merge_commit": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
-    "last_merged_pr": 84,
+    "stage": "R2_CORE_SESSION_META_LOOP",
+    "stage_status": "R2_CHECKPOINT_001_CANON_NEXT_GRILL_ME_COUNTER_0_OF_10",
+    "recovery_base_commit": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
+    "r1_final_approval_merge_commit": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
+    "last_merged_pr": 98,
     "canonical_recovery": "MERGED_TO_MAIN",
-    "planning_coverage": "R1_IN_PROGRESS",
-    "approved_grill_me_questions_in_completed_batch": 5,
+    "planning_coverage": "R1_COMPLETE_R2_ACTIVE",
+    "approved_grill_me_questions_in_checkpoint_001": 1,
+    "checkpoint_001_closure": "EARLY_CHECKPOINT_AUTHORITY_DRIFT",
     "current_new_grill_me_counter": "0/10",
+    "current_r2_decision": "BS-WORLD-20260803-02",
     "product_implementation": "BLOCKED",
-    "existing_reference_contract_validation": "PASS_AT_PR84_HEAD",
-    "new_r1_runtime_validation": "NOT_RUN",
+    "existing_reference_contract_validation": "PASS_AT_PR98_HEAD",
+    "new_r2_runtime_validation": "NOT_RUN",
     "android_device_validation": "NOT_RUN",
     "accessibility_human_review": "NOT_RUN",
     "performance_profile": "NOT_RUN",
@@ -35,6 +41,9 @@
   "current_r1_canon": {
     "registry": "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
     "root_decisions": "CURRENT_CONFIRMED_DECISIONS.md",
+    "game_bible": "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
+    "r1_final_approval": "docs/planning/BLACKSMITH_R1_FINAL_APPROVAL_AND_WORLD_SCHEDULE_PROGRESS_2026.md",
+    "r2_checkpoint_001": "docs/planning/BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md",
     "approved_core_ledger": "docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md",
     "event_chronicle_set": "docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md",
     "batch_and_merge_policy": "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md"
@@ -66,9 +75,13 @@
       "BS-SET-20260802-01",
       "BS-SET-20260802-02",
       "BS-SET-20260802-03",
-      "BS-SET-20260802-04"
+      "BS-SET-20260802-04",
+      "BS-OPS-20260803-05",
+      "BS-WORLD-20260803-01",
+      "BS-WORLD-20260803-02",
+      "BS-OPS-20260803-06"
     ],
-    "sync_status": "POSTMERGE_FINALIZATION",
+    "sync_status": "SYNCED_TO_MAIN_AFTER_CHECKPOINT_MERGE",
     "target_tabs": [
       "00_프로젝트_허브",
       "01_작업순서",
@@ -78,7 +91,7 @@
       "90_본제작_출시_사업",
       "99_변경이력"
     ],
-    "readback_status": "PREMERGE_PASS_POSTMERGE_SYNC_PENDING",
+    "readback_status": "CHECKPOINT_MAIN_READBACK_REQUIRED",
     "exact_head_record_policy": "PR_METADATA_AND_SHEET_HISTORY_AVOID_SELF_REFERENTIAL_COMMIT"
   },
   "project": {
@@ -91,7 +104,7 @@
   "protected_baseline": {
     "authority_kind": "GITHUB_MAIN_COMMIT",
     "authority_ref": "refs/heads/main",
-    "commit": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
+    "commit": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
     "policy_sha256": null,
     "policy_hash_status": "RECALCULATION_NOT_RUN",
     "policy_source_path": "AGENTS.md",
@@ -216,12 +229,12 @@
         "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
         "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
       ],
-      "existing_legacy_migration": "NOT_IN_THIS_RECOVERY",
+      "existing_legacy_migration": "NOT_IN_THIS_CHECKPOINT",
       "pr81_status": "REFERENCE_ONLY_SUPERSEDED_AS_MERGE_UNIT"
     },
     "managing-project-intake-and-work-contract": {
       "planning_first_governance": {
-        "actual_project_batch_execution": "NOT_RUN",
+        "actual_project_batch_execution": "EXECUTED_R2_CHECKPOINT_001",
         "base_contract_source": "docs/PLANNING_FIRST_GRILL_ME_BATCH_POLICY.md",
         "base_release_finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
         "base_release_lock": "base-v9.4.3.lock.json",
@@ -230,7 +243,11 @@
         "numeric_default_state": "RECOMMENDED_DEFAULT",
         "planning_conflict_state": "GRILL_ME_REQUIRED",
         "post_merge_sheet_state": "SYNCED_TO_MAIN",
-        "pre_merge_sheet_state": "APPROVED_PENDING_MERGE"
+        "pre_merge_sheet_state": "APPROVED_PENDING_MERGE",
+        "current_checkpoint": "BS-OPS-20260803-06",
+        "current_approved_decision": "BS-WORLD-20260803-02",
+        "checkpoint_reason": "AUTHORITY_DRIFT_EARLY_CHECKPOINT",
+        "next_counter": "0/10"
       },
       "first_prompt_governance": {
         "actual_project_instruction_execution": "NOT_RUN",
@@ -292,7 +309,7 @@
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
       "sha256": null,
-      "hash_status": "RECALCULATION_NOT_RUN_AFTER_R1_EDIT"
+      "hash_status": "RECALCULATION_NOT_RUN_AFTER_R2_CHECKPOINT"
     }
   },
   "validators": [
@@ -305,15 +322,17 @@
     "manual: Godot project parse/runtime check",
     "manual: Android device and safe-area check when applicable",
     "manual: UX UI human understanding and accessibility review",
-    "python tests/test_base_v943_first_prompt_adoption.py"
+    "python tests/test_base_v943_first_prompt_adoption.py",
+    "python tests/check_project_core_alignment.py"
   ],
   "validation_status": {
-    "pr_84_premerge_github_sheet_pr_audit": "PASS",
-    "pr_84_base_v9_adoption": "PASS",
-    "pr_84_python_contracts": "PASS",
-    "pr_84_existing_reference_godot_contracts": "PASS",
-    "postmerge_sync_pr": "IN_PROGRESS",
-    "new_r1_godot_runtime": "NOT_RUN",
+    "pr_98_premerge_github_sheet_pr_audit": "PASS",
+    "pr_98_base_v9_adoption": "PASS",
+    "pr_98_pr_validation": "PASS",
+    "pr_98_sheet_readback": "PASS",
+    "r2_checkpoint_001_adversarial_audit": "P0_0_P1_ADAPTER_DRIFT_REPAIRED",
+    "checkpoint_001_postmerge_sync": "PENDING_THIS_CHECKPOINT",
+    "new_r2_godot_runtime": "NOT_RUN",
     "android_device": "NOT_RUN",
     "accessibility_human": "NOT_RUN",
     "performance": "NOT_RUN",
