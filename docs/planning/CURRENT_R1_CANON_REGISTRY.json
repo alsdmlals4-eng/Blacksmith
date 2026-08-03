@@ -11,12 +11,15 @@
   "sheet_sync_closure_pr": 97,
   "r1_final_approval_merge_pr": 98,
   "r1_final_approval_merge_sha": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
+  "r2_checkpoint_001_merge_pr": 99,
+  "r2_checkpoint_001_merge_sha": "534ac05596573ae4055fa97a4e6888f4e8966b05",
   "r1_final_approval_decision": "BS-OPS-20260803-05",
   "world_schedule_decision": "BS-WORLD-20260803-01",
   "r2_world_schedule_baseline_decision": "BS-WORLD-20260803-02",
   "r2_checkpoint_decision": "BS-OPS-20260803-06",
   "sheet_sync_baseline_decision": "BS-OPS-20260803-04",
   "sheet_sync_baseline_status": "MAIN_CANON_READBACK_PASS",
+  "r2_checkpoint_sync_status": "MERGED_PR99_MAIN_CANON_READBACK_PASS",
   "current_operating_decisions": [
     "BS-OPS-20260802-01",
     "BS-OPS-20260802-02",
@@ -65,7 +68,7 @@
       "id": "r2-world-schedule-checkpoint-001",
       "path": "BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md",
       "role": "r2_first_slice_world_schedule_baseline_and_early_authority_checkpoint",
-      "status": "USER_APPROVED_CANON"
+      "status": "USER_APPROVED_MERGED_PR99"
     },
     {
       "id": "r1-final-approval-world-schedule",
@@ -208,7 +211,9 @@
       "id": "BS-R2-CHECKPOINT-001-20260803",
       "decision_ids": ["BS-WORLD-20260803-02", "BS-OPS-20260803-06"],
       "closure": "EARLY_CHECKPOINT_1_OF_10_AUTHORITY_DRIFT",
-      "status": "CANON_SYNC_IN_PROGRESS"
+      "merge_pr": 99,
+      "merge_sha": "534ac05596573ae4055fa97a4e6888f4e8966b05",
+      "status": "MERGED_MAIN_CANON_READBACK_PASS"
     }
   ],
   "current_core_contract": {
@@ -251,6 +256,7 @@
     {"number": 96, "status": "MERGED_POST_MERGE_FINALIZATION"},
     {"number": 97, "status": "MERGED_SHEET_SYNC_GATE_CLOSURE"},
     {"number": 98, "status": "MERGED_R1_FINAL_APPROVAL_WORLD_SCHEDULE"},
+    {"number": 99, "status": "MERGED_R2_CHECKPOINT_001"},
     {"number": 95, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
     {"number": 86, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
     {"number": 61, "status": "HISTORY_ONLY_CLOSED_WITHOUT_MERGE"},
@@ -282,9 +288,11 @@
     "pr98_base_validation": "PASS",
     "pr98_pr_validation": "PASS",
     "pr98_sheet_readback": "PASS",
-    "r2_checkpoint_001_adversarial_audit": "P0_0_P1_ADAPTER_AUTHORITY_DRIFT_REPAIRED",
-    "r2_checkpoint_001_sheet_sync": "IN_PROGRESS",
-    "authority_drift": "REPAIRED_IN_CHECKPOINT_001",
+    "pr99_workflows": "PASS_5_OF_5",
+    "pr99_review": "COMMENTS_0_THREADS_0_P0_0_P1_0",
+    "r2_checkpoint_001_adversarial_audit": "PASS_P0_0_P1_0",
+    "r2_checkpoint_001_sheet_sync": "PASS_MAIN_CANON_READBACK",
+    "authority_drift": "RESOLVED",
     "latest_product_runtime": "NOT_RUN",
     "android": "NOT_RUN",
     "accessibility": "NOT_RUN",

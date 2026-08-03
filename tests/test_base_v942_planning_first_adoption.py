@@ -53,8 +53,8 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         state = adapter["project_operating_state"]
         self.assertEqual("R2_CORE_SESSION_META_LOOP", state["stage"])
         self.assertEqual("R2_CHECKPOINT_001_CANON_NEXT_GRILL_ME_COUNTER_0_OF_10", state["stage_status"])
-        self.assertEqual(98, state["last_merged_pr"])
-        self.assertEqual("8df4a10241bfa0c07211402d7c8c0e3e1f1e1249", state["r1_final_approval_merge_commit"])
+        self.assertEqual(99, state["last_merged_pr"])
+        self.assertEqual("534ac05596573ae4055fa97a4e6888f4e8966b05", state["r2_checkpoint_001_merge_commit"])
         self.assertEqual("R1_COMPLETE_R2_ACTIVE", state["planning_coverage"])
         self.assertEqual("BLOCKED_UNVERIFIED", adapter["compatibility"]["view_freshness"])
         self.assertEqual("DO_NOT_HAND_EDIT_GENERATED_COMPATIBILITY_VIEWS", adapter["compatibility"]["manual_edit_policy"])
@@ -66,8 +66,11 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         sheet = adapter["gdd_sheet"]
         self.assertIn("BS-WORLD-20260803-02", sheet["sync_decision_ids"])
         self.assertIn("BS-OPS-20260803-06", sheet["sync_decision_ids"])
-        self.assertEqual("SYNCED_TO_MAIN_AFTER_CHECKPOINT_MERGE", sheet["sync_status"])
-        self.assertEqual("8df4a10241bfa0c07211402d7c8c0e3e1f1e1249", adapter["protected_baseline"]["commit"])
+        self.assertEqual("SYNCED_TO_MAIN", sheet["sync_status"])
+        self.assertEqual("MAIN_CANON_READBACK_PASS", sheet["readback_status"])
+        self.assertEqual("534ac05596573ae4055fa97a4e6888f4e8966b05", sheet["last_synced_main_commit"])
+        self.assertEqual(99, sheet["last_synced_pr"])
+        self.assertEqual("534ac05596573ae4055fa97a4e6888f4e8966b05", adapter["protected_baseline"]["commit"])
         self.assertEqual(
             ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
             adapter["protected_paths"],
@@ -77,6 +80,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         self.assertEqual("BS-WORLD-20260803-02", registry["r2_world_schedule_baseline_decision"])
         self.assertEqual("BS-OPS-20260803-06", registry["r2_checkpoint_decision"])
+        self.assertEqual(99, registry["r2_checkpoint_001_merge_pr"])
+        self.assertEqual("534ac05596573ae4055fa97a4e6888f4e8966b05", registry["r2_checkpoint_001_merge_sha"])
+        self.assertEqual("MERGED_PR99_MAIN_CANON_READBACK_PASS", registry["r2_checkpoint_sync_status"])
         preset = registry["world_schedule_contract"]["first_slice_preset"]
         self.assertEqual("FINAL_RESULT", preset["day_3"])
         self.assertEqual("SAME_UID_REVISIT_AND_NEXT_ACTION", preset["day_4"])
@@ -98,6 +104,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             "3일차: 최종 세계 결과",
             "4일차: 같은 UID 재방문",
             "NEXT_GRILL_ME_COUNTER_0_OF_10",
+            "COMPLETE / MERGED_PR99 / MAIN_CANON / READBACK_PASS",
         ):
             self.assertIn(token, root)
 
