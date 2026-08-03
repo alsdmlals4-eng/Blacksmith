@@ -9,6 +9,7 @@ REGISTRY = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
 CUSTOMER_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CUSTOMER_DISCLOSURE_MINIMUM_CANON_2026.md"
 SCHEDULE_CANON = ROOT / "docs/planning/BLACKSMITH_R2_MULTI_SCHEDULE_DISPLAY_AND_ALERT_CANON_2026.md"
 CONTENT_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CONTENT_COMPOSITION_AND_ITEM_LEGACY_CANON_2026.md"
+VISITOR_CANON = ROOT / "docs/planning/BLACKSMITH_R2_VISITOR_ARCHETYPES_AND_INITIAL_CONTENT_FAMILIES_CANON_2026.md"
 ROOT_DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 
@@ -97,6 +98,34 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertTrue(contract["world_result_requires_customer_and_item_follow_up"])
         self.assertEqual("DEFERRED_TO_FOLLOW_UP_GATE", contract["exact_content_counts"])
 
+    def test_visitor_archetypes_and_noble_content_contract(self) -> None:
+        registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        decisions = {item["id"]: item for item in registry["current_decisions"]}
+        decision = decisions["BS-CONTENT-20260804-02"]
+        contract = decision["contract"]
+
+        self.assertEqual("USER_APPROVED_PENDING_MERGE", decision["status"])
+        self.assertEqual("BS-CONTENT-20260804-01", decision["refines"])
+        self.assertEqual(
+            ["GLADIATOR", "ADVENTURER", "SOLDIER", "NOBLE"],
+            contract["visitor_archetypes"],
+        )
+        self.assertTrue(contract["schedule_requires_primary_visitor_fit"])
+        self.assertEqual(5, len(contract["personal_content_families"]))
+        self.assertIn("ARTISTRY_PRESTIGE_AND_PATRONAGE", contract["personal_content_families"])
+        self.assertEqual(4, len(contract["world_content_families"]))
+        self.assertIn("ROYAL_CEREMONY_AND_MASTERWORK_EXPOSITION", contract["world_content_families"])
+        self.assertIn("ARTISTRY", contract["noble_request_focus"])
+        self.assertIn("INHERITANCE", contract["noble_request_focus"])
+        self.assertIn("HEIRLOOM_RESTORATION", contract["noble_item_scope"])
+        self.assertEqual("JUDGMENT", contract["noble_primary_stat"])
+        self.assertEqual("SKILL", contract["noble_optional_secondary_stat"])
+        self.assertFalse(contract["new_customer_stats_added"])
+        self.assertIn("GIFT_OR_INHERITANCE", contract["noncombat_item_legacy"])
+        self.assertFalse(contract["noble_is_expensive_combat_reskin"])
+        self.assertFalse(contract["general_non_metal_luxury_goods_in_scope"])
+        self.assertEqual("FOLLOW_UP_TEST_PRESET", contract["exact_counts_and_numeric_weights"])
+
     def test_gpt_role_boundary_is_non_batch(self) -> None:
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         decisions = {item["id"]: item for item in registry["current_decisions"]}
@@ -115,11 +144,16 @@ class R2Batch003Tests(unittest.TestCase):
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         active_batch = registry["active_batch"]
         self.assertEqual("R2_BATCH_003", active_batch["id"])
-        self.assertEqual(3, active_batch["approved_decisions"])
-        self.assertEqual("3/10", active_batch["counter"])
+        self.assertEqual(4, active_batch["approved_decisions"])
+        self.assertEqual("4/10", active_batch["counter"])
         self.assertEqual("APPROVED_PENDING_MERGE", active_batch["state"])
         self.assertEqual(
-            ["BS-CUSTOMER-20260803-02", "BS-SCHEDULE-20260804-01", "BS-CONTENT-20260804-01"],
+            [
+                "BS-CUSTOMER-20260803-02",
+                "BS-SCHEDULE-20260804-01",
+                "BS-CONTENT-20260804-01",
+                "BS-CONTENT-20260804-02",
+            ],
             active_batch["decisions"],
         )
         self.assertEqual(["BS-OPS-20260804-01"], active_batch["non_batch_operating_directives"])
@@ -128,7 +162,7 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertFalse(active_batch["product_paths_changed"])
         self.assertEqual("BLOCKED", registry["product_implementation"])
         self.assertEqual(
-            "DEFINE_INITIAL_PERSONAL_AND_WORLD_EVENT_FAMILIES_AND_VISUAL_IDENTITIES",
+            "DEFINE_NOBLE_ARTISTRY_LUXURY_AND_HOUSE_FIT_CRAFTING_AXES",
             registry["next_activity"],
         )
 
@@ -136,6 +170,7 @@ class R2Batch003Tests(unittest.TestCase):
         customer = CUSTOMER_CANON.read_text(encoding="utf-8")
         schedule = SCHEDULE_CANON.read_text(encoding="utf-8")
         content = CONTENT_CANON.read_text(encoding="utf-8")
+        visitor = VISITOR_CANON.read_text(encoding="utf-8")
         root = ROOT_DECISIONS.read_text(encoding="utf-8")
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
 
@@ -179,15 +214,30 @@ class R2Batch003Tests(unittest.TestCase):
             self.assertIn(token, content)
 
         for token in (
+            "BS-CONTENT-20260804-02",
+            "검투사 / 모험가 / 군인 / 귀족",
+            "예술·위신·후원",
+            "왕실 의례·명품 박람회",
+            "의장용 무기·갑주",
+            "가문 귀속",
+            "증여·상속 이력",
+            "귀족 때문에 새 고객 능력치를 추가하지 않는다",
+            "금색·보석 과잉으로 통일하지 않는다",
+            "제품 구현: `BLOCKED`",
+        ):
+            self.assertIn(token, visitor)
+
+        for token in (
             "BS-CUSTOMER-20260803-02",
             "BS-SCHEDULE-20260804-01",
             "BS-CONTENT-20260804-01",
+            "BS-CONTENT-20260804-02",
             "BS-OPS-20260804-01",
-            "R2_BATCH_003_3_OF_10",
+            "R2_BATCH_003_4_OF_10",
             "APPROVED_PENDING_MERGE",
-            "사건 위험도: `1~10`",
-            "오늘의 중요 소식 최대 3건",
-            "활동·고객 동기·작품 결과·후속 제작 환류",
+            "검투사 / 모험가 / 군인 / 귀족",
+            "예술·위신·후원",
+            "왕실 의례·명품 박람회",
             "GPT 논의는 핵심 재미·콘텐츠 기획·이미지·아트 방향",
         ):
             self.assertIn(token, root)
@@ -196,13 +246,16 @@ class R2Batch003Tests(unittest.TestCase):
             "BS-CUSTOMER-20260803-02",
             "BS-SCHEDULE-20260804-01",
             "BS-CONTENT-20260804-01",
+            "BS-CONTENT-20260804-02",
             "BS-OPS-20260804-01",
             "사건 위험도: 정수 `1~10`",
             "오늘의 중요 소식 최대 3건",
             "콘텐츠 조합·작품 생애 환류 계약",
-            "활동 이름과 보상만 다르고",
+            "검투사 / 모험가 / 군인 / 귀족",
+            "귀족 예술·사치 방향",
+            "전시·감정·증여·상속",
             "GPT에서는 다음 영역을 중심으로 논의한다",
-            "승인 카운터: `3/10`",
+            "승인 카운터: `4/10`",
             "세계일정 진행 계약",
             "행동 증거",
             "자동 단조",
