@@ -9,13 +9,14 @@
 ```yaml
 WORK_MODE: TOTAL_PLANNING
 CURRENT_STAGE: R1_PROJECT_CORE_AND_PLAYER_PROMISE
-R1_STATUS: CORE_CONFLICTS_RESOLVED / CANON_ALIGNMENT_AND_PR_AUDIT
-MAIN_SHA: b3a852cbb35de73a4b2da32151f845ddd61e1921
-LAST_MERGED_PR: 93
-CURRENT_AUTHORITY_PR: 94
+R1_STATUS: R1_CANON_ALIGNED / USER_FINAL_REVIEW_PENDING
+CANON_BASELINE_PR: 94
+CANON_BASELINE_SHA: 8a0956d6c8b4cf3db545a17d0bd002ba8354d568
 PRODUCT_IMPLEMENTATION: BLOCKED
 HALL_OF_FAME: FUTURE_CONTENT_HOLD_NONCOMPETITIVE_ARCHIVE
 ```
+
+`CANON_BASELINE_SHA`는 R1 정본을 확정한 병합 기준이며 파일 자신의 현재 Git commit을 뜻하지 않는다.
 
 ## 처음 읽을 순서
 
@@ -64,20 +65,19 @@ HALL_OF_FAME: FUTURE_CONTENT_HOLD_NONCOMPETITIVE_ARCHIVE
 - 과거 정확한 수치는 `LEGACY_IMPLEMENTED_VALUE`이며 최신 제품 확정값이 아니다.
 - 최신 runtime·Android·접근성·성능·사람 플레이는 `NOT_RUN`이다.
 
-## 열린 PR
+## PR·감사 상태
 
-- `#94`: 현재 권위 복구 Draft
-- `#95`: 병합 없이 종료된 중복 PR
-- `#86`: 대체된 PR
-- `#61`: 역사 전용 PR
-- `#81`: 참고 자산 PR
+- PR #94: `MERGED_CANON_BASELINE`
+- Audit ID: `BS-OPS-20260803-02`
+- P0: `0`
+- P1: `0`
+- 최종 CI: `Validate Base v9 adoption PASS / PR validation PASS`
+- PR #81: 참고 자산 Draft, 독립 병합 금지
+- PR #95·#86·#61: 병합 없이 종료 또는 역사 전용
 
-## 다음 작업
+## 다음 Gate
 
-1. Hub·Sheet의 최신 Decision 표현을 맞춘다.
-2. PR #94의 changed files·리뷰·스레드·댓글·CI·금지 경로·권위 드리프트를 감사한다.
-3. 차단 결함이 없으면 expected HEAD를 고정해 squash merge한다.
-4. main SHA와 Sheet를 재동기화한다.
-5. 사용자 R1 정본 최종 검수를 진행한다.
-
-제품 구현은 계속 `BLOCKED`다.
+1. PR #94 병합 SHA와 Google Sheet를 최종 동기화한다.
+2. 사용자 R1 정본 최종 검수를 진행한다.
+3. 승인 후 R2 `Core·Session·Meta Loop` 기획을 시작한다.
+4. 제품 구현은 계속 `BLOCKED`다.
