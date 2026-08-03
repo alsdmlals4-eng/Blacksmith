@@ -12,6 +12,7 @@ CURRENT_STAGE: R1_PROJECT_CORE_AND_PLAYER_PROMISE
 R1_STATUS: R1_CANON_ALIGNED / USER_FINAL_REVIEW_PENDING
 CANON_BASELINE_PR: 94
 CANON_BASELINE_SHA: 8a0956d6c8b4cf3db545a17d0bd002ba8354d568
+SHEET_SYNC: COMPLETE / BS-OPS-20260803-03 / READBACK_PASS
 PRODUCT_IMPLEMENTATION: BLOCKED
 HALL_OF_FAME: FUTURE_CONTENT_HOLD_NONCOMPETITIVE_ARCHIVE
 ```
@@ -68,16 +69,16 @@ HALL_OF_FAME: FUTURE_CONTENT_HOLD_NONCOMPETITIVE_ARCHIVE
 ## PR·감사 상태
 
 - PR #94: `MERGED_CANON_BASELINE`
+- PR #96: `MERGED_POST_MERGE_FINALIZATION`
 - Audit ID: `BS-OPS-20260803-02`
 - P0: `0`
 - P1: `0`
-- 최종 CI: `Validate Base v9 adoption PASS / PR validation PASS`
+- PR #94·#96 CI: `Validate Base v9 adoption PASS / PR validation PASS`
 - PR #81: 참고 자산 Draft, 독립 병합 금지
 - PR #95·#86·#61: 병합 없이 종료 또는 역사 전용
 
 ## 다음 Gate
 
-1. PR #94 병합 SHA와 Google Sheet를 최종 동기화한다.
-2. 사용자 R1 정본 최종 검수를 진행한다.
-3. 승인 후 R2 `Core·Session·Meta Loop` 기획을 시작한다.
-4. 제품 구현은 계속 `BLOCKED`다.
+1. 사용자 R1 정본 최종 검수
+2. 승인 후 R2 `Core·Session·Meta Loop` 기획
+3. 제품 구현은 계속 `BLOCKED`
