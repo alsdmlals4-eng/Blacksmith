@@ -1,6 +1,6 @@
 {
   "artifact_role": "CURRENT_R2_CANON_REGISTRY",
-  "schema_version": 2,
+  "schema_version": 3,
   "project": "Blacksmith",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "stage_status": "R2_CHECKPOINT_002_MERGED_MAIN_CANON_READBACK_PASS",
@@ -16,6 +16,8 @@
     "main_before_checkpoint": "53793be4f613e26279611d12f1ee738d2b989276",
     "checkpoint_merge_pr": 101,
     "checkpoint_merge_sha": "a81cbe5de685e2900070d9a32db56556538e0a6f",
+    "postmerge_closure_pr": 102,
+    "current_main": "d8ef47a6702c3afac4eb1a10439df974a2d259df",
     "r1_registry": "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
     "r2_checkpoint_001_decisions": [
       "BS-WORLD-20260803-02",
@@ -64,6 +66,36 @@
       }
     },
     {
+      "id": "BS-CUSTOMER-20260803-02",
+      "title": "판매 전 고객 정보 최소 공개와 대략적 성공률",
+      "status": "USER_APPROVED_PENDING_MERGE",
+      "canon": "docs/planning/BLACKSMITH_R2_CUSTOMER_DISCLOSURE_MINIMUM_CANON_2026.md",
+      "refines": "BS-CUSTOMER-20260803-01",
+      "contract": {
+        "public_fields": [
+          "EVENT_RISK_TIER",
+          "CUSTOMER_CORE_STATS",
+          "APPROXIMATE_SUCCESS_CHANCE"
+        ],
+        "event_risk_tiers": [
+          "LOW",
+          "MEDIUM",
+          "HIGH",
+          "VERY_HIGH"
+        ],
+        "success_display": "APPROXIMATE_PERCENT_ROUNDED_TO_NEAREST_10",
+        "success_display_min_percent": 5,
+        "success_display_max_percent": 95,
+        "pre_equipment_basis": "CUSTOMER_STATS_PLUS_KNOWN_EVENT_RISK",
+        "post_equipment_recalculation": true,
+        "pre_sale_modifier_breakdown": false,
+        "unknown_variable_notice": false,
+        "exhaustive_event_details": false,
+        "result_causes_explained": true,
+        "numeric_authority": "BASELINE_TEST_PRESET"
+      }
+    },
+    {
       "id": "BS-OPS-20260803-07",
       "title": "R2 승인 2/10 정본 교정 조기 체크포인트",
       "status": "EARLY_CHECKPOINT_MERGED_MAIN_CANON",
@@ -78,6 +110,16 @@
       "status": "SUPERSEDED_IN_SCOPE_BY_BS-WORLD-20260803-03",
       "retained_role": "HISTORICAL_BASELINE_EXAMPLE_FOR_ONE_PERSONAL_SCHEDULE",
       "prohibited_interpretation": "UNIVERSAL_WORLD_SCHEDULE_STATE_MACHINE"
+    }
+  ],
+  "refinements": [
+    {
+      "decision": "BS-CUSTOMER-20260803-01",
+      "refined_by": "BS-CUSTOMER-20260803-02",
+      "scope": "PRE_SALE_INFORMATION_DISCLOSURE",
+      "new_primary_display": "EVENT_RISK_PLUS_CORE_STATS_PLUS_APPROXIMATE_PERCENT",
+      "unknown_variable_notice": false,
+      "detailed_pre_sale_reason_list_required": false
     }
   ],
   "resolution_formula_structure": {
@@ -96,7 +138,9 @@
   "adversarial_guards": [
     "CUSTOMER_STATS_MUST_NOT_INVALIDATE_EQUIPMENT_CHOICE",
     "EVENT_RNG_MUST_NOT_OVERWHELM_PREPARATION",
-    "FORECAST_MUST_SHOW_REASONS_AND_AVOID_FALSE_PRECISION",
+    "APPROXIMATE_PERCENT_MUST_NOT_IMPLY_CERTAINTY",
+    "DISPLAYED_ESTIMATE_MUST_BE_CALIBRATED_TO_OUTCOMES",
+    "NO_SEPARATE_UNKNOWN_VARIABLE_WARNING_IN_PRE_SALE_UI",
     "CUSTOMER_PROFILE_MUST_NOT_EXPAND_INTO_MANDATORY_TRAINING_RPG",
     "PERSONAL_AND_WORLD_SCHEDULES_MUST_KEEP_DISTINCT_TRIGGERS"
   ],
@@ -120,5 +164,17 @@
     "performance_validation": "NOT_RUN",
     "human_playtest": "NOT_RUN"
   },
-  "next_activity": "DEFINE_CUSTOMER_DIALOGUE_INFORMATION_DISCLOSURE_AND_RISK_TRANSPARENCY"
+  "active_batch": {
+    "id": "R2_BATCH_003",
+    "approved_decisions": 1,
+    "max_batch_size": 10,
+    "counter": "1/10",
+    "state": "APPROVED_PENDING_MERGE",
+    "decisions": [
+      "BS-CUSTOMER-20260803-02"
+    ],
+    "base_main": "d8ef47a6702c3afac4eb1a10439df974a2d259df",
+    "product_paths_changed": false
+  },
+  "next_activity": "DEFINE_MULTI_SCHEDULE_DISPLAY_AND_ALERT_PRIORITY"
 }
