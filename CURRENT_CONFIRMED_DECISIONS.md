@@ -10,13 +10,15 @@
 >
 > 고객 능력·성공 예측: `BS-CUSTOMER-20260803-01 / USER_APPROVED`
 >
+> 고객 정보 최소 공개: `BS-CUSTOMER-20260803-02 / USER_APPROVED / R2_BATCH_003_1_OF_10 / APPROVED_PENDING_MERGE`
+>
 > R2 체크포인트 002: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / MERGED_PR101 / MAIN_CANON / READBACK_PASS`
 >
 > R2 체크포인트 002 main SHA: `a81cbe5de685e2900070d9a32db56556538e0a6f`
 >
 > 현재 단계: `R2_CORE_SESSION_META_LOOP / PLANNING_ACTIVE`
 >
-> 상태: `R1_USER_APPROVED / R2_CHECKPOINT_002_CANON / NEXT_GRILL_ME_COUNTER_0_OF_10 / PRODUCT_BLOCKED`
+> 상태: `R1_USER_APPROVED / R2_CHECKPOINT_002_CANON / NEXT_GRILL_ME_COUNTER_0_OF_10 / R2_BATCH_003_1_OF_10_APPROVED_PENDING_MERGE / PRODUCT_BLOCKED`
 
 ## 1. 권위 규칙
 
@@ -37,6 +39,7 @@
 - `BS-OPS-20260803-05`: R1 사용자 최종 승인, R2 기획 Gate 개방
 - `BS-OPS-20260803-06`: R2 체크포인트 001과 Base 어댑터 드리프트 봉합
 - `BS-OPS-20260803-07`: 승인 2/10이지만 기존 세계일정 범위 교정을 위한 조기 체크포인트
+- `BS-CUSTOMER-20260803-02`: 판매 전 공개 정보를 사건 위험도·고객 능력치·대략적 예상 성공률로 제한
 
 제품 구현은 R1~R8 전체 기획과 최종 사용자 검수 전까지 `BLOCKED`다.
 
@@ -56,7 +59,7 @@
 ```
 
 - 순간 동력: 강화 결과와 멈춤·추가 도전 판단
-- 중기 판단: 고객 능력·일정 난이도·작품 적합성을 비교한 판매
+- 중기 판단: 고객 능력·사건 위험도·작품 적합성을 비교한 판매
 - 장기 의미: 작품의 소유자·손상·복원·사건·계승·연대기가 날짜에 걸쳐 돌아오는 것
 
 ## 4. 핵심 시스템
@@ -70,7 +73,7 @@
 7. 방문 고객 대화·조언·판매·납품
 8. 고객 개인 일정의 날짜 종료 진행 판정
 9. 특정 날짜를 예고하는 대규모 세계 일정
-10. 고객 능력·특기·약점과 성공 가능성 예측
+10. 고객 능력·특기·약점, 사건 위험도와 대략적 예상 성공률
 11. 피로도·날짜 우선순위
 12. 버전형 경제·판정·기간 테스트 프리셋
 
@@ -94,7 +97,8 @@ R2 상세화는 다음 승인 규칙을 삭제하거나 약화하지 않는다.
 
 ```text
 방문 고객 등장
-→ 앞으로 할 일·목적·예상 위험·예정 시점 대략 파악
+→ 앞으로 할 일·목적·사건 위험도·예정 시점 대략 파악
+→ 고객 능력치와 대략적 예상 성공률 확인
 → 간단한 조언
 → 작품·도구·소모품 판매 또는 납품
 → 개인 일정 활성화 또는 세계 일정 준비 기여 등록
@@ -155,13 +159,32 @@ vs 일정 난이도
 
 정확한 보정치·상한·난이도는 `BASELINE_TEST_PRESET`이다.
 
-판매 전후에는 다음 성공 예측 구간과 이유를 보여준다.
+기존 검증 분류는 다음 5단계를 유지한다.
 
 ```text
 매우 낮음 / 낮음 / 보통 / 높음 / 매우 높음
 ```
 
-예측은 고객이 성공 가능성이 높은 사람인지 낮은 사람인지 판단할 수 있어야 하며, 작품·도구·조언을 변경하면 예상 구간과 변화 이유가 갱신된다. 숨은 변수가 있으므로 거짓 정밀도의 단일 확률보다 구간을 우선한다.
+### 9.1 BS-CUSTOMER-20260803-02 — 판매 전 최소 공개
+
+판매 전 주 UI에는 다음 세 정보만 표시한다.
+
+1. 사건 위험도: `낮음 / 보통 / 높음 / 매우 높음`
+2. 고객 핵심 능력치: `기량 / 체력 / 판단력`
+3. 대략적 예상 성공률: `약 10% 단위`, 표시 범위 `5~95%`
+
+```text
+사건 위험도: 높음
+고객 능력: 기량 4 / 체력 3 / 판단력 4
+예상 성공률: 약 60%
+
+장비 선택 후
+예상 성공률: 약 70% ↑
+```
+
+별도의 `미확인 위험 있음` 또는 숨은 변수 경고는 표시하지 않는다. 판매 전에는 세부 사건 전개, 내부 난이도 수치, 상세 보정 목록과 난수 구조도 공개하지 않는다. 작품·도구·조언을 바꾸면 갱신된 성공률과 상승·하락 방향만 짧게 보여준다.
+
+기존 `BS-CUSTOMER-20260803-01`의 고객 능력·장비 적합성·결과 인과 원칙은 유지한다. 판매 전 상세 이유 목록을 필수로 해석하는 부분은 `BS-CUSTOMER-20260803-02`가 세분화한다.
 
 ## 10. 이전 세계일정 결정 재분류
 
@@ -176,6 +199,7 @@ vs 일정 난이도
 통합 정본:
 
 - `docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R2_CUSTOMER_DISCLOSURE_MINIMUM_CANON_2026.md`
 - `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 - `docs/planning/CURRENT_R1_CANON_REGISTRY.json`
 - `[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md`
@@ -187,27 +211,29 @@ vs 일정 난이도
 - 고객 능력치를 과도하게 늘려 고객 육성 RPG가 되는 범위 팽창 금지
 - 매일 고객 재방문을 요구하는 진행 막힘 금지
 - 모든 일정을 동일한 3일·4일 리듬으로 평준화 금지
-- 숨은 변수와 정면으로 충돌하는 거짓 성공률 표시 금지
+- 대략적 확률을 확정 결과처럼 보이게 하는 0%·100% 표시 금지
+- 표시 성공률과 실제 결과 분포가 반복적으로 어긋나는 구조 금지
+- 별도의 숨은 위험 경고를 판매 UI에 다시 추가하지 않음
 - 개인 일정 로그가 강화보다 긴 필수 콘텐츠가 되는 구조 금지
 
 ## 12. 감사·검증 상태
 
 - 체크포인트 병합: PR `#101` / `a81cbe5de685e2900070d9a32db56556538e0a6f`
-- 신규 승인: `BS-WORLD-20260803-03`, `BS-CUSTOMER-20260803-01`
+- post-merge 폐쇄: PR `#102` / main `d8ef47a6702c3afac4eb1a10439df974a2d259df`
+- 신규 승인: `BS-CUSTOMER-20260803-02 / R2_BATCH_003_1_OF_10 / APPROVED_PENDING_MERGE`
 - 조기 체크포인트: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / CLOSED`
 - 적대적 감사: `P0_0 / P1_0`
-- 자동 검증: `BASE_V9_ADOPTION_PASS / PLANNING_FIRST_PASS / PR_VALIDATION_PASS`
-- PR validation 상세: `PYTHON_FULL_CONTRACTS_PASS / GODOT_4_7_1_HEADLESS_PASS`
-- PR 상태: `COMMENTS_0 / INLINE_THREADS_0 / EXACT_HEAD_SQUASH_MERGED`
-- GitHub·Google Sheet: `MAIN_CANON / READBACK_PASS`
+- 이전 자동 검증: `BASE_V9_ADOPTION_PASS / PLANNING_FIRST_PASS / PR_VALIDATION_PASS`
+- 이전 PR validation 상세: `PYTHON_FULL_CONTRACTS_PASS / GODOT_4_7_1_HEADLESS_PASS`
+- 이전 PR 상태: `COMMENTS_0 / INLINE_THREADS_0 / EXACT_HEAD_SQUASH_MERGED`
+- GitHub·Google Sheet 체크포인트 002: `MAIN_CANON / READBACK_PASS`
 - 제품 코드·Scene·runtime data·asset 변경: `0`
 - 최신 제품 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
 
 ## 13. 다음 Gate
 
-1. 판매 전 짧은 대화에서 일정 난이도·위험·미지 정보를 어디까지 공개할지 확정
-2. 능력치 1~5의 보정 변환과 5단계 성공 구간 경계는 GPT 권장 테스트 프리셋으로 설계
-3. 여러 개인 일정과 세계 일정의 동시 표시·알림 과밀 방지
-4. 새 승인 카운터는 `0/10`에서 시작
-5. 제품 구현은 계속 `BLOCKED`
+1. 여러 개인 일정과 세계 일정의 동시 표시·알림 과밀 방지
+2. 예상 성공률 반올림·상한·능력치 보정은 GPT 권장 테스트 프리셋으로 검증
+3. 새 승인 카운터는 `1/10`
+4. 제품 구현은 계속 `BLOCKED`
