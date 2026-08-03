@@ -1,15 +1,18 @@
 {
   "artifact_role": "CURRENT_R1_CANON_REGISTRY",
-  "schema_version": 4,
+  "schema_version": 5,
   "project": "Blacksmith",
-  "current_stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
-  "stage_status": "R1_CANON_ALIGNED_USER_FINAL_REVIEW_PENDING",
+  "current_stage": "R2_CORE_SESSION_META_LOOP",
+  "stage_status": "R1_USER_APPROVED_R2_PLANNING_ACTIVE",
   "product_implementation": "BLOCKED",
   "canon_baseline_merge_pr": 94,
   "canon_baseline_merge_sha": "8a0956d6c8b4cf3db545a17d0bd002ba8354d568",
   "post_merge_finalization_pr": 96,
-  "sheet_sync_decision": "BS-OPS-20260803-03",
-  "sheet_sync_status": "MAIN_CANON_READBACK_PASS",
+  "sheet_sync_closure_pr": 97,
+  "r1_final_approval_decision": "BS-OPS-20260803-05",
+  "world_schedule_decision": "BS-WORLD-20260803-01",
+  "sheet_sync_baseline_decision": "BS-OPS-20260803-04",
+  "sheet_sync_baseline_status": "MAIN_CANON_READBACK_PASS",
   "current_operating_decisions": [
     "BS-OPS-20260802-01",
     "BS-OPS-20260802-02",
@@ -19,7 +22,9 @@
     "BS-OPS-20260802-06",
     "BS-OPS-20260803-01",
     "BS-OPS-20260803-02",
-    "BS-OPS-20260803-03"
+    "BS-OPS-20260803-03",
+    "BS-OPS-20260803-04",
+    "BS-OPS-20260803-05"
   ],
   "current_core_resolution_decisions": [
     "BS-CORE-20260802-03",
@@ -27,27 +32,34 @@
     "BS-CORE-20260803-01",
     "BS-CORE-20260803-02",
     "BS-CORE-20260803-03",
-    "BS-CORE-20260803-04"
+    "BS-CORE-20260803-04",
+    "BS-WORLD-20260803-01"
   ],
-  "authority_policy": "Latest approved Decision and merged final canon override older drafts, historical PoC documents, stale Sheet wording, and legacy implemented values. Unvalidated exact numbers are versioned test presets, not product canon.",
+  "authority_policy": "Latest approved Decision and merged final canon override older drafts, historical PoC documents, stale Sheet wording, and legacy implemented values. Unvalidated exact numbers and durations are versioned test presets, not product canon.",
   "documents": [
     {
       "id": "current-confirmed-decisions",
       "path": "../../CURRENT_CONFIRMED_DECISIONS.md",
       "role": "root_current_decision_entrypoint",
-      "status": "CURRENT_MERGED_CANON"
+      "status": "CURRENT_CANON_PENDING_MERGE"
     },
     {
       "id": "blacksmith-game-bible",
       "path": "../../[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
       "role": "integrated_current_game_design_canon",
-      "status": "CURRENT_MERGED_CANON"
+      "status": "CURRENT_CANON_PENDING_MERGE"
     },
     {
       "id": "roadmap",
       "path": "../../[기획서]/00_프로젝트_허브/ROADMAP.md",
       "role": "current_stage_and_gate_plan",
-      "status": "CURRENT_MERGED_CANON"
+      "status": "CURRENT_CANON_PENDING_MERGE"
+    },
+    {
+      "id": "r1-final-approval-world-schedule",
+      "path": "BLACKSMITH_R1_FINAL_APPROVAL_AND_WORLD_SCHEDULE_PROGRESS_2026.md",
+      "role": "r1_user_final_approval_and_daily_world_schedule_progress_canon",
+      "status": "USER_APPROVED_PENDING_MERGE"
     },
     {
       "id": "grillme-approval-batch-001",
@@ -125,13 +137,13 @@
       "id": "active-context",
       "path": "../../[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
       "role": "current_work_context",
-      "status": "CURRENT_MERGED_CANON"
+      "status": "CURRENT_CANON_PENDING_MERGE"
     },
     {
       "id": "development-gates",
       "path": "../../[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
       "role": "planning_and_product_gate_status",
-      "status": "CURRENT_MERGED_CANON"
+      "status": "CURRENT_CANON_PENDING_MERGE"
     }
   ],
   "approved_batches": [
@@ -167,6 +179,12 @@
       "merge_pr": 96,
       "merge_sha": "e617e13c5fb325cdb80f63c89185eb26966a12c2",
       "decision_id": "BS-OPS-20260803-03"
+    },
+    {
+      "id": "BS-R1-SHEET-SYNC-CLOSURE-20260803",
+      "merge_pr": 97,
+      "merge_sha": "fb99b700e89d9816c098fcbd3970081189bec20f",
+      "decision_id": "BS-OPS-20260803-04"
     }
   ],
   "current_core_contract": {
@@ -175,41 +193,58 @@
     "final_cap": "DEFERRED",
     "general_affix_slots": 2,
     "active_lifecycle_modifier_slots": 1,
-    "vertical_slice": "ONE_WORK_PLUS50_LIFECYCLE_RETURN_LOOP",
+    "vertical_slice": "ONE_WORK_PLUS50_MULTI_DAY_LIFECYCLE_RETURN_LOOP",
     "numeric_authority": "VERSIONED_TEST_PRESETS",
-    "fun_validation": "BEHAVIOR_EVIDENCE_PLUS_RECALL_INTERVIEW"
+    "fun_validation": "BEHAVIOR_EVIDENCE_PLUS_RECALL_INTERVIEW",
+    "world_schedule_progression": "ONE_EXPLICIT_STEP_PER_GAME_DAY_MAXIMUM",
+    "world_schedule_minimum_intermediate_states": 1,
+    "world_schedule_same_day_resolution": false,
+    "world_schedule_scale_duration_relation": "MONOTONIC_INCREASE"
+  },
+  "world_schedule_contract": {
+    "required_states": ["SCHEDULED_OR_PREPARATION", "AT_LEAST_ONE_INTERMEDIATE", "RESOLVED_ON_SEPARATE_DAY"],
+    "scale_order": ["LOCAL_PERSONAL", "REGIONAL_FACTION", "REALM_NATIONAL", "WAR_CATASTROPHE"],
+    "exact_durations": "BASELINE_TEST_PRESET",
+    "date_pass_only_modifier_growth": "PROHIBITED",
+    "empty_wait_updates": "PROHIBITED"
   },
   "content_holds": {
     "hall_of_fame": "FUTURE_CONTENT_HOLD_NONCOMPETITIVE_ARCHIVE",
-    "large_world_content": "DEFERRED",
+    "large_world_content": "DEFERRED_CONTENT_BUT_SCALE_DURATION_RULE_APPROVED",
     "post_plus50_growth": "DEFERRED"
   },
   "pull_request_status": [
     {"number": 94, "status": "MERGED_CANON_BASELINE"},
     {"number": 96, "status": "MERGED_POST_MERGE_FINALIZATION"},
+    {"number": 97, "status": "MERGED_SHEET_SYNC_GATE_CLOSURE"},
     {"number": 95, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
     {"number": 86, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
     {"number": 61, "status": "HISTORY_ONLY_CLOSED_WITHOUT_MERGE"},
     {"number": 81, "status": "REFERENCE_ASSET_OPEN_DRAFT_DO_NOT_MERGE_AS_UNIT"}
   ],
   "next_activity": {
-    "id": "R1_USER_FINAL_REVIEW",
-    "status": "PENDING_USER_APPROVAL",
+    "id": "R2_CORE_SESSION_META_LOOP_PLANNING",
+    "status": "ACTIVE",
     "steps": [
-      "perform user final review of R1 canon",
-      "begin R2 Core Session Meta Loop planning only after approval"
+      "define first vertical-slice world schedule scale and stages",
+      "define daily update information and player intervention points",
+      "define simultaneous schedule and day-skip protection",
+      "continue R2 planning without product implementation"
     ]
   },
   "validation": {
     "batch_001_to_004_main_and_sheet_readback": "PASS",
     "core_resolution_decisions_sheet_readback": "PASS",
     "r1_canon_alignment_audit": "PASS_P0_0_P1_0",
+    "r1_user_final_review": "PASS_USER_APPROVED",
     "pr94_base_validation": "PASS",
     "pr94_pr_validation": "PASS",
     "pr96_base_validation": "PASS",
     "pr96_pr_validation": "PASS",
-    "sheet_main_canon_sync": "PASS_READBACK",
-    "authority_drift": "RESOLVED",
+    "pr97_base_validation": "PASS",
+    "pr97_pr_validation": "PASS",
+    "sheet_main_canon_sync_baseline": "PASS_READBACK",
+    "authority_drift": "RESOLVED_PENDING_CURRENT_PR_MERGE",
     "latest_product_runtime": "NOT_RUN",
     "android": "NOT_RUN",
     "accessibility": "NOT_RUN",
