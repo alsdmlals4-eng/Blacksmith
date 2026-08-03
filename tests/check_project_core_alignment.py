@@ -10,9 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 VALIDATED_STATUS = "IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING"
 ACTIONS_STATUS = "ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED"
 
-# Active authority documents validate the current R1 canon. Historical PoC
-# evidence remains required in the dedicated MVP/implementation records rather
-# than being copied back into every current entrypoint.
+# Active authority documents validate the current merged R1 canon. Historical
+# PoC evidence remains required in dedicated implementation records.
 REQUIRED_TEXT = {
     "README.md": (
         "장비의 출생·성장·소유·사건 기록",
@@ -22,18 +21,18 @@ REQUIRED_TEXT = {
         "docs/CI_EXECUTION_POLICY.md",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
-        "R1_STATUS: CORE_CONFLICTS_RESOLVED / CANON_ALIGNMENT_AND_PR_AUDIT",
+        "R1_STATUS: R1_CANON_ALIGNED / USER_FINAL_REVIEW_PENDING",
         "+10/+20/+30/+40/+50",
         "REFERENCE_IMPLEMENTATION / HISTORICAL_POC",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
-        "#94",
+        "CANON_BASELINE_PR: 94",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
-        "CANON_ALIGNMENT_AND_PR_AUDIT",
+        "USER_FINAL_REVIEW_PENDING",
         "+10/+20/+30/+40/+50",
         "REFERENCE_IMPLEMENTATION / HISTORICAL_POC",
         "행동 증거",
-        "CURRENT_AUTHORITY_REPAIR / DRAFT",
+        "MERGED_CANON_BASELINE",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "2026-07-23-project-core-design.md",
@@ -47,14 +46,14 @@ REQUIRED_TEXT = {
         "Core Vertical Slice Gate",
         "Core Fun Validation Gate",
         "REFERENCE_IMPLEMENTATION",
-        "PR #94",
+        "MERGED_CANON_BASELINE",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
-        "CORE_DECISIONS_APPROVED / CANON_ALIGNMENT_IN_PROGRESS",
+        "CANON_ALIGNED / USER_FINAL_REVIEW_PENDING",
         "첫 코어 버티컬 슬라이스",
         "행동 증거",
         "FUTURE_CONTENT_HOLD",
-        "PR #94 적대적 감사",
+        "PR #94 병합 SHA",
     ),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
         "작품의 출생·성장·소유·손상·복원·사건 기록",
@@ -134,21 +133,22 @@ FORBIDDEN_TEXT = {
         "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
         "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
         "#33 Draft, stacked",
+        "CURRENT_AUTHORITY_PR",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "SPEC_READY / IMPLEMENTATION_NOT_STARTED",
         "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
         "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
         "agent/propose-project-core-contract",
+        "CURRENT_AUTHORITY_REPAIR / DRAFT",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "구현 미시작",
-        "IMPLEMENTATION_NOT_STARTED",
         "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
         "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
+        "CURRENT_DRAFT_PR",
     ),
     "docs/MVP-003_SCOPE.md": (
-        "IMPLEMENTATION_NOT_STARTED",
         "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
         "제품 구현은 시작되지 않았다",
     ),
