@@ -10,7 +10,9 @@
 >
 > R2 첫 승인 Decision: `BS-WORLD-20260803-02 / USER_APPROVED / BASELINE_TEST_PRESET`
 >
-> R2 체크포인트: `BS-OPS-20260803-06 / EARLY_CHECKPOINT_1_OF_10`
+> R2 체크포인트: `BS-OPS-20260803-06 / EARLY_CHECKPOINT_1_OF_10 / MERGED_PR99`
+>
+> R2 체크포인트 main SHA: `534ac05596573ae4055fa97a4e6888f4e8966b05`
 >
 > 현재 단계: `R2_CORE_SESSION_META_LOOP / PLANNING_ACTIVE`
 >
@@ -148,11 +150,14 @@
 - PR #94: R1 canon baseline squash merged
 - PR #96·#97: post-merge authority·Sheet sync state squash merged
 - PR #98: R1 최종 승인·세계일정 구조 squash merged
+- PR #99: R2 체크포인트 001·Base 어댑터 복구 squash merged
 - R1 정본 감사: P0 `0`, P1 `0`
-- R2 체크포인트 001 감사: P0 `0`, P1 어댑터 권위 드리프트 `RESOLVED_IN_CANON_CHECKPOINT`
-- GitHub·Google Sheet 정본 정렬: `CHECKPOINT_SYNC_REQUIRED`
+- R2 체크포인트 001 감사: P0 `0`, P1 어댑터 권위 드리프트 `RESOLVED`
+- GitHub·Google Sheet 정본 정렬: `COMPLETE / MERGED_PR99 / MAIN_CANON / READBACK_PASS`
 - 사용자 R1 최종 검수: `APPROVED / BS-OPS-20260803-05`
 - R2 첫 기간 프리셋: `APPROVED / BS-WORLD-20260803-02`
+- PR #99 자동 검증: `5 WORKFLOWS PASS`
+- PR #99 리뷰 상태: `COMMENTS_0 / THREADS_0 / P0_0 / P1_0`
 - 최신 제품 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
 
