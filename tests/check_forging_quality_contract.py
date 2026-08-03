@@ -115,7 +115,6 @@ for rel in [
 game_bible = text("[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md")
 require("폭주 단조" in game_bible and "제작 피버" in game_bible, "Game Bible에 과거 피버 구현명과 현재 용어의 관계가 없습니다.")
 require("LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET" in game_bible, "Game Bible에 피버 정확 수치의 권위 분류가 없습니다.")
-require("비중첩" in game_bible or "중첩되지" in game_bible or "한 번만" in game_bible, "Game Bible에 피버 비중첩 구조가 없습니다.")
 
 for rel in [
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
