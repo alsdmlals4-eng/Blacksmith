@@ -1,22 +1,21 @@
 {
   "artifact_role": "CURRENT_R1_CANON_REGISTRY",
-  "schema_version": 3,
+  "schema_version": 4,
   "project": "Blacksmith",
   "current_stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
-  "stage_status": "CORE_CONFLICTS_RESOLVED_CANON_ALIGNMENT_AND_PR_AUDIT",
+  "stage_status": "R1_CANON_ALIGNED_USER_FINAL_REVIEW_PENDING",
   "product_implementation": "BLOCKED",
-  "current_main_sha": "b3a852cbb35de73a4b2da32151f845ddd61e1921",
-  "last_merged_pr": 93,
-  "current_authority_pr": 94,
-  "current_authority_branch": "agent/core-review-authority-repair",
-  "current_authority_head": "ccc22b1103a21ef360da1eda7df0dc6733fde0f8",
+  "canon_baseline_merge_pr": 94,
+  "canon_baseline_merge_sha": "8a0956d6c8b4cf3db545a17d0bd002ba8354d568",
   "current_operating_decisions": [
     "BS-OPS-20260802-01",
     "BS-OPS-20260802-02",
     "BS-OPS-20260802-03",
     "BS-OPS-20260802-04",
     "BS-OPS-20260802-05",
-    "BS-OPS-20260802-06"
+    "BS-OPS-20260802-06",
+    "BS-OPS-20260803-01",
+    "BS-OPS-20260803-02"
   ],
   "current_core_resolution_decisions": [
     "BS-CORE-20260802-03",
@@ -26,25 +25,25 @@
     "BS-CORE-20260803-03",
     "BS-CORE-20260803-04"
   ],
-  "authority_policy": "Latest approved Decision and final batch canon override older drafts, historical PoC documents, stale Sheet wording, and legacy implemented values. Unvalidated exact numbers are versioned test presets, not product canon.",
+  "authority_policy": "Latest approved Decision and merged final canon override older drafts, historical PoC documents, stale Sheet wording, and legacy implemented values. Unvalidated exact numbers are versioned test presets, not product canon.",
   "documents": [
     {
       "id": "current-confirmed-decisions",
       "path": "../../CURRENT_CONFIRMED_DECISIONS.md",
       "role": "root_current_decision_entrypoint",
-      "status": "CURRENT_DRAFT_PR94"
+      "status": "CURRENT_MERGED_CANON"
     },
     {
       "id": "blacksmith-game-bible",
       "path": "../../[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
       "role": "integrated_current_game_design_canon",
-      "status": "CURRENT_DRAFT_PR94"
+      "status": "CURRENT_MERGED_CANON"
     },
     {
       "id": "roadmap",
       "path": "../../[기획서]/00_프로젝트_허브/ROADMAP.md",
       "role": "current_stage_and_gate_plan",
-      "status": "CURRENT_DRAFT_PR94"
+      "status": "CURRENT_MERGED_CANON"
     },
     {
       "id": "grillme-approval-batch-001",
@@ -74,43 +73,43 @@
       "id": "core-resolution-01",
       "path": "BLACKSMITH_CORE_CANON_RESOLUTION_01_2026.md",
       "role": "plus50_validation_cap_and_deferred_final_cap",
-      "status": "USER_APPROVED_DRAFT_PR94"
+      "status": "USER_APPROVED_MERGED_PR94"
     },
     {
       "id": "core-resolution-02",
       "path": "BLACKSMITH_CORE_CANON_RESOLUTION_02_2026.md",
       "role": "two_general_affix_slots_world_schedule_lifecycle_layer_and_benchmark_policy",
-      "status": "USER_APPROVED_DRAFT_PR94"
+      "status": "USER_APPROVED_MERGED_PR94"
     },
     {
       "id": "core-resolution-03",
       "path": "BLACKSMITH_CORE_CANON_RESOLUTION_03_2026.md",
       "role": "one_active_lifecycle_modifier_with_evolution_history",
-      "status": "USER_APPROVED_DRAFT_PR94"
+      "status": "USER_APPROVED_MERGED_PR94"
     },
     {
       "id": "core-resolution-04",
       "path": "BLACKSMITH_CORE_CANON_RESOLUTION_04_2026.md",
       "role": "one_work_plus50_lifecycle_vertical_slice",
-      "status": "USER_APPROVED_DRAFT_PR94"
+      "status": "USER_APPROVED_MERGED_PR94"
     },
     {
       "id": "core-resolution-05",
       "path": "BLACKSMITH_CORE_CANON_RESOLUTION_05_2026.md",
       "role": "structure_canon_and_versioned_numeric_test_presets",
-      "status": "USER_APPROVED_DRAFT_PR94"
+      "status": "USER_APPROVED_MERGED_PR94"
     },
     {
       "id": "core-resolution-06",
       "path": "BLACKSMITH_CORE_CANON_RESOLUTION_06_2026.md",
       "role": "behavior_evidence_plus_recall_interview_validation_gate",
-      "status": "USER_APPROVED_DRAFT_PR94"
+      "status": "USER_APPROVED_MERGED_PR94"
     },
     {
-      "id": "core-system-fun-pr-adversarial-review",
-      "path": "BLACKSMITH_CORE_SYSTEM_FUN_AND_PR_ADVERSARIAL_REVIEW_2026-08-02.md",
-      "role": "source_backed_core_system_and_pr_audit",
-      "status": "CURRENT_AUDIT_FINDINGS_RESOLVED_OR_ALIGNMENT_IN_PROGRESS"
+      "id": "r1-canon-alignment-audit",
+      "path": "BLACKSMITH_R1_CANON_ALIGNMENT_AND_PR94_AUDIT_2026.md",
+      "role": "r1_canon_alignment_and_adversarial_audit",
+      "status": "MERGED_PR94_P0_0_P1_0"
     },
     {
       "id": "mvp-003-scope",
@@ -122,13 +121,13 @@
       "id": "active-context",
       "path": "../../[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
       "role": "current_work_context",
-      "status": "CURRENT_DRAFT_PR94"
+      "status": "CURRENT_MERGED_CANON"
     },
     {
       "id": "development-gates",
       "path": "../../[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
       "role": "planning_and_product_gate_status",
-      "status": "CURRENT_DRAFT_PR94"
+      "status": "CURRENT_MERGED_CANON"
     }
   ],
   "approved_batches": [
@@ -152,6 +151,12 @@
       "merge_pr": 93,
       "merge_sha": "b3a852cbb35de73a4b2da32151f845ddd61e1921",
       "closure": "USER_DIRECTED_EARLY_CLOSE_2_OF_2"
+    },
+    {
+      "id": "BS-R1-CANON-ALIGNMENT-20260803",
+      "merge_pr": 94,
+      "merge_sha": "8a0956d6c8b4cf3db545a17d0bd002ba8354d568",
+      "audit_id": "BS-OPS-20260803-02"
     }
   ],
   "current_core_contract": {
@@ -169,42 +174,44 @@
     "large_world_content": "DEFERRED",
     "post_plus50_growth": "DEFERRED"
   },
-  "open_pull_requests": [
+  "pull_request_status": [
     {
       "number": 94,
-      "status": "CURRENT_AUTHORITY_REPAIR_DRAFT"
-    },
-    {
-      "number": 86,
-      "status": "SUPERSEDED_CLOSE_WITHOUT_MERGE"
-    },
-    {
-      "number": 61,
-      "status": "HISTORY_ONLY_CLOSE_WITHOUT_MERGE"
-    },
-    {
-      "number": 81,
-      "status": "REFERENCE_ASSET_DO_NOT_MERGE_AS_UNIT"
+      "status": "MERGED_CANON_BASELINE"
     },
     {
       "number": 95,
       "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"
+    },
+    {
+      "number": 86,
+      "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"
+    },
+    {
+      "number": 61,
+      "status": "HISTORY_ONLY_CLOSED_WITHOUT_MERGE"
+    },
+    {
+      "number": 81,
+      "status": "REFERENCE_ASSET_OPEN_DRAFT_DO_NOT_MERGE_AS_UNIT"
     }
   ],
   "next_activity": {
-    "id": "R1_CANON_ALIGNMENT_AND_PR94_AUDIT",
-    "status": "IN_PROGRESS",
+    "id": "R1_USER_FINAL_REVIEW",
+    "status": "PENDING_USER_APPROVAL",
     "steps": [
-      "align Game Bible Roadmap MVP Scope Hub and Sheet",
-      "audit changed files reviews threads comments CI forbidden paths and authority drift",
-      "squash merge with expected head if P0 and P1 are zero",
-      "sync main SHA to Sheet and request final user review"
+      "sync PR94 merge SHA to Google Sheet",
+      "perform user final review of R1 canon",
+      "begin R2 Core Session Meta Loop planning only after approval"
     ]
   },
   "validation": {
     "batch_001_to_004_main_and_sheet_readback": "PASS",
     "core_resolution_decisions_sheet_readback": "PASS",
-    "authority_drift": "ALIGNMENT_IN_PROGRESS",
+    "r1_canon_alignment_audit": "PASS_P0_0_P1_0",
+    "pr94_base_validation": "PASS",
+    "pr94_pr_validation": "PASS",
+    "authority_drift": "RESOLVED",
     "latest_product_runtime": "NOT_RUN",
     "android": "NOT_RUN",
     "accessibility": "NOT_RUN",
