@@ -94,6 +94,51 @@
       }
     },
     {
+      "id": "BS-SCHEDULE-20260804-01",
+      "title": "다중 일정 표시와 알림 우선순위",
+      "status": "USER_APPROVED_PENDING_MERGE",
+      "canon": "docs/planning/BLACKSMITH_R2_MULTI_SCHEDULE_DISPLAY_AND_ALERT_CANON_2026.md",
+      "contract": {
+        "pinned_world_schedule": "NEAREST_MAJOR_WORLD_SCHEDULE_ONE",
+        "important_news_visible_max": 3,
+        "important_news_numeric_authority": "BASELINE_TEST_PRESET",
+        "routine_personal_progress": "GROUPED_END_OF_DAY_SUMMARY",
+        "full_history_access": "SCHEDULE_LEDGER",
+        "tracked_personal_schedule_max": 1,
+        "tracked_schedule_overrides_critical_priority": false,
+        "immediate_alert_triggers": [
+          "PLAYER_DECISION_REQUIRED_TODAY",
+          "WORLD_EVENT_OR_PREPARATION_CHECKPOINT_TODAY",
+          "SCHEDULE_COMPLETED",
+          "MAJOR_CUSTOMER_STATE_CHANGE",
+          "MAJOR_ITEM_DAMAGE_OR_LOSS",
+          "FOLLOW_UP_REQUEST_OR_REVISIT"
+        ],
+        "routine_progress_individual_popup": false,
+        "overflow_destination": "SCHEDULE_LEDGER"
+      }
+    },
+    {
+      "id": "BS-OPS-20260804-01",
+      "title": "GPT 논의 역할 경계",
+      "status": "USER_DIRECTIVE_OPERATING_BOUNDARY_NON_BATCH",
+      "contract": {
+        "gpt_primary_scope": [
+          "CORE_FUN",
+          "CONTENT_PLANNING",
+          "IMAGE_AND_ART_DIRECTION",
+          "ADVERSARIAL_DESIGN_REVIEW"
+        ],
+        "default_excluded_scope": [
+          "PRODUCT_IMPLEMENTATION",
+          "CODE_OWNERSHIP",
+          "LOW_LEVEL_TECHNICAL_EXECUTION"
+        ],
+        "technical_constraints_allowed": "ONLY_WHEN_REQUIRED_TO_PROTECT_DESIGN_OR_ART_FEASIBILITY",
+        "implementation_handoff": "CODEX_OR_IMPLEMENTATION_PHASE"
+      }
+    },
+    {
       "id": "BS-OPS-20260803-07",
       "title": "R2 승인 2/10 정본 교정 조기 체크포인트",
       "status": "EARLY_CHECKPOINT_MERGED_MAIN_CANON",
@@ -144,7 +189,11 @@
     "DISPLAYED_ESTIMATE_MUST_BE_CALIBRATED_TO_OUTCOMES",
     "NO_SEPARATE_UNKNOWN_VARIABLE_WARNING_IN_PRE_SALE_UI",
     "CUSTOMER_PROFILE_MUST_NOT_EXPAND_INTO_MANDATORY_TRAINING_RPG",
-    "PERSONAL_AND_WORLD_SCHEDULES_MUST_KEEP_DISTINCT_TRIGGERS"
+    "PERSONAL_AND_WORLD_SCHEDULES_MUST_KEEP_DISTINCT_TRIGGERS",
+    "ROUTINE_SCHEDULE_PROGRESS_MUST_NOT_INTERRUPT_FORGING_FLOW",
+    "CRITICAL_ALERTS_MUST_NOT_BE_HIDDEN_BY_TRACKING_PREFERENCE",
+    "SCHEDULE_LEDGER_MUST_PRESERVE_FULL_READBACK",
+    "GPT_SCOPE_MUST_REMAIN_DESIGN_CONTENT_AND_ART_FOCUSED"
   ],
   "checkpoint": {
     "approved_decisions_in_checkpoint": 2,
@@ -168,17 +217,21 @@
   },
   "active_batch": {
     "id": "R2_BATCH_003",
-    "approved_decisions": 1,
+    "approved_decisions": 2,
     "max_batch_size": 10,
-    "counter": "1/10",
+    "counter": "2/10",
     "state": "APPROVED_PENDING_MERGE",
     "decisions": [
-      "BS-CUSTOMER-20260803-02"
+      "BS-CUSTOMER-20260803-02",
+      "BS-SCHEDULE-20260804-01"
+    ],
+    "non_batch_operating_directives": [
+      "BS-OPS-20260804-01"
     ],
     "base_main": "d8ef47a6702c3afac4eb1a10439df974a2d259df",
     "draft_pr": 103,
     "current_validation": "PENDING_FOR_CURRENT_HEAD",
     "product_paths_changed": false
   },
-  "next_activity": "DEFINE_MULTI_SCHEDULE_DISPLAY_AND_ALERT_PRIORITY"
+  "next_activity": "DEFINE_PERSONAL_AND_WORLD_SCHEDULE_CONTENT_FAMILIES"
 }
