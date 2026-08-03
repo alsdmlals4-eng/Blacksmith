@@ -6,6 +6,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
+REGISTRY = ROOT / "docs/planning/CURRENT_R1_CANON_REGISTRY.json"
+CHECKPOINT = ROOT / "docs/planning/BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md"
+ROOT_DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 
 
 def load() -> dict:
@@ -69,6 +72,34 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
             adapter["protected_paths"],
         )
+
+    def test_r2_checkpoint_decisions_are_canonically_linked(self) -> None:
+        registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
+        self.assertEqual("BS-WORLD-20260803-02", registry["r2_world_schedule_baseline_decision"])
+        self.assertEqual("BS-OPS-20260803-06", registry["r2_checkpoint_decision"])
+        preset = registry["world_schedule_contract"]["first_slice_preset"]
+        self.assertEqual("FINAL_RESULT", preset["day_3"])
+        self.assertEqual("SAME_UID_REVISIT_AND_NEXT_ACTION", preset["day_4"])
+        self.assertEqual("USER_APPROVED_BASELINE_TEST_PRESET", preset["authority"])
+
+        checkpoint = CHECKPOINT.read_text(encoding="utf-8")
+        root = ROOT_DECISIONS.read_text(encoding="utf-8")
+        for token in (
+            "BS-WORLD-20260803-02",
+            "BS-OPS-20260803-06",
+            "BASELINE_TEST_PRESET",
+            "EARLY_CHECKPOINT_1_OF_10",
+            "제품 구현: `BLOCKED`",
+        ):
+            self.assertIn(token, checkpoint)
+        for token in (
+            "BS-WORLD-20260803-02",
+            "BS-OPS-20260803-06",
+            "3일차: 최종 세계 결과",
+            "4일차: 같은 UID 재방문",
+            "NEXT_GRILL_ME_COUNTER_0_OF_10",
+        ):
+            self.assertIn(token, root)
 
 
 if __name__ == "__main__":
