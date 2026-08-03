@@ -39,14 +39,36 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual("GRILL_ME_REQUIRED", policy["planning_conflict_state"])
         self.assertEqual("APPROVED_PENDING_MERGE", policy["pre_merge_sheet_state"])
         self.assertEqual("SYNCED_TO_MAIN", policy["post_merge_sheet_state"])
-        self.assertEqual("NOT_RUN", policy["actual_project_batch_execution"])
+        self.assertEqual("EXECUTED_R2_CHECKPOINT_001", policy["actual_project_batch_execution"])
+        self.assertEqual("BS-OPS-20260803-06", policy["current_checkpoint"])
+        self.assertEqual("BS-WORLD-20260803-02", policy["current_approved_decision"])
+        self.assertEqual("AUTHORITY_DRIFT_EARLY_CHECKPOINT", policy["checkpoint_reason"])
+        self.assertEqual("0/10", policy["next_counter"])
 
-    def test_blacksmith_boundaries_remain_truthful(self) -> None:
+    def test_blacksmith_current_state_and_boundaries_remain_truthful(self) -> None:
         adapter = load()
+        state = adapter["project_operating_state"]
+        self.assertEqual("R2_CORE_SESSION_META_LOOP", state["stage"])
+        self.assertEqual("R2_CHECKPOINT_001_CANON_NEXT_GRILL_ME_COUNTER_0_OF_10", state["stage_status"])
+        self.assertEqual(98, state["last_merged_pr"])
+        self.assertEqual("8df4a10241bfa0c07211402d7c8c0e3e1f1e1249", state["r1_final_approval_merge_commit"])
+        self.assertEqual("R1_COMPLETE_R2_ACTIVE", state["planning_coverage"])
         self.assertEqual("BLOCKED_UNVERIFIED", adapter["compatibility"]["view_freshness"])
         self.assertEqual("DO_NOT_HAND_EDIT_GENERATED_COMPATIBILITY_VIEWS", adapter["compatibility"]["manual_edit_policy"])
-        self.assertEqual("BLOCKED", adapter["project_operating_state"]["product_implementation"])
-        self.assertEqual("NOT_RUN", adapter["project_operating_state"]["human_playtest"])
+        self.assertEqual("BLOCKED", state["product_implementation"])
+        self.assertEqual("NOT_RUN", state["human_playtest"])
+
+    def test_sheet_and_protected_baseline_are_current(self) -> None:
+        adapter = load()
+        sheet = adapter["gdd_sheet"]
+        self.assertIn("BS-WORLD-20260803-02", sheet["sync_decision_ids"])
+        self.assertIn("BS-OPS-20260803-06", sheet["sync_decision_ids"])
+        self.assertEqual("SYNCED_TO_MAIN_AFTER_CHECKPOINT_MERGE", sheet["sync_status"])
+        self.assertEqual("8df4a10241bfa0c07211402d7c8c0e3e1f1e1249", adapter["protected_baseline"]["commit"])
+        self.assertEqual(
+            ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
+            adapter["protected_paths"],
+        )
 
 
 if __name__ == "__main__":
