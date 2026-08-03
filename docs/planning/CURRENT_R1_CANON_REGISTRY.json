@@ -7,6 +7,9 @@
   "product_implementation": "BLOCKED",
   "canon_baseline_merge_pr": 94,
   "canon_baseline_merge_sha": "8a0956d6c8b4cf3db545a17d0bd002ba8354d568",
+  "post_merge_finalization_pr": 96,
+  "sheet_sync_decision": "BS-OPS-20260803-03",
+  "sheet_sync_status": "MAIN_CANON_READBACK_PASS",
   "current_operating_decisions": [
     "BS-OPS-20260802-01",
     "BS-OPS-20260802-02",
@@ -15,7 +18,8 @@
     "BS-OPS-20260802-05",
     "BS-OPS-20260802-06",
     "BS-OPS-20260803-01",
-    "BS-OPS-20260803-02"
+    "BS-OPS-20260803-02",
+    "BS-OPS-20260803-03"
   ],
   "current_core_resolution_decisions": [
     "BS-CORE-20260802-03",
@@ -157,6 +161,12 @@
       "merge_pr": 94,
       "merge_sha": "8a0956d6c8b4cf3db545a17d0bd002ba8354d568",
       "audit_id": "BS-OPS-20260803-02"
+    },
+    {
+      "id": "BS-R1-POST-MERGE-FINALIZATION-20260803",
+      "merge_pr": 96,
+      "merge_sha": "e617e13c5fb325cdb80f63c89185eb26966a12c2",
+      "decision_id": "BS-OPS-20260803-03"
     }
   ],
   "current_core_contract": {
@@ -175,32 +185,17 @@
     "post_plus50_growth": "DEFERRED"
   },
   "pull_request_status": [
-    {
-      "number": 94,
-      "status": "MERGED_CANON_BASELINE"
-    },
-    {
-      "number": 95,
-      "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"
-    },
-    {
-      "number": 86,
-      "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"
-    },
-    {
-      "number": 61,
-      "status": "HISTORY_ONLY_CLOSED_WITHOUT_MERGE"
-    },
-    {
-      "number": 81,
-      "status": "REFERENCE_ASSET_OPEN_DRAFT_DO_NOT_MERGE_AS_UNIT"
-    }
+    {"number": 94, "status": "MERGED_CANON_BASELINE"},
+    {"number": 96, "status": "MERGED_POST_MERGE_FINALIZATION"},
+    {"number": 95, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
+    {"number": 86, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
+    {"number": 61, "status": "HISTORY_ONLY_CLOSED_WITHOUT_MERGE"},
+    {"number": 81, "status": "REFERENCE_ASSET_OPEN_DRAFT_DO_NOT_MERGE_AS_UNIT"}
   ],
   "next_activity": {
     "id": "R1_USER_FINAL_REVIEW",
     "status": "PENDING_USER_APPROVAL",
     "steps": [
-      "sync PR94 merge SHA to Google Sheet",
       "perform user final review of R1 canon",
       "begin R2 Core Session Meta Loop planning only after approval"
     ]
@@ -211,6 +206,9 @@
     "r1_canon_alignment_audit": "PASS_P0_0_P1_0",
     "pr94_base_validation": "PASS",
     "pr94_pr_validation": "PASS",
+    "pr96_base_validation": "PASS",
+    "pr96_pr_validation": "PASS",
+    "sheet_main_canon_sync": "PASS_READBACK",
     "authority_drift": "RESOLVED",
     "latest_product_runtime": "NOT_RUN",
     "android": "NOT_RUN",
