@@ -1,10 +1,12 @@
 # Active Context
 
-- 갱신: `2026-08-03 09:25 KST`
+- 갱신: `2026-08-03 09:35 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R1_PROJECT_CORE_AND_PLAYER_PROMISE / USER_FINAL_REVIEW_PENDING`
 - R1 정본 기준 병합: PR `#94`
 - R1 정본 기준 SHA: `8a0956d6c8b4cf3db545a17d0bd002ba8354d568`
+- post-merge 상태 최종화: PR `#96`
+- Sheet 동기화: `BS-OPS-20260803-03 / MAIN_CANON / READBACK_PASS`
 - R1 감사: `BS-OPS-20260803-02 / P0=0 / P1=0`
 - 명예의 전당: `FUTURE_CONTENT_HOLD / NONCOMPETITIVE_ARCHIVE`
 - 제품 구현: `BLOCKED`
@@ -101,18 +103,19 @@
 - `[기획서]/00_프로젝트_허브/ROADMAP.md`
 - Core Resolution `01~06`
 - PR #94: `MERGED_CANON_BASELINE`
+- PR #96: `MERGED_POST_MERGE_FINALIZATION`
 - PR #81: `REFERENCE_ASSET / OPEN_DRAFT / DO_NOT_MERGE_AS_UNIT`
 - PR #95·#86·#61: 종료 또는 역사 전용
 
 ## 실제 검증 상태
 
-- PR #94 Base CI: `PASS`
-- PR #94 PR validation: `PASS`
+- PR #94·#96 Base CI: `PASS`
+- PR #94·#96 PR validation: `PASS`
+- GitHub·Google Sheet 정본 동기화: `COMPLETE / READBACK_PASS`
 - 최신 R1 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 
 ## 다음 작업
 
-1. Google Sheet를 PR #94 병합 SHA로 최종화
-2. 사용자 R1 정본 최종 검수
-3. 승인 후 R2 기획
-4. 제품 구현은 계속 `BLOCKED`
+1. 사용자 R1 정본 최종 검수
+2. 승인 후 R2 기획
+3. 제품 구현은 계속 `BLOCKED`
