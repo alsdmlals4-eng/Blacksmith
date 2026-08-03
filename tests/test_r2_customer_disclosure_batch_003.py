@@ -180,7 +180,7 @@ class R2Batch003Tests(unittest.TestCase):
             "CATALYST_AFFIX",
             "CHRONICLE_AFFIX",
             "등급 수식어 자체가",
-            "연대기가 촉매 수식어를 진화시키던",
+            "연대기가 촉매 수식어를 직접 성장·진화시키는 구조 금지",
             "승인 카운터: `10/10`",
         ):
             self.assertIn(token, three_affix)
