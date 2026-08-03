@@ -119,6 +119,39 @@
       }
     },
     {
+      "id": "BS-CONTENT-20260804-01",
+      "title": "활동·동기·작품 결과·후속 환류의 콘텐츠 조합 원칙",
+      "status": "USER_APPROVED_PENDING_MERGE",
+      "canon": "docs/planning/BLACKSMITH_R2_CONTENT_COMPOSITION_AND_ITEM_LEGACY_CANON_2026.md",
+      "contract": {
+        "personal_content_axes": [
+          "ACTIVITY_TYPE",
+          "CUSTOMER_MOTIVATION",
+          "EVENT_RISK_AND_REQUIREMENTS",
+          "ITEM_USE_OUTCOME",
+          "FOLLOW_UP_CRAFTING_RETURN"
+        ],
+        "personal_content_flow": "SITUATION_TO_EQUIPMENT_CHOICE_TO_RESULT_TO_ITEM_LEGACY_TO_NEXT_CRAFTING_DECISION",
+        "world_content_axes": [
+          "WORLD_EVENT",
+          "PARTICIPANT_AND_FACTION_MOTIVES",
+          "REQUIRED_ITEM_FAMILIES",
+          "PREPARATION_CONTRIBUTIONS",
+          "WORLD_AFTERMATH",
+          "CUSTOMER_AND_ITEM_FOLLOW_UP"
+        ],
+        "mandatory_result_outputs": [
+          "CUSTOMER_RESULT",
+          "ITEM_UID_STATE_OR_LEGACY",
+          "NEXT_CRAFTING_OR_REPAIR_DECISION"
+        ],
+        "activity_name_and_reward_only_is_distinct_content": false,
+        "mandatory_long_form_quest": false,
+        "world_result_requires_customer_and_item_follow_up": true,
+        "exact_content_counts": "DEFERRED_TO_FOLLOW_UP_GATE"
+      }
+    },
+    {
       "id": "BS-OPS-20260804-01",
       "title": "GPT 논의 역할 경계",
       "status": "USER_DIRECTIVE_OPERATING_BOUNDARY_NON_BATCH",
@@ -193,6 +226,12 @@
     "ROUTINE_SCHEDULE_PROGRESS_MUST_NOT_INTERRUPT_FORGING_FLOW",
     "CRITICAL_ALERTS_MUST_NOT_BE_HIDDEN_BY_TRACKING_PREFERENCE",
     "SCHEDULE_LEDGER_MUST_PRESERVE_FULL_READBACK",
+    "CONTENT_MUST_COMBINE_ACTIVITY_MOTIVATION_ITEM_OUTCOME_AND_FOLLOW_UP",
+    "CONTENT_MUST_RETURN_TO_NEXT_CRAFTING_DECISION",
+    "ACTIVITY_NAME_AND_REWARD_ONLY_RESKINS_PROHIBITED",
+    "CUSTOMER_MOTIVATION_MUST_AFFECT_STAKES_OR_RESULT",
+    "MANDATORY_LONG_QUEST_CHAIN_PROHIBITED",
+    "WORLD_RESULT_MUST_PRESERVE_CUSTOMER_AND_ITEM_FOLLOW_UP",
     "GPT_SCOPE_MUST_REMAIN_DESIGN_CONTENT_AND_ART_FOCUSED"
   ],
   "checkpoint": {
@@ -217,13 +256,14 @@
   },
   "active_batch": {
     "id": "R2_BATCH_003",
-    "approved_decisions": 2,
+    "approved_decisions": 3,
     "max_batch_size": 10,
-    "counter": "2/10",
+    "counter": "3/10",
     "state": "APPROVED_PENDING_MERGE",
     "decisions": [
       "BS-CUSTOMER-20260803-02",
-      "BS-SCHEDULE-20260804-01"
+      "BS-SCHEDULE-20260804-01",
+      "BS-CONTENT-20260804-01"
     ],
     "non_batch_operating_directives": [
       "BS-OPS-20260804-01"
@@ -233,5 +273,5 @@
     "current_validation": "PENDING_FOR_CURRENT_HEAD",
     "product_paths_changed": false
   },
-  "next_activity": "DEFINE_PERSONAL_AND_WORLD_SCHEDULE_CONTENT_FAMILIES"
+  "next_activity": "DEFINE_INITIAL_PERSONAL_AND_WORLD_EVENT_FAMILIES_AND_VISUAL_IDENTITIES"
 }
