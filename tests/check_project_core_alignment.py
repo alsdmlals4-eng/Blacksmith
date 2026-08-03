@@ -10,8 +10,9 @@ ROOT = Path(__file__).resolve().parents[1]
 VALIDATED_STATUS = "IMPLEMENTATION_VALIDATED / HUMAN_VALIDATION_PENDING"
 ACTIONS_STATUS = "ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED"
 
-# Active authority documents validate the current merged R1 canon. Historical
-# PoC evidence remains required in dedicated implementation records.
+# Active authority documents validate the current approved R1 canon and active
+# R2 planning state. Historical PoC evidence remains required in dedicated
+# implementation records.
 REQUIRED_TEXT = {
     "README.md": (
         "장비의 출생·성장·소유·사건 기록",
@@ -21,18 +22,18 @@ REQUIRED_TEXT = {
         "docs/CI_EXECUTION_POLICY.md",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
-        "R1_STATUS: R1_CANON_ALIGNED / USER_FINAL_REVIEW_PENDING",
+        "R1_STATUS: USER_APPROVED / CANON_COMPLETE",
         "+10/+20/+30/+40/+50",
         "REFERENCE_IMPLEMENTATION / HISTORICAL_POC",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
-        "CANON_BASELINE_PR: 94",
+        "WORLD_SCHEDULE: DAILY_STAGED_PROGRESS / SCALE_INCREASES_DURATION",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
-        "USER_FINAL_REVIEW_PENDING",
+        "R1 최종 승인",
         "+10/+20/+30/+40/+50",
         "REFERENCE_IMPLEMENTATION / HISTORICAL_POC",
         "행동 증거",
-        "MERGED_CANON_BASELINE",
+        "세계일정 진행 계약",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "2026-07-23-project-core-design.md",
@@ -46,14 +47,14 @@ REQUIRED_TEXT = {
         "Core Vertical Slice Gate",
         "Core Fun Validation Gate",
         "REFERENCE_IMPLEMENTATION",
-        "MERGED_CANON_BASELINE",
+        "USER_R1_FINAL_REVIEW_GATE: PASS",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
-        "CANON_ALIGNED / USER_FINAL_REVIEW_PENDING",
+        "USER_APPROVED / CANON_COMPLETE",
         "첫 코어 버티컬 슬라이스",
         "행동 증거",
         "FUTURE_CONTENT_HOLD",
-        "PR #94 병합 SHA",
+        "CANON_BASELINE_SHA",
     ),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
         "작품의 출생·성장·소유·손상·복원·사건 기록",
@@ -61,6 +62,7 @@ REQUIRED_TEXT = {
         "현재 검증 상한: `+50`",
         "활성 사건·연대기 수식어 1개",
         "회상 인터뷰",
+        "WORLD_SCHEDULE: DAILY_STAGED_PROGRESS / SCALE_INCREASES_DURATION",
     ),
     "[기획서]/00_프로젝트_허브/DECISION_LOG.md": (
         "DEC-023 프로젝트 코어 확정",
@@ -134,6 +136,7 @@ FORBIDDEN_TEXT = {
         "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
         "#33 Draft, stacked",
         "CURRENT_AUTHORITY_PR",
+        "R1_STATUS: R1_CANON_ALIGNED / USER_FINAL_REVIEW_PENDING",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "SPEC_READY / IMPLEMENTATION_NOT_STARTED",
@@ -141,12 +144,14 @@ FORBIDDEN_TEXT = {
         "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
         "agent/propose-project-core-contract",
         "CURRENT_AUTHORITY_REPAIR / DRAFT",
+        "USER_FINAL_REVIEW_PENDING",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "구현 미시작",
         "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
         "DEFERRED_UNTIL_ACTIONS_AVAILABLE",
         "CURRENT_DRAFT_PR",
+        "CANON_ALIGNED / USER_FINAL_REVIEW_PENDING",
     ),
     "docs/MVP-003_SCOPE.md": (
         "IMPLEMENTATION_CANDIDATE / VALIDATION_DEFERRED",
