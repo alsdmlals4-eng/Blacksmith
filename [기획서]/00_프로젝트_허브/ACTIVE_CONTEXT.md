@@ -1,14 +1,15 @@
 # Active Context
 
-- 갱신: `2026-08-03 22:44 KST`
+- 갱신: `2026-08-03 23:12 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R2_CORE_SESSION_META_LOOP / PLANNING_ACTIVE`
 - R1 최종 승인: `BS-OPS-20260803-05 / USER_APPROVED / CANON_COMPLETE`
 - 이전 R2 체크포인트: `BS-OPS-20260803-06 / MERGED_PR99_PR100`
 - 일정 구조 교정: `BS-WORLD-20260803-03 / USER_APPROVED`
 - 고객 능력·성공 예측: `BS-CUSTOMER-20260803-01 / USER_APPROVED`
-- 현재 체크포인트: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / APPROVED_PENDING_MERGE`
-- 기준 main: `53793be4f613e26279611d12f1ee738d2b989276`
+- 현재 체크포인트: `BS-OPS-20260803-07 / EARLY_CHECKPOINT_2_OF_10 / MERGED_PR101 / MAIN_CANON / READBACK_PASS`
+- 체크포인트 main: `a81cbe5de685e2900070d9a32db56556538e0a6f`
+- 다음 승인 카운터: `0/10`
 - 제품 구현: `BLOCKED`
 
 ## 프로젝트 코어
@@ -144,11 +145,11 @@ vs 일정 난이도
 ## 적대적 검토 상태
 
 - 프로젝트 코어·핵심 재미: `VALID`
-- 신규 일정 교정의 P0: `0`
-- 열린 P1: 기존 문서의 개인 일정·세계 일정 혼합 해석
-- 조치: `BS-WORLD-20260803-03`으로 유형·트리거 분리, 이전 3일 프리셋 범위 재분류
-- 고객 능력 위험: 좋은 고객이 작품을 압도할 수 있음
-- 조치: 고객·작품·도구·조언 기여를 분리하고 능력 보정 상한을 테스트
+- 체크포인트 002 P0: `0`
+- 체크포인트 002 P1: `0`
+- 해결: 개인 일정·세계 일정 혼합 해석을 `BS-WORLD-20260803-03`으로 교정
+- 해결: R1 상속 불변 규칙과 Active Context 검증 표식을 복원
+- 고객 능력 보호: 고객·작품·도구·조언 기여를 분리하고 능력 보정 상한을 테스트
 - 남은 설계 위험: 정보 과소 공개, 성공 예측 거짓 정밀도, 일정 알림 과밀, 고객 관리 RPG 범위 팽창
 
 ## 역사 구현·보조 기능 추적
@@ -175,6 +176,11 @@ vs 일정 난이도
 
 ## 검증 상태
 
+- PR #101: `EXACT_HEAD_SQUASH_MERGED / a81cbe5de685e2900070d9a32db56556538e0a6f`
+- 자동 검증: `BASE_V9_ADOPTION_PASS / PLANNING_FIRST_PASS / PR_VALIDATION_PASS`
+- PR validation: `PYTHON_FULL_CONTRACTS_PASS / GODOT_4_7_1_HEADLESS_PASS`
+- 리뷰: `COMMENTS_0 / INLINE_THREADS_0 / P0_0 / P1_0`
+- GitHub·Google Sheet: `MAIN_CANON / READBACK_PASS`
 - 제품 코드·Scene·runtime data·asset 변경: `0`
 - 최신 runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
@@ -184,4 +190,5 @@ vs 일정 난이도
 1. 판매 전 짧은 대화에서 일정 난이도·위험·미지 정보를 어디까지 공개할지 Grill Me
 2. 능력치 1~5 보정값과 성공 구간 경계는 GPT 권장 테스트 프리셋으로 설계
 3. 개인 일정·세계 일정 동시 표시와 알림 과밀 방지
-4. 제품 구현은 계속 `BLOCKED`
+4. 새 승인 카운터는 `0/10`
+5. 제품 구현은 계속 `BLOCKED`

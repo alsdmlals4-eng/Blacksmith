@@ -1,9 +1,9 @@
 {
   "artifact_role": "CURRENT_R2_CANON_REGISTRY",
-  "schema_version": 1,
+  "schema_version": 2,
   "project": "Blacksmith",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
-  "stage_status": "R2_CHECKPOINT_002_APPROVED_PENDING_MERGE",
+  "stage_status": "R2_CHECKPOINT_002_MERGED_MAIN_CANON_READBACK_PASS",
   "product_implementation": "BLOCKED",
   "authority_precedence": [
     "CURRENT_CONFIRMED_DECISIONS.md",
@@ -14,6 +14,8 @@
   ],
   "baseline": {
     "main_before_checkpoint": "53793be4f613e26279611d12f1ee738d2b989276",
+    "checkpoint_merge_pr": 101,
+    "checkpoint_merge_sha": "a81cbe5de685e2900070d9a32db56556538e0a6f",
     "r1_registry": "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
     "r2_checkpoint_001_decisions": [
       "BS-WORLD-20260803-02",
@@ -24,7 +26,7 @@
     {
       "id": "BS-WORLD-20260803-03",
       "title": "고객 개인 일정과 예고형 세계 일정의 분리",
-      "status": "USER_APPROVED",
+      "status": "USER_APPROVED_MERGED_PR101",
       "canon": "docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md",
       "contract": {
         "personal_schedule_activation": "CUSTOMER_VISIT_PLUS_SALE_OR_DELIVERY",
@@ -38,15 +40,25 @@
     {
       "id": "BS-CUSTOMER-20260803-01",
       "title": "고객의 간단한 능력치와 성공 가능성 예측",
-      "status": "USER_APPROVED",
+      "status": "USER_APPROVED_MERGED_PR101",
       "canon": "docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md",
       "contract": {
-        "core_stats": ["SKILL", "ENDURANCE", "JUDGMENT"],
+        "core_stats": [
+          "SKILL",
+          "ENDURANCE",
+          "JUDGMENT"
+        ],
         "display_scale": "1_TO_5",
         "schedule_stat_usage": "ONE_PRIMARY_PLUS_AT_MOST_ONE_SECONDARY",
         "traits_max": 2,
         "weaknesses_max": 1,
-        "success_forecast": ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"],
+        "success_forecast": [
+          "VERY_LOW",
+          "LOW",
+          "MEDIUM",
+          "HIGH",
+          "VERY_HIGH"
+        ],
         "forecast_reasons_required": true,
         "exact_modifiers": "BASELINE_TEST_PRESET"
       }
@@ -54,8 +66,10 @@
     {
       "id": "BS-OPS-20260803-07",
       "title": "R2 승인 2/10 정본 교정 조기 체크포인트",
-      "status": "EARLY_CHECKPOINT_APPROVED_PENDING_MERGE",
-      "reason": "PREVIOUS_WORLD_SCHEDULE_SCOPE_CORRECTION"
+      "status": "EARLY_CHECKPOINT_MERGED_MAIN_CANON",
+      "reason": "PREVIOUS_WORLD_SCHEDULE_SCOPE_CORRECTION",
+      "merge_pr": 101,
+      "merge_sha": "a81cbe5de685e2900070d9a32db56556538e0a6f"
     }
   ],
   "supersession": [
@@ -90,8 +104,16 @@
     "approved_decisions_in_checkpoint": 2,
     "max_batch_size": 10,
     "early_checkpoint": true,
+    "closure": "MERGED_PR101_MAIN_CANON_READBACK_PASS",
     "next_counter_after_merge": "0/10",
     "product_paths_changed": false,
+    "workflows": "PASS_3_OF_3",
+    "python_contracts": "PASS",
+    "godot_4_7_1_headless": "PASS",
+    "issue_comments": 0,
+    "inline_review_threads": 0,
+    "adversarial_audit": "P0_0_P1_0",
+    "sheet_sync": "MAIN_CANON_READBACK_PASS",
     "runtime_validation": "NOT_RUN",
     "android_validation": "NOT_RUN",
     "accessibility_validation": "NOT_RUN",

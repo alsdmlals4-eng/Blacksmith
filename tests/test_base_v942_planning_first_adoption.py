@@ -114,6 +114,24 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertTrue(customer["forecast_reasons_required"])
         self.assertEqual("BASELINE_TEST_PRESET", customer["exact_modifiers"])
 
+    def test_checkpoint_002_is_merged_and_synced(self) -> None:
+        registry = json.loads(R2_REGISTRY.read_text(encoding="utf-8"))
+        self.assertEqual(
+            "R2_CHECKPOINT_002_MERGED_MAIN_CANON_READBACK_PASS",
+            registry["stage_status"],
+        )
+        self.assertEqual(101, registry["baseline"]["checkpoint_merge_pr"])
+        self.assertEqual(
+            "a81cbe5de685e2900070d9a32db56556538e0a6f",
+            registry["baseline"]["checkpoint_merge_sha"],
+        )
+        checkpoint = registry["checkpoint"]
+        self.assertEqual("MERGED_PR101_MAIN_CANON_READBACK_PASS", checkpoint["closure"])
+        self.assertEqual("0/10", checkpoint["next_counter_after_merge"])
+        self.assertEqual("PASS_3_OF_3", checkpoint["workflows"])
+        self.assertEqual("P0_0_P1_0", checkpoint["adversarial_audit"])
+        self.assertFalse(checkpoint["product_paths_changed"])
+
     def test_current_canon_text_is_linked_and_truthful(self) -> None:
         canon = CUSTOMER_SCHEDULE_CANON.read_text(encoding="utf-8")
         root = ROOT_DECISIONS.read_text(encoding="utf-8")
@@ -136,7 +154,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             "SUPERSEDED_IN_SCOPE_BY_BS-WORLD-20260803-03",
             "고객 개인 일정의 날짜 종료 진행 판정",
             "특정 날짜를 예고하는 대규모 세계 일정",
-            "R2_CHECKPOINT_002_PENDING_MERGE",
+            "R2_CHECKPOINT_002_CANON",
+            "MERGED_PR101",
+            "NEXT_GRILL_ME_COUNTER_0_OF_10",
         ):
             self.assertIn(token, root)
 
@@ -145,6 +165,8 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             "BS-CUSTOMER-20260803-01",
             "고객 재방문 없이 하루 종료마다 최대 한 번 진행 판정",
             "매우 낮음 / 낮음 / 보통 / 높음 / 매우 높음",
+            "MERGED_PR101",
+            "MAIN_CANON / READBACK_PASS",
         ):
             self.assertIn(token, active)
 
