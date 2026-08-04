@@ -1,8 +1,8 @@
 # [현재 정본] Active Context
 
-- 갱신: `2026-08-04 10:05 KST`
+- 갱신: `2026-08-04 10:31 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R2_CORE_SESSION_META_LOOP / CANON_ADVERSARIAL_AUDIT_ACTIVE`
+- 단계: `R2_CORE_SESSION_META_LOOP / CANON_AUDIT_COMPLETE_PENDING_EXACT_HEAD_VALIDATION`
 - R2 체크포인트 003: `MERGED_PR103 / CLOSURE_PR104`
 - 체크포인트 폐쇄 main: `d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9`
 - 정본 감사: `BS-OPS-20260804-02 / BS-ADV-20260804-01`
@@ -15,8 +15,10 @@
 2. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 3. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
 4. 본 문서
-5. `ROADMAP.md`
-6. `DEVELOPMENT_GATES.md`
+5. `START_HERE.md`
+6. `DOCUMENTATION_MAP.md`
+7. `ROADMAP.md`
+8. `DEVELOPMENT_GATES.md`
 
 구형 문서 상태:
 
@@ -121,7 +123,7 @@ EMPTY → SEED → DEVELOPED → EVOLVED → MASTERED
 - 작품·도구·조언을 준비 기여로 누적
 - 준비 체크포인트와 예정 날짜에서 판정
 
-과거 고정 `3일 결과·4일 재방문`은 모든 일정의 현재 상태 머신이 아니다.
+범용 고정 일정 프리셋은 현재 상태 머신이 아니다.
 
 ## 일정 표시
 
@@ -168,11 +170,13 @@ EMPTY → SEED → DEVELOPED → EVOLVED → MASTERED
 
 - 핵심 재미 방향: `VALID`
 - P0: `0`
-- P1 발견: `7`
-- 이번 PR에서 해결할 문서·권위 P1: `6`
+- P1 범주 발견: `7`
+- 이번 PR에서 해결한 문서·권위 P1: `6`
 - 사용자 Decision이 필요한 P1: 등급·예술성 한국어 명칭 충돌 `1`
 - P2 후속 후보: `7`
 - 제품 경로 변경: `0`
+
+`START_HERE.md`와 `DOCUMENTATION_MAP.md`의 추가 드리프트는 위 6개 문서·권위 P1 범주의 콜드 스타트 전파 사례로 함께 해결했다.
 
 ## 열린 설계 후보 — 아직 승인 아님
 
@@ -187,7 +191,11 @@ EMPTY → SEED → DEVELOPED → EVOLVED → MASTERED
 ## 역사 구현·검증 추적
 
 - `POC v0.6.4 · main · 2026.07.23.1`
-- 제작 모델 7건·통합 6건
+- 과거 일반 강화 실패 기준선: `+11 / LEGACY_IMPLEMENTED_VALUE`
+- 실패·위험 data 소유자: `data/crafting/enhancement_balance.json`
+- 정밀 이정표 data 소유자: `data/crafting/enhancement_milestones.json`
+- 제작 모델 7건
+- 통합 6건
 - `HISTORICAL_EVIDENCE`, 최신 제품 PASS 아님
 - PR #103/#104 exact-head Base·Python·Godot: `PASS`
 - focused planning tests standalone: 별도 실행 전 `NOT_RUN`
@@ -195,10 +203,9 @@ EMPTY → SEED → DEVELOPED → EVOLVED → MASTERED
 
 ## 다음 작업
 
-1. 구형 고위험 문서 직접 상태 표시
-2. PR #81 제목·본문에 `REFERENCE ONLY / DO NOT MERGE` 강화
-3. 정본 드리프트·Legacy Status 자동 계약 추가
-4. GitHub·Google Sheet 동일 Decision ID 동기화
-5. exact-head 검증·PR 리뷰·적대적 재감사
-6. 사용자에게 열린 P1/P2 설계 후보 제시
-7. 제품 구현은 계속 `BLOCKED`
+1. PR #105 exact-head 검증 완료
+2. GitHub·Google Sheet 동일 Decision ID 동기화
+3. PR 댓글·리뷰 스레드·보호 경로 재감사
+4. expected-head squash 병합
+5. 다음 R2 승인 배치를 `0/10`에서 재개
+6. 제품 구현은 계속 `BLOCKED`
