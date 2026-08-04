@@ -1,6 +1,6 @@
 # [현재 정본] Active Context
 
-- 갱신: `2026-08-05 00:34 KST`
+- 갱신: `2026-08-05 01:16 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_004_2_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
@@ -116,15 +116,18 @@ RED → GREEN → REFACTOR
 
 ## 검증 경계
 
-- 이전 PR #103/#104/#105 exact-head Base·Python·Godot: `PASS`
-- 이번 변경 TDD RED: Planning-first run `33`에서 관측
-- GREEN exact-head: `PENDING`
+- TDD RED: commit `a5f20ab4578c83f75d044b68f19ed0bcb7b45d00`, Planning-first run `33`, `EXPECTED_FAILURE`
+- 관측된 GREEN: commit `25d5f53a380328a7ff655498adb8c10bdd1073f1`
+- GREEN runs: Planning-first `57`, Base `524`, PR validation `1115`
+- Python 전체 계약: `PASS`
+- Godot 4.7.1 headless: `PASS`
+- 최종 exact-head: PR·Sheet에서 재검증 후 기록
 - focused planning test standalone: `NOT_RUN`
 - runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
 
 ## 다음 작업
 
-1. GREEN exact-head 검증
+1. 증거 커밋 자체 exact-head 검증
 2. Google Sheet same-ID readback
 3. Draft PR #106에 누적, 조기 체크포인트 조건 또는 최대 10건 전 병합 금지
