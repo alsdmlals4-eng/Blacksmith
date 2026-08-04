@@ -3,6 +3,7 @@
 - 갱신: `2026-08-05 00:34 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_004_2_OF_10`
+- R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
 - 정본 감사 Decision: `BS-OPS-20260804-02 / BS-ADV-20260804-01`
 - 현재 제작 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
