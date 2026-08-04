@@ -113,7 +113,8 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertIn("현재 구현·후속 기획의 직접 기준으로 사용하지 마십시오", old)
         self.assertIn("BS-OPS-20260804-02", root)
         self.assertIn("PR #81 전체 병합 단위는 `[폐기]`", root)
-        self.assertIn("CANON_ADVERSARIAL_AUDIT", active)
+        self.assertIn("CANON_AUDIT_COMPLETE", active)
+        self.assertIn("BS-ADV-20260804-01", active)
         self.assertIn("다음 승인 카운터: `0/10`", active)
 
 
