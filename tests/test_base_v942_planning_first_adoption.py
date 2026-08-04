@@ -156,16 +156,23 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertIn("[보통] → [우수] → [명품] → [걸작] → [전설]", canon)
         self.assertIn("제작 후 등급 승격 금지", canon)
 
-    def test_artistry_is_numeric_weapon_stat_without_named_tiers(self) -> None:
+    def test_artistry_is_unbounded_numeric_weapon_stat_without_named_tiers(self) -> None:
         registry = load_json(R2_REGISTRY)
         decisions = {item["id"]: item for item in registry["current_decisions"]}
         contract = decisions["BS-CRAFT-20260805-01"]["contract"]
 
         self.assertEqual("WEAPON_ITEM_STAT", contract["stat_role"])
-        self.assertEqual("INTEGER_1_TO_10", contract["scale"])
+        self.assertEqual(
+            "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
+            contract["domain"],
+        )
+        self.assertEqual(0, contract["minimum"])
+        self.assertIsNone(contract["fixed_design_maximum"])
         self.assertFalse(contract["decimals_allowed"])
+        self.assertFalse(contract["denominator_display_allowed"])
         self.assertFalse(contract["named_tiers_exist"])
         self.assertTrue(contract["displayed_with_weapon_stats"])
+        self.assertFalse(contract["technical_storage_limit_is_content_maximum"])
         self.assertFalse(contract["combat_power_by_default"])
         self.assertFalse(contract["universal_affix_multiplier"])
         self.assertTrue(contract["affects_sale_value"])
@@ -175,9 +182,12 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         )
 
         canon = ARTISTRY_CANON.read_text(encoding="utf-8")
-        self.assertIn("예술성 7/10", canon)
+        self.assertIn("예술성 27", canon)
+        self.assertIn("고정 설계 최대치 없음", canon)
         self.assertIn("단계명 없음", canon)
         self.assertIn("전투 성능을 기본적으로 올리지 않는다", canon)
+        self.assertNotIn("예술성 7/10", canon)
+        self.assertNotIn("예술성 1~10", canon)
 
     def test_benchmark_checkpoint_and_tdd_governance_are_current(self) -> None:
         registry = load_json(R2_REGISTRY)
@@ -224,6 +234,12 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual("SUPERSEDED", grade_history["BS-GRADE-20260801-02"]["status"])
         self.assertEqual("CURRENT_CANON", grade_history["BS-CRAFT-20260804-07"]["status"])
 
+        artistry_history = {item["source"]: item for item in registry["artistry_model_history"]}
+        self.assertEqual(
+            "SUPERSEDED",
+            artistry_history["BS-CRAFT-20260805-01 initial bounded-stat draft"]["status"],
+        )
+
         pr81 = registry["pull_requests"][0]
         self.assertEqual(81, pr81["number"])
         self.assertEqual("REJECTED", pr81["merge_unit_status"])
@@ -241,13 +257,16 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             "CHRONICLE_AFFIX",
             "[등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어",
             "[보통] → [우수] → [명품] → [걸작] → [전설]",
-            "예술성 1~10",
+            "예술성 27",
+            "고정 설계 최대치 없음",
             "예술성 단계명 없음",
             "보조재료 슬롯 재도입 금지",
             "제품 구현: `BLOCKED`",
         ):
             self.assertIn(token, current)
 
+        self.assertNotIn("예술성 7/10", current)
+        self.assertNotIn("예술성 1~10", current)
         self.assertIn("[부분 대체됨]", old)
         self.assertIn("현재 구현·후속 기획의 직접 기준으로 사용하지 마십시오", old)
         self.assertIn("BS-OPS-20260804-02", root)
