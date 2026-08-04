@@ -1,4 +1,4 @@
-# Development Gates
+# [현재 정본] Development Gates
 
 ## 판정 원칙
 
@@ -7,27 +7,24 @@
 - 과거 PoC PASS는 최신 제품 PASS를 대신하지 않는다.
 - 미검증 정확한 숫자는 버전형 테스트 프리셋이다.
 - 제품 구현은 R1~R8 전체 기획과 최종 사용자 검수 뒤 별도 승인으로만 시작한다.
+- `[대체됨]`, `[보류]`, `[폐기]`, `[역사 증거]` 문서는 현재 구현 근거로 사용하지 않는다.
 
 ## Current Gate Summary
 
 ```yaml
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
-R1_STATUS: USER_APPROVED / CANON_COMPLETE
-R2_STATUS: PLANNING_ACTIVE
-R1_FINAL_APPROVAL_DECISION: BS-OPS-20260803-05
-WORLD_SCHEDULE_DECISION: BS-WORLD-20260803-01
-CANON_BASELINE_PR: 94
-CANON_BASELINE_SHA: 8a0956d6c8b4cf3db545a17d0bd002ba8354d568
-POST_MERGE_FINALIZATION_PR: 96
-SHEET_SYNC_CLOSURE_PR: 97
+R1_STATUS: USER_APPROVED / HISTORICAL_BASELINE / R2_REFINED
+R2_STATUS: CHECKPOINT_003_CANON / PLANNING_ACTIVE
+R2_CHECKPOINT_MERGE_PR: 103
+R2_CHECKPOINT_MERGE_SHA: 674ee21013cb5d41f89a1a3f3b10ecfc31238295
+R2_CHECKPOINT_CLOSURE_PR: 104
+R2_CHECKPOINT_CLOSURE_SHA: d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9
+CANON_ADVERSARIAL_AUDIT: BS-OPS-20260804-02 / BS-ADV-20260804-01
+CURRENT_AFFIX_SLOTS: GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
+NEXT_APPROVAL_COUNTER: 0/10
 CORE_DIRECTION_GATE: PASS
-CORE_CONFLICT_DECISION_GATE: PASS
-AUTHORITY_CONSISTENCY_GATE: PASS
-R1_ADVERSARIAL_AUDIT_GATE: PASS_P0_0_P1_0
-SHEET_CANON_ALIGNMENT_GATE: PASS / BS-OPS-20260803-04 / READBACK_PASS
-USER_R1_FINAL_REVIEW_GATE: PASS / BS-OPS-20260803-05
-WORLD_SCHEDULE_STRUCTURE_GATE: PASS / DAILY_STAGED_PROGRESS
-R2_PLANNING_GATE: OPEN
+R2_CHECKPOINT_003_AUTHORITY_GATE: PASS_WITH_POSTMERGE_DRIFT_FOUND
+LEGACY_DOCUMENT_CLASSIFICATION_GATE: IN_PROGRESS
 CODEX_IMPLEMENTATION_GATE: BLOCKED
 LATEST_RUNTIME_VALIDATION_GATE: NOT_RUN
 ANDROID_DEVICE_GATE: NOT_RUN
@@ -38,71 +35,183 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 
 ## R1 Core Gate
 
+유지되는 R1 기반:
+
 - 현재 검증 상한 `+50`
 - 정밀 이정표 `+10/+20/+30/+40/+50`
-- 일반 수식어 A·B
-- 활성 사건·연대기 수식어 한 개와 진화 이력
 - UID 기반 작품 생애·손상·복원·계승
 - 방문 고객 인계와 즉시·지연 결과
-- 세계일정의 날짜별 단계 진행과 규모별 기간 증가
 - 피로도·날짜 우선순위
 - 구조 정본과 수치 테스트 프리셋 분리
+- 행동 증거와 중립적 회상 인터뷰
 
-판정: `PASS / USER_APPROVED / CANON_COMPLETE`.
+R2에서 대체된 구조:
 
-## World Schedule Gate
+- 일반 수식어 A·B → 등급·촉매·연대기 세 수식어
+- 보조재료 슬롯 → 제거
+- 모든 일정의 고정 날짜 프리셋 → 개인 일정과 날짜 예고형 세계 일정 분리
+
+판정: `PASS / USER_APPROVED_BASELINE / R2_REFINED`.
+
+## Three Affix Gate
 
 필수 불변 규칙:
 
-- 발생·납품 당일에 최종 세계 결과까지 해결하지 않음
-- 첫 날짜 진행 한 번만으로 최종 해결하지 않음
-- 하루 종료 한 번당 최대 한 단계 또는 한 개 진행 단위 전진
-- 최종 결과 전에 최소 하나의 중간 상태 제공
-- 규모가 클수록 필요한 단계와 게임 날짜 증가
-- 날짜별 진행은 작품 기여·위험·조건·대응 가능성을 갱신
-- 날짜 경과만으로 사건 수식어 자동 성장 금지
-- 빈 대기 로그·필수 장문 대화·날짜 스킵 최적화 금지
-
-상대 기간:
-
 ```text
-LOCAL/PERSONAL
-< REGIONAL/FACTION
-< REALM/NATIONAL
-< WAR/CATASTROPHE
+GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 ```
 
-정확한 기간·단계·동시 진행 수·분기 수는 `BASELINE_TEST_PRESET`이다.
+- 정확히 세 슬롯
+- 제작 완료 시 등급 수식어 생성
+- 촉매·연대기 수식어는 최초 제작 시 `EMPTY`
+- 등급 수식어는 동일 UID에서 고정
+- 촉매 수식어는 현재·누적 촉매 이력으로 확률적 성장
+- 연대기 수식어는 실제 작품 생애 기록으로 사건 기반 성장
+- 세 슬롯의 생성·진화·덮어쓰기 교차 영향 금지
+- 제작 등급 효과 중복 가산 금지
+- 일반 수식어 A·B 재도입 금지
+
+판정: `PASS / USER_APPROVED / MERGED_PR103`.
+
+## Precision Enhancement Gate
+
+- 일반 강화: 한 입력 한 결과
+- 정밀 이정표: `+10/+20/+30/+40/+50`
+- 정밀 입력: 주재료 맥락 + 강화 방식 + 촉매 한 개
+- 강화 방식: 세부 수치 방향
+- 촉매: 촉매 수식어 후보 계보·확률
+- 보조재료 슬롯 없음
+- 같은 이정표 무한 리롤 금지
+- 촉매가 정확한 성공·수식어·최고 단계를 보장하지 않음
+
+판정: `PASS / STRUCTURE_APPROVED / EXACT_PROBABILITIES_UNVALIDATED`.
+
+## Equipment Name·Chronicle Detail Gate
+
+```text
+[등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어
+```
+
+- 빈 촉매 수식어 생략
+- 빈 연대기 수식어는 하이픈과 함께 생략
+- 현재 연대기 수식어 하나만 장비명에 표시
+- 연대기 부분을 누르면 UID 기반 읽기 전용 하단 상세 패널
+- 형성 사건·주요 타임라인·진화 계보·현재 가치·소유·손상·복원 기록 표시
+- 기록에 없는 사건과 미해결 미래 결과 금지
+- 열람으로 판정·보상·진화 발생 금지
+- 색상만으로 상호작용 표시 금지
+
+판정: `PASS / USER_APPROVED / MERGED_PR103`.
+
+열린 Gate:
+
+- 긴 이름 줄바꿈·축약·스크린리더 순서
+- 제작 등급 수식어와 예술성 시각 단계의 한국어 명칭 분리
+
+## Customer Information Gate
+
+- 사건 위험도 정수 `1~10`
+- 고객 기량·체력·판단력 정수 `1~10`
+- 예상 성공률 약 10% 단위, `5~95%`
+- 작품·도구·조언 선택 후 방향 갱신
+- 정확한 보정치·RNG·모든 변수 사전 공개 금지
+- 수치 최적화가 작품 생애를 압도하지 않는지 사람 플레이 필요
+
+판정: `STRUCTURE_APPROVED / EXACT_MODIFIERS_BASELINE_TEST_PRESET`.
+
+## Personal Schedule Gate
+
+- 고객 방문과 판매·납품으로 활성화
+- 재방문 없이 하루 종료마다 최대 한 번 진행
+- 판매 당일 최종 해결 금지
+- 고객 결과·작품 UID 상태·다음 제작 판단을 남김
+
+판정: `PASS / USER_APPROVED`.
+
+## World Schedule Gate
+
+- 특정 날짜와 규모 사전 예고
+- 작품·도구·조언을 준비 기여로 누적
+- 준비 체크포인트와 예정 날짜에서 판정
+- 세계 결과와 고객·작품 후속 결과를 분리
+- 과거 `3일 결과·4일 재방문`은 한 개인 일정의 역사적 테스트 예시
+- 빈 대기·필수 장문 대화·날짜 스킵 최적화 금지
 
 판정: `STRUCTURE_APPROVED / EXACT_DURATION_UNVALIDATED`.
 
-## Core Vertical Slice Gate
+## Schedule Display Gate
 
 ```text
-플레이어 선택 작품 한 점 제작
-→ +10/+20/+30/+40/+50
-→ 방문 고객 납품
-→ 즉시 사용 계획·초기 인과 피드백
-→ 날짜 1: 준비·초기 진행
-→ 날짜 2+: 중간 변화·전환점
-→ 별도 날짜: 최종 세계 결과
-→ 같은 UID 재방문
-→ 손상·복원·재강화·후속 판단
+가장 가까운 주요 세계 일정 하나 고정
++ 오늘의 중요 소식 최대 3건
++ 일반 개인 일정은 하루 종료 묶음 요약
++ 결정·완료·중대 결과만 즉시 알림
++ 관심 개인 일정 하나 추적
++ 전체 기록은 일정 장부
 ```
 
-`+50` 도달만으로 완료하지 않으며 세계일정은 최소 하나의 중간 상태를 거친다. 다른 작품군은 제한된 비플레이 미리보기로만 제시한다.
+판정: `PASS / USER_APPROVED / NOT_RUNTIME_VALIDATED`.
 
-판정: `SCOPE_APPROVED / IMPLEMENTATION_NOT_STARTED`.
+## Artistry Gate
+
+- 새 가치 수치는 예술성 하나
+- 정수 `1~10`
+- 실용 성능과 분리
+- 강화 단계만으로 자동 상승 금지
+- 고예술성이 모든 고객의 최적해가 되는 구조 금지
+- 제작 등급 수식어와 예술성 시각 단계는 별개
+
+열린 P1:
+
+- 예시 `[명품]`과 예술성 한국어 단계 `명품`의 어휘 충돌
+
+판정: `STRUCTURE_APPROVED / DISPLAY_LABEL_REVIEW_REQUIRED`.
+
+## Content Composition Gate
+
+모든 일정은 다음을 남겨야 한다.
+
+- 고객 결과
+- 작품 UID 상태와 유산
+- 다음 제작·강화·복원 판단
+
+이름과 보상만 바꾼 재스킨은 별도 콘텐츠로 세지 않는다.
+
+초기 방문 고객:
+
+- 검투사
+- 모험가
+- 군인
+- 귀족
+
+판정: `DIRECTION_APPROVED / EXACT_CONTENT_COUNTS_DEFERRED`.
+
+## Ownership·Lifecycle Gate
+
+승인된 기반:
+
+- 판매·납품 뒤에도 작품 UID와 생애 기록 유지
+- 손상·복원·재방문·계승 가능
+- 일반 실패는 역사를 자동 삭제하지 않음
+
+열린 P2:
+
+- 영구 소유권 이전
+- 복원 의뢰의 임시 회수
+- 재판매 가능 여부
+- 증여·상속·상실·회수 상태 전이
+
+판정: `BASELINE_APPROVED / STATE_MACHINE_REVIEW_REQUIRED`.
 
 ## Core Fun Validation Gate
 
 필수 행동 증거:
 
 - 강화 지속·중단 고민
-- 일반 수식어 A·B와 주요 선택 기억
-- 납품 결과 인과 설명
-- 세계일정 현재 단계와 다음 진행 이해
-- 재방문 후 자발적 다음 행동
+- 등급·촉매·연대기 세 축의 생성 원인 설명
+- 납품 결과와 작품 선택의 인과 설명
+- 일정 현재 상태와 다음 행동 이해
+- 재방문 뒤 자발적 다음 행동
 - 피로도·날짜 우선순위 사용
 - 손상·복원의 생애 의미 이해
 
@@ -110,62 +219,51 @@ LOCAL/PERSONAL
 
 판정: `CONTRACT_APPROVED / EXECUTION_NOT_RUN`.
 
-## Numeric Authority Gate
+## Legacy Document Gate
 
-정본은 자원 종류·소비 시점·반환 여부·정보 공개·상태 전이·피로도와 날짜 역할·세계일정 규모와 기간의 상대 관계를 소유한다. 정확한 비용·확률·소비량·보상량·세계일정 기간·재방문 간격은 `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET / EXPERIMENT_VARIANT / CURRENT_VALIDATED / DEPRECATED_PRESET`으로 관리한다.
+상태 어휘:
 
-판정: `STRUCTURE_APPROVED / EXACT_VALUES_UNVALIDATED`.
+```text
+[현재 정본]
+[부분 대체됨]
+[대체됨]
+[보류]
+[폐기]
+[역사 증거]
+```
 
-## Damage·Restoration Gate
+필수:
 
-- 일반 실패와 대파는 UID·생애·연대기 유지
-- 강화 단계 하락 가능
-- 수식어 잠금·복원
-- 이정표 보상 중복 지급 금지
-- 완전 파괴는 명시적이고 정보가 제공된 선택만 허용
-- 완전 파괴 후에도 역사 기록 보존
+- 구형 A/B 수식어·보조재료·2슬롯 문서에 상태 표시
+- PR #81 전체 병합 단위 `DO_NOT_MERGE`
+- 역사 PoC 수치를 제품값으로 해석 금지
+- Current R1 Registry를 현재 R2 계약으로 오인하지 않게 표시
+- 기계 판독 상태 원장과 파일 배너 일치
 
-과거 `+30 즉시 영구 파괴`는 `LEGACY_IMPLEMENTED_VALUE / HISTORICAL_POC`다.
+판정: `IN_PROGRESS / BS-OPS-20260804-02`.
 
-판정: `PASS / USER_APPROVED`.
+## PR Gate
 
-## Hall of Fame Gate
-
-경쟁·랭킹·점수·시즌 보상 없는 비경쟁 작품 아카이브이며 현재 `FUTURE_CONTENT_HOLD`다.
+- PR #103: `MERGED_R2_CHECKPOINT_003_CANON`
+- PR #104: `MERGED_POSTMERGE_CLOSURE`
+- PR #81: `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT / SELECTIVE_PROMOTION_HOLD`
+- 새 감사 PR: exact-head 검증·Sheet readback·P0/P1 재감사 뒤 병합
 
 ## Historical Forging Baseline Gate
 
 - `POC v0.6.4 · main · 2026.07.23.1`
-- `제작 모델 7건`, `통합 6건`
-- `REFERENCE_IMPLEMENTATION / HISTORICAL_POC`
-
-## R1 Authority·Audit Gate
-
-- [x] 핵심 충돌 해소
-- [x] Game Bible·Roadmap·MVP·Root Decision·Registry·Hub 정렬
-- [x] Sheet 역사 Decision 재분류
-- [x] PR #94 적대적 감사 P0 0 / P1 0
-- [x] PR #94·#96·#97 최종 CI 통과
-- [x] expected-head squash merge
-- [x] 병합 SHA Sheet 최종화·readback
-- [x] 사용자 R1 정본 최종 검수
-
-## PR Gate
-
-- PR #94: `MERGED_CANON_BASELINE`
-- PR #96: `MERGED_POST_MERGE_FINALIZATION`
-- PR #97: `MERGED_SHEET_SYNC_GATE_CLOSURE`
-- PR #81: `REFERENCE_ASSET / OPEN_DRAFT / DO_NOT_MERGE_AS_UNIT`
-- PR #95·#86·#61: 종료 또는 역사 전용
+- 제작 모델 7건·통합 6건
+- `REFERENCE_IMPLEMENTATION / HISTORICAL_EVIDENCE`
+- 최신 제품 PASS가 아님
 
 ## Product Implementation Gate
 
-R1~R8 기획·검수, 테스트 프리셋·rollback 계약과 최종 사용자 승인이 완료되기 전까지 `BLOCKED`다.
+R1~R8 기획·검수, 저장·rollback·migration 계약, 테스트 프리셋과 최종 사용자 승인이 완료되기 전까지 `BLOCKED`다.
 
 ## Current Next Gate
 
 ```yaml
-NEXT_ACTIVITY: PLAN_R2_CORE_SESSION_META_LOOP
-R2_FIRST_DECISION_AREA: WORLD_SCHEDULE_SCALE_DURATION_DAILY_UPDATE_AND_PLAYER_INTERVENTION
+NEXT_ACTIVITY: COMPLETE_CANON_ADVERSARIAL_AUDIT_AND_LEGACY_CLASSIFICATION
+NEXT_APPROVAL_COUNTER: 0/10
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
