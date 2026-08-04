@@ -1,4 +1,4 @@
-# Blacksmith 예술성 비상한 수치형 능력치 설계
+# Blacksmith 예술성 고정 상한 없는 수치형 능력치 설계
 
 - 설계 승인: `2026-08-05`
 - Decision ID: `BS-CRAFT-20260805-01`
@@ -17,7 +17,7 @@
 
 ```text
 ARTISTRY: integer >= 0
-fixed maximum: none
+fixed design maximum: none
 named tiers: none
 ```
 
@@ -32,10 +32,11 @@ named tiers: none
 
 - `0`을 허용한다.
 - 정수만 사용하며 소수점은 사용하지 않는다.
-- 고정 최대치는 없다.
+- 게임 설계상 고정 최대치는 없다.
 - `/10`, `/100`, 별점, 백분율로 표시하지 않는다.
 - 예술성 단계명이나 희귀도명을 붙이지 않는다.
 - 공격력·내구도·조작성과 같은 능력치 영역에 원수치로 표시한다.
+- 구현 자료형에는 기술적 한계가 존재할 수 있으나 이를 플레이어-facing 최대치나 콘텐츠 상한으로 사용하지 않는다.
 
 ## 3. 의미
 
@@ -110,6 +111,16 @@ named tiers: none
 
 ## 8. 벤치마킹 판정
 
+### 확인한 사례
+
+- Blizzard의 Diablo IV 아이템화 자료는 item power, affix, Greater Affix, Tempering, Masterworking을 별도 정보 축으로 다룬다. 숫자형 능력과 이름이 붙는 등급을 분리하는 정보 구조의 참고 사례다. 확인일 `2026-08-05`.
+  - https://news.blizzard.com/en-us/article/24140806/diablo-iv-patch-notes-1-3-1-5
+- Grinding Gear Games의 Path of Exile 공식 필터 문서는 `ItemLevel`, `AreaLevel`, 소켓 수 등 숫자값을 비교 연산자로 다루는 원수치 기반 정보 구조를 보여 준다. 확인일 `2026-08-05`.
+  - https://www.pathofexile.com/forum/view-thread/2771031
+- Dwarf Fortress의 현재 아이템 품질·가치 문서는 제작 품질과 장식이 가치에 서로 다른 방식으로 기여함을 보여 준다. 커뮤니티 유지 문서이므로 보조 근거로만 사용한다. 확인일 `2026-08-05`.
+  - https://dwarffortresswiki.org/index.php/Item_quality
+  - https://dwarffortresswiki.org/item_value
+
 ### 채택
 
 - 공격력·내구도와 같은 원수치 능력치 표시
@@ -136,7 +147,7 @@ named tiers: none
 field: artistry
 conceptual type: non-negative integer
 minimum: 0
-fixed maximum: none
+fixed design maximum: none
 user display: decimal integer without denominator
 ```
 
@@ -155,7 +166,7 @@ user display: decimal integer without denominator
 현재 계약:
 
 ```text
-NON_NEGATIVE_INTEGER / NO_FIXED_MAXIMUM / NO_NAMED_TIERS
+NON_NEGATIVE_INTEGER / NO_FIXED_DESIGN_MAXIMUM / NO_NAMED_TIERS
 ```
 
 ## 11. TDD 인수 조건
@@ -164,9 +175,9 @@ NON_NEGATIVE_INTEGER / NO_FIXED_MAXIMUM / NO_NAMED_TIERS
 
 RED에서 다음을 요구한다.
 
-1. Registry의 예술성 도메인이 `NON_NEGATIVE_INTEGER_NO_FIXED_MAXIMUM`이다.
-2. 현재 권위 문서에 `/10`, `1~10`, `예술성 10 = 최고치`가 남아 있지 않다.
-3. `0` 허용과 고정 최대치 없음이 명시된다.
+1. Registry의 예술성 도메인이 `NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM`이다.
+2. 현재 권위 문서에 `/10`, `1~10`, `예술성 10 = 최고치`가 현재 계약으로 남아 있지 않다.
+3. `0` 허용과 고정 설계 최대치 없음이 명시된다.
 4. 예술성 단계명과 범용 전투력 배율이 금지된다.
 5. 과거 `1~10` 계약은 `[대체됨]` 역사로만 남는다.
 6. 제품 구현은 `BLOCKED`다.
@@ -186,10 +197,19 @@ GREEN은 최소 정본·Registry·라우터·Sheet 변경으로 만든다. 이�
 
 ## 13. 적대적 보호 조건
 
-- 예술성 고정 최대치 재도입 금지
+- 예술성 고정 설계 최대치 재도입 금지
 - `/10`, `/100`, 별점·백분율 표기 금지
 - 예술성 0을 미완성·사용 불가와 동일시 금지
 - 제작 등급이 예술성 상한을 결정하게 하지 않음
 - 예술성 무한 성장과 경제 선형 지배를 동일시하지 않음
+- 기술적 자료형 한계를 콘텐츠 최대치로 노출하지 않음
 - 구체적 점감·분포를 사용자 승인 없이 제품값으로 고정하지 않음
 - 제품 구현은 계속 `BLOCKED`
+
+## 14. 자체 검토 결과
+
+- Placeholder: 없음
+- 내부 충돌: 없음
+- 단일 명세 범위: 적절함
+- 모호성 해소: `고정 설계 최대치 없음`과 `기술적 자료형 한계`를 분리함
+- 구현 전 사용자 검토: 필요
