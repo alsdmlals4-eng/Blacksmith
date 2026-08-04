@@ -10,17 +10,17 @@
 WORK_MODE: TOTAL_PLANNING
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
 R1_STATUS: USER_APPROVED / HISTORICAL_BASELINE / R2_REFINED
-R2_STATUS: CHECKPOINT_003_CANON / CANON_AUDIT_COMPLETE_WITH_OPEN_USER_DECISIONS
+R2_STATUS: R2_BATCH_004_ACTIVE_1_OF_10
+CURRENT_DECISION: BS-CRAFT-20260804-07
 R2_CHECKPOINT_003_PR: 103
-R2_CHECKPOINT_003_MERGE: 674ee21013cb5d41f89a1a3f3b10ecfc31238295
 R2_CHECKPOINT_003_CLOSURE_PR: 104
-R2_CHECKPOINT_003_CLOSURE_MERGE: d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9
-CANON_AUDIT: BS-OPS-20260804-02 / BS-ADV-20260804-01
-NEXT_APPROVAL_COUNTER: 0/10
+CANON_AUDIT_PR: 105
+CANON_AUDIT_MERGE: 95f8fa33a645914578451af325afcaa32732c426
+NEXT_APPROVAL_COUNTER: 1/10
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
 
-위 SHA는 완료된 체크포인트의 불변 병합 증거이며 이 파일 자신의 현재 Git commit을 예측하지 않는다.
+위 SHA는 완료된 정본 감사의 불변 병합 증거이며 이 파일 자신의 미래 Git commit을 예측하지 않는다.
 
 ## 처음 읽을 순서
 
@@ -28,13 +28,14 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 2. `CURRENT_CONFIRMED_DECISIONS.md`
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-5. `ACTIVE_CONTEXT.md`
-6. `DEVELOPMENT_GATES.md`
-7. `ROADMAP.md`
-8. `DOCUMENTATION_MAP.md`
-9. `DESIGN_DOCUMENT_REGISTRY.json`
-10. 필요한 분야별 최신 R2 정본
-11. 실제 구현·data·tests — 역사 구현과 현재 제품 상태를 구분
+5. `docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md`
+6. `ACTIVE_CONTEXT.md`
+7. `DEVELOPMENT_GATES.md`
+8. `ROADMAP.md`
+9. `DOCUMENTATION_MAP.md`
+10. `DESIGN_DOCUMENT_REGISTRY.json`
+11. 필요한 분야별 최신 R2 정본
+12. 실제 구현·data·tests — 역사 구현과 현재 제품 기획을 구분
 
 구형 파일의 상태는 `docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json`에서 확인한다.
 
@@ -46,8 +47,11 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 - 정밀강화는 `주재료 맥락 + 강화 방식 + 촉매 한 개`다.
 - 보조재료 슬롯은 없다.
 - 작품 수식어는 정확히 `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX` 세 개다.
+- 제작 등급은 `보통 / 우수 / 걸작 / 전설` 네 단계다.
+- 제작 등급은 최초 직접 단조 완료 시 한 번 결정되고 동일 UID에서 고정된다.
+- `전설`은 최초 제작 판정에서만 극희귀하게 발생하며 후천 승격되지 않는다.
+- `전설`이 예술성·촉매·연대기·최강 성능을 자동 보장하지 않는다.
 - 제작 완료 시 등급 수식어가 생성되고 촉매·연대기 수식어는 비어 있다.
-- 등급 수식어는 동일 UID에서 고정된다.
 - 촉매 수식어는 현재·누적 촉매 이력으로 확률적으로 성장한다.
 - 연대기 수식어는 실제 작품 생애 기록으로 생성·진화한다.
 - 세 수식어는 서로 생성·진화·덮어쓰기 하지 않는다.
@@ -82,38 +86,35 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 ## 역사 구현 기준선
 
 - MVP-001·002·003은 과거 구현·자동 검증 증거다.
-- MVP-003은 `REFERENCE_IMPLEMENTATION / HISTORICAL_EVIDENCE / HOLD`다.
+- 과거 제작 등급 구현은 `STANDARD / GOOD / PERFECT`다.
+- 현재 제품 기획은 `CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_MASTERWORK / CRAFT_LEGENDARY`다.
+- 과거 3단계 구현은 `REFERENCE_IMPLEMENTATION / HISTORICAL_EVIDENCE`이며 현재 4단계 구현 완료를 뜻하지 않는다.
 - 과거 정확한 수치는 `LEGACY_IMPLEMENTED_VALUE`이며 최신 제품 확정값이 아니다.
 - 과거 PASS는 최신 runtime·Android·접근성·성능·사람 플레이 PASS를 의미하지 않는다.
-- 최신 제품 검증은 모두 별도 Gate에서 다시 수행한다.
 
 ## PR·감사 상태
 
 - PR #103: `MERGED_R2_CHECKPOINT_003_CANON`
 - PR #104: `MERGED_POSTMERGE_CLOSURE`
-- PR #105: `CANON_ADVERSARIAL_AUDIT / VALIDATION_ACTIVE`
+- PR #105: `MERGED_CANON_ADVERSARIAL_AUDIT`
 - PR #81: `[역사 증거] / 전체 병합 [폐기] / 선별 이관 [보류]`
-- Audit: `BS-ADV-20260804-01`
-- P0: `0`
-- P1 총 발견: `9`
-- P1 문서·권위 해결: `8`
-- P1 사용자 Decision 필요: `1`
+- 현재 Draft PR: `R2_BATCH_004 / 1_OF_10 / APPROVED_PENDING_MERGE`
 - 제품 경로 변경: `0`
 
 ## 열린 사용자 Decision
 
-1. 제작 등급 수식어와 예술성 시각 단계의 한국어 명칭 분리
+1. 예술성 단계의 수·한국어 명칭·점수 구간·표시 방식
 2. 연대기 수식어 효과 책임
 3. 작품 소유권 상태 머신
 4. 긴 조합 장비명 표시
 5. 첫 작품 정체성 보상 시점
 6. 완전 파괴와 작품 애착 검증
-7. PR #81 선별 이관 순서
-
-첫 번째가 열린 P1이며 나머지는 P2 후속 기획 후보다.
+7. 성공률 공개의 최적화 수렴 위험
+8. PR #81 선별 이관 순서
 
 ## 다음 Gate
 
-1. PR #105 exact-head 검증·Sheet 동기화·병합
-2. 다음 R2 승인 배치를 `0/10`에서 재개
-3. 제품 구현은 계속 `BLOCKED`
+1. `BS-CRAFT-20260804-07` exact-head 검증·Sheet 동기화
+2. 예술성 단계 설계로 R2 Batch 004를 `1/10`에서 계속
+3. 승인 10건 전 Draft PR 유지
+4. 제품 구현은 계속 `BLOCKED`
