@@ -100,6 +100,17 @@ RED → GREEN → REFACTOR
 분야별 선별 이관: [보류]
 ```
 
+## 역사 구현·회귀 기준선
+
+다음은 현재 5등급 제품값이 아니라 과거 reference implementation의 회귀 증거다.
+
+- 최신 역사 구현 배지: `POC v0.6.4 · main · 2026.07.23.1`
+- 제작 모델 7건
+- 제작 결과 통합 6건
+- 과거 제작 품질: `STANDARD / GOOD / PERFECT`
+- 과거 피버·품질 정확 수치: `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
+- 과거 PASS는 현재 5등급·예술성 제품 구현 PASS가 아님
+
 ## 검증 경계
 
 - 이전 PR #103/#104/#105 exact-head Base·Python·Godot: `PASS`
@@ -111,7 +122,6 @@ RED → GREEN → REFACTOR
 
 ## 다음 작업
 
-1. 5등급·숫자형 예술성·운영 계약을 Registry와 정본에 동기화
-2. GREEN exact-head 검증
-3. Google Sheet same-ID readback
-4. Draft PR #106에 누적, 조기 체크포인트 조건 또는 최대 10건 전 병합 금지
+1. GREEN exact-head 검증
+2. Google Sheet same-ID readback
+3. Draft PR #106에 누적, 조기 체크포인트 조건 또는 최대 10건 전 병합 금지
