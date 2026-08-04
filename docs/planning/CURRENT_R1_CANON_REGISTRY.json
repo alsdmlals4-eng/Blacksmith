@@ -1,302 +1,176 @@
 {
   "artifact_role": "CURRENT_R1_CANON_REGISTRY",
-  "schema_version": 6,
+  "schema_version": 7,
   "project": "Blacksmith",
+  "registry_status": "HISTORICAL_R1_APPROVED_BASELINE_R2_REFINED",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
-  "stage_status": "R1_USER_APPROVED_R2_CHECKPOINT_001_CANON",
+  "stage_status": "R2_CHECKPOINT_003_CANON",
   "product_implementation": "BLOCKED",
-  "canon_baseline_merge_pr": 94,
-  "canon_baseline_merge_sha": "8a0956d6c8b4cf3db545a17d0bd002ba8354d568",
-  "post_merge_finalization_pr": 96,
-  "sheet_sync_closure_pr": 97,
-  "r1_final_approval_merge_pr": 98,
-  "r1_final_approval_merge_sha": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
-  "r2_checkpoint_001_merge_pr": 99,
-  "r2_checkpoint_001_merge_sha": "534ac05596573ae4055fa97a4e6888f4e8966b05",
-  "r1_final_approval_decision": "BS-OPS-20260803-05",
-  "world_schedule_decision": "BS-WORLD-20260803-01",
+  "r1_merge_evidence": {
+    "canon_baseline_pr": 94,
+    "canon_baseline_sha": "8a0956d6c8b4cf3db545a17d0bd002ba8354d568",
+    "post_merge_finalization_pr": 96,
+    "sheet_sync_closure_pr": 97,
+    "r1_final_approval_pr": 98,
+    "r1_final_approval_sha": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
+    "r1_final_approval_decision": "BS-OPS-20260803-05"
+  },
+  "r2_checkpoint_history": {
+    "checkpoint_001_pr": 99,
+    "checkpoint_001_sha": "534ac05596573ae4055fa97a4e6888f4e8966b05",
+    "checkpoint_002_pr": 101,
+    "checkpoint_002_closure_pr": 102,
+    "checkpoint_003_pr": 103,
+    "checkpoint_003_closure_pr": 104,
+    "checkpoint_003_closure_sha": "d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9"
+  },
   "r2_world_schedule_baseline_decision": "BS-WORLD-20260803-02",
   "r2_checkpoint_decision": "BS-OPS-20260803-06",
-  "sheet_sync_baseline_decision": "BS-OPS-20260803-04",
-  "sheet_sync_baseline_status": "MAIN_CANON_READBACK_PASS",
-  "r2_checkpoint_sync_status": "MERGED_PR99_MAIN_CANON_READBACK_PASS",
-  "current_operating_decisions": [
-    "BS-OPS-20260802-01",
-    "BS-OPS-20260802-02",
-    "BS-OPS-20260802-03",
-    "BS-OPS-20260802-04",
-    "BS-OPS-20260802-05",
-    "BS-OPS-20260802-06",
-    "BS-OPS-20260803-01",
-    "BS-OPS-20260803-02",
-    "BS-OPS-20260803-03",
-    "BS-OPS-20260803-04",
-    "BS-OPS-20260803-05",
-    "BS-OPS-20260803-06"
-  ],
-  "current_core_resolution_decisions": [
-    "BS-CORE-20260802-03",
-    "BS-CORE-20260802-04",
-    "BS-CORE-20260803-01",
-    "BS-CORE-20260803-02",
-    "BS-CORE-20260803-03",
-    "BS-CORE-20260803-04",
-    "BS-WORLD-20260803-01",
-    "BS-WORLD-20260803-02"
-  ],
-  "authority_policy": "Latest approved Decision and merged final canon override older drafts, historical PoC documents, stale Sheet wording, and legacy implemented values. Unvalidated exact numbers and durations are versioned test presets, not product canon.",
+  "authority_policy": "R1 decisions remain historical approved evidence. Current R2 Decisions and Current R2 Registry override any R1 structure they explicitly refine or supersede.",
   "documents": [
     {
-      "id": "current-confirmed-decisions",
       "path": "../../CURRENT_CONFIRMED_DECISIONS.md",
       "role": "root_current_decision_entrypoint",
-      "status": "CURRENT_APPROVED_CANON"
+      "status": "CURRENT_R2_CANON"
     },
     {
-      "id": "blacksmith-game-bible",
+      "path": "CURRENT_R2_CANON_REGISTRY.json",
+      "role": "current_r2_machine_readable_authority",
+      "status": "CURRENT_R2_CANON"
+    },
+    {
+      "path": "BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
+      "role": "integrated_current_r2_game_design",
+      "status": "CURRENT_R2_CANON"
+    },
+    {
       "path": "../../[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
-      "role": "integrated_current_game_design_canon",
-      "status": "CURRENT_APPROVED_CANON"
+      "role": "r1_integrated_game_design_entrypoint",
+      "status": "PARTIALLY_SUPERSEDED",
+      "historical_content_commit": "d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9"
     },
     {
-      "id": "roadmap",
       "path": "../../[기획서]/00_프로젝트_허브/ROADMAP.md",
       "role": "current_stage_and_gate_plan",
-      "status": "CURRENT_APPROVED_CANON"
+      "status": "CURRENT_R2_CANON"
     },
     {
-      "id": "r2-world-schedule-checkpoint-001",
-      "path": "BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md",
-      "role": "r2_first_slice_world_schedule_baseline_and_early_authority_checkpoint",
-      "status": "USER_APPROVED_MERGED_PR99"
+      "path": "../../[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+      "role": "current_planning_and_product_gates",
+      "status": "CURRENT_R2_CANON"
     },
     {
-      "id": "r1-final-approval-world-schedule",
-      "path": "BLACKSMITH_R1_FINAL_APPROVAL_AND_WORLD_SCHEDULE_PROGRESS_2026.md",
-      "role": "r1_user_final_approval_and_daily_world_schedule_progress_canon",
-      "status": "USER_APPROVED_CANON"
-    },
-    {
-      "id": "grillme-approval-batch-001",
-      "path": "BLACKSMITH_GRILLME_APPROVAL_BATCH_001_2026.md",
-      "role": "approved_core_fatigue_enhancement_and_chronicle_set_canon",
-      "status": "CURRENT_MERGED"
-    },
-    {
-      "id": "grillme-approval-batch-002",
-      "path": "BLACKSMITH_GRILLME_APPROVAL_BATCH_002_2026.md",
-      "role": "approved_demo_lifecycle_customer_support_and_resource_canon",
-      "status": "CURRENT_MERGED"
-    },
-    {
-      "id": "grillme-approval-batch-003",
-      "path": "BLACKSMITH_GRILLME_APPROVAL_BATCH_003_2026.md",
-      "role": "approved_collector_and_noncompetitive_hall_canon",
-      "status": "CURRENT_MERGED"
-    },
-    {
-      "id": "grillme-batch-004",
-      "path": "BLACKSMITH_GRILLME_BATCH_04_R1_DECISIONS_2026.md",
-      "role": "approved_theme_gallery_and_future_content_hold_canon",
-      "status": "CURRENT_MERGED"
-    },
-    {
-      "id": "core-resolution-01",
-      "path": "BLACKSMITH_CORE_CANON_RESOLUTION_01_2026.md",
-      "role": "plus50_validation_cap_and_deferred_final_cap",
-      "status": "USER_APPROVED_MERGED_PR94"
-    },
-    {
-      "id": "core-resolution-02",
       "path": "BLACKSMITH_CORE_CANON_RESOLUTION_02_2026.md",
-      "role": "two_general_affix_slots_world_schedule_lifecycle_layer_and_benchmark_policy",
-      "status": "USER_APPROVED_MERGED_PR94"
+      "role": "historical_two_general_affix_resolution",
+      "status": "SUPERSEDED_BY_BS-CRAFT-20260804-06"
     },
     {
-      "id": "core-resolution-03",
       "path": "BLACKSMITH_CORE_CANON_RESOLUTION_03_2026.md",
-      "role": "one_active_lifecycle_modifier_with_evolution_history",
-      "status": "USER_APPROVED_MERGED_PR94"
+      "role": "historical_one_active_lifecycle_modifier_resolution",
+      "status": "PARTIALLY_SUPERSEDED_BY_BS-CRAFT-20260804-06_AND_BS-UX-20260804-01"
     },
     {
-      "id": "core-resolution-04",
-      "path": "BLACKSMITH_CORE_CANON_RESOLUTION_04_2026.md",
-      "role": "one_work_plus50_lifecycle_vertical_slice",
-      "status": "USER_APPROVED_MERGED_PR94"
-    },
-    {
-      "id": "core-resolution-05",
-      "path": "BLACKSMITH_CORE_CANON_RESOLUTION_05_2026.md",
-      "role": "structure_canon_and_versioned_numeric_test_presets",
-      "status": "USER_APPROVED_MERGED_PR94"
-    },
-    {
-      "id": "core-resolution-06",
-      "path": "BLACKSMITH_CORE_CANON_RESOLUTION_06_2026.md",
-      "role": "behavior_evidence_plus_recall_interview_validation_gate",
-      "status": "USER_APPROVED_MERGED_PR94"
-    },
-    {
-      "id": "r1-canon-alignment-audit",
-      "path": "BLACKSMITH_R1_CANON_ALIGNMENT_AND_PR94_AUDIT_2026.md",
-      "role": "r1_canon_alignment_and_adversarial_audit",
-      "status": "MERGED_PR94_P0_0_P1_0"
-    },
-    {
-      "id": "mvp-003-scope",
       "path": "../../docs/MVP-003_SCOPE.md",
       "role": "historical_reference_implementation_scope",
-      "status": "REFERENCE_IMPLEMENTATION_HISTORICAL_POC"
+      "status": "HISTORICAL_EVIDENCE_HOLD"
     },
     {
-      "id": "active-context",
-      "path": "../../[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
-      "role": "current_work_context",
-      "status": "CURRENT_APPROVED_CANON"
-    },
-    {
-      "id": "development-gates",
-      "path": "../../[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
-      "role": "planning_and_product_gate_status",
-      "status": "CURRENT_APPROVED_CANON"
+      "path": "BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json",
+      "role": "legacy_status_authority",
+      "status": "CURRENT_R2_CANON"
     }
   ],
-  "approved_batches": [
-    {
-      "id": "BS-GRILL-BATCH-20260802-001",
-      "merge_pr": 87,
-      "merge_sha": "f0c2d65196750d39d4d2db3bfe6f387a61226f4a"
-    },
-    {
-      "id": "BS-GRILL-BATCH-20260802-002",
-      "merge_pr": 89,
-      "merge_sha": "6a570a52eb9dea95895e7478bf892fc5adfa9262"
-    },
-    {
-      "id": "BS-GRILL-BATCH-20260802-003",
-      "merge_pr": 91,
-      "merge_sha": "eac7af22726587d5451d1b130c38d8afc6af6633"
-    },
-    {
-      "id": "BS-GRILL-BATCH-20260802-004",
-      "merge_pr": 93,
-      "merge_sha": "b3a852cbb35de73a4b2da32151f845ddd61e1921",
-      "closure": "USER_DIRECTED_EARLY_CLOSE_2_OF_2"
-    },
-    {
-      "id": "BS-R1-CANON-ALIGNMENT-20260803",
-      "merge_pr": 94,
-      "merge_sha": "8a0956d6c8b4cf3db545a17d0bd002ba8354d568",
-      "audit_id": "BS-OPS-20260803-02"
-    },
-    {
-      "id": "BS-R1-POST-MERGE-FINALIZATION-20260803",
-      "merge_pr": 96,
-      "merge_sha": "e617e13c5fb325cdb80f63c89185eb26966a12c2",
-      "decision_id": "BS-OPS-20260803-03"
-    },
-    {
-      "id": "BS-R1-SHEET-SYNC-CLOSURE-20260803",
-      "merge_pr": 97,
-      "merge_sha": "fb99b700e89d9816c098fcbd3970081189bec20f",
-      "decision_id": "BS-OPS-20260803-04"
-    },
-    {
-      "id": "BS-R1-FINAL-APPROVAL-WORLD-SCHEDULE-20260803",
-      "merge_pr": 98,
-      "merge_sha": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
-      "decision_ids": ["BS-OPS-20260803-05", "BS-WORLD-20260803-01"]
-    },
-    {
-      "id": "BS-R2-CHECKPOINT-001-20260803",
-      "decision_ids": ["BS-WORLD-20260803-02", "BS-OPS-20260803-06"],
-      "closure": "EARLY_CHECKPOINT_1_OF_10_AUTHORITY_DRIFT",
-      "merge_pr": 99,
-      "merge_sha": "534ac05596573ae4055fa97a4e6888f4e8966b05",
-      "status": "MERGED_MAIN_CANON_READBACK_PASS"
-    }
+  "r1_retained_principles": [
+    "ONE_BLACKSMITH",
+    "ENHANCEMENT_STOP_OR_CONTINUE_IS_IMMEDIATE_CORE_FUN",
+    "ITEM_UID_AND_LIFECYCLE_PERSISTENCE",
+    "FATIGUE_IS_DAILY_PRIORITY_RESOURCE_NOT_SUCCESS_PENALTY",
+    "CUSTOMER_AND_WORLD_RESULTS_CREATE_NEXT_CRAFTING_REASON",
+    "GENERAL_FAILURE_DOES_NOT_AUTOMATICALLY_DELETE_ITEM_HISTORY",
+    "VERSIONED_TEST_PRESETS_SEPARATE_FROM_PRODUCT_VALUES",
+    "BEHAVIOR_EVIDENCE_PLUS_NEUTRAL_RECALL_INTERVIEW",
+    "PRODUCT_IMPLEMENTATION_BLOCKED_UNTIL_R1_TO_R8_AND_FINAL_USER_REVIEW"
   ],
-  "current_core_contract": {
+  "historical_core_contract": {
     "validation_cap": "+50",
     "precision_milestones": [10, 20, 30, 40, 50],
     "final_cap": "DEFERRED",
     "general_affix_slots": 2,
+    "general_affix_slots_status": "SUPERSEDED_BY_EXACTLY_THREE_GRADE_CATALYST_CHRONICLE_SLOTS",
     "active_lifecycle_modifier_slots": 1,
+    "active_lifecycle_modifier_status": "REFINED_AS_CHRONICLE_AFFIX_WITH_UID_BACKED_DETAIL",
+    "world_schedule_fixed_day_preset": "HISTORICAL_PERSONAL_SCHEDULE_EXAMPLE_NOT_UNIVERSAL",
     "vertical_slice": "ONE_WORK_PLUS50_MULTI_DAY_LIFECYCLE_RETURN_LOOP",
     "numeric_authority": "VERSIONED_TEST_PRESETS",
-    "fun_validation": "BEHAVIOR_EVIDENCE_PLUS_RECALL_INTERVIEW",
-    "world_schedule_progression": "ONE_EXPLICIT_STEP_PER_GAME_DAY_MAXIMUM",
-    "world_schedule_minimum_intermediate_states": 1,
-    "world_schedule_same_day_resolution": false,
-    "world_schedule_scale_duration_relation": "MONOTONIC_INCREASE",
-    "first_slice_world_schedule_baseline": "DELIVERY_PREP_DAY1_INITIAL_DAY2_TURNING_DAY3_RESULT_DAY4_REVISIT"
+    "fun_validation": "BEHAVIOR_EVIDENCE_PLUS_RECALL_INTERVIEW"
   },
-  "world_schedule_contract": {
-    "required_states": ["SCHEDULED_OR_PREPARATION", "AT_LEAST_ONE_INTERMEDIATE", "RESOLVED_ON_SEPARATE_DAY"],
-    "scale_order": ["LOCAL_PERSONAL", "REGIONAL_FACTION", "REALM_NATIONAL", "WAR_CATASTROPHE"],
-    "exact_durations": "BASELINE_TEST_PRESET",
-    "first_slice_preset": {
-      "delivery_day": "USE_PLAN_PREPARATION_EXPECTED_CONTRIBUTION",
-      "day_1": "DEPARTURE_INITIAL_USE_INITIAL_CONTACT",
-      "day_2": "VARIABLE_RISK_OPPORTUNITY_TURNING_POINT",
-      "day_3": "FINAL_RESULT",
-      "day_4": "SAME_UID_REVISIT_AND_NEXT_ACTION",
-      "authority": "USER_APPROVED_BASELINE_TEST_PRESET"
+  "r2_supersession": [
+    {
+      "historical_rule": "GENERAL_AFFIX_A_AND_B",
+      "status": "SUPERSEDED",
+      "replacement": "GRADE_AFFIX_CATALYST_AFFIX_CHRONICLE_AFFIX",
+      "decision": "BS-CRAFT-20260804-06"
     },
-    "date_pass_only_modifier_growth": "PROHIBITED",
-    "empty_wait_updates": "PROHIBITED"
-  },
-  "content_holds": {
-    "hall_of_fame": "FUTURE_CONTENT_HOLD_NONCOMPETITIVE_ARCHIVE",
-    "large_world_content": "DEFERRED_CONTENT_BUT_SCALE_DURATION_RULE_APPROVED",
-    "post_plus50_growth": "DEFERRED"
-  },
-  "pull_request_status": [
-    {"number": 94, "status": "MERGED_CANON_BASELINE"},
-    {"number": 96, "status": "MERGED_POST_MERGE_FINALIZATION"},
-    {"number": 97, "status": "MERGED_SHEET_SYNC_GATE_CLOSURE"},
-    {"number": 98, "status": "MERGED_R1_FINAL_APPROVAL_WORLD_SCHEDULE"},
-    {"number": 99, "status": "MERGED_R2_CHECKPOINT_001"},
-    {"number": 95, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
-    {"number": 86, "status": "SUPERSEDED_CLOSED_WITHOUT_MERGE"},
-    {"number": 61, "status": "HISTORY_ONLY_CLOSED_WITHOUT_MERGE"},
-    {"number": 81, "status": "REFERENCE_ASSET_OPEN_DRAFT_DO_NOT_MERGE_AS_UNIT"}
+    {
+      "historical_rule": "AUXILIARY_MATERIAL_SLOT",
+      "status": "REJECTED",
+      "replacement": "PRIMARY_MATERIAL_CONTEXT_PLUS_ENHANCEMENT_METHOD_PLUS_ONE_CATALYST",
+      "decision": "BS-CRAFT-20260804-04"
+    },
+    {
+      "historical_rule": "UNIVERSAL_DAY3_RESULT_DAY4_REVISIT",
+      "status": "SUPERSEDED_IN_SCOPE",
+      "replacement": "PERSONAL_SCHEDULE_AND_ANNOUNCED_FIXED_DATE_WORLD_SCHEDULE_SEPARATION",
+      "decision": "BS-WORLD-20260803-03"
+    },
+    {
+      "historical_rule": "CUSTOMER_DISPLAY_SCALE_1_TO_5",
+      "status": "SUPERSEDED",
+      "replacement": "INTEGER_1_TO_10",
+      "decision": "BS-CUSTOMER-20260803-02"
+    },
+    {
+      "historical_rule": "BS-GRADE-20260801-02_FIVE_CRAFTSMANSHIP_GRADES",
+      "status": "SUPERSEDED_IN_TIER_MODEL",
+      "replacement": "STANDARD_GOOD_PERFECT_BASELINE_GRADE_AFFIX_IDS",
+      "decision": "BS-CRAFT-20260804-06"
+    }
   ],
+  "pull_request_status": [
+    {
+      "number": 94,
+      "status": "MERGED_R1_CANON_BASELINE"
+    },
+    {
+      "number": 98,
+      "status": "MERGED_R1_FINAL_APPROVAL"
+    },
+    {
+      "number": 103,
+      "status": "MERGED_R2_CHECKPOINT_003"
+    },
+    {
+      "number": 104,
+      "status": "MERGED_R2_CHECKPOINT_003_CLOSURE"
+    },
+    {
+      "number": 81,
+      "status": "REFERENCE_ONLY_DO_NOT_MERGE_AS_UNIT",
+      "whole_pr_merge": "REJECTED",
+      "selective_promotion": "HOLD"
+    }
+  ],
+  "validation": {
+    "r1_user_final_review": "PASS_USER_APPROVED",
+    "r2_checkpoint_003_pr103_workflows": "PASS",
+    "r2_checkpoint_003_pr104_workflows": "PASS",
+    "latest_runtime_android_accessibility_performance_human": "NOT_RUN",
+    "product_paths_changed_in_checkpoint_003": false
+  },
   "next_activity": {
-    "id": "R2_CORE_SESSION_META_LOOP_PLANNING",
+    "id": "R2_CANON_ADVERSARIAL_AUDIT_AND_LEGACY_CLASSIFICATION",
     "status": "ACTIVE",
     "approved_counter": "0/10",
-    "steps": [
-      "define intervention days versus observation-only days",
-      "define daily update information and player response options",
-      "define simultaneous schedule and day-skip protection",
-      "define immediate session and long-term reward hierarchy",
-      "continue R2 planning without product implementation"
-    ]
-  },
-  "validation": {
-    "batch_001_to_004_main_and_sheet_readback": "PASS",
-    "core_resolution_decisions_sheet_readback": "PASS",
-    "r1_canon_alignment_audit": "PASS_P0_0_P1_0",
-    "r1_user_final_review": "PASS_USER_APPROVED",
-    "pr94_base_validation": "PASS",
-    "pr94_pr_validation": "PASS",
-    "pr96_base_validation": "PASS",
-    "pr96_pr_validation": "PASS",
-    "pr97_base_validation": "PASS",
-    "pr97_pr_validation": "PASS",
-    "pr98_base_validation": "PASS",
-    "pr98_pr_validation": "PASS",
-    "pr98_sheet_readback": "PASS",
-    "pr99_workflows": "PASS_5_OF_5",
-    "pr99_review": "COMMENTS_0_THREADS_0_P0_0_P1_0",
-    "r2_checkpoint_001_adversarial_audit": "PASS_P0_0_P1_0",
-    "r2_checkpoint_001_sheet_sync": "PASS_MAIN_CANON_READBACK",
-    "authority_drift": "RESOLVED",
-    "latest_product_runtime": "NOT_RUN",
-    "android": "NOT_RUN",
-    "accessibility": "NOT_RUN",
-    "performance": "NOT_RUN",
-    "human_playtest": "NOT_RUN"
+    "product_implementation": "BLOCKED"
   }
 }

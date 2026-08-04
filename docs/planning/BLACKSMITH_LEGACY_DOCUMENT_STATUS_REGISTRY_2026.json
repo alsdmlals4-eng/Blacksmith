@@ -1,0 +1,153 @@
+{
+  "artifact_role": "BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY",
+  "schema_version": 1,
+  "project": "Blacksmith",
+  "decision_id": "BS-OPS-20260804-02",
+  "audit_id": "BS-ADV-20260804-01",
+  "baseline_main": "d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9",
+  "product_implementation": "BLOCKED",
+  "status_vocabulary": {
+    "CURRENT_CANON": "현재 구현·후속 기획의 직접 기준",
+    "PARTIALLY_SUPERSEDED": "일부 원칙은 유지되나 명시된 범위는 최신 정본이 우선",
+    "SUPERSEDED": "같은 책임을 최신 정본이 완전히 인수하여 현재 구현 기준으로 사용 금지",
+    "HOLD": "아이디어·설계·구현 계획을 아직 채택하지 않아 승인 전 참고만 가능",
+    "REJECTED": "사용하지 않기로 결정하여 재참조 금지",
+    "HISTORICAL_EVIDENCE": "당시 구현·검증·승인 과정 보존용이며 현재 PASS나 제품값이 아님"
+  },
+  "current_authority": [
+    "CURRENT_CONFIRMED_DECISIONS.md",
+    "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
+    "docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md",
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "[기획서]/00_프로젝트_허브/ROADMAP.md",
+    "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
+  ],
+  "documents": [
+    {
+      "path": "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
+      "status": "PARTIALLY_SUPERSEDED",
+      "superseded_scope": [
+        "general affix A/B structure",
+        "two general affix slots",
+        "auxiliary material role",
+        "fixed world-schedule day preset as universal rule"
+      ],
+      "current_replacements": [
+        "CURRENT_CONFIRMED_DECISIONS.md",
+        "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
+        "docs/planning/BLACKSMITH_R2_PRECISION_ENHANCEMENT_METHOD_AND_CATALYST_STRUCTURE_CANON_2026.md",
+        "docs/planning/BLACKSMITH_R2_THREE_AFFIX_SLOT_ARCHITECTURE_CANON_2026.md",
+        "docs/planning/BLACKSMITH_R2_CHRONICLE_AFFIX_DETAIL_INTERACTION_CANON_2026.md"
+      ]
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
+      "status": "SUPERSEDED",
+      "replacement": "CURRENT_CONFIRMED_DECISIONS.md + CURRENT_R2_CANON_REGISTRY.json"
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_PRECISION_ENHANCEMENT_BASELINE.md",
+      "status": "SUPERSEDED",
+      "replacement": "BS-CRAFT-20260804-04 through BS-CRAFT-20260804-06"
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_CORE_CANON_RESOLUTION_02_2026.md",
+      "status": "SUPERSEDED",
+      "replacement": "BS-CRAFT-20260804-06"
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_CORE_CANON_RESOLUTION_03_2026.md",
+      "status": "PARTIALLY_SUPERSEDED",
+      "retained_scope": "one current chronicle affix with evolution history",
+      "replacement": "BS-CRAFT-20260804-06 + BS-UX-20260804-01"
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_MASTER_GAME_DESIGN_PLANNING.md",
+      "status": "PARTIALLY_SUPERSEDED",
+      "retained_scope": "historical project background and broad economy/customer themes",
+      "replacement": "Current Decisions + R1/R2 registries"
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_GROWTH_SYSTEM_PLANNING.md",
+      "status": "PARTIALLY_SUPERSEDED",
+      "retained_scope": "historical growth-axis exploration",
+      "replacement": "Current Decisions + R2 crafting canons"
+    },
+    {
+      "path": "docs/MVP-003_SCOPE.md",
+      "status": "HISTORICAL_EVIDENCE",
+      "secondary_status": "HOLD",
+      "retained_scope": "historical reference implementation and test evidence",
+      "current_use": "must not define current product scope"
+    },
+    {
+      "path": "docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md",
+      "status": "SUPERSEDED",
+      "replacement": "BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md"
+    },
+    {
+      "path": "docs/PROJECT_CORE_REVIEW_REPORT.md",
+      "status": "SUPERSEDED",
+      "replacement": "CURRENT_CONFIRMED_DECISIONS.md + latest adversarial review"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md",
+      "status": "HISTORICAL_EVIDENCE",
+      "secondary_status": "HOLD",
+      "current_use": "reference only; no implementation authority"
+    }
+  ],
+  "pull_requests": [
+    {
+      "number": 81,
+      "status": "HISTORICAL_EVIDENCE",
+      "merge_unit_status": "REJECTED",
+      "display_status": "REFERENCE_ONLY_DO_NOT_MERGE_AS_UNIT",
+      "head": "docs/blacksmith-v9-planning-audit",
+      "head_sha": "12c336f41f6bbbba57c31395db996481086850de",
+      "commits": 181,
+      "changed_files": 88,
+      "selective_promotion_status": "HOLD",
+      "selective_promotion_candidates": [
+        "Save Continue ResultEnvelope",
+        "data and save migration",
+        "automatic forge decision boundary",
+        "customer common pipeline",
+        "UI Android lifecycle accessibility",
+        "storage sales archive",
+        "validation fixtures local telemetry",
+        "visual and asset governance"
+      ],
+      "known_conflicting_asset": {
+        "decision": "BS-GRADE-20260801-02",
+        "status": "SUPERSEDED_IN_TIER_MODEL_BY_BS-CRAFT-20260804-06",
+        "reason": "five craftsmanship grades conflict with current three baseline grade-affix IDs and artistry terminology"
+      }
+    }
+  ],
+  "pattern_rules": [
+    {
+      "pattern": "docs/superpowers/plans/2026-08-01-*",
+      "status": "HOLD",
+      "reason": "implementation remains blocked until R1-R8 and final user review"
+    },
+    {
+      "pattern": "PR81:docs/planning/data/*",
+      "status": "HOLD",
+      "reason": "branch-only machine-readable plans require selective promotion against current R2 canon"
+    },
+    {
+      "pattern": "historical POC exact numbers",
+      "status": "HISTORICAL_EVIDENCE",
+      "reason": "not current product values unless reclassified as BASELINE_TEST_PRESET or CURRENT_VALIDATED"
+    }
+  ],
+  "prohibited_current_claims": [
+    "general affix A and B are the current affix slots",
+    "the current affix slot count is two",
+    "an auxiliary material slot exists in the current precision-enhancement structure",
+    "all schedules use a universal fixed day-3 result and day-4 revisit",
+    "PR 81 can be merged as a unit",
+    "a historical POC PASS is a current product PASS"
+  ]
+}

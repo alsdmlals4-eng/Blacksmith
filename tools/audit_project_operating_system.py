@@ -38,30 +38,80 @@ FRONT_FIELD = re.compile(r"^(?P<key>[A-Za-z_][A-Za-z0-9_-]*):\s*(?P<value>.+?)\s
 ACTIVE_DOCS = (
     "README.md",
     "AGENTS.md",
-    "docs/GODOT_PLAYTEST.md",
-    "docs/MVP-002_SCOPE.md",
+    "CURRENT_CONFIRMED_DECISIONS.md",
+    "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
+    "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
     "[기획서]/00_프로젝트_허브/START_HERE.md",
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
     "[기획서]/00_프로젝트_허브/ROADMAP.md",
-    "[기획서]/00_프로젝트_허브/DECISION_LOG.md",
-    "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
+    "[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json",
 )
 
 STALE_PATTERNS = {
     "legacy +5 milestone": re.compile(r"\+5[^\n]{0,80}(첫 수식어|수식어 판정|완료 후 새 철검)", re.IGNORECASE),
-    "legacy no destruction rule": re.compile(r"(실패 시 단계 유지[·, ]+파괴 없음|무기 파괴·수리 없음|실패해도 단계가 내려가거나 무기가 파괴되지 않)", re.IGNORECASE),
+    "legacy current two-affix claim": re.compile(r"현재[^\n]{0,60}(일반 수식어 A.{0,20}일반 수식어 B|수식어 슬롯.{0,10}2개)", re.IGNORECASE),
+    "legacy current auxiliary material claim": re.compile(r"현재[^\n]{0,60}보조재료 슬롯.{0,20}(존재|사용|필수)", re.IGNORECASE),
+    "legacy universal day preset": re.compile(r"모든[^\n]{0,80}(3일 결과|4일 재방문)", re.IGNORECASE),
     "legacy five-test count": re.compile(r"강화 모델\s*5건", re.IGNORECASE),
-    "legacy +0~+5 scope": re.compile(r"\+0\s*[~～-]\s*\+?5", re.IGNORECASE),
     "legacy optional precision enhancement": re.compile(r"정밀 강화\s*ON/OFF", re.IGNORECASE),
 }
 
 REQUIRED_ASSERTIONS = {
-    "README.md": ("+100", "자동 단조", "단계 하락", "파괴", "Godot AI"),
-    "docs/MVP-002_SCOPE.md": ("+10 단위", "자동 단조", "폭주 단조", "+30"),
-    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": ("POC v", "자동 단조", "+11", "+30"),
-    "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": ("+100", "자동 단조", "폭주 단조", "보관함"),
-    "project.godot": ("res://addons/godot_ai/plugin.cfg", "res://addons/godot_ai/runtime/game_helper.gd"),
+    "README.md": (
+        "장비의 출생·성장·소유·사건 기록",
+        "Godot AI",
+    ),
+    "CURRENT_CONFIRMED_DECISIONS.md": (
+        "[현재 정본]",
+        "BS-OPS-20260804-02",
+        "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
+        '"schema_version": 6',
+        '"planning_pr": 103',
+        '"closure_pr": 104',
+        '"next_approval_counter": "0/10"',
+        '"product_implementation": "BLOCKED"',
+    ),
+    "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
+        "[현재 정본]",
+        "GRADE_AFFIX",
+        "CATALYST_AFFIX",
+        "CHRONICLE_AFFIX",
+        "보조재료 슬롯 재도입 금지",
+        "일반 수식어 A·B 구조 재도입 금지",
+    ),
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
+        "R2 체크포인트 003",
+        "BS-OPS-20260804-02",
+        "다음 승인 카운터: `0/10`",
+        "제품 구현: `BLOCKED`",
+    ),
+    "[기획서]/00_프로젝트_허브/ROADMAP.md": (
+        "R2_CHECKPOINT_003",
+        "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+        "PRODUCT_IMPLEMENTATION: BLOCKED",
+    ),
+    "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
+        "Three Affix Gate",
+        "Legacy Document Gate",
+        "CODEX_IMPLEMENTATION_GATE: BLOCKED",
+    ),
+    "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
+        "[부분 대체됨]",
+        "현재 구현·후속 기획의 직접 기준으로 사용하지 마십시오",
+        "BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
+    ),
+    "docs/MVP-003_SCOPE.md": (
+        "[역사 증거] [보류]",
+        "NOT_CURRENT_PRODUCT_SCOPE / HOLD",
+    ),
+    "project.godot": (
+        "res://addons/godot_ai/plugin.cfg",
+        "res://addons/godot_ai/runtime/game_helper.gd",
+    ),
 }
 
 
@@ -288,8 +338,6 @@ def audit_project(project_root: Path, profile: dict, findings: list[Finding]) ->
 
     broken_refs: list[str] = []
     for source in text_files(project_root):
-        # Vendored add-ons may name upstream-only docs/tests in comments or remote URL builders.
-        # Their runtime contract is checked through project.godot, required entrypoints, and Godot parsing.
         if is_vendored_reference_source(project_root, source):
             continue
         text = source.read_text(encoding="utf-8", errors="replace")

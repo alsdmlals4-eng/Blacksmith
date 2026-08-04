@@ -3,447 +3,153 @@
   "schema_version": 3,
   "registry_role": "ai-design-document-router-and-publication-index",
   "project_name": "Blacksmith",
-  "current_operating_decision": "BS-OPS-20260802-01",
+  "current_operating_decision": "BS-OPS-20260804-02",
   "current_work_mode": "TOTAL_PLANNING",
-  "source_of_truth_policy": "Each question has exactly one current GitHub Markdown or JSON source. Runtime values live in data/**/*.json, implementation facts live in scenes/scripts/resources/tests, and Google Sheet is a user-facing planning consumer.",
-  "publication_status_policy": [
-    "CURRENT",
-    "STALE",
-    "NOT_RUN",
-    "FAILED"
-  ],
-  "publication_policies": [
-    "source_only",
-    "milestone_sync",
-    "always_sync"
-  ],
-  "required_responsibility_coverage": [
-    "프로젝트 전체",
-    "게임 디자인",
-    "UX·UI·접근성",
-    "개발·엔지니어링",
-    "QA",
-    "프로덕션·PM"
+  "current_stage": "R2_CORE_SESSION_META_LOOP",
+  "product_implementation": "BLOCKED",
+  "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, and Development Gates. Status-marked historical documents never override current R2 canon.",
+  "status_vocabulary": [
+    "ACTIVE",
+    "PARTIALLY_SUPERSEDED",
+    "SUPERSEDED",
+    "HISTORICAL_HOLD"
   ],
   "documents": [
     {
       "document_id": "current-confirmed-decisions",
-      "title": "Blacksmith Current Confirmed Decisions",
-      "discipline": "프로젝트 전체",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "ACTIVE",
       "source_path": "../../CURRENT_CONFIRMED_DECISIONS.md",
       "source_format": "markdown",
+      "status": "ACTIVE",
       "source_role": "current_decision_entrypoint",
-      "publication_policy": "always_sync",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "CURRENT",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "./ACTIVE_CONTEXT.md",
-        "./DEVELOPMENT_GATES.md",
-        "./ROADMAP.md",
-        "../../skills/PROJECT_BASE_ADAPTER.json"
-      ]
+      "publication_policy": "always_sync"
     },
     {
-      "document_id": "bs-ops-20260802-01-baseline",
-      "title": "BS-OPS-20260802-01 Baseline Recovery Record",
-      "discipline": "QA",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "document_id": "current-r2-canon-registry",
+      "source_path": "../../docs/planning/CURRENT_R2_CANON_REGISTRY.json",
+      "source_format": "json",
       "status": "ACTIVE",
-      "source_path": "../../docs/operations/BS-OPS-20260802-01_BASELINE.md",
-      "source_format": "markdown",
-      "source_role": "operating_baseline_and_finding_ledger",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "CURRENT",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../project.godot",
-        "../../skills/PROJECT_BASE_ADAPTER.json",
-        "../../docs/PROJECT_OPERATING_HEALTH.json"
-      ]
+      "source_role": "current_machine_readable_canon",
+      "publication_policy": "always_sync"
     },
     {
-      "document_id": "planning-canon-recovery-design",
-      "title": "Blacksmith 기획 정본 복구·총기획 재개 설계",
-      "discipline": "프로젝트 전체",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "document_id": "current-r2-game-bible",
+      "source_path": "../../docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
+      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_path": "../../docs/superpowers/specs/2026-08-02-planning-canon-recovery-design.md",
-      "source_format": "markdown",
-      "source_role": "approved_recovery_design",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "CURRENT",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../CURRENT_CONFIRMED_DECISIONS.md",
-        "./ROADMAP.md"
-      ]
+      "source_role": "current_integrated_game_design",
+      "publication_policy": "milestone_sync"
     },
     {
-      "document_id": "planning-canon-recovery-plan",
-      "title": "Blacksmith Planning Canon Recovery Implementation Plan",
-      "discipline": "프로덕션·PM",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
+      "document_id": "active-context",
+      "source_path": "./ACTIVE_CONTEXT.md",
+      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_path": "../../docs/superpowers/plans/2026-08-02-blacksmith-planning-canon-recovery.md",
-      "source_format": "markdown",
-      "source_role": "approved_recovery_execution_plan",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "CURRENT",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "./ACTIVE_CONTEXT.md",
-        "./DEVELOPMENT_GATES.md",
-        "./ROADMAP.md"
-      ]
+      "source_role": "current_session_context",
+      "publication_policy": "always_sync"
     },
     {
-      "document_id": "project-core-contract",
-      "title": "Blacksmith 프로젝트 코어 확정 계약",
-      "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "REVIEW_REQUIRED",
-      "source_path": "../../docs/superpowers/specs/2026-07-23-project-core-design.md",
+      "document_id": "roadmap",
+      "source_path": "./ROADMAP.md",
       "source_format": "markdown",
-      "source_role": "protected_core_input_for_r1",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
-        "./ACTIVE_CONTEXT.md",
-        "./DEVELOPMENT_GATES.md"
-      ]
+      "status": "ACTIVE",
+      "source_role": "current_stage_and_gate_plan",
+      "publication_policy": "always_sync"
+    },
+    {
+      "document_id": "development-gates",
+      "source_path": "./DEVELOPMENT_GATES.md",
+      "source_format": "markdown",
+      "status": "ACTIVE",
+      "source_role": "current_planning_and_product_gates",
+      "publication_policy": "always_sync"
+    },
+    {
+      "document_id": "canon-adversarial-review-20260804",
+      "source_path": "../../docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md",
+      "source_format": "markdown",
+      "status": "ACTIVE",
+      "source_role": "current_canon_adversarial_audit",
+      "publication_policy": "always_sync"
+    },
+    {
+      "document_id": "legacy-document-status-registry",
+      "source_path": "../../docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json",
+      "source_format": "json",
+      "status": "ACTIVE",
+      "source_role": "legacy_status_authority",
+      "publication_policy": "always_sync"
+    },
+    {
+      "document_id": "current-r1-canon-registry",
+      "source_path": "../../docs/planning/CURRENT_R1_CANON_REGISTRY.json",
+      "source_format": "json",
+      "status": "HISTORICAL_HOLD",
+      "source_role": "historical_r1_approved_baseline_r2_refined",
+      "publication_policy": "source_only"
     },
     {
       "document_id": "blacksmith-game-bible",
-      "title": "Blacksmith 통합 게임 기획서",
-      "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "REVIEW_REQUIRED",
       "source_path": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
       "source_format": "markdown",
-      "source_role": "integrated_planning_input_for_r1_to_r7",
-      "publication_policy": "milestone_sync",
-      "output_pdf": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.pdf",
-      "output_docx": null,
-      "asset_dir": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.assets",
-      "publication_manifest": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE_PUBLICATION_MANIFEST.json",
-      "publication_status": "NOT_RUN",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../project.godot",
-        "../../data",
-        "../../scripts",
-        "../../scenes",
-        "../../tests"
-      ]
+      "status": "PARTIALLY_SUPERSEDED",
+      "source_role": "r1_historical_entrypoint_to_current_r2_game_bible",
+      "publication_policy": "source_only"
     },
     {
-      "document_id": "project-core-review-report",
-      "title": "Blacksmith 프로젝트 코어 1차 진단·벤치마킹 보고서",
-      "discipline": "QA",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "HISTORICAL",
-      "source_path": "../../docs/PROJECT_CORE_REVIEW_REPORT.md",
+      "document_id": "project-core-contract",
+      "source_path": "../../docs/superpowers/specs/2026-07-23-project-core-design.md",
       "source_format": "markdown",
-      "source_role": "historical_analysis_result",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../docs/superpowers/specs/2026-07-23-project-core-design.md"
-      ]
+      "status": "HISTORICAL_HOLD",
+      "source_role": "historical_project_core_input",
+      "publication_policy": "source_only"
     },
     {
       "document_id": "equipment-lifecycle-poc-integrated-spec",
-      "title": "Blacksmith 장비 한 점의 생애 PoC 통합 명세",
-      "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "REFERENCE_IMPLEMENTATION",
       "source_path": "../../docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md",
       "source_format": "markdown",
-      "source_role": "historical_poc_spec_and_r4_input",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../docs/MVP-003_SCOPE.md",
-        "../../docs/MVP-003_IMPLEMENTATION_STATUS.md",
-        "../../scripts",
-        "../../scenes",
-        "../../tests"
-      ]
+      "status": "HISTORICAL_HOLD",
+      "source_role": "historical_poc_spec_no_implementation_authority",
+      "publication_policy": "source_only"
     },
     {
       "document_id": "equipment-lifecycle-poc-implementation-plan",
-      "title": "Blacksmith 장비 한 점의 생애 PoC 구현계획",
-      "discipline": "개발·엔지니어링",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "HISTORICAL",
       "source_path": "../../docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md",
       "source_format": "markdown",
+      "status": "HISTORICAL_HOLD",
       "source_role": "historical_implementation_plan",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../docs/MVP-003_SCOPE.md",
-        "../../docs/MVP-003_IMPLEMENTATION_STATUS.md"
-      ]
+      "publication_policy": "source_only"
     },
     {
       "document_id": "mvp-003-equipment-lifecycle-scope",
-      "title": "MVP-003 장비 한 점의 생애 PoC 범위",
-      "discipline": "개발·엔지니어링",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA"
-      ],
-      "status": "REFERENCE_IMPLEMENTATION",
       "source_path": "../../docs/MVP-003_SCOPE.md",
       "source_format": "markdown",
-      "source_role": "historical_implementation_scope",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../docs/MVP-003_IMPLEMENTATION_STATUS.md",
-        "../../scripts",
-        "../../scenes",
-        "../../tests"
-      ]
-    },
-    {
-      "document_id": "mvp-001-forging-scope",
-      "title": "MVP-001 제작 범위",
-      "discipline": "개발·엔지니어링",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "개발·엔지니어링",
-        "QA"
-      ],
-      "status": "REFERENCE_IMPLEMENTATION",
-      "source_path": "../../docs/MVP-001_SCOPE.md",
-      "source_format": "markdown",
-      "source_role": "historical_implementation_scope",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../scripts/forging",
-        "../../scripts/ui/forging_screen.gd",
-        "../../tests/unit/test_forging_session.gd"
-      ]
-    },
-    {
-      "document_id": "mvp-002-enhancement-scope",
-      "title": "MVP-002 강화·보관·자동 단조 범위",
-      "discipline": "개발·엔지니어링",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA"
-      ],
-      "status": "REFERENCE_IMPLEMENTATION",
-      "source_path": "../../docs/MVP-002_SCOPE.md",
-      "source_format": "markdown",
-      "source_role": "historical_implementation_scope",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../data/crafting",
-        "../../scripts/enhancement",
-        "../../scenes/test/enhancement_test.tscn",
-        "../../tests/unit/test_enhancement_session.gd"
-      ]
-    },
-    {
-      "document_id": "balance-simulation-scope",
-      "title": "위험·가격 곡선 시뮬레이션 범위",
-      "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "REFERENCE_IMPLEMENTATION",
-      "source_path": "../../docs/BALANCE_SIMULATION_SCOPE.md",
-      "source_format": "markdown",
-      "source_role": "historical_analysis_scope_and_r5_input",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../data/crafting/enhancement_balance.json",
-        "../../tools/simulate_enhancement_balance.py",
-        "../../tests/test_enhancement_balance_simulator.py"
-      ]
-    },
-    {
-      "document_id": "balance-simulation-report",
-      "title": "위험·가격 곡선 기준선 시뮬레이션 보고서",
-      "discipline": "게임 디자인",
-      "responsibility_coverage": [
-        "게임 디자인",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "HISTORICAL",
-      "source_path": "../../docs/BALANCE_SIMULATION_REPORT.md",
-      "source_format": "markdown",
-      "source_role": "historical_analysis_result_and_r5_evidence",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../data/crafting/enhancement_balance.json",
-        "../../tools/simulate_enhancement_balance.py",
-        "../../tests/test_enhancement_balance_simulator.py"
-      ]
+      "status": "HISTORICAL_HOLD",
+      "source_role": "historical_reference_implementation_scope",
+      "publication_policy": "source_only"
     },
     {
       "document_id": "final-adversarial-review-report",
-      "title": "과거 Blacksmith 적대적 검토 및 MVP 마감 보고서",
-      "discipline": "QA",
-      "responsibility_coverage": [
-        "프로젝트 전체",
-        "게임 디자인",
-        "UX·UI·접근성",
-        "개발·엔지니어링",
-        "QA",
-        "프로덕션·PM"
-      ],
-      "status": "HISTORICAL",
       "source_path": "../../docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md",
       "source_format": "markdown",
-      "source_role": "historical_validation_report",
-      "publication_policy": "source_only",
-      "output_pdf": null,
-      "output_docx": null,
-      "asset_dir": null,
-      "publication_manifest": null,
-      "publication_status": "STALE",
-      "human_visual_review": "NOT_RUN",
-      "actual_paths": [
-        "../../tests",
-        "../../.github/workflows"
-      ]
+      "status": "SUPERSEDED",
+      "source_role": "historical_adversarial_review",
+      "publication_policy": "source_only"
+    },
+    {
+      "document_id": "project-core-review-report",
+      "source_path": "../../docs/PROJECT_CORE_REVIEW_REPORT.md",
+      "source_format": "markdown",
+      "status": "SUPERSEDED",
+      "source_role": "historical_project_core_review",
+      "publication_policy": "source_only"
     }
+  ],
+  "routing_guards": [
+    "ACTIVE_DOCUMENTS_OVERRIDE_STATUS_MARKED_HISTORICAL_DOCUMENTS",
+    "GENERAL_AFFIX_A_B_MUST_NOT_BE_ROUTED_AS_CURRENT",
+    "AUXILIARY_MATERIAL_SLOT_MUST_NOT_BE_ROUTED_AS_CURRENT",
+    "PR81_MUST_NOT_BE_ROUTED_AS_MERGEABLE_CANON",
+    "HISTORICAL_POC_PASS_MUST_NOT_BE_ROUTED_AS_CURRENT_PRODUCT_PASS",
+    "PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED"
   ]
 }

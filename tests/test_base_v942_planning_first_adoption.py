@@ -8,167 +8,114 @@ ROOT = Path(__file__).resolve().parents[1]
 ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
 R1_REGISTRY = ROOT / "docs/planning/CURRENT_R1_CANON_REGISTRY.json"
 R2_REGISTRY = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
-CHECKPOINT_001 = ROOT / "docs/planning/BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md"
-CUSTOMER_SCHEDULE_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md"
+LEGACY_REGISTRY = ROOT / "docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json"
+CURRENT_GAME_BIBLE = ROOT / "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
+OLD_GAME_BIBLE = ROOT / "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
 ROOT_DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 
 
-def load_adapter() -> dict:
-    return json.loads(ADAPTER.read_text(encoding="utf-8"))
+def load_json(path: Path) -> dict:
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 class PlanningFirstCompatibilityTests(unittest.TestCase):
-    def test_v943_preserves_planning_first_contract(self) -> None:
-        adapter = load_adapter()
+    def test_base_v943_contract_remains_pinned(self) -> None:
+        adapter = load_json(ADAPTER)
         release = adapter["base_release"]
         self.assertEqual("9.4.3", release["version"])
         self.assertEqual("7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8", release["release_commit"])
         self.assertEqual("da33a350d61b8adc52df97fccc7001708a933370", release["release_evidence_commit"])
         self.assertEqual("0b7c94f38d959efc0fc9442274c60b2e268a3c97", release["finalization_commit"])
-        self.assertEqual(
-            "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59",
-            adapter["skill_registry"]["base"]["sha256"],
-        )
-
-    def test_intake_route_and_batch_contract(self) -> None:
-        adapter = load_adapter()
-        active = {
-            route if isinstance(route, str) else route["skill_id"]
-            for route in adapter["routing"]["base_routes"]
-            if isinstance(route, str) or route.get("status") == "ACTIVE"
-        }
-        self.assertIn("managing-project-intake-and-work-contract", active)
-        policy = adapter["shared_overrides"]["managing-project-intake-and-work-contract"]["planning_first_governance"]
-        self.assertEqual("docs/PLANNING_FIRST_GRILL_ME_BATCH_POLICY.md", policy["base_contract_source"])
-        self.assertEqual("templates/project-operations/GRILL_ME_BATCH_CHECKPOINT.md", policy["checkpoint_template"])
-        self.assertEqual("base-v9.4.3.lock.json", policy["base_release_lock"])
-        self.assertEqual(10, policy["max_approved_decisions_per_batch"])
-        self.assertEqual("RECOMMENDED_DEFAULT", policy["numeric_default_state"])
-        self.assertEqual("GRILL_ME_REQUIRED", policy["planning_conflict_state"])
-        self.assertEqual("APPROVED_PENDING_MERGE", policy["pre_merge_sheet_state"])
-        self.assertEqual("SYNCED_TO_MAIN", policy["post_merge_sheet_state"])
-
-    def test_base_adapter_boundaries_remain_stable(self) -> None:
-        adapter = load_adapter()
-        state = adapter["project_operating_state"]
-        self.assertEqual("R2_CORE_SESSION_META_LOOP", state["stage"])
-        self.assertEqual("BLOCKED_UNVERIFIED", adapter["compatibility"]["view_freshness"])
-        self.assertEqual(
-            "DO_NOT_HAND_EDIT_GENERATED_COMPATIBILITY_VIEWS",
-            adapter["compatibility"]["manual_edit_policy"],
-        )
-        self.assertEqual("BLOCKED", state["product_implementation"])
-        self.assertEqual("NOT_RUN", state["human_playtest"])
+        self.assertEqual(10, adapter["shared_overrides"]["managing-project-intake-and-work-contract"]["planning_first_governance"]["max_approved_decisions_per_batch"])
+        self.assertEqual("BLOCKED", adapter["project_operating_state"]["product_implementation"])
         self.assertEqual(
             ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
             adapter["protected_paths"],
         )
 
-    def test_r1_checkpoint_history_remains_available(self) -> None:
-        registry = json.loads(R1_REGISTRY.read_text(encoding="utf-8"))
-        self.assertEqual("BS-WORLD-20260803-02", registry["r2_world_schedule_baseline_decision"])
-        self.assertEqual("BS-OPS-20260803-06", registry["r2_checkpoint_decision"])
-        self.assertTrue(CHECKPOINT_001.exists())
+    def test_r1_registry_is_historical_and_r2_refined(self) -> None:
+        registry = load_json(R1_REGISTRY)
+        self.assertEqual("HISTORICAL_R1_APPROVED_BASELINE_R2_REFINED", registry["registry_status"])
+        self.assertEqual("R2_CHECKPOINT_003_CANON", registry["stage_status"])
+        historical = registry["historical_core_contract"]
+        self.assertEqual(2, historical["general_affix_slots"])
+        self.assertEqual(
+            "SUPERSEDED_BY_EXACTLY_THREE_GRADE_CATALYST_CHRONICLE_SLOTS",
+            historical["general_affix_slots_status"],
+        )
+        supersession = {item["historical_rule"]: item for item in registry["r2_supersession"]}
+        self.assertEqual("SUPERSEDED", supersession["GENERAL_AFFIX_A_AND_B"]["status"])
+        self.assertEqual("REJECTED", supersession["AUXILIARY_MATERIAL_SLOT"]["status"])
+        pr81 = next(item for item in registry["pull_request_status"] if item["number"] == 81)
+        self.assertEqual("REFERENCE_ONLY_DO_NOT_MERGE_AS_UNIT", pr81["status"])
+        self.assertEqual("REJECTED", pr81["whole_pr_merge"])
 
-    def test_current_r2_schedule_taxonomy(self) -> None:
-        registry = json.loads(R2_REGISTRY.read_text(encoding="utf-8"))
+    def test_r2_checkpoint_003_is_closed_without_self_reference(self) -> None:
+        registry = load_json(R2_REGISTRY)
+        self.assertEqual(6, registry["schema_version"])
+        self.assertIn("R2_CHECKPOINT_003_CANON", registry["stage_status"])
+        evidence = registry["immutable_merge_evidence"]["checkpoint_003"]
+        self.assertEqual(103, evidence["planning_pr"])
+        self.assertEqual("674ee21013cb5d41f89a1a3f3b10ecfc31238295", evidence["planning_merge_sha"])
+        self.assertEqual(104, evidence["closure_pr"])
+        self.assertEqual("d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9", evidence["closure_merge_sha"])
+        self.assertEqual("PASS", evidence["github_readback"])
+        self.assertEqual("PASS", evidence["sheet_readback"])
+        serialized = R2_REGISTRY.read_text(encoding="utf-8")
+        self.assertNotIn('"current_main"', serialized)
+        self.assertNotIn("PENDING_POSTMERGE_CLOSURE_PR104", serialized)
+        self.assertEqual("0/10", registry["next_approval_counter"])
+        self.assertEqual("BLOCKED", registry["product_implementation"])
+
+    def test_current_customer_and_schedule_contracts(self) -> None:
+        registry = load_json(R2_REGISTRY)
         decisions = {item["id"]: item for item in registry["current_decisions"]}
+        customer = decisions["BS-CUSTOMER-20260803-02"]["contract"]
+        self.assertEqual("INTEGER_1_TO_10", customer["event_risk_scale"])
+        self.assertEqual("INTEGER_1_TO_10", customer["customer_stat_scale"])
+        self.assertEqual("NEAREST_10_PERCENT", customer["success_forecast_rounding"])
+        self.assertEqual("5_TO_95_PERCENT", customer["success_forecast_range"])
 
-        world = decisions["BS-WORLD-20260803-03"]
-        contract = world["contract"]
-        self.assertEqual("CUSTOMER_VISIT_PLUS_SALE_OR_DELIVERY", contract["personal_schedule_activation"])
-        self.assertEqual("ONE_END_OF_DAY_CHECK_MAXIMUM_WHILE_ACTIVE", contract["personal_schedule_progression"])
-        self.assertFalse(contract["repeat_visit_required_for_progress"])
-        self.assertEqual("ANNOUNCED_FIXED_DATE_MAJOR_EVENT", contract["world_schedule_activation"])
-        self.assertEqual(
-            "PREPARATION_CHECKPOINTS_PLUS_SCHEDULED_EVENT_DATE",
-            contract["world_schedule_progression"],
-        )
+        schedule = decisions["BS-WORLD-20260803-03"]["contract"]
+        self.assertEqual("CUSTOMER_VISIT_PLUS_SALE_OR_DELIVERY", schedule["personal_schedule_activation"])
+        self.assertEqual("ONE_END_OF_DAY_CHECK_MAXIMUM_WHILE_ACTIVE", schedule["personal_schedule_progression"])
+        self.assertFalse(schedule["universal_fixed_day3_result_day4_revisit"])
 
-        supersession = registry["supersession"][0]
-        self.assertEqual("BS-WORLD-20260803-02", supersession["decision"])
-        self.assertEqual(
-            "SUPERSEDED_IN_SCOPE_BY_BS-WORLD-20260803-03",
-            supersession["status"],
-        )
-        self.assertEqual(
-            "HISTORICAL_BASELINE_EXAMPLE_FOR_ONE_PERSONAL_SCHEDULE",
-            supersession["retained_role"],
-        )
+    def test_legacy_status_registry_prevents_stale_authority(self) -> None:
+        registry = load_json(LEGACY_REGISTRY)
+        statuses = {item["path"]: item for item in registry["documents"]}
+        self.assertEqual("SUPERSEDED", statuses["docs/planning/BLACKSMITH_PRECISION_ENHANCEMENT_BASELINE.md"]["status"])
+        self.assertEqual("SUPERSEDED", statuses["docs/planning/BLACKSMITH_CORE_CANON_RESOLUTION_02_2026.md"]["status"])
+        self.assertEqual("PARTIALLY_SUPERSEDED", statuses["[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"]["status"])
+        pr81 = registry["pull_requests"][0]
+        self.assertEqual(81, pr81["number"])
+        self.assertEqual("REJECTED", pr81["merge_unit_status"])
+        self.assertEqual("HOLD", pr81["selective_promotion_status"])
 
-    def test_visible_customer_capability_forecast(self) -> None:
-        registry = json.loads(R2_REGISTRY.read_text(encoding="utf-8"))
-        decisions = {item["id"]: item for item in registry["current_decisions"]}
-        customer = decisions["BS-CUSTOMER-20260803-01"]["contract"]
-
-        self.assertEqual(["SKILL", "ENDURANCE", "JUDGMENT"], customer["core_stats"])
-        self.assertEqual("1_TO_5", customer["display_scale"])
-        self.assertEqual("ONE_PRIMARY_PLUS_AT_MOST_ONE_SECONDARY", customer["schedule_stat_usage"])
-        self.assertEqual(2, customer["traits_max"])
-        self.assertEqual(1, customer["weaknesses_max"])
-        self.assertEqual(
-            ["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"],
-            customer["success_forecast"],
-        )
-        self.assertTrue(customer["forecast_reasons_required"])
-        self.assertEqual("BASELINE_TEST_PRESET", customer["exact_modifiers"])
-
-    def test_checkpoint_002_is_merged_and_synced(self) -> None:
-        registry = json.loads(R2_REGISTRY.read_text(encoding="utf-8"))
-        self.assertEqual(
-            "R2_CHECKPOINT_002_MERGED_MAIN_CANON_READBACK_PASS",
-            registry["stage_status"],
-        )
-        self.assertEqual(101, registry["baseline"]["checkpoint_merge_pr"])
-        self.assertEqual(
-            "a81cbe5de685e2900070d9a32db56556538e0a6f",
-            registry["baseline"]["checkpoint_merge_sha"],
-        )
-        checkpoint = registry["checkpoint"]
-        self.assertEqual("MERGED_PR101_MAIN_CANON_READBACK_PASS", checkpoint["closure"])
-        self.assertEqual("0/10", checkpoint["next_counter_after_merge"])
-        self.assertEqual("PASS_3_OF_3", checkpoint["workflows"])
-        self.assertEqual("P0_0_P1_0", checkpoint["adversarial_audit"])
-        self.assertFalse(checkpoint["product_paths_changed"])
-
-    def test_current_canon_text_is_linked_and_truthful(self) -> None:
-        canon = CUSTOMER_SCHEDULE_CANON.read_text(encoding="utf-8")
+    def test_current_entrypoints_are_truthful(self) -> None:
+        current = CURRENT_GAME_BIBLE.read_text(encoding="utf-8")
+        old = OLD_GAME_BIBLE.read_text(encoding="utf-8")
         root = ROOT_DECISIONS.read_text(encoding="utf-8")
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
 
         for token in (
-            "BS-WORLD-20260803-03",
-            "BS-CUSTOMER-20260803-01",
-            "BS-OPS-20260803-07",
-            "기량",
-            "체력",
-            "판단력",
-            "매우 낮음 / 낮음 / 보통 / 높음 / 매우 높음",
+            "GRADE_AFFIX",
+            "CATALYST_AFFIX",
+            "CHRONICLE_AFFIX",
+            "[등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어",
+            "보조재료 슬롯 재도입 금지",
             "제품 구현: `BLOCKED`",
         ):
-            self.assertIn(token, canon)
+            self.assertIn(token, current)
 
-        for token in (
-            "CURRENT_R2_CANON_REGISTRY.json",
-            "SUPERSEDED_IN_SCOPE_BY_BS-WORLD-20260803-03",
-            "고객 개인 일정의 날짜 종료 진행 판정",
-            "특정 날짜를 예고하는 대규모 세계 일정",
-            "R2_CHECKPOINT_002_CANON",
-            "MERGED_PR101",
-            "NEXT_GRILL_ME_COUNTER_0_OF_10",
-        ):
-            self.assertIn(token, root)
-
-        for token in (
-            "BS-WORLD-20260803-03",
-            "BS-CUSTOMER-20260803-01",
-            "고객 재방문 없이 하루 종료마다 최대 한 번 진행 판정",
-            "매우 낮음 / 낮음 / 보통 / 높음 / 매우 높음",
-            "MERGED_PR101",
-            "MAIN_CANON / READBACK_PASS",
-        ):
-            self.assertIn(token, active)
+        self.assertIn("[부분 대체됨]", old)
+        self.assertIn("현재 구현·후속 기획의 직접 기준으로 사용하지 마십시오", old)
+        self.assertIn("BS-OPS-20260804-02", root)
+        self.assertIn("PR #81 전체 병합 단위는 `[폐기]`", root)
+        self.assertIn("CANON_AUDIT_COMPLETE", active)
+        self.assertIn("BS-ADV-20260804-01", active)
+        self.assertIn("다음 승인 카운터: `0/10`", active)
 
 
 if __name__ == "__main__":
