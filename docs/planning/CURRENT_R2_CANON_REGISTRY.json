@@ -3,7 +3,7 @@
   "schema_version": 6,
   "project": "Blacksmith",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
-  "stage_status": "R2_CHECKPOINT_003_CANON_ADVERSARIAL_AUDIT_ACTIVE",
+  "stage_status": "R2_CHECKPOINT_003_CANON_ADVERSARIAL_AUDIT_COMPLETED_WITH_OPEN_USER_DECISIONS",
   "product_implementation": "BLOCKED",
   "authority_precedence": [
     "CURRENT_CONFIRMED_DECISIONS.md",
@@ -82,14 +82,6 @@
         "routine_personal_updates": "END_OF_DAY_GROUPED_SUMMARY",
         "full_history": "SCHEDULE_LEDGER",
         "tracked_personal_schedule_count": 1,
-        "immediate_alerts": [
-          "DECISION_REQUIRED_TODAY",
-          "WORLD_OR_CHECKPOINT_TODAY",
-          "COMPLETION",
-          "MAJOR_CUSTOMER_STATE",
-          "MAJOR_ITEM_DAMAGE_OR_LOSS",
-          "FOLLOW_UP_OR_REVISIT"
-        ],
         "routine_individual_popup": false
       }
     },
@@ -112,19 +104,8 @@
       "refines": "BS-CONTENT-20260804-01",
       "contract": {
         "visitor_archetypes": ["GLADIATOR", "ADVENTURER", "SOLDIER", "NOBLE"],
-        "personal_families": [
-          "COMPETITION_AND_RIVALRY",
-          "EXPLORATION_AND_FRONTIER",
-          "PROTECTION_AND_DUTY",
-          "HUNTING_AND_THREAT_RESPONSE",
-          "ARTISTRY_PRESTIGE_AND_PATRONAGE"
-        ],
-        "world_families": [
-          "GRAND_TOURNAMENT_SEASON",
-          "GREAT_RUIN_EXPEDITION",
-          "KINGDOM_CRISIS",
-          "ROYAL_CEREMONY_AND_MASTERWORK_EXPOSITION"
-        ],
+        "personal_families": ["COMPETITION_AND_RIVALRY", "EXPLORATION_AND_FRONTIER", "PROTECTION_AND_DUTY", "HUNTING_AND_THREAT_RESPONSE", "ARTISTRY_PRESTIGE_AND_PATRONAGE"],
+        "world_families": ["GRAND_TOURNAMENT_SEASON", "GREAT_RUIN_EXPEDITION", "KINGDOM_CRISIS", "ROYAL_CEREMONY_AND_MASTERWORK_EXPOSITION"],
         "noble_primary_stat": "JUDGMENT",
         "noble_optional_secondary_stat": "SKILL",
         "general_non_metal_luxury_goods": "EXCLUDED"
@@ -152,12 +133,7 @@
         "decimals_allowed": false,
         "enhancement_level_auto_raises_artistry": false,
         "preview_levels": ["LOW", "MEDIUM", "HIGH"],
-        "visual_tiers": {
-          "BASIC": "1_TO_2",
-          "REFINED": "3_TO_5",
-          "MASTERWORK": "6_TO_8",
-          "MASTERPIECE": "9_TO_10"
-        },
+        "visual_tiers": {"BASIC": "1_TO_2", "REFINED": "3_TO_5", "MASTERWORK": "6_TO_8", "MASTERPIECE": "9_TO_10"},
         "visual_tier_equals_grade_affix": false,
         "exact_coefficients": "BASELINE_TEST_PRESET"
       }
@@ -168,9 +144,7 @@
       "status": "SUPERSEDED_IN_STRUCTURE_BY_BS-CRAFT-20260804-04",
       "retained_role": "HISTORICAL_DESIGN_EXPLORATION_ONLY",
       "merged_in_pr": 103,
-      "contract": {
-        "auxiliary_material_slot_is_current": false
-      }
+      "contract": {"auxiliary_material_slot_is_current": false}
     },
     {
       "id": "BS-CRAFT-20260804-04",
@@ -189,14 +163,7 @@
           "CATALYST": "CATALYST_AFFIX_SEED_LINEAGE_AND_MUTATION_PROBABILITY",
           "ITEM_CHRONICLE": "CHRONICLE_AFFIX_GENERATION_AND_EVOLUTION"
         },
-        "enhancement_methods": [
-          "EDGE_REINFORCEMENT",
-          "SHOCK_ABSORPTION",
-          "LIGHTWEIGHTING",
-          "BALANCE_TUNING",
-          "ARTISTIC_FINISH",
-          "ENVIRONMENTAL_TREATMENT"
-        ]
+        "enhancement_methods": ["EDGE_REINFORCEMENT", "SHOCK_ABSORPTION", "LIGHTWEIGHTING", "BALANCE_TUNING", "ARTISTIC_FINISH", "ENVIRONMENTAL_TREATMENT"]
       }
     },
     {
@@ -248,11 +215,7 @@
           "influenced_by_crafting_grade": false,
           "low_risk_repeat_farming_allowed": false
         },
-        "first_completion_result": {
-          "grade_affix": "ASSIGNED",
-          "catalyst_affix": "EMPTY",
-          "chronicle_affix": "EMPTY"
-        },
+        "first_completion_result": {"grade_affix": "ASSIGNED", "catalyst_affix": "EMPTY", "chronicle_affix": "EMPTY"},
         "cross_slot_overwrite_allowed": false,
         "storage": "THREE_SEPARATE_UID_FIELDS",
         "name_composition": "[GRADE_AFFIX] CATALYST_AFFIX BASE_ITEM_NAME - CHRONICLE_AFFIX"
@@ -280,83 +243,30 @@
         "preserve_item_detail_context_on_close": true
       }
     },
-    {
-      "id": "BS-OPS-20260804-01",
-      "status": "USER_DIRECTIVE_OPERATING_BOUNDARY_NON_BATCH"
-    },
+    {"id": "BS-OPS-20260804-01", "status": "USER_DIRECTIVE_OPERATING_BOUNDARY_NON_BATCH"},
     {
       "id": "BS-OPS-20260804-02",
       "title": "정본 드리프트 방지와 구형 문서 상태 분류",
-      "status": "USER_DIRECTED_NON_BATCH_GOVERNANCE_IN_PROGRESS",
+      "status": "USER_DIRECTED_NON_BATCH_GOVERNANCE_COMPLETED",
       "audit_id": "BS-ADV-20260804-01",
       "canon": "docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md"
     }
   ],
   "supporting_approved_directions": [
-    {
-      "id": "BS-ART-20260731-01",
-      "title": "스타일라이즈드 다크 포지",
-      "status": "APPROVAL_EVIDENCE_RECOVERED_MINIMUM_CONTRACT",
-      "detailed_promotion": "HOLD_FROM_PR81"
-    },
-    {
-      "id": "BS-MODAK-20260731-01",
-      "title": "C안 표정 기반 밝은 불 정령 모닥",
-      "status": "APPROVAL_EVIDENCE_RECOVERED_MINIMUM_CONTRACT",
-      "detailed_promotion": "HOLD_FROM_PR81"
-    },
-    {
-      "id": "BS-MAIN-20260801-01",
-      "title": "별도 메인 화면",
-      "status": "APPROVAL_EVIDENCE_RECOVERED_MINIMUM_CONTRACT",
-      "detailed_promotion": "DEFERRED_TO_R6"
-    },
-    {
-      "id": "BS-SHELL-20260801-01",
-      "title": "단일 BlacksmithApp + View·Overlay 혼합",
-      "status": "APPROVAL_EVIDENCE_RECOVERED_DIRECTION_ONLY",
-      "detailed_promotion": "DEFERRED_TO_R6_R9"
-    },
-    {
-      "id": "BS-SAVE-20260801-01",
-      "title": "단일 캠페인·자동 백업 2개·AttemptIntent·ResultEnvelope",
-      "status": "APPROVAL_EVIDENCE_RECOVERED_DIRECTION_ONLY",
-      "detailed_promotion": "HOLD_FROM_PR81_UNTIL_R3_R7"
-    },
-    {
-      "id": "BS-VISUAL-20260731-01",
-      "title": "작업 비주얼 기준선",
-      "status": "USER_ACCEPTED_WORKING_BASELINE_FINAL_ASSET_NO",
-      "detailed_promotion": "DEFERRED_TO_R6"
-    }
+    {"id": "BS-ART-20260731-01", "status": "APPROVAL_EVIDENCE_RECOVERED_MINIMUM_CONTRACT", "detailed_promotion": "HOLD_FROM_PR81"},
+    {"id": "BS-MODAK-20260731-01", "status": "APPROVAL_EVIDENCE_RECOVERED_MINIMUM_CONTRACT", "detailed_promotion": "HOLD_FROM_PR81"},
+    {"id": "BS-MAIN-20260801-01", "status": "APPROVAL_EVIDENCE_RECOVERED_MINIMUM_CONTRACT", "detailed_promotion": "DEFERRED_TO_R6"},
+    {"id": "BS-SHELL-20260801-01", "status": "APPROVAL_EVIDENCE_RECOVERED_DIRECTION_ONLY", "detailed_promotion": "DEFERRED_TO_R6_R9"},
+    {"id": "BS-SAVE-20260801-01", "status": "APPROVAL_EVIDENCE_RECOVERED_DIRECTION_ONLY", "detailed_promotion": "HOLD_FROM_PR81_UNTIL_R3_R7"},
+    {"id": "BS-VISUAL-20260731-01", "status": "USER_ACCEPTED_WORKING_BASELINE_FINAL_ASSET_NO", "detailed_promotion": "DEFERRED_TO_R6"}
   ],
   "supersession": [
-    {
-      "decision": "BS-WORLD-20260803-02",
-      "status": "SUPERSEDED_IN_SCOPE_BY_BS-WORLD-20260803-03",
-      "retained_role": "HISTORICAL_PERSONAL_SCHEDULE_PRESET"
-    },
-    {
-      "decision": "BS-CUSTOMER-20260803-01_DISPLAY_SCALE_1_TO_5",
-      "status": "SUPERSEDED_BY_BS-CUSTOMER-20260803-02_SCALE_1_TO_10"
-    },
-    {
-      "decision": "BS-GRADE-20260801-02",
-      "status": "SUPERSEDED_IN_TIER_MODEL_BY_BS-CRAFT-20260804-06",
-      "reason": "five grade labels conflict with current three baseline grade-affix IDs and artistry terminology"
-    },
-    {
-      "decision": "BS-CRAFT-20260804-03",
-      "status": "SUPERSEDED_IN_STRUCTURE_BY_BS-CRAFT-20260804-04"
-    },
-    {
-      "decision": "GENERAL_AFFIX_A_B_STRUCTURE",
-      "status": "SUPERSEDED_BY_BS-CRAFT-20260804-06"
-    },
-    {
-      "decision": "AUXILIARY_MATERIAL_SLOT",
-      "status": "REJECTED_BY_BS-CRAFT-20260804-04"
-    }
+    {"decision": "BS-WORLD-20260803-02", "status": "SUPERSEDED_IN_SCOPE_BY_BS-WORLD-20260803-03", "retained_role": "HISTORICAL_PERSONAL_SCHEDULE_PRESET"},
+    {"decision": "BS-CUSTOMER-20260803-01_DISPLAY_SCALE_1_TO_5", "status": "SUPERSEDED_BY_BS-CUSTOMER-20260803-02_SCALE_1_TO_10"},
+    {"decision": "BS-GRADE-20260801-02", "status": "SUPERSEDED_IN_TIER_MODEL_BY_BS-CRAFT-20260804-06"},
+    {"decision": "BS-CRAFT-20260804-03", "status": "SUPERSEDED_IN_STRUCTURE_BY_BS-CRAFT-20260804-04"},
+    {"decision": "GENERAL_AFFIX_A_B_STRUCTURE", "status": "SUPERSEDED_BY_BS-CRAFT-20260804-06"},
+    {"decision": "AUXILIARY_MATERIAL_SLOT", "status": "REJECTED_BY_BS-CRAFT-20260804-04"}
   ],
   "adversarial_guards": [
     "AUXILIARY_MATERIAL_SLOT_MUST_NOT_EXIST",
@@ -417,18 +327,7 @@
     "max_batch_size": 10,
     "counter": "10/10",
     "state": "CLOSED_MERGED_PR103_AND_CLOSURE_PR104",
-    "decisions": [
-      "BS-CUSTOMER-20260803-02",
-      "BS-SCHEDULE-20260804-01",
-      "BS-CONTENT-20260804-01",
-      "BS-CONTENT-20260804-02",
-      "BS-CRAFT-20260804-01",
-      "BS-CRAFT-20260804-02",
-      "BS-CRAFT-20260804-03",
-      "BS-CRAFT-20260804-04",
-      "BS-CRAFT-20260804-05",
-      "BS-CRAFT-20260804-06"
-    ]
+    "decisions": ["BS-CUSTOMER-20260803-02", "BS-SCHEDULE-20260804-01", "BS-CONTENT-20260804-01", "BS-CONTENT-20260804-02", "BS-CRAFT-20260804-01", "BS-CRAFT-20260804-02", "BS-CRAFT-20260804-03", "BS-CRAFT-20260804-04", "BS-CRAFT-20260804-05", "BS-CRAFT-20260804-06"]
   },
   "legacy_document_status_registry": "docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json",
   "legacy_reference_pull_request": {
@@ -439,21 +338,15 @@
   },
   "adversarial_audit": {
     "id": "BS-ADV-20260804-01",
-    "status": "IN_PROGRESS",
+    "status": "COMPLETED_WITH_OPEN_USER_DECISIONS",
+    "core_fun_direction": "VALID",
+    "structural_alignment": "VALID_AFTER_AUTHORITY_REPAIR",
     "p0": 0,
-    "p1_found": 7,
-    "p1_document_authority_targets": 6,
-    "p1_user_decision_required": ["GRADE_AFFIX_AND_ARTISTRY_KOREAN_LABEL_COLLISION"],
-    "p2_open": [
-      "CHRONICLE_EFFECT_RESPONSIBILITY",
-      "ITEM_OWNERSHIP_STATE_MACHINE",
-      "MOBILE_COMPOSED_NAME_LAYOUT",
-      "FIRST_ITEM_IDENTITY_REWARD_TIMING",
-      "PERMANENT_DESTRUCTION_VS_ATTACHMENT",
-      "SUCCESS_FORECAST_OPTIMIZATION_RISK",
-      "PR81_SELECTIVE_PROMOTION"
-    ]
+    "p1_categories_found": 7,
+    "p1_document_authority_resolved": 6,
+    "p1_user_decision_open": ["GRADE_AFFIX_AND_ARTISTRY_KOREAN_LABEL_COLLISION"],
+    "p2_open": ["CHRONICLE_EFFECT_RESPONSIBILITY", "ITEM_OWNERSHIP_STATE_MACHINE", "MOBILE_COMPOSED_NAME_LAYOUT", "FIRST_ITEM_IDENTITY_REWARD_TIMING", "PERMANENT_DESTRUCTION_VS_ATTACHMENT", "SUCCESS_FORECAST_OPTIMIZATION_RISK", "PR81_SELECTIVE_PROMOTION"]
   },
   "next_approval_counter": "0/10",
-  "next_activity": "COMPLETE_CANON_AUDIT_VALIDATE_SYNC_SHEET_AND_PREPARE_USER_REVIEW_OF_OPEN_DESIGN_DECISIONS"
+  "next_activity": "USER_REVIEW_OPEN_DESIGN_DECISIONS_THEN_CONTINUE_R2_PLANNING"
 }
