@@ -100,7 +100,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
 
         for token in (
-            "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+            "GRADE_AFFIX",
+            "CATALYST_AFFIX",
+            "CHRONICLE_AFFIX",
             "[등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어",
             "보조재료 슬롯 재도입 금지",
             "제품 구현: `BLOCKED`",
