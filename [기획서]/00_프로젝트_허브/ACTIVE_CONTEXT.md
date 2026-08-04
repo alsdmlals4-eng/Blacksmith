@@ -1,6 +1,6 @@
 # [현재 정본] Active Context
 
-- 갱신: `2026-08-05 01:16 KST`
+- 갱신: `2026-08-05 08:22 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_004_2_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
@@ -43,17 +43,39 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 ## 예술성
 
 ```text
-예술성 1~10
-예술성 7/10
+공격력  42
+내구도  31
+조작성  18
+예술성  27
 ```
 
 - 무기·작품 능력치의 하나
-- 정수, 소수점 없음
+- `0` 이상의 정수
+- 소수점 없음
+- 고정 설계 최대치 없음
+- `/10`, `/100`, 별점·백분율 표기 없음
 - 예술성 단계명 없음
-- 다른 무기 능력치와 함께 표시
-- 판매 가치와 귀족·후원자·수집가·전시·감정·증여·의식 수요에 기여 가능
+- 다른 무기 능력치와 함께 원수치 표시
+- 판매·감정 가치와 귀족·후원자·수집가·전시·증여·의식 수요에 기여 가능
 - 전투 성능을 기본적으로 올리지 않음
-- 범용 속성 증폭 배율이 아님
+- 범용 속성·수식어 증폭 배율이 아님
+- 제작 등급이 예술성 상한을 만들지 않음
+- 기술적 자료형 한계는 콘텐츠 최대치가 아님
+
+`예술성 0`은 미완성품이 아니라 미적 투자가 거의 없는 정상 기능품이다.
+
+```text
+[전설] 운철 전투도끼 / 예술성 3
+[보통] 은제 의장검 / 예술성 87
+```
+
+현재 기계 계약:
+
+```text
+NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
+```
+
+초기 bounded 표현과 분모 표기는 `[대체됨]`이다. 정확한 기대 범위·가격 점감·고객 선호 구간·증감값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
 
 ## 장비명
 
@@ -87,10 +109,14 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 RED → GREEN → REFACTOR
 ```
 
-- 테스트 먼저
-- 의도한 RED 관측
-- 최소 변경으로 GREEN
-- RED·GREEN 증거 없이 완료 주장 금지
+이번 정제 RED:
+
+- commit `3b08260dcfeeb1d97900949b04395f15a29d74d0`
+- Planning-first run `65`: `EXPECTED_FAILURE`
+- Base run `532`: `PASS`
+- 실패 원인: `domain` 부재, bounded 예술성 이력 미분리, 원수치 표기 부재
+
+GREEN exact-head는 최종 정본·Registry·라우터·검증 도구 동기화 후 기록한다.
 
 ## PR #81 경계
 
@@ -116,18 +142,13 @@ RED → GREEN → REFACTOR
 
 ## 검증 경계
 
-- TDD RED: commit `a5f20ab4578c83f75d044b68f19ed0bcb7b45d00`, Planning-first run `33`, `EXPECTED_FAILURE`
-- 관측된 GREEN: commit `25d5f53a380328a7ff655498adb8c10bdd1073f1`
-- GREEN runs: Planning-first `57`, Base `524`, PR validation `1115`
-- Python 전체 계약: `PASS`
-- Godot 4.7.1 headless: `PASS`
-- 최종 exact-head: PR·Sheet에서 재검증 후 기록
-- focused planning test standalone: `NOT_RUN`
+- focused unbounded-artistry test standalone: `NOT_RUN`
 - runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
 
 ## 다음 작업
 
-1. 증거 커밋 자체 exact-head 검증
-2. Google Sheet same-ID readback
-3. Draft PR #106에 누적, 조기 체크포인트 조건 또는 최대 10건 전 병합 금지
+1. Registry·Legacy Registry·라우터·감사 도구 GREEN 동기화
+2. exact-head Planning-first·Base·Python·Godot 검증
+3. Google Sheet same-ID readback
+4. Draft PR #106 유지, 명시적 병합 승인 전 미병합
