@@ -1,10 +1,11 @@
 {
   "artifact_role": "BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY",
-  "schema_version": 1,
+  "schema_version": 2,
   "project": "Blacksmith",
   "decision_id": "BS-OPS-20260804-02",
   "audit_id": "BS-ADV-20260804-01",
-  "baseline_main": "d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9",
+  "latest_refinement": "BS-CRAFT-20260804-07",
+  "baseline_main": "95f8fa33a645914578451af325afcaa32732c426",
   "product_implementation": "BLOCKED",
   "status_vocabulary": {
     "CURRENT_CANON": "현재 구현·후속 기획의 직접 기준",
@@ -17,7 +18,8 @@
   "current_authority": [
     "CURRENT_CONFIRMED_DECISIONS.md",
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
-    "docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md",
+    "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
+    "docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "[기획서]/00_프로젝트_허브/ROADMAP.md",
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
@@ -30,13 +32,15 @@
         "general affix A/B structure",
         "two general affix slots",
         "auxiliary material role",
-        "fixed world-schedule day preset as universal rule"
+        "fixed world-schedule day preset as universal rule",
+        "historical crafting grade labels and tier counts"
       ],
       "current_replacements": [
         "CURRENT_CONFIRMED_DECISIONS.md",
         "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
         "docs/planning/BLACKSMITH_R2_PRECISION_ENHANCEMENT_METHOD_AND_CATALYST_STRUCTURE_CANON_2026.md",
         "docs/planning/BLACKSMITH_R2_THREE_AFFIX_SLOT_ARCHITECTURE_CANON_2026.md",
+        "docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
         "docs/planning/BLACKSMITH_R2_CHRONICLE_AFFIX_DETAIL_INTERACTION_CANON_2026.md"
       ]
     },
@@ -48,12 +52,12 @@
     {
       "path": "docs/planning/BLACKSMITH_PRECISION_ENHANCEMENT_BASELINE.md",
       "status": "SUPERSEDED",
-      "replacement": "BS-CRAFT-20260804-04 through BS-CRAFT-20260804-06"
+      "replacement": "BS-CRAFT-20260804-04 through BS-CRAFT-20260804-07"
     },
     {
       "path": "docs/planning/BLACKSMITH_CORE_CANON_RESOLUTION_02_2026.md",
       "status": "SUPERSEDED",
-      "replacement": "BS-CRAFT-20260804-06"
+      "replacement": "BS-CRAFT-20260804-06 + BS-CRAFT-20260804-07"
     },
     {
       "path": "docs/planning/BLACKSMITH_CORE_CANON_RESOLUTION_03_2026.md",
@@ -77,8 +81,8 @@
       "path": "docs/MVP-003_SCOPE.md",
       "status": "HISTORICAL_EVIDENCE",
       "secondary_status": "HOLD",
-      "retained_scope": "historical reference implementation and test evidence",
-      "current_use": "must not define current product scope"
+      "retained_scope": "historical reference implementation and test evidence including three-grade STANDARD/GOOD/PERFECT data",
+      "current_use": "must not define current four-tier product scope"
     },
     {
       "path": "docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md",
@@ -95,6 +99,26 @@
       "status": "HISTORICAL_EVIDENCE",
       "secondary_status": "HOLD",
       "current_use": "reference only; no implementation authority"
+    }
+  ],
+  "grade_model_history": [
+    {
+      "source": "historical runtime and data",
+      "model": ["STANDARD", "GOOD", "PERFECT"],
+      "status": "HISTORICAL_EVIDENCE",
+      "current_use": "reference implementation only"
+    },
+    {
+      "decision": "BS-GRADE-20260801-02",
+      "model": ["보통", "우수", "명품", "걸작", "전설"],
+      "status": "SUPERSEDED",
+      "replacement": "BS-CRAFT-20260804-07"
+    },
+    {
+      "decision": "BS-CRAFT-20260804-07",
+      "model": ["보통", "우수", "걸작", "전설"],
+      "status": "CURRENT_CANON",
+      "implementation": "NOT_STARTED_BLOCKED"
     }
   ],
   "pull_requests": [
@@ -120,8 +144,8 @@
       ],
       "known_conflicting_asset": {
         "decision": "BS-GRADE-20260801-02",
-        "status": "SUPERSEDED_IN_TIER_MODEL_BY_BS-CRAFT-20260804-06",
-        "reason": "five craftsmanship grades conflict with current three baseline grade-affix IDs and artistry terminology"
+        "status": "SUPERSEDED_IN_TIER_MODEL_BY_BS-CRAFT-20260804-07",
+        "reason": "five craftsmanship grades conflict with the approved four-tier birth-grade model and separate artistry terminology"
       }
     }
   ],
@@ -137,9 +161,9 @@
       "reason": "branch-only machine-readable plans require selective promotion against current R2 canon"
     },
     {
-      "pattern": "historical POC exact numbers",
+      "pattern": "historical POC exact numbers and three-grade IDs",
       "status": "HISTORICAL_EVIDENCE",
-      "reason": "not current product values unless reclassified as BASELINE_TEST_PRESET or CURRENT_VALIDATED"
+      "reason": "not current product values unless reclassified and implemented through a later gate"
     }
   ],
   "prohibited_current_claims": [
@@ -147,6 +171,9 @@
     "the current affix slot count is two",
     "an auxiliary material slot exists in the current precision-enhancement structure",
     "all schedules use a universal fixed day-3 result and day-4 revisit",
+    "the current planning crafting grade model has only STANDARD GOOD PERFECT",
+    "the superseded five-tier craftsmanship model is current",
+    "legendary crafting grade can be earned after crafting through history reputation appraisal repair or enhancement",
     "PR 81 can be merged as a unit",
     "a historical POC PASS is a current product PASS"
   ]
