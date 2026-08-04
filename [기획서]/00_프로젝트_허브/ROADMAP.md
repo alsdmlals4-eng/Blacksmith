@@ -5,18 +5,18 @@
 ```yaml
 CURRENT_WORK_MODE: TOTAL_PLANNING
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
-CURRENT_STAGE_STATUS: R2_CHECKPOINT_003_CANON / ADVERSARIAL_CANON_AUDIT_COMPLETED_WITH_OPEN_USER_DECISIONS
+CURRENT_STAGE_STATUS: R2_BATCH_004_ACTIVE_1_OF_10
 R1_FINAL_APPROVAL: BS-OPS-20260803-05
 R2_CHECKPOINT_003_MERGE_PR: 103
-R2_CHECKPOINT_003_MERGE_SHA: 674ee21013cb5d41f89a1a3f3b10ecfc31238295
 R2_CHECKPOINT_003_CLOSURE_PR: 104
-R2_CHECKPOINT_003_CLOSURE_SHA: d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9
-CANON_AUDIT: BS-OPS-20260804-02 / BS-ADV-20260804-01 / COMPLETE
-NEXT_APPROVAL_COUNTER: 0/10
+CANON_AUDIT_PR: 105
+CANON_AUDIT_MERGE_SHA: 95f8fa33a645914578451af325afcaa32732c426
+CURRENT_DECISION: BS-CRAFT-20260804-07
+NEXT_APPROVAL_COUNTER: 1/10
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
 
-문서 병합은 승인 기획을 main에 보존하는 작업이며 제품 구현 승인과 다르다.
+문서 병합은 승인 기획을 보존하는 작업이며 제품 구현 승인이 아니다.
 
 ## R0 — 운영·정본 복구
 
@@ -39,12 +39,13 @@ R2에서 대체된 R1 구조:
 - 일반 수식어 A·B → `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
 - 보조재료 슬롯 → 제거
 - 범용 고정 일정 프리셋 → 개인 일정과 날짜 예고형 세계 일정 분리
+- 구형 제작 등급안 → 현재 `보통 / 우수 / 걸작 / 전설` 4단계
 
 ## R2 — Core·Session·Meta Loop
 
-상태: `PLANNING_ACTIVE / CHECKPOINT_003_CANON / CANON_AUDIT_COMPLETE`.
+상태: `PLANNING_ACTIVE / R2_BATCH_004_1_OF_10`.
 
-병합 완료:
+병합 완료 기준선:
 
 - 고객 능력·위험도 `1~10`, 예상 성공률 `5~95%`
 - 개인 일정·세계 일정 분리
@@ -58,6 +59,22 @@ R2에서 대체된 R1 구조:
 - 장비명 조합과 UID 기반 연대기 상세
 - 구형 문서 상태 분류와 자동 드리프트 검사
 
+현재 승인:
+
+### `BS-CRAFT-20260804-07` — 제작 등급 4단계
+
+```text
+[보통] → [우수] → [걸작] → [전설]
+```
+
+- 최초 직접 단조 완료 시 한 번 확정
+- 동일 UID에서 영구 고정
+- `전설`은 최초 제작 판정의 극희귀 결과
+- 제작 후 승격·강등 없음
+- 예술성·촉매·연대기·명성·감정과 별도 축
+- 과거 `STANDARD / GOOD / PERFECT` 구현은 역사 기준선
+- 제품 4단계 구현은 `NOT_STARTED / BLOCKED`
+
 ```text
 작품 종류 + 주재료 + 직접 단조
 → 제작 등급·등급 수식어
@@ -69,21 +86,23 @@ R2에서 대체된 R1 구조:
 → 다음 강화·복원·제작 판단
 ```
 
-### 다음 승인 후보 — `0/10`
+### 다음 승인 후보 — `1/10`
 
-1. 제작 등급 수식어와 예술성 시각 단계의 한국어 명칭 분리
+1. 예술성 단계의 수·한국어 명칭·점수 구간·표시 방식
 2. 연대기 수식어의 효과 책임 경계
 3. 작품 판매·증여·복원·상속 소유권 상태 머신
 4. 모바일 장비명 줄바꿈·축약·스크린리더 순서
 5. 첫 작품의 촉매·연대기 정체성 보상 시점
 6. 완전 파괴와 작품 애착 검증
-7. PR #81 분야별 자산 선별 이관
+7. 성공률 공개의 수치 최적화 수렴 위험
+8. PR #81 분야별 자산 선별 이관
 
 ## R3 — 제작·강화·작품 정체성·실패·저장
 
 시작 조건: `R2_USER_APPROVED`.
 
 - 작품 종류·주재료·제작 등급
+- `보통 / 우수 / 걸작 / 전설` 4단계 구현·migration
 - `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
 - 강화 방식·촉매 계보·정밀 이정표
 - 실패·손상·대파·잠금·복원·완전 파괴
@@ -95,6 +114,7 @@ R2에서 대체된 R1 구조:
 
 - 일반 수식어 A·B 재도입 금지
 - 보조재료 슬롯 재도입 금지
+- 제작 후 `걸작 → 전설` 승격 금지
 - 수식어 슬롯 간 덮어쓰기
 - 같은 이정표 무한 리롤
 - 저장·로드 결과 재추첨
@@ -122,6 +142,7 @@ R2에서 대체된 R1 구조:
 시작 조건: `R4_APPROVED`.
 
 - 골드·재료 Source/Sink
+- 제작 등급 4단계 확률·성능·가치 프리셋
 - 강화·촉매·복원 비용
 - 예술성·실용 성능·희소성·연대기의 가격 책임
 - 피로도·날짜 전환
@@ -151,7 +172,7 @@ R2에서 대체된 R1 구조:
 
 ```text
 플레이어 선택 작품 한 점
-→ 제작과 등급 수식어
+→ 제작과 4단계 등급 수식어
 → +10/+20/+30/+40/+50
 → 촉매 수식어 형성·성장
 → 고객 납품
@@ -164,7 +185,8 @@ R2에서 대체된 R1 구조:
 ### 행동 증거
 
 - 강화 지속·중단 고민
-- 등급·촉매·연대기 생성 원인 설명
+- 제작 등급·촉매·연대기 생성 원인 설명
+- `전설`을 후천 명성 단계로 오해하지 않음
 - 작품 선택과 고객 결과 인과 설명
 - 일정 우선순위 이해
 - 재방문 뒤 자발적 다음 행동
@@ -184,6 +206,7 @@ R2에서 대체된 R1 구조:
 
 - 플레이어 약속 ↔ 반복 행동
 - 강화 코어 ↔ 피로도·날짜·고객·세계 환류
+- 제작 등급 ↔ 예술성·촉매·연대기 분리
 - 세 수식어 ↔ 실제 작품 판단과 애착
 - 경제 수치 ↔ 행동 가설
 - 복잡도 ↔ 모바일 온보딩
