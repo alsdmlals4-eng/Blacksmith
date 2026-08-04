@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
 THREE_AFFIX_CANON = ROOT / "docs/planning/BLACKSMITH_R2_THREE_AFFIX_SLOT_ARCHITECTURE_CANON_2026.md"
 CHRONICLE_DETAIL_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CHRONICLE_AFFIX_DETAIL_INTERACTION_CANON_2026.md"
+CLOSURE_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CHECKPOINT_003_POSTMERGE_CLOSURE_2026.md"
 ROOT_DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 
@@ -18,7 +19,7 @@ class R2Batch003Tests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
-    def test_prior_batch_decisions_remain_registered(self) -> None:
+    def test_batch_decisions_are_closed_in_pr103(self) -> None:
         for decision_id in (
             "BS-CUSTOMER-20260803-02",
             "BS-SCHEDULE-20260804-01",
@@ -30,7 +31,12 @@ class R2Batch003Tests(unittest.TestCase):
             "BS-CRAFT-20260804-05",
             "BS-CRAFT-20260804-06",
         ):
-            self.assertEqual("USER_APPROVED_PENDING_MERGE", self.decisions[decision_id]["status"])
+            self.assertEqual("USER_APPROVED_MERGED_PR103", self.decisions[decision_id]["status"])
+
+        historical = self.decisions["BS-CRAFT-20260804-03"]
+        self.assertEqual("SUPERSEDED_IN_STRUCTURE_BY_BS-CRAFT-20260804-04", historical["status"])
+        self.assertEqual(103, historical["merged_in_pr"])
+        self.assertFalse(historical["contract"]["auxiliary_material_slot_is_current"])
 
     def test_three_independent_affix_slots(self) -> None:
         decision = self.decisions["BS-CRAFT-20260804-06"]
@@ -52,10 +58,6 @@ class R2Batch003Tests(unittest.TestCase):
             "[GRADE_AFFIX] CATALYST_AFFIX BASE_ITEM_NAME - CHRONICLE_AFFIX",
             contract["name_composition"],
         )
-        self.assertEqual(
-            "COMPOSED_NAME_PLUS_SEPARATE_LABELED_DETAIL_FIELDS",
-            contract["mobile_display"],
-        )
 
     def test_grade_catalyst_and_chronicle_ownership(self) -> None:
         contract = self.decisions["BS-CRAFT-20260804-06"]["contract"]
@@ -71,11 +73,11 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertFalse(chronicle["influenced_by_catalyst"])
         self.assertFalse(chronicle["low_risk_repeat_farming_allowed"])
 
-    def test_chronicle_detail_checkpoint_refinement(self) -> None:
+    def test_chronicle_detail_checkpoint_refinement_is_merged(self) -> None:
         decision = self.decisions["BS-UX-20260804-01"]
         contract = decision["contract"]
 
-        self.assertEqual("USER_APPROVED_CHECKPOINT_REFINEMENT", decision["status"])
+        self.assertEqual("USER_APPROVED_MERGED_PR103_CHECKPOINT_REFINEMENT", decision["status"])
         self.assertEqual("BS-CRAFT-20260804-06", decision["refines"])
         self.assertEqual("POST_BATCH_CHECKPOINT_REFINEMENT", decision["batch_role"])
         self.assertEqual(
@@ -94,13 +96,33 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertFalse(contract["interaction_triggers_gameplay_resolution_or_reward"])
         self.assertFalse(contract["color_only_interaction_cue_allowed"])
         self.assertTrue(contract["preserve_item_detail_context_on_close"])
-        for required_section in (
-            "FORMATION_EVENT",
-            "SIGNIFICANT_TIMELINE",
-            "EVOLUTION_CHAIN",
-            "CURRENT_EFFECTS_AND_VALUE",
-        ):
-            self.assertIn(required_section, contract["detail_sections"])
+
+    def test_checkpoint_003_closure(self) -> None:
+        checkpoint = self.registry["checkpoint"]
+        batch = self.registry["active_batch"]
+
+        self.assertEqual("R2_CHECKPOINT_003", checkpoint["id"])
+        self.assertEqual(103, checkpoint["merge_pr"])
+        self.assertEqual("SQUASH", checkpoint["merge_method"])
+        self.assertEqual("228f409c3043bf1618172985a288dc656b0f05b9", checkpoint["exact_head"])
+        self.assertEqual("674ee21013cb5d41f89a1a3f3b10ecfc31238295", checkpoint["merge_sha"])
+        self.assertEqual(104, checkpoint["postmerge_closure_pr"])
+        self.assertEqual("P0_0_P1_0", checkpoint["adversarial_audit"])
+        self.assertEqual("PASS", checkpoint["workflows"]["python_full_contracts"])
+        self.assertEqual("PASS", checkpoint["workflows"]["godot_4_7_1_headless"])
+        self.assertFalse(checkpoint["product_paths_changed"])
+        self.assertEqual("NOT_RUN", checkpoint["focused_test_standalone"])
+
+        self.assertEqual("R2_BATCH_003", batch["id"])
+        self.assertEqual(10, batch["approved_decisions"])
+        self.assertEqual("10/10", batch["counter"])
+        self.assertEqual("CLOSED_MERGED_PR103", batch["state"])
+        self.assertEqual(["BS-UX-20260804-01"], batch["checkpoint_refinements"])
+        self.assertEqual("EXACT_HEAD_VALIDATED_AND_SQUASH_MERGED", batch["current_validation"])
+        self.assertEqual(103, batch["merge_pr"])
+        self.assertEqual(104, batch["postmerge_closure_pr"])
+        self.assertEqual("0/10", self.registry["next_approval_counter"])
+        self.assertEqual("BLOCKED", self.registry["product_implementation"])
 
     def test_adversarial_guards(self) -> None:
         guards = set(self.registry["adversarial_guards"])
@@ -123,22 +145,10 @@ class R2Batch003Tests(unittest.TestCase):
         ):
             self.assertIn(guard, guards)
 
-    def test_batch_counter_remains_ten_of_ten(self) -> None:
-        batch = self.registry["active_batch"]
-        self.assertEqual("R2_BATCH_003", batch["id"])
-        self.assertEqual(10, batch["approved_decisions"])
-        self.assertEqual("10/10", batch["counter"])
-        self.assertEqual("APPROVED_PENDING_MERGE", batch["state"])
-        self.assertEqual("BS-CRAFT-20260804-06", batch["decisions"][-1])
-        self.assertEqual(["BS-UX-20260804-01"], batch["checkpoint_refinements"])
-        self.assertEqual("PENDING_FOR_CURRENT_HEAD", batch["current_validation"])
-        self.assertEqual(103, batch["draft_pr"])
-        self.assertFalse(batch["product_paths_changed"])
-        self.assertEqual("BLOCKED", self.registry["product_implementation"])
-
-    def test_canon_documents_preserve_approved_interaction(self) -> None:
+    def test_canon_documents_preserve_closure_and_interaction(self) -> None:
         three_affix = THREE_AFFIX_CANON.read_text(encoding="utf-8")
         chronicle_detail = CHRONICLE_DETAIL_CANON.read_text(encoding="utf-8")
+        closure = CLOSURE_CANON.read_text(encoding="utf-8")
         root = ROOT_DECISIONS.read_text(encoding="utf-8")
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
 
@@ -162,10 +172,19 @@ class R2Batch003Tests(unittest.TestCase):
             self.assertIn(token, chronicle_detail)
 
         for token in (
-            "BS-UX-20260804-01",
+            "R2_BATCH_003 / 10_OF_10 / CLOSED_MERGED_PR103",
+            "R2_CHECKPOINT_003 / MAIN_CANON",
+            "NEXT_GRILL_ME_COUNTER_0_OF_10",
+            "post-merge closure PR: `#104`",
+        ):
+            self.assertIn(token, closure)
+
+        for token in (
+            "R2_CHECKPOINT_003_CANON",
+            "NEXT_GRILL_ME_COUNTER_0_OF_10",
+            "PR #103 squash merge",
+            "post-merge closure PR: `#104`",
             "[명품] 예리한 강철 장검 - 투기장의 승자",
-            "연대기 수식어 상세 열람",
-            "R2_BATCH_003 / 10_OF_10 / APPROVED_PENDING_MERGE",
         ):
             self.assertIn(token, root)
 
@@ -176,7 +195,7 @@ class R2Batch003Tests(unittest.TestCase):
             "통합 6건",
             "enhancement_balance.json",
             "enhancement_milestones.json",
-            "현재 배치: `R2_BATCH_003 / 10_OF_10 / APPROVED_PENDING_MERGE`",
+            "다음 승인 카운터: `0/10`",
             "연대기 수식어를 누르면 그 이름의 근거가 된 작품 기록을 확인할 수 있다",
         ):
             self.assertIn(token, active)
