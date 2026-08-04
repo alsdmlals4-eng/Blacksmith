@@ -4,10 +4,11 @@
   "registry_role": "ai-design-document-router-and-publication-index",
   "project_name": "Blacksmith",
   "current_operating_decision": "BS-OPS-20260804-02",
+  "current_planning_decision": "BS-CRAFT-20260804-07",
   "current_work_mode": "TOTAL_PLANNING",
-  "current_stage": "R2_CORE_SESSION_META_LOOP",
+  "current_stage": "R2_CORE_SESSION_META_LOOP / R2_BATCH_004_1_OF_10",
   "product_implementation": "BLOCKED",
-  "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, and Development Gates. Status-marked historical documents never override current R2 canon.",
+  "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, Development Gates, and the latest topic canon. Status-marked historical documents never override current R2 canon.",
   "status_vocabulary": [
     "ACTIVE",
     "PARTIALLY_SUPERSEDED",
@@ -40,6 +41,15 @@
       "publication_policy": "milestone_sync"
     },
     {
+      "document_id": "r2-four-tier-crafting-grade-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
+      "source_format": "markdown",
+      "status": "ACTIVE",
+      "source_role": "current_crafting_grade_tiers_and_birth_legend_contract",
+      "decision_id": "BS-CRAFT-20260804-07",
+      "publication_policy": "always_sync"
+    },
+    {
       "document_id": "active-context",
       "source_path": "./ACTIVE_CONTEXT.md",
       "source_format": "markdown",
@@ -68,7 +78,7 @@
       "source_path": "../../docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md",
       "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "current_canon_adversarial_audit",
+      "source_role": "completed_canon_adversarial_audit",
       "publication_policy": "always_sync"
     },
     {
@@ -148,6 +158,10 @@
     "ACTIVE_DOCUMENTS_OVERRIDE_STATUS_MARKED_HISTORICAL_DOCUMENTS",
     "GENERAL_AFFIX_A_B_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "AUXILIARY_MATERIAL_SLOT_MUST_NOT_BE_ROUTED_AS_CURRENT",
+    "CURRENT_CRAFTING_GRADE_MODEL_MUST_ROUTE_TO_BS_CRAFT_20260804_07",
+    "HISTORICAL_STANDARD_GOOD_PERFECT_MUST_NOT_BE_ROUTED_AS_CURRENT_PLANNING_MODEL",
+    "SUPERSEDED_FIVE_TIER_GRADE_MODEL_MUST_NOT_BE_ROUTED_AS_CURRENT",
+    "POST_CRAFT_LEGENDARY_PROMOTION_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "PR81_MUST_NOT_BE_ROUTED_AS_MERGEABLE_CANON",
     "HISTORICAL_POC_PASS_MUST_NOT_BE_ROUTED_AS_CURRENT_PRODUCT_PASS",
     "PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED"
