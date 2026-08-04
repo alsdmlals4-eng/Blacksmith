@@ -108,6 +108,9 @@ RED → GREEN → REFACTOR
 - 제작 모델 7건
 - 제작 결과 통합 6건
 - 과거 제작 품질: `STANDARD / GOOD / PERFECT`
+- 과거 일반 강화 실패 기준선: `+11 / LEGACY_IMPLEMENTED_VALUE`
+- 실패·위험 data 소유자: `data/crafting/enhancement_balance.json`
+- 정밀 이정표 data 소유자: `data/crafting/enhancement_milestones.json`
 - 과거 피버·품질 정확 수치: `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
 - 과거 PASS는 현재 5등급·예술성 제품 구현 PASS가 아님
 
