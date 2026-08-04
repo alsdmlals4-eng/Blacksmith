@@ -19,7 +19,7 @@
 - 일반 수식어 슬롯 두 개
 - 보조재료 슬롯
 - 정밀 등급 1개와 일반 수식어 두 개 구조
-- 모든 일정의 고정 3일 결과·4일 재방문
+- 범용 고정 일정 프리셋
 - 제작 완료 시 촉매·연대기뿐 아니라 모든 수식어가 비어 있다는 해석
 
 현재 작품 수식어는 정확히 다음 세 슬롯입니다.
@@ -49,5 +49,12 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 - 피로도는 제한된 하루의 작업 우선순위 자원이다.
 - 일반 실패는 작품 역사를 자동 삭제하지 않는다.
 - 제품 구현은 R1~R8와 최종 사용자 검수 전까지 `BLOCKED`다.
+
+## 역사 구현 용어와 수치 권위
+
+- 과거 PoC의 구현명 `폭주 단조`는 현재 문서에서 설명하는 역사적 `제작 피버` 기능을 가리킨다.
+- 당시 피버 공격·가치 보너스와 정수 결과는 `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`이다.
+- 이 수치는 과거 data·Script·Godot 계약의 회귀 검증에만 사용하며 최신 제품 확정값이 아니다.
+- 과거 구현 PASS는 최신 runtime·Android·접근성·성능·사람 플레이 PASS를 뜻하지 않는다.
 
 문서 상태의 기계 판독 기준은 `docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json`을 사용합니다.
