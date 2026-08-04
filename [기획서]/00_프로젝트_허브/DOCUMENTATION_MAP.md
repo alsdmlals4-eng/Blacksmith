@@ -25,7 +25,9 @@
 | 질문 | 책임 원본 | Decision |
 |---|---|---|
 | 제작 등급 5단계 | `docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md` | `BS-CRAFT-20260804-07` |
-| 예술성 숫자형 능력치 | `docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md` | `BS-CRAFT-20260805-01` |
+| 예술성 원수치 능력치 | `docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md` | `BS-CRAFT-20260805-01` |
+| 예술성 승인 설계 | `docs/superpowers/specs/2026-08-05-artistry-unbounded-stat-design.md` | `BS-CRAFT-20260805-01` |
+| 예술성 구현 계획 | `docs/superpowers/plans/2026-08-05-artistry-unbounded-stat.md` | `BS-CRAFT-20260805-01` |
 | 아이템화 벤치마킹 | `docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md` | `BS-OPS-20260805-01` |
 | 세 수식어 | `docs/planning/BLACKSMITH_R2_THREE_AFFIX_SLOT_ARCHITECTURE_CANON_2026.md` | `BS-CRAFT-20260804-06` |
 | 정밀강화 | `docs/planning/BLACKSMITH_R2_PRECISION_ENHANCEMENT_METHOD_AND_CATALYST_STRUCTURE_CANON_2026.md` | `BS-CRAFT-20260804-04` |
@@ -42,7 +44,7 @@
 
 ```text
 제작 등급: 보통 / 우수 / 명품 / 걸작 / 전설
-예술성: 1~10, 단계명 없음
+예술성: 0 이상의 정수 / 고정 설계 최대치 없음 / 예술성 27
 ```
 
 ## 구형 라우팅
@@ -51,7 +53,8 @@
 |---|---|---|
 | 4등급 제작 문서 | `[대체됨]` | 5등급 정본 |
 | `STANDARD / GOOD / PERFECT` runtime | `[역사 증거]` | 현재 제품 구현 아님 |
-| 예술성 named visual tiers | `[대체됨]` | 숫자형 예술성 정본 |
+| 초기 bounded 예술성 모델 | `[대체됨]` | 고정 상한 없는 원수치 예술성 정본 |
+| 예술성 named visual tiers | `[대체됨]` | 고정 상한 없는 원수치 예술성 정본 |
 | R1 Game Bible | `[부분 대체됨]` | Current R2 Game Bible |
 | PR #81 | 전체 병합 `[폐기]` / 선별 `[보류]` | 별도 소형 PR |
 
@@ -61,6 +64,7 @@
 - 최대 배치 크기: 10
 - 조기 체크포인트: 고위험 충돌·세션 종료·정본 영향 큼
 - TDD: `RED → GREEN → REFACTOR`
-- TDD RED run `33`: expected failure observed
-- GREEN exact-head: `PENDING`
+- 예술성 RED: commit `3b08260d`, Planning-first run `65`
+- GREEN candidate: Planning-first run `78`, Base run `545`
+- final exact-head: `PENDING`
 - 제품 구현: `BLOCKED`
