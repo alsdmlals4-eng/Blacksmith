@@ -18,6 +18,8 @@ fixed design maximum: none
 named tiers: none
 ```
 
+대표 원수치 표기: `예술성 27`.
+
 표시 예시:
 
 ```text
