@@ -7,10 +7,10 @@ CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
 R2_STATUS: CHECKPOINT_003_CANON / BATCH_004_ACTIVE_2_OF_10
 CURRENT_AFFIX_SLOTS: GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 CURRENT_CRAFTING_GRADES: 보통 / 우수 / 명품 / 걸작 / 전설
-CURRENT_ARTISTRY: INTEGER_1_TO_10_WEAPON_ITEM_STAT_NO_NAMED_TIERS
+CURRENT_ARTISTRY: NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
 MAXIMUM_BATCH_SIZE: 10
 EARLY_CHECKPOINTS: HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT
-TDD_GATE: RED_GREEN_OBSERVED / FINAL_EXACT_HEAD_REVALIDATION
+TDD_GATE: ARTISTRY_RED_OBSERVED / GREEN_VALIDATION_IN_PROGRESS
 CODEX_IMPLEMENTATION_GATE: BLOCKED
 LATEST_RUNTIME_VALIDATION_GATE: NOT_RUN
 ANDROID_DEVICE_GATE: NOT_RUN
@@ -36,19 +36,22 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 
 ## Artistry Gate
 
-```text
-예술성 7/10
-```
+대표 원수치 표기: `예술성 27`.
 
 - 무기·작품 능력치
-- 정수 `1~10`, 소수점 없음
-- 단계명 없음
-- 다른 능력치와 함께 상세 표시
-- 판매 가치·귀족·후원자·수집가·전시·감정·증여·의식 수요에 기여 가능
+- `0` 이상의 정수, 소수점 없음
+- 고정 설계 최대치 없음
+- 예술성 단계명 없음
+- 분모·별점·백분율 표기 없음
+- 다른 능력치와 함께 원수치 표시
+- 예술성 0은 미적 투자가 거의 없는 정상 기능품
+- 제작 등급은 예술성 상한을 만들지 않음
+- 판매·감정 가치와 귀족·후원자·수집가·전시·증여·의식 수요에 기여 가능
 - 전투 성능을 기본적으로 올리지 않음
 - 범용 속성·수식어 배율 금지
+- 기술적 자료형 한계는 콘텐츠 최대치가 아님
 
-판정: `USER_APPROVED / R2_BATCH_004_2_OF_10 / IMPLEMENTATION_BLOCKED`.
+판정: `USER_APPROVED_REFINED / R2_BATCH_004_2_OF_10 / IMPLEMENTATION_BLOCKED`.
 
 ## Three Affix Gate
 
@@ -60,6 +63,7 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 - 등급 수식어는 제작 완료 시 생성·고정
 - 촉매·연대기는 최초 제작 시 `EMPTY`
 - 슬롯 간 생성·진화·덮어쓰기 금지
+- 예술성은 네 번째 수식어 슬롯이 아님
 - 일반 수식어 A·B 재도입 금지
 
 판정: `PASS / USER_APPROVED`.
@@ -101,21 +105,15 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 RED → GREEN → REFACTOR
 ```
 
-- 테스트 먼저
-- 의도한 RED 관측
-- 최소 변경으로 GREEN
-- GREEN 이후 정리
-- RED·GREEN 증거 없이 PASS 주장 금지
-- 문서·기획도 기계 판독 계약으로 보호
+이번 예술성 정제 증거:
 
-증거:
+- RED commit `3b08260dcfeeb1d97900949b04395f15a29d74d0`
+- Planning-first run `65`: expected failure
+- Base run `532`: PASS
+- GREEN candidate Planning-first run `78`: PASS
+- final exact-head Python·Godot: `PENDING`
 
-- RED commit `a5f20ab4578c83f75d044b68f19ed0bcb7b45d00`, Planning-first run `33`, expected failure
-- GREEN reference commit `25d5f53a380328a7ff655498adb8c10bdd1073f1`
-- Planning-first `57`, Base `524`, PR validation `1115`
-- Python full `PASS`, Godot 4.7.1 `PASS`
-
-판정: `RED_GREEN_OBSERVED / FINAL_EVIDENCE_COMMIT_EXACT_HEAD_PENDING`.
+판정: `RED_OBSERVED / GREEN_CANDIDATE / FINAL_EXACT_HEAD_PENDING`.
 
 ## Batch·Checkpoint Gate
 
@@ -152,7 +150,7 @@ RED → GREEN → REFACTOR
 
 - `[현재 정본] / [부분 대체됨] / [대체됨] / [보류] / [폐기] / [역사 증거]`
 - 구형 4등급 문서 직접 `[대체됨]`
-- 구형 예술성 단계 프리셋 `[대체됨]`
+- 초기 bounded 예술성 모델과 named tier `[대체됨]`
 - PR #81 `DO_NOT_MERGE_AS_UNIT`
 
 판정: `PASS_PENDING_FINAL_DRIFT_SCAN`.
