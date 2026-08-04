@@ -6,7 +6,7 @@
 - 병합 PR: `#103`
 - 검증된 PR HEAD: `228f409c3043bf1618172985a288dc656b0f05b9`
 - squash merge SHA: `674ee21013cb5d41f89a1a3f3b10ecfc31238295`
-- post-merge closure PR: `PENDING_CREATION`
+- post-merge closure PR: `#104`
 - 제품 구현: `BLOCKED`
 
 ## 목적
