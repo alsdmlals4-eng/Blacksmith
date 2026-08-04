@@ -61,6 +61,8 @@ CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
 
 ## 4. 예술성
 
+대표 원수치 표기: `예술성 27`.
+
 ```text
 공격력  42
 내구도  31
@@ -72,7 +74,7 @@ CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
 
 - `0` 이상의 정수, 소수점 없음
 - 고정 설계 최대치 없음
-- `/10`, `/100`, 별점·백분율 표기 없음
+- 분모·별점·백분율 표기 없음
 - 예술성 단계명 없음
 - 무기 상세에서 다른 능력치와 함께 원수치 표시
 - 조형·세공·표면 마감·장식 조화·감정 가치를 표현
@@ -87,11 +89,7 @@ CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
 
 고정 설계 최대치가 없더라도 경제와 고객 판정은 콘텐츠별 기대 범위·최소 요구치·선호 구간·점감 함수를 사용할 수 있다. 예술성이 모든 고객과 모든 상황의 선형 최적해가 되면 안 된다.
 
-다음은 `[대체됨]`이다.
-
-- bounded 예술성 계약과 분모 표기
-- `INTEGER_1_TO_10`
-- `BASIC / REFINED / MASTERWORK / MASTERPIECE` 시각 단계
+동일 Decision의 초기 bounded-stat 초안과 named-tier 프리셋은 `[대체됨]`이며 정확한 옛 문자열은 Legacy Registry에만 보존한다.
 
 현재 기계 계약:
 
