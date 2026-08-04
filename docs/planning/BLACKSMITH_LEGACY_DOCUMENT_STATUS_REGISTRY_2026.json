@@ -21,6 +21,7 @@
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
     "docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
     "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md",
+    "docs/superpowers/specs/2026-08-05-artistry-unbounded-stat-design.md",
     "docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md",
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "[기획서]/00_프로젝트_허브/ROADMAP.md",
@@ -35,7 +36,8 @@
         "two general affix slots",
         "auxiliary material role",
         "fixed world-schedule day preset as universal rule",
-        "historical crafting grade labels and tier counts"
+        "historical crafting grade labels and tier counts",
+        "bounded artistry scale and denominator display"
       ],
       "current_replacements": [
         "CURRENT_CONFIRMED_DECISIONS.md",
@@ -143,8 +145,17 @@
       "replacement": "BS-CRAFT-20260805-01"
     },
     {
-      "decision": "BS-CRAFT-20260805-01",
+      "source": "BS-CRAFT-20260805-01 initial bounded-stat draft",
       "model": "INTEGER_1_TO_10_WEAPON_ITEM_STAT_NO_NAMED_TIERS",
+      "status": "SUPERSEDED",
+      "replacement": "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM"
+    },
+    {
+      "source": "BS-CRAFT-20260805-01 unbounded raw-value refinement",
+      "decision": "BS-CRAFT-20260805-01",
+      "model": "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
+      "minimum": 0,
+      "denominator_display": false,
       "status": "CURRENT_CANON",
       "implementation": "NOT_STARTED_BLOCKED"
     }
@@ -175,6 +186,10 @@
     "the current crafting grade model has four tiers",
     "STANDARD GOOD PERFECT is current product planning",
     "artistry uses named tiers",
+    "artistry has a fixed design maximum",
+    "artistry uses a denominator, percentage, or star display",
+    "artistry 10 is the maximum",
+    "crafting grade sets the artistry maximum",
     "artistry is a universal combat or affix multiplier",
     "legendary can be earned after crafting",
     "PR 81 can be merged as a unit",
