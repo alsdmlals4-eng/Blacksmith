@@ -4,6 +4,7 @@
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_004_1_OF_10`
 - R2 체크포인트 003: `MERGED_PR103 / CLOSURE_PR104`
+- 정본 감사 Decision: `BS-OPS-20260804-02 / BS-ADV-20260804-01`
 - 정본 감사 main: `PR105 / 95f8fa33a645914578451af325afcaa32732c426`
 - 현재 Decision: `BS-CRAFT-20260804-07`
 - 현재 승인 카운터: `1/10`
