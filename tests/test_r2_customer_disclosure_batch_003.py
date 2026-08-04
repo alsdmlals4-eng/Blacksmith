@@ -80,20 +80,36 @@ class R2Checkpoint003AndBatch004Tests(unittest.TestCase):
         self.assertIn("[보통] → [우수] → [명품] → [걸작] → [전설]", canon)
         self.assertIn("제작 후 등급 승격 금지", canon)
 
-    def test_numeric_artistry_has_no_named_tiers(self) -> None:
+    def test_artistry_is_unbounded_raw_value_without_named_tiers(self) -> None:
         decision = self.decisions["BS-CRAFT-20260805-01"]
         contract = decision["contract"]
-        self.assertEqual("USER_APPROVED_R2_BATCH_004_2_OF_10_APPROVED_PENDING_MERGE", decision["status"])
+        self.assertEqual(
+            "USER_APPROVED_REFINED_R2_BATCH_004_2_OF_10_APPROVED_PENDING_MERGE",
+            decision["status"],
+        )
         self.assertEqual("WEAPON_ITEM_STAT", contract["stat_role"])
-        self.assertEqual("INTEGER_1_TO_10", contract["scale"])
+        self.assertEqual(
+            "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
+            contract["domain"],
+        )
+        self.assertEqual(0, contract["minimum"])
+        self.assertIsNone(contract["fixed_design_maximum"])
+        self.assertFalse(contract["decimals_allowed"])
+        self.assertFalse(contract["denominator_display_allowed"])
         self.assertFalse(contract["named_tiers_exist"])
         self.assertTrue(contract["displayed_with_weapon_stats"])
+        self.assertFalse(contract["technical_storage_limit_is_content_maximum"])
+        self.assertFalse(contract["grade_sets_fixed_artistry_maximum"])
+        self.assertFalse(contract["zero_means_incomplete_or_unusable"])
         self.assertFalse(contract["combat_power_by_default"])
         self.assertFalse(contract["universal_affix_multiplier"])
 
         canon = ARTISTRY_CANON.read_text(encoding="utf-8")
-        self.assertIn("예술성 7/10", canon)
-        self.assertIn("단계명 없음", canon)
+        self.assertIn("예술성 27", canon)
+        self.assertIn("고정 설계 최대치 없음", canon)
+        self.assertIn("예술성 단계명 없음", canon)
+        self.assertNotIn("예술성 7/10", canon)
+        self.assertNotIn("예술성 1~10", canon)
 
     def test_superseded_four_tier_file_is_visibly_historical(self) -> None:
         text = FOUR_GRADE_HISTORY.read_text(encoding="utf-8")
