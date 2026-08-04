@@ -41,6 +41,7 @@ ACTIVE_DOCS = (
     "CURRENT_CONFIRMED_DECISIONS.md",
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
+    "docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
     "[기획서]/00_프로젝트_허브/START_HERE.md",
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
@@ -50,11 +51,25 @@ ACTIVE_DOCS = (
 
 STALE_PATTERNS = {
     "legacy +5 milestone": re.compile(r"\+5[^\n]{0,80}(첫 수식어|수식어 판정|완료 후 새 철검)", re.IGNORECASE),
-    "legacy current two-affix claim": re.compile(r"현재[^\n]{0,60}(일반 수식어 A.{0,20}일반 수식어 B|수식어 슬롯.{0,10}2개)", re.IGNORECASE),
-    "legacy current auxiliary material claim": re.compile(r"현재[^\n]{0,60}보조재료 슬롯.{0,20}(존재|사용|필수)", re.IGNORECASE),
+    "legacy current two-affix claim": re.compile(
+        r"현재[^\n]{0,60}(일반 수식어 A.{0,20}일반 수식어 B|수식어 슬롯.{0,10}2개)",
+        re.IGNORECASE,
+    ),
+    "legacy current auxiliary material claim": re.compile(
+        r"현재[^\n]{0,60}보조재료 슬롯.{0,20}(존재|사용|필수)",
+        re.IGNORECASE,
+    ),
     "legacy universal day preset": re.compile(r"모든[^\n]{0,80}(3일 결과|4일 재방문)", re.IGNORECASE),
     "legacy five-test count": re.compile(r"강화 모델\s*5건", re.IGNORECASE),
     "legacy optional precision enhancement": re.compile(r"정밀 강화\s*ON/OFF", re.IGNORECASE),
+    "legacy current three-grade planning claim": re.compile(
+        r"현재[^\n]{0,80}(baseline ID|제작 등급)[^\n]{0,40}STANDARD\s*/\s*GOOD\s*/\s*PERFECT",
+        re.IGNORECASE,
+    ),
+    "legacy post-craft legendary promotion": re.compile(
+        r"(걸작[^\n]{0,20}전설|전설[^\n]{0,40}승격)[^\n]{0,80}(강화|명성|연대기|감정|복원)",
+        re.IGNORECASE,
+    ),
 }
 
 REQUIRED_ASSERTIONS = {
@@ -65,28 +80,46 @@ REQUIRED_ASSERTIONS = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "BS-OPS-20260804-02",
+        "BS-CRAFT-20260804-07",
+        "[보통] → [우수] → [걸작] → [전설]",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "제품 구현: `BLOCKED`",
     ),
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
-        '"schema_version": 6',
-        '"planning_pr": 103',
-        '"closure_pr": 104',
-        '"next_approval_counter": "0/10"',
-        '"product_implementation": "BLOCKED"',
+        '"schema_version":7',
+        '"planning_pr":103',
+        '"closure_pr":104',
+        '"canon_audit_pr":105',
+        '"next_approval_counter":"1/10"',
+        '"product_implementation":"BLOCKED"',
+        '"id":"BS-CRAFT-20260804-07"',
+        '"four_grade_product_implementation":"NOT_STARTED_BLOCKED"',
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
         "GRADE_AFFIX",
         "CATALYST_AFFIX",
         "CHRONICLE_AFFIX",
+        "[보통] → [우수] → [걸작] → [전설]",
         "보조재료 슬롯 재도입 금지",
         "일반 수식어 A·B 구조 재도입 금지",
+        "과거 3단계 구현 PASS를 현재 4단계 제품 구현 PASS로 해석 금지",
+    ),
+    "docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md": (
+        "BS-CRAFT-20260804-07",
+        "R2_BATCH_004_1_OF_10",
+        "CRAFT_NORMAL",
+        "CRAFT_SUPERIOR",
+        "CRAFT_MASTERWORK",
+        "CRAFT_LEGENDARY",
+        "제작 후 `걸작 → 전설` 승격 금지",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 003",
         "BS-OPS-20260804-02",
-        "다음 승인 카운터: `0/10`",
+        "BS-CRAFT-20260804-07",
+        "R2_BATCH_004_1_OF_10",
+        "현재 승인 카운터: `1/10`",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
@@ -208,8 +241,21 @@ def resolve_reference(project_root: Path, source: Path, candidate: str) -> Path:
     return hub if hub.exists() else local
 
 
-def add(findings: list[Finding], severity: str, code: str, message: str, path: Path | str | None = None) -> None:
-    findings.append(Finding(severity=severity, code=code, message=message, path=None if path is None else str(path)))
+def add(
+    findings: list[Finding],
+    severity: str,
+    code: str,
+    message: str,
+    path: Path | str | None = None,
+) -> None:
+    findings.append(
+        Finding(
+            severity=severity,
+            code=code,
+            message=message,
+            path=None if path is None else str(path),
+        )
+    )
 
 
 def audit_base(base_root: Path, profile: dict, findings: list[Finding]) -> dict:
