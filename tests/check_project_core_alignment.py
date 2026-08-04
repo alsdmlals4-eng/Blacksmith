@@ -26,7 +26,9 @@ REQUIRED_TEXT = {
         "BS-CRAFT-20260804-07",
         "BS-CRAFT-20260805-01",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
-        "예술성 1~10",
+        "예술성 27",
+        "고정 설계 최대치 없음",
+        "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "PR #81 전체 병합 단위는 `[폐기]`",
         "제품 구현: `BLOCKED`",
@@ -35,6 +37,8 @@ REQUIRED_TEXT = {
         "[현재 정본]",
         "R2_BATCH_004_2_OF_10",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
+        "예술성 27",
+        "고정 설계 최대치 없음",
         "예술성 단계명 없음",
         "일반 수식어 A·B 구조 재도입 금지",
         "보조재료 슬롯 재도입 금지",
@@ -49,13 +53,17 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md": (
         "BS-CRAFT-20260805-01",
-        "예술성 7/10",
-        "단계명 없음",
+        "예술성 27",
+        "고정 설계 최대치 없음",
+        "예술성 단계명 없음",
+        "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "전투 성능을 기본적으로 올리지 않는다",
     ),
     "docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md": (
         "Diablo IV",
+        "Path of Exile",
         "Dwarf Fortress",
+        "예술성 27",
         "채택",
         "비채택",
         "Differentiation",
@@ -70,12 +78,16 @@ REQUIRED_TEXT = {
         "BS-OPS-20260804-02",
         "R2_BATCH_004_2_OF_10",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+        "예술성 27",
+        "고정 설계 최대치 없음",
         "전체 병합 단위: [폐기]",
         "현재 승인 카운터: `2/10`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_003",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+        "예술성 27",
+        "고정 설계 최대치",
         "일반 수식어 A·B 재도입",
         "첫 코어 버티컬 슬라이스",
         "행동 증거",
@@ -87,7 +99,19 @@ REQUIRED_TEXT = {
         "Equipment Name·Chronicle Detail Gate",
         "Core Fun Validation Gate",
         "Legacy Document Gate",
+        "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
+        "예술성 27",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
+    ),
+    "[기획서]/00_프로젝트_허브/START_HERE.md": (
+        "예술성: 0 이상의 정수",
+        "고정 설계 최대치 없음",
+        "예술성 27",
+    ),
+    "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
+        "예술성 원수치 능력치",
+        "고정 설계 최대치 없음",
+        "예술성 27",
     ),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
         "[부분 대체됨]",
@@ -124,6 +148,20 @@ FORBIDDEN_ACTIVE_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "R2_CHECKPOINT_003_PENDING_MERGE",
         "PENDING_POSTMERGE_CLOSURE_PR104",
+        "예술성 1~10",
+        "예술성 7/10",
+    ),
+    "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
+        "예술성 1~10",
+        "예술성 7/10",
+    ),
+    "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md": (
+        "예술성 1~10",
+        "예술성 7/10",
+    ),
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
+        "예술성 1~10",
+        "예술성 7/10",
     ),
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
         '"current_main"',
@@ -218,10 +256,28 @@ def validate_r2(failures: list[str]) -> None:
     artistry = decisions.get("BS-CRAFT-20260805-01", {}).get("contract", {})
     if artistry.get("stat_role") != "WEAPON_ITEM_STAT":
         failures.append("artistry must be a weapon item stat")
-    if artistry.get("scale") != "INTEGER_1_TO_10" or artistry.get("named_tiers_exist") is not False:
-        failures.append("artistry must be integer 1-10 without named tiers")
+    if artistry.get("domain") != "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM":
+        failures.append("artistry must use the unbounded non-negative integer domain")
+    if artistry.get("minimum") != 0:
+        failures.append("artistry minimum must be zero")
+    if artistry.get("fixed_design_maximum") is not None:
+        failures.append("artistry must not have a fixed design maximum")
+    if artistry.get("decimals_allowed") is not False:
+        failures.append("artistry decimals must be disallowed")
+    if artistry.get("denominator_display_allowed") is not False:
+        failures.append("artistry denominator display must be disallowed")
+    if artistry.get("named_tiers_exist") is not False:
+        failures.append("artistry named tiers must not exist")
+    if artistry.get("technical_storage_limit_is_content_maximum") is not False:
+        failures.append("technical artistry limit must not become a content maximum")
+    if artistry.get("grade_sets_fixed_artistry_maximum") is not False:
+        failures.append("crafting grade must not set an artistry maximum")
+    if artistry.get("zero_means_incomplete_or_unusable") is not False:
+        failures.append("artistry zero must remain a valid functional item")
     if artistry.get("combat_power_by_default") is not False:
         failures.append("artistry must not increase combat by default")
+    if artistry.get("universal_affix_multiplier") is not False:
+        failures.append("artistry must not be a universal affix multiplier")
 
     ops = decisions.get("BS-OPS-20260805-01", {}).get("contract", {})
     if ops.get("maximum_approved_decisions_per_batch") != 10:
@@ -240,6 +296,12 @@ def validate_r2(failures: list[str]) -> None:
         failures.append("historical grade model must remain separately recorded")
     if alignment.get("five_grade_product_implementation") != "NOT_STARTED_BLOCKED":
         failures.append("five-grade implementation must remain blocked")
+    if alignment.get("current_artistry_model") != "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM_NO_NAMED_TIERS":
+        failures.append("current artistry implementation alignment is stale")
+    if alignment.get("historical_bounded_artistry_model") != "INTEGER_1_TO_10_NO_NAMED_TIERS_SUPERSEDED":
+        failures.append("bounded artistry history must remain explicitly superseded")
+    if alignment.get("artistry_product_implementation") != "NOT_STARTED_BLOCKED":
+        failures.append("artistry implementation must remain blocked")
 
     batch = registry.get("active_batch", {})
     if batch.get("counter") != "2/10" or batch.get("maximum_size") != 10:
@@ -280,6 +342,20 @@ def validate_legacy(failures: list[str]) -> None:
         marker = EXPECTED_MARKERS.get(status)
         if marker and marker not in path.read_text(encoding="utf-8", errors="replace"):
             failures.append(f"{relative}: status {status!r} requires marker {marker!r}")
+
+    artistry_history = {
+        item.get("source"): item
+        for item in registry.get("artistry_model_history", [])
+        if isinstance(item, dict) and isinstance(item.get("source"), str)
+    }
+    bounded = artistry_history.get("BS-CRAFT-20260805-01 initial bounded-stat draft", {})
+    if bounded.get("status") != "SUPERSEDED":
+        failures.append("initial bounded artistry draft must be SUPERSEDED")
+    current = artistry_history.get("BS-CRAFT-20260805-01 unbounded raw-value refinement", {})
+    if current.get("status") != "CURRENT_CANON":
+        failures.append("unbounded artistry refinement must be CURRENT_CANON")
+    if current.get("model") != "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM":
+        failures.append("legacy registry current artistry model is stale")
 
     pr81 = next(
         (item for item in registry.get("pull_requests", []) if isinstance(item, dict) and item.get("number") == 81),
