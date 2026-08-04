@@ -72,7 +72,7 @@ CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
 - `0` 이상의 정수
 - 소수점 없음
 - 고정 설계 최대치 없음
-- `/10`, `/100`, 별점·백분율 표기 없음
+- 분모·별점·백분율 표기 없음
 - 예술성 단계명 없음
 - 제작 등급과 별도 축
 - 무기 상세의 다른 능력치와 함께 원수치 표시
@@ -84,13 +84,7 @@ CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
 
 `예술성 0`은 미완성품이 아니라 미적 투자가 거의 없는 정상 기능품이다. 제작 등급은 예술성의 고정 상한을 만들지 않으므로 `[전설] / 예술성 3`, `[보통] / 예술성 87`이 모두 가능하다.
 
-다음은 `[대체됨]`이다.
-
-- bounded 계약 `예술성 1~10`
-- 분모 표기 `예술성 7/10`
-- `예술성 10 = 최고치`
-- `INTEGER_1_TO_10`
-- `BASIC / REFINED / MASTERWORK / MASTERPIECE` 예술성 단계
+동일 Decision의 초기 bounded-stat 초안과 named-tier 프리셋은 `[대체됨]`이다. 정확한 옛 문자열과 모델 ID는 `BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json`에만 역사 증거로 보존한다.
 
 현재 기계 계약:
 
