@@ -14,18 +14,20 @@
 ```yaml
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
 R1_STATUS: USER_APPROVED / HISTORICAL_BASELINE / R2_REFINED
-R2_STATUS: CHECKPOINT_003_CANON / PLANNING_ACTIVE
+R2_STATUS: R2_BATCH_004_ACTIVE_1_OF_10
+CURRENT_DECISION: BS-CRAFT-20260804-07
 R2_CHECKPOINT_MERGE_PR: 103
-R2_CHECKPOINT_MERGE_SHA: 674ee21013cb5d41f89a1a3f3b10ecfc31238295
 R2_CHECKPOINT_CLOSURE_PR: 104
-R2_CHECKPOINT_CLOSURE_SHA: d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9
-CANON_ADVERSARIAL_AUDIT: BS-OPS-20260804-02 / BS-ADV-20260804-01 / COMPLETE_WITH_OPEN_USER_DECISIONS
+CANON_ADVERSARIAL_AUDIT_PR: 105
+CANON_ADVERSARIAL_AUDIT: COMPLETE
 CURRENT_AFFIX_SLOTS: GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
-NEXT_APPROVAL_COUNTER: 0/10
+CURRENT_CRAFTING_GRADES: 보통 / 우수 / 걸작 / 전설
+NEXT_APPROVAL_COUNTER: 1/10
 CORE_DIRECTION_GATE: PASS
 R2_CHECKPOINT_003_AUTHORITY_GATE: PASS
 LEGACY_DOCUMENT_CLASSIFICATION_GATE: PASS
-OPEN_USER_DESIGN_DECISION_GATE: 1_P1_PLUS_7_P2
+CRAFTING_GRADE_FOUR_TIER_GATE: USER_APPROVED_PENDING_MERGE
+ARTISTRY_TIER_GATE: USER_REVIEW_REQUIRED
 CODEX_IMPLEMENTATION_GATE: BLOCKED
 LATEST_RUNTIME_VALIDATION_GATE: NOT_RUN
 ANDROID_DEVICE_GATE: NOT_RUN
@@ -51,8 +53,33 @@ R2 대체:
 - 일반 수식어 A·B → 등급·촉매·연대기 세 수식어
 - 보조재료 슬롯 → 제거
 - 범용 고정 일정 프리셋 → 개인 일정·날짜 예고형 세계 일정 분리
+- 구형 제작 등급안 → `보통 / 우수 / 걸작 / 전설`
 
 판정: `PASS / USER_APPROVED_BASELINE / R2_REFINED`.
+
+## Crafting Grade Four-Tier Gate
+
+```text
+[보통] → [우수] → [걸작] → [전설]
+```
+
+내부 계획 ID:
+
+```text
+CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_MASTERWORK / CRAFT_LEGENDARY
+```
+
+- 최초 직접 단조 완료 시 한 번 결정
+- 동일 작품 UID에서 영구 고정
+- `전설`은 최초 제작 판정에서만 극희귀하게 발생
+- 제작 후 승격·강등 없음
+- 강화·촉매·연대기·감정·명성·복원·상속으로 변경 금지
+- `전설`이 예술성·촉매·연대기·전투 최강을 자동 보장하지 않음
+- 정확한 확률·성능·가치 배율은 `BASELINE_TEST_PRESET`
+- 과거 `STANDARD / GOOD / PERFECT`는 역사 구현 기준선
+- 제품 4단계 구현은 `NOT_STARTED / BLOCKED`
+
+판정: `USER_APPROVED / BS-CRAFT-20260804-07 / R2_BATCH_004_1_OF_10 / IMPLEMENTATION_NOT_STARTED`.
 
 ## Three Affix Gate
 
@@ -62,6 +89,7 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 
 - 정확히 세 슬롯
 - 제작 완료 시 등급 수식어 생성
+- 등급 수식어 라벨은 `보통 / 우수 / 걸작 / 전설`
 - 촉매·연대기 수식어는 최초 제작 시 `EMPTY`
 - 등급 수식어는 동일 UID에서 고정
 - 촉매 수식어는 촉매 이력으로 확률적 성장
@@ -70,7 +98,7 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 - 제작 등급 효과 중복 가산 금지
 - 일반 수식어 A·B 재도입 금지
 
-판정: `PASS / USER_APPROVED / MERGED_PR103`.
+판정: `PASS / USER_APPROVED / MERGED_PR103 / GRADE_REFINED_BY_BS-CRAFT-20260804-07`.
 
 ## Precision Enhancement Gate
 
@@ -91,6 +119,12 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 [등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어
 ```
 
+대표 예시:
+
+```text
+[걸작] 예리한 강철 장검 - 투기장의 승자
+```
+
 - 빈 촉매 수식어 생략
 - 빈 연대기 수식어는 하이픈과 함께 생략
 - 현재 연대기 하나만 이름에 표시
@@ -98,13 +132,13 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 - 형성 사건·주요 타임라인·진화 계보·가치·소유·손상·복원 기록 표시
 - 기록 없는 사건·미래 결과·열람 보상 금지
 - 색상만으로 상호작용 표시 금지
+- 기존 임시 제작 등급 라벨 `[명품]`은 사용하지 않음
 
-판정: `PASS / USER_APPROVED / MERGED_PR103`.
+판정: `PASS / USER_APPROVED / MERGED_PR103 / LABEL_REFINED_BY_BS-CRAFT-20260804-07`.
 
 열린 Gate:
 
 - 긴 이름 줄바꿈·축약·스크린리더 순서
-- 제작 등급 수식어와 예술성 시각 단계 한국어 명칭 분리
 
 ## Customer Information Gate
 
@@ -153,12 +187,17 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 - 강화 단계만으로 자동 상승 금지
 - 고예술성이 모든 고객의 최적해가 되는 구조 금지
 - 제작 등급 수식어와 예술성 시각 단계는 별개
+- 제작 등급의 `보통 / 우수 / 걸작 / 전설`을 예술성 단계명으로 재사용 금지
 
-열린 P1:
+다음 사용자 Decision:
 
-- 예시 `[명품]`과 예술성 한국어 단계 `명품`의 어휘 충돌
+- 예술성 단계 수
+- 한국어 단계명
+- `1~10` 점수 구간
+- 장비명·상세 화면 표시 방식
+- 시각 변화·가격·고객 수요의 책임 경계
 
-판정: `STRUCTURE_APPROVED / DISPLAY_LABEL_USER_DECISION_REQUIRED`.
+판정: `STRUCTURE_APPROVED / TIER_DESIGN_USER_REVIEW_REQUIRED`.
 
 ## Content Composition Gate
 
@@ -197,6 +236,7 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 
 - 강화 지속·중단 고민
 - 등급·촉매·연대기 생성 원인 설명
+- `전설`을 후천 명성·연대기 단계로 오해하지 않음
 - 작품 선택과 고객 결과 인과 설명
 - 일정 현재 상태와 다음 행동 이해
 - 재방문 뒤 자발적 다음 행동
@@ -224,28 +264,31 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 
 - 구형 A/B 수식어·보조재료·2슬롯 문서 직접 상태 표시
 - PR #81 전체 병합 단위 `DO_NOT_MERGE / REJECTED`
+- 과거 3단계 구현·구형 5단계안·현재 4단계 기획을 분리
 - 역사 PoC 수치와 최신 제품값 분리
 - R1 Registry 역사 기반 재분류
 - Design Document Registry 현행 R2 라우팅
 - 기계 판독 상태 원장과 파일 배너 자동 검사
 
-판정: `PASS / BS-OPS-20260804-02 / BS-ADV-20260804-01`.
+판정: `PASS / BS-OPS-20260804-02 / BS-ADV-20260804-01 / REFINED_BY_BS-CRAFT-20260804-07`.
 
 ## PR Gate
 
 - PR #103: `MERGED_R2_CHECKPOINT_003_CANON`
 - PR #104: `MERGED_POSTMERGE_CLOSURE`
+- PR #105: `MERGED_CANON_AUDIT / 95f8fa33a645914578451af325afcaa32732c426`
 - PR #81: `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT / SELECTIVE_PROMOTION_HOLD`
-- PR #105: exact-head 검증·Sheet readback·P0/P1 재감사 뒤 expected-head squash 병합
+- R2 Batch 004 Draft PR: 승인 10건 또는 별도 체크포인트 전까지 미병합
 
 ## Historical Baseline Gate
 
 - `POC v0.6.4 · main · 2026.07.23.1`
 - 제작 모델 7건·통합 6건
+- 과거 제작 등급 구현 `STANDARD / GOOD / PERFECT`
 - 과거 일반 강화 실패 `+11 / LEGACY_IMPLEMENTED_VALUE`
 - `data/crafting/enhancement_balance.json`
 - `data/crafting/enhancement_milestones.json`
-- `HISTORICAL_EVIDENCE`, 최신 제품 PASS 아님
+- `HISTORICAL_EVIDENCE`, 최신 4단계 제품 PASS 아님
 
 ## Product Implementation Gate
 
@@ -254,7 +297,7 @@ R1~R8 기획·검수, 저장·rollback·migration 계약, 테스트 프리셋과
 ## Current Next Gate
 
 ```yaml
-NEXT_ACTIVITY: USER_REVIEW_OPEN_DESIGN_DECISIONS_AND_CONTINUE_R2_PLANNING
-NEXT_APPROVAL_COUNTER: 0/10
+NEXT_ACTIVITY: DEFINE_ARTISTRY_TIERS_AND_PRESENTATION
+NEXT_APPROVAL_COUNTER: 1/10
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
