@@ -15,6 +15,8 @@ REQUIRED_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "BS-OPS-20260804-02",
+        "BS-CRAFT-20260804-07",
+        "[보통] → [우수] → [걸작] → [전설]",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "PR #81 전체 병합 단위는 `[폐기]`",
         "제품 구현: `BLOCKED`",
@@ -25,15 +27,29 @@ REQUIRED_TEXT = {
         "CATALYST_AFFIX",
         "CHRONICLE_AFFIX",
         "[등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어",
+        "[보통] → [우수] → [걸작] → [전설]",
         "일반 수식어 A·B 구조 재도입 금지",
         "보조재료 슬롯 재도입 금지",
+        "과거 3단계 구현 PASS를 현재 4단계 제품 구현 PASS로 해석 금지",
+    ),
+    "docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md": (
+        "BS-CRAFT-20260804-07",
+        "R2_BATCH_004_1_OF_10",
+        "CRAFT_NORMAL",
+        "CRAFT_SUPERIOR",
+        "CRAFT_MASTERWORK",
+        "CRAFT_LEGENDARY",
+        "제작 후 `걸작 → 전설` 승격 금지",
+        "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 003",
         "BS-OPS-20260804-02",
+        "BS-CRAFT-20260804-07",
+        "R2_BATCH_004_1_OF_10",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "전체 병합 단위: [폐기]",
-        "다음 승인 카운터: `0/10`",
+        "현재 승인 카운터: `1/10`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_003",
@@ -65,11 +81,8 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md": (
         "BS-ADV-20260804-01",
-        "COMPLETED_WITH_OPEN_USER_DECISIONS",
         "CORE_FUN_DIRECTION: VALID",
         "P0: 0",
-        "P1_DOCUMENT_AUTHORITY_RESOLVED: 6",
-        "P1_USER_DECISION_OPEN: 1",
     ),
     "docs/MVP-003_SCOPE.md": (
         "[역사 증거] [보류]",
@@ -105,6 +118,7 @@ FORBIDDEN_ACTIVE_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "R2_CHECKPOINT_003_PENDING_MERGE",
         "PENDING_POSTMERGE_CLOSURE_PR104",
+        "baseline ID: `STANDARD / GOOD / PERFECT`",
     ),
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
         '"current_main"',
@@ -147,14 +161,14 @@ def validate_r2(failures: list[str]) -> None:
     registry = load_json(R2_REGISTRY_PATH, failures)
     if not registry:
         return
-    if registry.get("schema_version") != 6:
-        failures.append("R2 registry schema_version must be 6")
-    if "R2_CHECKPOINT_003_CANON" not in str(registry.get("stage_status")):
-        failures.append("R2 registry must identify checkpoint 003 as current canon")
+    if registry.get("schema_version") != 7:
+        failures.append("R2 registry schema_version must be 7")
+    if registry.get("stage_status") != "R2_BATCH_004_ACTIVE_1_OF_10":
+        failures.append("R2 registry must identify batch 004 as active at 1/10")
     if registry.get("product_implementation") != "BLOCKED":
         failures.append("R2 registry product implementation must remain BLOCKED")
-    if registry.get("next_approval_counter") != "0/10":
-        failures.append("R2 registry next approval counter must be 0/10")
+    if registry.get("next_approval_counter") != "1/10":
+        failures.append("R2 registry next approval counter must be 1/10")
 
     evidence = registry.get("immutable_merge_evidence", {}).get("checkpoint_003", {})
     expected = {
@@ -162,6 +176,8 @@ def validate_r2(failures: list[str]) -> None:
         "planning_merge_sha": "674ee21013cb5d41f89a1a3f3b10ecfc31238295",
         "closure_pr": 104,
         "closure_merge_sha": "d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9",
+        "canon_audit_pr": 105,
+        "canon_audit_merge_sha": "95f8fa33a645914578451af325afcaa32732c426",
         "github_readback": "PASS",
         "sheet_readback": "PASS",
     }
@@ -179,6 +195,34 @@ def validate_r2(failures: list[str]) -> None:
         failures.append("current affix slot count must be 3")
     if affix.get("affix_slots") != ["GRADE_AFFIX", "CATALYST_AFFIX", "CHRONICLE_AFFIX"]:
         failures.append("current affix slots must be grade/catalyst/chronicle")
+
+    grade = decisions.get("BS-CRAFT-20260804-07", {}).get("contract", {})
+    if grade.get("grade_count") != 4:
+        failures.append("current crafting grade count must be 4")
+    if grade.get("grade_ids") != [
+        "CRAFT_NORMAL",
+        "CRAFT_SUPERIOR",
+        "CRAFT_MASTERWORK",
+        "CRAFT_LEGENDARY",
+    ]:
+        failures.append("current crafting grade IDs must match the approved four-tier model")
+    if grade.get("korean_labels") != ["보통", "우수", "걸작", "전설"]:
+        failures.append("current Korean crafting grade labels must be 보통/우수/걸작/전설")
+    if grade.get("post_craft_promotion_allowed") is not False:
+        failures.append("post-craft grade promotion must be false")
+    if grade.get("legendary_origin") != "EXTREMELY_RARE_FIRST_CRAFT_RESULT":
+        failures.append("legendary grade must be an extremely rare first-craft result")
+
+    alignment = registry.get("implementation_alignment", {})
+    if alignment.get("historical_implemented_grade_model") != ["STANDARD", "GOOD", "PERFECT"]:
+        failures.append("historical implemented grade model must remain separately recorded")
+    if alignment.get("four_grade_product_implementation") != "NOT_STARTED_BLOCKED":
+        failures.append("four-tier product implementation must remain blocked and not started")
+
+    batch = registry.get("active_batch", {})
+    if batch.get("id") != "R2_BATCH_004" or batch.get("counter") != "1/10":
+        failures.append("active batch must be R2_BATCH_004 at 1/10")
+
     precision = decisions.get("BS-CRAFT-20260804-04", {}).get("contract", {})
     if precision.get("auxiliary_material_slot_exists") is not False:
         failures.append("auxiliary material slot must be false")
@@ -202,6 +246,8 @@ def validate_legacy(failures: list[str]) -> None:
     registry = load_json(LEGACY_REGISTRY_PATH, failures)
     if not registry:
         return
+    if registry.get("schema_version") != 2:
+        failures.append("legacy registry schema_version must be 2")
     for item in registry.get("documents", []):
         if not isinstance(item, dict):
             failures.append("legacy registry contains non-object document entry")
@@ -218,6 +264,20 @@ def validate_legacy(failures: list[str]) -> None:
         marker = EXPECTED_MARKERS.get(status)
         if marker and marker not in path.read_text(encoding="utf-8", errors="replace"):
             failures.append(f"{relative}: status {status!r} requires visible marker {marker!r}")
+
+    grade_history = registry.get("grade_model_history", [])
+    current = next(
+        (item for item in grade_history if isinstance(item, dict) and item.get("decision") == "BS-CRAFT-20260804-07"),
+        None,
+    )
+    if current is None or current.get("status") != "CURRENT_CANON":
+        failures.append("legacy registry must identify BS-CRAFT-20260804-07 as current grade canon")
+    historical = next(
+        (item for item in grade_history if isinstance(item, dict) and item.get("source") == "historical runtime and data"),
+        None,
+    )
+    if historical is None or historical.get("status") != "HISTORICAL_EVIDENCE":
+        failures.append("legacy registry must keep the three-tier runtime model as historical evidence")
 
     entries = [item for item in registry.get("pull_requests", []) if isinstance(item, dict)]
     pr81 = next((item for item in entries if item.get("number") == 81), None)
