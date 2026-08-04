@@ -6,11 +6,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
+LEGACY_REGISTRY = ROOT / "docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json"
 THREE_AFFIX_CANON = ROOT / "docs/planning/BLACKSMITH_R2_THREE_AFFIX_SLOT_ARCHITECTURE_CANON_2026.md"
 CHRONICLE_DETAIL_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CHRONICLE_AFFIX_DETAIL_INTERACTION_CANON_2026.md"
-CLOSURE_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CHECKPOINT_003_POSTMERGE_CLOSURE_2026.md"
+AUDIT_CANON = ROOT / "docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md"
 ROOT_DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
+ROADMAP = ROOT / "[기획서]/00_프로젝트_허브/ROADMAP.md"
+GATES = ROOT / "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
 
 
 class R2Batch003Tests(unittest.TestCase):
@@ -19,7 +22,7 @@ class R2Batch003Tests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
-    def test_batch_decisions_are_closed_in_pr103(self) -> None:
+    def test_batch_decisions_are_closed_in_checkpoint_003(self) -> None:
         for decision_id in (
             "BS-CUSTOMER-20260803-02",
             "BS-SCHEDULE-20260804-01",
@@ -35,13 +38,18 @@ class R2Batch003Tests(unittest.TestCase):
 
         historical = self.decisions["BS-CRAFT-20260804-03"]
         self.assertEqual("SUPERSEDED_IN_STRUCTURE_BY_BS-CRAFT-20260804-04", historical["status"])
-        self.assertEqual(103, historical["merged_in_pr"])
         self.assertFalse(historical["contract"]["auxiliary_material_slot_is_current"])
+
+        closed = self.registry["closed_batch"]
+        self.assertEqual("R2_BATCH_003", closed["id"])
+        self.assertEqual(10, closed["approved_decisions"])
+        self.assertEqual("10/10", closed["counter"])
+        self.assertEqual("CLOSED_MERGED_PR103_AND_CLOSURE_PR104", closed["state"])
+        self.assertEqual("0/10", self.registry["next_approval_counter"])
 
     def test_three_independent_affix_slots(self) -> None:
         decision = self.decisions["BS-CRAFT-20260804-06"]
         contract = decision["contract"]
-        self.assertEqual("BS-UX-20260804-01", decision["refined_by"])
         self.assertEqual(3, contract["affix_slot_count"])
         self.assertEqual(
             ["GRADE_AFFIX", "CATALYST_AFFIX", "CHRONICLE_AFFIX"],
@@ -59,12 +67,23 @@ class R2Batch003Tests(unittest.TestCase):
             contract["name_composition"],
         )
 
+    def test_precision_structure_has_no_auxiliary_slot(self) -> None:
+        contract = self.decisions["BS-CRAFT-20260804-04"]["contract"]
+        self.assertFalse(contract["auxiliary_material_slot_exists"])
+        self.assertEqual("ONE_INPUT_ONE_RESULT", contract["normal_enhancement_flow"])
+        self.assertEqual([10, 20, 30, 40, 50], contract["precision_milestones"])
+        self.assertEqual(
+            ["PRIMARY_MATERIAL_CONTEXT", "ENHANCEMENT_METHOD", "ONE_CATALYST"],
+            contract["precision_inputs"],
+        )
+
     def test_grade_catalyst_and_chronicle_ownership(self) -> None:
         contract = self.decisions["BS-CRAFT-20260804-06"]["contract"]
         grade = contract["grade_affix"]
         catalyst = contract["catalyst_affix"]
         chronicle = contract["chronicle_affix"]
 
+        self.assertEqual(["STANDARD", "GOOD", "PERFECT"], grade["baseline_grade_ids"])
         self.assertTrue(grade["immutable_for_same_item_uid"])
         self.assertFalse(grade["adds_second_grade_multiplier"])
         self.assertEqual("PROBABILISTIC", catalyst["result_model"])
@@ -73,13 +92,10 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertFalse(chronicle["influenced_by_catalyst"])
         self.assertFalse(chronicle["low_risk_repeat_farming_allowed"])
 
-    def test_chronicle_detail_checkpoint_refinement_is_merged(self) -> None:
+    def test_chronicle_detail_contract_is_merged(self) -> None:
         decision = self.decisions["BS-UX-20260804-01"]
         contract = decision["contract"]
-
         self.assertEqual("USER_APPROVED_MERGED_PR103_CHECKPOINT_REFINEMENT", decision["status"])
-        self.assertEqual("BS-CRAFT-20260804-06", decision["refines"])
-        self.assertEqual("POST_BATCH_CHECKPOINT_REFINEMENT", decision["batch_role"])
         self.assertEqual(
             "[GRADE_AFFIX] CATALYST_AFFIX BASE_ITEM_NAME - CHRONICLE_AFFIX",
             contract["equipment_name_format"],
@@ -95,67 +111,65 @@ class R2Batch003Tests(unittest.TestCase):
         self.assertFalse(contract["invented_unrecorded_history_allowed"])
         self.assertFalse(contract["interaction_triggers_gameplay_resolution_or_reward"])
         self.assertFalse(contract["color_only_interaction_cue_allowed"])
-        self.assertTrue(contract["preserve_item_detail_context_on_close"])
 
-    def test_checkpoint_003_closure(self) -> None:
-        checkpoint = self.registry["checkpoint"]
-        batch = self.registry["active_batch"]
+    def test_checkpoint_merge_evidence(self) -> None:
+        evidence = self.registry["immutable_merge_evidence"]["checkpoint_003"]
+        self.assertEqual("228f409c3043bf1618172985a288dc656b0f05b9", evidence["planning_exact_head"])
+        self.assertEqual("674ee21013cb5d41f89a1a3f3b10ecfc31238295", evidence["planning_merge_sha"])
+        self.assertEqual("d09ed504e9ab66384e4a7f675731674c1f7f5871", evidence["closure_exact_head"])
+        self.assertEqual("d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9", evidence["closure_merge_sha"])
+        self.assertEqual("PASS", evidence["github_readback"])
+        self.assertEqual("PASS", evidence["sheet_readback"])
 
-        self.assertEqual("R2_CHECKPOINT_003", checkpoint["id"])
-        self.assertEqual(103, checkpoint["merge_pr"])
-        self.assertEqual("SQUASH", checkpoint["merge_method"])
-        self.assertEqual("228f409c3043bf1618172985a288dc656b0f05b9", checkpoint["exact_head"])
-        self.assertEqual("674ee21013cb5d41f89a1a3f3b10ecfc31238295", checkpoint["merge_sha"])
-        self.assertEqual(104, checkpoint["postmerge_closure_pr"])
-        self.assertEqual("P0_0_P1_0", checkpoint["adversarial_audit"])
-        self.assertEqual("PASS", checkpoint["workflows"]["python_full_contracts"])
-        self.assertEqual("PASS", checkpoint["workflows"]["godot_4_7_1_headless"])
-        self.assertFalse(checkpoint["product_paths_changed"])
-        self.assertEqual("NOT_RUN", checkpoint["focused_test_standalone"])
-
-        self.assertEqual("R2_BATCH_003", batch["id"])
-        self.assertEqual(10, batch["approved_decisions"])
-        self.assertEqual("10/10", batch["counter"])
-        self.assertEqual("CLOSED_MERGED_PR103", batch["state"])
-        self.assertEqual(["BS-UX-20260804-01"], batch["checkpoint_refinements"])
-        self.assertEqual("EXACT_HEAD_VALIDATED_AND_SQUASH_MERGED", batch["current_validation"])
-        self.assertEqual(103, batch["merge_pr"])
-        self.assertEqual(104, batch["postmerge_closure_pr"])
-        self.assertEqual("0/10", self.registry["next_approval_counter"])
-        self.assertEqual("BLOCKED", self.registry["product_implementation"])
-
-    def test_adversarial_guards(self) -> None:
+    def test_adversarial_guards_and_pr81_boundary(self) -> None:
         guards = set(self.registry["adversarial_guards"])
         for guard in (
             "EXACTLY_THREE_AFFIX_SLOTS_GRADE_CATALYST_CHRONICLE",
+            "GENERAL_AFFIX_A_B_STRUCTURE_MUST_NOT_RETURN",
+            "AUXILIARY_MATERIAL_SLOT_MUST_NOT_EXIST",
             "GRADE_AFFIX_MUST_NOT_DOUBLE_COUNT_GRADE_MULTIPLIERS",
             "CATALYST_AFFIX_MUST_NOT_BE_INFLUENCED_BY_CHRONICLE",
             "CHRONICLE_AFFIX_MUST_NOT_BE_CREATED_OR_CHANGED_BY_CATALYST",
-            "EQUIPMENT_NAME_MUST_COMPOSE_GRADE_CATALYST_BASE_AND_CHRONICLE_IN_APPROVED_ORDER",
-            "EMPTY_CHRONICLE_MUST_OMIT_SUFFIX_AND_HYPHEN",
-            "CURRENT_CHRONICLE_ONLY_IN_EQUIPMENT_NAME",
             "CHRONICLE_AFFIX_SUFFIX_MUST_OPEN_UID_BACKED_DETAIL",
-            "CHRONICLE_DETAIL_MUST_USE_SIGNIFICANT_RECORDS_ONLY",
-            "CHRONICLE_DETAIL_MUST_PRESERVE_EVOLUTION_CHAIN",
-            "CHRONICLE_DETAIL_MUST_BE_READ_ONLY",
-            "CHRONICLE_DETAIL_MUST_PRESERVE_ITEM_CONTEXT",
-            "CHRONICLE_DETAIL_MUST_NOT_USE_COLOR_ONLY_CUE",
-            "CHRONICLE_DETAIL_MUST_NOT_REVEAL_UNRESOLVED_FUTURE_RESULTS",
-            "UNRECORDED_CHRONICLE_HISTORY_PROHIBITED",
+            "LEGACY_DOCUMENTS_MUST_HAVE_EXPLICIT_STATUS",
+            "PR81_MUST_NOT_BE_MERGED_AS_UNIT",
+            "REGISTRY_MUST_NOT_PREDICT_ITS_OWN_FUTURE_MERGE_SHA",
         ):
             self.assertIn(guard, guards)
 
-    def test_canon_documents_preserve_closure_and_interaction(self) -> None:
+        pr81 = self.registry["legacy_reference_pull_request"]
+        self.assertEqual(81, pr81["number"])
+        self.assertEqual("REFERENCE_ONLY_DO_NOT_MERGE_AS_UNIT", pr81["status"])
+        self.assertEqual("REJECTED", pr81["whole_pr_merge"])
+        self.assertEqual("HOLD", pr81["selective_promotion"])
+
+    def test_legacy_files_have_direct_status_markers(self) -> None:
+        legacy = json.loads(LEGACY_REGISTRY.read_text(encoding="utf-8"))
+        for item in legacy["documents"]:
+            path = ROOT / item["path"]
+            self.assertTrue(path.exists(), item["path"])
+            text = path.read_text(encoding="utf-8")
+            expected_markers = {
+                "SUPERSEDED": "[대체됨]",
+                "PARTIALLY_SUPERSEDED": "[부분 대체됨]",
+                "HISTORICAL_EVIDENCE": "[역사 증거]",
+            }
+            marker = expected_markers.get(item["status"])
+            if marker:
+                self.assertIn(marker, text, item["path"])
+
+    def test_current_documents_preserve_core_fun_and_current_structure(self) -> None:
         three_affix = THREE_AFFIX_CANON.read_text(encoding="utf-8")
         chronicle_detail = CHRONICLE_DETAIL_CANON.read_text(encoding="utf-8")
-        closure = CLOSURE_CANON.read_text(encoding="utf-8")
+        audit = AUDIT_CANON.read_text(encoding="utf-8")
         root = ROOT_DECISIONS.read_text(encoding="utf-8")
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
+        roadmap = ROADMAP.read_text(encoding="utf-8")
+        gates = GATES.read_text(encoding="utf-8")
 
         for token in (
             "[등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어",
             "[명품] 예리한 강철 장검 - 투기장의 승자",
-            "하단 상세 패널",
             "BS-UX-20260804-01",
         ):
             self.assertIn(token, three_affix)
@@ -163,42 +177,19 @@ class R2Batch003Tests(unittest.TestCase):
         for token in (
             "TAP_CHRONICLE_SUFFIX",
             "BOTTOM_SHEET",
-            "주요 연대기 타임라인",
             "수식어 진화 계보",
-            "ITEM_UID",
             "읽기 전용",
-            "제품 구현: `BLOCKED`",
         ):
             self.assertIn(token, chronicle_detail)
 
-        for token in (
-            "R2_BATCH_003 / 10_OF_10 / CLOSED_MERGED_PR103",
-            "R2_CHECKPOINT_003 / MAIN_CANON",
-            "NEXT_GRILL_ME_COUNTER_0_OF_10",
-            "post-merge closure PR: `#104`",
-        ):
-            self.assertIn(token, closure)
-
-        for token in (
-            "R2_CHECKPOINT_003_CANON",
-            "NEXT_GRILL_ME_COUNTER_0_OF_10",
-            "PR #103 squash merge",
-            "post-merge closure PR: `#104`",
-            "[명품] 예리한 강철 장검 - 투기장의 승자",
-        ):
-            self.assertIn(token, root)
-
-        for token in (
-            "세계일정 진행 계약",
-            "자동 단조",
-            "제작 모델 7건",
-            "통합 6건",
-            "enhancement_balance.json",
-            "enhancement_milestones.json",
-            "다음 승인 카운터: `0/10`",
-            "연대기 수식어를 누르면 그 이름의 근거가 된 작품 기록을 확인할 수 있다",
-        ):
-            self.assertIn(token, active)
+        self.assertIn("CORE_FUN_DIRECTION: VALID", audit)
+        self.assertIn("P0: 0", audit)
+        self.assertIn("BS-OPS-20260804-02", root)
+        self.assertIn("PR #81 전체 병합 단위는 `[폐기]`", root)
+        self.assertIn("GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX", active)
+        self.assertIn("일반 수식어 A·B 재도입 금지", roadmap)
+        self.assertIn("Three Affix Gate", gates)
+        self.assertIn("제품 구현: `BLOCKED`", root)
 
 
 if __name__ == "__main__":
