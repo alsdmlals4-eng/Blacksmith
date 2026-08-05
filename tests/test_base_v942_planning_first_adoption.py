@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
+MIGRATION_STATE = ROOT / "docs/operations/BLACKSMITH_ADAPTER_MIGRATION_STATE_2026-08-06.json"
 R1_REGISTRY = ROOT / "docs/planning/CURRENT_R1_CANON_REGISTRY.json"
 R2_REGISTRY = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
 LEGACY_REGISTRY = ROOT / "docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json"
@@ -36,7 +37,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual("7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8", release["release_commit"])
         self.assertEqual("da33a350d61b8adc52df97fccc7001708a933370", release["release_evidence_commit"])
         self.assertEqual("0b7c94f38d959efc0fc9442274c60b2e268a3c97", release["finalization_commit"])
-        self.assertEqual("BLOCKED", adapter["project_operating_state"]["product_implementation"])
+        migration = load_json(MIGRATION_STATE)
+        preserved = migration["migrated_adapter_root_fields"]["project_operating_state"]
+        self.assertEqual("BLOCKED", preserved["product_implementation"])
 
     def test_r1_registry_remains_historical(self) -> None:
         registry = load_json(R1_REGISTRY)
