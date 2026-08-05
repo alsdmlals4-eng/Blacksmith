@@ -8,7 +8,7 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005 / 7/10`
+> 현재 승인 배치: `R2_BATCH_005 / 8/10`
 >
 > 제품 구현: `BLOCKED`
 
@@ -35,6 +35,7 @@
 - `BS-ITEM-20260806-01`: 장비군 고정 기본 중량 포인트와 중량 전용 ±5 강화 효과 — `R2_BATCH_005_5_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-ITEM-20260806-02`: 중량 성능 예산 기억과 정밀강화 경량화·중량화 기회비용 — `R2_BATCH_005_6_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-ITEM-20260806-03`: 중량 성능 예산 1점 환산과 장비 역할 프리셋 자동 배분 — `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
+- `BS-ITEM-20260806-04`: 작품군 단일 역할 원수치와 최초 마법·유틸리티 기능 카탈로그 — `R2_BATCH_005_8_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
@@ -287,4 +288,18 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 새 최고 중량 예산은 기존 프로필에 자동 배분한다.
 - 경량화는 기존 공격·방어·기능 용량을 유지한다.
 - 일반 사건 성공률에는 자동 합산하지 않는다.
+- 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-04 -->
+## 작품 역할 원수치와 최초 특수기능 카탈로그
+
+- Decision: `BS-ITEM-20260806-04`
+- 상태: `R2_BATCH_005_8_OF_10 / APPROVED_PENDING_MERGE`
+- 모델: `SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS`
+- 무기는 공격, 방패·갑옷은 방어를 주 역할 원수치로 사용한다.
+- 표시 공격·방어는 최초 제작 + 중량 기반 + 승인된 강화 출력만 가산한다.
+- 기본 다중 전투 보조 수치는 추가하지 않는다.
+- 최초 마법 기능: `ARCANE_CONDUCTION / ELEMENTAL_WARD / ARCANE_SENSING`.
+- 최초 유틸리티 기능: `ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY / TASK_INTEGRATION`.
+- 기능 용량은 기능을 자동 생성하지 않으며 일반 사건 성공률에 자동 합산하지 않는다.
 - 제품 구현: `BLOCKED`.

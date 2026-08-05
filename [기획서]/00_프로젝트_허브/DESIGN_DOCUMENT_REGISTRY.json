@@ -7,8 +7,8 @@
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "current_checkpoint": "R2_CHECKPOINT_004_MAIN_CANON",
-  "current_batch": "R2_BATCH_005_7_OF_10",
-  "current_design_decision": "BS-ITEM-20260806-03",
+  "current_batch": "R2_BATCH_005_8_OF_10",
+  "current_design_decision": "BS-ITEM-20260806-04",
   "product_implementation": "BLOCKED",
   "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, Development Gates, and the focused current canon. Status-marked historical documents never override current R2 canon.",
   "documents": [
@@ -257,6 +257,30 @@
       "source_path": "../../docs/superpowers/plans/2026-08-06-weight-budget-conversion-and-role-presets.md",
       "status": "ACTIVE",
       "source_role": "executed_canon_plan_for_bs_item_20260806_03"
+    },
+    {
+      "document_id": "item-role-stat-initial-function-catalog-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_ITEM_ROLE_STAT_AND_INITIAL_FUNCTION_CATALOG_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_item_role_stat_and_initial_special_function_contract"
+    },
+    {
+      "document_id": "item-role-stat-initial-function-catalog-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-item-role-stat-and-function-catalog-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_item_20260806_04"
+    },
+    {
+      "document_id": "item-role-stat-initial-function-catalog-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-item-role-stat-and-function-catalog.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_item_20260806_04"
+    },
+    {
+      "document_id": "item-role-stat-initial-function-catalog-contract-test",
+      "source_path": "../../tests/test_r2_item_role_stat_and_initial_function_catalog.py",
+      "status": "ACTIVE",
+      "source_role": "tdd_contract_for_bs_item_20260806_04"
     }
   ],
   "routing_guards": [
@@ -288,6 +312,12 @@
     "CURRENT_ITEM_WEIGHT_USES_EQUIPMENT_GROUP_FIXED_BASE_WEIGHT",
     "ONLY_ONE_EXPLICIT_PLUS_OR_MINUS_FIVE_WEIGHT_MODIFIER_IS_ALLOWED_PER_ITEM",
     "MATERIAL_GRADE_ARTISTRY_RAW_STATS_AND_GENERAL_ENHANCEMENT_DO_NOT_AUTOMATICALLY_CHANGE_WEIGHT",
-    "EQUIPMENT_BASE_WEIGHT_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED"
+    "EQUIPMENT_BASE_WEIGHT_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
+    "R2_BATCH_005_IS_ACTIVE_AT_8_OF_10_WITH_BS_ITEM_20260806_04",
+    "ITEM_ROLE_STAT_MODEL_IS_SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS",
+    "DEFAULT_SECONDARY_COMBAT_STAT_SCHEMA_IS_FORBIDDEN",
+    "FUNCTION_CAPACITY_DOES_NOT_AUTO_GENERATE_FUNCTIONS",
+    "FUNCTION_TAGS_DO_NOT_AUTO_ADD_TO_GENERIC_EVENT_SUCCESS",
+    "TRANSFORMATIVE_FUNCTIONS_REQUIRE_SEPARATE_DESIGN_APPROVAL"
   ]
 }

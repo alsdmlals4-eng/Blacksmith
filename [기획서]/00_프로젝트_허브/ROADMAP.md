@@ -2,11 +2,11 @@
 
 ```yaml
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
-CURRENT_STAGE_STATUS: R2_CHECKPOINT_004_MAIN_CANON / R2_BATCH_005_ACTIVE_7_OF_10
+CURRENT_STAGE_STATUS: R2_CHECKPOINT_004_MAIN_CANON / R2_BATCH_005_ACTIVE_8_OF_10
 R2_CHECKPOINT_003: PR103 / CLOSURE_PR104 / CANON_AUDIT_PR105
 R2_CHECKPOINT_004: PR106 / CLOSURE_PR107 / CANON_AUDIT_PR108
 CURRENT_DECISIONS: BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-OPS-20260805-01
-NEXT_APPROVAL_COUNTER: 7/10
+NEXT_APPROVAL_COUNTER: 8/10
 MAXIMUM_BATCH_SIZE: 10
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
@@ -133,7 +133,7 @@ R8에서 핵심 재미·모바일 복잡도·정본·구형 문서·PR·CI를 �
 
 ## BS-ITEM-20260806-01 현재 정제
 
-- 활성 배치: `R2_BATCH_005_7_OF_10`
+- 활성 배치: `R2_BATCH_005_8_OF_10`
 - 장비군 고정 기본 중량: `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`
 - 중량 전용 효과: `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`, 작품당 최대 하나
 - 자동 중량 변경 금지: 재료·제작 등급·예술성·원수치·일반 강화 단계
@@ -157,3 +157,11 @@ R8에서 핵심 재미·모바일 복잡도·정본·구형 문서·PR·CI를 �
 - 기본 작품 역할 프로필은 최초 제작 시 확정되고 UID에서 불변.
 - 플레이어 자유 배분·무료 재분배·기본 혼합 프로필 없음.
 - 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-04 -->
+## 배치 005 — 작품 역할 원수치·기능 카탈로그
+
+- `BS-ITEM-20260806-04 / R2_BATCH_005_8_OF_10`
+- 장비군 단일 역할 원수치와 최초 특수기능 6종을 정본화.
+- 다음 Gate: 특수기능 획득·강화 소유권과 최초 제작 원수치 분포 테스트 프리셋.
+- `PRODUCT_IMPLEMENTATION: BLOCKED`

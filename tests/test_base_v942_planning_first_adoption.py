@@ -66,14 +66,14 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertIn("CLOSURE_MERGED_PR107", closure)
         self.assertIn("7a46fa38586a42f268cd0432744203049649ddd5", closure)
 
-    def test_batch_005_is_active_at_seven_of_ten(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_7_OF_10", self.registry["stage_status"])
-        self.assertEqual("7/10", self.registry["next_approval_counter"])
+    def test_batch_005_is_active_at_eight_of_ten(self) -> None:
+        self.assertEqual("R2_BATCH_005_ACTIVE_8_OF_10", self.registry["stage_status"])
+        self.assertEqual("8/10", self.registry["next_approval_counter"])
         self.assertEqual("BLOCKED", self.registry["product_implementation"])
         active = self.registry["active_batch"]
         self.assertEqual("R2_BATCH_005", active["id"])
-        self.assertEqual(7, active["approved_decisions"])
-        self.assertEqual("7/10", active["counter"])
+        self.assertEqual(8, active["approved_decisions"])
+        self.assertEqual("8/10", active["counter"])
         self.assertEqual(
             [
                 "BS-CRAFT-20260805-02",
@@ -83,6 +83,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
                 "BS-ITEM-20260806-01",
                 "BS-ITEM-20260806-02",
                 "BS-ITEM-20260806-03",
+                "BS-ITEM-20260806-04",
             ],
             active["decisions"],
         )

@@ -34,7 +34,7 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "R2_BATCH_005_7_OF_10",
+        "R2_BATCH_005_8_OF_10",
         "BS-CRAFT-20260805-02",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
         "예술성 27",
@@ -88,7 +88,7 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_R2_WEIGHT_BUDGET_CONVERSION_AND_ROLE_PRESETS_CANON_2026.md": (
         "BS-ITEM-20260806-03",
-        "R2_BATCH_005_7_OF_10",
+        "R2_BATCH_005_8_OF_10",
         "1 ATTACK_BUDGET = ATTACK +5",
         "1 DEFENSE_BUDGET = DEFENSE +5",
         "ROLE_PRESET_AUTOMATIC_SINGLE_LANE",
@@ -119,37 +119,45 @@ REQUIRED_TEXT = {
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_7_OF_10",
-        "현재 승인 카운터: `7/10`",
+        "R2_BATCH_005_8_OF_10",
+        "현재 승인 카운터: `8/10`",
         "BS-CRAFT-20260805-02",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_7_OF_10",
+        "R2_BATCH_005_ACTIVE_8_OF_10",
         "BS-CRAFT-20260805-02",
         "첫 코어 버티컬 슬라이스",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_7_OF_10",
+        "R2_BATCH_005_ACTIVE_8_OF_10",
         "Artistry Generation·Growth·Valuation Gate",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_7_OF_10",
+        "R2_BATCH_005_ACTIVE_8_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 27",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_7_OF_10",
+        "R2_BATCH_005_8_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 생성·성장·가치 평가",
+    ),
+    "docs/planning/BLACKSMITH_R2_ITEM_ROLE_STAT_AND_INITIAL_FUNCTION_CATALOG_CANON_2026.md": (
+        "BS-ITEM-20260806-04",
+        "R2_BATCH_005_8_OF_10",
+        "SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS",
+        "ARCANE_CONDUCTION",
+        "TASK_INTEGRATION",
+        "제품 구현: `BLOCKED`",
     ),
 }
 
@@ -209,8 +217,8 @@ def check_r2(failures: list[str]) -> None:
         return
     expected = {
         "schema_version": 8,
-        "stage_status": "R2_BATCH_005_ACTIVE_7_OF_10",
-        "next_approval_counter": "7/10",
+        "stage_status": "R2_BATCH_005_ACTIVE_8_OF_10",
+        "next_approval_counter": "8/10",
         "product_implementation": "BLOCKED",
     }
     for key, value in expected.items():
@@ -238,9 +246,9 @@ def check_r2(failures: list[str]) -> None:
         failures.append("closed batch must be R2_BATCH_004 at 2/10")
 
     active = registry.get("active_batch", {})
-    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "7/10":
-        failures.append("active batch must be R2_BATCH_005 at 7/10")
-    if active.get("approved_decisions") != 7 or active.get("decisions") != [
+    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "8/10":
+        failures.append("active batch must be R2_BATCH_005 at 8/10")
+    if active.get("approved_decisions") != 8 or active.get("decisions") != [
         "BS-CRAFT-20260805-02",
         "BS-CUSTOMER-20260805-01",
         "BS-UX-20260805-01",
@@ -248,8 +256,9 @@ def check_r2(failures: list[str]) -> None:
         "BS-ITEM-20260806-01",
         "BS-ITEM-20260806-02",
         "BS-ITEM-20260806-03",
+        "BS-ITEM-20260806-04",
     ]:
-        failures.append("active batch 005 must contain the seven approved decisions")
+        failures.append("active batch 005 must contain the eight approved decisions")
     if active.get("maximum_size") != 10:
         failures.append("active batch maximum size must remain 10")
 
@@ -347,6 +356,29 @@ def check_r2(failures: list[str]) -> None:
         failures.append("only one weight modifier may be active per item")
     if weight.get("product_implementation") != "BLOCKED":
         failures.append("equipment base-weight product implementation must remain blocked")
+
+
+    role_catalog = decisions.get("BS-ITEM-20260806-04", {}).get("contract", {})
+    if role_catalog.get("item_role_stat_model") != "SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS":
+        failures.append("item role-stat model is incorrect")
+    if role_catalog.get("primary_role_stat_by_equipment_group", {}).get("SWORD") != "ATTACK":
+        failures.append("sword primary role stat must be attack")
+    if role_catalog.get("primary_role_stat_by_equipment_group", {}).get("HEAVY_ARMOR") != "DEFENSE":
+        failures.append("heavy armor primary role stat must be defense")
+    if role_catalog.get("display_attack_sources") != ["CRAFTED_ATTACK", "WEIGHT_ATTACK_OUTPUT", "APPROVED_ENHANCEMENT_ATTACK_OUTPUT"]:
+        failures.append("display attack sources are incomplete")
+    if role_catalog.get("display_defense_sources") != ["CRAFTED_DEFENSE", "WEIGHT_DEFENSE_OUTPUT", "APPROVED_ENHANCEMENT_DEFENSE_OUTPUT"]:
+        failures.append("display defense sources are incomplete")
+    if set(role_catalog.get("initial_magic_function_catalog", {})) != {"ARCANE_CONDUCTION", "ELEMENTAL_WARD", "ARCANE_SENSING"}:
+        failures.append("initial magic function catalog is incomplete")
+    if set(role_catalog.get("initial_utility_function_catalog", {})) != {"ENVIRONMENTAL_SEALING", "FIELD_SERVICEABILITY", "TASK_INTEGRATION"}:
+        failures.append("initial utility function catalog is incomplete")
+    if role_catalog.get("function_tags_added_to_generic_event_success") is not False:
+        failures.append("function tags must not auto-add to generic success")
+    if role_catalog.get("transformative_function_requires_separate_design_approval") is not True:
+        failures.append("transformative functions must require separate approval")
+    if role_catalog.get("product_implementation") != "BLOCKED":
+        failures.append("item role stat and function catalog implementation must remain blocked")
 
     alignment = registry.get("implementation_alignment", {})
     if alignment.get("historical_implemented_grade_model") != ["STANDARD", "GOOD", "PERFECT"]:

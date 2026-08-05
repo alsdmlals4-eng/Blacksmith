@@ -1,8 +1,8 @@
 # [현재 정본] Active Context
 
-- 갱신: `2026-08-05 21:45 KST`
+- 갱신: `2026-08-06 07:01 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_7_OF_10`
+- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_8_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
 - R2 체크포인트 004: `planning #106 / closure #107 / canon audit #108`
 - PR #106 exact head: `227b2dabf0d98832811415156e72f65d601332a9`
@@ -12,7 +12,7 @@
 - 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
 - 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_4_OF_10`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
-- 현재 승인 카운터: `7/10`
+- 현재 승인 카운터: `8/10`
 - 제품 구현: `BLOCKED`
 
 ## 현재 핵심
@@ -223,4 +223,16 @@ RED:
 - 마법 기능·유틸리티 예산 1점은 기능 용량 +1.
 - 기본 작품 역할 프로필은 최초 제작 시 확정되고 UID에서 불변.
 - 플레이어 자유 배분·무료 재분배·기본 혼합 프로필 없음.
+- 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-04 -->
+## 현재 작품 역할 원수치·기능 카탈로그 승인
+
+- Decision: `BS-ITEM-20260806-04`
+- 활성 배치: `R2_BATCH_005_8_OF_10`
+- 역할 모델: `SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS`
+- 무기 공격 / 방패·갑옷 방어 / 기타 장비 공격·방어 생략.
+- 마법 3종과 유틸리티 3종만 최초 승인.
+- 기능 자동 생성·중복 누적·일반 성공률 범용 합산 금지.
+- 정본: `docs/planning/BLACKSMITH_R2_ITEM_ROLE_STAT_AND_INITIAL_FUNCTION_CATALOG_CANON_2026.md`
 - 제품 구현: `BLOCKED`.

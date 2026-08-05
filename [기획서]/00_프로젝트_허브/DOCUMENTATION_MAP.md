@@ -13,7 +13,7 @@
 
 | 질문 | 책임 원본 | 상태 |
 |---|---|---|
-| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_7_OF_10` |
+| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_8_OF_10` |
 | 현재 기계 정본 | `docs/planning/CURRENT_R2_CANON_REGISTRY.json` | `CURRENT / SCHEMA_8` |
 | 현재 통합 GDD | `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md` | `CURRENT` |
 | 현재 세션 상태 | `ACTIVE_CONTEXT.md` | `CURRENT` |
@@ -138,3 +138,11 @@ customer_artistry_fit = context derived, not persisted
 - 기본 작품 역할 프로필은 최초 제작 시 확정되고 UID에서 불변.
 - 플레이어 자유 배분·무료 재분배·기본 혼합 프로필 없음.
 - 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-04 -->
+## 작품 역할 원수치·기능 카탈로그
+
+- Decision: `BS-ITEM-20260806-04 / R2_BATCH_005_8_OF_10`
+- Canon: `docs/planning/BLACKSMITH_R2_ITEM_ROLE_STAT_AND_INITIAL_FUNCTION_CATALOG_CANON_2026.md`
+- Spec: `docs/superpowers/specs/2026-08-06-item-role-stat-and-function-catalog-design.md`
+- Plan: `docs/superpowers/plans/2026-08-06-item-role-stat-and-function-catalog.md`
