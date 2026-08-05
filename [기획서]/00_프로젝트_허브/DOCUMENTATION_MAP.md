@@ -13,7 +13,7 @@
 
 | 질문 | 책임 원본 | 상태 |
 |---|---|---|
-| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_0_OF_10` |
+| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_1_OF_10` |
 | 현재 기계 정본 | `docs/planning/CURRENT_R2_CANON_REGISTRY.json` | `CURRENT / SCHEMA_8` |
 | 현재 통합 GDD | `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md` | `CURRENT` |
 | 현재 세션 상태 | `ACTIVE_CONTEXT.md` | `CURRENT` |
@@ -28,7 +28,7 @@ PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9
 MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7
 CLOSURE_PR107
 R2_BATCH_004_CLOSED_2_OF_10
-R2_BATCH_005_0_OF_10
+R2_BATCH_005_1_OF_10
 ```
 
 ## 분야별 책임 원본
@@ -37,6 +37,9 @@ R2_BATCH_005_0_OF_10
 |---|---|---|
 | 제작 등급 5단계 | `docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md` | `BS-CRAFT-20260804-07 / MERGED_PR106` |
 | 예술성 원수치 능력치 | `docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md` | `BS-CRAFT-20260805-01 / MERGED_PR106` |
+| 예술성 생성·성장·가치 평가 | `docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md` | `BS-CRAFT-20260805-02 / R2_BATCH_005_1_OF_10` |
+| 예술성 설계 명세 | `docs/superpowers/specs/2026-08-05-artistry-generation-growth-economy-design.md` | `BS-CRAFT-20260805-02 / APPROVED_INPUT` |
+| 예술성 구현 계획 | `docs/superpowers/plans/2026-08-05-artistry-generation-growth-economy.md` | `BS-CRAFT-20260805-02 / EXECUTION_PLAN` |
 | 아이템화 벤치마킹 | `docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md` | `BS-OPS-20260805-01` |
 | 세 수식어 | `docs/planning/BLACKSMITH_R2_THREE_AFFIX_SLOT_ARCHITECTURE_CANON_2026.md` | `BS-CRAFT-20260804-06` |
 | 정밀강화 | `docs/planning/BLACKSMITH_R2_PRECISION_ENHANCEMENT_METHOD_AND_CATALYST_STRUCTURE_CANON_2026.md` | `BS-CRAFT-20260804-04` |
@@ -53,6 +56,20 @@ R2_BATCH_005_0_OF_10
 예술성: 0 이상의 정수, 고정 설계 최대치 없음, 예술성 27 원수치 표기
 ```
 
+## 예술성 책임 경계
+
+```text
+artistry = UID persisted stat
+artistry_value = context derived, not persisted
+customer_artistry_fit = context derived, not persisted
+```
+
+- 최초 생성: 설계 미적 성향·재료 시각/가공 적합성·직접 단조 미적 결과
+- 후천 성장: `ARTISTIC_FINISH`·예술성 책임 촉매·승인된 세공/마감·의미 있는 재작업
+- 가치: 구성요소별 가산 + 예술성 구간별 한계 가치 점감
+- 고객: `IGNORE / SECONDARY / PRIMARY / REQUIREMENT`
+- 정확한 수치: `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`
+
 ## 구형 라우팅
 
 | 문서·모델 | 상태 | 대체 |
@@ -65,9 +82,9 @@ R2_BATCH_005_0_OF_10
 
 ## 배치·검증
 
-- `R2_BATCH_004: CLOSED_MERGED_PR106 / 2/10`
-- `R2_BATCH_005: ACTIVE / 0/10`
+- `R2_BATCH_004: CLOSED_MERGED_PR107 / 2/10`
+- `R2_BATCH_005: ACTIVE / 1/10`
 - 최대 배치 크기: 10
-- 조기 체크포인트: 고위험 충돌·세션 종료·정본 영향 큼
-- TDD: `RED → GREEN → REFACTOR`
+- TDD RED: Planning-first `109`
+- GREEN exact-head: `PENDING`
 - 제품 구현: `BLOCKED`
