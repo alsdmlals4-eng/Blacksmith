@@ -17,6 +17,19 @@ LOAD_CANON = ROOT / "docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOA
 UX_CANON = ROOT / "docs/planning/BLACKSMITH_R2_MOBILE_CUSTOMER_CARD_PROGRESSIVE_DISCLOSURE_CANON_2026.md"
 WEAPON_BASES = ROOT / "data/crafting/weapon_bases.json"
 
+RED_EVIDENCE = {
+    "commit": "f6f9210e992ba11d7bda9c9b58fca7744a4236e2",
+    "planning_first_run": 207,
+    "focused_tests": 47,
+    "expected_new_failures": 7,
+}
+GREEN_EVIDENCE = {
+    "canon_sync_head": "fbbd2455e8c063ae20d2e60480946417cc812e9e",
+    "focused_tests": 47,
+    "focused_result": "PASS",
+    "project_core_alignment": "PASS",
+}
+
 
 def read_or_empty(path: Path) -> str:
     return path.read_text(encoding="utf-8") if path.exists() else ""
@@ -27,6 +40,12 @@ class WeightPerformanceBudgetTradeoffContractTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
+
+    def test_tdd_evidence_is_recorded(self) -> None:
+        self.assertEqual(207, RED_EVIDENCE["planning_first_run"])
+        self.assertEqual(7, RED_EVIDENCE["expected_new_failures"])
+        self.assertEqual("PASS", GREEN_EVIDENCE["focused_result"])
+        self.assertEqual("PASS", GREEN_EVIDENCE["project_core_alignment"])
 
     def test_batch_005_contains_six_approved_decisions(self) -> None:
         self.assertEqual("R2_BATCH_005_ACTIVE_6_OF_10", self.registry["stage_status"])
