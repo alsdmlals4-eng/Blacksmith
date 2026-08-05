@@ -149,7 +149,7 @@ REQUIRED_ASSERTIONS = {
     ),
     "docs/planning/BLACKSMITH_R2_CUSTOMER_CAPABILITY_AND_EQUIPMENT_COMPATIBILITY_CANON_2026.md": (
         "BS-CUSTOMER-20260805-01",
-        "R2_BATCH_005_2_OF_10",
+        "R2_BATCH_005_4_OF_10",
         "근력 / 기량 / 체력 / 판단력",
         "WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL",
         "HISTORICAL_SUPERSEDED",
@@ -216,7 +216,7 @@ REQUIRED_ASSERTIONS = {
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_2_OF_10",
+        "R2_BATCH_005_4_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 생성·성장·가치 평가",
         "예술성 원수치 능력치",
