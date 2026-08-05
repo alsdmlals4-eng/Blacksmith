@@ -106,5 +106,6 @@
 - Canon synchronization commit: `12fe01e9e821146eebf8edb175750d9fda35a9f1`.
 - Focused contracts: `34 tests PASS`.
 - Project core alignment: `PASS`.
-- One-shot synchronizer and workflow were removed from the GREEN result commit.
-- This user-authored update triggers final exact-head Planning-first, Base, Python/operating-audit, and Godot validation. Sheet and PR final evidence remain pending until those runs complete.
+- First exact-head validation `a32ef34079b6bce2e86130f07ef41f14e19e1572`: Planning-first `180` PASS, Base `667` PASS; PR validation `1258` exposed one stale operating-audit assertion for `DOCUMENTATION_MAP`.
+- Audit repair commit: `7bd11515db24a46b402915ec26acb2d55ad769b0`; the one-shot repair workflow removed itself after updating only the stale assertion.
+- This user-authored update triggers the final exact-head validation. Sheet and PR final evidence remain pending until all runs complete.
