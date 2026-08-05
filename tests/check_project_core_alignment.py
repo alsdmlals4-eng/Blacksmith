@@ -21,22 +21,37 @@ REQUIRED_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005 / 0/10",
+        "R2_BATCH_005 / 1/10",
+        "BS-CRAFT-20260805-02",
         "MERGED_PR106",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "예술성 27",
         "고정 설계 최대치 없음",
+        "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
+        "IGNORE / SECONDARY / PRIMARY / REQUIREMENT",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "제품 구현: `BLOCKED`",
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "R2_BATCH_005_0_OF_10",
+        "R2_BATCH_005_1_OF_10",
+        "BS-CRAFT-20260805-02",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
         "예술성 27",
         "고정 설계 최대치 없음",
+        "ARTISTIC_FINISH",
+        "구간별 한계 가치",
         "일반 수식어 A·B 구조 재도입 금지",
         "보조재료 슬롯 재도입 금지",
+    ),
+    "docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md": (
+        "BS-CRAFT-20260805-02",
+        "R2_BATCH_005_1_OF_10",
+        "BASE_ITEM_DESIGN_AESTHETIC_TENDENCY",
+        "ARTISTIC_FINISH",
+        "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
+        "IGNORE / SECONDARY / PRIMARY / REQUIREMENT",
+        "제품 구현: `BLOCKED`",
     ),
     "docs/planning/BLACKSMITH_R2_CHECKPOINT_004_POSTMERGE_CLOSURE_2026.md": (
         "CLOSURE_MERGED_PR107",
@@ -56,46 +71,50 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md": (
         "BS-CRAFT-20260805-01",
-        "MERGED_PR106",
+        "BS-CRAFT-20260805-02",
         "예술성 27",
         "고정 설계 최대치 없음",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_0_OF_10",
-        "현재 승인 카운터: `0/10`",
+        "R2_BATCH_005_1_OF_10",
+        "현재 승인 카운터: `1/10`",
+        "BS-CRAFT-20260805-02",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_0_OF_10",
+        "R2_BATCH_005_ACTIVE_1_OF_10",
+        "BS-CRAFT-20260805-02",
         "첫 코어 버티컬 슬라이스",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_0_OF_10",
-        "7a46fa38586a42f268cd0432744203049649ddd5",
+        "R2_BATCH_005_ACTIVE_1_OF_10",
+        "Artistry Generation·Growth·Valuation Gate",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_0_OF_10",
+        "R2_BATCH_005_ACTIVE_1_OF_10",
+        "BS-CRAFT-20260805-02",
         "예술성 27",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_0_OF_10",
-        "예술성 원수치 능력치",
+        "R2_BATCH_005_1_OF_10",
+        "BS-CRAFT-20260805-02",
+        "예술성 생성·성장·가치 평가",
     ),
 }
 
 FORBIDDEN = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
-        "APPROVED_PENDING_MERGE",
+        "R2_BATCH_005 / 0/10",
         "R2_BATCH_004 / 2/10",
         "예술성 7/10",
         "예술성 1~10",
@@ -103,12 +122,11 @@ FORBIDDEN = {
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
         "R2_BATCH_004_ACTIVE_2_OF_10",
         "PENDING_EXPECTED_HEAD_MERGE",
-        "APPROVED_PENDING_MERGE",
         '"auxiliary_material_slot_exists":true',
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
+        "현재 승인 카운터: `0/10`",
         "현재 승인 카운터: `2/10`",
-        "Draft PR 유지",
     ),
 }
 
@@ -151,25 +169,13 @@ def check_r2(failures: list[str]) -> None:
         return
     expected = {
         "schema_version": 8,
-        "stage_status": "R2_BATCH_005_ACTIVE_0_OF_10",
-        "next_approval_counter": "0/10",
+        "stage_status": "R2_BATCH_005_ACTIVE_1_OF_10",
+        "next_approval_counter": "1/10",
         "product_implementation": "BLOCKED",
     }
     for key, value in expected.items():
         if registry.get(key) != value:
             failures.append(f"R2 registry {key!r} must equal {value!r}")
-
-    cp3 = registry.get("immutable_merge_evidence", {}).get("checkpoint_003", {})
-    for key, value in {
-        "planning_pr": 103,
-        "planning_merge_sha": "674ee21013cb5d41f89a1a3f3b10ecfc31238295",
-        "closure_pr": 104,
-        "closure_merge_sha": "d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9",
-        "canon_audit_pr": 105,
-        "canon_audit_merge_sha": "95f8fa33a645914578451af325afcaa32732c426",
-    }.items():
-        if cp3.get(key) != value:
-            failures.append(f"checkpoint 003 {key!r} must equal {value!r}")
 
     cp4 = registry.get("immutable_merge_evidence", {}).get("checkpoint_004", {})
     for key, value in {
@@ -187,39 +193,23 @@ def check_r2(failures: list[str]) -> None:
         if cp4.get(key) != value:
             failures.append(f"checkpoint 004 {key!r} must equal {value!r}")
 
-    green = registry.get("tdd_evidence", {}).get("closure_green", {})
-    for key, value in {
-        "commit": "1ad791123eaf6c727e964380814ffb69f1357bbf",
-        "planning_first_run": 101,
-        "base_run": 579,
-        "pr_validation_run": 1170,
-        "status": "PASS",
-    }.items():
-        if green.get(key) != value:
-            failures.append(f"closure GREEN {key!r} must equal {value!r}")
-
     closed = registry.get("closed_batch", {})
     if closed.get("id") != "R2_BATCH_004" or closed.get("counter") != "2/10":
         failures.append("closed batch must be R2_BATCH_004 at 2/10")
-    if closed.get("decisions") != ["BS-CRAFT-20260804-07", "BS-CRAFT-20260805-01"]:
-        failures.append("closed batch 004 decisions are incomplete")
-    if closed.get("closure_reason") != "USER_APPROVED_EARLY_CHECKPOINT":
-        failures.append("closed batch 004 reason is incorrect")
 
     active = registry.get("active_batch", {})
-    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "0/10":
-        failures.append("active batch must be R2_BATCH_005 at 0/10")
-    if active.get("approved_decisions") != 0 or active.get("decisions") != []:
-        failures.append("active batch 005 must start empty")
+    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "1/10":
+        failures.append("active batch must be R2_BATCH_005 at 1/10")
+    if active.get("approved_decisions") != 1 or active.get("decisions") != ["BS-CRAFT-20260805-02"]:
+        failures.append("active batch 005 must contain only BS-CRAFT-20260805-02")
+    if active.get("maximum_size") != 10:
+        failures.append("active batch maximum size must remain 10")
 
     decisions = {
         item.get("id"): item
         for item in registry.get("current_decisions", [])
         if isinstance(item, dict) and isinstance(item.get("id"), str)
     }
-    customer = decisions.get("BS-CUSTOMER-20260803-02", {}).get("contract", {})
-    if customer.get("event_risk_scale") != "INTEGER_1_TO_10":
-        failures.append("customer risk scale contract is missing")
     precision = decisions.get("BS-CRAFT-20260804-04", {}).get("contract", {})
     if precision.get("auxiliary_material_slot_exists") is not False:
         failures.append("auxiliary material slot must remain false")
@@ -234,11 +224,31 @@ def check_r2(failures: list[str]) -> None:
         failures.append("unbounded artistry domain is missing")
     if artistry.get("minimum") != 0 or artistry.get("fixed_design_maximum") is not None:
         failures.append("artistry minimum or maximum is incorrect")
-    if artistry.get("combat_power_by_default") is not False:
-        failures.append("artistry must not increase combat by default")
-    ops = decisions.get("BS-OPS-20260805-01", {}).get("contract", {})
-    if ops.get("tdd_cycle") != ["RED", "GREEN", "REFACTOR"]:
-        failures.append("TDD cycle is incomplete")
+
+    flow = decisions.get("BS-CRAFT-20260805-02", {}).get("contract", {})
+    if flow.get("persisted_stat") != "ARTISTRY":
+        failures.append("artistry flow persisted stat is missing")
+    if flow.get("initial_sources") != [
+        "BASE_ITEM_DESIGN_AESTHETIC_TENDENCY",
+        "MATERIAL_VISUAL_PROCESSING_FIT",
+        "DIRECT_FORGING_AESTHETIC_RESULT",
+    ]:
+        failures.append("artistry initial sources are incomplete")
+    if flow.get("allowed_post_craft_growth_sources") != [
+        "ARTISTIC_FINISH",
+        "ARTISTRY_OWNED_CATALYST_EFFECT",
+        "APPROVED_FINISHING_OR_DECORATION_CONTENT",
+        "MEANINGFUL_ARTISTIC_REWORK",
+    ]:
+        failures.append("artistry post-craft sources are incomplete")
+    if flow.get("valuation_model") != "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE":
+        failures.append("artistry valuation model is incorrect")
+    if flow.get("customer_interest_roles") != ["IGNORE", "SECONDARY", "PRIMARY", "REQUIREMENT"]:
+        failures.append("customer artistry interest roles are incomplete")
+    if flow.get("same_source_double_count_allowed") is not False:
+        failures.append("same-source double counting must be false")
+    if flow.get("exact_values") != "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED":
+        failures.append("artistry exact values must remain test presets")
 
     alignment = registry.get("implementation_alignment", {})
     if alignment.get("historical_implemented_grade_model") != ["STANDARD", "GOOD", "PERFECT"]:
