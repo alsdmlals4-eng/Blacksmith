@@ -42,6 +42,13 @@ class CustomerEquipmentCompatibilityContractTests(unittest.TestCase):
         self.assertEqual("INTEGER_0_TO_10", contract.get("magic_aptitude_scale"))
         self.assertEqual(2, contract.get("magic_affinity_tag_maximum"))
 
+    def test_customer_archetype_stat_identifiers_follow_the_refined_schema(self) -> None:
+        new_decision = self.decisions["BS-CUSTOMER-20260805-01"]
+        self.assertIn("BS-CONTENT-20260804-02", new_decision.get("refines", []))
+        archetype_contract = self.decisions["BS-CONTENT-20260804-02"]["contract"]
+        self.assertEqual("DEXTERITY", archetype_contract["noble_optional_secondary_stat"])
+        self.assertNotEqual("SKILL", archetype_contract["noble_optional_secondary_stat"])
+
     def test_equipment_taxonomy_and_applicable_stats_are_explicit(self) -> None:
         contract = self.decisions.get("BS-CUSTOMER-20260805-01", {}).get("contract", {})
         self.assertEqual(
