@@ -7,54 +7,68 @@
 
 ## 1. Purpose
 
-Equipment weight must not be a pure disadvantage. A heavier work can support more attack, defense, magical function, or utility capacity, while a lightweighting operation trades part of that capacity for broader customer usability.
+Equipment weight must not be a pure disadvantage. A heavier work begins with more attack, defense, magical-function, or utility capacity. Later lightweighting lowers the weight customers must carry but does not erase performance budget already established in the work.
 
 ```text
-heavier structure
-→ larger performance budget
-→ higher Strength customer can use it without alteration
+initial crafting weight
+→ initial performance budget is fixed
 
-lightweighting work
-→ lower final weight and lower performance budget
-→ lower Strength customer can use it
+later lightweighting
+→ current weight decreases
+→ previously earned performance budget remains
+→ lower-Strength customers become eligible
+
+later weighting
+→ current weight increases
+→ new budget is gained only when a new highest budget-recognized weight is reached
 ```
 
 Weight remains a supporting system. General enhancement success/failure and stop-or-push decisions remain the core progression loop.
 
 ## 2. Rejected alternatives
 
-### Base-weight-only budget
+### Current-weight budget recalculation
 
-Budget would remain unchanged after lightweighting. This makes lightweighting almost always optimal because it removes the assignment restriction without paying a performance cost. Rejected.
+Reducing budget whenever lightweighting lowers current weight contradicts the intended fantasy: the smith preserves the work's established performance while spending a rare precision-enhancement opportunity to make it easier to use. Rejected.
+
+### Unconditional budget on every weighting action
+
+Alternating lightweighting and weighting could repeatedly grant budget at the same weight. Rejected.
 
 ### Weight tiers
 
-Separate bonus tables for light, medium, and heavy thresholds would create breakpoints, exception handling, and hidden optimization. Rejected.
+Separate bonus tables for light, medium, and heavy thresholds create breakpoints and hidden optimization. Rejected.
 
 ### Direct automatic bonus to every stat
 
-Adding weight-derived points simultaneously to attack, defense, magic, durability, and handling would multiply the same cause across several outputs. Rejected as double counting.
+Adding one weight-derived point simultaneously to attack, defense, magic, durability, and handling multiplies the same cause across several outputs. Rejected as double counting.
 
-## 3. Adopted model
+## 3. Adopted budget memory model
 
-All current weights are multiples of five, so final weight converts linearly into one small budget source.
+All current weights use five-point steps.
 
 ```text
-EFFECTIVE_WEIGHT = max(0, BASE_WEIGHT + STRUCTURAL_WEIGHT_DELTA)
-WEIGHT_PERFORMANCE_BUDGET = EFFECTIVE_WEIGHT / 5
+INITIAL_WEIGHT = equipment-group base weight at first crafting completion
+CURRENT_WEIGHT = max(0, INITIAL_WEIGHT + cumulative successful precision weight adjustments)
+BUDGET_RECOGNIZED_WEIGHT = max(INITIAL_WEIGHT, highest successful CURRENT_WEIGHT ever reached by this UID)
+WEIGHT_PERFORMANCE_BUDGET = BUDGET_RECOGNIZED_WEIGHT / 5
 TOTAL_PERFORMANCE_BUDGET = NON_WEIGHT_BASE_BUDGET + WEIGHT_PERFORMANCE_BUDGET
 ```
 
-- `WEIGHT_PERFORMANCE_BUDGET` is an integer.
-- Each `5 WEIGHT_POINT` contributes `+1 PERFORMANCE_BUDGET_POINT`.
-- This contribution is included exactly once.
-- The equipment-group preset must not secretly add a second heavy-item bonus.
-- Weight budget does not multiply material, craftsmanship grade, artistry, catalyst, chronicle, or enhancement values.
+- Each `5 WEIGHT_POINT` of `BUDGET_RECOGNIZED_WEIGHT` contributes `+1 PERFORMANCE_BUDGET_POINT`.
+- Initial crafting weight grants the initial weight budget immediately.
+- Decreasing `CURRENT_WEIGHT` never decreases `BUDGET_RECOGNIZED_WEIGHT` or already allocated budget.
+- Increasing weight grants new budget only for the portion that exceeds the UID's previous `BUDGET_RECOGNIZED_WEIGHT`.
+- Budget recognition is monotonic for the same UID.
+- Current customer load checks use `CURRENT_WEIGHT`, never `BUDGET_RECOGNIZED_WEIGHT`.
+- The contribution is counted exactly once.
+- Equipment-group presets must not secretly add a second heavy-item bonus.
+- Weight budget does not multiply material, craftsmanship grade, artistry, catalyst, chronicle, or general-enhancement values.
 - Weight budget does not directly change the generic customer event success forecast.
 
-## 4. Current examples
+## 4. Initial examples
 
-| Equipment | Effective weight | Weight budget |
+| Equipment | Initial weight | Initial weight budget |
 |---|---:|---:|
 | Accessory | 0 | 0 |
 | Tool or clothing | 5 | 1 |
@@ -63,11 +77,9 @@ TOTAL_PERFORMANCE_BUDGET = NON_WEIGHT_BASE_BUDGET + WEIGHT_PERFORMANCE_BUDGET
 | Polearm or medium armor | 20 | 4 |
 | Heavy armor | 30 | 6 |
 
-A weighted treatment can raise a compatible item by one row step, and a lightweight treatment can lower it by one row step.
-
 ## 5. Budget lanes
 
-Weight budget is capacity, not a direct bonus to every displayed stat. Each budget point is assigned to one item-compatible lane.
+Weight budget is capacity, not a direct bonus to every displayed stat. Each budget point is allocated to one item-compatible lane.
 
 ```text
 ATTACK_BUDGET
@@ -88,97 +100,128 @@ Suggested compatibility:
 
 `MAGIC_FUNCTION_BUDGET` feeds approved magical or special-function outputs. It does not create a universal mana stat or automatically improve every magical property.
 
-The exact conversion from one budget point to displayed attack, defense, magical-function, durability, handling, or special-function values remains a `BASELINE_TEST_PRESET`. The preview must show the exact resulting stat changes before the operation.
+The exact conversion from one budget point to displayed attack, defense, magical-function, durability, handling, or special-function values remains a `BASELINE_TEST_PRESET`. The preview must show exact resulting stat changes before the operation.
 
-## 6. Structural weight treatment ownership
+## 6. Precision-enhancement ownership and opportunity cost
 
-`LIGHTWEIGHT / NONE / WEIGHTED` belongs to the **precision-enhancement method**, not the catalyst affix.
+Weight adjustment belongs to the **precision-enhancement method**, not the catalyst affix.
 
 ```text
-LIGHTWEIGHT = -5 WEIGHT_POINT and -1 weight budget
-NONE = 0
-WEIGHTED = +5 WEIGHT_POINT and +1 weight budget
+precision milestones = +10 / +20 / +30 / +40 / +50
+LIGHTWEIGHTING = CURRENT_WEIGHT -5 / existing budget preserved
+WEIGHTING = CURRENT_WEIGHT +5 / budget added only above previous recognized peak
 ```
 
-Reasons:
-
-- Lightweighting is a deliberate smithing operation that reshapes the work.
+- A precision milestone can apply at most one weight adjustment.
+- Adjustments from different precision milestones can accumulate.
+- The same milestone cannot be replayed, refunded, or repeatedly switched for weight gain.
+- Selecting lightweighting or weighting consumes that milestone's enhancement-method opportunity instead of attack, defense, magic, artistic, or other precision directions.
 - Catalyst remains responsible for `CATALYST_AFFIX` lineage, mutation, and specialized effects.
-- No new affix slot is needed.
-- The operation remains inside the enhancement-centered player loop.
+- No new affix slot is created.
 
-One item has at most one active structural weight treatment. Repeating the same treatment does not stack. Reworking it replaces the current treatment and recalculates budget from the new effective weight.
+This opportunity cost is the primary balance constraint. Repeated lightweighting and weighting is allowed across later milestones, but it is normally inefficient because only five precision milestones exist.
 
-## 7. Allocation and rework
-
-When weight changes, the budget difference must be explicitly allocated or removed from compatible lanes.
+## 7. Budget-gain rules
 
 ```text
-NONE → WEIGHTED
-weight +5 / budget +1
-player assigns +1 to one compatible lane
-
-NONE → LIGHTWEIGHT
-weight -5 / budget -1
-player selects one compatible lane that can lose 1
-
-WEIGHTED → LIGHTWEIGHT
-weight -10 / budget -2
-player removes a total of 2 from compatible lanes
+old_peak = BUDGET_RECOGNIZED_WEIGHT
+new_current = max(0, CURRENT_WEIGHT + WEIGHT_ADJUSTMENT)
+new_peak = max(old_peak, new_current)
+new_budget_gain = (new_peak - old_peak) / 5
 ```
 
-- A lane cannot fall below zero.
-- The operation is unavailable when the required budget cannot be removed legally.
-- Before execution, display final weight, customer assignment change, and exact stat changes.
-- Rework replaces the structural state; it does not add historical budget deltas.
-- Repeated switching cannot create net budget or duplicate stat gains.
+### Lightweighting
+
+```text
+CURRENT_WEIGHT -5
+BUDGET_RECOGNIZED_WEIGHT unchanged
+WEIGHT_PERFORMANCE_BUDGET unchanged
+```
+
+Lightweighting never removes already allocated attack, defense, magical-function, or utility budget.
+
+### Weighting below or at the old peak
+
+```text
+CURRENT_WEIGHT +5
+new current weight <= old peak
+new budget gain = 0
+```
+
+This prevents lightweighting–weighting loops from duplicating budget.
+
+### Weighting above the old peak
+
+```text
+CURRENT_WEIGHT +5
+new current weight > old peak
+new budget gain = (new current weight - old peak) / 5
+```
+
+Each newly gained point is allocated to one compatible lane.
 
 ## 8. Player-facing examples
 
-### Heavy polearm
+### Heavy polearm made lighter
 
 ```text
-장병기 기본 중량 20
-중량 성능 예산 4
-배분: 공격 3 / 유틸리티 1
-근력 2 고객 최대 중량 20 → 사용 가능
+initial polearm weight 20
+recognized weight 20
+weight budget 4
+allocation: attack 3 / utility 1
+
++10 precision: lightweighting
+current weight 15
+recognized weight 20
+weight budget remains 4
+lower-Strength customer eligibility improves
 ```
 
-### Lightweight polearm
+### Reversing the lightweighting
 
 ```text
-경량화 -5
-최종 중량 15
-중량 성능 예산 3
-배분 조정: 공격 2 / 유틸리티 1
-근력 2 고객 최대 중량 20 → 사용 가능
-근력 1 고객 최대 중량 10 → 사용 불가
++20 precision: weighting
+current weight 20
+old recognized weight 20
+new budget gain 0
 ```
 
-### Weighted sword
+Returning to a previously reached weight does not duplicate budget.
+
+### Reaching a new high
 
 ```text
-검 기본 중량 10
-중량화 +5
-최종 중량 15
-중량 성능 예산 3
-추가 예산 +1을 공격 또는 마법 기능 등에 배분
-근력 1 고객 최대 중량 10 → 사용 불가
-근력 2 고객 최대 중량 20 → 사용 가능
++30 precision: weighting
+current weight 25
+old recognized weight 20
+new recognized weight 25
+new budget gain +1
 ```
+
+### Repeated lightweighting
+
+```text
+initial heavy armor weight 30 / budget 6
++10 lightweighting → current 25 / budget 6
++20 lightweighting → current 20 / budget 6
+```
+
+The item keeps its established performance but spends two of only five precision-enhancement opportunities to broaden usability.
 
 ## 9. Core-fun protection
 
 ```text
 강화 성공·실패와 멈춤 판단
-→ 작품 성능 방향과 구조 중량 선택
-→ 적합한 고객에게 배정
+→ 정밀강화 기회를 성능 강화 또는 중량 조정에 사용
+→ 고객 최대 중량과 작품 성능을 함께 비교
 → 사건과 같은 UID 작품의 생애 환류
 → 다음 강화·복원·제작 판단
 ```
 
-- Heavy equipment is not automatically superior because it restricts eligible customers.
-- Lightweight equipment is not automatically superior because it gives up budget.
+- Heavy equipment is not automatically superior because fewer customers can use it without later work.
+- Lightweighting is valuable but not free because it consumes a rare precision milestone.
+- Performance already forged into an item is not erased by later lightweighting.
+- Weighting can add performance budget, but only by reaching a genuinely new weight peak.
 - Customer Strength becomes a meaningful matching axis without becoming a customer-RPG progression system.
 - General enhancement level remains separate and does not automatically change weight.
 - Weight budget affects item performance only through explicit allocation, not generic event success.
@@ -187,36 +230,40 @@ player removes a total of 2 from compatible lanes
 
 D&D 2024 equipment rules pair heavier armor with stronger protection and Strength requirements. Blacksmith adopts the readable benefit-versus-user-requirement relationship, but rejects movement, stealth, and spellcasting penalty layers.
 
-- Adopt: heavier equipment can provide stronger protection or capability.
-- Adapt: use one binary Strength load gate and one linear budget source.
+- Adopt: heavier equipment can begin with stronger protection or capability.
+- Adapt: later smithing can reduce use weight without deleting already forged capacity.
 - Reject: speed, accuracy, fatigue, stealth, and casting penalties.
 - Source: https://www.dndbeyond.com/sources/dnd/br-2024/equipment
 
 ## 11. Adversarial review
 
-### Mandatory lightweighting risk
+### Budget-loss contradiction
 
-If lightweighting preserves the original weight budget, it becomes a dominant no-cost choice. Prevented by deriving budget from effective weight.
+If lightweighting deletes budget, the operation weakens the established item rather than representing skilled weight reduction. Prevented by monotonic budget recognition.
 
-### Heavy stacking risk
+### Loop duplication
 
-If the heavy equipment preset and weight formula both grant performance, the same cause is counted twice. Prevented by one explicit `WEIGHT_PERFORMANCE_BUDGET` component.
+If every weighting grants budget, alternating adjustments farms power. Prevented by granting budget only above the UID's historical recognized-weight peak.
 
-### Universal-stat inflation risk
+### Free optimization
 
-If one weight point improves all stats, heavy items scale multiplicatively. Prevented by lane allocation: one budget point goes to one compatible lane.
+If weight adjustment is available at any time, every item can become light without meaningful cost. Prevented by limiting adjustments to one selection per distinct `+10` precision milestone.
 
-### Rework farming risk
+### Universal-stat inflation
 
-If each rework adds a historical bonus, players can alternate lightweight and weighted treatments to farm stats. Prevented by derived-state recalculation and replacement semantics.
+If one budget point improves all stats, heavy items scale multiplicatively. Prevented by lane allocation: one budget point goes to one compatible lane.
 
-### Accessory exploit risk
+### Hidden load mismatch
 
-Weight-zero accessories could gain cheap power by becoming weighted while avoiding the intended equipment structure. Accessories are excluded from weight-derived budget and structural weight treatments by default.
+If customer load checks use recognized peak weight, lightweighting would not improve eligibility. Prevented by using `CURRENT_WEIGHT` for load and `BUDGET_RECOGNIZED_WEIGHT` only for performance budget.
 
-### Enhancement displacement risk
+### Accessory exploit
 
-Weight can become the main optimization system if its contribution is multiplied by grade or enhancement. Prevented by a small linear contribution, no multipliers, and no generic success-rate effect.
+Weight-zero accessories could gain cheap power through weighting. Accessories are excluded from weight-derived budget and precision weight adjustment by default.
+
+### Enhancement displacement
+
+Weight can become the main optimization system if its contribution is multiplied by grade or enhancement. Prevented by a small linear contribution, no multipliers, limited milestones, and no generic success-rate effect.
 
 Adversarial result: `P0 0 / P1 0`.
 
