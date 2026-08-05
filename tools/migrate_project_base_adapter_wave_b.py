@@ -47,8 +47,8 @@ def normalized_route(route: dict) -> dict:
     }
 
 
-def evidence(evidence_id: str, source: str, digest: str) -> dict:
-    return {"id": evidence_id, "source": source, "sha256": digest}
+def evidence(evidence_id: str, source: str, path: Path) -> dict:
+    return {"id": evidence_id, "source": source, "sha256": sha256_bytes(path.read_bytes())}
 
 
 def main() -> None:
@@ -122,36 +122,6 @@ def main() -> None:
         },
     }
     write_json(STATE_PATH, state_doc)
-    state_digest = sha256_bytes(STATE_PATH.read_bytes())
-    state_evidence = evidence("blacksmith-project-state", "docs/PROJECT_OPERATING_STATE.json", state_digest)
-
-    health = {
-        "schema_version": 1,
-        "artifact_role": "PROJECT_OPERATING_HEALTH",
-        "operating_maturity": "OM-L3",
-        "product_evidence_maturity": "PE-0",
-        "critical_gates": {
-            "static": "PASS",
-            "runtime": "NOT_RUN",
-            "device": "NOT_RUN",
-            "accessibility": "NOT_RUN",
-            "human": "NOT_RUN",
-        },
-        "integrity_verdict": "PASS_WITH_NOT_RUN_GATES",
-        "evidence": {
-            "operating": [state_evidence],
-            "product": [],
-            "sheet": [state_evidence],
-            "gates": {
-                "static": [state_evidence],
-                "runtime": [],
-                "device": [],
-                "accessibility": [],
-                "human": [],
-            },
-        },
-    }
-    write_json(HEALTH_PATH, health)
 
     protected_paths = copy.deepcopy(original["protected_paths"])
     project_registry_sha = sha256_bytes(PROJECT_REGISTRY_PATH.read_bytes())
@@ -259,12 +229,48 @@ human_validation: HUMAN_NOT_RUN
 |---|---|---|
 {table}
 
+## Evidence separation
+
+- operating maturity: `docs/PROJECT_OPERATING_STATE.json`;
+- Sheet-current contract: this migration record;
+- static adapter gate: `skills/PROJECT_BASE_ADAPTER.json`.
+
+Each health evidence ID and source is unique. One verified operating record caps the conservative machine maturity at `OM-L1`; no product evidence is promoted.
+
 ## Scope boundary
 
 The migration changes the Base connection contract, standard machine health, project-owned state, and official generated views only. It does not edit `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, `project.godot`, Blacksmith gameplay canon, or Google Sheet cells. Historical PASS and NOT_RUN values are preserved verbatim and are not promoted.
 """,
         encoding="utf-8",
     )
+
+    health = {
+        "schema_version": 1,
+        "artifact_role": "PROJECT_OPERATING_HEALTH",
+        "operating_maturity": "OM-L1",
+        "product_evidence_maturity": "PE-0",
+        "critical_gates": {
+            "static": "PASS",
+            "runtime": "NOT_RUN",
+            "device": "NOT_RUN",
+            "accessibility": "NOT_RUN",
+            "human": "NOT_RUN",
+        },
+        "integrity_verdict": "PASS_WITH_NOT_RUN_GATES",
+        "evidence": {
+            "operating": [evidence("blacksmith-operating-state", "docs/PROJECT_OPERATING_STATE.json", STATE_PATH)],
+            "product": [],
+            "sheet": [evidence("blacksmith-sheet-migration", "docs/operations/PROJECT_BASE_ADAPTER_MIGRATION_2026-08-06.md", MIGRATION_PATH)],
+            "gates": {
+                "static": [evidence("blacksmith-static-adapter", "skills/PROJECT_BASE_ADAPTER.json", ADAPTER_PATH)],
+                "runtime": [],
+                "device": [],
+                "accessibility": [],
+                "human": [],
+            },
+        },
+    }
+    write_json(HEALTH_PATH, health)
 
 
 if __name__ == "__main__":
