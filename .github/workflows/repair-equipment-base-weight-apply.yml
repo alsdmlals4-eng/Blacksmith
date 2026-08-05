@@ -1,0 +1,44 @@
+name: Repair Equipment Weight Apply Script
+
+on:
+  push:
+    branches:
+      - agent/r2-artistry-generation-growth-economy-design
+    paths:
+      - ".github/workflows/repair-equipment-base-weight-apply.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: agent/r2-artistry-generation-growth-economy-design
+      - name: Patch exact stale assertion update
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("tools/apply_equipment_base_weight_points_canon.py")
+          text = path.read_text(encoding="utf-8")
+          anchor = '    if path.endswith("test_base_v942_planning_first_adoption.py"):\n'
+          patch = '''    if path.endswith("test_r2_enhancement_dominant_simple_load_gate.py"):
+              text = text.replace('self.assertIn("R2_BATCH_005 / 4/10", current)', 'self.assertIn("R2_BATCH_005 / 5/10", current)')
+          '''
+          if patch not in text:
+              if anchor not in text:
+                  raise SystemExit("target anchor not found")
+              text = text.replace(anchor, patch + anchor, 1)
+          path.write_text(text, encoding="utf-8")
+          PY
+      - name: Remove one-shot repair workflow
+        run: rm .github/workflows/repair-equipment-base-weight-apply.yml
+      - name: Commit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "ci: repair equipment weight batch assertion update"
+          git push origin HEAD:agent/r2-artistry-generation-growth-economy-design
