@@ -1,0 +1,43 @@
+{
+  "artifact_role": "BLACKSMITH_SHEET_AUTHORITY_EVIDENCE",
+  "decision_id": "DEC-BASE-20260805-001",
+  "interpretation": "Existing GitHub-to-Sheet sync evidence is preserved; this adapter migration performs no Sheet write.",
+  "legacy_gdd_sheet": {
+    "authoritative_source": "GITHUB_CANON",
+    "exact_head_record_policy": "PR_METADATA_AND_SHEET_HISTORY_AVOID_SELF_REFERENTIAL_COMMIT",
+    "last_synced_main_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
+    "last_synced_pr": 99,
+    "readback_status": "MAIN_CANON_READBACK_PASS",
+    "role": "USER_FACING_GDD_WORKSPACE",
+    "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+    "sync_decision_ids": [
+      "BS-OPS-20260802-01",
+      "BS-OPS-20260802-02",
+      "BS-CORE-20260802-01",
+      "BS-CORE-20260802-02",
+      "BS-SET-20260802-01",
+      "BS-SET-20260802-02",
+      "BS-SET-20260802-03",
+      "BS-SET-20260802-04",
+      "BS-OPS-20260803-05",
+      "BS-WORLD-20260803-01",
+      "BS-WORLD-20260803-02",
+      "BS-OPS-20260803-06"
+    ],
+    "sync_status": "SYNCED_TO_MAIN",
+    "target_tabs": [
+      "00_프로젝트_허브",
+      "01_작업순서",
+      "02_현재_확정결정",
+      "04_누락_충돌_감사",
+      "05_GDD_요약",
+      "90_본제작_출시_사업",
+      "99_변경이력"
+    ],
+    "url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit"
+  },
+  "repository": "alsdmlals4-eng/Blacksmith",
+  "schema_version": 1,
+  "sheet_mutation": "NONE",
+  "source_adapter_baseline": "b1dd945875568098b107815a03e88b0272d384e9"
+}
