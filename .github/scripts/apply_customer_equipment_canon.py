@@ -1,0 +1,520 @@
+from __future__ import annotations
+
+import json
+import re
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+DECISION = "BS-CUSTOMER-20260805-01"
+
+
+def read(path: str) -> str:
+    return (ROOT / path).read_text(encoding="utf-8")
+
+
+def write(path: str, text: str) -> None:
+    target = ROOT / path
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(text.rstrip() + "\n", encoding="utf-8")
+
+
+def replace(path: str, old: str, new: str, *, required: bool = False) -> None:
+    text = read(path)
+    if old not in text:
+        if required:
+            raise SystemExit(f"required token missing in {path}: {old}")
+        return
+    write(path, text.replace(old, new))
+
+
+def append_once(path: str, marker: str, block: str) -> None:
+    text = read(path)
+    if marker not in text:
+        write(path, text.rstrip() + "\n\n" + block.strip() + "\n")
+
+
+canon_path = "docs/planning/BLACKSMITH_R2_CUSTOMER_CAPABILITY_AND_EQUIPMENT_COMPATIBILITY_CANON_2026.md"
+spec_path = "docs/superpowers/specs/2026-08-05-customer-equipment-compatibility-design.md"
+plan_path = "docs/superpowers/plans/2026-08-05-customer-equipment-compatibility.md"
+
+canon = '''# [현재 정본] Blacksmith R2 고객 능력·장비 적합성 계약
+
+- Decision ID: `BS-CUSTOMER-20260805-01`
+- 상태: `USER_APPROVED / R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE`
+- 정제 대상: `BS-CUSTOMER-20260803-01`, `BS-CUSTOMER-20260803-02`의 고객 능력 구조
+- 유지 계약: 사건 위험도 `1~10`, 고객 능력치 표시 `1~10`, 예상 성공률 `5~95%`·약 `10%` 단위, 장비 변경 전후 갱신
+- 제품 구현: `BLOCKED`
+
+## 1. 설계 목적
+
+고객을 별도의 전투 캐릭터 육성 게임으로 확장하는 것이 아니라, 대장장이가 **누구에게 어떤 작품을 맡길지 판단하는 근거**를 만든다.
+
+```text
+고객의 역할·일정·능력 확인
+→ 작품 종류·능력치·중량·특수기능 대조
+→ 적합·부적합 원인 확인
+→ 판매·지원 결정
+→ 사건 결과에서 실제 기여 원인 확인
+→ 다음 제작·강화·복원 판단
+```
+
+## 2. 고객 기초 능력치
+
+```text
+근력 / 기량 / 체력 / 판단력
+STRENGTH / DEXTERITY / CONSTITUTION / JUDGMENT
+```
+
+각 능력치는 `1~10` 정수다.
+
+- **근력**: 총 장비 중량 감당, 무거운 작품 운용, 과중량 부담 완화
+- **기량**: 전반적 장비 운용, 공격·방어 성능 활용, 오용·내구도 낭비 감소
+- **체력**: 장시간 일정, 부상·피로·환경 위험, 중량 부담의 지속 영향
+- **판단력**: 위험 대응, 특수기능 사용 시점, 미확인 효과·저주·환경 대응
+
+근력은 작품 공격력을 직접 더하지 않고, 기량도 작품 공격·방어 능력치를 중복 생성하지 않는다.
+
+## 3. 희소 적성
+
+### 무기 적성
+
+- 저장: 주 적성 `1개`, 보조 적성 `최대 1개`, 나머지는 미숙
+- 단계: `0 미숙 / 1 숙련 / 2 전문 / 3 달인`
+- 무기군: `검류 / 도끼류 / 둔기류 / 장병기류 / 원거리류 / 방패·보조장비`
+
+```text
+SWORD / AXE / BLUNT / POLEARM / RANGED / SHIELD_SUPPORT
+```
+
+### 갑옷 적성
+
+- 저장: 주 적성 `1개`, 보조 적성 `최대 1개`, 나머지는 미숙
+- 단계: 무기 적성과 동일한 `0~3`
+- 갑옷군: `의복·로브 / 경갑 / 중갑 / 중장갑`
+
+```text
+CLOTHING_OR_ROBE / LIGHT / MEDIUM / HEAVY
+```
+
+적성은 작품의 원래 공격·방어 값을 직접 올리지 않는다. 고객이 해당 작품의 성능을 얼마나 안정적으로 활용하는지를 판정한다.
+
+## 4. 마력 적성
+
+- `마력 적성 0~10`
+- 마법 관련 고객만 선택적 친화 태그 `최대 2개`
+- `0`은 능동적 마법 장비 운용 불가 또는 사실상 비활성을 뜻할 수 있다.
+
+마력 적성 하나로 모든 특수기능을 해결하지 않는다.
+
+```text
+특수기능 적합도
+= 마력 적성
++ 관련 친화
++ 판단력
++ 관련 장비 적성
++ 활성 조건
+```
+
+정확한 계수는 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+
+## 5. 작품 종류와 능력치 적용 범위
+
+```text
+WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL
+```
+
+모든 작품이 모든 수치를 억지로 가지지 않는다. 적용되지 않는 수치는 `0`으로 채우지 않고 생략한다.
+
+### 공통 작품 능력치
+
+```text
+WEIGHT / DURABILITY / HANDLING / ARTISTRY
+```
+
+### 조건부 작품 능력치
+
+```text
+ATTACK / DEFENSE / STABILITY / ENVIRONMENTAL_RESPONSE / SPECIAL_FUNCTIONS
+```
+
+- 무기: 공격, 조작성, 중량, 내구도, 무기군, 조건부 특수기능
+- 방패·보조장비: 방어, 안정성, 조작성, 중량, 방패·보조 적성
+- 방어구: 방어, 중량, 조작성 부담, 환경 대응, 갑옷군
+- 장신구·도구: 지원 효과·특수기능·요구 조건; 무기·갑옷 적성을 강제로 요구하지 않음
+
+기존 작품 원수치의 소유권은 작품 UID에 남는다. 고객 능력은 작품 수치를 복제하지 않고 **활용도·적합도·위험**을 파생한다.
+
+## 6. 파생 장비 상태
+
+```text
+총 중량 / 적정 하중 / 균형 상태 / 특수기능 적합도
+TOTAL_WEIGHT / COMFORTABLE_LOAD / BALANCE_STATE / SPECIAL_FUNCTION_FIT
+```
+
+균형 상태는 저장 능력치가 아니라 현재 착용 조합의 파생 결과다.
+
+```text
+부적합 / 불안정 / 안정 / 능숙
+UNSUITABLE / UNSTABLE / STABLE / SKILLED
+```
+
+- `총 장비 중량 ≤ 적정 하중`: 중량 페널티 없음
+- `총 장비 중량 > 적정 하중`: 초과량에 따라 단계적으로 부담 증가
+- 근력과 중량의 정확한 일치를 최고 효율 조건으로 사용하지 않음
+
+```text
+장비 적합성
+= 관련 적성
++ 기량·판단력 등 사건 관련 능력
++ 근력 대비 하중 상태
++ 작품 조작성·조건부 특수기능
++ 사건 환경
+```
+
+정확한 산식·하중 환산·가중치는 버전형 테스트 프리셋에서 관리한다.
+
+## 7. 플레이어 공개 원칙
+
+고객 카드에 거대한 전체 적성 행렬을 기본 노출하지 않는다.
+
+- 기본: 근력·기량·체력·판단력, 현재 일정에 관련된 주·보조 적성, 필요할 때만 마력 적성
+- 장비 선택 후: 예상 성공률과 함께 적합·부적합 원인
+- 상세 보기: 전체 저장 프로필과 파생 근거
+- 내부 정확한 계산식·숨은 위험의 정답은 공개하지 않음
+
+## 8. 적대적 검토 결과
+
+### 채택
+
+- 기초 능력치와 장비 적성 분리
+- 근력과 총 중량 비교
+- 마력 적성과 마법 장비 요구 연결
+- 무기·방패·방어구·장신구/도구의 적용 수치 분리
+
+### 수정 채택
+
+- 모든 무기·갑옷군 행렬 대신 희소 적성
+- 균형은 고정 수치가 아니라 착용 조합의 파생 상태
+- 장신구·도구는 필요한 요구 조건만 사용
+
+### 비채택
+
+- 고객 하나마다 모든 무기·갑옷 적성을 수치로 저장
+- 근력과 중량이 정확히 같을 때만 최고 효율
+- 마력 적성 하나로 마력량·속성·특수기능 통제를 통합
+- 고객 능력치를 작품 공격·방어에 다시 직접 합산
+
+## 9. 보호 조건
+
+- 강화 판단과 작품 성장이 핵심이며 고객 스탯 육성이 메인 루프로 전도되면 안 됨
+- 작품 원수치와 고객 활용 보정을 이중 계산하지 않음
+- 관련 없는 작품 종류에 무의미한 능력치·적성을 강제하지 않음
+- 정확한 수치·공식은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`
+- 제품 코드·런타임 데이터·Scene·에셋 변경 금지
+- 제품 구현: `BLOCKED`
+'''
+
+spec = '''# Customer Capability and Equipment Compatibility Design
+
+**Decision:** `BS-CUSTOMER-20260805-01`  
+**Status:** USER_APPROVED  
+**Batch:** `R2_BATCH_005_2_OF_10`
+
+## Goal
+
+Make customer–item matching legible and consequential without turning Blacksmith into a customer-RPG or duplicating item power.
+
+## Approved model
+
+1. Persist Strength, Dexterity, Constitution, and Judgment at 1–10.
+2. Persist sparse weapon and armor proficiencies at 0–3: one primary and at most one secondary each.
+3. Persist magic aptitude at 0–10 and at most two optional affinity tags for magic-relevant customers.
+4. Derive total weight, comfortable load, balance state, and special-function fit from the equipped loadout.
+5. Classify items as weapon, shield/offhand, armor, or accessory/tool and omit non-applicable stats.
+6. Keep raw attack, defense, and other values owned by the item UID; customer capability changes utilization and risk, not raw item stats.
+7. Preserve the existing 1–10 risk disclosure and 5–95% approximate success forecast.
+
+## Core-fun guard
+
+The feature must improve the decision “which work should I entrust to this customer?” and feed the result back into forging, enhancement, repair, and the item’s UID history. It must not create a separate customer-build optimization loop.
+
+## Open values
+
+Load conversion, utilization coefficients, forecast contribution caps, and named-customer presets remain `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`.
+'''
+
+plan = '''# Customer Capability and Equipment Compatibility Canon Plan
+
+> Execute planning-only canon synchronization for approved Decision `BS-CUSTOMER-20260805-01`. Product implementation stays blocked.
+
+## Task 1 — RED contract
+
+- Add `tests/test_r2_customer_equipment_compatibility.py`.
+- Add the test to planning-first CI.
+- Verify failure while Decision ID, canon file, batch 2/10, and authority tokens are absent.
+
+## Task 2 — GREEN authority sync
+
+- Create the focused customer/equipment canon and design spec.
+- Add the Decision to `CURRENT_R2_CANON_REGISTRY.json`.
+- Move `R2_BATCH_005` from 1/10 to 2/10.
+- Update Current Decisions, Current Game Bible, Active Context, Roadmap, Development Gates, Start Here, Documentation Map, and Design Document Registry.
+- Mark the older customer schedule canon as retained for schedule behavior but refined for capability structure.
+
+## Task 3 — Regression and adversarial review
+
+- Run focused planning-first contract tests.
+- Run Base adoption, Python project contract, Godot headless, and PR validation workflows.
+- Confirm product paths remain unchanged.
+- Check PR diff, review threads, stale authority tokens, and Sheet readback.
+
+## Task 4 — Sheet sync
+
+Write `BS-CUSTOMER-20260805-01` as `APPROVED_PENDING_MERGE` to current decisions, audit, GDD summary, core systems, and change history. Record the exact PR head. Do not claim `SYNCED_TO_MAIN` before merge and post-merge readback.
+'''
+
+write(canon_path, canon)
+write(spec_path, spec)
+write(plan_path, plan)
+
+registry_path = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
+registry = json.loads(registry_path.read_text(encoding="utf-8"))
+registry["stage_status"] = "R2_BATCH_005_ACTIVE_2_OF_10"
+registry["next_approval_counter"] = "2/10"
+active = registry["active_batch"]
+active["approved_decisions"] = 2
+active["counter"] = "2/10"
+active["decisions"] = ["BS-CRAFT-20260805-02", DECISION]
+active["status"] = "ACTIVE_DRAFT_PR109_APPROVED_PENDING_MERGE"
+new_decision = {
+    "id": DECISION,
+    "title": "고객 4능력·희소 적성·마력 적성과 장비 적합성",
+    "status": "USER_APPROVED_R2_BATCH_005_2_OF_10_APPROVED_PENDING_MERGE",
+    "refines": ["BS-CUSTOMER-20260803-01", "BS-CUSTOMER-20260803-02"],
+    "canon": canon_path,
+    "spec": spec_path,
+    "plan": plan_path,
+    "contract": {
+        "base_stats": ["STRENGTH", "DEXTERITY", "CONSTITUTION", "JUDGMENT"],
+        "base_stat_scale": "INTEGER_1_TO_10",
+        "weapon_proficiency_storage": "SPARSE_PRIMARY_ONE_SECONDARY_MAX_ONE",
+        "armor_proficiency_storage": "SPARSE_PRIMARY_ONE_SECONDARY_MAX_ONE",
+        "proficiency_scale": "INTEGER_0_TO_3",
+        "weapon_groups": ["SWORD", "AXE", "BLUNT", "POLEARM", "RANGED", "SHIELD_SUPPORT"],
+        "armor_classes": ["CLOTHING_OR_ROBE", "LIGHT", "MEDIUM", "HEAVY"],
+        "magic_aptitude_scale": "INTEGER_0_TO_10",
+        "magic_affinity_tag_maximum": 2,
+        "equipment_categories": ["WEAPON", "SHIELD_OR_OFFHAND", "ARMOR", "ACCESSORY_OR_TOOL"],
+        "common_item_stats": ["WEIGHT", "DURABILITY", "HANDLING", "ARTISTRY"],
+        "conditional_item_stats": ["ATTACK", "DEFENSE", "STABILITY", "ENVIRONMENTAL_RESPONSE", "SPECIAL_FUNCTIONS"],
+        "non_applicable_stats_are_omitted": True,
+        "derived_loadout_states": ["TOTAL_WEIGHT", "COMFORTABLE_LOAD", "BALANCE_STATE", "SPECIAL_FUNCTION_FIT"],
+        "balance_states": ["UNSUITABLE", "UNSTABLE", "STABLE", "SKILLED"],
+        "load_rule": "NO_PENALTY_AT_OR_BELOW_COMFORTABLE_LOAD",
+        "overload_rule": "ESCALATING_OVERLOAD_PENALTY",
+        "customer_stats_directly_add_to_item_attack_or_defense": False,
+        "raw_item_stats_remain_owned_by_item": True,
+        "special_function_fit_factors": ["MAGIC_APTITUDE", "RELEVANT_AFFINITY", "JUDGMENT", "RELEVANT_PROFICIENCY", "ACTIVATION_CONDITIONS"],
+        "event_risk_and_success_disclosure_preserved": True,
+        "exact_values": "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED",
+        "product_implementation": "BLOCKED",
+    },
+}
+decisions = registry["current_decisions"]
+if not any(item.get("id") == DECISION for item in decisions):
+    insert_at = next((i for i, item in enumerate(decisions) if item.get("id") == "BS-UX-20260804-01"), len(decisions))
+    decisions.insert(insert_at, new_decision)
+registry.setdefault("implementation_alignment", {}).update({
+    "current_customer_capability_model": "FOUR_BASE_STATS_SPARSE_PROFICIENCIES_MAGIC_APTITUDE",
+    "current_equipment_compatibility_model": "ITEM_OWNED_RAW_STATS_CONTEXT_DERIVED_CUSTOMER_FIT",
+    "customer_equipment_product_implementation": "NOT_STARTED_BLOCKED",
+})
+registry.setdefault("tdd_evidence", {})["customer_equipment_red"] = {
+    "commit": "ed36f3c1f5ca5359a7ca4a1104a886039a5ee4fd",
+    "planning_first_run": 137,
+    "status": "EXPECTED_FAILURE",
+}
+registry["tdd_evidence"]["customer_equipment_green"] = {"status": "PENDING_EXACT_HEAD_CI"}
+registry_path.write_text(json.dumps(registry, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+
+design_registry_path = ROOT / "[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json"
+design_registry = json.loads(design_registry_path.read_text(encoding="utf-8"))
+design_registry["current_batch"] = "R2_BATCH_005_2_OF_10"
+design_registry["current_design_decision"] = DECISION
+additions = [
+    {"document_id": "customer-capability-equipment-compatibility-canon", "source_path": "../../" + canon_path, "status": "ACTIVE", "source_role": "current_customer_capability_and_equipment_fit_contract"},
+    {"document_id": "customer-equipment-compatibility-design", "source_path": "../../" + spec_path, "status": "ACTIVE", "source_role": "approved_design_input_for_bs_customer_20260805_01"},
+    {"document_id": "customer-equipment-compatibility-plan", "source_path": "../../" + plan_path, "status": "ACTIVE", "source_role": "executed_canon_plan_for_bs_customer_20260805_01"},
+]
+existing_ids = {item["document_id"] for item in design_registry["documents"]}
+for item in reversed(additions):
+    if item["document_id"] not in existing_ids:
+        design_registry["documents"].insert(7, item)
+guards = [g for g in design_registry["routing_guards"] if g != "R2_BATCH_005_IS_ACTIVE_AT_1_OF_10_WITH_BS_CRAFT_20260805_02"]
+for guard in (
+    "R2_BATCH_005_IS_ACTIVE_AT_2_OF_10_WITH_BS_CRAFT_20260805_02_AND_BS_CUSTOMER_20260805_01",
+    "CUSTOMER_BASE_STATS_ARE_STRENGTH_DEXTERITY_CONSTITUTION_JUDGMENT_1_TO_10",
+    "CUSTOMER_PROFICIENCIES_ARE_SPARSE_AND_ITEM_RAW_STATS_REMAIN_ITEM_OWNED",
+    "CUSTOMER_EQUIPMENT_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
+):
+    if guard not in guards:
+        guards.insert(4, guard)
+design_registry["routing_guards"] = guards
+design_registry_path.write_text(json.dumps(design_registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+current = "CURRENT_CONFIRMED_DECISIONS.md"
+replace(current, "R2_BATCH_005 / 1/10", "R2_BATCH_005 / 2/10")
+replace(
+    current,
+    "- `BS-CUSTOMER-20260803-02`: 위험도·능력치 `1~10`, 예상 성공률 `5~95%`",
+    "- `BS-CUSTOMER-20260803-02`: 위험도·능력치 `1~10`, 예상 성공률 `5~95%`\n- `BS-CUSTOMER-20260805-01`: 근력·기량·체력·판단력, 희소 무기·갑옷 적성, 마력 적성, 장비 적합성 — `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE`",
+    required=True,
+)
+text = read(current)
+text = text.replace("## 6. 작품 이름과 수식어", "## 7. 작품 이름과 수식어")
+text = text.replace("## 7. 운영 계약", "## 8. 운영 계약")
+text = text.replace("## 8. 보호 조건", "## 9. 보호 조건")
+customer_section = '''## 6. 고객 능력·장비 적합성
+
+```text
+근력 / 기량 / 체력 / 판단력 = 각 1~10
+무기 적성 / 갑옷 적성 = 희소 저장, 0~3
+마력 적성 = 0~10, 선택 친화 태그 최대 2개
+```
+
+작품 종류는 `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`로 분리한다. 공통 작품 능력치는 `WEIGHT / DURABILITY / HANDLING / ARTISTRY`, 조건부 능력치는 `ATTACK / DEFENSE / STABILITY / ENVIRONMENTAL_RESPONSE / SPECIAL_FUNCTIONS`다. 적용되지 않는 수치는 생략한다.
+
+현재 착용 조합에서 `TOTAL_WEIGHT / COMFORTABLE_LOAD / BALANCE_STATE / SPECIAL_FUNCTION_FIT`을 파생한다. 균형 상태는 `부적합 / 불안정 / 안정 / 능숙`이며, 적정 하중 이내에는 중량 페널티가 없고 초과 시 단계적으로 부담이 증가한다.
+
+고객 능력은 작품 공격·방어 값을 직접 다시 더하지 않는다. 작품 원수치는 UID에 남고 고객 능력·적성은 활용도·위험·예상 성공률을 조정한다. 정확한 공식은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+
+'''
+if "## 6. 고객 능력·장비 적합성" not in text:
+    text = text.replace("## 7. 작품 이름과 수식어", customer_section + "## 7. 작품 이름과 수식어")
+write(current, text)
+
+game_bible = "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
+replace(game_bible, "R2_BATCH_005_1_OF_10", "R2_BATCH_005_2_OF_10")
+replace(
+    game_bible,
+    "- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-OPS-20260805-01`",
+    "- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-OPS-20260805-01`",
+    required=True,
+)
+bible = read(game_bible)
+replacement = '''## 8. 고객·장비 적합성·일정·콘텐츠
+
+고객 능력과 사건 위험도는 `1~10`, 예상 성공률은 `5~95%`다. 고객 기초 능력은 `근력 / 기량 / 체력 / 판단력`, 무기·갑옷 적성은 희소 `0~3`, 마력 적성은 `0~10`이다.
+
+```text
+WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL
+```
+
+작품 원수치는 작품 UID에 남고, 고객 능력·적성·중량 상태·특수기능 조건으로 고객·장비 적합성을 파생한다. `TOTAL_WEIGHT / COMFORTABLE_LOAD / BALANCE_STATE / SPECIAL_FUNCTION_FIT`은 착용 조합마다 다시 계산한다. 고객 능력치를 작품 공격·방어에 직접 중복 합산하지 않는다.
+
+모든 콘텐츠는 고객 결과, 작품 UID 상태·유산, 다음 제작·강화·복원 판단을 남겨야 한다. Decision: `BS-CUSTOMER-20260805-01`.
+
+## 9. 운영 방법'''
+bible, count = re.subn(r"## 8\. 고객·일정·콘텐츠\n.*?\n## 9\. 운영 방법", replacement, bible, count=1, flags=re.S)
+if count != 1:
+    raise SystemExit("game bible customer section replacement failed")
+write(game_bible, bible)
+
+legacy = "docs/planning/BLACKSMITH_R2_CUSTOMER_SCHEDULE_AND_VISIBLE_CAPABILITY_CANON_2026.md"
+append_once(
+    legacy,
+    DECISION,
+    '''## 2026-08-05 능력 구조 정제
+
+> 일정 활성화·진행·결과 계약은 유지한다. 고객 능력 구조는 후속 결정으로 정제되었으며, 현재 능력·장비 적합성 권위는 `BS-CUSTOMER-20260805-01`과 `BLACKSMITH_R2_CUSTOMER_CAPABILITY_AND_EQUIPMENT_COMPATIBILITY_CANON_2026.md`다. 이 문서의 기존 `기량 / 체력 / 판단력` 최소 프로필과 과거 `1~5` 표현은 역사적 설계 입력이며 현재 능력 스키마를 덮어쓰지 않는다.''',
+)
+
+hub_files = [
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    "[기획서]/00_프로젝트_허브/ROADMAP.md",
+    "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+    "[기획서]/00_프로젝트_허브/START_HERE.md",
+    "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+]
+for path in hub_files:
+    text = read(path)
+    text = text.replace("R2_BATCH_005_ACTIVE_1_OF_10", "R2_BATCH_005_ACTIVE_2_OF_10")
+    text = text.replace("R2_BATCH_005_1_OF_10", "R2_BATCH_005_2_OF_10")
+    text = text.replace("R2_BATCH_005 / 1/10", "R2_BATCH_005 / 2/10")
+    text = text.replace("현재 승인 카운터: `1/10`", "현재 승인 카운터: `2/10`")
+    if DECISION not in text:
+        text = text.rstrip() + f'''\n\n## 고객 능력·장비 적합성 승인
+
+- Decision: `{DECISION}`
+- 고객: 근력·기량·체력·판단력 `1~10`, 희소 무기·갑옷 적성 `0~3`, 마력 적성 `0~10`
+- 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
+- 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
+- 상태: `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE / PRODUCT_IMPLEMENTATION_BLOCKED`
+'''
+    write(path, text)
+
+artistry_test = "tests/test_r2_artistry_generation_growth_economy.py"
+text = read(artistry_test)
+text = text.replace("test_batch_005_contains_only_the_first_approved_decision", "test_batch_005_contains_two_approved_decisions")
+text = text.replace('"R2_BATCH_005_ACTIVE_1_OF_10"', '"R2_BATCH_005_ACTIVE_2_OF_10"')
+text = text.replace('self.assertEqual("1/10", self.registry["next_approval_counter"])', 'self.assertEqual("2/10", self.registry["next_approval_counter"])')
+text = text.replace('self.assertEqual(1, active["approved_decisions"])', 'self.assertEqual(2, active["approved_decisions"])')
+text = text.replace('self.assertEqual("1/10", active["counter"])', 'self.assertEqual("2/10", active["counter"])')
+text = text.replace('self.assertEqual(["BS-CRAFT-20260805-02"], active["decisions"])', 'self.assertEqual(["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01"], active["decisions"])')
+write(artistry_test, text)
+
+base_test = "tests/test_base_v942_planning_first_adoption.py"
+text = read(base_test)
+text = text.replace("test_batch_005_is_active_at_one_of_ten", "test_batch_005_is_active_at_two_of_ten")
+text = text.replace('"R2_BATCH_005_ACTIVE_1_OF_10"', '"R2_BATCH_005_ACTIVE_2_OF_10"')
+text = text.replace('self.assertEqual("1/10", self.registry["next_approval_counter"])', 'self.assertEqual("2/10", self.registry["next_approval_counter"])')
+text = text.replace('self.assertEqual(1, active["approved_decisions"])', 'self.assertEqual(2, active["approved_decisions"])')
+text = text.replace('self.assertEqual("1/10", active["counter"])', 'self.assertEqual("2/10", active["counter"])')
+text = text.replace('self.assertEqual(["BS-CRAFT-20260805-02"], active["decisions"])', 'self.assertEqual(["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01"], active["decisions"])')
+text = text.replace('self.assertIn("R2_BATCH_005_1_OF_10", game_bible)', 'self.assertIn("R2_BATCH_005_2_OF_10", game_bible)')
+text = text.replace('self.assertIn("R2_BATCH_005_1_OF_10", active)', 'self.assertIn("R2_BATCH_005_2_OF_10", active)')
+text = text.replace('self.assertIn("R2_BATCH_005 / 1/10", root)', 'self.assertIn("R2_BATCH_005 / 2/10", root)')
+write(base_test, text)
+
+alignment_test = "tests/check_project_core_alignment.py"
+text = read(alignment_test)
+text = text.replace("R2_BATCH_005_ACTIVE_1_OF_10", "R2_BATCH_005_ACTIVE_2_OF_10")
+text = text.replace("R2_BATCH_005_1_OF_10", "R2_BATCH_005_2_OF_10")
+text = text.replace("R2_BATCH_005 / 1/10", "R2_BATCH_005 / 2/10")
+text = text.replace("현재 승인 카운터: `1/10`", "현재 승인 카운터: `2/10`")
+text = text.replace('"next_approval_counter": "1/10"', '"next_approval_counter": "2/10"')
+text = text.replace('active.get("id") != "R2_BATCH_005" or active.get("counter") != "1/10"', 'active.get("id") != "R2_BATCH_005" or active.get("counter") != "2/10"')
+text = text.replace('failures.append("active batch must be R2_BATCH_005 at 1/10")', 'failures.append("active batch must be R2_BATCH_005 at 2/10")')
+text = text.replace('if active.get("approved_decisions") != 1 or active.get("decisions") != ["BS-CRAFT-20260805-02"]:', 'if active.get("approved_decisions") != 2 or active.get("decisions") != ["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01"]:')
+text = text.replace('failures.append("active batch 005 must contain only BS-CRAFT-20260805-02")', 'failures.append("active batch 005 must contain the two approved decisions")')
+customer_check = '''
+    customer_fit = decisions.get("BS-CUSTOMER-20260805-01", {}).get("contract", {})
+    if customer_fit.get("base_stats") != ["STRENGTH", "DEXTERITY", "CONSTITUTION", "JUDGMENT"]:
+        failures.append("customer four-stat contract is incomplete")
+    if customer_fit.get("equipment_categories") != ["WEAPON", "SHIELD_OR_OFFHAND", "ARMOR", "ACCESSORY_OR_TOOL"]:
+        failures.append("equipment category contract is incomplete")
+    if customer_fit.get("customer_stats_directly_add_to_item_attack_or_defense") is not False:
+        failures.append("customer stats must not double-count raw item attack or defense")
+    if customer_fit.get("exact_values") != "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED":
+        failures.append("customer equipment exact values must remain test presets")
+
+'''
+if "customer four-stat contract is incomplete" not in text:
+    text = text.replace('    alignment = registry.get("implementation_alignment", {})', customer_check + '    alignment = registry.get("implementation_alignment", {})')
+write(alignment_test, text)
+
+audit = "tools/audit_project_operating_system.py"
+if (ROOT / audit).is_file():
+    text = read(audit)
+    text = text.replace("R2_BATCH_005_ACTIVE_1_OF_10", "R2_BATCH_005_ACTIVE_2_OF_10")
+    text = text.replace("R2_BATCH_005_1_OF_10", "R2_BATCH_005_2_OF_10")
+    text = text.replace("R2_BATCH_005 / 1/10", "R2_BATCH_005 / 2/10")
+    text = text.replace('["BS-CRAFT-20260805-02"]', '["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01"]')
+    write(audit, text)
+
+for one_shot in (
+    ROOT / ".github/workflows/apply-customer-equipment-canon.yml",
+    ROOT / ".github/scripts/apply_customer_equipment_canon.py",
+):
+    if one_shot.exists():
+        one_shot.unlink()
