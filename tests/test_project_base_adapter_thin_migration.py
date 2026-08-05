@@ -29,6 +29,7 @@ FORBIDDEN_ROOT_KEYS = {
     "current_operating_decisions",
     "project_operating_state",
     "current_r1_canon",
+    "validation_status",
 }
 BASE_KEYS = {
     "repository",
@@ -124,6 +125,9 @@ class BlacksmithThinAdapterMigrationTests(unittest.TestCase):
         self.assertEqual("BLOCKED", state["product_implementation"])
         self.assertEqual("NOT_RUN", state["new_r2_runtime_validation"])
         self.assertEqual("NOT_RUN", state["human_playtest"])
+        validation = preserved["validation_status"]
+        self.assertEqual("PASS_5_OF_5", validation["pr_99_workflows"])
+        self.assertEqual("NOT_RUN", validation["new_r2_godot_runtime"])
 
     def test_migration_map_and_workflow_bind_the_approved_contract(self) -> None:
         migration = MIGRATION_PATH.read_text(encoding="utf-8")
@@ -133,6 +137,7 @@ class BlacksmithThinAdapterMigrationTests(unittest.TestCase):
             "/current_operating_decisions",
             "/project_operating_state",
             "/current_r1_canon",
+            "/validation_status",
             "PRODUCT_FILES_UNCHANGED",
             "GOOGLE_SHEETS_UNCHANGED",
         ):
