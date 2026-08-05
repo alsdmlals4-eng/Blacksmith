@@ -46,13 +46,23 @@ class WeightPerformanceBudgetTradeoffContractTests(unittest.TestCase):
             active["decisions"],
         )
 
-    def test_final_weight_produces_one_budget_point_per_five_weight(self) -> None:
+    def test_budget_uses_monotonic_recognized_weight_not_current_weight(self) -> None:
         self.assertIn("BS-ITEM-20260806-02", self.decisions)
         contract = self.decisions.get("BS-ITEM-20260806-02", {}).get("contract", {})
-        self.assertEqual("FINAL_WEIGHT_LINEAR_SINGLE_SOURCE", contract.get("weight_performance_budget_model"))
-        self.assertEqual("EFFECTIVE_WEIGHT_DIVIDED_BY_5", contract.get("weight_performance_budget_formula"))
+        self.assertEqual(
+            "PEAK_RECOGNIZED_WEIGHT_MONOTONIC_SINGLE_SOURCE",
+            contract.get("weight_performance_budget_model"),
+        )
+        self.assertEqual(
+            "MAX_INITIAL_OR_HIGHEST_SUCCESSFUL_CURRENT_WEIGHT_DIVIDED_BY_5",
+            contract.get("weight_performance_budget_formula"),
+        )
         self.assertEqual(5, contract.get("weight_points_per_budget_point"))
-        self.assertTrue(contract.get("budget_point_allocates_to_exactly_one_lane"))
+        self.assertTrue(contract.get("initial_weight_grants_initial_budget"))
+        self.assertTrue(contract.get("lightweighting_preserves_existing_budget"))
+        self.assertTrue(contract.get("budget_recognized_weight_is_monotonic"))
+        self.assertTrue(contract.get("current_weight_drives_customer_load_gate"))
+        self.assertTrue(contract.get("weighting_grants_budget_only_above_previous_peak"))
         self.assertFalse(contract.get("weight_budget_multiplied_by_other_progression_axes", True))
 
     def test_budget_lanes_are_explicit_and_compatible(self) -> None:
@@ -61,6 +71,7 @@ class WeightPerformanceBudgetTradeoffContractTests(unittest.TestCase):
             ["ATTACK_BUDGET", "DEFENSE_BUDGET", "MAGIC_FUNCTION_BUDGET", "UTILITY_BUDGET"],
             contract.get("budget_lanes"),
         )
+        self.assertTrue(contract.get("budget_point_allocates_to_exactly_one_lane"))
         compatibility = contract.get("equipment_lane_compatibility", {})
         self.assertEqual(
             ["ATTACK_BUDGET", "MAGIC_FUNCTION_BUDGET", "UTILITY_BUDGET"],
@@ -73,20 +84,18 @@ class WeightPerformanceBudgetTradeoffContractTests(unittest.TestCase):
         self.assertEqual([], compatibility.get("ACCESSORY"))
         self.assertFalse(contract.get("accessory_weight_budget_enabled_by_default", True))
 
-    def test_structural_weight_treatment_is_precision_enhancement_tradeoff(self) -> None:
+    def test_weight_adjustment_consumes_precision_milestone_opportunity(self) -> None:
         contract = self.decisions.get("BS-ITEM-20260806-02", {}).get("contract", {})
-        self.assertEqual("PRECISION_ENHANCEMENT_METHOD", contract.get("structural_weight_treatment_owner"))
+        self.assertEqual("PRECISION_ENHANCEMENT_METHOD", contract.get("weight_adjustment_owner"))
         self.assertEqual(
-            {"LIGHTWEIGHT": -5, "NONE": 0, "WEIGHTED": 5},
-            contract.get("weight_delta_by_treatment"),
+            {"LIGHTWEIGHTING": -5, "WEIGHTING": 5},
+            contract.get("weight_delta_by_operation"),
         )
-        self.assertEqual(
-            {"LIGHTWEIGHT": -1, "NONE": 0, "WEIGHTED": 1},
-            contract.get("budget_delta_by_treatment"),
-        )
-        self.assertEqual(1, contract.get("maximum_active_structural_weight_treatments_per_item"))
-        self.assertFalse(contract.get("structural_weight_treatments_stack", True))
-        self.assertEqual("REPLACE_AND_RECALCULATE_DERIVED_BUDGET", contract.get("rework_semantics"))
+        self.assertEqual([10, 20, 30, 40, 50], contract.get("precision_milestones"))
+        self.assertEqual(1, contract.get("maximum_weight_adjustments_per_precision_milestone"))
+        self.assertTrue(contract.get("weight_adjustments_accumulate_across_distinct_milestones"))
+        self.assertFalse(contract.get("same_milestone_weight_adjustment_replay_allowed", True))
+        self.assertFalse(contract.get("used_precision_milestone_refund_allowed", True))
 
     def test_weight_budget_does_not_replace_enhancement_or_generic_success(self) -> None:
         contract = self.decisions.get("BS-ITEM-20260806-02", {}).get("contract", {})
@@ -95,18 +104,19 @@ class WeightPerformanceBudgetTradeoffContractTests(unittest.TestCase):
         self.assertEqual("BLOCKED", contract.get("product_implementation"))
         weapon_bases = read_or_empty(WEAPON_BASES)
         self.assertNotIn('"weight_performance_budget"', weapon_bases)
-        self.assertNotIn('"structural_weight_treatment"', weapon_bases)
+        self.assertNotIn('"budget_recognized_weight"', weapon_bases)
 
-    def test_authority_documents_record_the_tradeoff(self) -> None:
+    def test_authority_documents_record_budget_preservation_and_peak_only_gain(self) -> None:
         for path in (CANON, SPEC, PLAN):
             self.assertTrue(path.exists(), f"missing authority document: {path}")
         canon = read_or_empty(CANON)
         for token in (
             "BS-ITEM-20260806-02",
             "R2_BATCH_005_6_OF_10",
-            "최종 중량 5당 성능 예산 +1",
-            "경량화 -5 중량 / -1 예산",
-            "중량화 +5 중량 / +1 예산",
+            "최초 제작 중량 5당 초기 성능 예산 +1",
+            "경량화 -5 중량 / 기존 예산 유지",
+            "중량화 +5 중량 / 과거 최고 인정 중량 초과분만 예산 추가",
+            "정밀강화 +10 / +20 / +30 / +40 / +50",
             "PRECISION_ENHANCEMENT_METHOD",
             "제품 구현: `BLOCKED`",
         ):
@@ -124,7 +134,8 @@ class WeightPerformanceBudgetTradeoffContractTests(unittest.TestCase):
             self.assertIn("REFINED_BY_BS-ITEM-20260806-02", text)
             self.assertIn("R2_BATCH_005_6_OF_10", text)
         self.assertIn("정밀강화 방식", precision)
-        self.assertIn("중량 예산 전후", ux)
+        self.assertIn("현재 중량 전후", ux)
+        self.assertIn("인정 중량", ux)
         self.assertIn("WITHIN_LIMIT / OVERWEIGHT", load)
         self.assertNotIn("단계별 중량 초과 페널티 재도입", load)
 
