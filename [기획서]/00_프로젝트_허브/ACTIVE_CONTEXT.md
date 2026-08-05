@@ -1,6 +1,6 @@
 # [현재 정본] Active Context
 
-- 갱신: `2026-08-05 21:06 KST`
+- 갱신: `2026-08-05 21:45 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_1_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
@@ -135,7 +135,16 @@ RED:
 - Planning-first `109`: `EXPECTED_FAILURE`
 - 실패 원인: `BS-CRAFT-20260805-02` 부재와 배치 `0/10`
 
-GREEN exact-head: `PENDING`
+관측된 GREEN:
+
+- commit `3665c5894591b241736de1a48981a71800203116`
+- Planning-first `127`: `PASS`
+- Base `609`: `PASS`
+- PR validation `1200`: `PASS`
+- Python 전체 계약: `PASS`
+- Godot 4.7.1 headless: `PASS`
+
+최종 exact-head: PR·Sheet 재검증 후 기록.
 
 ## 역사 구현·회귀 기준선
 
@@ -157,6 +166,6 @@ GREEN exact-head: `PENDING`
 
 ## 다음 작업
 
-1. GREEN exact-head CI·리뷰·Sheet readback
+1. 증거 커밋 자체 exact-head CI·리뷰·Sheet readback
 2. Draft PR #109에 `1/10` 누적 유지
 3. 명시적 병합 승인 전 병합 금지
