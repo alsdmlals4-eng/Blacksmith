@@ -1,6 +1,6 @@
 # [현재 정본] Active Context
 
-- 갱신: `2026-08-05 08:22 KST`
+- 갱신: `2026-08-05 09:01 KST`
 - Work Mode: `TOTAL_PLANNING`
 - 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_004_2_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
@@ -111,14 +111,19 @@ NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
 RED → GREEN → REFACTOR
 ```
 
-이번 정제 RED:
+이번 예술성 정제:
 
-- commit `3b08260dcfeeb1d97900949b04395f15a29d74d0`
+- RED commit `3b08260dcfeeb1d97900949b04395f15a29d74d0`
 - Planning-first run `65`: `EXPECTED_FAILURE`
 - Base run `532`: `PASS`
-- 실패 원인: `domain` 부재, bounded 예술성 이력 미분리, 원수치 표기 부재
+- GREEN reference commit `a1859dd48003d17bd2c73a6eacf4aee0347a1406`
+- Planning-first run `88`: `PASS`
+- Base run `555`: `PASS`
+- PR validation run `1146`: `PASS`
+- Python 전체 계약: `PASS`
+- Godot 4.7.1 headless: `PASS`
 
-GREEN exact-head는 최종 정본·Registry·라우터·검증 도구 동기화 후 기록한다.
+최종 증거 커밋 exact-head는 PR·Sheet 동기화 전 재검증한다.
 
 ## PR #81 경계
 
@@ -145,12 +150,13 @@ GREEN exact-head는 최종 정본·Registry·라우터·검증 도구 동기화 
 ## 검증 경계
 
 - focused unbounded-artistry test standalone: `NOT_RUN`
+- focused batch-003 test standalone: `NOT_RUN`
 - runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 제품 구현: `BLOCKED`
 
 ## 다음 작업
 
-1. Registry·Legacy Registry·라우터·감사 도구 GREEN 동기화
-2. exact-head Planning-first·Base·Python·Godot 검증
-3. Google Sheet same-ID readback
-4. Draft PR #106 유지, 명시적 병합 승인 전 미병합
+1. 최종 증거 HEAD exact-head 검증
+2. Google Sheet same-ID readback
+3. PR #106 설명·변경 경계·리뷰 상태 확정
+4. Draft PR 유지, 명시적 병합 승인 전 미병합
