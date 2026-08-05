@@ -11,6 +11,7 @@ on:
       - "tests/test_r2_enhancement_dominant_simple_load_gate.py"
       - "tests/test_r2_equipment_base_weight_points.py"
       - "tests/test_r2_weight_performance_budget_and_lightweight_tradeoff.py"
+      - "tests/test_r2_weight_budget_conversion_and_role_presets.py"
       - ".github/workflows/validate-base-v942-planning-first-adoption.yml"
 
 permissions:
@@ -33,4 +34,5 @@ jobs:
           tests.test_r2_enhancement_dominant_simple_load_gate
           tests.test_r2_equipment_base_weight_points
           tests.test_r2_weight_performance_budget_and_lightweight_tradeoff
+          tests.test_r2_weight_budget_conversion_and_role_presets
           -v
