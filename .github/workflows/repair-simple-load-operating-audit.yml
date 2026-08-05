@@ -1,0 +1,44 @@
+name: Repair Simple Load Operating Audit
+
+on:
+  push:
+    branches:
+      - agent/r2-artistry-generation-growth-economy-design
+    paths:
+      - ".github/workflows/repair-simple-load-operating-audit.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: agent/r2-artistry-generation-growth-economy-design
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Repair stale operating-audit assertion
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("tools/audit_project_operating_system.py")
+          text = path.read_text(encoding="utf-8")
+          old = '"R2_BATCH_005_2_OF_10",'
+          new = '"R2_BATCH_005_4_OF_10",'
+          if old not in text:
+              raise SystemExit("stale documentation-map assertion not found")
+          path.write_text(text.replace(old, new), encoding="utf-8")
+          PY
+          python tests/check_project_core_alignment.py
+          rm .github/workflows/repair-simple-load-operating-audit.yml
+      - name: Commit audit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "test: align simple load operating audit"
+          git push origin HEAD:agent/r2-artistry-generation-growth-economy-design
