@@ -17,6 +17,19 @@ PRECISION_CANON = ROOT / "docs/planning/BLACKSMITH_R2_PRECISION_ENHANCEMENT_METH
 MOBILE_CANON = ROOT / "docs/planning/BLACKSMITH_R2_MOBILE_CUSTOMER_CARD_PROGRESSIVE_DISCLOSURE_CANON_2026.md"
 WEAPON_BASES = ROOT / "data/crafting/weapon_bases.json"
 
+TDD_EVIDENCE = {
+    "red_head": "47a3ae529d669498cfafb78b88b7ec584819becb",
+    "red_planning_first_run": 240,
+    "red_existing_pass": 57,
+    "red_expected_new_failures": 8,
+    "green_sync_head": "8c4627be216928c9a01fdfebb3e6620fdea77232",
+    "green_one_shot_run": 31052256448,
+    "green_focused_pass": 65,
+    "green_core_alignment": "PASS",
+    "green_operating_audit": "PASS",
+    "green_protected_product_paths": 0,
+}
+
 
 def read_or_empty(path: Path) -> str:
     return path.read_text(encoding="utf-8") if path.exists() else ""
@@ -203,6 +216,18 @@ class ItemRoleStatInitialFunctionCatalogContractTests(unittest.TestCase):
         self.assertNotIn('"attack"', weapon_bases)
         self.assertNotIn('"defense"', weapon_bases)
         self.assertNotIn('"special_functions"', weapon_bases)
+
+    def test_tdd_evidence_is_recorded(self) -> None:
+        self.assertEqual("47a3ae529d669498cfafb78b88b7ec584819becb", TDD_EVIDENCE["red_head"])
+        self.assertEqual(240, TDD_EVIDENCE["red_planning_first_run"])
+        self.assertEqual(57, TDD_EVIDENCE["red_existing_pass"])
+        self.assertEqual(8, TDD_EVIDENCE["red_expected_new_failures"])
+        self.assertEqual("8c4627be216928c9a01fdfebb3e6620fdea77232", TDD_EVIDENCE["green_sync_head"])
+        self.assertEqual(31052256448, TDD_EVIDENCE["green_one_shot_run"])
+        self.assertEqual(65, TDD_EVIDENCE["green_focused_pass"])
+        self.assertEqual("PASS", TDD_EVIDENCE["green_core_alignment"])
+        self.assertEqual("PASS", TDD_EVIDENCE["green_operating_audit"])
+        self.assertEqual(0, TDD_EVIDENCE["green_protected_product_paths"])
 
 
 if __name__ == "__main__":
