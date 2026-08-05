@@ -15,14 +15,14 @@ class ArtistryGenerationGrowthEconomyContractTests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
-    def test_batch_005_contains_two_approved_decisions(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_2_OF_10", self.registry["stage_status"])
-        self.assertEqual("2/10", self.registry["next_approval_counter"])
+    def test_batch_005_contains_three_approved_decisions(self) -> None:
+        self.assertEqual("R2_BATCH_005_ACTIVE_3_OF_10", self.registry["stage_status"])
+        self.assertEqual("3/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
         self.assertEqual("R2_BATCH_005", active["id"])
-        self.assertEqual(2, active["approved_decisions"])
-        self.assertEqual("2/10", active["counter"])
-        self.assertEqual(["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01"], active["decisions"])
+        self.assertEqual(3, active["approved_decisions"])
+        self.assertEqual("3/10", active["counter"])
+        self.assertEqual(["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01", "BS-UX-20260805-01"], active["decisions"])
         self.assertEqual(10, active["maximum_size"])
 
     def test_artistry_sources_and_context_values_are_separated(self) -> None:

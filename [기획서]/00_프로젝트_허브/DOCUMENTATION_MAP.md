@@ -13,7 +13,7 @@
 
 | 질문 | 책임 원본 | 상태 |
 |---|---|---|
-| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_2_OF_10` |
+| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_3_OF_10` |
 | 현재 기계 정본 | `docs/planning/CURRENT_R2_CANON_REGISTRY.json` | `CURRENT / SCHEMA_8` |
 | 현재 통합 GDD | `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md` | `CURRENT` |
 | 현재 세션 상태 | `ACTIVE_CONTEXT.md` | `CURRENT` |
@@ -96,3 +96,8 @@ customer_artistry_fit = context derived, not persisted
 - 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
 - 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
 - 상태: `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE / PRODUCT_IMPLEMENTATION_BLOCKED`
+
+<!-- BS-UX-20260805-01 -->
+- 모바일 고객 카드 단계적 공개 정본: `docs/planning/BLACKSMITH_R2_MOBILE_CUSTOMER_CARD_PROGRESSIVE_DISCLOSURE_CANON_2026.md`
+- 승인 설계: `docs/superpowers/specs/2026-08-05-mobile-customer-card-progressive-disclosure-design.md`
+- 정본 동기화 계획: `docs/superpowers/plans/2026-08-05-mobile-customer-card-progressive-disclosure.md`

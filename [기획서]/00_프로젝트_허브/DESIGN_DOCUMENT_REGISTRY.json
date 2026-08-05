@@ -7,8 +7,8 @@
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "current_checkpoint": "R2_CHECKPOINT_004_MAIN_CANON",
-  "current_batch": "R2_BATCH_005_2_OF_10",
-  "current_design_decision": "BS-CUSTOMER-20260805-01",
+  "current_batch": "R2_BATCH_005_3_OF_10",
+  "current_design_decision": "BS-UX-20260805-01",
   "product_implementation": "BLOCKED",
   "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, Development Gates, and the focused current canon. Status-marked historical documents never override current R2 canon.",
   "documents": [
@@ -71,6 +71,24 @@
       "source_path": "../../docs/superpowers/plans/2026-08-05-customer-equipment-compatibility.md",
       "status": "ACTIVE",
       "source_role": "executed_canon_plan_for_bs_customer_20260805_01"
+    },
+    {
+      "document_id": "mobile-customer-card-progressive-disclosure-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_MOBILE_CUSTOMER_CARD_PROGRESSIVE_DISCLOSURE_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_mobile_customer_card_information_hierarchy_contract"
+    },
+    {
+      "document_id": "mobile-customer-card-progressive-disclosure-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-05-mobile-customer-card-progressive-disclosure-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_ux_20260805_01"
+    },
+    {
+      "document_id": "mobile-customer-card-progressive-disclosure-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-05-mobile-customer-card-progressive-disclosure.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_ux_20260805_01"
     },
     {
       "document_id": "artistry-generation-growth-economy-design",
@@ -177,7 +195,10 @@
     "CUSTOMER_EQUIPMENT_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
     "CUSTOMER_PROFICIENCIES_ARE_SPARSE_AND_ITEM_RAW_STATS_REMAIN_ITEM_OWNED",
     "CUSTOMER_BASE_STATS_ARE_STRENGTH_DEXTERITY_CONSTITUTION_JUDGMENT_1_TO_10",
-    "R2_BATCH_005_IS_ACTIVE_AT_2_OF_10_WITH_BS_CRAFT_20260805_02_AND_BS_CUSTOMER_20260805_01",
+    "MOBILE_CUSTOMER_CARD_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
+    "CRITICAL_CUSTOMER_CARD_INFORMATION_MUST_NOT_BE_COLOR_LONG_PRESS_OR_HOVER_ONLY",
+    "MOBILE_CUSTOMER_CARD_USES_THREE_LAYER_PROGRESSIVE_DISCLOSURE",
+    "R2_BATCH_005_IS_ACTIVE_AT_3_OF_10_WITH_BS_CRAFT_20260805_02_BS_CUSTOMER_20260805_01_AND_BS_UX_20260805_01",
     "ARTISTRY_GROWTH_REQUIRES_APPROVED_SOURCE_AND_UID_PROVENANCE",
     "ARTISTRY_VALUE_IS_CONTEXT_DERIVED_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
     "ARTISTRY_CUSTOMER_FIT_IS_CONTEXT_DERIVED_NOT_PERSISTED",

@@ -1,8 +1,8 @@
 # [현재 정본] Blacksmith R2 통합 Game Bible
 
-- 상태: `CURRENT_CANON / R2_BATCH_005_2_OF_10`
+- 상태: `CURRENT_CANON / R2_BATCH_005_3_OF_10`
 - 체크포인트 004: `PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9 / MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / MAIN_CANON`
-- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-OPS-20260805-01`
+- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-UX-20260805-01 / BS-OPS-20260805-01`
 - 제품 구현: `BLOCKED`
 
 ## 1. 프로젝트 약속
@@ -173,3 +173,12 @@ WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL
 - 현재 5등급·예술성 생성·성장·가치 평가 제품 구현: `NOT_STARTED`
 - runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
 - 과거 PoC PASS는 현재 제품 PASS가 아님
+
+<!-- BS-UX-20260805-01 -->
+## 모바일 고객 카드와 장비 판단
+
+```text
+기본 카드 → 장비 선택 후 판단층 → 상세 보기
+```
+
+고객 카드의 목적은 고객 RPG 육성이 아니라 작품을 누구에게 맡길지 설명 가능한 판단을 제공하는 것이다. 기본 카드에는 4능력치와 관련 적성만 표시한다. 작품 선택 후 균형·예상 성공률·핵심 원인 2~4개를 즉시 보여주며, 전체 관련 적성·총 중량·적정 하중·특수기능 근거는 상세 보기로 보낸다. 핵심 상태는 색상만으로 전달하지 않으며 모바일 상호작용 목표는 최소 `48dp`다. 제품 구현: `BLOCKED`.

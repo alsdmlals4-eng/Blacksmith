@@ -2,7 +2,7 @@
 
 - 갱신: `2026-08-05 21:45 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_2_OF_10`
+- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_3_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
 - R2 체크포인트 004: `planning #106 / closure #107 / canon audit #108`
 - PR #106 exact head: `227b2dabf0d98832811415156e72f65d601332a9`
@@ -12,7 +12,7 @@
 - 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
 - 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_2_OF_10`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
-- 현재 승인 카운터: `2/10`
+- 현재 승인 카운터: `3/10`
 - 제품 구현: `BLOCKED`
 
 ## 현재 핵심
@@ -177,3 +177,13 @@ RED:
 - 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
 - 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
 - 상태: `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE / PRODUCT_IMPLEMENTATION_BLOCKED`
+
+<!-- BS-UX-20260805-01 -->
+## 현재 UX 승인
+
+- Decision: `BS-UX-20260805-01`
+- 기본 카드 → 장비 선택 후 판단층 → 상세 보기
+- 장비 선택 후 균형·성공률·핵심 원인 2~4개 표시
+- 전체 적성 행렬 기본 노출 금지
+- 모바일 최소 `48dp`, 색상·길게 누르기·호버 단독 핵심 정보 금지
+- 제품 구현: `BLOCKED`

@@ -175,3 +175,8 @@ UNSUITABLE / UNSTABLE / STABLE / SKILLED
 - 정확한 수치·공식은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`
 - 제품 코드·런타임 데이터·Scene·에셋 변경 금지
 - 제품 구현: `BLOCKED`
+
+<!-- REFINED_BY_BS-UX-20260805-01 -->
+## 표시 구조 후속 정제
+
+고객 능력·적성·장비 적합성 데이터 계약은 유지한다. 모바일 기본 공개 범위와 상세 진입 방식은 `BS-UX-20260805-01` 및 `BLACKSMITH_R2_MOBILE_CUSTOMER_CARD_PROGRESSIVE_DISCLOSURE_CANON_2026.md`가 정제한다.
