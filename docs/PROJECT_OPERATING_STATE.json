@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "artifact_role": "BLACKSMITH_PROJECT_OPERATING_STATE",
+  "repository": "alsdmlals4-eng/Blacksmith",
+  "current_state": {
+    "operating_decision": "BS-WORLD-20260803-02",
+    "stage": "R2_CORE_SESSION_META_LOOP",
+    "stage_status": "R2_CHECKPOINT_001_CANON_NEXT_GRILL_ME_COUNTER_0_OF_10",
+    "product_implementation": "BLOCKED",
+    "runtime_validation": "NOT_RUN",
+    "android_device_validation": "NOT_RUN",
+    "human_validation": "NOT_RUN"
+  },
+  "adapter_migration": {
+    "decision_id": "DEC-BASE-20260805-001",
+    "status": "PRESERVED_AND_MIGRATED_ON_DRAFT_BRANCH",
+    "source_main_commit": "b1dd945875568098b107815a03e88b0272d384e9",
+    "trusted_base_validator": "bfdc9e44d4a6920dc085eaa3f9d19d31b1acd2a1",
+    "source_adapter_sha256": "3e7b075622d088320c4962ed2359f790703b5e62ca13d38e5d99eb04a17f3498",
+    "preserved_from_adapter": {
+      "current_operating_decisions": [
+        "BS-OPS-20260802-01",
+        "BS-OPS-20260802-02",
+        "BS-OPS-20260803-03",
+        "BS-OPS-20260803-04",
+        "BS-OPS-20260803-05",
+        "BS-OPS-20260803-06"
+      ],
+      "project_operating_state": {
+        "work_mode": "TOTAL_PLANNING",
+        "stage": "R2_CORE_SESSION_META_LOOP",
+        "stage_status": "R2_CHECKPOINT_001_CANON_NEXT_GRILL_ME_COUNTER_0_OF_10",
+        "recovery_base_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
+        "r1_final_approval_merge_commit": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
+        "r2_checkpoint_001_merge_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
+        "last_merged_pr": 99,
+        "canonical_recovery": "MERGED_TO_MAIN",
+        "planning_coverage": "R1_COMPLETE_R2_ACTIVE",
+        "approved_grill_me_questions_in_checkpoint_001": 1,
+        "checkpoint_001_closure": "EARLY_CHECKPOINT_AUTHORITY_DRIFT",
+        "current_new_grill_me_counter": "0/10",
+        "current_r2_decision": "BS-WORLD-20260803-02",
+        "product_implementation": "BLOCKED",
+        "existing_reference_contract_validation": "PASS_AT_PR99_HEAD",
+        "new_r2_runtime_validation": "NOT_RUN",
+        "android_device_validation": "NOT_RUN",
+        "accessibility_human_review": "NOT_RUN",
+        "performance_profile": "NOT_RUN",
+        "human_playtest": "NOT_RUN"
+      },
+      "current_r1_canon": {
+        "registry": "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
+        "root_decisions": "CURRENT_CONFIRMED_DECISIONS.md",
+        "game_bible": "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
+        "r1_final_approval": "docs/planning/BLACKSMITH_R1_FINAL_APPROVAL_AND_WORLD_SCHEDULE_PROGRESS_2026.md",
+        "r2_checkpoint_001": "docs/planning/BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md",
+        "approved_core_ledger": "docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md",
+        "event_chronicle_set": "docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md",
+        "batch_and_merge_policy": "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md"
+      },
+      "validation_status": {
+        "pr_98_premerge_github_sheet_pr_audit": "PASS",
+        "pr_98_base_v9_adoption": "PASS",
+        "pr_98_pr_validation": "PASS",
+        "pr_98_sheet_readback": "PASS",
+        "pr_99_exact_head": "5e21076da43c4cc0e542004f2e0a2ecbcc9cec77",
+        "pr_99_merge_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
+        "pr_99_workflows": "PASS_5_OF_5",
+        "pr_99_review": "COMMENTS_0_THREADS_0_P0_0_P1_0",
+        "r2_checkpoint_001_adversarial_audit": "PASS_P0_0_P1_0",
+        "checkpoint_001_postmerge_sync": "PASS_PR99_MAIN_AND_SHEET_READBACK",
+        "new_r2_godot_runtime": "NOT_RUN",
+        "android_device": "NOT_RUN",
+        "accessibility_human": "NOT_RUN",
+        "performance": "NOT_RUN",
+        "human_playtest": "NOT_RUN"
+      }
+    },
+    "original_project_operating_health": {
+      "artifact_role": "PROJECT_OPERATING_HEALTH",
+      "schema_version": 1,
+      "current_operating_decisions": [
+        "BS-OPS-20260802-01",
+        "BS-OPS-20260802-02"
+      ],
+      "current_stage": "R1_PROJECT_CORE_AND_PLAYER_PROMISE",
+      "stage_status": "IN_PROGRESS_GRILL_BATCH_01_MERGED_NEW_COUNTER_0_OF_10",
+      "integrity_verdict": "R0_RECOVERY_AND_R1_BATCH_01_MERGED_PRODUCT_GATES_INCOMPLETE",
+      "operating_maturity": "OM-L3_CANON_RECOVERED_APPROVAL_BATCHED_AND_MERGED",
+      "product_evidence_maturity": "PE-0",
+      "last_merged_pr": 84,
+      "batch_01_merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
+      "critical_gates": {
+        "canonical_recovery": "PASS",
+        "decision_authority": "PASS",
+        "premerge_adversarial_audit": "PASS",
+        "pr_84_merge": "PASS",
+        "decision_sync": "POSTMERGE_FINALIZATION",
+        "planning_coverage": "R1_IN_PROGRESS",
+        "grill_me_new_counter": "0/10",
+        "planning_and_review_complete": "BLOCKED",
+        "codex_implementation": "BLOCKED",
+        "existing_reference_static_and_godot_contracts": "PASS_AT_PR84_HEAD",
+        "new_r1_runtime": "NOT_RUN",
+        "device": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "performance": "NOT_RUN",
+        "human": "NOT_RUN"
+      },
+      "approved_r1_decisions": [
+        "BS-CORE-20260802-01",
+        "BS-CORE-20260802-02",
+        "BS-SET-20260802-01",
+        "BS-SET-20260802-02",
+        "BS-SET-20260802-03",
+        "BS-SET-20260802-04"
+      ],
+      "current_canon": [
+        "CURRENT_CONFIRMED_DECISIONS.md",
+        "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
+        "docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md",
+        "docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md",
+        "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md",
+        "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+        "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+        "[기획서]/00_프로젝트_허브/ROADMAP.md"
+      ],
+      "evidence": {
+        "operating": [
+          {
+            "evidence_id": "BS-OPS-20260802-01-DESIGN",
+            "type": "USER_APPROVED_DESIGN",
+            "path": "docs/superpowers/specs/2026-08-02-planning-canon-recovery-design.md",
+            "result": "PASS"
+          },
+          {
+            "evidence_id": "BS-GRILL-BATCH-20260802-01",
+            "type": "USER_APPROVED_R1_DECISION_BATCH",
+            "path": "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md",
+            "scope": "five approved Grill Me decisions and future ten-decision merge cadence",
+            "result": "MERGED_TO_MAIN",
+            "merge_pr": 84,
+            "merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf"
+          }
+        ],
+        "sheet": [
+          {
+            "evidence_id": "BS-OPS-20260802-01-SHEET",
+            "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+            "scope": "R0 recovery ranges",
+            "result": "PASS"
+          },
+          {
+            "evidence_id": "BS-GRILL-BATCH-20260802-01-SHEET",
+            "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+            "scope": "02 current decisions, 05 GDD summary, 99 history, 00 hub, 04 audit",
+            "result": "PREMERGE_READBACK_PASS_POSTMERGE_FINALIZATION_PENDING"
+          }
+        ],
+        "authority": [
+          {
+            "evidence_id": "BS-GRILL-BATCH-20260802-01-AUTHORITY",
+            "scope": "Root, R1 registry, Hub, PR 84, Issue 79",
+            "result": "PASS"
+          }
+        ],
+        "ci": [
+          {
+            "evidence_id": "PR84-BASE-V9-247",
+            "result": "PASS"
+          },
+          {
+            "evidence_id": "PR84-VALIDATION-838",
+            "result": "PASS",
+            "scope": "Python contracts and Godot 4.7.1 headless contracts"
+          }
+        ],
+        "protected_paths": [
+          {
+            "evidence_id": "BS-GRILL-BATCH-20260802-01-DIFF",
+            "base_commit": "ac120fb146cea29bb5f8876682809f76779d86ad",
+            "result": "PASS",
+            "changed_product_paths": 0
+          }
+        ],
+        "product": []
+      },
+      "grill_me_merge_policy": {
+        "decision_id": "BS-OPS-20260802-02",
+        "completed_batch": "BS-GRILL-BATCH-20260802-01",
+        "completed_approved_count": 5,
+        "completed_merge_pr": 84,
+        "completed_merge_sha": "bd68c2dbf20592e84c1bebfdc83c4c925d010dbf",
+        "current_new_approval_counter": "0/10",
+        "future_batch_size": 10,
+        "premerge_audit_required": true,
+        "merge_method": "SQUASH"
+      },
+      "known_gaps": [
+        "R1 planning coverage remains incomplete after batch 01",
+        "new R1 fatigue/date/event chronicle runtime not implemented",
+        "Android device validation not executed",
+        "accessibility human review not executed",
+        "performance profiling not executed",
+        "current external human playtest not executed"
+      ],
+      "interpretation": "R0 authority and R1 approval batch 01 are merged. Product evidence remains PE-0 for new R1 features; no product, demo, build, or release PASS is permitted."
+    },
+    "preserved_nested_metadata": {
+      "base_release_adoption_status": "RELEASE_ADOPTED",
+      "compatibility_generation_status": {
+        "view_generation_status": "NOT_RUN_IN_CONNECTOR_ONLY_SESSION",
+        "view_freshness": "BLOCKED_UNVERIFIED",
+        "manual_edit_policy": "DO_NOT_HAND_EDIT_GENERATED_COMPATIBILITY_VIEWS"
+      },
+      "gdd_sheet": {
+        "role": "USER_FACING_GDD_WORKSPACE",
+        "url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit",
+        "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+        "authoritative_source": "GITHUB_CANON",
+        "sync_decision_ids": [
+          "BS-OPS-20260802-01",
+          "BS-OPS-20260802-02",
+          "BS-CORE-20260802-01",
+          "BS-CORE-20260802-02",
+          "BS-SET-20260802-01",
+          "BS-SET-20260802-02",
+          "BS-SET-20260802-03",
+          "BS-SET-20260802-04",
+          "BS-OPS-20260803-05",
+          "BS-WORLD-20260803-01",
+          "BS-WORLD-20260803-02",
+          "BS-OPS-20260803-06"
+        ],
+        "sync_status": "SYNCED_TO_MAIN",
+        "target_tabs": [
+          "00_프로젝트_허브",
+          "01_작업순서",
+          "02_현재_확정결정",
+          "04_누락_충돌_감사",
+          "05_GDD_요약",
+          "90_본제작_출시_사업",
+          "99_변경이력"
+        ],
+        "readback_status": "MAIN_CANON_READBACK_PASS",
+        "last_synced_main_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
+        "last_synced_pr": 99,
+        "exact_head_record_policy": "PR_METADATA_AND_SHEET_HISTORY_AVOID_SELF_REFERENTIAL_COMMIT"
+      },
+      "routing_policy": {
+        "selection_policy": "AUTOMATIC_TRIGGER_MATCH_MINIMUM_SET",
+        "load_all_skills": false,
+        "blacksmith_engineering_original_status": "ACTIVE_BUT_IMPLEMENTATION_GATE_BLOCKED"
+      },
+      "protected_baseline": {
+        "authority_kind": "GITHUB_MAIN_COMMIT",
+        "authority_ref": "refs/heads/main",
+        "commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
+        "policy_sha256": null,
+        "policy_hash_status": "RECALCULATION_NOT_RUN",
+        "policy_source_path": "AGENTS.md",
+        "policy_source_type": "CURRENT_PROJECT_OPERATING_POLICY",
+        "protected_paths_pointer": "/protected_paths"
+      },
+      "skill_registry": {
+        "base": {
+          "hash_definition": "RAW_FILE_BYTES_SHA256",
+          "path": "skills/SKILL_REGISTRY.json",
+          "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59",
+          "hash_status": "ADOPTION_EVIDENCE_VALUE"
+        },
+        "project": {
+          "hash_definition": "RAW_FILE_BYTES_SHA256",
+          "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+          "sha256": null,
+          "hash_status": "RECALCULATION_NOT_RUN_AFTER_R2_CHECKPOINT"
+        }
+      },
+      "manual_validator_evidence": [
+        "manual: GitHub PR and Sheet premerge adversarial audit",
+        "manual: Godot project parse/runtime check",
+        "manual: Android device and safe-area check when applicable",
+        "manual: UX UI human understanding and accessibility review"
+      ]
+    },
+    "normalized_contract": {
+      "adapter_schema": "BASE_V1_THIN_ADAPTER",
+      "health_schema": "BASE_PROJECT_OPERATING_HEALTH_V1",
+      "protected_baseline_policy": "OPTION_A_EXACT_TRUSTED_BASE_EQUALITY",
+      "gdd_sheet_contract_status": "CURRENT",
+      "project_state_authority": "docs/PROJECT_OPERATING_STATE.json",
+      "machine_health_authority": "docs/PROJECT_OPERATING_HEALTH.json",
+      "product_files": "UNCHANGED",
+      "google_sheets": "UNCHANGED"
+    }
+  }
+}

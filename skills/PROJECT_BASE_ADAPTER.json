@@ -1,67 +1,22 @@
 {
   "artifact_role": "PROJECT_BASE_ADAPTER",
-  "schema_version": 1,
-  "current_operating_decisions": [
-    "BS-OPS-20260802-01",
-    "BS-OPS-20260802-02",
-    "BS-OPS-20260803-03",
-    "BS-OPS-20260803-04",
-    "BS-OPS-20260803-05",
-    "BS-OPS-20260803-06"
-  ],
   "base_release": {
-    "finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
-    "release_commit": "7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8",
-    "release_evidence_commit": "da33a350d61b8adc52df97fccc7001708a933370",
     "repository": "alsdmlals4-eng/Base",
     "version": "9.4.3",
-    "adoption_status": "RELEASE_ADOPTED"
-  },
-  "project_operating_state": {
-    "work_mode": "TOTAL_PLANNING",
-    "stage": "R2_CORE_SESSION_META_LOOP",
-    "stage_status": "R2_CHECKPOINT_001_CANON_NEXT_GRILL_ME_COUNTER_0_OF_10",
-    "recovery_base_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
-    "r1_final_approval_merge_commit": "8df4a10241bfa0c07211402d7c8c0e3e1f1e1249",
-    "r2_checkpoint_001_merge_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
-    "last_merged_pr": 99,
-    "canonical_recovery": "MERGED_TO_MAIN",
-    "planning_coverage": "R1_COMPLETE_R2_ACTIVE",
-    "approved_grill_me_questions_in_checkpoint_001": 1,
-    "checkpoint_001_closure": "EARLY_CHECKPOINT_AUTHORITY_DRIFT",
-    "current_new_grill_me_counter": "0/10",
-    "current_r2_decision": "BS-WORLD-20260803-02",
-    "product_implementation": "BLOCKED",
-    "existing_reference_contract_validation": "PASS_AT_PR99_HEAD",
-    "new_r2_runtime_validation": "NOT_RUN",
-    "android_device_validation": "NOT_RUN",
-    "accessibility_human_review": "NOT_RUN",
-    "performance_profile": "NOT_RUN",
-    "human_playtest": "NOT_RUN"
-  },
-  "current_r1_canon": {
-    "registry": "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
-    "root_decisions": "CURRENT_CONFIRMED_DECISIONS.md",
-    "game_bible": "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
-    "r1_final_approval": "docs/planning/BLACKSMITH_R1_FINAL_APPROVAL_AND_WORLD_SCHEDULE_PROGRESS_2026.md",
-    "r2_checkpoint_001": "docs/planning/BLACKSMITH_R2_WORLD_SCHEDULE_BASELINE_CHECKPOINT_001_2026.md",
-    "approved_core_ledger": "docs/planning/BLACKSMITH_R1_APPROVED_CORE_DECISIONS_2026.md",
-    "event_chronicle_set": "docs/planning/BLACKSMITH_EVENT_CHRONICLE_SET_CANON_2026.md",
-    "batch_and_merge_policy": "docs/planning/BLACKSMITH_GRILLME_BATCH_01_AND_MERGE_POLICY_2026.md"
+    "release_commit": "7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8",
+    "release_evidence_commit": "da33a350d61b8adc52df97fccc7001708a933370",
+    "finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97"
   },
   "compatibility": {
     "cycle": "ONE_CYCLE",
-    "legacy_inputs": {
-      "skills/BASE_V9_ADAPTER.json": "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",
-      "skills/PROJECT_BASE_SKILL_ADAPTER.json": "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json"
-    },
     "views": [
       "skills/BASE_V9_ADAPTER.json",
       "skills/PROJECT_BASE_SKILL_ADAPTER.json"
     ],
-    "view_generation_status": "NOT_RUN_IN_CONNECTOR_ONLY_SESSION",
-    "view_freshness": "BLOCKED_UNVERIFIED",
-    "manual_edit_policy": "DO_NOT_HAND_EDIT_GENERATED_COMPATIBILITY_VIEWS"
+    "legacy_inputs": {
+      "skills/BASE_V9_ADAPTER.json": "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",
+      "skills/PROJECT_BASE_SKILL_ADAPTER.json": "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json"
+    }
   },
   "gdd_sheet": {
     "role": "USER_FACING_GDD_WORKSPACE",
@@ -82,7 +37,7 @@
       "BS-WORLD-20260803-02",
       "BS-OPS-20260803-06"
     ],
-    "sync_status": "SYNCED_TO_MAIN",
+    "sync_status": "CURRENT",
     "target_tabs": [
       "00_프로젝트_허브",
       "01_작업순서",
@@ -95,7 +50,8 @@
     "readback_status": "MAIN_CANON_READBACK_PASS",
     "last_synced_main_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
     "last_synced_pr": 99,
-    "exact_head_record_policy": "PR_METADATA_AND_SHEET_HISTORY_AVOID_SELF_REFERENTIAL_COMMIT"
+    "exact_head_record_policy": "PR_METADATA_AND_SHEET_HISTORY_AVOID_SELF_REFERENTIAL_COMMIT",
+    "declared_sync_status": "SYNCED_TO_MAIN"
   },
   "project": {
     "engine": "Godot 4.7",
@@ -105,13 +61,12 @@
     "pc_status": "FUTURE_PLATFORM_CONSIDERATION"
   },
   "protected_baseline": {
-    "authority_kind": "GITHUB_MAIN_COMMIT",
-    "authority_ref": "refs/heads/main",
-    "commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
-    "policy_sha256": null,
-    "policy_hash_status": "RECALCULATION_NOT_RUN",
-    "policy_source_path": "AGENTS.md",
-    "policy_source_type": "CURRENT_PROJECT_OPERATING_POLICY",
+    "authority_kind": "REMOTE_TRACKING_REF",
+    "authority_ref": "refs/remotes/origin/main",
+    "commit": "b1dd945875568098b107815a03e88b0272d384e9",
+    "policy_sha256": "1c36c4180b85d6bd97f4e7cdba908cc73298f529d368aa07e0dffde6e1e8ec52",
+    "policy_source_path": "skills/PROJECT_BASE_ADAPTER.json",
+    "policy_source_type": "CANONICAL_ADAPTER_SOURCE",
     "protected_paths_pointer": "/protected_paths"
   },
   "protected_paths": [
@@ -158,13 +113,11 @@
     ],
     "inactive_routes": [],
     "precedence": "PROJECT_LOCAL_THEN_BASE_SHARED",
-    "selection_policy": "AUTOMATIC_TRIGGER_MATCH_MINIMUM_SET",
-    "load_all_skills": false,
     "project_routes": [
       {
         "route_id": "blacksmith-engineering",
         "skill_id": "blacksmith-engineering",
-        "status": "ACTIVE_BUT_IMPLEMENTATION_GATE_BLOCKED"
+        "status": "ACTIVE"
       },
       {
         "route_id": "blacksmith-game-design",
@@ -178,6 +131,7 @@
       }
     ]
   },
+  "schema_version": 1,
   "shared_overrides": {
     "auditing-and-refining-ui-art": {
       "base_main_commit": "0fd95f4513343e77fd664af2763a01b02f52545b",
@@ -305,14 +259,12 @@
     "base": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "skills/SKILL_REGISTRY.json",
-      "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59",
-      "hash_status": "ADOPTION_EVIDENCE_VALUE"
+      "sha256": "693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59"
     },
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
-      "sha256": null,
-      "hash_status": "RECALCULATION_NOT_RUN_AFTER_R2_CHECKPOINT"
+      "sha256": "0074d2814b8034860ca6d4684eaaa59245546b313b21eb245ec88fb16d4c75e6"
     }
   },
   "validators": [
@@ -321,28 +273,8 @@
     "python tools/audit_project_operating_system.py",
     "python tests/test_base_shared_external_ai_adapter.py",
     "python tests/test_base_v942_planning_first_adoption.py",
-    "manual: GitHub PR and Sheet premerge adversarial audit",
-    "manual: Godot project parse/runtime check",
-    "manual: Android device and safe-area check when applicable",
-    "manual: UX UI human understanding and accessibility review",
     "python tests/test_base_v943_first_prompt_adoption.py",
-    "python tests/check_project_core_alignment.py"
-  ],
-  "validation_status": {
-    "pr_98_premerge_github_sheet_pr_audit": "PASS",
-    "pr_98_base_v9_adoption": "PASS",
-    "pr_98_pr_validation": "PASS",
-    "pr_98_sheet_readback": "PASS",
-    "pr_99_exact_head": "5e21076da43c4cc0e542004f2e0a2ecbcc9cec77",
-    "pr_99_merge_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
-    "pr_99_workflows": "PASS_5_OF_5",
-    "pr_99_review": "COMMENTS_0_THREADS_0_P0_0_P1_0",
-    "r2_checkpoint_001_adversarial_audit": "PASS_P0_0_P1_0",
-    "checkpoint_001_postmerge_sync": "PASS_PR99_MAIN_AND_SHEET_READBACK",
-    "new_r2_godot_runtime": "NOT_RUN",
-    "android_device": "NOT_RUN",
-    "accessibility_human": "NOT_RUN",
-    "performance": "NOT_RUN",
-    "human_playtest": "NOT_RUN"
-  }
+    "python tests/check_project_core_alignment.py",
+    "python -m unittest tests.test_project_base_adapter_thin_migration -v"
+  ]
 }

@@ -6,13 +6,14 @@
     "repository": "alsdmlals4-eng/Base"
   },
   "base_release": {
-    "release_commit": "a728712cb776ec98f4875914a580fcf7d0156593",
-    "release_evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
+    "finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",
+    "release_commit": "7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8",
+    "release_evidence_commit": "da33a350d61b8adc52df97fccc7001708a933370",
     "repository": "alsdmlals4-eng/Base",
-    "version": "9.4.0"
+    "version": "9.4.3"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "1477957d9322e76bca45aaf07bdafd5bcb3a01a1d78dc9f17816f9e332161be4",
+  "canonical_source_sha256": "2c9563b13fff87f9c3f48a0c53a735379c760978af39d1833342ad3659e959ba",
   "canonical_sources": [
     "[기획서]/",
     "docs/UX_UI_SYSTEM.md",
@@ -33,11 +34,13 @@
   "generated": true,
   "hash_definition": "RAW_FILE_BYTES_SHA256",
   "legacy_source": "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json",
-  "legacy_source_sha256": "adbff9163ce0e464094b37b8e3a0416062c235ac21e9a740bf84107e3205c151",
+  "legacy_source_sha256": "c8f67ffd101e880af0e0e9171c76a32349b1a980fc5acaddf1d8f6524fa25205",
   "license_record": "docs/technical/THIRD_PARTY_LICENSES.md",
   "lifecycle": "ONE_CYCLE",
   "project": {
     "engine": "Godot 4.7",
+    "pc_status": "FUTURE_PLATFORM_CONSIDERATION",
+    "primary_platform": "ANDROID_PORTRAIT_MOBILE",
     "repository": "alsdmlals4-eng/Blacksmith",
     "root": "."
   },
@@ -110,8 +113,7 @@
         "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
       ],
       "existing_legacy_migration": "NOT_IN_THIS_ADOPTION"
-    },
-    "optimizing-ai-model-and-prompt-costs": {}
+    }
   },
   "third_party_inventory": "docs/technical/ADOPTED_ASSETS.md",
   "validators": [

@@ -24,8 +24,18 @@
       "status": "ACTIVE"
     },
     {
+      "route_id": "managing-project-intake-and-work-contract",
+      "skill_id": "managing-project-intake-and-work-contract",
+      "status": "ACTIVE"
+    },
+    {
       "route_id": "optimizing-ai-model-and-prompt-costs",
       "skill_id": "optimizing-ai-model-and-prompt-costs",
+      "status": "ACTIVE"
+    },
+    {
+      "route_id": "orchestrating-deepseek-worktrees",
+      "skill_id": "orchestrating-deepseek-worktrees",
       "status": "ACTIVE"
     }
   ],
@@ -72,12 +82,26 @@
       "status": "ACTIVE",
       "target_route_id": "governing-legacy-retention-and-archives"
     },
+    "managing-project-intake-and-work-contract": {
+      "route_id": "managing-project-intake-and-work-contract",
+      "skill_id": "managing-project-intake-and-work-contract",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "managing-project-intake-and-work-contract"
+    },
     "optimizing-ai-model-and-prompt-costs": {
       "route_id": "optimizing-ai-model-and-prompt-costs",
       "skill_id": "optimizing-ai-model-and-prompt-costs",
       "source": "BASE_SHARED",
       "status": "ACTIVE",
       "target_route_id": "optimizing-ai-model-and-prompt-costs"
+    },
+    "orchestrating-deepseek-worktrees": {
+      "route_id": "orchestrating-deepseek-worktrees",
+      "skill_id": "orchestrating-deepseek-worktrees",
+      "source": "BASE_SHARED",
+      "status": "ACTIVE",
+      "target_route_id": "orchestrating-deepseek-worktrees"
     }
   },
   "generated": true,
@@ -85,7 +109,7 @@
   "project_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
-    "sha256": "e157f6d3d7f82dc98069ae1197d850d6a33a1ac2347dcf18998d308f8d3996e9"
+    "sha256": "0074d2814b8034860ca6d4684eaaa59245546b313b21eb245ec88fb16d4c75e6"
   },
   "project_routes": [
     {
@@ -108,6 +132,6 @@
   "source_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "skills/PROJECT_BASE_ADAPTER.json",
-    "sha256": "1477957d9322e76bca45aaf07bdafd5bcb3a01a1d78dc9f17816f9e332161be4"
+    "sha256": "2c9563b13fff87f9c3f48a0c53a735379c760978af39d1833342ad3659e959ba"
   }
 }
