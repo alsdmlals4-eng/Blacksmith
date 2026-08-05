@@ -13,7 +13,7 @@
 
 | 질문 | 책임 원본 | 상태 |
 |---|---|---|
-| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_4_OF_10` |
+| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_5_OF_10` |
 | 현재 기계 정본 | `docs/planning/CURRENT_R2_CANON_REGISTRY.json` | `CURRENT / SCHEMA_8` |
 | 현재 통합 GDD | `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md` | `CURRENT` |
 | 현재 세션 상태 | `ACTIVE_CONTEXT.md` | `CURRENT` |
@@ -110,4 +110,13 @@ customer_artistry_fit = context derived, not persisted
 - 상태: `WITHIN_LIMIT / OVERWEIGHT`; 초과 시 배정 불가
 - 성공률: 강화 레벨이 주효과, 고객 능력·적성은 작은 보조 보정
 - 정본: `docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md`
+- 제품 구현: `BLOCKED`
+
+## BS-ITEM-20260806-01 현재 정제
+
+- 활성 배치: `R2_BATCH_005_5_OF_10`
+- 장비군 고정 기본 중량: `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`
+- 중량 전용 효과: `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`, 작품당 최대 하나
+- 자동 중량 변경 금지: 재료·제작 등급·예술성·원수치·일반 강화 단계
+- 정본: `docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_CANON_2026.md`
 - 제품 구현: `BLOCKED`

@@ -21,19 +21,20 @@ class EnhancementDominantSimpleLoadGateContractTests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
-    def test_batch_005_contains_four_approved_decisions(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_4_OF_10", self.registry["stage_status"])
-        self.assertEqual("4/10", self.registry["next_approval_counter"])
+    def test_batch_005_contains_five_approved_decisions(self) -> None:
+        self.assertEqual("R2_BATCH_005_ACTIVE_5_OF_10", self.registry["stage_status"])
+        self.assertEqual("5/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
         self.assertEqual("R2_BATCH_005", active["id"])
-        self.assertEqual(4, active["approved_decisions"])
-        self.assertEqual("4/10", active["counter"])
+        self.assertEqual(5, active["approved_decisions"])
+        self.assertEqual("5/10", active["counter"])
         self.assertEqual(
             [
                 "BS-CRAFT-20260805-02",
                 "BS-CUSTOMER-20260805-01",
                 "BS-UX-20260805-01",
                 "BS-CUSTOMER-20260806-01",
+                "BS-ITEM-20260806-01",
             ],
             active["decisions"],
         )
@@ -83,7 +84,7 @@ class EnhancementDominantSimpleLoadGateContractTests(unittest.TestCase):
         current = CURRENT.read_text(encoding="utf-8")
         bible = BIBLE.read_text(encoding="utf-8")
         self.assertIn("BS-CUSTOMER-20260806-01", current)
-        self.assertIn("R2_BATCH_005 / 4/10", current)
+        self.assertIn("R2_BATCH_005 / 5/10", current)
         self.assertIn("강화가 주효과", bible)
         self.assertIn("중량 초과 시 배정 불가", bible)
 

@@ -8,7 +8,7 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005 / 4/10`
+> 현재 승인 배치: `R2_BATCH_005 / 5/10`
 >
 > 제품 구현: `BLOCKED`
 
@@ -32,6 +32,7 @@
 - `BS-CUSTOMER-20260805-01`: 근력·기량·체력·판단력, 희소 무기·갑옷 적성, 마력 적성, 장비 적합성 — `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-UX-20260805-01`: 모바일 고객 카드 3단계 정보 공개와 설명 가능한 장비 판단 — `R2_BATCH_005_3_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-CUSTOMER-20260806-01`: 강화 중심 단순 장비 판정과 근력 기반 최대 중량 게이트 — `R2_BATCH_005_4_OF_10 / APPROVED_PENDING_MERGE`
+- `BS-ITEM-20260806-01`: 장비군 고정 기본 중량 포인트와 중량 전용 ±5 강화 효과 — `R2_BATCH_005_5_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
@@ -242,3 +243,14 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - `COMFORTABLE_LOAD / BALANCE_STATE / 단계적 초과 페널티`는 현재 중량 계약이 아니다.
 - 공격·방어·조작성·예술성 원수치를 일반 성공률에 범용 합산하지 않는다.
 - 제품 구현: `BLOCKED`
+
+<!-- BS-ITEM-20260806-01 -->
+## 장비군 기본 중량 포인트
+
+```text
+장신구 0 / 도구 5
+의복·로브 5 / 경갑 10 / 중갑 20 / 중장갑 30
+검·원거리·방패보조 10 / 도끼·둔기 15 / 장병기 20
+```
+
+`ITEM_WEIGHT = max(0, BASE_WEIGHT + EXPLICIT_WEIGHT_MODIFIER)`다. 중량 전용 효과는 작품당 하나만 허용하며 `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`다. 재료·제작 등급·예술성·공격·방어·조작성·내구도·일반 강화 단계는 중량을 자동 변경하지 않는다. 제품 구현: `BLOCKED`.

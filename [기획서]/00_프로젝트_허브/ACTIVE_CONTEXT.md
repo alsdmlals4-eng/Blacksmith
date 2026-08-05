@@ -2,7 +2,7 @@
 
 - 갱신: `2026-08-05 21:45 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_4_OF_10`
+- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_5_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
 - R2 체크포인트 004: `planning #106 / closure #107 / canon audit #108`
 - PR #106 exact head: `227b2dabf0d98832811415156e72f65d601332a9`
@@ -12,7 +12,7 @@
 - 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
 - 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_4_OF_10`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
-- 현재 승인 카운터: `4/10`
+- 현재 승인 카운터: `5/10`
 - 제품 구현: `BLOCKED`
 
 ## 현재 핵심
@@ -196,4 +196,13 @@ RED:
 - 상태: `WITHIN_LIMIT / OVERWEIGHT`; 초과 시 배정 불가
 - 성공률: 강화 레벨이 주효과, 고객 능력·적성은 작은 보조 보정
 - 정본: `docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md`
+- 제품 구현: `BLOCKED`
+
+## BS-ITEM-20260806-01 현재 정제
+
+- 활성 배치: `R2_BATCH_005_5_OF_10`
+- 장비군 고정 기본 중량: `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`
+- 중량 전용 효과: `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`, 작품당 최대 하나
+- 자동 중량 변경 금지: 재료·제작 등급·예술성·원수치·일반 강화 단계
+- 정본: `docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_CANON_2026.md`
 - 제품 구현: `BLOCKED`

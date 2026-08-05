@@ -201,3 +201,20 @@ WITHIN_LIMIT / OVERWEIGHT
 
 <!-- ACTIVE_BATCH_REFINED_BY_BS-CUSTOMER-20260806-01 -->
 현재 후속 정제 배치: `R2_BATCH_005_4_OF_10`
+
+<!-- REFINED_BY_BS-ITEM-20260806-01 -->
+## 장비군 기본 중량 후속 정제
+
+현재 작품 중량 계약은 다음과 같다.
+
+```text
+ITEM_WEIGHT = max(0, BASE_WEIGHT + EXPLICIT_WEIGHT_MODIFIER)
+BASE_WEIGHT + EXPLICIT_WEIGHT_MODIFIER
+LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5
+```
+
+- 장비군 고정 기본값은 5단위다.
+- 작품당 중량 전용 변경은 최대 하나다.
+- 재료·등급·예술성·원수치·일반 강화 단계는 중량을 자동 변경하지 않는다.
+- 현재 후속 정제 배치: `R2_BATCH_005_5_OF_10`
+- 제품 구현: `BLOCKED`.

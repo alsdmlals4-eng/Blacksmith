@@ -35,10 +35,10 @@
 - Consumes: current registry at batch 4/10 and the current simple-load canon.
 - Produces: a failing contract requiring Decision `BS-ITEM-20260806-01`, batch 5/10, the exact table, and the explicit modifier guardrails.
 
-- [ ] Write tests for the active batch, exact base-weight table, additive modifier, no automatic material/stat/general-enhancement scaling, authority routing, and product blocking.
-- [ ] Add the test module to Planning-first workflow paths and unittest invocation.
-- [ ] Run Planning-first CI and verify failure because the Decision and canon do not exist.
-- [ ] Record the RED commit and run number.
+- [x] Write tests for the active batch, exact base-weight table, additive modifier, no automatic material/stat/general-enhancement scaling, authority routing, and product blocking.
+- [x] Add the test module to Planning-first workflow paths and unittest invocation.
+- [x] Run Planning-first CI and verify failure because the Decision and canon do not exist.
+- [x] Record the RED commit `eca4f5d5ec203db9e83fbe7d47f4b5bb8e3b3fff` and Planning-first run `190`.
 
 ### Task 2: GREEN focused canon and registry
 
@@ -51,10 +51,10 @@
 - Consumes: the approved design spec and RED contract.
 - Produces: machine-readable Decision `BS-ITEM-20260806-01` and the current base-weight mapping.
 
-- [ ] Add the new Decision and move the active batch from 4/10 to 5/10 without rewriting historical counters.
-- [ ] Store all twelve equipment-group base values exactly.
-- [ ] Store the modifier values, one-modifier limit, final minimum zero, and excluded automatic weight sources.
-- [ ] Register canon, spec, and plan as active authority documents.
+- [x] Add the new Decision and move the active batch from 4/10 to 5/10 without rewriting historical counters.
+- [x] Store all twelve equipment-group base values exactly.
+- [x] Store the modifier values, one-modifier limit, final minimum zero, and excluded automatic weight sources.
+- [x] Register canon, spec, and plan as active authority documents.
 
 ### Task 3: Current authority and validator refinement
 
@@ -78,11 +78,11 @@
 - Consumes: the registry contract.
 - Produces: one current 5/10 authority interpretation with older 1/10–4/10 markers retained as history.
 
-- [ ] Route total weight to base group weight plus one explicit modifier.
-- [ ] State that general enhancement levels and unrelated item stats do not change weight.
-- [ ] Add the player-facing `중량 N` and optional `경량화 -5` or `중량화 +5` reason-chip contract.
-- [ ] Update active-batch validators to 5/10 while retaining prior historical evidence.
-- [ ] Add the new canon to project and operating audits.
+- [x] Route total weight to base group weight plus one explicit modifier.
+- [x] State that general enhancement levels and unrelated item stats do not change weight.
+- [x] Add the player-facing `중량 N` and optional `경량화 -5` or `중량화 +5` reason-chip contract.
+- [x] Update active-batch validators to 5/10 while retaining prior historical evidence.
+- [x] Add the new canon to project and operating audits.
 
 ### Task 4: Verification, PR, and Sheet evidence
 

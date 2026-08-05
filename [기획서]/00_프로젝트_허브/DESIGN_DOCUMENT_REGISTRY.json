@@ -7,8 +7,8 @@
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "current_checkpoint": "R2_CHECKPOINT_004_MAIN_CANON",
-  "current_batch": "R2_BATCH_005_4_OF_10",
-  "current_design_decision": "BS-CUSTOMER-20260806-01",
+  "current_batch": "R2_BATCH_005_5_OF_10",
+  "current_design_decision": "BS-ITEM-20260806-01",
   "product_implementation": "BLOCKED",
   "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, Development Gates, and the focused current canon. Status-marked historical documents never override current R2 canon.",
   "documents": [
@@ -203,6 +203,24 @@
       "source_path": "../../docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md",
       "status": "SUPERSEDED",
       "source_role": "historical_adversarial_review"
+    },
+    {
+      "document_id": "equipment-base-weight-points-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_equipment_group_base_weight_contract"
+    },
+    {
+      "document_id": "equipment-base-weight-points-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-equipment-base-weight-points-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_item_20260806_01"
+    },
+    {
+      "document_id": "equipment-base-weight-points-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-equipment-base-weight-points.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_item_20260806_01"
     }
   ],
   "routing_guards": [
@@ -215,7 +233,6 @@
     "FOUR_STATE_LOAD_BALANCE_AND_ESCALATING_OVERLOAD_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "ENHANCEMENT_IS_PRIMARY_CONTROLLABLE_CUSTOMER_SUCCESS_MODIFIER",
     "CURRENT_LOAD_MODEL_IS_BINARY_MAXIMUM_LOAD_GATE",
-    "R2_BATCH_005_IS_ACTIVE_AT_4_OF_10_WITH_BS_CRAFT_20260805_02_BS_CUSTOMER_20260805_01_BS_UX_20260805_01_AND_BS_CUSTOMER_20260806_01",
     "CUSTOMER_BASE_STATS_ARE_STRENGTH_DEXTERITY_CONSTITUTION_JUDGMENT_1_TO_10",
     "MOBILE_CUSTOMER_CARD_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
     "CRITICAL_CUSTOMER_CARD_INFORMATION_MUST_NOT_BE_COLOR_LONG_PRESS_OR_HOVER_ONLY",
@@ -230,6 +247,11 @@
     "AUXILIARY_MATERIAL_SLOT_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "PR81_MUST_NOT_BE_ROUTED_AS_MERGEABLE_CANON",
     "HISTORICAL_POC_PASS_MUST_NOT_BE_ROUTED_AS_CURRENT_PRODUCT_PASS",
-    "PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED"
+    "PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
+    "R2_BATCH_005_IS_ACTIVE_AT_5_OF_10_WITH_BS_ITEM_20260806_01",
+    "CURRENT_ITEM_WEIGHT_USES_EQUIPMENT_GROUP_FIXED_BASE_WEIGHT",
+    "ONLY_ONE_EXPLICIT_PLUS_OR_MINUS_FIVE_WEIGHT_MODIFIER_IS_ALLOWED_PER_ITEM",
+    "MATERIAL_GRADE_ARTISTRY_RAW_STATS_AND_GENERAL_ENHANCEMENT_DO_NOT_AUTOMATICALLY_CHANGE_WEIGHT",
+    "EQUIPMENT_BASE_WEIGHT_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED"
   ]
 }

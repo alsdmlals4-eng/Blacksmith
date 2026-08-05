@@ -1,8 +1,8 @@
 # [현재 정본] Blacksmith R2 통합 Game Bible
 
-- 상태: `CURRENT_CANON / R2_BATCH_005_4_OF_10`
+- 상태: `CURRENT_CANON / R2_BATCH_005_5_OF_10`
 - 체크포인트 004: `PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9 / MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / MAIN_CANON`
-- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-UX-20260805-01 / BS-CUSTOMER-20260806-01 / BS-OPS-20260805-01`
+- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-UX-20260805-01 / BS-CUSTOMER-20260806-01 / BS-ITEM-20260806-01 / BS-OPS-20260805-01`
 - 제품 구현: `BLOCKED`
 
 ## 1. 프로젝트 약속
@@ -162,7 +162,7 @@ WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL
 
 - 질문·추천·설계 전 벤치마킹·현업 비교
 - 승인 10건은 최대 배치 크기
-- 현재 `R2_BATCH_005_2_OF_10`
+- 현재 `R2_BATCH_005_5_OF_10`
 - 조기 체크포인트도 적대적 감사·CI·Sheet readback 필수
 - 모든 작업은 `RED → GREEN → REFACTOR`
 - 명시적 사용자 승인 전 병합 금지
@@ -203,3 +203,14 @@ OVERWEIGHT → 중량 초과 시 배정 불가
 ```
 
 공격·방어·조작성·예술성은 모든 고객 사건에 자동 합산하지 않는다. 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-01 -->
+## 장비군 고정 기본 중량
+
+```text
+ACCESSORY 0 / TOOL 5
+CLOTHING_OR_ROBE 5 / LIGHT_ARMOR 10 / MEDIUM_ARMOR 20 / HEAVY_ARMOR 30
+SWORD 10 / AXE 15 / BLUNT 15 / POLEARM 20 / RANGED 10 / SHIELD_SUPPORT 10
+```
+
+작품 중량은 `BASE_WEIGHT + EXPLICIT_WEIGHT_MODIFIER`이며 최솟값은 0이다. 작품당 중량 전용 효과는 하나만 허용한다. 재료·제작 등급·예술성·공격·방어·조작성·내구도·일반 강화 단계는 중량을 자동 변경하지 않는다. 장비군 고정 기본 중량은 고객 배정 가능 여부만 보조하며 강화보다 중요한 성장 축이 아니다. 제품 구현: `BLOCKED`.
