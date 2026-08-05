@@ -166,15 +166,15 @@ SPECIAL_FUNCTIONS
 
 `+10/+20/+30/+40/+50` 이정표에서 성공한 정밀강화는 한 가지 출력 패키지만 선택한다. 선택은 해당 이정표 기회를 소비한다.
 
-| 정밀강화 방식 | 적용 대상 | 테스트 변동 | 추가 규칙 |
-|---|---|---|---|
-| `EDGE_REINFORCEMENT` | `ATTACK` 보유 작품 | `APPROVED_ENHANCEMENT_ATTACK_OUTPUT +5` | 방어 작품에는 표시하지 않음 |
-| `SHOCK_ABSORPTION` | `DEFENSE` 보유 작품 | `APPROVED_ENHANCEMENT_DEFENSE_OUTPUT +5` | 공격 전용 작품에는 표시하지 않음 |
-| `BALANCE_TUNING` | 취급 가능한 작품 | `HANDLING +5` | 공격·방어를 동시에 올리지 않음 |
-| `ARTISTIC_FINISH` | 모든 호환 작품 | `ARTISTRY +5` | 전투 출력 자동 증가 없음 |
-| `LIGHTWEIGHTING` | 중량 5 이상 작품 | `CURRENT_WEIGHT -5` | 이전 성능 예산·배분 출력 보존 |
-| `WEIGHTING` | 중량화 가능 작품 | `CURRENT_WEIGHT +5` | 새 인정 최고 중량일 때만 역할 출력 `+5` 또는 기능 용량 `+1` |
-| `ENVIRONMENTAL_TREATMENT` | 환경 기능 호환 작품 | 수치 자동 증가 없음 | 같은 이정표에서 `FUNCTION_REWORK` 환경 기능 작업을 선택할 수 있음 |
+| 정밀강화 방식 | 출력 차선 | 적용 대상 | 테스트 변동 | 추가 규칙 |
+|---|---|---|---|---|
+| `EDGE_REINFORCEMENT` | `STAT_METHOD` | `ATTACK` 보유 작품 | `APPROVED_ENHANCEMENT_ATTACK_OUTPUT +5` | 방어 작품에는 표시하지 않음 |
+| `SHOCK_ABSORPTION` | `STAT_METHOD` | `DEFENSE` 보유 작품 | `APPROVED_ENHANCEMENT_DEFENSE_OUTPUT +5` | 공격 전용 작품에는 표시하지 않음 |
+| `BALANCE_TUNING` | `STAT_METHOD` | 취급 가능한 작품 | `HANDLING +5` | 공격·방어를 동시에 올리지 않음 |
+| `ARTISTIC_FINISH` | `STAT_METHOD` | 모든 호환 작품 | `ARTISTRY +5` | 전투 출력 자동 증가 없음 |
+| `LIGHTWEIGHTING` | `STAT_METHOD` | 중량 5 이상 작품 | `CURRENT_WEIGHT -5` | 이전 성능 예산·배분 출력 보존 |
+| `WEIGHTING` | `STAT_METHOD` | 중량화 가능 작품 | `CURRENT_WEIGHT +5` | 새 인정 최고 중량일 때만 역할 출력 `+5` 또는 기능 용량 `+1` |
+| `ENVIRONMENTAL_TREATMENT` | `FUNCTION_REWORK` | 승인된 환경 기능 레시피가 있는 작품 | 승인 환경 기능 `ADD / REPLACE / REBIND / REMOVE` 중 하나 | 같은 이정표에서 별도 수치 패키지를 받지 않음 |
 
 이 수치 역시 `BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED`다.
 
@@ -202,6 +202,8 @@ PRECISION_OUTPUT_LANE
 
 - 정밀 이정표 한 번에 `STAT_METHOD`와 `FUNCTION_REWORK`를 동시에 적용하지 않는다.
 - 기능 재작업은 해당 이정표 기회를 소비한다.
+- `ENVIRONMENTAL_TREATMENT`는 승인된 환경 기능 레시피에 한해 `FUNCTION_REWORK` 차선을 사용한다.
+- 다른 마법·유틸리티 기능은 작품별 승인 재작업 레시피가 있을 때만 `FUNCTION_REWORK` 후보가 된다.
 - 일반 강화는 기능을 생성·교체·제거·결속 변경하지 않는다.
 - 중량화는 용량만 늘릴 수 있고 기능 목록은 변경하지 않는다.
 
@@ -315,7 +317,7 @@ TDD RED 계약은 다음 부재 때문에 실패해야 한다.
 - `R2_BATCH_005_9_OF_10`
 - 최초 역할 수치 기준값과 두 보정표
 - 일반 강화 무변동 목록
-- 정밀강화 7방식 변동표
+- 정밀강화 7방식 변동표와 상호배타 출력 차선
 - `FUNCTION_REWORK` 소유권과 행동 4종
 - 변동 장부 필드
 - Google Sheet 새 탭 동기화 상태
