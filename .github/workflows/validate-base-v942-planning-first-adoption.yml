@@ -6,6 +6,7 @@ on:
       - "skills/PROJECT_BASE_ADAPTER.json"
       - "tests/test_base_v942_planning_first_adoption.py"
       - "tests/test_r2_artistry_generation_growth_economy.py"
+      - "tests/test_r2_customer_equipment_compatibility.py"
       - ".github/workflows/validate-base-v942-planning-first-adoption.yml"
 
 permissions:
@@ -23,4 +24,5 @@ jobs:
           python -m unittest
           tests.test_base_v942_planning_first_adoption
           tests.test_r2_artistry_generation_growth_economy
+          tests.test_r2_customer_equipment_compatibility
           -v
