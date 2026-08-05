@@ -1,0 +1,113 @@
+        '        "1 DEFENSE_BUDGET = DEFENSE +5",\n'
+        '        "ROLE_PRESET_AUTOMATIC_SINGLE_LANE",\n'
+        '        "제품 구현: `BLOCKED`",\n'
+        '    ),\n'
+    )
+    text = insert_after_once(text, anchor, addition)
+    text = text.replace(
+        '"stage_status": "R2_BATCH_005_ACTIVE_6_OF_10",\n        "next_approval_counter": "6/10",',
+        '"stage_status": "R2_BATCH_005_ACTIVE_7_OF_10",\n        "next_approval_counter": "7/10",',
+        1,
+    )
+    text = text.replace(
+        'active.get("id") != "R2_BATCH_005" or active.get("counter") != "6/10"',
+        'active.get("id") != "R2_BATCH_005" or active.get("counter") != "7/10"',
+        1,
+    )
+    text = text.replace("active batch must be R2_BATCH_005 at 6/10", "active batch must be R2_BATCH_005 at 7/10")
+    text = text.replace(
+        'if active.get("approved_decisions") != 6 or active.get("decisions") != [',
+        'if active.get("approved_decisions") != 7 or active.get("decisions") != [',
+        1,
+    )
+    list_anchor = '        "BS-ITEM-20260806-02",\n    ]:'
+    if list_anchor in text:
+        text = text.replace(
+            list_anchor,
+            '        "BS-ITEM-20260806-02",\n        "BS-ITEM-20260806-03",\n    ]:',
+            1,
+        )
+    text = text.replace("active batch 005 must contain the six approved decisions", "active batch 005 must contain the seven approved decisions")
+    check_block = """
+    conversion = decisions.get("BS-ITEM-20260806-03", {}).get("contract", {})
+    if conversion.get("performance_budget_conversion_model") != "ROLE_PRESET_AUTOMATIC_SINGLE_LANE":
+        failures.append("weight budget conversion model is incorrect")
+    if conversion.get("point_conversion") != {
+        "ATTACK_BUDGET": {"output": "ATTACK", "per_budget_point": 5},
+        "DEFENSE_BUDGET": {"output": "DEFENSE", "per_budget_point": 5},
+        "MAGIC_FUNCTION_BUDGET": {"output": "MAGIC_FUNCTION_CAPACITY", "per_budget_point": 1},
+        "UTILITY_BUDGET": {"output": "UTILITY_CAPACITY", "per_budget_point": 1},
+    }:
+        failures.append("weight budget point conversion is incomplete")
+    if conversion.get("default_profile_by_equipment_group", {}).get("POLEARM") != "PHYSICAL_WEAPON":
+        failures.append("polearm default performance profile is missing")
+    if conversion.get("performance_profile_immutable_for_uid") is not True:
+        failures.append("performance profile must be immutable")
+    if conversion.get("player_free_allocation_ui") is not False:
+        failures.append("player free allocation UI must remain disabled")
+    if conversion.get("product_implementation") != "BLOCKED":
+        failures.append("weight budget conversion product implementation must remain blocked")
+"""
+    if "weight budget conversion model is incorrect" not in text:
+        marker = "\n\ndef check_r1"
+        if marker not in text:
+            raise RuntimeError("core alignment check_r1 marker missing")
+        text = text.replace(marker, check_block + marker, 1)
+    write(path, text)
+
+
+def update_operating_audit() -> None:
+    path = "tools/audit_project_operating_system.py"
+    text = read(path)
+    text = insert_after_once(
+        text,
+        '    "docs/planning/BLACKSMITH_R2_WEIGHT_PERFORMANCE_BUDGET_AND_LIGHTWEIGHT_TRADEOFF_CANON_2026.md",\n',
+        '    "docs/planning/BLACKSMITH_R2_WEIGHT_BUDGET_CONVERSION_AND_ROLE_PRESETS_CANON_2026.md",\n',
+    )
+    text = text.replace('"R2_BATCH_005 / 6/10"', '"R2_BATCH_005 / 7/10"', 1)
+    text = text.replace('\'"stage_status":"R2_BATCH_005_ACTIVE_6_OF_10"\',', '\'"stage_status":"R2_BATCH_005_ACTIVE_7_OF_10"\',', 1)
+    text = text.replace('\'"next_approval_counter":"6/10"\',', '\'"next_approval_counter":"7/10"\',', 1)
+    if '"id":"BS-ITEM-20260806-03"' not in text:
+        text = insert_after_once(
+            text,
+            '        \'"id":"BS-ITEM-20260806-01"\',\n',
+            '        \'"id":"BS-ITEM-20260806-02"\',\n'
+            '        \'"id":"BS-ITEM-20260806-03"\',\n'
+            '        \'"performance_budget_conversion_model":"ROLE_PRESET_AUTOMATIC_SINGLE_LANE"\',\n'
+            '        \'"ATTACK_BUDGET":{"output":"ATTACK","per_budget_point":5}\',\n'
+            '        \'"DEFENSE_BUDGET":{"output":"DEFENSE","per_budget_point":5}\',\n',
+        )
+    text = text.replace(
+        '"docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (\n        "[현재 정본]",\n        "R2_BATCH_005_6_OF_10",',
+        '"docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (\n        "[현재 정본]",\n        "R2_BATCH_005_7_OF_10",',
+        1,
+    )
+    anchor = (
+        '    "docs/planning/BLACKSMITH_R2_WEIGHT_PERFORMANCE_BUDGET_AND_LIGHTWEIGHT_TRADEOFF_CANON_2026.md": (\n'
+        '        "BS-ITEM-20260806-02",\n'
+        '        "R2_BATCH_005_6_OF_10",\n'
+        '        "최초 제작 중량 5당 초기 성능 예산 +1",\n'
+        '        "경량화 -5 중량 / 기존 예산 유지",\n'
+        '        "중량화 +5 중량 / 과거 최고 인정 중량 초과분만 예산 추가",\n'
+        '        "PRECISION_ENHANCEMENT_METHOD",\n'
+        '        "제품 구현: `BLOCKED`",\n'
+        '    ),\n'
+    )
+    addition = (
+        '    "docs/planning/BLACKSMITH_R2_WEIGHT_BUDGET_CONVERSION_AND_ROLE_PRESETS_CANON_2026.md": (\n'
+        '        "BS-ITEM-20260806-03",\n'
+        '        "R2_BATCH_005_7_OF_10",\n'
+        '        "1 ATTACK_BUDGET = ATTACK +5",\n'
+        '        "1 DEFENSE_BUDGET = DEFENSE +5",\n'
+        '        "ROLE_PRESET_AUTOMATIC_SINGLE_LANE",\n'
+        '        "제품 구현: `BLOCKED`",\n'
+        '    ),\n'
+    )
+    text = insert_after_once(text, anchor, addition)
+    replacements = [
+        (
+            '"[기획서]/00_프로젝트_허브/START_HERE.md": (\n        "R2_CHECKPOINT_004",\n        "R2_BATCH_005_ACTIVE_6_OF_10",',
+            '"[기획서]/00_프로젝트_허브/START_HERE.md": (\n        "R2_CHECKPOINT_004",\n        "R2_BATCH_005_ACTIVE_7_OF_10",',
+        ),
+        (
+            '"[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (\n        "R2 체크포인트 004",\n        "R2_BATCH_005_6_OF_10",\n        "현재 승인 카운터: `6/10`",',
