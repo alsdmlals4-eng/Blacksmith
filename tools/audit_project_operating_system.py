@@ -41,6 +41,7 @@ ACTIVE_DOCS = (
     "docs/planning/BLACKSMITH_R2_MOBILE_CUSTOMER_CARD_PROGRESSIVE_DISCLOSURE_CANON_2026.md",
     "docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md",
     "docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_CANON_2026.md",
+    "docs/planning/BLACKSMITH_R2_WEIGHT_PERFORMANCE_BUDGET_AND_LIGHTWEIGHT_TRADEOFF_CANON_2026.md",
     "[기획서]/00_프로젝트_허브/START_HERE.md",
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
@@ -78,7 +79,7 @@ REQUIRED_ASSERTIONS = {
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
         '"schema_version":8',
         '"stage_status":"R2_BATCH_005_ACTIVE_6_OF_10"',
-        '"next_approval_counter":"5/10"',
+        '"next_approval_counter":"6/10"',
         '"planning_pr":103',
         '"closure_pr":104',
         '"canon_audit_pr":105',
@@ -185,6 +186,15 @@ REQUIRED_ASSERTIONS = {
         "WEIGHTED: +5",
         "제품 구현: `BLOCKED`",
     ),
+    "docs/planning/BLACKSMITH_R2_WEIGHT_PERFORMANCE_BUDGET_AND_LIGHTWEIGHT_TRADEOFF_CANON_2026.md": (
+        "BS-ITEM-20260806-02",
+        "R2_BATCH_005_6_OF_10",
+        "최초 제작 중량 5당 초기 성능 예산 +1",
+        "경량화 -5 중량 / 기존 예산 유지",
+        "중량화 +5 중량 / 과거 최고 인정 중량 초과분만 예산 추가",
+        "PRECISION_ENHANCEMENT_METHOD",
+        "제품 구현: `BLOCKED`",
+    ),
     "docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md": (
         "Diablo IV",
         "Dwarf Fortress",
@@ -201,8 +211,8 @@ REQUIRED_ASSERTIONS = {
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_5_OF_10",
-        "현재 승인 카운터: `5/10`",
+        "R2_BATCH_005_6_OF_10",
+        "현재 승인 카운터: `6/10`",
         "MERGED_PR106",
         "BS-CRAFT-20260805-02",
         "예술성 27",
@@ -228,7 +238,7 @@ REQUIRED_ASSERTIONS = {
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_5_OF_10",
+        "R2_BATCH_005_6_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 생성·성장·가치 평가",
         "예술성 원수치 능력치",
