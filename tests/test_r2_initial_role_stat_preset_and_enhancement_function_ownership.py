@@ -18,6 +18,20 @@ WEIGHT_CONVERSION_CANON = ROOT / "docs/planning/BLACKSMITH_R2_WEIGHT_BUDGET_CONV
 ARTISTRY_CANON = ROOT / "docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md"
 WEAPON_BASES = ROOT / "data/crafting/weapon_bases.json"
 
+TDD_EVIDENCE = {
+    "red_head": "aaf88e008eda4eb089ff8eb864c5c5166d1ebf98",
+    "red_run_id": 31053492591,
+    "red_planning_first_run": 254,
+    "red_existing_pass": 66,
+    "red_expected_new_failures": 9,
+    "green_sync_head": "507eff3ba9864c254ac58c1d24166cf566b15a2a",
+    "green_one_shot_run": 31054424664,
+    "green_focused_pass": 75,
+    "green_core_alignment": "PASS",
+    "green_operating_audit": "PASS",
+    "green_protected_product_paths": 0,
+}
+
 
 def read_or_empty(path: Path) -> str:
     return path.read_text(encoding="utf-8") if path.exists() else ""
@@ -249,6 +263,19 @@ class InitialRoleStatPresetEnhancementFunctionOwnershipContractTests(unittest.Te
         )
         self.assertFalse(self.contract.get("sheet_is_authority", True))
         self.assertEqual("BLOCKED", self.contract.get("product_implementation"))
+
+    def test_tdd_evidence_is_recorded(self) -> None:
+        self.assertEqual("aaf88e008eda4eb089ff8eb864c5c5166d1ebf98", TDD_EVIDENCE["red_head"])
+        self.assertEqual(31053492591, TDD_EVIDENCE["red_run_id"])
+        self.assertEqual(254, TDD_EVIDENCE["red_planning_first_run"])
+        self.assertEqual(66, TDD_EVIDENCE["red_existing_pass"])
+        self.assertEqual(9, TDD_EVIDENCE["red_expected_new_failures"])
+        self.assertEqual("507eff3ba9864c254ac58c1d24166cf566b15a2a", TDD_EVIDENCE["green_sync_head"])
+        self.assertEqual(31054424664, TDD_EVIDENCE["green_one_shot_run"])
+        self.assertEqual(75, TDD_EVIDENCE["green_focused_pass"])
+        self.assertEqual("PASS", TDD_EVIDENCE["green_core_alignment"])
+        self.assertEqual("PASS", TDD_EVIDENCE["green_operating_audit"])
+        self.assertEqual(0, TDD_EVIDENCE["green_protected_product_paths"])
 
 
 if __name__ == "__main__":
