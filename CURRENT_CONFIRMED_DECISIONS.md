@@ -1,10 +1,12 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
-> R2 체크포인트 003: PR `#103` / closure `#104`
+> R2 체크포인트 003: PR `#103` / closure `#104` / canon audit `#105`
 >
-> 정본 감사: PR `#105` / `BS-OPS-20260804-02 / BS-ADV-20260804-01`
+> R2_CHECKPOINT_004: planning PR `#106` / exact head `227b2dabf0d98832811415156e72f65d601332a9` / squash merge `789c73f38003f40dde5e9a99cd7dcb3ca03863f7` / closure PR `#107`
 >
-> 현재 승인 배치: `R2_BATCH_004 / 2/10`
+> 폐쇄 배치: `R2_BATCH_004 / 2/10 / CLOSED_MERGED_PR106`
+>
+> 현재 승인 배치: `R2_BATCH_005 / 0/10`
 >
 > 제품 구현: `BLOCKED`
 
@@ -28,21 +30,17 @@
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
-- `BS-CRAFT-20260804-01`: 예술성 단일 가치 수치
-- `BS-CRAFT-20260804-02`: 예술성 표시·가격·수요 경계의 역사 기반
 - `BS-CRAFT-20260804-04`: 보조재료 제거와 정밀강화 방식·촉매 책임 분리
 - `BS-CRAFT-20260804-05`: 촉매 수식어 씨앗·계보·진화
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
-- `BS-CRAFT-20260804-07`: 제작 등급 5단계와 출생 전설 고정
-- `BS-CRAFT-20260805-01`: 예술성을 고정 설계 최대치 없는 숫자형 무기·작품 능력치로 확정
+- `BS-CRAFT-20260804-07`: 제작 등급 5단계와 출생 전설 고정 — `MERGED_PR106 / MAIN_CANON`
+- `BS-CRAFT-20260805-01`: 예술성을 고정 설계 최대치 없는 숫자형 무기·작품 능력치로 확정 — `MERGED_PR106 / MAIN_CANON`
 - `BS-UX-20260804-01`: 조합 장비명과 UID 연대기 상세
 - `BS-OPS-20260804-01`: GPT 역할 경계와 제품 구현 분리
 - `BS-OPS-20260804-02`: 정본 드리프트·구형 문서 상태 관리
 - `BS-OPS-20260805-01`: 벤치마킹·조기 체크포인트·상시 TDD
 
 ## 3. 제작 등급
-
-현재 제품 기획:
 
 ```text
 [보통] → [우수] → [명품] → [걸작] → [전설]
@@ -60,7 +58,7 @@ CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
 - `전설`은 높은 예술성·촉매 수식어·연대기 수식어·보편 최강 성능을 보장하지 않음
 - 정확한 확률·배율은 `BASELINE_TEST_PRESET`
 
-이전 4단계 `[보통] → [우수] → [걸작] → [전설]`은 `[대체됨]`이다. 과거 구현 `STANDARD / GOOD / PERFECT`는 `[역사 증거]`다.
+이전 4단계는 `[대체됨]`, 과거 구현 `STANDARD / GOOD / PERFECT`는 `[역사 증거]`다.
 
 ## 4. 예술성
 
@@ -69,22 +67,18 @@ CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
 ```
 
 - 무기·작품 능력치의 하나
-- `0` 이상의 정수
-- 소수점 없음
+- `0` 이상의 정수, 소수점 없음
 - 고정 설계 최대치 없음
-- 분모·별점·백분율 표기 없음
-- 예술성 단계명 없음
+- 분모·별점·백분율·예술성 단계명 없음
 - 제작 등급과 별도 축
-- 무기 상세의 다른 능력치와 함께 원수치 표시
+- 다른 능력치와 함께 원수치 표시
 - 판매·감정 가치와 귀족·후원자·수집가·전시·증여·의식 수요에 기여 가능
 - 전투 성능을 기본적으로 올리지 않음
-- 모든 속성을 일괄 증폭하는 범용 품질 배율이 아님
+- 범용 전투력·수식어 배율이 아님
 - 강화 단계만으로 자동 상승하지 않음
-- 기술적 자료형 한계는 플레이어-facing 최대치나 콘텐츠 상한이 아님
+- 기술적 자료형 한계는 콘텐츠 최대치가 아님
 
-`예술성 0`은 미완성품이 아니라 미적 투자가 거의 없는 정상 기능품이다. 제작 등급은 예술성의 고정 상한을 만들지 않으므로 `[전설] / 예술성 3`, `[보통] / 예술성 87`이 모두 가능하다.
-
-동일 Decision의 초기 bounded-stat 초안과 named-tier 프리셋은 `[대체됨]`이다. 정확한 옛 문자열과 모델 ID는 `BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json`에만 역사 증거로 보존한다.
+`예술성 0`은 미완성품이 아니라 미적 투자가 거의 없는 정상 기능품이다. 제작 등급은 예술성 상한을 만들지 않으므로 `[전설] / 예술성 3`, `[보통] / 예술성 87`이 모두 가능하다.
 
 현재 기계 계약:
 
@@ -92,7 +86,7 @@ CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
 NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
 ```
 
-정확한 초기 분포·가격 점감·고객 선호 구간·증감값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+동일 Decision의 초기 bounded-stat 초안과 named-tier 프리셋은 `[대체됨]`이다. 정확한 초기 분포·가격 점감·고객 선호 구간·증감값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
 
 ## 5. 작품 이름과 수식어
 
@@ -100,37 +94,20 @@ NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
 [등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어
 ```
 
-```text
-[명품] 예리한 강철 장검 - 투기장의 승자
-```
-
 연대기 수식어를 누르면 같은 UID의 형성 사건·주요 타임라인·진화 계보·소유·손상·복원 기록을 읽기 전용 하단 패널에서 확인한다.
 
 ## 6. 운영 계약
 
-### 벤치마킹·현업 비교
-
-질문·추천·새 시스템 설계 전 유사 게임과 현업 사례를 비교하고 `채택 / 수정 채택 / 비채택 / 차별점 / 남은 불확실성`을 기록한다. 프로젝트 코어와 충돌하면 유명 사례도 비채택한다.
-
-### 승인 배치
-
+- 질문·추천·새 시스템 설계 전 벤치마킹·현업 비교
+- 결과를 `채택 / 수정 채택 / 비채택 / 차별점 / 남은 불확실성`으로 기록
 - 승인 10건은 최대 배치 크기
-- 현재 `R2_BATCH_004_2_OF_10`
-- `HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT`이면 조기 체크포인트 허용
+- `HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT` 조기 체크포인트 허용
 - 조기 체크포인트도 적대적 감사·CI·changed files·Sheet readback 필수
+- 작업마다 TDD: `RED → GREEN → REFACTOR`
+- RED·GREEN 증거 없이 PASS 주장 금지
 - 병합은 명시적 사용자 승인 필요
 
-### 작업마다 TDD
-
-```text
-RED → GREEN → REFACTOR
-```
-
-- 테스트 먼저 작성
-- 의도한 RED 실제 관측
-- 최소 변경으로 GREEN
-- RED와 GREEN 증거 없이 PASS 주장 금지
-- 기획·문서 변경도 기계 판독 계약으로 보호
+현재 `R2_BATCH_005 / 0/10`이다.
 
 ## 7. 보호 조건
 
@@ -141,5 +118,4 @@ RED → GREEN → REFACTOR
 - 예술성 고정 설계 최대치·분모 표기·named tier 재도입 금지
 - 예술성을 범용 전투력·수식어 배율로 변환 금지
 - PR #81 전체 병합 단위는 `[폐기]`
-- 구형 문서는 `[대체됨] / [부분 대체됨] / [보류] / [폐기] / [역사 증거]` 표시
 - 제품 구현: `BLOCKED`
