@@ -49,10 +49,10 @@
 - Consumes: approved design spec and RED contract.
 - Produces: Decision `BS-CUSTOMER-20260806-01` and machine-readable current rules.
 
-- [ ] Add the new Decision with `BINARY_MAXIMUM_LOAD_GATE`.
-- [ ] Move active batch from 3/10 to 4/10 without rewriting historical Decision counters.
-- [ ] Record the load formula, status model, forecast formula, small modifiers, and special-function requirement gate.
-- [ ] Register the canon, design, and plan documents as ACTIVE.
+- [x] Add the new Decision with `BINARY_MAXIMUM_LOAD_GATE`.
+- [x] Move active batch from 3/10 to 4/10 without rewriting historical Decision counters.
+- [x] Record the load formula, status model, forecast formula, small modifiers, and special-function requirement gate.
+- [x] Register the canon, design, and plan documents as ACTIVE.
 
 ### Task 3: Current authority and validator refinement
 
@@ -77,12 +77,12 @@
 - Consumes: current Decision contract.
 - Produces: one current active interpretation and no stale active 3/10 or four-state load assertions.
 
-- [ ] Route current load terminology to `TOTAL_WEIGHT / MAXIMUM_LOAD / LOAD_STATUS`.
-- [ ] Mark `COMFORTABLE_LOAD / BALANCE_STATE` and escalating overload penalties `HISTORICAL_SUPERSEDED` for load handling.
-- [ ] Update mobile disclosure to show `총 중량 / 최대 중량` and binary usability.
-- [ ] State that enhancement is the primary controllable success modifier.
-- [ ] Update active batch assertions to 4/10 while preserving historical 1/10, 2/10, and 3/10 markers.
-- [ ] Add the new canon to project and operating audits.
+- [x] Route current load terminology to `TOTAL_WEIGHT / MAXIMUM_LOAD / LOAD_STATUS`.
+- [x] Mark `COMFORTABLE_LOAD / BALANCE_STATE` and escalating overload penalties `HISTORICAL_SUPERSEDED` for load handling.
+- [x] Update mobile disclosure to show `총 중량 / 최대 중량` and binary usability.
+- [x] State that enhancement is the primary controllable success modifier.
+- [x] Update active batch assertions to 4/10 while preserving historical 1/10, 2/10, and 3/10 markers.
+- [x] Add the new canon to project and operating audits.
 
 ### Task 4: Verification, PR, and Sheet evidence
 
@@ -93,10 +93,18 @@
 - Consumes: final exact branch head and observed CI results.
 - Produces: read-back evidence for the same Decision ID and commit.
 
-- [ ] Run focused Planning-first contracts and project-core alignment.
+- [x] Run focused Planning-first contracts and project-core alignment.
 - [ ] Run Base adoption, Python full contracts, operating audit, and Godot 4.7.1 headless validation.
 - [ ] Confirm protected product path changes remain zero.
 - [ ] Confirm PR comments and unresolved review threads remain zero.
 - [ ] Write Decision `BS-CUSTOMER-20260806-01`, batch 4/10, exact head, and CI results to the six Sheet authority locations.
 - [ ] Read back all written Sheet ranges.
 - [ ] Update PR #109 while keeping it Draft and unmerged.
+
+## Intermediate GREEN evidence
+
+- Canon synchronization commit: `12fe01e9e821146eebf8edb175750d9fda35a9f1`.
+- Focused contracts: `34 tests PASS`.
+- Project core alignment: `PASS`.
+- One-shot synchronizer and workflow were removed from the GREEN result commit.
+- This user-authored update triggers final exact-head Planning-first, Base, Python/operating-audit, and Godot validation. Sheet and PR final evidence remain pending until those runs complete.
