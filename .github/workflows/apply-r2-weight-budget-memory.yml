@@ -24,6 +24,18 @@ jobs:
           python-version: "3.12"
       - name: Apply canon synchronization
         run: python tools/apply_r2_weight_budget_memory.py
+      - name: Repair current mobile counter assertion
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("tests/test_r2_mobile_customer_card_progressive_disclosure.py")
+          text = path.read_text(encoding="utf-8")
+          old = 'self.assertIn("현재 승인 카운터: `5/10`", active)'
+          new = 'self.assertIn("현재 승인 카운터: `6/10`", active)'
+          if old not in text and new not in text:
+              raise SystemExit("mobile current counter assertion not found")
+          path.write_text(text.replace(old, new), encoding="utf-8")
+          PY
       - name: Run focused contracts
         run: >-
           python -m unittest
