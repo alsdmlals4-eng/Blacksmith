@@ -102,16 +102,24 @@ class BlacksmithThinAdapterMigrationTests(unittest.TestCase):
         self.assertEqual("PASS_5_OF_5", preserved["validation_status"]["pr_99_workflows"])
         self.assertIn("original_project_operating_health", migration)
 
-    def test_health_uses_base_machine_contract_only(self) -> None:
+    def test_health_uses_unique_verified_evidence_only(self) -> None:
         health = load_json(HEALTH_PATH)
         self.assertEqual(HEALTH_KEYS, set(health))
         self.assertEqual("PROJECT_OPERATING_HEALTH", health["artifact_role"])
-        self.assertEqual("OM-L3", health["operating_maturity"])
+        self.assertEqual("OM-L1", health["operating_maturity"])
         self.assertEqual("PE-0", health["product_evidence_maturity"])
         self.assertEqual("PASS_WITH_NOT_RUN_GATES", health["integrity_verdict"])
         self.assertEqual("PASS", health["critical_gates"]["static"])
         self.assertEqual("NOT_RUN", health["critical_gates"]["runtime"])
         self.assertEqual("NOT_RUN", health["critical_gates"]["human"])
+        records = (
+            health["evidence"]["operating"]
+            + health["evidence"]["product"]
+            + health["evidence"]["sheet"]
+            + [record for values in health["evidence"]["gates"].values() for record in values]
+        )
+        self.assertEqual(len(records), len({record["id"] for record in records}))
+        self.assertEqual(len(records), len({record["source"] for record in records}))
 
     def test_migration_map_and_workflow_bind_the_approved_contract(self) -> None:
         migration = MIGRATION_PATH.read_text(encoding="utf-8")
