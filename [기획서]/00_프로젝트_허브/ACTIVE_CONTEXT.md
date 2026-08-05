@@ -31,7 +31,7 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 ## 체크포인트 004 폐쇄
 
 ```text
-R2_BATCH_004 / 2_OF_10 / CLOSED_MERGED_PR106
+R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR106
 R2_CHECKPOINT_004 / MAIN_CANON
 NEXT: R2_BATCH_005 / 0_OF_10
 ```
@@ -108,6 +108,17 @@ NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
 - 실패 원인: PR106 병합 뒤 저장소 권위 상태가 아직 배치 004 활성·pending으로 남음
 
 GREEN과 최종 exact-head 증거는 PR #107 검증 뒤 기록한다.
+
+## 역사 구현·회귀 기준선
+
+다음은 현재 5등급·예술성 제품 구현 PASS가 아니라 과거 reference implementation의 `[역사 증거]`다.
+
+- 최신 역사 구현 배지: `POC v0.6.4 · main · 2026.07.23.1`
+- 제작 모델 7건
+- 제작 결과 통합 6건
+- 과거 제작 품질: `STANDARD / GOOD / PERFECT`
+- 과거 피버·품질 정확 수치: `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
+- 이 회귀 PASS를 현재 5등급·고정 상한 없는 예술성 제품 구현 PASS로 해석하지 않음
 
 ## 검증 경계
 
