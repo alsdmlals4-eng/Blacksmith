@@ -9,7 +9,8 @@
 - PR #106 squash merge: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
 - PR #107 exact head: `1ad791123eaf6c727e964380814ffb69f1357bbf`
 - PR #107 squash merge: `7a46fa38586a42f268cd0432744203049649ddd5`
-- 현재 제작 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02`
+- 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
+- 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_1_OF_10`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
 - 현재 승인 카운터: `1/10`
 - 제품 구현: `BLOCKED`
