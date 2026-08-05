@@ -52,6 +52,9 @@ jobs:
                   ('self.assertIn("R2_BATCH_005_5_OF_10", bible)', 'self.assertIn("R2_BATCH_005_7_OF_10", bible)'),
                   ('self.assertIn("현재 승인 카운터: `6/10`", active)', 'self.assertIn("현재 승인 카운터: `7/10`", active)'),
               ],
+              "tests/check_project_core_alignment.py": [
+                  ('        "next_approval_counter": "6/10",', '        "next_approval_counter": "7/10",'),
+              ],
           }
           for filename, pairs in replacements.items():
               path = Path(filename)
