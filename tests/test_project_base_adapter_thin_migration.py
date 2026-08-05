@@ -8,60 +8,35 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ADAPTER_PATH = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
 HEALTH_PATH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
+STATE_PATH = ROOT / "docs/PROJECT_OPERATING_STATE.json"
 MIGRATION_PATH = ROOT / "docs/operations/PROJECT_BASE_ADAPTER_MIGRATION_2026-08-06.md"
 WORKFLOW_PATH = ROOT / ".github/workflows/validate-project-base-adapter.yml"
 
 EXPECTED_ROOT_KEYS = {
-    "artifact_role",
-    "base_release",
-    "compatibility",
-    "gdd_sheet",
-    "project",
-    "protected_baseline",
-    "protected_paths",
-    "routing",
-    "schema_version",
-    "shared_overrides",
-    "skill_registry",
-    "validators",
+    "artifact_role", "base_release", "compatibility", "gdd_sheet",
+    "project", "protected_baseline", "protected_paths", "routing",
+    "schema_version", "shared_overrides", "skill_registry", "validators",
 }
 FORBIDDEN_ROOT_KEYS = {
-    "current_operating_decisions",
-    "project_operating_state",
-    "current_r1_canon",
-    "validation_status",
+    "current_operating_decisions", "project_operating_state",
+    "current_r1_canon", "validation_status",
 }
 BASE_KEYS = {
-    "repository",
-    "version",
-    "release_commit",
-    "release_evidence_commit",
-    "finalization_commit",
+    "repository", "version", "release_commit",
+    "release_evidence_commit", "finalization_commit",
 }
 COMPATIBILITY_KEYS = {"cycle", "views", "legacy_inputs"}
 ROUTING_KEYS = {
-    "base_routes",
-    "project_routes",
-    "inactive_routes",
-    "aliases",
-    "precedence",
+    "base_routes", "project_routes", "inactive_routes", "aliases", "precedence",
 }
 BASELINE_KEYS = {
-    "commit",
-    "authority_kind",
-    "authority_ref",
-    "policy_source_type",
-    "policy_source_path",
-    "protected_paths_pointer",
-    "policy_sha256",
+    "commit", "authority_kind", "authority_ref", "policy_source_type",
+    "policy_source_path", "protected_paths_pointer", "policy_sha256",
 }
 REGISTRY_KEYS = {"path", "sha256", "hash_definition"}
-ALLOWED_SHEET_STATES = {
-    "NOT_CONFIGURED",
-    "CURRENT",
-    "PROPOSED_SHEET_CHANGE",
-    "STALE",
-    "BLOCKED",
+HEALTH_KEYS = {
+    "schema_version", "artifact_role", "operating_maturity",
+    "product_evidence_maturity", "critical_gates", "integrity_verdict", "evidence",
 }
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 TRUSTED_BASE = "bfdc9e44d4a6920dc085eaa3f9d19d31b1acd2a1"
@@ -104,16 +79,15 @@ class BlacksmithThinAdapterMigrationTests(unittest.TestCase):
         self.assertEqual("CANONICAL_ADAPTER_SOURCE", baseline["policy_source_type"])
         self.assertEqual("skills/PROJECT_BASE_ADAPTER.json", baseline["policy_source_path"])
         self.assertRegex(baseline["policy_sha256"], SHA256)
-        self.assertIn(adapter["gdd_sheet"]["sync_status"], ALLOWED_SHEET_STATES)
         self.assertEqual("CURRENT", adapter["gdd_sheet"]["sync_status"])
         for registry in adapter["skill_registry"].values():
             self.assertEqual(REGISTRY_KEYS, set(registry))
             self.assertEqual("RAW_FILE_BYTES_SHA256", registry["hash_definition"])
             self.assertRegex(registry["sha256"], SHA256)
 
-    def test_removed_state_is_preserved_in_project_health(self) -> None:
-        health = load_json(HEALTH_PATH)
-        migration = health["adapter_migration"]
+    def test_removed_state_and_original_health_are_preserved(self) -> None:
+        state_doc = load_json(STATE_PATH)
+        migration = state_doc["adapter_migration"]
         self.assertEqual(DECISION, migration["decision_id"])
         self.assertEqual(PR_BASE, migration["source_main_commit"])
         preserved = migration["preserved_from_adapter"]
@@ -125,20 +99,27 @@ class BlacksmithThinAdapterMigrationTests(unittest.TestCase):
         self.assertEqual("BLOCKED", state["product_implementation"])
         self.assertEqual("NOT_RUN", state["new_r2_runtime_validation"])
         self.assertEqual("NOT_RUN", state["human_playtest"])
-        validation = preserved["validation_status"]
-        self.assertEqual("PASS_5_OF_5", validation["pr_99_workflows"])
-        self.assertEqual("NOT_RUN", validation["new_r2_godot_runtime"])
+        self.assertEqual("PASS_5_OF_5", preserved["validation_status"]["pr_99_workflows"])
+        self.assertIn("original_project_operating_health", migration)
+
+    def test_health_uses_base_machine_contract_only(self) -> None:
+        health = load_json(HEALTH_PATH)
+        self.assertEqual(HEALTH_KEYS, set(health))
+        self.assertEqual("PROJECT_OPERATING_HEALTH", health["artifact_role"])
+        self.assertEqual("OM-L3", health["operating_maturity"])
+        self.assertEqual("PE-0", health["product_evidence_maturity"])
+        self.assertEqual("PASS_WITH_NOT_RUN_GATES", health["integrity_verdict"])
+        self.assertEqual("PASS", health["critical_gates"]["static"])
+        self.assertEqual("NOT_RUN", health["critical_gates"]["runtime"])
+        self.assertEqual("NOT_RUN", health["critical_gates"]["human"])
 
     def test_migration_map_and_workflow_bind_the_approved_contract(self) -> None:
         migration = MIGRATION_PATH.read_text(encoding="utf-8")
         workflow = WORKFLOW_PATH.read_text(encoding="utf-8")
         for token in (
-            DECISION,
-            "/current_operating_decisions",
-            "/project_operating_state",
-            "/current_r1_canon",
-            "/validation_status",
-            "PRODUCT_FILES_UNCHANGED",
+            DECISION, "/current_operating_decisions", "/project_operating_state",
+            "/current_r1_canon", "/validation_status",
+            "docs/PROJECT_OPERATING_STATE.json", "PRODUCT_FILES_UNCHANGED",
             "GOOGLE_SHEETS_UNCHANGED",
         ):
             self.assertIn(token, migration)
