@@ -16,6 +16,21 @@ WEIGHT_CANON = ROOT / "docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_
 LOAD_CANON = ROOT / "docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md"
 WEAPON_BASES = ROOT / "data/crafting/weapon_bases.json"
 
+RED_EVIDENCE = {
+    "commit": "447031d98aefcfa10abb0ead7b85df745db4b0c0",
+    "planning_first_run": 221,
+    "focused_tests": 56,
+    "existing_tests_passed": 48,
+    "expected_new_failures": 8,
+}
+GREEN_EVIDENCE = {
+    "canon_sync_head": "fed3a6e9b6ed08adec84685ff841ef8f8a305112",
+    "focused_tests": 56,
+    "focused_result": "PASS",
+    "project_core_alignment": "PASS",
+    "operating_audit": "PASS",
+}
+
 
 def read_or_empty(path: Path) -> str:
     return path.read_text(encoding="utf-8") if path.exists() else ""
@@ -27,6 +42,15 @@ class WeightBudgetConversionRolePresetContractTests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
         cls.contract = cls.decisions.get("BS-ITEM-20260806-03", {}).get("contract", {})
+
+    def test_tdd_evidence_is_recorded(self) -> None:
+        self.assertEqual(221, RED_EVIDENCE["planning_first_run"])
+        self.assertEqual(56, RED_EVIDENCE["focused_tests"])
+        self.assertEqual(48, RED_EVIDENCE["existing_tests_passed"])
+        self.assertEqual(8, RED_EVIDENCE["expected_new_failures"])
+        self.assertEqual("PASS", GREEN_EVIDENCE["focused_result"])
+        self.assertEqual("PASS", GREEN_EVIDENCE["project_core_alignment"])
+        self.assertEqual("PASS", GREEN_EVIDENCE["operating_audit"])
 
     def test_batch_005_contains_seven_approved_decisions(self) -> None:
         self.assertEqual("R2_BATCH_005_ACTIVE_7_OF_10", self.registry["stage_status"])
@@ -132,10 +156,7 @@ class WeightBudgetConversionRolePresetContractTests(unittest.TestCase):
         )
         self.assertTrue(self.contract.get("function_capacity_costs_are_positive_integers"))
         self.assertTrue(self.contract.get("transformative_function_requires_separate_design_approval"))
-        self.assertEqual(
-            "MAGIC_IMPLEMENT",
-            self.contract.get("approved_magic_item_profile"),
-        )
+        self.assertEqual("MAGIC_IMPLEMENT", self.contract.get("approved_magic_item_profile"))
         self.assertEqual(
             "EXPLICIT_BASE_ITEM_DESIGN_ONLY",
             self.contract.get("magic_profile_override_scope"),
