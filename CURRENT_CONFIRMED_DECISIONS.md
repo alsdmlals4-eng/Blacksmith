@@ -4,7 +4,7 @@
 >
 > R2_CHECKPOINT_004: planning PR `#106` / exact head `227b2dabf0d98832811415156e72f65d601332a9` / squash merge `789c73f38003f40dde5e9a99cd7dcb3ca03863f7` / closure PR `#107`
 >
-> 폐쇄 배치: `R2_BATCH_004 / 2/10 / CLOSED_MERGED_PR106`
+> 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR106`
 >
 > 현재 승인 배치: `R2_BATCH_005 / 0/10`
 >
