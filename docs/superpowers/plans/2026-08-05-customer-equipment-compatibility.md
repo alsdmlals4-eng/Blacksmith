@@ -22,7 +22,15 @@
 - Run Base adoption, Python project contract, Godot headless, and PR validation workflows.
 - Confirm product paths remain unchanged.
 - Check PR diff, review threads, stale authority tokens, and Sheet readback.
+- Confirm the customer model improves equipment-selection judgment without becoming a separate customer-RPG progression loop.
+- Confirm raw item power remains owned by the item UID and is not counted again through customer stats or proficiency.
 
 ## Task 4 — Sheet sync
 
 Write `BS-CUSTOMER-20260805-01` as `APPROVED_PENDING_MERGE` to current decisions, audit, GDD summary, core systems, and change history. Record the exact PR head. Do not claim `SYNCED_TO_MAIN` before merge and post-merge readback.
+
+## Task 5 — Final exact-head evidence
+
+- Re-run all required workflows from a user-authored exact head after structural synchronization.
+- Record observed run IDs and conclusions; do not treat `action_required` from an automation-authored head as a content test result.
+- Update PR evidence and Google Sheet locations only after the exact-head checks complete.
