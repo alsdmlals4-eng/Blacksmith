@@ -46,4 +46,5 @@ Write `BS-CUSTOMER-20260805-01` as `APPROVED_PENDING_MERGE` to current decisions
 - PR validation `1233`: PASS
 - Python full contracts: PASS
 - Godot `4.7.1` headless: PASS
-- evidence-recording commit requires one final exact-head verification before Sheet/PR readback is declared complete.
+- Evidence was written back to the current Registry in a separate commit.
+- The final evidence-readback head is verified separately; the Sheet and PR metadata use only that final exact head.
