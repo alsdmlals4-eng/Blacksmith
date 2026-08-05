@@ -188,3 +188,13 @@ LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5
 - 재료·등급·예술성·원수치·일반 강화 단계는 중량을 자동 변경하지 않는다.
 - 현재 후속 정제 배치: `R2_BATCH_005_5_OF_10`
 - 제품 구현: `BLOCKED`.
+
+<!-- REFINED_BY_BS-ITEM-20260806-02 -->
+## [현재 후속 정제] 현재 중량과 인정 중량 분리
+
+- `REFINED_BY_BS-ITEM-20260806-02`
+- `R2_BATCH_005_6_OF_10`
+- 고객 배정은 `CURRENT_WEIGHT`와 `MAXIMUM_LOAD`를 비교한다.
+- 성능 예산의 `BUDGET_RECOGNIZED_WEIGHT`는 고객 하중 판정에 사용하지 않는다.
+- `WITHIN_LIMIT / OVERWEIGHT` 이진 게이트와 강화 중심 성공률 공식은 유지한다.
+- 중량 예산은 일반 사건 성공률에 직접 더하지 않는다.

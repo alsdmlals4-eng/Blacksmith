@@ -66,17 +66,26 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertIn("CLOSURE_MERGED_PR107", closure)
         self.assertIn("7a46fa38586a42f268cd0432744203049649ddd5", closure)
 
-    def test_batch_005_is_active_at_five_of_ten(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_5_OF_10", self.registry["stage_status"])
-        self.assertEqual("5/10", self.registry["next_approval_counter"])
+    def test_batch_005_is_active_at_six_of_ten(self) -> None:
+        self.assertEqual("R2_BATCH_005_ACTIVE_6_OF_10", self.registry["stage_status"])
+        self.assertEqual("6/10", self.registry["next_approval_counter"])
         self.assertEqual("BLOCKED", self.registry["product_implementation"])
         active = self.registry["active_batch"]
         self.assertEqual("R2_BATCH_005", active["id"])
-        self.assertEqual(5, active["approved_decisions"])
-        self.assertEqual("5/10", active["counter"])
-        self.assertEqual(["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01", "BS-UX-20260805-01", "BS-CUSTOMER-20260806-01", "BS-ITEM-20260806-01"], active["decisions"])
+        self.assertEqual(6, active["approved_decisions"])
+        self.assertEqual("6/10", active["counter"])
+        self.assertEqual(
+            [
+                "BS-CRAFT-20260805-02",
+                "BS-CUSTOMER-20260805-01",
+                "BS-UX-20260805-01",
+                "BS-CUSTOMER-20260806-01",
+                "BS-ITEM-20260806-01",
+                "BS-ITEM-20260806-02",
+            ],
+            active["decisions"],
+        )
         self.assertEqual(10, active["maximum_size"])
-
     def test_customer_and_schedule_contracts_remain_current(self) -> None:
         customer = self.decisions["BS-CUSTOMER-20260803-02"]["contract"]
         self.assertEqual("INTEGER_1_TO_10", customer["event_risk_scale"])
@@ -153,9 +162,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             self.assertIn("제품 구현: `BLOCKED`", text)
             self.assertNotIn("예술성 7/10", text)
             self.assertNotIn("예술성 1~10", text)
-        self.assertIn("R2_BATCH_005_5_OF_10", game_bible)
-        self.assertIn("R2_BATCH_005_5_OF_10", active)
-        self.assertIn("R2_BATCH_005 / 5/10", root)
+        self.assertIn("R2_BATCH_005_6_OF_10", game_bible)
+        self.assertIn("R2_BATCH_005_6_OF_10", active)
+        self.assertIn("R2_BATCH_005 / 6/10", root)
 
 
 if __name__ == "__main__":

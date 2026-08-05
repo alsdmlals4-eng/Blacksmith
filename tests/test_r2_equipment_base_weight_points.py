@@ -42,13 +42,13 @@ class EquipmentBaseWeightPointsContractTests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
-    def test_batch_005_contains_five_approved_decisions(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_5_OF_10", self.registry["stage_status"])
-        self.assertEqual("5/10", self.registry["next_approval_counter"])
+    def test_batch_005_contains_six_approved_decisions(self) -> None:
+        self.assertEqual("R2_BATCH_005_ACTIVE_6_OF_10", self.registry["stage_status"])
+        self.assertEqual("6/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
         self.assertEqual("R2_BATCH_005", active["id"])
-        self.assertEqual(5, active["approved_decisions"])
-        self.assertEqual("5/10", active["counter"])
+        self.assertEqual(6, active["approved_decisions"])
+        self.assertEqual("6/10", active["counter"])
         self.assertEqual(
             [
                 "BS-CRAFT-20260805-02",
@@ -56,10 +56,10 @@ class EquipmentBaseWeightPointsContractTests(unittest.TestCase):
                 "BS-UX-20260805-01",
                 "BS-CUSTOMER-20260806-01",
                 "BS-ITEM-20260806-01",
+                "BS-ITEM-20260806-02",
             ],
             active["decisions"],
         )
-
     def test_base_weight_table_is_exact_and_uses_five_point_steps(self) -> None:
         self.assertIn("BS-ITEM-20260806-01", self.decisions)
         contract = self.decisions.get("BS-ITEM-20260806-01", {}).get("contract", {})
@@ -125,7 +125,7 @@ class EquipmentBaseWeightPointsContractTests(unittest.TestCase):
         current = read_or_empty(CURRENT)
         bible = read_or_empty(BIBLE)
         self.assertIn("BS-ITEM-20260806-01", current)
-        self.assertIn("R2_BATCH_005 / 5/10", current)
+        self.assertIn("R2_BATCH_005 / 6/10", current)
         self.assertIn("장비군 고정 기본 중량", bible)
         self.assertIn("재료·제작 등급·예술성", bible)
 

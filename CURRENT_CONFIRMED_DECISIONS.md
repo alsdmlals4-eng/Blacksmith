@@ -8,7 +8,7 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005 / 5/10`
+> 현재 승인 배치: `R2_BATCH_005 / 6/10`
 >
 > 제품 구현: `BLOCKED`
 
@@ -33,6 +33,7 @@
 - `BS-UX-20260805-01`: 모바일 고객 카드 3단계 정보 공개와 설명 가능한 장비 판단 — `R2_BATCH_005_3_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-CUSTOMER-20260806-01`: 강화 중심 단순 장비 판정과 근력 기반 최대 중량 게이트 — `R2_BATCH_005_4_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-ITEM-20260806-01`: 장비군 고정 기본 중량 포인트와 중량 전용 ±5 강화 효과 — `R2_BATCH_005_5_OF_10 / APPROVED_PENDING_MERGE`
+- `BS-ITEM-20260806-02`: 중량 성능 예산 기억과 정밀강화 경량화·중량화 기회비용 — `R2_BATCH_005_6_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
@@ -194,7 +195,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 작업마다 TDD: `RED → GREEN → REFACTOR`
 - 병합은 명시적 사용자 승인 필요
 
-현재 `R2_BATCH_005 / 2/10`이다.
+현재 `R2_BATCH_005 / 6/10`이다.
 
 ## 9. 보호 조건
 
@@ -254,3 +255,16 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 ```
 
 `ITEM_WEIGHT = max(0, BASE_WEIGHT + EXPLICIT_WEIGHT_MODIFIER)`다. 중량 전용 효과는 작품당 하나만 허용하며 `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`다. 재료·제작 등급·예술성·공격·방어·조작성·내구도·일반 강화 단계는 중량을 자동 변경하지 않는다. 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-02 -->
+## 중량 성능 예산 기억과 정밀강화 중량 조정
+
+```text
+최초 제작 중량 5당 초기 성능 예산 +1
+경량화 -5 중량 / 기존 예산 유지
+중량화 +5 중량 / 과거 최고 인정 중량 초과분만 예산 추가
+```
+
+고객 배정은 현재 중량을 사용하고 성능 예산은 UID의 역대 최고 인정 중량을 사용한다. 중량 조정은 `+10/+20/+30/+40/+50` 정밀강화에서만 선택하며 이정표당 최대 한 번, 서로 다른 이정표에서는 누적할 수 있다. 같은 이정표의 반복·환불은 허용하지 않는다. 중량 성능 예산은 공격·방어·마법 기능·유틸리티 중 호환 축 하나에만 배분하며 일반 사건 성공률에는 직접 더하지 않는다.
+
+제품 구현: `BLOCKED`.
