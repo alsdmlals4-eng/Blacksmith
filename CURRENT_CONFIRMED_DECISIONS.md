@@ -8,7 +8,7 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005 / 0/10`
+> 현재 승인 배치: `R2_BATCH_005 / 1/10`
 >
 > 제품 구현: `BLOCKED`
 
@@ -37,8 +37,8 @@
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
 - `BS-CRAFT-20260804-07`: 제작 등급 5단계와 출생 전설 고정 — `MERGED_PR106 / MAIN_CANON`
 - `BS-CRAFT-20260805-01`: 예술성을 고정 설계 최대치 없는 숫자형 무기·작품 능력치로 확정 — `MERGED_PR106 / MAIN_CANON`
+- `BS-CRAFT-20260805-02`: 예술성 초기 생성·후천 성장·가치 점감·고객 선호 경계 — `R2_BATCH_005_1_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-UX-20260804-01`: 조합 장비명과 UID 연대기 상세
-- `BS-OPS-20260804-01`: GPT 역할 경계와 제품 구현 분리
 - `BS-OPS-20260804-02`: 정본 드리프트·구형 문서 상태 관리
 - `BS-OPS-20260805-01`: 벤치마킹·조기 체크포인트·상시 TDD
 
@@ -48,21 +48,14 @@
 [보통] → [우수] → [명품] → [걸작] → [전설]
 ```
 
-```text
-CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
-```
-
 - 최초 직접 단조 완료 시 한 번 확정
 - 동일 UID에서 영구 고정
 - 제작 후 승격·강등 없음
 - `전설`은 최초 제작에서만 극희귀하게 발생
-- 강화·촉매·연대기·명성·감정·복원·상속으로 변경되지 않음
-- `전설`은 높은 예술성·촉매 수식어·연대기 수식어·보편 최강 성능을 보장하지 않음
+- 제작 등급은 예술성 최소값·상한·배율을 결정하지 않음
 - 정확한 확률·배율은 `BASELINE_TEST_PRESET`
 
-이전 4단계는 `[대체됨]`, 과거 구현 `STANDARD / GOOD / PERFECT`는 `[역사 증거]`다.
-
-## 4. 예술성
+## 4. 예술성 원수치
 
 ```text
 예술성 27
@@ -74,23 +67,99 @@ CRAFT_NORMAL / CRAFT_SUPERIOR / CRAFT_FINE / CRAFT_MASTERWORK / CRAFT_LEGENDARY
 - 분모·별점·백분율·예술성 단계명 없음
 - 제작 등급과 별도 축
 - 다른 능력치와 함께 원수치 표시
-- 판매·감정 가치와 귀족·후원자·수집가·전시·증여·의식 수요에 기여 가능
 - 전투 성능을 기본적으로 올리지 않음
 - 범용 전투력·수식어 배율이 아님
-- 강화 단계만으로 자동 상승하지 않음
 - 기술적 자료형 한계는 콘텐츠 최대치가 아님
-
-`예술성 0`은 미완성품이 아니라 미적 투자가 거의 없는 정상 기능품이다. 제작 등급은 예술성 상한을 만들지 않으므로 `[전설] / 예술성 3`, `[보통] / 예술성 87`이 모두 가능하다.
-
-현재 기계 계약:
 
 ```text
 NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
 ```
 
-동일 Decision의 초기 bounded-stat 초안과 named-tier 프리셋은 `[대체됨]`이다. 정확한 초기 분포·가격 점감·고객 선호 구간·증감값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+## 5. 예술성 생성·성장·가치 평가
 
-## 5. 작품 이름과 수식어
+```text
+artistry = 작품 UID에 저장되는 원수치
+artistry_value = 시장·감정 맥락의 파생 점감 가치
+customer_artistry_fit = 고객·일정 맥락의 파생 적합도
+```
+
+### 최초 제작 허용 원천
+
+```text
+BASE_ITEM_DESIGN_AESTHETIC_TENDENCY
+MATERIAL_VISUAL_PROCESSING_FIT
+DIRECT_FORGING_AESTHETIC_RESULT
+```
+
+- 재료 가격·희귀도 자체는 예술성으로 직접 변환하지 않음
+- 제작 등급을 예술성 보너스표로 변환하지 않음
+- 별도 보조재료·장식재료 슬롯을 추가하지 않음
+
+### 제작 후 허용 성장 원천
+
+```text
+ARTISTIC_FINISH
+ARTISTRY_OWNED_CATALYST_EFFECT
+APPROVED_FINISHING_OR_DECORATION_CONTENT
+MEANINGFUL_ARTISTIC_REWORK
+```
+
+다음은 예술성을 자동 증가시키지 않는다.
+
+```text
+GENERAL_ENHANCEMENT_LEVEL
+SALE
+GIFT
+EXHIBITION_COUNT
+APPRAISAL_COUNT
+OWNERSHIP_TRANSFER
+FAME
+CHRONICLE_EVENT
+LOW_COST_REPEAT_ACTION
+```
+
+### 가치 평가
+
+```text
+최종 가치
+= 기능 가치
++ 제작 등급 가치
++ 예술성 점감 가치
++ 촉매 수식어 가치
++ 연대기 가치
++ 고객·시장 수요 보정
+```
+
+```text
+ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE
+```
+
+- 예술성이 증가하면 가치 기여는 감소하지 않음
+- 높은 구간일수록 추가 1점의 한계 가치는 작아짐
+- 원수치는 압축하지 않음
+- 구간별 한계 가치 테이블을 우선
+- 제작 등급·재료·예술성·촉매·연대기의 연속 곱셈 금지
+- 같은 원인의 이중 계산 금지
+
+### 고객 관심 유형
+
+```text
+IGNORE / SECONDARY / PRIMARY / REQUIREMENT
+```
+
+예술성에 관심 없는 고객은 초과 예술성에 추가 비용을 지불하지 않을 수 있지만, 높은 예술성 자체에 패널티를 주지 않는다.
+
+### 악용 방지
+
+- 수리·손상·판매·전시·감정·증여 반복으로 예술성 순증가 금지
+- 동일 저비용 세공 반복 파밍 금지
+- 촉매 직접 증가와 가격·수식어 배율의 이중 계산 금지
+- 연대기·명성은 예술성 원수치를 자동 변경하지 않음
+- 모든 예술성 변화는 작품 UID와 출처를 기록
+
+정확한 초기 분포·증감값·가격 구간·고객 요구치는 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+
+## 6. 작품 이름과 수식어
 
 ```text
 [등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어
@@ -98,20 +167,18 @@ NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
 
 연대기 수식어를 누르면 같은 UID의 형성 사건·주요 타임라인·진화 계보·소유·손상·복원 기록을 읽기 전용 하단 패널에서 확인한다.
 
-## 6. 운영 계약
+## 7. 운영 계약
 
 - 질문·추천·새 시스템 설계 전 벤치마킹·현업 비교
 - 결과를 `채택 / 수정 채택 / 비채택 / 차별점 / 남은 불확실성`으로 기록
 - 승인 10건은 최대 배치 크기
 - `HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT` 조기 체크포인트 허용
-- 조기 체크포인트도 적대적 감사·CI·changed files·Sheet readback 필수
 - 작업마다 TDD: `RED → GREEN → REFACTOR`
-- RED·GREEN 증거 없이 PASS 주장 금지
 - 병합은 명시적 사용자 승인 필요
 
-현재 `R2_BATCH_005 / 0/10`이다.
+현재 `R2_BATCH_005 / 1/10`이다.
 
-## 7. 보호 조건
+## 8. 보호 조건
 
 - 일반 수식어 A·B 재도입 금지
 - 보조재료 슬롯 재도입 금지
@@ -119,5 +186,5 @@ NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
 - 제작 등급 후천 변경 금지
 - 예술성 고정 설계 최대치·분모 표기·named tier 재도입 금지
 - 예술성을 범용 전투력·수식어 배율로 변환 금지
-- PR #81 전체 병합 단위는 `[폐기]`
+- 예술성·연대기·명성을 하나의 영구 총점으로 통합 금지
 - 제품 구현: `BLOCKED`
