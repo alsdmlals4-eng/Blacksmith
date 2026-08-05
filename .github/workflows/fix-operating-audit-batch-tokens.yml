@@ -1,0 +1,32 @@
+name: Fix Operating Audit Batch Tokens
+
+on:
+  push:
+    branches:
+      - agent/r2-artistry-generation-growth-economy-design
+    paths:
+      - .github/workflows/fix-operating-audit-batch-tokens.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: agent/r2-artistry-generation-growth-economy-design
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Apply focused operating audit fix
+        run: python .github/scripts/fix_operating_audit_batch_tokens.py
+      - name: Commit GREEN fix
+        run: |
+          git config user.name "alsdmlals4-eng"
+          git config user.email "alsdmlals4@gmail.com"
+          git add -A
+          git commit -m "fix: align operating audit with active batch"
+          git push origin HEAD:agent/r2-artistry-generation-growth-economy-design
