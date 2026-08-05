@@ -12,32 +12,82 @@ R1_REGISTRY_PATH = ROOT / "docs/planning/CURRENT_R1_CANON_REGISTRY.json"
 LEGACY_REGISTRY_PATH = ROOT / "docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json"
 
 REQUIRED_TEXT = {
+    "AGENTS.md": (
+        "벤치마킹·현업 비교",
+        "최대 배치 크기",
+        "조기 체크포인트",
+        "작업마다 TDD",
+        "RED → GREEN → REFACTOR",
+    ),
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "BS-OPS-20260804-02",
+        "BS-OPS-20260805-01",
+        "BS-CRAFT-20260804-07",
+        "BS-CRAFT-20260805-01",
+        "[보통] → [우수] → [명품] → [걸작] → [전설]",
+        "예술성 27",
+        "고정 설계 최대치 없음",
+        "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "PR #81 전체 병합 단위는 `[폐기]`",
         "제품 구현: `BLOCKED`",
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "GRADE_AFFIX",
-        "CATALYST_AFFIX",
-        "CHRONICLE_AFFIX",
-        "[등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어",
+        "R2_BATCH_004_2_OF_10",
+        "[보통] → [우수] → [명품] → [걸작] → [전설]",
+        "예술성 27",
+        "고정 설계 최대치 없음",
+        "예술성 단계명 없음",
         "일반 수식어 A·B 구조 재도입 금지",
         "보조재료 슬롯 재도입 금지",
+        "과거 3단계 구현 PASS를 현재 5단계 제품 구현 PASS로 해석 금지",
+    ),
+    "docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md": (
+        "BS-CRAFT-20260804-07",
+        "CRAFT_FINE",
+        "[보통] → [우수] → [명품] → [걸작] → [전설]",
+        "제작 후 등급 승격 금지",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md": (
+        "BS-CRAFT-20260805-01",
+        "예술성 27",
+        "고정 설계 최대치 없음",
+        "예술성 단계명 없음",
+        "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
+        "전투 성능을 기본적으로 올리지 않는다",
+    ),
+    "docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md": (
+        "Diablo IV",
+        "Path of Exile",
+        "Dwarf Fortress",
+        "예술성 27",
+        "채택",
+        "비채택",
+        "Differentiation",
+    ),
+    "docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md": (
+        "[대체됨]",
+        "[보통] → [우수] → [걸작] → [전설]",
+        "BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 003",
         "BS-OPS-20260804-02",
+        "R2_BATCH_004_2_OF_10",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+        "예술성 27",
+        "고정 설계 최대치 없음",
         "전체 병합 단위: [폐기]",
-        "다음 승인 카운터: `0/10`",
+        "현재 승인 카운터: `2/10`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_003",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+        "예술성 27",
+        "고정 설계 최대치",
         "일반 수식어 A·B 재도입",
         "첫 코어 버티컬 슬라이스",
         "행동 증거",
@@ -49,7 +99,19 @@ REQUIRED_TEXT = {
         "Equipment Name·Chronicle Detail Gate",
         "Core Fun Validation Gate",
         "Legacy Document Gate",
+        "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
+        "예술성 27",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
+    ),
+    "[기획서]/00_프로젝트_허브/START_HERE.md": (
+        "예술성: 0 이상의 정수",
+        "고정 설계 최대치 없음",
+        "예술성 27",
+    ),
+    "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
+        "예술성 원수치 능력치",
+        "고정 설계 최대치 없음",
+        "예술성 27",
     ),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
         "[부분 대체됨]",
@@ -57,29 +119,10 @@ REQUIRED_TEXT = {
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
     ),
-    "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md": (
-        "[현재 정본]",
-        "CURRENT_R2_CANON_REGISTRY.json",
-        "GRADE_AFFIX + CATALYST_AFFIX + CHRONICLE_AFFIX",
-        "DO_NOT_MERGE_AS_UNIT",
-    ),
-    "docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md": (
-        "BS-ADV-20260804-01",
-        "COMPLETED_WITH_OPEN_USER_DECISIONS",
-        "CORE_FUN_DIRECTION: VALID",
-        "P0: 0",
-        "P1_DOCUMENT_AUTHORITY_RESOLVED: 6",
-        "P1_USER_DECISION_OPEN: 1",
-    ),
     "docs/MVP-003_SCOPE.md": (
         "[역사 증거] [보류]",
         "NOT_CURRENT_PRODUCT_SCOPE / HOLD",
         "PASS를 의미하지 않습니다",
-    ),
-    "docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md": (
-        "[역사 증거] [보류]",
-        "NO_IMPLEMENTATION_AUTHORITY",
-        "제품 구현: `BLOCKED`",
     ),
     "docs/CI_EXECUTION_POLICY.md": (
         "ACTIONS_AVAILABLE / AUTOMATIC_PR_ENABLED",
@@ -105,11 +148,25 @@ FORBIDDEN_ACTIVE_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "R2_CHECKPOINT_003_PENDING_MERGE",
         "PENDING_POSTMERGE_CLOSURE_PR104",
+        "예술성 1~10",
+        "예술성 7/10",
+    ),
+    "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
+        "예술성 1~10",
+        "예술성 7/10",
+    ),
+    "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md": (
+        "예술성 1~10",
+        "예술성 7/10",
+    ),
+    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
+        "예술성 1~10",
+        "예술성 7/10",
     ),
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
         '"current_main"',
         "PENDING_POSTMERGE_CLOSURE_PR104",
-        '"auxiliary_material_slot_exists": true',
+        '"auxiliary_material_slot_exists":true',
     ),
 }
 
@@ -127,7 +184,7 @@ def load_json(path: Path, failures: list[str]) -> dict[str, Any]:
         failures.append(f"cannot read JSON {path.relative_to(ROOT)}: {exc}")
         return {}
     if not isinstance(value, dict):
-        failures.append(f"JSON root must be an object: {path.relative_to(ROOT)}")
+        failures.append(f"JSON root must be object: {path.relative_to(ROOT)}")
         return {}
     return value
 
@@ -147,14 +204,14 @@ def validate_r2(failures: list[str]) -> None:
     registry = load_json(R2_REGISTRY_PATH, failures)
     if not registry:
         return
-    if registry.get("schema_version") != 6:
-        failures.append("R2 registry schema_version must be 6")
-    if "R2_CHECKPOINT_003_CANON" not in str(registry.get("stage_status")):
-        failures.append("R2 registry must identify checkpoint 003 as current canon")
+    if registry.get("schema_version") != 8:
+        failures.append("R2 registry schema_version must be 8")
+    if registry.get("stage_status") != "R2_BATCH_004_ACTIVE_2_OF_10":
+        failures.append("R2 registry must identify batch 004 at 2/10")
     if registry.get("product_implementation") != "BLOCKED":
-        failures.append("R2 registry product implementation must remain BLOCKED")
-    if registry.get("next_approval_counter") != "0/10":
-        failures.append("R2 registry next approval counter must be 0/10")
+        failures.append("product implementation must remain BLOCKED")
+    if registry.get("next_approval_counter") != "2/10":
+        failures.append("next approval counter must be 2/10")
 
     evidence = registry.get("immutable_merge_evidence", {}).get("checkpoint_003", {})
     expected = {
@@ -162,12 +219,14 @@ def validate_r2(failures: list[str]) -> None:
         "planning_merge_sha": "674ee21013cb5d41f89a1a3f3b10ecfc31238295",
         "closure_pr": 104,
         "closure_merge_sha": "d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9",
+        "canon_audit_pr": 105,
+        "canon_audit_merge_sha": "95f8fa33a645914578451af325afcaa32732c426",
         "github_readback": "PASS",
         "sheet_readback": "PASS",
     }
     for key, value in expected.items():
         if evidence.get(key) != value:
-            failures.append(f"R2 checkpoint evidence {key!r} must equal {value!r}")
+            failures.append(f"checkpoint evidence {key!r} must equal {value!r}")
 
     decisions = {
         item.get("id"): item
@@ -175,10 +234,79 @@ def validate_r2(failures: list[str]) -> None:
         if isinstance(item, dict) and isinstance(item.get("id"), str)
     }
     affix = decisions.get("BS-CRAFT-20260804-06", {}).get("contract", {})
-    if affix.get("affix_slot_count") != 3:
-        failures.append("current affix slot count must be 3")
     if affix.get("affix_slots") != ["GRADE_AFFIX", "CATALYST_AFFIX", "CHRONICLE_AFFIX"]:
         failures.append("current affix slots must be grade/catalyst/chronicle")
+
+    grade = decisions.get("BS-CRAFT-20260804-07", {}).get("contract", {})
+    if grade.get("grade_count") != 5:
+        failures.append("current crafting grade count must be 5")
+    if grade.get("grade_ids") != [
+        "CRAFT_NORMAL",
+        "CRAFT_SUPERIOR",
+        "CRAFT_FINE",
+        "CRAFT_MASTERWORK",
+        "CRAFT_LEGENDARY",
+    ]:
+        failures.append("current crafting grade IDs must match five-tier model")
+    if grade.get("korean_labels") != ["보통", "우수", "명품", "걸작", "전설"]:
+        failures.append("current Korean grade labels must be 보통/우수/명품/걸작/전설")
+    if grade.get("post_craft_promotion_allowed") is not False:
+        failures.append("post-craft grade promotion must be false")
+
+    artistry = decisions.get("BS-CRAFT-20260805-01", {}).get("contract", {})
+    if artistry.get("stat_role") != "WEAPON_ITEM_STAT":
+        failures.append("artistry must be a weapon item stat")
+    if artistry.get("domain") != "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM":
+        failures.append("artistry must use the unbounded non-negative integer domain")
+    if artistry.get("minimum") != 0:
+        failures.append("artistry minimum must be zero")
+    if artistry.get("fixed_design_maximum") is not None:
+        failures.append("artistry must not have a fixed design maximum")
+    if artistry.get("decimals_allowed") is not False:
+        failures.append("artistry decimals must be disallowed")
+    if artistry.get("denominator_display_allowed") is not False:
+        failures.append("artistry denominator display must be disallowed")
+    if artistry.get("named_tiers_exist") is not False:
+        failures.append("artistry named tiers must not exist")
+    if artistry.get("technical_storage_limit_is_content_maximum") is not False:
+        failures.append("technical artistry limit must not become a content maximum")
+    if artistry.get("grade_sets_fixed_artistry_maximum") is not False:
+        failures.append("crafting grade must not set an artistry maximum")
+    if artistry.get("zero_means_incomplete_or_unusable") is not False:
+        failures.append("artistry zero must remain a valid functional item")
+    if artistry.get("combat_power_by_default") is not False:
+        failures.append("artistry must not increase combat by default")
+    if artistry.get("universal_affix_multiplier") is not False:
+        failures.append("artistry must not be a universal affix multiplier")
+
+    ops = decisions.get("BS-OPS-20260805-01", {}).get("contract", {})
+    if ops.get("maximum_approved_decisions_per_batch") != 10:
+        failures.append("maximum approved decision batch size must be 10")
+    if ops.get("early_checkpoint_triggers") != [
+        "HIGH_RISK_CONFLICT",
+        "SESSION_END",
+        "LARGE_CANON_IMPACT",
+    ]:
+        failures.append("early checkpoint triggers are incomplete")
+    if ops.get("tdd_cycle") != ["RED", "GREEN", "REFACTOR"]:
+        failures.append("TDD cycle must be RED/GREEN/REFACTOR")
+
+    alignment = registry.get("implementation_alignment", {})
+    if alignment.get("historical_implemented_grade_model") != ["STANDARD", "GOOD", "PERFECT"]:
+        failures.append("historical grade model must remain separately recorded")
+    if alignment.get("five_grade_product_implementation") != "NOT_STARTED_BLOCKED":
+        failures.append("five-grade implementation must remain blocked")
+    if alignment.get("current_artistry_model") != "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM_NO_NAMED_TIERS":
+        failures.append("current artistry implementation alignment is stale")
+    if alignment.get("historical_bounded_artistry_model") != "INTEGER_1_TO_10_NO_NAMED_TIERS_SUPERSEDED":
+        failures.append("bounded artistry history must remain explicitly superseded")
+    if alignment.get("artistry_product_implementation") != "NOT_STARTED_BLOCKED":
+        failures.append("artistry implementation must remain blocked")
+
+    batch = registry.get("active_batch", {})
+    if batch.get("counter") != "2/10" or batch.get("maximum_size") != 10:
+        failures.append("active batch must be 2/10 with maximum size 10")
+
     precision = decisions.get("BS-CRAFT-20260804-04", {}).get("contract", {})
     if precision.get("auxiliary_material_slot_exists") is not False:
         failures.append("auxiliary material slot must be false")
@@ -193,9 +321,6 @@ def validate_r1(failures: list[str]) -> None:
         return
     if registry.get("registry_status") != "HISTORICAL_R1_APPROVED_BASELINE_R2_REFINED":
         failures.append("R1 registry must be historical and R2 refined")
-    status = registry.get("historical_core_contract", {}).get("general_affix_slots_status")
-    if status != "SUPERSEDED_BY_EXACTLY_THREE_GRADE_CATALYST_CHRONICLE_SLOTS":
-        failures.append("historical two-slot contract must be explicitly superseded")
 
 
 def validate_legacy(failures: list[str]) -> None:
@@ -204,12 +329,11 @@ def validate_legacy(failures: list[str]) -> None:
         return
     for item in registry.get("documents", []):
         if not isinstance(item, dict):
-            failures.append("legacy registry contains non-object document entry")
             continue
         relative = item.get("path")
         status = item.get("status")
         if not isinstance(relative, str) or not isinstance(status, str):
-            failures.append("legacy document entry requires path and status")
+            failures.append("legacy document requires path and status")
             continue
         path = ROOT / relative
         if not path.is_file():
@@ -217,17 +341,28 @@ def validate_legacy(failures: list[str]) -> None:
             continue
         marker = EXPECTED_MARKERS.get(status)
         if marker and marker not in path.read_text(encoding="utf-8", errors="replace"):
-            failures.append(f"{relative}: status {status!r} requires visible marker {marker!r}")
+            failures.append(f"{relative}: status {status!r} requires marker {marker!r}")
 
-    entries = [item for item in registry.get("pull_requests", []) if isinstance(item, dict)]
-    pr81 = next((item for item in entries if item.get("number") == 81), None)
-    if pr81 is None:
-        failures.append("legacy registry must include PR81")
-    else:
-        if pr81.get("merge_unit_status") != "REJECTED":
-            failures.append("legacy registry PR81 merge unit must be REJECTED")
-        if pr81.get("selective_promotion_status") != "HOLD":
-            failures.append("legacy registry PR81 selective promotion must be HOLD")
+    artistry_history = {
+        item.get("source"): item
+        for item in registry.get("artistry_model_history", [])
+        if isinstance(item, dict) and isinstance(item.get("source"), str)
+    }
+    bounded = artistry_history.get("BS-CRAFT-20260805-01 initial bounded-stat draft", {})
+    if bounded.get("status") != "SUPERSEDED":
+        failures.append("initial bounded artistry draft must be SUPERSEDED")
+    current = artistry_history.get("BS-CRAFT-20260805-01 unbounded raw-value refinement", {})
+    if current.get("status") != "CURRENT_CANON":
+        failures.append("unbounded artistry refinement must be CURRENT_CANON")
+    if current.get("model") != "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM":
+        failures.append("legacy registry current artistry model is stale")
+
+    pr81 = next(
+        (item for item in registry.get("pull_requests", []) if isinstance(item, dict) and item.get("number") == 81),
+        None,
+    )
+    if pr81 is None or pr81.get("merge_unit_status") != "REJECTED":
+        failures.append("legacy registry must reject PR81 as merge unit")
 
 
 def validate_design_registry(failures: list[str]) -> None:

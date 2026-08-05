@@ -1,10 +1,11 @@
 {
   "artifact_role": "BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY",
-  "schema_version": 1,
+  "schema_version": 2,
   "project": "Blacksmith",
   "decision_id": "BS-OPS-20260804-02",
   "audit_id": "BS-ADV-20260804-01",
-  "baseline_main": "d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9",
+  "latest_refinement": "BS-CRAFT-20260804-07 + BS-CRAFT-20260805-01 + BS-OPS-20260805-01",
+  "baseline_main": "95f8fa33a645914578451af325afcaa32732c426",
   "product_implementation": "BLOCKED",
   "status_vocabulary": {
     "CURRENT_CANON": "현재 구현·후속 기획의 직접 기준",
@@ -17,7 +18,11 @@
   "current_authority": [
     "CURRENT_CONFIRMED_DECISIONS.md",
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
-    "docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md",
+    "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
+    "docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
+    "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md",
+    "docs/superpowers/specs/2026-08-05-artistry-unbounded-stat-design.md",
+    "docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md",
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "[기획서]/00_프로젝트_허브/ROADMAP.md",
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
@@ -30,15 +35,23 @@
         "general affix A/B structure",
         "two general affix slots",
         "auxiliary material role",
-        "fixed world-schedule day preset as universal rule"
+        "fixed world-schedule day preset as universal rule",
+        "historical crafting grade labels and tier counts",
+        "bounded artistry scale and denominator display"
       ],
       "current_replacements": [
         "CURRENT_CONFIRMED_DECISIONS.md",
         "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
-        "docs/planning/BLACKSMITH_R2_PRECISION_ENHANCEMENT_METHOD_AND_CATALYST_STRUCTURE_CANON_2026.md",
         "docs/planning/BLACKSMITH_R2_THREE_AFFIX_SLOT_ARCHITECTURE_CANON_2026.md",
-        "docs/planning/BLACKSMITH_R2_CHRONICLE_AFFIX_DETAIL_INTERACTION_CANON_2026.md"
+        "docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
+        "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md"
       ]
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
+      "status": "SUPERSEDED",
+      "replacement": "docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
+      "retained_scope": "historical approved draft before five-tier refinement"
     },
     {
       "path": "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
@@ -48,12 +61,12 @@
     {
       "path": "docs/planning/BLACKSMITH_PRECISION_ENHANCEMENT_BASELINE.md",
       "status": "SUPERSEDED",
-      "replacement": "BS-CRAFT-20260804-04 through BS-CRAFT-20260804-06"
+      "replacement": "BS-CRAFT-20260804-04 through BS-CRAFT-20260805-01"
     },
     {
       "path": "docs/planning/BLACKSMITH_CORE_CANON_RESOLUTION_02_2026.md",
       "status": "SUPERSEDED",
-      "replacement": "BS-CRAFT-20260804-06"
+      "replacement": "BS-CRAFT-20260804-06 + BS-CRAFT-20260804-07 + BS-CRAFT-20260805-01"
     },
     {
       "path": "docs/planning/BLACKSMITH_CORE_CANON_RESOLUTION_03_2026.md",
@@ -77,8 +90,8 @@
       "path": "docs/MVP-003_SCOPE.md",
       "status": "HISTORICAL_EVIDENCE",
       "secondary_status": "HOLD",
-      "retained_scope": "historical reference implementation and test evidence",
-      "current_use": "must not define current product scope"
+      "retained_scope": "historical reference implementation and test evidence including three-grade STANDARD/GOOD/PERFECT data",
+      "current_use": "must not define current five-tier product scope"
     },
     {
       "path": "docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md",
@@ -97,6 +110,56 @@
       "current_use": "reference only; no implementation authority"
     }
   ],
+  "grade_model_history": [
+    {
+      "source": "historical runtime and data",
+      "model": ["STANDARD", "GOOD", "PERFECT"],
+      "status": "HISTORICAL_EVIDENCE",
+      "current_use": "reference implementation only"
+    },
+    {
+      "decision": "BS-GRADE-20260801-02",
+      "model": ["보통", "우수", "명품", "걸작", "전설"],
+      "status": "SUPERSEDED",
+      "replacement": "BS-CRAFT-20260804-07",
+      "reason": "matching labels do not restore the superseded rule ownership, progression meaning, or old PR merge unit"
+    },
+    {
+      "source": "BS-CRAFT-20260804-07 four-tier approved draft",
+      "model": ["보통", "우수", "걸작", "전설"],
+      "status": "SUPERSEDED",
+      "replacement": "BS-CRAFT-20260804-07 five-tier refinement"
+    },
+    {
+      "decision": "BS-CRAFT-20260804-07",
+      "model": ["보통", "우수", "명품", "걸작", "전설"],
+      "status": "CURRENT_CANON",
+      "implementation": "NOT_STARTED_BLOCKED"
+    }
+  ],
+  "artistry_model_history": [
+    {
+      "source": "BS-CRAFT-20260804-02 provisional named visual tiers",
+      "model": ["BASIC", "REFINED", "MASTERWORK", "MASTERPIECE"],
+      "status": "SUPERSEDED",
+      "replacement": "BS-CRAFT-20260805-01"
+    },
+    {
+      "source": "BS-CRAFT-20260805-01 initial bounded-stat draft",
+      "model": "INTEGER_1_TO_10_WEAPON_ITEM_STAT_NO_NAMED_TIERS",
+      "status": "SUPERSEDED",
+      "replacement": "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM"
+    },
+    {
+      "source": "BS-CRAFT-20260805-01 unbounded raw-value refinement",
+      "decision": "BS-CRAFT-20260805-01",
+      "model": "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
+      "minimum": 0,
+      "denominator_display": false,
+      "status": "CURRENT_CANON",
+      "implementation": "NOT_STARTED_BLOCKED"
+    }
+  ],
   "pull_requests": [
     {
       "number": 81,
@@ -108,45 +171,27 @@
       "commits": 181,
       "changed_files": 88,
       "selective_promotion_status": "HOLD",
-      "selective_promotion_candidates": [
-        "Save Continue ResultEnvelope",
-        "data and save migration",
-        "automatic forge decision boundary",
-        "customer common pipeline",
-        "UI Android lifecycle accessibility",
-        "storage sales archive",
-        "validation fixtures local telemetry",
-        "visual and asset governance"
-      ],
       "known_conflicting_asset": {
         "decision": "BS-GRADE-20260801-02",
-        "status": "SUPERSEDED_IN_TIER_MODEL_BY_BS-CRAFT-20260804-06",
-        "reason": "five craftsmanship grades conflict with current three baseline grade-affix IDs and artistry terminology"
+        "status": "SUPERSEDED_IN_RULE_OWNERSHIP_BY_BS-CRAFT-20260804-07",
+        "reason": "label similarity does not authorize the old five-tier rules or whole-PR merge"
       }
     }
   ],
-  "pattern_rules": [
-    {
-      "pattern": "docs/superpowers/plans/2026-08-01-*",
-      "status": "HOLD",
-      "reason": "implementation remains blocked until R1-R8 and final user review"
-    },
-    {
-      "pattern": "PR81:docs/planning/data/*",
-      "status": "HOLD",
-      "reason": "branch-only machine-readable plans require selective promotion against current R2 canon"
-    },
-    {
-      "pattern": "historical POC exact numbers",
-      "status": "HISTORICAL_EVIDENCE",
-      "reason": "not current product values unless reclassified as BASELINE_TEST_PRESET or CURRENT_VALIDATED"
-    }
-  ],
   "prohibited_current_claims": [
-    "general affix A and B are the current affix slots",
+    "general affix A and B are current",
     "the current affix slot count is two",
-    "an auxiliary material slot exists in the current precision-enhancement structure",
-    "all schedules use a universal fixed day-3 result and day-4 revisit",
+    "an auxiliary material slot exists",
+    "all schedules use a universal fixed day preset",
+    "the current crafting grade model has four tiers",
+    "STANDARD GOOD PERFECT is current product planning",
+    "artistry uses named tiers",
+    "artistry has a fixed design maximum",
+    "artistry uses a denominator, percentage, or star display",
+    "artistry 10 is the maximum",
+    "crafting grade sets the artistry maximum",
+    "artistry is a universal combat or affix multiplier",
+    "legendary can be earned after crafting",
     "PR 81 can be merged as a unit",
     "a historical POC PASS is a current product PASS"
   ]

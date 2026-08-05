@@ -3,17 +3,13 @@
   "schema_version": 3,
   "registry_role": "ai-design-document-router-and-publication-index",
   "project_name": "Blacksmith",
-  "current_operating_decision": "BS-OPS-20260804-02",
+  "current_operating_decision": "BS-OPS-20260805-01",
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
+  "current_batch": "R2_BATCH_004_2_OF_10",
   "product_implementation": "BLOCKED",
   "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, and Development Gates. Status-marked historical documents never override current R2 canon.",
-  "status_vocabulary": [
-    "ACTIVE",
-    "PARTIALLY_SUPERSEDED",
-    "SUPERSEDED",
-    "HISTORICAL_HOLD"
-  ],
+  "status_vocabulary": ["ACTIVE", "PARTIALLY_SUPERSEDED", "SUPERSEDED", "HISTORICAL_HOLD"],
   "documents": [
     {
       "document_id": "current-confirmed-decisions",
@@ -40,6 +36,46 @@
       "publication_policy": "milestone_sync"
     },
     {
+      "document_id": "five-tier-crafting-grade-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
+      "source_format": "markdown",
+      "status": "ACTIVE",
+      "source_role": "current_crafting_grade_contract",
+      "publication_policy": "always_sync"
+    },
+    {
+      "document_id": "numeric-artistry-stat-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md",
+      "source_format": "markdown",
+      "status": "ACTIVE",
+      "source_role": "current_unbounded_artistry_contract",
+      "publication_policy": "always_sync"
+    },
+    {
+      "document_id": "artistry-unbounded-stat-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-05-artistry-unbounded-stat-design.md",
+      "source_format": "markdown",
+      "status": "ACTIVE",
+      "source_role": "approved_artistry_refinement_spec",
+      "publication_policy": "always_sync"
+    },
+    {
+      "document_id": "artistry-unbounded-stat-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-05-artistry-unbounded-stat.md",
+      "source_format": "markdown",
+      "status": "ACTIVE",
+      "source_role": "tdd_canon_sync_plan",
+      "publication_policy": "milestone_sync"
+    },
+    {
+      "document_id": "itemization-benchmark-20260805",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md",
+      "source_format": "markdown",
+      "status": "ACTIVE",
+      "source_role": "benchmark_and_industry_comparison",
+      "publication_policy": "always_sync"
+    },
+    {
       "document_id": "active-context",
       "source_path": "./ACTIVE_CONTEXT.md",
       "source_format": "markdown",
@@ -64,20 +100,20 @@
       "publication_policy": "always_sync"
     },
     {
-      "document_id": "canon-adversarial-review-20260804",
-      "source_path": "../../docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md",
-      "source_format": "markdown",
-      "status": "ACTIVE",
-      "source_role": "current_canon_adversarial_audit",
-      "publication_policy": "always_sync"
-    },
-    {
       "document_id": "legacy-document-status-registry",
       "source_path": "../../docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json",
       "source_format": "json",
       "status": "ACTIVE",
       "source_role": "legacy_status_authority",
       "publication_policy": "always_sync"
+    },
+    {
+      "document_id": "four-tier-crafting-grade-draft",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
+      "source_format": "markdown",
+      "status": "SUPERSEDED",
+      "source_role": "historical_approved_draft_before_five_tier_refinement",
+      "publication_policy": "source_only"
     },
     {
       "document_id": "current-r1-canon-registry",
@@ -92,7 +128,7 @@
       "source_path": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
       "source_format": "markdown",
       "status": "PARTIALLY_SUPERSEDED",
-      "source_role": "r1_historical_entrypoint_to_current_r2_game_bible",
+      "source_role": "r1_historical_entrypoint",
       "publication_policy": "source_only"
     },
     {
@@ -134,18 +170,13 @@
       "status": "SUPERSEDED",
       "source_role": "historical_adversarial_review",
       "publication_policy": "source_only"
-    },
-    {
-      "document_id": "project-core-review-report",
-      "source_path": "../../docs/PROJECT_CORE_REVIEW_REPORT.md",
-      "source_format": "markdown",
-      "status": "SUPERSEDED",
-      "source_role": "historical_project_core_review",
-      "publication_policy": "source_only"
     }
   ],
   "routing_guards": [
     "ACTIVE_DOCUMENTS_OVERRIDE_STATUS_MARKED_HISTORICAL_DOCUMENTS",
+    "FOUR_TIER_DRAFT_MUST_NOT_BE_ROUTED_AS_CURRENT",
+    "BOUNDED_ARTISTRY_MODEL_MUST_NOT_BE_ROUTED_AS_CURRENT",
+    "ARTISTRY_DENOMINATOR_OR_NAMED_TIERS_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "GENERAL_AFFIX_A_B_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "AUXILIARY_MATERIAL_SLOT_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "PR81_MUST_NOT_BE_ROUTED_AS_MERGEABLE_CANON",

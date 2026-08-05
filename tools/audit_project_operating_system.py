@@ -11,7 +11,6 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Iterable
 
-
 TEXT_SUFFIXES = {".md", ".json", ".py", ".gd", ".tscn", ".yml", ".yaml", ".txt", ".toml"}
 VENDORED_REFERENCE_ROOTS = ("addons/",)
 LOCAL_PREFIXES = (
@@ -41,6 +40,8 @@ ACTIVE_DOCS = (
     "CURRENT_CONFIRMED_DECISIONS.md",
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
+    "docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
+    "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md",
     "[기획서]/00_프로젝트_허브/START_HERE.md",
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
@@ -50,11 +51,36 @@ ACTIVE_DOCS = (
 
 STALE_PATTERNS = {
     "legacy +5 milestone": re.compile(r"\+5[^\n]{0,80}(첫 수식어|수식어 판정|완료 후 새 철검)", re.IGNORECASE),
-    "legacy current two-affix claim": re.compile(r"현재[^\n]{0,60}(일반 수식어 A.{0,20}일반 수식어 B|수식어 슬롯.{0,10}2개)", re.IGNORECASE),
-    "legacy current auxiliary material claim": re.compile(r"현재[^\n]{0,60}보조재료 슬롯.{0,20}(존재|사용|필수)", re.IGNORECASE),
+    "legacy current two-affix claim": re.compile(
+        r"현재[^\n]{0,60}(일반 수식어 A.{0,20}일반 수식어 B|수식어 슬롯.{0,10}2개)",
+        re.IGNORECASE,
+    ),
+    "legacy current auxiliary material claim": re.compile(
+        r"현재[^\n]{0,60}보조재료 슬롯.{0,20}(존재|사용|필수)",
+        re.IGNORECASE,
+    ),
     "legacy universal day preset": re.compile(r"모든[^\n]{0,80}(3일 결과|4일 재방문)", re.IGNORECASE),
-    "legacy five-test count": re.compile(r"강화 모델\s*5건", re.IGNORECASE),
     "legacy optional precision enhancement": re.compile(r"정밀 강화\s*ON/OFF", re.IGNORECASE),
+    "legacy current three-grade planning claim": re.compile(
+        r"현재[^\n]{0,80}(baseline ID|제작 등급)[^\n]{0,40}STANDARD\s*/\s*GOOD\s*/\s*PERFECT",
+        re.IGNORECASE,
+    ),
+    "legacy current four-grade planning claim": re.compile(
+        r"현재[^\n]{0,80}\[보통\][^\n]{0,20}\[우수\][^\n]{0,20}\[걸작\][^\n]{0,20}\[전설\]",
+        re.IGNORECASE,
+    ),
+    "named artistry tiers current": re.compile(
+        r"현재[^\n]{0,80}(BASIC|REFINED)[^\n]{0,80}(MASTERWORK|MASTERPIECE)",
+        re.IGNORECASE,
+    ),
+    "bounded artistry current": re.compile(
+        r"현재[^\n]{0,100}예술성[^\n]{0,50}(1\s*~\s*10|\d+\s*/\s*10)",
+        re.IGNORECASE,
+    ),
+    "fixed artistry maximum current": re.compile(
+        r"현재[^\n]{0,100}예술성[^\n]{0,50}(10\s*=\s*최고|고정 최대치\s*10)",
+        re.IGNORECASE,
+    ),
 }
 
 REQUIRED_ASSERTIONS = {
@@ -62,41 +88,109 @@ REQUIRED_ASSERTIONS = {
         "장비의 출생·성장·소유·사건 기록",
         "Godot AI",
     ),
+    "AGENTS.md": (
+        "벤치마킹·현업 비교",
+        "최대 배치 크기",
+        "조기 체크포인트",
+        "작업마다 TDD",
+        "RED → GREEN → REFACTOR",
+    ),
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "BS-OPS-20260804-02",
+        "BS-OPS-20260805-01",
+        "BS-CRAFT-20260804-07",
+        "BS-CRAFT-20260805-01",
+        "[보통] → [우수] → [명품] → [걸작] → [전설]",
+        "예술성 27",
+        "고정 설계 최대치 없음",
+        "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "제품 구현: `BLOCKED`",
     ),
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
-        '"schema_version": 6',
-        '"planning_pr": 103',
-        '"closure_pr": 104',
-        '"next_approval_counter": "0/10"',
-        '"product_implementation": "BLOCKED"',
+        '"schema_version":8',
+        '"planning_pr":103',
+        '"closure_pr":104',
+        '"canon_audit_pr":105',
+        '"next_approval_counter":"2/10"',
+        '"product_implementation":"BLOCKED"',
+        '"id":"BS-CRAFT-20260804-07"',
+        '"id":"BS-CRAFT-20260805-01"',
+        '"id":"BS-OPS-20260805-01"',
+        '"domain":"NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM"',
+        '"minimum":0',
+        '"fixed_design_maximum":null',
+        '"denominator_display_allowed":false',
+        '"technical_storage_limit_is_content_maximum":false',
+        '"current_artistry_model":"NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM_NO_NAMED_TIERS"',
+        '"historical_bounded_artistry_model":"INTEGER_1_TO_10_NO_NAMED_TIERS_SUPERSEDED"',
+        '"five_grade_product_implementation":"NOT_STARTED_BLOCKED"',
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
+        "R2_BATCH_004_2_OF_10",
         "GRADE_AFFIX",
         "CATALYST_AFFIX",
         "CHRONICLE_AFFIX",
+        "[보통] → [우수] → [명품] → [걸작] → [전설]",
+        "예술성 27",
+        "고정 설계 최대치 없음",
+        "예술성 단계명 없음",
         "보조재료 슬롯 재도입 금지",
         "일반 수식어 A·B 구조 재도입 금지",
+        "과거 3단계 구현 PASS를 현재 5단계 제품 구현 PASS로 해석 금지",
+    ),
+    "docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md": (
+        "BS-CRAFT-20260804-07",
+        "CRAFT_FINE",
+        "[보통] → [우수] → [명품] → [걸작] → [전설]",
+        "제작 후 등급 승격 금지",
+    ),
+    "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md": (
+        "BS-CRAFT-20260805-01",
+        "예술성 27",
+        "고정 설계 최대치 없음",
+        "예술성 단계명 없음",
+        "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
+        "전투 성능을 기본적으로 올리지 않는다",
+    ),
+    "docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md": (
+        "Diablo IV",
+        "Path of Exile",
+        "Dwarf Fortress",
+        "예술성 27",
+        "채택",
+        "비채택",
+    ),
+    "docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md": (
+        "[대체됨]",
+        "BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 003",
         "BS-OPS-20260804-02",
-        "다음 승인 카운터: `0/10`",
+        "BS-OPS-20260805-01",
+        "BS-CRAFT-20260805-01",
+        "R2_BATCH_004_2_OF_10",
+        "예술성 27",
+        "고정 설계 최대치 없음",
+        "현재 승인 카운터: `2/10`",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_003",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+        "예술성 27",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "Three Affix Gate",
+        "Benchmark Gate",
+        "TDD Gate",
         "Legacy Document Gate",
+        "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
+        "예술성 27",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
     ),
     "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md": (
@@ -208,8 +302,21 @@ def resolve_reference(project_root: Path, source: Path, candidate: str) -> Path:
     return hub if hub.exists() else local
 
 
-def add(findings: list[Finding], severity: str, code: str, message: str, path: Path | str | None = None) -> None:
-    findings.append(Finding(severity=severity, code=code, message=message, path=None if path is None else str(path)))
+def add(
+    findings: list[Finding],
+    severity: str,
+    code: str,
+    message: str,
+    path: Path | str | None = None,
+) -> None:
+    findings.append(
+        Finding(
+            severity=severity,
+            code=code,
+            message=message,
+            path=None if path is None else str(path),
+        )
+    )
 
 
 def audit_base(base_root: Path, profile: dict, findings: list[Finding]) -> dict:
@@ -439,9 +546,7 @@ def main() -> int:
 
     print(f"Base adoption audit {report['status']}")
     print(f"- Base active skills: {base_summary.get('active_skill_count', 'unknown')}")
-    print(f"- Base text files scanned: {base_summary.get('text_file_count', 'unknown')}")
     print(f"- Project skills: {project_summary.get('project_skill_count', 'unknown')}")
-    print(f"- Project text files scanned: {project_summary.get('text_file_count', 'unknown')}")
     print(f"- Errors: {len(errors)} / Warnings: {len(warnings)}")
     for item in findings:
         location = f" [{item.path}]" if item.path else ""
