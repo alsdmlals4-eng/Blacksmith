@@ -1,0 +1,30 @@
+name: Patch planning-first authority consumer
+
+on:
+  push:
+    branches:
+      - agent/rebuild-thin-base-adapter
+    paths:
+      - .github/workflows/temporary-patch-planning-first-consumer.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - run: python tools/temporary_patch_planning_first_consumer.py
+      - run: python -m unittest tests.test_base_v942_planning_first_adoption -v
+      - name: Commit consumer authority update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/test_base_v942_planning_first_adoption.py
+          git diff --cached --check
+          git commit -m "test: read migrated project state authority"
+          git push origin HEAD:agent/rebuild-thin-base-adapter
