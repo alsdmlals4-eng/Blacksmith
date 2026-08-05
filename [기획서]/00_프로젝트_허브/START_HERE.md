@@ -8,9 +8,9 @@
 WORK_MODE: TOTAL_PLANNING
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
 R2_CHECKPOINT_003: PR103 / CLOSURE_PR104 / CANON_AUDIT_PR105
-R2_CHECKPOINT_004: PR106 / CLOSURE_PR107
-R2_STATUS: R2_BATCH_005_ACTIVE_0_OF_10
-CURRENT_DECISIONS: BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-OPS-20260805-01
+R2_CHECKPOINT_004: PR106 / CLOSURE_PR107 / CANON_AUDIT_PR108
+R2_STATUS: R2_BATCH_005_ACTIVE_1_OF_10
+CURRENT_DECISIONS: BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-OPS-20260805-01
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
 
@@ -37,19 +37,32 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 ```
 
 - 제작 등급은 최초 직접 단조 완료 시 확정하고 동일 UID에서 고정
-- `전설`은 출생 극희귀 결과이며 후천 승격 없음
 - 예술성은 전투력을 기본적으로 올리지 않고 범용 속성 배율이 아님
 - 일반 강화는 한 입력에 한 결과
 - 정밀강화는 주재료 맥락 + 강화 방식 + 촉매 한 개
 - 연대기 수식어를 누르면 UID 기반 읽기 전용 상세
 - 보조재료 슬롯과 일반 수식어 A·B는 현재 구조 아님
 
+## 예술성 생성·성장·가치 평가
+
+Decision: `BS-CRAFT-20260805-02`.
+
+```text
+초기 생성: 설계 미적 성향 / 재료 시각·가공 적합성 / 직접 단조 미적 결과
+후천 성장: ARTISTIC_FINISH / 예술성 책임 촉매 / 승인된 세공·마감 / 의미 있는 재작업
+가치 평가: ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE
+고객 관심: IGNORE / SECONDARY / PRIMARY / REQUIREMENT
+```
+
+- 일반 강화·판매·증여·전시·감정·명성·연대기로 자동 증가 금지
+- 수리·손상·판매·전시·감정·증여·저비용 반복으로 순증가 금지
+- 동일 원인 이중 계산과 전체 가치 곱셈 중첩 금지
+- 정확한 값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`
+
 ## 체크포인트 상태
 
-- R2_CHECKPOINT_004: `PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9`
-- squash merge: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
-- 배치 004: `CLOSED_MERGED_PR106 / 2_OF_10`
-- 현재 배치 005: `ACTIVE / 0_OF_10`
+- R2_CHECKPOINT_004: `MAIN_CANON`
+- 현재 배치 005: `ACTIVE / 1_OF_10`
 - 제품 구현: `BLOCKED`
 
 ## 운영 규칙
