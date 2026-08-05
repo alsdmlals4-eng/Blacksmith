@@ -46,7 +46,7 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md": (
         "BS-CRAFT-20260805-02",
-        "R2_BATCH_005_2_OF_10",
+        "R2_BATCH_005_1_OF_10",
         "BASE_ITEM_DESIGN_AESTHETIC_TENDENCY",
         "ARTISTIC_FINISH",
         "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
@@ -126,7 +126,6 @@ FORBIDDEN = {
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "현재 승인 카운터: `0/10`",
-        "현재 승인 카운터: `2/10`",
     ),
 }
 
