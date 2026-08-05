@@ -25,9 +25,11 @@ RED_EVIDENCE = {
 }
 GREEN_EVIDENCE = {
     "canon_sync_head": "fbbd2455e8c063ae20d2e60480946417cc812e9e",
-    "focused_tests": 47,
+    "operating_audit_repair_head": "dc3664024acf999a602a12719a50a9780d2e61c8",
+    "focused_tests": 48,
     "focused_result": "PASS",
     "project_core_alignment": "PASS",
+    "operating_audit": "PASS",
 }
 
 
@@ -46,6 +48,7 @@ class WeightPerformanceBudgetTradeoffContractTests(unittest.TestCase):
         self.assertEqual(7, RED_EVIDENCE["expected_new_failures"])
         self.assertEqual("PASS", GREEN_EVIDENCE["focused_result"])
         self.assertEqual("PASS", GREEN_EVIDENCE["project_core_alignment"])
+        self.assertEqual("PASS", GREEN_EVIDENCE["operating_audit"])
 
     def test_batch_005_contains_six_approved_decisions(self) -> None:
         self.assertEqual("R2_BATCH_005_ACTIVE_6_OF_10", self.registry["stage_status"])
