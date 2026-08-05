@@ -21,7 +21,7 @@ REQUIRED_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005 / 7/10",
+        "R2_BATCH_005 / 9/10",
         "BS-CRAFT-20260805-02",
         "MERGED_PR106",
         "7a46fa38586a42f268cd0432744203049649ddd5",
@@ -34,7 +34,7 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "R2_BATCH_005_8_OF_10",
+        "R2_BATCH_005_9_OF_10",
         "BS-CRAFT-20260805-02",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
         "예술성 27",
@@ -119,35 +119,35 @@ REQUIRED_TEXT = {
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_8_OF_10",
-        "현재 승인 카운터: `8/10`",
+        "R2_BATCH_005_9_OF_10",
+        "현재 승인 카운터: `9/10`",
         "BS-CRAFT-20260805-02",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_8_OF_10",
+        "R2_BATCH_005_ACTIVE_9_OF_10",
         "BS-CRAFT-20260805-02",
         "첫 코어 버티컬 슬라이스",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_8_OF_10",
+        "R2_BATCH_005_ACTIVE_9_OF_10",
         "Artistry Generation·Growth·Valuation Gate",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_8_OF_10",
+        "R2_BATCH_005_ACTIVE_9_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 27",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_8_OF_10",
+        "R2_BATCH_005_9_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 생성·성장·가치 평가",
     ),
@@ -157,6 +157,16 @@ REQUIRED_TEXT = {
         "SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS",
         "ARCANE_CONDUCTION",
         "TASK_INTEGRATION",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md": (
+        "BS-ITEM-20260806-05",
+        "R2_BATCH_005_9_OF_10",
+        "MAX_ZERO_BASE_PLUS_MATERIAL_FIT_PLUS_DIRECT_FORGING",
+        "GENERAL_ENHANCEMENT",
+        "FUNCTION_REWORK",
+        "ITEM_CHANGE_LEDGER_ENTRY",
+        "42_능력치_강화_참조표",
         "제품 구현: `BLOCKED`",
     ),
 }
@@ -217,8 +227,8 @@ def check_r2(failures: list[str]) -> None:
         return
     expected = {
         "schema_version": 8,
-        "stage_status": "R2_BATCH_005_ACTIVE_8_OF_10",
-        "next_approval_counter": "8/10",
+        "stage_status": "R2_BATCH_005_ACTIVE_9_OF_10",
+        "next_approval_counter": "9/10",
         "product_implementation": "BLOCKED",
     }
     for key, value in expected.items():
@@ -246,9 +256,9 @@ def check_r2(failures: list[str]) -> None:
         failures.append("closed batch must be R2_BATCH_004 at 2/10")
 
     active = registry.get("active_batch", {})
-    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "8/10":
-        failures.append("active batch must be R2_BATCH_005 at 8/10")
-    if active.get("approved_decisions") != 8 or active.get("decisions") != [
+    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "9/10":
+        failures.append("active batch must be R2_BATCH_005 at 9/10")
+    if active.get("approved_decisions") != 9 or active.get("decisions") != [
         "BS-CRAFT-20260805-02",
         "BS-CUSTOMER-20260805-01",
         "BS-UX-20260805-01",
@@ -257,8 +267,9 @@ def check_r2(failures: list[str]) -> None:
         "BS-ITEM-20260806-02",
         "BS-ITEM-20260806-03",
         "BS-ITEM-20260806-04",
+        "BS-ITEM-20260806-05",
     ]:
-        failures.append("active batch 005 must contain the eight approved decisions")
+        failures.append("active batch 005 must contain the nine approved decisions")
     if active.get("maximum_size") != 10:
         failures.append("active batch maximum size must remain 10")
 

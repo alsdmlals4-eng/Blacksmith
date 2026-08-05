@@ -52,12 +52,12 @@ class WeightBudgetConversionRolePresetContractTests(unittest.TestCase):
         self.assertEqual("PASS", GREEN_EVIDENCE["project_core_alignment"])
         self.assertEqual("PASS", GREEN_EVIDENCE["operating_audit"])
 
-    def test_batch_005_contains_eight_approved_decisions(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_8_OF_10", self.registry["stage_status"])
-        self.assertEqual("8/10", self.registry["next_approval_counter"])
+    def test_batch_005_contains_nine_approved_decisions(self) -> None:
+        self.assertEqual("R2_BATCH_005_ACTIVE_9_OF_10", self.registry["stage_status"])
+        self.assertEqual("9/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
-        self.assertEqual(8, active["approved_decisions"])
-        self.assertEqual("8/10", active["counter"])
+        self.assertEqual(9, active["approved_decisions"])
+        self.assertEqual("9/10", active["counter"])
         self.assertEqual(
             [
                 "BS-CRAFT-20260805-02",
@@ -68,6 +68,7 @@ class WeightBudgetConversionRolePresetContractTests(unittest.TestCase):
                 "BS-ITEM-20260806-02",
                 "BS-ITEM-20260806-03",
                 "BS-ITEM-20260806-04",
+                "BS-ITEM-20260806-05",
             ],
             active["decisions"],
         )

@@ -257,3 +257,12 @@ low-cost repeat loop
 - 제품 코드·Scene·runtime data·asset 변경 없음
 - 제품 구현: `BLOCKED`
 - runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
+
+<!-- REFINED_BY_BS-ITEM-20260806-05 -->
+## [현재 후속 정제] 예술 마감의 테스트 변동
+
+- `REFINED_BY_BS-ITEM-20260806-05`
+- `R2_BATCH_005_9_OF_10`
+- 성공한 `ARTISTIC_FINISH` 정밀강화의 테스트 변동은 `ARTISTRY +5`다.
+- 예술 마감은 해당 정밀 이정표 기회를 소비하며 공격·방어 수치 패키지를 동시에 주지 않는다.
+- 정확한 값은 `BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED`다.

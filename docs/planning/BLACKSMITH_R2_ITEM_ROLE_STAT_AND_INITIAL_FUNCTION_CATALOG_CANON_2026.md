@@ -236,3 +236,12 @@ TRANSFORMATIVE_OR_RULE_BYPASS_FUNCTION
 - `data/crafting/weapon_bases.json`은 변경하지 않는다.
 - 정확한 최초 공격·방어 분포, 강화 단계 증가량, 위험 완화량, 현장 수리량은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
 - 제품 구현: `BLOCKED`.
+
+<!-- REFINED_BY_BS-ITEM-20260806-05 -->
+## [현재 후속 정제] 최초 역할 수치와 기능 재작업 소유권
+
+- `REFINED_BY_BS-ITEM-20260806-05`
+- `R2_BATCH_005_9_OF_10`
+- 최초 역할 수치는 장비군 기준값 `5 / 10 / 15`, 주재료 적합 `-2 / 0 / +2`, 직접 단조 `-1 / 0 / +1`의 합으로 정한다.
+- 제작 후 특수기능 목록 변경은 `FUNCTION_REWORK`만 소유한다.
+- 일반 강화와 남는 기능 용량은 기능을 자동 생성하지 않는다.

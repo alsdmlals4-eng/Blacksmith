@@ -13,7 +13,7 @@
 
 | 질문 | 책임 원본 | 상태 |
 |---|---|---|
-| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_8_OF_10` |
+| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_9_OF_10` |
 | 현재 기계 정본 | `docs/planning/CURRENT_R2_CANON_REGISTRY.json` | `CURRENT / SCHEMA_8` |
 | 현재 통합 GDD | `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md` | `CURRENT` |
 | 현재 세션 상태 | `ACTIVE_CONTEXT.md` | `CURRENT` |
@@ -146,3 +146,13 @@ customer_artistry_fit = context derived, not persisted
 - Canon: `docs/planning/BLACKSMITH_R2_ITEM_ROLE_STAT_AND_INITIAL_FUNCTION_CATALOG_CANON_2026.md`
 - Spec: `docs/superpowers/specs/2026-08-06-item-role-stat-and-function-catalog-design.md`
 - Plan: `docs/superpowers/plans/2026-08-06-item-role-stat-and-function-catalog.md`
+
+<!-- BS-ITEM-20260806-05 CURRENT HUB ROUTING -->
+## 현재 9/10 작품 수치·강화 변동 Gate
+
+- Decision: `BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10`
+- 권위 정본: `docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md`
+- 조회 시트: `42_능력치_강화_참조표`
+- 핵심: 최초 역할 수치 `5·10·15`, 일반 강화 원수치 자동 변동 없음, 정밀강화 수치 패키지와 기능 재작업 상호배타, 통합 변동 장부 필수
+- 다음 Gate: 작품별 특수기능 제작·재작업 레시피와 테스트 프리셋 플레이테스트 계획
+- 제품 구현: `BLOCKED`

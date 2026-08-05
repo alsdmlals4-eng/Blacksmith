@@ -8,7 +8,7 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005 / 8/10`
+> 현재 승인 배치: `R2_BATCH_005 / 9/10`
 >
 > 제품 구현: `BLOCKED`
 
@@ -36,6 +36,7 @@
 - `BS-ITEM-20260806-02`: 중량 성능 예산 기억과 정밀강화 경량화·중량화 기회비용 — `R2_BATCH_005_6_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-ITEM-20260806-03`: 중량 성능 예산 1점 환산과 장비 역할 프리셋 자동 배분 — `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-ITEM-20260806-04`: 작품군 단일 역할 원수치와 최초 마법·유틸리티 기능 카탈로그 — `R2_BATCH_005_8_OF_10 / APPROVED_PENDING_MERGE`
+- `BS-ITEM-20260806-05`: 최초 제작 역할 수치 테스트 프리셋과 강화·특수기능 변동 소유권 — `R2_BATCH_005_9_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
@@ -303,3 +304,16 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 최초 유틸리티 기능: `ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY / TASK_INTEGRATION`.
 - 기능 용량은 기능을 자동 생성하지 않으며 일반 사건 성공률에 자동 합산하지 않는다.
 - 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-05 CURRENT AUTHORITY -->
+## 현재 작품 역할 수치·강화 변동 소유권
+
+- Decision: `BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10`
+- 통합 변동 장부: `GENERAL_ENHANCEMENT / STAT_METHOD / FUNCTION_REWORK`
+- 최초 역할 수치: `장비군 기준값 5·10·15 + 주재료 -2·0·+2 + 직접 단조 -1·0·+1`
+- 일반 강화: 강화 단계와 사건 성공률 `+1%p/단계`만 소유하고 작품 원수치를 자동 변경하지 않음
+- 정밀강화: 공격·방어·취급·예술성 `+5`, 경량화·중량화 `±5`, 환경 기능 재작업 중 한 패키지만 선택
+- 기능 재작업: `ADD / REPLACE / REBIND / REMOVE`, 정밀 이정표 소비, 실패 시 기존 기능 보존
+- Google Sheet 미러: `42_능력치_강화_참조표`
+- 밸런스: `BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED`
+- 제품 구현: `BLOCKED`

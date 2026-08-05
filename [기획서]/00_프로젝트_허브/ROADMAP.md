@@ -2,7 +2,7 @@
 
 ```yaml
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
-CURRENT_STAGE_STATUS: R2_CHECKPOINT_004_MAIN_CANON / R2_BATCH_005_ACTIVE_8_OF_10
+CURRENT_STAGE_STATUS: R2_CHECKPOINT_004_MAIN_CANON / R2_BATCH_005_ACTIVE_9_OF_10
 R2_CHECKPOINT_003: PR103 / CLOSURE_PR104 / CANON_AUDIT_PR105
 R2_CHECKPOINT_004: PR106 / CLOSURE_PR107 / CANON_AUDIT_PR108
 CURRENT_DECISIONS: BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-OPS-20260805-01
@@ -165,3 +165,13 @@ R8에서 핵심 재미·모바일 복잡도·정본·구형 문서·PR·CI를 �
 - 장비군 단일 역할 원수치와 최초 특수기능 6종을 정본화.
 - 다음 Gate: 특수기능 획득·강화 소유권과 최초 제작 원수치 분포 테스트 프리셋.
 - `PRODUCT_IMPLEMENTATION: BLOCKED`
+
+<!-- BS-ITEM-20260806-05 CURRENT HUB ROUTING -->
+## 현재 9/10 작품 수치·강화 변동 Gate
+
+- Decision: `BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10`
+- 권위 정본: `docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md`
+- 조회 시트: `42_능력치_강화_참조표`
+- 핵심: 최초 역할 수치 `5·10·15`, 일반 강화 원수치 자동 변동 없음, 정밀강화 수치 패키지와 기능 재작업 상호배타, 통합 변동 장부 필수
+- 다음 Gate: 작품별 특수기능 제작·재작업 레시피와 테스트 프리셋 플레이테스트 계획
+- 제품 구현: `BLOCKED`
