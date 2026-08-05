@@ -24,17 +24,34 @@ jobs:
           python-version: "3.12"
       - name: Apply canon synchronization
         run: python tools/apply_r2_weight_budget_memory.py
-      - name: Repair current mobile counter assertion
+      - name: Repair current validation assertions
         run: |
           python - <<'PY'
           from pathlib import Path
-          path = Path("tests/test_r2_mobile_customer_card_progressive_disclosure.py")
-          text = path.read_text(encoding="utf-8")
+          import re
+
+          mobile_path = Path("tests/test_r2_mobile_customer_card_progressive_disclosure.py")
+          mobile = mobile_path.read_text(encoding="utf-8")
           old = 'self.assertIn("현재 승인 카운터: `5/10`", active)'
           new = 'self.assertIn("현재 승인 카운터: `6/10`", active)'
-          if old not in text and new not in text:
+          if old not in mobile and new not in mobile:
               raise SystemExit("mobile current counter assertion not found")
-          path.write_text(text.replace(old, new), encoding="utf-8")
+          mobile_path.write_text(mobile.replace(old, new), encoding="utf-8")
+
+          core_path = Path("tests/check_project_core_alignment.py")
+          core = core_path.read_text(encoding="utf-8")
+          for relative in (
+              "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+              "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
+          ):
+              pattern = re.compile(
+                  rf'(\"{re.escape(relative)}\": \(.*?\")R2_BATCH_005_5_OF_10(\")',
+                  re.S,
+              )
+              core, count = pattern.subn(r'\1R2_BATCH_005_6_OF_10\2', core, count=1)
+              if count != 1 and "R2_BATCH_005_6_OF_10" not in core:
+                  raise SystemExit(f"core current token not repaired for {relative}")
+          core_path.write_text(core, encoding="utf-8")
           PY
       - name: Run focused contracts
         run: >-
