@@ -16,6 +16,7 @@ AGENTS = ROOT / "AGENTS.md"
 GRADE_CANON = ROOT / "docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md"
 ARTISTRY_CANON = ROOT / "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md"
 BENCHMARK_CANON = ROOT / "docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md"
+CLOSURE_CANON = ROOT / "docs/planning/BLACKSMITH_R2_CHECKPOINT_004_POSTMERGE_CLOSURE_2026.md"
 
 
 def load_json(path: Path) -> dict:
@@ -44,7 +45,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual("REFERENCE_ONLY_DO_NOT_MERGE_AS_UNIT", pr81["status"])
         self.assertEqual("REJECTED", pr81["whole_pr_merge"])
 
-    def test_checkpoint_004_is_closed_and_batch_005_is_active(self) -> None:
+    def test_checkpoint_004_closure_evidence_is_complete(self) -> None:
         registry = self.registry
         self.assertEqual(8, registry["schema_version"])
         self.assertEqual("R2_BATCH_005_ACTIVE_0_OF_10", registry["stage_status"])
@@ -64,20 +65,30 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual("227b2dabf0d98832811415156e72f65d601332a9", checkpoint_004["planning_exact_head"])
         self.assertEqual("789c73f38003f40dde5e9a99cd7dcb3ca03863f7", checkpoint_004["planning_merge_sha"])
         self.assertEqual(107, checkpoint_004["closure_pr"])
-        self.assertEqual("PENDING_EXPECTED_HEAD_MERGE", checkpoint_004["closure_status"])
+        self.assertEqual("1ad791123eaf6c727e964380814ffb69f1357bbf", checkpoint_004["closure_exact_head"])
+        self.assertEqual("7a46fa38586a42f268cd0432744203049649ddd5", checkpoint_004["closure_merge_sha"])
+        self.assertEqual("MERGED_MAIN_CANON", checkpoint_004["closure_status"])
         self.assertEqual("SQUASH", checkpoint_004["merge_method"])
         self.assertEqual("PASS", checkpoint_004["github_readback"])
         self.assertEqual("PASS", checkpoint_004["sheet_readback"])
+
+        green = registry["tdd_evidence"]["closure_green"]
+        self.assertEqual("1ad791123eaf6c727e964380814ffb69f1357bbf", green["commit"])
+        self.assertEqual(101, green["planning_first_run"])
+        self.assertEqual(579, green["base_run"])
+        self.assertEqual(1170, green["pr_validation_run"])
+        self.assertEqual("PASS", green["status"])
+
+        closure = CLOSURE_CANON.read_text(encoding="utf-8")
+        self.assertIn("CLOSURE_MERGED_PR107", closure)
+        self.assertIn("7a46fa38586a42f268cd0432744203049649ddd5", closure)
 
         closed = registry["closed_batch"]
         self.assertEqual("R2_BATCH_004", closed["id"])
         self.assertEqual(2, closed["approved_decisions"])
         self.assertEqual("2/10", closed["counter"])
         self.assertEqual("USER_APPROVED_EARLY_CHECKPOINT", closed["closure_reason"])
-        self.assertEqual(
-            ["BS-CRAFT-20260804-07", "BS-CRAFT-20260805-01"],
-            closed["decisions"],
-        )
+        self.assertEqual(["BS-CRAFT-20260804-07", "BS-CRAFT-20260805-01"], closed["decisions"])
 
         active = registry["active_batch"]
         self.assertEqual("R2_BATCH_005", active["id"])
@@ -103,10 +114,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual("USER_APPROVED_MERGED_PR106_R2_CHECKPOINT_004_MAIN_CANON", decision["status"])
         contract = decision["contract"]
         self.assertEqual(5, contract["grade_count"])
-        self.assertEqual(
-            ["CRAFT_NORMAL", "CRAFT_SUPERIOR", "CRAFT_FINE", "CRAFT_MASTERWORK", "CRAFT_LEGENDARY"],
-            contract["grade_ids"],
-        )
+        self.assertEqual(["CRAFT_NORMAL", "CRAFT_SUPERIOR", "CRAFT_FINE", "CRAFT_MASTERWORK", "CRAFT_LEGENDARY"], contract["grade_ids"])
         self.assertEqual(["보통", "우수", "명품", "걸작", "전설"], contract["korean_labels"])
         self.assertEqual("FIRST_DIRECT_FORGING_COMPLETION_ONLY", contract["determination_timing"])
         self.assertTrue(contract["immutable_for_same_item_uid"])
@@ -128,10 +136,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
 
     def test_artistry_is_unbounded_merged_main_canon(self) -> None:
         decision = self.decisions["BS-CRAFT-20260805-01"]
-        self.assertEqual(
-            "USER_APPROVED_REFINED_MERGED_PR106_R2_CHECKPOINT_004_MAIN_CANON",
-            decision["status"],
-        )
+        self.assertEqual("USER_APPROVED_REFINED_MERGED_PR106_R2_CHECKPOINT_004_MAIN_CANON", decision["status"])
         contract = decision["contract"]
         self.assertEqual("WEAPON_ITEM_STAT", contract["stat_role"])
         self.assertEqual("NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM", contract["domain"])
@@ -161,10 +166,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertTrue(contract["benchmarking_before_questions_and_recommendations"])
         self.assertTrue(contract["industry_comparison_required"])
         self.assertEqual(10, contract["maximum_approved_decisions_per_batch"])
-        self.assertEqual(
-            ["HIGH_RISK_CONFLICT", "SESSION_END", "LARGE_CANON_IMPACT"],
-            contract["early_checkpoint_triggers"],
-        )
+        self.assertEqual(["HIGH_RISK_CONFLICT", "SESSION_END", "LARGE_CANON_IMPACT"], contract["early_checkpoint_triggers"])
         self.assertTrue(contract["tdd_required_for_every_change"])
         self.assertEqual(["RED", "GREEN", "REFACTOR"], contract["tdd_cycle"])
 
@@ -179,10 +181,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         registry = load_json(LEGACY_REGISTRY)
         self.assertEqual(2, registry["schema_version"])
         artistry_history = {item["source"]: item for item in registry["artistry_model_history"]}
-        self.assertEqual(
-            "SUPERSEDED",
-            artistry_history["BS-CRAFT-20260805-01 initial bounded-stat draft"]["status"],
-        )
+        self.assertEqual("SUPERSEDED", artistry_history["BS-CRAFT-20260805-01 initial bounded-stat draft"]["status"])
         pr81 = registry["pull_requests"][0]
         self.assertEqual(81, pr81["number"])
         self.assertEqual("REJECTED", pr81["merge_unit_status"])
