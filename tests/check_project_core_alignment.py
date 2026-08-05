@@ -21,7 +21,7 @@ REQUIRED_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005 / 1/10",
+        "R2_BATCH_005 / 2/10",
         "BS-CRAFT-20260805-02",
         "MERGED_PR106",
         "7a46fa38586a42f268cd0432744203049649ddd5",
@@ -34,7 +34,7 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "R2_BATCH_005_1_OF_10",
+        "R2_BATCH_005_2_OF_10",
         "BS-CRAFT-20260805-02",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
         "예술성 27",
@@ -46,7 +46,7 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md": (
         "BS-CRAFT-20260805-02",
-        "R2_BATCH_005_1_OF_10",
+        "R2_BATCH_005_2_OF_10",
         "BASE_ITEM_DESIGN_AESTHETIC_TENDENCY",
         "ARTISTIC_FINISH",
         "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
@@ -78,35 +78,35 @@ REQUIRED_TEXT = {
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_1_OF_10",
-        "현재 승인 카운터: `1/10`",
+        "R2_BATCH_005_2_OF_10",
+        "현재 승인 카운터: `2/10`",
         "BS-CRAFT-20260805-02",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_1_OF_10",
+        "R2_BATCH_005_ACTIVE_2_OF_10",
         "BS-CRAFT-20260805-02",
         "첫 코어 버티컬 슬라이스",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_1_OF_10",
+        "R2_BATCH_005_ACTIVE_2_OF_10",
         "Artistry Generation·Growth·Valuation Gate",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_1_OF_10",
+        "R2_BATCH_005_ACTIVE_2_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 27",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_1_OF_10",
+        "R2_BATCH_005_2_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 생성·성장·가치 평가",
     ),
@@ -169,8 +169,8 @@ def check_r2(failures: list[str]) -> None:
         return
     expected = {
         "schema_version": 8,
-        "stage_status": "R2_BATCH_005_ACTIVE_1_OF_10",
-        "next_approval_counter": "1/10",
+        "stage_status": "R2_BATCH_005_ACTIVE_2_OF_10",
+        "next_approval_counter": "2/10",
         "product_implementation": "BLOCKED",
     }
     for key, value in expected.items():
@@ -198,10 +198,10 @@ def check_r2(failures: list[str]) -> None:
         failures.append("closed batch must be R2_BATCH_004 at 2/10")
 
     active = registry.get("active_batch", {})
-    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "1/10":
-        failures.append("active batch must be R2_BATCH_005 at 1/10")
-    if active.get("approved_decisions") != 1 or active.get("decisions") != ["BS-CRAFT-20260805-02"]:
-        failures.append("active batch 005 must contain only BS-CRAFT-20260805-02")
+    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "2/10":
+        failures.append("active batch must be R2_BATCH_005 at 2/10")
+    if active.get("approved_decisions") != 2 or active.get("decisions") != ["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01"]:
+        failures.append("active batch 005 must contain the two approved decisions")
     if active.get("maximum_size") != 10:
         failures.append("active batch maximum size must remain 10")
 
@@ -249,6 +249,17 @@ def check_r2(failures: list[str]) -> None:
         failures.append("same-source double counting must be false")
     if flow.get("exact_values") != "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED":
         failures.append("artistry exact values must remain test presets")
+
+
+    customer_fit = decisions.get("BS-CUSTOMER-20260805-01", {}).get("contract", {})
+    if customer_fit.get("base_stats") != ["STRENGTH", "DEXTERITY", "CONSTITUTION", "JUDGMENT"]:
+        failures.append("customer four-stat contract is incomplete")
+    if customer_fit.get("equipment_categories") != ["WEAPON", "SHIELD_OR_OFFHAND", "ARMOR", "ACCESSORY_OR_TOOL"]:
+        failures.append("equipment category contract is incomplete")
+    if customer_fit.get("customer_stats_directly_add_to_item_attack_or_defense") is not False:
+        failures.append("customer stats must not double-count raw item attack or defense")
+    if customer_fit.get("exact_values") != "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED":
+        failures.append("customer equipment exact values must remain test presets")
 
     alignment = registry.get("implementation_alignment", {})
     if alignment.get("historical_implemented_grade_model") != ["STANDARD", "GOOD", "PERFECT"]:

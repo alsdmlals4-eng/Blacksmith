@@ -8,7 +8,7 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005 / 1/10`
+> 현재 승인 배치: `R2_BATCH_005 / 2/10`
 >
 > 제품 구현: `BLOCKED`
 
@@ -29,6 +29,7 @@
 
 - `BS-WORLD-20260803-03`: 고객 개인 일정과 날짜 예고형 세계 일정 분리
 - `BS-CUSTOMER-20260803-02`: 위험도·능력치 `1~10`, 예상 성공률 `5~95%`
+- `BS-CUSTOMER-20260805-01`: 근력·기량·체력·판단력, 희소 무기·갑옷 적성, 마력 적성, 장비 적합성 — `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
@@ -159,7 +160,21 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 
 정확한 초기 분포·증감값·가격 구간·고객 요구치는 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
 
-## 6. 작품 이름과 수식어
+## 6. 고객 능력·장비 적합성
+
+```text
+근력 / 기량 / 체력 / 판단력 = 각 1~10
+무기 적성 / 갑옷 적성 = 희소 저장, 0~3
+마력 적성 = 0~10, 선택 친화 태그 최대 2개
+```
+
+작품 종류는 `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`로 분리한다. 공통 작품 능력치는 `WEIGHT / DURABILITY / HANDLING / ARTISTRY`, 조건부 능력치는 `ATTACK / DEFENSE / STABILITY / ENVIRONMENTAL_RESPONSE / SPECIAL_FUNCTIONS`다. 적용되지 않는 수치는 생략한다.
+
+현재 착용 조합에서 `TOTAL_WEIGHT / COMFORTABLE_LOAD / BALANCE_STATE / SPECIAL_FUNCTION_FIT`을 파생한다. 균형 상태는 `부적합 / 불안정 / 안정 / 능숙`이며, 적정 하중 이내에는 중량 페널티가 없고 초과 시 단계적으로 부담이 증가한다.
+
+고객 능력은 작품 공격·방어 값을 직접 다시 더하지 않는다. 작품 원수치는 UID에 남고 고객 능력·적성은 활용도·위험·예상 성공률을 조정한다. 정확한 공식은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+
+## 7. 작품 이름과 수식어
 
 ```text
 [등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어
@@ -167,7 +182,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 
 연대기 수식어를 누르면 같은 UID의 형성 사건·주요 타임라인·진화 계보·소유·손상·복원 기록을 읽기 전용 하단 패널에서 확인한다.
 
-## 7. 운영 계약
+## 8. 운영 계약
 
 - 질문·추천·새 시스템 설계 전 벤치마킹·현업 비교
 - 결과를 `채택 / 수정 채택 / 비채택 / 차별점 / 남은 불확실성`으로 기록
@@ -176,9 +191,9 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 작업마다 TDD: `RED → GREEN → REFACTOR`
 - 병합은 명시적 사용자 승인 필요
 
-현재 `R2_BATCH_005 / 1/10`이다.
+현재 `R2_BATCH_005 / 2/10`이다.
 
-## 8. 보호 조건
+## 9. 보호 조건
 
 - 일반 수식어 A·B 재도입 금지
 - 보조재료 슬롯 재도입 금지

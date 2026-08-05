@@ -2,7 +2,7 @@
 
 - 갱신: `2026-08-05 21:45 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_1_OF_10`
+- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_2_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
 - R2 체크포인트 004: `planning #106 / closure #107 / canon audit #108`
 - PR #106 exact head: `227b2dabf0d98832811415156e72f65d601332a9`
@@ -10,9 +10,9 @@
 - PR #107 exact head: `1ad791123eaf6c727e964380814ffb69f1357bbf`
 - PR #107 squash merge: `7a46fa38586a42f268cd0432744203049649ddd5`
 - 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
-- 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_1_OF_10`
+- 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_2_OF_10`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
-- 현재 승인 카운터: `1/10`
+- 현재 승인 카운터: `2/10`
 - 제품 구현: `BLOCKED`
 
 ## 현재 핵심
@@ -122,7 +122,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 
 - 질문·추천·설계 전 벤치마킹·현업 비교
 - 최대 배치 크기: `10`
-- 현재: `R2_BATCH_005 / 1/10`
+- 현재: `R2_BATCH_005 / 2/10`
 - 조기 체크포인트: `HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT`
 - 작업마다 TDD: `RED → GREEN → REFACTOR`
 - 병합은 명시적 사용자 승인 필요
@@ -169,3 +169,11 @@ RED:
 1. 증거 커밋 자체 exact-head CI·리뷰·Sheet readback
 2. Draft PR #109에 `1/10` 누적 유지
 3. 명시적 병합 승인 전 병합 금지
+
+## 고객 능력·장비 적합성 승인
+
+- Decision: `BS-CUSTOMER-20260805-01`
+- 고객: 근력·기량·체력·판단력 `1~10`, 희소 무기·갑옷 적성 `0~3`, 마력 적성 `0~10`
+- 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
+- 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
+- 상태: `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE / PRODUCT_IMPLEMENTATION_BLOCKED`

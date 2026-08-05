@@ -57,7 +57,7 @@ REQUIRED_ASSERTIONS = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005 / 1/10",
+        "R2_BATCH_005 / 2/10",
         "BS-CRAFT-20260804-07",
         "BS-CRAFT-20260805-01",
         "BS-CRAFT-20260805-02",
@@ -73,7 +73,7 @@ REQUIRED_ASSERTIONS = {
     ),
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
         '"schema_version":8',
-        '"stage_status":"R2_BATCH_005_ACTIVE_1_OF_10"',
+        '"stage_status":"R2_BATCH_005_ACTIVE_2_OF_10"',
         '"next_approval_counter":"1/10"',
         '"planning_pr":103',
         '"closure_pr":104',
@@ -102,7 +102,7 @@ REQUIRED_ASSERTIONS = {
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "R2_BATCH_005_1_OF_10",
+        "R2_BATCH_005_2_OF_10",
         "BS-CRAFT-20260805-02",
         "GRADE_AFFIX",
         "CATALYST_AFFIX",
@@ -133,7 +133,7 @@ REQUIRED_ASSERTIONS = {
     ),
     "docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md": (
         "BS-CRAFT-20260805-02",
-        "R2_BATCH_005_1_OF_10",
+        "R2_BATCH_005_2_OF_10",
         "BASE_ITEM_DESIGN_AESTHETIC_TENDENCY",
         "ARTISTIC_FINISH",
         "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
@@ -150,14 +150,14 @@ REQUIRED_ASSERTIONS = {
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_1_OF_10",
+        "R2_BATCH_005_ACTIVE_2_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 27",
         "고정 설계 최대치 없음",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_1_OF_10",
+        "R2_BATCH_005_2_OF_10",
         "현재 승인 카운터: `1/10`",
         "MERGED_PR106",
         "BS-CRAFT-20260805-02",
@@ -167,14 +167,14 @@ REQUIRED_ASSERTIONS = {
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_1_OF_10",
+        "R2_BATCH_005_ACTIVE_2_OF_10",
         "BS-CRAFT-20260805-02",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_1_OF_10",
+        "R2_BATCH_005_ACTIVE_2_OF_10",
         "Artistry Generation·Growth·Valuation Gate",
         "Three Affix Gate",
         "Benchmark Gate",
@@ -184,7 +184,7 @@ REQUIRED_ASSERTIONS = {
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_1_OF_10",
+        "R2_BATCH_005_2_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 생성·성장·가치 평가",
         "예술성 원수치 능력치",

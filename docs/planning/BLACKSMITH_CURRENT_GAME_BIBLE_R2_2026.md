@@ -1,8 +1,8 @@
 # [현재 정본] Blacksmith R2 통합 Game Bible
 
-- 상태: `CURRENT_CANON / R2_BATCH_005_1_OF_10`
+- 상태: `CURRENT_CANON / R2_BATCH_005_2_OF_10`
 - 체크포인트 004: `PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9 / MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / MAIN_CANON`
-- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-OPS-20260805-01`
+- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-OPS-20260805-01`
 - 제품 구현: `BLOCKED`
 
 ## 1. 프로젝트 약속
@@ -146,15 +146,23 @@ ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE
 
 연대기 수식어를 누르면 UID 기반 읽기 전용 상세를 연다. 연대기 사건은 예술성 원수치를 자동 변경하지 않는다.
 
-## 8. 고객·일정·콘텐츠
+## 8. 고객·장비 적합성·일정·콘텐츠
 
-고객 능력과 사건 위험도는 `1~10`, 예상 성공률은 `5~95%`다. 이 bounded 척도는 예술성과 다른 계약이다. 모든 콘텐츠는 고객 결과, 작품 UID 상태·유산, 다음 제작·강화·복원 판단을 남겨야 한다.
+고객 능력과 사건 위험도는 `1~10`, 예상 성공률은 `5~95%`다. 고객 기초 능력은 `근력 / 기량 / 체력 / 판단력`, 무기·갑옷 적성은 희소 `0~3`, 마력 적성은 `0~10`이다.
+
+```text
+WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL
+```
+
+작품 원수치는 작품 UID에 남고, 고객 능력·적성·중량 상태·특수기능 조건으로 고객·장비 적합성을 파생한다. `TOTAL_WEIGHT / COMFORTABLE_LOAD / BALANCE_STATE / SPECIAL_FUNCTION_FIT`은 착용 조합마다 다시 계산한다. 고객 능력치를 작품 공격·방어에 직접 중복 합산하지 않는다.
+
+모든 콘텐츠는 고객 결과, 작품 UID 상태·유산, 다음 제작·강화·복원 판단을 남겨야 한다. Decision: `BS-CUSTOMER-20260805-01`.
 
 ## 9. 운영 방법
 
 - 질문·추천·설계 전 벤치마킹·현업 비교
 - 승인 10건은 최대 배치 크기
-- 현재 `R2_BATCH_005_1_OF_10`
+- 현재 `R2_BATCH_005_2_OF_10`
 - 조기 체크포인트도 적대적 감사·CI·Sheet readback 필수
 - 모든 작업은 `RED → GREEN → REFACTOR`
 - 명시적 사용자 승인 전 병합 금지

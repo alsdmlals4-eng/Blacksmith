@@ -13,7 +13,7 @@
 
 | 질문 | 책임 원본 | 상태 |
 |---|---|---|
-| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_1_OF_10` |
+| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_2_OF_10` |
 | 현재 기계 정본 | `docs/planning/CURRENT_R2_CANON_REGISTRY.json` | `CURRENT / SCHEMA_8` |
 | 현재 통합 GDD | `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md` | `CURRENT` |
 | 현재 세션 상태 | `ACTIVE_CONTEXT.md` | `CURRENT` |
@@ -28,7 +28,7 @@ PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9
 MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7
 CLOSURE_PR107
 R2_BATCH_004_CLOSED_2_OF_10
-R2_BATCH_005_1_OF_10
+R2_BATCH_005_2_OF_10
 ```
 
 ## 분야별 책임 원본
@@ -37,7 +37,7 @@ R2_BATCH_005_1_OF_10
 |---|---|---|
 | 제작 등급 5단계 | `docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md` | `BS-CRAFT-20260804-07 / MERGED_PR106` |
 | 예술성 원수치 능력치 | `docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md` | `BS-CRAFT-20260805-01 / MERGED_PR106` |
-| 예술성 생성·성장·가치 평가 | `docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md` | `BS-CRAFT-20260805-02 / R2_BATCH_005_1_OF_10` |
+| 예술성 생성·성장·가치 평가 | `docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md` | `BS-CRAFT-20260805-02 / R2_BATCH_005_2_OF_10` |
 | 예술성 설계 명세 | `docs/superpowers/specs/2026-08-05-artistry-generation-growth-economy-design.md` | `BS-CRAFT-20260805-02 / APPROVED_INPUT` |
 | 예술성 구현 계획 | `docs/superpowers/plans/2026-08-05-artistry-generation-growth-economy.md` | `BS-CRAFT-20260805-02 / EXECUTION_PLAN` |
 | 아이템화 벤치마킹 | `docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md` | `BS-OPS-20260805-01` |
@@ -88,3 +88,11 @@ customer_artistry_fit = context derived, not persisted
 - TDD RED: Planning-first `109`
 - GREEN exact-head: `PENDING`
 - 제품 구현: `BLOCKED`
+
+## 고객 능력·장비 적합성 승인
+
+- Decision: `BS-CUSTOMER-20260805-01`
+- 고객: 근력·기량·체력·판단력 `1~10`, 희소 무기·갑옷 적성 `0~3`, 마력 적성 `0~10`
+- 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
+- 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
+- 상태: `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE / PRODUCT_IMPLEMENTATION_BLOCKED`
