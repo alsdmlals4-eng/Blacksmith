@@ -2,7 +2,7 @@
 
 - Decision ID: `BS-CUSTOMER-20260805-01`
 - 상태: `USER_APPROVED / R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE`
-- 정제 대상: `BS-CUSTOMER-20260803-01`, `BS-CUSTOMER-20260803-02`의 고객 능력 구조
+- 정제 대상: `BS-CONTENT-20260804-02`, `BS-CUSTOMER-20260803-01`, `BS-CUSTOMER-20260803-02`의 고객 능력 구조
 - 유지 계약: 사건 위험도 `1~10`, 고객 능력치 표시 `1~10`, 예상 성공률 `5~95%`·약 `10%` 단위, 장비 변경 전후 갱신
 - 제품 구현: `BLOCKED`
 
@@ -34,6 +34,8 @@ STRENGTH / DEXTERITY / CONSTITUTION / JUDGMENT
 - **판단력**: 위험 대응, 특수기능 사용 시점, 미확인 효과·저주·환경 대응
 
 근력은 작품 공격력을 직접 더하지 않고, 기량도 작품 공격·방어 능력치를 중복 생성하지 않는다.
+
+기존 방문고객 정본의 보조 능력치 식별자 `SKILL`은 현재 기초 능력치 식별자 `DEXTERITY`로 정제한다. 한국어 표시는 계속 `기량`을 사용한다.
 
 ## 3. 희소 적성
 
