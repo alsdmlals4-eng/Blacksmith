@@ -66,14 +66,14 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertIn("CLOSURE_MERGED_PR107", closure)
         self.assertIn("7a46fa38586a42f268cd0432744203049649ddd5", closure)
 
-    def test_batch_005_is_active_at_six_of_ten(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_6_OF_10", self.registry["stage_status"])
-        self.assertEqual("6/10", self.registry["next_approval_counter"])
+    def test_batch_005_is_active_at_seven_of_ten(self) -> None:
+        self.assertEqual("R2_BATCH_005_ACTIVE_7_OF_10", self.registry["stage_status"])
+        self.assertEqual("7/10", self.registry["next_approval_counter"])
         self.assertEqual("BLOCKED", self.registry["product_implementation"])
         active = self.registry["active_batch"]
         self.assertEqual("R2_BATCH_005", active["id"])
-        self.assertEqual(6, active["approved_decisions"])
-        self.assertEqual("6/10", active["counter"])
+        self.assertEqual(7, active["approved_decisions"])
+        self.assertEqual("7/10", active["counter"])
         self.assertEqual(
             [
                 "BS-CRAFT-20260805-02",
@@ -82,6 +82,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
                 "BS-CUSTOMER-20260806-01",
                 "BS-ITEM-20260806-01",
                 "BS-ITEM-20260806-02",
+                "BS-ITEM-20260806-03",
             ],
             active["decisions"],
         )
@@ -162,9 +163,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             self.assertIn("제품 구현: `BLOCKED`", text)
             self.assertNotIn("예술성 7/10", text)
             self.assertNotIn("예술성 1~10", text)
-        self.assertIn("R2_BATCH_005_6_OF_10", game_bible)
-        self.assertIn("R2_BATCH_005_6_OF_10", active)
-        self.assertIn("R2_BATCH_005 / 6/10", root)
+        self.assertIn("R2_BATCH_005_7_OF_10", game_bible)
+        self.assertIn("R2_BATCH_005_7_OF_10", active)
+        self.assertIn("R2_BATCH_005 / 7/10", root)
 
 
 if __name__ == "__main__":

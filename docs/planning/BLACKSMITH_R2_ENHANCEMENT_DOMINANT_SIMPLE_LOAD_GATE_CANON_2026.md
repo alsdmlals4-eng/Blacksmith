@@ -198,3 +198,13 @@ LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5
 - 성능 예산의 `BUDGET_RECOGNIZED_WEIGHT`는 고객 하중 판정에 사용하지 않는다.
 - `WITHIN_LIMIT / OVERWEIGHT` 이진 게이트와 강화 중심 성공률 공식은 유지한다.
 - 중량 예산은 일반 사건 성공률에 직접 더하지 않는다.
+
+<!-- REFINED_BY_BS-ITEM-20260806-03 -->
+## [현재 후속 정제] 중량 기반 원수치와 사건 성공률
+
+- `REFINED_BY_BS-ITEM-20260806-03`
+- `R2_BATCH_005_7_OF_10`
+- 중량 예산에서 나온 공격·방어·기능 용량은 작품 UID의 원수치다.
+- 일반 사건 성공률 공식에는 자동 합산하지 않는다.
+- 중량화 미리보기는 역할 프로필에 따라 공격 +5, 방어 +5, 또는 기능 용량 +1을 표시한다.
+- `WITHIN_LIMIT / OVERWEIGHT` 이진 하중 게이트는 유지한다.

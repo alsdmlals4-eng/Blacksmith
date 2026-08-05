@@ -21,7 +21,7 @@ REQUIRED_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005 / 6/10",
+        "R2_BATCH_005 / 7/10",
         "BS-CRAFT-20260805-02",
         "MERGED_PR106",
         "7a46fa38586a42f268cd0432744203049649ddd5",
@@ -34,7 +34,7 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "R2_BATCH_005_6_OF_10",
+        "R2_BATCH_005_7_OF_10",
         "BS-CRAFT-20260805-02",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
         "예술성 27",
@@ -86,6 +86,14 @@ REQUIRED_TEXT = {
         "PRECISION_ENHANCEMENT_METHOD",
         "제품 구현: `BLOCKED`",
     ),
+    "docs/planning/BLACKSMITH_R2_WEIGHT_BUDGET_CONVERSION_AND_ROLE_PRESETS_CANON_2026.md": (
+        "BS-ITEM-20260806-03",
+        "R2_BATCH_005_7_OF_10",
+        "1 ATTACK_BUDGET = ATTACK +5",
+        "1 DEFENSE_BUDGET = DEFENSE +5",
+        "ROLE_PRESET_AUTOMATIC_SINGLE_LANE",
+        "제품 구현: `BLOCKED`",
+    ),
     "docs/planning/BLACKSMITH_R2_CHECKPOINT_004_POSTMERGE_CLOSURE_2026.md": (
         "CLOSURE_MERGED_PR107",
         "1ad791123eaf6c727e964380814ffb69f1357bbf",
@@ -111,35 +119,35 @@ REQUIRED_TEXT = {
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_6_OF_10",
-        "현재 승인 카운터: `6/10`",
+        "R2_BATCH_005_7_OF_10",
+        "현재 승인 카운터: `7/10`",
         "BS-CRAFT-20260805-02",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_6_OF_10",
+        "R2_BATCH_005_ACTIVE_7_OF_10",
         "BS-CRAFT-20260805-02",
         "첫 코어 버티컬 슬라이스",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_6_OF_10",
+        "R2_BATCH_005_ACTIVE_7_OF_10",
         "Artistry Generation·Growth·Valuation Gate",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_6_OF_10",
+        "R2_BATCH_005_ACTIVE_7_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 27",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_6_OF_10",
+        "R2_BATCH_005_7_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 생성·성장·가치 평가",
     ),
@@ -201,8 +209,8 @@ def check_r2(failures: list[str]) -> None:
         return
     expected = {
         "schema_version": 8,
-        "stage_status": "R2_BATCH_005_ACTIVE_6_OF_10",
-        "next_approval_counter": "6/10",
+        "stage_status": "R2_BATCH_005_ACTIVE_7_OF_10",
+        "next_approval_counter": "7/10",
         "product_implementation": "BLOCKED",
     }
     for key, value in expected.items():
@@ -230,17 +238,18 @@ def check_r2(failures: list[str]) -> None:
         failures.append("closed batch must be R2_BATCH_004 at 2/10")
 
     active = registry.get("active_batch", {})
-    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "6/10":
-        failures.append("active batch must be R2_BATCH_005 at 6/10")
-    if active.get("approved_decisions") != 6 or active.get("decisions") != [
+    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "7/10":
+        failures.append("active batch must be R2_BATCH_005 at 7/10")
+    if active.get("approved_decisions") != 7 or active.get("decisions") != [
         "BS-CRAFT-20260805-02",
         "BS-CUSTOMER-20260805-01",
         "BS-UX-20260805-01",
         "BS-CUSTOMER-20260806-01",
         "BS-ITEM-20260806-01",
         "BS-ITEM-20260806-02",
+        "BS-ITEM-20260806-03",
     ]:
-        failures.append("active batch 005 must contain the six approved decisions")
+        failures.append("active batch 005 must contain the seven approved decisions")
     if active.get("maximum_size") != 10:
         failures.append("active batch maximum size must remain 10")
 
@@ -348,6 +357,25 @@ def check_r2(failures: list[str]) -> None:
         failures.append("artistry product implementation must remain blocked")
     if registry.get("legacy_reference_pull_request", {}).get("whole_pr_merge") != "REJECTED":
         failures.append("PR81 whole merge must remain rejected")
+
+    conversion = decisions.get("BS-ITEM-20260806-03", {}).get("contract", {})
+    if conversion.get("performance_budget_conversion_model") != "ROLE_PRESET_AUTOMATIC_SINGLE_LANE":
+        failures.append("weight budget conversion model is incorrect")
+    if conversion.get("point_conversion") != {
+        "ATTACK_BUDGET": {"output": "ATTACK", "per_budget_point": 5},
+        "DEFENSE_BUDGET": {"output": "DEFENSE", "per_budget_point": 5},
+        "MAGIC_FUNCTION_BUDGET": {"output": "MAGIC_FUNCTION_CAPACITY", "per_budget_point": 1},
+        "UTILITY_BUDGET": {"output": "UTILITY_CAPACITY", "per_budget_point": 1},
+    }:
+        failures.append("weight budget point conversion is incomplete")
+    if conversion.get("default_profile_by_equipment_group", {}).get("POLEARM") != "PHYSICAL_WEAPON":
+        failures.append("polearm default performance profile is missing")
+    if conversion.get("performance_profile_immutable_for_uid") is not True:
+        failures.append("performance profile must be immutable")
+    if conversion.get("player_free_allocation_ui") is not False:
+        failures.append("player free allocation UI must remain disabled")
+    if conversion.get("product_implementation") != "BLOCKED":
+        failures.append("weight budget conversion product implementation must remain blocked")
 
 
 def check_historical(failures: list[str]) -> None:

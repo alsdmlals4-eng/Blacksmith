@@ -2,7 +2,7 @@
 
 - 갱신: `2026-08-05 21:45 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_6_OF_10`
+- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_7_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
 - R2 체크포인트 004: `planning #106 / closure #107 / canon audit #108`
 - PR #106 exact head: `227b2dabf0d98832811415156e72f65d601332a9`
@@ -12,7 +12,7 @@
 - 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
 - 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_4_OF_10`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
-- 현재 승인 카운터: `6/10`
+- 현재 승인 카운터: `7/10`
 - 제품 구현: `BLOCKED`
 
 ## 현재 핵심
@@ -200,7 +200,7 @@ RED:
 
 ## BS-ITEM-20260806-01 현재 정제
 
-- 활성 배치: `R2_BATCH_005_6_OF_10`
+- 활성 배치: `R2_BATCH_005_7_OF_10`
 - 장비군 고정 기본 중량: `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`
 - 중량 전용 효과: `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`, 작품당 최대 하나
 - 자동 중량 변경 금지: 재료·제작 등급·예술성·원수치·일반 강화 단계
@@ -209,9 +209,18 @@ RED:
 
 ## BS-ITEM-20260806-02 — 중량 성능 예산 기억
 
-- 상태: `R2_BATCH_005_6_OF_10 / APPROVED_PENDING_MERGE`
+- 상태: `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
 - 최초 제작 중량 5당 초기 성능 예산 +1.
 - 경량화는 현재 중량만 감소하고 기존 예산을 유지.
 - 중량화는 과거 최고 인정 중량 초과분만 예산 추가.
 - 정밀강화 다섯 이정표에서 이정표당 중량 조정 최대 1회.
+- 제품 구현: `BLOCKED`.
+
+## BS-ITEM-20260806-03 — 중량 예산 환산과 역할 프리셋
+
+- 상태: `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
+- 공격·방어 예산 1점은 원수치 +5.
+- 마법 기능·유틸리티 예산 1점은 기능 용량 +1.
+- 기본 작품 역할 프로필은 최초 제작 시 확정되고 UID에서 불변.
+- 플레이어 자유 배분·무료 재분배·기본 혼합 프로필 없음.
 - 제품 구현: `BLOCKED`.

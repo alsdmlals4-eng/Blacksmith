@@ -1,8 +1,8 @@
 # [현재 정본] Blacksmith R2 통합 Game Bible
 
-- 상태: `CURRENT_CANON / R2_BATCH_005_6_OF_10`
+- 상태: `CURRENT_CANON / R2_BATCH_005_7_OF_10`
 - 체크포인트 004: `PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9 / MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / MAIN_CANON`
-- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-UX-20260805-01 / BS-CUSTOMER-20260806-01 / BS-ITEM-20260806-01 / BS-OPS-20260805-01`
+- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-UX-20260805-01 / BS-CUSTOMER-20260806-01 / BS-ITEM-20260806-01 / BS-OPS-20260805-01` / BS-ITEM-20260806-03
 - 제품 구현: `BLOCKED`
 
 ## 1. 프로젝트 약속
@@ -162,7 +162,7 @@ WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL
 
 - 질문·추천·설계 전 벤치마킹·현업 비교
 - 승인 10건은 최대 배치 크기
-- 현재 `R2_BATCH_005_5_OF_10`
+- 현재 `R2_BATCH_005_7_OF_10`
 - 조기 체크포인트도 적대적 감사·CI·Sheet readback 필수
 - 모든 작업은 `RED → GREEN → REFACTOR`
 - 명시적 사용자 승인 전 병합 금지
@@ -226,3 +226,15 @@ SWORD 10 / AXE 15 / BLUNT 15 / POLEARM 20 / RANGED 10 / SHIELD_SUPPORT 10
 - 공격·방어·마법 기능·유틸리티 중 한 예산점은 한 호환 축에만 배분한다.
 - 일반 사건 성공률 직접 보정과 다른 성장축 배율은 금지한다.
 - 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-03 -->
+## 중량 예산 환산
+
+```text
+공격 예산 1점 = 공격 +5
+방어 예산 1점 = 방어 +5
+마법 기능 예산 1점 = 마법 기능 용량 +1
+유틸리티 예산 1점 = 유틸리티 용량 +1
+```
+
+기본 작품 설계가 최초 제작 시 하나의 역할 프로필을 확정한다. 플레이어 자유 배분·제작 후 무료 재배분·기본 혼합 프로필은 없다. 새 최고 중량으로 얻는 예산은 기존 프로필을 따르고, 경량화는 이미 배분된 결과를 유지한다. 제품 구현: `BLOCKED`.

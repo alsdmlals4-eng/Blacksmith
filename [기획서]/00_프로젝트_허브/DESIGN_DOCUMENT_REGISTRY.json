@@ -7,8 +7,8 @@
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "current_checkpoint": "R2_CHECKPOINT_004_MAIN_CANON",
-  "current_batch": "R2_BATCH_005_6_OF_10",
-  "current_design_decision": "BS-ITEM-20260806-02",
+  "current_batch": "R2_BATCH_005_7_OF_10",
+  "current_design_decision": "BS-ITEM-20260806-03",
   "product_implementation": "BLOCKED",
   "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, Development Gates, and the focused current canon. Status-marked historical documents never override current R2 canon.",
   "documents": [
@@ -239,6 +239,24 @@
       "source_path": "../../docs/superpowers/plans/2026-08-06-weight-performance-budget-and-lightweight-tradeoff.md",
       "status": "ACTIVE",
       "source_role": "executed_canon_plan_for_bs_item_20260806_02"
+    },
+    {
+      "document_id": "weight-budget-conversion-role-presets-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_WEIGHT_BUDGET_CONVERSION_AND_ROLE_PRESETS_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_weight_budget_point_conversion_and_automatic_role_profile_contract"
+    },
+    {
+      "document_id": "weight-budget-conversion-role-presets-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-weight-budget-conversion-and-role-presets-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_item_20260806_03"
+    },
+    {
+      "document_id": "weight-budget-conversion-role-presets-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-weight-budget-conversion-and-role-presets.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_item_20260806_03"
     }
   ],
   "routing_guards": [

@@ -13,7 +13,7 @@
 
 | 질문 | 책임 원본 | 상태 |
 |---|---|---|
-| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_6_OF_10` |
+| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_7_OF_10` |
 | 현재 기계 정본 | `docs/planning/CURRENT_R2_CANON_REGISTRY.json` | `CURRENT / SCHEMA_8` |
 | 현재 통합 GDD | `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md` | `CURRENT` |
 | 현재 세션 상태 | `ACTIVE_CONTEXT.md` | `CURRENT` |
@@ -114,7 +114,7 @@ customer_artistry_fit = context derived, not persisted
 
 ## BS-ITEM-20260806-01 현재 정제
 
-- 활성 배치: `R2_BATCH_005_6_OF_10`
+- 활성 배치: `R2_BATCH_005_7_OF_10`
 - 장비군 고정 기본 중량: `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`
 - 중량 전용 효과: `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`, 작품당 최대 하나
 - 자동 중량 변경 금지: 재료·제작 등급·예술성·원수치·일반 강화 단계
@@ -123,9 +123,18 @@ customer_artistry_fit = context derived, not persisted
 
 ## BS-ITEM-20260806-02 — 중량 성능 예산 기억
 
-- 상태: `R2_BATCH_005_6_OF_10 / APPROVED_PENDING_MERGE`
+- 상태: `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
 - 최초 제작 중량 5당 초기 성능 예산 +1.
 - 경량화는 현재 중량만 감소하고 기존 예산을 유지.
 - 중량화는 과거 최고 인정 중량 초과분만 예산 추가.
 - 정밀강화 다섯 이정표에서 이정표당 중량 조정 최대 1회.
+- 제품 구현: `BLOCKED`.
+
+## BS-ITEM-20260806-03 — 중량 예산 환산과 역할 프리셋
+
+- 상태: `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
+- 공격·방어 예산 1점은 원수치 +5.
+- 마법 기능·유틸리티 예산 1점은 기능 용량 +1.
+- 기본 작품 역할 프로필은 최초 제작 시 확정되고 UID에서 불변.
+- 플레이어 자유 배분·무료 재분배·기본 혼합 프로필 없음.
 - 제품 구현: `BLOCKED`.

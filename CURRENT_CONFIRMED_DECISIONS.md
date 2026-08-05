@@ -8,7 +8,7 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005 / 6/10`
+> 현재 승인 배치: `R2_BATCH_005 / 7/10`
 >
 > 제품 구현: `BLOCKED`
 
@@ -34,6 +34,7 @@
 - `BS-CUSTOMER-20260806-01`: 강화 중심 단순 장비 판정과 근력 기반 최대 중량 게이트 — `R2_BATCH_005_4_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-ITEM-20260806-01`: 장비군 고정 기본 중량 포인트와 중량 전용 ±5 강화 효과 — `R2_BATCH_005_5_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-ITEM-20260806-02`: 중량 성능 예산 기억과 정밀강화 경량화·중량화 기회비용 — `R2_BATCH_005_6_OF_10 / APPROVED_PENDING_MERGE`
+- `BS-ITEM-20260806-03`: 중량 성능 예산 1점 환산과 장비 역할 프리셋 자동 배분 — `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
@@ -195,7 +196,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 작업마다 TDD: `RED → GREEN → REFACTOR`
 - 병합은 명시적 사용자 승인 필요
 
-현재 `R2_BATCH_005 / 6/10`이다.
+현재 `R2_BATCH_005 / 7/10`이다.
 
 ## 9. 보호 조건
 
@@ -268,3 +269,22 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 고객 배정은 현재 중량을 사용하고 성능 예산은 UID의 역대 최고 인정 중량을 사용한다. 중량 조정은 `+10/+20/+30/+40/+50` 정밀강화에서만 선택하며 이정표당 최대 한 번, 서로 다른 이정표에서는 누적할 수 있다. 같은 이정표의 반복·환불은 허용하지 않는다. 중량 성능 예산은 공격·방어·마법 기능·유틸리티 중 호환 축 하나에만 배분하며 일반 사건 성공률에는 직접 더하지 않는다.
 
 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-03 -->
+## 중량 성능 예산 환산과 자동 역할 프리셋
+
+```text
+1 ATTACK_BUDGET = ATTACK +5
+1 DEFENSE_BUDGET = DEFENSE +5
+1 MAGIC_FUNCTION_BUDGET = MAGIC_FUNCTION_CAPACITY +1
+1 UTILITY_BUDGET = UTILITY_CAPACITY +1
+```
+
+- 기본 작품 설계가 최초 제작 시 하나의 역할 프로필을 확정한다.
+- 무기는 기본 공격, 방어구·방패는 기본 방어, 도구·의복은 기본 유틸리티로 자동 배분한다.
+- 마법 장비 프로필은 승인된 기본 작품 설계에만 명시한다.
+- UID 생성 후 플레이어 자유 재배분과 별도 포인트 배분 UI는 없다.
+- 새 최고 중량 예산은 기존 프로필에 자동 배분한다.
+- 경량화는 기존 공격·방어·기능 용량을 유지한다.
+- 일반 사건 성공률에는 자동 합산하지 않는다.
+- 제품 구현: `BLOCKED`.
