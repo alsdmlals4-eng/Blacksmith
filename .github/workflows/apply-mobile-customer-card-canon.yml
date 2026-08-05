@@ -6,6 +6,7 @@ on:
       - agent/r2-artistry-generation-growth-economy-design
     paths:
       - "tools/apply_mobile_customer_card_canon.py"
+      - "tools/fix_mobile_customer_card_validator_tokens.py"
       - ".github/workflows/apply-mobile-customer-card-canon.yml"
 
 permissions:
@@ -22,7 +23,9 @@ jobs:
         with:
           python-version: "3.12"
       - name: Apply approved canon
-        run: python tools/apply_mobile_customer_card_canon.py
+        run: |
+          python tools/apply_mobile_customer_card_canon.py
+          python tools/fix_mobile_customer_card_validator_tokens.py
       - name: Run focused contracts
         run: |
           python -m unittest \
@@ -33,7 +36,7 @@ jobs:
             -v
           python tests/check_project_core_alignment.py
       - name: Remove one-shot automation files
-        run: rm tools/apply_mobile_customer_card_canon.py .github/workflows/apply-mobile-customer-card-canon.yml
+        run: rm tools/apply_mobile_customer_card_canon.py tools/fix_mobile_customer_card_validator_tokens.py .github/workflows/apply-mobile-customer-card-canon.yml
       - name: Commit GREEN canon synchronization
         run: |
           git config user.name "github-actions[bot]"
