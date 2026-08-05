@@ -46,7 +46,8 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 - 동일 UID에서 영구 고정
 - 제작 후 승격·강등 없음
 - 제작 등급은 예술성 최소값·상한·배율을 결정하지 않음
-- 과거 `STANDARD / GOOD / PERFECT`는 역사 구현이며 현재 5단계 제품 구현 PASS가 아님
+- 과거 `STANDARD / GOOD / PERFECT`는 역사 구현이며 현재 5단계 제품 구현이 아님
+- 과거 3단계 구현 PASS를 현재 5단계 제품 구현 PASS로 해석 금지
 
 ## 4. 예술성 원수치
 
