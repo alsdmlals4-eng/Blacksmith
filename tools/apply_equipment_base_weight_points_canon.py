@@ -478,6 +478,8 @@ for path in test_paths:
         '                "BS-CUSTOMER-20260806-01",\n            ],',
         '                "BS-CUSTOMER-20260806-01",\n                "BS-ITEM-20260806-01",\n            ],',
     )
+    if path.endswith("test_r2_enhancement_dominant_simple_load_gate.py"):
+    text = text.replace('self.assertIn("R2_BATCH_005 / 4/10", current)', 'self.assertIn("R2_BATCH_005 / 5/10", current)')
     if path.endswith("test_base_v942_planning_first_adoption.py"):
         text = text.replace('self.assertIn("R2_BATCH_005_4_OF_10", game_bible)', 'self.assertIn("R2_BATCH_005_5_OF_10", game_bible)')
         text = text.replace('self.assertIn("R2_BATCH_005_4_OF_10", active)', 'self.assertIn("R2_BATCH_005_5_OF_10", active)')
