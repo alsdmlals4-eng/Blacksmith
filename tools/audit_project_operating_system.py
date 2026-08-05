@@ -185,14 +185,14 @@ REQUIRED_ASSERTIONS = {
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_2_OF_10",
+        "R2_BATCH_005_ACTIVE_3_OF_10",
         "BS-CRAFT-20260805-02",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_2_OF_10",
+        "R2_BATCH_005_ACTIVE_3_OF_10",
         "Artistry Generation·Growth·Valuation Gate",
         "Three Affix Gate",
         "Benchmark Gate",
