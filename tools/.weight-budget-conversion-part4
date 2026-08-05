@@ -49,9 +49,9 @@
         failures.append("weight budget conversion product implementation must remain blocked")
 """
     if "weight budget conversion model is incorrect" not in text:
-        marker = "\n\ndef check_r1"
+        marker = "\n\ndef check_historical"
         if marker not in text:
-            raise RuntimeError("core alignment check_r1 marker missing")
+            raise RuntimeError("core alignment check_historical marker missing")
         text = text.replace(marker, check_block + marker, 1)
     write(path, text)
 
