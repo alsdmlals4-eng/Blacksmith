@@ -2,9 +2,11 @@
 
 > R2 체크포인트 003: PR `#103` / closure `#104` / canon audit `#105`
 >
-> R2_CHECKPOINT_004: planning PR `#106` / exact head `227b2dabf0d98832811415156e72f65d601332a9` / squash merge `789c73f38003f40dde5e9a99cd7dcb3ca03863f7` / closure PR `#107`
+> R2_CHECKPOINT_004 planning: PR `#106` / exact head `227b2dabf0d98832811415156e72f65d601332a9` / squash merge `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
 >
-> 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR106`
+> R2_CHECKPOINT_004 closure: PR `#107` / exact head `1ad791123eaf6c727e964380814ffb69f1357bbf` / squash merge `7a46fa38586a42f268cd0432744203049649ddd5`
+>
+> 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
 > 현재 승인 배치: `R2_BATCH_005 / 0/10`
 >
