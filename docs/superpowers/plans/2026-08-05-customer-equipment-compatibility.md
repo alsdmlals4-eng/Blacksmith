@@ -37,3 +37,13 @@ Write `BS-CUSTOMER-20260805-01` as `APPROVED_PENDING_MERGE` to current decisions
 - Re-run all required workflows from a user-authored exact head after structural synchronization.
 - Record observed run IDs and conclusions; do not treat `action_required` from an automation-authored head as a content test result.
 - Update PR evidence and Google Sheet locations only after the exact-head checks complete.
+
+## Observed GREEN evidence
+
+- exact head: `cdfd74d49525227cee3d15d8a38da07219e6ac32`
+- Planning-first `155`: PASS
+- Base `642`: PASS
+- PR validation `1233`: PASS
+- Python full contracts: PASS
+- Godot `4.7.1` headless: PASS
+- evidence-recording commit requires one final exact-head verification before Sheet/PR readback is declared complete.
