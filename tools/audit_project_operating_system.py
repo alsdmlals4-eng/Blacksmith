@@ -37,6 +37,7 @@ ACTIVE_DOCS = (
     "docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
     "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md",
     "docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md",
+    "docs/planning/BLACKSMITH_R2_CUSTOMER_CAPABILITY_AND_EQUIPMENT_COMPATIBILITY_CANON_2026.md",
     "[기획서]/00_프로젝트_허브/START_HERE.md",
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
@@ -74,7 +75,7 @@ REQUIRED_ASSERTIONS = {
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
         '"schema_version":8',
         '"stage_status":"R2_BATCH_005_ACTIVE_2_OF_10"',
-        '"next_approval_counter":"1/10"',
+        '"next_approval_counter":"2/10"',
         '"planning_pr":103',
         '"closure_pr":104',
         '"canon_audit_pr":105',
@@ -133,12 +134,20 @@ REQUIRED_ASSERTIONS = {
     ),
     "docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md": (
         "BS-CRAFT-20260805-02",
-        "R2_BATCH_005_2_OF_10",
+        "R2_BATCH_005_1_OF_10",
         "BASE_ITEM_DESIGN_AESTHETIC_TENDENCY",
         "ARTISTIC_FINISH",
         "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
         "IGNORE / SECONDARY / PRIMARY / REQUIREMENT",
         "구간별 한계 가치",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_CUSTOMER_CAPABILITY_AND_EQUIPMENT_COMPATIBILITY_CANON_2026.md": (
+        "BS-CUSTOMER-20260805-01",
+        "R2_BATCH_005_2_OF_10",
+        "근력 / 기량 / 체력 / 판단력",
+        "WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL",
+        "부적합 / 불안정 / 안정 / 능숙",
         "제품 구현: `BLOCKED`",
     ),
     "docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md": (
@@ -158,7 +167,7 @@ REQUIRED_ASSERTIONS = {
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
         "R2_BATCH_005_2_OF_10",
-        "현재 승인 카운터: `1/10`",
+        "현재 승인 카운터: `2/10`",
         "MERGED_PR106",
         "BS-CRAFT-20260805-02",
         "예술성 27",
@@ -214,7 +223,6 @@ STALE_ACTIVE_ASSERTIONS = {
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2_BATCH_004_2_OF_10",
         "현재 승인 카운터: `0/10`",
-        "현재 승인 카운터: `2/10`",
     ),
 }
 
