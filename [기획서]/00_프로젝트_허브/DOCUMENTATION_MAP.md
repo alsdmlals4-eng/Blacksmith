@@ -13,21 +13,30 @@
 
 | 질문 | 책임 원본 | 상태 |
 |---|---|---|
-| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_004_2_OF_10` |
+| 현재 승인 Decision | `CURRENT_CONFIRMED_DECISIONS.md` | `CURRENT / R2_BATCH_005_0_OF_10` |
 | 현재 기계 정본 | `docs/planning/CURRENT_R2_CANON_REGISTRY.json` | `CURRENT / SCHEMA_8` |
 | 현재 통합 GDD | `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md` | `CURRENT` |
 | 현재 세션 상태 | `ACTIVE_CONTEXT.md` | `CURRENT` |
 | Gate·순서 | `DEVELOPMENT_GATES.md` / `ROADMAP.md` | `CURRENT` |
 | 작업 규칙 | `AGENTS.md` | `CURRENT / BENCHMARK_TDD_CHECKPOINT` |
 
+## 체크포인트
+
+```text
+R2_CHECKPOINT_004
+PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9
+MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7
+CLOSURE_PR107
+R2_BATCH_004_CLOSED_2_OF_10
+R2_BATCH_005_0_OF_10
+```
+
 ## 분야별 책임 원본
 
 | 질문 | 책임 원본 | Decision |
 |---|---|---|
-| 제작 등급 5단계 | `docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md` | `BS-CRAFT-20260804-07` |
-| 예술성 원수치 능력치 | `docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md` | `BS-CRAFT-20260805-01` |
-| 예술성 승인 설계 | `docs/superpowers/specs/2026-08-05-artistry-unbounded-stat-design.md` | `BS-CRAFT-20260805-01` |
-| 예술성 구현 계획 | `docs/superpowers/plans/2026-08-05-artistry-unbounded-stat.md` | `BS-CRAFT-20260805-01` |
+| 제작 등급 5단계 | `docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md` | `BS-CRAFT-20260804-07 / MERGED_PR106` |
+| 예술성 원수치 능력치 | `docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md` | `BS-CRAFT-20260805-01 / MERGED_PR106` |
 | 아이템화 벤치마킹 | `docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md` | `BS-OPS-20260805-01` |
 | 세 수식어 | `docs/planning/BLACKSMITH_R2_THREE_AFFIX_SLOT_ARCHITECTURE_CANON_2026.md` | `BS-CRAFT-20260804-06` |
 | 정밀강화 | `docs/planning/BLACKSMITH_R2_PRECISION_ENHANCEMENT_METHOD_AND_CATALYST_STRUCTURE_CANON_2026.md` | `BS-CRAFT-20260804-04` |
@@ -40,11 +49,8 @@
 
 ```text
 [등급 수식어] 촉매 수식어 기본 작품명 - 연대기 수식어
-```
-
-```text
 제작 등급: 보통 / 우수 / 명품 / 걸작 / 전설
-예술성: 0 이상의 정수 / 고정 설계 최대치 없음 / 예술성 27
+예술성: 0 이상의 정수, 고정 설계 최대치 없음, 예술성 27 원수치 표기
 ```
 
 ## 구형 라우팅
@@ -53,18 +59,15 @@
 |---|---|---|
 | 4등급 제작 문서 | `[대체됨]` | 5등급 정본 |
 | `STANDARD / GOOD / PERFECT` runtime | `[역사 증거]` | 현재 제품 구현 아님 |
-| 초기 bounded 예술성 모델 | `[대체됨]` | 고정 상한 없는 원수치 예술성 정본 |
-| 예술성 named visual tiers | `[대체됨]` | 고정 상한 없는 원수치 예술성 정본 |
+| bounded 예술성·named visual tiers | `[대체됨]` | 고정 상한 없는 예술성 정본 |
 | R1 Game Bible | `[부분 대체됨]` | Current R2 Game Bible |
 | PR #81 | 전체 병합 `[폐기]` / 선별 `[보류]` | 별도 소형 PR |
 
 ## 배치·검증
 
-- `R2_BATCH_004: 2/10`
+- `R2_BATCH_004: CLOSED_MERGED_PR106 / 2/10`
+- `R2_BATCH_005: ACTIVE / 0/10`
 - 최대 배치 크기: 10
 - 조기 체크포인트: 고위험 충돌·세션 종료·정본 영향 큼
 - TDD: `RED → GREEN → REFACTOR`
-- 예술성 RED: commit `3b08260d`, Planning-first run `65`
-- GREEN candidate: Planning-first run `78`, Base run `545`
-- final exact-head: `PENDING`
 - 제품 구현: `BLOCKED`

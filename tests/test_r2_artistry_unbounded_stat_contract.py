@@ -18,18 +18,21 @@ class ArtistryUnboundedStatContractTests(unittest.TestCase):
     def test_registry_contract(self) -> None:
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         decisions = {item["id"]: item for item in registry["current_decisions"]}
-        contract = decisions["BS-CRAFT-20260805-01"]["contract"]
-
+        decision = decisions["BS-CRAFT-20260805-01"]
         self.assertEqual(
-            "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
-            contract["domain"],
+            "USER_APPROVED_REFINED_MERGED_PR106_R2_CHECKPOINT_004_MAIN_CANON",
+            decision["status"],
         )
+        contract = decision["contract"]
+        self.assertEqual("NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM", contract["domain"])
         self.assertEqual(0, contract["minimum"])
         self.assertIsNone(contract["fixed_design_maximum"])
         self.assertFalse(contract["decimals_allowed"])
         self.assertFalse(contract["denominator_display_allowed"])
         self.assertFalse(contract["named_tiers_exist"])
         self.assertFalse(contract["technical_storage_limit_is_content_maximum"])
+        self.assertFalse(contract["grade_sets_fixed_artistry_maximum"])
+        self.assertFalse(contract["zero_means_incomplete_or_unusable"])
         self.assertFalse(contract["combat_power_by_default"])
         self.assertFalse(contract["universal_affix_multiplier"])
 
@@ -40,11 +43,16 @@ class ArtistryUnboundedStatContractTests(unittest.TestCase):
             self.assertIn("고정 설계 최대치 없음", text, path.as_posix())
             self.assertNotIn("예술성 7/10", text, path.as_posix())
             self.assertNotIn("예술성 1~10", text, path.as_posix())
+            self.assertNotIn("APPROVED_PENDING_MERGE", text, path.as_posix())
 
-    def test_batch_and_product_boundary_are_unchanged(self) -> None:
+    def test_checkpoint_and_product_boundary(self) -> None:
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
-        self.assertEqual("R2_BATCH_004_ACTIVE_2_OF_10", registry["stage_status"])
-        self.assertEqual("2/10", registry["next_approval_counter"])
+        self.assertEqual("R2_BATCH_005_ACTIVE_0_OF_10", registry["stage_status"])
+        self.assertEqual("0/10", registry["next_approval_counter"])
+        self.assertEqual("R2_BATCH_004", registry["closed_batch"]["id"])
+        self.assertEqual("2/10", registry["closed_batch"]["counter"])
+        self.assertEqual("R2_BATCH_005", registry["active_batch"]["id"])
+        self.assertEqual("0/10", registry["active_batch"]["counter"])
         self.assertEqual("BLOCKED", registry["product_implementation"])
 
 

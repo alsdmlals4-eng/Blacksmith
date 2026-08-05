@@ -6,177 +6,139 @@
   "current_operating_decision": "BS-OPS-20260805-01",
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
-  "current_batch": "R2_BATCH_004_2_OF_10",
+  "current_checkpoint": "R2_CHECKPOINT_004_MAIN_CANON",
+  "current_batch": "R2_BATCH_005_0_OF_10",
   "product_implementation": "BLOCKED",
   "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, and Development Gates. Status-marked historical documents never override current R2 canon.",
-  "status_vocabulary": ["ACTIVE", "PARTIALLY_SUPERSEDED", "SUPERSEDED", "HISTORICAL_HOLD"],
   "documents": [
     {
       "document_id": "current-confirmed-decisions",
       "source_path": "../../CURRENT_CONFIRMED_DECISIONS.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "current_decision_entrypoint",
-      "publication_policy": "always_sync"
+      "source_role": "current_decision_entrypoint"
     },
     {
       "document_id": "current-r2-canon-registry",
       "source_path": "../../docs/planning/CURRENT_R2_CANON_REGISTRY.json",
-      "source_format": "json",
       "status": "ACTIVE",
-      "source_role": "current_machine_readable_canon",
-      "publication_policy": "always_sync"
+      "source_role": "current_machine_readable_canon"
     },
     {
       "document_id": "current-r2-game-bible",
       "source_path": "../../docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "current_integrated_game_design",
-      "publication_policy": "milestone_sync"
+      "source_role": "current_integrated_game_design"
+    },
+    {
+      "document_id": "checkpoint-004-postmerge-closure",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_CHECKPOINT_004_POSTMERGE_CLOSURE_2026.md",
+      "status": "ACTIVE",
+      "source_role": "checkpoint_merge_and_closure_evidence"
     },
     {
       "document_id": "five-tier-crafting-grade-canon",
       "source_path": "../../docs/planning/BLACKSMITH_R2_FIVE_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "current_crafting_grade_contract",
-      "publication_policy": "always_sync"
+      "source_role": "current_crafting_grade_contract"
     },
     {
       "document_id": "numeric-artistry-stat-canon",
       "source_path": "../../docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "current_unbounded_artistry_contract",
-      "publication_policy": "always_sync"
+      "source_role": "current_artistry_contract"
     },
     {
-      "document_id": "artistry-unbounded-stat-design",
+      "document_id": "artistry-unbounded-design",
       "source_path": "../../docs/superpowers/specs/2026-08-05-artistry-unbounded-stat-design.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "approved_artistry_refinement_spec",
-      "publication_policy": "always_sync"
+      "source_role": "approved_artistry_design_spec"
     },
     {
-      "document_id": "artistry-unbounded-stat-plan",
+      "document_id": "artistry-unbounded-plan",
       "source_path": "../../docs/superpowers/plans/2026-08-05-artistry-unbounded-stat.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "tdd_canon_sync_plan",
-      "publication_policy": "milestone_sync"
+      "source_role": "executed_artistry_implementation_plan"
     },
     {
       "document_id": "itemization-benchmark-20260805",
       "source_path": "../../docs/planning/BLACKSMITH_R2_ITEMIZATION_BENCHMARK_2026-08-05.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "benchmark_and_industry_comparison",
-      "publication_policy": "always_sync"
+      "source_role": "benchmark_and_industry_comparison"
     },
     {
       "document_id": "active-context",
       "source_path": "./ACTIVE_CONTEXT.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "current_session_context",
-      "publication_policy": "always_sync"
+      "source_role": "current_session_context"
     },
     {
       "document_id": "roadmap",
       "source_path": "./ROADMAP.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "current_stage_and_gate_plan",
-      "publication_policy": "always_sync"
+      "source_role": "current_stage_and_gate_plan"
     },
     {
       "document_id": "development-gates",
       "source_path": "./DEVELOPMENT_GATES.md",
-      "source_format": "markdown",
       "status": "ACTIVE",
-      "source_role": "current_planning_and_product_gates",
-      "publication_policy": "always_sync"
+      "source_role": "current_planning_and_product_gates"
     },
     {
       "document_id": "legacy-document-status-registry",
       "source_path": "../../docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json",
-      "source_format": "json",
       "status": "ACTIVE",
-      "source_role": "legacy_status_authority",
-      "publication_policy": "always_sync"
+      "source_role": "legacy_status_authority"
     },
     {
       "document_id": "four-tier-crafting-grade-draft",
       "source_path": "../../docs/planning/BLACKSMITH_R2_FOUR_TIER_CRAFTING_GRADE_AND_BIRTH_LEGEND_CANON_2026.md",
-      "source_format": "markdown",
       "status": "SUPERSEDED",
-      "source_role": "historical_approved_draft_before_five_tier_refinement",
-      "publication_policy": "source_only"
+      "source_role": "historical_approved_draft_before_five_tier_refinement"
     },
     {
       "document_id": "current-r1-canon-registry",
       "source_path": "../../docs/planning/CURRENT_R1_CANON_REGISTRY.json",
-      "source_format": "json",
       "status": "HISTORICAL_HOLD",
-      "source_role": "historical_r1_approved_baseline_r2_refined",
-      "publication_policy": "source_only"
-    },
-    {
-      "document_id": "blacksmith-game-bible",
-      "source_path": "../01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md",
-      "source_format": "markdown",
-      "status": "PARTIALLY_SUPERSEDED",
-      "source_role": "r1_historical_entrypoint",
-      "publication_policy": "source_only"
+      "source_role": "historical_r1_approved_baseline_r2_refined"
     },
     {
       "document_id": "project-core-contract",
       "source_path": "../../docs/superpowers/specs/2026-07-23-project-core-design.md",
-      "source_format": "markdown",
       "status": "HISTORICAL_HOLD",
-      "source_role": "historical_project_core_input",
-      "publication_policy": "source_only"
+      "source_role": "historical_project_core_input"
     },
     {
       "document_id": "equipment-lifecycle-poc-integrated-spec",
       "source_path": "../../docs/superpowers/specs/2026-07-23-equipment-lifecycle-poc-integrated-spec.md",
-      "source_format": "markdown",
       "status": "HISTORICAL_HOLD",
-      "source_role": "historical_poc_spec_no_implementation_authority",
-      "publication_policy": "source_only"
+      "source_role": "historical_poc_spec_no_implementation_authority"
     },
     {
       "document_id": "equipment-lifecycle-poc-implementation-plan",
       "source_path": "../../docs/superpowers/plans/2026-07-23-equipment-lifecycle-poc-implementation.md",
-      "source_format": "markdown",
       "status": "HISTORICAL_HOLD",
-      "source_role": "historical_implementation_plan",
-      "publication_policy": "source_only"
+      "source_role": "historical_implementation_plan"
     },
     {
       "document_id": "mvp-003-equipment-lifecycle-scope",
       "source_path": "../../docs/MVP-003_SCOPE.md",
-      "source_format": "markdown",
       "status": "HISTORICAL_HOLD",
-      "source_role": "historical_reference_implementation_scope",
-      "publication_policy": "source_only"
+      "source_role": "historical_reference_implementation_scope"
     },
     {
       "document_id": "final-adversarial-review-report",
       "source_path": "../../docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md",
-      "source_format": "markdown",
       "status": "SUPERSEDED",
-      "source_role": "historical_adversarial_review",
-      "publication_policy": "source_only"
+      "source_role": "historical_adversarial_review"
     }
   ],
   "routing_guards": [
     "ACTIVE_DOCUMENTS_OVERRIDE_STATUS_MARKED_HISTORICAL_DOCUMENTS",
+    "R2_CHECKPOINT_004_PR106_IS_MAIN_CANON",
+    "R2_BATCH_004_IS_CLOSED_AT_2_OF_10",
+    "R2_BATCH_005_STARTS_AT_0_OF_10",
     "FOUR_TIER_DRAFT_MUST_NOT_BE_ROUTED_AS_CURRENT",
-    "BOUNDED_ARTISTRY_MODEL_MUST_NOT_BE_ROUTED_AS_CURRENT",
-    "ARTISTRY_DENOMINATOR_OR_NAMED_TIERS_MUST_NOT_BE_ROUTED_AS_CURRENT",
+    "BOUNDED_OR_NAMED_ARTISTRY_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "GENERAL_AFFIX_A_B_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "AUXILIARY_MATERIAL_SLOT_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "PR81_MUST_NOT_BE_ROUTED_AS_MERGEABLE_CANON",

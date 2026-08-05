@@ -4,13 +4,15 @@
 
 ```yaml
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
-R2_STATUS: CHECKPOINT_003_CANON / BATCH_004_ACTIVE_2_OF_10
+R2_STATUS: R2_CHECKPOINT_004_MAIN_CANON / R2_BATCH_005_ACTIVE_0_OF_10
+R2_CHECKPOINT_004: PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9 / MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / CLOSURE_PR107
 CURRENT_AFFIX_SLOTS: GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 CURRENT_CRAFTING_GRADES: 보통 / 우수 / 명품 / 걸작 / 전설
 CURRENT_ARTISTRY: NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
+NEXT_APPROVAL_COUNTER: 0/10
 MAXIMUM_BATCH_SIZE: 10
 EARLY_CHECKPOINTS: HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT
-TDD_GATE: ARTISTRY_RED_GREEN_OBSERVED / FINAL_EXACT_HEAD_REVALIDATION
+TDD_GATE: RED_GREEN_OBSERVED / FINAL_EXACT_HEAD_REVALIDATION
 CODEX_IMPLEMENTATION_GATE: BLOCKED
 LATEST_RUNTIME_VALIDATION_GATE: NOT_RUN
 ANDROID_DEVICE_GATE: NOT_RUN
@@ -32,26 +34,25 @@ HUMAN_PLAYTEST_GATE: NOT_RUN
 - 예술성·촉매·연대기·명성으로 등급 변경 금지
 - 과거 4단계와 `STANDARD / GOOD / PERFECT`는 현재 제품 모델 아님
 
-판정: `USER_APPROVED / R2_BATCH_004_1_OF_10 / IMPLEMENTATION_BLOCKED`.
+판정: `USER_APPROVED / MERGED_PR106 / R2_CHECKPOINT_004_MAIN_CANON / IMPLEMENTATION_BLOCKED`.
 
 ## Artistry Gate
 
-대표 원수치 표기: `예술성 27`.
+```text
+예술성 27
+NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
+```
 
-- 무기·작품 능력치
-- `0` 이상의 정수, 소수점 없음
-- 고정 설계 최대치 없음
-- 예술성 단계명 없음
-- 분모·별점·백분율 표기 없음
+- `0` 이상의 정수, 고정 설계 최대치 없음
+- 소수점·분모·별점·백분율·단계명 없음
 - 다른 능력치와 함께 원수치 표시
-- 예술성 0은 미적 투자가 거의 없는 정상 기능품
+- 예술성 0은 정상 기능품
 - 제작 등급은 예술성 상한을 만들지 않음
-- 판매·감정 가치와 귀족·후원자·수집가·전시·증여·의식 수요에 기여 가능
+- 판매·감정·귀족·후원자·수집가·전시·증여·의식 수요에 기여 가능
 - 전투 성능을 기본적으로 올리지 않음
 - 범용 속성·수식어 배율 금지
-- 기술적 자료형 한계는 콘텐츠 최대치가 아님
 
-판정: `USER_APPROVED_REFINED / R2_BATCH_004_2_OF_10 / IMPLEMENTATION_BLOCKED`.
+판정: `USER_APPROVED_REFINED / MERGED_PR106 / R2_CHECKPOINT_004_MAIN_CANON / IMPLEMENTATION_BLOCKED`.
 
 ## Three Affix Gate
 
@@ -63,7 +64,6 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 - 등급 수식어는 제작 완료 시 생성·고정
 - 촉매·연대기는 최초 제작 시 `EMPTY`
 - 슬롯 간 생성·진화·덮어쓰기 금지
-- 예술성은 네 번째 수식어 슬롯이 아님
 - 일반 수식어 A·B 재도입 금지
 
 판정: `PASS / USER_APPROVED`.
@@ -105,24 +105,24 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 RED → GREEN → REFACTOR
 ```
 
-이번 예술성 정제 증거:
+예술성 정제:
 
-- RED commit `3b08260dcfeeb1d97900949b04395f15a29d74d0`
-- Planning-first run `65`: expected failure
-- Base run `532`: PASS
-- GREEN reference commit `a1859dd48003d17bd2c73a6eacf4aee0347a1406`
-- Planning-first run `88`: PASS
-- Base run `555`: PASS
-- PR validation run `1146`: PASS
-- Python full contracts: PASS
-- Godot 4.7.1: PASS
+- RED `3b08260dcfeeb1d97900949b04395f15a29d74d0`, Planning-first `65` expected failure
+- final exact head `227b2dabf0d98832811415156e72f65d601332a9`
+- Planning-first `91`, Base `558`, PR validation `1149`, Python full, Godot 4.7.1: `PASS`
 
-판정: `RED_GREEN_OBSERVED / FINAL_EVIDENCE_COMMIT_EXACT_HEAD_PENDING`.
+체크포인트 폐쇄:
+
+- RED `276f62d7477ab48521b814c17832ee24c4c6457f`
+- PR validation `1150`: `EXPECTED_FAILURE`
+- Base `559`: `PASS`
+- GREEN·final evidence: PR #107 exact-head 재검증 후 기록
 
 ## Batch·Checkpoint Gate
 
+- R2_BATCH_004: `CLOSED_MERGED_PR106 / 2_OF_10 / USER_APPROVED_EARLY_CHECKPOINT`
+- R2_BATCH_005: `ACTIVE / 0_OF_10`
 - 승인 10건은 최대 배치 크기
-- 현재 `2/10`
 - 고위험 충돌·세션 종료·정본 영향이 크면 조기 체크포인트 허용
 - 조기 체크포인트도 적대적 감사·PR·CI·Sheet readback 필수
 - 병합은 명시적 사용자 승인 필요
@@ -140,21 +140,20 @@ RED → GREEN → REFACTOR
 
 ## Historical Forging Validation Gate
 
-현재 제품 승인과 분리된 과거 reference implementation 회귀 기준선:
+다음은 현재 5등급·예술성 제품 구현 승인이 아니라 과거 reference implementation의 `[역사 증거]` 회귀 기준선이다.
 
 - `POC v0.6.4 · main · 2026.07.23.1`
 - 제작 모델 7건
 - 제작 결과 통합 6건
-- `STANDARD / GOOD / PERFECT`
-- `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
+- 과거 품질: `STANDARD / GOOD / PERFECT`
+- 정확 수치: `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
 
-판정: `HISTORICAL_EVIDENCE / AUTOMATED_REGRESSION_PASS_REQUIRED / NOT_CURRENT_FIVE_GRADE_PRODUCT_PASS`.
+판정: `HISTORICAL_EVIDENCE / AUTOMATED_REGRESSION_REQUIRED / NOT_CURRENT_PRODUCT_PASS`.
 
 ## Legacy Document Gate
 
 - `[현재 정본] / [부분 대체됨] / [대체됨] / [보류] / [폐기] / [역사 증거]`
-- 구형 4등급 문서 직접 `[대체됨]`
-- 초기 bounded 예술성 모델과 named tier `[대체됨]`
+- 구형 4등급·bounded 예술성·named tier `[대체됨]`
 - PR #81 `DO_NOT_MERGE_AS_UNIT`
 
 판정: `PASS_PENDING_FINAL_DRIFT_SCAN`.
