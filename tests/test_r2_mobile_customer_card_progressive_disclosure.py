@@ -19,14 +19,14 @@ class MobileCustomerCardProgressiveDisclosureContractTests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
-    def test_batch_005_contains_three_approved_decisions(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_3_OF_10", self.registry["stage_status"])
-        self.assertEqual("3/10", self.registry["next_approval_counter"])
+    def test_batch_005_contains_four_approved_decisions(self) -> None:
+        self.assertEqual("R2_BATCH_005_ACTIVE_4_OF_10", self.registry["stage_status"])
+        self.assertEqual("4/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
-        self.assertEqual(3, active["approved_decisions"])
-        self.assertEqual("3/10", active["counter"])
+        self.assertEqual(4, active["approved_decisions"])
+        self.assertEqual("4/10", active["counter"])
         self.assertEqual(
-            ["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01", "BS-UX-20260805-01"],
+            ["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01", "BS-UX-20260805-01", "BS-CUSTOMER-20260806-01"],
             active["decisions"],
         )
 
@@ -55,7 +55,7 @@ class MobileCustomerCardProgressiveDisclosureContractTests(unittest.TestCase):
             contract["default_layer"],
         )
         self.assertEqual(
-            ["BALANCE_STATE", "SUCCESS_FORECAST", "KEY_REASON_CHIPS", "SPECIAL_FUNCTION_RISK_WHEN_RELEVANT"],
+            ["LOAD_STATUS", "SUCCESS_FORECAST", "KEY_REASON_CHIPS", "SPECIAL_FUNCTION_RISK_WHEN_RELEVANT"],
             contract["post_equipment_layer"],
         )
         self.assertEqual(2, contract["reason_chip_minimum"])
@@ -67,8 +67,8 @@ class MobileCustomerCardProgressiveDisclosureContractTests(unittest.TestCase):
         self.assertEqual(
             [
                 "ALL_RELEVANT_PROFICIENCIES",
-                "TOTAL_WEIGHT_AND_COMFORTABLE_LOAD",
-                "SPECIAL_FUNCTION_FIT_FACTORS",
+                "TOTAL_WEIGHT_AND_MAXIMUM_LOAD",
+                "SPECIAL_FUNCTION_REQUIREMENTS",
                 "APPLICABLE_ITEM_STAT_BREAKDOWN",
             ],
             contract["detail_layer"],
@@ -102,9 +102,9 @@ class MobileCustomerCardProgressiveDisclosureContractTests(unittest.TestCase):
         ):
             self.assertIn(token, canon)
         self.assertIn("BS-UX-20260805-01", bible)
-        self.assertIn("R2_BATCH_005_3_OF_10", bible)
+        self.assertIn("R2_BATCH_005_4_OF_10", bible)
         self.assertIn("BS-UX-20260805-01", active)
-        self.assertIn("현재 승인 카운터: `3/10`", active)
+        self.assertIn("현재 승인 카운터: `4/10`", active)
 
 
 if __name__ == "__main__":

@@ -28,7 +28,7 @@ STRENGTH / DEXTERITY / CONSTITUTION / JUDGMENT
 
 각 능력치는 `1~10` 정수다.
 
-- **근력**: 총 장비 중량 감당, 무거운 작품 운용, 과중량 부담 완화
+- **근력**: 총 장비 중량의 최대 허용치 결정
 - **기량**: 전반적 장비 운용, 공격·방어 성능 활용, 오용·내구도 낭비 감소
 - **체력**: 장시간 일정, 부상·피로·환경 위험, 중량 부담의 지속 영향
 - **판단력**: 위험 대응, 특수기능 사용 시점, 미확인 효과·저주·환경 대응
@@ -107,7 +107,9 @@ ATTACK / DEFENSE / STABILITY / ENVIRONMENTAL_RESPONSE / SPECIAL_FUNCTIONS
 
 기존 작품 원수치의 소유권은 작품 UID에 남는다. 고객 능력은 작품 수치를 복제하지 않고 **활용도·적합도·위험**을 파생한다.
 
-## 6. 파생 장비 상태
+## 6. [역사적 계약] 파생 장비 상태
+
+`HISTORICAL_SUPERSEDED`: 아래 `COMFORTABLE_LOAD / BALANCE_STATE`와 단계적 초과 페널티는 `BS-CUSTOMER-20260806-01` 이전 계약이다.
 
 ```text
 총 중량 / 적정 하중 / 균형 상태 / 특수기능 적합도
@@ -180,3 +182,19 @@ UNSUITABLE / UNSTABLE / STABLE / SKILLED
 ## 표시 구조 후속 정제
 
 고객 능력·적성·장비 적합성 데이터 계약은 유지한다. 모바일 기본 공개 범위와 상세 진입 방식은 `BS-UX-20260805-01` 및 `BLACKSMITH_R2_MOBILE_CUSTOMER_CARD_PROGRESSIVE_DISCLOSURE_CANON_2026.md`가 정제한다.
+
+<!-- REFINED_BY_BS-CUSTOMER-20260806-01 -->
+## 단순 최대 중량 후속 정제
+
+현재 중량 계약은 다음과 같다.
+
+```text
+TOTAL_WEIGHT / MAXIMUM_LOAD / LOAD_STATUS
+MAXIMUM_LOAD = STRENGTH × 10 WEIGHT_POINT
+WITHIN_LIMIT / OVERWEIGHT
+```
+
+- 한도 이내: 보너스·페널티 없음
+- 중량 초과 시 배정 불가
+- `COMFORTABLE_LOAD / BALANCE_STATE / ESCALATING_OVERLOAD_PENALTY`: `HISTORICAL_SUPERSEDED`
+- 성공률은 강화가 주효과이며 고객 능력·적성은 작은 보조 보정만 제공한다.

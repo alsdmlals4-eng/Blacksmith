@@ -1,8 +1,8 @@
 # [현재 정본] Blacksmith R2 통합 Game Bible
 
-- 상태: `CURRENT_CANON / R2_BATCH_005_3_OF_10`
+- 상태: `CURRENT_CANON / R2_BATCH_005_4_OF_10`
 - 체크포인트 004: `PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9 / MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / MAIN_CANON`
-- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-UX-20260805-01 / BS-OPS-20260805-01`
+- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-UX-20260805-01 / BS-CUSTOMER-20260806-01 / BS-OPS-20260805-01`
 - 제품 구현: `BLOCKED`
 
 ## 1. 프로젝트 약속
@@ -182,3 +182,24 @@ WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL
 ```
 
 고객 카드의 목적은 고객 RPG 육성이 아니라 작품을 누구에게 맡길지 설명 가능한 판단을 제공하는 것이다. 기본 카드에는 4능력치와 관련 적성만 표시한다. 작품 선택 후 균형·예상 성공률·핵심 원인 2~4개를 즉시 보여주며, 전체 관련 적성·총 중량·적정 하중·특수기능 근거는 상세 보기로 보낸다. 핵심 상태는 색상만으로 전달하지 않으며 모바일 상호작용 목표는 최소 `48dp`다. 제품 구현: `BLOCKED`.
+
+<!-- BS-CUSTOMER-20260806-01 -->
+## 강화 중심 보조 판정
+
+강화가 주효과다. 고객 능력치·적성·작품 원수치는 작품 배정을 설명하는 보조 요소만 담당한다.
+
+```text
+MAXIMUM_LOAD = STRENGTH × 10 WEIGHT_POINT
+WITHIN_LIMIT → 보너스·페널티 없음
+OVERWEIGHT → 중량 초과 시 배정 불가
+```
+
+```text
+최종 성공률
+= 위험도 기본 성공률
++ 강화 레벨(+1당 +1%p)
++ 관련 능력 충족(+5%p)
++ 적성 보정(-10/0/+5/+10%p)
+```
+
+공격·방어·조작성·예술성은 모든 고객 사건에 자동 합산하지 않는다. 제품 구현: `BLOCKED`.

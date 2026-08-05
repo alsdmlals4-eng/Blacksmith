@@ -17,14 +17,14 @@ class CustomerEquipmentCompatibilityContractTests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
-    def test_batch_005_contains_three_approved_decisions(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_3_OF_10", self.registry["stage_status"])
-        self.assertEqual("3/10", self.registry["next_approval_counter"])
+    def test_batch_005_contains_four_approved_decisions(self) -> None:
+        self.assertEqual("R2_BATCH_005_ACTIVE_4_OF_10", self.registry["stage_status"])
+        self.assertEqual("4/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
-        self.assertEqual(3, active["approved_decisions"])
-        self.assertEqual("3/10", active["counter"])
+        self.assertEqual(4, active["approved_decisions"])
+        self.assertEqual("4/10", active["counter"])
         self.assertEqual(
-            ["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01", "BS-UX-20260805-01"],
+            ["BS-CRAFT-20260805-02", "BS-CUSTOMER-20260805-01", "BS-UX-20260805-01", "BS-CUSTOMER-20260806-01"],
             active["decisions"],
         )
 

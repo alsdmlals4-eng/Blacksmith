@@ -7,8 +7,8 @@
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "current_checkpoint": "R2_CHECKPOINT_004_MAIN_CANON",
-  "current_batch": "R2_BATCH_005_3_OF_10",
-  "current_design_decision": "BS-UX-20260805-01",
+  "current_batch": "R2_BATCH_005_4_OF_10",
+  "current_design_decision": "BS-CUSTOMER-20260806-01",
   "product_implementation": "BLOCKED",
   "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, Development Gates, and the focused current canon. Status-marked historical documents never override current R2 canon.",
   "documents": [
@@ -53,6 +53,24 @@
       "source_path": "../../docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md",
       "status": "ACTIVE",
       "source_role": "current_artistry_generation_growth_and_valuation_contract"
+    },
+    {
+      "document_id": "enhancement-dominant-simple-load-gate-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_binary_load_and_enhancement_dominant_forecast_contract"
+    },
+    {
+      "document_id": "enhancement-dominant-simple-load-gate-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-enhancement-dominant-simple-load-gate-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_customer_20260806_01"
+    },
+    {
+      "document_id": "enhancement-dominant-simple-load-gate-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-enhancement-dominant-simple-load-gate.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_customer_20260806_01"
     },
     {
       "document_id": "customer-capability-equipment-compatibility-canon",
@@ -194,11 +212,14 @@
     "ARTISTRY_STAT_REMAINS_NON_NEGATIVE_INTEGER_WITHOUT_FIXED_DESIGN_MAXIMUM",
     "CUSTOMER_EQUIPMENT_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
     "CUSTOMER_PROFICIENCIES_ARE_SPARSE_AND_ITEM_RAW_STATS_REMAIN_ITEM_OWNED",
+    "FOUR_STATE_LOAD_BALANCE_AND_ESCALATING_OVERLOAD_MUST_NOT_BE_ROUTED_AS_CURRENT",
+    "ENHANCEMENT_IS_PRIMARY_CONTROLLABLE_CUSTOMER_SUCCESS_MODIFIER",
+    "CURRENT_LOAD_MODEL_IS_BINARY_MAXIMUM_LOAD_GATE",
+    "R2_BATCH_005_IS_ACTIVE_AT_4_OF_10_WITH_BS_CRAFT_20260805_02_BS_CUSTOMER_20260805_01_BS_UX_20260805_01_AND_BS_CUSTOMER_20260806_01",
     "CUSTOMER_BASE_STATS_ARE_STRENGTH_DEXTERITY_CONSTITUTION_JUDGMENT_1_TO_10",
     "MOBILE_CUSTOMER_CARD_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
     "CRITICAL_CUSTOMER_CARD_INFORMATION_MUST_NOT_BE_COLOR_LONG_PRESS_OR_HOVER_ONLY",
     "MOBILE_CUSTOMER_CARD_USES_THREE_LAYER_PROGRESSIVE_DISCLOSURE",
-    "R2_BATCH_005_IS_ACTIVE_AT_3_OF_10_WITH_BS_CRAFT_20260805_02_BS_CUSTOMER_20260805_01_AND_BS_UX_20260805_01",
     "ARTISTRY_GROWTH_REQUIRES_APPROVED_SOURCE_AND_UID_PROVENANCE",
     "ARTISTRY_VALUE_IS_CONTEXT_DERIVED_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
     "ARTISTRY_CUSTOMER_FIT_IS_CONTEXT_DERIVED_NOT_PERSISTED",

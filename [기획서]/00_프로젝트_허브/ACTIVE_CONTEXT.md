@@ -2,7 +2,7 @@
 
 - 갱신: `2026-08-05 21:45 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_3_OF_10`
+- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_4_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
 - R2 체크포인트 004: `planning #106 / closure #107 / canon audit #108`
 - PR #106 exact head: `227b2dabf0d98832811415156e72f65d601332a9`
@@ -10,9 +10,9 @@
 - PR #107 exact head: `1ad791123eaf6c727e964380814ffb69f1357bbf`
 - PR #107 squash merge: `7a46fa38586a42f268cd0432744203049649ddd5`
 - 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
-- 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_2_OF_10`
+- 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_4_OF_10`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
-- 현재 승인 카운터: `3/10`
+- 현재 승인 카운터: `4/10`
 - 제품 구현: `BLOCKED`
 
 ## 현재 핵심
@@ -176,7 +176,7 @@ RED:
 - 고객: 근력·기량·체력·판단력 `1~10`, 희소 무기·갑옷 적성 `0~3`, 마력 적성 `0~10`
 - 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
 - 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
-- 상태: `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE / PRODUCT_IMPLEMENTATION_BLOCKED`
+- 상태: `R2_BATCH_005_4_OF_10 / APPROVED_PENDING_MERGE / PRODUCT_IMPLEMENTATION_BLOCKED`
 
 <!-- BS-UX-20260805-01 -->
 ## 현재 UX 승인
@@ -186,4 +186,14 @@ RED:
 - 장비 선택 후 균형·성공률·핵심 원인 2~4개 표시
 - 전체 적성 행렬 기본 노출 금지
 - 모바일 최소 `48dp`, 색상·길게 누르기·호버 단독 핵심 정보 금지
+- 제품 구현: `BLOCKED`
+
+<!-- BS-CUSTOMER-20260806-01 -->
+### 강화 중심 단순 장비 판정
+
+- Decision: `BS-CUSTOMER-20260806-01` / `R2_BATCH_005_4_OF_10`
+- 최대 중량: `STRENGTH × 10 WEIGHT_POINT`
+- 상태: `WITHIN_LIMIT / OVERWEIGHT`; 초과 시 배정 불가
+- 성공률: 강화 레벨이 주효과, 고객 능력·적성은 작은 보조 보정
+- 정본: `docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md`
 - 제품 구현: `BLOCKED`
