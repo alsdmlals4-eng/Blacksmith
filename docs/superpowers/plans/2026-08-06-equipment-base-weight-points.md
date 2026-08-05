@@ -93,10 +93,21 @@
 - Consumes: the final exact branch head and observed CI results.
 - Produces: read-back evidence for the same Decision ID, table, exact head, and verification status.
 
-- [ ] Run focused contracts and project-core alignment.
+- [x] Run focused contracts and project-core alignment.
 - [ ] Run Planning-first, Base adoption, Python full contracts, operating audit, and Godot 4.7.1 headless validation.
 - [ ] Confirm `data/crafting/weapon_bases.json` and all protected product paths are unchanged.
 - [ ] Confirm PR comments and unresolved review threads remain zero.
 - [ ] Write the Decision and exact head to the six Sheet authority locations.
 - [ ] Read back every written range.
 - [ ] Update PR #109 while keeping it Draft and unmerged.
+
+## Intermediate GREEN evidence
+
+- RED: commit `eca4f5d5ec203db9e83fbe7d47f4b5bb8e3b3fff`, Planning-first `190` failed because Decision `BS-ITEM-20260806-01`, batch 5/10, the table, and refinements did not yet exist.
+- First GREEN application exposed one stale current-batch assertion in the previous simple-load test after the other 39 focused contracts passed.
+- The synchronizer repair was limited to that assertion; a subsequent indentation failure was traced to the inserted repair line and corrected without changing the design contract.
+- GREEN synchronization commit: `4bb12ec5fea4eb2cf86c841245d692115c558457`.
+- Focused contracts: `40 tests PASS`.
+- Project core alignment: `PASS`.
+- One-shot synchronizer and repair workflows were removed from the GREEN result.
+- This user-authored evidence commit triggers final exact-head Planning-first, Base adoption, Python/operating-audit, and Godot validation.
