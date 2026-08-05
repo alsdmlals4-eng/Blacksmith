@@ -138,6 +138,18 @@ RED → GREEN → REFACTOR
 
 판정: `CONTRACT_APPROVED / EXECUTION_NOT_RUN`.
 
+## Historical Forging Validation Gate
+
+다음은 현재 5등급·예술성 제품 구현 승인이 아니라 과거 reference implementation의 `[역사 증거]` 회귀 기준선이다.
+
+- `POC v0.6.4 · main · 2026.07.23.1`
+- 제작 모델 7건
+- 제작 결과 통합 6건
+- 과거 품질: `STANDARD / GOOD / PERFECT`
+- 정확 수치: `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
+
+판정: `HISTORICAL_EVIDENCE / AUTOMATED_REGRESSION_REQUIRED / NOT_CURRENT_PRODUCT_PASS`.
+
 ## Legacy Document Gate
 
 - `[현재 정본] / [부분 대체됨] / [대체됨] / [보류] / [폐기] / [역사 증거]`
