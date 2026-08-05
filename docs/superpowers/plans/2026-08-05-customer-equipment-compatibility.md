@@ -26,6 +26,7 @@
 - Confirm raw item power remains owned by the item UID and is not counted again through customer stats or proficiency.
 - Resolve the inherited visitor-archetype identifier drift by refining `SKILL` to the canonical `DEXTERITY` identifier while retaining the Korean label `기량`.
 - Restore batch-specific validation semantics: the first artistry Decision keeps its historical `1/10` marker while active authority documents require the current `2/10` counter, without contradictory forbidden tokens.
+- Apply the same batch-specific semantics to the Base operating audit and add the new customer/equipment canon to its active authority assertions.
 
 ## Task 4 — Sheet sync
 
