@@ -13,6 +13,7 @@ on:
       - "tests/test_r2_weight_performance_budget_and_lightweight_tradeoff.py"
       - "tests/test_r2_weight_budget_conversion_and_role_presets.py"
       - "tests/test_r2_item_role_stat_and_initial_function_catalog.py"
+      - "tests/test_r2_initial_role_stat_preset_and_enhancement_function_ownership.py"
       - ".github/workflows/validate-base-v942-planning-first-adoption.yml"
 
 permissions:
@@ -37,4 +38,5 @@ jobs:
           tests.test_r2_weight_performance_budget_and_lightweight_tradeoff
           tests.test_r2_weight_budget_conversion_and_role_presets
           tests.test_r2_item_role_stat_and_initial_function_catalog
+          tests.test_r2_initial_role_stat_preset_and_enhancement_function_ownership
           -v
