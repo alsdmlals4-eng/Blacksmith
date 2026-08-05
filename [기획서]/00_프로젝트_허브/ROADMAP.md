@@ -2,10 +2,11 @@
 
 ```yaml
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
-CURRENT_STAGE_STATUS: R2_CHECKPOINT_003_CANON / R2_BATCH_004_ACTIVE_2_OF_10
+CURRENT_STAGE_STATUS: R2_CHECKPOINT_004_MAIN_CANON / R2_BATCH_005_ACTIVE_0_OF_10
 R2_CHECKPOINT_003: PR103 / CLOSURE_PR104 / CANON_AUDIT_PR105
+R2_CHECKPOINT_004: PR106 / CLOSURE_PR107
 CURRENT_DECISIONS: BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-OPS-20260805-01
-NEXT_APPROVAL_COUNTER: 2/10
+NEXT_APPROVAL_COUNTER: 0/10
 MAXIMUM_BATCH_SIZE: 10
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
@@ -16,46 +17,42 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 
 ## R2 — 현재 기획
 
-병합·승인 기반:
+체크포인트 004 main canon:
 
-- 강화 결과와 멈춤·추가 도전
-- 고객 능력·위험도·예상 성공률
-- 개인 일정·세계 일정 분리
+- 제작 등급: `[보통] → [우수] → [명품] → [걸작] → [전설]`
+- 제작 등급은 출생 기술 완성도이며 동일 UID에서 고정
+- 예술성은 `예술성 27`처럼 표시하는 고정 설계 최대치 없는 수치형 작품 능력치
+- 예술성 0은 정상 기능품
+- 제작 등급은 예술성 상한을 만들지 않음
 - `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
-- UID 기반 작품 생애·연대기 상세
-- 예술성 원수치 능력치
-
-현재 Draft PR #106 누적:
+- 벤치마킹·현업 비교, 조기 체크포인트, 작업마다 TDD
 
 ```text
-[보통] → [우수] → [명품] → [걸작] → [전설]
-예술성 27
+R2_CHECKPOINT_004
+PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9
+MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7
+R2_BATCH_004_CLOSED_2_OF_10
+R2_BATCH_005_ACTIVE_0_OF_10
 ```
 
-- 제작 등급은 출생 완성도, 동일 UID 고정
-- 예술성은 `0` 이상의 정수이며 고정 설계 최대치가 없음
-- 예술성은 단계명·분모 없이 다른 무기 능력치와 함께 표시
-- 제작 등급은 예술성 상한을 만들지 않음
-- 예술성은 전투 성능과 모든 수식어를 일괄 증폭하지 않음
-- 벤치마킹·현업 비교 필수
-- 승인 10건은 최대 배치 크기
-- `HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT` 조기 체크포인트
-- 작업마다 `RED → GREEN → REFACTOR` TDD
+### 다음 승인 후보 — `0/10`
 
-### 다음 승인 후보 — `2/10`
+1. 예술성 초기 분포와 제작 결과 기여
+2. 가격·감정 가치 점감 함수의 책임 경계
+3. 고객별 예술성 최소 요구치·선호 구간
+4. 연대기 수식어의 효과 책임 경계
+5. 판매·증여·복원·상속 소유권 상태 머신
+6. 모바일 긴 장비명 표시
+7. 첫 작품의 촉매·연대기 정체성 보상 시점
+8. 완전 파괴와 작품 애착 검증
+9. PR #81 분야별 선별 이관
 
-1. 연대기 수식어의 효과 책임 경계
-2. 판매·증여·복원·상속 소유권 상태 머신
-3. 모바일 긴 장비명 표시
-4. 첫 작품의 촉매·연대기 정체성 보상 시점
-5. 완전 파괴와 작품 애착 검증
-6. PR #81 분야별 선별 이관
+각 후보는 벤치마킹·적대적 검토를 먼저 수행하며 정확한 값은 사용자 승인 전 고정하지 않는다.
 
 ## R3 — 제작·강화·저장
 
 - 5단계 제작 등급 Schema·확률 프리셋
-- 예술성 초기값·변화 원천·가격 점감·고객 선호 구간
-- 예술성 저장 자료형과 overflow 보호
+- 예술성 초기값·변화 원천·가격 계수
 - 세 수식어와 정밀강화
 - 손상·복원·완전 파괴
 - UID·저장·migration·소유권
@@ -64,8 +61,8 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 
 - 일반 수식어 A·B 재도입 금지
 - 보조재료 슬롯 재도입 금지
-- 예술성 고정 설계 최대치·분모·named tier 재도입 금지
 - 예술성을 범용 전투력으로 변환 금지
+- 고정 설계 최대치 재도입 금지
 - 저장·로드 재추첨 금지
 
 ## R4–R6
@@ -79,7 +76,7 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 
 ```text
 작품 한 점 직접 단조
-→ 제작 등급과 예술성 초기값
+→ 제작 등급
 → 일반 강화와 멈춤 판단
 → 정밀강화와 촉매 수식어
 → 고객 납품과 일정
@@ -97,6 +94,6 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 
 ## R8–R9
 
-R8에서 핵심 재미·모바일 복잡도·정본·구형 문서·PR·CI를 적대적으로 검토한다. R1~R8와 최종 사용자 승인 후에만 구현 Gate를 연다.
+R8에서 핵심 재미·모바일 복잡도·정본·구형 문서·PR·CI를 적대적으로 검토한다. R1~R8와 최종 사용자 승인 후에만 Codex 구현 Gate를 연다.
 
 제품 구현은 현재 `BLOCKED`다.
