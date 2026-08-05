@@ -93,3 +93,11 @@
 - [ ] Write Decision `BS-UX-20260805-01`, batch 3/10, exact head, and CI results to Sheet.
 - [ ] Read back all Sheet ranges.
 - [ ] Update PR #109 while keeping Draft and unmerged.
+
+## Intermediate GREEN evidence
+
+- One-shot canon synchronization commit: `0c672f98f0c3bb25fc2c48826f215dc9b24e106f`.
+- Focused contract suite: 29 tests PASS.
+- Project core alignment: PASS after repairing the remaining active-batch validator tokens.
+- Automation-authored-head workflows `166 / 653 / 1244` returned `action_required`; they are not content test results.
+- This user-authored commit exists to trigger the final exact-head CI. Final Sheet and PR evidence remains pending until those runs complete.
