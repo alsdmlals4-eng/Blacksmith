@@ -1,6 +1,6 @@
 # Blacksmith R2 체크포인트 004 Postmerge Closure
 
-- 상태: `CLOSURE_PR107 / APPROVED_FOR_EXPECTED_HEAD_MERGE`
+- 상태: `CLOSURE_MERGED_PR107 / R2_CHECKPOINT_004_MAIN_CANON`
 - 새 게임 Decision: `NONE`
 - 제품 구현: `BLOCKED`
 
@@ -27,6 +27,26 @@ sheet_readback: PASS
 - PR validation `1149`: `PASS`
 - Python 전체 계약: `PASS`
 - Godot 4.7.1 headless: `PASS`
+
+## Closure PR 병합 증거
+
+```text
+closure_pr: 107
+closure_exact_head: 1ad791123eaf6c727e964380814ffb69f1357bbf
+closure_merge_sha: 7a46fa38586a42f268cd0432744203049649ddd5
+closure_status: MERGED_MAIN_CANON
+merge_method: SQUASH
+github_readback: PASS
+sheet_readback: PASS
+```
+
+GREEN 검증:
+
+- Planning-first `101`: `PASS`
+- Base `579`: `PASS`
+- PR validation `1170`: `PASS`
+- Python 전체 계약: `PASS`
+- Godot 4.7.1 headless: `PASS`
 - PR comments: `0`
 - inline review threads: `0`
 - changed protected product paths: `0`
@@ -35,31 +55,44 @@ sheet_readback: PASS
 
 ```text
 R2_CHECKPOINT_004: MAIN_CANON
-R2_BATCH_004: CLOSED_MERGED_PR106 / 2_OF_10
+R2_BATCH_004: CLOSED_MERGED_PR107 / 2_OF_10
 closure_reason: USER_APPROVED_EARLY_CHECKPOINT
 R2_BATCH_005: ACTIVE / 0_OF_10
 ```
 
 - 두 Decision의 ID와 계약 내용은 변경하지 않는다.
-- `APPROVED_PENDING_MERGE` 상태만 `MERGED_PR106 / MAIN_CANON`으로 닫는다.
+- planning 상태와 closure 상태가 모두 main에 병합됐다.
 - 배치 005는 승인 Decision 없이 `0/10`으로 시작한다.
 - 승인 10건은 계속 최대 배치 크기다.
 - 제품 구현 Gate는 계속 `BLOCKED`다.
 
-## 폐쇄 TDD
+## TDD 증거
 
-RED:
+폐쇄 RED:
 
 - commit `276f62d7477ab48521b814c17832ee24c4c6457f`
 - PR validation `1150`: `EXPECTED_FAILURE`
 - Base `559`: `PASS`
-- 실패 원인: PR106 병합 뒤 정본·Registry가 배치 004 활성·pending 상태를 유지함
 
-GREEN과 최종 exact-head 증거는 PR #107 CI가 완료된 후 PR 설명과 Sheet에 기록한다. Registry에는 자기참조를 피하기 위해 closure merge 전 `PENDING_EXPECTED_HEAD_MERGE`를 기록한다.
+폐쇄 GREEN:
+
+- commit `1ad791123eaf6c727e964380814ffb69f1357bbf`
+- Planning-first `101`: `PASS`
+- Base `579`: `PASS`
+- PR validation `1170`: `PASS`
+
+Canon audit RED:
+
+- commit `ee981aa3e07a49244ff2d0880a2fd03ad2a4c025`
+- Planning-first `102`: `EXPECTED_FAILURE`
+- 실패 원인: `closure_exact_head`와 실제 closure merge 증거가 Registry에 없음
+
+Canon audit GREEN과 최종 exact-head 증거는 PR #108 검증 결과를 PR 설명과 Sheet에 기록한다.
 
 ## 검증 경계
 
-- focused closure/artistry/batch tests standalone: `NOT_RUN`
+- focused canon-audit/closure/artistry tests standalone: `NOT_RUN`
 - runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
-- 현재 변경은 정본 상태·라우터·검증 도구에 한정
+- 현재 변경은 정본 증거·Registry·검증 계약에 한정
 - 제품 코드·Scene·runtime data·asset 변경 없음
+- 제품 구현: `BLOCKED`
