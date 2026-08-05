@@ -8,7 +8,8 @@
 WORK_MODE: TOTAL_PLANNING
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
 R2_CHECKPOINT_003: PR103 / CLOSURE_PR104 / CANON_AUDIT_PR105
-R2_STATUS: BATCH_004_ACTIVE_2_OF_10
+R2_CHECKPOINT_004: PR106 / CLOSURE_PR107
+R2_STATUS: R2_BATCH_005_ACTIVE_0_OF_10
 CURRENT_DECISIONS: BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-OPS-20260805-01
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
@@ -31,20 +32,25 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 
 ```text
 제작 등급: [보통] → [우수] → [명품] → [걸작] → [전설]
-예술성: 0 이상의 정수 / 고정 설계 최대치 없음 / 예술성 27
+예술성: 0 이상의 정수, 고정 설계 최대치 없음, 예술성 27 원수치 표기
 수식어: GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 ```
 
 - 제작 등급은 최초 직접 단조 완료 시 확정하고 동일 UID에서 고정
 - `전설`은 출생 극희귀 결과이며 후천 승격 없음
-- 예술성은 다른 무기 능력치와 같은 원수치이며 분모·별점·백분율·단계명이 없음
-- 예술성 0은 미완성품이 아니라 미적 투자가 거의 없는 정상 기능품
-- 제작 등급은 예술성의 고정 상한을 만들지 않음
-- 예술성은 전투력을 기본적으로 올리지 않고 범용 속성·수식어 배율이 아님
+- 예술성은 전투력을 기본적으로 올리지 않고 범용 속성 배율이 아님
 - 일반 강화는 한 입력에 한 결과
 - 정밀강화는 주재료 맥락 + 강화 방식 + 촉매 한 개
 - 연대기 수식어를 누르면 UID 기반 읽기 전용 상세
 - 보조재료 슬롯과 일반 수식어 A·B는 현재 구조 아님
+
+## 체크포인트 상태
+
+- R2_CHECKPOINT_004: `PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9`
+- squash merge: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
+- 배치 004: `CLOSED_MERGED_PR106 / 2_OF_10`
+- 현재 배치 005: `ACTIVE / 0_OF_10`
+- 제품 구현: `BLOCKED`
 
 ## 운영 규칙
 
@@ -54,21 +60,11 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 - 작업마다 `RED → GREEN → REFACTOR` TDD
 - 명시적 사용자 승인 전 병합 금지
 
-## 이번 정제 검증
-
-- RED commit: `3b08260dcfeeb1d97900949b04395f15a29d74d0`
-- Planning-first run `65`: expected failure
-- Base run `532`: PASS
-- GREEN candidate Planning-first run `78`: PASS
-- 최종 exact-head Python·Godot 검증: `PENDING`
-- 현재 5등급·예술성 제품 구현: `NOT_STARTED / BLOCKED`
-- runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
-
 ## 구형 문서
 
 상태 원장: `docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json`.
 
 - 이전 4등급 문서: `[대체됨]`
-- 초기 bounded 예술성 모델과 named tier: `[대체됨]`
+- 초기 bounded 예술성·named tier: `[대체됨]`
 - 과거 3등급 runtime: `[역사 증거]`
 - PR #81 전체 병합: `[폐기]`, 선별 이관: `[보류]`
