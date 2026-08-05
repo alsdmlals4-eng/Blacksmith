@@ -7,9 +7,10 @@
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "current_checkpoint": "R2_CHECKPOINT_004_MAIN_CANON",
-  "current_batch": "R2_BATCH_005_0_OF_10",
+  "current_batch": "R2_BATCH_005_1_OF_10",
+  "current_design_decision": "BS-CRAFT-20260805-02",
   "product_implementation": "BLOCKED",
-  "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, and Development Gates. Status-marked historical documents never override current R2 canon.",
+  "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, Development Gates, and the focused current canon. Status-marked historical documents never override current R2 canon.",
   "documents": [
     {
       "document_id": "current-confirmed-decisions",
@@ -45,19 +46,37 @@
       "document_id": "numeric-artistry-stat-canon",
       "source_path": "../../docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md",
       "status": "ACTIVE",
-      "source_role": "current_artistry_contract"
+      "source_role": "current_artistry_stat_contract"
+    },
+    {
+      "document_id": "artistry-generation-growth-valuation-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_artistry_generation_growth_and_valuation_contract"
+    },
+    {
+      "document_id": "artistry-generation-growth-economy-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-05-artistry-generation-growth-economy-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_craft_20260805_02"
+    },
+    {
+      "document_id": "artistry-generation-growth-economy-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-05-artistry-generation-growth-economy.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_implementation_plan_for_bs_craft_20260805_02"
     },
     {
       "document_id": "artistry-unbounded-design",
       "source_path": "../../docs/superpowers/specs/2026-08-05-artistry-unbounded-stat-design.md",
       "status": "ACTIVE",
-      "source_role": "approved_artistry_design_spec"
+      "source_role": "approved_artistry_domain_design_spec"
     },
     {
       "document_id": "artistry-unbounded-plan",
       "source_path": "../../docs/superpowers/plans/2026-08-05-artistry-unbounded-stat.md",
       "status": "ACTIVE",
-      "source_role": "executed_artistry_implementation_plan"
+      "source_role": "executed_artistry_domain_plan"
     },
     {
       "document_id": "itemization-benchmark-20260805",
@@ -134,9 +153,14 @@
   ],
   "routing_guards": [
     "ACTIVE_DOCUMENTS_OVERRIDE_STATUS_MARKED_HISTORICAL_DOCUMENTS",
-    "R2_CHECKPOINT_004_PR106_IS_MAIN_CANON",
+    "R2_CHECKPOINT_004_PR106_PR107_PR108_IS_MAIN_CANON",
     "R2_BATCH_004_IS_CLOSED_AT_2_OF_10",
-    "R2_BATCH_005_STARTS_AT_0_OF_10",
+    "R2_BATCH_005_IS_ACTIVE_AT_1_OF_10_WITH_BS_CRAFT_20260805_02",
+    "ARTISTRY_STAT_REMAINS_NON_NEGATIVE_INTEGER_WITHOUT_FIXED_DESIGN_MAXIMUM",
+    "ARTISTRY_GROWTH_REQUIRES_APPROVED_SOURCE_AND_UID_PROVENANCE",
+    "ARTISTRY_VALUE_IS_CONTEXT_DERIVED_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
+    "ARTISTRY_CUSTOMER_FIT_IS_CONTEXT_DERIVED_NOT_PERSISTED",
+    "SAME_SOURCE_DOUBLE_COUNT_AND_REPEAT_FARMING_ARE_FORBIDDEN",
     "FOUR_TIER_DRAFT_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "BOUNDED_OR_NAMED_ARTISTRY_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "GENERAL_AFFIX_A_B_MUST_NOT_BE_ROUTED_AS_CURRENT",
