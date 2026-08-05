@@ -9,6 +9,7 @@ on:
       - "tests/test_r2_customer_equipment_compatibility.py"
       - "tests/test_r2_mobile_customer_card_progressive_disclosure.py"
       - "tests/test_r2_enhancement_dominant_simple_load_gate.py"
+      - "tests/test_r2_equipment_base_weight_points.py"
       - ".github/workflows/validate-base-v942-planning-first-adoption.yml"
 
 permissions:
@@ -29,4 +30,5 @@ jobs:
           tests.test_r2_customer_equipment_compatibility
           tests.test_r2_mobile_customer_card_progressive_disclosure
           tests.test_r2_enhancement_dominant_simple_load_gate
+          tests.test_r2_equipment_base_weight_points
           -v
