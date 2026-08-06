@@ -29,14 +29,18 @@
     "runtime_verified": "NOT_RUN",
     "release_assets": 0,
     "verified_licenses": 0,
-    "device_reviews": 0
+    "device_reviews": 0,
+    "initial_status_observed": "IN_REVIEW",
+    "pre_write_readback_observed": "BLOCKED_NOT_GENERATED",
+    "normalized_target": "BLOCKED_IMAGE_NOT_GENERATED",
+    "concurrent_change_detected": true
   },
   "stale_sheet_cells": {
     "00_프로젝트_허브!E2": "R0_CANONICAL_RECOVERY_IN_PROGRESS",
     "01_작업순서!H2": "PASS_FOR_DRAFT_PR",
     "01_작업순서!H3": "NOT_STARTED",
     "01_작업순서!H4": "BLOCKED_BY_R0_AND_PRIOR_BUNDLES",
-    "72_이미지검수_승인로그!K2": "IN_REVIEW"
+    "72_이미지검수_승인로그!K2_INITIAL": "IN_REVIEW"
   },
   "corrected_gate_states": {
     "00_프로젝트_허브!E2": "R2_BATCH_006_MAIN_CANON_SCOPED_VERTICAL_SLICE_TASK1_DRAFT",
