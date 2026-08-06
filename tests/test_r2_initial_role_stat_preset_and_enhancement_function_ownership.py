@@ -47,9 +47,9 @@ class InitialRoleStatPresetEnhancementFunctionOwnershipContractTests(unittest.Te
     def test_batch_005_contains_ten_approved_decisions(self) -> None:
         self.assertEqual("R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING", self.registry["stage_status"])
         self.assertEqual("0/10", self.registry["next_approval_counter"])
-        active = self.registry["active_batch"]
-        self.assertEqual(10, active["approved_decisions"])
-        self.assertEqual("10/10", active["counter"])
+        closed = self.registry["closed_batch"]
+        self.assertEqual(10, closed["approved_decisions"])
+        self.assertEqual("10/10", closed["counter"])
         self.assertEqual(
             [
                 "BS-CRAFT-20260805-02",
@@ -63,7 +63,7 @@ class InitialRoleStatPresetEnhancementFunctionOwnershipContractTests(unittest.Te
                 "BS-ITEM-20260806-05",
                 "BS-ITEM-20260806-06",
             ],
-            active["decisions"],
+            closed["decisions"],
         )
 
     def test_initial_role_stat_formula_and_values_are_exact(self) -> None:

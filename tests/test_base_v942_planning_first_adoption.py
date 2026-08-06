@@ -69,14 +69,14 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertIn("CLOSURE_MERGED_PR107", closure)
         self.assertIn("7a46fa38586a42f268cd0432744203049649ddd5", closure)
 
-    def test_batch_005_is_active_at_ten_of_ten(self) -> None:
+    def test_batch_005_is_closed_at_ten_of_ten(self) -> None:
         self.assertEqual("R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING", self.registry["stage_status"])
         self.assertEqual("0/10", self.registry["next_approval_counter"])
         self.assertEqual("BLOCKED", self.registry["product_implementation"])
-        active = self.registry["active_batch"]
-        self.assertEqual("R2_BATCH_005", active["id"])
-        self.assertEqual(10, active["approved_decisions"])
-        self.assertEqual("10/10", active["counter"])
+        closed = self.registry["closed_batch"]
+        self.assertEqual("R2_BATCH_005", closed["id"])
+        self.assertEqual(10, closed["approved_decisions"])
+        self.assertEqual("10/10", closed["counter"])
         self.assertEqual(
             [
                 "BS-CRAFT-20260805-02",
@@ -90,9 +90,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
                 "BS-ITEM-20260806-05",
                 "BS-ITEM-20260806-06",
             ],
-            active["decisions"],
+            closed["decisions"],
         )
-        self.assertEqual(10, active["maximum_size"])
+        self.assertEqual(10, closed["maximum_size"])
     def test_customer_and_schedule_contracts_remain_current(self) -> None:
         customer = self.decisions["BS-CUSTOMER-20260803-02"]["contract"]
         self.assertEqual("INTEGER_1_TO_10", customer["event_risk_scale"])
