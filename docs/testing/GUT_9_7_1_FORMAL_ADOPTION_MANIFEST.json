@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "decision_id": "BS-TEST-20260806-01",
+  "framework": "GUT",
+  "version": "9.7.1",
+  "source_repository": "bitwes/Gut",
+  "source_tag": "v9.7.1",
+  "source_commit": "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605",
+  "license": "MIT",
+  "license_path": "addons/gut/LICENSE.md",
+  "godot_compatibility": "4.7.x",
+  "validated_engine": "4.7.1",
+  "authority_role": "GDSCRIPT_TEST_FRAMEWORK_ONLY",
+  "editor_plugin_enabled": false,
+  "adoption_status": "IMPLEMENTED_AWAITING_EXACT_HEAD_RUNTIME_CI",
+  "consumption_paths": {
+    "vendor_root": "addons/gut",
+    "config": ".gutconfig.json",
+    "unit_root": "tests/gut/unit",
+    "integration_root": "tests/gut/integration",
+    "cli_entry": "addons/gut/gut_cmdln.gd",
+    "workflow": ".github/workflows/gut-validation.yml",
+    "result": "artifacts/gut/junit.xml"
+  },
+  "minimum_discovered_tests": 1,
+  "zero_tests": "FAIL",
+  "skipped_tests": "FAIL",
+  "missing_junit": "FAIL",
+  "runner_failure": "FAIL",
+  "tracked_authoring_mutation": "FAIL",
+  "authoring_surfaces": [
+    "project.godot",
+    "**/*.tscn",
+    "**/*.tres",
+    "**/*.res",
+    "addons/godot_ai/**"
+  ],
+  "legacy_direct_gdscript_runners": "PRESERVED_UNTIL_SEPARATE_MIGRATION",
+  "removal_procedure": "docs/testing/GUT_9_7_1_REMOVAL_PROCEDURE.md",
+  "limitations": [
+    "This manifest does not claim active authority until exact-head runtime CI succeeds.",
+    "Android device execution and human playtest are outside framework adoption scope.",
+    "The GUT editor plugin remains disabled to preserve HiGodot authoring authority."
+  ]
+}
