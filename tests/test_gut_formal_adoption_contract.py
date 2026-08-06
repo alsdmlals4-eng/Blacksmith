@@ -22,6 +22,7 @@ SNAPSHOT = ROOT / "docs/operations/BLACKSMITH_ENTRY_GATE_SNAPSHOT_2026-08-06.jso
 REMOVAL = ROOT / "docs/testing/GUT_9_7_1_REMOVAL_PROCEDURE.md"
 PROJECT = ROOT / "project.godot"
 
+ADOPTION_BASE_SHA = "6985dd909b1198277ab201b27d144fd6ba839489"
 ADOPTION_MAIN_SHA = "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb"
 VALIDATED_HEAD_SHA = "9ab46229946ae11529824fabefc6d558bd608d5d"
 RUNTIME_RUN_ID = 31111242901
@@ -64,33 +65,58 @@ def _load_junit_validator():
     return module
 
 
-class GutFormalAdoptionContractTests(unittest.TestCase):
-    def test_adoption_pr_has_a_separate_non_product_change_boundary(self) -> None:
-        if not (ROOT / ".git").exists():
-            return
-        base_ref = os.environ.get("GITHUB_BASE_REF", "main")
-        remote_base = f"origin/{base_ref}"
-        merge_base = subprocess.run(
-            ["git", "merge-base", "HEAD", remote_base],
+def _adoption_changed_paths() -> set[str]:
+    subprocess.run(
+        ["git", "merge-base", "--is-ancestor", ADOPTION_BASE_SHA, ADOPTION_MAIN_SHA],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return {
+        line.strip()
+        for line in subprocess.run(
+            [
+                "git",
+                "-c",
+                "core.quotepath=false",
+                "diff",
+                "--name-only",
+                f"{ADOPTION_BASE_SHA}..{ADOPTION_MAIN_SHA}",
+            ],
             cwd=ROOT,
             check=True,
             capture_output=True,
             text=True,
-        ).stdout.strip()
-        changed = {
-            line.strip()
-            for line in subprocess.run(
-                ["git", "-c", "core.quotepath=false", "diff", "--name-only", f"{merge_base}..HEAD"],
-                cwd=ROOT,
-                check=True,
-                capture_output=True,
-                text=True,
-            ).stdout.splitlines()
-            if line.strip()
-        }
+        ).stdout.splitlines()
+        if line.strip()
+    }
+
+
+class GutFormalAdoptionContractTests(unittest.TestCase):
+    def test_adoption_pr_has_a_separate_non_product_change_boundary(self) -> None:
+        if not (ROOT / ".git").exists():
+            return
+        changed = _adoption_changed_paths()
         self.assertLessEqual(changed, ALLOWED_ADOPTION_PATHS, sorted(changed - ALLOWED_ADOPTION_PATHS))
         self.assertNotIn("project.godot", changed)
         self.assertFalse(any(path.startswith(("scenes/", "scripts/", "data/", "assets/", "addons/gut/")) for path in changed))
+
+    def test_adoption_boundary_is_independent_from_runtime_branch_environment(self) -> None:
+        if not (ROOT / ".git").exists():
+            return
+        original = os.environ.get("GITHUB_BASE_REF")
+        try:
+            os.environ["GITHUB_BASE_REF"] = ""
+            empty_base_ref = _adoption_changed_paths()
+            os.environ["GITHUB_BASE_REF"] = "unrelated-runtime-branch"
+            unrelated_base_ref = _adoption_changed_paths()
+        finally:
+            if original is None:
+                os.environ.pop("GITHUB_BASE_REF", None)
+            else:
+                os.environ["GITHUB_BASE_REF"] = original
+        self.assertEqual(empty_base_ref, unrelated_base_ref)
 
     def test_gut_config_has_real_project_consumption_roots(self) -> None:
         payload = _json(CONFIG)

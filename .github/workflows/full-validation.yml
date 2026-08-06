@@ -109,6 +109,7 @@ jobs:
           name: base-adoption-failure-report
           path: project/artifacts/base-adoption-report.json
           if-no-files-found: warn
+          retention-days: 1
 
   godot-validation:
     name: Ubuntu Godot full suite
