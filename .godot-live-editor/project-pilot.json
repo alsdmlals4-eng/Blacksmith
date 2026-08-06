@@ -22,11 +22,20 @@
   "source_mutation_policy": "FORBIDDEN",
   "scratch_scene_path": "res://.godot-live-editor-pilot/scratch.tscn",
   "behavior_checks": [
-    {
-      "kind": "PYTHON_PYTEST_PATH",
-      "target": "tests/check_no_merge_conflicts.py",
-      "timeout_seconds": 60
-    }
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_forging_session.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_enhancement_session.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_workshop_resources.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_workshop_calendar.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_craftsmanship_grade_resolver.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_customer_contract.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_world_activity_resolver.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_equipment_world_registry.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_poc_telemetry.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_manual_enhancement_economy.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_forging_quality_enhancement.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_workshop_action_atomicity.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_equipment_lifecycle_controller.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_equipment_lifecycle_poc.gd", "timeout_seconds": 60}
   ],
-  "expected_platform": "ANDROID_MOBILE"
+  "expected_platform": "ANDROID"
 }

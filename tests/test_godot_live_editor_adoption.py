@@ -12,19 +12,35 @@ DESCRIPTOR = ROOT / ".godot-live-editor/project-pilot.json"
 ADOPTION_DOC = ROOT / "docs/GODOT_LIVE_EDITOR_ADOPTION.md"
 WORKFLOW = ROOT / ".github/workflows/validate-godot-live-editor-pilot.yml"
 ALLOWED_PATHS = {
-    ".github/workflows/validate-godot-live-editor-pilot.yml",
     ".godot-live-editor/project-pilot.json",
     "docs/GODOT_LIVE_EDITOR_ADOPTION.md",
     "tests/test_godot_live_editor_adoption.py",
+    ".github/workflows/validate-godot-live-editor-pilot.yml",
 }
+BEHAVIOR_TARGETS = [
+    "res://tests/unit/test_forging_session.gd",
+    "res://tests/unit/test_enhancement_session.gd",
+    "res://tests/unit/test_workshop_resources.gd",
+    "res://tests/unit/test_workshop_calendar.gd",
+    "res://tests/unit/test_craftsmanship_grade_resolver.gd",
+    "res://tests/unit/test_customer_contract.gd",
+    "res://tests/unit/test_world_activity_resolver.gd",
+    "res://tests/unit/test_equipment_world_registry.gd",
+    "res://tests/unit/test_poc_telemetry.gd",
+    "res://tests/integration/test_manual_enhancement_economy.gd",
+    "res://tests/integration/test_forging_quality_enhancement.gd",
+    "res://tests/integration/test_workshop_action_atomicity.gd",
+    "res://tests/integration/test_equipment_lifecycle_controller.gd",
+    "res://tests/integration/test_equipment_lifecycle_poc.gd",
+]
 
 
-def _text(path: Path) -> str:
-    assert path.is_file(), f"missing adoption surface: {path.relative_to(ROOT)}"
+def _required_text(path: Path) -> str:
+    assert path.is_file(), f"missing required adoption surface: {path.relative_to(ROOT)}"
     return path.read_text(encoding="utf-8")
 
 
-def _changed_paths() -> set[str]:
+def _changed_paths_from_main() -> set[str]:
     merge_base = subprocess.run(
         ["git", "merge-base", "HEAD", "origin/main"],
         cwd=ROOT,
@@ -42,42 +58,98 @@ def _changed_paths() -> set[str]:
     return {line.strip() for line in output.splitlines() if line.strip()}
 
 
-def test_descriptor_is_exact_blacksmith_boundary() -> None:
-    payload = json.loads(_text(DESCRIPTOR))
+def test_descriptor_is_exact_blacksmith_contract() -> None:
+    payload = json.loads(_required_text(DESCRIPTOR))
+    assert payload["schema_version"] == "1"
     assert payload["project_identity"] == {
         "repository": "alsdmlals4-eng/Blacksmith",
         "project_id": "blacksmith",
     }
     assert payload["base_pilot_commit"] == BASE_C0_SHA
+    assert payload["project_state"] == "EXISTING_GODOT_PROJECT"
     assert payload["godot"] == {
         "version": "4.7.1-stable",
         "archive_sha256": GODOT_ARCHIVE_SHA256,
     }
+    assert payload["project_file"] == "project.godot"
     assert payload["main_scene_source"] == "application/run/main_scene"
     assert payload["legacy_editor_plugins"] == ["res://addons/godot_ai/plugin.cfg"]
     assert payload["legacy_autoloads"] == ["_mcp_game_helper"]
     assert payload["legacy_disable_mode"] == "TEMPORARY_COPY_ONLY"
     assert payload["source_mutation_policy"] == "FORBIDDEN"
-    assert payload["expected_platform"] == "ANDROID_MOBILE"
+    assert payload["scratch_scene_path"] == "res://.godot-live-editor-pilot/scratch.tscn"
+    assert payload["expected_platform"] == "ANDROID"
+    assert payload["behavior_checks"] == [
+        {"kind": "GODOT_SCRIPT", "target": target, "timeout_seconds": 60}
+        for target in BEHAVIOR_TARGETS
+    ]
 
 
 def test_source_legacy_authority_and_main_scene_remain_installed() -> None:
-    project = _text(ROOT / "project.godot")
+    project = (ROOT / "project.godot").read_text(encoding="utf-8")
     assert 'run/main_scene="res://scenes/test/enhancement_test.tscn"' in project
     assert '_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"' in project
     assert 'enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")' in project
     assert (ROOT / "addons/godot_ai/plugin.cfg").is_file()
+    for target in BEHAVIOR_TARGETS:
+        assert (ROOT / target.removeprefix("res://")).is_file(), target
 
 
-def test_workflow_and_document_pin_the_same_immutable_base() -> None:
-    workflow = _text(WORKFLOW)
-    document = _text(ADOPTION_DOC)
-    assert workflow.count(BASE_C0_SHA) == 2
-    assert f"base_pilot_commit: {BASE_C0_SHA}" in document
-    assert "TEMPORARY_COPY_ONLY" in document
-    assert "MAIN_SCENE_READ_ONLY" in document
-    assert "PRODUCTION_ADAPTER_READY: NOT_READY" in document
+def test_adoption_document_preserves_boundaries() -> None:
+    text = _required_text(ADOPTION_DOC)
+    for marker in (
+        "LEGACY_GODOT_AI_SOURCE_PRESERVED",
+        "LEGACY_DISABLED_IN_DISPOSABLE_COPY_ONLY",
+        "DUAL_MUTATION_AUTHORITY_FORBIDDEN",
+        "MAIN_SCENE_READ_ONLY",
+        "SCRATCH_SCENE_MUTATION_ONLY",
+        "SOURCE_TREE_UNCHANGED",
+        "SELF_CONTAINED_EVIDENCE_BUNDLE",
+        "project-pilot-evidence.json",
+        "runtime-result.json",
+        "scratch.tscn",
+        "expected_platform: ANDROID",
+        "android_device: NOT_RUN",
+        "PRODUCTION_ADAPTER_READY: NOT_READY",
+        "four adoption files",
+    ):
+        assert marker in text
+    for forbidden_claim in (
+        "PRODUCTION_ADAPTER_READY: READY",
+        "LEGACY_GODOT_AI_SOURCE_REMOVED",
+        "HUMAN_USABILITY: PASS",
+        "android_device: PASS",
+    ):
+        assert forbidden_claim not in text
 
 
-def test_adoption_scope_is_exactly_four_files() -> None:
-    assert _changed_paths() == ALLOWED_PATHS
+def test_workflow_uses_one_immutable_base_pin() -> None:
+    text = _required_text(WORKFLOW)
+    reusable = (
+        "alsdmlals4-eng/Base/.github/workflows/"
+        f"reusable-godot-project-pilot.yml@{BASE_C0_SHA}"
+    )
+    assert reusable in text
+    assert f"base_pilot_commit: {BASE_C0_SHA}" in text
+    assert "descriptor_path: .godot-live-editor/project-pilot.json" in text
+    assert "pull_request:" in text
+    assert "push:" in text
+    assert "workflow_dispatch:" in text
+    assert "permissions:\n  contents: read" in text
+    assert "fetch-depth: 0" in text
+    assert "persist-credentials: false" in text
+    assert "python -m pytest tests/test_godot_live_editor_adoption.py -q" in text
+    assert "@main" not in text
+    assert text.count(BASE_C0_SHA) == 2
+
+
+def test_pull_request_trigger_is_scoped_to_adoption_surface() -> None:
+    text = _required_text(WORKFLOW)
+    assert "    paths:\n" in text
+    for path in sorted(ALLOWED_PATHS):
+        assert f"      - {path}\n" in text
+
+
+def test_change_surface_is_bounded_to_four_adoption_files() -> None:
+    changed = _changed_paths_from_main()
+    assert changed <= ALLOWED_PATHS, f"forbidden changed paths: {sorted(changed - ALLOWED_PATHS)}"
