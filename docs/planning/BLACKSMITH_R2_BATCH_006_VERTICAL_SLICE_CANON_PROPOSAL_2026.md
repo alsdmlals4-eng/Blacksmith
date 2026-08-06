@@ -15,6 +15,7 @@ ALL_APPROVED_CONTRACTS_REQUIRED: true
 REPRESENTATIVE_CONTENT_ONLY: true
 PRODUCT_IMPLEMENTATION: BLOCKED
 VERTICAL_SLICE_IMPLEMENTATION: APPROVED
+VERTICAL_SLICE_IMPLEMENTATION_APPROVED: true
 HUMAN_PLAYTEST: NOT_RUN
 BALANCE_AUTHORITY: BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED
 ```
@@ -663,4 +664,4 @@ FINAL_BALANCE_APPROVAL: false
 HUMAN_PLAYTEST: NOT_RUN
 ```
 
-사용자 승인은 Batch 006의 10개 Decision과 승인된 namespace의 Godot 버티컬 슬라이스 구현 착수를 허용한다. 전체 제품 구현, 최종 밸런스 확정, 사람 플레이테스트 완료를 의미하지 않는다.
+사용자 승인은 Batch 006의 10개 Decision과 승인된 namespace의 Godot 버티컬 슬라이스 구현 착수를 허용한다. 전체 제품 구현, 최종 밸런스 승인, 사람 플레이테스트 완료를 의미하지 않는다.

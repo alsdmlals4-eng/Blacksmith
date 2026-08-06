@@ -28,7 +28,7 @@
 >
 > 제품 구현: `BLOCKED`
 >
-> 버티컬 슬라이스 구현: `APPROVED / MERGED_PR120_MAIN_CANON`
+> 버티컬 슬라이스 구현: `APPROVED / MERGED_PR120_MAIN_CANON / VERTICAL_SLICE_IMPLEMENTATION_APPROVED`
 
 ## 1. 프로젝트 코어
 
