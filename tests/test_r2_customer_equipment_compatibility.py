@@ -19,7 +19,7 @@ class CustomerEquipmentCompatibilityContractTests(unittest.TestCase):
 
     def test_batch_005_contains_ten_approved_decisions(self) -> None:
         self.assertEqual("R2_BATCH_006_APPROVED_MAIN_CANON", self.registry["stage_status"])
-        self.assertEqual("0/10", self.registry["next_approval_counter"])
+        self.assertEqual("10/10", self.registry["next_approval_counter"])
         closed = self.registry["closed_batch"]
         self.assertEqual("R2_BATCH_005", closed["id"])
         self.assertEqual(10, closed["approved_decisions"])
