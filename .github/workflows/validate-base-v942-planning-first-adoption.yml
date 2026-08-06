@@ -18,6 +18,7 @@ on:
       - "tests/test_r2_initial_role_stat_preset_and_enhancement_function_ownership.py"
       - "tests/test_r2_function_recipe_material_fit_and_playtest.py"
       - "tests/test_r2_checkpoint_005_postmerge_closure.py"
+      - "tests/test_r2_checkpoint_005_main_canon_finalization.py"
       - ".github/workflows/validate-project-base-adapter.yml"
       - ".github/workflows/validate-base-v942-planning-first-adoption.yml"
 
@@ -47,4 +48,5 @@ jobs:
           tests.test_r2_initial_role_stat_preset_and_enhancement_function_ownership
           tests.test_r2_function_recipe_material_fit_and_playtest
           tests.test_r2_checkpoint_005_postmerge_closure
+          tests.test_r2_checkpoint_005_main_canon_finalization
           -v
