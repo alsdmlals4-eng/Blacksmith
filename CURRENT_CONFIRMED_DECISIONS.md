@@ -1,7 +1,11 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
-<!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
-> **R2_CHECKPOINT_005_CLOSED_MAIN_CANON**
+<!-- R2_BATCH_006_CURRENT_AUTHORITY -->
+> **R2_BATCH_006_APPROVED_MAIN_CANON**
+>
+> `R2_BATCH_006_APPROVED_10_OF_10 / MERGED_PR120_MAIN_CANON / IMPLEMENTATION_APPROVED`
+>
+> source exact head: `388eff03c61126d8021601c3ab84efaa2133253e` / squash merge: `a8a94343c78a68bf7bb14b411e7741f43b257138`
 >
 > `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109_MAIN_CANON / CLOSURE_PR117_MERGED_MAIN_CANON`
 >
@@ -9,7 +13,7 @@
 >
 > closure exact head: `51d4acf4fc31233b4b218a6f20589fdbf2557ee2` / closure squash merge: `06f03323c1309d8da0e6f5b9f4680a20ce388126`
 >
-> next batch: `R2_BATCH_006_NOT_STARTED_0_OF_10` / 제품 구현: `BLOCKED` / 사람 플레이테스트: `NOT_RUN`
+> next batch: `R2_BATCH_006_APPROVED_10_OF_10 / MERGED_PR120_MAIN_CANON` / 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED` / 사람 플레이테스트: `NOT_RUN`
 
 
 > R2 체크포인트 003: PR `#103` / closure `#104` / canon audit `#105`
@@ -20,9 +24,9 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109`
+> 현재 승인 배치: `R2_BATCH_006_APPROVED_10_OF_10 / MERGED_PR120_MAIN_CANON`
 >
-> 제품 구현: `BLOCKED`
+> 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`
 
 ## 1. 프로젝트 코어
 
@@ -222,7 +226,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 예술성 고정 설계 최대치·분모 표기·named tier 재도입 금지
 - 예술성을 범용 전투력·수식어 배율로 변환 금지
 - 예술성·연대기·명성을 하나의 영구 총점으로 통합 금지
-- 제품 구현: `BLOCKED`
+- 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`
 
 <!-- BS-UX-20260805-01 -->
 ## 모바일 고객 카드 정보 계층
@@ -238,7 +242,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 불투명한 결과 전용 적합도 점수 금지
 - 색상·길게 누르기·호버 단독 핵심 정보 금지
 - 최소 `48dp` 터치 목표
-- 제품 구현: `BLOCKED`
+- 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`
 
 <!-- BS-CUSTOMER-20260806-01 -->
 ## 강화 중심 단순 장비 판정
@@ -259,7 +263,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 강화가 주효과이며 고객 능력·적성은 작은 보조 보정이다.
 - `COMFORTABLE_LOAD / BALANCE_STATE / 단계적 초과 페널티`는 현재 중량 계약이 아니다.
 - 공격·방어·조작성·예술성 원수치를 일반 성공률에 범용 합산하지 않는다.
-- 제품 구현: `BLOCKED`
+- 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`
 
 <!-- BS-ITEM-20260806-01 -->
 ## 장비군 기본 중량 포인트
@@ -270,7 +274,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 검·원거리·방패보조 10 / 도끼·둔기 15 / 장병기 20
 ```
 
-`ITEM_WEIGHT = max(0, BASE_WEIGHT + EXPLICIT_WEIGHT_MODIFIER)`다. 중량 전용 효과는 작품당 하나만 허용하며 `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`다. 재료·제작 등급·예술성·공격·방어·조작성·내구도·일반 강화 단계는 중량을 자동 변경하지 않는다. 제품 구현: `BLOCKED`.
+`ITEM_WEIGHT = max(0, BASE_WEIGHT + EXPLICIT_WEIGHT_MODIFIER)`다. 중량 전용 효과는 작품당 하나만 허용하며 `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`다. 재료·제작 등급·예술성·공격·방어·조작성·내구도·일반 강화 단계는 중량을 자동 변경하지 않는다. 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`.
 
 <!-- BS-ITEM-20260806-02 -->
 ## 중량 성능 예산 기억과 정밀강화 중량 조정
@@ -283,7 +287,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 
 고객 배정은 현재 중량을 사용하고 성능 예산은 UID의 역대 최고 인정 중량을 사용한다. 중량 조정은 `+10/+20/+30/+40/+50` 정밀강화에서만 선택하며 이정표당 최대 한 번, 서로 다른 이정표에서는 누적할 수 있다. 같은 이정표의 반복·환불은 허용하지 않는다. 중량 성능 예산은 공격·방어·마법 기능·유틸리티 중 호환 축 하나에만 배분하며 일반 사건 성공률에는 직접 더하지 않는다.
 
-제품 구현: `BLOCKED`.
+제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`.
 
 <!-- BS-ITEM-20260806-03 -->
 ## 중량 성능 예산 환산과 자동 역할 프리셋
@@ -302,7 +306,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 새 최고 중량 예산은 기존 프로필에 자동 배분한다.
 - 경량화는 기존 공격·방어·기능 용량을 유지한다.
 - 일반 사건 성공률에는 자동 합산하지 않는다.
-- 제품 구현: `BLOCKED`.
+- 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`.
 
 <!-- BS-ITEM-20260806-04 -->
 ## 작품 역할 원수치와 최초 특수기능 카탈로그
@@ -316,7 +320,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 최초 마법 기능: `ARCANE_CONDUCTION / ELEMENTAL_WARD / ARCANE_SENSING`.
 - 최초 유틸리티 기능: `ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY / TASK_INTEGRATION`.
 - 기능 용량은 기능을 자동 생성하지 않으며 일반 사건 성공률에 자동 합산하지 않는다.
-- 제품 구현: `BLOCKED`.
+- 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`.
 
 <!-- BS-ITEM-20260806-05 CURRENT AUTHORITY -->
 ## 현재 작품 역할 수치·강화 변동 소유권
@@ -329,7 +333,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 기능 재작업: `ADD / REPLACE / REBIND / REMOVE`, 정밀 이정표 소비, 실패 시 기존 기능 보존
 - Google Sheet 미러: `42_능력치_강화_참조표`
 - 밸런스: `BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED`
-- 제품 구현: `BLOCKED`
+- 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`
 
 ## 16. 주재료 역할 적합·기능 레시피·사람 플레이테스트
 
@@ -341,4 +345,4 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 현재 즉시 가용한 결속 재작업은 `ELEMENTAL_WARD(FIRE)`와 `ENVIRONMENTAL_SEALING(FIRE)`다.
 - 솔로 48케이스와 외부 3~5명 검증 전까지 수치는 `BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED`다.
 - 사람 플레이테스트: `NOT_RUN`.
-- 제품 구현: `BLOCKED`.
+- 제품 구현: `VERTICAL_SLICE_IMPLEMENTATION_APPROVED`.
