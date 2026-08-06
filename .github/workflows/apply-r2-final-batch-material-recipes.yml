@@ -6,6 +6,7 @@ on:
       - agent/r2-artistry-generation-growth-economy-design
     paths:
       - tools/apply_r2_final_batch_material_recipes.py
+      - tools/patch_r2_final_batch_current_assertions.py
       - .github/workflows/apply-r2-final-batch-material-recipes.yml
 
 permissions:
@@ -45,8 +46,11 @@ jobs:
 
       - name: Apply planning canon synchronization
         run: |
-          python -m py_compile tools/apply_r2_final_batch_material_recipes.py
+          python -m py_compile \
+            tools/apply_r2_final_batch_material_recipes.py \
+            tools/patch_r2_final_batch_current_assertions.py
           python tools/apply_r2_final_batch_material_recipes.py
+          python tools/patch_r2_final_batch_current_assertions.py
 
       - name: Validate JSON and focused contracts
         run: |
@@ -86,6 +90,7 @@ jobs:
         run: |
           rm -rf base-src
           git rm tools/apply_r2_final_batch_material_recipes.py
+          git rm tools/patch_r2_final_batch_current_assertions.py
           git rm .github/workflows/apply-r2-final-batch-material-recipes.yml
 
       - name: Commit synchronized canon
