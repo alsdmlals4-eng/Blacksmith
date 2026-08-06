@@ -20,7 +20,10 @@ from local_validation_contract import (
     tracked_authoring_hashes,
     utc_now,
 )
-from local_validation_pack_contract import REQUIRED_MATRIX_LANES
+from local_validation_pack_contract import (
+    REQUIRED_MATRIX_LANES,
+    detect_platform_kind,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -51,9 +54,10 @@ def main() -> int:
     before_hashes = tracked_authoring_hashes(repo)
     actual_python = f"{sys.version_info.major}.{sys.version_info.minor}"
     expected_contract = REQUIRED_MATRIX_LANES[args.lane_id]
-    lane_contract_match = expected_contract == (
-        args.platform_kind,
-        args.expected_python,
+    detected_platform_kind = detect_platform_kind()
+    lane_contract_match = (
+        expected_contract == (args.platform_kind, args.expected_python)
+        and detected_platform_kind == args.platform_kind
     )
     python_version_match = actual_python == args.expected_python
 
@@ -96,6 +100,7 @@ def main() -> int:
         "validation_mode": "LOCAL_PYTHON_MATRIX_LANE",
         "lane_id": args.lane_id,
         "platform_kind": args.platform_kind,
+        "detected_platform_kind": detected_platform_kind,
         "host_platform": platform.platform(),
         "head_sha": head,
         "expected_head_sha": args.expected_head,
