@@ -117,6 +117,12 @@ def test_spec_and_top_level_gates_include_required_markers() -> None:
         assert marker in agents
         assert marker in gates
 
+    for preserved_marker in (
+        "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
+        "R2_CHECKPOINT_005",
+    ):
+        assert preserved_marker in gates
+
 
 def test_design_workflow_is_static_and_does_not_claim_gut_runtime() -> None:
     workflow = _text(WORKFLOW)
