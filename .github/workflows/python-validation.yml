@@ -64,6 +64,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: project
+          fetch-depth: 0
 
       - name: Checkout pinned Base
         if: inputs.include-operating-audit
@@ -88,8 +89,10 @@ jobs:
       - name: Validate document and CI contracts
         working-directory: project
         run: |
+          python -m pip install --disable-pip-version-check pytest==8.3.5
           python tests/check_project_core_alignment_current.py
           python -m unittest tests/test_ci_workflow_structure.py
+          python -m pytest tests/test_higodot_gut_authority_gate.py -q
 
       - name: Validate archive retention governance
         working-directory: project
