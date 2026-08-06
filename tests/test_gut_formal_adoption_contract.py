@@ -106,9 +106,9 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         self.assertIn('res://addons/godot_ai/plugin.cfg', project)
         self.assertNotIn('res://addons/gut/plugin.cfg', project)
 
-    def test_adoption_manifest_is_complete_and_fail_closed(self) -> None:
+    def test_adoption_manifest_is_complete_fail_closed_and_evidence_backed(self) -> None:
         manifest = _json(MANIFEST)
-        self.assertEqual(manifest["schema_version"], "1.0.0")
+        self.assertEqual(manifest["schema_version"], "1.1.0")
         self.assertEqual(manifest["decision_id"], "BS-TEST-20260806-01")
         self.assertEqual(manifest["framework"], "GUT")
         self.assertEqual(manifest["version"], "9.7.1")
@@ -122,12 +122,37 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         self.assertEqual(manifest["validated_engine"], "4.7.1")
         self.assertEqual(manifest["authority_role"], "GDSCRIPT_TEST_FRAMEWORK_ONLY")
         self.assertFalse(manifest["editor_plugin_enabled"])
+        self.assertEqual(
+            manifest["adoption_status"],
+            "DRAFT_IMPLEMENTED_RUNTIME_VALIDATED_FORMAL_CANON_PENDING_MERGE",
+        )
         self.assertEqual(manifest["minimum_discovered_tests"], 1)
         self.assertEqual(manifest["zero_tests"], "FAIL")
         self.assertEqual(manifest["skipped_tests"], "FAIL")
         self.assertEqual(manifest["missing_junit"], "FAIL")
         self.assertEqual(manifest["tracked_authoring_mutation"], "FAIL")
         self.assertTrue(manifest["removal_procedure"])
+
+        runtime = manifest["runtime_validation"]
+        self.assertEqual(runtime["implementation_head_sha"], "e01b8c475bf494bcbde4339df6f18c7b31da1e19")
+        self.assertEqual(runtime["workflow_run_id"], 31109841958)
+        self.assertEqual(runtime["result"], "PASS")
+        self.assertEqual(runtime["godot_version"], "4.7.1.stable.official.a13da4feb")
+        self.assertEqual(runtime["gut_version"], "9.7.1")
+        self.assertEqual(runtime["tests"], 1)
+        self.assertEqual(runtime["passing_tests"], 1)
+        self.assertEqual(
+            runtime["junit"],
+            {"tests": 1, "failures": 0, "errors": 0, "skipped": 0},
+        )
+        self.assertEqual(runtime["clean_import"], "PASS")
+        self.assertEqual(runtime["tracked_authoring_surface_hash"], "UNCHANGED")
+        self.assertEqual(runtime["git_diff_after_runtime"], "CLEAN")
+        self.assertEqual(runtime["artifact_id"], 8971209716)
+        self.assertEqual(
+            manifest["known_non_blocking_import_warning"]["surface"],
+            "addons/gut/fonts/source_code_pro.fnt",
+        )
 
     def test_runtime_workflow_executes_gut_and_proves_read_only_behavior(self) -> None:
         workflow = _text(WORKFLOW)
