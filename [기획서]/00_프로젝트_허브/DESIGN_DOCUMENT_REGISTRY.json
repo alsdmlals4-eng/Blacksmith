@@ -7,9 +7,10 @@
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "current_checkpoint": "R2_CHECKPOINT_004_MAIN_CANON",
-  "current_batch": "R2_BATCH_005_0_OF_10",
+  "current_batch": "R2_BATCH_005_10_OF_10",
+  "current_design_decision": "BS-ITEM-20260806-06",
   "product_implementation": "BLOCKED",
-  "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, and Development Gates. Status-marked historical documents never override current R2 canon.",
+  "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, Development Gates, and the focused current canon. Status-marked historical documents never override current R2 canon.",
   "documents": [
     {
       "document_id": "current-confirmed-decisions",
@@ -45,19 +46,91 @@
       "document_id": "numeric-artistry-stat-canon",
       "source_path": "../../docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md",
       "status": "ACTIVE",
-      "source_role": "current_artistry_contract"
+      "source_role": "current_artistry_stat_contract"
+    },
+    {
+      "document_id": "artistry-generation-growth-valuation-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_artistry_generation_growth_and_valuation_contract"
+    },
+    {
+      "document_id": "enhancement-dominant-simple-load-gate-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_binary_load_and_enhancement_dominant_forecast_contract"
+    },
+    {
+      "document_id": "enhancement-dominant-simple-load-gate-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-enhancement-dominant-simple-load-gate-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_customer_20260806_01"
+    },
+    {
+      "document_id": "enhancement-dominant-simple-load-gate-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-enhancement-dominant-simple-load-gate.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_customer_20260806_01"
+    },
+    {
+      "document_id": "customer-capability-equipment-compatibility-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_CUSTOMER_CAPABILITY_AND_EQUIPMENT_COMPATIBILITY_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_customer_capability_and_equipment_fit_contract"
+    },
+    {
+      "document_id": "customer-equipment-compatibility-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-05-customer-equipment-compatibility-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_customer_20260805_01"
+    },
+    {
+      "document_id": "customer-equipment-compatibility-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-05-customer-equipment-compatibility.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_customer_20260805_01"
+    },
+    {
+      "document_id": "mobile-customer-card-progressive-disclosure-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_MOBILE_CUSTOMER_CARD_PROGRESSIVE_DISCLOSURE_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_mobile_customer_card_information_hierarchy_contract"
+    },
+    {
+      "document_id": "mobile-customer-card-progressive-disclosure-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-05-mobile-customer-card-progressive-disclosure-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_ux_20260805_01"
+    },
+    {
+      "document_id": "mobile-customer-card-progressive-disclosure-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-05-mobile-customer-card-progressive-disclosure.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_ux_20260805_01"
+    },
+    {
+      "document_id": "artistry-generation-growth-economy-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-05-artistry-generation-growth-economy-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_craft_20260805_02"
+    },
+    {
+      "document_id": "artistry-generation-growth-economy-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-05-artistry-generation-growth-economy.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_implementation_plan_for_bs_craft_20260805_02"
     },
     {
       "document_id": "artistry-unbounded-design",
       "source_path": "../../docs/superpowers/specs/2026-08-05-artistry-unbounded-stat-design.md",
       "status": "ACTIVE",
-      "source_role": "approved_artistry_design_spec"
+      "source_role": "approved_artistry_domain_design_spec"
     },
     {
       "document_id": "artistry-unbounded-plan",
       "source_path": "../../docs/superpowers/plans/2026-08-05-artistry-unbounded-stat.md",
       "status": "ACTIVE",
-      "source_role": "executed_artistry_implementation_plan"
+      "source_role": "executed_artistry_domain_plan"
     },
     {
       "document_id": "itemization-benchmark-20260805",
@@ -130,19 +203,146 @@
       "source_path": "../../docs/FINAL_ADVERSARIAL_REVIEW_REPORT.md",
       "status": "SUPERSEDED",
       "source_role": "historical_adversarial_review"
+    },
+    {
+      "document_id": "equipment-base-weight-points-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_equipment_group_base_weight_contract"
+    },
+    {
+      "document_id": "equipment-base-weight-points-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-equipment-base-weight-points-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_item_20260806_01"
+    },
+    {
+      "document_id": "equipment-base-weight-points-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-equipment-base-weight-points.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_item_20260806_01"
+    },
+    {
+      "document_id": "weight-performance-budget-lightweight-tradeoff-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_WEIGHT_PERFORMANCE_BUDGET_AND_LIGHTWEIGHT_TRADEOFF_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_weight_budget_memory_and_precision_adjustment_contract"
+    },
+    {
+      "document_id": "weight-performance-budget-lightweight-tradeoff-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-weight-performance-budget-and-lightweight-tradeoff-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_item_20260806_02"
+    },
+    {
+      "document_id": "weight-performance-budget-lightweight-tradeoff-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-weight-performance-budget-and-lightweight-tradeoff.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_item_20260806_02"
+    },
+    {
+      "document_id": "weight-budget-conversion-role-presets-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_WEIGHT_BUDGET_CONVERSION_AND_ROLE_PRESETS_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_weight_budget_point_conversion_and_automatic_role_profile_contract"
+    },
+    {
+      "document_id": "weight-budget-conversion-role-presets-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-weight-budget-conversion-and-role-presets-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_item_20260806_03"
+    },
+    {
+      "document_id": "weight-budget-conversion-role-presets-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-weight-budget-conversion-and-role-presets.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_item_20260806_03"
+    },
+    {
+      "document_id": "item-role-stat-initial-function-catalog-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_ITEM_ROLE_STAT_AND_INITIAL_FUNCTION_CATALOG_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_item_role_stat_and_initial_special_function_contract"
+    },
+    {
+      "document_id": "item-role-stat-initial-function-catalog-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-item-role-stat-and-function-catalog-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_item_20260806_04"
+    },
+    {
+      "document_id": "item-role-stat-initial-function-catalog-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-item-role-stat-and-function-catalog.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_item_20260806_04"
+    },
+    {
+      "document_id": "item-role-stat-initial-function-catalog-contract-test",
+      "source_path": "../../tests/test_r2_item_role_stat_and_initial_function_catalog.py",
+      "status": "ACTIVE",
+      "source_role": "tdd_contract_for_bs_item_20260806_04"
+    },
+    {
+      "document_id": "initial-role-stat-preset-enhancement-function-ownership-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_initial_role_stat_and_enhancement_function_ownership_contract"
+    },
+    {
+      "document_id": "initial-role-stat-preset-enhancement-function-ownership-design",
+      "source_path": "../../docs/superpowers/specs/2026-08-06-initial-role-stat-preset-and-enhancement-function-ownership-design.md",
+      "status": "ACTIVE",
+      "source_role": "approved_design_input_for_bs_item_20260806_05"
+    },
+    {
+      "document_id": "initial-role-stat-preset-enhancement-function-ownership-plan",
+      "source_path": "../../docs/superpowers/plans/2026-08-06-initial-role-stat-preset-and-enhancement-function-ownership.md",
+      "status": "ACTIVE",
+      "source_role": "executed_canon_plan_for_bs_item_20260806_05"
+    },
+    {
+      "document_id": "function-recipe-material-fit-playtest-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_FUNCTION_RECIPE_MATERIAL_FIT_AND_PLAYTEST_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_material_recipe_forging_and_playtest_contract"
     }
   ],
   "routing_guards": [
     "ACTIVE_DOCUMENTS_OVERRIDE_STATUS_MARKED_HISTORICAL_DOCUMENTS",
-    "R2_CHECKPOINT_004_PR106_IS_MAIN_CANON",
+    "R2_CHECKPOINT_004_PR106_PR107_PR108_IS_MAIN_CANON",
     "R2_BATCH_004_IS_CLOSED_AT_2_OF_10",
-    "R2_BATCH_005_STARTS_AT_0_OF_10",
+    "ARTISTRY_STAT_REMAINS_NON_NEGATIVE_INTEGER_WITHOUT_FIXED_DESIGN_MAXIMUM",
+    "CUSTOMER_EQUIPMENT_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
+    "CUSTOMER_PROFICIENCIES_ARE_SPARSE_AND_ITEM_RAW_STATS_REMAIN_ITEM_OWNED",
+    "FOUR_STATE_LOAD_BALANCE_AND_ESCALATING_OVERLOAD_MUST_NOT_BE_ROUTED_AS_CURRENT",
+    "ENHANCEMENT_IS_PRIMARY_CONTROLLABLE_CUSTOMER_SUCCESS_MODIFIER",
+    "CURRENT_LOAD_MODEL_IS_BINARY_MAXIMUM_LOAD_GATE",
+    "CUSTOMER_BASE_STATS_ARE_STRENGTH_DEXTERITY_CONSTITUTION_JUDGMENT_1_TO_10",
+    "MOBILE_CUSTOMER_CARD_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
+    "CRITICAL_CUSTOMER_CARD_INFORMATION_MUST_NOT_BE_COLOR_LONG_PRESS_OR_HOVER_ONLY",
+    "MOBILE_CUSTOMER_CARD_USES_THREE_LAYER_PROGRESSIVE_DISCLOSURE",
+    "ARTISTRY_GROWTH_REQUIRES_APPROVED_SOURCE_AND_UID_PROVENANCE",
+    "ARTISTRY_VALUE_IS_CONTEXT_DERIVED_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
+    "ARTISTRY_CUSTOMER_FIT_IS_CONTEXT_DERIVED_NOT_PERSISTED",
+    "SAME_SOURCE_DOUBLE_COUNT_AND_REPEAT_FARMING_ARE_FORBIDDEN",
     "FOUR_TIER_DRAFT_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "BOUNDED_OR_NAMED_ARTISTRY_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "GENERAL_AFFIX_A_B_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "AUXILIARY_MATERIAL_SLOT_MUST_NOT_BE_ROUTED_AS_CURRENT",
     "PR81_MUST_NOT_BE_ROUTED_AS_MERGEABLE_CANON",
     "HISTORICAL_POC_PASS_MUST_NOT_BE_ROUTED_AS_CURRENT_PRODUCT_PASS",
-    "PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED"
-  ]
+    "PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
+    "R2_BATCH_005_IS_ACTIVE_AT_5_OF_10_WITH_BS_ITEM_20260806_01",
+    "CURRENT_ITEM_WEIGHT_USES_EQUIPMENT_GROUP_FIXED_BASE_WEIGHT",
+    "ONLY_ONE_EXPLICIT_PLUS_OR_MINUS_FIVE_WEIGHT_MODIFIER_IS_ALLOWED_PER_ITEM",
+    "MATERIAL_GRADE_ARTISTRY_RAW_STATS_AND_GENERAL_ENHANCEMENT_DO_NOT_AUTOMATICALLY_CHANGE_WEIGHT",
+    "EQUIPMENT_BASE_WEIGHT_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED",
+    "R2_BATCH_005_IS_ACTIVE_AT_8_OF_10_WITH_BS_ITEM_20260806_04",
+    "ITEM_ROLE_STAT_MODEL_IS_SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS",
+    "DEFAULT_SECONDARY_COMBAT_STAT_SCHEMA_IS_FORBIDDEN",
+    "FUNCTION_CAPACITY_DOES_NOT_AUTO_GENERATE_FUNCTIONS",
+    "FUNCTION_TAGS_DO_NOT_AUTO_ADD_TO_GENERIC_EVENT_SUCCESS",
+    "TRANSFORMATIVE_FUNCTIONS_REQUIRE_SEPARATE_DESIGN_APPROVAL"
+  ],
+  "current_reference_sheet_tab": "42_능력치_강화_참조표"
 }

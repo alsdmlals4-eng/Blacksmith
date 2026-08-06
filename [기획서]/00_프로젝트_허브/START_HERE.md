@@ -8,9 +8,9 @@
 WORK_MODE: TOTAL_PLANNING
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
 R2_CHECKPOINT_003: PR103 / CLOSURE_PR104 / CANON_AUDIT_PR105
-R2_CHECKPOINT_004: PR106 / CLOSURE_PR107
-R2_STATUS: R2_BATCH_005_ACTIVE_0_OF_10
-CURRENT_DECISIONS: BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-OPS-20260805-01
+R2_CHECKPOINT_004: PR106 / CLOSURE_PR107 / CANON_AUDIT_PR108
+R2_STATUS: R2_BATCH_005_ACTIVE_10_OF_10
+CURRENT_DECISIONS: BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-OPS-20260805-01
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
 
@@ -37,19 +37,32 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 ```
 
 - 제작 등급은 최초 직접 단조 완료 시 확정하고 동일 UID에서 고정
-- `전설`은 출생 극희귀 결과이며 후천 승격 없음
 - 예술성은 전투력을 기본적으로 올리지 않고 범용 속성 배율이 아님
 - 일반 강화는 한 입력에 한 결과
 - 정밀강화는 주재료 맥락 + 강화 방식 + 촉매 한 개
 - 연대기 수식어를 누르면 UID 기반 읽기 전용 상세
 - 보조재료 슬롯과 일반 수식어 A·B는 현재 구조 아님
 
+## 예술성 생성·성장·가치 평가
+
+Decision: `BS-CRAFT-20260805-02`.
+
+```text
+초기 생성: 설계 미적 성향 / 재료 시각·가공 적합성 / 직접 단조 미적 결과
+후천 성장: ARTISTIC_FINISH / 예술성 책임 촉매 / 승인된 세공·마감 / 의미 있는 재작업
+가치 평가: ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE
+고객 관심: IGNORE / SECONDARY / PRIMARY / REQUIREMENT
+```
+
+- 일반 강화·판매·증여·전시·감정·명성·연대기로 자동 증가 금지
+- 수리·손상·판매·전시·감정·증여·저비용 반복으로 순증가 금지
+- 동일 원인 이중 계산과 전체 가치 곱셈 중첩 금지
+- 정확한 값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`
+
 ## 체크포인트 상태
 
-- R2_CHECKPOINT_004: `PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9`
-- squash merge: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
-- 배치 004: `CLOSED_MERGED_PR106 / 2_OF_10`
-- 현재 배치 005: `ACTIVE / 0_OF_10`
+- R2_CHECKPOINT_004: `MAIN_CANON`
+- 현재 배치 005: `ACTIVE / 1_OF_10`
 - 제품 구현: `BLOCKED`
 
 ## 운영 규칙
@@ -68,3 +81,76 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 - 초기 bounded 예술성·named tier: `[대체됨]`
 - 과거 3등급 runtime: `[역사 증거]`
 - PR #81 전체 병합: `[폐기]`, 선별 이관: `[보류]`
+
+## 고객 능력·장비 적합성 승인
+
+- Decision: `BS-CUSTOMER-20260805-01`
+- 고객: 근력·기량·체력·판단력 `1~10`, 희소 무기·갑옷 적성 `0~3`, 마력 적성 `0~10`
+- 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
+- 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
+- 상태: `R2_BATCH_005_4_OF_10 / APPROVED_PENDING_MERGE / PRODUCT_IMPLEMENTATION_BLOCKED`
+
+<!-- BS-UX-20260805-01 -->
+현재 UX Decision은 `BS-UX-20260805-01`: 모바일 고객 카드의 기본→장비 판단→상세 3단계 정보 공개. 제품 구현은 계속 `BLOCKED`.
+
+<!-- BS-CUSTOMER-20260806-01 -->
+### 강화 중심 단순 장비 판정
+
+- Decision: `BS-CUSTOMER-20260806-01` / `R2_BATCH_005_4_OF_10`
+- 최대 중량: `STRENGTH × 10 WEIGHT_POINT`
+- 상태: `WITHIN_LIMIT / OVERWEIGHT`; 초과 시 배정 불가
+- 성공률: 강화 레벨이 주효과, 고객 능력·적성은 작은 보조 보정
+- 정본: `docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md`
+- 제품 구현: `BLOCKED`
+
+## BS-ITEM-20260806-01 현재 정제
+
+- 활성 배치: `R2_BATCH_005_8_OF_10`
+- 장비군 고정 기본 중량: `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`
+- 중량 전용 효과: `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`, 작품당 최대 하나
+- 자동 중량 변경 금지: 재료·제작 등급·예술성·원수치·일반 강화 단계
+- 정본: `docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_CANON_2026.md`
+- 제품 구현: `BLOCKED`
+
+## BS-ITEM-20260806-02 — 중량 성능 예산 기억
+
+- 상태: `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
+- 최초 제작 중량 5당 초기 성능 예산 +1.
+- 경량화는 현재 중량만 감소하고 기존 예산을 유지.
+- 중량화는 과거 최고 인정 중량 초과분만 예산 추가.
+- 정밀강화 다섯 이정표에서 이정표당 중량 조정 최대 1회.
+- 제품 구현: `BLOCKED`.
+
+## BS-ITEM-20260806-03 — 중량 예산 환산과 역할 프리셋
+
+- 상태: `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
+- 공격·방어 예산 1점은 원수치 +5.
+- 마법 기능·유틸리티 예산 1점은 기능 용량 +1.
+- 기본 작품 역할 프로필은 최초 제작 시 확정되고 UID에서 불변.
+- 플레이어 자유 배분·무료 재분배·기본 혼합 프로필 없음.
+- 제품 구현: `BLOCKED`.
+
+<!-- BS-ITEM-20260806-04 -->
+## 현재 작품 능력치 진입점
+
+`BS-ITEM-20260806-04 / R2_BATCH_005_ACTIVE_8_OF_10`이 작품 역할 원수치와 최초 기능 카탈로그의 최신 권위다. 제품 구현은 `BLOCKED`다.
+
+<!-- BS-ITEM-20260806-05 CURRENT HUB ROUTING -->
+## 현재 9/10 작품 수치·강화 변동 Gate
+
+- Decision: `BS-ITEM-20260806-05 / R2_BATCH_005_10_OF_10`
+- 권위 정본: `docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md`
+- 조회 시트: `42_능력치_강화_참조표`
+- 핵심: 최초 역할 수치 `5·10·15`, 일반 강화 원수치 자동 변동 없음, 정밀강화 수치 패키지와 기능 재작업 상호배타, 통합 변동 장부 필수
+- 다음 Gate: 작품별 특수기능 제작·재작업 레시피와 테스트 프리셋 플레이테스트 계획
+- 제품 구현: `BLOCKED`
+
+## BS-ITEM-20260806-06 — 배치 005 완료 Gate
+
+- 현재 배치: `R2_BATCH_005_10_OF_10`
+- 주재료 역할 적합: `EXPLICIT_PRIMARY_MATERIAL_BY_EQUIPMENT_GROUP`
+- 직접 단조 역할 결과: `DETERMINISTIC_ROLE_STRIKE_THREE_ZONE`
+- 기능 레시피: `ROLE_PROFILE_MATERIAL_WEIGHT_CONTEXT_CAPACITY`
+- 사람 플레이테스트: `NOT_RUN`
+- 다음 행동: PR #109 체크포인트 검토·명시적 병합 승인 대기
+- 제품 구현: `BLOCKED`

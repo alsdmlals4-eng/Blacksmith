@@ -34,29 +34,30 @@ jobs:
       - name: Select the trusted protected baseline
         env:
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
           set -euo pipefail
           ADAPTER_PATH="skills/PROJECT_BASE_ADAPTER.json"
-          ADAPTER_CHANGES="$(git diff --name-only "$PR_BASE_SHA"...HEAD -- "$ADAPTER_PATH")"
+          git fetch origin "$PR_BASE_REF" --no-tags
+          LATEST_BASE_SHA="$(git rev-parse "origin/$PR_BASE_REF")"
+          ADAPTER_CHANGES="$(git diff --name-only "$PR_BASE_SHA"..."$PR_HEAD_SHA" -- "$ADAPTER_PATH")"
           if printf '%s\n' "$ADAPTER_CHANGES" | grep -Fxq "$ADAPTER_PATH"; then
-            # Adapter migration PR: trust the immutable pull-request base as the new protected baseline.
-            PROTECTED_BASE_SHA="$PR_BASE_SHA"
+            # Adapter migration PR: the adapter must explicitly adopt the latest base tip.
+            PROTECTED_BASE_SHA="$LATEST_BASE_SHA"
           else
-            # Normal PR: trust the baseline recorded by the adapter at the immutable pull-request base.
+            # Normal PR: use the current merged adapter record, not the stale original PR base.
             PROTECTED_BASE_SHA="$(
-              git show "$PR_BASE_SHA:$ADAPTER_PATH" |
-                python -c 'import json, sys; payload = json.load(sys.stdin); print(payload["protected_baseline"]["commit"])'
+              python -c 'import json, sys; payload = json.load(sys.stdin); print(payload["protected_baseline"]["commit"])' < "$ADAPTER_PATH"
             )"
           fi
           python -c 'import re, sys; value = sys.argv[1]; raise SystemExit(0 if re.fullmatch(r"[0-9a-f]{40}", value) else 1)' "$PROTECTED_BASE_SHA"
           git cat-file -e "$PROTECTED_BASE_SHA^{commit}"
-          git merge-base --is-ancestor "$PROTECTED_BASE_SHA" "$PR_BASE_SHA"
+          git merge-base --is-ancestor "$PROTECTED_BASE_SHA" "$LATEST_BASE_SHA"
           printf 'PROTECTED_BASE_SHA=%s\n' "$PROTECTED_BASE_SHA" >> "$GITHUB_ENV"
 
       - name: Validate adapter against the trusted protected baseline
         run: |
-          # Historical compatibility marker only; forbidden as an executable command:
-          # --protected-base "$PR_BASE_SHA"
           python .base-contract/tools/check_project_operating_contract.py \
             --project-root . \
             --base-repository .base-contract \

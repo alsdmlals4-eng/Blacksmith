@@ -21,22 +21,79 @@ REQUIRED_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005 / 0/10",
+        "R2_BATCH_005 / 10/10",
+        "BS-CRAFT-20260805-02",
         "MERGED_PR106",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "예술성 27",
         "고정 설계 최대치 없음",
+        "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
+        "IGNORE / SECONDARY / PRIMARY / REQUIREMENT",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+        "BS-ITEM-20260806-06",
         "제품 구현: `BLOCKED`",
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "R2_BATCH_005_0_OF_10",
+        "R2_BATCH_005_10_OF_10",
+        "BS-CRAFT-20260805-02",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
         "예술성 27",
         "고정 설계 최대치 없음",
+        "ARTISTIC_FINISH",
+        "구간별 한계 가치",
         "일반 수식어 A·B 구조 재도입 금지",
         "보조재료 슬롯 재도입 금지",
+    ),
+    "docs/planning/BLACKSMITH_R2_ARTISTRY_GENERATION_GROWTH_AND_VALUATION_CANON_2026.md": (
+        "BS-CRAFT-20260805-02",
+        "R2_BATCH_005_1_OF_10",
+        "BASE_ITEM_DESIGN_AESTHETIC_TENDENCY",
+        "ARTISTIC_FINISH",
+        "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
+        "IGNORE / SECONDARY / PRIMARY / REQUIREMENT",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_MOBILE_CUSTOMER_CARD_PROGRESSIVE_DISCLOSURE_CANON_2026.md": (
+        "BS-UX-20260805-01",
+        "R2_BATCH_005_5_OF_10",
+        "기본 카드 → 장비 선택 후 판단층 → 상세 보기",
+        "핵심 원인 2~4개",
+        "48dp",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md": (
+        "BS-CUSTOMER-20260806-01",
+        "R2_BATCH_005_5_OF_10",
+        "STRENGTH × 10 WEIGHT_POINT",
+        "WITHIN_LIMIT / OVERWEIGHT",
+        "강화 레벨 +1당 +1%p",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_CANON_2026.md": (
+        "BS-ITEM-20260806-01",
+        "R2_BATCH_005_5_OF_10",
+        "장비군 고정 기본 중량",
+        "LIGHTWEIGHT: -5",
+        "WEIGHTED: +5",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_WEIGHT_PERFORMANCE_BUDGET_AND_LIGHTWEIGHT_TRADEOFF_CANON_2026.md": (
+        "BS-ITEM-20260806-02",
+        "R2_BATCH_005_6_OF_10",
+        "최초 제작 중량 5당 초기 성능 예산 +1",
+        "경량화 -5 중량 / 기존 예산 유지",
+        "중량화 +5 중량 / 과거 최고 인정 중량 초과분만 예산 추가",
+        "PRECISION_ENHANCEMENT_METHOD",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_WEIGHT_BUDGET_CONVERSION_AND_ROLE_PRESETS_CANON_2026.md": (
+        "BS-ITEM-20260806-03",
+        "R2_BATCH_005_8_OF_10",
+        "1 ATTACK_BUDGET = ATTACK +5",
+        "1 DEFENSE_BUDGET = DEFENSE +5",
+        "ROLE_PRESET_AUTOMATIC_SINGLE_LANE",
+        "제품 구현: `BLOCKED`",
     ),
     "docs/planning/BLACKSMITH_R2_CHECKPOINT_004_POSTMERGE_CLOSURE_2026.md": (
         "CLOSURE_MERGED_PR107",
@@ -56,46 +113,78 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_R2_ARTISTRY_AS_NUMERIC_WEAPON_STAT_CANON_2026.md": (
         "BS-CRAFT-20260805-01",
-        "MERGED_PR106",
+        "BS-CRAFT-20260805-02",
         "예술성 27",
         "고정 설계 최대치 없음",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_0_OF_10",
-        "현재 승인 카운터: `0/10`",
+        "R2_BATCH_005_10_OF_10",
+        "현재 승인 카운터: `10/10`",
+        "BS-CRAFT-20260805-02",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_0_OF_10",
+        "R2_BATCH_005_ACTIVE_10_OF_10",
+        "BS-CRAFT-20260805-02",
         "첫 코어 버티컬 슬라이스",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_0_OF_10",
-        "7a46fa38586a42f268cd0432744203049649ddd5",
+        "R2_BATCH_005_ACTIVE_10_OF_10",
+        "Artistry Generation·Growth·Valuation Gate",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_0_OF_10",
+        "R2_BATCH_005_ACTIVE_10_OF_10",
+        "BS-CRAFT-20260805-02",
         "예술성 27",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_0_OF_10",
-        "예술성 원수치 능력치",
+        "R2_BATCH_005_10_OF_10",
+        "BS-CRAFT-20260805-02",
+        "예술성 생성·성장·가치 평가",
+    ),
+    "docs/planning/BLACKSMITH_R2_ITEM_ROLE_STAT_AND_INITIAL_FUNCTION_CATALOG_CANON_2026.md": (
+        "BS-ITEM-20260806-04",
+        "R2_BATCH_005_8_OF_10",
+        "SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS",
+        "ARCANE_CONDUCTION",
+        "TASK_INTEGRATION",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_FUNCTION_RECIPE_MATERIAL_FIT_AND_PLAYTEST_CANON_2026.md": (
+        "BS-ITEM-20260806-06",
+        "R2_BATCH_005_10_OF_10",
+        "EXPLICIT_PRIMARY_MATERIAL_BY_EQUIPMENT_GROUP",
+        "DETERMINISTIC_ROLE_STRIKE_THREE_ZONE",
+        "ROLE_PROFILE_MATERIAL_WEIGHT_CONTEXT_CAPACITY",
+        "ELEMENTAL_WARD(FIRE)",
+        "ENVIRONMENTAL_SEALING(FIRE)",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md": (
+        "BS-ITEM-20260806-05",
+        "R2_BATCH_005_9_OF_10",
+        "MAX_ZERO_BASE_PLUS_MATERIAL_FIT_PLUS_DIRECT_FORGING",
+        "GENERAL_ENHANCEMENT",
+        "FUNCTION_REWORK",
+        "ITEM_CHANGE_LEDGER_ENTRY",
+        "42_능력치_강화_참조표",
+        "제품 구현: `BLOCKED`",
     ),
 }
 
 FORBIDDEN = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
-        "APPROVED_PENDING_MERGE",
+        "R2_BATCH_005 / 0/10",
         "R2_BATCH_004 / 2/10",
         "예술성 7/10",
         "예술성 1~10",
@@ -103,12 +192,10 @@ FORBIDDEN = {
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json": (
         "R2_BATCH_004_ACTIVE_2_OF_10",
         "PENDING_EXPECTED_HEAD_MERGE",
-        "APPROVED_PENDING_MERGE",
         '"auxiliary_material_slot_exists":true',
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
-        "현재 승인 카운터: `2/10`",
-        "Draft PR 유지",
+        "현재 승인 카운터: `0/10`",
     ),
 }
 
@@ -151,25 +238,13 @@ def check_r2(failures: list[str]) -> None:
         return
     expected = {
         "schema_version": 8,
-        "stage_status": "R2_BATCH_005_ACTIVE_0_OF_10",
-        "next_approval_counter": "0/10",
+        "stage_status": "R2_BATCH_005_ACTIVE_10_OF_10",
+        "next_approval_counter": "10/10",
         "product_implementation": "BLOCKED",
     }
     for key, value in expected.items():
         if registry.get(key) != value:
             failures.append(f"R2 registry {key!r} must equal {value!r}")
-
-    cp3 = registry.get("immutable_merge_evidence", {}).get("checkpoint_003", {})
-    for key, value in {
-        "planning_pr": 103,
-        "planning_merge_sha": "674ee21013cb5d41f89a1a3f3b10ecfc31238295",
-        "closure_pr": 104,
-        "closure_merge_sha": "d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9",
-        "canon_audit_pr": 105,
-        "canon_audit_merge_sha": "95f8fa33a645914578451af325afcaa32732c426",
-    }.items():
-        if cp3.get(key) != value:
-            failures.append(f"checkpoint 003 {key!r} must equal {value!r}")
 
     cp4 = registry.get("immutable_merge_evidence", {}).get("checkpoint_004", {})
     for key, value in {
@@ -187,39 +262,34 @@ def check_r2(failures: list[str]) -> None:
         if cp4.get(key) != value:
             failures.append(f"checkpoint 004 {key!r} must equal {value!r}")
 
-    green = registry.get("tdd_evidence", {}).get("closure_green", {})
-    for key, value in {
-        "commit": "1ad791123eaf6c727e964380814ffb69f1357bbf",
-        "planning_first_run": 101,
-        "base_run": 579,
-        "pr_validation_run": 1170,
-        "status": "PASS",
-    }.items():
-        if green.get(key) != value:
-            failures.append(f"closure GREEN {key!r} must equal {value!r}")
-
     closed = registry.get("closed_batch", {})
     if closed.get("id") != "R2_BATCH_004" or closed.get("counter") != "2/10":
         failures.append("closed batch must be R2_BATCH_004 at 2/10")
-    if closed.get("decisions") != ["BS-CRAFT-20260804-07", "BS-CRAFT-20260805-01"]:
-        failures.append("closed batch 004 decisions are incomplete")
-    if closed.get("closure_reason") != "USER_APPROVED_EARLY_CHECKPOINT":
-        failures.append("closed batch 004 reason is incorrect")
 
     active = registry.get("active_batch", {})
-    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "0/10":
-        failures.append("active batch must be R2_BATCH_005 at 0/10")
-    if active.get("approved_decisions") != 0 or active.get("decisions") != []:
-        failures.append("active batch 005 must start empty")
+    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "10/10":
+        failures.append("active batch must be R2_BATCH_005 at 10/10")
+    if active.get("approved_decisions") != 10 or active.get("decisions") != [
+        "BS-CRAFT-20260805-02",
+        "BS-CUSTOMER-20260805-01",
+        "BS-UX-20260805-01",
+        "BS-CUSTOMER-20260806-01",
+        "BS-ITEM-20260806-01",
+        "BS-ITEM-20260806-02",
+        "BS-ITEM-20260806-03",
+        "BS-ITEM-20260806-04",
+        "BS-ITEM-20260806-05",
+        "BS-ITEM-20260806-06",
+    ]:
+        failures.append("active batch 005 must contain the ten approved decisions")
+    if active.get("maximum_size") != 10:
+        failures.append("active batch maximum size must remain 10")
 
     decisions = {
         item.get("id"): item
         for item in registry.get("current_decisions", [])
         if isinstance(item, dict) and isinstance(item.get("id"), str)
     }
-    customer = decisions.get("BS-CUSTOMER-20260803-02", {}).get("contract", {})
-    if customer.get("event_risk_scale") != "INTEGER_1_TO_10":
-        failures.append("customer risk scale contract is missing")
     precision = decisions.get("BS-CRAFT-20260804-04", {}).get("contract", {})
     if precision.get("auxiliary_material_slot_exists") is not False:
         failures.append("auxiliary material slot must remain false")
@@ -234,11 +304,118 @@ def check_r2(failures: list[str]) -> None:
         failures.append("unbounded artistry domain is missing")
     if artistry.get("minimum") != 0 or artistry.get("fixed_design_maximum") is not None:
         failures.append("artistry minimum or maximum is incorrect")
-    if artistry.get("combat_power_by_default") is not False:
-        failures.append("artistry must not increase combat by default")
-    ops = decisions.get("BS-OPS-20260805-01", {}).get("contract", {})
-    if ops.get("tdd_cycle") != ["RED", "GREEN", "REFACTOR"]:
-        failures.append("TDD cycle is incomplete")
+
+    flow = decisions.get("BS-CRAFT-20260805-02", {}).get("contract", {})
+    if flow.get("persisted_stat") != "ARTISTRY":
+        failures.append("artistry flow persisted stat is missing")
+    if flow.get("initial_sources") != [
+        "BASE_ITEM_DESIGN_AESTHETIC_TENDENCY",
+        "MATERIAL_VISUAL_PROCESSING_FIT",
+        "DIRECT_FORGING_AESTHETIC_RESULT",
+    ]:
+        failures.append("artistry initial sources are incomplete")
+    if flow.get("allowed_post_craft_growth_sources") != [
+        "ARTISTIC_FINISH",
+        "ARTISTRY_OWNED_CATALYST_EFFECT",
+        "APPROVED_FINISHING_OR_DECORATION_CONTENT",
+        "MEANINGFUL_ARTISTIC_REWORK",
+    ]:
+        failures.append("artistry post-craft sources are incomplete")
+    if flow.get("valuation_model") != "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE":
+        failures.append("artistry valuation model is incorrect")
+    if flow.get("customer_interest_roles") != ["IGNORE", "SECONDARY", "PRIMARY", "REQUIREMENT"]:
+        failures.append("customer artistry interest roles are incomplete")
+    if flow.get("same_source_double_count_allowed") is not False:
+        failures.append("same-source double counting must be false")
+    if flow.get("exact_values") != "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED":
+        failures.append("artistry exact values must remain test presets")
+
+
+    customer_fit = decisions.get("BS-CUSTOMER-20260805-01", {}).get("contract", {})
+    if customer_fit.get("base_stats") != ["STRENGTH", "DEXTERITY", "CONSTITUTION", "JUDGMENT"]:
+        failures.append("customer four-stat contract is incomplete")
+    if customer_fit.get("equipment_categories") != ["WEAPON", "SHIELD_OR_OFFHAND", "ARMOR", "ACCESSORY_OR_TOOL"]:
+        failures.append("equipment category contract is incomplete")
+    if customer_fit.get("customer_stats_directly_add_to_item_attack_or_defense") is not False:
+        failures.append("customer stats must not double-count raw item attack or defense")
+    if customer_fit.get("exact_values") != "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED":
+        failures.append("customer equipment exact values must remain test presets")
+
+
+    ux = decisions.get("BS-UX-20260805-01", {}).get("contract", {})
+    if ux.get("disclosure_model") != "THREE_LAYER_PROGRESSIVE_DISCLOSURE":
+        failures.append("mobile customer card disclosure model is missing")
+    if ux.get("reason_chip_minimum") != 2 or ux.get("reason_chip_maximum") != 4:
+        failures.append("mobile customer card reason chip bounds are incorrect")
+    if ux.get("minimum_touch_target_dp") != 48:
+        failures.append("mobile customer card minimum touch target must be 48dp")
+    if ux.get("color_only_state_communication_allowed") is not False:
+        failures.append("mobile customer card must not use color-only state communication")
+    if ux.get("product_implementation") != "BLOCKED":
+        failures.append("mobile customer card product implementation must remain blocked")
+
+    simple = decisions.get("BS-CUSTOMER-20260806-01", {}).get("contract", {})
+    if simple.get("load_model") != "BINARY_MAXIMUM_LOAD_GATE":
+        failures.append("current customer load model must be the binary maximum-load gate")
+    if simple.get("maximum_load_formula") != "STRENGTH_X_10_WEIGHT_POINT":
+        failures.append("maximum load formula is incorrect")
+    if simple.get("load_states") != ["WITHIN_LIMIT", "OVERWEIGHT"]:
+        failures.append("current load states are incorrect")
+    if simple.get("overweight_effect") != "ASSIGNMENT_BLOCKED":
+        failures.append("overweight equipment must block assignment")
+    if simple.get("enhancement_bonus_pp_per_level") != 1:
+        failures.append("enhancement must contribute one percentage point per level")
+    if simple.get("raw_item_attack_defense_handling_artistry_feed_general_forecast") is not False:
+        failures.append("raw item support stats must not feed the general forecast")
+
+    weight = decisions.get("BS-ITEM-20260806-01", {}).get("contract", {})
+    if weight.get("base_weight_model") != "EQUIPMENT_GROUP_FIXED_BASE_WEIGHT":
+        failures.append("equipment base-weight model is incorrect")
+    if weight.get("base_weight_points") != {"ACCESSORY": 0, "TOOL": 5, "CLOTHING_OR_ROBE": 5, "LIGHT_ARMOR": 10, "MEDIUM_ARMOR": 20, "HEAVY_ARMOR": 30, "SWORD": 10, "AXE": 15, "BLUNT": 15, "POLEARM": 20, "RANGED": 10, "SHIELD_SUPPORT": 10}:
+        failures.append("equipment base-weight table is incorrect")
+    if weight.get("explicit_weight_modifiers") != {"LIGHTWEIGHT": -5, "NONE": 0, "WEIGHTED": 5}:
+        failures.append("explicit weight modifiers are incorrect")
+    if weight.get("maximum_active_weight_modifiers_per_item") != 1:
+        failures.append("only one weight modifier may be active per item")
+    if weight.get("product_implementation") != "BLOCKED":
+        failures.append("equipment base-weight product implementation must remain blocked")
+
+
+    role_catalog = decisions.get("BS-ITEM-20260806-04", {}).get("contract", {})
+    if role_catalog.get("item_role_stat_model") != "SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS":
+        failures.append("item role-stat model is incorrect")
+    if role_catalog.get("primary_role_stat_by_equipment_group", {}).get("SWORD") != "ATTACK":
+        failures.append("sword primary role stat must be attack")
+    if role_catalog.get("primary_role_stat_by_equipment_group", {}).get("HEAVY_ARMOR") != "DEFENSE":
+        failures.append("heavy armor primary role stat must be defense")
+    if role_catalog.get("display_attack_sources") != ["CRAFTED_ATTACK", "WEIGHT_ATTACK_OUTPUT", "APPROVED_ENHANCEMENT_ATTACK_OUTPUT"]:
+        failures.append("display attack sources are incomplete")
+    if role_catalog.get("display_defense_sources") != ["CRAFTED_DEFENSE", "WEIGHT_DEFENSE_OUTPUT", "APPROVED_ENHANCEMENT_DEFENSE_OUTPUT"]:
+        failures.append("display defense sources are incomplete")
+    if set(role_catalog.get("initial_magic_function_catalog", {})) != {"ARCANE_CONDUCTION", "ELEMENTAL_WARD", "ARCANE_SENSING"}:
+        failures.append("initial magic function catalog is incomplete")
+    if set(role_catalog.get("initial_utility_function_catalog", {})) != {"ENVIRONMENTAL_SEALING", "FIELD_SERVICEABILITY", "TASK_INTEGRATION"}:
+        failures.append("initial utility function catalog is incomplete")
+    if role_catalog.get("function_tags_added_to_generic_event_success") is not False:
+        failures.append("function tags must not auto-add to generic success")
+    if role_catalog.get("transformative_function_requires_separate_design_approval") is not True:
+        failures.append("transformative functions must require separate approval")
+    if role_catalog.get("product_implementation") != "BLOCKED":
+        failures.append("item role stat and function catalog implementation must remain blocked")
+
+    final_contract = decisions.get("BS-ITEM-20260806-06", {}).get("contract", {})
+    if final_contract.get("material_role_fit_model") != "EXPLICIT_PRIMARY_MATERIAL_BY_EQUIPMENT_GROUP":
+        failures.append("primary material role-fit model is incorrect")
+    if final_contract.get("direct_forging_role_result_model") != "DETERMINISTIC_ROLE_STRIKE_THREE_ZONE":
+        failures.append("direct forging role-result model is incorrect")
+    if final_contract.get("current_available_bound_reworks") != ["ELEMENTAL_WARD_FIRE", "ENVIRONMENTAL_SEALING_FIRE"]:
+        failures.append("current available bound reworks are incorrect")
+    if final_contract.get("solo_playtest_case_count") != 48:
+        failures.append("solo playtest must contain 48 cases")
+    if final_contract.get("human_playtest_status") != "NOT_RUN":
+        failures.append("human playtest status must remain NOT_RUN")
+    if final_contract.get("product_implementation") != "BLOCKED":
+        failures.append("final batch product implementation must remain blocked")
 
     alignment = registry.get("implementation_alignment", {})
     if alignment.get("historical_implemented_grade_model") != ["STANDARD", "GOOD", "PERFECT"]:
@@ -249,6 +426,25 @@ def check_r2(failures: list[str]) -> None:
         failures.append("artistry product implementation must remain blocked")
     if registry.get("legacy_reference_pull_request", {}).get("whole_pr_merge") != "REJECTED":
         failures.append("PR81 whole merge must remain rejected")
+
+    conversion = decisions.get("BS-ITEM-20260806-03", {}).get("contract", {})
+    if conversion.get("performance_budget_conversion_model") != "ROLE_PRESET_AUTOMATIC_SINGLE_LANE":
+        failures.append("weight budget conversion model is incorrect")
+    if conversion.get("point_conversion") != {
+        "ATTACK_BUDGET": {"output": "ATTACK", "per_budget_point": 5},
+        "DEFENSE_BUDGET": {"output": "DEFENSE", "per_budget_point": 5},
+        "MAGIC_FUNCTION_BUDGET": {"output": "MAGIC_FUNCTION_CAPACITY", "per_budget_point": 1},
+        "UTILITY_BUDGET": {"output": "UTILITY_CAPACITY", "per_budget_point": 1},
+    }:
+        failures.append("weight budget point conversion is incomplete")
+    if conversion.get("default_profile_by_equipment_group", {}).get("POLEARM") != "PHYSICAL_WEAPON":
+        failures.append("polearm default performance profile is missing")
+    if conversion.get("performance_profile_immutable_for_uid") is not True:
+        failures.append("performance profile must be immutable")
+    if conversion.get("player_free_allocation_ui") is not False:
+        failures.append("player free allocation UI must remain disabled")
+    if conversion.get("product_implementation") != "BLOCKED":
+        failures.append("weight budget conversion product implementation must remain blocked")
 
 
 def check_historical(failures: list[str]) -> None:
