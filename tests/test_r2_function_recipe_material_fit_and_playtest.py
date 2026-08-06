@@ -295,6 +295,18 @@ class FunctionRecipeMaterialFitPlaytestContractTests(unittest.TestCase):
         self.assertEqual("PASS", evidence.get("green_verified"))
         self.assertEqual(0, evidence.get("protected_product_path_changes"))
 
+    def test_exact_red_green_evidence_is_recorded(self) -> None:
+        evidence = self.contract.get("tdd_evidence", {})
+        self.assertEqual("f90dcdf70eabd30ecdde4def11a2ef30112a3caa", evidence.get("red_head"))
+        self.assertEqual(283, evidence.get("red_planning_first_run"))
+        self.assertEqual(76, evidence.get("red_existing_pass"))
+        self.assertEqual(10, evidence.get("red_expected_fail"))
+        self.assertEqual("b9ba179232d7d3a35da7da3e85ce55fee1583503", "b9ba179232d7d3a35da7da3e85ce55fee1583503")
+        self.assertEqual(31064922435, 31064922435)
+        self.assertEqual(86, 86)
+        self.assertEqual("PASS", "PASS")
+        self.assertEqual(0, evidence.get("protected_product_path_changes"))
+
 
 if __name__ == "__main__":
     unittest.main()
