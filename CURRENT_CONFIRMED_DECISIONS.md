@@ -1,11 +1,13 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
 <!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
-> **R2_CHECKPOINT_005 / POSTMERGE_CLOSURE_PENDING**
+> **R2_CHECKPOINT_005_CLOSED_MAIN_CANON**
 >
-> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109 / MAIN_CANON`
+> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109_MAIN_CANON / CLOSURE_PR117_MERGED_MAIN_CANON`
 >
-> planning exact head: `77eba15415bc9ede661639b45bb526d5ce4410a5` / squash merge: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9`
+> planning exact head: `77eba15415bc9ede661639b45bb526d5ce4410a5` / planning squash merge: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9`
+>
+> closure exact head: `51d4acf4fc31233b4b218a6f20589fdbf2557ee2` / closure squash merge: `06f03323c1309d8da0e6f5b9f4680a20ce388126`
 >
 > next batch: `R2_BATCH_006_NOT_STARTED_0_OF_10` / 제품 구현: `BLOCKED` / 사람 플레이테스트: `NOT_RUN`
 

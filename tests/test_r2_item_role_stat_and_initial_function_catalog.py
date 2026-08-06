@@ -43,7 +43,7 @@ class ItemRoleStatInitialFunctionCatalogContractTests(unittest.TestCase):
         cls.contract = cls.decisions.get("BS-ITEM-20260806-04", {}).get("contract", {})
 
     def test_batch_005_contains_ten_approved_decisions(self) -> None:
-        self.assertEqual("R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING", self.registry["stage_status"])
+        self.assertEqual("R2_CHECKPOINT_005_CLOSED_MAIN_CANON", self.registry["stage_status"])
         self.assertEqual("0/10", self.registry["next_approval_counter"])
         closed = self.registry["closed_batch"]
         self.assertEqual(10, closed["approved_decisions"])
