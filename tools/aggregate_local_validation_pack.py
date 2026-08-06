@@ -37,6 +37,7 @@ def main() -> int:
         "full_lane_valid": evaluation.full_lane_valid,
         "missing_lanes": evaluation.missing_lanes,
         "failed_lanes": evaluation.failed_lanes,
+        "unexpected_lanes": evaluation.unexpected_lanes,
         "full_manifest": str(Path(args.full_manifest).resolve()),
         "lane_manifests": [
             str(Path(path).resolve()) for path in args.lane_manifest
