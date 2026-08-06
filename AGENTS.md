@@ -1,6 +1,6 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 단계는 제품 구현이 아니라 `TOTAL_PLANNING / R2_BATCH_004`이며 제품 구현은 `BLOCKED`다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 일반 제품 구현은 `BLOCKED`이며, `R2_BATCH_006_APPROVED_MAIN_CANON`이 승인한 버티컬 슬라이스 namespace만 제한적으로 구현할 수 있다.
 
 ## 1. 권위 순서
 
@@ -91,7 +91,7 @@ addons/
 project.godot
 ```
 
-제품 구현은 R1~R8와 최종 사용자 검수 및 별도 Codex Gate 전까지 `BLOCKED`다.
+일반 제품 구현은 R1~R8와 최종 사용자 검수 및 별도 Codex Gate 전까지 `BLOCKED`다. 버티컬 슬라이스는 승인된 namespace와 Task 범위를 넘어 확장하지 않는다.
 
 ## 6. 정본·구형 문서
 
@@ -122,3 +122,15 @@ project.godot
 Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분리하고 Families, 광고 SDK, 데이터·개인정보, ads/IAP, build·store·questionnaire 일치를 함께 검토한다. 원본을 조금 수정하거나 AI로 변환했다는 이유만으로 독립 자산으로 보지 않으며 `reference_brief`, `forbidden_expression`, 별도 `final_asset_record`, 유사성 검토를 요구한다.
 
 필수 권리·계약·약관 버전·플랫폼 답변이 미확인이면 `RELEASE_BLOCKED_UNVERIFIED`다. 제품 구현 BLOCKED 상태와 실제 제출·법률 검토·최종 등급 미실행 상태를 바꾸지 않는다.
+
+## 9. HiGodot·GUT 권위와 필수 진입 Gate
+
+- `HIGODOT_SOLE_AUTHORING_AUTHORITY`: 정식 채택 뒤 HiGodot만 Scene·Node·Resource·`project.godot` 설정을 저작한다.
+- `GUT_SOLE_TEST_AUTHORITY`: 정식 채택 뒤 GUT 9.7.1만 GDScript 단위·통합 테스트 프레임워크 권위를 가진다.
+- `ENTRY_GATE_FAIL_CLOSED`: 결정 원장·미확정/감사·이미지 목록/검수·열린 PR exact HEAD 중 하나라도 누락·stale·schema drift이면 작업 진입을 차단한다.
+
+현재 HiGodot은 `PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY`다. GUT 9.7.1 vendor는 `addons/gut/**`에 존재하지만 Plugin·config·프로젝트 GUT tests·runtime CI가 없어 `VENDORED_PRESENT_FORMAL_ADOPTION_PENDING`이다. 설계 승인과 별도 채택 PR 없이 둘을 활성 권위로 승격하지 않는다.
+
+GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. 같은 파일의 이중 권위와 출처 미상 변경은 실패 처리한다.
+
+`READY`·`AWAITING`·`IN_REVIEW`·`APPROVED` 같은 일반 상태 문자열만으로는 진입할 수 없다. 범위, current main SHA, Sheet range, 열린 PR 상태, 미실행 검증과 차단 이유가 기계 판독 가능한 상태로 함께 기록되어야 한다.
