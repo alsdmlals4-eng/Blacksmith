@@ -9,6 +9,7 @@ REGISTRY = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
 CANON = ROOT / "docs/planning/BLACKSMITH_R2_FUNCTION_RECIPE_MATERIAL_FIT_AND_PLAYTEST_CANON_2026.md"
 SPEC = ROOT / "docs/superpowers/specs/2026-08-06-function-recipes-material-fit-forging-playtest-design.md"
 PLAN = ROOT / "docs/superpowers/plans/2026-08-06-function-recipes-material-fit-forging-playtest.md"
+EVIDENCE = ROOT / "docs/planning/BLACKSMITH_R2_FUNCTION_RECIPE_MATERIAL_FIT_AND_PLAYTEST_EVIDENCE_2026.md"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 BIBLE = ROOT / "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
 INITIAL_OWNERSHIP_CANON = ROOT / "docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md"
@@ -250,7 +251,7 @@ class FunctionRecipeMaterialFitPlaytestContractTests(unittest.TestCase):
         self.assertEqual("NOT_RUN", self.contract.get("human_playtest_status"))
 
     def test_authority_documents_refinements_and_product_protection_exist(self) -> None:
-        for path in (CANON, SPEC, PLAN):
+        for path in (CANON, SPEC, PLAN, EVIDENCE):
             self.assertTrue(path.exists(), f"missing authority document: {path}")
         canon = read_or_empty(CANON)
         for token in (
@@ -301,10 +302,16 @@ class FunctionRecipeMaterialFitPlaytestContractTests(unittest.TestCase):
         self.assertEqual(283, evidence.get("red_planning_first_run"))
         self.assertEqual(76, evidence.get("red_existing_pass"))
         self.assertEqual(10, evidence.get("red_expected_fail"))
-        self.assertEqual("b9ba179232d7d3a35da7da3e85ce55fee1583503", "b9ba179232d7d3a35da7da3e85ce55fee1583503")
-        self.assertEqual(31064922435, 31064922435)
-        self.assertEqual(86, 86)
-        self.assertEqual("PASS", "PASS")
+        evidence_text = read_or_empty(EVIDENCE)
+        for token in (
+            "GREEN_SYNC_HEAD=b9ba179232d7d3a35da7da3e85ce55fee1583503",
+            "GREEN_ONE_SHOT_RUN=31064922435",
+            "GREEN_FOCUSED_PASS=86",
+            "GREEN_CORE_ALIGNMENT=PASS",
+            "GREEN_BASE_OPERATING_AUDIT=PASS",
+            "GREEN_PROTECTED_PRODUCT_PATH_CHANGES=0",
+        ):
+            self.assertIn(token, evidence_text)
         self.assertEqual(0, evidence.get("protected_product_path_changes"))
 
 
