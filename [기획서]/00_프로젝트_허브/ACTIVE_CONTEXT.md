@@ -96,7 +96,7 @@ PR #109는 Batch 005 기획 정본, PR #117은 체크포인트 폐쇄 정본, PR
 ## 다음 작업
 
 1. 승인된 구현 계획 Task 1 Schema·UID·SaveEnvelope TDD
-2. `scripts/data/scenes/tests/vertical_slice/` 격리 경계 유지
+2. 승인된 격리 경계인 스크립트·데이터·씬·테스트 전용 영역 유지
 3. Task별 RED → GREEN → REFACTOR 및 Draft PR 검증
 4. Android 빌드·실기기 저장 복구 검증
 5. 외부 3~5명 사람 플레이테스트
