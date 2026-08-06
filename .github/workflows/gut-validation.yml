@@ -88,6 +88,19 @@ jobs:
           chmod +x godot
           ./godot --version | tee artifacts/gut/godot-version.log
 
+      - name: Import GUT class_names on clean checkout
+        shell: bash
+        run: |
+          set +e
+          ./godot --headless --import --path . 2>&1 | tee artifacts/gut/godot-import.log
+          import_status=${PIPESTATUS[0]}
+          set -e
+          echo "$import_status" > artifacts/gut/import-exit-code.txt
+          if [ "$import_status" -ne 0 ] || grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" artifacts/gut/godot-import.log; then
+            echo "Godot clean import reported a blocking error."
+            exit 1
+          fi
+
       - name: Run GUT CLI
         shell: bash
         run: |
@@ -158,6 +171,8 @@ jobs:
             artifacts/gut/gut.log
             artifacts/gut/exit-code.txt
             artifacts/gut/godot-version.log
+            artifacts/gut/godot-import.log
+            artifacts/gut/import-exit-code.txt
             artifacts/gut/authoring-surfaces.before.sha256
             artifacts/gut/authoring-surfaces.after.sha256
           if-no-files-found: error
