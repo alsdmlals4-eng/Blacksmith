@@ -4,7 +4,9 @@ on:
   pull_request:
     paths:
       - "skills/PROJECT_BASE_ADAPTER.json"
+      - "docs/PROJECT_OPERATING_HEALTH.json"
       - "tests/test_base_v942_planning_first_adoption.py"
+      - "tests/test_project_adapter_long_lived_pr_baseline.py"
       - "tests/test_r2_artistry_generation_growth_economy.py"
       - "tests/test_r2_customer_equipment_compatibility.py"
       - "tests/test_r2_mobile_customer_card_progressive_disclosure.py"
@@ -15,6 +17,7 @@ on:
       - "tests/test_r2_item_role_stat_and_initial_function_catalog.py"
       - "tests/test_r2_initial_role_stat_preset_and_enhancement_function_ownership.py"
       - "tests/test_r2_function_recipe_material_fit_and_playtest.py"
+      - ".github/workflows/validate-project-base-adapter.yml"
       - ".github/workflows/validate-base-v942-planning-first-adoption.yml"
 
 permissions:
@@ -31,6 +34,7 @@ jobs:
       - run: >-
           python -m unittest
           tests.test_base_v942_planning_first_adoption
+          tests.test_project_adapter_long_lived_pr_baseline
           tests.test_r2_artistry_generation_growth_economy
           tests.test_r2_customer_equipment_compatibility
           tests.test_r2_mobile_customer_card_progressive_disclosure
