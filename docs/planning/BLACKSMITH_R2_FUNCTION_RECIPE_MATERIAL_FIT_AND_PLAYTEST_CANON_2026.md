@@ -1,5 +1,15 @@
 # [현재 정본] Blacksmith R2 기능 레시피·주재료 적합·직접 단조·플레이테스트 Canon
 
+<!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
+> **R2_CHECKPOINT_005 / POSTMERGE_CLOSURE_PENDING**
+>
+> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109 / MAIN_CANON`
+>
+> planning exact head: `77eba15415bc9ede661639b45bb526d5ce4410a5` / squash merge: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9`
+>
+> next batch: `R2_BATCH_006_NOT_STARTED_0_OF_10` / 제품 구현: `BLOCKED` / 사람 플레이테스트: `NOT_RUN`
+
+
 - Decision: `BS-ITEM-20260806-06`
 - 승인 상태: `USER_APPROVED / R2_BATCH_005_10_OF_10 / APPROVED_PENDING_MERGE`
 - 정제 대상: `BS-ITEM-20260806-03 / BS-ITEM-20260806-04 / BS-ITEM-20260806-05 / BS-CRAFT-20260804-04`
