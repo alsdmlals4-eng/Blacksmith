@@ -274,7 +274,7 @@ REQUIRED_ASSERTIONS = {
         "고정 설계 최대치 없음",
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
-        "R2 체크포인트 005",
+        "R2_CHECKPOINT_005",
         "R2_BATCH_005_CLOSED_10_OF_10",
         "현재 승인 카운터: `0/10`",
         "MERGED_PR106",
