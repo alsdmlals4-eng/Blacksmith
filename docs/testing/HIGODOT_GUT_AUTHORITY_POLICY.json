@@ -1,13 +1,14 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "spec_id": "BS-TEST-AUTH-20260806-01",
   "decision_ids": [
     "BS-OPS-20260806-10",
     "BS-TEST-20260806-01",
     "BS-GATE-20260806-01"
   ],
-  "adoption_state": "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING",
-  "effective_scope": "DESIGN_AND_STATIC_GATE_ONLY",
+  "adoption_state": "FORMALLY_ADOPTED_ACTIVE_TEST_FRAMEWORK_AUTHORITY",
+  "effective_scope": "MAIN_CANON_AUTHORITY_GATE_AND_GUT_RUNTIME",
+  "adoption_main_sha": "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb",
   "higodot": {
     "product": "hi-godot/godot-ai",
     "installed_path": "addons/godot_ai",
@@ -15,8 +16,9 @@
     "license": "MIT",
     "godot_requirement": "4.5+; 4.7+ recommended",
     "current_state": "PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY",
-    "target_role": "SOLE_GODOT_AUTHORING_AUTHORITY",
-    "owned_surfaces_after_adoption": [
+    "policy_role": "SOLE_GODOT_AUTHORING_AUTHORITY",
+    "production_activation": "PENDING_SEPARATE_APPROVAL",
+    "owned_surfaces": [
       "project.godot",
       "**/*.tscn",
       "**/*.tres",
@@ -47,12 +49,12 @@
     "upstream_license_blob_sha": "a38ac231fed3febe257c9e5fc31efb8ec7a39f90",
     "cli_entry_present": "res://addons/gut/gut_cmdln.gd",
     "project_plugin_enabled": false,
-    "config_present": false,
-    "project_gut_test_root_present": false,
-    "formal_ci_authority": false,
-    "status": "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING",
-    "target_role": "SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY",
-    "planned_consumption": {
+    "config_present": true,
+    "project_gut_test_root_present": true,
+    "formal_ci_authority": true,
+    "status": "FORMALLY_ADOPTED_ACTIVE",
+    "authority_role": "SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY",
+    "consumption": {
       "vendor_root": "addons/gut",
       "config": ".gutconfig.json",
       "test_roots": [
@@ -74,18 +76,20 @@
     "gut_edits_scene_resource_or_project_settings": "FORBIDDEN",
     "same_file_dual_authority": "FORBIDDEN",
     "unknown_change_authority": "FAIL_CLOSED",
-    "file_authority_manifest": "REQUIRED_FOR_FORMAL_ADOPTION_AND_MIXED_SURFACE_PRS"
+    "file_authority_manifest": "REQUIRED_FOR_MIXED_SURFACE_PRS"
   },
   "ci": {
-    "current_design_job": "authority-entry-contract",
-    "planned_runtime_job": "gut-runtime-read-only",
-    "planned_test_count_minimum": 1,
+    "design_job": "authority-entry-contract",
+    "runtime_job": "gut-runtime-read-only",
+    "latest_validated_head_sha": "9ab46229946ae11529824fabefc6d558bd608d5d",
+    "latest_runtime_run_id": 31111242901,
+    "latest_runtime_result": "PASS",
+    "test_count_minimum": 1,
     "zero_tests": "FAIL",
     "runner_skipped_or_missing": "FAIL",
     "tracked_authoring_surface_hash_before_after": "REQUIRED",
-    "junit_artifact": "REQUIRED_AFTER_FORMAL_ADOPTION",
-    "current_design_pr_runs_gut": false,
-    "current_design_pr_changes_product_paths": false
+    "junit_artifact": "REQUIRED",
+    "product_paths_changed_by_adoption": false
   },
   "entry_gate": {
     "mode": "FAIL_CLOSED",
@@ -117,5 +121,12 @@
     "project_settings_change_authority": "HIGODOT_ONLY",
     "preserve_historical_test_evidence": true,
     "clean_import_and_no_remaining_consumers": "REQUIRED"
+  },
+  "remaining_blockers": {
+    "general_product_implementation": "BLOCKED",
+    "higodot_production_authoring": "PENDING_SEPARATE_APPROVAL",
+    "visual_asset_gate": "BLOCKED_NOT_PRODUCT_READY",
+    "android_device_validation": "NOT_RUN",
+    "human_playtest": "NOT_RUN"
   }
 }
