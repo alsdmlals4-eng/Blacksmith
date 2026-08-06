@@ -1,6 +1,6 @@
 # Blacksmith R2 Checkpoint 005 Postmerge Closure
 
-상태: `RED_OBSERVED / GREEN_SYNC_PENDING / DRAFT_PR117`
+상태: `RED_OBSERVED / GREEN_OBSERVED / DRAFT_PR117_UNMERGED`
 
 ## Planning merge evidence
 
@@ -19,6 +19,8 @@ R2_BATCH_006_NOT_STARTED_0_OF_10
 R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING
 ```
 
+`R2_BATCH_006_NOT_STARTED_0_OF_10`은 다음 승인 슬롯만 연 상태이며 새 기획 주제나 Decision을 선택하지 않는다.
+
 ## Preserved gates
 
 - 제품 구현: `BLOCKED`
@@ -35,12 +37,22 @@ R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING
 - Planning-first: `306` / `EXPECTED_FAILURE`
 - 원인: 현재 권위 문서와 registry의 premerge 상태
 
-### GREEN
+### GREEN observed
 
-- exact head: `PENDING`
-- Planning-first: `PENDING`
-- Base adoption: `PENDING`
-- PR validation: `PENDING`
+- validated head: `f839ac0a69e4ddefdd20b16b03cf24d626a4cd71`
+- Planning-first: `344` / `PASS`
+- Thin Adapter: `86` / `PASS`
+- Project Base Adapter: `95` / `PASS`
+- Base adoption: `851` / `PASS`
+- PR validation: `1442` / `PASS`
+- Python document·CI·운영 감사·게임 데이터·강화·시뮬레이터: `PASS`
+- Godot 4.7.1 download·import·parse·scene smoke·model·integration: `PASS`
+
+이 증거를 기록한 뒤 생성되는 최종 exact head는 PR #117 설명과 GitHub Actions 결과에 별도로 고정한다.
+
+## Conflict review
+
+게임 기획 충돌은 발견되지 않았다. 수정된 문제는 모두 PR #109 병합 후에도 `ACTIVE / APPROVED_PENDING_MERGE`를 요구하던 현재 권위 문서·테스트·운영 감사 기준선 드리프트다.
 
 ## Next gate
 
