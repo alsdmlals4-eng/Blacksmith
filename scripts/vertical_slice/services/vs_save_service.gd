@@ -83,11 +83,12 @@ func _read_envelope(path: String):
 		return envelope
 	var source := file.get_as_text()
 	file.close()
-	var parsed: Variant = JSON.parse_string(source)
-	if not parsed is Dictionary:
+	var parser := JSON.new()
+	var parse_error := parser.parse(source)
+	if parse_error != OK or not parser.data is Dictionary:
 		envelope.validation_errors.append("SAVE_PARSE_ERROR")
 		return envelope
-	return SaveEnvelopeScript.from_dict(parsed)
+	return SaveEnvelopeScript.from_dict(parser.data)
 
 
 func _cleanup_temp() -> void:
