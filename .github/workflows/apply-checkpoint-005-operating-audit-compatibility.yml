@@ -1,0 +1,42 @@
+name: Apply Checkpoint 005 Operating Audit Compatibility
+
+on:
+  pull_request:
+    types:
+      - synchronize
+    paths:
+      - "tools/repair_checkpoint_005_operating_audit_compatibility.py"
+      - ".github/workflows/apply-checkpoint-005-operating-audit-compatibility.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'agent/finalize-r2-checkpoint-005-main-canon'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Repair audit compatibility
+        run: python tools/repair_checkpoint_005_operating_audit_compatibility.py
+      - name: Commit repaired authority evidence
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No compatibility repair required."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/planning/CURRENT_R2_CANON_REGISTRY.json \
+            '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md' \
+            '[기획서]/00_프로젝트_허브/ROADMAP.md' \
+            '[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md'
+          git commit -m "fix: restore operating audit compatibility evidence"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
