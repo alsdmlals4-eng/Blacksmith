@@ -7,8 +7,9 @@
     "BS-GATE-20260806-01"
   ],
   "captured_date_kst": "2026-08-06",
+  "snapshot_scope": "POSTMERGE_ADOPTION_CANON_CLOSURE",
   "source_repository": "alsdmlals4-eng/Blacksmith",
-  "source_main_sha": "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb",
+  "source_main_sha_at_capture": "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb",
   "source_sheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
   "source_sheet_ranges": [
     "00_프로젝트_허브!E2:K2",

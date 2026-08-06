@@ -90,7 +90,8 @@ def test_policy_forbids_role_intrusion_and_defines_consumption_removal() -> None
 def test_entry_snapshot_rejects_false_ready_states_and_preserves_blockers() -> None:
     snapshot = _json(SNAPSHOT)
     assert snapshot["schema_version"] == "1.2.0"
-    assert snapshot["source_main_sha"] == ADOPTION_MAIN_SHA
+    assert snapshot["snapshot_scope"] == "POSTMERGE_ADOPTION_CANON_CLOSURE"
+    assert snapshot["source_main_sha_at_capture"] == ADOPTION_MAIN_SHA
     assert snapshot["general_product_implementation"] == "BLOCKED"
     assert snapshot["scoped_vertical_slice"] == "OPEN_ONLY_FOR_APPROVED_NAMESPACES"
     assert snapshot["pr_122"]["state"] == "OPEN_DRAFT_UNMERGED"
