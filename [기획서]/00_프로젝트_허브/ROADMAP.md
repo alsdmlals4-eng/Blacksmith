@@ -1,12 +1,22 @@
 # [현재 정본] Blacksmith Roadmap
 
+<!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
+> **R2_CHECKPOINT_005 / POSTMERGE_CLOSURE_PENDING**
+>
+> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109 / MAIN_CANON`
+>
+> planning exact head: `77eba15415bc9ede661639b45bb526d5ce4410a5` / squash merge: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9`
+>
+> next batch: `R2_BATCH_006_NOT_STARTED_0_OF_10` / 제품 구현: `BLOCKED` / 사람 플레이테스트: `NOT_RUN`
+
+
 ```yaml
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
-CURRENT_STAGE_STATUS: R2_CHECKPOINT_004_MAIN_CANON / R2_BATCH_005_ACTIVE_10_OF_10
+CURRENT_STAGE_STATUS: R2_CHECKPOINT_004_MAIN_CANON / R2_BATCH_005_CLOSED_10_OF_10
 R2_CHECKPOINT_003: PR103 / CLOSURE_PR104 / CANON_AUDIT_PR105
 R2_CHECKPOINT_004: PR106 / CLOSURE_PR107 / CANON_AUDIT_PR108
 CURRENT_DECISIONS: BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-OPS-20260805-01
-NEXT_APPROVAL_COUNTER: 8/10
+NEXT_APPROVAL_COUNTER: 0/10
 MAXIMUM_BATCH_SIZE: 10
 PRODUCT_IMPLEMENTATION: BLOCKED
 ```
@@ -114,7 +124,7 @@ R8에서 핵심 재미·모바일 복잡도·정본·구형 문서·PR·CI를 �
 - 고객: 근력·기량·체력·판단력 `1~10`, 희소 무기·갑옷 적성 `0~3`, 마력 적성 `0~10`
 - 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
 - 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
-- 상태: `R2_BATCH_005_4_OF_10 / APPROVED_PENDING_MERGE / PRODUCT_IMPLEMENTATION_BLOCKED`
+- 상태: `R2_BATCH_005_4_OF_10 / MERGED_PR109 / MAIN_CANON / PRODUCT_IMPLEMENTATION_BLOCKED`
 
 <!-- BS-UX-20260805-01 -->
 ### Mobile Customer Card Information Hierarchy Gate
@@ -142,7 +152,7 @@ R8에서 핵심 재미·모바일 복잡도·정본·구형 문서·PR·CI를 �
 
 ## BS-ITEM-20260806-02 — 중량 성능 예산 기억
 
-- 상태: `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
+- 상태: `R2_BATCH_005_7_OF_10 / MERGED_PR109 / MAIN_CANON`
 - 최초 제작 중량 5당 초기 성능 예산 +1.
 - 경량화는 현재 중량만 감소하고 기존 예산을 유지.
 - 중량화는 과거 최고 인정 중량 초과분만 예산 추가.
@@ -151,7 +161,7 @@ R8에서 핵심 재미·모바일 복잡도·정본·구형 문서·PR·CI를 �
 
 ## BS-ITEM-20260806-03 — 중량 예산 환산과 역할 프리셋
 
-- 상태: `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
+- 상태: `R2_BATCH_005_7_OF_10 / MERGED_PR109 / MAIN_CANON`
 - 공격·방어 예산 1점은 원수치 +5.
 - 마법 기능·유틸리티 예산 1점은 기능 용량 +1.
 - 기본 작품 역할 프로필은 최초 제작 시 확정되고 UID에서 불변.
@@ -183,5 +193,5 @@ R8에서 핵심 재미·모바일 복잡도·정본·구형 문서·PR·CI를 �
 - 직접 단조 역할 결과: `DETERMINISTIC_ROLE_STRIKE_THREE_ZONE`
 - 기능 레시피: `ROLE_PROFILE_MATERIAL_WEIGHT_CONTEXT_CAPACITY`
 - 사람 플레이테스트: `NOT_RUN`
-- 다음 행동: PR #109 체크포인트 검토·명시적 병합 승인 대기
+- 다음 행동: PR #117 폐쇄 정본 검증·명시적 병합 승인 대기
 - 제품 구현: `BLOCKED`

@@ -1,5 +1,15 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
+<!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
+> **R2_CHECKPOINT_005 / POSTMERGE_CLOSURE_PENDING**
+>
+> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109 / MAIN_CANON`
+>
+> planning exact head: `77eba15415bc9ede661639b45bb526d5ce4410a5` / squash merge: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9`
+>
+> next batch: `R2_BATCH_006_NOT_STARTED_0_OF_10` / 제품 구현: `BLOCKED` / 사람 플레이테스트: `NOT_RUN`
+
+
 > R2 체크포인트 003: PR `#103` / closure `#104` / canon audit `#105`
 >
 > R2_CHECKPOINT_004 planning: PR `#106` / exact head `227b2dabf0d98832811415156e72f65d601332a9` / squash merge `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
@@ -8,7 +18,7 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005 / 10/10`
+> 현재 승인 배치: `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109`
 >
 > 제품 구현: `BLOCKED`
 
@@ -29,15 +39,15 @@
 
 - `BS-WORLD-20260803-03`: 고객 개인 일정과 날짜 예고형 세계 일정 분리
 - `BS-CUSTOMER-20260803-02`: 위험도·능력치 `1~10`, 예상 성공률 `5~95%`
-- `BS-CUSTOMER-20260805-01`: 근력·기량·체력·판단력, 희소 무기·갑옷 적성, 마력 적성, 장비 적합성 — `R2_BATCH_005_2_OF_10 / APPROVED_PENDING_MERGE`
-- `BS-UX-20260805-01`: 모바일 고객 카드 3단계 정보 공개와 설명 가능한 장비 판단 — `R2_BATCH_005_3_OF_10 / APPROVED_PENDING_MERGE`
-- `BS-CUSTOMER-20260806-01`: 강화 중심 단순 장비 판정과 근력 기반 최대 중량 게이트 — `R2_BATCH_005_4_OF_10 / APPROVED_PENDING_MERGE`
-- `BS-ITEM-20260806-01`: 장비군 고정 기본 중량 포인트와 중량 전용 ±5 강화 효과 — `R2_BATCH_005_5_OF_10 / APPROVED_PENDING_MERGE`
-- `BS-ITEM-20260806-02`: 중량 성능 예산 기억과 정밀강화 경량화·중량화 기회비용 — `R2_BATCH_005_6_OF_10 / APPROVED_PENDING_MERGE`
-- `BS-ITEM-20260806-03`: 중량 성능 예산 1점 환산과 장비 역할 프리셋 자동 배분 — `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
-- `BS-ITEM-20260806-04`: 작품군 단일 역할 원수치와 최초 마법·유틸리티 기능 카탈로그 — `R2_BATCH_005_8_OF_10 / APPROVED_PENDING_MERGE`
-- `BS-ITEM-20260806-05`: 최초 제작 역할 수치 테스트 프리셋과 강화·특수기능 변동 소유권 — `R2_BATCH_005_9_OF_10 / APPROVED_PENDING_MERGE`
-- `BS-ITEM-20260806-06`: 주재료 역할 적합·직접 단조 결과·기능 레시피·사람 플레이테스트 Gate — `R2_BATCH_005_10_OF_10 / APPROVED_PENDING_MERGE`
+- `BS-CUSTOMER-20260805-01`: 근력·기량·체력·판단력, 희소 무기·갑옷 적성, 마력 적성, 장비 적합성 — `R2_BATCH_005_2_OF_10 / MERGED_PR109 / MAIN_CANON`
+- `BS-UX-20260805-01`: 모바일 고객 카드 3단계 정보 공개와 설명 가능한 장비 판단 — `R2_BATCH_005_3_OF_10 / MERGED_PR109 / MAIN_CANON`
+- `BS-CUSTOMER-20260806-01`: 강화 중심 단순 장비 판정과 근력 기반 최대 중량 게이트 — `R2_BATCH_005_4_OF_10 / MERGED_PR109 / MAIN_CANON`
+- `BS-ITEM-20260806-01`: 장비군 고정 기본 중량 포인트와 중량 전용 ±5 강화 효과 — `R2_BATCH_005_5_OF_10 / MERGED_PR109 / MAIN_CANON`
+- `BS-ITEM-20260806-02`: 중량 성능 예산 기억과 정밀강화 경량화·중량화 기회비용 — `R2_BATCH_005_6_OF_10 / MERGED_PR109 / MAIN_CANON`
+- `BS-ITEM-20260806-03`: 중량 성능 예산 1점 환산과 장비 역할 프리셋 자동 배분 — `R2_BATCH_005_7_OF_10 / MERGED_PR109 / MAIN_CANON`
+- `BS-ITEM-20260806-04`: 작품군 단일 역할 원수치와 최초 마법·유틸리티 기능 카탈로그 — `R2_BATCH_005_8_OF_10 / MERGED_PR109 / MAIN_CANON`
+- `BS-ITEM-20260806-05`: 최초 제작 역할 수치 테스트 프리셋과 강화·특수기능 변동 소유권 — `R2_BATCH_005_9_OF_10 / MERGED_PR109 / MAIN_CANON`
+- `BS-ITEM-20260806-06`: 주재료 역할 적합·직접 단조 결과·기능 레시피·사람 플레이테스트 Gate — `R2_BATCH_005_10_OF_10 / MERGED_PR109 / MAIN_CANON`
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
@@ -46,7 +56,7 @@
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
 - `BS-CRAFT-20260804-07`: 제작 등급 5단계와 출생 전설 고정 — `MERGED_PR106 / MAIN_CANON`
 - `BS-CRAFT-20260805-01`: 예술성을 고정 설계 최대치 없는 숫자형 무기·작품 능력치로 확정 — `MERGED_PR106 / MAIN_CANON`
-- `BS-CRAFT-20260805-02`: 예술성 초기 생성·후천 성장·가치 점감·고객 선호 경계 — `R2_BATCH_005_1_OF_10 / APPROVED_PENDING_MERGE`
+- `BS-CRAFT-20260805-02`: 예술성 초기 생성·후천 성장·가치 점감·고객 선호 경계 — `R2_BATCH_005_1_OF_10 / MERGED_PR109 / MAIN_CANON`
 - `BS-UX-20260804-01`: 조합 장비명과 UID 연대기 상세
 - `BS-OPS-20260804-02`: 정본 드리프트·구형 문서 상태 관리
 - `BS-OPS-20260805-01`: 벤치마킹·조기 체크포인트·상시 TDD
@@ -199,7 +209,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 작업마다 TDD: `RED → GREEN → REFACTOR`
 - 병합은 명시적 사용자 승인 필요
 
-현재 `R2_BATCH_005 / 7/10`이다.
+`R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109 / MAIN_CANON`이다.
 
 ## 9. 보호 조건
 
@@ -296,7 +306,7 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 ## 작품 역할 원수치와 최초 특수기능 카탈로그
 
 - Decision: `BS-ITEM-20260806-04`
-- 상태: `R2_BATCH_005_8_OF_10 / APPROVED_PENDING_MERGE`
+- 상태: `R2_BATCH_005_8_OF_10 / MERGED_PR109 / MAIN_CANON`
 - 모델: `SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS`
 - 무기는 공격, 방패·갑옷은 방어를 주 역할 원수치로 사용한다.
 - 표시 공격·방어는 최초 제작 + 중량 기반 + 승인된 강화 출력만 가산한다.
