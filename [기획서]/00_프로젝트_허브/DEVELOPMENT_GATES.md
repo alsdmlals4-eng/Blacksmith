@@ -138,3 +138,19 @@ RED → GREEN → REFACTOR → exact-head CI → review readback
 ## Product Implementation Gate
 
 R2 Batch 006의 버티컬 슬라이스 범위·Schema·테스트 프리셋과 사용자 구현 승인이 있기 전까지 `BLOCKED`다.
+
+## Three Affix Gate
+
+```text
+GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
+```
+
+세 슬롯의 생성·진화·덮어쓰기 책임을 분리한다. 판정: `REQUIRED`.
+
+## Benchmark Gate
+
+- 새 Decision과 수치 프리셋은 유사 게임·현업 사례 비교를 먼저 수행한다.
+- 결과는 `채택 / 수정 채택 / 비채택 / 차별점 / 남은 불확실성`으로 기록한다.
+- 프로젝트 코어와 충돌하는 유명 사례는 비채택한다.
+
+판정: `REQUIRED_BY_BS-OPS-20260805-01`.

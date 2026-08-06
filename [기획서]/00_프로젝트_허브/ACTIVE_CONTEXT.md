@@ -125,3 +125,8 @@ BS-ITEM-20260806-06 / R2_BATCH_005_10_OF_10
 - R2 체크포인트 004 폐쇄 PR #107 squash merge: `7a46fa38586a42f268cd0432744203049649ddd5`
 - R2 체크포인트 005 기획 PR #109 squash merge: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9`
 - R2 체크포인트 005 폐쇄 PR #117 squash merge: `06f03323c1309d8da0e6f5b9f4680a20ce388126`
+
+## 역사 상태 호환 표기
+
+- 체크포인트 004 제작 기획 상태: `MERGED_PR106 / MAIN_CANON`
+- 이 표기는 현재 활성 배치가 아니라 불변 병합 이력이다.
