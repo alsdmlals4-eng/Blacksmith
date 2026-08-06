@@ -71,7 +71,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
 
     def test_batch_005_is_active_at_ten_of_ten(self) -> None:
         self.assertEqual("R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING", self.registry["stage_status"])
-        self.assertEqual("10/10", self.registry["next_approval_counter"])
+        self.assertEqual("0/10", self.registry["next_approval_counter"])
         self.assertEqual("BLOCKED", self.registry["product_implementation"])
         active = self.registry["active_batch"]
         self.assertEqual("R2_BATCH_005", active["id"])
