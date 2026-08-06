@@ -18,7 +18,7 @@ GitHub-hosted Actions를 실행할 수 없을 때 검증 장소만 로컬로 바
 | `windows-py313` | Windows Python 3.13 | reusable Python code validation |
 | `wsl-ubuntu-py312` | WSL2 Ubuntu Python 3.12 | Ubuntu reusable Python code validation |
 
-최종 pack은 authoritative lane과 네 matrix lane이 모두 같은 exact HEAD에서 `PASS`여야 `PASS`다. 누락·중복·실패·다른 HEAD·잘못된 Python/platform·tracked mutation은 모두 `FAIL`이다.
+최종 pack은 authoritative lane과 네 matrix lane이 모두 같은 exact HEAD에서 `PASS`여야 `PASS`다. 누락·중복·예기치 않은 lane·실패·다른 HEAD·잘못된 Python/platform·tracked mutation은 모두 `FAIL`이다. 각 matrix runner는 전달받은 platform 문자열뿐 아니라 실제 Windows 또는 WSL2 Ubuntu 환경을 감지한다.
 
 ## 병합용 PASS 조건
 
@@ -32,6 +32,7 @@ GitHub-hosted Actions를 실행할 수 없을 때 검증 장소만 로컬로 바
 - PR validation, BCA, Base v9, Project Base Adapter, Thin Adapter 성공
 - Godot 4.7.1 import·Scene smoke·모델 suite·GUT/JUnit 성공
 - 실행 전후 `project.godot`, Scene, Resource, `addons/godot_ai/**` hash 불변
+- authoritative Manifest가 실제 Windows·Base pin 2종·protected baseline·Godot 증거를 포함
 - `windows-wsl2-validation-pack.json`의 최종 `status == PASS`
 
 하나라도 빠지면 병합 증거가 아니다.
