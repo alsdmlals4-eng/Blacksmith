@@ -36,13 +36,17 @@ REPLACEMENTS = {
 
 def main() -> int:
     text = TARGET.read_text(encoding="utf-8")
+    replacements_applied = 0
     for old, new in REPLACEMENTS.items():
         count = text.count(old)
-        if count < 1:
-            raise RuntimeError(f"expected at least one match, found 0: {old[:90]!r}")
-        text = text.replace(old, new)
+        if count:
+            text = text.replace(old, new)
+            replacements_applied += count
+    if replacements_applied == 0:
+        print("updated=NONE")
+        return 0
     TARGET.write_text(text, encoding="utf-8", newline="\n")
-    print(f"updated={TARGET.relative_to(ROOT)}")
+    print(f"updated={TARGET.relative_to(ROOT)} replacements={replacements_applied}")
     return 0
 
 
