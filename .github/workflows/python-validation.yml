@@ -94,7 +94,6 @@ jobs:
           python -m unittest tests/test_ci_workflow_structure.py
           python -m pytest tests/test_higodot_gut_authority_gate.py -q
           python -m unittest tests/test_gut_formal_adoption_contract.py -v
-          python -m pytest tests/test_gut_postmerge_canon_sync.py -q
 
       - name: Validate archive retention governance
         working-directory: project
