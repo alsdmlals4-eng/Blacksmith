@@ -19,7 +19,10 @@ CURRENT_DOCS = (
     ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
     ROOT / "[기획서]/00_프로젝트_허브/ROADMAP.md",
     ROOT / "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+    ROOT / "[기획서]/00_프로젝트_허브/START_HERE.md",
+    ROOT / "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
 )
+ALIGNMENT = ROOT / "tests/check_project_core_alignment.py"
 TEST_FILES = (
     ROOT / "tests/test_base_v942_planning_first_adoption.py",
     ROOT / "tests/test_r2_artistry_generation_growth_economy.py",
@@ -37,6 +40,19 @@ TEST_FILES = (
 REGISTRY = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
 CLOSURE = ROOT / "docs/planning/BLACKSMITH_R2_CHECKPOINT_005_POSTMERGE_CLOSURE_2026.md"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
+
+BATCH_005_DECISIONS = [
+    "BS-CRAFT-20260805-02",
+    "BS-CUSTOMER-20260805-01",
+    "BS-UX-20260805-01",
+    "BS-CUSTOMER-20260806-01",
+    "BS-ITEM-20260806-01",
+    "BS-ITEM-20260806-02",
+    "BS-ITEM-20260806-03",
+    "BS-ITEM-20260806-04",
+    "BS-ITEM-20260806-05",
+    "BS-ITEM-20260806-06",
+]
 
 BANNER = f"""<!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
 > **R2_CHECKPOINT_005 / POSTMERGE_CLOSURE_PENDING**
@@ -77,6 +93,7 @@ def close_markdown(path: Path) -> bool:
         "R2_BATCH_005 / 10/10": "R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109",
         "NEXT_APPROVAL_COUNTER: 8/10": "NEXT_APPROVAL_COUNTER: 0/10",
         "NEXT_APPROVAL_COUNTER: 10/10": "NEXT_APPROVAL_COUNTER: 0/10",
+        "현재 승인 카운터: `10/10`": "현재 승인 카운터: `0/10`",
         "현재 `R2_BATCH_005 / 7/10`이다.": "`R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109 / MAIN_CANON`이다.",
         "다음 행동: PR #109 체크포인트 검토·명시적 병합 승인 대기": "다음 행동: PR #117 폐쇄 정본 검증·명시적 병합 승인 대기",
         "PR #109 체크포인트 검토·명시적 병합 승인 대기": "PR #117 폐쇄 정본 검증·명시적 병합 승인 대기",
@@ -91,6 +108,22 @@ def close_registry() -> bool:
     payload["schema_version"] = max(int(payload.get("schema_version", 0)), 9)
     payload["stage_status"] = "R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING"
     payload["next_approval_counter"] = "0/10"
+    payload["closed_batch"] = {
+        "id": "R2_BATCH_005",
+        "counter": "10/10",
+        "approved_decisions": 10,
+        "decisions": BATCH_005_DECISIONS,
+        "maximum_size": 10,
+        "status": "CLOSED_MERGED_PR109_MAIN_CANON",
+    }
+    payload["active_batch"] = {
+        "id": "R2_BATCH_006",
+        "counter": "0/10",
+        "approved_decisions": 0,
+        "decisions": [],
+        "maximum_size": 10,
+        "status": "NOT_STARTED",
+    }
     payload.setdefault("immutable_merge_evidence", {})["checkpoint_005"] = {
         "planning_pr": PLANNING_PR,
         "planning_exact_head": PLANNING_HEAD,
@@ -103,18 +136,7 @@ def close_registry() -> bool:
         "github_readback": "PASS",
         "sheet_readback": "PASS",
     }
-    batch_ids = {
-        "BS-CRAFT-20260805-02",
-        "BS-CUSTOMER-20260805-01",
-        "BS-UX-20260805-01",
-        "BS-CUSTOMER-20260806-01",
-        "BS-ITEM-20260806-01",
-        "BS-ITEM-20260806-02",
-        "BS-ITEM-20260806-03",
-        "BS-ITEM-20260806-04",
-        "BS-ITEM-20260806-05",
-        "BS-ITEM-20260806-06",
-    }
+    batch_ids = set(BATCH_005_DECISIONS)
     found: set[str] = set()
     for item in payload.get("current_decisions", []):
         decision_id = item.get("id")
@@ -163,6 +185,78 @@ def migrate_test_contract(path: Path) -> bool:
     text = text.replace('"DRAFT_PR_PENDING"', '"DRAFT_PR117_PENDING"')
     text = text.replace('"PR `#109`"', '"planning PR: `#109`"')
     return write_if_changed(path, text)
+
+
+def migrate_alignment_contract() -> bool:
+    text = ALIGNMENT.read_text(encoding="utf-8")
+    text = text.replace('"R2_BATCH_005 / 10/10"', '"R2_BATCH_005_CLOSED_10_OF_10"')
+    text = text.replace('"R2_BATCH_005_10_OF_10"', '"R2_BATCH_005_CLOSED_10_OF_10"')
+    text = text.replace('"R2_BATCH_005_ACTIVE_10_OF_10"', '"R2_BATCH_005_CLOSED_10_OF_10"')
+    text = text.replace('"현재 승인 카운터: `10/10`"', '"현재 승인 카운터: `0/10`"')
+    text = text.replace(
+        '    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (\n        "현재 승인 카운터: `0/10`",\n    ),',
+        '    "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (\n        "현재 승인 카운터: `10/10`",\n    ),',
+    )
+    text = text.replace('"schema_version": 8,', '"schema_version": 9,')
+    text = text.replace(
+        '"stage_status": "R2_BATCH_005_CLOSED_10_OF_10",',
+        '"stage_status": "R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING",',
+    )
+    text = text.replace('"next_approval_counter": "10/10",', '"next_approval_counter": "0/10",')
+    old_batch = '''    closed = registry.get("closed_batch", {})
+    if closed.get("id") != "R2_BATCH_004" or closed.get("counter") != "2/10":
+        failures.append("closed batch must be R2_BATCH_004 at 2/10")
+
+    active = registry.get("active_batch", {})
+    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "10/10":
+        failures.append("active batch must be R2_BATCH_005 at 10/10")
+    if active.get("approved_decisions") != 10 or active.get("decisions") != [
+        "BS-CRAFT-20260805-02",
+        "BS-CUSTOMER-20260805-01",
+        "BS-UX-20260805-01",
+        "BS-CUSTOMER-20260806-01",
+        "BS-ITEM-20260806-01",
+        "BS-ITEM-20260806-02",
+        "BS-ITEM-20260806-03",
+        "BS-ITEM-20260806-04",
+        "BS-ITEM-20260806-05",
+        "BS-ITEM-20260806-06",
+    ]:
+        failures.append("active batch 005 must contain the ten approved decisions")
+    if active.get("maximum_size") != 10:
+        failures.append("active batch maximum size must remain 10")
+'''
+    new_batch = '''    closed = registry.get("closed_batch", {})
+    if closed.get("id") != "R2_BATCH_005" or closed.get("counter") != "10/10":
+        failures.append("closed batch must be R2_BATCH_005 at 10/10")
+    if closed.get("approved_decisions") != 10 or closed.get("decisions") != [
+        "BS-CRAFT-20260805-02",
+        "BS-CUSTOMER-20260805-01",
+        "BS-UX-20260805-01",
+        "BS-CUSTOMER-20260806-01",
+        "BS-ITEM-20260806-01",
+        "BS-ITEM-20260806-02",
+        "BS-ITEM-20260806-03",
+        "BS-ITEM-20260806-04",
+        "BS-ITEM-20260806-05",
+        "BS-ITEM-20260806-06",
+    ]:
+        failures.append("closed batch 005 must contain the ten approved decisions")
+    if closed.get("maximum_size") != 10:
+        failures.append("closed batch maximum size must remain 10")
+
+    active = registry.get("active_batch", {})
+    if active.get("id") != "R2_BATCH_006" or active.get("counter") != "0/10":
+        failures.append("next batch slot must be R2_BATCH_006 at 0/10")
+    if active.get("approved_decisions") != 0 or active.get("decisions") != []:
+        failures.append("R2_BATCH_006 must remain not started")
+    if active.get("maximum_size") != 10 or active.get("status") != "NOT_STARTED":
+        failures.append("next batch maximum size and status are incorrect")
+'''
+    if old_batch not in text and new_batch not in text:
+        raise RuntimeError("project core alignment batch contract block not found")
+    text = text.replace(old_batch, new_batch)
+    return write_if_changed(ALIGNMENT, text)
 
 
 def update_health_evidence() -> bool:
@@ -240,6 +334,8 @@ def main() -> int:
     for path in TEST_FILES:
         if migrate_test_contract(path):
             changed.append(str(path.relative_to(ROOT)))
+    if migrate_alignment_contract():
+        changed.append(str(ALIGNMENT.relative_to(ROOT)))
     if update_health_evidence():
         changed.append(str(HEALTH.relative_to(ROOT)))
     print("changed=" + (",".join(changed) if changed else "NONE"))
