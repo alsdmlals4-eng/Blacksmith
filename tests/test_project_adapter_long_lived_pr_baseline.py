@@ -30,6 +30,14 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         self.assertIn('git merge-base --is-ancestor "$PROTECTED_BASE_SHA" "$LATEST_BASE_SHA"', text)
         self.assertNotIn('git merge-base --is-ancestor "$PROTECTED_BASE_SHA" "$PR_BASE_SHA"', text)
 
+    def test_workflow_printf_newlines_remain_escaped_in_yaml(self) -> None:
+        text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("if printf '%s\\n' \"$ADAPTER_CHANGES\" | grep -Fxq \"$ADAPTER_PATH\"; then", text)
+        self.assertIn("printf 'PROTECTED_BASE_SHA=%s\\n' \"$PROTECTED_BASE_SHA\" >> \"$GITHUB_ENV\"", text)
+        self.assertNotIn("if printf '%s\n' \"$ADAPTER_CHANGES\"", text)
+        self.assertNotIn("printf 'PROTECTED_BASE_SHA=%s\n' \"$PROTECTED_BASE_SHA\"", text)
+        self.assertFalse(any(line.startswith("' \"") for line in text.splitlines()))
+
     def test_current_decisions_health_evidence_hash_is_exact(self) -> None:
         health = json.loads(HEALTH.read_text(encoding="utf-8"))
         records = {
