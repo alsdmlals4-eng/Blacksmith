@@ -1,0 +1,43 @@
+name: Apply R2 Checkpoint 005 Final Contract Sync
+
+on:
+  pull_request:
+    types:
+      - synchronize
+    paths:
+      - "tools/synchronize_r2_checkpoint_005_final_contracts.py"
+      - ".github/workflows/apply-r2-checkpoint-005-final-contract-sync.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'agent/finalize-r2-checkpoint-005-main-canon'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Synchronize final contracts
+        run: python tools/synchronize_r2_checkpoint_005_final_contracts.py
+      - name: Commit synchronized files
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No synchronization changes required."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CURRENT_CONFIRMED_DECISIONS.md \
+            docs/planning/CURRENT_R2_CANON_REGISTRY.json \
+            '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md' \
+            tests \
+            tools/audit_project_operating_system.py
+          git commit -m "canon: synchronize checkpoint 005 final contracts"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
