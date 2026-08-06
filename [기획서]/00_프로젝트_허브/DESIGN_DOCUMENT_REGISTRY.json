@@ -7,8 +7,8 @@
   "current_work_mode": "TOTAL_PLANNING",
   "current_stage": "R2_CORE_SESSION_META_LOOP",
   "current_checkpoint": "R2_CHECKPOINT_004_MAIN_CANON",
-  "current_batch": "R2_BATCH_005_9_OF_10",
-  "current_design_decision": "BS-ITEM-20260806-05",
+  "current_batch": "R2_BATCH_005_10_OF_10",
+  "current_design_decision": "BS-ITEM-20260806-06",
   "product_implementation": "BLOCKED",
   "source_of_truth_policy": "Route current questions to Current Decisions, Current R2 Registry, Current R2 Game Bible, Active Context, Roadmap, Development Gates, and the focused current canon. Status-marked historical documents never override current R2 canon.",
   "documents": [
@@ -299,6 +299,12 @@
       "source_path": "../../docs/superpowers/plans/2026-08-06-initial-role-stat-preset-and-enhancement-function-ownership.md",
       "status": "ACTIVE",
       "source_role": "executed_canon_plan_for_bs_item_20260806_05"
+    },
+    {
+      "document_id": "function-recipe-material-fit-playtest-canon",
+      "source_path": "../../docs/planning/BLACKSMITH_R2_FUNCTION_RECIPE_MATERIAL_FIT_AND_PLAYTEST_CANON_2026.md",
+      "status": "ACTIVE",
+      "source_role": "current_material_recipe_forging_and_playtest_contract"
     }
   ],
   "routing_guards": [

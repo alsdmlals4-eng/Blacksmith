@@ -8,7 +8,7 @@
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
-> 현재 승인 배치: `R2_BATCH_005 / 9/10`
+> 현재 승인 배치: `R2_BATCH_005 / 10/10`
 >
 > 제품 구현: `BLOCKED`
 
@@ -37,6 +37,7 @@
 - `BS-ITEM-20260806-03`: 중량 성능 예산 1점 환산과 장비 역할 프리셋 자동 배분 — `R2_BATCH_005_7_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-ITEM-20260806-04`: 작품군 단일 역할 원수치와 최초 마법·유틸리티 기능 카탈로그 — `R2_BATCH_005_8_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-ITEM-20260806-05`: 최초 제작 역할 수치 테스트 프리셋과 강화·특수기능 변동 소유권 — `R2_BATCH_005_9_OF_10 / APPROVED_PENDING_MERGE`
+- `BS-ITEM-20260806-06`: 주재료 역할 적합·직접 단조 결과·기능 레시피·사람 플레이테스트 Gate — `R2_BATCH_005_10_OF_10 / APPROVED_PENDING_MERGE`
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
@@ -317,3 +318,15 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - Google Sheet 미러: `42_능력치_강화_참조표`
 - 밸런스: `BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED`
 - 제품 구현: `BLOCKED`
+
+## 16. 주재료 역할 적합·기능 레시피·사람 플레이테스트
+
+- 철은 모든 역할 장비에서 `STANDARD_ROLE_FIT(0)`이다.
+- 은은 검·원거리·경갑에 `+2`, 도끼·둔기·장병기·중장갑에 `-2`다.
+- 운석철은 도끼·둔기·장병기·중장갑에 `+2`, 원거리·경갑에 `-2`다.
+- 직접 단조 역할 타격은 `OUTSIDE / GOOD / PERFECT = -1 / 0 / +1`이며 제작 등급과 분리된다.
+- 최초 기능은 `ROLE_PROFILE_MATERIAL_WEIGHT_CONTEXT_CAPACITY` 레시피를 충족할 때만 결정적으로 생성된다.
+- 현재 즉시 가용한 결속 재작업은 `ELEMENTAL_WARD(FIRE)`와 `ENVIRONMENTAL_SEALING(FIRE)`다.
+- 솔로 48케이스와 외부 3~5명 검증 전까지 수치는 `BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED`다.
+- 사람 플레이테스트: `NOT_RUN`.
+- 제품 구현: `BLOCKED`.

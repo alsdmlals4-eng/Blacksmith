@@ -339,3 +339,9 @@ SPECIAL_FUNCTION_REWORK
 - 직접 단조 결과 분포
 - 정밀강화 수치 사람 플레이테스트 계획
 - 통합 변동 장부 제품 데이터 스키마·UI
+
+## REFINED_BY_BS-ITEM-20260806-06
+
+- 상태: `R2_BATCH_005_10_OF_10`
+- 주재료별 역할 적합, 직접 단조 역할 결과, 최초·재작업 기능 레시피와 사람 플레이테스트 Gate의 정확한 계약은 `docs/planning/BLACKSMITH_R2_FUNCTION_RECIPE_MATERIAL_FIT_AND_PLAYTEST_CANON_2026.md`가 소유한다.
+- 기존 수치 소유권·기능 카탈로그·정밀 이정표 배타성은 유지한다.

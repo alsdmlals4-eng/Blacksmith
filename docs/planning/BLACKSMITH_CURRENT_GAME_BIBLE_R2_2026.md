@@ -1,8 +1,8 @@
 # [현재 정본] Blacksmith R2 통합 Game Bible
 
-- 상태: `CURRENT_CANON / R2_BATCH_005_9_OF_10`
+- 상태: `CURRENT_CANON / R2_BATCH_005_10_OF_10`
 - 체크포인트 004: `PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9 / MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / MAIN_CANON`
-- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-UX-20260805-01 / BS-CUSTOMER-20260806-01 / BS-ITEM-20260806-01 / BS-OPS-20260805-01` / BS-ITEM-20260806-03 / BS-ITEM-20260806-04 / BS-ITEM-20260806-05
+- 현재 Decision: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / BS-CRAFT-20260805-02 / BS-CUSTOMER-20260805-01 / BS-UX-20260805-01 / BS-CUSTOMER-20260806-01 / BS-ITEM-20260806-01 / BS-OPS-20260805-01` / BS-ITEM-20260806-03 / BS-ITEM-20260806-04 / BS-ITEM-20260806-05 / BS-ITEM-20260806-06
 - 제품 구현: `BLOCKED`
 
 ## 1. 프로젝트 약속
@@ -269,3 +269,15 @@ CRAFTED_ROLE_STAT = max(0, 장비군 기준값 + 주재료 적합 보정 + 직�
 일반 강화는 강화 단계와 사건 성공률만 바꾼다. 작품 공격·방어·중량·내구·취급·예술성·기능 용량·기능 목록은 자동 변경하지 않는다. 실제 작품 수치 변화는 정밀강화 `STAT_METHOD`, 기능 목록 변화는 `FUNCTION_REWORK`가 소유한다. 한 이정표에서 두 차선을 동시에 받을 수 없다.
 
 변경은 `ITEM_CHANGE_LEDGER_ENTRY`로 기록한다. 조회용 Google Sheet 탭은 `42_능력치_강화_참조표`이며 GitHub 정본보다 우선하지 않는다. 정확한 값은 `BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED`, 제품 구현은 `BLOCKED`다.
+
+## 18. 주재료 역할 적합·기능 레시피·사람 플레이테스트
+
+```text
+철 = 범용 기준
+은 = 경량·정밀 역할 우세
+운석철 = 중량·충격 역할 우세
+```
+
+직접 단조의 역할 정밀 타격은 제작 등급과 분리된 `-1 / 0 / +1` 출력이다. 기능은 역할 프로필·장비군·주재료·최소 인정 중량·결속 맥락·용량을 모두 충족하는 레시피로만 생성한다. 현재 촉매로 가능한 결속 재작업은 불 계열 방호·환경 봉인뿐이다.
+
+사람 플레이테스트는 솔로 `48`케이스와 외부 `3~5명`의 2단계로 진행한다. `NO_DOUBLE_COUNT / NO_RECIPELESS_FUNCTION_GENERATION / NO_REPLACE_INTERMEDIATE_STATE_LOSS`는 각각 `0건`이어야 하며 현재 상태는 `NOT_RUN`이다. 제품 구현은 `BLOCKED`다.

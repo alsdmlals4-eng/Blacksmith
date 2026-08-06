@@ -2,7 +2,7 @@
 
 - 갱신: `2026-08-06 07:01 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_9_OF_10`
+- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_10_OF_10`
 - R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
 - R2 체크포인트 004: `planning #106 / closure #107 / canon audit #108`
 - PR #106 exact head: `227b2dabf0d98832811415156e72f65d601332a9`
@@ -12,7 +12,7 @@
 - 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
 - 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_4_OF_10`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
-- 현재 승인 카운터: `9/10`
+- 현재 승인 카운터: `10/10`
 - 제품 구현: `BLOCKED`
 
 ## 현재 핵심
@@ -240,9 +240,19 @@ RED:
 <!-- BS-ITEM-20260806-05 CURRENT HUB ROUTING -->
 ## 현재 9/10 작품 수치·강화 변동 Gate
 
-- Decision: `BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10`
+- Decision: `BS-ITEM-20260806-05 / R2_BATCH_005_10_OF_10`
 - 권위 정본: `docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md`
 - 조회 시트: `42_능력치_강화_참조표`
 - 핵심: 최초 역할 수치 `5·10·15`, 일반 강화 원수치 자동 변동 없음, 정밀강화 수치 패키지와 기능 재작업 상호배타, 통합 변동 장부 필수
 - 다음 Gate: 작품별 특수기능 제작·재작업 레시피와 테스트 프리셋 플레이테스트 계획
+- 제품 구현: `BLOCKED`
+
+## BS-ITEM-20260806-06 — 배치 005 완료 Gate
+
+- 현재 배치: `R2_BATCH_005_10_OF_10`
+- 주재료 역할 적합: `EXPLICIT_PRIMARY_MATERIAL_BY_EQUIPMENT_GROUP`
+- 직접 단조 역할 결과: `DETERMINISTIC_ROLE_STRIKE_THREE_ZONE`
+- 기능 레시피: `ROLE_PROFILE_MATERIAL_WEIGHT_CONTEXT_CAPACITY`
+- 사람 플레이테스트: `NOT_RUN`
+- 다음 행동: PR #109 체크포인트 검토·명시적 병합 승인 대기
 - 제품 구현: `BLOCKED`

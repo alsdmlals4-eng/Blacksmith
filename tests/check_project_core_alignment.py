@@ -21,7 +21,7 @@ REQUIRED_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005 / 9/10",
+        "R2_BATCH_005 / 10/10",
         "BS-CRAFT-20260805-02",
         "MERGED_PR106",
         "7a46fa38586a42f268cd0432744203049649ddd5",
@@ -30,11 +30,12 @@ REQUIRED_TEXT = {
         "ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE",
         "IGNORE / SECONDARY / PRIMARY / REQUIREMENT",
         "GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX",
+        "BS-ITEM-20260806-06",
         "제품 구현: `BLOCKED`",
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "R2_BATCH_005_9_OF_10",
+        "R2_BATCH_005_10_OF_10",
         "BS-CRAFT-20260805-02",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
         "예술성 27",
@@ -119,35 +120,35 @@ REQUIRED_TEXT = {
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_9_OF_10",
-        "현재 승인 카운터: `9/10`",
+        "R2_BATCH_005_10_OF_10",
+        "현재 승인 카운터: `10/10`",
         "BS-CRAFT-20260805-02",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_9_OF_10",
+        "R2_BATCH_005_ACTIVE_10_OF_10",
         "BS-CRAFT-20260805-02",
         "첫 코어 버티컬 슬라이스",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_9_OF_10",
+        "R2_BATCH_005_ACTIVE_10_OF_10",
         "Artistry Generation·Growth·Valuation Gate",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_9_OF_10",
+        "R2_BATCH_005_ACTIVE_10_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 27",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_9_OF_10",
+        "R2_BATCH_005_10_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 생성·성장·가치 평가",
     ),
@@ -157,6 +158,16 @@ REQUIRED_TEXT = {
         "SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS",
         "ARCANE_CONDUCTION",
         "TASK_INTEGRATION",
+        "제품 구현: `BLOCKED`",
+    ),
+    "docs/planning/BLACKSMITH_R2_FUNCTION_RECIPE_MATERIAL_FIT_AND_PLAYTEST_CANON_2026.md": (
+        "BS-ITEM-20260806-06",
+        "R2_BATCH_005_10_OF_10",
+        "EXPLICIT_PRIMARY_MATERIAL_BY_EQUIPMENT_GROUP",
+        "DETERMINISTIC_ROLE_STRIKE_THREE_ZONE",
+        "ROLE_PROFILE_MATERIAL_WEIGHT_CONTEXT_CAPACITY",
+        "ELEMENTAL_WARD(FIRE)",
+        "ENVIRONMENTAL_SEALING(FIRE)",
         "제품 구현: `BLOCKED`",
     ),
     "docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md": (
@@ -227,8 +238,8 @@ def check_r2(failures: list[str]) -> None:
         return
     expected = {
         "schema_version": 8,
-        "stage_status": "R2_BATCH_005_ACTIVE_9_OF_10",
-        "next_approval_counter": "9/10",
+        "stage_status": "R2_BATCH_005_ACTIVE_10_OF_10",
+        "next_approval_counter": "10/10",
         "product_implementation": "BLOCKED",
     }
     for key, value in expected.items():
@@ -256,9 +267,9 @@ def check_r2(failures: list[str]) -> None:
         failures.append("closed batch must be R2_BATCH_004 at 2/10")
 
     active = registry.get("active_batch", {})
-    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "9/10":
-        failures.append("active batch must be R2_BATCH_005 at 9/10")
-    if active.get("approved_decisions") != 9 or active.get("decisions") != [
+    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "10/10":
+        failures.append("active batch must be R2_BATCH_005 at 10/10")
+    if active.get("approved_decisions") != 10 or active.get("decisions") != [
         "BS-CRAFT-20260805-02",
         "BS-CUSTOMER-20260805-01",
         "BS-UX-20260805-01",
@@ -268,8 +279,9 @@ def check_r2(failures: list[str]) -> None:
         "BS-ITEM-20260806-03",
         "BS-ITEM-20260806-04",
         "BS-ITEM-20260806-05",
+        "BS-ITEM-20260806-06",
     ]:
-        failures.append("active batch 005 must contain the nine approved decisions")
+        failures.append("active batch 005 must contain the ten approved decisions")
     if active.get("maximum_size") != 10:
         failures.append("active batch maximum size must remain 10")
 
@@ -390,6 +402,20 @@ def check_r2(failures: list[str]) -> None:
         failures.append("transformative functions must require separate approval")
     if role_catalog.get("product_implementation") != "BLOCKED":
         failures.append("item role stat and function catalog implementation must remain blocked")
+
+    final_contract = decisions.get("BS-ITEM-20260806-06", {}).get("contract", {})
+    if final_contract.get("material_role_fit_model") != "EXPLICIT_PRIMARY_MATERIAL_BY_EQUIPMENT_GROUP":
+        failures.append("primary material role-fit model is incorrect")
+    if final_contract.get("direct_forging_role_result_model") != "DETERMINISTIC_ROLE_STRIKE_THREE_ZONE":
+        failures.append("direct forging role-result model is incorrect")
+    if final_contract.get("current_available_bound_reworks") != ["ELEMENTAL_WARD_FIRE", "ENVIRONMENTAL_SEALING_FIRE"]:
+        failures.append("current available bound reworks are incorrect")
+    if final_contract.get("solo_playtest_case_count") != 48:
+        failures.append("solo playtest must contain 48 cases")
+    if final_contract.get("human_playtest_status") != "NOT_RUN":
+        failures.append("human playtest status must remain NOT_RUN")
+    if final_contract.get("product_implementation") != "BLOCKED":
+        failures.append("final batch product implementation must remain blocked")
 
     alignment = registry.get("implementation_alignment", {})
     if alignment.get("historical_implemented_grade_model") != ["STANDARD", "GOOD", "PERFECT"]:
