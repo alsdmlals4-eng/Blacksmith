@@ -78,15 +78,19 @@ def test_policy_forbids_role_intrusion_and_defines_consumption_removal() -> None
 
 def test_entry_snapshot_rejects_false_ready_states() -> None:
     snapshot = _json(SNAPSHOT)
+    assert snapshot["schema_version"] == "1.1.0"
     assert snapshot["source_main_sha"] == "07f77041f85bde223768128949ad8dc587d5a003"
     assert snapshot["general_product_implementation"] == "BLOCKED"
     assert snapshot["scoped_vertical_slice"] == "OPEN_ONLY_FOR_APPROVED_NAMESPACES"
     assert snapshot["pr_122"]["state"] == "OPEN_DRAFT_UNMERGED"
     assert snapshot["gut"]["aggregate"] == "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING"
     assert snapshot["gut"]["plugin_enabled"] is False
+    assert snapshot["sheet_schema_gate"]["aggregate"] == "SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS"
+    assert snapshot["resolved_findings"]["71_이미지기획_생성목록"] == "SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS"
     assert snapshot["image_gate"]["aggregate"] == "BLOCKED_NOT_PRODUCT_READY"
     assert snapshot["image_gate"]["normalized_k2_status"] == "BLOCKED_IMAGE_NOT_GENERATED"
-    assert snapshot["open_findings"]["71_이미지기획_생성목록"] == "ENTRY_BLOCKED_SHEET_SCHEMA_DRIFT"
+    assert "IMAGE_NOT_GENERATED" in snapshot["open_findings"]["BS-IMG-004"]
+    assert "SOURCE_AND_LICENSE_NOT_RECORDED" in snapshot["open_findings"]["BS-IMG-005"]
     assert snapshot["corrected_sheet_states"]["01_작업순서!H2"] == "COMPLETE_MAIN_CANON"
     assert snapshot["corrected_sheet_states"]["01_작업순서!H3"] == "R1_COMPLETE_MAIN_CANON"
     assert "READY" in snapshot["forbidden_unqualified_states"]
