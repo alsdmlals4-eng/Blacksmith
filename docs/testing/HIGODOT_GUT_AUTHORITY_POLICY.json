@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0.0",
+  "decision_id": "BS-OPS-20260806-10",
+  "adoption_state": "DESIGN_REVIEW_REQUIRED",
+  "effective_scope": "DESIGN_AND_GATE_ONLY",
+  "higodot": {
+    "product": "hi-godot/godot-ai",
+    "installed_path": "addons/godot_ai",
+    "installed_plugin_version": "3.0.5",
+    "license": "MIT",
+    "godot_requirement": "4.5+; 4.7+ recommended",
+    "current_state": "PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY",
+    "target_role": "SOLE_GODOT_AUTHORING_AUTHORITY",
+    "owned_surfaces": [
+      "project.godot",
+      "**/*.tscn",
+      "**/*.tres",
+      "**/*.res",
+      "Godot scene node graphs",
+      "Godot project settings, plugins, and autoload declarations"
+    ],
+    "non_owned_surfaces": [
+      "tests/gut/**",
+      ".gutconfig.json",
+      "addons/gut/**",
+      "CI test result files"
+    ]
+  },
+  "gut": {
+    "product": "bitwes/Gut",
+    "source_repository": "https://github.com/bitwes/Gut",
+    "version": "9.7.1",
+    "tag": "v9.7.1",
+    "commit": "aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605",
+    "release_date": "2026-07-10",
+    "license": "MIT",
+    "license_path": "addons/gut/LICENSE.md",
+    "godot_compatibility": "4.7.x",
+    "status": "NOT_INSTALLED_DESIGN_ONLY",
+    "target_role": "SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY",
+    "planned_consumption": {
+      "vendor_root": "addons/gut",
+      "config": ".gutconfig.json",
+      "test_roots": [
+        "res://tests/gut/unit",
+        "res://tests/gut/integration"
+      ],
+      "cli_entry": "res://addons/gut/gut_cmdln.gd",
+      "result_format": "JUnit XML"
+    },
+    "runtime_write_allowlist": [
+      "user://gut/**",
+      "untracked CI artifact directory"
+    ],
+    "tracked_write_allowlist": []
+  },
+  "conflict_rules": {
+    "tracked_file_mutation_by_gut_runtime": "FORBIDDEN",
+    "higodot_edits_gut_tests_or_vendor_bytes": "FORBIDDEN",
+    "gut_edits_scene_resource_or_project_settings": "FORBIDDEN",
+    "same_file_dual_authority": "FORBIDDEN",
+    "change_authority_manifest": "REQUIRED_FOR_ADOPTION_AND_LATER_MIXED_SURFACE_PRS",
+    "unknown_authority": "FAIL_CLOSED"
+  },
+  "ci": {
+    "design_contract_job": "authority-entry-contract",
+    "planned_runtime_job": "gut-runtime-read-only",
+    "tracked_authoring_surface_hash_before_after": "REQUIRED",
+    "junit_artifact": "REQUIRED_AFTER_RUNTIME_ADOPTION",
+    "authority_manifest_validation": "REQUIRED_AFTER_RUNTIME_ADOPTION",
+    "current_design_pr_installs_gut": false,
+    "current_design_pr_changes_product_paths": false
+  },
+  "entry_gate": {
+    "mode": "FAIL_CLOSED",
+    "required_sheet_surfaces": [
+      "00_프로젝트_허브",
+      "01_작업순서",
+      "02_현재_확정결정",
+      "04_누락_충돌_감사",
+      "72_이미지검수_승인로그"
+    ],
+    "required_repository_surfaces": [
+      "CURRENT_CONFIRMED_DECISIONS.md",
+      "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
+      "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+      "open PR exact-head state"
+    ],
+    "generic_ready_or_awaiting_is_sufficient": false,
+    "stale_or_missing_input": "BLOCK_ENTRY"
+  },
+  "removal": {
+    "mode": "REMOVAL_BY_SEPARATE_REVIEWED_CHANGE",
+    "remove_paths": [
+      "addons/gut/**",
+      ".gutconfig.json",
+      "GUT-specific CI workflow",
+      "tests/gut/** after migration or retirement review"
+    ],
+    "project_settings_change_authority": "HIGODOT_ONLY",
+    "preserve_historical_test_evidence": true,
+    "verify_no_remaining_consumers": true
+  }
+}
