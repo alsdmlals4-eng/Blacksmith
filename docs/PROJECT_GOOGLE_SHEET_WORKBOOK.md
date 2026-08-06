@@ -7,8 +7,10 @@ spreadsheet_url: https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4
 spreadsheet_id: 1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg
 workbook_role: USER_FACING_GDD_WORKSPACE
 sheet_edit_policy: PROPOSED_SHEET_CHANGE
-base_commit: c987647d01ad2baa028a16e03d85ddfc1572a727
-last_verified_at: 2026-07-29
+base_version: 9.4.0
+base_payload_commit: a728712cb776ec98f4875914a580fcf7d0156593
+base_trusted_evidence_commit: ef1fba11167e4da0b298123b0c85ebd268191a42
+last_verified_at: 2026-08-06
 ```
 
 Google Sheets는 제작·강화·장비 연대기·고객·경제의 전체 흐름을 사용자가 확인·수정하고 AI가 GitHub 정본·실제 구현과 함께 읽는 GDD 작업면이다.
