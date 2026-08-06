@@ -44,6 +44,31 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 
 판정: `REQUIRED`.
 
+## R2_CHECKPOINT_004 Historical Evidence
+
+- planning main: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
+- closure main: `7a46fa38586a42f268cd0432744203049649ddd5`
+- 현재 활성 상태가 아니라 제작 등급·예술성 계약의 불변 출처다.
+
+## Artistry Generation·Growth·Valuation Gate
+
+Decision: `BS-CRAFT-20260805-02`.
+
+```text
+artistry = UID persisted non-negative integer
+artistry_value = CONTEXT_DERIVED_NOT_PERSISTED
+customer_artistry_fit = CONTEXT_DERIVED_NOT_PERSISTED
+NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
+```
+
+- 예술성은 제작 등급·일반 강화·판매·전시·소유권·명성으로 자동 증가하지 않는다.
+- 최초 생성과 후속 성장 원천을 분리한다.
+- 시장 가치 기여는 가산 후 구간별 한계 가치가 점감한다.
+- 동일 원인 이중 계산과 저비용 반복 파밍을 금지한다.
+- 정확한 값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+
+판정: `USER_APPROVED / MERGED_PR109_MAIN_CANON / IMPLEMENTATION_BLOCKED`.
+
 ## Historical POC Gate
 
 현재 Godot 프로젝트는 실행·파싱·씬 스모크·모델·통합 테스트가 통과하는 역사 POC다. 다음은 새 정본 구현으로 승격하지 않는다.
