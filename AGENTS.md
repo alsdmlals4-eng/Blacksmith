@@ -110,3 +110,15 @@ project.godot
 - PR 댓글·인라인 스레드
 - Google Sheet same-ID readback
 - 미실행 runtime·Android·접근성·성능·사람 플레이는 `NOT_RUN`
+
+## 8. 플랫폼 출시·에셋 권리
+
+출시·외부 자산·AI·외주·참조 기반 독립 제작 작업은 다음 프로젝트 증거를 읽는다.
+
+- `docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md`
+- `docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md`
+- `docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md`
+
+Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분리하고 Families, 광고 SDK, 데이터·개인정보, ads/IAP, build·store·questionnaire 일치를 함께 검토한다. 원본을 조금 수정하거나 AI로 변환했다는 이유만으로 독립 자산으로 보지 않으며 `reference_brief`, `forbidden_expression`, 별도 `final_asset_record`, 유사성 검토를 요구한다.
+
+필수 권리·계약·약관 버전·플랫폼 답변이 미확인이면 `RELEASE_BLOCKED_UNVERIFIED`다. 제품 구현 BLOCKED 상태와 실제 제출·법률 검토·최종 등급 미실행 상태를 바꾸지 않는다.

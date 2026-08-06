@@ -1,0 +1,41 @@
+{
+  "schema_version": "1",
+  "project_identity": {
+    "repository": "alsdmlals4-eng/Blacksmith",
+    "project_id": "blacksmith"
+  },
+  "base_pilot_commit": "2b595570bd237174b2b962a1eb54588b5ecc508d",
+  "project_state": "EXISTING_GODOT_PROJECT",
+  "godot": {
+    "version": "4.7.1-stable",
+    "archive_sha256": "c7ff14fd28472c8d4f193043de30278dcf7e5241a1dcf7566b02e27addaa33ba"
+  },
+  "project_file": "project.godot",
+  "main_scene_source": "application/run/main_scene",
+  "legacy_editor_plugins": [
+    "res://addons/godot_ai/plugin.cfg"
+  ],
+  "legacy_autoloads": [
+    "_mcp_game_helper"
+  ],
+  "legacy_disable_mode": "TEMPORARY_COPY_ONLY",
+  "source_mutation_policy": "FORBIDDEN",
+  "scratch_scene_path": "res://.godot-live-editor-pilot/scratch.tscn",
+  "behavior_checks": [
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_forging_session.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_enhancement_session.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_workshop_resources.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_workshop_calendar.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_craftsmanship_grade_resolver.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_customer_contract.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_world_activity_resolver.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_equipment_world_registry.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/unit/test_poc_telemetry.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_manual_enhancement_economy.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_forging_quality_enhancement.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_workshop_action_atomicity.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_equipment_lifecycle_controller.gd", "timeout_seconds": 60},
+    {"kind": "GODOT_SCRIPT", "target": "res://tests/integration/test_equipment_lifecycle_poc.gd", "timeout_seconds": 60}
+  ],
+  "expected_platform": "ANDROID"
+}
