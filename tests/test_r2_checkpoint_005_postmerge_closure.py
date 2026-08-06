@@ -16,6 +16,8 @@ CURRENT_DOCS = (
 
 PLANNING_HEAD = "77eba15415bc9ede661639b45bb526d5ce4410a5"
 PLANNING_MERGE = "31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9"
+CLOSURE_HEAD = "51d4acf4fc31233b4b218a6f20589fdbf2557ee2"
+CLOSURE_MERGE = "06f03323c1309d8da0e6f5b9f4680a20ce388126"
 
 
 class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
@@ -23,9 +25,9 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
 
-    def test_registry_records_pr109_as_merged_main_canon(self) -> None:
+    def test_registry_records_checkpoint_005_as_closed_main_canon(self) -> None:
         self.assertEqual(
-            "R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING",
+            "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
             self.registry["stage_status"],
         )
         self.assertEqual("0/10", self.registry["next_approval_counter"])
@@ -34,14 +36,19 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
         self.assertEqual(PLANNING_HEAD, evidence["planning_exact_head"])
         self.assertEqual(PLANNING_MERGE, evidence["planning_merge_sha"])
         self.assertEqual("MERGED_MAIN_CANON", evidence["planning_status"])
+        self.assertEqual(117, evidence["closure_pr"])
         self.assertEqual(
             "agent/r2-checkpoint-005-postmerge-closure",
             evidence["closure_branch"],
         )
-        self.assertEqual("DRAFT_PR117_PENDING", evidence["closure_status"])
+        self.assertEqual(CLOSURE_HEAD, evidence["closure_exact_head"])
+        self.assertEqual(CLOSURE_MERGE, evidence["closure_merge_sha"])
+        self.assertEqual("MERGED_MAIN_CANON", evidence["closure_status"])
         self.assertEqual("SQUASH", evidence["merge_method"])
+        self.assertEqual("PASS", evidence["closure_github_readback"])
+        self.assertEqual("PASS", evidence["closure_sheet_readback"])
 
-    def test_batch_005_decisions_no_longer_use_premerge_status(self) -> None:
+    def test_batch_005_decisions_remain_merged_main_canon(self) -> None:
         batch_ids = {
             "BS-CRAFT-20260805-02",
             "BS-CUSTOMER-20260805-01",
@@ -62,17 +69,21 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
             self.assertIn("MAIN_CANON", status, decision_id)
             self.assertNotIn("APPROVED_PENDING_MERGE", status, decision_id)
 
-    def test_current_authority_docs_route_to_checkpoint_005_closure(self) -> None:
+    def test_current_authority_docs_route_to_closed_checkpoint_005(self) -> None:
         forbidden = (
             "APPROVED_PENDING_MERGE",
             "DRAFT_PR109",
+            "DRAFT_PR117_PENDING",
+            "POSTMERGE_CLOSURE_PENDING",
             "PR #109 체크포인트 검토·명시적 병합 승인 대기",
+            "PR #117 폐쇄 정본 검증·명시적 병합 승인 대기",
         )
         required = (
             "R2_CHECKPOINT_005",
             "MERGED_PR109",
-            PLANNING_MERGE,
-            "제품 구현: `BLOCKED`",
+            "R2_BATCH_005_CLOSED_10_OF_10",
+            "R2_BATCH_006_NOT_STARTED_0_OF_10",
+            "BLOCKED",
         )
         for path in CURRENT_DOCS:
             text = path.read_text(encoding="utf-8")

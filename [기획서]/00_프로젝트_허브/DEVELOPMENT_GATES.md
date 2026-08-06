@@ -1,123 +1,143 @@
 # [현재 정본] Development Gates
 
 <!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
-> **R2_CHECKPOINT_005 / POSTMERGE_CLOSURE_PENDING**
+> **R2_CHECKPOINT_005_CLOSED_MAIN_CANON**
 >
-> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109 / MAIN_CANON`
->
-> planning exact head: `77eba15415bc9ede661639b45bb526d5ce4410a5` / squash merge: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9`
->
-> next batch: `R2_BATCH_006_NOT_STARTED_0_OF_10` / 제품 구현: `BLOCKED` / 사람 플레이테스트: `NOT_RUN`
-
+> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109_MAIN_CANON / R2_BATCH_006_NOT_STARTED_0_OF_10`
 
 ## Current Gate Summary
 
 ```yaml
 CURRENT_STAGE: R2_CORE_SESSION_META_LOOP
-R2_STATUS: R2_CHECKPOINT_004_MAIN_CANON / R2_BATCH_005_CLOSED_10_OF_10
-R2_CHECKPOINT_004_PLANNING: PR106_HEAD_227b2dabf0d98832811415156e72f65d601332a9 / MERGE_789c73f38003f40dde5e9a99cd7dcb3ca03863f7
-R2_CHECKPOINT_004_CLOSURE: PR107_HEAD_1ad791123eaf6c727e964380814ffb69f1357bbf / MERGE_7a46fa38586a42f268cd0432744203049649ddd5
-CURRENT_AFFIX_SLOTS: GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
-CURRENT_CRAFTING_GRADES: 보통 / 우수 / 명품 / 걸작 / 전설
-CURRENT_ARTISTRY: NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
-CURRENT_ARTISTRY_FLOW: BS-CRAFT-20260805-02
-NEXT_APPROVAL_COUNTER: 0/10
-MAXIMUM_BATCH_SIZE: 10
-EARLY_CHECKPOINTS: HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT
-TDD_GATE: RED_GREEN_OBSERVED / FINAL_EXACT_HEAD_REVALIDATION
+R2_STATUS: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
+R2_BATCH_005: CLOSED_10_OF_10
+R2_BATCH_006: NOT_STARTED_0_OF_10
+TDD_GATE: RED_GREEN_REFACTOR_REQUIRED
 CODEX_IMPLEMENTATION_GATE: BLOCKED
-LATEST_RUNTIME_VALIDATION_GATE: NOT_RUN
+VERTICAL_SLICE_PLAN_GATE: CONDITIONALLY_FEASIBLE
+VERTICAL_SLICE_CODE_GATE: USER_APPROVAL_REQUIRED
+LATEST_RUNTIME_VALIDATION_GATE: HISTORICAL_POC_ONLY
 ANDROID_DEVICE_GATE: NOT_RUN
 ACCESSIBILITY_GATE: NOT_RUN
 PERFORMANCE_GATE: NOT_RUN
-HUMAN_PLAYTEST_GATE: NOT_RUN
+HUMAN_PLAYTEST: NOT_RUN
+PRODUCT_IMPLEMENTATION: BLOCKED
 ```
 
-## Crafting Grade Gate
+## Canon Gate
 
-```text
-[보통] → [우수] → [명품] → [걸작] → [전설]
-```
+버티컬 슬라이스를 포함한 모든 새 구현은 다음을 동시에 지켜야 한다.
 
-- 최초 직접 단조 완료 시 확정
-- 동일 UID 고정
-- 후천 승격·강등 없음
-- 제작 등급은 예술성 최소값·상한·배율을 결정하지 않음
+- 제작 등급 5단계와 동일 UID 고정
+- 예술성 비음수 정수·고정 설계 최대치 없음
+- `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
+- 보조재료 슬롯 없음
+- 일반 강화 한 입력 한 결과
+- 정밀강화 `+10/+20/+30/+40/+50`
+- 장비군별 주재료·역할·기본 중량
+- 역할 수치 프리셋 `5/10/15`
+- 기능 용량과 명시적 재작업 레시피
+- 고객 최대 중량 `STRENGTH × 10`
+- 모바일 3단계 정보 공개와 설명 가능한 핵심 원인
+- 개인 일정·세계 일정 분리
+- 작품 UID 변동 장부와 연대기
 
-판정: `USER_APPROVED / MERGED_PR106 / R2_CHECKPOINT_004_MAIN_CANON / IMPLEMENTATION_BLOCKED`.
+판정: `REQUIRED`.
 
-## Artistry Gate
+## R2_CHECKPOINT_004 Historical Evidence
 
-```text
-예술성 27
-NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
-```
-
-- `0` 이상의 정수, 고정 설계 최대치 없음
-- 소수점·분모·별점·백분율·단계명 없음
-- 다른 능력치와 함께 원수치 표시
-- 예술성 0은 정상 기능품
-- 전투 성능을 기본적으로 올리지 않음
-- 범용 속성·수식어 배율 금지
-
-판정: `USER_APPROVED_REFINED / MERGED_PR106 / R2_CHECKPOINT_004_MAIN_CANON / IMPLEMENTATION_BLOCKED`.
+- planning main: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
+- closure main: `7a46fa38586a42f268cd0432744203049649ddd5`
+- 현재 활성 상태가 아니라 제작 등급·예술성 계약의 불변 출처다.
 
 ## Artistry Generation·Growth·Valuation Gate
 
 Decision: `BS-CRAFT-20260805-02`.
 
-필수 계약:
-
 ```text
-artistry = UID persisted stat
+artistry = UID persisted non-negative integer
 artistry_value = CONTEXT_DERIVED_NOT_PERSISTED
 customer_artistry_fit = CONTEXT_DERIVED_NOT_PERSISTED
+NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
 ```
 
-최초 생성 허용 원천:
+- 예술성은 제작 등급·일반 강화·판매·전시·소유권·명성으로 자동 증가하지 않는다.
+- 최초 생성과 후속 성장 원천을 분리한다.
+- 시장 가치 기여는 가산 후 구간별 한계 가치가 점감한다.
+- 동일 원인 이중 계산과 저비용 반복 파밍을 금지한다.
+- 정확한 값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+
+판정: `USER_APPROVED / MERGED_PR109_MAIN_CANON / IMPLEMENTATION_BLOCKED`.
+
+## Historical POC Gate
+
+현재 Godot 프로젝트는 실행·파싱·씬 스모크·모델·통합 테스트가 통과하는 역사 POC다. 다음은 새 정본 구현으로 승격하지 않는다.
+
+- 구형 `STANDARD / GOOD / PERFECT` 품질
+- 보조재료 입력과 관련 재고
+- 범용 수식어 배열
+- 고정 계약 일수 중심 고객 평가
+- 과거 정확한 확률·공격 배율·경제 수치
+
+판정: `REFERENCE_ONLY / REUSE_BY_PORT_NOT_BY_AUTHORITY`.
+
+## Vertical Slice Readiness Gate
+
+판정: `CONDITIONALLY_FEASIBLE`.
+
+필수 선행 조건:
+
+1. 대표 콘텐츠 경로를 전체 콘텐츠와 구분한다.
+2. 최신 정본 전용 Item UID·Save Schema를 확정한다.
+3. 정확한 수치를 테스트 프리셋으로 격리한다.
+4. 기존 POC 구형 모델을 새 Schema에 직접 혼합하지 않는다.
+5. 앱 시작 씬을 테스트 씬과 분리한다.
+6. 자동 검증과 사람 플레이테스트 결과를 별도로 기록한다.
+
+제품 코드를 시작하려면 사용자의 별도 구현 승인이 필요하다.
+
+## TDD Gate
+
+모든 변경은 다음 순서를 따른다.
 
 ```text
-BASE_ITEM_DESIGN_AESTHETIC_TENDENCY
-MATERIAL_VISUAL_PROCESSING_FIT
-DIRECT_FORGING_AESTHETIC_RESULT
+RED → GREEN → REFACTOR → exact-head CI → review readback
 ```
 
-제작 후 성장 허용 원천:
+현재 정본 폐쇄 보강 작업의 RED는 PR #119에서 관측한다.
 
-```text
-ARTISTIC_FINISH
-ARTISTRY_OWNED_CATALYST_EFFECT
-APPROVED_FINISHING_OR_DECORATION_CONTENT
-MEANINGFUL_ARTISTIC_REWORK
-```
+## Save·UID Gate
 
-자동 증가 금지:
+버티컬 슬라이스 최소 저장 항목:
 
-```text
-GENERAL_ENHANCEMENT_LEVEL / SALE / GIFT / EXHIBITION_COUNT
-APPRAISAL_COUNT / OWNERSHIP_TRANSFER / FAME / CHRONICLE_EVENT
-LOW_COST_REPEAT_ACTION
-```
+- 고유 작품 UID
+- 주재료·장비군·역할 프로필
+- 제작 등급·예술성·역할 원수치·중량
+- 세 수식어 슬롯
+- 강화 단계·정밀강화 사용 이정표
+- 기능과 기능 용량
+- 손상·복원·소유권·고객 결과
+- 모든 변동 원인 장부
 
-가치 모델:
+저장·로드 재추첨은 금지한다.
 
-```text
-ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE
-```
+판정: `DESIGN_REQUIRED_BEFORE_CODE`.
 
-- 예술성 가치 기여는 단조 증가
-- 높은 구간일수록 한계 가치 감소
-- 원수치 압축 금지
-- 구간별 한계 가치 data table 우선
-- 동일 원인 이중 계산 금지
-- 전체 가치 구성요소 곱셈 중첩 금지
-- 고객 관심 유형: `IGNORE / SECONDARY / PRIMARY / REQUIREMENT`
-- 관심 없는 고객은 초과 예술성에 추가 지불하지 않을 수 있으나 패널티 없음
-- 수리·손상·판매·전시·감정·증여·저비용 반복 순증가 금지
-- 모든 변화는 UID와 출처 기록
-- 정확한 수치: `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`
+## Human Playtest Gate
 
-판정: `USER_APPROVED / R2_BATCH_005_4_OF_10 / MERGED_PR109 / IMPLEMENTATION_BLOCKED`.
+필수 검증:
+
+- 강화 지속·중단 고민
+- 등급·예술성·촉매·연대기 구분
+- 고객 결과의 원인 설명
+- 모바일 정보 과부하 여부
+- 같은 UID에 대한 애착과 다음 행동
+
+판정: `NOT_RUN`.
+
+## Product Implementation Gate
+
+R2 Batch 006의 버티컬 슬라이스 범위·Schema·테스트 프리셋과 사용자 구현 승인이 있기 전까지 `BLOCKED`다.
 
 ## Three Affix Gate
 
@@ -125,170 +145,23 @@ ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE
 GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 ```
 
-- 정확히 세 슬롯
-- 슬롯 간 생성·진화·덮어쓰기 금지
-- 일반 수식어 A·B 재도입 금지
-
-판정: `PASS / USER_APPROVED`.
-
-## Precision Enhancement Gate
-
-- 일반 강화: 한 입력 한 결과
-- 정밀 이정표: `+10/+20/+30/+40/+50`
-- 주재료 맥락 + 강화 방식 + 촉매 한 개
-- 보조재료 슬롯 없음
-- 같은 이정표 무한 리롤 금지
-
-판정: `STRUCTURE_APPROVED / EXACT_VALUES_BASELINE_TEST_PRESET`.
+세 슬롯의 생성·진화·덮어쓰기 책임을 분리한다. 판정: `REQUIRED`.
 
 ## Benchmark Gate
 
-- 질문·추천·설계 전에 유사 게임·현업 사례 비교
-- `채택 / 수정 채택 / 비채택 / 차별점 / 남은 불확실성` 기록
-- 유명 사례라도 프로젝트 코어와 충돌하면 비채택
+- 새 Decision과 수치 프리셋은 유사 게임·현업 사례 비교를 먼저 수행한다.
+- 결과는 `채택 / 수정 채택 / 비채택 / 차별점 / 남은 불확실성`으로 기록한다.
+- 프로젝트 코어와 충돌하는 유명 사례는 비채택한다.
 
 판정: `REQUIRED_BY_BS-OPS-20260805-01`.
 
-## TDD Gate
-
-```text
-RED → GREEN → REFACTOR
-```
-
-이번 Decision RED:
-
-- commit `c5459a81447a6f3d5f14d628a12acbdea34d1fcf`
-- Planning-first `109`: `EXPECTED_FAILURE`
-- 실패 원인: 새 Decision 부재와 배치 `0/10`
-
-관측된 GREEN:
-
-- commit `3665c5894591b241736de1a48981a71800203116`
-- Planning-first `127`: `PASS`
-- Base `609`: `PASS`
-- PR validation `1200`: `PASS`
-- Python full contracts: `PASS`
-- Godot 4.7.1 headless: `PASS`
-
-판정: `RED_GREEN_OBSERVED / FINAL_EVIDENCE_COMMIT_EXACT_HEAD_PENDING`.
-
-## Batch·Checkpoint Gate
-
-- R2_BATCH_004: `CLOSED_MERGED_PR107 / 2_OF_10 / USER_APPROVED_EARLY_CHECKPOINT`
-- R2_BATCH_005: `ACTIVE / 1_OF_10`
-- 승인 10건은 최대 배치 크기
-- 고위험 충돌·세션 종료·정본 영향이 크면 조기 체크포인트 허용
-- 병합은 명시적 사용자 승인 필요
-
-## Core Fun Validation Gate
-
-필수 행동 증거:
-
-- 강화 지속·중단 고민
-- 제작 등급·예술성·촉매·연대기의 원인 구분
-- 예술성 변화 원인과 고객 가치 차이 설명
-- 고객 결과와 작품 선택 인과 설명
-
-판정: `CONTRACT_APPROVED / EXECUTION_NOT_RUN`.
-
 ## Historical Forging Validation Gate
 
-다음은 현재 제품 구현 승인이 아니라 과거 reference implementation의 `[역사 증거]`다.
+다음은 현재 제품 구현 승인이 아니라 보존해야 하는 `[역사 증거]`다.
 
-- `POC v0.6.4 · main · 2026.07.23.1`
+- 최신 역사 구현 배지: `POC v0.6.4 · main · 2026.07.23.1`
 - 제작 모델 7건
 - 제작 결과 통합 6건
-- 과거 품질: `STANDARD / GOOD / PERFECT`
-- 정확 수치: `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
+- 정확한 구형 품질·피버 수치는 `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
 
-## Legacy Document Gate
-
-- `[현재 정본] / [부분 대체됨] / [대체됨] / [보류] / [폐기] / [역사 증거]`
-- PR #81 `DO_NOT_MERGE_AS_UNIT`
-
-## Product Implementation Gate
-
-R1~R8와 최종 사용자 검수, 저장·migration 계약, 테스트 프리셋 승인 전까지 `BLOCKED`다.
-
-## 고객 능력·장비 적합성 승인
-
-- Decision: `BS-CUSTOMER-20260805-01`
-- 고객: 근력·기량·체력·판단력 `1~10`, 희소 무기·갑옷 적성 `0~3`, 마력 적성 `0~10`
-- 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
-- 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
-- 상태: `R2_BATCH_005_4_OF_10 / MERGED_PR109 / MAIN_CANON / PRODUCT_IMPLEMENTATION_BLOCKED`
-
-<!-- BS-UX-20260805-01 -->
-### Mobile Customer Card Progressive Disclosure Gate
-
-- Decision: `BS-UX-20260805-01`
-- 3단계 정보 계층: APPROVED
-- 설명 가능한 이유 2~4개: REQUIRED
-- 접근성 48dp·비색상 단독 신호: REQUIRED
-- 이미지·애니메이션 HX: BLOCKED_UNTIL_REVIEW_COMPLETE
-- CODEX_IMPLEMENTATION_GATE: BLOCKED
-
-<!-- BS-CUSTOMER-20260806-01 -->
-### 강화 중심 단순 장비 판정
-
-- Decision: `BS-CUSTOMER-20260806-01` / `R2_BATCH_005_4_OF_10`
-- 최대 중량: `STRENGTH × 10 WEIGHT_POINT`
-- 상태: `WITHIN_LIMIT / OVERWEIGHT`; 초과 시 배정 불가
-- 성공률: 강화 레벨이 주효과, 고객 능력·적성은 작은 보조 보정
-- 정본: `docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md`
-- 제품 구현: `BLOCKED`
-
-## BS-ITEM-20260806-01 현재 정제
-
-- 활성 배치: `R2_BATCH_005_8_OF_10`
-- 장비군 고정 기본 중량: `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`
-- 중량 전용 효과: `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`, 작품당 최대 하나
-- 자동 중량 변경 금지: 재료·제작 등급·예술성·원수치·일반 강화 단계
-- 정본: `docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_CANON_2026.md`
-- 제품 구현: `BLOCKED`
-
-## BS-ITEM-20260806-02 — 중량 성능 예산 기억
-
-- 상태: `R2_BATCH_005_7_OF_10 / MERGED_PR109 / MAIN_CANON`
-- 최초 제작 중량 5당 초기 성능 예산 +1.
-- 경량화는 현재 중량만 감소하고 기존 예산을 유지.
-- 중량화는 과거 최고 인정 중량 초과분만 예산 추가.
-- 정밀강화 다섯 이정표에서 이정표당 중량 조정 최대 1회.
-- 제품 구현: `BLOCKED`.
-
-## BS-ITEM-20260806-03 — 중량 예산 환산과 역할 프리셋
-
-- 상태: `R2_BATCH_005_7_OF_10 / MERGED_PR109 / MAIN_CANON`
-- 공격·방어 예산 1점은 원수치 +5.
-- 마법 기능·유틸리티 예산 1점은 기능 용량 +1.
-- 기본 작품 역할 프로필은 최초 제작 시 확정되고 UID에서 불변.
-- 플레이어 자유 배분·무료 재분배·기본 혼합 프로필 없음.
-- 제품 구현: `BLOCKED`.
-
-<!-- BS-ITEM-20260806-04 -->
-## Item Role Stat and Function Catalog Gate
-
-- Decision: `BS-ITEM-20260806-04 / R2_BATCH_005_ACTIVE_8_OF_10`
-- `SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS`
-- 최초 승인 기능 6종 외 기능과 용량 3 규칙 우회 기능은 별도 승인 필요.
-- `CODEX_IMPLEMENTATION_GATE: BLOCKED`
-
-<!-- BS-ITEM-20260806-05 CURRENT HUB ROUTING -->
-## 현재 9/10 작품 수치·강화 변동 Gate
-
-- Decision: `BS-ITEM-20260806-05 / R2_BATCH_005_10_OF_10`
-- 권위 정본: `docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md`
-- 조회 시트: `42_능력치_강화_참조표`
-- 핵심: 최초 역할 수치 `5·10·15`, 일반 강화 원수치 자동 변동 없음, 정밀강화 수치 패키지와 기능 재작업 상호배타, 통합 변동 장부 필수
-- 다음 Gate: 작품별 특수기능 제작·재작업 레시피와 테스트 프리셋 플레이테스트 계획
-- 제품 구현: `BLOCKED`
-
-## BS-ITEM-20260806-06 — 배치 005 완료 Gate
-
-- 현재 배치: `R2_BATCH_005_10_OF_10`
-- 주재료 역할 적합: `EXPLICIT_PRIMARY_MATERIAL_BY_EQUIPMENT_GROUP`
-- 직접 단조 역할 결과: `DETERMINISTIC_ROLE_STRIKE_THREE_ZONE`
-- 기능 레시피: `ROLE_PROFILE_MATERIAL_WEIGHT_CONTEXT_CAPACITY`
-- 사람 플레이테스트: `NOT_RUN`
-- 다음 행동: PR #117 폐쇄 정본 검증·명시적 병합 승인 대기
-- 제품 구현: `BLOCKED`
+판정: `HISTORICAL_EVIDENCE / PRODUCT_IMPLEMENTATION_BLOCKED`.

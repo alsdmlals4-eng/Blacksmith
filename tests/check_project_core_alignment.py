@@ -238,7 +238,7 @@ def check_r2(failures: list[str]) -> None:
         return
     expected = {
         "schema_version": 9,
-        "stage_status": "R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING",
+        "stage_status": "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
         "next_approval_counter": "0/10",
         "product_implementation": "BLOCKED",
     }
