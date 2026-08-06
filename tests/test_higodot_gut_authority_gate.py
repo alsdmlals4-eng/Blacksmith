@@ -149,7 +149,7 @@ def test_design_pr_change_surface_excludes_product_and_vendor_paths() -> None:
     changed = {
         line.strip()
         for line in subprocess.run(
-            ["git", "diff", "--name-only", f"{merge_base}..HEAD"],
+            ["git", "-c", "core.quotepath=false", "diff", "--name-only", f"{merge_base}..HEAD"],
             cwd=ROOT,
             check=True,
             capture_output=True,
