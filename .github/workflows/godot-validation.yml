@@ -90,6 +90,8 @@ jobs:
           run_test res://tests/unit/test_world_activity_resolver.gd "WorldActivityResolver tests PASSED"
           run_test res://tests/unit/test_equipment_world_registry.gd "EquipmentWorldRegistry tests PASSED"
           run_test res://tests/unit/test_poc_telemetry.gd "PocTelemetry tests PASSED"
+          run_test res://tests/vertical_slice/unit/test_vs_item.gd "VSItem tests PASSED"
+          run_test res://tests/vertical_slice/unit/test_vs_save_service.gd "VSSaveService tests PASSED"
           run_test res://tests/integration/test_manual_enhancement_economy.gd "Manual enhancement economy integration tests PASSED"
           run_test res://tests/integration/test_forging_quality_enhancement.gd "Forging quality enhancement integration tests PASSED"
           run_test res://tests/integration/test_workshop_action_atomicity.gd "Workshop action atomicity integration tests PASSED"
