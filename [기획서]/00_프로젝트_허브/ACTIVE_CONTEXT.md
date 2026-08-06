@@ -139,3 +139,9 @@ BS-ITEM-20260806-06 / R2_BATCH_005_10_OF_10
 - 제작 모델 7건
 - 제작 결과 통합 6건
 - 정확한 구형 품질·피버 수치는 `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
+
+## 강화 데이터 소유권
+
+- 실패·위험·소재 소비 정책의 현재 역사 구현 소유자는 `data/crafting/enhancement_balance.json`이다.
+- 정밀강화 이정표 구조의 현재 역사 구현 소유자는 `data/crafting/enhancement_milestones.json`이다.
+- 버티컬 슬라이스는 이 파일의 구형 보조재료 계약을 정본으로 승격하지 않고, 최신 R2 Schema로 명시적으로 이관한다.
