@@ -133,6 +133,8 @@ def validate_logged_result(result: CommandResult) -> CommandResult:
 
 def python_commands(python: str, scope: str, base_root: Path | None) -> list[tuple[str, list[str]]]:
     commands: list[tuple[str, list[str]]] = [
+        ("pytest-version", [python, "-c", "import pytest; assert pytest.__version__ == '8.3.5', pytest.__version__"]),
+        ("local-validation-fallback", [python, "-m", "unittest", "tests/test_local_validation_fallback.py", "-v"]),
         ("no-merge-conflicts-unittest", [python, "-m", "unittest", "tests/test_no_merge_conflicts.py"]),
         ("no-merge-conflicts-scan", [python, "tests/check_no_merge_conflicts.py", "."]),
         ("project-core-alignment", [python, "tests/check_project_core_alignment_current.py"]),
@@ -205,7 +207,10 @@ def summarize_status(
     base_present: bool,
     godot_present: bool,
     require_godot: bool,
+    contract_consistent: bool = True,
 ) -> str:
+    if not contract_consistent:
+        return "FAIL"
     if not exact_head or not clean_before or not clean_after or not authoring_unchanged:
         return "FAIL"
     if any(not result.passed for result in command_results):
@@ -247,6 +252,7 @@ def main() -> int:
 
     godot_present = bool(args.godot and Path(args.godot).is_file())
     if all(result.passed for result in results) and godot_present:
+        (repo / "artifacts" / "gut").mkdir(parents=True, exist_ok=True)
         for name, command in godot_commands(str(Path(args.godot).resolve()), repo):
             result = validate_logged_result(run_command(name, command, repo, log_dir))
             results.append(result)
@@ -258,6 +264,8 @@ def main() -> int:
     clean_after = git_output(repo, "status", "--porcelain", "--untracked-files=no") == ""
     base_head = git_output(base_root, "rev-parse", "HEAD") if base_root is not None and (base_root / ".git").exists() else None
     base_pin_match = base_head == BASE_PIN
+    workflow_text = (repo / ".github" / "workflows" / "python-validation.yml").read_text(encoding="utf-8")
+    workflow_base_pin_match = BASE_PIN in workflow_text
     status = summarize_status(
         results,
         exact_head,
@@ -267,6 +275,7 @@ def main() -> int:
         base_pin_match,
         godot_present,
         args.require_godot,
+        workflow_base_pin_match,
     )
     manifest = {
         "schema_version": "1.0.0",
@@ -285,6 +294,7 @@ def main() -> int:
         "base_expected_head": BASE_PIN,
         "base_actual_head": base_head,
         "base_pin_match": base_pin_match,
+        "workflow_base_pin_match": workflow_base_pin_match,
         "godot_executable": str(Path(args.godot).resolve()) if args.godot else None,
         "godot_required": args.require_godot,
         "godot_present": godot_present,
