@@ -13,6 +13,7 @@ WORKFLOW = ROOT / ".github/workflows/validate-higodot-gut-authority-gate.yml"
 PYTHON_VALIDATION = ROOT / ".github/workflows/python-validation.yml"
 AGENTS = ROOT / "AGENTS.md"
 GATES = ROOT / "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
+FORMAL_ADOPTION_CONTRACT = ROOT / "tests/test_gut_formal_adoption_contract.py"
 
 ALLOWED_CHANGED_PATHS = {
     str(SPEC.relative_to(ROOT)),
@@ -141,7 +142,9 @@ def test_design_workflow_is_static_and_does_not_claim_gut_runtime() -> None:
 
 
 def test_design_pr_change_surface_excludes_product_and_vendor_paths() -> None:
-    if not (ROOT / ".git").exists():
+    # The formal-adoption PR is stacked on this design PR and owns a separate,
+    # stricter changed-file contract. Keep this assertion scoped to PR #123.
+    if FORMAL_ADOPTION_CONTRACT.is_file() or not (ROOT / ".git").exists():
         return
     merge_base = subprocess.run(
         ["git", "merge-base", "HEAD", "origin/main"],

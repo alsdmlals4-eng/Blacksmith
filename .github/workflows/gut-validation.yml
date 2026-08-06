@@ -1,0 +1,178 @@
+name: Validate GUT 9.7.1 Formal Adoption
+
+on:
+  pull_request:
+    paths:
+      - ".gutconfig.json"
+      - ".github/workflows/gut-validation.yml"
+      - ".github/workflows/python-validation.yml"
+      - "addons/gut/**"
+      - "tests/gut/**"
+      - "tests/test_gut_formal_adoption_contract.py"
+      - "tests/test_higodot_gut_authority_gate.py"
+      - "tools/validate_gut_junit.py"
+      - "docs/testing/GUT_9_7_1_FORMAL_ADOPTION_MANIFEST.json"
+      - "docs/testing/GUT_9_7_1_REMOVAL_PROCEDURE.md"
+      - "project.godot"
+      - "**/*.tscn"
+      - "**/*.tres"
+      - "**/*.res"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  gut-runtime-read-only:
+    name: GUT 9.7.1 / Godot 4.7.1 / read-only authority
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact PR merge
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate adoption contracts before runtime
+        run: python -m unittest tests/test_gut_formal_adoption_contract.py -v
+
+      - name: Capture authoring surface hashes before GUT
+        shell: bash
+        run: |
+          mkdir -p artifacts/gut
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import subprocess
+
+          tracked = subprocess.check_output(["git", "ls-files", "-z"]).split(b"\0")
+          selected = []
+          for raw in tracked:
+              if not raw:
+                  continue
+              path = raw.decode("utf-8")
+              if (
+                  path == "project.godot"
+                  or path.endswith((".tscn", ".tres", ".res"))
+                  or path.startswith("addons/godot_ai/")
+              ):
+                  selected.append(path)
+          output = Path("artifacts/gut/authoring-surfaces.before.sha256")
+          output.write_text(
+              "".join(
+                  f"{sha256(Path(path).read_bytes()).hexdigest()}  {path}\n"
+                  for path in sorted(selected)
+              ),
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Download Godot 4.7.1
+        shell: bash
+        run: |
+          GODOT_ARCHIVE="Godot_v4.7.1-stable_linux.x86_64.zip"
+          curl -L --fail --retry 3 \
+            -o "$GODOT_ARCHIVE" \
+            "https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7.1"
+          unzip -q "$GODOT_ARCHIVE"
+          mv Godot_v4.7.1-stable_linux.x86_64 godot
+          chmod +x godot
+          ./godot --version | tee artifacts/gut/godot-version.log
+
+      - name: Import GUT class_names on clean checkout
+        shell: bash
+        run: |
+          set +e
+          ./godot --headless --import --path . 2>&1 | tee artifacts/gut/godot-import.log
+          import_status=${PIPESTATUS[0]}
+          set -e
+          echo "$import_status" > artifacts/gut/import-exit-code.txt
+          if [ "$import_status" -ne 0 ] || grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" artifacts/gut/godot-import.log; then
+            echo "Godot clean import reported a blocking error."
+            exit 1
+          fi
+
+      - name: Run GUT CLI
+        shell: bash
+        run: |
+          set +e
+          ./godot --headless -d -s --path "$PWD" addons/gut/gut_cmdln.gd \
+            -gdir=res://tests/gut/unit \
+            -gdir=res://tests/gut/integration \
+            -ginclude_subdirs \
+            -gexit \
+            -gjunit_xml_file=res://artifacts/gut/junit.xml \
+            2>&1 | tee artifacts/gut/gut.log
+          gut_status=${PIPESTATUS[0]}
+          set -e
+          echo "$gut_status" > artifacts/gut/exit-code.txt
+          exit "$gut_status"
+
+      - name: Validate JUnit test count and results
+        if: always()
+        run: python tools/validate_gut_junit.py artifacts/gut/junit.xml --minimum-tests 1
+
+      - name: Capture authoring surface hashes after GUT
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+          import subprocess
+
+          tracked = subprocess.check_output(["git", "ls-files", "-z"]).split(b"\0")
+          selected = []
+          for raw in tracked:
+              if not raw:
+                  continue
+              path = raw.decode("utf-8")
+              if (
+                  path == "project.godot"
+                  or path.endswith((".tscn", ".tres", ".res"))
+                  or path.startswith("addons/godot_ai/")
+              ):
+                  selected.append(path)
+          output = Path("artifacts/gut/authoring-surfaces.after.sha256")
+          output.write_text(
+              "".join(
+                  f"{sha256(Path(path).read_bytes()).hexdigest()}  {path}\n"
+                  for path in sorted(selected)
+              ),
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Prove GUT did not mutate tracked authoring surfaces
+        if: always()
+        shell: bash
+        run: |
+          diff -u \
+            artifacts/gut/authoring-surfaces.before.sha256 \
+            artifacts/gut/authoring-surfaces.after.sha256
+          git diff --exit-code
+
+      - name: Upload GUT JUnit and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gut-9-7-1-godot-4-7-1-${{ github.sha }}
+          path: |
+            artifacts/gut/junit.xml
+            artifacts/gut/gut.log
+            artifacts/gut/exit-code.txt
+            artifacts/gut/godot-version.log
+            artifacts/gut/godot-import.log
+            artifacts/gut/import-exit-code.txt
+            artifacts/gut/authoring-surfaces.before.sha256
+            artifacts/gut/authoring-surfaces.after.sha256
+          if-no-files-found: error

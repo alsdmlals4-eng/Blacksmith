@@ -1,0 +1,14 @@
+{
+  "dirs": [
+    "res://tests/gut/unit",
+    "res://tests/gut/integration"
+  ],
+  "include_subdirs": true,
+  "prefix": "test_",
+  "suffix": ".gd",
+  "should_exit": true,
+  "log_level": 2,
+  "ignore_pause": false,
+  "tests": [],
+  "unit_test_name": ""
+}
