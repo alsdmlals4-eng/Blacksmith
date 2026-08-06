@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -17,6 +19,19 @@ JUNIT_VALIDATOR = ROOT / "tools/validate_gut_junit.py"
 MANIFEST = ROOT / "docs/testing/GUT_9_7_1_FORMAL_ADOPTION_MANIFEST.json"
 REMOVAL = ROOT / "docs/testing/GUT_9_7_1_REMOVAL_PROCEDURE.md"
 PROJECT = ROOT / "project.godot"
+
+ALLOWED_ADOPTION_PATHS = {
+    ".gutconfig.json",
+    ".github/workflows/gut-validation.yml",
+    ".github/workflows/python-validation.yml",
+    "docs/testing/GUT_9_7_1_FORMAL_ADOPTION_MANIFEST.json",
+    "docs/testing/GUT_9_7_1_REMOVAL_PROCEDURE.md",
+    "tests/gut/integration/README.md",
+    "tests/gut/unit/test_gut_framework_smoke.gd",
+    "tests/test_gut_formal_adoption_contract.py",
+    "tests/test_higodot_gut_authority_gate.py",
+    "tools/validate_gut_junit.py",
+}
 
 
 def _text(path: Path) -> str:
@@ -41,6 +56,33 @@ def _load_junit_validator():
 
 
 class GutFormalAdoptionContractTests(unittest.TestCase):
+    def test_adoption_pr_has_a_separate_non_product_change_boundary(self) -> None:
+        if not (ROOT / ".git").exists():
+            return
+        base_ref = os.environ.get("GITHUB_BASE_REF", "docs/higodot-gut-authority-gate")
+        remote_base = f"origin/{base_ref}"
+        merge_base = subprocess.run(
+            ["git", "merge-base", "HEAD", remote_base],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        changed = {
+            line.strip()
+            for line in subprocess.run(
+                ["git", "-c", "core.quotepath=false", "diff", "--name-only", f"{merge_base}..HEAD"],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.splitlines()
+            if line.strip()
+        }
+        self.assertLessEqual(changed, ALLOWED_ADOPTION_PATHS, sorted(changed - ALLOWED_ADOPTION_PATHS))
+        self.assertNotIn("project.godot", changed)
+        self.assertFalse(any(path.startswith(("scenes/", "scripts/", "data/", "assets/", "addons/gut/")) for path in changed))
+
     def test_gut_config_has_real_project_consumption_roots(self) -> None:
         payload = _json(CONFIG)
         self.assertEqual(
