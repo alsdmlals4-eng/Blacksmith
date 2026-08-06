@@ -37,13 +37,13 @@ func _make_item():
 	item.raw_role_stat = 15
 	item.weight_point = 10
 	item.function_capacity = 1
-	item.functions = ["DISPLAY_ATTACK"]
+	item.functions.assign(["DISPLAY_ATTACK"])
 	item.grade_affix = "MASTERWORK_EDGE"
 	item.catalyst_affix = ""
 	item.chronicle_affix = ""
 	item.enhancement_level = 0
 	item.enhancement_failure_streak = 0
-	item.used_precision_milestones = []
+	item.used_precision_milestones.clear()
 	item.damage_state = "INTACT"
 	item.owner_id = "PLAYER"
 	return item
@@ -64,7 +64,7 @@ func _test_round_trip_preserves_mutable_state() -> void:
 	var item = _make_item()
 	item.enhancement_level = 10
 	item.enhancement_failure_streak = 2
-	item.used_precision_milestones = [10]
+	item.used_precision_milestones.assign([10])
 	item.catalyst_affix = "EMBER_TOUCHED"
 	item.chronicle_affix = "ARENA_TESTED"
 	item.damage_state = "DAMAGED"
@@ -73,7 +73,7 @@ func _test_round_trip_preserves_mutable_state() -> void:
 	_expect(item.append_ledger_entry(entry.to_dict()) == OK, "first ledger entry should append")
 	var restored = ItemScript.from_dict(item.to_dict())
 	_expect(restored.enhancement_level == 10, "enhancement level changed")
-	_expect(restored.used_precision_milestones == [10], "precision milestones changed")
+	_expect(restored.used_precision_milestones.size() == 1 and restored.used_precision_milestones[0] == 10, "precision milestones changed")
 	_expect(restored.catalyst_affix == "EMBER_TOUCHED", "catalyst affix changed")
 	_expect(restored.chronicle_affix == "ARENA_TESTED", "chronicle affix changed")
 	_expect(restored.damage_state == "DAMAGED", "damage state changed")
