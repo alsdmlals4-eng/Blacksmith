@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "decision_id": "BS-TEST-20260806-01",
   "framework": "GUT",
   "version": "9.7.1",
@@ -12,7 +12,7 @@
   "validated_engine": "4.7.1",
   "authority_role": "GDSCRIPT_TEST_FRAMEWORK_ONLY",
   "editor_plugin_enabled": false,
-  "adoption_status": "IMPLEMENTED_AWAITING_EXACT_HEAD_RUNTIME_CI",
+  "adoption_status": "DRAFT_IMPLEMENTED_RUNTIME_VALIDATED_FORMAL_CANON_PENDING_MERGE",
   "consumption_paths": {
     "vendor_root": "addons/gut",
     "config": ".gutconfig.json",
@@ -35,11 +35,43 @@
     "**/*.res",
     "addons/godot_ai/**"
   ],
+  "runtime_validation": {
+    "implementation_head_sha": "e01b8c475bf494bcbde4339df6f18c7b31da1e19",
+    "tested_merge_ref_sha": "b7c8435e258f50e3999c836ec5cde70029fa83ce",
+    "workflow_run_id": 31109841958,
+    "workflow_run_number": 3,
+    "job_id": 92644434268,
+    "result": "PASS",
+    "godot_version": "4.7.1.stable.official.a13da4feb",
+    "gut_version": "9.7.1",
+    "scripts": 1,
+    "tests": 1,
+    "passing_tests": 1,
+    "asserts": 1,
+    "junit": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "clean_import": "PASS",
+    "tracked_authoring_surface_hash": "UNCHANGED",
+    "git_diff_after_runtime": "CLEAN",
+    "artifact_id": 8971209716,
+    "artifact_zip_sha256": "2ae88bf6513c3ade6ea6c1c2ec4e3df04504a23f231b2c24da235fd223f0ec58"
+  },
+  "known_non_blocking_import_warning": {
+    "surface": "addons/gut/fonts/source_code_pro.fnt",
+    "observation": "Godot clean import emitted invalid UTF-8 byte warnings while importing a vendored GUT font resource.",
+    "impact_on_adoption_smoke": "NON_BLOCKING_IN_OBSERVED_RUN",
+    "follow_up": "Verify upstream byte identity and import behavior before treating the warning as resolved. Do not modify vendor bytes in this PR."
+  },
   "legacy_direct_gdscript_runners": "PRESERVED_UNTIL_SEPARATE_MIGRATION",
   "removal_procedure": "docs/testing/GUT_9_7_1_REMOVAL_PROCEDURE.md",
   "limitations": [
-    "This manifest does not claim active authority until exact-head runtime CI succeeds.",
+    "The Draft implementation is runtime-validated but is not current main canon until the stacked design and adoption PRs are reviewed and merged in order.",
     "Android device execution and human playtest are outside framework adoption scope.",
-    "The GUT editor plugin remains disabled to preserve HiGodot authoring authority."
+    "The GUT editor plugin remains disabled to preserve HiGodot authoring authority.",
+    "The product image gate remains blocked because image generation, rights review, and runtime review are not complete."
   ]
 }
