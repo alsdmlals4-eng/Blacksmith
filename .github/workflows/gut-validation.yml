@@ -176,3 +176,4 @@ jobs:
             artifacts/gut/authoring-surfaces.before.sha256
             artifacts/gut/authoring-surfaces.after.sha256
           if-no-files-found: error
+          retention-days: 1
