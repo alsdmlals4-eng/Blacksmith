@@ -5,6 +5,10 @@ on:
     paths:
       - "skills/PROJECT_BASE_ADAPTER.json"
       - "docs/PROJECT_OPERATING_HEALTH.json"
+      - "docs/planning/BLACKSMITH_R2_BATCH_006_VERTICAL_SLICE_CANON_PROPOSAL_2026.md"
+      - "docs/planning/R2_BATCH_006_VERTICAL_SLICE_PROPOSAL_REGISTRY.json"
+      - "docs/planning/BLACKSMITH_R2_VERTICAL_SLICE_BENCHMARK_2026-08-06.md"
+      - "docs/superpowers/plans/2026-08-06-blacksmith-godot-vertical-slice.md"
       - "tests/test_base_v942_planning_first_adoption.py"
       - "tests/test_project_adapter_long_lived_pr_baseline.py"
       - "tests/test_r2_artistry_generation_growth_economy.py"
@@ -19,6 +23,7 @@ on:
       - "tests/test_r2_function_recipe_material_fit_and_playtest.py"
       - "tests/test_r2_checkpoint_005_postmerge_closure.py"
       - "tests/test_r2_checkpoint_005_main_canon_finalization.py"
+      - "tests/test_r2_batch_006_vertical_slice_proposal.py"
       - ".github/workflows/validate-project-base-adapter.yml"
       - ".github/workflows/validate-base-v942-planning-first-adoption.yml"
 
@@ -49,4 +54,5 @@ jobs:
           tests.test_r2_function_recipe_material_fit_and_playtest
           tests.test_r2_checkpoint_005_postmerge_closure
           tests.test_r2_checkpoint_005_main_canon_finalization
+          tests.test_r2_batch_006_vertical_slice_proposal
           -v
