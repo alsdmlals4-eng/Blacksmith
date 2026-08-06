@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "spec_id": "BS-TEST-AUTH-20260806-01",
   "decision_ids": [
     "BS-OPS-20260806-10",
@@ -7,8 +7,9 @@
     "BS-GATE-20260806-01"
   ],
   "captured_date_kst": "2026-08-06",
+  "snapshot_scope": "POSTMERGE_ADOPTION_CANON_CLOSURE",
   "source_repository": "alsdmlals4-eng/Blacksmith",
-  "source_main_sha": "07f77041f85bde223768128949ad8dc587d5a003",
+  "source_main_sha_at_capture": "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb",
   "source_sheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
   "source_sheet_ranges": [
     "00_프로젝트_허브!E2:K2",
@@ -29,10 +30,21 @@
     "vendor": "PRESENT",
     "local_version": "9.7.1",
     "plugin_enabled": false,
-    "config_present": false,
-    "project_test_root_present": false,
-    "formal_ci_authority": false,
-    "aggregate": "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING"
+    "config_present": true,
+    "project_test_root_present": true,
+    "formal_ci_authority": true,
+    "aggregate": "FORMALLY_ADOPTED_ACTIVE",
+    "adoption_main_sha": "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb",
+    "validated_head_sha": "9ab46229946ae11529824fabefc6d558bd608d5d",
+    "runtime_run_id": 31111242901,
+    "runtime_result": "PASS",
+    "junit": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tracked_authoring_surface_hash": "UNCHANGED"
   },
   "corrected_sheet_states": {
     "00_프로젝트_허브!E2": "R2_BATCH_006_MAIN_CANON_SCOPED_VERTICAL_SLICE_TASK1_DRAFT",
@@ -42,6 +54,9 @@
     "01_작업순서!H3": "R1_COMPLETE_MAIN_CANON",
     "01_작업순서!D4": "R2_BATCH_006_COMPLETE / R3-R8_INCOMPLETE / SCOPED_VERTICAL_SLICE_ACTIVE",
     "01_작업순서!H4": "R2_BATCH_006_MAIN_CANON_R3_R8_INCOMPLETE_SCOPED_VS_OPEN_GENERAL_PRODUCT_BLOCKED",
+    "02_현재_확정결정!BS-OPS-20260806-10": "MAIN_CANON_POLICY_ACTIVE / HIGODOT_PRODUCTION_ACTIVATION_PENDING",
+    "02_현재_확정결정!BS-TEST-20260806-01": "MAIN_CANON_ACTIVE_TEST_FRAMEWORK_AUTHORITY",
+    "02_현재_확정결정!BS-GATE-20260806-01": "MAIN_CANON_ENTRY_GATE_ACTIVE",
     "71_이미지기획_생성목록!L5": "BLOCKED_IMAGE_NOT_GENERATED",
     "71_이미지기획_생성목록!L6": "BLOCKED_IMAGE_NOT_GENERATED",
     "72_이미지검수_승인로그!K2": "BLOCKED_IMAGE_NOT_GENERATED",
@@ -78,17 +93,21 @@
   },
   "open_findings": {
     "BS-IMG-004": "IMAGE_NOT_GENERATED / SOURCE_LICENSE_REVIEW_REQUIRED",
-    "BS-IMG-005": "IMAGE_NOT_GENERATED / RESOLUTION_NOT_DEFINED / SOURCE_AND_LICENSE_NOT_RECORDED / PRIORITY_UNSET"
+    "BS-IMG-005": "IMAGE_NOT_GENERATED / RESOLUTION_NOT_DEFINED / SOURCE_AND_LICENSE_NOT_RECORDED / PRIORITY_UNSET",
+    "HIGODOT_PRODUCTION_AUTHORING": "PILOT_ONLY / SEPARATE_APPROVAL_REQUIRED",
+    "ANDROID_DEVICE_VALIDATION": "NOT_RUN",
+    "HUMAN_PLAYTEST": "NOT_RUN"
   },
   "resolved_findings": {
     "71_이미지기획_생성목록": "SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS",
     "BS-IMG-004_ROW_SCHEMA": "RESOLVED",
-    "BS-IMG-005_ROW_SCHEMA": "RESOLVED_WITH_EXPLICIT_UNKNOWNS"
+    "BS-IMG-005_ROW_SCHEMA": "RESOLVED_WITH_EXPLICIT_UNKNOWNS",
+    "GUT_9_7_1_FORMAL_ADOPTION": "FORMALLY_ADOPTED_ACTIVE"
   },
   "permitted_aggregate_states": [
     "COMPLETE_MAIN_CANON",
     "OPEN_ONLY_FOR_APPROVED_NAMESPACES",
-    "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING",
+    "FORMALLY_ADOPTED_ACTIVE",
     "SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS",
     "BLOCKED_STALE_AUTHORITY",
     "BLOCKED_OPEN_DECISION",
@@ -104,5 +123,5 @@
     "IN_REVIEW",
     "APPROVED"
   ],
-  "entry_decision": "DESIGN_REVIEW_ALLOWED / SHEET_SCHEMA_REPAIRED / FORMAL_GUT_ADOPTION_BLOCKED / GENERAL_PRODUCT_BLOCKED"
+  "entry_decision": "AUTHORITY_GATE_MAIN_CANON / GUT_FORMALLY_ADOPTED / VISUAL_GATE_BLOCKED / GENERAL_PRODUCT_BLOCKED"
 }

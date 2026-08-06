@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "decision_id": "BS-TEST-20260806-01",
   "framework": "GUT",
   "version": "9.7.1",
@@ -12,7 +12,8 @@
   "validated_engine": "4.7.1",
   "authority_role": "GDSCRIPT_TEST_FRAMEWORK_ONLY",
   "editor_plugin_enabled": false,
-  "adoption_status": "DRAFT_IMPLEMENTED_RUNTIME_VALIDATED_FORMAL_CANON_PENDING_MERGE",
+  "adoption_status": "MAIN_CANON_ACTIVE_TEST_FRAMEWORK_AUTHORITY",
+  "adoption_main_sha": "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb",
   "consumption_paths": {
     "vendor_root": "addons/gut",
     "config": ".gutconfig.json",
@@ -36,11 +37,11 @@
     "addons/godot_ai/**"
   ],
   "runtime_validation": {
-    "implementation_head_sha": "e01b8c475bf494bcbde4339df6f18c7b31da1e19",
-    "tested_merge_ref_sha": "b7c8435e258f50e3999c836ec5cde70029fa83ce",
-    "workflow_run_id": 31109841958,
-    "workflow_run_number": 3,
-    "job_id": 92644434268,
+    "main_base_validation_head_sha": "9ab46229946ae11529824fabefc6d558bd608d5d",
+    "tested_merge_ref_sha": "88005c9330fe4ad9fd2d1d9183e3d9e828793f05",
+    "workflow_run_id": 31111242901,
+    "workflow_run_number": 6,
+    "job_id": 92649290055,
     "result": "PASS",
     "godot_version": "4.7.1.stable.official.a13da4feb",
     "gut_version": "9.7.1",
@@ -57,21 +58,22 @@
     "clean_import": "PASS",
     "tracked_authoring_surface_hash": "UNCHANGED",
     "git_diff_after_runtime": "CLEAN",
-    "artifact_id": 8971209716,
-    "artifact_zip_sha256": "2ae88bf6513c3ade6ea6c1c2ec4e3df04504a23f231b2c24da235fd223f0ec58"
+    "artifact_id": 8971760740,
+    "artifact_zip_sha256": "c871f5ca799fbd4f165cfd41fd5a13824e266c867b03fbeb31603906a8d0ce16"
   },
   "known_non_blocking_import_warning": {
     "surface": "addons/gut/fonts/source_code_pro.fnt",
     "observation": "Godot clean import emitted invalid UTF-8 byte warnings while importing a vendored GUT font resource.",
     "impact_on_adoption_smoke": "NON_BLOCKING_IN_OBSERVED_RUN",
-    "follow_up": "Verify upstream byte identity and import behavior before treating the warning as resolved. Do not modify vendor bytes in this PR."
+    "follow_up": "Verify upstream byte identity and import behavior before treating the warning as resolved. Do not modify vendor bytes in the postmerge canon closure."
   },
   "legacy_direct_gdscript_runners": "PRESERVED_UNTIL_SEPARATE_MIGRATION",
   "removal_procedure": "docs/testing/GUT_9_7_1_REMOVAL_PROCEDURE.md",
   "limitations": [
-    "The Draft implementation is runtime-validated but is not current main canon until the stacked design and adoption PRs are reviewed and merged in order.",
-    "Android device execution and human playtest are outside framework adoption scope.",
+    "GUT is active main-canon test framework authority, while legacy direct GDScript runners remain compatibility paths until a separate migration.",
+    "Android device execution and human playtest are outside framework adoption scope and remain NOT_RUN.",
     "The GUT editor plugin remains disabled to preserve HiGodot authoring authority.",
+    "HiGodot production authoring activation still requires separate approval and remains PILOT_ONLY.",
     "The product image gate remains blocked because image generation, rights review, and runtime review are not complete."
   ]
 }

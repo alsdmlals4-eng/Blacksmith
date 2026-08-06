@@ -17,15 +17,24 @@ INTEGRATION_README = ROOT / "tests/gut/integration/README.md"
 WORKFLOW = ROOT / ".github/workflows/gut-validation.yml"
 JUNIT_VALIDATOR = ROOT / "tools/validate_gut_junit.py"
 MANIFEST = ROOT / "docs/testing/GUT_9_7_1_FORMAL_ADOPTION_MANIFEST.json"
+POLICY = ROOT / "docs/testing/HIGODOT_GUT_AUTHORITY_POLICY.json"
+SNAPSHOT = ROOT / "docs/operations/BLACKSMITH_ENTRY_GATE_SNAPSHOT_2026-08-06.json"
 REMOVAL = ROOT / "docs/testing/GUT_9_7_1_REMOVAL_PROCEDURE.md"
 PROJECT = ROOT / "project.godot"
+
+ADOPTION_MAIN_SHA = "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb"
+VALIDATED_HEAD_SHA = "9ab46229946ae11529824fabefc6d558bd608d5d"
+RUNTIME_RUN_ID = 31111242901
+RUNTIME_ARTIFACT_ID = 8971760740
 
 ALLOWED_ADOPTION_PATHS = {
     ".gutconfig.json",
     ".github/workflows/gut-validation.yml",
     ".github/workflows/python-validation.yml",
+    "docs/operations/BLACKSMITH_ENTRY_GATE_SNAPSHOT_2026-08-06.json",
     "docs/testing/GUT_9_7_1_FORMAL_ADOPTION_MANIFEST.json",
     "docs/testing/GUT_9_7_1_REMOVAL_PROCEDURE.md",
+    "docs/testing/HIGODOT_GUT_AUTHORITY_POLICY.json",
     "tests/gut/integration/README.md",
     "tests/gut/unit/test_gut_framework_smoke.gd",
     "tests/test_gut_formal_adoption_contract.py",
@@ -59,7 +68,7 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
     def test_adoption_pr_has_a_separate_non_product_change_boundary(self) -> None:
         if not (ROOT / ".git").exists():
             return
-        base_ref = os.environ.get("GITHUB_BASE_REF", "docs/higodot-gut-authority-gate")
+        base_ref = os.environ.get("GITHUB_BASE_REF", "main")
         remote_base = f"origin/{base_ref}"
         merge_base = subprocess.run(
             ["git", "merge-base", "HEAD", remote_base],
@@ -106,9 +115,9 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         self.assertIn('res://addons/godot_ai/plugin.cfg', project)
         self.assertNotIn('res://addons/gut/plugin.cfg', project)
 
-    def test_adoption_manifest_is_complete_fail_closed_and_evidence_backed(self) -> None:
+    def test_adoption_manifest_is_complete_fail_closed_and_main_canon(self) -> None:
         manifest = _json(MANIFEST)
-        self.assertEqual(manifest["schema_version"], "1.1.0")
+        self.assertEqual(manifest["schema_version"], "1.2.0")
         self.assertEqual(manifest["decision_id"], "BS-TEST-20260806-01")
         self.assertEqual(manifest["framework"], "GUT")
         self.assertEqual(manifest["version"], "9.7.1")
@@ -122,10 +131,8 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         self.assertEqual(manifest["validated_engine"], "4.7.1")
         self.assertEqual(manifest["authority_role"], "GDSCRIPT_TEST_FRAMEWORK_ONLY")
         self.assertFalse(manifest["editor_plugin_enabled"])
-        self.assertEqual(
-            manifest["adoption_status"],
-            "DRAFT_IMPLEMENTED_RUNTIME_VALIDATED_FORMAL_CANON_PENDING_MERGE",
-        )
+        self.assertEqual(manifest["adoption_status"], "MAIN_CANON_ACTIVE_TEST_FRAMEWORK_AUTHORITY")
+        self.assertEqual(manifest["adoption_main_sha"], ADOPTION_MAIN_SHA)
         self.assertEqual(manifest["minimum_discovered_tests"], 1)
         self.assertEqual(manifest["zero_tests"], "FAIL")
         self.assertEqual(manifest["skipped_tests"], "FAIL")
@@ -134,8 +141,9 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         self.assertTrue(manifest["removal_procedure"])
 
         runtime = manifest["runtime_validation"]
-        self.assertEqual(runtime["implementation_head_sha"], "e01b8c475bf494bcbde4339df6f18c7b31da1e19")
-        self.assertEqual(runtime["workflow_run_id"], 31109841958)
+        self.assertEqual(runtime["main_base_validation_head_sha"], VALIDATED_HEAD_SHA)
+        self.assertEqual(runtime["workflow_run_id"], RUNTIME_RUN_ID)
+        self.assertEqual(runtime["workflow_run_number"], 6)
         self.assertEqual(runtime["result"], "PASS")
         self.assertEqual(runtime["godot_version"], "4.7.1.stable.official.a13da4feb")
         self.assertEqual(runtime["gut_version"], "9.7.1")
@@ -148,11 +156,25 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         self.assertEqual(runtime["clean_import"], "PASS")
         self.assertEqual(runtime["tracked_authoring_surface_hash"], "UNCHANGED")
         self.assertEqual(runtime["git_diff_after_runtime"], "CLEAN")
-        self.assertEqual(runtime["artifact_id"], 8971209716)
+        self.assertEqual(runtime["artifact_id"], RUNTIME_ARTIFACT_ID)
         self.assertEqual(
             manifest["known_non_blocking_import_warning"]["surface"],
             "addons/gut/fonts/source_code_pro.fnt",
         )
+
+    def test_policy_and_snapshot_match_active_adoption_without_opening_product_gate(self) -> None:
+        policy = _json(POLICY)
+        snapshot = _json(SNAPSHOT)
+        self.assertEqual(policy["adoption_state"], "FORMALLY_ADOPTED_ACTIVE_TEST_FRAMEWORK_AUTHORITY")
+        self.assertEqual(policy["adoption_main_sha"], ADOPTION_MAIN_SHA)
+        self.assertEqual(policy["gut"]["status"], "FORMALLY_ADOPTED_ACTIVE")
+        self.assertTrue(policy["gut"]["formal_ci_authority"])
+        self.assertEqual(snapshot["snapshot_scope"], "POSTMERGE_ADOPTION_CANON_CLOSURE")
+        self.assertEqual(snapshot["source_main_sha_at_capture"], ADOPTION_MAIN_SHA)
+        self.assertEqual(snapshot["gut"]["aggregate"], "FORMALLY_ADOPTED_ACTIVE")
+        self.assertEqual(snapshot["general_product_implementation"], "BLOCKED")
+        self.assertEqual(snapshot["image_gate"]["aggregate"], "BLOCKED_NOT_PRODUCT_READY")
+        self.assertEqual(snapshot["higodot"], "PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY")
 
     def test_runtime_workflow_executes_gut_and_proves_read_only_behavior(self) -> None:
         workflow = _text(WORKFLOW)
