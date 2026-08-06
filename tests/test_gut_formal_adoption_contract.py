@@ -134,6 +134,8 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         for marker in (
             "name: Validate GUT 9.7.1 Formal Adoption",
             "Godot_v4.7.1-stable_linux.x86_64.zip",
+            "./godot --headless --import --path .",
+            "artifacts/gut/godot-import.log",
             "addons/gut/gut_cmdln.gd",
             "-gdir=res://tests/gut/unit",
             "-gdir=res://tests/gut/integration",
