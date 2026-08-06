@@ -38,7 +38,18 @@ PR_VALIDATION_RUN=1386
 PYTHON_OPERATING_GODOT=PASS
 ```
 
-`Validate Project Base Adapter #39` failed because the pull request merge ref used the pre-#115 adapter workflow and an obsolete protected-baseline selection. Blacksmith main subsequently merged PR #115 (`42bd0b8981567d0c6ccfadfb29654416bb0098da`), which selects the adapter-recorded historical baseline for ordinary planning PRs. A later branch synchronization run must verify the corrected workflow before merge approval.
+`Validate Project Base Adapter #39` failed because the pull request merge ref used the pre-#115 adapter workflow and an obsolete protected-baseline selection. Blacksmith main subsequently merged PR #115 (`42bd0b8981567d0c6ccfadfb29654416bb0098da`), which selects the adapter-recorded historical baseline for ordinary planning PRs.
+
+## Corrected adapter verification trigger
+
+```text
+MAIN_ADAPTER_FIX=42bd0b8981567d0c6ccfadfb29654416bb0098da
+PREVIOUS_BOT_COMMIT_WORKFLOWS=ACTION_REQUIRED_NO_JOBS
+CURRENT_TRIGGER=HUMAN_AUTHORED_CONNECTOR_COMMIT
+REQUIRED_RESULT=PROJECT_BASE_ADAPTER_AND_FULL_PR_WORKFLOWS_PASS
+```
+
+The evidence test reads this document rather than accepting constant self-comparisons. Merge approval remains blocked until the corrected adapter workflow and the complete PR validation set pass on the same final head.
 
 ## Protection
 
