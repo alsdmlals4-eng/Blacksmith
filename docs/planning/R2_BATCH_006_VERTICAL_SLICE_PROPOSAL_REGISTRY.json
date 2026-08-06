@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "batch_id": "R2_BATCH_006",
+  "status": "DRAFT_PENDING_USER_APPROVAL",
+  "counter": "10/10",
+  "base_main_sha": "303be5eccd792988cf398e7d54e987373f3b6f71",
+  "proposal_pr": 120,
+  "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+  "product_implementation": "BLOCKED",
+  "human_playtest": "NOT_RUN",
+  "vertical_slice_verdict": "CONDITIONALLY_FEASIBLE",
+  "preset_policy": "BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED",
+  "decisions": [
+    {
+      "id": "BS-VS-20260806-01",
+      "title": "Vertical slice completion contract and representative scope",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "Apply every approved system contract and prohibition while implementing one representative sword-to-customer-to-same-UID return path.",
+      "completion_path": [
+        "NEW_GAME",
+        "DIRECT_FORGING",
+        "ITEM_UID_BIRTH",
+        "GENERAL_ENHANCEMENT_TO_10",
+        "PRECISION_ENHANCEMENT_AT_10",
+        "CUSTOMER_ASSIGNMENT",
+        "SCHEDULE_RESULT",
+        "CHRONICLE_OR_REPAIR",
+        "SAVE_AND_LOAD",
+        "SAME_UID_RETURN_TO_WORKSHOP"
+      ],
+      "target_first_session_minutes": [20, 30],
+      "representative_content_only": true,
+      "all_approved_contracts_required": true
+    },
+    {
+      "id": "BS-SAVE-20260806-01",
+      "title": "Versioned item UID, ledger, and save envelope",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "Persist the same item identity, random seed, immutable birth facts, and append-only change ledger in a versioned Godot save envelope.",
+      "save_schema_version": 1,
+      "uid_format": "BSI-<32_LOWER_HEX>",
+      "forbid_load_reroll": true,
+      "append_only_item_ledger": true
+    },
+    {
+      "id": "BS-MATERIAL-20260806-01",
+      "title": "Representative primary materials and explicit tradeoffs",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "Use iron, silver, and meteor iron as primary materials only; do not reintroduce a secondary-material slot.",
+      "materials": [
+        {
+          "id": "iron",
+          "attack_material_fit": 0,
+          "artistry_tendency": 0,
+          "weight_point": 15,
+          "function_capacity": 0,
+          "role": "BALANCED_BASELINE"
+        },
+        {
+          "id": "silver",
+          "attack_material_fit": -5,
+          "artistry_tendency": 4,
+          "weight_point": 10,
+          "function_capacity": 1,
+          "role": "LIGHT_ARTISTIC_ARCANE"
+        },
+        {
+          "id": "meteor_iron",
+          "attack_material_fit": 5,
+          "artistry_tendency": 2,
+          "weight_point": 20,
+          "function_capacity": 1,
+          "role": "HEAVY_ATTACK_COSMIC"
+        }
+      ],
+      "secondary_material_slot": false
+    },
+    {
+      "id": "BS-CRAFT-20260806-01",
+      "title": "Five-grade vertical-slice birth roll preset",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "Map the three-zone direct-forging result to a persisted one-time five-grade birth roll; legendary remains possible only at the highest input tier and remains rare.",
+      "quality_input_tiers": {
+        "low": "ZONE_SCORE_0_TO_2",
+        "mid": "ZONE_SCORE_3_TO_4",
+        "high": "ZONE_SCORE_5_TO_6"
+      },
+      "grade_order": ["NORMAL", "FINE", "MASTERWORK", "MASTERPIECE", "LEGENDARY"]
+    },
+    {
+      "id": "BS-ITEM-20260806-07",
+      "title": "Initial attack, artistry, weight, and function-capacity preset",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "Use direct-forging attack outputs 5/10/15 plus explicit material fit; calculate artistry and weight independently; grade does not multiply raw stats.",
+      "direct_forging_attack_outputs": [5, 10, 15],
+      "artistry_forging_outputs": [0, 3, 6],
+      "attack_formula": "MAX_ZERO_BASE_PLUS_MATERIAL_FIT_PLUS_DIRECT_FORGING",
+      "artistry_formula": "MATERIAL_ARTISTRY_TENDENCY_PLUS_DIRECT_FORGING_AESTHETIC_RESULT",
+      "grade_modifies_raw_stats": false
+    },
+    {
+      "id": "BS-ENHANCE-20260806-01",
+      "title": "General enhancement demo range, risk, and pity",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "Limit the slice to +0 through +10; one input produces one result; failure consumes the attempt and may hold or downgrade, while destruction is excluded from this baseline slice.",
+      "minimum_level": 0,
+      "maximum_level": 10,
+      "one_input_one_result": true,
+      "destruction_enabled": false,
+      "pity_resets_on_success": true
+    },
+    {
+      "id": "BS-ENHANCE-20260806-02",
+      "title": "+10 precision-enhancement exclusive output",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "At +10 choose exactly one of ATTACK_PACKAGE, LIGHTWEIGHT, or FUNCTION_REWORK; the same milestone cannot be rerolled.",
+      "milestone": 10,
+      "choices": {
+        "ATTACK_PACKAGE": {"attack_delta": 5, "weight_delta": 0},
+        "LIGHTWEIGHT": {"attack_delta": 0, "weight_delta": -5},
+        "FUNCTION_REWORK": {"attack_delta": 0, "weight_delta": 0}
+      },
+      "mutually_exclusive": true,
+      "forbid_same_milestone_reroll": true
+    },
+    {
+      "id": "BS-CATALYST-20260806-01",
+      "title": "Representative Salamander catalyst seed lineage",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "Use salamander_core only as the representative catalyst; create an EMBER_TOUCHED seed in CATALYST_AFFIX and optionally consume one function-capacity point for ELEMENTAL_WARD(FIRE).",
+      "catalyst_id": "salamander_core",
+      "lineage": ["EMPTY", "SEED", "DEVELOPED", "EVOLVED", "MASTERED"],
+      "slice_maximum_lineage_stage": "SEED",
+      "seed_affix": "EMBER_TOUCHED",
+      "optional_function": "ELEMENTAL_WARD(FIRE)",
+      "function_capacity_cost": 1,
+      "modifies_grade": false,
+      "modifies_artistry_directly": false
+    },
+    {
+      "id": "BS-CUSTOMER-20260806-02",
+      "title": "Three-customer explainable-fit roster",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "Use a gladiator, soldier, and ceremonial noble to expose attack demand, balanced reliability, artistry requirement, fire-function fit, and the binary maximum-weight gate.",
+      "customers": [
+        {
+          "id": "gladiator",
+          "strength": 8,
+          "dexterity": 6,
+          "vitality": 8,
+          "judgment": 4,
+          "attack_interest": "PRIMARY",
+          "artistry_interest": "IGNORE",
+          "fire_function_interest": "SECONDARY"
+        },
+        {
+          "id": "soldier",
+          "strength": 5,
+          "dexterity": 6,
+          "vitality": 7,
+          "judgment": 6,
+          "attack_interest": "PRIMARY",
+          "artistry_interest": "SECONDARY",
+          "fire_function_interest": "IGNORE"
+        },
+        {
+          "id": "ceremonial_noble",
+          "strength": 1,
+          "dexterity": 5,
+          "vitality": 4,
+          "judgment": 8,
+          "attack_interest": "SECONDARY",
+          "artistry_interest": "REQUIREMENT",
+          "minimum_artistry": 6,
+          "fire_function_interest": "PRIMARY"
+        }
+      ],
+      "maximum_load_formula": "STRENGTH_X_10_WEIGHT_POINT",
+      "overweight_assignment": "BLOCKED",
+      "success_display_rounding_percent": 10,
+      "explanation_reason_count": [2, 4]
+    },
+    {
+      "id": "BS-CHRONICLE-20260806-01",
+      "title": "Schedule result, damage, repair, chronicle, and playtest gate",
+      "status": "RECOMMENDED_PENDING_USER_APPROVAL",
+      "authority": "PROPOSAL_ONLY_NOT_MAIN_CANON",
+      "summary": "Resolve one customer schedule and one announced world schedule, append the result to the same UID, allow one repair decision, and keep human playtest evidence separate from automated validation.",
+      "personal_schedule": "ARENA_BOUT_DAY_2",
+      "world_schedule": "GRANARY_FIRE_DAY_4",
+      "damage_states": ["INTACT", "WORN", "DAMAGED"],
+      "repair_preserves_grade": true,
+      "repair_preserves_artistry": true,
+      "result_reroll": false,
+      "external_playtesters": [3, 5],
+      "acceptance_counts_for_five_testers": {
+        "complete_end_to_end": 3,
+        "explain_grade_artistry_catalyst_chronicle": 3,
+        "identify_stop_or_continue_decision": 3,
+        "critical_save_corruption": 0
+      }
+    }
+  ],
+  "save_contract": {
+    "schema_version": 1,
+    "preset_version": "VS-2026.08.06-A",
+    "path": "user://blacksmith_vertical_slice_v1.json",
+    "temporary_path": "user://blacksmith_vertical_slice_v1.tmp",
+    "uid_format": "BSI-<32_LOWER_HEX>",
+    "persist_rng_seed": true,
+    "append_only_item_ledger": true,
+    "forbid_load_reroll": true,
+    "atomic_replace_required": true,
+    "minimum_item_fields": [
+      "uid",
+      "birth_rng_seed",
+      "primary_material_id",
+      "equipment_group",
+      "role_profile",
+      "crafting_grade",
+      "artistry",
+      "raw_role_stat",
+      "weight_point",
+      "function_capacity",
+      "functions",
+      "grade_affix",
+      "catalyst_affix",
+      "chronicle_affix",
+      "enhancement_level",
+      "used_precision_milestones",
+      "damage_state",
+      "owner_id",
+      "ledger"
+    ]
+  },
+  "baseline_test_preset": {
+    "version": "VS-2026.08.06-A",
+    "is_final_balance": false,
+    "grade_order": ["NORMAL", "FINE", "MASTERWORK", "MASTERPIECE", "LEGENDARY"],
+    "crafting_grade_rolls": {
+      "low": [85.0, 14.0, 1.0, 0.0, 0.0],
+      "mid": [60.0, 30.0, 9.0, 1.0, 0.0],
+      "high": [30.0, 40.0, 24.0, 5.5, 0.5]
+    },
+    "general_enhancement_cap": 10,
+    "general_enhancement_success_percent": {
+      "1": 100,
+      "2": 100,
+      "3": 100,
+      "4": 80,
+      "5": 80,
+      "6": 80,
+      "7": 65,
+      "8": 65,
+      "9": 65,
+      "10": 50
+    },
+    "failure_outcomes": {
+      "4_to_6": {"hold": 100, "downgrade": 0, "destroy": 0},
+      "7_to_9": {"hold": 75, "downgrade": 25, "destroy": 0},
+      "10": {"hold": 60, "downgrade": 40, "destroy": 0}
+    },
+    "pity_percent_per_failure": 5,
+    "maximum_success_percent": 95,
+    "customer_success_formula": "CLAMP_5_95(35_PLUS_ENHANCEMENT_X4_PLUS_SMALL_FIT_MODIFIERS)",
+    "customer_fit_modifiers_percent": {
+      "role_fit": 5,
+      "material_or_function_fit": 5,
+      "artistry_requirement_met": 5,
+      "artistry_requirement_unmet": -10,
+      "judgment_risk_fit": 5
+    }
+  },
+  "implementation_boundaries": {
+    "new_namespaces": [
+      "scripts/vertical_slice/",
+      "data/vertical_slice/",
+      "scenes/vertical_slice/",
+      "tests/vertical_slice/"
+    ],
+    "forbidden_reuse_as_authority": [
+      "STANDARD_GOOD_PERFECT_QUALITY_MODEL",
+      "SECONDARY_MATERIAL_SLOT",
+      "GENERIC_AFFIXES_ARRAY",
+      "HISTORICAL_EXACT_BALANCE_VALUES",
+      "FIXED_THREE_DAY_CUSTOMER_CONTRACT"
+    ],
+    "allowed_selective_reuse": [
+      "INPUT_UTILITIES",
+      "SCREEN_ROUTING_PATTERNS",
+      "HEADLESS_TEST_RUNNER_PATTERNS",
+      "ACCESSIBILITY_HELPERS"
+    ]
+  }
+}
