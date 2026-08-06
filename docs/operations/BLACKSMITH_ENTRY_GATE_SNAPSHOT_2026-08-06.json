@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "spec_id": "BS-TEST-AUTH-20260806-01",
   "decision_ids": [
     "BS-OPS-20260806-10",
@@ -15,7 +15,7 @@
     "01_작업순서!D2:H4",
     "02_현재_확정결정!A1:T120",
     "04_누락_충돌_감사!A1:J130",
-    "71_이미지기획_생성목록!A1:T40",
+    "71_이미지기획_생성목록!A1:L6",
     "72_이미지검수_승인로그!K2:M5"
   ],
   "general_product_implementation": "BLOCKED",
@@ -42,10 +42,25 @@
     "01_작업순서!H3": "R1_COMPLETE_MAIN_CANON",
     "01_작업순서!D4": "R2_BATCH_006_COMPLETE / R3-R8_INCOMPLETE / SCOPED_VERTICAL_SLICE_ACTIVE",
     "01_작업순서!H4": "R2_BATCH_006_MAIN_CANON_R3_R8_INCOMPLETE_SCOPED_VS_OPEN_GENERAL_PRODUCT_BLOCKED",
+    "71_이미지기획_생성목록!L5": "BLOCKED_IMAGE_NOT_GENERATED",
+    "71_이미지기획_생성목록!L6": "BLOCKED_IMAGE_NOT_GENERATED",
     "72_이미지검수_승인로그!K2": "BLOCKED_IMAGE_NOT_GENERATED",
     "72_이미지검수_승인로그!K3": "DIRECTION_ONLY_NOT_PRODUCT_READY",
     "72_이미지검수_승인로그!K4": "DIRECTION_ONLY_NOT_PRODUCT_READY",
     "72_이미지검수_승인로그!K5": "GOVERNANCE_APPROVED_EXECUTION_BLOCKED"
+  },
+  "sheet_schema_gate": {
+    "aggregate": "SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS",
+    "range": "71_이미지기획_생성목록!A1:L6",
+    "repaired_rows": [
+      "BS-IMG-004",
+      "BS-IMG-005"
+    ],
+    "unknown_values_preserved_as_explicit_unknowns": [
+      "BS-IMG-005!G=NOT_DEFINED",
+      "BS-IMG-005!J=SOURCE_AND_LICENSE_NOT_RECORDED",
+      "BS-IMG-005!K=UNSET"
+    ]
   },
   "image_gate": {
     "aggregate": "BLOCKED_NOT_PRODUCT_READY",
@@ -62,19 +77,23 @@
     "normalized_k2_status": "BLOCKED_IMAGE_NOT_GENERATED"
   },
   "open_findings": {
-    "71_이미지기획_생성목록": "ENTRY_BLOCKED_SHEET_SCHEMA_DRIFT",
-    "BS-IMG-004": "ROW_VALUES_DO_NOT_MATCH_HEADER_SEMANTICS",
-    "BS-IMG-005": "INCOMPLETE_ROW_WITHOUT_EXPLICIT_STATUS"
+    "BS-IMG-004": "IMAGE_NOT_GENERATED / SOURCE_LICENSE_REVIEW_REQUIRED",
+    "BS-IMG-005": "IMAGE_NOT_GENERATED / RESOLUTION_NOT_DEFINED / SOURCE_AND_LICENSE_NOT_RECORDED / PRIORITY_UNSET"
+  },
+  "resolved_findings": {
+    "71_이미지기획_생성목록": "SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS",
+    "BS-IMG-004_ROW_SCHEMA": "RESOLVED",
+    "BS-IMG-005_ROW_SCHEMA": "RESOLVED_WITH_EXPLICIT_UNKNOWNS"
   },
   "permitted_aggregate_states": [
     "COMPLETE_MAIN_CANON",
     "OPEN_ONLY_FOR_APPROVED_NAMESPACES",
     "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING",
+    "SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS",
     "BLOCKED_STALE_AUTHORITY",
     "BLOCKED_OPEN_DECISION",
     "BLOCKED_VISUAL_NOT_GENERATED",
     "BLOCKED_VISUAL_REVIEW_INCOMPLETE",
-    "BLOCKED_SHEET_SCHEMA_DRIFT",
     "BLOCKED_RUNTIME_NOT_RUN",
     "DIRECTION_ONLY_NOT_PRODUCT_READY",
     "NOT_APPLICABLE"
@@ -85,5 +104,5 @@
     "IN_REVIEW",
     "APPROVED"
   ],
-  "entry_decision": "DESIGN_REVIEW_ALLOWED / FORMAL_GUT_ADOPTION_BLOCKED / GENERAL_PRODUCT_BLOCKED"
+  "entry_decision": "DESIGN_REVIEW_ALLOWED / SHEET_SCHEMA_REPAIRED / FORMAL_GUT_ADOPTION_BLOCKED / GENERAL_PRODUCT_BLOCKED"
 }
