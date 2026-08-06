@@ -22,7 +22,7 @@
 - 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
 - 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_4_OF_10`
 - 현재 운영 Decision: `BS-OPS-20260805-01`
-- 현재 승인 카운터: `10/10`
+- 현재 승인 카운터: `0/10`
 - 제품 구현: `BLOCKED`
 
 ## 현재 핵심
