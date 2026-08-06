@@ -33,7 +33,7 @@ class FunctionRecipeMaterialFitPlaytestContractTests(unittest.TestCase):
         cls.contract = cls.decisions.get("BS-ITEM-20260806-06", {}).get("contract", {})
 
     def test_batch_005_is_complete_at_ten_of_ten(self) -> None:
-        self.assertEqual("R2_CHECKPOINT_005_CLOSED_MAIN_CANON", self.registry["stage_status"])
+        self.assertEqual("R2_BATCH_006_APPROVED_MAIN_CANON", self.registry["stage_status"])
         self.assertEqual("0/10", self.registry["next_approval_counter"])
         closed = self.registry["closed_batch"]
         self.assertEqual(10, closed["approved_decisions"])

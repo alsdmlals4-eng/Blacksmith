@@ -70,8 +70,8 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertIn("7a46fa38586a42f268cd0432744203049649ddd5", closure)
 
     def test_batch_005_is_closed_at_ten_of_ten(self) -> None:
-        self.assertEqual("R2_CHECKPOINT_005_CLOSED_MAIN_CANON", self.registry["stage_status"])
-        self.assertEqual("0/10", self.registry["next_approval_counter"])
+        self.assertEqual("R2_BATCH_006_APPROVED_MAIN_CANON", self.registry["stage_status"])
+        self.assertEqual("10/10", self.registry["next_approval_counter"])
         self.assertEqual("BLOCKED", self.registry["product_implementation"])
         closed = self.registry["closed_batch"]
         self.assertEqual("R2_BATCH_005", closed["id"])

@@ -6,7 +6,7 @@
   "base_main_sha": "303be5eccd792988cf398e7d54e987373f3b6f71",
   "proposal_pr": 120,
   "authority": "MAIN_CANON",
-  "product_implementation": "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
+  "product_implementation": "BLOCKED",
   "human_playtest": "NOT_RUN",
   "vertical_slice_verdict": "APPROVED_FOR_IMPLEMENTATION",
   "preset_policy": "BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED",
@@ -380,5 +380,7 @@
     ]
   },
   "source_exact_head": "388eff03c61126d8021601c3ab84efaa2133253e",
-  "merge_sha": "a8a94343c78a68bf7bb14b411e7741f43b257138"
+  "merge_sha": "a8a94343c78a68bf7bb14b411e7741f43b257138",
+  "vertical_slice_implementation": "APPROVED",
+  "implementation_scope": "VERTICAL_SLICE_NAMESPACES_ONLY"
 }

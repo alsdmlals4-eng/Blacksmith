@@ -26,11 +26,8 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
 
     def test_registry_records_checkpoint_005_as_closed_main_canon(self) -> None:
-        self.assertEqual(
-            "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
-            self.registry["stage_status"],
-        )
-        self.assertEqual("0/10", self.registry["next_approval_counter"])
+        self.assertEqual("R2_BATCH_006_APPROVED_MAIN_CANON", self.registry["stage_status"])
+        self.assertEqual("10/10", self.registry["next_approval_counter"])
         evidence = self.registry["immutable_merge_evidence"]["checkpoint_005"]
         self.assertEqual(109, evidence["planning_pr"])
         self.assertEqual(PLANNING_HEAD, evidence["planning_exact_head"])
@@ -82,7 +79,8 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
             "R2_CHECKPOINT_005",
             "MERGED_PR109",
             "R2_BATCH_005_CLOSED_10_OF_10",
-            "R2_BATCH_006_NOT_STARTED_0_OF_10",
+            "R2_BATCH_006_APPROVED_10_OF_10",
+            "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
             "BLOCKED",
         )
         for path in CURRENT_DOCS:

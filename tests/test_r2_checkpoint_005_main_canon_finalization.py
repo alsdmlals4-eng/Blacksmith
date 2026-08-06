@@ -19,8 +19,9 @@ class Checkpoint005MainCanonFinalizationTest(unittest.TestCase):
         required = (
             "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
             "R2_BATCH_005_CLOSED_10_OF_10",
-            "R2_BATCH_006_NOT_STARTED_0_OF_10",
+            "R2_BATCH_006_APPROVED_10_OF_10",
             "PRODUCT_IMPLEMENTATION: BLOCKED",
+            "VERTICAL_SLICE_IMPLEMENTATION: APPROVED",
             "HUMAN_PLAYTEST: NOT_RUN",
         )
         forbidden = (
@@ -47,7 +48,7 @@ class Checkpoint005MainCanonFinalizationTest(unittest.TestCase):
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         self.assertEqual(
             registry["stage_status"],
-            "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
+            "R2_BATCH_006_APPROVED_MAIN_CANON",
         )
         checkpoint = registry["immutable_merge_evidence"]["checkpoint_005"]
         self.assertEqual(checkpoint["closure_pr"], 117)
@@ -57,10 +58,11 @@ class Checkpoint005MainCanonFinalizationTest(unittest.TestCase):
         )
         self.assertEqual(checkpoint["closure_status"], "MERGED_MAIN_CANON")
         self.assertEqual(registry["active_batch"]["id"], "R2_BATCH_006")
-        self.assertEqual(registry["active_batch"]["status"], "NOT_STARTED")
-        self.assertEqual(registry["active_batch"]["approved_count"], 0)
+        self.assertEqual(registry["active_batch"]["status"], "APPROVED_MERGED_PR120_MAIN_CANON")
+        self.assertEqual(registry["active_batch"]["approved_count"], 10)
         self.assertEqual(registry["active_batch"]["maximum_count"], 10)
         self.assertEqual(registry["product_implementation"], "BLOCKED")
+        self.assertEqual(registry["vertical_slice_implementation"], "APPROVED")
         self.assertEqual(registry["human_playtest"], "NOT_RUN")
 
 

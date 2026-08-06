@@ -40,7 +40,8 @@ class R2Batch006MainCanonClosureTests(unittest.TestCase):
         self.assertEqual(registry["status"], "USER_APPROVED_MERGED_PR120_MAIN_CANON")
         self.assertEqual(registry["authority"], "MAIN_CANON")
         self.assertEqual(registry["merge_sha"], MERGE_SHA)
-        self.assertEqual(registry["product_implementation"], "VERTICAL_SLICE_IMPLEMENTATION_APPROVED")
+        self.assertEqual(registry["product_implementation"], "BLOCKED")
+        self.assertEqual(registry["vertical_slice_implementation"], "APPROVED")
         self.assertEqual({item["id"] for item in registry["decisions"]}, DECISIONS)
         for item in registry["decisions"]:
             self.assertEqual(item["status"], "USER_APPROVED_MERGED_PR120_MAIN_CANON")
@@ -49,7 +50,8 @@ class R2Batch006MainCanonClosureTests(unittest.TestCase):
     def test_current_authority_opens_only_vertical_slice_implementation(self) -> None:
         current = json.loads(CURRENT_REGISTRY.read_text(encoding="utf-8"))
         self.assertEqual(current["stage_status"], "R2_BATCH_006_APPROVED_MAIN_CANON")
-        self.assertEqual(current["product_implementation"], "VERTICAL_SLICE_IMPLEMENTATION_APPROVED")
+        self.assertEqual(current["product_implementation"], "BLOCKED")
+        self.assertEqual(current["vertical_slice_implementation"], "APPROVED")
         batch = current["active_batch"]
         self.assertEqual(batch["id"], "R2_BATCH_006")
         self.assertEqual(batch["status"], "APPROVED_MERGED_PR120_MAIN_CANON")
