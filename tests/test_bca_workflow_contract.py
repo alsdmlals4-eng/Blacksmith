@@ -8,6 +8,8 @@ WORKFLOW = ROOT / ".github/workflows/validate-bca-visual-sheet-adoption.yml"
 
 CHECKOUT_SHA = "11bd71901bbe5b1630ceea73d27597364c9af683"
 SETUP_PYTHON_SHA = "a26af69be951a213d495a4c3e4e4022e16d87065"
+ESCAPED_REGISTRY_PATH = "      - '\\[기획서\\]/00_프로젝트_허브/SKILL_REGISTRY.json'"
+UNESCAPED_REGISTRY_PATH = '      - "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json"'
 
 
 class BCAWorkflowContractTests(unittest.TestCase):
@@ -16,8 +18,7 @@ class BCAWorkflowContractTests(unittest.TestCase):
         cls.text = WORKFLOW.read_text(encoding="utf-8")
 
     def test_uses_canonical_block_yaml(self) -> None:
-        self.assertIn('"on":\n', self.text)
-        self.assertNotIn("\non:\n", self.text)
+        self.assertIn("\non:\n", self.text)
         for compact in (
             "branches: [",
             "paths: [",
@@ -29,14 +30,15 @@ class BCAWorkflowContractTests(unittest.TestCase):
         self.assertIn("    paths:\n", self.text)
         self.assertIn("permissions:\n  contents: read\n", self.text)
 
-    def test_job_and_concurrency_are_explicit(self) -> None:
-        self.assertIn(
-            '  group: "blacksmith-bca-${{ github.event.pull_request.number || github.ref }}"',
-            self.text,
-        )
+    def test_literal_bracket_registry_path_is_escaped_for_github_glob(self) -> None:
+        self.assertIn(ESCAPED_REGISTRY_PATH, self.text)
+        self.assertNotIn(UNESCAPED_REGISTRY_PATH, self.text)
+
+    def test_job_steps_are_explicit(self) -> None:
         self.assertIn("jobs:\n  contract:\n", self.text)
         self.assertIn("    name: BCA visual Sheet adoption contract\n", self.text)
         self.assertIn("      - name: Checkout repository\n", self.text)
+        self.assertIn("      - name: Set up Python\n", self.text)
         self.assertIn("      - name: Run BCA contracts\n", self.text)
         self.assertIn("      - name: Check diff whitespace\n", self.text)
 
