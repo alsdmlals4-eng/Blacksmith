@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0.0",
+  "decision_id": "BS-OPS-20260806-10",
+  "captured_date_kst": "2026-08-06",
+  "source_repository": "alsdmlals4-eng/Blacksmith",
+  "source_main_sha": "07f77041f85bde223768128949ad8dc587d5a003",
+  "source_sheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
+  "source_sheet_ranges": [
+    "00_프로젝트_허브!A1:T40",
+    "01_작업순서!A1:T120",
+    "02_현재_확정결정!A1:T120",
+    "04_누락_충돌_감사!A1:J300",
+    "72_이미지검수_승인로그!A1:T300"
+  ],
+  "general_product_implementation": "BLOCKED",
+  "scoped_vertical_slice": "OPEN_ONLY_FOR_APPROVED_NAMESPACES",
+  "pr_122": {
+    "state": "OPEN_DRAFT_UNMERGED",
+    "head_sha": "f4568468c2c04f29ea1472e2ac12329447f1a365"
+  },
+  "higodot": "PILOT_ONLY_NOT_PRODUCTION_READY",
+  "gut_adoption": "BLOCKED_DESIGN_REVIEW_REQUIRED",
+  "image_gate": {
+    "aggregate": "BLOCKED_NOT_PRODUCT_READY",
+    "direction_approved": true,
+    "image_generated": "NOT_RUN",
+    "final_screen_readability": "NOT_RUN",
+    "rights_verified": "NOT_RUN",
+    "runtime_verified": "NOT_RUN",
+    "release_assets": 0,
+    "verified_licenses": 0,
+    "device_reviews": 0
+  },
+  "stale_sheet_cells": {
+    "00_프로젝트_허브!E2": "R0_CANONICAL_RECOVERY_IN_PROGRESS",
+    "01_작업순서!H2": "PASS_FOR_DRAFT_PR",
+    "01_작업순서!H3": "NOT_STARTED",
+    "01_작업순서!H4": "BLOCKED_BY_R0_AND_PRIOR_BUNDLES",
+    "72_이미지검수_승인로그!K2": "IN_REVIEW"
+  },
+  "corrected_gate_states": {
+    "00_프로젝트_허브!E2": "R2_BATCH_006_MAIN_CANON_SCOPED_VERTICAL_SLICE_TASK1_DRAFT",
+    "01_작업순서!H2": "COMPLETE_MAIN_CANON",
+    "01_작업순서!H3": "R1_COMPLETE_MAIN_CANON",
+    "01_작업순서!H4": "R2_BATCH_006_MAIN_CANON_R3_R8_INCOMPLETE_SCOPED_VS_OPEN_GENERAL_PRODUCT_BLOCKED",
+    "72_이미지검수_승인로그!K2": "BLOCKED_IMAGE_NOT_GENERATED",
+    "72_이미지검수_승인로그!K3": "DIRECTION_ONLY_NOT_PRODUCT_READY",
+    "72_이미지검수_승인로그!K4": "DIRECTION_ONLY_NOT_PRODUCT_READY",
+    "72_이미지검수_승인로그!K5": "GOVERNANCE_APPROVED_EXECUTION_BLOCKED"
+  },
+  "permitted_aggregate_states": [
+    "COMPLETE_MAIN_CANON",
+    "OPEN_ONLY_FOR_APPROVED_NAMESPACES",
+    "BLOCKED_STALE_AUTHORITY",
+    "BLOCKED_OPEN_DECISION",
+    "BLOCKED_DESIGN_REVIEW_REQUIRED",
+    "BLOCKED_IMAGE_NOT_GENERATED",
+    "BLOCKED_IMAGE_RIGHTS_NOT_RUN",
+    "BLOCKED_RUNTIME_NOT_RUN",
+    "DIRECTION_ONLY_NOT_PRODUCT_READY",
+    "NOT_APPLICABLE"
+  ],
+  "entry_decision": "ENTRY_GATE_BLOCKED_FOR_GUT_INSTALL_AND_GENERAL_PRODUCT_WORK"
+}
