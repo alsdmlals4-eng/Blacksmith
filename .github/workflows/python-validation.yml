@@ -112,6 +112,11 @@ jobs:
           python tools/validate_lifecycle_data.py
           python -m unittest tests/test_lifecycle_data_contract.py
 
+      - name: Validate vertical slice data contract
+        if: inputs.scope == 'code'
+        working-directory: project
+        run: python -m unittest tests.test_vertical_slice_data_contract -v
+
       - name: Validate forging quality contract
         if: inputs.scope == 'code'
         working-directory: project
