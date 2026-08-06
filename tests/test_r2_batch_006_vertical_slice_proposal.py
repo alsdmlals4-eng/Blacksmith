@@ -26,21 +26,22 @@ EXPECTED_DECISIONS = [
 
 
 class R2Batch006VerticalSliceProposalTests(unittest.TestCase):
-    def test_registry_is_a_ten_decision_unapproved_proposal(self) -> None:
+    def test_registry_is_a_ten_decision_approved_main_canon(self) -> None:
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         self.assertEqual(registry["schema_version"], 1)
         self.assertEqual(registry["batch_id"], "R2_BATCH_006")
-        self.assertEqual(registry["status"], "DRAFT_PENDING_USER_APPROVAL")
+        self.assertEqual(registry["status"], "USER_APPROVED_MERGED_PR120_MAIN_CANON")
         self.assertEqual(registry["counter"], "10/10")
         self.assertEqual(registry["product_implementation"], "BLOCKED")
+        self.assertEqual(registry["vertical_slice_implementation"], "APPROVED")
         self.assertEqual(registry["human_playtest"], "NOT_RUN")
         self.assertEqual(
             [item["id"] for item in registry["decisions"]],
             EXPECTED_DECISIONS,
         )
         for decision in registry["decisions"]:
-            self.assertEqual(decision["status"], "RECOMMENDED_PENDING_USER_APPROVAL")
-            self.assertEqual(decision["authority"], "PROPOSAL_ONLY_NOT_MAIN_CANON")
+            self.assertEqual(decision["status"], "USER_APPROVED_MERGED_PR120_MAIN_CANON")
+            self.assertEqual(decision["authority"], "MAIN_CANON")
 
     def test_proposal_preserves_all_current_canon_boundaries(self) -> None:
         text = PROPOSAL.read_text(encoding="utf-8")
@@ -54,6 +55,7 @@ class R2Batch006VerticalSliceProposalTests(unittest.TestCase):
             "STRENGTH × 10 WEIGHT_POINT",
             "+10",
             "PRODUCT_IMPLEMENTATION: BLOCKED",
+            "VERTICAL_SLICE_IMPLEMENTATION: APPROVED",
             "HUMAN_PLAYTEST: NOT_RUN",
             "scripts/vertical_slice/",
             "data/vertical_slice/",

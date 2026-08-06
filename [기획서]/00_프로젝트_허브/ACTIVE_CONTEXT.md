@@ -1,24 +1,29 @@
 # [현재 정본] Active Context
 
-<!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
-> **R2_CHECKPOINT_005_CLOSED_MAIN_CANON**
+<!-- R2_BATCH_006_CURRENT_AUTHORITY -->
+> **R2_BATCH_006_APPROVED_MAIN_CANON**
 >
 > `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109_MAIN_CANON / CLOSURE_PR117_MERGED_MAIN_CANON`
 >
-> `R2_BATCH_006_NOT_STARTED_0_OF_10`
+> `R2_BATCH_006_APPROVED_10_OF_10 / MERGED_PR120_MAIN_CANON`
 
 - 갱신: `2026-08-06 18:30 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 현재 단계: `R2_CORE_SESSION_META_LOOP / R2_CHECKPOINT_005_CLOSED_MAIN_CANON`
+- 현재 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_006_APPROVED_MAIN_CANON`
 - 현재 승인 카운터: `0/10`
+- 승인된 Batch 006: `10/10 / MERGED_PR120_MAIN_CANON`
 - 제품 구현: `BLOCKED`
+- 버티컬 슬라이스 구현: `APPROVED / MERGED_PR120_MAIN_CANON`
 - 사람 플레이테스트: `NOT_RUN`
 
 ```yaml
 R2_CHECKPOINT_005: CLOSED_MAIN_CANON
+R2_CHECKPOINT_005_CLOSED_MAIN_CANON: HISTORICAL_EVIDENCE
 R2_BATCH_005: CLOSED_10_OF_10
-R2_BATCH_006: NOT_STARTED_0_OF_10
+R2_BATCH_006: APPROVED_10_OF_10
 PRODUCT_IMPLEMENTATION: BLOCKED
+VERTICAL_SLICE_IMPLEMENTATION: APPROVED
+VERTICAL_SLICE_IMPLEMENTATION_APPROVED: true
 HUMAN_PLAYTEST: NOT_RUN
 ```
 
@@ -90,11 +95,11 @@ PR #109는 Batch 005 기획 정본, PR #117은 체크포인트 폐쇄 정본, PR
 
 ## 다음 작업
 
-1. Godot 버티컬 슬라이스 범위 승인
-2. Batch 006에서 데모용 데이터 Schema·UID·저장 경계를 확정
-3. 대표 콘텐츠 한 경로의 테스트 프리셋 작성
-4. 별도 승인 후에만 제품 경로 구현
-5. 내부 구조 테스트 후 외부 3~5명 사람 플레이테스트
+1. 승인된 구현 계획 Task 1 Schema·UID·SaveEnvelope TDD
+2. 승인된 격리 경계인 스크립트·데이터·씬·테스트 전용 영역 유지
+3. Task별 RED → GREEN → REFACTOR 및 Draft PR 검증
+4. Android 빌드·실기기 저장 복구 검증
+5. 외부 3~5명 사람 플레이테스트
 
 과거 배치 진행 카운터와 PR 대기 문구는 역사 문서에서만 조회한다.
 

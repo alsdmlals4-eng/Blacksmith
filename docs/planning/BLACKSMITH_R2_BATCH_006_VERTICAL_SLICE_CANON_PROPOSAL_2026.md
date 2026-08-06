@@ -1,10 +1,10 @@
-# Blacksmith R2 Batch 006 — Godot Vertical Slice Canon Proposal
+# Blacksmith R2 Batch 006 — Godot Vertical Slice Canon
 
-> 상태: `DRAFT_PENDING_USER_APPROVAL`
+> 상태: `USER_APPROVED_MERGED_PR120_MAIN_CANON`
 >
-> 권위: `PROPOSAL_ONLY_NOT_MAIN_CANON`
+> 권위: `MAIN_CANON`
 >
-> 기준 main: `303be5eccd792988cf398e7d54e987373f3b6f71`
+> 승인 병합 main: `a8a94343c78a68bf7bb14b411e7741f43b257138`
 >
 > PR: `#120`
 
@@ -14,11 +14,13 @@ COUNTER: 10/10
 ALL_APPROVED_CONTRACTS_REQUIRED: true
 REPRESENTATIVE_CONTENT_ONLY: true
 PRODUCT_IMPLEMENTATION: BLOCKED
+VERTICAL_SLICE_IMPLEMENTATION: APPROVED
+VERTICAL_SLICE_IMPLEMENTATION_APPROVED: true
 HUMAN_PLAYTEST: NOT_RUN
 BALANCE_AUTHORITY: BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED
 ```
 
-## 1. 제안 목적
+## 1. 승인 목적
 
 현재 승인된 기획을 모두 적용한 Godot 버티컬 슬라이스를 만들 수 있도록 다음 네 가지를 한 배치에서 잠근다.
 
@@ -132,7 +134,7 @@ tests/vertical_slice/
 - 최종 아트·오디오·현지화
 - Android 스토어 출시 품질
 
-판정: `RECOMMENDED_PENDING_USER_APPROVAL`.
+판정: `USER_APPROVED_MERGED_PR120_MAIN_CANON`.
 
 ---
 
@@ -221,7 +223,7 @@ payload
 - 저장·불러오기 재추첨을 막기 위해 RNG seed와 이미 확정된 결과를 함께 저장한다.
 - 파일 쓰기 성공 후 임시 파일을 본 파일로 교체한다.
 
-판정: `RECOMMENDED_PENDING_USER_APPROVAL`.
+판정: `USER_APPROVED_MERGED_PR120_MAIN_CANON`.
 
 ---
 
@@ -244,7 +246,7 @@ payload
 
 재료 가격과 희귀도는 예술성으로 직접 변환하지 않는다.
 
-판정: `RECOMMENDED_PENDING_USER_APPROVAL`.
+판정: `USER_APPROVED_MERGED_PR120_MAIN_CANON`.
 
 ---
 
@@ -392,7 +394,7 @@ MAX(0, 재료 공격 적합 + 직접 단조 공격 결과)
 - `LIGHTWEIGHT`는 기존 성능 기억을 삭제하지 않는다.
 - 중량은 0 미만이 될 수 없다.
 
-판정: `RECOMMENDED_PENDING_USER_APPROVAL`.
+판정: `USER_APPROVED_MERGED_PR120_MAIN_CANON`.
 
 ---
 
@@ -431,7 +433,7 @@ capacity_cost = 1
 
 철검은 capacity 0이므로 `FUNCTION_REWORK` 없이 화염 방호 기능을 받을 수 없다. 은검·운석검은 capacity 1이므로 재료 선택이 실제 기능 선택으로 이어진다.
 
-판정: `RECOMMENDED_PENDING_USER_APPROVAL`.
+판정: `USER_APPROVED_MERGED_PR120_MAIN_CANON`.
 
 ---
 
@@ -569,7 +571,7 @@ RESTORED_AFTER_FAILURE
 
 자동 검증과 사람 플레이테스트를 같은 PASS로 기록하지 않는다.
 
-판정: `RECOMMENDED_PENDING_USER_APPROVAL / HUMAN_PLAYTEST_NOT_RUN`.
+판정: `USER_APPROVED_MERGED_PR120_MAIN_CANON / HUMAN_PLAYTEST_NOT_RUN`.
 
 ---
 
@@ -578,11 +580,12 @@ RESTORED_AFTER_FAILURE
 | 항목 | 권위 |
 |---|---|
 | 기존 R2 승인 계약 | MAIN_CANON |
-| 이 문서의 10개 Decision | RECOMMENDED_PENDING_USER_APPROVAL |
+| 이 문서의 10개 Decision | MAIN_CANON / MERGED_PR120 |
 | `VS-2026.08.06-A` 수치 | BASELINE_TEST_PRESET |
 | 기존 POC 정확 수치 | HISTORICAL_REFERENCE_ONLY |
 | 실제 플레이 감각 | USER_PLAYTEST_REQUIRED |
-| 제품 구현 | BLOCKED |
+| 일반 제품 구현 | BLOCKED |
+| 버티컬 슬라이스 구현 | APPROVED / NAMESPACE_SCOPED |
 
 ## 5. 승인 후 구현 순서
 
@@ -623,8 +626,42 @@ VS-0 Schema·SaveEnvelope
 판정:
 
 ```text
-R2_BATCH_006_DRAFT_10_OF_10
-READY_FOR_USER_REVIEW
+R2_BATCH_006_APPROVED_10_OF_10
+MERGED_PR120_MAIN_CANON
 PRODUCT_IMPLEMENTATION: BLOCKED
+VERTICAL_SLICE_IMPLEMENTATION: APPROVED
 HUMAN_PLAYTEST: NOT_RUN
 ```
+
+
+
+## 구현 승인 범위
+
+```yaml
+GENERAL_PRODUCT_IMPLEMENTATION_REMAINS_BLOCKED: true
+VERTICAL_SLICE_IMPLEMENTATION: APPROVED
+APPROVED_NAMESPACES:
+  - scripts/vertical_slice/
+  - data/vertical_slice/
+  - scenes/vertical_slice/
+  - tests/vertical_slice/
+FINAL_BALANCE_APPROVAL: false
+HUMAN_PLAYTEST: NOT_RUN
+```
+
+이번 승인은 승인된 대표 버티컬 슬라이스 구현에만 적용한다. 다른 제품 경로, 전체 콘텐츠 생산, 최종 밸런스, 출시 승인은 열지 않는다.
+
+## 승인·병합 증거
+
+```yaml
+USER_APPROVAL: PASS
+SOURCE_PR: 120
+SOURCE_EXACT_HEAD: 388eff03c61126d8021601c3ab84efaa2133253e
+SQUASH_MERGE_SHA: a8a94343c78a68bf7bb14b411e7741f43b257138
+AUTHORITY: MAIN_CANON
+IMPLEMENTATION_SCOPE: VERTICAL_SLICE_ONLY
+FINAL_BALANCE_APPROVAL: false
+HUMAN_PLAYTEST: NOT_RUN
+```
+
+사용자 승인은 Batch 006의 10개 Decision과 승인된 namespace의 Godot 버티컬 슬라이스 구현 착수를 허용한다. 전체 제품 구현, 최종 밸런스 승인, 사람 플레이테스트 완료를 의미하지 않는다.

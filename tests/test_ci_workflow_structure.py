@@ -88,7 +88,10 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("inputs.scope == 'code'", python_workflow)
         self.assertIn("check_forging_quality_contract.py", python_workflow)
         self.assertIn("test_lifecycle_data_contract.py", python_workflow)
-        self.assertIn("check_project_core_alignment.py", python_workflow)
+        self.assertIn("check_project_core_alignment_current.py", python_workflow)
+        current_wrapper = (ROOT / "tests" / "check_project_core_alignment_current.py").read_text(encoding="utf-8")
+        self.assertIn("import check_project_core_alignment as legacy", current_wrapper)
+        self.assertIn("legacy.check_r2(failures)", current_wrapper)
 
     def test_activation_policy_is_recorded(self) -> None:
         policy = (ROOT / "docs" / "CI_EXECUTION_POLICY.md").read_text(encoding="utf-8")

@@ -18,7 +18,7 @@ class CustomerEquipmentCompatibilityContractTests(unittest.TestCase):
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
     def test_batch_005_contains_ten_approved_decisions(self) -> None:
-        self.assertEqual("R2_CHECKPOINT_005_CLOSED_MAIN_CANON", self.registry["stage_status"])
+        self.assertEqual("R2_BATCH_006_APPROVED_MAIN_CANON", self.registry["stage_status"])
         self.assertEqual("0/10", self.registry["next_approval_counter"])
         closed = self.registry["closed_batch"]
         self.assertEqual("R2_BATCH_005", closed["id"])
