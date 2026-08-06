@@ -43,13 +43,13 @@ func _make_item():
 	item.raw_role_stat = 17
 	item.weight_point = 15
 	item.function_capacity = 2
-	item.functions = ["DISPLAY_ATTACK", "ELEMENTAL_WARD_FIRE"]
+	item.functions.assign(["DISPLAY_ATTACK", "ELEMENTAL_WARD_FIRE"])
 	item.grade_affix = "LEGENDARY_EDGE"
 	item.catalyst_affix = "EMBER_TOUCHED"
 	item.chronicle_affix = "ARENA_TESTED"
 	item.enhancement_level = 10
 	item.enhancement_failure_streak = 0
-	item.used_precision_milestones = [10]
+	item.used_precision_milestones.assign([10])
 	item.damage_state = "DAMAGED"
 	item.owner_id = "customer_gladiator"
 	return item
