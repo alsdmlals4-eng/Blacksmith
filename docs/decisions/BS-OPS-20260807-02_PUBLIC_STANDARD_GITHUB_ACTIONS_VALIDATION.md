@@ -4,9 +4,12 @@
 
 ```text
 USER_APPROVED
-DRAFT_PR_128_PENDING_ACTIONS_VALIDATION
+MAIN_CANON_ACTIVE
+MERGED_PR_128
+MAIN_SHA_AT_ACTIVATION_24fda421020bdf5b8f38cf09df6b3764c72cb1d9
+PREMERGE_FULL_VALIDATION_102_PASS
+POSTMERGE_FULL_VALIDATION_103_PASS
 SUPERSEDES_BS_OPS_20260807_01
-NOT_MAIN_CANON_UNTIL_MERGED
 ```
 
 ## 결정
@@ -87,6 +90,39 @@ HUMAN_PLAYTEST_NOT_RUN
 - `.github/workflows/gut-validation.yml`
 - `docs/operations/GITHUB_ACTIONS_PUBLIC_STANDARD_RUNNER_POLICY.md`
 
-## 활성화 Gate
+## 활성화 증거
 
-이 Decision 문서와 artifact 1일 보존 안전장치가 병합되고 main readback이 완료되면 `MAIN_CANON_ACTIVE`로 전환한다.
+### PR #128 exact-head
+
+- exact head: `05d0e897925d93bf6c082daf8c567f5b5844d987`
+- automatic PR workflows: 6/6 PASS
+- Full validation #102: run `31131847266`, 8/8 jobs PASS
+- comments: 0
+- reviews: 0
+- unresolved review threads: 0
+- changed files: 7
+- product authoring paths changed: 0
+
+### main readback
+
+- squash merge: PR #128
+- activation main SHA: `24fda421020bdf5b8f38cf09df6b3764c72cb1d9`
+- postmerge Full validation #103: run `31132114629`, 8/8 jobs PASS
+- Sheet Decision `BS-OPS-20260807-02`: `MAIN_CANON_ACTIVE`
+- `00_프로젝트_허브`: current main·GUT active·PR #128 merged 상태로 교정 완료
+
+## 활성 상태
+
+활성화 Gate는 충족됐다.
+
+```text
+MAIN_CANON_ACTIVE
+PUBLIC_STANDARD_RUNNERS_ONLY
+ARTIFACT_RETENTION_1_DAY
+PR_127_SUPERSEDED
+PRODUCT_VISUAL_AUDIO_GATES_UNCHANGED
+ANDROID_DEVICE_NOT_RUN
+HUMAN_PLAYTEST_NOT_RUN
+```
+
+Base main `4f98f968a377f7b6a11aafa4fc94d11bddbebedc`가 현재 project operating/contract pin보다 최신인 상태는 별도 Base adoption Decision까지 `DEFERRED`다.
