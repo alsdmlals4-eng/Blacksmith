@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import hashlib
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,8 +20,23 @@ CURRENT_DOCS = (
     ROOT / "[기획서]/00_프로젝트_허브/ROADMAP.md",
     ROOT / "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
 )
+TEST_FILES = (
+    ROOT / "tests/test_base_v942_planning_first_adoption.py",
+    ROOT / "tests/test_r2_artistry_generation_growth_economy.py",
+    ROOT / "tests/test_r2_customer_equipment_compatibility.py",
+    ROOT / "tests/test_r2_mobile_customer_card_progressive_disclosure.py",
+    ROOT / "tests/test_r2_enhancement_dominant_simple_load_gate.py",
+    ROOT / "tests/test_r2_equipment_base_weight_points.py",
+    ROOT / "tests/test_r2_weight_performance_budget_and_lightweight_tradeoff.py",
+    ROOT / "tests/test_r2_weight_budget_conversion_and_role_presets.py",
+    ROOT / "tests/test_r2_item_role_stat_and_initial_function_catalog.py",
+    ROOT / "tests/test_r2_initial_role_stat_preset_and_enhancement_function_ownership.py",
+    ROOT / "tests/test_r2_function_recipe_material_fit_and_playtest.py",
+    ROOT / "tests/test_r2_checkpoint_005_postmerge_closure.py",
+)
 REGISTRY = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
 CLOSURE = ROOT / "docs/planning/BLACKSMITH_R2_CHECKPOINT_005_POSTMERGE_CLOSURE_2026.md"
+HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 
 BANNER = f"""<!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
 > **R2_CHECKPOINT_005 / POSTMERGE_CLOSURE_PENDING**
@@ -122,6 +139,39 @@ def close_registry() -> bool:
     return write_if_changed(REGISTRY, content)
 
 
+def migrate_test_contract(path: Path) -> bool:
+    text = path.read_text(encoding="utf-8")
+    text = text.replace(
+        '"R2_BATCH_005_ACTIVE_10_OF_10"',
+        '"R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING"',
+    )
+    text = re.sub(
+        r"USER_APPROVED_R2_BATCH_005_(\d+)_OF_10_APPROVED_PENDING_MERGE",
+        r"USER_APPROVED_R2_BATCH_005_\1_OF_10_MERGED_PR109_MAIN_CANON",
+        text,
+    )
+    text = text.replace('"R2_BATCH_005 / 7/10"', '"R2_BATCH_005_CLOSED_10_OF_10"')
+    text = text.replace('"R2_BATCH_005 / 10/10"', '"R2_BATCH_005_CLOSED_10_OF_10"')
+    text = text.replace(
+        'self.assertEqual(8, self.registry["schema_version"])',
+        'self.assertEqual(9, self.registry["schema_version"])',
+    )
+    text = text.replace('"DRAFT_PR_PENDING"', '"DRAFT_PR117_PENDING"')
+    text = text.replace('"PR `#109`"', '"planning PR: `#109`"')
+    return write_if_changed(path, text)
+
+
+def update_health_evidence() -> bool:
+    payload = json.loads(HEALTH.read_text(encoding="utf-8"))
+    digest = hashlib.sha256((ROOT / "CURRENT_CONFIRMED_DECISIONS.md").read_bytes()).hexdigest()
+    records = payload["evidence"]["operating"]
+    matches = [record for record in records if record.get("source") == "CURRENT_CONFIRMED_DECISIONS.md"]
+    if len(matches) != 1:
+        raise RuntimeError("expected exactly one CURRENT_CONFIRMED_DECISIONS.md health record")
+    matches[0]["sha256"] = digest
+    return write_if_changed(HEALTH, json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
+
+
 def close_closure_document() -> bool:
     content = f"""# Blacksmith R2 Checkpoint 005 Postmerge Closure
 
@@ -183,6 +233,11 @@ def main() -> int:
         changed.append(str(REGISTRY.relative_to(ROOT)))
     if close_closure_document():
         changed.append(str(CLOSURE.relative_to(ROOT)))
+    for path in TEST_FILES:
+        if migrate_test_contract(path):
+            changed.append(str(path.relative_to(ROOT)))
+    if update_health_evidence():
+        changed.append(str(HEALTH.relative_to(ROOT)))
     print("changed=" + (",".join(changed) if changed else "NONE"))
     return 0
 
