@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "preset_version": "VS-2026.08.06-A",
+  "authority": "R2_BATCH_006_APPROVED_MAIN_CANON",
+  "is_final_balance": false,
+  "human_playtest": "NOT_RUN",
+  "item_uid_prefix": "BSI-",
+  "representative_scope": {
+    "equipment_groups": ["SWORD"],
+    "primary_material_ids": ["iron", "silver", "meteor_iron"],
+    "maximum_enhancement_level": 10,
+    "precision_milestones": [10],
+    "customer_ids": ["gladiator", "soldier", "ceremonial_noble"],
+    "personal_schedule_count": 1,
+    "world_schedule_count": 1
+  },
+  "primary_materials": [
+    {
+      "id": "iron",
+      "name": "철",
+      "role_fit_delta": 0,
+      "artistry_delta": 0,
+      "weight_point": 10
+    },
+    {
+      "id": "silver",
+      "name": "은",
+      "role_fit_delta": 2,
+      "artistry_delta": 2,
+      "weight_point": 10
+    },
+    {
+      "id": "meteor_iron",
+      "name": "운석철",
+      "role_fit_delta": 2,
+      "artistry_delta": 1,
+      "weight_point": 15
+    }
+  ],
+  "crafting_grade_rolls": {
+    "LOW": [
+      {"id": "NORMAL", "minimum_roll": 0.0},
+      {"id": "FINE", "minimum_roll": 0.75},
+      {"id": "RARE", "minimum_roll": 0.95}
+    ],
+    "MID": [
+      {"id": "NORMAL", "minimum_roll": 0.0},
+      {"id": "FINE", "minimum_roll": 0.45},
+      {"id": "RARE", "minimum_roll": 0.82},
+      {"id": "MASTERWORK", "minimum_roll": 0.97}
+    ],
+    "HIGH": [
+      {"id": "FINE", "minimum_roll": 0.0},
+      {"id": "RARE", "minimum_roll": 0.55},
+      {"id": "MASTERWORK", "minimum_roll": 0.9},
+      {"id": "LEGENDARY", "minimum_roll": 0.995}
+    ]
+  },
+  "save_contract": {
+    "item_schema_version": 1,
+    "save_schema_version": 1,
+    "persist_birth_rng_seed": true,
+    "persist_run_rng_seed": true,
+    "persist_resolved_events": true,
+    "ledger_policy": "APPEND_ONLY_CONTIGUOUS_SEQUENCE",
+    "atomic_write_policy": "TEMP_FLUSH_RENAME_WITH_BACKUP",
+    "load_rerolls_resolved_events": false
+  },
+  "acceptance": {
+    "uid_format": "BSI- plus 32 lowercase hexadecimal characters",
+    "same_uid_after_load": true,
+    "same_birth_facts_after_load": true,
+    "same_resolved_events_after_load": true,
+    "backup_recovery_required": true
+  }
+}
