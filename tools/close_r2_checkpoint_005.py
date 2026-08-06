@@ -153,6 +153,10 @@ def migrate_test_contract(path: Path) -> bool:
     text = text.replace('"R2_BATCH_005 / 7/10"', '"R2_BATCH_005_CLOSED_10_OF_10"')
     text = text.replace('"R2_BATCH_005 / 10/10"', '"R2_BATCH_005_CLOSED_10_OF_10"')
     text = text.replace(
+        'self.assertEqual("10/10", self.registry["next_approval_counter"])',
+        'self.assertEqual("0/10", self.registry["next_approval_counter"])',
+    )
+    text = text.replace(
         'self.assertEqual(8, self.registry["schema_version"])',
         'self.assertEqual(9, self.registry["schema_version"])',
     )
