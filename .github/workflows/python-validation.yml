@@ -93,6 +93,7 @@ jobs:
           python tests/check_project_core_alignment_current.py
           python -m unittest tests/test_ci_workflow_structure.py
           python -m pytest tests/test_higodot_gut_authority_gate.py -q
+          python -m unittest tests/test_gut_formal_adoption_contract.py -v
 
       - name: Validate archive retention governance
         working-directory: project
