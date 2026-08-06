@@ -182,17 +182,23 @@ untracked CI JUnit artifact
 - `00_프로젝트_허브!E2`: `R2_BATCH_006_MAIN_CANON_SCOPED_VERTICAL_SLICE_TASK1_DRAFT`
 - `01_작업순서` R0·R1을 main canon 완료로 교정
 - `01_작업순서` R2 완료와 R3~R8 미완료·일반 제품 차단을 분리
+- `71_이미지기획_생성목록!A1:L6`: 열 정렬과 상태 열 readback 완료
+- `BS-IMG-004!L`: `BLOCKED_IMAGE_NOT_GENERATED`
+- `BS-IMG-005!G/J/K/L`: `NOT_DEFINED / SOURCE_AND_LICENSE_NOT_RECORDED / UNSET / BLOCKED_IMAGE_NOT_GENERATED`
 - `72_이미지검수_승인로그!K2`: `BLOCKED_IMAGE_NOT_GENERATED`
 - 방향 승인 행: `DIRECTION_ONLY_NOT_PRODUCT_READY`
 - 에셋 거버넌스 행: `GOVERNANCE_APPROVED_EXECUTION_BLOCKED`
 
-남은 차단:
+현재 판정:
 
-- `71_이미지기획_생성목록`의 `BS-IMG-004`는 헤더 의미와 값 배치가 일치하지 않는다.
-- `BS-IMG-005`는 행이 불완전하고 명시적 상태가 없다.
-- 판정: `ENTRY_BLOCKED_SHEET_SCHEMA_DRIFT`.
+- 이미지 목록의 행·열 구조 오류는 `SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS`다.
+- 구조 복구는 이미지 제품 Gate 개방을 뜻하지 않는다.
+- `BS-IMG-004`는 이미지 미생성 및 원출처·라이선스 검수가 남아 있다.
+- `BS-IMG-005`는 이미지 미생성, 해상도 미정, 출처·라이선스 미기록, 우선순위 미정이 남아 있다.
 - PR #122는 Draft·미병합이며 다음 버티컬 슬라이스 Task를 자동 개방하지 않는다.
 - 제품 이미지 생성·권리·실기기 런타임은 `NOT_RUN`이다.
+
+판정: `SHEET_SCHEMA_REPAIRED / VISUAL_AND_RIGHTS_GATES_BLOCKED`.
 
 ## 8. 제거 절차
 
