@@ -10,6 +10,7 @@ SPEC = ROOT / "docs/planning/BLACKSMITH_HIGODOT_GUT_AUTHORITY_AND_ENTRY_GATE_SPE
 POLICY = ROOT / "docs/testing/HIGODOT_GUT_AUTHORITY_POLICY.json"
 SNAPSHOT = ROOT / "docs/operations/BLACKSMITH_ENTRY_GATE_SNAPSHOT_2026-08-06.json"
 WORKFLOW = ROOT / ".github/workflows/validate-higodot-gut-authority-gate.yml"
+PYTHON_VALIDATION = ROOT / ".github/workflows/python-validation.yml"
 AGENTS = ROOT / "AGENTS.md"
 GATES = ROOT / "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
 
@@ -18,6 +19,7 @@ ALLOWED_CHANGED_PATHS = {
     str(POLICY.relative_to(ROOT)),
     str(SNAPSHOT.relative_to(ROOT)),
     str(WORKFLOW.relative_to(ROOT)),
+    str(PYTHON_VALIDATION.relative_to(ROOT)),
     str(Path(__file__).relative_to(ROOT)),
     str(AGENTS.relative_to(ROOT)),
     str(GATES.relative_to(ROOT)),
