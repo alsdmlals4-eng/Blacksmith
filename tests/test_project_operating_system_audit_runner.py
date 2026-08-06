@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import importlib.util
 import sys
 import unittest
@@ -57,6 +58,31 @@ class PlannedReferenceClassificationTests(unittest.TestCase):
 
         self.assertEqual(finding.severity, "ERROR")
         self.assertEqual(finding.code, "DOCUMENT_SOURCE_MISSING")
+
+
+class CurrentAssertionConfigurationTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.original = copy.deepcopy(audit.REQUIRED_ASSERTIONS)
+
+    def tearDown(self) -> None:
+        audit.REQUIRED_ASSERTIONS = self.original
+
+    def test_registry_assertions_follow_approved_batch_006(self) -> None:
+        runner.configure_current_assertions()
+        tokens = audit.REQUIRED_ASSERTIONS["docs/planning/CURRENT_R2_CANON_REGISTRY.json"]
+        self.assertIn('"stage_status":"R2_BATCH_006_APPROVED_MAIN_CANON"', tokens)
+        self.assertIn('"status":"APPROVED_MERGED_PR120_MAIN_CANON"', tokens)
+        self.assertIn('"vertical_slice_implementation":"APPROVED"', tokens)
+        self.assertIn('"product_implementation":"BLOCKED"', tokens)
+        self.assertNotIn('"stage_status":"R2_CHECKPOINT_005_CLOSED_MAIN_CANON"', tokens)
+        self.assertNotIn('"status":"NOT_STARTED"', tokens)
+
+    def test_gate_assertions_keep_general_block_and_scoped_approval(self) -> None:
+        runner.configure_current_assertions()
+        tokens = audit.REQUIRED_ASSERTIONS["[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"]
+        self.assertIn("GENERAL_PRODUCT_IMPLEMENTATION: BLOCKED", tokens)
+        self.assertIn("VERTICAL_SLICE_CODE_GATE: USER_APPROVED", tokens)
+        self.assertNotIn("CODEX_IMPLEMENTATION_GATE: BLOCKED", tokens)
 
 
 if __name__ == "__main__":
