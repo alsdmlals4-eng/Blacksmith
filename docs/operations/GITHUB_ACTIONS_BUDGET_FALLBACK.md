@@ -17,6 +17,14 @@ GitHub-hosted Actions를 실행할 수 없을 때 검증 장소만 로컬로 바
 
 Godot 또는 Base가 빠지면 `PARTIAL`이며 병합 증거가 아니다.
 
+## 사전 준비
+
+```powershell
+python -m pip install pytest==8.3.5
+```
+
+runner는 프로젝트 workflow가 고정한 Base SHA와 자신의 `BASE_PIN`이 다르면 실패한다.
+
 ## Windows PowerShell 실행
 
 ```powershell
