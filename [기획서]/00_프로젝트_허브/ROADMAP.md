@@ -26,6 +26,15 @@ HUMAN_PLAYTEST: NOT_RUN
 
 상태: `R2_CHECKPOINT_005_CLOSED_MAIN_CANON`.
 
+## 불변 체크포인트 이력
+
+- `R2_CHECKPOINT_004`: 제작 등급 5단계·예술성 원수치 정제와 후속 폐쇄를 완료했다.
+- `R2_CHECKPOINT_005`: `BS-CRAFT-20260805-02`를 포함한 승인 10건과 작품 역할·기능 레시피 Gate를 폐쇄했다.
+- 체크포인트 004 planning/closure main: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / 7a46fa38586a42f268cd0432744203049649ddd5`
+- 체크포인트 005 planning/closure main: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9 / 06f03323c1309d8da0e6f5b9f4680a20ce388126`
+
+이 항목은 현재 활성 카운터가 아니라 재현 가능한 병합 증거다.
+
 ## R2 Batch 006 — 다음 기획 배치
 
 최대 10개 Decision으로 다음 순서를 권장한다.
