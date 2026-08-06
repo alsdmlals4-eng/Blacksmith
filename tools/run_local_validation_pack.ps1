@@ -36,7 +36,7 @@ try {
     if ($Head -ne $ExpectedHead) {
         throw "HEAD mismatch: $Head != $ExpectedHead"
     }
-    if ((git status --porcelain --untracked-files=no).Length -ne 0) {
+    if (@(git status --porcelain --untracked-files=no).Count -ne 0) {
         throw "Tracked worktree must be clean"
     }
 
@@ -130,7 +130,7 @@ try {
 
     Get-Content $Pack
     Get-FileHash $Pack -Algorithm SHA256
-    if ((git status --porcelain --untracked-files=no).Length -ne 0) {
+    if (@(git status --porcelain --untracked-files=no).Count -ne 0) {
         throw "Tracked worktree changed during validation"
     }
 }
