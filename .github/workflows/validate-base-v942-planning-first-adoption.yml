@@ -17,6 +17,7 @@ on:
       - "tests/test_r2_item_role_stat_and_initial_function_catalog.py"
       - "tests/test_r2_initial_role_stat_preset_and_enhancement_function_ownership.py"
       - "tests/test_r2_function_recipe_material_fit_and_playtest.py"
+      - "tests/test_r2_checkpoint_005_postmerge_closure.py"
       - ".github/workflows/validate-project-base-adapter.yml"
       - ".github/workflows/validate-base-v942-planning-first-adoption.yml"
 
@@ -45,4 +46,5 @@ jobs:
           tests.test_r2_item_role_stat_and_initial_function_catalog
           tests.test_r2_initial_role_stat_preset_and_enhancement_function_ownership
           tests.test_r2_function_recipe_material_fit_and_playtest
+          tests.test_r2_checkpoint_005_postmerge_closure
           -v
