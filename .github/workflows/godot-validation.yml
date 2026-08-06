@@ -112,3 +112,4 @@ jobs:
             godot-*-smoke.log
             godot-test.log
           if-no-files-found: warn
+          retention-days: 1
