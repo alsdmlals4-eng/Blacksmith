@@ -1,268 +1,98 @@
 # [현재 정본] Active Context
 
 <!-- R2_CHECKPOINT_005_CURRENT_AUTHORITY -->
-> **R2_CHECKPOINT_005 / POSTMERGE_CLOSURE_PENDING**
+> **R2_CHECKPOINT_005_CLOSED_MAIN_CANON**
 >
-> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109 / MAIN_CANON`
+> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109_MAIN_CANON / CLOSURE_PR117_MERGED_MAIN_CANON`
 >
-> planning exact head: `77eba15415bc9ede661639b45bb526d5ce4410a5` / squash merge: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9`
->
-> next batch: `R2_BATCH_006_NOT_STARTED_0_OF_10` / 제품 구현: `BLOCKED` / 사람 플레이테스트: `NOT_RUN`
+> `R2_BATCH_006_NOT_STARTED_0_OF_10`
 
-
-- 갱신: `2026-08-06 07:01 KST`
+- 갱신: `2026-08-06 18:30 KST`
 - Work Mode: `TOTAL_PLANNING`
-- 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_005_10_OF_10`
-- R2 체크포인트 003: `PR #103 / closure #104 / canon audit #105`
-- R2 체크포인트 004: `planning #106 / closure #107 / canon audit #108`
-- PR #106 exact head: `227b2dabf0d98832811415156e72f65d601332a9`
-- PR #106 squash merge: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
-- PR #107 exact head: `1ad791123eaf6c727e964380814ffb69f1357bbf`
-- PR #107 squash merge: `7a46fa38586a42f268cd0432744203049649ddd5`
-- 이전 제작 Decision 상태: `BS-CRAFT-20260804-07 / BS-CRAFT-20260805-01 / MERGED_PR106 / MAIN_CANON`
-- 현재 제작 Decision: `BS-CRAFT-20260805-02 / R2_BATCH_005_4_OF_10`
-- 현재 운영 Decision: `BS-OPS-20260805-01`
-- 현재 승인 카운터: `0/10`
+- 현재 단계: `R2_CORE_SESSION_META_LOOP / R2_CHECKPOINT_005_CLOSED_MAIN_CANON`
 - 제품 구현: `BLOCKED`
+- 사람 플레이테스트: `NOT_RUN`
 
-## 현재 핵심
+```yaml
+R2_CHECKPOINT_005: CLOSED_MAIN_CANON
+R2_BATCH_005: CLOSED_10_OF_10
+R2_BATCH_006: NOT_STARTED_0_OF_10
+PRODUCT_IMPLEMENTATION: BLOCKED
+HUMAN_PLAYTEST: NOT_RUN
+```
+
+## 현재 권위
+
+1. `CURRENT_CONFIRMED_DECISIONS.md`
+2. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
+3. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+4. 이 문서와 `ROADMAP.md`, `DEVELOPMENT_GATES.md`
+
+PR #109는 Batch 005 기획 정본, PR #117은 체크포인트 폐쇄 정본, PR #118은 BCA 워크플로 복구로 병합됐다.
+
+## 현재 게임 코어
 
 ```text
 직접 단조
-→ 제작 등급 5단계
-→ 일반 강화와 멈춤·추가 도전
-→ 정밀강화 방식·촉매
-→ 고객·세계 전달
-→ 같은 UID 연대기·손상·복원
+→ 제작 등급·예술성·역할 수치 확정
+→ 일반 강화 지속·중단 판단
+→ 정밀강화 방식·촉매 선택
+→ 고객·일정에 작품 전달
+→ 같은 UID의 결과·연대기·손상·복원
 → 다음 제작 판단
 ```
 
-```text
-GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
-```
+## 현재 승인 계약
 
-## 체크포인트 004 폐쇄
+### 작품·제작
 
-```text
-R2_CHECKPOINT_004 / MAIN_CANON
-R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107
-NEXT: R2_BATCH_005 / 1_OF_10
-```
+- 제작 등급: `[보통] → [우수] → [명품] → [걸작] → [전설]`
+- 최초 직접 단조 완료 시 확정하고 동일 UID에서 고정한다.
+- 예술성은 `0` 이상의 정수이며 고정 설계 최대치가 없다.
+- 수식어 슬롯은 `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX` 세 개다.
+- 보조재료 슬롯은 없다.
+- 주재료는 장비군별 명시적 역할 적합성을 가진다.
+- 직접 단조 결과는 역할별 3구간 판정으로 결정한다.
+- 최초 역할 수치 프리셋은 `5 / 10 / 15`다.
+- 작품 기본 중량은 장비군별 `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`다.
+- 기능 레시피는 역할·주재료·중량·상황·기능 용량을 함께 사용한다.
 
-## 제작 등급 5단계
+### 강화
 
-```text
-[보통] → [우수] → [명품] → [걸작] → [전설]
-```
+- 일반 강화는 한 입력에 한 결과만 낸다.
+- 일반 강화가 역할 원수치나 예술성을 자동 증가시키지 않는다.
+- 정밀강화 이정표는 `+10 / +20 / +30 / +40 / +50`이다.
+- 정밀강화 수치 패키지와 기능 재작업은 같은 이정표에서 상호배타다.
+- 촉매 계보는 `EMPTY → SEED → DEVELOPED → EVOLVED → MASTERED`다.
 
-- 최초 직접 단조 완료 시 한 번 확정
-- 동일 UID 영구 고정
-- 제작 후 승격·강등 없음
-- 제작 등급은 예술성 최소값·상한·배율을 결정하지 않음
+### 고객·일정·UX
 
-과거 `STANDARD / GOOD / PERFECT`는 `HISTORICAL_IMPLEMENTED_VALUE`다.
+- 고객 능력은 근력·기량·체력·판단력 `1~10`이다.
+- 최대 중량은 `STRENGTH × 10 WEIGHT_POINT`; 초과 장비는 배정 불가다.
+- 성공률의 주효과는 강화 단계이며 고객 능력·적성은 작은 보조 보정이다.
+- 고객 카드는 기본 → 장비 선택 후 판단 → 상세 보기의 3단계 공개를 사용한다.
+- 핵심 원인 2~4개를 설명하고 48dp·비색상 단독 신호 금지를 지킨다.
+- 고객 개인 일정과 날짜 예고형 세계 일정을 분리한다.
+- 작품 결과는 고객 결과, UID 상태·연대기, 다음 제작·복원 판단으로 환류한다.
 
-## 예술성 원수치
+## 현재 구현 현실
 
-대표 원수치 표기: `예술성 27`.
+현재 Godot 코드는 `POC v0.6.4` 역사 구현이다. 실행·테스트 기반은 보존하지만 다음 요소는 현재 정본 구현으로 간주하지 않는다.
 
-- `0` 이상의 정수
-- 고정 설계 최대치 없음
-- 분모·별점·백분율·예술성 단계명 없음
-- 전투 성능을 기본적으로 올리지 않음
-- 제작 등급이 예술성 상한을 만들지 않음
+- `STANDARD / GOOD / PERFECT` 구형 품질
+- 보조재료 입력
+- 범용 `affixes` 배열
+- 고정 3일 계약 중심 고객 판정
+- 현재 기획과 다른 정확한 확률·배율
 
-```text
-NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
-```
-
-## 예술성 생성·성장·가치 평가
-
-```text
-artistry = 작품 UID에 저장되는 원수치
-artistry_value = 시장·감정 맥락의 파생 점감 가치
-customer_artistry_fit = 고객·일정 맥락의 파생 적합도
-```
-
-최초 제작 허용 원천:
-
-```text
-BASE_ITEM_DESIGN_AESTHETIC_TENDENCY
-MATERIAL_VISUAL_PROCESSING_FIT
-DIRECT_FORGING_AESTHETIC_RESULT
-```
-
-제작 후 허용 성장 원천:
-
-```text
-ARTISTIC_FINISH
-ARTISTRY_OWNED_CATALYST_EFFECT
-APPROVED_FINISHING_OR_DECORATION_CONTENT
-MEANINGFUL_ARTISTIC_REWORK
-```
-
-자동 증가 금지:
-
-```text
-GENERAL_ENHANCEMENT_LEVEL / SALE / GIFT / EXHIBITION_COUNT
-APPRAISAL_COUNT / OWNERSHIP_TRANSFER / FAME / CHRONICLE_EVENT
-LOW_COST_REPEAT_ACTION
-```
-
-가치 모델:
-
-```text
-ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE
-```
-
-고객 관심 유형:
-
-```text
-IGNORE / SECONDARY / PRIMARY / REQUIREMENT
-```
-
-- 높은 구간일수록 추가 예술성의 한계 가치는 작아짐
-- 화면 원수치는 압축하지 않음
-- 같은 원인의 이중 계산과 전체 곱셈 중첩 금지
-- 수리·손상·판매·전시·감정·증여·저비용 반복으로 순증가 금지
-- 모든 변화는 작품 UID와 출처를 기록
-- 정확한 수치는 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`
-
-## 운영 계약
-
-- 질문·추천·설계 전 벤치마킹·현업 비교
-- 최대 배치 크기: `10`
-- 현재: `R2_BATCH_005 / 2/10`
-- 조기 체크포인트: `HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT`
-- 작업마다 TDD: `RED → GREEN → REFACTOR`
-- 병합은 명시적 사용자 승인 필요
-
-## 이번 TDD
-
-RED:
-
-- commit `c5459a81447a6f3d5f14d628a12acbdea34d1fcf`
-- Planning-first `109`: `EXPECTED_FAILURE`
-- 실패 원인: `BS-CRAFT-20260805-02` 부재와 배치 `0/10`
-
-관측된 GREEN:
-
-- commit `3665c5894591b241736de1a48981a71800203116`
-- Planning-first `127`: `PASS`
-- Base `609`: `PASS`
-- PR validation `1200`: `PASS`
-- Python 전체 계약: `PASS`
-- Godot 4.7.1 headless: `PASS`
-
-최종 exact-head: PR·Sheet 재검증 후 기록.
-
-## 역사 구현·회귀 기준선
-
-다음은 현재 제품 구현 PASS가 아니라 `[역사 증거]`다.
-
-- 최신 역사 구현 배지: `POC v0.6.4 · main · 2026.07.23.1`
-- 제작 모델 7건
-- 제작 결과 통합 6건
-- 과거 제작 품질: `STANDARD / GOOD / PERFECT`
-- 강화 실패·위험 data 소유자: `data/crafting/enhancement_balance.json`
-- 정밀 이정표 data 소유자: `data/crafting/enhancement_milestones.json`
-- 과거 피버·품질 정확 수치: `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
-
-## 검증 경계
-
-- focused artistry generation/growth/economy test standalone: `NOT_RUN`
-- runtime·Android·접근성·성능·사람 플레이: `NOT_RUN`
-- 제품 구현: `BLOCKED`
+따라서 기존 POC를 그대로 확장하지 않고, 최신 정본을 소비하는 별도 버티컬 슬라이스 경로를 설계해야 한다.
 
 ## 다음 작업
 
-1. 증거 커밋 자체 exact-head CI·리뷰·Sheet readback
-2. Draft PR #109에 `1/10` 누적 유지
-3. 명시적 병합 승인 전 병합 금지
+1. Godot 버티컬 슬라이스 범위 승인
+2. Batch 006에서 데모용 데이터 Schema·UID·저장 경계를 확정
+3. 대표 콘텐츠 한 경로의 테스트 프리셋 작성
+4. 별도 승인 후에만 제품 경로 구현
+5. 내부 구조 테스트 후 외부 3~5명 사람 플레이테스트
 
-## 고객 능력·장비 적합성 승인
-
-- Decision: `BS-CUSTOMER-20260805-01`
-- 고객: 근력·기량·체력·판단력 `1~10`, 희소 무기·갑옷 적성 `0~3`, 마력 적성 `0~10`
-- 작품: `WEAPON / SHIELD_OR_OFFHAND / ARMOR / ACCESSORY_OR_TOOL`
-- 파생: 총 중량·적정 하중·균형 상태·특수기능 적합도
-- 상태: `R2_BATCH_005_4_OF_10 / MERGED_PR109 / MAIN_CANON / PRODUCT_IMPLEMENTATION_BLOCKED`
-
-<!-- BS-UX-20260805-01 -->
-## 현재 UX 승인
-
-- Decision: `BS-UX-20260805-01`
-- 기본 카드 → 장비 선택 후 판단층 → 상세 보기
-- 장비 선택 후 균형·성공률·핵심 원인 2~4개 표시
-- 전체 적성 행렬 기본 노출 금지
-- 모바일 최소 `48dp`, 색상·길게 누르기·호버 단독 핵심 정보 금지
-- 제품 구현: `BLOCKED`
-
-<!-- BS-CUSTOMER-20260806-01 -->
-### 강화 중심 단순 장비 판정
-
-- Decision: `BS-CUSTOMER-20260806-01` / `R2_BATCH_005_4_OF_10`
-- 최대 중량: `STRENGTH × 10 WEIGHT_POINT`
-- 상태: `WITHIN_LIMIT / OVERWEIGHT`; 초과 시 배정 불가
-- 성공률: 강화 레벨이 주효과, 고객 능력·적성은 작은 보조 보정
-- 정본: `docs/planning/BLACKSMITH_R2_ENHANCEMENT_DOMINANT_SIMPLE_LOAD_GATE_CANON_2026.md`
-- 제품 구현: `BLOCKED`
-
-## BS-ITEM-20260806-01 현재 정제
-
-- 활성 배치: `R2_BATCH_005_7_OF_10`
-- 장비군 고정 기본 중량: `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`
-- 중량 전용 효과: `LIGHTWEIGHT -5 / NONE 0 / WEIGHTED +5`, 작품당 최대 하나
-- 자동 중량 변경 금지: 재료·제작 등급·예술성·원수치·일반 강화 단계
-- 정본: `docs/planning/BLACKSMITH_R2_EQUIPMENT_BASE_WEIGHT_POINTS_CANON_2026.md`
-- 제품 구현: `BLOCKED`
-
-## BS-ITEM-20260806-02 — 중량 성능 예산 기억
-
-- 상태: `R2_BATCH_005_7_OF_10 / MERGED_PR109 / MAIN_CANON`
-- 최초 제작 중량 5당 초기 성능 예산 +1.
-- 경량화는 현재 중량만 감소하고 기존 예산을 유지.
-- 중량화는 과거 최고 인정 중량 초과분만 예산 추가.
-- 정밀강화 다섯 이정표에서 이정표당 중량 조정 최대 1회.
-- 제품 구현: `BLOCKED`.
-
-## BS-ITEM-20260806-03 — 중량 예산 환산과 역할 프리셋
-
-- 상태: `R2_BATCH_005_7_OF_10 / MERGED_PR109 / MAIN_CANON`
-- 공격·방어 예산 1점은 원수치 +5.
-- 마법 기능·유틸리티 예산 1점은 기능 용량 +1.
-- 기본 작품 역할 프로필은 최초 제작 시 확정되고 UID에서 불변.
-- 플레이어 자유 배분·무료 재분배·기본 혼합 프로필 없음.
-- 제품 구현: `BLOCKED`.
-
-<!-- BS-ITEM-20260806-04 -->
-## 현재 작품 역할 원수치·기능 카탈로그 승인
-
-- Decision: `BS-ITEM-20260806-04`
-- 활성 배치: `R2_BATCH_005_8_OF_10`
-- 역할 모델: `SINGLE_PRIMARY_RAW_STAT_PLUS_OPTIONAL_FUNCTIONS`
-- 무기 공격 / 방패·갑옷 방어 / 기타 장비 공격·방어 생략.
-- 마법 3종과 유틸리티 3종만 최초 승인.
-- 기능 자동 생성·중복 누적·일반 성공률 범용 합산 금지.
-- 정본: `docs/planning/BLACKSMITH_R2_ITEM_ROLE_STAT_AND_INITIAL_FUNCTION_CATALOG_CANON_2026.md`
-- 제품 구현: `BLOCKED`.
-
-<!-- BS-ITEM-20260806-05 CURRENT HUB ROUTING -->
-## 현재 9/10 작품 수치·강화 변동 Gate
-
-- Decision: `BS-ITEM-20260806-05 / R2_BATCH_005_10_OF_10`
-- 권위 정본: `docs/planning/BLACKSMITH_R2_INITIAL_ROLE_STAT_PRESET_AND_ENHANCEMENT_FUNCTION_OWNERSHIP_CANON_2026.md`
-- 조회 시트: `42_능력치_강화_참조표`
-- 핵심: 최초 역할 수치 `5·10·15`, 일반 강화 원수치 자동 변동 없음, 정밀강화 수치 패키지와 기능 재작업 상호배타, 통합 변동 장부 필수
-- 다음 Gate: 작품별 특수기능 제작·재작업 레시피와 테스트 프리셋 플레이테스트 계획
-- 제품 구현: `BLOCKED`
-
-## BS-ITEM-20260806-06 — 배치 005 완료 Gate
-
-- 현재 배치: `R2_BATCH_005_10_OF_10`
-- 주재료 역할 적합: `EXPLICIT_PRIMARY_MATERIAL_BY_EQUIPMENT_GROUP`
-- 직접 단조 역할 결과: `DETERMINISTIC_ROLE_STRIKE_THREE_ZONE`
-- 기능 레시피: `ROLE_PROFILE_MATERIAL_WEIGHT_CONTEXT_CAPACITY`
-- 사람 플레이테스트: `NOT_RUN`
-- 다음 행동: PR #117 폐쇄 정본 검증·명시적 병합 승인 대기
-- 제품 구현: `BLOCKED`
+과거 배치 진행 카운터와 PR 대기 문구는 역사 문서에서만 조회한다.
