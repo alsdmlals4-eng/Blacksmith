@@ -42,8 +42,7 @@ jobs:
           git fetch origin "$PR_BASE_REF" --no-tags
           LATEST_BASE_SHA="$(git rev-parse "origin/$PR_BASE_REF")"
           ADAPTER_CHANGES="$(git diff --name-only "$PR_BASE_SHA"..."$PR_HEAD_SHA" -- "$ADAPTER_PATH")"
-          if printf '%s
-' "$ADAPTER_CHANGES" | grep -Fxq "$ADAPTER_PATH"; then
+          if printf '%s\n' "$ADAPTER_CHANGES" | grep -Fxq "$ADAPTER_PATH"; then
             # Adapter migration PR: the adapter must explicitly adopt the latest base tip.
             PROTECTED_BASE_SHA="$LATEST_BASE_SHA"
           else
@@ -55,9 +54,12 @@ jobs:
           python -c 'import re, sys; value = sys.argv[1]; raise SystemExit(0 if re.fullmatch(r"[0-9a-f]{40}", value) else 1)' "$PROTECTED_BASE_SHA"
           git cat-file -e "$PROTECTED_BASE_SHA^{commit}"
           git merge-base --is-ancestor "$PROTECTED_BASE_SHA" "$LATEST_BASE_SHA"
-          printf 'PROTECTED_BASE_SHA=%s
-' "$PROTECTED_BASE_SHA" >> "$GITHUB_ENV"
+          printf 'PROTECTED_BASE_SHA=%s\n' "$PROTECTED_BASE_SHA" >> "$GITHUB_ENV"
 
       - name: Validate adapter against the trusted protected baseline
         run: |
-          python .base-contract/tools/check_project_operating_contract.py             --project-root .             --base-repository .base-contract             --protected-base "$PROTECTED_BASE_SHA"             --check
+          python .base-contract/tools/check_project_operating_contract.py \
+            --project-root . \
+            --base-repository .base-contract \
+            --protected-base "$PROTECTED_BASE_SHA" \
+            --check
