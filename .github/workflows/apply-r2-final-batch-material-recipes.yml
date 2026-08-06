@@ -1,0 +1,97 @@
+name: Apply R2 Final Batch Material Recipes
+
+on:
+  push:
+    branches:
+      - agent/r2-artistry-generation-growth-economy-design
+    paths:
+      - tools/apply_r2_final_batch_material_recipes.py
+      - .github/workflows/apply-r2-final-batch-material-recipes.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Blacksmith branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: agent/r2-artistry-generation-growth-economy-design
+          fetch-depth: 0
+
+      - name: Checkout pinned Base
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: alsdmlals4-eng/Base
+          ref: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
+          path: base-src
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Record protected file hashes
+        run: |
+          sha256sum \
+            data/crafting/materials.json \
+            data/crafting/weapon_bases.json \
+            data/crafting/forging_balance.json \
+            data/crafting/craftsmanship_grades.json \
+            > /tmp/protected.before
+
+      - name: Apply planning canon synchronization
+        run: |
+          python -m py_compile tools/apply_r2_final_batch_material_recipes.py
+          python tools/apply_r2_final_batch_material_recipes.py
+
+      - name: Validate JSON and focused contracts
+        run: |
+          python -m json.tool docs/planning/CURRENT_R2_CANON_REGISTRY.json > /dev/null
+          python -m json.tool '[기획서]/00_프로젝트_허브/DESIGN_DOCUMENT_REGISTRY.json' > /dev/null
+          python -m unittest \
+            tests.test_base_v942_planning_first_adoption \
+            tests.test_r2_artistry_generation_growth_economy \
+            tests.test_r2_customer_equipment_compatibility \
+            tests.test_r2_mobile_customer_card_progressive_disclosure \
+            tests.test_r2_enhancement_dominant_simple_load_gate \
+            tests.test_r2_equipment_base_weight_points \
+            tests.test_r2_weight_performance_budget_and_lightweight_tradeoff \
+            tests.test_r2_weight_budget_conversion_and_role_presets \
+            tests.test_r2_item_role_stat_and_initial_function_catalog \
+            tests.test_r2_initial_role_stat_preset_and_enhancement_function_ownership \
+            tests.test_r2_function_recipe_material_fit_and_playtest \
+            -v
+
+      - name: Run alignment and operating audit
+        run: |
+          python tests/check_project_core_alignment.py
+          python tools/run_project_operating_system_audit.py \
+            --base-root base-src \
+            --report /tmp/blacksmith-base-adoption-report.json
+
+      - name: Verify protected product scope
+        run: |
+          sha256sum -c /tmp/protected.before
+          if git diff --name-only HEAD -- data scripts scenes assets addons project.godot | grep -q .; then
+            echo 'Protected product path changed unexpectedly.' >&2
+            git diff --name-only HEAD -- data scripts scenes assets addons project.godot >&2
+            exit 1
+          fi
+
+      - name: Remove one-shot files
+        run: |
+          rm -rf base-src
+          git rm tools/apply_r2_final_batch_material_recipes.py
+          git rm .github/workflows/apply-r2-final-batch-material-recipes.yml
+
+      - name: Commit synchronized canon
+        run: |
+          git config user.name 'alsdmlals4-eng'
+          git config user.email 'alsdmlals4@gmail.com'
+          git add -A
+          git commit -m 'docs: complete batch 005 material recipes and playtest gate'
+          git push origin HEAD:agent/r2-artistry-generation-growth-economy-design
