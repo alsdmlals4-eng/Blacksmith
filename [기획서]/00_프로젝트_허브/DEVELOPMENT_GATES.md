@@ -154,3 +154,14 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 - 프로젝트 코어와 충돌하는 유명 사례는 비채택한다.
 
 판정: `REQUIRED_BY_BS-OPS-20260805-01`.
+
+## Historical Forging Validation Gate
+
+다음은 현재 제품 구현 승인이 아니라 보존해야 하는 `[역사 증거]`다.
+
+- 최신 역사 구현 배지: `POC v0.6.4 · main · 2026.07.23.1`
+- 제작 모델 7건
+- 제작 결과 통합 6건
+- 정확한 구형 품질·피버 수치는 `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
+
+판정: `HISTORICAL_EVIDENCE / PRODUCT_IMPLEMENTATION_BLOCKED`.
