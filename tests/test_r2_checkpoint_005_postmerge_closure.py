@@ -27,7 +27,7 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
 
     def test_registry_records_checkpoint_005_as_closed_main_canon(self) -> None:
         self.assertEqual("R2_BATCH_006_APPROVED_MAIN_CANON", self.registry["stage_status"])
-        self.assertEqual("10/10", self.registry["next_approval_counter"])
+        self.assertEqual("0/10", self.registry["next_approval_counter"])
         evidence = self.registry["immutable_merge_evidence"]["checkpoint_005"]
         self.assertEqual(109, evidence["planning_pr"])
         self.assertEqual(PLANNING_HEAD, evidence["planning_exact_head"])
