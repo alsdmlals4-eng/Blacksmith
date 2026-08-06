@@ -54,7 +54,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual("REJECTED", legacy["pull_requests"][0]["merge_unit_status"])
 
     def test_checkpoint_004_evidence_is_immutable(self) -> None:
-        self.assertEqual(8, self.registry["schema_version"])
+        self.assertEqual(9, self.registry["schema_version"])
         evidence = self.registry["immutable_merge_evidence"]["checkpoint_004"]
         self.assertEqual(106, evidence["planning_pr"])
         self.assertEqual("227b2dabf0d98832811415156e72f65d601332a9", evidence["planning_exact_head"])
@@ -69,14 +69,14 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertIn("CLOSURE_MERGED_PR107", closure)
         self.assertIn("7a46fa38586a42f268cd0432744203049649ddd5", closure)
 
-    def test_batch_005_is_active_at_ten_of_ten(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_10_OF_10", self.registry["stage_status"])
-        self.assertEqual("10/10", self.registry["next_approval_counter"])
+    def test_batch_005_is_closed_at_ten_of_ten(self) -> None:
+        self.assertEqual("R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING", self.registry["stage_status"])
+        self.assertEqual("0/10", self.registry["next_approval_counter"])
         self.assertEqual("BLOCKED", self.registry["product_implementation"])
-        active = self.registry["active_batch"]
-        self.assertEqual("R2_BATCH_005", active["id"])
-        self.assertEqual(10, active["approved_decisions"])
-        self.assertEqual("10/10", active["counter"])
+        closed = self.registry["closed_batch"]
+        self.assertEqual("R2_BATCH_005", closed["id"])
+        self.assertEqual(10, closed["approved_decisions"])
+        self.assertEqual("10/10", closed["counter"])
         self.assertEqual(
             [
                 "BS-CRAFT-20260805-02",
@@ -90,9 +90,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
                 "BS-ITEM-20260806-05",
                 "BS-ITEM-20260806-06",
             ],
-            active["decisions"],
+            closed["decisions"],
         )
-        self.assertEqual(10, active["maximum_size"])
+        self.assertEqual(10, closed["maximum_size"])
     def test_customer_and_schedule_contracts_remain_current(self) -> None:
         customer = self.decisions["BS-CUSTOMER-20260803-02"]["contract"]
         self.assertEqual("INTEGER_1_TO_10", customer["event_risk_scale"])
@@ -129,7 +129,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
 
     def test_artistry_generation_growth_and_valuation_is_approved(self) -> None:
         decision = self.decisions["BS-CRAFT-20260805-02"]
-        self.assertEqual("USER_APPROVED_R2_BATCH_005_1_OF_10_APPROVED_PENDING_MERGE", decision["status"])
+        self.assertEqual("USER_APPROVED_R2_BATCH_005_1_OF_10_MERGED_PR109_MAIN_CANON", decision["status"])
         contract = decision["contract"]
         self.assertEqual("ARTISTRY", contract["persisted_stat"])
         self.assertEqual("CONTEXT_DERIVED_NOT_PERSISTED", contract["artistry_value_storage"])
@@ -171,7 +171,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             self.assertNotIn("예술성 1~10", text)
         self.assertIn("R2_BATCH_005_7_OF_10", game_bible)
         self.assertIn("R2_BATCH_005_7_OF_10", active)
-        self.assertIn("R2_BATCH_005 / 7/10", root)
+        self.assertIn("R2_BATCH_005_CLOSED_10_OF_10", root)
 
 
 if __name__ == "__main__":

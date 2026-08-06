@@ -21,7 +21,7 @@ REQUIRED_TEXT = {
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005 / 10/10",
+        "R2_BATCH_005_CLOSED_10_OF_10",
         "BS-CRAFT-20260805-02",
         "MERGED_PR106",
         "7a46fa38586a42f268cd0432744203049649ddd5",
@@ -35,7 +35,7 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md": (
         "[현재 정본]",
-        "R2_BATCH_005_10_OF_10",
+        "R2_BATCH_005_CLOSED_10_OF_10",
         "BS-CRAFT-20260805-02",
         "[보통] → [우수] → [명품] → [걸작] → [전설]",
         "예술성 27",
@@ -120,35 +120,35 @@ REQUIRED_TEXT = {
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
         "R2 체크포인트 004",
-        "R2_BATCH_005_10_OF_10",
-        "현재 승인 카운터: `10/10`",
+        "R2_BATCH_005_CLOSED_10_OF_10",
+        "현재 승인 카운터: `0/10`",
         "BS-CRAFT-20260805-02",
         "7a46fa38586a42f268cd0432744203049649ddd5",
         "제품 구현: `BLOCKED`",
     ),
     "[기획서]/00_프로젝트_허브/ROADMAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_10_OF_10",
+        "R2_BATCH_005_CLOSED_10_OF_10",
         "BS-CRAFT-20260805-02",
         "첫 코어 버티컬 슬라이스",
         "PRODUCT_IMPLEMENTATION: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_10_OF_10",
+        "R2_BATCH_005_CLOSED_10_OF_10",
         "Artistry Generation·Growth·Valuation Gate",
         "NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM",
         "CODEX_IMPLEMENTATION_GATE: BLOCKED",
     ),
     "[기획서]/00_프로젝트_허브/START_HERE.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_ACTIVE_10_OF_10",
+        "R2_BATCH_005_CLOSED_10_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 27",
     ),
     "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md": (
         "R2_CHECKPOINT_004",
-        "R2_BATCH_005_10_OF_10",
+        "R2_BATCH_005_CLOSED_10_OF_10",
         "BS-CRAFT-20260805-02",
         "예술성 생성·성장·가치 평가",
     ),
@@ -162,7 +162,7 @@ REQUIRED_TEXT = {
     ),
     "docs/planning/BLACKSMITH_R2_FUNCTION_RECIPE_MATERIAL_FIT_AND_PLAYTEST_CANON_2026.md": (
         "BS-ITEM-20260806-06",
-        "R2_BATCH_005_10_OF_10",
+        "R2_BATCH_005_CLOSED_10_OF_10",
         "EXPLICIT_PRIMARY_MATERIAL_BY_EQUIPMENT_GROUP",
         "DETERMINISTIC_ROLE_STRIKE_THREE_ZONE",
         "ROLE_PROFILE_MATERIAL_WEIGHT_CONTEXT_CAPACITY",
@@ -195,7 +195,7 @@ FORBIDDEN = {
         '"auxiliary_material_slot_exists":true',
     ),
     "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md": (
-        "현재 승인 카운터: `0/10`",
+        "현재 승인 카운터: `10/10`",
     ),
 }
 
@@ -237,9 +237,9 @@ def check_r2(failures: list[str]) -> None:
     if not registry:
         return
     expected = {
-        "schema_version": 8,
-        "stage_status": "R2_BATCH_005_ACTIVE_10_OF_10",
-        "next_approval_counter": "10/10",
+        "schema_version": 9,
+        "stage_status": "R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING",
+        "next_approval_counter": "0/10",
         "product_implementation": "BLOCKED",
     }
     for key, value in expected.items():
@@ -263,13 +263,9 @@ def check_r2(failures: list[str]) -> None:
             failures.append(f"checkpoint 004 {key!r} must equal {value!r}")
 
     closed = registry.get("closed_batch", {})
-    if closed.get("id") != "R2_BATCH_004" or closed.get("counter") != "2/10":
-        failures.append("closed batch must be R2_BATCH_004 at 2/10")
-
-    active = registry.get("active_batch", {})
-    if active.get("id") != "R2_BATCH_005" or active.get("counter") != "10/10":
-        failures.append("active batch must be R2_BATCH_005 at 10/10")
-    if active.get("approved_decisions") != 10 or active.get("decisions") != [
+    if closed.get("id") != "R2_BATCH_005" or closed.get("counter") != "10/10":
+        failures.append("closed batch must be R2_BATCH_005 at 10/10")
+    if closed.get("approved_decisions") != 10 or closed.get("decisions") != [
         "BS-CRAFT-20260805-02",
         "BS-CUSTOMER-20260805-01",
         "BS-UX-20260805-01",
@@ -281,9 +277,17 @@ def check_r2(failures: list[str]) -> None:
         "BS-ITEM-20260806-05",
         "BS-ITEM-20260806-06",
     ]:
-        failures.append("active batch 005 must contain the ten approved decisions")
-    if active.get("maximum_size") != 10:
-        failures.append("active batch maximum size must remain 10")
+        failures.append("closed batch 005 must contain the ten approved decisions")
+    if closed.get("maximum_size") != 10:
+        failures.append("closed batch maximum size must remain 10")
+
+    active = registry.get("active_batch", {})
+    if active.get("id") != "R2_BATCH_006" or active.get("counter") != "0/10":
+        failures.append("next batch slot must be R2_BATCH_006 at 0/10")
+    if active.get("approved_decisions") != 0 or active.get("decisions") != []:
+        failures.append("R2_BATCH_006 must remain not started")
+    if active.get("maximum_size") != 10 or active.get("status") != "NOT_STARTED":
+        failures.append("next batch maximum size and status are incorrect")
 
     decisions = {
         item.get("id"): item
