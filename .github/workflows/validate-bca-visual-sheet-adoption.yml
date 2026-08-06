@@ -9,6 +9,7 @@ on:
       - "AGENTS.md"
       - "docs/**"
       - "skills/**"
+      - '\[기획서\]/00_프로젝트_허브/SKILL_REGISTRY.json'
       - "tests/test_bca_visual_sheet_adoption.py"
       - "tests/test_bca_workflow_contract.py"
       - ".github/workflows/validate-bca-visual-sheet-adoption.yml"
