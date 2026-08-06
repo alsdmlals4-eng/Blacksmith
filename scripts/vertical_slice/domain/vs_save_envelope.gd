@@ -12,6 +12,7 @@ const REQUIRED_FIELDS := [
 	"items",
 	"resolved_events",
 ]
+const EVENT_INTEGER_FIELDS := ["rng_seed", "game_day", "sequence"]
 
 var schema_version: int = SCHEMA_VERSION
 var preset_version: String = "VS-2026.08.06-A"
@@ -40,7 +41,7 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 
 	var raw_events: Variant = value.get("resolved_events", {})
 	if raw_events is Dictionary:
-		envelope.resolved_events = raw_events.duplicate(true)
+		envelope.resolved_events = _normalize_event_dictionary(raw_events)
 	else:
 		envelope.validation_errors.append("INVALID_FIELD_TYPE:resolved_events")
 
@@ -62,6 +63,33 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 
 	envelope._validate_values()
 	return envelope
+
+
+static func _normalize_event_dictionary(value: Dictionary) -> Dictionary:
+	var normalized: Dictionary = {}
+	for key in value:
+		var child: Variant = value[key]
+		if child is Dictionary:
+			normalized[key] = _normalize_event_dictionary(child)
+		elif child is Array:
+			normalized[key] = _normalize_event_array(child)
+		elif child is float and EVENT_INTEGER_FIELDS.has(str(key)) and child == floor(child):
+			normalized[key] = int(child)
+		else:
+			normalized[key] = child
+	return normalized
+
+
+static func _normalize_event_array(value: Array) -> Array:
+	var normalized: Array = []
+	for child in value:
+		if child is Dictionary:
+			normalized.append(_normalize_event_dictionary(child))
+		elif child is Array:
+			normalized.append(_normalize_event_array(child))
+		else:
+			normalized.append(child)
+	return normalized
 
 
 func to_dict() -> Dictionary:
