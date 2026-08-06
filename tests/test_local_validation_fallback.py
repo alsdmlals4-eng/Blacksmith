@@ -72,6 +72,27 @@ class LocalValidationFallbackTests(unittest.TestCase):
             passed = module.CommandResult("godot-test_forging_session", ["godot"], 0, "a", "b", str(log))
             self.assertTrue(module.validate_logged_result(passed).passed)
 
+    def test_runner_keeps_parity_with_current_workflow_contracts(self) -> None:
+        root = Path(__file__).parents[1]
+        runner = (root / "tools" / "run_local_validation.py").read_text(encoding="utf-8")
+        required_markers = (
+            "tests/test_no_merge_conflicts.py",
+            "tests/test_gut_formal_adoption_contract.py",
+            "tests/check_enhancement_failure_contract.py",
+            "res://scenes/main/main.tscn",
+            "addons/gut/gut_cmdln.gd",
+            "tools/validate_gut_junit.py",
+            module.BASE_PIN,
+        )
+        for marker in required_markers:
+            self.assertIn(marker, runner)
+
+    def test_workflow_base_pin_matches_runner(self) -> None:
+        root = Path(__file__).parents[1]
+        workflow = root / ".github" / "workflows" / "python-validation.yml"
+        if workflow.is_file():
+            self.assertIn(module.BASE_PIN, workflow.read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()
