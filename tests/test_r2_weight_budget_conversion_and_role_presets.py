@@ -53,7 +53,7 @@ class WeightBudgetConversionRolePresetContractTests(unittest.TestCase):
         self.assertEqual("PASS", GREEN_EVIDENCE["operating_audit"])
 
     def test_batch_005_contains_ten_approved_decisions(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_10_OF_10", self.registry["stage_status"])
+        self.assertEqual("R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING", self.registry["stage_status"])
         self.assertEqual("10/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
         self.assertEqual(10, active["approved_decisions"])
@@ -207,7 +207,7 @@ class WeightBudgetConversionRolePresetContractTests(unittest.TestCase):
         ):
             self.assertIn(token, canon)
         self.assertIn("BS-ITEM-20260806-03", read_or_empty(CURRENT))
-        self.assertIn("R2_BATCH_005 / 7/10", read_or_empty(CURRENT))
+        self.assertIn("R2_BATCH_005_CLOSED_10_OF_10", read_or_empty(CURRENT))
         self.assertIn("중량 예산 환산", read_or_empty(BIBLE))
         for path in (WEIGHT_BUDGET_CANON, WEIGHT_CANON, LOAD_CANON):
             text = read_or_empty(path)

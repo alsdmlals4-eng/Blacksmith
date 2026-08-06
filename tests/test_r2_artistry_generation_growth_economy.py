@@ -16,7 +16,7 @@ class ArtistryGenerationGrowthEconomyContractTests(unittest.TestCase):
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
     def test_batch_005_contains_ten_approved_decisions(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_10_OF_10", self.registry["stage_status"])
+        self.assertEqual("R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING", self.registry["stage_status"])
         self.assertEqual("10/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
         self.assertEqual("R2_BATCH_005", active["id"])

@@ -33,7 +33,7 @@ class FunctionRecipeMaterialFitPlaytestContractTests(unittest.TestCase):
         cls.contract = cls.decisions.get("BS-ITEM-20260806-06", {}).get("contract", {})
 
     def test_batch_005_is_complete_at_ten_of_ten(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_10_OF_10", self.registry["stage_status"])
+        self.assertEqual("R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING", self.registry["stage_status"])
         self.assertEqual("10/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
         self.assertEqual(10, active["approved_decisions"])
@@ -266,7 +266,7 @@ class FunctionRecipeMaterialFitPlaytestContractTests(unittest.TestCase):
         ):
             self.assertIn(token, canon)
         self.assertIn("BS-ITEM-20260806-06", read_or_empty(CURRENT))
-        self.assertIn("R2_BATCH_005 / 10/10", read_or_empty(CURRENT))
+        self.assertIn("R2_BATCH_005_CLOSED_10_OF_10", read_or_empty(CURRENT))
         self.assertIn("사람 플레이테스트", read_or_empty(BIBLE))
         for path in (INITIAL_OWNERSHIP_CANON, ITEM_FUNCTION_CANON, PRECISION_CANON):
             text = read_or_empty(path)

@@ -43,7 +43,7 @@ class ItemRoleStatInitialFunctionCatalogContractTests(unittest.TestCase):
         cls.contract = cls.decisions.get("BS-ITEM-20260806-04", {}).get("contract", {})
 
     def test_batch_005_contains_ten_approved_decisions(self) -> None:
-        self.assertEqual("R2_BATCH_005_ACTIVE_10_OF_10", self.registry["stage_status"])
+        self.assertEqual("R2_CHECKPOINT_005_POSTMERGE_CLOSURE_PENDING", self.registry["stage_status"])
         self.assertEqual("10/10", self.registry["next_approval_counter"])
         active = self.registry["active_batch"]
         self.assertEqual(10, active["approved_decisions"])
@@ -208,7 +208,7 @@ class ItemRoleStatInitialFunctionCatalogContractTests(unittest.TestCase):
         ):
             self.assertIn(token, canon)
         self.assertIn("BS-ITEM-20260806-04", read_or_empty(CURRENT))
-        self.assertIn("R2_BATCH_005 / 10/10", read_or_empty(CURRENT))
+        self.assertIn("R2_BATCH_005_CLOSED_10_OF_10", read_or_empty(CURRENT))
         self.assertIn("작품 역할 원수치", read_or_empty(BIBLE))
         for path in (WEIGHT_CONVERSION_CANON, CUSTOMER_CANON, PRECISION_CANON, MOBILE_CANON):
             text = read_or_empty(path)

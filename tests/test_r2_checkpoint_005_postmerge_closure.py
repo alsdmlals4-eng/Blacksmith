@@ -38,7 +38,7 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
             "agent/r2-checkpoint-005-postmerge-closure",
             evidence["closure_branch"],
         )
-        self.assertEqual("DRAFT_PR_PENDING", evidence["closure_status"])
+        self.assertEqual("DRAFT_PR117_PENDING", evidence["closure_status"])
         self.assertEqual("SQUASH", evidence["merge_method"])
 
     def test_batch_005_decisions_no_longer_use_premerge_status(self) -> None:
@@ -86,7 +86,7 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
         for token in (
             "R2_BATCH_005_CLOSED_10_OF_10",
             "R2_BATCH_006_NOT_STARTED_0_OF_10",
-            "PR `#109`",
+            "planning PR: `#109`",
             PLANNING_HEAD,
             PLANNING_MERGE,
             "제품 구현: `BLOCKED`",
