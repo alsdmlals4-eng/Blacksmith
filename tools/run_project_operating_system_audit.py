@@ -28,6 +28,53 @@ def classify_planned_references(findings: list[audit.Finding]) -> None:
             finding.code = "PLANNED_PATH_NOT_YET_CREATED"
 
 
+def configure_current_assertions() -> None:
+    """Keep the long-lived audit aligned with the approved Batch 006 authority.
+
+    Historical Batch 005 assertions remain in the source documents and legacy
+    contracts. Only assertions that describe the *current* stage and scoped
+    implementation gate are advanced here.
+    """
+    assertions = dict(audit.REQUIRED_ASSERTIONS)
+
+    registry_path = "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
+    registry_tokens = list(assertions[registry_path])
+    replacements = {
+        '"stage_status":"R2_CHECKPOINT_005_CLOSED_MAIN_CANON"':
+            '"stage_status":"R2_BATCH_006_APPROVED_MAIN_CANON"',
+        '"status":"NOT_STARTED"':
+            '"status":"APPROVED_MERGED_PR120_MAIN_CANON"',
+    }
+    registry_tokens = [replacements.get(token, token) for token in registry_tokens]
+    for token in (
+        '"vertical_slice_implementation":"APPROVED"',
+        '"implementation_scope":"VERTICAL_SLICE_NAMESPACES_ONLY"',
+        '"planning_pr":120',
+        '"planning_merge_sha":"a8a94343c78a68bf7bb14b411e7741f43b257138"',
+    ):
+        if token not in registry_tokens:
+            registry_tokens.append(token)
+    assertions[registry_path] = tuple(registry_tokens)
+
+    gates_path = "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
+    gate_tokens = list(assertions[gates_path])
+    gate_tokens = [
+        "GENERAL_PRODUCT_IMPLEMENTATION: BLOCKED"
+        if token == "CODEX_IMPLEMENTATION_GATE: BLOCKED"
+        else token
+        for token in gate_tokens
+    ]
+    for token in (
+        "VERTICAL_SLICE_CODE_GATE: USER_APPROVED",
+        "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
+    ):
+        if token not in gate_tokens:
+            gate_tokens.append(token)
+    assertions[gates_path] = tuple(gate_tokens)
+
+    audit.REQUIRED_ASSERTIONS = assertions
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Audit Base adoption while distinguishing implementation-plan future paths"
@@ -50,6 +97,7 @@ def main() -> int:
         print(f"Base adoption audit FAILED: {exc}")
         return 1
 
+    configure_current_assertions()
     try:
         base_summary = audit.audit_base(base_root, profile, findings)
         project_summary = audit.audit_project(project_root, profile, findings)
