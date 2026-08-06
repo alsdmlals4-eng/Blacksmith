@@ -139,6 +139,7 @@ jobs:
           name: enhancement-failure-contract-log
           path: project/enhancement-failure-contract.log
           if-no-files-found: ignore
+          retention-days: 1
 
       - name: Validate enhancement balance simulator
         if: inputs.scope == 'code'
