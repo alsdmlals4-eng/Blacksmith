@@ -30,3 +30,6 @@ Thumbs.db
 [기획서]/**/*.docx
 [기획서]/**/*.pdf
 [기획서]/**/*.assets/generated/
+
+# Local asset vault
+.asset-vault/
