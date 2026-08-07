@@ -1,9 +1,11 @@
 from __future__ import annotations
+
 import json
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
 
 class BaseV9AdoptionTests(unittest.TestCase):
     def test_base_v9_adapter_and_android_boundary(self) -> None:
@@ -13,6 +15,7 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertEqual(data["sheet"]["sync_status"], "SHEET_GITHUB_CONFLICT")
         self.assertEqual(data["maturity"]["level"], 2)
         self.assertEqual(data["validation"]["android_device"], "NOT_RUN")
+
     def test_adoption_contract_and_gates_exist(self) -> None:
         audit = (ROOT / "docs/BASE_V9_ADOPTION_AUDIT.md").read_text(encoding="utf-8")
         workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
@@ -20,6 +23,15 @@ class BaseV9AdoptionTests(unittest.TestCase):
             self.assertIn(token, audit)
         self.assertIn("ci-gate", workflow)
         self.assertIn("adversarial-gate", workflow)
+
+    def test_only_approved_task1_product_paths_are_exempt(self) -> None:
+        workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
+        self.assertIn("^(src/|scripts/|scenes/|data/|assets/|addons/|project", workflow)
+        self.assertIn("^(scripts|data)/vertical_slice/", workflow)
+        self.assertIn("protected-product-paths.txt", workflow)
+        self.assertIn("Unapproved product paths changed", workflow)
+        self.assertNotIn("^(scripts|scenes|data)/vertical_slice/", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()
