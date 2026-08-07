@@ -20,7 +20,7 @@
 >
 > R2_CHECKPOINT_004 planning: PR `#106` / exact head `227b2dabf0d98832811415156e72f65d601332a9` / squash merge `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
 >
-> R2_CHECKPOINT_004 closure: PR `#107` / exact head `1ad791123eaf6c727e964380814ffb69f1357bbf` / squash merge `7a46fa38586a42f268cd0432744203049649ddd5`
+> R2_CHECKPOINT_004 closure: PR `#107` / exact head `1ad791123eaf6c727e964380814ffb69f1357bbf` / squash merge `7a46fa38586a42f268CD0432744203049649ddd5`
 >
 > 폐쇄 배치: `R2_BATCH_004_CLOSED_2_OF_10 / CLOSED_MERGED_PR107`
 >
@@ -68,6 +68,7 @@
 - `BS-UX-20260804-01`: 조합 장비명과 UID 연대기 상세
 - `BS-OPS-20260804-02`: 정본 드리프트·구형 문서 상태 관리
 - `BS-OPS-20260805-01`: 벤치마킹·조기 체크포인트·상시 TDD
+- `BS-HERA-20260808-01`: Hera Agent Godot 1.0.0 vendor tree의 main 존재를 인정하되 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE`로 고정하고 authoring/mutation authority를 `NONE`으로 유지한다. 활성화는 별도 사용자 승인 adoption이 필요하다. — `USER_APPROVED_RECONCILIATION / DRAFT_PR132_PENDING_MERGE / TASK2_IMPLEMENTATION_BLOCKED`
 
 ## 3. 제작 등급
 
@@ -117,7 +118,6 @@ BASE_ITEM_DESIGN_AESTHETIC_TENDENCY
 MATERIAL_VISUAL_PROCESSING_FIT
 DIRECT_FORGING_AESTHETIC_RESULT
 ```
-
 - 재료 가격·희귀도 자체는 예술성으로 직접 변환하지 않음
 - 제작 등급을 예술성 보너스표로 변환하지 않음
 - 별도 보조재료·장식재료 슬롯을 추가하지 않음
