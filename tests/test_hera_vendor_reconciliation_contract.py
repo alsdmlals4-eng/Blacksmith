@@ -17,6 +17,7 @@ DECISION_ID = "BS-HERA-20260808-01"
 HERA_STATE = "VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE"
 INTRODUCED_MAIN_COMMIT = "a5126d8a2091ce2350e50713eac614a045cc6ef2"
 OBSERVED_MAIN = "ddb914f7e70e0deb62f5840fb990eb471eb7f441"
+MERGE_MAIN = "29b06e323185e436d709fcdf638f445b9099266e"
 
 
 def _text(path: Path) -> str:
@@ -69,13 +70,15 @@ def test_development_gates_match_current_tool_and_task_authority() -> None:
         "GUT_FORMAL_AUTHORITY: FORMALLY_ADOPTED_ACTIVE",
         "TASK1: PR130_MERGED_MAIN_CANON",
         "PR122: CLOSED_SUPERSEDED_UNMERGED",
-        "PR131: DESIGN_APPROVED_IMPLEMENTATION_BLOCKED",
-        "PR132: HERA_RECONCILIATION_DRAFT_PENDING_MERGE",
+        "PR131: DESIGN_APPROVED_REBASE_REVIEW_PENDING",
+        f"PR132: MERGED_MAIN_CANON_{MERGE_MAIN}",
+        "TASK2: TASK2_DESIGN_APPROVED_IMPLEMENTATION_BLOCKED",
         DECISION_ID,
         HERA_STATE,
     ):
         assert marker in gates
     assert "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING" not in gates
+    assert "HERA_RECONCILIATION_DRAFT_PENDING_MERGE" not in gates
 
 
 def test_project_does_not_activate_hera_and_keeps_current_higodot_plugin() -> None:
