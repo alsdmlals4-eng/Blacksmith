@@ -16,5 +16,11 @@ jobs:
         with: {fetch-depth: 0}
       - run: |
           git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" > changed.txt
-          if grep -E '^(src/|scenes/|data/|assets/|addons/|project\.godot$)' changed.txt; then exit 1; fi
+          grep -E '^(src/|scripts/|scenes/|data/|assets/|addons/|project\.godot$)' changed.txt \
+            | grep -Ev '^(scripts|data)/vertical_slice/' > protected-product-paths.txt || true
+          if [ -s protected-product-paths.txt ]; then
+            echo "Unapproved product paths changed:"
+            cat protected-product-paths.txt
+            exit 1
+          fi
           test -f skills/BASE_V9_ADAPTER.json

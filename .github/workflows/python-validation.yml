@@ -116,6 +116,11 @@ jobs:
           python tools/validate_lifecycle_data.py
           python -m unittest tests/test_lifecycle_data_contract.py
 
+      - name: Validate vertical slice Task 1 canon contract
+        if: inputs.scope == 'code'
+        working-directory: project
+        run: python -m unittest tests.test_vertical_slice_task1_canon_contract -v
+
       - name: Validate forging quality contract
         if: inputs.scope == 'code'
         working-directory: project
