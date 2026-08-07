@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +17,11 @@ MERGE_MAIN = "29b06e323185e436d709fcdf638f445b9099266e"
 
 def _text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
+
+
+def _git_blob_bytes(path: Path) -> bytes:
+    relative = path.relative_to(ROOT).as_posix()
+    return subprocess.check_output(["git", "show", f"HEAD:{relative}"], cwd=ROOT)
 
 
 def test_hera_decision_is_closed_as_merged_main_canon() -> None:
@@ -45,4 +51,4 @@ def test_reconciliation_evidence_records_postmerge_validation_truthfully() -> No
 def test_operating_health_hash_tracks_current_decisions_after_closure() -> None:
     health = json.loads(_text(HEALTH))
     record = next(item for item in health["evidence"]["operating"] if item["id"] == "BS-CURRENT-DECISIONS")
-    assert record["sha256"] == hashlib.sha256(DECISIONS.read_bytes()).hexdigest()
+    assert record["sha256"] == hashlib.sha256(_git_blob_bytes(DECISIONS)).hexdigest()
