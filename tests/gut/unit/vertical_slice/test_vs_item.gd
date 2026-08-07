@@ -94,11 +94,11 @@ func test_unsupported_grade_is_rejected() -> void:
 func test_ledger_sequence_is_append_only() -> void:
 	var item = _make_item()
 	var first = LedgerEntryScript.create(1, "event-1", "ITEM_BORN", "BS-SAVE-20260806-01", "", "a", 1, {})
-	var duplicate = LedgerEntryScript.create(1, "event-2", "ENHANCEMENT", "BS-ENHANCE-20260806-01", "a", "b", 1, {})
+	var duplicate_entry = LedgerEntryScript.create(1, "event-2", "ENHANCEMENT", "BS-ENHANCE-20260806-01", "a", "b", 1, {})
 	var skipped = LedgerEntryScript.create(3, "event-3", "ENHANCEMENT", "BS-ENHANCE-20260806-01", "b", "c", 1, {})
 	var second = LedgerEntryScript.create(2, "event-2", "ENHANCEMENT", "BS-ENHANCE-20260806-01", "a", "b", 1, {})
 	assert_eq(item.append_ledger_entry(first.to_dict()), OK, "sequence 1 should append")
-	assert_eq(item.append_ledger_entry(duplicate.to_dict()), ERR_ALREADY_EXISTS, "duplicate sequence must fail")
+	assert_eq(item.append_ledger_entry(duplicate_entry.to_dict()), ERR_ALREADY_EXISTS, "duplicate sequence must fail")
 	assert_eq(item.append_ledger_entry(skipped.to_dict()), ERR_INVALID_DATA, "skipped sequence must fail")
 	assert_eq(item.append_ledger_entry(second.to_dict()), OK, "contiguous sequence 2 should append")
 	assert_eq(item.ledger.size(), 2, "failed entries must not mutate ledger")
