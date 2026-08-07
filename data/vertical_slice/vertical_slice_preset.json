@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "preset_version": "VS-2026.08.06-A",
+  "authority": "R2_BATCH_006_APPROVED_MAIN_CANON",
+  "is_final_balance": false,
+  "human_playtest": "NOT_RUN",
+  "item_uid_prefix": "BSI-",
+  "representative_scope": {
+    "equipment_groups": [
+      "SWORD"
+    ],
+    "primary_material_ids": [
+      "iron",
+      "silver",
+      "meteor_iron"
+    ],
+    "maximum_enhancement_level": 10,
+    "precision_milestones": [
+      10
+    ],
+    "customer_ids": [
+      "gladiator",
+      "soldier",
+      "ceremonial_noble"
+    ],
+    "personal_schedule_count": 1,
+    "world_schedule_count": 1
+  },
+  "primary_materials": [
+    {
+      "id": "iron",
+      "name": "철",
+      "role_fit_delta": 0,
+      "artistry_delta": 0,
+      "weight_point": 15,
+      "function_capacity": 0
+    },
+    {
+      "id": "silver",
+      "name": "은",
+      "role_fit_delta": -5,
+      "artistry_delta": 4,
+      "weight_point": 10,
+      "function_capacity": 1
+    },
+    {
+      "id": "meteor_iron",
+      "name": "운석철",
+      "role_fit_delta": 5,
+      "artistry_delta": 2,
+      "weight_point": 20,
+      "function_capacity": 1
+    }
+  ],
+  "crafting_grade_probabilities": {
+    "LOW": {
+      "CRAFT_NORMAL": 0.85,
+      "CRAFT_SUPERIOR": 0.14,
+      "CRAFT_FINE": 0.01,
+      "CRAFT_MASTERWORK": 0.0,
+      "CRAFT_LEGENDARY": 0.0
+    },
+    "MID": {
+      "CRAFT_NORMAL": 0.6,
+      "CRAFT_SUPERIOR": 0.3,
+      "CRAFT_FINE": 0.09,
+      "CRAFT_MASTERWORK": 0.01,
+      "CRAFT_LEGENDARY": 0.0
+    },
+    "HIGH": {
+      "CRAFT_NORMAL": 0.3,
+      "CRAFT_SUPERIOR": 0.4,
+      "CRAFT_FINE": 0.24,
+      "CRAFT_MASTERWORK": 0.055,
+      "CRAFT_LEGENDARY": 0.005
+    }
+  },
+  "save_contract": {
+    "item_schema_version": 1,
+    "save_schema_version": 1,
+    "persist_birth_rng_seed": true,
+    "persist_run_rng_seed": true,
+    "persist_resolved_events": true,
+    "ledger_policy": "APPEND_ONLY_CONTIGUOUS_SEQUENCE",
+    "atomic_write_policy": "TEMP_FLUSH_RENAME_WITH_BACKUP",
+    "load_rerolls_resolved_events": false
+  },
+  "acceptance": {
+    "uid_format": "BSI- plus 32 lowercase hexadecimal characters",
+    "same_uid_after_load": true,
+    "same_birth_facts_after_load": true,
+    "same_resolved_events_after_load": true,
+    "backup_recovery_required": true
+  }
+}
