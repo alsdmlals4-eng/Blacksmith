@@ -4,7 +4,8 @@
   "decision_ids": [
     "BS-OPS-20260806-10",
     "BS-TEST-20260806-01",
-    "BS-GATE-20260806-01"
+    "BS-GATE-20260806-01",
+    "BS-HERA-20260808-01"
   ],
   "adoption_state": "FORMALLY_ADOPTED_ACTIVE_TEST_FRAMEWORK_AUTHORITY",
   "effective_scope": "MAIN_CANON_AUTHORITY_GATE_AND_GUT_RUNTIME",
@@ -69,6 +70,19 @@
       "untracked CI artifact directory"
     ],
     "tracked_write_allowlist": []
+  },
+  "hera": {
+    "decision_id": "BS-HERA-20260808-01",
+    "product": "Hera Agent Godot",
+    "installed_path": "addons/hera_agent_godot",
+    "installed_plugin_version": "1.0.0",
+    "introduced_main_commit": "a5126d8a2091ce2350e50713eac614a045cc6ef2",
+    "observed_current_main": "ddb914f7e70e0deb62f5840fb990eb471eb7f441",
+    "status": "VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE",
+    "project_plugin_enabled": false,
+    "authoring_authority": "NONE",
+    "production_activation": "REQUIRES_SEPARATE_USER_APPROVED_ADOPTION",
+    "mutation_permission": "NONE_UNTIL_SEPARATE_ADOPTION"
   },
   "conflict_rules": {
     "tracked_file_mutation_by_gut_runtime": "FORBIDDEN",
