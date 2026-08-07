@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "preset_version": "VS-2026.08.06-A",
+  "authority": "R2_BATCH_006_APPROVED_MAIN_CANON",
+  "task1_active_namespaces": [
+    "scripts/vertical_slice/",
+    "data/vertical_slice/",
+    "tests/gut/unit/vertical_slice/"
+  ],
+  "future_planned_namespaces": [
+    "scenes/vertical_slice/"
+  ],
+  "general_product_implementation_remains_blocked": true,
+  "vertical_slice_implementation_approved": true,
+  "item": {
+    "schema_version": 1,
+    "uid_pattern": "^BSI-[0-9a-f]{32}$",
+    "required_fields": [
+      "schema_version",
+      "uid",
+      "birth_rng_seed",
+      "primary_material_id",
+      "equipment_group",
+      "role_profile",
+      "crafting_grade",
+      "artistry",
+      "raw_role_stat",
+      "weight_point",
+      "function_capacity",
+      "functions",
+      "grade_affix",
+      "catalyst_affix",
+      "chronicle_affix",
+      "enhancement_level",
+      "enhancement_failure_streak",
+      "used_precision_milestones",
+      "damage_state",
+      "owner_id",
+      "ledger"
+    ],
+    "crafting_grades": [
+      "CRAFT_NORMAL",
+      "CRAFT_SUPERIOR",
+      "CRAFT_FINE",
+      "CRAFT_MASTERWORK",
+      "CRAFT_LEGENDARY"
+    ],
+    "primary_material_ids": [
+      "iron",
+      "silver",
+      "meteor_iron"
+    ],
+    "equipment_groups": [
+      "SWORD"
+    ],
+    "role_profiles": [
+      "PHYSICAL_WEAPON_ATTACK"
+    ],
+    "damage_states": [
+      "INTACT",
+      "DAMAGED",
+      "BROKEN",
+      "RESTORED"
+    ],
+    "affix_fields": [
+      "grade_affix",
+      "catalyst_affix",
+      "chronicle_affix"
+    ],
+    "ledger_policy": "APPEND_ONLY_CONTIGUOUS_SEQUENCE"
+  },
+  "ledger_entry": {
+    "schema_version": 1,
+    "game_day_field": "occurred_at_game_day",
+    "required_fields": [
+      "schema_version",
+      "sequence",
+      "event_id",
+      "event_type",
+      "source_decision_id",
+      "before_digest",
+      "after_digest",
+      "occurred_at_game_day",
+      "payload"
+    ]
+  },
+  "save_envelope": {
+    "schema_version": 1,
+    "required_fields": [
+      "schema_version",
+      "preset_version",
+      "saved_at_utc",
+      "active_run",
+      "items_by_uid",
+      "customer_state",
+      "schedule_state",
+      "global_ledger_sequence"
+    ],
+    "active_run_required_fields": [
+      "run_id",
+      "run_rng_seed",
+      "current_day",
+      "resolved_events"
+    ],
+    "items_field": "items_by_uid",
+    "write_policy": "TEMP_FLUSH_RENAME_WITH_BACKUP",
+    "load_may_reroll_resolved_events": false,
+    "primary_path": "user://blacksmith_vertical_slice_v1.json"
+  }
+}
