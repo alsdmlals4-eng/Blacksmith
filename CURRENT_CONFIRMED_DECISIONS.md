@@ -68,6 +68,7 @@
 - `BS-UX-20260804-01`: 조합 장비명과 UID 연대기 상세
 - `BS-OPS-20260804-02`: 정본 드리프트·구형 문서 상태 관리
 - `BS-OPS-20260805-01`: 벤치마킹·조기 체크포인트·상시 TDD
+- `BS-HERA-20260808-01`: Hera Agent Godot 1.0.0 vendor tree의 main 존재를 인정하되 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE`로 고정하고 authoring/mutation authority를 `NONE`으로 유지한다. 활성화는 별도 사용자 승인 adoption이 필요하다. — `USER_APPROVED_RECONCILIATION / DRAFT_PR132_PENDING_MERGE / TASK2_IMPLEMENTATION_BLOCKED`
 
 ## 3. 제작 등급
 
