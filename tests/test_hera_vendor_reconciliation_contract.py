@@ -7,7 +7,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "docs/testing/HIGODOT_GUT_AUTHORITY_POLICY.json"
 AGENTS = ROOT / "AGENTS.md"
-DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 RECONCILIATION = ROOT / "docs/operations/BLACKSMITH_HERA_VENDOR_RECONCILIATION_2026-08-08.md"
 PROJECT = ROOT / "project.godot"
 HERA_MANIFEST = ROOT / "addons/hera_agent_godot/plugin.cfg"
@@ -28,7 +27,7 @@ def _json(path: Path) -> dict:
 
 
 def test_same_decision_id_is_present_in_active_canon_and_reconciliation_evidence() -> None:
-    assert DECISION_ID in _text(DECISIONS)
+    assert DECISION_ID in _text(AGENTS)
     assert DECISION_ID in _text(RECONCILIATION)
 
 
