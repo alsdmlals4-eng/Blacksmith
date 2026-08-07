@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "docs/testing/HIGODOT_GUT_AUTHORITY_POLICY.json"
 AGENTS = ROOT / "AGENTS.md"
 DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
+DEVELOPMENT_GATES = ROOT / "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
 RECONCILIATION = ROOT / "docs/operations/BLACKSMITH_HERA_VENDOR_RECONCILIATION_2026-08-08.md"
 PROJECT = ROOT / "project.godot"
 HERA_MANIFEST = ROOT / "addons/hera_agent_godot/plugin.cfg"
@@ -55,6 +56,26 @@ def test_existing_higodot_and_gut_authorities_are_preserved() -> None:
     assert policy["higodot"]["production_activation"] == "PENDING_SEPARATE_APPROVAL"
     assert policy["gut"]["status"] == "FORMALLY_ADOPTED_ACTIVE"
     assert policy["gut"]["authority_role"] == "SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY"
+
+
+def test_development_gates_match_current_tool_and_task_authority() -> None:
+    gates = _text(DEVELOPMENT_GATES)
+    for marker in (
+        "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
+        "GUT_TEST_AUTHORITY: FORMALLY_ADOPTED_ACTIVE",
+        "GUT_CONFIG_PRESENT: true",
+        "GUT_PROJECT_TEST_ROOT_PRESENT: true",
+        "GUT_RUNTIME_CI: true",
+        "GUT_FORMAL_AUTHORITY: FORMALLY_ADOPTED_ACTIVE",
+        "TASK1: PR130_MERGED_MAIN_CANON",
+        "PR122: CLOSED_SUPERSEDED_UNMERGED",
+        "PR131: DESIGN_APPROVED_IMPLEMENTATION_BLOCKED",
+        "PR132: HERA_RECONCILIATION_DRAFT_PENDING_MERGE",
+        DECISION_ID,
+        HERA_STATE,
+    ):
+        assert marker in gates
+    assert "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING" not in gates
 
 
 def test_project_does_not_activate_hera_and_keeps_current_higodot_plugin() -> None:
