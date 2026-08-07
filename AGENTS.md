@@ -123,14 +123,16 @@ Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분�
 
 필수 권리·계약·약관 버전·플랫폼 답변이 미확인이면 `RELEASE_BLOCKED_UNVERIFIED`다. 제품 구현 BLOCKED 상태와 실제 제출·법률 검토·최종 등급 미실행 상태를 바꾸지 않는다.
 
-## 9. HiGodot·GUT 권위와 필수 진입 Gate
+## 9. HiGodot·GUT·Hera 권위와 필수 진입 Gate
 
 - `HIGODOT_SOLE_AUTHORING_AUTHORITY`: 정식 채택 뒤 HiGodot만 Scene·Node·Resource·`project.godot` 설정을 저작한다.
-- `GUT_SOLE_TEST_AUTHORITY`: 정식 채택 뒤 GUT 9.7.1만 GDScript 단위·통합 테스트 프레임워크 권위를 가진다.
+- `GUT_SOLE_TEST_AUTHORITY`: GUT 9.7.1은 `BS-TEST-20260806-01` 및 postmerge closure에 따라 `FORMALLY_ADOPTED_ACTIVE`이며 GDScript 단위·통합 테스트 프레임워크의 단일 권위다.
 - `ENTRY_GATE_FAIL_CLOSED`: 결정 원장·미확정/감사·이미지 목록/검수·열린 PR exact HEAD 중 하나라도 누락·stale·schema drift이면 작업 진입을 차단한다.
 
-현재 HiGodot은 `PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY`다. GUT 9.7.1 vendor는 `addons/gut/**`에 존재하지만 Plugin·config·프로젝트 GUT tests·runtime CI가 없어 `VENDORED_PRESENT_FORMAL_ADOPTION_PENDING`이다. 설계 승인과 별도 채택 PR 없이 둘을 활성 권위로 승격하지 않는다.
+현재 HiGodot은 `PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY`이며 Production 저작 권위 활성화는 별도 승인 전까지 `PENDING_SEPARATE_APPROVAL`이다. GUT 9.7.1은 `.gutconfig.json`, `tests/gut/**`, formal CI를 포함한 `SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY`로 이미 정식 채택되어 있다.
 
-GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. 같은 파일의 이중 권위와 출처 미상 변경은 실패 처리한다.
+`BS-HERA-20260808-01`: `addons/hera_agent_godot/**`의 Hera Agent Godot 1.0.0 vendor tree는 main commit `a5126d8a2091ce2350e50713eac614a045cc6ef2`부터 존재하지만 `project.godot`에서 활성화되어 있지 않다. 현재 상태는 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE`이며 authoring/mutation 권위는 `NONE`이다. 별도 사용자 승인 채택 전에는 Hera를 활성화하거나 HiGodot/GUT 권위를 대체·우회할 수 없다.
+
+GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. 같은 파일의 이중 권위와 출처 미상 변경은 실패 처리한다. Hera 또한 별도 채택 전에는 Git 추적 제품·저작 surface를 수정할 권위가 없다.
 
 `READY`·`AWAITING`·`IN_REVIEW`·`APPROVED` 같은 일반 상태 문자열만으로는 진입할 수 없다. 범위, current main SHA, Sheet range, 열린 PR 상태, 미실행 검증과 차단 이유가 기계 판독 가능한 상태로 함께 기록되어야 한다.
