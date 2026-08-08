@@ -19,6 +19,7 @@ MANIFEST = ROOT / "docs/testing/GUT_9_7_1_FORMAL_ADOPTION_MANIFEST.json"
 ADOPTION_MAIN_SHA = "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb"
 VALIDATED_HEAD_SHA = "9ab46229946ae11529824fabefc6d558bd608d5d"
 RUNTIME_RUN_ID = 31111242901
+HIGODOT_ACTIVATION_DECISION = "BS-HIGODOT-20260808-01"
 
 ALLOWED_CHANGED_PATHS = {
     str(SPEC.relative_to(ROOT)),
@@ -41,15 +42,19 @@ def _json(path: Path) -> dict:
     return json.loads(_text(path))
 
 
-def test_policy_separates_active_test_authority_from_pending_higodot_activation() -> None:
+def test_policy_separates_active_test_authority_from_active_higodot_authority() -> None:
     policy = _json(POLICY)
     assert policy["schema_version"] == "1.1.0"
     assert policy["adoption_state"] == "FORMALLY_ADOPTED_ACTIVE_TEST_FRAMEWORK_AUTHORITY"
     assert policy["effective_scope"] == "MAIN_CANON_AUTHORITY_GATE_AND_GUT_RUNTIME"
     assert policy["adoption_main_sha"] == ADOPTION_MAIN_SHA
-    assert policy["higodot"]["current_state"] == "PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY"
+    assert HIGODOT_ACTIVATION_DECISION in policy["decision_ids"]
+    assert policy["higodot"]["current_state"] == "FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY"
     assert policy["higodot"]["policy_role"] == "SOLE_GODOT_AUTHORING_AUTHORITY"
-    assert policy["higodot"]["production_activation"] == "PENDING_SEPARATE_APPROVAL"
+    assert policy["higodot"]["production_activation"] == "USER_APPROVED_ACTIVE"
+    assert policy["higodot"]["activation_decision_id"] == HIGODOT_ACTIVATION_DECISION
+    assert policy["higodot"]["activation_scope"] == "TASK2_SCOPED_AUTHORING_ONLY"
+    assert policy["higodot"]["production_execution_path"] == "BLOCKED_UNAVAILABLE_OR_UNVERIFIED"
     assert policy["gut"]["status"] == "FORMALLY_ADOPTED_ACTIVE"
     assert policy["gut"]["authority_role"] == "SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY"
     assert policy["gut"]["official_version"] == "9.7.1"
@@ -95,6 +100,7 @@ def test_entry_snapshot_rejects_false_ready_states_and_preserves_blockers() -> N
     assert snapshot["general_product_implementation"] == "BLOCKED"
     assert snapshot["scoped_vertical_slice"] == "OPEN_ONLY_FOR_APPROVED_NAMESPACES"
     assert snapshot["pr_122"]["state"] == "OPEN_DRAFT_UNMERGED"
+    # This dated snapshot is retained as historical evidence from before the 2026-08-08 activation.
     assert snapshot["higodot"] == "PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY"
     assert snapshot["gut"]["aggregate"] == "FORMALLY_ADOPTED_ACTIVE"
     assert snapshot["gut"]["plugin_enabled"] is False
