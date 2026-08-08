@@ -164,3 +164,9 @@ def test_workflow_has_no_artifact_upload_before_validation_gate() -> None:
     gate_index = prove.index("provenance_ready=false")
     prefix = prove[:gate_index]
     assert "actions/upload-artifact" not in prefix
+
+
+def test_workflow_uses_canonical_equipment_lifecycle_controller_marker() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert "Equipment lifecycle controller integration tests PASSED" in text
+    assert '"Equipment lifecycle controller tests PASSED"' not in text
