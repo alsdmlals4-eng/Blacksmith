@@ -153,9 +153,11 @@ def test_workflow_runs_required_post_authoring_validations_before_provenance_gat
     )
     for marker in required_markers:
         assert marker in prove, marker
-    gate_index = prove.index("provenance_ready=false")
+    artifact_index = prove.index("Upload proven HiGodot Task 2 provenance")
+    ready_index = prove.index("provenance_ready=true")
     for marker in required_markers:
-        assert prove.index(marker) < gate_index, marker
+        assert prove.index(marker) < artifact_index, marker
+    assert artifact_index < ready_index
 
 
 def test_workflow_has_no_artifact_upload_before_post_authoring_validation() -> None:
