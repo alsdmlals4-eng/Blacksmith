@@ -53,7 +53,7 @@ def _valid_recipe() -> dict:
         "pr_number": 131,
         "branch": TARGET_BRANCH,
         "godot_version": "4.7.1-stable",
-        "higodot_version": "3.0.5",
+        "higodot_version": "3.1.3",
         "mcp_url": "http://127.0.0.1:8000/mcp",
         "serialized_outputs": sorted(ALLOWED_SERIALIZED_PATHS),
         "operations": [
@@ -83,8 +83,8 @@ def _valid_provenance_context(head: str) -> dict:
         "pr_number": 131,
         "input_head_sha": head,
         "godot": {"version": "4.7.1-stable"},
-        "higodot": {"version": "3.0.5"},
-        "server": {"version": "3.0.5"},
+        "higodot": {"version": "3.1.3"},
+        "server": {"version": "3.1.3"},
         "session": {"id": "session-1", "project_path": "/workspace/Blacksmith"},
         "changed_paths": sorted(ALLOWED_SERIALIZED_PATHS),
     }
@@ -112,7 +112,7 @@ def test_recipe_is_exact_task2_scope_and_forbids_text_serialization_fallback() -
     assert payload["pr_number"] == 131
     assert payload["branch"] == TARGET_BRANCH
     assert payload["godot_version"] == "4.7.1-stable"
-    assert payload["higodot_version"] == "3.0.5"
+    assert payload["higodot_version"] == "3.1.3"
     assert set(payload["serialized_outputs"]) == ALLOWED_SERIALIZED_PATHS
     operations = json.dumps(payload.get("operations", []), sort_keys=True)
     for forbidden in ("filesystem_manage", "script_create", "script_patch"):
@@ -314,7 +314,7 @@ def test_mutation_runtime_is_xvfb_non_headless_and_version_bound() -> None:
     text = _required_text(WORKFLOW)
     assert "xvfb-run" in text
     assert "4.7.1" in text
-    assert "godot-ai==3.0.5" in text
+    assert "godot-ai==3.1.3" in text
     assert GODOT_ARCHIVE_SHA256 in text
     assert "GODOT_AI_MODE" in text and "user" in text
     assert "GODOT_AI_DISABLE_TELEMETRY" in text
