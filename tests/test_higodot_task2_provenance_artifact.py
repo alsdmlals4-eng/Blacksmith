@@ -86,8 +86,8 @@ def _context(head: str) -> dict:
         "pr_number": 131,
         "input_head_sha": head,
         "godot": {"version": "4.7.1-stable"},
-        "higodot": {"version": "3.0.5"},
-        "server": {"version": "3.0.5"},
+        "higodot": {"version": "3.1.3"},
+        "server": {"version": "3.1.3"},
         "session": {"id": "blacksmith@abcd", "project_path": "/workspace/Blacksmith"},
         "changed_paths": sorted(ALLOWED),
     }

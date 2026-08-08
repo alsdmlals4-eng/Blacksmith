@@ -50,8 +50,8 @@ def _session() -> dict:
         "name": "Blacksmith",
         "godot_version": "4.7.1.stable.official",
         "project_path": PROJECT_PATH,
-        "plugin_version": "3.0.5",
-        "server_version": "3.0.5",
+        "plugin_version": "3.1.3",
+        "server_version": "3.1.3",
         "protocol_version": 1,
         "current_scene": "res://scenes/test/enhancement_test.tscn",
         "play_state": "stopped",
@@ -95,7 +95,7 @@ def _required_tools(recipe: dict) -> set[str]:
     }
 
 
-def test_recipe_uses_exact_305_executable_call_shape() -> None:
+def test_recipe_uses_exact_313_executable_call_shape() -> None:
     payload = json.loads(RECIPE.read_text(encoding="utf-8"))
     assert payload["operations"]
     for item in payload["operations"]:
@@ -157,9 +157,9 @@ def test_preflight_rejects_ambiguous_project_sessions_before_activation() -> Non
 def test_preflight_rejects_version_or_readiness_drift_before_activation() -> None:
     driver = _load_driver()
     recipe = driver.load_recipe(RECIPE)
-    bad = dict(_session(), plugin_version="3.0.6")
+    bad = dict(_session(), plugin_version="3.1.4")
     client = FakeClient(_required_tools(recipe), _preflight_responses([bad]))
-    with pytest.raises(ValueError, match="3.0.5"):
+    with pytest.raises(ValueError, match="3.1.3"):
         asyncio.run(driver.preflight_mcp(client, recipe, PROJECT_PATH))
     assert [name for name, _ in client.calls] == ["__list_tools__", "session_manage"]
 

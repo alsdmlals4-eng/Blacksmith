@@ -49,8 +49,8 @@ def test_run_prove_binds_preflight_mutations_and_provenance_context() -> None:
     assert context["repository"] == "alsdmlals4-eng/Blacksmith"
     assert context["pr_number"] == 131
     assert context["godot"] == {"version": "4.7.1-stable"}
-    assert context["higodot"] == {"version": "3.0.5"}
-    assert context["server"] == {"version": "3.0.5"}
+    assert context["higodot"] == {"version": "3.1.3"}
+    assert context["server"] == {"version": "3.1.3"}
     assert context["session"]["id"] == "blacksmith@a3f2"
     assert context["session"]["project_path"] == PROJECT_PATH
     assert set(context["changed_paths"]) == set(driver.ALLOWED_SERIALIZED_PATHS)

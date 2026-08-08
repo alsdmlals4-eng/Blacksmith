@@ -50,7 +50,7 @@ def _make_artifact(tmp_path: Path, head: str) -> Path:
     context = {
         "decision_ids": ["BS-HIGODOT-EXEC-20260808-01", "BS-HIGODOT-20260808-01", "BS-VS-TASK2-20260807-01"],
         "repository": "alsdmlals4-eng/Blacksmith", "pr_number": 131, "input_head_sha": head,
-        "godot": {"version": "4.7.1-stable"}, "higodot": {"version": "3.0.5"}, "server": {"version": "3.0.5"},
+        "godot": {"version": "4.7.1-stable"}, "higodot": {"version": "3.1.3"}, "server": {"version": "3.1.3"},
         "session": {"id": "blacksmith@abcd", "project_path": "/workspace/Blacksmith"}, "changed_paths": sorted(ALLOWED),
     }
     operations = [{"tool": "scene_manage", "arguments_sha256": "a"*64, "success": True, "result_sha256": "b"*64, "error": None}]
