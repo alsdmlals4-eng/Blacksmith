@@ -14,6 +14,7 @@ PROJECT = ROOT / "project.godot"
 HERA_MANIFEST = ROOT / "addons/hera_agent_godot/plugin.cfg"
 
 DECISION_ID = "BS-HERA-20260808-01"
+HIGODOT_DECISION_ID = "BS-HIGODOT-20260808-01"
 HERA_STATE = "VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE"
 INTRODUCED_MAIN_COMMIT = "a5126d8a2091ce2350e50713eac614a045cc6ef2"
 OBSERVED_MAIN = "ddb914f7e70e0deb62f5840fb990eb471eb7f441"
@@ -52,18 +53,25 @@ def test_policy_acknowledges_hera_without_granting_authority() -> None:
     assert hera["mutation_permission"] == "NONE_UNTIL_SEPARATE_ADOPTION"
 
 
-def test_existing_higodot_and_gut_authorities_are_preserved() -> None:
+def test_higodot_activation_preserves_gut_and_hera_authority_boundaries() -> None:
     policy = _json(POLICY)
-    assert policy["higodot"]["current_state"] == "PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY"
-    assert policy["higodot"]["production_activation"] == "PENDING_SEPARATE_APPROVAL"
+    assert HIGODOT_DECISION_ID in policy["decision_ids"]
+    assert policy["higodot"]["current_state"] == "FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY"
+    assert policy["higodot"]["production_activation"] == "USER_APPROVED_ACTIVE"
+    assert policy["higodot"]["activation_scope"] == "TASK2_SCOPED_AUTHORING_ONLY"
+    assert policy["higodot"]["production_execution_path"] == "BLOCKED_UNAVAILABLE_OR_UNVERIFIED"
     assert policy["gut"]["status"] == "FORMALLY_ADOPTED_ACTIVE"
     assert policy["gut"]["authority_role"] == "SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY"
+    assert policy["hera"]["authoring_authority"] == "NONE"
 
 
 def test_development_gates_match_current_tool_and_task_authority() -> None:
     gates = _text(DEVELOPMENT_GATES)
     for marker in (
         "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
+        "HIGODOT_AUTHORING_AUTHORITY: FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY",
+        "HIGODOT_PRODUCTION_ACTIVATION: USER_APPROVED_ACTIVE",
+        "HIGODOT_PRODUCTION_EXECUTION_PATH: BLOCKED_UNAVAILABLE_OR_UNVERIFIED",
         "GUT_TEST_AUTHORITY: FORMALLY_ADOPTED_ACTIVE",
         "GUT_CONFIG_PRESENT: true",
         "GUT_PROJECT_TEST_ROOT_PRESENT: true",
@@ -71,11 +79,12 @@ def test_development_gates_match_current_tool_and_task_authority() -> None:
         "GUT_FORMAL_AUTHORITY: FORMALLY_ADOPTED_ACTIVE",
         "TASK1: PR130_MERGED_MAIN_CANON",
         "PR122: CLOSED_SUPERSEDED_UNMERGED",
-        "PR131: DESIGN_PLAN_CURRENT_INITIALIZER_APPROVED_RED_ALLOWED",
+        "PR131: SCRIPT_GREEN_HIGODOT_AUTHORITY_ACTIVE_EXECUTION_PATH_BLOCKED",
         f"PR132: MERGED_MAIN_CANON_{MERGE_MAIN}",
-        "TASK2: ENTRY_GATE_PASS_SCOPED_RED_ALLOWED",
+        "TASK2: STATIC_RED_REMAINS_SCENE_PROJECT_EXECUTION_BLOCKED",
         f"INITIALIZER_DECISION: {INITIALIZER_DECISION_ID}",
         "INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED",
+        HIGODOT_DECISION_ID,
         DECISION_ID,
         HERA_STATE,
     ):
@@ -101,5 +110,6 @@ def test_active_agent_rules_no_longer_claim_gut_adoption_is_pending() -> None:
     assert "GUT 9.7.1" in agents
     assert "FORMALLY_ADOPTED_ACTIVE" in agents
     assert "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING" not in agents
+    assert HIGODOT_DECISION_ID in agents
     assert DECISION_ID in agents
     assert HERA_STATE in agents
