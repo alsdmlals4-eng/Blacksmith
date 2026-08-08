@@ -125,11 +125,13 @@ Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분�
 
 ## 9. HiGodot·GUT·Hera 권위와 필수 진입 Gate
 
-- `HIGODOT_SOLE_AUTHORING_AUTHORITY`: 정식 채택 뒤 HiGodot만 Scene·Node·Resource·`project.godot` 설정을 저작한다.
+- `HIGODOT_SOLE_AUTHORING_AUTHORITY`: `BS-HIGODOT-20260808-01` 사용자 승인으로 HiGodot은 Production Scene·Node·Resource·`project.godot` 설정의 단일 저작 권위로 활성화됐다.
 - `GUT_SOLE_TEST_AUTHORITY`: GUT 9.7.1은 `BS-TEST-20260806-01` 및 postmerge closure에 따라 `FORMALLY_ADOPTED_ACTIVE`이며 GDScript 단위·통합 테스트 프레임워크의 단일 권위다.
 - `ENTRY_GATE_FAIL_CLOSED`: 결정 원장·미확정/감사·이미지 목록/검수·열린 PR exact HEAD 중 하나라도 누락·stale·schema drift이면 작업 진입을 차단한다.
 
-현재 HiGodot은 `PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY`이며 Production 저작 권위 활성화는 별도 승인 전까지 `PENDING_SEPARATE_APPROVAL`이다. GUT 9.7.1은 `.gutconfig.json`, `tests/gut/**`, formal CI를 포함한 `SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY`로 이미 정식 채택되어 있다.
+현재 HiGodot 권위는 `FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY`이고 production activation은 `USER_APPROVED_ACTIVE`다. 단, 현재 승인은 `TASK2_SCOPED_AUTHORING_ONLY`이며 일반 제품 Gate를 열지 않는다. 또한 실제 `.tscn`/Resource/`project.godot` 변경은 HiGodot production-authoring 실행 경로가 직접 생성한 저작 provenance가 있어야 하며, 일반 코드 편집기·GitHub Contents API·직접 텍스트 치환으로 Godot 직렬화 surface를 우회해서는 안 된다. 현재 저장소의 Live-Editor Pilot은 scratch-only/source-mutation-forbidden이므로 production 실행 경로로 간주하지 않는다.
+
+`BS-HIGODOT-20260808-01`: HiGodot production authoring 권위를 활성화하되, 현재 Task 2에서 허용되는 Godot 저작 범위는 승인된 MainMenu / BlacksmithApp / Workshop scene과 `application/run/main_scene` 전환뿐이다. mixed-surface PR에는 `FILE_AUTHORITY_MANIFEST_REQUIRED_FOR_MIXED_SURFACE_PR`가 적용된다. 현재 production 실행 경로가 노출되지 않았거나 검증되지 않았으면 Scene/`project.godot` GREEN은 fail-closed로 중지한다.
 
 `BS-HERA-20260808-01`: `addons/hera_agent_godot/**`의 Hera Agent Godot 1.0.0 vendor tree는 main commit `a5126d8a2091ce2350e50713eac614a045cc6ef2`부터 존재하지만 `project.godot`에서 활성화되어 있지 않다. 현재 상태는 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE`이며 authoring/mutation 권위는 `NONE`이다. 별도 사용자 승인 채택 전에는 Hera를 활성화하거나 HiGodot/GUT 권위를 대체·우회할 수 없다.
 
