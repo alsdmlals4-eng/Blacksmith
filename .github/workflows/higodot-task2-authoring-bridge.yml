@@ -1,0 +1,435 @@
+name: HiGodot Task 2 Authoring Bridge
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_head_sha:
+        description: Exact PR #131 head SHA approved for this PROVE attempt
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  TARGET_REPOSITORY: alsdmlals4-eng/Blacksmith
+  TARGET_PR: "131"
+  TARGET_BRANCH: feat/vertical-slice-task2-app-shell
+  GODOT_VERSION: 4.7.1-stable
+  HIGODOT_VERSION: "3.0.5"
+  GODOT_AI_MODE: user
+  GODOT_AI_DISABLE_TELEMETRY: "true"
+
+concurrency:
+  group: higodot-task2-authoring-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prove:
+    name: PROVE / read-only identity and runtime gate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      provenance_ready: ${{ steps.publish-gate.outputs.provenance_ready }}
+    steps:
+      - name: Checkout exact requested head without credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.expected_head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Capture pre-authoring project setting baseline
+        shell: bash
+        run: cp project.godot "$RUNNER_TEMP/project.godot.before"
+
+      - name: Validate repository branch and exact head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ github.repository }}" = "$TARGET_REPOSITORY"
+          test "${{ github.ref_name }}" = "feat/vertical-slice-task2-app-shell"
+          test "$(git rev-parse HEAD)" = "${{ inputs.expected_head_sha }}"
+          test "$(git status --porcelain)" = ""
+
+      - name: Validate PR #131 metadata before any authoring
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$TARGET_REPOSITORY/pulls/131" \
+            -o "$RUNNER_TEMP/pr-131.json"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["RUNNER_TEMP"] + "/pr-131.json").read_text(encoding="utf-8"))
+          expected = os.environ["EXPECTED_HEAD_SHA"]
+          failures = []
+          if payload.get("number") != 131:
+              failures.append("PR number mismatch")
+          if payload.get("state") != "open" or payload.get("merged") is True:
+              failures.append("PR #131 is not open/unmerged")
+          if payload.get("base", {}).get("ref") != "main":
+              failures.append("PR #131 base is not main")
+          if payload.get("head", {}).get("ref") != os.environ["TARGET_BRANCH"]:
+              failures.append("PR #131 branch mismatch")
+          if payload.get("head", {}).get("sha") != expected:
+              failures.append("PR #131 head moved")
+          if failures:
+              raise SystemExit("; ".join(failures))
+          print("PR #131 identity PASS")
+          PY
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned HiGodot server/client environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "godot-ai==3.0.5" "fastmcp==3.4.2"
+          python - <<'PY'
+          from importlib.metadata import version
+          actual = version("godot-ai")
+          actual_fastmcp = version("fastmcp")
+          if actual != "3.0.5":
+              raise SystemExit(f"godot-ai version mismatch: {actual}")
+          if actual_fastmcp != "3.4.2":
+              raise SystemExit(f"fastmcp version mismatch: {actual_fastmcp}")
+          print(f"godot-ai package identity PASS: {actual}")
+          print(f"fastmcp package identity PASS: {actual_fastmcp}")
+          PY
+
+      - name: Install Xvfb
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xvfb
+
+      - name: Download and verify Godot 4.7.1
+        working-directory: ${{ runner.temp }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output godot.zip \
+            https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip
+          echo "c7ff14fd28472c8d4f193043de30278dcf7e5241a1dcf7566b02e27addaa33ba  godot.zip" | sha256sum --check -
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.1-stable_linux.x86_64
+          ./Godot_v4.7.1-stable_linux.x86_64 --version
+
+      - name: Prove non-headless Editor launch path only
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Task 7 still does not send MCP authoring requests. Until Task 8 wires
+          # the approved recipe, the exact diff gate below intentionally fails closed.
+          xvfb-run -a "$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64" --editor --path "$GITHUB_WORKSPACE" --quit-after 2
+
+      - name: Verify exact serialized diff before validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/higodot-task2/validation
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from tools import higodot_task2_bridge as bridge
+
+          baseline = Path(os.environ["RUNNER_TEMP"] + "/project.godot.before").read_text(encoding="utf-8")
+          hashes = bridge.verify_serialized_diff(Path("."), baseline)
+          Path("artifacts/higodot-task2/serialized-sha256.json").write_text(
+              json.dumps(hashes, sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Validate Task 2 static app shell
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest tests.test_vertical_slice_task2_app_shell_contract -v 2>&1 \
+            | tee artifacts/higodot-task2/validation/task2-static.log
+
+      - name: Validate Godot import and Task 2 scene smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64"
+          "$GODOT" --headless --editor --path . --quit 2>&1 \
+            | tee artifacts/higodot-task2/validation/godot-import.log
+          for scene in \
+            res://scenes/vertical_slice/main_menu.tscn \
+            res://scenes/vertical_slice/vertical_slice_app.tscn \
+            res://scenes/vertical_slice/screens/vs_workshop_screen.tscn; do
+            log_name=$(basename "$scene" .tscn)
+            "$GODOT" --headless --path . "$scene" --quit-after 2 2>&1 \
+              | tee "artifacts/higodot-task2/validation/${log_name}-smoke.log"
+            if grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" \
+              "artifacts/higodot-task2/validation/${log_name}-smoke.log"; then
+              exit 1
+            fi
+          done
+
+      - name: Run formal GUT 9.7.1 suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64"
+          "$GODOT" --headless -d -s --path "$PWD" addons/gut/gut_cmdln.gd \
+            -gdir=res://tests/gut/unit \
+            -gdir=res://tests/gut/integration \
+            -ginclude_subdirs \
+            -gexit \
+            -gjunit_xml_file=res://artifacts/higodot-task2/validation/gut-junit.xml \
+            2>&1 | tee artifacts/higodot-task2/validation/gut.log
+          python tools/validate_gut_junit.py \
+            artifacts/higodot-task2/validation/gut-junit.xml --minimum-tests 1
+
+      - name: Validate Task 1 canon
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest tests.test_vertical_slice_task1_canon_contract -v 2>&1 \
+            | tee artifacts/higodot-task2/validation/task1.log
+
+      - name: Run Godot model and integration regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64"
+          : > artifacts/higodot-task2/validation/model-integration.log
+          run_test() {
+            test_path="$1"
+            marker="$2"
+            echo "== $test_path ==" | tee -a artifacts/higodot-task2/validation/model-integration.log
+            "$GODOT" --headless --path . --script "$test_path" \
+              >> artifacts/higodot-task2/validation/model-integration.log 2>&1
+            grep -q "$marker" artifacts/higodot-task2/validation/model-integration.log
+          }
+          run_test res://tests/unit/test_forging_session.gd "ForgingSession tests PASSED"
+          run_test res://tests/unit/test_enhancement_session.gd "EnhancementSession tests PASSED"
+          run_test res://tests/unit/test_workshop_resources.gd "WorkshopResources tests PASSED"
+          run_test res://tests/unit/test_workshop_calendar.gd "WorkshopCalendar tests PASSED"
+          run_test res://tests/unit/test_craftsmanship_grade_resolver.gd "CraftsmanshipGradeResolver tests PASSED"
+          run_test res://tests/unit/test_customer_contract.gd "CustomerContract tests PASSED"
+          run_test res://tests/unit/test_world_activity_resolver.gd "WorldActivityResolver tests PASSED"
+          run_test res://tests/unit/test_equipment_world_registry.gd "EquipmentWorldRegistry tests PASSED"
+          run_test res://tests/unit/test_poc_telemetry.gd "PocTelemetry tests PASSED"
+          run_test res://tests/integration/test_manual_enhancement_economy.gd "Manual enhancement economy integration tests PASSED"
+          run_test res://tests/integration/test_forging_quality_enhancement.gd "Forging quality enhancement integration tests PASSED"
+          run_test res://tests/integration/test_workshop_action_atomicity.gd "Workshop action atomicity integration tests PASSED"
+          run_test res://tests/integration/test_equipment_lifecycle_controller.gd "Equipment lifecycle controller integration tests PASSED"
+          run_test res://tests/integration/test_equipment_lifecycle_poc.gd "Equipment lifecycle PoC integration tests PASSED"
+
+      - name: Validate named evidence set before any provenance gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools import higodot_task2_bridge as bridge
+
+          root = Path("artifacts/higodot-task2/validation")
+          files = {
+              "task2_static_contract": root / "task2-static.log",
+              "godot_import": root / "godot-import.log",
+              "smoke_main_menu": root / "main_menu-smoke.log",
+              "smoke_vertical_slice_app": root / "vertical_slice_app-smoke.log",
+              "smoke_workshop": root / "vs_workshop_screen-smoke.log",
+              "gut": root / "gut-junit.xml",
+              "task1_contract": root / "task1.log",
+              "model_integration": root / "model-integration.log",
+          }
+          evidence = {
+              name: {"status": "PASS", "sha256": bridge.sha256_file(path)}
+              for name, path in files.items()
+          }
+          evidence = bridge.validate_post_authoring_validations(evidence)
+          (root / "validation-evidence.json").write_text(
+              json.dumps(evidence, sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Build and validate proven HiGodot Task 2 provenance
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from tools import higodot_task2_provenance as provenance
+
+          root = Path("artifacts/higodot-task2")
+          validation_root = root / "validation"
+          artifact_root = root / "provenance"
+          context_path = root / "session-context.json"
+          operations_path = root / "operation-evidence.json"
+          if not context_path.is_file() or not operations_path.is_file():
+              raise SystemExit("real HiGodot authoring context/evidence is required before provenance")
+
+          context = json.loads(context_path.read_text(encoding="utf-8"))
+          operations = json.loads(operations_path.read_text(encoding="utf-8"))
+          serialized = json.loads((root / "serialized-sha256.json").read_text(encoding="utf-8"))
+          validations = json.loads((validation_root / "validation-evidence.json").read_text(encoding="utf-8"))
+          validation_files = {
+              "task2_static_contract": validation_root / "task2-static.log",
+              "godot_import": validation_root / "godot-import.log",
+              "smoke_main_menu": validation_root / "main_menu-smoke.log",
+              "smoke_vertical_slice_app": validation_root / "vertical_slice_app-smoke.log",
+              "smoke_workshop": validation_root / "vs_workshop_screen-smoke.log",
+              "gut": validation_root / "gut-junit.xml",
+              "task1_contract": validation_root / "task1.log",
+              "model_integration": validation_root / "model-integration.log",
+          }
+          schema_path = Path(".github/validation/higodot-task2-provenance-schema.json")
+          manifest = provenance.prepare_provenance_artifact(
+              repo=Path("."),
+              artifact_root=artifact_root,
+              context=context,
+              operations=operations,
+              serialized_hashes=serialized,
+              validations=validations,
+              validation_files=validation_files,
+              expected_head=os.environ["EXPECTED_HEAD_SHA"],
+              schema_path=schema_path,
+          )
+          provenance.validate_provenance_artifact(
+              artifact_root,
+              os.environ["EXPECTED_HEAD_SHA"],
+              schema_path,
+          )
+          manifest_path = artifact_root / "higodot-task2-provenance.json"
+          product_project = artifact_root / "product/project.godot"
+          if not manifest_path.is_file() or not product_project.is_file():
+              raise SystemExit("provenance bundle is incomplete")
+          print(f"validated provenance manifest: {manifest_path}")
+          print(f"validated proven product bytes: {product_project}")
+          print(f"changed_paths={manifest['changed_paths']}")
+          PY
+
+      - name: Upload proven HiGodot Task 2 provenance
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: higodot-task2-provenance
+          path: artifacts/higodot-task2/provenance
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Mark proven artifact ready for guarded publish
+        id: publish-gate
+        shell: bash
+        run: echo "provenance_ready=true" >> "$GITHUB_OUTPUT"
+
+  publish:
+    name: PUBLISH / guarded byte-identical transport
+    needs: prove
+    if: ${{ needs.prove.outputs.provenance_ready == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout exact proven input head with write credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.expected_head_sha }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Download proven HiGodot Task 2 provenance
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: higodot-task2-provenance
+          path: artifacts/higodot-task2/provenance
+
+      - name: Capture remote head before staging
+        id: branch-head-before
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote_head=$(git ls-remote --heads origin refs/heads/feat/vertical-slice-task2-app-shell | awk '{print $1}')
+          echo "remote_head=$remote_head" >> "$GITHUB_OUTPUT"
+
+      - name: Verify remote head and stage byte-identical proven outputs
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+          REMOTE_HEAD: ${{ steps.branch-head-before.outputs.remote_head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from tools import higodot_task2_provenance as provenance
+
+          provenance.verify_publish_head(os.environ["EXPECTED_HEAD_SHA"], os.environ["REMOTE_HEAD"])
+          manifest = provenance.stage_proven_artifact(
+              Path("artifacts/higodot-task2/provenance"),
+              Path("."),
+              os.environ["EXPECTED_HEAD_SHA"],
+              Path(".github/validation/higodot-task2-provenance-schema.json"),
+          )
+          print(f"staged proven changed_paths={manifest['changed_paths']}")
+          PY
+          git diff --name-only
+
+      - name: Stage exact product allowlist and verify staged names
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -- \
+            project.godot \
+            scenes/vertical_slice/main_menu.tscn \
+            scenes/vertical_slice/vertical_slice_app.tscn \
+            scenes/vertical_slice/screens/vs_workshop_screen.tscn
+          actual=$(git diff --cached --name-only | sort)
+          expected=$(printf '%s\n' \
+            project.godot \
+            scenes/vertical_slice/main_menu.tscn \
+            scenes/vertical_slice/screens/vs_workshop_screen.tscn \
+            scenes/vertical_slice/vertical_slice_app.tscn | sort)
+          test "$actual" = "$expected"
+
+      - name: Verify target branch has not moved before push
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote_head=$(git ls-remote --heads origin refs/heads/feat/vertical-slice-task2-app-shell | awk '{print $1}')
+          EXPECTED_HEAD_SHA="$EXPECTED_HEAD_SHA" REMOTE_HEAD="$remote_head" python - <<'PY'
+          import os
+          from tools import higodot_task2_provenance as provenance
+          provenance.verify_publish_head(os.environ["EXPECTED_HEAD_SHA"], os.environ["REMOTE_HEAD"])
+          PY
+
+      - name: Commit and push proven bytes without force
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "feat: publish proven Task 2 HiGodot app shell"
+          git push origin HEAD:feat/vertical-slice-task2-app-shell

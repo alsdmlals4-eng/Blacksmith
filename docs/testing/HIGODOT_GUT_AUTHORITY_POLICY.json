@@ -5,7 +5,8 @@
     "BS-OPS-20260806-10",
     "BS-TEST-20260806-01",
     "BS-GATE-20260806-01",
-    "BS-HERA-20260808-01"
+    "BS-HERA-20260808-01",
+    "BS-HIGODOT-20260808-01"
   ],
   "adoption_state": "FORMALLY_ADOPTED_ACTIVE_TEST_FRAMEWORK_AUTHORITY",
   "effective_scope": "MAIN_CANON_AUTHORITY_GATE_AND_GUT_RUNTIME",
@@ -16,9 +17,12 @@
     "installed_plugin_version": "3.0.5",
     "license": "MIT",
     "godot_requirement": "4.5+; 4.7+ recommended",
-    "current_state": "PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY",
+    "current_state": "FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY",
     "policy_role": "SOLE_GODOT_AUTHORING_AUTHORITY",
-    "production_activation": "PENDING_SEPARATE_APPROVAL",
+    "production_activation": "USER_APPROVED_ACTIVE",
+    "activation_decision_id": "BS-HIGODOT-20260808-01",
+    "activation_scope": "TASK2_SCOPED_AUTHORING_ONLY",
+    "production_execution_path": "BLOCKED_UNAVAILABLE_OR_UNVERIFIED",
     "owned_surfaces": [
       "project.godot",
       "**/*.tscn",
@@ -138,7 +142,7 @@
   },
   "remaining_blockers": {
     "general_product_implementation": "BLOCKED",
-    "higodot_production_authoring": "PENDING_SEPARATE_APPROVAL",
+    "higodot_production_authoring": "ACTIVE_AUTHORITY_EXECUTION_PATH_UNAVAILABLE_OR_UNVERIFIED",
     "visual_asset_gate": "BLOCKED_NOT_PRODUCT_READY",
     "android_device_validation": "NOT_RUN",
     "human_playtest": "NOT_RUN"

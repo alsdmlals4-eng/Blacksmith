@@ -55,6 +55,40 @@ func save_envelope(envelope) -> Error:
 	return OK
 
 
+func replace_envelope_after_confirmation(envelope) -> Error:
+	if envelope == null:
+		return ERR_INVALID_PARAMETER
+	if not envelope.has_method("to_dict"):
+		return ERR_INVALID_DATA
+
+	var candidate = SaveEnvelopeScript.from_dict(envelope.to_dict())
+	if not candidate.validation_errors.is_empty():
+		return ERR_INVALID_DATA
+
+	if FileAccess.file_exists(save_path):
+		var current_primary = _read_envelope(save_path)
+		if current_primary.validation_errors.is_empty():
+			return save_envelope(candidate)
+
+	var stage_error := _stage_envelope(candidate)
+	if stage_error != OK:
+		return stage_error
+
+	var absolute_save := ProjectSettings.globalize_path(save_path)
+	var absolute_temp := ProjectSettings.globalize_path(temp_path)
+	if FileAccess.file_exists(save_path):
+		var remove_primary_error := DirAccess.remove_absolute(absolute_save)
+		if remove_primary_error != OK:
+			_cleanup_temp()
+			return remove_primary_error
+
+	var commit_error := DirAccess.rename_absolute(absolute_temp, absolute_save)
+	if commit_error != OK:
+		_cleanup_temp()
+		return commit_error
+	return OK
+
+
 func load_envelope():
 	if not FileAccess.file_exists(save_path):
 		if FileAccess.file_exists(backup_path):
@@ -75,6 +109,16 @@ func load_envelope():
 			backup.recovered_from_backup = true
 			return backup
 	return primary
+
+
+func _stage_envelope(envelope) -> Error:
+	var file := FileAccess.open(temp_path, FileAccess.WRITE)
+	if file == null:
+		return FileAccess.get_open_error()
+	file.store_string(JSON.stringify(envelope.to_dict(), "  "))
+	file.flush()
+	file.close()
+	return OK
 
 
 func _read_envelope(path: String):
