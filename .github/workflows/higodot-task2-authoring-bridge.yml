@@ -93,13 +93,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m pip install --disable-pip-version-check "godot-ai==3.0.5"
+          python -m pip install --disable-pip-version-check "godot-ai==3.0.5" "fastmcp==3.4.2"
           python - <<'PY'
           from importlib.metadata import version
           actual = version("godot-ai")
+          actual_fastmcp = version("fastmcp")
           if actual != "3.0.5":
               raise SystemExit(f"godot-ai version mismatch: {actual}")
+          if actual_fastmcp != "3.4.2":
+              raise SystemExit(f"fastmcp version mismatch: {actual_fastmcp}")
           print(f"godot-ai package identity PASS: {actual}")
+          print(f"fastmcp package identity PASS: {actual_fastmcp}")
           PY
 
       - name: Install Xvfb
