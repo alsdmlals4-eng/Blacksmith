@@ -27,180 +27,98 @@
     "minimum_primary_control_size": [48, 48],
     "settings_surface": "INLINE_MAIN_MENU_OVERLAY",
     "initial_app_state": "WORKSHOP",
-    "project_setting_allowlist": [
-      "application/run/main_scene"
-    ]
+    "project_setting_allowlist": ["application/run/main_scene"]
   },
   "operations": [
     {
       "tool": "scene_manage",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "root_type": "Control",
-      "root_name": "MainMenu"
+      "arguments": {"op": "create", "params": {"path": "res://scenes/vertical_slice/main_menu.tscn", "root_type": "Control", "root_name": "MainMenu"}}
     },
     {
-      "tool": "node_manage",
-      "operation": "attach_script",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "node": "MainMenu",
-      "script": "res://scripts/vertical_slice/ui/vs_main_menu.gd"
+      "tool": "node_set_property",
+      "arguments": {"path": "/MainMenu", "property": "script", "value": "res://scripts/vertical_slice/ui/vs_main_menu.gd", "scene_file": "res://scenes/vertical_slice/main_menu.tscn"}
     },
     {
       "tool": "ui_manage",
-      "operation": "set_full_rect",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "node": "MainMenu"
-    },
-    {
-      "tool": "node_create",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "parent": "MainMenu",
-      "node_type": "VBoxContainer",
-      "name": "MenuLayout"
-    },
-    {
-      "tool": "node_create",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "parent": "MainMenu/MenuLayout",
-      "node_type": "Label",
-      "name": "SaveStatusLabel"
-    },
-    {
-      "tool": "node_create",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "parent": "MainMenu/MenuLayout",
-      "node_type": "Button",
-      "name": "ContinueButton"
-    },
-    {
-      "tool": "node_set_property",
-      "operation": "set",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "node": "MainMenu/MenuLayout/ContinueButton",
-      "property": "custom_minimum_size",
-      "value": [48, 48]
-    },
-    {
-      "tool": "node_create",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "parent": "MainMenu/MenuLayout",
-      "node_type": "Button",
-      "name": "NewGameButton"
-    },
-    {
-      "tool": "node_set_property",
-      "operation": "set",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "node": "MainMenu/MenuLayout/NewGameButton",
-      "property": "custom_minimum_size",
-      "value": [48, 48]
-    },
-    {
-      "tool": "node_create",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "parent": "MainMenu/MenuLayout",
-      "node_type": "Button",
-      "name": "SettingsButton"
-    },
-    {
-      "tool": "node_set_property",
-      "operation": "set",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "node": "MainMenu/MenuLayout/SettingsButton",
-      "property": "custom_minimum_size",
-      "value": [48, 48]
-    },
-    {
-      "tool": "node_create",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "parent": "MainMenu",
-      "node_type": "PanelContainer",
-      "name": "SettingsOverlay"
-    },
-    {
-      "tool": "node_set_property",
-      "operation": "set",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn",
-      "node": "MainMenu/SettingsOverlay",
-      "property": "visible",
-      "value": false
-    },
-    {
-      "tool": "scene_manage",
-      "operation": "save",
-      "scene": "res://scenes/vertical_slice/main_menu.tscn"
-    },
-    {
-      "tool": "scene_manage",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/vertical_slice_app.tscn",
-      "root_type": "Control",
-      "root_name": "BlacksmithApp"
-    },
-    {
-      "tool": "node_manage",
-      "operation": "attach_script",
-      "scene": "res://scenes/vertical_slice/vertical_slice_app.tscn",
-      "node": "BlacksmithApp",
-      "script": "res://scripts/vertical_slice/ui/vs_app.gd"
+      "arguments": {"op": "set_anchor_preset", "params": {"path": "/MainMenu", "preset": "full_rect"}}
     },
     {
       "tool": "ui_manage",
-      "operation": "set_full_rect",
-      "scene": "res://scenes/vertical_slice/vertical_slice_app.tscn",
-      "node": "BlacksmithApp"
-    },
-    {
-      "tool": "scene_manage",
-      "operation": "save",
-      "scene": "res://scenes/vertical_slice/vertical_slice_app.tscn"
-    },
-    {
-      "tool": "scene_manage",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn",
-      "root_type": "Control",
-      "root_name": "WorkshopScreen"
+      "arguments": {
+        "op": "build_layout",
+        "params": {
+          "parent_path": "/MainMenu",
+          "tree": {
+            "type": "VBoxContainer",
+            "name": "MenuLayout",
+            "children": [
+              {"type": "Label", "name": "SaveStatusLabel", "properties": {"text": "SAVE STATUS"}},
+              {"type": "Button", "name": "ContinueButton", "properties": {"text": "Continue", "custom_minimum_size": {"x": 48, "y": 48}}},
+              {"type": "Button", "name": "NewGameButton", "properties": {"text": "New Game", "custom_minimum_size": {"x": 48, "y": 48}}},
+              {"type": "Button", "name": "SettingsButton", "properties": {"text": "Settings", "custom_minimum_size": {"x": 48, "y": 48}}}
+            ]
+          }
+        }
+      }
     },
     {
       "tool": "ui_manage",
-      "operation": "set_full_rect",
-      "scene": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn",
-      "node": "WorkshopScreen"
+      "arguments": {
+        "op": "build_layout",
+        "params": {
+          "parent_path": "/MainMenu",
+          "tree": {
+            "type": "PanelContainer",
+            "name": "SettingsOverlay",
+            "properties": {"visible": false},
+            "anchor_preset": "full_rect",
+            "children": [{"type": "Label", "name": "SettingsTitle", "properties": {"text": "Settings"}}]
+          }
+        }
+      }
+    },
+    {"tool": "scene_save", "arguments": {}},
+    {
+      "tool": "scene_manage",
+      "arguments": {"op": "create", "params": {"path": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn", "root_type": "Control", "root_name": "WorkshopScreen"}}
     },
     {
-      "tool": "node_create",
-      "operation": "create",
-      "scene": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn",
-      "parent": "WorkshopScreen",
-      "node_type": "Label",
-      "name": "WorkshopTitle"
+      "tool": "ui_manage",
+      "arguments": {"op": "set_anchor_preset", "params": {"path": "/WorkshopScreen", "preset": "full_rect"}}
+    },
+    {
+      "tool": "ui_manage",
+      "arguments": {"op": "build_layout", "params": {"parent_path": "/WorkshopScreen", "tree": {"type": "Label", "name": "WorkshopTitle", "properties": {"text": "WORKSHOP"}, "anchor_preset": "center"}}}
+    },
+    {"tool": "scene_save", "arguments": {}},
+    {
+      "tool": "scene_manage",
+      "arguments": {"op": "create", "params": {"path": "res://scenes/vertical_slice/vertical_slice_app.tscn", "root_type": "Control", "root_name": "BlacksmithApp"}}
     },
     {
       "tool": "node_set_property",
-      "operation": "set",
-      "scene": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn",
-      "node": "WorkshopScreen/WorkshopTitle",
-      "property": "text",
-      "value": "WORKSHOP"
+      "arguments": {"path": "/BlacksmithApp", "property": "script", "value": "res://scripts/vertical_slice/ui/vs_app.gd", "scene_file": "res://scenes/vertical_slice/vertical_slice_app.tscn"}
     },
     {
-      "tool": "scene_manage",
-      "operation": "save",
-      "scene": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn"
+      "tool": "ui_manage",
+      "arguments": {"op": "set_anchor_preset", "params": {"path": "/BlacksmithApp", "preset": "full_rect"}}
     },
+    {
+      "tool": "node_create",
+      "arguments": {"type": "Control", "name": "ScreenHost", "parent_path": "/BlacksmithApp", "scene_file": "res://scenes/vertical_slice/vertical_slice_app.tscn"}
+    },
+    {
+      "tool": "ui_manage",
+      "arguments": {"op": "set_anchor_preset", "params": {"path": "/BlacksmithApp/ScreenHost", "preset": "full_rect"}}
+    },
+    {
+      "tool": "node_create",
+      "arguments": {"scene_path": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn", "name": "WorkshopScreen", "parent_path": "/BlacksmithApp/ScreenHost", "scene_file": "res://scenes/vertical_slice/vertical_slice_app.tscn"}
+    },
+    {"tool": "scene_save", "arguments": {}},
     {
       "tool": "project_manage",
-      "operation": "settings_set",
-      "setting": "application/run/main_scene",
-      "value": "res://scenes/vertical_slice/main_menu.tscn"
+      "arguments": {"op": "settings_set", "params": {"key": "application/run/main_scene", "value": "res://scenes/vertical_slice/main_menu.tscn"}}
     }
   ]
 }
