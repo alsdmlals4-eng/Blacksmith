@@ -43,18 +43,24 @@ class VerticalSliceNewCampaignInitializerAuthorityTests(unittest.TestCase):
         self.assertEqual(gate["image_rights"], "NOT_RUN")
         self.assertEqual(gate["android_device"], "NOT_RUN")
         self.assertEqual(gate["human_playtest"], "NOT_RUN")
+        # Historical snapshot: captured before BS-HIGODOT-20260808-01 activation.
         self.assertEqual(gate["higodot_authority"], "PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY")
         self.assertEqual(gate["hera_authority"], "NONE")
 
-    def test_development_gate_is_synchronized_before_red_entry(self) -> None:
+    def test_development_gate_preserves_initializer_after_higodot_activation(self) -> None:
         text = DEVELOPMENT_GATES.read_text(encoding="utf-8")
         self.assertIn("INITIALIZER_DECISION: BS-VS-INIT-20260808-01", text)
-        self.assertIn("ENTRY_STATE_GATE: PASS_SCOPED_TASK2_RED_ALLOWED", text)
+        self.assertIn("INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED", text)
         self.assertIn(
-            "VERTICAL_SLICE_CODE_GATE: USER_APPROVED_SCOPED_ONLY_TASK2_ENTRY_GATE_PASS_RED_ALLOWED",
+            "ENTRY_STATE_GATE: PASS_SCOPED_TASK2_AUTHORITY_ACTIVE_EXECUTION_BLOCKED",
             text,
         )
-        self.assertIn("TASK2: ENTRY_GATE_PASS_SCOPED_RED_ALLOWED", text)
+        self.assertIn(
+            "VERTICAL_SLICE_CODE_GATE: USER_APPROVED_SCOPED_ONLY_TASK2_SCRIPT_GREEN_HIGODOT_AUTHORITY_ACTIVE_EXECUTION_PATH_BLOCKED",
+            text,
+        )
+        self.assertIn("TASK2: STATIC_RED_REMAINS_SCENE_PROJECT_EXECUTION_BLOCKED", text)
+        self.assertIn("HIGODOT_ACTIVATION_DECISION: BS-HIGODOT-20260808-01", text)
         self.assertIn("GENERAL_PRODUCT: BLOCKED", text)
 
 
