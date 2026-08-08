@@ -2,7 +2,6 @@ class_name VSApp
 extends Control
 
 signal state_changed(previous_state: String, current_state: String)
-signal item_selected(uid: String)
 
 const OK_TRANSITION := "OK"
 const INVALID_TRANSITION := "INVALID_TRANSITION"
