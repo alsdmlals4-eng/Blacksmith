@@ -1,8 +1,9 @@
 # BS-HIGODOT-EXEC-20260808-01 — Task 2 HiGodot CI Authoring Bridge
 
-Status: `USER_APPROVED_DESIGN / WRITTEN_SPEC_REVIEW_PENDING / IMPLEMENTATION_NOT_STARTED`
+Status: `USER_APPROVED_DESIGN / WRITTEN_SPEC_REVIEW_APPROVED / IMPLEMENTATION_PLAN_COMMITTED / BRIDGE_TDD_RED_NEXT`
 
 Approved at: `2026-08-08 KST`
+Written-spec review approved at: `2026-08-08 21:11 KST`
 
 ## Decision
 
@@ -60,14 +61,28 @@ Before publication, PROVE must produce a self-contained provenance manifest that
 
 After publication, automatic PR validation and Full validation must pass on the exact merge-candidate head before merge readiness.
 
+## Written-spec review and implementation plan
+
+The user approved the written-spec review on `2026-08-08 21:11 KST`. The review record is:
+
+`docs/operations/BLACKSMITH_HIGODOT_EXEC_SPEC_REVIEW_2026-08-08.md`
+
+The approved implementation plan is:
+
+`docs/superpowers/plans/2026-08-08-blacksmith-higodot-ci-authoring-bridge.md`
+
+The immediate execution boundary after plan commit is Task 1 only: add the bridge contract test and centralized CI routing, observe a remote failing test caused by missing workflow/driver/recipe/schema surfaces, and record that exact RED. No workflow/driver GREEN implementation and no Scene/`project.godot` product mutation precedes the observed RED.
+
+The design spec's original status line records its pre-review staging state. This Decision and the review record supersede that status line for current execution state without changing the approved design content.
+
 ## Current state
 
 ```text
 DESIGN = USER_APPROVED
 WRITTEN_SPEC = docs/superpowers/specs/2026-08-08-blacksmith-higodot-ci-authoring-bridge-design.md
-WRITTEN_SPEC_REVIEW = PENDING
-IMPLEMENTATION_PLAN = NOT_STARTED
-BRIDGE_TDD = NOT_STARTED
+WRITTEN_SPEC_REVIEW = APPROVED
+IMPLEMENTATION_PLAN = docs/superpowers/plans/2026-08-08-blacksmith-higodot-ci-authoring-bridge.md
+BRIDGE_TDD = RED_NEXT
 TASK2_STATIC_APP_SHELL = EXPECTED_RED
 SCENE_PROJECT_MUTATION = 0
 PR131 = DRAFT_UNMERGED
