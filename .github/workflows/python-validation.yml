@@ -124,6 +124,11 @@ jobs:
         working-directory: project
         run: python -m unittest tests.test_vertical_slice_task1_canon_contract -v
 
+      - name: Validate vertical slice Task 2 app shell contract
+        if: inputs.scope == 'code'
+        working-directory: project
+        run: python -m unittest tests.test_vertical_slice_task2_app_shell_contract -v
+
       - name: Validate forging quality contract
         if: inputs.scope == 'code'
         working-directory: project
