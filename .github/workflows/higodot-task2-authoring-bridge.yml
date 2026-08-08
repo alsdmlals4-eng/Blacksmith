@@ -133,7 +133,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Task 6 still does not send MCP authoring requests. Until Task 8 wires
+          # Task 7 still does not send MCP authoring requests. Until Task 8 wires
           # the approved recipe, the exact diff gate below intentionally fails closed.
           xvfb-run -a "$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64" --editor --path "$GITHUB_WORKSPACE" --quit-after 2
 
@@ -333,25 +333,121 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Keep publication disabled until guarded transport exists
+      - name: Mark proven artifact ready for guarded publish
         id: publish-gate
         shell: bash
-        run: echo "provenance_ready=false" >> "$GITHUB_OUTPUT"
+        run: echo "provenance_ready=true" >> "$GITHUB_OUTPUT"
 
   publish:
-    name: PUBLISH / disabled byte-identical transport skeleton
+    name: PUBLISH / guarded byte-identical transport
     needs: prove
     if: ${{ needs.prove.outputs.provenance_ready == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - name: Fail closed until Task 7 verified artifact transport exists
+      - name: Checkout exact proven input head with write credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.expected_head_sha }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Download proven HiGodot Task 2 provenance
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: higodot-task2-provenance
+          path: artifacts/higodot-task2/provenance
+
+      - name: Verify target branch has not moved before staging
         env:
           EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
         shell: bash
         run: |
           set -euo pipefail
-          echo "expected_head_sha=$EXPECTED_HEAD_SHA"
-          echo "artifact sha256 verification and byte-identical transport are not implemented in Task 6"
-          exit 1
+          remote_head=$(git ls-remote --heads origin refs/heads/feat/vertical-slice-task2-app-shell | awk '{print $1}')
+          python - <<'PY'
+          import os
+          from tools import higodot_task2_provenance as provenance
+          provenance.verify_publish_head(os.environ["EXPECTED_HEAD_SHA"], os.environ["REMOTE_HEAD"])
+          PY
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+          REMOTE_HEAD: ${{ steps.branch-head-before.outputs.remote_head }}
+
+      - name: Capture remote head before staging
+        id: branch-head-before
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote_head=$(git ls-remote --heads origin refs/heads/feat/vertical-slice-task2-app-shell | awk '{print $1}')
+          echo "remote_head=$remote_head" >> "$GITHUB_OUTPUT"
+
+      - name: Verify remote head and stage byte-identical proven outputs
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+          REMOTE_HEAD: ${{ steps.branch-head-before.outputs.remote_head }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from tools import higodot_task2_provenance as provenance
+
+          provenance.verify_publish_head(os.environ["EXPECTED_HEAD_SHA"], os.environ["REMOTE_HEAD"])
+          manifest = provenance.stage_proven_artifact(
+              Path("artifacts/higodot-task2/provenance"),
+              Path("."),
+              os.environ["EXPECTED_HEAD_SHA"],
+              Path(".github/validation/higodot-task2-provenance-schema.json"),
+          )
+          print(f"staged proven changed_paths={manifest['changed_paths']}")
+          PY
+          git diff --name-only
+
+      - name: Stage exact product allowlist and verify staged names
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -- \
+            project.godot \
+            scenes/vertical_slice/main_menu.tscn \
+            scenes/vertical_slice/vertical_slice_app.tscn \
+            scenes/vertical_slice/screens/vs_workshop_screen.tscn
+          actual=$(git diff --cached --name-only | sort)
+          expected=$(printf '%s\n' \
+            project.godot \
+            scenes/vertical_slice/main_menu.tscn \
+            scenes/vertical_slice/screens/vs_workshop_screen.tscn \
+            scenes/vertical_slice/vertical_slice_app.tscn | sort)
+          test "$actual" = "$expected"
+
+      - name: Verify target branch has not moved before push
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          remote_head=$(git ls-remote --heads origin refs/heads/feat/vertical-slice-task2-app-shell | awk '{print $1}')
+          EXPECTED_HEAD_SHA="$EXPECTED_HEAD_SHA" REMOTE_HEAD="$remote_head" python - <<'PY'
+          import os
+          from tools import higodot_task2_provenance as provenance
+          provenance.verify_publish_head(os.environ["EXPECTED_HEAD_SHA"], os.environ["REMOTE_HEAD"])
+          PY
+
+      - name: Commit and push proven bytes without force
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "feat: publish proven Task 2 HiGodot app shell"
+          git push origin HEAD:feat/vertical-slice-task2-app-shell
