@@ -98,6 +98,7 @@ jobs:
           python -m pytest tests/test_hera_vendor_reconciliation_contract.py -q
           python -m pytest tests/test_hera_postmerge_closure_contract.py -q
           python -m unittest tests.test_vertical_slice_new_campaign_initializer_authority -v
+          python -m pytest tests/test_higodot_task2_ci_authoring_bridge_contract.py -q
 
       - name: Validate archive retention governance
         working-directory: project
