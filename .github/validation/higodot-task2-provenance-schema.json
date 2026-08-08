@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blacksmith.local/schemas/higodot-task2-provenance.schema.json",
+  "title": "Blacksmith Task 2 HiGodot PROVE provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_ids",
+    "repository",
+    "pr_number",
+    "input_head_sha",
+    "godot",
+    "higodot",
+    "server",
+    "session",
+    "operations",
+    "changed_paths",
+    "serialized_sha256",
+    "validations",
+    "artifact_sha256"
+  ],
+  "properties": {
+    "decision_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "repository": {"const": "alsdmlals4-eng/Blacksmith"},
+    "pr_number": {"const": 131},
+    "input_head_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "godot": {"$ref": "#/$defs/versionIdentity"},
+    "higodot": {"$ref": "#/$defs/versionIdentity"},
+    "server": {"$ref": "#/$defs/versionIdentity"},
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "project_path"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "project_path": {"type": "string", "minLength": 1}
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tool", "arguments_sha256", "success", "result_sha256", "error"],
+        "properties": {
+          "tool": {"type": "string", "minLength": 1},
+          "arguments_sha256": {"$ref": "#/$defs/sha256"},
+          "success": {"type": "boolean"},
+          "result_sha256": {
+            "anyOf": [
+              {"$ref": "#/$defs/sha256"},
+              {"type": "null"}
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {"type": "string"},
+              {"type": "null"}
+            ]
+          }
+        }
+      }
+    },
+    "changed_paths": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "project.godot",
+          "scenes/vertical_slice/main_menu.tscn",
+          "scenes/vertical_slice/vertical_slice_app.tscn",
+          "scenes/vertical_slice/screens/vs_workshop_screen.tscn"
+        ]
+      }
+    },
+    "serialized_sha256": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project.godot",
+        "scenes/vertical_slice/main_menu.tscn",
+        "scenes/vertical_slice/vertical_slice_app.tscn",
+        "scenes/vertical_slice/screens/vs_workshop_screen.tscn"
+      ],
+      "properties": {
+        "project.godot": {"$ref": "#/$defs/sha256"},
+        "scenes/vertical_slice/main_menu.tscn": {"$ref": "#/$defs/sha256"},
+        "scenes/vertical_slice/vertical_slice_app.tscn": {"$ref": "#/$defs/sha256"},
+        "scenes/vertical_slice/screens/vs_workshop_screen.tscn": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "validations": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status", "sha256"],
+        "properties": {
+          "status": {"const": "PASS"},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    },
+    "artifact_sha256": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/sha256"}
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "versionIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version"],
+      "properties": {
+        "version": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
