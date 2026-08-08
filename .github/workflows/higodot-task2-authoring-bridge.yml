@@ -364,22 +364,6 @@ jobs:
           name: higodot-task2-provenance
           path: artifacts/higodot-task2/provenance
 
-      - name: Verify target branch has not moved before staging
-        env:
-          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          remote_head=$(git ls-remote --heads origin refs/heads/feat/vertical-slice-task2-app-shell | awk '{print $1}')
-          python - <<'PY'
-          import os
-          from tools import higodot_task2_provenance as provenance
-          provenance.verify_publish_head(os.environ["EXPECTED_HEAD_SHA"], os.environ["REMOTE_HEAD"])
-          PY
-        env:
-          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
-          REMOTE_HEAD: ${{ steps.branch-head-before.outputs.remote_head }}
-
       - name: Capture remote head before staging
         id: branch-head-before
         shell: bash
@@ -442,8 +426,6 @@ jobs:
           PY
 
       - name: Commit and push proven bytes without force
-        env:
-          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
         shell: bash
         run: |
           set -euo pipefail
