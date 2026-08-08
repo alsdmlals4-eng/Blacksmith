@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import importlib.util
-import json
 import subprocess
 from pathlib import Path
 
@@ -11,7 +10,6 @@ ROOT = Path(__file__).resolve().parents[1]
 PROVENANCE = ROOT / "tools" / "higodot_task2_provenance.py"
 WORKFLOW = ROOT / ".github" / "workflows" / "higodot-task2-authoring-bridge.yml"
 SCHEMA = ROOT / ".github" / "validation" / "higodot-task2-provenance-schema.json"
-TARGET_BRANCH = "feat/vertical-slice-task2-app-shell"
 ALLOWED = {
     "project.godot",
     "scenes/vertical_slice/main_menu.tscn",
@@ -103,3 +101,14 @@ def test_workflow_publish_is_guarded_byte_transport_only() -> None:
     for forbidden in ("xvfb-run", "godot-ai", "fastmcp", "/mcp", "--force", "git rebase", "godot --"):
         assert forbidden not in publish
     assert publish.count("git ls-remote --heads origin refs/heads/feat/vertical-slice-task2-app-shell") >= 2
+
+
+def test_publish_captures_remote_head_before_staging_and_checks_again_before_push() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    publish = text[text.index("publish:"):]
+    capture = publish.index("Capture remote head before staging")
+    stage = publish.index("Verify remote head and stage byte-identical proven outputs")
+    before_push = publish.index("Verify target branch has not moved before push")
+    push = publish.index("git push origin HEAD:feat/vertical-slice-task2-app-shell")
+    assert capture < stage < before_push < push
+    assert "Verify target branch has not moved before staging" not in publish
