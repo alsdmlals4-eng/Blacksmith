@@ -45,7 +45,7 @@ jobs:
         run: |
           set -euo pipefail
           test "${{ github.repository }}" = "$TARGET_REPOSITORY"
-          test "${{ github.ref_name }}" = "$TARGET_BRANCH"
+          test "${{ github.ref_name }}" = "feat/vertical-slice-task2-app-shell"
           test "$(git rev-parse HEAD)" = "${{ inputs.expected_head_sha }}"
           test "$(git status --porcelain)" = ""
 
