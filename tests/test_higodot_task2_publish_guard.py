@@ -77,8 +77,9 @@ def test_verify_publish_head_rejects_race_and_invalid_sha() -> None:
 def test_stage_proven_artifact_copies_exact_bytes_and_exact_four_diff(tmp_path: Path) -> None:
     p = _load(); head = "c"*40; artifact = _make_artifact(tmp_path, head); checkout = _clean_checkout(tmp_path)
     manifest = p.stage_proven_artifact(artifact, checkout, head, SCHEMA)
-    changed = set(_run(checkout, "git", "status", "--porcelain").splitlines())
-    assert len(changed) == 4
+    tracked = set(filter(None, _run(checkout, "git", "diff", "--name-only").splitlines()))
+    untracked = set(filter(None, _run(checkout, "git", "ls-files", "--others", "--exclude-standard").splitlines()))
+    assert tracked | untracked == ALLOWED
     for relative in ALLOWED:
         assert (checkout/relative).read_bytes() == (artifact/"product"/relative).read_bytes()
         assert p.sha256_file(checkout/relative) == manifest["serialized_sha256"][relative]
