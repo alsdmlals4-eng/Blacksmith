@@ -330,7 +330,7 @@ def test_publish_stays_gated_until_provenance_ready() -> None:
     assert "provenance_ready" in prove
     assert "provenance_ready" in publish
     assert "needs.prove.outputs.provenance_ready" in publish
-    for forbidden in ("xvfb-run", "godot --", "godot-ai", "/mcp", "--force", " rebase "):
+    for forbidden in ("xvfb-run", "godot --", "godot-ai", "/mcp", "--force", " rebase ", "git push"):
         assert forbidden not in publish
-    for marker in ("expected_head_sha", "sha256", "artifact", "git push"):
+    for marker in ("expected_head_sha", "sha256", "artifact"):
         assert marker in publish
