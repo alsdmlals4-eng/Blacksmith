@@ -102,6 +102,7 @@ jobs:
           python -m pytest tests/test_higodot_task2_mcp_driver.py -q
           python -m pytest tests/test_higodot_task2_toolchain_pin.py -q
           python -m pytest tests/test_higodot_task2_313_runtime_contract.py -q
+          python -m pytest tests/test_user_approved_editor_plugin_sync_contract.py -q
           python -m pytest tests/test_higodot_task2_post_authoring_gate.py -q
           python -m pytest tests/test_higodot_task2_provenance_artifact.py -q
           python -m pytest tests/test_higodot_task2_publish_guard.py -q
