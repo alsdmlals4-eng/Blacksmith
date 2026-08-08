@@ -133,8 +133,10 @@ Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분�
 
 `BS-HIGODOT-20260808-01`: HiGodot production authoring 권위를 활성화하되, 현재 Task 2에서 허용되는 Godot 저작 범위는 승인된 MainMenu / BlacksmithApp / Workshop scene과 `application/run/main_scene` 전환뿐이다. mixed-surface PR에는 `FILE_AUTHORITY_MANIFEST_REQUIRED_FOR_MIXED_SURFACE_PR`가 적용된다. 현재 production 실행 경로가 노출되지 않았거나 검증되지 않았으면 Scene/`project.godot` GREEN은 fail-closed로 중지한다.
 
-`BS-HERA-20260808-01`: `addons/hera_agent_godot/**`의 Hera Agent Godot 1.0.0 vendor tree는 main commit `a5126d8a2091ce2350e50713eac614a045cc6ef2`부터 존재하지만 `project.godot`에서 활성화되어 있지 않다. 현재 상태는 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE`이며 authoring/mutation 권위는 `NONE`이다. 별도 사용자 승인 채택 전에는 Hera를 활성화하거나 HiGodot/GUT 권위를 대체·우회할 수 없다.
+`BS-HERA-20260808-01`: Hera Agent Godot 1.0.0 vendor tree의 main 존재와 당시 비활성 상태를 확정한 역사적 reconciliation Decision이다. 당시 상태 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE`는 보존한다.
 
-GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. 같은 파일의 이중 권위와 출처 미상 변경은 실패 처리한다. Hera 또한 별도 채택 전에는 Git 추적 제품·저작 surface를 수정할 권위가 없다.
+`BS-TOOLCHAIN-20260809-01`: 사용자가 Godot AI 3.1.3 전환과 GUT·Hera editor plugin 활성화를 승인했다. 현재 GitHub 상태는 Godot AI `3.1.3`, GUT editor plugin enabled, Hera editor plugin enabled이며 Hera의 현재 상태는 `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`다. 이 활성화는 권위 확장이 아니다. HiGodot은 계속 `TASK2_SCOPED_AUTHORING_ONLY` Godot 직렬화 저작 권위이고, GUT은 계속 `SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY`, Hera authoring/mutation authority는 계속 `NONE`이다. Hera가 별도 범위 승인을 받기 전에는 `.tscn`·Resource·`project.godot` 또는 기타 추적 제품 surface를 저작·수정할 수 없다.
+
+GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. 같은 파일의 이중 권위와 출처 미상 변경은 실패 처리한다. Hera 또한 별도 범위 승인 전에는 Git 추적 제품·저작 surface를 수정할 권위가 없다.
 
 `READY`·`AWAITING`·`IN_REVIEW`·`APPROVED` 같은 일반 상태 문자열만으로는 진입할 수 없다. 범위, current main SHA, Sheet range, 열린 PR 상태, 미실행 검증과 차단 이유가 기계 판독 가능한 상태로 함께 기록되어야 한다.
