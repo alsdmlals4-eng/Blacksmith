@@ -1,12 +1,13 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "spec_id": "BS-TEST-AUTH-20260806-01",
   "decision_ids": [
     "BS-OPS-20260806-10",
     "BS-TEST-20260806-01",
     "BS-GATE-20260806-01",
     "BS-HERA-20260808-01",
-    "BS-HIGODOT-20260808-01"
+    "BS-HIGODOT-20260808-01",
+    "BS-TOOLCHAIN-20260809-01"
   ],
   "adoption_state": "FORMALLY_ADOPTED_ACTIVE_TEST_FRAMEWORK_AUTHORITY",
   "effective_scope": "MAIN_CANON_AUTHORITY_GATE_AND_GUT_RUNTIME",
@@ -14,7 +15,7 @@
   "higodot": {
     "product": "hi-godot/godot-ai",
     "installed_path": "addons/godot_ai",
-    "installed_plugin_version": "3.0.5",
+    "installed_plugin_version": "3.1.3",
     "license": "MIT",
     "godot_requirement": "4.5+; 4.7+ recommended",
     "current_state": "FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY",
@@ -53,7 +54,8 @@
     "local_license_blob_sha": "a38ac231fed3febe257c9e5fc31efb8ec7a39f90",
     "upstream_license_blob_sha": "a38ac231fed3febe257c9e5fc31efb8ec7a39f90",
     "cli_entry_present": "res://addons/gut/gut_cmdln.gd",
-    "project_plugin_enabled": false,
+    "project_plugin_enabled": true,
+    "plugin_activation_decision_id": "BS-TOOLCHAIN-20260809-01",
     "config_present": true,
     "project_gut_test_root_present": true,
     "formal_ci_authority": true,
@@ -81,12 +83,14 @@
     "installed_path": "addons/hera_agent_godot",
     "installed_plugin_version": "1.0.0",
     "introduced_main_commit": "a5126d8a2091ce2350e50713eac614a045cc6ef2",
-    "observed_current_main": "ddb914f7e70e0deb62f5840fb990eb471eb7f441",
-    "status": "VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE",
-    "project_plugin_enabled": false,
+    "observed_current_main": "2dddf864519a557152c6bbf0f0ee7fb94eadf11c",
+    "status": "VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE",
+    "project_plugin_enabled": true,
+    "plugin_activation_decision_id": "BS-TOOLCHAIN-20260809-01",
     "authoring_authority": "NONE",
-    "production_activation": "REQUIRES_SEPARATE_USER_APPROVED_ADOPTION",
-    "mutation_permission": "NONE_UNTIL_SEPARATE_ADOPTION"
+    "production_activation": "USER_APPROVED_EDITOR_PLUGIN_ENABLED_NON_AUTHORITATIVE",
+    "mutation_permission": "NONE_UNLESS_SEPARATELY_SCOPED",
+    "serialized_mutation_permission": "NONE_UNLESS_SEPARATELY_SCOPED"
   },
   "conflict_rules": {
     "tracked_file_mutation_by_gut_runtime": "FORBIDDEN",
