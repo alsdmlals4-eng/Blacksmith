@@ -22,6 +22,7 @@ func test_workshop_is_initial_state() -> void:
 	if app == null:
 		return
 	assert_eq(app.current_state, "WORKSHOP", "Task 2 shell must enter at WORKSHOP")
+	app.free()
 
 
 func test_declared_edge_is_distinct_from_implemented_destination() -> void:
@@ -32,6 +33,7 @@ func test_declared_edge_is_distinct_from_implemented_destination() -> void:
 	assert_true(app.can_transition("WORKSHOP", "FORGE"), "WORKSHOP→FORGE must be declared")
 	assert_eq(app.transition_to("FORGE"), app.MISSING_DESTINATION, "declared but unimplemented state must fail closed")
 	assert_eq(app.current_state, "WORKSHOP", "missing destination must not mutate current state")
+	app.free()
 
 
 func test_undeclared_edge_fails_closed() -> void:
@@ -42,3 +44,4 @@ func test_undeclared_edge_fails_closed() -> void:
 	assert_false(app.can_transition("WORKSHOP", "RESULT"), "WORKSHOP→RESULT must not bypass the declared graph")
 	assert_eq(app.transition_to("RESULT"), app.INVALID_TRANSITION, "undeclared edge must fail closed")
 	assert_eq(app.current_state, "WORKSHOP", "invalid transition must not mutate current state")
+	app.free()
