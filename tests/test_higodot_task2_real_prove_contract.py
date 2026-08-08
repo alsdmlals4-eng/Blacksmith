@@ -6,31 +6,42 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DRIVER = ROOT / "tools" / "higodot_task2_bridge.py"
+ORCHESTRATOR = ROOT / "tools" / "higodot_task2_real_prove.py"
 RECIPE = ROOT / ".github" / "validation" / "higodot-task2-authoring-recipe.json"
 WORKFLOW = ROOT / ".github" / "workflows" / "higodot-task2-authoring-bridge.yml"
 PROJECT_PATH = "/workspace/Blacksmith"
 HEAD = "a" * 40
 
 
-def _load_driver():
-    spec = importlib.util.spec_from_file_location("higodot_task2_bridge", DRIVER)
+def _load(path: Path, name: str):
+    spec = importlib.util.spec_from_file_location(name, path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
 
 
+def _load_driver():
+    return _load(DRIVER, "higodot_task2_bridge")
+
+
+def _load_orchestrator():
+    assert ORCHESTRATOR.is_file(), f"missing Task 8 orchestrator: {ORCHESTRATOR.relative_to(ROOT)}"
+    return _load(ORCHESTRATOR, "higodot_task2_real_prove")
+
+
 def test_run_prove_binds_preflight_mutations_and_provenance_context() -> None:
     from tests.test_higodot_task2_mcp_driver import FakeClient, _preflight_responses, _required_tools
 
     driver = _load_driver()
+    orchestrator = _load_orchestrator()
     recipe = driver.load_recipe(RECIPE)
     responses = _preflight_responses()
     for index, item in enumerate(recipe["operations"]):
         responses.setdefault(item["tool"], []).append({"status": "ok", "operation_index": index})
     client = FakeClient(_required_tools(recipe), responses)
 
-    result = asyncio.run(driver.run_prove(client, recipe, PROJECT_PATH, HEAD))
+    result = asyncio.run(orchestrator.run_prove(client, recipe, PROJECT_PATH, HEAD))
 
     assert set(result) == {"context", "operations"}
     context = result["context"]
@@ -47,8 +58,8 @@ def test_run_prove_binds_preflight_mutations_and_provenance_context() -> None:
     assert all(record["success"] is True for record in result["operations"])
 
 
-def test_driver_exposes_fail_closed_real_prove_cli() -> None:
-    source = DRIVER.read_text(encoding="utf-8")
+def test_orchestrator_exposes_fail_closed_real_prove_cli() -> None:
+    source = ORCHESTRATOR.read_text(encoding="utf-8") if ORCHESTRATOR.is_file() else ""
     for marker in (
         "async def run_prove(",
         "def write_prove_evidence(",
@@ -65,8 +76,9 @@ def test_driver_exposes_fail_closed_real_prove_cli() -> None:
 def test_workflow_invokes_real_prove_before_serialized_diff_validation() -> None:
     text = WORKFLOW.read_text(encoding="utf-8")
     prove = text[text.index("prove:") : text.index("publish:")]
+    command = "python tools/higodot_task2_real_prove.py prove"
     for marker in (
-        "python tools/higodot_task2_bridge.py prove",
+        command,
         ".github/validation/higodot-task2-authoring-recipe.json",
         "artifacts/higodot-task2/session-context.json",
         "artifacts/higodot-task2/operation-evidence.json",
@@ -76,7 +88,7 @@ def test_workflow_invokes_real_prove_before_serialized_diff_validation() -> None
     ):
         assert marker in prove, marker
     assert "--quit-after 2" not in prove
-    assert prove.index("python tools/higodot_task2_bridge.py prove") < prove.index("verify_serialized_diff")
+    assert prove.index(command) < prove.index("verify_serialized_diff")
 
 
 def test_workflow_pins_uv_for_higodot_plugin_server_startup() -> None:
