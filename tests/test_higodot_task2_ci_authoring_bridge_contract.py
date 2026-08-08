@@ -328,9 +328,13 @@ def test_publish_stays_gated_until_provenance_ready() -> None:
     prove = text[text.index("prove:") : text.index("publish:")]
     publish = text[text.index("publish:") :]
     assert "provenance_ready" in prove
+    assert "provenance_ready=true" in prove
+    assert "actions/upload-artifact@" in prove
+    assert prove.index("actions/upload-artifact@") < prove.index("provenance_ready=true")
     assert "provenance_ready" in publish
     assert "needs.prove.outputs.provenance_ready" in publish
-    for forbidden in ("xvfb-run", "godot --", "godot-ai", "/mcp", "--force", " rebase ", "git push"):
+    for forbidden in ("xvfb-run", "godot --", "godot-ai", "/mcp", "--force", " rebase "):
         assert forbidden not in publish
+    assert f"git push origin HEAD:{TARGET_BRANCH}" in publish
     for marker in ("expected_head_sha", "sha256", "artifact"):
         assert marker in publish
