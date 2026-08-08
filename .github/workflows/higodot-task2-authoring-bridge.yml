@@ -133,7 +133,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Task 5 still does not send MCP authoring requests. Until Task 8 wires
+          # Task 6 still does not send MCP authoring requests. Until Task 8 wires
           # the approved recipe, the exact diff gate below intentionally fails closed.
           xvfb-run -a "$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64" --editor --path "$GITHUB_WORKSPACE" --quit-after 2
 
@@ -265,7 +265,75 @@ jobs:
           )
           PY
 
-      - name: Keep publication disabled until real provenance exists
+      - name: Build and validate proven HiGodot Task 2 provenance
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from tools import higodot_task2_provenance as provenance
+
+          root = Path("artifacts/higodot-task2")
+          validation_root = root / "validation"
+          artifact_root = root / "provenance"
+          context_path = root / "session-context.json"
+          operations_path = root / "operation-evidence.json"
+          if not context_path.is_file() or not operations_path.is_file():
+              raise SystemExit("real HiGodot authoring context/evidence is required before provenance")
+
+          context = json.loads(context_path.read_text(encoding="utf-8"))
+          operations = json.loads(operations_path.read_text(encoding="utf-8"))
+          serialized = json.loads((root / "serialized-sha256.json").read_text(encoding="utf-8"))
+          validations = json.loads((validation_root / "validation-evidence.json").read_text(encoding="utf-8"))
+          validation_files = {
+              "task2_static_contract": validation_root / "task2-static.log",
+              "godot_import": validation_root / "godot-import.log",
+              "smoke_main_menu": validation_root / "main_menu-smoke.log",
+              "smoke_vertical_slice_app": validation_root / "vertical_slice_app-smoke.log",
+              "smoke_workshop": validation_root / "vs_workshop_screen-smoke.log",
+              "gut": validation_root / "gut-junit.xml",
+              "task1_contract": validation_root / "task1.log",
+              "model_integration": validation_root / "model-integration.log",
+          }
+          schema_path = Path(".github/validation/higodot-task2-provenance-schema.json")
+          manifest = provenance.prepare_provenance_artifact(
+              repo=Path("."),
+              artifact_root=artifact_root,
+              context=context,
+              operations=operations,
+              serialized_hashes=serialized,
+              validations=validations,
+              validation_files=validation_files,
+              expected_head=os.environ["EXPECTED_HEAD_SHA"],
+              schema_path=schema_path,
+          )
+          provenance.validate_provenance_artifact(
+              artifact_root,
+              os.environ["EXPECTED_HEAD_SHA"],
+              schema_path,
+          )
+          manifest_path = artifact_root / "higodot-task2-provenance.json"
+          product_project = artifact_root / "product/project.godot"
+          if not manifest_path.is_file() or not product_project.is_file():
+              raise SystemExit("provenance bundle is incomplete")
+          print(f"validated provenance manifest: {manifest_path}")
+          print(f"validated proven product bytes: {product_project}")
+          print(f"changed_paths={manifest['changed_paths']}")
+          PY
+
+      - name: Upload proven HiGodot Task 2 provenance
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: higodot-task2-provenance
+          path: artifacts/higodot-task2/provenance
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Keep publication disabled until guarded transport exists
         id: publish-gate
         shell: bash
         run: echo "provenance_ready=false" >> "$GITHUB_OUTPUT"
@@ -285,5 +353,5 @@ jobs:
         run: |
           set -euo pipefail
           echo "expected_head_sha=$EXPECTED_HEAD_SHA"
-          echo "artifact sha256 verification and byte-identical transport are not implemented in Task 3"
+          echo "artifact sha256 verification and byte-identical transport are not implemented in Task 6"
           exit 1
