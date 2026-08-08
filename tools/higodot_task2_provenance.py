@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import copy
 import json
+import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +20,8 @@ SENSITIVE_KEY_FRAGMENTS = (
     "credential",
 )
 SENSITIVE_EXACT_KEYS = {"env", "environ", "environment"}
+_SHA40 = re.compile(r"^[0-9a-f]{40}$")
+sha256_file = bridge.sha256_file
 
 
 def assert_no_sensitive_provenance_fields(value: Any, path: str = "$") -> None:
@@ -206,5 +210,55 @@ def validate_provenance_artifact(
     for name in sorted(bridge.REQUIRED_POST_AUTHORING_VALIDATIONS):
         if artifact_hashes[f"validation/{name}.evidence"] != validations[name]["sha256"]:
             raise ValueError(f"validation artifact hash does not match evidence hash: {name}")
+
+    return manifest
+
+
+def verify_publish_head(expected_head: str, actual_remote_head: str) -> None:
+    if _SHA40.fullmatch(expected_head or "") is None or _SHA40.fullmatch(actual_remote_head or "") is None:
+        raise ValueError("publish head values must be lowercase 40-hex commit SHAs")
+    if actual_remote_head != expected_head:
+        raise ValueError(
+            f"publish target branch moved: expected {expected_head}, got {actual_remote_head}"
+        )
+
+
+def _git_status_porcelain(repo: Path) -> list[str]:
+    output = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=repo,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    return [line for line in output.splitlines() if line.strip()]
+
+
+def stage_proven_artifact(
+    artifact_root: Path,
+    checkout_root: Path,
+    expected_head: str,
+    schema_path: Path,
+) -> dict[str, Any]:
+    manifest = validate_provenance_artifact(artifact_root, expected_head, schema_path)
+    if _git_status_porcelain(checkout_root):
+        raise ValueError("publish checkout must be clean before staging proven bytes")
+
+    for relative in sorted(bridge.ALLOWED_SERIALIZED_PATHS):
+        source = artifact_root / "product" / relative
+        destination = checkout_root / relative
+        copied_hash = _copy_exact(source, destination)
+        expected_hash = manifest["serialized_sha256"][relative]
+        if copied_hash != expected_hash:
+            raise ValueError(f"staged product hash mismatch: {relative}")
+
+    changed = bridge.git_changed_paths(checkout_root)
+    if len(changed) != len(bridge.ALLOWED_SERIALIZED_PATHS) or set(changed) != set(bridge.ALLOWED_SERIALIZED_PATHS):
+        raise ValueError(f"staged publish diff escaped exact allowlist: {changed}")
+
+    for relative in sorted(bridge.ALLOWED_SERIALIZED_PATHS):
+        actual_hash = bridge.sha256_file(checkout_root / relative)
+        if actual_hash != manifest["serialized_sha256"][relative]:
+            raise ValueError(f"staged checkout hash mismatch: {relative}")
 
     return manifest
