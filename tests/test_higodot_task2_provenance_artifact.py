@@ -257,8 +257,11 @@ def test_workflow_builds_and_validates_provenance_before_upload() -> None:
         "validation-evidence.json",
         "actions/upload-artifact@",
         "higodot-task2-provenance",
+        "provenance_ready=true",
     ):
         assert marker in prove, marker
-    assert prove.index("validate_provenance_artifact") < prove.index("actions/upload-artifact@")
+    validation_index = prove.index("validate_provenance_artifact")
+    upload_index = prove.index("actions/upload-artifact@")
+    ready_index = prove.index("provenance_ready=true")
     assert prove.index("validate_post_authoring_validations") < prove.index("prepare_provenance_artifact")
-    assert "provenance_ready=true" not in prove
+    assert validation_index < upload_index < ready_index
