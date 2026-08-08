@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   prove:
-    name: PROVE / read-only identity and runtime gate
+    name: PROVE / HiGodot authoring and validation gate
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -97,18 +97,24 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m pip install --disable-pip-version-check "godot-ai==3.0.5" "fastmcp==3.4.2"
+          python -m pip install --disable-pip-version-check "godot-ai==3.0.5" "fastmcp==3.4.2" "uv==0.12.3"
           python - <<'PY'
           from importlib.metadata import version
           actual = version("godot-ai")
           actual_fastmcp = version("fastmcp")
+          actual_uv = version("uv")
           if actual != "3.0.5":
               raise SystemExit(f"godot-ai version mismatch: {actual}")
           if actual_fastmcp != "3.4.2":
               raise SystemExit(f"fastmcp version mismatch: {actual_fastmcp}")
+          if actual_uv != "0.12.3":
+              raise SystemExit(f"uv version mismatch: {actual_uv}")
           print(f"godot-ai package identity PASS: {actual}")
           print(f"fastmcp package identity PASS: {actual_fastmcp}")
+          print(f"uv package identity PASS: {actual_uv}")
           PY
+          uv --version
+          uvx --version
 
       - name: Install Xvfb
         shell: bash
@@ -129,13 +135,66 @@ jobs:
           chmod +x Godot_v4.7.1-stable_linux.x86_64
           ./Godot_v4.7.1-stable_linux.x86_64 --version
 
-      - name: Prove non-headless Editor launch path only
+      - name: Launch non-headless Editor with HiGodot plugin
         shell: bash
         run: |
           set -euo pipefail
-          # Task 7 still does not send MCP authoring requests. Until Task 8 wires
-          # the approved recipe, the exact diff gate below intentionally fails closed.
-          xvfb-run -a "$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64" --editor --path "$GITHUB_WORKSPACE" --quit-after 2
+          mkdir -p artifacts/higodot-task2
+          setsid xvfb-run -a "$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64" \
+            --editor --path "$GITHUB_WORKSPACE" \
+            > "$RUNNER_TEMP/higodot-editor.log" 2>&1 &
+          editor_pid=$!
+          echo "EDITOR_PID=$editor_pid" >> "$GITHUB_ENV"
+          echo "HiGodot Editor process group started: $editor_pid"
+
+      - name: Wait for localhost HiGodot MCP server
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          import socket
+          import time
+
+          deadline = time.monotonic() + 45.0
+          last_error = None
+          while time.monotonic() < deadline:
+              try:
+                  with socket.create_connection(("127.0.0.1", 8000), timeout=1.0):
+                      print("HiGodot MCP port 8000 ready")
+                      raise SystemExit(0)
+              except OSError as exc:
+                  last_error = exc
+                  time.sleep(0.5)
+          raise SystemExit(f"HiGodot MCP port 8000 did not become ready: {last_error}")
+          PY
+
+      - name: Execute approved Task 2 recipe through real HiGodot MCP
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/higodot_task2_real_prove.py prove \
+            --recipe .github/validation/higodot-task2-authoring-recipe.json \
+            --project-path "$GITHUB_WORKSPACE" \
+            --expected-head "$EXPECTED_HEAD_SHA" \
+            --context-out artifacts/higodot-task2/session-context.json \
+            --operations-out artifacts/higodot-task2/operation-evidence.json
+
+      - name: Stop authoring Editor before headless validation
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          if [ -n "${EDITOR_PID:-}" ]; then
+            kill "$EDITOR_PID" 2>/dev/null || true
+            kill -- "-$EDITOR_PID" 2>/dev/null || true
+            wait "$EDITOR_PID" 2>/dev/null || true
+          fi
+          if [ -f "$RUNNER_TEMP/higodot-editor.log" ]; then
+            tail -n 120 "$RUNNER_TEMP/higodot-editor.log"
+          fi
 
       - name: Verify exact serialized diff before validation
         shell: bash
