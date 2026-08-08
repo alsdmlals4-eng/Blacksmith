@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.2.0",
+  "schema_version": "1.1.0",
   "spec_id": "BS-TEST-AUTH-20260806-01",
   "decision_ids": [
     "BS-OPS-20260806-10",
