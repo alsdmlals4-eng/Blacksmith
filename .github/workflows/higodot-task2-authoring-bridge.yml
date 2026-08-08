@@ -40,6 +40,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Capture pre-authoring project setting baseline
+        shell: bash
+        run: cp project.godot "$RUNNER_TEMP/project.godot.before"
+
       - name: Validate repository branch and exact head
         shell: bash
         run: |
@@ -129,10 +133,137 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Task 3 only proves the approved non-headless runtime shape.
-          # No MCP authoring request is sent in this task.
+          # Task 5 still does not send MCP authoring requests. Until Task 8 wires
+          # the approved recipe, the exact diff gate below intentionally fails closed.
           xvfb-run -a "$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64" --editor --path "$GITHUB_WORKSPACE" --quit-after 2
-          test "$(git status --porcelain)" = ""
+
+      - name: Verify exact serialized diff before validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/higodot-task2/validation
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from tools import higodot_task2_bridge as bridge
+
+          baseline = Path(os.environ["RUNNER_TEMP"] + "/project.godot.before").read_text(encoding="utf-8")
+          hashes = bridge.verify_serialized_diff(Path("."), baseline)
+          Path("artifacts/higodot-task2/serialized-sha256.json").write_text(
+              json.dumps(hashes, sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Validate Task 2 static app shell
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest tests.test_vertical_slice_task2_app_shell_contract -v 2>&1 \
+            | tee artifacts/higodot-task2/validation/task2-static.log
+
+      - name: Validate Godot import and Task 2 scene smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64"
+          "$GODOT" --headless --editor --path . --quit 2>&1 \
+            | tee artifacts/higodot-task2/validation/godot-import.log
+          for scene in \
+            res://scenes/vertical_slice/main_menu.tscn \
+            res://scenes/vertical_slice/vertical_slice_app.tscn \
+            res://scenes/vertical_slice/screens/vs_workshop_screen.tscn; do
+            log_name=$(basename "$scene" .tscn)
+            "$GODOT" --headless --path . "$scene" --quit-after 2 2>&1 \
+              | tee "artifacts/higodot-task2/validation/${log_name}-smoke.log"
+            if grep -Eq "SCRIPT ERROR:|Parse Error:|Compile Error:|ERROR:" \
+              "artifacts/higodot-task2/validation/${log_name}-smoke.log"; then
+              exit 1
+            fi
+          done
+
+      - name: Run formal GUT 9.7.1 suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64"
+          "$GODOT" --headless -d -s --path "$PWD" addons/gut/gut_cmdln.gd \
+            -gdir=res://tests/gut/unit \
+            -gdir=res://tests/gut/integration \
+            -ginclude_subdirs \
+            -gexit \
+            -gjunit_xml_file=res://artifacts/higodot-task2/validation/gut-junit.xml \
+            2>&1 | tee artifacts/higodot-task2/validation/gut.log
+          python tools/validate_gut_junit.py \
+            artifacts/higodot-task2/validation/gut-junit.xml --minimum-tests 1
+
+      - name: Validate Task 1 canon
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest tests.test_vertical_slice_task1_canon_contract -v 2>&1 \
+            | tee artifacts/higodot-task2/validation/task1.log
+
+      - name: Run Godot model and integration regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64"
+          : > artifacts/higodot-task2/validation/model-integration.log
+          run_test() {
+            test_path="$1"
+            marker="$2"
+            echo "== $test_path ==" | tee -a artifacts/higodot-task2/validation/model-integration.log
+            "$GODOT" --headless --path . --script "$test_path" \
+              >> artifacts/higodot-task2/validation/model-integration.log 2>&1
+            grep -q "$marker" artifacts/higodot-task2/validation/model-integration.log
+          }
+          run_test res://tests/unit/test_forging_session.gd "ForgingSession tests PASSED"
+          run_test res://tests/unit/test_enhancement_session.gd "EnhancementSession tests PASSED"
+          run_test res://tests/unit/test_workshop_resources.gd "WorkshopResources tests PASSED"
+          run_test res://tests/unit/test_workshop_calendar.gd "WorkshopCalendar tests PASSED"
+          run_test res://tests/unit/test_craftsmanship_grade_resolver.gd "CraftsmanshipGradeResolver tests PASSED"
+          run_test res://tests/unit/test_customer_contract.gd "CustomerContract tests PASSED"
+          run_test res://tests/unit/test_world_activity_resolver.gd "WorldActivityResolver tests PASSED"
+          run_test res://tests/unit/test_equipment_world_registry.gd "EquipmentWorldRegistry tests PASSED"
+          run_test res://tests/unit/test_poc_telemetry.gd "PocTelemetry tests PASSED"
+          run_test res://tests/integration/test_manual_enhancement_economy.gd "Manual enhancement economy integration tests PASSED"
+          run_test res://tests/integration/test_forging_quality_enhancement.gd "Forging quality enhancement integration tests PASSED"
+          run_test res://tests/integration/test_workshop_action_atomicity.gd "Workshop action atomicity integration tests PASSED"
+          run_test res://tests/integration/test_equipment_lifecycle_controller.gd "Equipment lifecycle controller tests PASSED"
+          run_test res://tests/integration/test_equipment_lifecycle_poc.gd "Equipment lifecycle PoC integration tests PASSED"
+
+      - name: Validate named evidence set before any provenance gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from tools import higodot_task2_bridge as bridge
+
+          root = Path("artifacts/higodot-task2/validation")
+          files = {
+              "task2_static_contract": root / "task2-static.log",
+              "godot_import": root / "godot-import.log",
+              "smoke_main_menu": root / "main_menu-smoke.log",
+              "smoke_vertical_slice_app": root / "vertical_slice_app-smoke.log",
+              "smoke_workshop": root / "vs_workshop_screen-smoke.log",
+              "gut": root / "gut-junit.xml",
+              "task1_contract": root / "task1.log",
+              "model_integration": root / "model-integration.log",
+          }
+          evidence = {
+              name: {"status": "PASS", "sha256": bridge.sha256_file(path)}
+              for name, path in files.items()
+          }
+          evidence = bridge.validate_post_authoring_validations(evidence)
+          (root / "validation-evidence.json").write_text(
+              json.dumps(evidence, sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
 
       - name: Keep publication disabled until real provenance exists
         id: publish-gate
