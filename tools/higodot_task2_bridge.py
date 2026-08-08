@@ -20,7 +20,7 @@ TARGET_REPOSITORY = "alsdmlals4-eng/Blacksmith"
 TARGET_PR = 131
 TARGET_BRANCH = "feat/vertical-slice-task2-app-shell"
 TARGET_GODOT_VERSION = "4.7.1-stable"
-TARGET_HIGODOT_VERSION = "3.0.5"
+TARGET_HIGODOT_VERSION = "3.1.3"
 MCP_URL = "http://127.0.0.1:8000/mcp"
 EXPECTED_MAIN_SCENE = "res://scenes/vertical_slice/main_menu.tscn"
 
@@ -233,11 +233,11 @@ def validate_executable_recipe(recipe: dict[str, Any]) -> None:
         if not isinstance(arguments, dict) or "session_id" in arguments:
             raise ValueError(f"operation {index} arguments must be an object without session_id")
         if tool == "node_manage" and arguments.get("op") == "attach_script":
-            raise ValueError("node_manage has no attach_script op in HiGodot 3.0.5")
+            raise ValueError("node_manage has no attach_script op in HiGodot 3.1.3")
         if tool == "ui_manage" and arguments.get("op") not in {
             "set_anchor_preset", "set_text", "build_layout", "draw_recipe"
         }:
-            raise ValueError("ui_manage op is not available in HiGodot 3.0.5")
+            raise ValueError("ui_manage op is not available in HiGodot 3.1.3")
         if tool == "node_set_property" and arguments.get("property") == "script":
             if arguments.get("value") not in APPROVED_SCRIPT_PATHS:
                 raise ValueError("script property points outside approved Task 2 scripts")
