@@ -231,7 +231,7 @@ jobs:
           run_test res://tests/integration/test_manual_enhancement_economy.gd "Manual enhancement economy integration tests PASSED"
           run_test res://tests/integration/test_forging_quality_enhancement.gd "Forging quality enhancement integration tests PASSED"
           run_test res://tests/integration/test_workshop_action_atomicity.gd "Workshop action atomicity integration tests PASSED"
-          run_test res://tests/integration/test_equipment_lifecycle_controller.gd "Equipment lifecycle controller tests PASSED"
+          run_test res://tests/integration/test_equipment_lifecycle_controller.gd "Equipment lifecycle controller integration tests PASSED"
           run_test res://tests/integration/test_equipment_lifecycle_poc.gd "Equipment lifecycle PoC integration tests PASSED"
 
       - name: Validate named evidence set before any provenance gate
