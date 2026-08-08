@@ -57,6 +57,16 @@ PREFLIGHT_TOOLS = {
     "scene_get_hierarchy",
     "project_manage",
 }
+REQUIRED_POST_AUTHORING_VALIDATIONS = {
+    "task2_static_contract",
+    "godot_import",
+    "smoke_main_menu",
+    "smoke_vertical_slice_app",
+    "smoke_workshop",
+    "gut",
+    "task1_contract",
+    "model_integration",
+}
 REQUIRED_PROVENANCE_FIELDS = {
     "decision_ids",
     "repository",
@@ -178,8 +188,6 @@ def validate_recipe(recipe: dict[str, Any]) -> None:
     if not isinstance(operations, list) or not operations:
         raise ValueError("operations must be a non-empty list")
 
-    # Keep the original Task 2 authority validator compatible with its in-memory
-    # design fixture. load_recipe() adds the strict executable 3.0.5 shape gate.
     if not all(isinstance(item, dict) and set(item) == {"tool", "arguments"} for item in operations):
         project_writes = 0
         for index, operation in enumerate(operations):
@@ -224,7 +232,6 @@ def validate_executable_recipe(recipe: dict[str, Any]) -> None:
             raise ValueError(f"operation {index} uses forbidden writer {tool!r}")
         if not isinstance(arguments, dict) or "session_id" in arguments:
             raise ValueError(f"operation {index} arguments must be an object without session_id")
-
         if tool == "node_manage" and arguments.get("op") == "attach_script":
             raise ValueError("node_manage has no attach_script op in HiGodot 3.0.5")
         if tool == "ui_manage" and arguments.get("op") not in {
@@ -457,6 +464,28 @@ def verify_serialized_diff(repo: Path, before_project_text: str) -> dict[str, st
     return hashes
 
 
+def _require_sha256(value: Any, field: str) -> None:
+    if not isinstance(value, str) or _SHA256.fullmatch(value) is None:
+        raise ValueError(f"{field} must be a lowercase SHA-256 hex digest")
+
+
+def validate_post_authoring_validations(
+    evidence: dict[str, dict[str, str]],
+) -> dict[str, dict[str, str]]:
+    if not isinstance(evidence, dict) or set(evidence) != REQUIRED_POST_AUTHORING_VALIDATIONS:
+        raise ValueError("validation evidence must equal the exact required set")
+    normalized: dict[str, dict[str, str]] = {}
+    for name in sorted(REQUIRED_POST_AUTHORING_VALIDATIONS):
+        record = evidence.get(name)
+        if not isinstance(record, dict) or set(record) != {"status", "sha256"}:
+            raise ValueError(f"validation {name!r} must contain status and sha256 only")
+        if record.get("status") != "PASS":
+            raise ValueError(f"validation {name!r} must be PASS")
+        _require_sha256(record.get("sha256"), f"validation {name!r} SHA-256")
+        normalized[name] = {"status": "PASS", "sha256": str(record["sha256"])}
+    return normalized
+
+
 def build_provenance(
     context: dict[str, Any],
     operations: list[dict[str, Any]],
@@ -478,11 +507,6 @@ def build_provenance(
         "validations": copy.deepcopy(validations),
         "artifact_sha256": copy.deepcopy(context.get("artifact_sha256", {})),
     }
-
-
-def _require_sha256(value: Any, field: str) -> None:
-    if not isinstance(value, str) or _SHA256.fullmatch(value) is None:
-        raise ValueError(f"{field} must be a lowercase SHA-256 hex digest")
 
 
 def _require_version_identity(value: Any, expected: str, field: str) -> None:
@@ -539,10 +563,10 @@ def validate_provenance(payload: dict[str, Any], expected_head: str) -> None:
     validations = payload.get("validations")
     if not isinstance(validations, dict) or not validations:
         raise ValueError("validations must contain at least one PASS record")
-    for name, evidence in validations.items():
-        if not isinstance(evidence, dict) or evidence.get("status") != "PASS":
+    for name, record in validations.items():
+        if not isinstance(record, dict) or record.get("status") != "PASS":
             raise ValueError(f"validation {name!r} must be PASS")
-        _require_sha256(evidence.get("sha256"), f"validations[{name!r}].sha256")
+        _require_sha256(record.get("sha256"), f"validations[{name!r}].sha256")
     artifacts = payload.get("artifact_sha256")
     if not isinstance(artifacts, dict) or not artifacts:
         raise ValueError("artifact_sha256 must contain at least one artifact digest")
