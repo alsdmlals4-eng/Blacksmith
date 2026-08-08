@@ -158,11 +158,11 @@ def test_workflow_runs_required_post_authoring_validations_before_provenance_gat
         assert prove.index(marker) < gate_index, marker
 
 
-def test_workflow_has_no_artifact_upload_before_validation_gate() -> None:
+def test_workflow_has_no_artifact_upload_before_post_authoring_validation() -> None:
     text = WORKFLOW.read_text(encoding="utf-8")
     prove = text[text.index("prove:") : text.index("publish:")]
-    gate_index = prove.index("provenance_ready=false")
-    prefix = prove[:gate_index]
+    validation_index = prove.index("validate_post_authoring_validations")
+    prefix = prove[:validation_index]
     assert "actions/upload-artifact" not in prefix
 
 
