@@ -1,0 +1,154 @@
+name: HiGodot Task 2 Authoring Bridge
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_head_sha:
+        description: Exact PR #131 head SHA approved for this PROVE attempt
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  TARGET_REPOSITORY: alsdmlals4-eng/Blacksmith
+  TARGET_PR: "131"
+  TARGET_BRANCH: feat/vertical-slice-task2-app-shell
+  GODOT_VERSION: 4.7.1-stable
+  HIGODOT_VERSION: "3.0.5"
+  GODOT_AI_MODE: user
+  GODOT_AI_DISABLE_TELEMETRY: "true"
+
+concurrency:
+  group: higodot-task2-authoring-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prove:
+    name: PROVE / read-only identity and runtime gate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      provenance_ready: ${{ steps.publish-gate.outputs.provenance_ready }}
+    steps:
+      - name: Checkout exact requested head without credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.expected_head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate repository branch and exact head
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ github.repository }}" = "$TARGET_REPOSITORY"
+          test "${{ github.ref_name }}" = "$TARGET_BRANCH"
+          test "$(git rev-parse HEAD)" = "${{ inputs.expected_head_sha }}"
+          test "$(git status --porcelain)" = ""
+
+      - name: Validate PR #131 metadata before any authoring
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$TARGET_REPOSITORY/pulls/131" \
+            -o "$RUNNER_TEMP/pr-131.json"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["RUNNER_TEMP"] + "/pr-131.json").read_text(encoding="utf-8"))
+          expected = os.environ["EXPECTED_HEAD_SHA"]
+          failures = []
+          if payload.get("number") != 131:
+              failures.append("PR number mismatch")
+          if payload.get("state") != "open" or payload.get("merged") is True:
+              failures.append("PR #131 is not open/unmerged")
+          if payload.get("base", {}).get("ref") != "main":
+              failures.append("PR #131 base is not main")
+          if payload.get("head", {}).get("ref") != os.environ["TARGET_BRANCH"]:
+              failures.append("PR #131 branch mismatch")
+          if payload.get("head", {}).get("sha") != expected:
+              failures.append("PR #131 head moved")
+          if failures:
+              raise SystemExit("; ".join(failures))
+          print("PR #131 identity PASS")
+          PY
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned HiGodot server/client environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check "godot-ai==3.0.5"
+          python - <<'PY'
+          from importlib.metadata import version
+          actual = version("godot-ai")
+          if actual != "3.0.5":
+              raise SystemExit(f"godot-ai version mismatch: {actual}")
+          print(f"godot-ai package identity PASS: {actual}")
+          PY
+
+      - name: Install Xvfb
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xvfb
+
+      - name: Download and verify Godot 4.7.1
+        working-directory: ${{ runner.temp }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output godot.zip \
+            https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip
+          echo "c7ff14fd28472c8d4f193043de30278dcf7e5241a1dcf7566b02e27addaa33ba  godot.zip" | sha256sum --check -
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.1-stable_linux.x86_64
+          ./Godot_v4.7.1-stable_linux.x86_64 --version
+
+      - name: Prove non-headless Editor launch path only
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Task 3 only proves the approved non-headless runtime shape.
+          # No MCP authoring request is sent in this task.
+          xvfb-run -a "$RUNNER_TEMP/Godot_v4.7.1-stable_linux.x86_64" --editor --path "$GITHUB_WORKSPACE" --quit-after 2
+          test "$(git status --porcelain)" = ""
+
+      - name: Keep publication disabled until real provenance exists
+        id: publish-gate
+        shell: bash
+        run: echo "provenance_ready=false" >> "$GITHUB_OUTPUT"
+
+  publish:
+    name: PUBLISH / disabled byte-identical transport skeleton
+    needs: prove
+    if: ${{ needs.prove.outputs.provenance_ready == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Fail closed until Task 7 verified artifact transport exists
+        env:
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "expected_head_sha=$EXPECTED_HEAD_SHA"
+          echo "artifact sha256 verification and byte-identical transport are not implemented in Task 3"
+          exit 1
