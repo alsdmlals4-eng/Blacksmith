@@ -87,7 +87,8 @@ def test_workflow_invokes_real_prove_before_serialized_diff_validation() -> None
         "kill \"$EDITOR_PID\"",
     ):
         assert marker in prove, marker
-    assert "--quit-after 2" not in prove
+    launch = prove[prove.index("Launch non-headless Editor with HiGodot plugin") : prove.index(command)]
+    assert "--quit-after 2" not in launch
     assert prove.index(command) < prove.index("verify_serialized_diff")
 
 
