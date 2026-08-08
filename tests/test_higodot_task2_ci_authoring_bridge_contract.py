@@ -17,6 +17,7 @@ SCHEMA = ROOT / ".github" / "validation" / "higodot-task2-provenance-schema.json
 DECISION = ROOT / "docs" / "decisions" / "BS-HIGODOT-EXEC-20260808-01_TASK2_CI_AUTHORING_BRIDGE.md"
 DECISION_ID = "BS-HIGODOT-EXEC-20260808-01"
 TARGET_BRANCH = "feat/vertical-slice-task2-app-shell"
+GODOT_ARCHIVE_SHA256 = "c7ff14fd28472c8d4f193043de30278dcf7e5241a1dcf7566b02e27addaa33ba"
 ALLOWED_SERIALIZED_PATHS = {
     "project.godot",
     "scenes/vertical_slice/main_menu.tscn",
@@ -265,7 +266,10 @@ def test_validate_provenance_rejects_wrong_head_and_output_set() -> None:
         driver.validate_provenance(changed, head)
 
 
-@pytest.mark.skipif(not WORKFLOW.is_file(), reason="Task 3 workflow not implemented yet")
+def test_task3_workflow_surface_exists() -> None:
+    assert WORKFLOW.is_file(), f"missing Task 3 workflow: {WORKFLOW.relative_to(ROOT)}"
+
+
 def test_workflow_is_manual_only_and_bound_to_exact_pr_head() -> None:
     text = _required_text(WORKFLOW)
     assert "workflow_dispatch:" in text
@@ -273,11 +277,10 @@ def test_workflow_is_manual_only_and_bound_to_exact_pr_head() -> None:
     assert TARGET_BRANCH in text
     assert "alsdmlals4-eng/Blacksmith" in text
     assert "PR #131" in text or "pr_number: 131" in text or "TARGET_PR=131" in text
-    for forbidden_trigger in ("\n  pull_request:", "\n  push:", "\n  schedule:", "repository_dispatch:"):
+    for forbidden_trigger in ("\n  pull_request:", "\n  push:", "\n  schedule:", "repository_dispatch:", "issue_comment:", "pull_request_review:"):
         assert forbidden_trigger not in text
 
 
-@pytest.mark.skipif(not WORKFLOW.is_file(), reason="Task 3 workflow not implemented yet")
 def test_workflow_separates_prove_read_from_publish_write() -> None:
     text = _required_text(WORKFLOW)
     assert "prove:" in text
@@ -286,14 +289,33 @@ def test_workflow_separates_prove_read_from_publish_write() -> None:
     assert "contents: write" in text
     assert "needs: prove" in text
     assert text.index("contents: read") < text.index("contents: write")
+    top_before_jobs = text[: text.index("jobs:")]
+    assert "contents: write" not in top_before_jobs
 
 
-@pytest.mark.skipif(not WORKFLOW.is_file(), reason="Task 3 workflow not implemented yet")
+def test_prove_checkout_and_identity_are_fail_closed() -> None:
+    text = _required_text(WORKFLOW)
+    prove = text[text.index("prove:") : text.index("publish:")]
+    for marker in (
+        "fetch-depth: 0",
+        "persist-credentials: false",
+        "expected_head_sha",
+        "github.repository",
+        "github.ref_name",
+        TARGET_BRANCH,
+        "131",
+        "pulls/131",
+    ):
+        assert marker in prove
+    assert "continue-on-error: true" not in prove
+
+
 def test_mutation_runtime_is_xvfb_non_headless_and_version_bound() -> None:
     text = _required_text(WORKFLOW)
     assert "xvfb-run" in text
     assert "4.7.1" in text
-    assert "3.0.5" in text
+    assert "godot-ai==3.0.5" in text
+    assert GODOT_ARCHIVE_SHA256 in text
     assert "GODOT_AI_MODE" in text and "user" in text
     assert "GODOT_AI_DISABLE_TELEMETRY" in text
     mutation_lines = [line for line in text.splitlines() if "xvfb-run" in line or "author" in line.lower() and "godot" in line.lower()]
@@ -301,10 +323,13 @@ def test_mutation_runtime_is_xvfb_non_headless_and_version_bound() -> None:
     assert all("--headless" not in line for line in mutation_lines)
 
 
-@pytest.mark.skipif(not WORKFLOW.is_file(), reason="Task 3 workflow not implemented yet")
-def test_publish_is_byte_identical_transport_not_second_authoring_pass() -> None:
+def test_publish_stays_gated_until_provenance_ready() -> None:
     text = _required_text(WORKFLOW)
+    prove = text[text.index("prove:") : text.index("publish:")]
     publish = text[text.index("publish:") :]
+    assert "provenance_ready" in prove
+    assert "provenance_ready" in publish
+    assert "needs.prove.outputs.provenance_ready" in publish
     for forbidden in ("xvfb-run", "godot --", "godot-ai", "/mcp", "--force", " rebase "):
         assert forbidden not in publish
     for marker in ("expected_head_sha", "sha256", "artifact", "git push"):
