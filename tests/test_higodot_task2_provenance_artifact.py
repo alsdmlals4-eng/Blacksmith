@@ -9,6 +9,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 DRIVER = ROOT / "tools" / "higodot_task2_bridge.py"
+PROVENANCE = ROOT / "tools" / "higodot_task2_provenance.py"
 WORKFLOW = ROOT / ".github" / "workflows" / "higodot-task2-authoring-bridge.yml"
 SCHEMA = ROOT / ".github" / "validation" / "higodot-task2-provenance-schema.json"
 ALLOWED = {
@@ -29,12 +30,21 @@ VALIDATION_NAMES = {
 }
 
 
-def _load_driver():
-    spec = importlib.util.spec_from_file_location("higodot_task2_bridge", DRIVER)
+def _load_module(name: str, path: Path):
+    assert path.is_file(), f"missing module: {path.relative_to(ROOT)}"
+    spec = importlib.util.spec_from_file_location(name, path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def _load_driver():
+    return _load_module("higodot_task2_bridge", DRIVER)
+
+
+def _load_provenance():
+    return _load_module("higodot_task2_provenance", PROVENANCE)
 
 
 def _materialize_source(repo: Path) -> dict[str, str]:
@@ -96,7 +106,7 @@ def _operations() -> list[dict]:
 
 
 def test_prepare_provenance_artifact_copies_only_exact_products_and_validation_bytes(tmp_path: Path) -> None:
-    driver = _load_driver()
+    provenance = _load_provenance()
     repo = tmp_path / "repo"
     repo.mkdir()
     hashes = _materialize_source(repo)
@@ -104,7 +114,7 @@ def test_prepare_provenance_artifact_copies_only_exact_products_and_validation_b
     head = "c" * 40
     artifact = tmp_path / "artifact"
 
-    manifest = driver.prepare_provenance_artifact(
+    manifest = provenance.prepare_provenance_artifact(
         repo=repo,
         artifact_root=artifact,
         context=_context(head),
@@ -141,7 +151,7 @@ def test_prepare_provenance_artifact_copies_only_exact_products_and_validation_b
 
 
 def test_prepare_provenance_rejects_sensitive_context_before_writing(tmp_path: Path) -> None:
-    driver = _load_driver()
+    provenance = _load_provenance()
     repo = tmp_path / "repo"
     repo.mkdir()
     hashes = _materialize_source(repo)
@@ -152,7 +162,7 @@ def test_prepare_provenance_rejects_sensitive_context_before_writing(tmp_path: P
     artifact = tmp_path / "artifact"
 
     with pytest.raises(ValueError, match="sensitive"):
-        driver.prepare_provenance_artifact(
+        provenance.prepare_provenance_artifact(
             repo=repo,
             artifact_root=artifact,
             context=context,
@@ -167,22 +177,22 @@ def test_prepare_provenance_rejects_sensitive_context_before_writing(tmp_path: P
 
 
 def test_sensitive_scan_rejects_environment_dump_nested_anywhere() -> None:
-    driver = _load_driver()
+    provenance = _load_provenance()
     payload = _context("e" * 40)
     payload["session"]["environment"] = {"PATH": "/tmp", "HOME": "/home/runner"}
     with pytest.raises(ValueError, match="sensitive"):
-        driver.assert_no_sensitive_provenance_fields(payload)
+        provenance.assert_no_sensitive_provenance_fields(payload)
 
 
 def test_validate_provenance_artifact_rejects_product_tamper(tmp_path: Path) -> None:
-    driver = _load_driver()
+    provenance = _load_provenance()
     repo = tmp_path / "repo"
     repo.mkdir()
     hashes = _materialize_source(repo)
     validations, validation_files = _validation_files(tmp_path)
     head = "f" * 40
     artifact = tmp_path / "artifact"
-    driver.prepare_provenance_artifact(
+    provenance.prepare_provenance_artifact(
         repo=repo,
         artifact_root=artifact,
         context=_context(head),
@@ -195,18 +205,18 @@ def test_validate_provenance_artifact_rejects_product_tamper(tmp_path: Path) -> 
     )
     (artifact / "product/project.godot").write_text("tampered\n", encoding="utf-8")
     with pytest.raises(ValueError, match="artifact hash"):
-        driver.validate_provenance_artifact(artifact, head, SCHEMA)
+        provenance.validate_provenance_artifact(artifact, head, SCHEMA)
 
 
 def test_validate_provenance_artifact_rejects_manifest_head_or_extra_file(tmp_path: Path) -> None:
-    driver = _load_driver()
+    provenance = _load_provenance()
     repo = tmp_path / "repo"
     repo.mkdir()
     hashes = _materialize_source(repo)
     validations, validation_files = _validation_files(tmp_path)
     head = "1" * 40
     artifact = tmp_path / "artifact"
-    driver.prepare_provenance_artifact(
+    provenance.prepare_provenance_artifact(
         repo=repo,
         artifact_root=artifact,
         context=_context(head),
@@ -218,27 +228,28 @@ def test_validate_provenance_artifact_rejects_manifest_head_or_extra_file(tmp_pa
         schema_path=SCHEMA,
     )
     with pytest.raises(ValueError, match="input head"):
-        driver.validate_provenance_artifact(artifact, "2" * 40, SCHEMA)
+        provenance.validate_provenance_artifact(artifact, "2" * 40, SCHEMA)
 
     (artifact / "environment.json").write_text('{"PATH":"/tmp"}\n', encoding="utf-8")
     with pytest.raises(ValueError, match="artifact file set"):
-        driver.validate_provenance_artifact(artifact, head, SCHEMA)
+        provenance.validate_provenance_artifact(artifact, head, SCHEMA)
 
 
 def test_provenance_schema_contract_is_checked_from_committed_schema() -> None:
-    driver = _load_driver()
+    provenance = _load_provenance()
     schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
-    assert driver.validate_provenance_schema_contract(schema) is None
+    assert provenance.validate_provenance_schema_contract(schema) is None
     bad = copy.deepcopy(schema)
     bad["properties"]["repository"].pop("const")
     with pytest.raises(ValueError, match="repository"):
-        driver.validate_provenance_schema_contract(bad)
+        provenance.validate_provenance_schema_contract(bad)
 
 
 def test_workflow_builds_and_validates_provenance_before_upload() -> None:
     text = WORKFLOW.read_text(encoding="utf-8")
     prove = text[text.index("prove:") : text.index("publish:")]
     for marker in (
+        "higodot_task2_provenance",
         "prepare_provenance_artifact",
         "validate_provenance_artifact",
         "higodot-task2-provenance.json",
