@@ -33,7 +33,7 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertNotIn("^(scripts|scenes|data)/vertical_slice/", workflow)
         self.assertNotIn("^addons/.*", workflow)
 
-    def test_toolchain_repair_exception_is_one_shot_and_exact() -> None:
+    def test_toolchain_repair_exception_is_one_shot_and_exact(self) -> None:
         workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
         for token in (
             "BS-TOOLCHAIN-20260809-01",
