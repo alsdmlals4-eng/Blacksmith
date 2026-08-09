@@ -64,6 +64,22 @@ class BaseV9AdoptionTests(unittest.TestCase):
         stripped = workflow.replace("addons/godot_ai/handlers/project_handler.gd", "").replace("addons/godot_ai/plugin.gd", "")
         self.assertNotIn("addons/godot_ai/", stripped)
 
+    def test_task2_published_product_exception_is_exact_four_paths_and_blob_bound(self) -> None:
+        workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
+        expected = {
+            "project.godot": "27372b3862207aab5942b7dcc71cfb4b74aa4b92",
+            "scenes/vertical_slice/main_menu.tscn": "6a8d9c4340f7b134d16a1ee4d91c0f9751c4e926",
+            "scenes/vertical_slice/vertical_slice_app.tscn": "bb7578a45bab294018ed6654ef9accfcde1b85e6",
+            "scenes/vertical_slice/screens/vs_workshop_screen.tscn": "731445f7d35a46c92ab834a8d46c18ba7e5655e2",
+        }
+        self.assertIn("BS-HIGODOT-EXEC-20260808-01", workflow)
+        self.assertIn("approved-task2-published-product-paths.txt", workflow)
+        for path, blob in expected.items():
+            self.assertIn(path, workflow)
+            self.assertIn(blob, workflow)
+        self.assertNotIn("scenes/vertical_slice/.*", workflow)
+        self.assertNotIn("project.godot.*", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()
