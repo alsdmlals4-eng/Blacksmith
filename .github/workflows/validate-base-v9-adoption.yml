@@ -36,10 +36,10 @@ jobs:
             mv protected-product-paths.remaining.txt protected-product-paths.txt
           fi
 
-          # One-shot approved Task 2 HiGodot repair and publication: PR #131 /
-          # BS-HIGODOT-EXEC-20260808-01. Both the vendored command implementation
-          # and the published serialized product remain exact-path and exact-blob
-          # bound; no directory-wide scene, addon, or project.godot exemption exists.
+          # One-shot approved Task 2 HiGodot repair and publication:
+          # pull_request.number == 131 / BS-HIGODOT-EXEC-20260808-01.
+          # Both the vendored command implementation and published serialized product
+          # remain exact-path and exact-blob bound; no directory-wide exemption exists.
           if [ "${{ github.event.pull_request.number }}" = "131" ] \
              && [ "${{ github.event.pull_request.base.sha }}" = "c3d7f0cf0f5b3662803ae58b7176d8a996638c60" ] \
              && [ "${{ github.event.pull_request.head.ref }}" = "feat/vertical-slice-task2-app-shell" ]; then
