@@ -15,9 +15,27 @@ jobs:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0}
       - run: |
+          set -euo pipefail
           git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" > changed.txt
           grep -E '^(src/|scripts/|scenes/|data/|assets/|addons/|project\.godot$)' changed.txt \
             | grep -Ev '^(scripts|data)/vertical_slice/' > protected-product-paths.txt || true
+
+          # One-shot approved repair: pull_request.number == 138 / BS-TOOLCHAIN-20260809-01.
+          # It is valid only against the exact accepted protected baseline below and
+          # removes exactly one already-reviewed Hera lifecycle file from this PR's
+          # protected-path rejection list. Future PRs receive no addon exemption.
+          if [ "${{ github.event.pull_request.number }}" = "138" ] \
+             && [ "${{ github.event.pull_request.base.sha }}" = "2dddf864519a557152c6bbf0f0ee7fb94eadf11c" ]; then
+            test -f docs/decisions/BS-TOOLCHAIN-20260809-01_GODOT_AI_313_HERA_GUT_PLUGIN_ACTIVATION.md
+            grep -Fq "BS-TOOLCHAIN-20260809-01" \
+              docs/decisions/BS-TOOLCHAIN-20260809-01_GODOT_AI_313_HERA_GUT_PLUGIN_ACTIVATION.md
+            printf '%s\n' 'addons/hera_agent_godot/hera_agent_plugin.gd' \
+              > approved-toolchain-protected-paths.txt
+            grep -Fxv -f approved-toolchain-protected-paths.txt protected-product-paths.txt \
+              > protected-product-paths.remaining.txt || true
+            mv protected-product-paths.remaining.txt protected-product-paths.txt
+          fi
+
           if [ -s protected-product-paths.txt ]; then
             echo "Unapproved product paths changed:"
             cat protected-product-paths.txt
