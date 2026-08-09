@@ -36,6 +36,32 @@ jobs:
             mv protected-product-paths.remaining.txt protected-product-paths.txt
           fi
 
+          # One-shot approved Task 2 HiGodot repair: pull_request.number == 131 /
+          # BS-HIGODOT-EXEC-20260808-01. This is deliberately narrower than an
+          # addon-directory exemption: it requires the exact main baseline, exact
+          # PR branch, authority Decision record, both expected changed paths, and
+          # the exact reviewed blobs produced by the approved TDD implementation.
+          if [ "${{ github.event.pull_request.number }}" = "131" ] \
+             && [ "${{ github.event.pull_request.base.sha }}" = "c3d7f0cf0f5b3662803ae58b7176d8a996638c60" ] \
+             && [ "${{ github.event.pull_request.head.ref }}" = "feat/vertical-slice-task2-app-shell" ]; then
+            test -f docs/decisions/BS-HIGODOT-EXEC-20260808-01_TASK2_CI_AUTHORING_BRIDGE.md
+            grep -Fq "BS-HIGODOT-EXEC-20260808-01" \
+              docs/decisions/BS-HIGODOT-EXEC-20260808-01_TASK2_CI_AUTHORING_BRIDGE.md
+            grep -Fxq 'addons/godot_ai/handlers/project_handler.gd' protected-product-paths.txt
+            grep -Fxq 'addons/godot_ai/plugin.gd' protected-product-paths.txt
+            test "$(git rev-parse '${{ github.sha }}:addons/godot_ai/handlers/project_handler.gd')" = \
+              "e3c2e4568a0d44cb621742241678814df90f31f5"
+            test "$(git rev-parse '${{ github.sha }}:addons/godot_ai/plugin.gd')" = \
+              "e465cb9f308d3968252f08bf9e0a0a83a80b87bd"
+            printf '%s\n' \
+              'addons/godot_ai/handlers/project_handler.gd' \
+              'addons/godot_ai/plugin.gd' \
+              > approved-task2-higodot-protected-paths.txt
+            grep -Fxv -f approved-task2-higodot-protected-paths.txt protected-product-paths.txt \
+              > protected-product-paths.remaining.txt || true
+            mv protected-product-paths.remaining.txt protected-product-paths.txt
+          fi
+
           if [ -s protected-product-paths.txt ]; then
             echo "Unapproved product paths changed:"
             cat protected-product-paths.txt
