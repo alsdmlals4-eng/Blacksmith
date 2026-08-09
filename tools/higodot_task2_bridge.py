@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import copy
 import hashlib
 import importlib
@@ -23,6 +24,8 @@ TARGET_GODOT_VERSION = "4.7.1-stable"
 TARGET_HIGODOT_VERSION = "3.1.3"
 MCP_URL = "http://127.0.0.1:8000/mcp"
 EXPECTED_MAIN_SCENE = "res://scenes/vertical_slice/main_menu.tscn"
+SESSION_DISCOVERY_ATTEMPTS = 41
+SESSION_DISCOVERY_DELAY_SECONDS = 0.5
 
 ALLOWED_SERIALIZED_PATHS: tuple[str, ...] = (
     "project.godot",
@@ -279,24 +282,47 @@ def _require_session_identity(session: dict[str, Any], expected_project_path: st
         raise ValueError("HiGodot server launch mode must be uvx")
 
 
+async def _discover_project_session(
+    client,
+    expected_project_path: str,
+    *,
+    attempts: int = SESSION_DISCOVERY_ATTEMPTS,
+    delay_seconds: float = SESSION_DISCOVERY_DELAY_SECONDS,
+) -> dict[str, Any]:
+    if attempts < 1:
+        raise ValueError("session discovery attempts must be at least 1")
+    if delay_seconds < 0:
+        raise ValueError("session discovery delay must be non-negative")
+
+    expected = _normalize_project_path(expected_project_path)
+    for attempt in range(attempts):
+        listing = await client.call("session_manage", {"op": "list", "params": {}})
+        sessions = listing.get("sessions")
+        if not isinstance(sessions, list):
+            raise ValueError("session_manage(list) returned invalid sessions payload")
+        matches = [
+            item
+            for item in sessions
+            if isinstance(item, dict)
+            and _normalize_project_path(str(item.get("project_path", ""))) == expected
+        ]
+        if len(matches) == 1:
+            return matches[0]
+        if len(matches) > 1:
+            raise ValueError(f"expected exactly one Blacksmith project session, found {len(matches)}")
+        if attempt + 1 < attempts:
+            await asyncio.sleep(delay_seconds)
+
+    raise ValueError("expected exactly one Blacksmith project session, found 0")
+
+
 async def preflight_mcp(client, recipe: dict[str, Any], expected_project_path: str) -> dict[str, Any]:
     available = await client.list_tool_names()
     missing = required_mcp_tools(recipe) - set(available)
     if missing:
         raise ValueError(f"required MCP tools are unavailable: {sorted(missing)}")
 
-    listing = await client.call("session_manage", {"op": "list", "params": {}})
-    sessions = listing.get("sessions")
-    if not isinstance(sessions, list):
-        raise ValueError("session_manage(list) returned invalid sessions payload")
-    matches = [
-        item for item in sessions
-        if isinstance(item, dict)
-        and _normalize_project_path(str(item.get("project_path", ""))) == _normalize_project_path(expected_project_path)
-    ]
-    if len(matches) != 1:
-        raise ValueError(f"expected exactly one Blacksmith project session, found {len(matches)}")
-    session = matches[0]
+    session = await _discover_project_session(client, expected_project_path)
     _require_session_identity(session, expected_project_path)
     session_id = str(session.get("session_id", ""))
     if not session_id:
