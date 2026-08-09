@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "2dddf864519a557152c6bbf0f0ee7fb94eadf11c",
+  "decision_ids": [
+    "BS-HIGODOT-EXEC-20260808-01",
+    "BS-HIGODOT-20260808-01",
+    "BS-VS-TASK2-20260807-01"
+  ],
+  "approved_paths": [
+    "project.godot"
+  ],
+  "approval_source": "GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE",
+  "approval_time": "2026-08-10T08:36:00+09:00",
+  "scope_summary": "Exact approved Task 2 start-scene publication produced by guarded HiGodot PROVE to PUBLISH; only the detected protected path project.godot is approved."
+}
