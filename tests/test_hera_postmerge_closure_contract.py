@@ -31,11 +31,11 @@ def test_hera_decision_is_closed_as_merged_main_canon() -> None:
     assert "DRAFT_PR132_PENDING_MERGE" not in text
 
 
-def test_entry_gate_records_merged_reconciliation_and_keeps_task2_blocked() -> None:
+def test_entry_gate_preserves_hera_closure_and_uses_current_task2_state() -> None:
     text = _text(GATES)
     assert "PR132: MERGED_MAIN_CANON_29b06e323185e436d709fcdf638f445b9099266e" in text
-    assert "PR131: DESIGN_APPROVED_REBASE_REVIEW_PENDING" in text
-    assert "TASK2_DESIGN_APPROVED_IMPLEMENTATION_BLOCKED" in text
+    assert "PR131: SCRIPT_GREEN_HIGODOT_AUTHORITY_ACTIVE_EXECUTION_PATH_BLOCKED" in text
+    assert "TASK2: STATIC_RED_REMAINS_SCENE_PROJECT_EXECUTION_BLOCKED" in text
     assert "HERA_RECONCILIATION_DRAFT_PENDING_MERGE" not in text
 
 
