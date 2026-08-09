@@ -219,6 +219,18 @@ def validate_recipe(recipe: dict[str, Any]) -> None:
             raise ValueError("recipe must contain exactly one project main-scene write")
 
 
+def _is_approved_main_scene_batch(tool: str, arguments: dict[str, Any]) -> bool:
+    return tool == "batch_execute" and arguments == {
+        "commands": [
+            {
+                "command": "set_main_scene",
+                "params": {"scene": EXPECTED_MAIN_SCENE},
+            }
+        ],
+        "undo": False,
+    }
+
+
 def validate_executable_recipe(recipe: dict[str, Any]) -> None:
     operations = recipe.get("operations")
     if not isinstance(operations, list) or not operations:
@@ -229,12 +241,17 @@ def validate_executable_recipe(recipe: dict[str, Any]) -> None:
             raise ValueError(f"operation {index} must contain exactly tool and arguments")
         tool = item["tool"]
         arguments = item["arguments"]
+        if not isinstance(arguments, dict) or "session_id" in arguments:
+            raise ValueError(f"operation {index} arguments must be an object without session_id")
+        if tool == "batch_execute":
+            if not _is_approved_main_scene_batch(tool, arguments):
+                raise ValueError("batch_execute is outside the exact approved Task 2 main-scene shape")
+            project_writes += 1
+            continue
         if tool not in ALLOWED_NATIVE_TOOLS:
             raise ValueError(f"operation {index} uses non-allowlisted tool {tool!r}")
         if tool in FORBIDDEN_WRITER_TOOLS or "filesystem" in tool:
             raise ValueError(f"operation {index} uses forbidden writer {tool!r}")
-        if not isinstance(arguments, dict) or "session_id" in arguments:
-            raise ValueError(f"operation {index} arguments must be an object without session_id")
         if tool == "node_manage" and arguments.get("op") == "attach_script":
             raise ValueError("node_manage has no attach_script op in HiGodot 3.1.3")
         if tool == "ui_manage" and arguments.get("op") not in {
@@ -246,13 +263,8 @@ def validate_executable_recipe(recipe: dict[str, Any]) -> None:
                 raise ValueError("script property points outside approved Task 2 scripts")
         if tool == "project_manage":
             if arguments.get("op") == "settings_set":
-                project_writes += 1
-                params = arguments.get("params")
-                if not isinstance(params, dict):
-                    raise ValueError("project settings_set requires params")
-                if params.get("key") != "application/run/main_scene" or params.get("value") != EXPECTED_MAIN_SCENE:
-                    raise ValueError("project_manage may only set the approved main scene")
-            elif arguments.get("op") != "settings_get":
+                raise ValueError("project_manage(settings_set) is not an approved Task 2 mutation route")
+            if arguments.get("op") != "settings_get":
                 raise ValueError("project_manage op is outside Task 2 scope")
     if project_writes != 1:
         raise ValueError("executable recipe must contain exactly one main-scene write")
@@ -382,6 +394,19 @@ def recipe_operation_to_call(item: dict[str, Any], session_id: str) -> tuple[str
 
 
 async def _readback_after_ambiguous(client, tool: str, arguments: dict[str, Any], session_id: str) -> dict[str, Any]:
+    if tool == "batch_execute":
+        recipe_arguments = copy.deepcopy(arguments)
+        recipe_arguments.pop("session_id", None)
+        if not _is_approved_main_scene_batch(tool, recipe_arguments):
+            raise ValueError("ambiguous batch_execute is outside the approved Task 2 main-scene shape")
+        return await client.call(
+            "project_manage",
+            {
+                "op": "settings_get",
+                "params": {"key": "application/run/main_scene"},
+                "session_id": session_id,
+            },
+        )
     if tool == "project_manage" and arguments.get("op") == "settings_set":
         params = arguments.get("params") or {}
         return await client.call(

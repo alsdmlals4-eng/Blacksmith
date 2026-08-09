@@ -117,8 +117,16 @@
     },
     {"tool": "scene_save", "arguments": {}},
     {
-      "tool": "project_manage",
-      "arguments": {"op": "settings_set", "params": {"key": "application/run/main_scene", "value": "res://scenes/vertical_slice/main_menu.tscn"}}
+      "tool": "batch_execute",
+      "arguments": {
+        "commands": [
+          {
+            "command": "set_main_scene",
+            "params": {"scene": "res://scenes/vertical_slice/main_menu.tscn"}
+          }
+        ],
+        "undo": false
+      }
     }
   ]
 }
