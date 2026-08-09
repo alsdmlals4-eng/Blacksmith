@@ -46,6 +46,24 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertNotIn("addons/hera_agent_godot/.*", workflow)
         self.assertNotIn("addons/hera_agent_godot/", workflow.replace("addons/hera_agent_godot/hera_agent_plugin.gd", ""))
 
+    def test_task2_higodot_exception_is_one_shot_blob_exact_and_decision_bound(self) -> None:
+        workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
+        for token in (
+            "BS-HIGODOT-EXEC-20260808-01",
+            "pull_request.number == 131",
+            "c3d7f0cf0f5b3662803ae58b7176d8a996638c60",
+            "feat/vertical-slice-task2-app-shell",
+            "addons/godot_ai/handlers/project_handler.gd",
+            "e3c2e4568a0d44cb621742241678814df90f31f5",
+            "addons/godot_ai/plugin.gd",
+            "e465cb9f308d3968252f08bf9e0a0a83a80b87bd",
+            "approved-task2-higodot-protected-paths.txt",
+        ):
+            self.assertIn(token, workflow)
+        self.assertNotIn("addons/godot_ai/.*", workflow)
+        stripped = workflow.replace("addons/godot_ai/handlers/project_handler.gd", "").replace("addons/godot_ai/plugin.gd", "")
+        self.assertNotIn("addons/godot_ai/", stripped)
+
 
 if __name__ == "__main__":
     unittest.main()
