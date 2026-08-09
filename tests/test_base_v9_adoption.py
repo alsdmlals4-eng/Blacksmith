@@ -24,13 +24,27 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertIn("ci-gate", workflow)
         self.assertIn("adversarial-gate", workflow)
 
-    def test_only_approved_task1_product_paths_are_exempt(self) -> None:
+    def test_default_product_exemption_remains_task1_only(self) -> None:
         workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
         self.assertIn("^(src/|scripts/|scenes/|data/|assets/|addons/|project", workflow)
         self.assertIn("^(scripts|data)/vertical_slice/", workflow)
         self.assertIn("protected-product-paths.txt", workflow)
         self.assertIn("Unapproved product paths changed", workflow)
         self.assertNotIn("^(scripts|scenes|data)/vertical_slice/", workflow)
+        self.assertNotIn("^addons/.*", workflow)
+
+    def test_toolchain_repair_exception_is_one_shot_and_exact() -> None:
+        workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
+        for token in (
+            "BS-TOOLCHAIN-20260809-01",
+            "pull_request.number == 138",
+            "2dddf864519a557152c6bbf0f0ee7fb94eadf11c",
+            "addons/hera_agent_godot/hera_agent_plugin.gd",
+            "approved-toolchain-protected-paths.txt",
+        ):
+            self.assertIn(token, workflow)
+        self.assertNotIn("addons/hera_agent_godot/.*", workflow)
+        self.assertNotIn("addons/hera_agent_godot/", workflow.replace("addons/hera_agent_godot/hera_agent_plugin.gd", ""))
 
 
 if __name__ == "__main__":
