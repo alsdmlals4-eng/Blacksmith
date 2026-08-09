@@ -65,8 +65,9 @@ def _session() -> dict:
 
 
 def _preflight_responses(sessions: list[dict] | None = None) -> dict[str, list[object]]:
+    session_list = [_session()] if sessions is None else sessions
     return {
-        "session_manage": [{"sessions": sessions or [_session()], "count": len(sessions or [_session()]), "exclude_domains": []}],
+        "session_manage": [{"sessions": session_list, "count": len(session_list), "exclude_domains": []}],
         "session_activate": [{"status": "ok", "active_session_id": SESSION_ID, "matched": "exact_id"}],
         "editor_state": [{
             "godot_version": "4.7.1.stable.official",
@@ -141,6 +142,52 @@ def test_preflight_rejects_missing_required_tool_before_session_calls() -> None:
     with pytest.raises(ValueError, match="required MCP tools"):
         asyncio.run(driver.preflight_mcp(client, recipe, PROJECT_PATH))
     assert client.calls == [("__list_tools__", {})]
+
+
+def test_discover_project_session_retries_zero_match_then_accepts_exact_session() -> None:
+    driver = _load_driver()
+    client = FakeClient(
+        set(),
+        {
+            "session_manage": [
+                {"sessions": [], "count": 0, "exclude_domains": []},
+                {"sessions": [_session()], "count": 1, "exclude_domains": []},
+            ]
+        },
+    )
+    result = asyncio.run(
+        driver._discover_project_session(
+            client,
+            PROJECT_PATH,
+            attempts=2,
+            delay_seconds=0,
+        )
+    )
+    assert result["session_id"] == SESSION_ID
+    assert [name for name, _ in client.calls] == ["session_manage", "session_manage"]
+
+
+def test_discover_project_session_exhausts_zero_match_budget_without_activation() -> None:
+    driver = _load_driver()
+    client = FakeClient(
+        set(),
+        {
+            "session_manage": [
+                {"sessions": [], "count": 0, "exclude_domains": []},
+                {"sessions": [], "count": 0, "exclude_domains": []},
+            ]
+        },
+    )
+    with pytest.raises(ValueError, match="expected exactly one Blacksmith project session, found 0"):
+        asyncio.run(
+            driver._discover_project_session(
+                client,
+                PROJECT_PATH,
+                attempts=2,
+                delay_seconds=0,
+            )
+        )
+    assert [name for name, _ in client.calls] == ["session_manage", "session_manage"]
 
 
 def test_preflight_rejects_ambiguous_project_sessions_before_activation() -> None:
