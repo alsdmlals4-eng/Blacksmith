@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Blacksmith"
 config/description="Idle clicker blacksmith game for Android mobile"
-run/main_scene="res://scenes/test/enhancement_test.tscn"
+run/main_scene="res://scenes/vertical_slice/main_menu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/show_image=false
 
