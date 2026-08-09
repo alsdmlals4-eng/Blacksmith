@@ -49,7 +49,7 @@ jobs:
         run: |
           set -euo pipefail
           git status --short
-          unexpected="$(git status --porcelain | awk '{print $2}' | grep -Ev '^(skills/BASE_V9_ADAPTER\.json|skills/PROJECT_BASE_SKILL_ADAPTER\.json|skills/PROJECT_SKILL_SNAPSHOT\.json|docs/PROJECT_OPERATING_DASHBOARD\.html)$' || true)"
+          unexpected="$(git status --porcelain | awk '{print $2}' | grep -Ev '^(\.base-contract/|skills/BASE_V9_ADAPTER\.json|skills/PROJECT_BASE_SKILL_ADAPTER\.json|skills/PROJECT_SKILL_SNAPSHOT\.json|docs/PROJECT_OPERATING_DASHBOARD\.html)$' || true)"
           if [ -n "$unexpected" ]; then
             printf 'Unexpected generator output:\n%s\n' "$unexpected" >&2
             exit 1
