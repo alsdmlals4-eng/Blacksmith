@@ -27,6 +27,7 @@ ADOPTION_MAIN_SHA = "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb"
 VALIDATED_HEAD_SHA = "9ab46229946ae11529824fabefc6d558bd608d5d"
 RUNTIME_RUN_ID = 31111242901
 RUNTIME_ARTIFACT_ID = 8971760740
+TOOLCHAIN_ACTIVATION_DECISION = "BS-TOOLCHAIN-20260809-01"
 
 ALLOWED_ADOPTION_PATHS = {
     ".gutconfig.json",
@@ -136,10 +137,15 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         self.assertIn("assert_eq", text)
         self.assertTrue(INTEGRATION_README.is_file())
 
-    def test_editor_plugin_is_not_enabled_as_second_authoring_authority(self) -> None:
+    def test_editor_plugin_enablement_does_not_grant_second_authoring_authority(self) -> None:
         project = _text(PROJECT)
+        policy = _json(POLICY)
         self.assertIn('res://addons/godot_ai/plugin.cfg', project)
-        self.assertNotIn('res://addons/gut/plugin.cfg', project)
+        self.assertIn('res://addons/gut/plugin.cfg', project)
+        self.assertTrue(policy["gut"]["project_plugin_enabled"])
+        self.assertEqual(policy["gut"]["plugin_activation_decision_id"], TOOLCHAIN_ACTIVATION_DECISION)
+        self.assertEqual(policy["gut"]["authority_role"], "SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY")
+        self.assertEqual(policy["higodot"]["policy_role"], "SOLE_GODOT_AUTHORING_AUTHORITY")
 
     def test_adoption_manifest_is_complete_fail_closed_and_main_canon(self) -> None:
         manifest = _json(MANIFEST)
@@ -156,6 +162,7 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         self.assertEqual(manifest["godot_compatibility"], "4.7.x")
         self.assertEqual(manifest["validated_engine"], "4.7.1")
         self.assertEqual(manifest["authority_role"], "GDSCRIPT_TEST_FRAMEWORK_ONLY")
+        # Historical adoption evidence remains unchanged: the editor plugin was disabled at adoption time.
         self.assertFalse(manifest["editor_plugin_enabled"])
         self.assertEqual(manifest["adoption_status"], "MAIN_CANON_ACTIVE_TEST_FRAMEWORK_AUTHORITY")
         self.assertEqual(manifest["adoption_main_sha"], ADOPTION_MAIN_SHA)
@@ -195,6 +202,7 @@ class GutFormalAdoptionContractTests(unittest.TestCase):
         self.assertEqual(policy["adoption_main_sha"], ADOPTION_MAIN_SHA)
         self.assertEqual(policy["gut"]["status"], "FORMALLY_ADOPTED_ACTIVE")
         self.assertTrue(policy["gut"]["formal_ci_authority"])
+        self.assertTrue(policy["gut"]["project_plugin_enabled"])
         self.assertEqual(snapshot["snapshot_scope"], "POSTMERGE_ADOPTION_CANON_CLOSURE")
         self.assertEqual(snapshot["source_main_sha_at_capture"], ADOPTION_MAIN_SHA)
         self.assertEqual(snapshot["gut"]["aggregate"], "FORMALLY_ADOPTED_ACTIVE")

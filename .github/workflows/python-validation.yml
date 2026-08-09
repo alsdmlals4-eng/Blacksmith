@@ -93,9 +93,21 @@ jobs:
           python tests/check_project_core_alignment_current.py
           python -m unittest tests/test_ci_workflow_structure.py
           python -m pytest tests/test_higodot_gut_authority_gate.py -q
+          python -m pytest tests/test_higodot_production_authoring_activation.py -q
+          python -m pytest tests/test_user_approved_editor_plugin_runtime_contract.py -q
           python -m unittest tests/test_gut_formal_adoption_contract.py -v
           python -m pytest tests/test_hera_vendor_reconciliation_contract.py -q
           python -m pytest tests/test_hera_postmerge_closure_contract.py -q
+          python -m unittest tests.test_vertical_slice_new_campaign_initializer_authority -v
+          python -m pytest tests/test_higodot_task2_ci_authoring_bridge_contract.py -q
+          python -m pytest tests/test_higodot_task2_mcp_driver.py -q
+          python -m pytest tests/test_higodot_task2_toolchain_pin.py -q
+          python -m pytest tests/test_higodot_task2_313_runtime_contract.py -q
+          python -m pytest tests/test_user_approved_editor_plugin_sync_contract.py -q
+          python -m pytest tests/test_higodot_task2_post_authoring_gate.py -q
+          python -m pytest tests/test_higodot_task2_provenance_artifact.py -q
+          python -m pytest tests/test_higodot_task2_publish_guard.py -q
+          python -m pytest tests/test_higodot_task2_real_prove_contract.py -q
 
       - name: Validate archive retention governance
         working-directory: project
@@ -122,6 +134,11 @@ jobs:
         if: inputs.scope == 'code'
         working-directory: project
         run: python -m unittest tests.test_vertical_slice_task1_canon_contract -v
+
+      - name: Validate vertical slice Task 2 app shell contract
+        if: inputs.scope == 'code'
+        working-directory: project
+        run: python -m unittest tests.test_vertical_slice_task2_app_shell_contract -v
 
       - name: Validate forging quality contract
         if: inputs.scope == 'code'
