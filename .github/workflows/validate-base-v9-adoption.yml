@@ -36,17 +36,17 @@ jobs:
             mv protected-product-paths.remaining.txt protected-product-paths.txt
           fi
 
-          # One-shot approved Task 2 HiGodot repair: pull_request.number == 131 /
-          # BS-HIGODOT-EXEC-20260808-01. This is deliberately narrower than an
-          # addon-directory exemption: it requires the exact main baseline, exact
-          # PR branch, authority Decision record, both expected changed paths, and
-          # the exact reviewed blobs produced by the approved TDD implementation.
+          # One-shot approved Task 2 HiGodot repair and publication: PR #131 /
+          # BS-HIGODOT-EXEC-20260808-01. Both the vendored command implementation
+          # and the published serialized product remain exact-path and exact-blob
+          # bound; no directory-wide scene, addon, or project.godot exemption exists.
           if [ "${{ github.event.pull_request.number }}" = "131" ] \
              && [ "${{ github.event.pull_request.base.sha }}" = "c3d7f0cf0f5b3662803ae58b7176d8a996638c60" ] \
              && [ "${{ github.event.pull_request.head.ref }}" = "feat/vertical-slice-task2-app-shell" ]; then
             test -f docs/decisions/BS-HIGODOT-EXEC-20260808-01_TASK2_CI_AUTHORING_BRIDGE.md
             grep -Fq "BS-HIGODOT-EXEC-20260808-01" \
               docs/decisions/BS-HIGODOT-EXEC-20260808-01_TASK2_CI_AUTHORING_BRIDGE.md
+
             grep -Fxq 'addons/godot_ai/handlers/project_handler.gd' protected-product-paths.txt
             grep -Fxq 'addons/godot_ai/plugin.gd' protected-product-paths.txt
             test "$(git rev-parse '${{ github.sha }}:addons/godot_ai/handlers/project_handler.gd')" = \
@@ -58,6 +58,28 @@ jobs:
               'addons/godot_ai/plugin.gd' \
               > approved-task2-higodot-protected-paths.txt
             grep -Fxv -f approved-task2-higodot-protected-paths.txt protected-product-paths.txt \
+              > protected-product-paths.remaining.txt || true
+            mv protected-product-paths.remaining.txt protected-product-paths.txt
+
+            grep -Fxq 'project.godot' protected-product-paths.txt
+            grep -Fxq 'scenes/vertical_slice/main_menu.tscn' protected-product-paths.txt
+            grep -Fxq 'scenes/vertical_slice/vertical_slice_app.tscn' protected-product-paths.txt
+            grep -Fxq 'scenes/vertical_slice/screens/vs_workshop_screen.tscn' protected-product-paths.txt
+            test "$(git rev-parse '${{ github.sha }}:project.godot')" = \
+              "27372b3862207aab5942b7dcc71cfb4b74aa4b92"
+            test "$(git rev-parse '${{ github.sha }}:scenes/vertical_slice/main_menu.tscn')" = \
+              "6a8d9c4340f7b134d16a1ee4d91c0f9751c4e926"
+            test "$(git rev-parse '${{ github.sha }}:scenes/vertical_slice/vertical_slice_app.tscn')" = \
+              "bb7578a45bab294018ed6654ef9accfcde1b85e6"
+            test "$(git rev-parse '${{ github.sha }}:scenes/vertical_slice/screens/vs_workshop_screen.tscn')" = \
+              "731445f7d35a46c92ab834a8d46c18ba7e5655e2"
+            printf '%s\n' \
+              'project.godot' \
+              'scenes/vertical_slice/main_menu.tscn' \
+              'scenes/vertical_slice/vertical_slice_app.tscn' \
+              'scenes/vertical_slice/screens/vs_workshop_screen.tscn' \
+              > approved-task2-published-product-paths.txt
+            grep -Fxv -f approved-task2-published-product-paths.txt protected-product-paths.txt \
               > protected-product-paths.remaining.txt || true
             mv protected-product-paths.remaining.txt protected-product-paths.txt
           fi
