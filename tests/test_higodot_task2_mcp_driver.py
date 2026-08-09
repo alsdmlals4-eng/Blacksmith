@@ -213,9 +213,18 @@ def test_validate_executable_recipe_rejects_batch_escape_hatch_shapes(arguments:
 
 def test_validate_executable_recipe_rejects_legacy_project_settings_set_route() -> None:
     driver = _load_driver()
-    recipe = json.loads(RECIPE.read_text(encoding="utf-8"))
-    assert recipe["operations"][-1]["tool"] == "project_manage"
-    assert recipe["operations"][-1]["arguments"]["op"] == "settings_set"
+    recipe = _recipe_with_final_operation(
+        {
+            "tool": "project_manage",
+            "arguments": {
+                "op": "settings_set",
+                "params": {
+                    "key": "application/run/main_scene",
+                    "value": driver.EXPECTED_MAIN_SCENE,
+                },
+            },
+        }
+    )
     with pytest.raises(ValueError):
         driver.validate_executable_recipe(recipe)
 
