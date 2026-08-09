@@ -4,6 +4,7 @@ import argparse
 import asyncio
 import json
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -14,6 +15,8 @@ except ModuleNotFoundError:  # Direct execution: python tools/higodot_task2_real
 
 
 _SHA40 = re.compile(r"^[0-9a-f]{40}$")
+_EXPECTED_CONTEXT_PATH = "artifacts/higodot-task2/session-context.json"
+_EXPECTED_OPERATIONS_PATH = "artifacts/higodot-task2/operation-evidence.json"
 
 
 async def run_prove(
@@ -76,6 +79,91 @@ def write_prove_evidence(
     )
 
 
+def _git(
+    repo: Path,
+    *args: str,
+    check: bool = True,
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", *args],
+        cwd=repo,
+        check=check,
+        capture_output=True,
+        text=True,
+    )
+
+
+def _is_tracked(repo: Path, relative_path: str) -> bool:
+    result = _git(
+        repo,
+        "ls-files",
+        "--error-unmatch",
+        "--",
+        relative_path,
+        check=False,
+    )
+    return result.returncode == 0
+
+
+def _require_exact_evidence_path(repo: Path, path: Path, expected: str) -> str:
+    candidate = path if path.is_absolute() else repo / path
+    resolved = candidate.resolve()
+    try:
+        relative = resolved.relative_to(repo).as_posix()
+    except ValueError as exc:
+        raise ValueError("PROVE evidence path must stay inside the project repository") from exc
+    if relative != expected:
+        raise ValueError(f"PROVE evidence path must equal {expected}")
+    if not resolved.is_file():
+        raise ValueError(f"PROVE evidence path is missing: {expected}")
+    if _is_tracked(repo, relative):
+        raise ValueError(f"PROVE evidence path must remain untracked: {expected}")
+    return relative
+
+
+def register_runtime_byproduct_excludes(
+    repo: Path,
+    context_out: Path,
+    operations_out: Path,
+) -> None:
+    """Hide only validated ephemeral PROVE byproducts from the strict product diff."""
+    repo = repo.resolve()
+    top_level = Path(_git(repo, "rev-parse", "--show-toplevel").stdout.strip()).resolve()
+    if top_level != repo:
+        raise ValueError("PROVE project path must be the Git repository root")
+
+    excluded = [
+        _require_exact_evidence_path(repo, context_out, _EXPECTED_CONTEXT_PATH),
+        _require_exact_evidence_path(repo, operations_out, _EXPECTED_OPERATIONS_PATH),
+    ]
+
+    untracked = _git(repo, "ls-files", "--others", "--exclude-standard").stdout.splitlines()
+    for relative in sorted(path for path in untracked if path.endswith(".gd.uid")):
+        source_relative = relative[: -len(".uid")]
+        source_path = repo / source_relative
+        if not source_path.is_file() or not _is_tracked(repo, source_relative):
+            raise ValueError(
+                f"generated .gd.uid requires paired tracked .gd: {relative}"
+            )
+        excluded.append(relative)
+
+    git_exclude_value = _git(repo, "rev-parse", "--git-path", "info/exclude").stdout.strip()
+    exclude_path = Path(git_exclude_value)
+    if not exclude_path.is_absolute():
+        exclude_path = repo / exclude_path
+    exclude_path.parent.mkdir(parents=True, exist_ok=True)
+    existing = exclude_path.read_text(encoding="utf-8") if exclude_path.exists() else ""
+    existing_lines = set(existing.splitlines())
+    additions = [f"/{relative}" for relative in excluded if f"/{relative}" not in existing_lines]
+    if not additions:
+        return
+    prefix = "" if not existing or existing.endswith("\n") else "\n"
+    exclude_path.write_text(
+        existing + prefix + "\n".join(additions) + "\n",
+        encoding="utf-8",
+    )
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Blacksmith Task 2 real HiGodot PROVE orchestrator")
     parser.add_argument("command", choices=["prove"])
@@ -85,12 +173,12 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--context-out",
         type=Path,
-        default=Path("artifacts/higodot-task2/session-context.json"),
+        default=Path(_EXPECTED_CONTEXT_PATH),
     )
     parser.add_argument(
         "--operations-out",
         type=Path,
-        default=Path("artifacts/higodot-task2/operation-evidence.json"),
+        default=Path(_EXPECTED_OPERATIONS_PATH),
     )
     return parser
 
@@ -100,6 +188,11 @@ async def _run_cli(args: argparse.Namespace) -> None:
     async with bridge.FastMCPBridgeClient() as client:
         result = await run_prove(client, recipe, args.project_path, args.expected_head)
     write_prove_evidence(result, args.context_out, args.operations_out)
+    register_runtime_byproduct_excludes(
+        Path(args.project_path),
+        args.context_out,
+        args.operations_out,
+    )
 
 
 def main() -> None:
