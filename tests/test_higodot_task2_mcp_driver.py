@@ -96,7 +96,29 @@ def _required_tools(recipe: dict) -> set[str]:
     }
 
 
+def _approved_main_scene_batch(driver) -> dict:
+    return {
+        "tool": "batch_execute",
+        "arguments": {
+            "commands": [
+                {
+                    "command": "set_main_scene",
+                    "params": {"scene": driver.EXPECTED_MAIN_SCENE},
+                }
+            ],
+            "undo": False,
+        },
+    }
+
+
+def _recipe_with_final_operation(final_operation: dict) -> dict:
+    payload = json.loads(RECIPE.read_text(encoding="utf-8"))
+    payload["operations"][-1] = final_operation
+    return payload
+
+
 def test_recipe_uses_exact_313_executable_call_shape() -> None:
+    driver = _load_driver()
     payload = json.loads(RECIPE.read_text(encoding="utf-8"))
     assert payload["operations"]
     for item in payload["operations"]:
@@ -108,6 +130,102 @@ def test_recipe_uses_exact_313_executable_call_shape() -> None:
     assert '"property": "script"' in encoded
     assert '"op": "set_anchor_preset"' in encoded
     assert '"preset": "full_rect"' in encoded
+    assert payload["operations"][-1] == _approved_main_scene_batch(driver)
+    assert '"op": "settings_set"' not in encoded
+
+
+def test_validate_executable_recipe_accepts_only_the_approved_main_scene_batch() -> None:
+    driver = _load_driver()
+    recipe = _recipe_with_final_operation(_approved_main_scene_batch(driver))
+    driver.validate_executable_recipe(recipe)
+
+
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        {
+            "commands": [
+                {"command": "set_main_scene", "params": {"scene": "res://scenes/vertical_slice/main_menu.tscn"}},
+                {"command": "set_main_scene", "params": {"scene": "res://scenes/vertical_slice/main_menu.tscn"}},
+            ],
+            "undo": False,
+        },
+        {
+            "commands": [
+                {"command": "set_project_setting", "params": {"scene": "res://scenes/vertical_slice/main_menu.tscn"}}
+            ],
+            "undo": False,
+        },
+        {
+            "commands": [
+                {
+                    "command": "set_main_scene",
+                    "params": {"scene": "res://scenes/vertical_slice/main_menu.tscn"},
+                    "extra": True,
+                }
+            ],
+            "undo": False,
+        },
+        {
+            "commands": [
+                {
+                    "command": "set_main_scene",
+                    "params": {
+                        "scene": "res://scenes/vertical_slice/main_menu.tscn",
+                        "extra": True,
+                    },
+                }
+            ],
+            "undo": False,
+        },
+        {
+            "commands": [
+                {"command": "set_main_scene", "params": {"scene": "res://scenes/main/main.tscn"}}
+            ],
+            "undo": False,
+        },
+        {
+            "commands": [
+                {"command": "set_main_scene", "params": {"scene": "res://scenes/vertical_slice/main_menu.tscn"}}
+            ],
+            "undo": True,
+        },
+        {
+            "commands": [
+                {"command": "set_main_scene", "params": {"scene": "res://scenes/vertical_slice/main_menu.tscn"}}
+            ]
+        },
+        {
+            "commands": [
+                {"command": "set_main_scene", "params": {"scene": "res://scenes/vertical_slice/main_menu.tscn"}}
+            ],
+            "undo": False,
+            "extra": True,
+        },
+    ],
+)
+def test_validate_executable_recipe_rejects_batch_escape_hatch_shapes(arguments: dict) -> None:
+    driver = _load_driver()
+    recipe = _recipe_with_final_operation({"tool": "batch_execute", "arguments": arguments})
+    with pytest.raises(ValueError):
+        driver.validate_executable_recipe(recipe)
+
+
+def test_validate_executable_recipe_rejects_legacy_project_settings_set_route() -> None:
+    driver = _load_driver()
+    recipe = json.loads(RECIPE.read_text(encoding="utf-8"))
+    assert recipe["operations"][-1]["tool"] == "project_manage"
+    assert recipe["operations"][-1]["arguments"]["op"] == "settings_set"
+    with pytest.raises(ValueError):
+        driver.validate_executable_recipe(recipe)
+
+
+def test_required_tools_include_batch_execute_and_read_only_project_manage() -> None:
+    driver = _load_driver()
+    recipe = _recipe_with_final_operation(_approved_main_scene_batch(driver))
+    tools = driver.required_mcp_tools(recipe)
+    assert "batch_execute" in tools
+    assert "project_manage" in tools
 
 
 def test_preflight_orders_read_only_identity_checks_before_mutation() -> None:
@@ -237,22 +355,40 @@ def test_execute_recipe_records_canonical_success_evidence() -> None:
     assert evidence[0]["error"] is None
 
 
-def test_mutation_timeout_is_read_back_once_and_never_blindly_retried() -> None:
+def test_main_scene_batch_timeout_is_read_back_once_and_never_blindly_retried() -> None:
     driver = _load_driver()
-    recipe = {
-        "operations": [{
-            "tool": "project_manage",
-            "arguments": {"op": "settings_set", "params": {"key": "application/run/main_scene", "value": "res://scenes/vertical_slice/main_menu.tscn"}},
-        }]
-    }
+    recipe = {"operations": [_approved_main_scene_batch(driver)]}
     client = FakeClient(
-        {"project_manage"},
-        {"project_manage": [TimeoutError("lost response"), {"key": "application/run/main_scene", "value": "res://scenes/vertical_slice/main_menu.tscn", "type": "String"}]},
+        {"batch_execute", "project_manage"},
+        {
+            "batch_execute": [TimeoutError("lost response")],
+            "project_manage": [
+                {
+                    "key": "application/run/main_scene",
+                    "value": driver.EXPECTED_MAIN_SCENE,
+                    "type": "String",
+                }
+            ],
+        },
     )
     with pytest.raises(driver.AmbiguousMutationError):
         asyncio.run(driver.execute_recipe_operations(client, recipe, SESSION_ID))
-    assert [name for name, _ in client.calls] == ["project_manage", "project_manage"]
-    assert client.calls[1][1]["op"] == "settings_get"
+    assert [name for name, _ in client.calls] == ["batch_execute", "project_manage"]
+    assert client.calls[0][1] == {
+        "commands": [
+            {
+                "command": "set_main_scene",
+                "params": {"scene": driver.EXPECTED_MAIN_SCENE},
+            }
+        ],
+        "undo": False,
+        "session_id": SESSION_ID,
+    }
+    assert client.calls[1][1] == {
+        "op": "settings_get",
+        "params": {"key": "application/run/main_scene"},
+        "session_id": SESSION_ID,
+    }
 
 
 def test_fastmcp_adapter_is_lazy_and_uses_structured_data_contract() -> None:
