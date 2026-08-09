@@ -7,6 +7,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "docs" / "testing" / "HIGODOT_GUT_AUTHORITY_POLICY.json"
 HERA_PLUGIN = ROOT / "addons" / "hera_agent_godot" / "hera_agent_plugin.gd"
+HIGODOT_PLUGIN = ROOT / "addons" / "godot_ai" / "plugin.gd"
+HIGODOT_PROJECT_HANDLER = ROOT / "addons" / "godot_ai" / "handlers" / "project_handler.gd"
+HIGODOT_TOOL_CATALOG = ROOT / "addons" / "godot_ai" / "tool_catalog.gd"
 DECISION_ID = "BS-TOOLCHAIN-20260809-01"
 
 
@@ -51,3 +54,23 @@ def test_hera_exits_headless_before_ui_autoload_or_server_construction() -> None
         "_server = HttpServer.new()",
     ):
         assert guard_index < enter.index(forbidden_before_guard), forbidden_before_guard
+
+
+def test_higodot_main_scene_command_is_raw_only_and_keeps_generic_startup_guard() -> None:
+    plugin = HIGODOT_PLUGIN.read_text(encoding="utf-8")
+    project_handler = HIGODOT_PROJECT_HANDLER.read_text(encoding="utf-8")
+    tool_catalog = HIGODOT_TOOL_CATALOG.read_text(encoding="utf-8")
+
+    assert (
+        '_dispatcher.register_lazy("set_main_scene", "project", &"set_main_scene")'
+        in plugin
+    )
+    assert '"application/run/main_scene"' in project_handler
+    assert "func set_main_scene(params: Dictionary) -> Dictionary:" in project_handler
+
+    project_domain = (
+        '{"id": "project", "label": "project", "count": 2, '
+        '"tools": ["project_manage", "project_run"]}'
+    )
+    assert project_domain in tool_catalog
+    assert "set_main_scene" not in tool_catalog
