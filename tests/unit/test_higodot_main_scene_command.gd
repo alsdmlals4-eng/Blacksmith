@@ -146,14 +146,31 @@ func _test_save_failure_restores_old_value() -> void:
 
 
 func _supports_save_seam() -> bool:
-	for method in ProjectHandlerScript.get_script_method_list():
+	# Keep the RED parseable while production still has its three-argument
+	# constructor. Introspect the instance script instead of spelling a
+	# four-argument .new() call that Godot would reject at parse time.
+	var probe = ProjectHandlerScript.new(null, null, null)
+	var script: Script = probe.get_script()
+	for method in script.get_script_method_list():
 		if str(method.get("name", "")) == "_init":
 			return Array(method.get("args", [])).size() >= 4
 	return false
 
 
 func _new_handler(save_callable: Callable):
-	return ProjectHandlerScript.new(null, null, null, save_callable)
+	var handler = ProjectHandlerScript.new(null, null, null)
+	# Once GREEN adds the approved persistence seam, inject the test Callable
+	# dynamically. Constructor arity is locked separately by _supports_save_seam().
+	if _has_script_property(handler, "_project_settings_save"):
+		handler.set("_project_settings_save", save_callable)
+	return handler
+
+
+func _has_script_property(instance, property_name: String) -> bool:
+	for property in instance.get_property_list():
+		if str(property.get("name", "")) == property_name:
+			return true
+	return false
 
 
 func _save_ok() -> int:
