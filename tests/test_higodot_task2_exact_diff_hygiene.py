@@ -116,7 +116,7 @@ def test_exact_diff_hygiene_rejects_orphan_generated_uid(tmp_path: Path) -> None
     context, operations = _write_expected_prove_byproducts(repo)
     (repo / "scripts" / "orphan.gd.uid").write_text("uid://orphan\n", encoding="utf-8")
 
-    with pytest.raises(ValueError, match="paired tracked \.gd"):
+    with pytest.raises(ValueError, match=r"paired tracked \.gd"):
         _apply_hygiene(repo, context, operations)
 
 
@@ -126,7 +126,7 @@ def test_exact_diff_hygiene_rejects_uid_for_untracked_script(tmp_path: Path) -> 
     (repo / "scripts" / "untracked.gd").write_text("extends Node\n", encoding="utf-8")
     (repo / "scripts" / "untracked.gd.uid").write_text("uid://untracked\n", encoding="utf-8")
 
-    with pytest.raises(ValueError, match="paired tracked \.gd"):
+    with pytest.raises(ValueError, match=r"paired tracked \.gd"):
         _apply_hygiene(repo, context, operations)
 
 
