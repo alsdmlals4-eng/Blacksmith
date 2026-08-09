@@ -167,7 +167,15 @@ class VerticalSliceTask1CanonContractTests(unittest.TestCase):
         self.assertIn("tests.test_vertical_slice_task1_canon_contract", python_workflow)
         self.assertIn("^(src/|scripts/|scenes/|data/|assets/|addons/|project", base_gate)
         self.assertIn("^(scripts|data)/vertical_slice/", base_gate)
-        self.assertNotIn("scenes/vertical_slice/", base_gate)
+        self.assertNotIn("^(scripts|scenes|data)/vertical_slice/", base_gate)
+        self.assertNotIn("scenes/vertical_slice/.*", base_gate)
+        self.assertIn("approved-task2-published-product-paths.txt", base_gate)
+        for exact_path in (
+            "scenes/vertical_slice/main_menu.tscn",
+            "scenes/vertical_slice/vertical_slice_app.tscn",
+            "scenes/vertical_slice/screens/vs_workshop_screen.tscn",
+        ):
+            self.assertIn(exact_path, base_gate)
         self.assertIn("tests/gut/**", gut_workflow)
         self.assertNotIn("tests/vertical_slice/unit/test_vs_item.gd", godot_workflow)
         self.assertNotIn("tests/vertical_slice/unit/test_vs_save_service.gd", godot_workflow)
