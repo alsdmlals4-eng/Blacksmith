@@ -113,3 +113,11 @@ def test_publish_captures_remote_head_before_staging_and_checks_again_before_pus
     push = publish.index("git push origin HEAD:feat/vertical-slice-task2-app-shell")
     assert capture < stage < before_push < push
     assert "Verify target branch has not moved before staging" not in publish
+
+
+def test_publish_keeps_downloaded_provenance_outside_checkout_clean_gate() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    publish = text[text.index("publish:"):]
+    assert "path: ${{ runner.temp }}/higodot-task2-provenance" in publish
+    assert 'Path(os.environ["RUNNER_TEMP"]) / "higodot-task2-provenance"' in publish
+    assert 'Path("artifacts/higodot-task2/provenance")' not in publish
