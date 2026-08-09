@@ -117,7 +117,19 @@ def test_recipe_is_exact_task2_scope_and_forbids_text_serialization_fallback() -
     operations = json.dumps(payload.get("operations", []), sort_keys=True)
     for forbidden in ("filesystem_manage", "script_create", "script_patch"):
         assert forbidden not in operations
-    assert "application/run/main_scene" in operations
+    assert payload["operations"][-1] == {
+        "tool": "batch_execute",
+        "arguments": {
+            "commands": [
+                {
+                    "command": "set_main_scene",
+                    "params": {"scene": "res://scenes/vertical_slice/main_menu.tscn"},
+                }
+            ],
+            "undo": False,
+        },
+    }
+    assert '"op": "settings_set"' not in operations
     assert "res://scripts/vertical_slice/ui/vs_main_menu.gd" in operations
     assert "res://scripts/vertical_slice/ui/vs_app.gd" in operations
 
