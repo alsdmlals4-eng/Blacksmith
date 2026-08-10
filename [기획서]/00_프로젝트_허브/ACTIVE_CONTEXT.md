@@ -53,6 +53,7 @@ R3_R7_RESUME_LOCATOR_AUTHORITY: NON_CANONICAL_RESUME_LOCATOR
   - Live-Editor Pilot: run `31344872263` SUCCESS
   - PR #140 authority workflow: run `31344719243` SUCCESS
 - 역사 POC 회귀 증거는 현재 제품 PASS가 아니다: `POC v0.6.4 · main · 2026.07.23.1 / 제작 모델 7건 / 통합 6건 / HISTORICAL_EVIDENCE_ONLY`.
+- 역사 POC 강화 데이터 소유권 locator: `enhancement_balance.json`은 failure/risk, `enhancement_milestones.json`은 milestone 정의를 소유한다. 이 locator는 구형 데이터의 책임 위치를 보존할 뿐 현재 제품 밸런스 확정을 뜻하지 않는다.
 
 ## 현재 권위와 보호 경계
 
