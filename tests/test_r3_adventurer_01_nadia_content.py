@@ -8,7 +8,11 @@ ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / "docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json"
 CANON = ROOT / "docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
-ACTIVE = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
+HUB = ROOT / "[기획서]/00_프로젝트_허브"
+ACTIVE = HUB / "ACTIVE_CONTEXT.md"
+START_HERE = HUB / "START_HERE.md"
+ROADMAP = HUB / "ROADMAP.md"
+GATES = HUB / "DEVELOPMENT_GATES.md"
 
 
 class Adventurer01NadiaContentContractTests(unittest.TestCase):
@@ -51,11 +55,25 @@ class Adventurer01NadiaContentContractTests(unittest.TestCase):
     def test_stable_entrypoints_record_the_decision_without_opening_product_code(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
+        start_here = START_HERE.read_text(encoding="utf-8")
+        roadmap = ROADMAP.read_text(encoding="utf-8")
+        gates = GATES.read_text(encoding="utf-8")
+
         self.assertIn("BS-CONTENT-20260811-01", current)
         self.assertIn("R3_R7_DESIGN_ACTIVE", active)
         self.assertIn("ADVENTURER_01_DETAIL_APPROVED", active)
         self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", active)
         self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", active)
+
+        for text in (start_here, roadmap, gates):
+            self.assertIn("R3_R7_DESIGN_ACTIVE", text)
+            self.assertIn("BS-CONTENT-20260811-01", text)
+            self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
+            self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
+
+        self.assertNotIn("R3_R7_DESIGN_PAUSED", start_here)
+        self.assertNotIn("ADVENTURER_01_DETAIL_PENDING", start_here)
+        self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", gates)
 
 
 if __name__ == "__main__":
