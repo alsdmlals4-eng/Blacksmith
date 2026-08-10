@@ -62,10 +62,12 @@ class PlannedReferenceClassificationTests(unittest.TestCase):
 
 class CurrentAssertionConfigurationTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.original = copy.deepcopy(audit.REQUIRED_ASSERTIONS)
+        self.original_assertions = copy.deepcopy(audit.REQUIRED_ASSERTIONS)
+        self.original_active_docs = tuple(audit.ACTIVE_DOCS)
 
     def tearDown(self) -> None:
-        audit.REQUIRED_ASSERTIONS = self.original
+        audit.REQUIRED_ASSERTIONS = self.original_assertions
+        audit.ACTIVE_DOCS = self.original_active_docs
 
     def test_registry_assertions_follow_approved_batch_006(self) -> None:
         runner.configure_current_assertions()
@@ -77,12 +79,29 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertNotIn('"stage_status":"R2_CHECKPOINT_005_CLOSED_MAIN_CANON"', tokens)
         self.assertNotIn('"status":"NOT_STARTED"', tokens)
 
+    def test_r3_planning_authority_is_audited_without_opening_product_scope(self) -> None:
+        runner.configure_current_assertions()
+        registry = audit.REQUIRED_ASSERTIONS[runner.R3_REGISTRY]
+        canon = audit.REQUIRED_ASSERTIONS[runner.R3_NADIA_CANON]
+        self.assertIn('"stage_status": "R3_R7_DESIGN_ACTIVE"', registry)
+        self.assertIn('"product_implementation": "BLOCKED"', registry)
+        self.assertIn('"task3_implementation": "NOT_APPROVED"', registry)
+        self.assertIn('"next_approval_counter": "1/10"', registry)
+        self.assertIn('"id": "BS-CONTENT-20260811-01"', registry)
+        self.assertIn("BS-CONTENT-20260811-01", canon)
+        self.assertIn("직접 전투·탐험 미니게임을 추가하지 않는다", canon)
+        self.assertIn(runner.R3_REGISTRY, audit.ACTIVE_DOCS)
+        self.assertIn(runner.R3_NADIA_CANON, audit.ACTIVE_DOCS)
+
     def test_gate_assertions_keep_general_block_and_task2_closed_scope(self) -> None:
         runner.configure_current_assertions()
         tokens = audit.REQUIRED_ASSERTIONS["[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"]
         self.assertIn("GENERAL_PRODUCT_IMPLEMENTATION: BLOCKED", tokens)
         self.assertIn("VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE", tokens)
         self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED", tokens)
+        self.assertIn("R3_R7_DESIGN_ACTIVE", tokens)
+        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01", tokens)
+        self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("VERTICAL_SLICE_CODE_GATE: USER_APPROVED", tokens)
         self.assertNotIn("CODEX_IMPLEMENTATION_GATE: BLOCKED", tokens)
 
@@ -93,14 +112,16 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         for tokens in (start, active):
             self.assertNotIn("예술성 27", tokens)
             self.assertNotIn("고정 설계 최대치 없음", tokens)
+            self.assertIn("TASK2_MAIN_MERGED", tokens)
+            self.assertIn("POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE", tokens)
+            self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", tokens)
+            self.assertIn("R3_R7_DESIGN_ACTIVE", tokens)
+            self.assertIn("BS-CONTENT-20260811-01", tokens)
+            self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("R2_CHECKPOINT_005", start)
-        for token in (
-            "TASK2_MAIN_MERGED",
-            "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE",
-            "PRODUCT_IMPLEMENTATION: BLOCKED",
-        ):
-            self.assertIn(token, start)
-            self.assertIn(token, active)
+        self.assertNotIn("현재 승인 카운터: `0/10`", active)
+        self.assertNotIn("제품 구현: `BLOCKED`", active)
+        self.assertIn("현재 R3–R7 승인 카운터: `1/10`", active)
 
 
 if __name__ == "__main__":

@@ -10,6 +10,9 @@ from pathlib import Path
 import audit_project_operating_system as audit
 
 PLANNED_REFERENCE_PREFIX = "docs/superpowers/plans/"
+R3_REGISTRY = "docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json"
+R3_NADIA_CANON = "docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md"
+R3_DECISION = "BS-CONTENT-20260811-01"
 
 
 def classify_planned_references(findings: list[audit.Finding]) -> None:
@@ -29,11 +32,11 @@ def classify_planned_references(findings: list[audit.Finding]) -> None:
 
 
 def configure_current_assertions() -> None:
-    """Keep the long-lived audit aligned with current R2/Task2 authority.
+    """Align the long-lived audit with current R2/Task2 evidence and R3 planning authority.
 
-    Historical Batch 005 assertions remain in the source documents and legacy
-    contracts. Current handoff routers intentionally stay compressed instead of
-    duplicating detailed domain-canon values such as the artistry display example.
+    R2/Task2 merge evidence remains historical/current-compatible authority. R3–R7 is
+    a planning-only layer: it is current for design routing but does not open product
+    or Task3 implementation.
     """
     assertions = dict(audit.REQUIRED_ASSERTIONS)
 
@@ -56,6 +59,29 @@ def configure_current_assertions() -> None:
             registry_tokens.append(token)
     assertions[registry_path] = tuple(registry_tokens)
 
+    assertions[R3_REGISTRY] = (
+        '"stage_status": "R3_R7_DESIGN_ACTIVE"',
+        '"product_implementation": "BLOCKED"',
+        '"task3_implementation": "NOT_APPROVED"',
+        '"next_approval_counter": "1/10"',
+        f'"id": "{R3_DECISION}"',
+        '"content_id": "ADVENTURER_01"',
+        '"customer_id": "NADIA_VENN"',
+        '"direct_combat_or_exploration_minigame": false',
+        '"single_always_best_equipment_answer": false',
+    )
+    assertions[R3_NADIA_CANON] = (
+        R3_DECISION,
+        "ADVENTURER_01",
+        "NADIA_VENN",
+        "생환 + 회수",
+        "같은 UID",
+        "직접 전투·탐험 미니게임을 추가하지 않는다",
+        "BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED",
+        "제품 구현: `BLOCKED`",
+        "Task3 구현: `NOT_APPROVED`",
+    )
+
     gates_path = "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
     gate_tokens = list(assertions[gates_path])
     gate_tokens = [
@@ -68,6 +94,9 @@ def configure_current_assertions() -> None:
         "VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE",
         "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
         "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
+        "R3_R7_DESIGN_ACTIVE",
+        f"R3_R7_CURRENT_DECISION: {R3_DECISION}",
+        "TASK3_IMPLEMENTATION: NOT_APPROVED",
     ):
         if token not in gate_tokens:
             gate_tokens.append(token)
@@ -86,16 +115,32 @@ def configure_current_assertions() -> None:
         ]
         if path.endswith("START_HERE.md"):
             tokens = [token for token in tokens if token != "R2_CHECKPOINT_005"]
+        if path.endswith("ACTIVE_CONTEXT.md"):
+            tokens = [
+                token
+                for token in tokens
+                if token not in {"현재 승인 카운터: `0/10`", "제품 구현: `BLOCKED`"}
+            ]
         for token in (
             "TASK2_MAIN_MERGED",
             "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE",
             "PRODUCT_IMPLEMENTATION: BLOCKED",
+            "R3_R7_DESIGN_ACTIVE",
+            R3_DECISION,
+            "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ):
             if token not in tokens:
                 tokens.append(token)
+        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `1/10`" not in tokens:
+            tokens.append("현재 R3–R7 승인 카운터: `1/10`")
         assertions[path] = tuple(tokens)
 
     audit.REQUIRED_ASSERTIONS = assertions
+    current_docs = list(audit.ACTIVE_DOCS)
+    for path in (R3_REGISTRY, R3_NADIA_CANON):
+        if path not in current_docs:
+            current_docs.append(path)
+    audit.ACTIVE_DOCS = tuple(current_docs)
 
 
 def main() -> int:
