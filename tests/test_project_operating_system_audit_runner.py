@@ -86,6 +86,22 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertNotIn("VERTICAL_SLICE_CODE_GATE: USER_APPROVED", tokens)
         self.assertNotIn("CODEX_IMPLEMENTATION_GATE: BLOCKED", tokens)
 
+    def test_handoff_router_assertions_do_not_duplicate_domain_artistry_contract(self) -> None:
+        runner.configure_current_assertions()
+        start = audit.REQUIRED_ASSERTIONS["[기획서]/00_프로젝트_허브/START_HERE.md"]
+        active = audit.REQUIRED_ASSERTIONS["[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"]
+        for tokens in (start, active):
+            self.assertNotIn("예술성 27", tokens)
+            self.assertNotIn("고정 설계 최대치 없음", tokens)
+        self.assertNotIn("R2_CHECKPOINT_005", start)
+        for token in (
+            "TASK2_MAIN_MERGED",
+            "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE",
+            "PRODUCT_IMPLEMENTATION: BLOCKED",
+        ):
+            self.assertIn(token, start)
+            self.assertIn(token, active)
+
 
 if __name__ == "__main__":
     unittest.main()
