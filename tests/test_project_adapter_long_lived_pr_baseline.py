@@ -47,11 +47,6 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         record = records["BS-CURRENT-DECISIONS"]
         self.assertEqual("CURRENT_CONFIRMED_DECISIONS.md", record["source"])
         actual = hashlib.sha256(CURRENT.read_bytes()).hexdigest()
-        if actual != record["sha256"]:
-            print(
-                "::error file=docs/PROJECT_OPERATING_HEALTH.json,line=1::"
-                f"BS-CURRENT-DECISIONS sha256 expected={record['sha256']} actual={actual}"
-            )
         self.assertEqual(actual, record["sha256"])
 
     def test_operating_maturity_has_three_valid_operating_records(self) -> None:
