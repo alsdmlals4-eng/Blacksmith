@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BASE_C0_SHA = "2b595570bd237174b2b962a1eb54588b5ecc508d"
 GODOT_ARCHIVE_SHA256 = "c7ff14fd28472c8d4f193043de30278dcf7e5241a1dcf7566b02e27addaa33ba"
+DOWNLOAD_ARTIFACT_SHA = "634f93cb2916e3fdff6788551b99b062d0335ce0"
 DESCRIPTOR = ROOT / ".godot-live-editor/project-pilot.json"
 ADOPTION_DOC = ROOT / "docs/GODOT_LIVE_EDITOR_ADOPTION.md"
 WORKFLOW = ROOT / ".github/workflows/validate-godot-live-editor-pilot.yml"
@@ -152,6 +153,17 @@ def test_workflow_uses_one_immutable_base_pin() -> None:
     assert "python -m pytest tests/test_godot_live_editor_adoption.py -q" in text
     assert "@main" not in text
     assert text.count(BASE_C0_SHA) == 2
+
+
+def test_workflow_surfaces_bounded_pilot_failure_marker() -> None:
+    text = _required_text(WORKFLOW)
+    assert "pilot-failure-diagnostics:" in text
+    assert "needs: project-pilot" in text
+    assert "needs.project-pilot.result == 'failure'" in text
+    assert f"actions/download-artifact@{DOWNLOAD_ARTIFACT_SHA}" in text
+    assert "godot-project-pilot-${{ github.repository_id }}-${{ github.sha }}" in text
+    assert ".godot-live-editor/pilot-failure/failure.json" in text
+    assert "cat .godot-live-editor/pilot-failure/failure.json" in text
 
 
 def test_pull_request_trigger_is_scoped_to_adoption_surface() -> None:
