@@ -1,0 +1,46 @@
+name: Normalize v4.5 r2 router EOF
+
+on:
+  push:
+    branches:
+      - agent/project-instruction-v45-r2-canon
+    paths:
+      - ".github/workflows/fix-v45-r2-router-eof.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    if: github.repository == 'alsdmlals4-eng/Blacksmith'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: agent/project-instruction-v45-r2-canon
+          fetch-depth: 0
+      - name: Remove trailing blank lines
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          paths = [
+              Path('AGENTS.md'),
+              Path('[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'),
+              Path('[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md'),
+          ]
+          for path in paths:
+              text = path.read_text(encoding='utf-8')
+              path.write_text(text.rstrip() + '\n', encoding='utf-8')
+          PY
+          git diff --check origin/main...HEAD || true
+      - name: Commit normalized routers
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add AGENTS.md '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md' '[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md'
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'style: normalize v4.5 r2 router EOF'
+          git push origin HEAD:agent/project-instruction-v45-r2-canon
