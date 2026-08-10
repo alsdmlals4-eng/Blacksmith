@@ -15,7 +15,7 @@
     {
       "id": "BS-CONTENT-20260811-01",
       "title": "모험가 01 나디아 벤 유적 탐사 생환·회수 콘텐츠",
-      "status": "USER_APPROVED_R3_R7_1_OF_10_PENDING_MERGE",
+      "status": "USER_APPROVED_R3_R7_1_OF_10_MERGED_PR142_MAIN_CANON",
       "canon": "docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md",
       "refines": [
         "BS-CONTENT-20260804-01",
@@ -63,7 +63,20 @@
         "artistry_auto_growth": false,
         "full_item_destruction_baseline": "NOT_IN_BASELINE_UNLESS_SEPARATE_EXPLICIT_HIGH_RISK_CHOICE",
         "exact_values": "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED",
-        "product_implementation": "BLOCKED"
+        "product_implementation": "BLOCKED",
+        "customer_information_layers": [
+          "DEFAULT_CUSTOMER_CARD",
+          "POST_EQUIPMENT_DECISION_LAYER",
+          "DETAIL_VIEW"
+        ],
+        "reason_priority": "LOAD_GATE_THEN_ENHANCEMENT_THEN_RELEVANT_UTILITY_THEN_SMALL_CUSTOMER_CONTEXT",
+        "result_information_hierarchy": "THREE_STATE_SUMMARY_TWO_TO_FOUR_REASONS_ONE_PRIMARY_NEXT_ACTION",
+        "test_fixture_status": "NON_CANONICAL_BASELINE_TEST_FIXTURE",
+        "playtest_evidence": "OBSERVED_BEHAVIOR_PLUS_NEUTRAL_RECALL",
+        "auto_recommended_best_item": false,
+        "minimum_touch_target": "48dp",
+        "same_uid_visible_in_result": true,
+        "approved_main": "13f878589b4849defb97d2c4509e7bf50bcb507d"
       }
     }
   ],
