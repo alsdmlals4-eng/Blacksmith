@@ -3,6 +3,8 @@ name: Validate Base v9.4.2 Planning First Adoption
 on:
   pull_request:
     paths:
+      - "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md"
+      - "docs/decisions/BS-OPS-20260811-01_PROJECT_INSTRUCTION_V45_R2_CANON.md"
       - "skills/PROJECT_BASE_ADAPTER.json"
       - "docs/PROJECT_OPERATING_HEALTH.json"
       - "docs/planning/BLACKSMITH_R2_BATCH_006_VERTICAL_SLICE_CANON_PROPOSAL_2026.md"
@@ -16,7 +18,9 @@ on:
       - '\[기획서\]/00_프로젝트_허브/START_HERE.md'
       - '\[기획서\]/00_프로젝트_허브/DEVELOPMENT_GATES.md'
       - '\[기획서\]/00_프로젝트_허브/ROADMAP.md'
+      - '\[기획서\]/00_프로젝트_허브/DOCUMENTATION_MAP.md'
       - "docs/superpowers/plans/2026-08-06-blacksmith-godot-vertical-slice.md"
+      - "tests/test_project_total_instruction_v45_r2_canon.py"
       - "tests/test_base_v942_planning_first_adoption.py"
       - "tests/test_project_adapter_long_lived_pr_baseline.py"
       - "tests/test_r3_adventurer_01_nadia_content.py"
@@ -50,6 +54,7 @@ jobs:
           python-version: "3.12"
       - run: >-
           python -m unittest
+          tests.test_project_total_instruction_v45_r2_canon
           tests.test_base_v942_planning_first_adoption
           tests.test_project_adapter_long_lived_pr_baseline
           tests.test_r3_adventurer_01_nadia_content

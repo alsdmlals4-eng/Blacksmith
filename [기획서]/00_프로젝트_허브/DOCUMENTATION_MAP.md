@@ -176,3 +176,12 @@ customer_artistry_fit = context derived, not persisted
 - 사람 플레이테스트: `NOT_RUN`
 - 다음 행동: PR #117 폐쇄 정본 검증·명시적 병합 승인 대기
 - 제품 구현: `BLOCKED`
+
+## 프로젝트 총 작업지시문 정본
+
+| 질문 | 책임 원본 | 상태 |
+|---|---|---|
+| 프로젝트 총 작업지시문 | `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` | `CURRENT / V4_5_R2` |
+| Blacksmith 경로·repo override | `docs/decisions/BS-OPS-20260811-01_PROJECT_INSTRUCTION_V45_R2_CANON.md` | `CURRENT / USER_APPROVED` |
+
+Decision: `BS-OPS-20260811-01`. Source 원문과 현재 Blacksmith 바인딩 충돌은 숨기지 않고 explicit override로 관리한다.
