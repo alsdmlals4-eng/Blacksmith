@@ -93,6 +93,7 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             closed["decisions"],
         )
         self.assertEqual(10, closed["maximum_size"])
+
     def test_customer_and_schedule_contracts_remain_current(self) -> None:
         customer = self.decisions["BS-CUSTOMER-20260803-02"]["contract"]
         self.assertEqual("INTEGER_1_TO_10", customer["event_risk_scale"])
@@ -162,15 +163,29 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         game_bible = CURRENT_GAME_BIBLE.read_text(encoding="utf-8")
         root = ROOT_DECISIONS.read_text(encoding="utf-8")
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
-        for text in (game_bible, root, active):
+
+        # Domain owners keep the detailed artistry contract.
+        for text in (game_bible, root):
             self.assertIn("예술성 27", text)
             self.assertIn("고정 설계 최대치 없음", text)
             self.assertIn("BS-CRAFT-20260805-02", text)
             self.assertIn("제품 구현: `BLOCKED`", text)
             self.assertNotIn("예술성 7/10", text)
             self.assertNotIn("예술성 1~10", text)
+
+        # Active Context is intentionally a compressed handoff router rather
+        # than a duplicate of every domain-canon detail.
+        for token in (
+            "TASK2_MAIN_MERGED",
+            "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE",
+            "PRODUCT_IMPLEMENTATION: BLOCKED",
+            "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
+            "PR81_REFERENCE_ONLY_DO_NOT_MERGE",
+        ):
+            self.assertIn(token, active)
+        self.assertNotIn("Task 1 Schema·UID·SaveEnvelope TDD", active)
+
         self.assertIn("R2_BATCH_005_7_OF_10", game_bible)
-        self.assertIn("R2_BATCH_005_7_OF_10", active)
         self.assertIn("R2_BATCH_005_CLOSED_10_OF_10", root)
 
 

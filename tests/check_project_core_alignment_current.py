@@ -122,8 +122,9 @@ def main() -> int:
     gate_tokens.extend(
         [
             "GENERAL_PRODUCT_IMPLEMENTATION: BLOCKED",
-            "VERTICAL_SLICE_CODE_GATE: USER_APPROVED",
+            "VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE",
             "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
+            "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
         ]
     )
     required["[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"] = tuple(gate_tokens)

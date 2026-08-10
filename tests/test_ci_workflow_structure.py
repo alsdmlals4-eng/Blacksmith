@@ -102,17 +102,18 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json", workflow)
         self.assertNotIn("python .base-contract/tools/check_project_operating_contract.py", workflow)
 
-    def test_project_godot_protected_change_manifest_is_exact_and_one_shot(self) -> None:
+    def test_consumed_task2_protected_change_manifest_is_retired(self) -> None:
         path = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-        self.assertTrue(path.is_file(), "exact protected-change approval manifest is missing")
-        manifest = json.loads(path.read_text(encoding="utf-8"))
-        self.assertEqual("PROJECT_PROTECTED_CHANGE_APPROVAL", manifest["artifact_role"])
-        self.assertEqual("APPROVED", manifest["status"])
-        self.assertEqual("2dddf864519a557152c6bbf0f0ee7fb94eadf11c", manifest["protected_base_commit"])
-        self.assertEqual(["project.godot"], manifest["approved_paths"])
-        self.assertIn("BS-HIGODOT-EXEC-20260808-01", manifest["decision_ids"])
-        self.assertEqual("GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE", manifest["approval_source"])
-        self.assertFalse(any(any(char in item for char in "*?[]") for item in manifest["approved_paths"]))
+        self.assertFalse(path.exists(), "consumed one-shot protected-change approval must be retired")
+        adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            "fa9595b2df95897c915331a1cb5d9b1a583611f0",
+            adapter["protected_baseline"]["commit"],
+        )
+        self.assertEqual(
+            ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
+            adapter["protected_paths"],
+        )
 
     def test_activation_policy_is_recorded(self) -> None:
         policy = (ROOT / "docs" / "CI_EXECUTION_POLICY.md").read_text(encoding="utf-8")

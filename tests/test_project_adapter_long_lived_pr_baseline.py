@@ -7,8 +7,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/validate-project-base-adapter.yml"
+ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
+APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
+TASK2_POSTMERGE_BASELINE = "fa9595b2df95897c915331a1cb5d9b1a583611f0"
 
 
 class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
@@ -37,6 +40,11 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         self.assertNotIn("if printf '%s\n' \"$ADAPTER_CHANGES\"", text)
         self.assertNotIn("printf 'PROTECTED_BASE_SHA=%s\n' \"$PROTECTED_BASE_SHA\"", text)
         self.assertFalse(any(line.startswith("' \"") for line in text.splitlines()))
+
+    def test_completed_task2_protected_change_advances_baseline_and_retires_one_shot_approval(self) -> None:
+        adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
+        self.assertEqual(TASK2_POSTMERGE_BASELINE, adapter["protected_baseline"]["commit"])
+        self.assertFalse(APPROVAL.exists())
 
     def test_current_decisions_health_evidence_hash_is_exact(self) -> None:
         health = json.loads(HEALTH.read_text(encoding="utf-8"))

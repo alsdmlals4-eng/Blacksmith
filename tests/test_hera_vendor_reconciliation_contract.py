@@ -16,6 +16,7 @@ HERA_MANIFEST = ROOT / "addons/hera_agent_godot/plugin.cfg"
 DECISION_ID = "BS-HERA-20260808-01"
 TOOLCHAIN_DECISION_ID = "BS-TOOLCHAIN-20260809-01"
 HIGODOT_DECISION_ID = "BS-HIGODOT-20260808-01"
+HIGODOT_EXEC_DECISION_ID = "BS-HIGODOT-EXEC-20260808-01"
 HISTORICAL_HERA_STATE = "VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE"
 CURRENT_HERA_STATE = "VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE"
 INTRODUCED_MAIN_COMMIT = "a5126d8a2091ce2350e50713eac614a045cc6ef2"
@@ -64,10 +65,11 @@ def test_policy_acknowledges_enabled_hera_without_granting_authority() -> None:
 def test_higodot_activation_preserves_gut_and_hera_authority_boundaries() -> None:
     policy = _json(POLICY)
     assert HIGODOT_DECISION_ID in policy["decision_ids"]
+    assert HIGODOT_EXEC_DECISION_ID in policy["decision_ids"]
     assert policy["higodot"]["current_state"] == "FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY"
     assert policy["higodot"]["production_activation"] == "USER_APPROVED_ACTIVE"
     assert policy["higodot"]["activation_scope"] == "TASK2_SCOPED_AUTHORING_ONLY"
-    assert policy["higodot"]["production_execution_path"] == "BLOCKED_UNAVAILABLE_OR_UNVERIFIED"
+    assert policy["higodot"]["production_execution_path"] == "PROVEN_TASK2_COMPLETED"
     assert policy["gut"]["status"] == "FORMALLY_ADOPTED_ACTIVE"
     assert policy["gut"]["project_plugin_enabled"] is True
     assert policy["gut"]["authority_role"] == "SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY"
@@ -81,7 +83,7 @@ def test_development_gates_match_current_tool_and_task_authority() -> None:
         "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
         "HIGODOT_AUTHORING_AUTHORITY: FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY",
         "HIGODOT_PRODUCTION_ACTIVATION: USER_APPROVED_ACTIVE",
-        "HIGODOT_PRODUCTION_EXECUTION_PATH: BLOCKED_UNAVAILABLE_OR_UNVERIFIED",
+        "HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED",
         "GUT_TEST_AUTHORITY: FORMALLY_ADOPTED_ACTIVE",
         "GUT_CONFIG_PRESENT: true",
         "GUT_PROJECT_TEST_ROOT_PRESENT: true",
@@ -93,12 +95,14 @@ def test_development_gates_match_current_tool_and_task_authority() -> None:
         f"INITIALIZER_DECISION: {INITIALIZER_DECISION_ID}",
         "INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED",
         HIGODOT_DECISION_ID,
+        HIGODOT_EXEC_DECISION_ID,
         DECISION_ID,
         TOOLCHAIN_DECISION_ID,
         "HERA_AGENT_STATE: VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE",
         "HERA_AGENT_PLUGIN_ENABLED: true",
         "HERA_AGENT_AUTHORITY: NONE",
         "GUT_PLUGIN_ENABLED: true",
+        "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
     ):
         assert marker in gates
     assert "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING" not in gates

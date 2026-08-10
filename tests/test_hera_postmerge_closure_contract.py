@@ -8,12 +8,20 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 GATES = ROOT / "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
+ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
+START_HERE = ROOT / "[기획서]/00_프로젝트_허브/START_HERE.md"
+HIGODOT_EXEC = ROOT / "docs/decisions/BS-HIGODOT-EXEC-20260808-01_TASK2_CI_AUTHORING_BRIDGE.md"
 RECONCILIATION = ROOT / "docs/operations/BLACKSMITH_HERA_VENDOR_RECONCILIATION_2026-08-08.md"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 
 DECISION_ID = "BS-HERA-20260808-01"
 HIGODOT_DECISION_ID = "BS-HIGODOT-20260808-01"
+HIGODOT_EXEC_DECISION_ID = "BS-HIGODOT-EXEC-20260808-01"
 MERGE_MAIN = "29b06e323185e436d709fcdf638f445b9099266e"
+TASK2_MERGE_MAIN = "a61a0bceec4254c4b78350980275cc9a903f9042"
+CURRENT_MAIN = "fa9595b2df95897c915331a1cb5d9b1a583611f0"
+BASE_CURRENT_MAIN_OBSERVED = "49f6190b9b5a535ceb7986755c1b68b221754cf5"
+PROJECT_BASE_ADAPTER_PIN = "2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b"
 INITIALIZER_DECISION_ID = "BS-VS-INIT-20260808-01"
 
 
@@ -26,22 +34,91 @@ def _git_blob_bytes(path: Path) -> bytes:
     return subprocess.check_output(["git", "show", f"HEAD:{relative}"], cwd=ROOT)
 
 
+def _markdown_section(text: str, heading: str) -> str:
+    start = text.index(heading)
+    remainder = text[start + len(heading) :]
+    next_heading = remainder.find("\n## ")
+    if next_heading == -1:
+        return remainder
+    return remainder[:next_heading]
+
+
 def test_hera_decision_is_closed_as_merged_main_canon() -> None:
     text = _text(DECISIONS)
     assert DECISION_ID in text
     assert "MERGED_PR132_MAIN_CANON" in text
-    assert "DRAFT_PR132_PENDING_MERGE" not in text
+    assert "DRAFT_PR132_PENDING_MERGE" not in _markdown_section(text, "## 현재 운영 폐쇄 상태")
 
 
 def test_entry_gate_records_merged_reconciliation_and_current_task2_authority() -> None:
     text = _text(GATES)
-    assert f"PR132: MERGED_MAIN_CANON_{MERGE_MAIN}" in text
-    assert "PR131: SCRIPT_GREEN_HIGODOT_AUTHORITY_ACTIVE_EXECUTION_PATH_BLOCKED" in text
-    assert "TASK2: STATIC_RED_REMAINS_SCENE_PROJECT_EXECUTION_BLOCKED" in text
-    assert f"INITIALIZER_DECISION: {INITIALIZER_DECISION_ID}" in text
-    assert "INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED" in text
-    assert f"HIGODOT_ACTIVATION_DECISION: {HIGODOT_DECISION_ID}" in text
-    assert "HERA_RECONCILIATION_DRAFT_PENDING_MERGE" not in text
+    current = _markdown_section(text, "## Current Gate Summary")
+    assert f"PR132: MERGED_MAIN_CANON_{MERGE_MAIN}" in current
+    assert f"PR131: MERGED_MAIN_CANON_{TASK2_MERGE_MAIN}" in current
+    assert "TASK2: MAIN_MERGED_POSTMERGE_CI_CLOSURE_COMPLETE" in current
+    assert "HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED" in current
+    assert f"INITIALIZER_DECISION: {INITIALIZER_DECISION_ID}" in current
+    assert "INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED" in current
+    assert f"HIGODOT_ACTIVATION_DECISION: {HIGODOT_DECISION_ID}" in current
+    assert "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED" in current
+    assert "EXECUTION_PATH_BLOCKED" not in current
+    assert "HERA_RECONCILIATION_DRAFT_PENDING_MERGE" not in current
+
+
+def test_handoff_router_records_current_main_and_paused_design_boundary() -> None:
+    active = _text(ACTIVE_CONTEXT)
+    start = _text(START_HERE)
+
+    for text in (active, start):
+        assert CURRENT_MAIN in text
+        assert BASE_CURRENT_MAIN_OBSERVED in text
+        assert PROJECT_BASE_ADAPTER_PIN in text
+        assert "BASE_CURRENT_MAIN_OBSERVED" in text
+        assert "PROJECT_BASE_ADAPTER_PIN" in text
+        assert "TASK2_MAIN_MERGED" in text
+        assert "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE" in text
+        assert "PR81_REFERENCE_ONLY_DO_NOT_MERGE" in text
+        assert "R3_R7_DESIGN_PAUSED" in text
+        assert "ADVENTURER_01_DETAIL_PENDING" in text
+        assert "NON_CANONICAL_RESUME_LOCATOR" in text
+        assert "PRODUCT_IMPLEMENTATION: BLOCKED" in text
+        assert "HUMAN_PLAYTEST: NOT_RUN" in text
+        assert "ANDROID_DEVICE: NOT_RUN" in text
+
+    assert "R2_BATCH_006_NOT_STARTED_0_OF_10" not in start
+    assert "POSTMERGE_CLOSURE_PENDING" not in start
+    assert "Task 1 Schema·UID·SaveEnvelope TDD" not in active
+
+
+def test_higodot_execution_decision_records_actual_task2_closure_evidence() -> None:
+    text = _text(HIGODOT_EXEC)
+    assert HIGODOT_EXEC_DECISION_ID in text
+    assert "TASK2_MAIN_MERGED" in text
+    assert "POSTMERGE_CI_CLOSURE_COMPLETE" in text
+    assert "02420ebd3bcdd86776c4ab70824738aa4071a168" in text
+    assert "8afb9a439df46eec3568a75d7f2536b89e1edaba" in text
+    assert "345cf339e2af754d447099dd8e1b278b80b849d5" in text
+    assert TASK2_MERGE_MAIN in text
+    assert CURRENT_MAIN in text
+    current = _markdown_section(text, "## Current closure")
+    assert "PR131 = MERGED" in current
+    assert "BRIDGE_TDD = COMPLETE" in current
+    assert "SCENE_PROJECT_MUTATION = HIGODOT_PROVEN_PUBLISHED" in current
+
+
+def test_current_decision_router_records_completed_higodot_path_without_erasing_history() -> None:
+    text = _text(DECISIONS)
+    current = _markdown_section(text, "## 현재 운영 폐쇄 상태")
+    assert HIGODOT_EXEC_DECISION_ID in current
+    assert "TASK2: TASK2_MAIN_MERGED" in current
+    assert "POSTMERGE: POSTMERGE_CI_CLOSURE_COMPLETE" in current
+    assert TASK2_MERGE_MAIN in current
+    assert CURRENT_MAIN in current
+    assert "NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED" in current
+
+    # Historical activation-stage wording remains legitimate evidence below the
+    # current closure router; this test intentionally does not require its deletion.
+    assert "BLOCKED_UNAVAILABLE_OR_UNVERIFIED" in text
 
 
 def test_reconciliation_evidence_records_postmerge_validation_truthfully() -> None:

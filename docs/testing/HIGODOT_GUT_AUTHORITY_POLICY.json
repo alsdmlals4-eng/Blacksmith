@@ -7,6 +7,7 @@
     "BS-GATE-20260806-01",
     "BS-HERA-20260808-01",
     "BS-HIGODOT-20260808-01",
+    "BS-HIGODOT-EXEC-20260808-01",
     "BS-TOOLCHAIN-20260809-01"
   ],
   "adoption_state": "FORMALLY_ADOPTED_ACTIVE_TEST_FRAMEWORK_AUTHORITY",
@@ -22,8 +23,18 @@
     "policy_role": "SOLE_GODOT_AUTHORING_AUTHORITY",
     "production_activation": "USER_APPROVED_ACTIVE",
     "activation_decision_id": "BS-HIGODOT-20260808-01",
+    "execution_decision_id": "BS-HIGODOT-EXEC-20260808-01",
     "activation_scope": "TASK2_SCOPED_AUTHORING_ONLY",
-    "production_execution_path": "BLOCKED_UNAVAILABLE_OR_UNVERIFIED",
+    "production_execution_path": "PROVEN_TASK2_COMPLETED",
+    "task2_execution_evidence": {
+      "prove_input_head": "02420ebd3bcdd86776c4ab70824738aa4071a168",
+      "prove_run_id": 31341840236,
+      "provenance_artifact_id": 9046072682,
+      "serialized_publish_commit": "8afb9a439df46eec3568a75d7f2536b89e1edaba",
+      "approved_pr_head": "345cf339e2af754d447099dd8e1b278b80b849d5",
+      "task2_merge_main": "a61a0bceec4254c4b78350980275cc9a903f9042",
+      "postmerge_technical_baseline": "fa9595b2df95897c915331a1cb5d9b1a583611f0"
+    },
     "owned_surfaces": [
       "project.godot",
       "**/*.tscn",
@@ -146,7 +157,7 @@
   },
   "remaining_blockers": {
     "general_product_implementation": "BLOCKED",
-    "higodot_production_authoring": "ACTIVE_AUTHORITY_EXECUTION_PATH_UNAVAILABLE_OR_UNVERIFIED",
+    "higodot_production_authoring": "TASK2_PROVEN_COMPLETE_NEW_SCOPE_REQUIRES_APPROVAL",
     "visual_asset_gate": "BLOCKED_NOT_PRODUCT_READY",
     "android_device_validation": "NOT_RUN",
     "human_playtest": "NOT_RUN"

@@ -20,6 +20,7 @@ ADOPTION_MAIN_SHA = "2c4ae7eb244f1e6e01fd0392b747f8ffc3cee7eb"
 VALIDATED_HEAD_SHA = "9ab46229946ae11529824fabefc6d558bd608d5d"
 RUNTIME_RUN_ID = 31111242901
 HIGODOT_ACTIVATION_DECISION = "BS-HIGODOT-20260808-01"
+HIGODOT_EXEC_DECISION = "BS-HIGODOT-EXEC-20260808-01"
 TOOLCHAIN_ACTIVATION_DECISION = "BS-TOOLCHAIN-20260809-01"
 
 ALLOWED_CHANGED_PATHS = {
@@ -50,13 +51,14 @@ def test_policy_separates_active_test_authority_from_active_higodot_authority() 
     assert policy["effective_scope"] == "MAIN_CANON_AUTHORITY_GATE_AND_GUT_RUNTIME"
     assert policy["adoption_main_sha"] == ADOPTION_MAIN_SHA
     assert HIGODOT_ACTIVATION_DECISION in policy["decision_ids"]
+    assert HIGODOT_EXEC_DECISION in policy["decision_ids"]
     assert TOOLCHAIN_ACTIVATION_DECISION in policy["decision_ids"]
     assert policy["higodot"]["current_state"] == "FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY"
     assert policy["higodot"]["policy_role"] == "SOLE_GODOT_AUTHORING_AUTHORITY"
     assert policy["higodot"]["production_activation"] == "USER_APPROVED_ACTIVE"
     assert policy["higodot"]["activation_decision_id"] == HIGODOT_ACTIVATION_DECISION
     assert policy["higodot"]["activation_scope"] == "TASK2_SCOPED_AUTHORING_ONLY"
-    assert policy["higodot"]["production_execution_path"] == "BLOCKED_UNAVAILABLE_OR_UNVERIFIED"
+    assert policy["higodot"]["production_execution_path"] == "PROVEN_TASK2_COMPLETED"
     assert policy["gut"]["status"] == "FORMALLY_ADOPTED_ACTIVE"
     assert policy["gut"]["authority_role"] == "SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY"
     assert policy["gut"]["official_version"] == "9.7.1"
@@ -70,6 +72,8 @@ def test_policy_separates_active_test_authority_from_active_higodot_authority() 
     assert policy["gut"]["config_present"] is True
     assert policy["gut"]["project_gut_test_root_present"] is True
     assert policy["gut"]["formal_ci_authority"] is True
+    assert policy["remaining_blockers"]["general_product_implementation"] == "BLOCKED"
+    assert policy["remaining_blockers"]["higodot_production_authoring"] == "TASK2_PROVEN_COMPLETE_NEW_SCOPE_REQUIRES_APPROVAL"
 
 
 def test_policy_forbids_role_intrusion_and_defines_consumption_removal() -> None:
