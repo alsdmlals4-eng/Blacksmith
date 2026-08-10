@@ -149,6 +149,15 @@ jobs:
           python -m unittest tests/test_project_operating_system_audit_runner.py
           python tools/run_project_operating_system_audit.py --base-root ../base --report artifacts/base-adoption-report.json
 
+      - name: Upload operating audit diagnostics
+        if: failure() && inputs.include-operating-audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: base-adoption-report
+          path: project/artifacts/base-adoption-report.json
+          if-no-files-found: ignore
+          retention-days: 1
+
       - name: Validate game and lifecycle data
         if: inputs.scope == 'code'
         working-directory: project
