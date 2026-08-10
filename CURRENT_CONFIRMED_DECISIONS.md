@@ -1,5 +1,10 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
+<!-- R3_R7_DESIGN_RESUMED -->
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-01 / R3_R7_1_OF_10 / PLANNING_ONLY**
+>
+> R2 Batch 006과 Task2 기술 폐쇄는 그대로 상속한다. 이번 승인은 R3–R7 기획 재개이며 Task3 또는 일반 제품 구현 승인으로 확대하지 않는다.
+
 <!-- R2_BATCH_006_CURRENT_AUTHORITY -->
 > **R2_BATCH_006_APPROVED_MAIN_CANON**
 >
@@ -40,7 +45,11 @@ POSTMERGE: POSTMERGE_CI_CLOSURE_COMPLETE
 CURRENT_TECHNICAL_BASELINE: fa9595b2df95897c915331a1cb5d9b1a583611f0
 HIGODOT_EXECUTION_DECISION: BS-HIGODOT-EXEC-20260808-01
 HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
+R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
+R3_R7_APPROVAL_COUNTER: 1/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01
 NEW_PRODUCT_SCOPE: NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED
+TASK3_IMPLEMENTATION: NOT_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
 HUMAN_PLAYTEST: NOT_RUN
 ANDROID_DEVICE: NOT_RUN
@@ -77,6 +86,7 @@ ANDROID_DEVICE: NOT_RUN
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
+- `BS-CONTENT-20260811-01`: `ADVENTURER_01` 나디아 벤 유적 탐사 개인 일정. `생환 + 회수`를 목표로 작품 한 점을 맡기고, 하루 종료당 최대 한 번 진행하며, 같은 UID의 즉시 인과 결과와 지연 생애·복원·후속 강화 이유를 만든다. 직접 전투·탐험 미니게임과 단일 항상최적 장비 정답은 추가하지 않는다. — `USER_APPROVED / R3_R7_1_OF_10 / PENDING_MERGE / PLANNING_ONLY`
 - `BS-CRAFT-20260804-04`: 보조재료 제거와 정밀강화 방식·촉매 책임 분리
 - `BS-CRAFT-20260804-05`: 촉매 수식어 씨앗·계보·진화
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
@@ -369,3 +379,27 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 - 솔로 48케이스와 외부 3~5명 검증 전까지 수치는 `BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED`다.
 - 사람 플레이테스트: `NOT_RUN`.
 - 제품 구현: `BLOCKED`.
+
+## 17. R3–R7 첫 상세 콘텐츠 — 나디아 벤 유적 탐사
+
+Decision: `BS-CONTENT-20260811-01`.
+
+```text
+ADVENTURER_01 / NADIA_VENN
+유적 탐사 개인 일정
+생환 + 회수
+```
+
+- 나디아는 모험가 유형 대표 고객·유적 탐사대장이다.
+- 플레이어는 직접 탐험하거나 전투하지 않고 작품 한 점을 골라 인계한다.
+- 선택 축은 강화 단계·위험, 중량/고객 적합, 실제 관련 환경·유틸리티 적합이다.
+- 단일 항상최적 장비 정답을 만들지 않는다.
+- 일정은 `PERSONAL_SCHEDULE`이며 활성 중 `ONE_END_OF_DAY_CHECK_MAXIMUM_WHILE_ACTIVE`를 따른다.
+- `PREP_AND_ENTRY → HAZARD_AND_RECOVERY_ATTEMPT → RETURN_AND_RESULT`는 구조 상태이며 고정 3일 계약이 아니다.
+- 결과는 귀환·회수·같은 UID 작품 상태를 분리하고, 즉시 인과 결과 뒤 복원·후속 강화·새 제작 이유로 환류한다.
+- 일상 사건 완료만으로 `CHRONICLE_AFFIX`나 예술성을 자동 지급하지 않는다.
+- 정확한 기간·확률·보상·손실·복구 비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+- 책임 원본: `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`.
+- Registry: `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`.
+- 제품 구현: `BLOCKED`.
+- Task3 구현: `NOT_APPROVED`.
