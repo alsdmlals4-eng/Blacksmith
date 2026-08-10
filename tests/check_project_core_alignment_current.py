@@ -154,7 +154,6 @@ def main() -> int:
         print("Project core alignment FAILED")
         for failure in failures:
             print(f"- {failure}")
-            print(f"::error::{failure}")
         return 1
     print("Project core alignment PASSED")
     return 0
