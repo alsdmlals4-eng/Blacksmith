@@ -90,6 +90,18 @@ The approved implementation plan is:
 
 Those files preserve the pre-execution design/TDD staging history. Their old staging language is historical evidence and does not override this Decision's current closure section.
 
+## Historical pre-execution state
+
+The following values are retained only as immutable staging evidence from before the bridge implementation ran:
+
+```text
+WRITTEN_SPEC_REVIEW = APPROVED
+BRIDGE_TDD = RED_NEXT
+SCENE_PROJECT_MUTATION = 0
+```
+
+At that time, the Base generic Godot production adapter remains `NOT_READY`, and **This Decision is not merge approval** was the applicable pre-merge gate. Those statements are historical and are superseded for current status by `Current closure` below.
+
 ## Current closure
 
 ```text
