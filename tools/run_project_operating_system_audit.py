@@ -65,8 +65,9 @@ def configure_current_assertions() -> None:
         for token in gate_tokens
     ]
     for token in (
-        "VERTICAL_SLICE_CODE_GATE: USER_APPROVED",
+        "VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE",
         "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
+        "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
     ):
         if token not in gate_tokens:
             gate_tokens.append(token)
