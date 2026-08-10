@@ -37,3 +37,20 @@ jobs:
       base_pilot_commit: 2b595570bd237174b2b962a1eb54588b5ecc508d
       descriptor_path: .godot-live-editor/project-pilot.json
       artifact_retention_days: 14
+
+  pilot-failure-diagnostics:
+    needs: project-pilot
+    if: ${{ always() && needs.project-pilot.result == 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: godot-project-pilot-${{ github.repository_id }}-${{ github.sha }}
+          path: .godot-live-editor/pilot-failure
+      - name: Surface bounded Pilot failure marker
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f .godot-live-editor/pilot-failure/failure.json
+          cat .godot-live-editor/pilot-failure/failure.json
