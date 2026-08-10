@@ -89,34 +89,26 @@ jobs:
       - name: Validate document and CI contracts
         working-directory: project
         run: |
-          run_contract() {
-            label="$1"
-            shift
-            "$@" || {
-              echo "::error::$label"
-              exit 1
-            }
-          }
           python -m pip install --disable-pip-version-check pytest==8.3.5
-          run_contract core_alignment python tests/check_project_core_alignment_current.py
-          run_contract ci_workflow_structure python -m unittest tests/test_ci_workflow_structure.py
-          run_contract higodot_gut_authority python -m pytest tests/test_higodot_gut_authority_gate.py -q
-          run_contract higodot_production_activation python -m pytest tests/test_higodot_production_authoring_activation.py -q
-          run_contract editor_plugin_runtime python -m pytest tests/test_user_approved_editor_plugin_runtime_contract.py -q
-          run_contract gut_formal_adoption python -m unittest tests/test_gut_formal_adoption_contract.py -v
-          run_contract hera_vendor_reconciliation python -m pytest tests/test_hera_vendor_reconciliation_contract.py -q
-          run_contract hera_postmerge_closure python -m pytest tests/test_hera_postmerge_closure_contract.py -q
-          run_contract new_campaign_initializer python -m unittest tests.test_vertical_slice_new_campaign_initializer_authority -v
-          run_contract higodot_task2_bridge python -m pytest tests/test_higodot_task2_ci_authoring_bridge_contract.py -q
-          run_contract higodot_exact_diff_hygiene python -m pytest tests/test_higodot_task2_exact_diff_hygiene.py -q
-          run_contract higodot_mcp_driver python -m pytest tests/test_higodot_task2_mcp_driver.py -q
-          run_contract higodot_toolchain_pin python -m pytest tests/test_higodot_task2_toolchain_pin.py -q
-          run_contract higodot_313_runtime python -m pytest tests/test_higodot_task2_313_runtime_contract.py -q
-          run_contract editor_plugin_sync python -m pytest tests/test_user_approved_editor_plugin_sync_contract.py -q
-          run_contract higodot_post_authoring python -m pytest tests/test_higodot_task2_post_authoring_gate.py -q
-          run_contract higodot_provenance python -m pytest tests/test_higodot_task2_provenance_artifact.py -q
-          run_contract higodot_publish_guard python -m pytest tests/test_higodot_task2_publish_guard.py -q
-          run_contract higodot_real_prove python -m pytest tests/test_higodot_task2_real_prove_contract.py -q
+          python tests/check_project_core_alignment_current.py
+          python -m unittest tests/test_ci_workflow_structure.py
+          python -m pytest tests/test_higodot_gut_authority_gate.py -q
+          python -m pytest tests/test_higodot_production_authoring_activation.py -q
+          python -m pytest tests/test_user_approved_editor_plugin_runtime_contract.py -q
+          python -m unittest tests/test_gut_formal_adoption_contract.py -v
+          python -m pytest tests/test_hera_vendor_reconciliation_contract.py -q
+          python -m pytest tests/test_hera_postmerge_closure_contract.py -q
+          python -m unittest tests.test_vertical_slice_new_campaign_initializer_authority -v
+          python -m pytest tests/test_higodot_task2_ci_authoring_bridge_contract.py -q
+          python -m pytest tests/test_higodot_task2_exact_diff_hygiene.py -q
+          python -m pytest tests/test_higodot_task2_mcp_driver.py -q
+          python -m pytest tests/test_higodot_task2_toolchain_pin.py -q
+          python -m pytest tests/test_higodot_task2_313_runtime_contract.py -q
+          python -m pytest tests/test_user_approved_editor_plugin_sync_contract.py -q
+          python -m pytest tests/test_higodot_task2_post_authoring_gate.py -q
+          python -m pytest tests/test_higodot_task2_provenance_artifact.py -q
+          python -m pytest tests/test_higodot_task2_publish_guard.py -q
+          python -m pytest tests/test_higodot_task2_real_prove_contract.py -q
 
       - name: Validate archive retention governance
         working-directory: project
