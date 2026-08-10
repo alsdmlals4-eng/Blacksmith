@@ -41,6 +41,7 @@ class MobileCustomerCardProgressiveDisclosureContractTests(unittest.TestCase):
             ],
             closed["decisions"],
         )
+
     def test_three_layer_mobile_card_is_canonical(self) -> None:
         self.assertIn("BS-UX-20260805-01", self.decisions)
         decision = self.decisions["BS-UX-20260805-01"]
@@ -115,7 +116,8 @@ class MobileCustomerCardProgressiveDisclosureContractTests(unittest.TestCase):
         self.assertIn("BS-UX-20260805-01", bible)
         self.assertIn("R2_BATCH_005_7_OF_10", bible)
         self.assertIn("BS-UX-20260805-01", active)
-        self.assertIn("현재 승인 카운터: `0/10`", active)
+        self.assertIn("R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10", active)
+        self.assertNotIn("현재 승인 카운터: `0/10`", active)
 
 
 if __name__ == "__main__":
