@@ -49,7 +49,8 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
-      - run: >-
+      - name: Run planning-first contract suite
+        run: >-
           python -m unittest
           tests.test_base_v942_planning_first_adoption
           tests.test_project_adapter_long_lived_pr_baseline
@@ -70,3 +71,31 @@ jobs:
           tests.test_r2_batch_006_vertical_slice_proposal
           tests.test_r2_batch_006_main_canon_closure
           -v
+      - name: Identify failing contract modules
+        if: failure()
+        shell: bash
+        run: |
+          modules=(
+            tests.test_base_v942_planning_first_adoption
+            tests.test_project_adapter_long_lived_pr_baseline
+            tests.test_hera_postmerge_closure_contract
+            tests.test_r3_adventurer_01_nadia_content
+            tests.test_r2_artistry_generation_growth_economy
+            tests.test_r2_customer_equipment_compatibility
+            tests.test_r2_mobile_customer_card_progressive_disclosure
+            tests.test_r2_enhancement_dominant_simple_load_gate
+            tests.test_r2_equipment_base_weight_points
+            tests.test_r2_weight_performance_budget_and_lightweight_tradeoff
+            tests.test_r2_weight_budget_conversion_and_role_presets
+            tests.test_r2_item_role_stat_and_initial_function_ownership
+            tests.test_r2_function_recipe_material_fit_and_playtest
+            tests.test_r2_checkpoint_005_postmerge_closure
+            tests.test_r2_checkpoint_005_main_canon_finalization
+            tests.test_r2_batch_006_vertical_slice_proposal
+            tests.test_r2_batch_006_main_canon_closure
+          )
+          for module in "${modules[@]}"; do
+            if ! python -m unittest "$module" -q; then
+              echo "::error title=Planning-first failing module::$module"
+            fi
+          done
