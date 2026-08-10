@@ -46,6 +46,40 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertNotIn("addons/hera_agent_godot/.*", workflow)
         self.assertNotIn("addons/hera_agent_godot/", workflow.replace("addons/hera_agent_godot/hera_agent_plugin.gd", ""))
 
+    def test_task2_higodot_exception_is_one_shot_blob_exact_and_decision_bound(self) -> None:
+        workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
+        for token in (
+            "BS-HIGODOT-EXEC-20260808-01",
+            "pull_request.number == 131",
+            "c3d7f0cf0f5b3662803ae58b7176d8a996638c60",
+            "feat/vertical-slice-task2-app-shell",
+            "addons/godot_ai/handlers/project_handler.gd",
+            "e3c2e4568a0d44cb621742241678814df90f31f5",
+            "addons/godot_ai/plugin.gd",
+            "e465cb9f308d3968252f08bf9e0a0a83a80b87bd",
+            "approved-task2-higodot-protected-paths.txt",
+        ):
+            self.assertIn(token, workflow)
+        self.assertNotIn("addons/godot_ai/.*", workflow)
+        stripped = workflow.replace("addons/godot_ai/handlers/project_handler.gd", "").replace("addons/godot_ai/plugin.gd", "")
+        self.assertNotIn("addons/godot_ai/", stripped)
+
+    def test_task2_published_product_exception_is_exact_four_paths_and_blob_bound(self) -> None:
+        workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
+        expected = {
+            "project.godot": "27372b3862207aab5942b7dcc71cfb4b74aa4b92",
+            "scenes/vertical_slice/main_menu.tscn": "6a8d9c4340f7b134d16a1ee4d91c0f9751c4e926",
+            "scenes/vertical_slice/vertical_slice_app.tscn": "bb7578a45bab294018ed6654ef9accfcde1b85e6",
+            "scenes/vertical_slice/screens/vs_workshop_screen.tscn": "731445f7d35a46c92ab834a8d46c18ba7e5655e2",
+        }
+        self.assertIn("BS-HIGODOT-EXEC-20260808-01", workflow)
+        self.assertIn("approved-task2-published-product-paths.txt", workflow)
+        for path, blob in expected.items():
+            self.assertIn(path, workflow)
+            self.assertIn(blob, workflow)
+        self.assertNotIn("scenes/vertical_slice/.*", workflow)
+        self.assertNotIn("project.godot.*", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

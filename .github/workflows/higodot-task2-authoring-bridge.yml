@@ -421,7 +421,7 @@ jobs:
         uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
         with:
           name: higodot-task2-provenance
-          path: artifacts/higodot-task2/provenance
+          path: ${{ runner.temp }}/higodot-task2-provenance
 
       - name: Capture remote head before staging
         id: branch-head-before
@@ -445,7 +445,7 @@ jobs:
 
           provenance.verify_publish_head(os.environ["EXPECTED_HEAD_SHA"], os.environ["REMOTE_HEAD"])
           manifest = provenance.stage_proven_artifact(
-              Path("artifacts/higodot-task2/provenance"),
+              Path(os.environ["RUNNER_TEMP"]) / "higodot-task2-provenance",
               Path("."),
               os.environ["EXPECTED_HEAD_SHA"],
               Path(".github/validation/higodot-task2-provenance-schema.json"),

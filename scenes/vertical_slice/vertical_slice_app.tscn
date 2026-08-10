@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://xr1db6yi3n2n"]
+
+[ext_resource type="Script" uid="uid://b327lccqh1dps" path="res://scripts/vertical_slice/ui/vs_app.gd" id="1_ckucl"]
+[ext_resource type="PackedScene" uid="uid://clv5jcaguskve" path="res://scenes/vertical_slice/screens/vs_workshop_screen.tscn" id="2_yqult"]
+
+[node name="BlacksmithApp" type="Control" unique_id=1923340125]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_ckucl")
+
+[node name="ScreenHost" type="Control" parent="." unique_id=2089365586]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="WorkshopScreen" parent="ScreenHost" unique_id=1051693238 instance=ExtResource("2_yqult")]
+layout_mode = 1
+grow_horizontal = 2
+grow_vertical = 2

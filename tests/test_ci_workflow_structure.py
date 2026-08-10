@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -92,6 +93,26 @@ class CiWorkflowStructureTests(unittest.TestCase):
         current_wrapper = (ROOT / "tests" / "check_project_core_alignment_current.py").read_text(encoding="utf-8")
         self.assertIn("import check_project_core_alignment as legacy", current_wrapper)
         self.assertIn("legacy.check_r2(failures)", current_wrapper)
+
+    def test_project_base_adapter_uses_exact_approved_protected_change_gate(self) -> None:
+        workflow = read("validate-project-base-adapter.yml")
+        self.assertIn("ref: 4ec410e611152294f3f2685570fca6019c7abcfa", workflow)
+        self.assertIn("check_approved_project_operating_contract.py", workflow)
+        self.assertIn("approved-protected-change", workflow)
+        self.assertIn("docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json", workflow)
+        self.assertNotIn("python .base-contract/tools/check_project_operating_contract.py", workflow)
+
+    def test_project_godot_protected_change_manifest_is_exact_and_one_shot(self) -> None:
+        path = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
+        self.assertTrue(path.is_file(), "exact protected-change approval manifest is missing")
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual("PROJECT_PROTECTED_CHANGE_APPROVAL", manifest["artifact_role"])
+        self.assertEqual("APPROVED", manifest["status"])
+        self.assertEqual("2dddf864519a557152c6bbf0f0ee7fb94eadf11c", manifest["protected_base_commit"])
+        self.assertEqual(["project.godot"], manifest["approved_paths"])
+        self.assertIn("BS-HIGODOT-EXEC-20260808-01", manifest["decision_ids"])
+        self.assertEqual("GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE", manifest["approval_source"])
+        self.assertFalse(any(any(char in item for char in "*?[]") for item in manifest["approved_paths"]))
 
     def test_activation_policy_is_recorded(self) -> None:
         policy = (ROOT / "docs" / "CI_EXECUTION_POLICY.md").read_text(encoding="utf-8")
