@@ -77,11 +77,13 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertNotIn('"stage_status":"R2_CHECKPOINT_005_CLOSED_MAIN_CANON"', tokens)
         self.assertNotIn('"status":"NOT_STARTED"', tokens)
 
-    def test_gate_assertions_keep_general_block_and_scoped_approval(self) -> None:
+    def test_gate_assertions_keep_general_block_and_task2_closed_scope(self) -> None:
         runner.configure_current_assertions()
         tokens = audit.REQUIRED_ASSERTIONS["[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"]
         self.assertIn("GENERAL_PRODUCT_IMPLEMENTATION: BLOCKED", tokens)
-        self.assertIn("VERTICAL_SLICE_CODE_GATE: USER_APPROVED", tokens)
+        self.assertIn("VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE", tokens)
+        self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED", tokens)
+        self.assertNotIn("VERTICAL_SLICE_CODE_GATE: USER_APPROVED", tokens)
         self.assertNotIn("CODEX_IMPLEMENTATION_GATE: BLOCKED", tokens)
 
 
