@@ -6,6 +6,7 @@ on:
       - agent/project-instruction-v45-r2-canon
     paths:
       - "tools/hydrate_instruction_v45_r2.py"
+      - "tools/apply_project_instruction_v45_r2_router.py"
       - "tools/.instruction_v45_r2_payload/**"
       - ".github/workflows/hydrate-v45-r2-instruction.yml"
 
@@ -32,6 +33,8 @@ jobs:
           python-version: "3.12"
       - name: Verify payload and materialize exact source
         run: python tools/hydrate_instruction_v45_r2.py
+      - name: Materialize current Blacksmith router consumers
+        run: python tools/apply_project_instruction_v45_r2_router.py
       - name: Verify exact source hash
         shell: bash
         run: |
@@ -39,16 +42,20 @@ jobs:
           actual="$(sha256sum PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md | awk '{print $1}')"
           test "$actual" = "3f898b7e2749a2e1900e9df48183f02d4fbc735fd0e80297f28bb09317144de4"
           test "$(wc -c < PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md)" -eq 77734
-      - name: Commit exact source if needed
+      - name: Commit canon and routers if needed
         shell: bash
         run: |
           set -euo pipefail
-          if git diff --quiet -- PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md && git ls-files --error-unmatch PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md >/dev/null 2>&1; then
-            echo "Exact source already tracked; no hydration commit required."
+          git add \
+            PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md \
+            AGENTS.md \
+            '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md' \
+            '[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md'
+          if git diff --cached --quiet; then
+            echo "Canon and routers already materialized."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
-          git commit -m "docs: materialize exact v4.5 r2 instruction source"
+          git commit -m "docs: bind v4.5 r2 instruction canon to Blacksmith"
           git push origin HEAD:agent/project-instruction-v45-r2-canon
