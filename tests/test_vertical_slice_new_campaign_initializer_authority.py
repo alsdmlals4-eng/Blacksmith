@@ -52,7 +52,7 @@ class VerticalSliceNewCampaignInitializerAuthorityTests(unittest.TestCase):
         self.assertIn("INITIALIZER_DECISION: BS-VS-INIT-20260808-01", text)
         self.assertIn("INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED", text)
         self.assertIn(
-            "ENTRY_STATE_GATE: PASS_TASK2_CLOSED_NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED",
+            "ENTRY_STATE_GATE: PASS_R3_R7_PLANNING_ONLY_PRODUCT_SCOPE_STILL_REQUIRED",
             text,
         )
         self.assertIn(
@@ -63,6 +63,9 @@ class VerticalSliceNewCampaignInitializerAuthorityTests(unittest.TestCase):
         self.assertIn("HIGODOT_ACTIVATION_DECISION: BS-HIGODOT-20260808-01", text)
         self.assertIn("HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED", text)
         self.assertIn("GENERAL_PRODUCT: BLOCKED", text)
+        self.assertIn("R3_R7_DESIGN: ACTIVE_PLANNING_ONLY", text)
+        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01", text)
+        self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
         self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED", text)
 
 
