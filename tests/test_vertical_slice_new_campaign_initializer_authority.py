@@ -47,21 +47,23 @@ class VerticalSliceNewCampaignInitializerAuthorityTests(unittest.TestCase):
         self.assertEqual(gate["higodot_authority"], "PILOT_ONLY_NOT_PRODUCTION_AUTHORING_AUTHORITY")
         self.assertEqual(gate["hera_authority"], "NONE")
 
-    def test_development_gate_preserves_initializer_after_higodot_activation(self) -> None:
+    def test_current_development_gate_preserves_initializer_after_task2_closure(self) -> None:
         text = DEVELOPMENT_GATES.read_text(encoding="utf-8")
         self.assertIn("INITIALIZER_DECISION: BS-VS-INIT-20260808-01", text)
         self.assertIn("INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED", text)
         self.assertIn(
-            "ENTRY_STATE_GATE: PASS_SCOPED_TASK2_AUTHORITY_ACTIVE_EXECUTION_BLOCKED",
+            "ENTRY_STATE_GATE: PASS_TASK2_CLOSED_NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED",
             text,
         )
         self.assertIn(
-            "VERTICAL_SLICE_CODE_GATE: USER_APPROVED_SCOPED_ONLY_TASK2_SCRIPT_GREEN_HIGODOT_AUTHORITY_ACTIVE_EXECUTION_PATH_BLOCKED",
+            "VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE",
             text,
         )
-        self.assertIn("TASK2: STATIC_RED_REMAINS_SCENE_PROJECT_EXECUTION_BLOCKED", text)
+        self.assertIn("TASK2: MAIN_MERGED_POSTMERGE_CI_CLOSURE_COMPLETE", text)
         self.assertIn("HIGODOT_ACTIVATION_DECISION: BS-HIGODOT-20260808-01", text)
+        self.assertIn("HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED", text)
         self.assertIn("GENERAL_PRODUCT: BLOCKED", text)
+        self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED", text)
 
 
 if __name__ == "__main__":
