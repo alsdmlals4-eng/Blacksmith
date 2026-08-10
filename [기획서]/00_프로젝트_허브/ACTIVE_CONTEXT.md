@@ -67,6 +67,7 @@ R3_R7_RESUME_LOCATOR_AUTHORITY: NON_CANONICAL_RESUME_LOCATOR
 
 - PR #81 전체 병합 금지.
 - 일반 제품 구현은 `BLOCKED`.
+- 제품 구현: `BLOCKED`.
 - Task2 완료를 새로운 Task3/R3 구현 승인으로 해석하지 않는다.
 - 사람 플레이테스트·Android 실기기·접근성은 실제 실행 전 `NOT_RUN`.
 - HiGodot은 승인된 Godot persistent authoring 권위, GUT 9.7.1은 GDScript test 권위, Hera는 enabled non-authoritative / `AUTHORITY_NONE`이다.
@@ -87,6 +88,12 @@ BS-ITEM-20260806-04 / R2_BATCH_005_8_OF_10
 BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10
 BS-ITEM-20260806-06 / R2_BATCH_005_10_OF_10
 ```
+
+## 불변 체크포인트 호환 이력
+
+- R2 체크포인트 004 기획·폐쇄 이력은 현재 단계가 아니라 삭제 금지 증거다.
+- `R2_CHECKPOINT_004 / MERGED_PR106 / MAIN_CANON`
+- closure squash merge: `7a46fa38586a42f268cd0432744203049649ddd5`
 
 ## 비정본 설계 재개 지점
 
