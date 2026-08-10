@@ -135,12 +135,14 @@ def main() -> int:
 
     active_tokens = list(required["[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"])
     active_tokens.remove("현재 승인 카운터: `0/10`")
+    active_tokens.remove("제품 구현: `BLOCKED`")
     active_tokens.extend(
         [
             "현재 R3–R7 승인 카운터: `1/10`",
             "R3_R7_DESIGN_ACTIVE",
             "R3_R7_APPROVAL_COUNTER: 1/10",
             "BS-CONTENT-20260811-01",
+            "PRODUCT_IMPLEMENTATION: BLOCKED",
             "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ]
     )
