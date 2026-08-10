@@ -52,6 +52,7 @@ R3_R7_RESUME_LOCATOR_AUTHORITY: NON_CANONICAL_RESUME_LOCATOR
   - Full validation: run `31344872151` SUCCESS
   - Live-Editor Pilot: run `31344872263` SUCCESS
   - PR #140 authority workflow: run `31344719243` SUCCESS
+- 역사 POC 회귀 증거는 현재 제품 PASS가 아니다: `POC v0.6.4 · main · 2026.07.23.1 / 제작 모델 7건 / 통합 6건 / HISTORICAL_EVIDENCE_ONLY`.
 
 ## 현재 권위와 보호 경계
 
