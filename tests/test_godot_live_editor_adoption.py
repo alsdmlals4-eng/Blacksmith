@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BASE_C0_SHA = "2b595570bd237174b2b962a1eb54588b5ecc508d"
 GODOT_ARCHIVE_SHA256 = "c7ff14fd28472c8d4f193043de30278dcf7e5241a1dcf7566b02e27addaa33ba"
+DOWNLOAD_ARTIFACT_SHA = "634f93cb2916e3fdff6788551b99b062d0335ce0"
 DESCRIPTOR = ROOT / ".godot-live-editor/project-pilot.json"
 ADOPTION_DOC = ROOT / "docs/GODOT_LIVE_EDITOR_ADOPTION.md"
 WORKFLOW = ROOT / ".github/workflows/validate-godot-live-editor-pilot.yml"
@@ -58,6 +59,12 @@ def _changed_paths_from_main() -> set[str]:
     return {line.strip() for line in output.splitlines() if line.strip()}
 
 
+def _configured_main_scene(project_text: str) -> str:
+    prefix = 'run/main_scene="'
+    assert prefix in project_text, "application/run/main_scene must remain configured"
+    return project_text.split(prefix, 1)[1].split('"', 1)[0]
+
+
 def test_descriptor_is_exact_blacksmith_contract() -> None:
     payload = json.loads(_required_text(DESCRIPTOR))
     assert payload["schema_version"] == "1"
@@ -85,11 +92,14 @@ def test_descriptor_is_exact_blacksmith_contract() -> None:
     ]
 
 
-def test_source_legacy_authority_and_main_scene_remain_installed() -> None:
+def test_source_legacy_authority_and_configured_main_scene_remain_installed() -> None:
     project = (ROOT / "project.godot").read_text(encoding="utf-8")
-    assert 'run/main_scene="res://scenes/test/enhancement_test.tscn"' in project
+    main_scene = _configured_main_scene(project)
+    assert main_scene.startswith("res://")
+    assert main_scene.endswith(".tscn")
+    assert (ROOT / main_scene.removeprefix("res://")).is_file(), main_scene
     assert '_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"' in project
-    assert 'enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")' in project
+    assert '"res://addons/godot_ai/plugin.cfg"' in project
     assert (ROOT / "addons/godot_ai/plugin.cfg").is_file()
     for target in BEHAVIOR_TARGETS:
         assert (ROOT / target.removeprefix("res://")).is_file(), target
@@ -102,6 +112,7 @@ def test_adoption_document_preserves_boundaries() -> None:
         "LEGACY_DISABLED_IN_DISPOSABLE_COPY_ONLY",
         "DUAL_MUTATION_AUTHORITY_FORBIDDEN",
         "MAIN_SCENE_READ_ONLY",
+        "source-configured main Scene",
         "SCRATCH_SCENE_MUTATION_ONLY",
         "SOURCE_TREE_UNCHANGED",
         "SELF_CONTAINED_EVIDENCE_BUNDLE",
@@ -119,6 +130,7 @@ def test_adoption_document_preserves_boundaries() -> None:
         "LEGACY_GODOT_AI_SOURCE_REMOVED",
         "HUMAN_USABILITY: PASS",
         "android_device: PASS",
+        "res://scenes/test/enhancement_test.tscn",
     ):
         assert forbidden_claim not in text
 
@@ -141,6 +153,17 @@ def test_workflow_uses_one_immutable_base_pin() -> None:
     assert "python -m pytest tests/test_godot_live_editor_adoption.py -q" in text
     assert "@main" not in text
     assert text.count(BASE_C0_SHA) == 2
+
+
+def test_workflow_surfaces_bounded_pilot_failure_marker() -> None:
+    text = _required_text(WORKFLOW)
+    assert "pilot-failure-diagnostics:" in text
+    assert "needs: project-pilot" in text
+    assert "needs.project-pilot.result == 'failure'" in text
+    assert f"actions/download-artifact@{DOWNLOAD_ARTIFACT_SHA}" in text
+    assert "godot-project-pilot-${{ github.repository_id }}-${{ github.sha }}" in text
+    assert ".godot-live-editor/pilot-failure/failure.json" in text
+    assert "cat .godot-live-editor/pilot-failure/failure.json" in text
 
 
 def test_pull_request_trigger_is_scoped_to_adoption_surface() -> None:

@@ -22,7 +22,7 @@ This repository adopts the immutable Base C0.1 Pilot commit `2b595570bd237174b2b
 
 `LEGACY_GODOT_AI_SOURCE_PRESERVED` means the source repository keeps `res://addons/godot_ai/plugin.cfg`, the Godot AI addon bytes, and `_mcp_game_helper` unchanged.
 
-`LEGACY_DISABLED_IN_DISPOSABLE_COPY_ONLY` means the Base runner copies the project to a temporary workspace and disables only the declared Plugin and Autoload entries in that copy. The source `project.godot` remains byte-identical.
+`LEGACY_DISABLED_IN_DISPOSABLE_COPY_ONLY` means the Base runner copies the project to a temporary workspace and disables only the declared Godot AI Plugin and Autoload entries in that copy. Other approved editor plugins remain governed by their own authority contracts. The source `project.godot` remains byte-identical.
 
 `DUAL_MUTATION_AUTHORITY_FORBIDDEN` means Godot AI and the Base transaction adapter are never active together in the Pilot workspace.
 
@@ -30,7 +30,7 @@ This repository adopts the immutable Base C0.1 Pilot commit `2b595570bd237174b2b
 
 The workflow creates and prepares a disposable project copy, imports and parses it with Godot 4.7.1, then runs the same fourteen model and integration GDScript checks used by the authoritative Godot validation workflow.
 
-The configured main Scene `res://scenes/test/enhancement_test.tscn` is opened only under `MAIN_SCENE_READ_ONLY`.
+The source-configured main Scene is read from `application/run/main_scene`, must resolve to an existing in-project `.tscn`, and is opened only under `MAIN_SCENE_READ_ONLY`. The Pilot does not freeze or override a historical product entry Scene.
 
 Rename, Editor Undo, save, ledger recording, and physical SHA-256 verification occur only in the runner-owned `res://.godot-live-editor-pilot/scratch.tscn` under `SCRATCH_SCENE_MUTATION_ONLY`.
 
