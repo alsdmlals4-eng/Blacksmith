@@ -69,6 +69,7 @@ class Adventurer01NadiaContentContractTests(unittest.TestCase):
             "DEFAULT_CUSTOMER_CARD",
             "POST_EQUIPMENT_DECISION_LAYER",
             "DETAIL_VIEW",
+            "작품 미선택 기본 예상 성공률",
             "LOAD_GATE_THEN_ENHANCEMENT_THEN_RELEVANT_UTILITY_THEN_SMALL_CUSTOMER_CONTEXT",
             "OVERWEIGHT이면 예상 성공률보다 배정 불가를 우선한다",
             "자동 추천·Best 배지 금지",
