@@ -86,7 +86,7 @@ ANDROID_DEVICE: NOT_RUN
 - `BS-SCHEDULE-20260804-01`: 주요 일정·소식·묶음 요약·일정 장부
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
-- `BS-CONTENT-20260811-01`: `ADVENTURER_01` 나디아 벤 유적 탐사 개인 일정. `생환 + 회수`를 목표로 작품 한 점을 맡기고, 하루 종료당 최대 한 번 진행하며, 같은 UID의 즉시 인과 결과와 지연 생애·복원·후속 강화 이유를 만든다. 직접 전투·탐험 미니게임과 단일 항상최적 장비 정답은 추가하지 않는다. — `USER_APPROVED / R3_R7_1_OF_10 / PENDING_MERGE / PLANNING_ONLY`
+- `BS-CONTENT-20260811-01`: `ADVENTURER_01` 나디아 벤 유적 탐사 개인 일정. `생환 + 회수`를 목표로 작품 한 점을 맡기고, 하루 종료당 최대 한 번 진행하며, 같은 UID의 즉시 인과 결과와 지연 생애·복원·후속 강화 이유를 만든다. 직접 전투·탐험 미니게임과 단일 항상최적 장비 정답은 추가하지 않는다. — `USER_APPROVED / R3_R7_1_OF_10 / MERGED_PR142_MAIN_CANON / PLANNING_ONLY`
 - `BS-CRAFT-20260804-04`: 보조재료 제거와 정밀강화 방식·촉매 책임 분리
 - `BS-CRAFT-20260804-05`: 촉매 수식어 씨앗·계보·진화
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`

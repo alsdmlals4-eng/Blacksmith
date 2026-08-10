@@ -94,7 +94,7 @@ class Adventurer01NadiaContentContractTests(unittest.TestCase):
 
         self.assertIn("BS-CONTENT-20260811-01", current)
         self.assertIn("MERGED_PR142_MAIN_CANON", current)
-        self.assertNotIn("BS-CONTENT-20260811-01`:", current.split("PENDING_MERGE")[0] if "PENDING_MERGE" in current else "")
+        self.assertNotIn("USER_APPROVED / R3_R7_1_OF_10 / PENDING_MERGE / PLANNING_ONLY", current)
         self.assertIn("R3_R7_DESIGN_ACTIVE", active)
         self.assertIn("ADVENTURER_01_DETAIL_APPROVED", active)
         self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", active)
