@@ -9,6 +9,7 @@
 - Blacksmith baseline main before this handoff refresh: `fa9595b2df95897c915331a1cb5d9b1a583611f0`
 - `BASE_CURRENT_MAIN_OBSERVED`: `49f6190b9b5a535ceb7986755c1b68b221754cf5`
 - `PROJECT_BASE_ADAPTER_PIN`: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
+- 현재 승인 카운터: `0/10`
 - Base current main 관측값과 프로젝트가 채택한 Base adapter pin은 서로 다른 증거다. 새 Base main 관측만으로 프로젝트 pin을 자동 승격하지 않는다.
 
 ```yaml
@@ -68,6 +69,23 @@ R3_R7_RESUME_LOCATOR_AUTHORITY: NON_CANONICAL_RESUME_LOCATOR
 - Task2 완료를 새로운 Task3/R3 구현 승인으로 해석하지 않는다.
 - 사람 플레이테스트·Android 실기기·접근성은 실제 실행 전 `NOT_RUN`.
 - HiGodot은 승인된 Godot persistent authoring 권위, GUT 9.7.1은 GDScript test 권위, Hera는 enabled non-authoritative / `AUTHORITY_NONE`이다.
+
+## 승인 Decision 호환 인덱스
+
+아래 표기는 Active Context가 도메인 본책을 복제하기 위한 것이 아니라, 기존 검증·추적에서 사용하는 승인 ID의 재개 locator다. 상세 내용은 Current Decisions와 R2 Registry가 책임진다.
+
+```text
+BS-CRAFT-20260805-02 / R2_BATCH_005_1_OF_10
+BS-CUSTOMER-20260805-01 / R2_BATCH_005_2_OF_10
+BS-UX-20260805-01 / R2_BATCH_005_3_OF_10
+BS-CUSTOMER-20260806-01 / R2_BATCH_005_4_OF_10
+BS-ITEM-20260806-01 / R2_BATCH_005_5_OF_10
+BS-ITEM-20260806-02 / R2_BATCH_005_6_OF_10
+BS-ITEM-20260806-03 / R2_BATCH_005_7_OF_10
+BS-ITEM-20260806-04 / R2_BATCH_005_8_OF_10
+BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10
+BS-ITEM-20260806-06 / R2_BATCH_005_10_OF_10
+```
 
 ## 비정본 설계 재개 지점
 
