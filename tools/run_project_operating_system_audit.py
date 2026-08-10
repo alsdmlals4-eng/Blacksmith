@@ -29,11 +29,11 @@ def classify_planned_references(findings: list[audit.Finding]) -> None:
 
 
 def configure_current_assertions() -> None:
-    """Keep the long-lived audit aligned with the approved Batch 006 authority.
+    """Keep the long-lived audit aligned with current R2/Task2 authority.
 
     Historical Batch 005 assertions remain in the source documents and legacy
-    contracts. Only assertions that describe the *current* stage and scoped
-    implementation gate are advanced here.
+    contracts. Current handoff routers intentionally stay compressed instead of
+    duplicating detailed domain-canon values such as the artistry display example.
     """
     assertions = dict(audit.REQUIRED_ASSERTIONS)
 
@@ -72,6 +72,28 @@ def configure_current_assertions() -> None:
         if token not in gate_tokens:
             gate_tokens.append(token)
     assertions[gates_path] = tuple(gate_tokens)
+
+    router_paths = (
+        "[기획서]/00_프로젝트_허브/START_HERE.md",
+        "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+    )
+    stale_router_tokens = {"예술성 27", "고정 설계 최대치 없음"}
+    for path in router_paths:
+        tokens = [
+            token
+            for token in assertions[path]
+            if token not in stale_router_tokens
+        ]
+        if path.endswith("START_HERE.md"):
+            tokens = [token for token in tokens if token != "R2_CHECKPOINT_005"]
+        for token in (
+            "TASK2_MAIN_MERGED",
+            "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE",
+            "PRODUCT_IMPLEMENTATION: BLOCKED",
+        ):
+            if token not in tokens:
+                tokens.append(token)
+        assertions[path] = tuple(tokens)
 
     audit.REQUIRED_ASSERTIONS = assertions
 
