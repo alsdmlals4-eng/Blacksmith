@@ -45,6 +45,11 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
         self.assertEqual(TASK2_POSTMERGE_BASELINE, adapter["protected_baseline"]["commit"])
         self.assertFalse(APPROVAL.exists())
+        actual = hashlib.sha256(ADAPTER.read_bytes()).hexdigest()
+        print(
+            "::notice file=skills/PROJECT_BASE_ADAPTER.json,line=1::"
+            f"PROJECT_BASE_ADAPTER sha256={actual}"
+        )
 
     def test_current_decisions_health_evidence_hash_is_exact(self) -> None:
         health = json.loads(HEALTH.read_text(encoding="utf-8"))
