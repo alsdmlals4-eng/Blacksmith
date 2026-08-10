@@ -1,152 +1,87 @@
 # [현재 정본] Active Context
 
-<!-- R2_BATCH_006_CURRENT_AUTHORITY -->
-> **R2_BATCH_006_APPROVED_MAIN_CANON**
+<!-- CURRENT_OPERATIONAL_HANDOFF -->
+> **TASK2_MAIN_MERGED / POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE**
 >
-> `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109_MAIN_CANON / CLOSURE_PR117_MERGED_MAIN_CANON`
->
-> `R2_BATCH_006_APPROVED_10_OF_10 / MERGED_PR120_MAIN_CANON`
+> 이 문서는 현재 상태와 다음 읽기 순서를 연결하는 압축 라우터다. 세부 Decision·과거 단계·실행 로그는 책임 원본에서 읽는다.
 
-- 갱신: `2026-08-06 18:30 KST`
-- Work Mode: `TOTAL_PLANNING`
-- 현재 단계: `R2_CORE_SESSION_META_LOOP / R2_BATCH_006_APPROVED_MAIN_CANON`
-- 현재 승인 카운터: `0/10`
-- 승인된 Batch 006: `10/10 / MERGED_PR120_MAIN_CANON`
-- 제품 구현: `BLOCKED`
-- 버티컬 슬라이스 구현: `APPROVED / MERGED_PR120_MAIN_CANON`
-- 사람 플레이테스트: `NOT_RUN`
+- 갱신 기준: `2026-08-10 KST`
+- Blacksmith baseline main before this handoff refresh: `fa9595b2df95897c915331a1cb5d9b1a583611f0`
+- `BASE_CURRENT_MAIN_OBSERVED`: `49f6190b9b5a535ceb7986755c1b68b221754cf5`
+- `PROJECT_BASE_ADAPTER_PIN`: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
+- Base current main 관측값과 프로젝트가 채택한 Base adapter pin은 서로 다른 증거다. 새 Base main 관측만으로 프로젝트 pin을 자동 승격하지 않는다.
 
 ```yaml
-R2_CHECKPOINT_005: CLOSED_MAIN_CANON
-R2_CHECKPOINT_005_CLOSED_MAIN_CANON: HISTORICAL_EVIDENCE
-R2_BATCH_005: CLOSED_10_OF_10
-R2_BATCH_006: APPROVED_10_OF_10
+CURRENT_STAGE: R2_BATCH_006_MAIN_CANON
+TASK2: TASK2_MAIN_MERGED
+POSTMERGE_CLOSURE: POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE
+WORK_MODE: CONTINUOUS_WORK_SCOPE_CLOSED
 PRODUCT_IMPLEMENTATION: BLOCKED
-VERTICAL_SLICE_IMPLEMENTATION: APPROVED
-VERTICAL_SLICE_IMPLEMENTATION_APPROVED: true
+NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED
 HUMAN_PLAYTEST: NOT_RUN
+ANDROID_DEVICE: NOT_RUN
+ACCESSIBILITY: NOT_RUN
+PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
+R3_R7_DESIGN_STATE: R3_R7_DESIGN_PAUSED
+R3_R7_RESUME_LOCATOR: ADVENTURER_01_DETAIL_PENDING
+R3_R7_RESUME_LOCATOR_AUTHORITY: NON_CANONICAL_RESUME_LOCATOR
 ```
 
-## 현재 권위
+## 현재 완료 상태
 
-1. `CURRENT_CONFIRMED_DECISIONS.md`
-2. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-3. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-4. 이 문서와 `ROADMAP.md`, `DEVELOPMENT_GATES.md`
+- Task 1 UID·SaveEnvelope는 main 정본으로 병합됐다.
+- Task 2 MainMenu → BlacksmithApp → Workshop 시작 경로와 `project.godot application/run/main_scene` 전환은 HiGodot provenance를 거쳐 병합됐다.
+- `BS-HIGODOT-EXEC-20260808-01` Task2 제품 provenance:
+  - PROVE input: `02420ebd3bcdd86776c4ab70824738aa4071a168`
+  - PROVE run: `31341840236`
+  - provenance artifact: `9046072682`
+  - serialized publish commit: `8afb9a439df46eec3568a75d7f2536b89e1edaba`
+  - approved PR branch head: `345cf339e2af754d447099dd8e1b278b80b849d5`
+  - Task2 merge main: `a61a0bceec4254c4b78350980275cc9a903f9042`
+- 후속 CI 복구는 제품 직렬화 bytes를 바꾸지 않았다.
+  - PR #139 merge main: `7ccee408cf5c936ae9302a986fa0c786e0247078`
+  - PR #140 merge/current technical baseline: `fa9595b2df95897c915331a1cb5d9b1a583611f0`
+  - Full validation: run `31344872151` SUCCESS
+  - Live-Editor Pilot: run `31344872263` SUCCESS
+  - PR #140 authority workflow: run `31344719243` SUCCESS
 
-PR #109는 Batch 005 기획 정본, PR #117은 체크포인트 폐쇄 정본, PR #118은 BCA 워크플로 복구로 병합됐다.
+## 현재 권위와 보호 경계
 
-## 현재 게임 코어
+1. `AGENTS.md`
+2. `CURRENT_CONFIRMED_DECISIONS.md`
+3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
+4. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+5. 이 문서와 `START_HERE.md`, `DEVELOPMENT_GATES.md`, `ROADMAP.md`
+6. 실제 code/data/Scene/tests
+7. Google Sheet — 같은 Decision과 상태를 연결하는 소비처
 
-```text
-직접 단조
-→ 제작 등급·예술성·역할 수치 확정
-→ 일반 강화 지속·중단 판단
-→ 정밀강화 방식·촉매 선택
-→ 고객·일정에 작품 전달
-→ 같은 UID의 결과·연대기·손상·복원
-→ 다음 제작 판단
-```
+불변 보호:
 
-## 현재 승인 계약
+- PR #81 전체 병합 금지.
+- 일반 제품 구현은 `BLOCKED`.
+- Task2 완료를 새로운 Task3/R3 구현 승인으로 해석하지 않는다.
+- 사람 플레이테스트·Android 실기기·접근성은 실제 실행 전 `NOT_RUN`.
+- HiGodot은 승인된 Godot persistent authoring 권위, GUT 9.7.1은 GDScript test 권위, Hera는 enabled non-authoritative / `AUTHORITY_NONE`이다.
 
-### 작품·제작
+## 비정본 설계 재개 지점
 
-- 제작 등급: `[보통] → [우수] → [명품] → [걸작] → [전설]`
-- 최초 직접 단조 완료 시 확정하고 동일 UID에서 고정한다.
-- 예술성은 `0` 이상의 정수이며 고정 설계 최대치가 없다.
-- 수식어 슬롯은 `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX` 세 개다.
-- 보조재료 슬롯은 없다.
-- 주재료는 장비군별 명시적 역할 적합성을 가진다.
-- 직접 단조 결과는 역할별 3구간 판정으로 결정한다.
-- 최초 역할 수치 프리셋은 `5 / 10 / 15`다.
-- 작품 기본 중량은 장비군별 `0 / 5 / 10 / 15 / 20 / 30 WEIGHT_POINT`다.
-- 기능 레시피는 역할·주재료·중량·상황·기능 용량을 함께 사용한다.
+`R3_R7_DESIGN_PAUSED / ADVENTURER_01_DETAIL_PENDING / NON_CANONICAL_RESUME_LOCATOR`
 
-### 강화
+이 표시는 과거 대화에서 멈춘 브레인스토밍 위치를 찾기 위한 locator일 뿐, 새 제품 범위·고객 상세·Task3 구현 승인 또는 current canon이 아니다. 실제 재개 시 GitHub main·Sheet·현재 사용자 지시를 다시 읽고 새 제품 범위 승인을 확인한다.
 
-- 일반 강화는 한 입력에 한 결과만 낸다.
-- 일반 강화가 역할 원수치나 예술성을 자동 증가시키지 않는다.
-- 정밀강화 이정표는 `+10 / +20 / +30 / +40 / +50`이다.
-- 정밀강화 수치 패키지와 기능 재작업은 같은 이정표에서 상호배타다.
-- 촉매 계보는 `EMPTY → SEED → DEVELOPED → EVOLVED → MASTERED`다.
+## 다음 실행 순서
 
-### 고객·일정·UX
+1. 현재 main과 열린 PR을 다시 읽는다.
+2. 이 handoff refresh가 아직 PR이면 exact-head CI·적대적 검토 후 같은 운영 범위로 병합한다.
+3. 병합 후 새 main과 Sheet를 readback한다.
+4. 새 제품 작업은 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`가 해소될 때까지 시작하지 않는다.
+5. R3–R7 기획 재개가 승인되면 위 비정본 locator에서 참고 대화를 회수하되 저장소 정본과 충돌하는 내용은 폐기한다.
 
-- 고객 능력은 근력·기량·체력·판단력 `1~10`이다.
-- 최대 중량은 `STRENGTH × 10 WEIGHT_POINT`; 초과 장비는 배정 불가다.
-- 성공률의 주효과는 강화 단계이며 고객 능력·적성은 작은 보조 보정이다.
-- 고객 카드는 기본 → 장비 선택 후 판단 → 상세 보기의 3단계 공개를 사용한다.
-- 핵심 원인 2~4개를 설명하고 48dp·비색상 단독 신호 금지를 지킨다.
-- 고객 개인 일정과 날짜 예고형 세계 일정을 분리한다.
-- 작품 결과는 고객 결과, UID 상태·연대기, 다음 제작·복원 판단으로 환류한다.
+## 먼저 읽을 파일
 
-## 현재 구현 현실
-
-현재 Godot 코드는 `POC v0.6.4` 역사 구현이다. 실행·테스트 기반은 보존하지만 다음 요소는 현재 정본 구현으로 간주하지 않는다.
-
-- `STANDARD / GOOD / PERFECT` 구형 품질
-- 보조재료 입력
-- 범용 `affixes` 배열
-- 고정 3일 계약 중심 고객 판정
-- 현재 기획과 다른 정확한 확률·배율
-
-따라서 기존 POC를 그대로 확장하지 않고, 최신 정본을 소비하는 별도 버티컬 슬라이스 경로를 설계해야 한다.
-
-## 다음 작업
-
-1. 승인된 구현 계획 Task 1 Schema·UID·SaveEnvelope TDD
-2. 승인된 격리 경계인 스크립트·데이터·씬·테스트 전용 영역 유지
-3. Task별 RED → GREEN → REFACTOR 및 Draft PR 검증
-4. Android 빌드·실기기 저장 복구 검증
-5. 외부 3~5명 사람 플레이테스트
-
-과거 배치 진행 카운터와 PR 대기 문구는 역사 문서에서만 조회한다.
-
-## 승인 Decision 호환 인덱스
-
-다음 카운터는 현재 활성 상태가 아니라 Batch 005의 **역사적 승인 순서**다.
-
-```text
-BS-CRAFT-20260805-02 / R2_BATCH_005_1_OF_10
-BS-CUSTOMER-20260805-01 / R2_BATCH_005_2_OF_10
-BS-UX-20260805-01 / R2_BATCH_005_3_OF_10
-BS-CUSTOMER-20260806-01 / R2_BATCH_005_4_OF_10
-BS-ITEM-20260806-01 / R2_BATCH_005_5_OF_10
-BS-ITEM-20260806-02 / R2_BATCH_005_6_OF_10
-BS-ITEM-20260806-03 / R2_BATCH_005_7_OF_10
-BS-ITEM-20260806-04 / R2_BATCH_005_8_OF_10
-BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10
-BS-ITEM-20260806-06 / R2_BATCH_005_10_OF_10
-```
-
-대표 예술성 표기는 `예술성 27`이며, 도메인은 `고정 설계 최대치 없음`이다.
-
-## 불변 체크포인트 증거
-
-다음은 현재 활성 단계가 아니라 삭제하면 안 되는 병합 이력이다.
-
-- R2 체크포인트 004 기획 PR #106 squash merge: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
-- R2 체크포인트 004 폐쇄 PR #107 squash merge: `7a46fa38586a42f268cd0432744203049649ddd5`
-- R2 체크포인트 005 기획 PR #109 squash merge: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9`
-- R2 체크포인트 005 폐쇄 PR #117 squash merge: `06f03323c1309d8da0e6f5b9f4680a20ce388126`
-
-## 역사 상태 호환 표기
-
-- 체크포인트 004 제작 기획 상태: `MERGED_PR106 / MAIN_CANON`
-- 이 표기는 현재 활성 배치가 아니라 불변 병합 이력이다.
-
-## 역사 구현·회귀 기준선
-
-다음은 현재 제품 구현 승인이 아니라 보존해야 하는 `[역사 증거]`다.
-
-- 최신 역사 구현 배지: `POC v0.6.4 · main · 2026.07.23.1`
-- 제작 모델 7건
-- 제작 결과 통합 6건
-- 정확한 구형 품질·피버 수치는 `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
-
-## 강화 데이터 소유권
-
-- 실패·위험·소재 소비 정책의 현재 역사 구현 소유자는 `data/crafting/enhancement_balance.json`이다.
-- 정밀강화 이정표 구조의 현재 역사 구현 소유자는 `data/crafting/enhancement_milestones.json`이다.
-- 버티컬 슬라이스는 이 파일의 구형 보조재료 계약을 정본으로 승격하지 않고, 최신 R2 Schema로 명시적으로 이관한다.
+1. `AGENTS.md`
+2. `CURRENT_CONFIRMED_DECISIONS.md`
+3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
+4. `docs/decisions/BS-HIGODOT-EXEC-20260808-01_TASK2_CI_AUTHORING_BRIDGE.md`
+5. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+6. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`
