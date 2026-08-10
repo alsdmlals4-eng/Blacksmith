@@ -185,4 +185,3 @@ customer_artistry_fit = context derived, not persisted
 | Blacksmith 경로·repo override | `docs/decisions/BS-OPS-20260811-01_PROJECT_INSTRUCTION_V45_R2_CANON.md` | `CURRENT / USER_APPROVED` |
 
 Decision: `BS-OPS-20260811-01`. Source 원문과 현재 Blacksmith 바인딩 충돌은 숨기지 않고 explicit override로 관리한다.
-

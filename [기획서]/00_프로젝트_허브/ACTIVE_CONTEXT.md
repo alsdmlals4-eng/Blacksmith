@@ -162,4 +162,3 @@ TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
 첨부 v4.5 r2 source의 `Switchy-Express-Cargo-Puzzle` 경로는 source provenance를 위해 수정하지 않고 보존한다. 현재 실행은 `BS-OPS-20260811-01`의 Blacksmith override를 따른다.
-
