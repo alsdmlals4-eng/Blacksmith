@@ -58,6 +58,12 @@ def _changed_paths_from_main() -> set[str]:
     return {line.strip() for line in output.splitlines() if line.strip()}
 
 
+def _configured_main_scene(project_text: str) -> str:
+    prefix = 'run/main_scene="'
+    assert prefix in project_text, "application/run/main_scene must remain configured"
+    return project_text.split(prefix, 1)[1].split('"', 1)[0]
+
+
 def test_descriptor_is_exact_blacksmith_contract() -> None:
     payload = json.loads(_required_text(DESCRIPTOR))
     assert payload["schema_version"] == "1"
@@ -85,9 +91,12 @@ def test_descriptor_is_exact_blacksmith_contract() -> None:
     ]
 
 
-def test_source_legacy_authority_and_main_scene_remain_installed() -> None:
+def test_source_legacy_authority_and_configured_main_scene_remain_installed() -> None:
     project = (ROOT / "project.godot").read_text(encoding="utf-8")
-    assert 'run/main_scene="res://scenes/test/enhancement_test.tscn"' in project
+    main_scene = _configured_main_scene(project)
+    assert main_scene.startswith("res://")
+    assert main_scene.endswith(".tscn")
+    assert (ROOT / main_scene.removeprefix("res://")).is_file(), main_scene
     assert '_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"' in project
     assert 'enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")' in project
     assert (ROOT / "addons/godot_ai/plugin.cfg").is_file()
@@ -102,6 +111,7 @@ def test_adoption_document_preserves_boundaries() -> None:
         "LEGACY_DISABLED_IN_DISPOSABLE_COPY_ONLY",
         "DUAL_MUTATION_AUTHORITY_FORBIDDEN",
         "MAIN_SCENE_READ_ONLY",
+        "source-configured main Scene",
         "SCRATCH_SCENE_MUTATION_ONLY",
         "SOURCE_TREE_UNCHANGED",
         "SELF_CONTAINED_EVIDENCE_BUNDLE",
@@ -119,6 +129,7 @@ def test_adoption_document_preserves_boundaries() -> None:
         "LEGACY_GODOT_AI_SOURCE_REMOVED",
         "HUMAN_USABILITY: PASS",
         "android_device: PASS",
+        "res://scenes/test/enhancement_test.tscn",
     ):
         assert forbidden_claim not in text
 
