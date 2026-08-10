@@ -147,3 +147,19 @@ BS-CONTENT-20260811-01 / R3_R7_1_OF_10
 6. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
 7. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
 8. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
+
+## 현재 프로젝트 작업지시문 바인딩
+
+```yaml
+WORK_INSTRUCTION: V4_5_R2_CURRENT_CANON
+WORK_INSTRUCTION_PATH: PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
+WORK_INSTRUCTION_DECISION: BS-OPS-20260811-01
+PROJECT_REPOSITORY: alsdmlals4-eng/Blacksmith
+PROJECT_LOCAL_PATH: C:\Users\user\Documents\GitHub\Ninza\Blacksmith
+GODOT_PROJECT_PATH: C:/Users/user/Documents/GitHub/Ninza/Blacksmith
+PRODUCT_IMPLEMENTATION: BLOCKED
+TASK3_IMPLEMENTATION: NOT_APPROVED
+```
+
+첨부 v4.5 r2 source의 `Switchy-Express-Cargo-Puzzle` 경로는 source provenance를 위해 수정하지 않고 보존한다. 현재 실행은 `BS-OPS-20260811-01`의 Blacksmith override를 따른다.
+

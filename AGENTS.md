@@ -140,3 +140,12 @@ Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분�
 GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. 같은 파일의 이중 권위와 출처 미상 변경은 실패 처리한다. Hera 또한 별도 범위 승인 전에는 Git 추적 제품·저작 surface를 수정할 권위가 없다.
 
 `READY`·`AWAITING`·`IN_REVIEW`·`APPROVED` 같은 일반 상태 문자열만으로는 진입할 수 없다. 범위, current main SHA, Sheet range, 열린 PR 상태, 미실행 검증과 차단 이유가 기계 판독 가능한 상태로 함께 기록되어야 한다.
+
+## 10. 현재 프로젝트 총 작업지시문
+
+- 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`)
+- 프로젝트 바인딩 override Decision: `BS-OPS-20260811-01`
+- 첨부 source의 Switchy-Express 경로는 원문 보존 역사값이며, 현재 Blacksmith 실행 경로는 `BS-OPS-20260811-01`의 사용자 최신 바인딩을 따른다.
+- 같은 승인 범위는 기술 재검증 후 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확대만 별도 사용자 Decision이 필요하다.
+- `PRODUCT_IMPLEMENTATION: BLOCKED`, `TASK3_IMPLEMENTATION: NOT_APPROVED`를 유지한다.
+
