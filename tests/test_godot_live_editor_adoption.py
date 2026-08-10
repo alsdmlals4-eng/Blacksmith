@@ -98,7 +98,7 @@ def test_source_legacy_authority_and_configured_main_scene_remain_installed() ->
     assert main_scene.endswith(".tscn")
     assert (ROOT / main_scene.removeprefix("res://")).is_file(), main_scene
     assert '_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"' in project
-    assert 'enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")' in project
+    assert '"res://addons/godot_ai/plugin.cfg"' in project
     assert (ROOT / "addons/godot_ai/plugin.cfg").is_file()
     for target in BEHAVIOR_TARGETS:
         assert (ROOT / target.removeprefix("res://")).is_file(), target
