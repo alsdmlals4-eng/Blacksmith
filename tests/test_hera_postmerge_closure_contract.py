@@ -110,7 +110,8 @@ def test_current_decision_router_records_completed_higodot_path_without_erasing_
     text = _text(DECISIONS)
     current = _markdown_section(text, "## 현재 운영 폐쇄 상태")
     assert HIGODOT_EXEC_DECISION_ID in current
-    assert "TASK2_MAIN_MERGED / POSTMERGE_CI_CLOSURE_COMPLETE" in current
+    assert "TASK2: TASK2_MAIN_MERGED" in current
+    assert "POSTMERGE: POSTMERGE_CI_CLOSURE_COMPLETE" in current
     assert TASK2_MERGE_MAIN in current
     assert CURRENT_MAIN in current
     assert "NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED" in current
