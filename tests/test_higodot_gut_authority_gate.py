@@ -167,6 +167,8 @@ def test_design_workflow_is_static_and_does_not_claim_gut_runtime() -> None:
     assert "permissions:\n  contents: read" in workflow
     assert "fetch-depth: 0" in workflow
     assert "persist-credentials: false" in workflow
+    assert r"- '\[기획서\]/00_프로젝트_허브/DEVELOPMENT_GATES.md'" in workflow
+    assert '- "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"' not in workflow
     assert "gut_cmdln.gd" not in workflow
     assert "--headless" not in workflow
 
