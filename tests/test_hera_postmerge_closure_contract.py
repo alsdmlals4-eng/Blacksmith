@@ -19,10 +19,12 @@ HIGODOT_DECISION_ID = "BS-HIGODOT-20260808-01"
 HIGODOT_EXEC_DECISION_ID = "BS-HIGODOT-EXEC-20260808-01"
 MERGE_MAIN = "29b06e323185e436d709fcdf638f445b9099266e"
 TASK2_MERGE_MAIN = "a61a0bceec4254c4b78350980275cc9a903f9042"
-CURRENT_MAIN = "fa9595b2df95897c915331a1cb5d9b1a583611f0"
-BASE_CURRENT_MAIN_OBSERVED = "49f6190b9b5a535ceb7986755c1b68b221754cf5"
+TASK2_TECHNICAL_BASELINE = "fa9595b2df95897c915331a1cb5d9b1a583611f0"
+CURRENT_HANDOFF_MAIN = "68540e6cd288aff138b1ea4c5b1feeb9e0653947"
+BASE_CURRENT_MAIN_OBSERVED = "315c66eea9614c284b9c11c4d522141065dfa4b0"
 PROJECT_BASE_ADAPTER_PIN = "2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b"
 INITIALIZER_DECISION_ID = "BS-VS-INIT-20260808-01"
+R3_DECISION_ID = "BS-CONTENT-20260811-01"
 
 
 def _text(path: Path) -> str:
@@ -65,12 +67,12 @@ def test_entry_gate_records_merged_reconciliation_and_current_task2_authority() 
     assert "HERA_RECONCILIATION_DRAFT_PENDING_MERGE" not in current
 
 
-def test_handoff_router_records_current_main_and_paused_design_boundary() -> None:
+def test_handoff_router_records_current_main_and_r3_planning_only_boundary() -> None:
     active = _text(ACTIVE_CONTEXT)
     start = _text(START_HERE)
 
     for text in (active, start):
-        assert CURRENT_MAIN in text
+        assert CURRENT_HANDOFF_MAIN in text
         assert BASE_CURRENT_MAIN_OBSERVED in text
         assert PROJECT_BASE_ADAPTER_PIN in text
         assert "BASE_CURRENT_MAIN_OBSERVED" in text
@@ -78,12 +80,16 @@ def test_handoff_router_records_current_main_and_paused_design_boundary() -> Non
         assert "TASK2_MAIN_MERGED" in text
         assert "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE" in text
         assert "PR81_REFERENCE_ONLY_DO_NOT_MERGE" in text
-        assert "R3_R7_DESIGN_PAUSED" in text
-        assert "ADVENTURER_01_DETAIL_PENDING" in text
-        assert "NON_CANONICAL_RESUME_LOCATOR" in text
+        assert "R3_R7_DESIGN_ACTIVE" in text
+        assert R3_DECISION_ID in text
+        assert "ADVENTURER_01_DETAIL_APPROVED" in text
         assert "PRODUCT_IMPLEMENTATION: BLOCKED" in text
+        assert "TASK3_IMPLEMENTATION: NOT_APPROVED" in text
         assert "HUMAN_PLAYTEST: NOT_RUN" in text
         assert "ANDROID_DEVICE: NOT_RUN" in text
+        assert "R3_R7_DESIGN_PAUSED" not in text
+        assert "ADVENTURER_01_DETAIL_PENDING" not in text
+        assert "NON_CANONICAL_RESUME_LOCATOR" not in text
 
     assert "R2_BATCH_006_NOT_STARTED_0_OF_10" not in start
     assert "POSTMERGE_CLOSURE_PENDING" not in start
@@ -99,22 +105,26 @@ def test_higodot_execution_decision_records_actual_task2_closure_evidence() -> N
     assert "8afb9a439df46eec3568a75d7f2536b89e1edaba" in text
     assert "345cf339e2af754d447099dd8e1b278b80b849d5" in text
     assert TASK2_MERGE_MAIN in text
-    assert CURRENT_MAIN in text
+    assert TASK2_TECHNICAL_BASELINE in text
     current = _markdown_section(text, "## Current closure")
     assert "PR131 = MERGED" in current
     assert "BRIDGE_TDD = COMPLETE" in current
     assert "SCENE_PROJECT_MUTATION = HIGODOT_PROVEN_PUBLISHED" in current
 
 
-def test_current_decision_router_records_completed_higodot_path_without_erasing_history() -> None:
+def test_current_decision_router_preserves_task2_technical_baseline_and_r3_scope() -> None:
     text = _text(DECISIONS)
     current = _markdown_section(text, "## 현재 운영 폐쇄 상태")
     assert HIGODOT_EXEC_DECISION_ID in current
     assert "TASK2: TASK2_MAIN_MERGED" in current
     assert "POSTMERGE: POSTMERGE_CI_CLOSURE_COMPLETE" in current
     assert TASK2_MERGE_MAIN in current
-    assert CURRENT_MAIN in current
+    assert TASK2_TECHNICAL_BASELINE in current
     assert "NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED" in current
+    assert "R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE" in current
+    assert f"R3_R7_CURRENT_DECISION: {R3_DECISION_ID}" in current
+    assert "TASK3_IMPLEMENTATION: NOT_APPROVED" in current
+    assert "PRODUCT_IMPLEMENTATION: BLOCKED" in current
 
     # Historical activation-stage wording remains legitimate evidence below the
     # current closure router; this test intentionally does not require its deletion.
