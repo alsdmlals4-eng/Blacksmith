@@ -1,0 +1,99 @@
+{
+  "artifact_role": "CURRENT_R3_R7_CANON_REGISTRY",
+  "schema_version": 1,
+  "project": "Blacksmith",
+  "current_stage": "R3_R7_CONTENT_DESIGN",
+  "stage_status": "R3_R7_DESIGN_ACTIVE",
+  "product_implementation": "BLOCKED",
+  "task3_implementation": "NOT_APPROVED",
+  "next_approval_counter": "1/10",
+  "inherits": [
+    "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
+    "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
+  ],
+  "current_decisions": [
+    {
+      "id": "BS-CONTENT-20260811-01",
+      "title": "모험가 01 나디아 벤 유적 탐사 생환·회수 콘텐츠",
+      "status": "USER_APPROVED_R3_R7_1_OF_10_PENDING_MERGE",
+      "canon": "docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md",
+      "refines": [
+        "BS-CONTENT-20260804-01",
+        "BS-CONTENT-20260804-02"
+      ],
+      "depends_on": [
+        "BS-WORLD-20260803-03",
+        "BS-CUSTOMER-20260803-02",
+        "BS-CUSTOMER-20260806-01",
+        "BS-UX-20260805-01",
+        "BS-CORE-20260803-04"
+      ],
+      "contract": {
+        "content_id": "ADVENTURER_01",
+        "customer_id": "NADIA_VENN",
+        "customer_archetype": "ADVENTURER",
+        "activity_family": "EXPLORATION_FRONTIER",
+        "content_goal": "SURVIVAL_AND_RECOVERY",
+        "player_role": "BLACKSMITH_EQUIPMENT_DECISION_MAKER_NOT_EXPEDITION_CONTROLLER",
+        "direct_combat_or_exploration_minigame": false,
+        "single_always_best_equipment_answer": false,
+        "primary_decision_axes": [
+          "ENHANCEMENT_LEVEL_AND_RISK",
+          "WEIGHT_AND_CUSTOMER_FIT",
+          "ENVIRONMENTAL_OR_UTILITY_FIT"
+        ],
+        "schedule_type": "PERSONAL_SCHEDULE",
+        "activation": "CUSTOMER_VISIT_PLUS_EQUIPMENT_HANDOFF",
+        "personal_schedule_progression": "ONE_END_OF_DAY_CHECK_MAXIMUM_WHILE_ACTIVE",
+        "structural_states": [
+          "PREP_AND_ENTRY",
+          "HAZARD_AND_RECOVERY_ATTEMPT",
+          "RETURN_AND_RESULT"
+        ],
+        "universal_fixed_day_count": false,
+        "recovery_target_identity": "CONTENT_INSTANCE_DATA_NOT_GLOBAL_CANON",
+        "result_axes": [
+          "EXPEDITION_RETURN_STATE",
+          "RECOVERY_STATE",
+          "ITEM_UID_LIFECYCLE_STATE"
+        ],
+        "immediate_feedback": "SHORT_CAUSAL_RESULT_WITH_2_TO_4_REASONS",
+        "delayed_feedback": "SAME_UID_REVISIT_REPAIR_RESTORE_OR_FOLLOWUP_ENHANCEMENT_REASON",
+        "chronicle_affix_auto_grant": false,
+        "artistry_auto_growth": false,
+        "full_item_destruction_baseline": "NOT_IN_BASELINE_UNLESS_SEPARATE_EXPLICIT_HIGH_RISK_CHOICE",
+        "exact_values": "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED",
+        "product_implementation": "BLOCKED"
+      }
+    }
+  ],
+  "benchmark_context": [
+    {
+      "source": "Potion Craft: Alchemist Simulator Steam product page",
+      "decision": "ADAPT",
+      "use": "customer problem to crafted solution to consequence",
+      "avoid": "one-correct-recipe customer matching"
+    },
+    {
+      "source": "Crusader Kings III Dev Diary #85: An Artifact's Life",
+      "decision": "ADAPT",
+      "use": "persistent item history and reputation through use",
+      "avoid": "recurring durability maintenance as Blacksmith core"
+    },
+    {
+      "source": "Games User Research playtest method guidance",
+      "decision": "ADOPT",
+      "use": "observed behavior plus neutral interview or recall evidence",
+      "avoid": "self-report-only fun validation"
+    }
+  ],
+  "protected_boundaries": [
+    "PRODUCT_IMPLEMENTATION_BLOCKED",
+    "NO_TASK3_IMPLEMENTATION_APPROVAL",
+    "NO_DIRECT_COMBAT_OR_EXPLORATION_MINIGAME",
+    "NO_UNIVERSAL_FIXED_DAY_COUNT",
+    "NO_AFFIX_OR_ARTISTRY_AUTOGRANT_FROM_ROUTINE_EVENT",
+    "SAME_ITEM_UID_LIFECYCLE_PRESERVED",
+    "PR81_REFERENCE_ONLY_DO_NOT_MERGE"
+  ]
+}
