@@ -1,0 +1,54 @@
+name: Hydrate v4.5 r2 instruction source
+
+on:
+  push:
+    branches:
+      - agent/project-instruction-v45-r2-canon
+    paths:
+      - "tools/hydrate_instruction_v45_r2.py"
+      - "tools/.instruction_v45_r2_payload/**"
+      - ".github/workflows/hydrate-v45-r2-instruction.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hydrate-v45-r2-instruction-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  hydrate:
+    if: github.repository == 'alsdmlals4-eng/Blacksmith' && github.ref == 'refs/heads/agent/project-instruction-v45-r2-canon'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: agent/project-instruction-v45-r2-canon
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Verify payload and materialize exact source
+        run: python tools/hydrate_instruction_v45_r2.py
+      - name: Verify exact source hash
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(sha256sum PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md | awk '{print $1}')"
+          test "$actual" = "3f898b7e2749a2e1900e9df48183f02d4fbc735fd0e80297f28bb09317144de4"
+          test "$(wc -c < PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md)" -eq 77734
+      - name: Commit exact source if needed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md && git ls-files --error-unmatch PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md >/dev/null 2>&1; then
+            echo "Exact source already tracked; no hydration commit required."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
+          git commit -m "docs: materialize exact v4.5 r2 instruction source"
+          git push origin HEAD:agent/project-instruction-v45-r2-canon
