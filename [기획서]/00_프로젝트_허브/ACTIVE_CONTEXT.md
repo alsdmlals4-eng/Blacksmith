@@ -56,6 +56,7 @@ PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
   - Full validation: run `31357963490` SUCCESS
   - Live-Editor Pilot: run `31357963734` attempt 2 SUCCESS
 - 역사 POC 회귀 증거는 현재 제품 PASS가 아니다: `POC v0.6.4 · main · 2026.07.23.1 / 제작 모델 7건 / 통합 6건 / HISTORICAL_EVIDENCE_ONLY`.
+- 역사 POC 강화 데이터 소유권 locator: `enhancement_balance.json`은 failure/risk를, `enhancement_milestones.json`은 milestone 정의를 소유한다. 이 문자열은 구형 데이터의 책임 위치를 보존하는 호환 앵커일 뿐 현재 R3 제품 밸런스 확정이나 제품 구현 승인을 뜻하지 않는다.
 
 ## 현재 R3–R7 기획 재개 상태
 
