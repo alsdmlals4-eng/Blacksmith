@@ -47,13 +47,24 @@ g = replace_once(
     "Task2의 script와 serialized surface는 모두 main에 병합되고 postmerge CI가 폐쇄됐다. 이후 R3–R7 9/10 기획이 완료되어 현재는 기존 승인 canon 범위의 Phase C entry만 열렸다. 이미지 생성은 사용자가 보류했으므로 이미지 생성·권리·가독성·런타임 증거는 여전히 `NOT_RUN`/deferred다. 승인 canon 밖 신규 제품 Task와 Task3는 별도 사용자 범위 승인 전 진입하지 않는다.",
     "missing state narrative",
 )
-# Current HiGodot/GUT/Hera status block also owns current scope labels.
-g = replace_once(g, "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED\nTASK3_IMPLEMENTATION: NOT_APPROVED\n```\n\nHiGodot Task2", "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON\nTASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED\n```\n\nHiGodot Task2", "authority current scope")
+g = replace_once(
+    g,
+    "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED\nTASK3_IMPLEMENTATION: NOT_APPROVED\n```\n\nHiGodot Task2",
+    "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON\nTASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED\n```\n\nHiGodot Task2",
+    "authority current scope",
+)
 GATES.write_text(g, encoding="utf-8", newline="\n")
 
 
-t = TEST.read_text(encoding="utf-8")nt_old = '''        self.assertIn(\n            "ENTRY_STATE_GATE: PASS_R3_R7_PLANNING_ONLY_PRODUCT_SCOPE_STILL_REQUIRED",\n            text,\n        )'''
-t_new = '''        self.assertIn(\n            "ENTRY_STATE_GATE: PASS_PLANNING_COMPLETE_PHASE_C_EXISTING_CANON_P0_BOOTSTRAP_REQUIRED",\n            text,\n        )'''
+t = TEST.read_text(encoding="utf-8")
+t_old = '''        self.assertIn(
+            "ENTRY_STATE_GATE: PASS_R3_R7_PLANNING_ONLY_PRODUCT_SCOPE_STILL_REQUIRED",
+            text,
+        )'''
+t_new = '''        self.assertIn(
+            "ENTRY_STATE_GATE: PASS_PLANNING_COMPLETE_PHASE_C_EXISTING_CANON_P0_BOOTSTRAP_REQUIRED",
+            text,
+        )'''
 t = replace_once(t, t_old, t_new, "initializer entry gate")
 t = replace_once(t, '        self.assertIn("GENERAL_PRODUCT: BLOCKED", text)', '        self.assertIn("GENERAL_PRODUCT: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", text)', "initializer general product")
 t = replace_once(t, '        self.assertIn("R3_R7_DESIGN: ACTIVE_PLANNING_ONLY", text)', '        self.assertIn("R3_R7_DESIGN: PLANNING_COMPLETE_CLOSED_AT_9_OF_10", text)', "initializer R3")
