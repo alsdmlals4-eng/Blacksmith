@@ -396,4 +396,3 @@ Decision05는 planning-only다. 직접 전투·team/guild management·betting·o
 > `TASK3_IMPLEMENTATION: NOT_APPROVED`
 >
 > 기존 `CEREMONIAL_NOBLE`와 같은 작품 UID의 상태·수리·계승 이력을 바탕으로 계승 전 개입 깊이를 판단한다. 최대 복원·최고 Artistry·가문 위신/진품성 총점 자동 정답을 만들지 않으며, 직접 의식·가문·궁정·외교 경영을 추가하지 않는다.
-
