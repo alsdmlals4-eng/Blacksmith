@@ -1,15 +1,15 @@
 # [현재 정본] Active Context
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-08 / COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-09 / GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED / PLANNING_ONLY**
 >
 > 이 문서는 현재 상태와 다음 읽기 순서를 연결하는 압축 라우터다. 세부 Decision·과거 단계·실행 로그는 책임 원본에서 읽는다.
 
 - 갱신 기준: `2026-08-11 KST`
-- Blacksmith current main observed at Decision 08 start: `7005a939e003f7248e7d2546c4266bb5d144f90a`
+- Blacksmith current main observed at Decision 09 start: `80b35b9fc914853428e991c4130edc87dd260083`
 - `BASE_CURRENT_MAIN_OBSERVED`: `23d5b292f619022cdd8ab7a33fb1debc2d294861`
 - `PROJECT_BASE_ADAPTER_PIN`: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
-- 현재 R3–R7 승인 카운터: `8/10`
+- 현재 R3–R7 승인 카운터: `9/10`
 - Base current main 관측값과 프로젝트가 채택한 Base adapter pin은 서로 다른 증거다. 새 Base main 관측만으로 프로젝트 pin을 자동 승격하지 않는다.
 
 ```yaml
@@ -20,11 +20,11 @@ R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10
 R2_BATCH_005_MERGE: MERGED_PR109_MAIN_CANON
 R2_BATCH_006: R2_BATCH_006_APPROVED_10_OF_10
 R2_BATCH_006_MERGE: MERGED_PR120_MAIN_CANON
-R3_R7_APPROVAL_COUNTER: 8/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08
+R3_R7_APPROVAL_COUNTER: 9/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
 PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
 PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
-R3_R7_RESUME_LOCATOR: COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED
+R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED
 VERTICAL_SLICE_IMPLEMENTATION: APPROVED_TASK2_COMPLETE
 VERTICAL_SLICE_IMPLEMENTATION_EVIDENCE: VERTICAL_SLICE_IMPLEMENTATION_APPROVED
 TASK2: TASK2_MAIN_MERGED
@@ -62,34 +62,36 @@ PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 
 ## 현재 R3–R7 기획 재개 상태
 
-`BS-CONTENT-20260811-01`~`07`은 승인 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-08`이다.
+`BS-CONTENT-20260811-01`~`08`은 승인 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-09`이다.
 
 ```text
-COLLECTOR_02 / SEDRIC_VAEL
-→ 기존 수집가 추가 고객·귀족 기록 보관가를 두 번째 Collector-family 상세 콘텐츠로 승격
-→ ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY
-→ archival category / keeping purpose 공개
-→ 실제 작품 UID와 기록된 provenance·custody·생애 근거 비교
-→ 한 작품 UID 선택·같은 UID 인계
-→ accession은 비직접 고객/세계 사건
-→ ARCHIVE_ACCESSION_STATE
- + PROVENANCE_DOCUMENTATION_STATE
- + ITEM_UID_CUSTODY_LEGACY_STATE
-→ 보존·기존 treatment·재평가·후속 전시/연구·다른 작품 제작 이유
+GLADIATOR_02 / KYLE_VAREN
+→ 기존 구형 PoC 계승 고객을 두 번째 Gladiator-family 상세 콘텐츠로 승격
+→ VETERAN_COMEBACK_EQUIPMENT_CONTINUITY_AND_SUCCESSION
+→ 실제 prior Kyle item record + comeback 목적 공개
+→ old UID current state·실제 lifecycle evidence + hard serviceability/eligibility 확인
+→ KEEP_IN_SERVICE 또는 RETIRE_AND_REPLACE
+→ 비직접 comeback/arena world event
+→ VETERAN_RETURN_STATE
+ + EQUIPMENT_CONTINUITY_STATE
+ + ITEM_UID_LINEAGE_STATE
+→ 실제 원인 2~4개 + 주 후속 행동 1개
 ```
 
-- Ersa/Collector01의 공개 전시 증거·thesis 책임을 보존한다.
-- Noble01의 물리적 수리·복원·재작업 개입 깊이 책임을 보존한다.
-- 진품성·provenance completeness·archive prestige 같은 aggregate score를 만들지 않는다.
-- 최고 Artistry·가장 오래된 작품·가장 많은 Chronicle·최고 강화가 자동 정답이 아니다.
-- 기록되지 않은 provenance/custody를 생성하거나 자동 보완하지 않는다.
-- archive storage·museum·visitor·staff/shelf·보존환경·loan logistics 관리 게임을 추가하지 않는다.
-- accession/review 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
-- 같은 작품 UID를 후보·인계·accession 결과·후속 custody까지 보존한다.
+- Cassia/Gladiator01의 current-match arena fit·equipment contribution 책임을 보존한다.
+- Noble01/기존 repair owner의 treatment-depth 책임을 보존한다.
+- keep path는 같은 UID를 유지한다.
+- replacement는 old UID/history를 보존하고 new UID로 시작하며 history/progression을 복사하지 않는다.
+- 오래된 작품·새 작품·최고 강화·최고 Artistry·가장 많은 Chronicle이 자동 정답이 아니다.
+- sentiment/veteran/lineage 총점을 추가하지 않는다.
+- legacy `gladiator_kyle / iron_sword` fixed data와 score formula는 historical non-authoritative fixture다.
+- 직접 arena combat·roster/guild·training/injury management·betting·baseline permadeath를 추가하지 않는다.
+- comeback/replacement 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
 - `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`를 이번 Decision에서 재정의하지 않는다.
 
 책임 원본:
 
+- `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`
 - `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
 - `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
@@ -163,6 +165,7 @@ BS-CONTENT-20260811-05 / R3_R7_5_OF_10
 BS-CONTENT-20260811-06 / R3_R7_6_OF_10
 BS-CONTENT-20260811-07 / R3_R7_7_OF_10
 BS-CONTENT-20260811-08 / R3_R7_8_OF_10
+BS-CONTENT-20260811-09 / R3_R7_9_OF_10
 BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 ```
 
@@ -175,10 +178,11 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 
 ## 다음 실행 순서
 
-1. `BS-CONTENT-20260811-08`의 RED→GREEN 회귀, 적대 검토, exact-head CI, GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
-2. Sedric archival accession이 Ersa exhibition과 Noble01 treatment-depth를 침범하지 않고, same-UID provenance/custody 3축과 anti-score·anti-fabrication·anti-management·anti-farming 경계를 유지하는지 검증한다.
-3. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.
-4. Decision08 merge·Sheet readback 뒤 다음 신규 R3–R7 Decision은 `9/10` 사용자 기획 승인 Gate에서 이어간다.
+1. `BS-CONTENT-20260811-09`의 focused GREEN 뒤 D01–D08 역사/current consumer 회귀를 닫는다.
+2. Kyle continuity가 Cassia arena-fit과 Noble01 treatment-depth를 침범하지 않고 old/new UID history 경계를 지키는지 적대 검토한다.
+3. 하나의 exact reviewed head에서 Python·Godot·Base·BCA·GUT·HiGodot·Adapter Gate를 모두 GREEN으로 만든다.
+4. PR #154 병합과 같은 Decision ID의 Google Sheet sync/readback을 닫은 뒤에만 다음 신규 R3–R7 Decision `10/10` 사용자 기획 승인 Gate로 이동한다.
+5. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.
 
 ## 먼저 읽을 파일
 
@@ -186,17 +190,18 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 2. `CURRENT_CONFIRMED_DECISIONS.md`
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
-7. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
-8. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
-9. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
-10. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
-11. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
-12. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-13. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-14. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-15. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
+5. `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`
+6. `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
+7. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
+8. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
+9. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+10. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
+11. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
+12. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+13. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
+14. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+15. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+16. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
 
 ## 현재 프로젝트 작업지시문 바인딩
 
@@ -215,20 +220,16 @@ TASK3_IMPLEMENTATION: NOT_APPROVED
 
 첨부 v4.5 r2 source의 `Switchy-Express-Cargo-Puzzle` 경로는 source provenance를 위해 수정하지 않고 보존한다. 현재 실행은 `BS-OPS-20260811-01`의 Blacksmith override를 따른다.
 
-<!-- BS-CONTENT-20260811-08 CURRENT -->
-## R3–R7 current 8/10 — Sedric Collector02
+<!-- BS-CONTENT-20260811-09 CURRENT -->
+## R3–R7 current 9/10 — Kyle Gladiator02
 
 ```text
 R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 8/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08
-R3_R7_RESUME_LOCATOR: COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED
+R3_R7_APPROVAL_COUNTER: 9/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
+R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
-Nadia 1/10, Toren 2/10, Marek 3/10, Ersa 4/10, Cassia 5/10, Noble01 6/10, Liana 7/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-08`이다.
-
-`COLLECTOR_02 / SEDRIC_VAEL / ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY`는 공개된 archival purpose와 실제 작품 UID의 provenance·custody·생애 근거를 비교해 한 작품을 인계한다. accession은 비직접 사건이며 `ARCHIVE_ACCESSION_STATE / PROVENANCE_DOCUMENTATION_STATE / ITEM_UID_CUSTODY_LEGACY_STATE`를 분리해 돌려준다.
-
-Ersa의 exhibition evidence/thesis, Noble01의 physical treatment depth, Liana의 commander mission-fit 책임은 각각 승인 이력으로 유지한다. 같은 UID, anti-score, anti-fabrication, anti-management, anti-farming 경계를 보존하며 제품 구현과 Task3는 계속 차단한다.
+현재 Decision은 `BS-CONTENT-20260811-09`이다. `GLADIATOR_02 / KYLE_VAREN`은 실제 prior item의 현역 지속 또는 은퇴·교체 판단을 소유한다.

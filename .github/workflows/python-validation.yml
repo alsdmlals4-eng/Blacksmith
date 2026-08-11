@@ -97,6 +97,7 @@ jobs:
           python -m unittest tests.test_r3_collector_01_ersa_content -v
           python -m unittest tests.test_r3_collector_02_sedric_content -v
           python -m unittest tests.test_r3_gladiator_01_cassia_content -v
+          python -m unittest tests.test_r3_gladiator_02_kyle_content -v
           python -m unittest tests.test_r3_noble_01_heirloom_succession_content -v
           python -m unittest tests.test_auto_enhancement_cap_unlock -v
           python -m unittest tests/test_ci_workflow_structure.py

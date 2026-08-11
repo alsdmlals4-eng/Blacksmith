@@ -64,9 +64,10 @@ class VerticalSliceNewCampaignInitializerAuthorityTests(unittest.TestCase):
         self.assertIn("HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED", text)
         self.assertIn("GENERAL_PRODUCT: BLOCKED", text)
         self.assertIn("R3_R7_DESIGN: ACTIVE_PLANNING_ONLY", text)
-        self.assertIn("R3_R7_APPROVAL_COUNTER: 5/10", text)
-        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05", text)
+        self.assertIn("R3_R7_APPROVAL_COUNTER: 9/10", text)
+        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09", text)
         self.assertIn("BS-CONTENT-20260811-03", text)
+        self.assertIn("BS-CONTENT-20260811-08", text)
         self.assertIn(
             "첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.",
             text,

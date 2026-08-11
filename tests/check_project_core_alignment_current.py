@@ -134,9 +134,11 @@ def main() -> int:
             "BS-CONTENT-20260811-05",
             "BS-CONTENT-20260811-06",
             "BS-CONTENT-20260811-07",
-            "R3_R7_APPROVAL_COUNTER: 8/10",
-            "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08",
-            "COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED",
+            "BS-CONTENT-20260811-08",
+            "BS-CONTENT-20260811-09",
+            "R3_R7_APPROVAL_COUNTER: 9/10",
+            "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09",
+            "GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED",
             "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ]
     )
@@ -147,11 +149,11 @@ def main() -> int:
     active_tokens.remove("제품 구현: `BLOCKED`")
     active_tokens.extend(
         [
-            "현재 R3–R7 승인 카운터: `8/10`",
+            "현재 R3–R7 승인 카운터: `9/10`",
             "R3_R7_DESIGN_ACTIVE",
-            "R3_R7_APPROVAL_COUNTER: 8/10",
-            "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08",
-            "R3_R7_RESUME_LOCATOR: COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED",
+            "R3_R7_APPROVAL_COUNTER: 9/10",
+            "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09",
+            "R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED",
             "BS-CONTENT-20260811-01",
             "BS-CONTENT-20260811-02",
             "BS-CONTENT-20260811-03",

@@ -19,6 +19,7 @@ R3_CASSIA_CANON = "docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_
 R3_NOBLE_CANON = "docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md"
 R3_LIANA_CANON = "docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md"
 R3_SEDRIC_CANON = "docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md"
+R3_KYLE_CANON = "docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md"
 R3_FIRST_DECISION = "BS-CONTENT-20260811-01"
 R3_SECOND_DECISION = "BS-CONTENT-20260811-02"
 R3_THIRD_DECISION = "BS-CONTENT-20260811-03"
@@ -26,7 +27,8 @@ R3_FOURTH_DECISION = "BS-CONTENT-20260811-04"
 R3_FIFTH_DECISION = "BS-CONTENT-20260811-05"
 R3_SIXTH_DECISION = "BS-CONTENT-20260811-06"
 R3_SEVENTH_DECISION = "BS-CONTENT-20260811-07"
-R3_CURRENT_DECISION = "BS-CONTENT-20260811-08"
+R3_EIGHTH_DECISION = "BS-CONTENT-20260811-08"
+R3_CURRENT_DECISION = "BS-CONTENT-20260811-09"
 
 
 def classify_planned_references(findings: list[audit.Finding]) -> None:
@@ -78,7 +80,7 @@ def configure_current_assertions() -> None:
         '"stage_status": "R3_R7_DESIGN_ACTIVE"',
         '"product_implementation": "BLOCKED"',
         '"task3_implementation": "NOT_APPROVED"',
-        '"next_approval_counter": "8/10"',
+        '"next_approval_counter": "9/10"',
         f'"id": "{R3_FIRST_DECISION}"',
         f'"id": "{R3_SECOND_DECISION}"',
         f'"id": "{R3_THIRD_DECISION}"',
@@ -86,6 +88,7 @@ def configure_current_assertions() -> None:
         f'"id": "{R3_FIFTH_DECISION}"',
         f'"id": "{R3_SIXTH_DECISION}"',
         f'"id": "{R3_SEVENTH_DECISION}"',
+        f'"id": "{R3_EIGHTH_DECISION}"',
         f'"id": "{R3_CURRENT_DECISION}"',
         '"content_id": "COLLECTOR_01"',
         '"customer_id": "ERSA_ROEN"',
@@ -212,7 +215,7 @@ def configure_current_assertions() -> None:
     )
 
     assertions[R3_SEDRIC_CANON] = (
-        R3_CURRENT_DECISION,
+        R3_EIGHTH_DECISION,
         "COLLECTOR_02",
         "SEDRIC_VAEL",
         "ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY",
@@ -231,6 +234,31 @@ def configure_current_assertions() -> None:
         "Task3 구현: `NOT_APPROVED`",
     )
 
+    assertions[R3_KYLE_CANON] = (
+        R3_CURRENT_DECISION,
+        "GLADIATOR_02",
+        "KYLE_VAREN",
+        "VETERAN_COMEBACK_EQUIPMENT_CONTINUITY_AND_SUCCESSION",
+        "VETERAN_RETURN_STATE",
+        "EQUIPMENT_CONTINUITY_STATE",
+        "ITEM_UID_LINEAGE_STATE",
+        "NO_UID_REWRITE",
+        "NO_HISTORY_TRANSFER_TO_REPLACEMENT",
+        "OLD_ITEM_HISTORY_PRESERVED",
+        "NEW_ITEM_GETS_NEW_UID",
+        "CASSIA_ARENA_FIT_RESPONSIBILITY_PRESERVED",
+        "NOBLE01_TREATMENT_DEPTH_RESPONSIBILITY_PRESERVED",
+        "LEGACY_GLADIATOR_KYLE_FIXTURE_NON_AUTHORITATIVE",
+        "NO_FIXED_IRON_SWORD_CANON",
+        "NO_LEGACY_ARENA_SCORE_FORMULA_CANON",
+        "NO_DIRECT_ARENA_COMBAT",
+        "NO_GLADIATOR_ROSTER_OR_GUILD_MANAGEMENT",
+        "NO_TRAINING_OR_INJURY_MANAGEMENT",
+        "P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED",
+        "제품 구현: `BLOCKED`",
+        "Task3 구현: `NOT_APPROVED`",
+    )
+
     gates_path = "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
     gate_tokens = list(assertions[gates_path])
     gate_tokens = [
@@ -244,7 +272,7 @@ def configure_current_assertions() -> None:
         "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
         "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
         "R3_R7_DESIGN_ACTIVE",
-        "R3_R7_APPROVAL_COUNTER: 8/10",
+        "R3_R7_APPROVAL_COUNTER: 9/10",
         f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
         R3_THIRD_DECISION,
         "TASK3_IMPLEMENTATION: NOT_APPROVED",
@@ -284,20 +312,21 @@ def configure_current_assertions() -> None:
             R3_FIFTH_DECISION,
             R3_SIXTH_DECISION,
             R3_SEVENTH_DECISION,
+            R3_EIGHTH_DECISION,
             R3_CURRENT_DECISION,
             f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
-            "COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED",
+            "GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED",
             "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ):
             if token not in tokens:
                 tokens.append(token)
-        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `8/10`" not in tokens:
-            tokens.append("현재 R3–R7 승인 카운터: `8/10`")
+        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `9/10`" not in tokens:
+            tokens.append("현재 R3–R7 승인 카운터: `9/10`")
         assertions[path] = tuple(tokens)
 
     audit.REQUIRED_ASSERTIONS = assertions
     current_docs = list(audit.ACTIVE_DOCS)
-    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON, R3_ERSA_CANON, R3_CASSIA_CANON, R3_NOBLE_CANON, R3_LIANA_CANON, R3_SEDRIC_CANON):
+    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON, R3_ERSA_CANON, R3_CASSIA_CANON, R3_NOBLE_CANON, R3_LIANA_CANON, R3_SEDRIC_CANON, R3_KYLE_CANON):
         if path not in current_docs:
             current_docs.append(path)
     audit.ACTIVE_DOCS = tuple(current_docs)
