@@ -1,0 +1,56 @@
+name: Decision09 gate consumer cleanup
+
+on:
+  push:
+    branches:
+      - docs/r3-gladiator-02-kyle-veteran-continuity
+    paths:
+      - '.github/workflows/decision09-gates-cleanup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/r3-gladiator-02-kyle-veteran-continuity
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Remove stale current-state mirrors
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md')
+          s = p.read_text(encoding='utf-8')
+          old = '`BS-CONTENT-20260811-01`, `BS-CONTENT-20260811-02`, `BS-CONTENT-20260811-03`, `BS-CONTENT-20260811-04`, 현재 `BS-CONTENT-20260811-05`는 planning-only Decision이다.'
+          new = '`BS-CONTENT-20260811-01`~`BS-CONTENT-20260811-09`는 planning-only Decision이며 현재 Decision은 `BS-CONTENT-20260811-09`다.'
+          if old not in s:
+              raise SystemExit('Product Implementation Gate current-decision anchor missing')
+          s = s.replace(old, new, 1)
+          s = s.replace('R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05', 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09')
+          # These two YAML blocks are explicitly labeled current state, not Task2 historical evidence.
+          s = s.replace('GODOT_AI_VERSION: 3.1.3', 'GODOT_AI_VERSION: 3.1.4')
+          stale = '<!-- BS-CONTENT-20260811-05 CURRENT -->'
+          if stale in s:
+              s = s[:s.index(stale)].rstrip() + '\n'
+          if 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05' in s:
+              raise SystemExit('stale D05 current pointer remains in Development Gates')
+          p.write_text(s, encoding='utf-8')
+          Path('.github/workflows/decision09-gates-cleanup.yml').unlink()
+          PY
+      - name: Focused gate regression
+        run: |
+          python -m unittest tests.test_r3_gladiator_02_kyle_content tests.test_r3_noble_01_heirloom_succession_content tests.test_project_operating_system_audit_runner -v
+          python tests/check_project_core_alignment_current.py
+      - name: Commit cleanup and remove this one-shot workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "docs: remove stale R3 gate current mirrors"
+          git push origin HEAD:docs/r3-gladiator-02-kyle-veteran-continuity
