@@ -178,3 +178,32 @@ Semantic RED evidence for this hardening:
 - Python job `93802395639`
 - checkout/Base/Python/PowerShell parser/project-core/existing bootstrap tests all passed before the new isolation test;
 - the new isolation test failed specifically because `NON_DEDICATED_BLACKSMITH_EDITOR_CONFLICT_FAIL_CLOSED` and the stricter orphan-port policy were not yet implemented.
+
+## 2026-08-12 same-ID local executor runtime hardening
+
+This is a bounded correction under `BS-OPS-20260811-03`, not a new Decision
+and not gameplay implementation.
+
+- The managed `CODEX_HOME/config.toml` writer constructs an explicit line list,
+  joins it with LF only, and calls `System.IO.File.WriteAllText` with
+  `System.Text.UTF8Encoding($false)`. The managed marker, fail-closed unmanaged
+  config check, 8006 MCP URL, approval, sandbox, network, and timeout settings
+  remain required.
+- When no exact dedicated Blacksmith editor exists, the launcher may clean up
+  only `VERIFIED_BLACKSMITH_RETAINED_SERVER` / `OLD_BLACKSMITH_RETAINED_SERVER`:
+  exactly one HTTP 8006 listener and one WS 9506 listener, one shared PID,
+  a `godot-ai`/`godot_ai` command line with `--port 8006`, `--ws-port 9506`,
+  and `app_userdata/Blacksmith/godot_ai_server.pid`.
+- The candidate identity is rechecked immediately before `Stop-Process -Id`.
+  The launcher also rechecks that neither an exact nor a conflicting Blacksmith
+  editor appeared after the original snapshot; that race fails closed without
+  stopping a process.
+  No name-based, broad, foreign, unknown, partial, or multi-listener process
+  termination is permitted. Both ports must release within the bounded wait or
+  the launcher fails closed.
+- An exact dedicated editor suppresses retained-server cleanup. Any state that
+  does not meet every predicate retains
+  `UNVERIFIED_RETAINED_SERVER_REUSE_FORBIDDEN` and `PORT_CONFLICT_FAIL_CLOSED`.
+- Bootstrap remains orchestration only. A fresh exact HiGodot session,
+  `editor_state`, `scene_get_hierarchy`, and `settings_get` receipt remains
+  required before persistent Godot authoring.
