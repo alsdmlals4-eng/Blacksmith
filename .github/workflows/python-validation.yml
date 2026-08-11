@@ -86,6 +86,23 @@ jobs:
           python -m unittest tests/test_no_merge_conflicts.py
           python tests/check_no_merge_conflicts.py .
 
+      - name: Parse dedicated PowerShell bootstrap
+        working-directory: project
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            'tools/start_blacksmith_local_executor.ps1',
+            [ref]$tokens,
+            [ref]$errors
+          ) | Out-Null
+          if ($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
+          Write-Host 'PowerShell parser: PASS'
+
       - name: Validate document and CI contracts
         working-directory: project
         run: |
