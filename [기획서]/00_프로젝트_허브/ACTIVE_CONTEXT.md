@@ -1,7 +1,7 @@
 # [현재 정본] Active Context
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-08 / COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED / PLANNING_ONLY**
 >
 > 이 문서는 현재 상태와 다음 읽기 순서를 연결하는 압축 라우터다. 세부 Decision·과거 단계·실행 로그는 책임 원본에서 읽는다.
 
@@ -175,10 +175,10 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 
 ## 다음 실행 순서
 
-1. `BS-CONTENT-20260811-07`의 RED→GREEN 회귀, 적대 검토, exact-head CI, GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
-2. Marek multi-UID 표준화와 Liana single-commander duty-fit이 분리되는지, 임무·귀환·same-UID field legacy 3축이 유지되는지 검증한다.
+1. `BS-CONTENT-20260811-08`의 RED→GREEN 회귀, 적대 검토, exact-head CI, GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
+2. Sedric archival accession이 Ersa exhibition과 Noble01 treatment-depth를 침범하지 않고, same-UID provenance/custody 3축과 anti-score·anti-fabrication·anti-management·anti-farming 경계를 유지하는지 검증한다.
 3. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.
-4. Decision07 merge·Sheet readback 뒤 다음 신규 R3–R7 Decision은 `8/10` 사용자 기획 승인 Gate에서 이어간다.
+4. Decision08 merge·Sheet readback 뒤 다음 신규 R3–R7 Decision은 `9/10` 사용자 기획 승인 Gate에서 이어간다.
 
 ## 먼저 읽을 파일
 
@@ -186,16 +186,17 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 2. `CURRENT_CONFIRMED_DECISIONS.md`
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
-7. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
-8. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
-9. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
-10. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
-11. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-12. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-13. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-14. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
+5. `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
+6. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
+7. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
+8. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+9. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
+10. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
+11. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+12. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
+13. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+14. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+15. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
 
 ## 현재 프로젝트 작업지시문 바인딩
 

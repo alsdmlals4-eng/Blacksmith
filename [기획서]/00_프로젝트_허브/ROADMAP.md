@@ -179,6 +179,27 @@ CEREMONY_READINESS_STATE / HEIRLOOM_TREATMENT_FIT_STATE / ITEM_UID_DYNASTIC_LEGA
 
 - `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
 
+### 7/10 — `BS-CONTENT-20260811-07`
+
+```text
+SOLDIER_02 / LIANA_BERG
+FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY
+MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE
+```
+
+목표:
+
+- 공개된 지휘 책임·임무 위험·필요 장비 역할과 실제 작품 UID 근거를 비교해 한 작품을 맡긴다.
+- Marek의 multi-UID 소량 표준화와 Cassia의 arena contribution 책임을 보존한다.
+- 직접 전술전투·부대 이동/대형·실시간 병참·사상자 micromanagement를 추가하지 않는다.
+- command/hero/leadership/mission-fit 총점, 최고 방어/강화 자동정답, 작품 단독 인과를 만들지 않는다.
+- baseline Liana permadeath/replacement loop와 임무 반복 Artistry/Chronicle farming을 추가하지 않는다.
+- 같은 UID를 인계·현장 결과·귀환/회수까지 보존한다.
+
+책임 원본:
+
+- `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
+
 ### 8/10 — `BS-CONTENT-20260811-08`
 
 ```text

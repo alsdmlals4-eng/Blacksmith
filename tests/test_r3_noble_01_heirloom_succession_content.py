@@ -113,7 +113,7 @@ class Noble01HeirloomSuccessionContentContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, canon)
 
-    def test_current_routers_preserve_noble01_history_while_liana_is_current(self) -> None:
+    def test_current_routers_preserve_noble01_history_while_sedric_is_current(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
@@ -143,10 +143,10 @@ class Noble01HeirloomSuccessionContentContractTests(unittest.TestCase):
         for text in (active, start_here, roadmap):
             self.assertIn("COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED", text)
 
-        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-07`", active)
-        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-07`", start_here)
-        self.assertIn("현재 승인 카운터: `7/10`.", roadmap)
-        self.assertIn("Decision: `BS-CONTENT-20260811-07`.", gates)
+        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-08`", active)
+        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-08`", start_here)
+        self.assertIn("현재 승인 카운터: `8/10`.", roadmap)
+        self.assertIn("Decision: `BS-CONTENT-20260811-08`.", gates)
         self.assertIn("### 6/10 — `BS-CONTENT-20260811-06`", roadmap)
 
     def test_decision06_reuses_existing_ceremonial_noble_fixture(self) -> None:
