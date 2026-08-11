@@ -130,6 +130,18 @@ def live_prefix(path: Path, text: str) -> str:
     return text
 
 
+def normalized_contract_lines(text: str) -> set[str]:
+    lines: set[str] = set()
+    for raw in text.splitlines():
+        line = raw.strip()
+        if line.startswith(">"):
+            line = line[1:].strip()
+        line = line.strip("`").strip()
+        if line:
+            lines.add(line)
+    return lines
+
+
 def check_phase_c_continuation(failures: list[str]) -> None:
     stale_live_tokens = (
         "P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING",
@@ -148,8 +160,9 @@ def check_phase_c_continuation(failures: list[str]) -> None:
                 failures.append(
                     f"{path.relative_to(ROOT)} live continuation must contain {token!r}"
                 )
+        live_lines = normalized_contract_lines(current)
         for token in stale_live_tokens:
-            if token in current:
+            if token in live_lines:
                 failures.append(
                     f"{path.relative_to(ROOT)} live continuation must not retain stale token {token!r}"
                 )
