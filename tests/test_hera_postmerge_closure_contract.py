@@ -21,7 +21,7 @@ MERGE_MAIN = "29b06e323185e436d709fcdf638f445b9099266e"
 TASK2_MERGE_MAIN = "a61a0bceec4254c4b78350980275cc9a903f9042"
 TASK2_TECHNICAL_BASELINE = "fa9595b2df95897c915331a1cb5d9b1a583611f0"
 CURRENT_HANDOFF_MAIN = "68540e6cd288aff138b1ea4c5b1feeb9e0653947"
-BASE_CURRENT_MAIN_OBSERVED = "23d5b292f619022cdd8ab7a33fb1debc2d294861"
+BASE_CURRENT_MAIN_OBSERVED = "6d2feba2bc49fda2d8d273248b55087853615d5d"
 PROJECT_BASE_ADAPTER_PIN = "2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b"
 INITIALIZER_DECISION_ID = "BS-VS-INIT-20260808-01"
 R3_FIRST_DECISION_ID = "BS-CONTENT-20260811-01"
@@ -71,7 +71,7 @@ def test_entry_gate_records_merged_reconciliation_and_current_task2_authority() 
     assert "HERA_RECONCILIATION_DRAFT_PENDING_MERGE" not in current
 
 
-def test_handoff_router_records_current_main_and_r3_planning_only_boundary() -> None:
+def test_handoff_router_records_current_main_and_bounded_phase_c_boundary() -> None:
     active = _text(ACTIVE_CONTEXT)
     start = _text(START_HERE)
 
@@ -84,13 +84,19 @@ def test_handoff_router_records_current_main_and_r3_planning_only_boundary() -> 
         assert "TASK2_MAIN_MERGED" in text
         assert "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE" in text
         assert "PR81_REFERENCE_ONLY_DO_NOT_MERGE" in text
-        assert "R3_R7_DESIGN_ACTIVE" in text
+        assert "R3_R7_DESIGN_ACTIVE" in text  # historical planning snapshot remains discoverable
         assert R3_FIRST_DECISION_ID in text
         assert R3_THIRD_DECISION_ID in text
         assert R3_CURRENT_DECISION_ID in text
         assert R3_CURRENT_RESUME_LOCATOR in text
-        assert "PRODUCT_IMPLEMENTATION: BLOCKED" in text
-        assert "TASK3_IMPLEMENTATION: NOT_APPROVED" in text
+        assert "BS-OPS-20260811-03" in text
+        assert "PLANNING_COMPLETE: USER_DECLARED" in text
+        assert "PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST" in text
+        assert "P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING" in text
+        assert "PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON" in text
+        assert "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED" in text
+        assert "HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED" in text
+        assert "HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED" in text
         assert "HUMAN_PLAYTEST: NOT_RUN" in text
         assert "ANDROID_DEVICE: NOT_RUN" in text
         assert "R3_R7_DESIGN_PAUSED" not in text
@@ -131,12 +137,17 @@ def test_current_decision_router_preserves_task2_technical_baseline_and_r3_scope
     assert TASK2_MERGE_MAIN in current
     assert TASK2_TECHNICAL_BASELINE in current
     assert "NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED" in current
-    assert "R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE" in current
+    assert "R3_R7_DESIGN_STATE: R3_R7_PLANNING_BATCH_CLOSED_AT_9_OF_10" in current
     assert f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION_ID}" in current
     assert f"R3_R7_APPROVAL_COUNTER: {R3_CURRENT_APPROVAL_COUNTER}" in current
     assert R3_THIRD_DECISION_ID in text
-    assert "TASK3_IMPLEMENTATION: NOT_APPROVED" in current
-    assert "PRODUCT_IMPLEMENTATION: BLOCKED" in current
+    assert "BS-OPS-20260811-03" in current
+    assert "PLANNING_COMPLETE: USER_DECLARED" in current
+    assert "P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING" in current
+    assert "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED" in current
+    assert "PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON" in current
+    assert "HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED" in current
+    assert "HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED" in current
 
     # The first R3 decision remains historical/current-canon evidence elsewhere;
     # it is not required to remain the current router forever.

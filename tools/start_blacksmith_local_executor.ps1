@@ -2,6 +2,9 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 # BLACKSMITH_DEDICATED_LOCAL_EXECUTOR
+# ASSUME_PREVIOUS_POWERSHELL_CLOSED
+# PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST
+# CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST
 # BOOTSTRAP_ORCHESTRATION_ONLY
 # The launcher prepares/reuses the isolated local tool envelope. It is NOT
 # HiGodot authoring evidence and does not mutate product Scene/Resource/script
@@ -299,6 +302,9 @@ function Wait-ForDedicatedListeners {
     Fail-Bootstrap "Dedicated listeners did not appear within $BootstrapWaitSeconds seconds. HTTP=$HttpPort WS=$WsPort. POST_BOOTSTRAP_LIVE_READINESS_NOT_PROVEN"
 }
 
+Write-Host 'ASSUME_PREVIOUS_POWERSHELL_CLOSED'
+Write-Host 'PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST'
+Write-Host 'CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST'
 Write-Step 'Starting bounded Blacksmith local executor bootstrap.'
 
 if (-not (Test-Path -LiteralPath $Project -PathType Container)) {
@@ -340,4 +346,4 @@ Write-Step 'Inside Codex, FIRST verify exact Blacksmith project/session, Godot-A
 Write-Step "Launching Codex with CODEX_HOME=$CodexHome from $Project"
 
 Set-Location -LiteralPath $Project
-& $codexCommand.Source
+& $codexCommand.Source -C $Project

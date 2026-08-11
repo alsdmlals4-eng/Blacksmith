@@ -248,3 +248,23 @@ Defense: implementation is constrained to existing approved canon. New substanti
 ## Expected result
 
 Before this binding, Blacksmith could accidentally share a global Godot settings profile, generic ports, or generic Codex state with another project. After it, every local implementation block starts from a reproducible Blacksmith-only execution envelope, so concurrent Godot projects do not fight over the same HiGodot ports and Codex cannot accidentally load another project's MCP profile.
+
+## Base #288 reconciliation
+
+Post-design fresh Base read advanced to `6d2feba2bc49fda2d8d273248b55087853615d5d` (`docs: require project-dedicated local execution environment (#288)`). This is a same-goal upstream authority change and is therefore consumed before Blacksmith merge.
+
+Blacksmith explicitly inherits:
+
+```text
+ASSUME_PREVIOUS_POWERSHELL_CLOSED
+PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST
+CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST
+```
+
+The one-shot launcher is always presented/executed from a fresh-shell assumption, creates or repairs missing Blacksmith-local components before product work, and launches the executor with exact project targeting:
+
+```powershell
+codex -C 'C:\Users\user\Documents\GitHub\Ninza\Blacksmith'
+```
+
+The dedicated PowerShell boundary means a fresh PowerShell process with Blacksmith-specific environment injection, not a separately installed PowerShell binary. HiGodot remains the sole persistent Godot authoring authority. Hera, when a later acceptance step actually requires the adopted profile, remains `LIVE_QA_AND_OBSERVABILITY_ONLY` and non-authoring.

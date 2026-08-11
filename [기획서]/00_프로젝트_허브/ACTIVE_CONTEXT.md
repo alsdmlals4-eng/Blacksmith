@@ -3,6 +3,10 @@
 <!-- BS_OPS_20260811_03_PHASE_C_ENTRY -->
 > **PLANNING_COMPLETE / BS-OPS-20260811-03 / PHASE_B_FINAL_REVIEW_COMPLETE / PHASE_C_ENTRY_APPROVED**
 >
+> `ASSUME_PREVIOUS_POWERSHELL_CLOSED` / `PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST` / `CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST`
+>
+> `BASE_DEDICATED_ENV_MAIN_OBSERVED: 6d2feba2bc49fda2d8d273248b55087853615d5d`
+>
 > 사용자가 `기획 완료`를 명시했다. R3–R7 기획 배치는 승인된 9/10에서 닫으며, 승인되지 않은 Decision10을 만들지 않는다. 이미 승인된 정본 구현만 Phase C로 진입하고 신규 제품 범위는 별도 Decision이 필요하다.
 >
 > `PLANNING_COMPLETE: USER_DECLARED` / `R3_R7_PLANNING_BATCH: CLOSED_AT_9_OF_10` / `PHASE_B_FINAL_REVIEW: COMPLETE`
@@ -25,7 +29,7 @@
 
 - 갱신 기준: `2026-08-11 KST`
 - Blacksmith current main observed at Decision 09 start: `80b35b9fc914853428e991c4130edc87dd260083`
-- `BASE_CURRENT_MAIN_OBSERVED`: `23d5b292f619022cdd8ab7a33fb1debc2d294861`
+- `BASE_CURRENT_MAIN_OBSERVED`: `6d2feba2bc49fda2d8d273248b55087853615d5d`
 - `PROJECT_BASE_ADAPTER_PIN`: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
 - 현재 R3–R7 승인 카운터: `9/10`
 - Base current main 관측값과 프로젝트가 채택한 Base adapter pin은 서로 다른 증거다. 새 Base main 관측만으로 프로젝트 pin을 자동 승격하지 않는다.
@@ -80,7 +84,7 @@ PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 - 역사 POC 회귀 증거는 현재 제품 PASS가 아니다: `POC v0.6.4 · main · 2026.07.23.1 / 제작 모델 7건 / 통합 6건 / HISTORICAL_EVIDENCE_ONLY`.
 - 역사 POC 강화 데이터 소유권 locator: `enhancement_balance.json`은 failure/risk를, `enhancement_milestones.json`은 milestone 정의를 소유한다. 이 문자열은 구형 데이터의 책임 위치를 보존하는 호환 앵커일 뿐 현재 R3 제품 밸런스 확정이나 제품 구현 승인을 뜻하지 않는다.
 
-## 현재 R3–R7 기획 재개 상태
+## 역사 snapshot — `기획 완료` 직전 R3–R7 9/10 기획 상태
 
 `BS-CONTENT-20260811-01`~`08`은 승인 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-09`이다.
 
@@ -122,7 +126,7 @@ GLADIATOR_02 / KYLE_VAREN
 - `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
 
-이 승인은 **기획 재개 승인**이다. Task3 또는 일반 제품 구현 승인이 아니다.
+이 문장은 `기획 완료` 직전 Decision09의 **역사적 기획 재개 경계**다. 현재 Phase C 구현 Gate는 상단 `BS-OPS-20260811-03`이 소유하며, Task3는 여전히 별도 승인 대상이다.
 
 ## 현재 권위와 보호 경계
 

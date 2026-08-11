@@ -163,3 +163,17 @@ fresh HiGodot session/version/readiness: PASS required before mutation
 ```
 
 Actual Windows bootstrap execution, editor UI state, live ports, Codex authentication, and HiGodot live receipt remain `NOT_RUN` until observed locally.
+
+## Base #288 reconciliation task
+
+Fresh Base main `6d2feba2bc49fda2d8d273248b55087853615d5d` directly strengthens this goal. Before exact-head acceptance:
+
+- [x] require `ASSUME_PREVIOUS_POWERSHELL_CLOSED`;
+- [x] require `PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST`;
+- [x] require `CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST`;
+- [x] invoke Codex with `-C` and the exact Blacksmith project path;
+- [x] preserve HiGodot persistent-authoring exclusivity and Hera live-QA/non-authoring boundary;
+- [x] keep port/process existence as bootstrap evidence only;
+- [x] preserve no destructive Git/process side effects.
+
+The Base #288 follow-up used a new semantic RED before these production tokens were added.

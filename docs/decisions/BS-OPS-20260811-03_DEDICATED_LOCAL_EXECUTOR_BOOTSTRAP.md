@@ -128,3 +128,21 @@ ACCESSIBILITY: NOT_RUN
 - Godot self-contained `_sc_`와 Codex custom home/MCP 구성을 프로젝트 전용 값으로 바인딩한다.
 
 본 Decision은 새 제품 기능이 아니라 이미 승인된 제품 구현을 안전하게 시작하기 위한 실행 환경 및 Phase 전환 정본이다.
+
+## Current Base dedicated-environment authority
+
+Fresh same-goal Base main observed before Blacksmith acceptance:
+
+`6d2feba2bc49fda2d8d273248b55087853615d5d` — `docs: require project-dedicated local execution environment (#288)`
+
+Blacksmith consumes the shared invariants with project-owned concrete values:
+
+```text
+ASSUME_PREVIOUS_POWERSHELL_CLOSED
+PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST
+CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST
+ONE_SHOT_LOCAL_EXECUTOR_BOOTSTRAP
+BOOTSTRAP_MINIMUM_PREFLIGHT_ONLY
+```
+
+The executor launch is additionally pinned with `codex -C C:\Users\user\Documents\GitHub\Ninza\Blacksmith`. A dedicated PowerShell is a fresh PowerShell process with the Blacksmith environment injected; it is not a second PowerShell installation.
