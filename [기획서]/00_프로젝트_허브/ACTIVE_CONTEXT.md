@@ -1,15 +1,15 @@
 # [현재 정본] Active Context
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / ADVENTURER_01_DETAIL_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED / PLANNING_ONLY**
 >
 > 이 문서는 현재 상태와 다음 읽기 순서를 연결하는 압축 라우터다. 세부 Decision·과거 단계·실행 로그는 책임 원본에서 읽는다.
 
 - 갱신 기준: `2026-08-11 KST`
-- Blacksmith current main observed at design resume: `68540e6cd288aff138b1ea4c5b1feeb9e0653947`
+- Blacksmith current main observed at Decision 02 start: `cb5ceff127bf4f2adb38b34ebaa092d97111fa94`
 - `BASE_CURRENT_MAIN_OBSERVED`: `315c66eea9614c284b9c11c4d522141065dfa4b0`
 - `PROJECT_BASE_ADAPTER_PIN`: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
-- 현재 R3–R7 승인 카운터: `1/10`
+- 현재 R3–R7 승인 카운터: `2/10`
 - Base current main 관측값과 프로젝트가 채택한 Base adapter pin은 서로 다른 증거다. 새 Base main 관측만으로 프로젝트 pin을 자동 승격하지 않는다.
 
 ```yaml
@@ -20,9 +20,9 @@ R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10
 R2_BATCH_005_MERGE: MERGED_PR109_MAIN_CANON
 R2_BATCH_006: R2_BATCH_006_APPROVED_10_OF_10
 R2_BATCH_006_MERGE: MERGED_PR120_MAIN_CANON
-R3_R7_APPROVAL_COUNTER: 1/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01
-R3_R7_RESUME_LOCATOR: ADVENTURER_01_DETAIL_APPROVED
+R3_R7_APPROVAL_COUNTER: 2/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02
+R3_R7_RESUME_LOCATOR: ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED
 VERTICAL_SLICE_IMPLEMENTATION: APPROVED_TASK2_COMPLETE
 VERTICAL_SLICE_IMPLEMENTATION_EVIDENCE: VERTICAL_SLICE_IMPLEMENTATION_APPROVED
 TASK2: TASK2_MAIN_MERGED
@@ -74,10 +74,23 @@ ADVENTURER_01
 → 복원·후속 강화·새 제작 이유
 ```
 
+첫 Decision `BS-CONTENT-20260811-01`의 Nadia 정본은 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-02`다.
+
+```text
+ADVENTURER_02 / TOREN_MARCH
+→ 장거리 길잡이
+→ 여정 지속성 + 신뢰성
+→ 작품 한 점 인계
+→ 환경 노출·경로 적응은 비직접 일정 사건
+→ 도착·환경 대응·같은 UID 작품 상태 결과
+→ 수리·복원·후속 강화·다음 여정용 신작 이유
+```
+
 책임 원본:
 
 - `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
 - `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
 
 이 승인은 **기획 재개 승인**이다. Task3 또는 일반 제품 구현 승인이 아니다.
 
@@ -120,6 +133,7 @@ BS-ITEM-20260806-04 / R2_BATCH_005_8_OF_10
 BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10
 BS-ITEM-20260806-06 / R2_BATCH_005_10_OF_10
 BS-CONTENT-20260811-01 / R3_R7_1_OF_10
+BS-CONTENT-20260811-02 / R3_R7_2_OF_10
 ```
 
 ## 불변 체크포인트 호환 이력
@@ -131,11 +145,11 @@ BS-CONTENT-20260811-01 / R3_R7_1_OF_10
 
 ## 다음 실행 순서
 
-1. `BS-CONTENT-20260811-01`의 GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
-2. TDD RED→GREEN과 적대적 검토로 직접 탐험 게임화·단일 장비 정답·고정 일정 일수·자동 수식어 지급 회귀를 차단한다.
+1. `BS-CONTENT-20260811-02`의 GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
+2. TDD RED→GREEN과 적대적 검토로 직접 여행 게임화·새 신뢰성/수리성 원수치·자동 마모세·Nadia 재스킨 회귀를 차단한다.
 3. 같은 범위 PR의 exact-head CI·리뷰·Sheet readback을 확인한다.
 4. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.
-5. 다음 R3–R7 신규 Decision은 현재 승인 카운터 `1/10`에서 이어간다.
+5. 다음 R3–R7 신규 Decision은 현재 승인 카운터 `2/10`에서 이어간다.
 
 ## 먼저 읽을 파일
 
@@ -144,9 +158,10 @@ BS-CONTENT-20260811-01 / R3_R7_1_OF_10
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
 5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-7. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-8. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
+6. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+7. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+8. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+9. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
 
 ## 현재 프로젝트 작업지시문 바인딩
 
