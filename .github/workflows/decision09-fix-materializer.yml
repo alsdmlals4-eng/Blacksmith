@@ -1,4 +1,4 @@
-name: Decision09 materializer repair
+name: Decision09 current-history repair
 
 on:
   push:
@@ -20,28 +20,209 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Make canon responsibility IDs explicit before focused GREEN
+      - name: Repair current/history consumers without rewriting Decision08 history
         run: |
           python - <<'PY'
           from pathlib import Path
-          p = Path('tools/_decision09_materialize.py')
-          s = p.read_text(encoding='utf-8')
-          anchor = 'def main() -> None:\n'
-          patch = '''def normalize_canon_responsibility_ids() -> None:\n    path = CANON\n    text = read(path)\n    text = text.replace(\n        "Cassia / `GLADIATOR_01`의 질문:",\n        "Cassia / `CASSIA_BELLAN / GLADIATOR_01 / ARENA_SIGNATURE_WEAPON_AND_LEGACY`의 질문:",\n    )\n    text = text.replace(\n        "Noble01 / `CEREMONIAL_NOBLE`은",\n        "Noble01 / `CEREMONIAL_NOBLE / HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY`은",\n    )\n    write(path, text)\n\n\n'''
-          if 'def normalize_canon_responsibility_ids()' in s:
-              raise SystemExit('canon normalizer already exists')
-          if anchor not in s:
-              raise SystemExit('main anchor missing')
-          s = s.replace(anchor, patch + anchor, 1)
-          s = s.replace('    update_registry()\n', '    normalize_canon_responsibility_ids()\n    update_registry()\n', 1)
-          p.write_text(s, encoding='utf-8')
+
+          ROOT = Path('.')
+          D08 = 'BS-CONTENT-20260811-08'
+          D09 = 'BS-CONTENT-20260811-09'
+          LOC08 = 'COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED'
+          LOC09 = 'GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED'
+          KYLE_CANON = 'docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md'
+
+          def read(path: str) -> str:
+              return (ROOT / path).read_text(encoding='utf-8')
+
+          def write(path: str, text: str) -> None:
+              (ROOT / path).write_text(text, encoding='utf-8')
+
+          def replace_required(text: str, old: str, new: str, label: str, count: int | None = None) -> str:
+              found = text.count(old)
+              if found == 0:
+                  raise SystemExit(f'{label}: missing required anchor {old!r}')
+              if count is not None and found != count:
+                  raise SystemExit(f'{label}: expected {count} occurrences of {old!r}, got {found}')
+              return text.replace(old, new)
+
+          # ACTIVE_CONTEXT: preserve complete historical authority list, update the active execution path,
+          # and remove the stale duplicate D08-current mirror now that D09 owns the current mirror.
+          path = '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
+          s = read(path)
+          current_start = s.index('## 현재 R3–R7 기획 재개 상태')
+          owners_start = s.index('책임 원본:\n\n', current_start)
+          owners_end = s.index('\n\n이 승인은', owners_start)
+          owners = '''책임 원본:\n\n- `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`\n- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`\n- `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`\n- `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`\n- `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`\n- `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`\n- `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`\n- `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`\n- `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`\n- `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`'''
+          s = s[:owners_start] + owners + s[owners_end:]
+          next_start = s.index('## 다음 실행 순서')
+          next_end = s.index('## 먼저 읽을 파일', next_start)
+          next_section = '''## 다음 실행 순서\n\n1. `BS-CONTENT-20260811-09`의 focused GREEN 뒤 D01–D08 역사/current consumer 회귀를 닫는다.\n2. Kyle continuity가 Cassia arena-fit과 Noble01 treatment-depth를 침범하지 않고 old/new UID history 경계를 지키는지 적대 검토한다.\n3. 하나의 exact reviewed head에서 Python·Godot·Base·BCA·GUT·HiGodot·Adapter Gate를 모두 GREEN으로 만든다.\n4. PR #154 병합과 같은 Decision ID의 Google Sheet sync/readback을 닫은 뒤에만 다음 신규 R3–R7 Decision `10/10` 사용자 기획 승인 Gate로 이동한다.\n5. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.\n\n'''
+          s = s[:next_start] + next_section + s[next_end:]
+          read_start = s.index('## 먼저 읽을 파일')
+          read_end = s.index('## 현재 프로젝트 작업지시문 바인딩', read_start)
+          read_section = '''## 먼저 읽을 파일\n\n1. `AGENTS.md`\n2. `CURRENT_CONFIRMED_DECISIONS.md`\n3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`\n4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`\n5. `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`\n7. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`\n8. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`\n9. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`\n10. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`\n11. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`\n12. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`\n13. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n14. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`\n15. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`\n16. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`\n\n'''
+          s = s[:read_start] + read_section + s[read_end:]
+          stale = '<!-- BS-CONTENT-20260811-08 CURRENT -->'
+          current = '<!-- BS-CONTENT-20260811-09 CURRENT -->'
+          if stale in s:
+              a = s.index(stale)
+              b = s.index(current, a)
+              s = s[:a] + s[b:]
+          write(path, s)
+
+          # START_HERE: restore complete authority/read order, add D08/D09 protection, update next work,
+          # and collapse the stale duplicate D08 current block.
+          path = '[기획서]/00_프로젝트_허브/START_HERE.md'
+          s = read(path)
+          current_start = s.index('## 현재 R3–R7 설계 재개')
+          owners_start = s.index('책임 원본:\n\n', current_start)
+          owners_end = s.index('\n\n## 처음 읽을 순서', owners_start)
+          owners = '''책임 원본:\n\n1. `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`\n2. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`\n3. `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`\n4. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`\n5. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`\n7. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`\n8. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`\n9. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`\n10. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`'''
+          s = s[:owners_start] + owners + s[owners_end:]
+          order_start = s.index('## 처음 읽을 순서')
+          order_end = s.index('## Task2 기술 폐쇄 상태', order_start)
+          order = '''## 처음 읽을 순서\n\n1. `AGENTS.md`\n2. `CURRENT_CONFIRMED_DECISIONS.md`\n3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`\n4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`\n5. `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`\n7. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`\n8. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`\n9. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`\n10. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`\n11. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`\n12. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`\n13. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n14. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`\n\n'''
+          s = s[:order_start] + order + s[order_end:]
+          d07_rule = '- `BS-CONTENT-20260811-07`은 Marek/Cassia 책임 경계를 보존하고 직접 전투·부대 지휘·baseline permadeath·숨은 총점·작품 단독 인과·임무 farming을 금지한다.\n'
+          if '- `BS-CONTENT-20260811-08`은' not in s:
+              s = s.replace(d07_rule, d07_rule + '- `BS-CONTENT-20260811-08`은 Ersa exhibition·Noble01 treatment-depth 책임을 보존하고 provenance fabrication·archive management·accession farming을 금지한다.\n- `BS-CONTENT-20260811-09`은 Cassia arena-fit·Noble01 treatment-depth 책임을 보존하고 old/new UID history overwrite·legacy score 부활·gladiator-management drift·comeback farming을 금지한다.\n')
+          next_start = s.index('## 다음 작업')
+          stale = '<!-- BS-CONTENT-20260811-08 CURRENT -->'
+          if stale in s:
+              next_end = s.index(stale, next_start)
+          else:
+              next_end = s.index('<!-- BS-CONTENT-20260811-09 CURRENT -->', next_start)
+          next_section = '''## 다음 작업\n\n현재 연속 작업은 `BS-CONTENT-20260811-09`의 역사/current consumer 회귀, 적대 검토, exact-head CI, PR #154 병합, GitHub·Sheet same-ID 동기화와 postmerge readback까지다. 그 작업이 닫힌 뒤 다음 신규 R3–R7 Decision은 승인 카운터 `10/10`에서 별도 사용자 기획 승인을 받아 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.\n\n'''
+          s = s[:next_start] + next_section + s[next_end:]
+          if stale in s:
+              a = s.index(stale)
+              b = s.index('<!-- BS-CONTENT-20260811-09 CURRENT -->', a)
+              s = s[:a] + s[b:]
+          write(path, s)
+
+          # ROADMAP: remove only the obsolete D07-current mirror; retain its historical 7/10 detail section.
+          path = '[기획서]/00_프로젝트_허브/ROADMAP.md'
+          s = read(path)
+          stale = '<!-- BS-CONTENT-20260811-07 CURRENT -->'
+          if stale in s:
+              a = s.index(stale)
+              b = s.index('### 7/10 — `BS-CONTENT-20260811-07`', a)
+              s = s[:a] + s[b:]
+          write(path, s)
+
+          # Move only moving-current assertions in R3/history tests. Historical canon/status assertions stay intact.
+          current_replacements = {
+              'R3_R7_APPROVAL_COUNTER: 8/10': 'R3_R7_APPROVAL_COUNTER: 9/10',
+              f'R3_R7_CURRENT_DECISION: {D08}': f'R3_R7_CURRENT_DECISION: {D09}',
+              LOC08: LOC09,
+              f'현재 Decision은 `{D08}`': f'현재 Decision은 `{D09}`',
+              f'현재 연속 작업은 `{D08}`': f'현재 연속 작업은 `{D09}`',
+              '현재 승인 카운터: `8/10`.': '현재 승인 카운터: `9/10`.',
+              f'Decision: `{D08}`.': f'Decision: `{D09}`.',
+              '현재 R3–R7 승인 카운터: `8/10`': '현재 R3–R7 승인 카운터: `9/10`',
+          }
+          current_paths = list(Path('tests').glob('test_r3_*content.py')) + [
+              Path('tests/check_project_core_alignment_current.py'),
+              Path('tests/test_auto_enhancement_cap_unlock.py'),
+              Path('tests/test_hera_postmerge_closure_contract.py'),
+              Path('tests/test_project_operating_system_audit_runner.py'),
+          ]
+          for p in current_paths:
+              if not p.exists():
+                  continue
+              t = p.read_text(encoding='utf-8')
+              t = t.replace('self.assertEqual("8/10", registry.get("next_approval_counter"))', 'self.assertEqual("9/10", registry.get("next_approval_counter"))')
+              for old, new in current_replacements.items():
+                  t = t.replace(old, new)
+              p.write_text(t, encoding='utf-8')
+
+          # Core-alignment current layer must preserve D08 as history in addition to D09 current.
+          p = Path('tests/check_project_core_alignment_current.py')
+          t = p.read_text(encoding='utf-8')
+          anchor = '            "BS-CONTENT-20260811-07",\n            "R3_R7_APPROVAL_COUNTER: 9/10",'
+          if anchor in t:
+              t = t.replace(anchor, '            "BS-CONTENT-20260811-07",\n            "BS-CONTENT-20260811-08",\n            "BS-CONTENT-20260811-09",\n            "R3_R7_APPROVAL_COUNTER: 9/10",')
+          p.write_text(t, encoding='utf-8')
+
+          # Hera: only moving-current constants move; Task2/Hera historical SHAs remain immutable.
+          p = Path('tests/test_hera_postmerge_closure_contract.py')
+          t = p.read_text(encoding='utf-8')
+          t = t.replace('R3_CURRENT_DECISION_ID = "BS-CONTENT-20260811-08"', 'R3_CURRENT_DECISION_ID = "BS-CONTENT-20260811-09"')
+          t = t.replace('R3_CURRENT_RESUME_LOCATOR = "COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED"', 'R3_CURRENT_RESUME_LOCATOR = "GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED"')
+          t = t.replace('R3_CURRENT_APPROVAL_COUNTER = "8/10"', 'R3_CURRENT_APPROVAL_COUNTER = "9/10"')
+          p.write_text(t, encoding='utf-8')
+
+          # Operating audit: split eighth historical Sedric from current ninth Kyle and audit both canons.
+          p = Path('tools/run_project_operating_system_audit.py')
+          t = p.read_text(encoding='utf-8')
+          t = t.replace(
+              'R3_SEDRIC_CANON = "docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md"',
+              'R3_SEDRIC_CANON = "docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md"\nR3_KYLE_CANON = "docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md"',
+          )
+          t = t.replace('R3_CURRENT_DECISION = "BS-CONTENT-20260811-08"', 'R3_EIGHTH_DECISION = "BS-CONTENT-20260811-08"\nR3_CURRENT_DECISION = "BS-CONTENT-20260811-09"')
+          t = t.replace('\'"next_approval_counter": "8/10"\'', '\'"next_approval_counter": "9/10"\'')
+          t = t.replace("        f'\"id\": \"{R3_SEVENTH_DECISION}\"',\n        f'\"id\": \"{R3_CURRENT_DECISION}\"',", "        f'\"id\": \"{R3_SEVENTH_DECISION}\"',\n        f'\"id\": \"{R3_EIGHTH_DECISION}\"',\n        f'\"id\": \"{R3_CURRENT_DECISION}\"',")
+          t = t.replace('    assertions[R3_SEDRIC_CANON] = (\n        R3_CURRENT_DECISION,', '    assertions[R3_SEDRIC_CANON] = (\n        R3_EIGHTH_DECISION,')
+          kyle_block = '''\n    assertions[R3_KYLE_CANON] = (\n        R3_CURRENT_DECISION,\n        "GLADIATOR_02",\n        "KYLE_VAREN",\n        "VETERAN_COMEBACK_EQUIPMENT_CONTINUITY_AND_SUCCESSION",\n        "VETERAN_RETURN_STATE",\n        "EQUIPMENT_CONTINUITY_STATE",\n        "ITEM_UID_LINEAGE_STATE",\n        "NO_UID_REWRITE",\n        "NO_HISTORY_TRANSFER_TO_REPLACEMENT",\n        "OLD_ITEM_HISTORY_PRESERVED",\n        "NEW_ITEM_GETS_NEW_UID",\n        "CASSIA_ARENA_FIT_RESPONSIBILITY_PRESERVED",\n        "NOBLE01_TREATMENT_DEPTH_RESPONSIBILITY_PRESERVED",\n        "LEGACY_GLADIATOR_KYLE_FIXTURE_NON_AUTHORITATIVE",\n        "NO_FIXED_IRON_SWORD_CANON",\n        "NO_LEGACY_ARENA_SCORE_FORMULA_CANON",\n        "NO_DIRECT_ARENA_COMBAT",\n        "NO_GLADIATOR_ROSTER_OR_GUILD_MANAGEMENT",\n        "NO_TRAINING_OR_INJURY_MANAGEMENT",\n        "P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED",\n        "제품 구현: `BLOCKED`",\n        "Task3 구현: `NOT_APPROVED`",\n    )\n'''
+          gate_anchor = '\n    gates_path = "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"'
+          if 'assertions[R3_KYLE_CANON]' not in t:
+              t = t.replace(gate_anchor, kyle_block + gate_anchor)
+          t = t.replace('"R3_R7_APPROVAL_COUNTER: 8/10"', '"R3_R7_APPROVAL_COUNTER: 9/10"')
+          t = t.replace('            R3_SEVENTH_DECISION,\n            R3_CURRENT_DECISION,', '            R3_SEVENTH_DECISION,\n            R3_EIGHTH_DECISION,\n            R3_CURRENT_DECISION,')
+          t = t.replace('            "COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED",', '            "GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED",')
+          t = t.replace('"현재 R3–R7 승인 카운터: `8/10`"', '"현재 R3–R7 승인 카운터: `9/10`"')
+          t = t.replace('(R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON, R3_ERSA_CANON, R3_CASSIA_CANON, R3_NOBLE_CANON, R3_LIANA_CANON, R3_SEDRIC_CANON)', '(R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON, R3_ERSA_CANON, R3_CASSIA_CANON, R3_NOBLE_CANON, R3_LIANA_CANON, R3_SEDRIC_CANON, R3_KYLE_CANON)')
+          p.write_text(t, encoding='utf-8')
+
+          # Audit unit test now requires both Sedric historical authority and Kyle current authority.
+          p = Path('tests/test_project_operating_system_audit_runner.py')
+          t = p.read_text(encoding='utf-8')
+          t = t.replace('        sedric = audit.REQUIRED_ASSERTIONS[runner.R3_SEDRIC_CANON]\n', '        sedric = audit.REQUIRED_ASSERTIONS[runner.R3_SEDRIC_CANON]\n        kyle = audit.REQUIRED_ASSERTIONS[runner.R3_KYLE_CANON]\n')
+          t = t.replace("            '\"id\": \"BS-CONTENT-20260811-08\"',\n        ):", "            '\"id\": \"BS-CONTENT-20260811-08\"',\n            '\"id\": \"BS-CONTENT-20260811-09\"',\n        ):")
+          sedric_tail = '        self.assertIn("NO_DOCUMENT_FABRICATION", sedric)\n'
+          if 'self.assertIn("GLADIATOR_02", kyle)' not in t:
+              t = t.replace(sedric_tail, sedric_tail + '''        self.assertIn("BS-CONTENT-20260811-09", kyle)\n        self.assertIn("GLADIATOR_02", kyle)\n        self.assertIn("KYLE_VAREN", kyle)\n        self.assertIn("VETERAN_COMEBACK_EQUIPMENT_CONTINUITY_AND_SUCCESSION", kyle)\n        self.assertIn("VETERAN_RETURN_STATE", kyle)\n        self.assertIn("EQUIPMENT_CONTINUITY_STATE", kyle)\n        self.assertIn("ITEM_UID_LINEAGE_STATE", kyle)\n        self.assertIn("OLD_ITEM_HISTORY_PRESERVED", kyle)\n        self.assertIn("NEW_ITEM_GETS_NEW_UID", kyle)\n        self.assertIn("NO_LEGACY_ARENA_SCORE_FORMULA_CANON", kyle)\n''')
+          t = t.replace('            runner.R3_SEDRIC_CANON,\n        ):', '            runner.R3_SEDRIC_CANON,\n            runner.R3_KYLE_CANON,\n        ):')
+          # Preserve D08 in handoff history while D09 is current.
+          loop_anchor = '                "BS-CONTENT-20260811-07",\n            ):'
+          if loop_anchor in t:
+              t = t.replace(loop_anchor, '                "BS-CONTENT-20260811-07",\n                "BS-CONTENT-20260811-08",\n                "BS-CONTENT-20260811-09",\n            ):')
+          p.write_text(t, encoding='utf-8')
+
+          # Structural smoke checks for the exact intended current/history split.
+          active = read('[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md')
+          start = read('[기획서]/00_프로젝트_허브/START_HERE.md')
+          roadmap = read('[기획서]/00_프로젝트_허브/ROADMAP.md')
+          for label, text in [('active', active), ('start', start), ('roadmap', roadmap)]:
+              if 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09' not in text:
+                  raise SystemExit(f'{label}: D09 current missing')
+          if '<!-- BS-CONTENT-20260811-08 CURRENT -->' in active or '<!-- BS-CONTENT-20260811-08 CURRENT -->' in start:
+              raise SystemExit('stale D08 current mirror remains')
+          if '<!-- BS-CONTENT-20260811-07 CURRENT -->' in roadmap:
+              raise SystemExit('stale D07 current mirror remains')
+          if '16. Google Sheet' not in active or '14. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`' not in start:
+              raise SystemExit('read-order reconstruction failed')
           PY
-          python -m py_compile tools/_decision09_materialize.py
-      - name: Commit helper repair
+          python -m py_compile tools/run_project_operating_system_audit.py tests/check_project_core_alignment_current.py tests/test_hera_postmerge_closure_contract.py tests/test_project_operating_system_audit_runner.py
+      - name: Run focused current-history regression
+        run: |
+          python -m unittest \
+            tests.test_r3_gladiator_02_kyle_content \
+            tests.test_r3_collector_02_sedric_content \
+            tests.test_r3_soldier_02_liana_content \
+            tests.test_r3_collector_01_ersa_content \
+            tests.test_r3_soldier_01_marek_content \
+            tests.test_r3_gladiator_01_cassia_content \
+            tests.test_r3_noble_01_heirloom_succession_content \
+            tests.test_auto_enhancement_cap_unlock \
+            tests.test_project_operating_system_audit_runner -v
+          python tests/check_project_core_alignment_current.py
+      - name: Commit current-history repair
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tools/_decision09_materialize.py
+          git add CURRENT_CONFIRMED_DECISIONS.md '[기획서]/00_프로젝트_허브' tests tools/run_project_operating_system_audit.py
           git diff --cached --check
-          git commit -m "fix: name Decision09 preserved responsibility owners"
+          git commit -m "test: preserve R3 history while Kyle is current"
           git push origin HEAD:docs/r3-gladiator-02-kyle-veteran-continuity
