@@ -18,7 +18,9 @@ The branch was attacked for:
 - accession/review Artistry or Chronicle farming;
 - product-code or Task3 scope leakage;
 - Decision01–07 history loss while moving current to Decision08;
-- stale current routers and untouched current consumers.
+- stale current routers and untouched current consumers;
+- historical/current coupling in long-lived audit assertions;
+- one-shot workflow checkout/report artifacts leaking into the retained PR diff.
 
 ## Validated findings and repairs
 
@@ -80,9 +82,67 @@ The Decision08 focused test now requires:
 
 in Roadmap order, and confirms `SOLDIER_02 / LIANA_BERG` is inside the 7/10 historical section.
 
+### 5. Hera closure test mixed historical Task2 evidence with moving R3 current
+
+Exact-head attempts exposed that the long-lived Hera postmerge closure contract correctly preserved Task2 merge/baseline evidence but still pinned the moving R3 current Decision to D07. During the first repair attempt, the trailing operating-health assertion was accidentally overwritten with a stronger but non-authoritative shape requiring a `DEVELOPMENT_GATES` health entry that the real manifest does not own.
+
+Classification: `OMISSION / MUST_FIX` for the stale current constant, followed by `CONFLICT / MUST_FIX` for the accidental test overwrite.
+
+Repair:
+
+- moved only the R3 current constants to Decision08 / 8-of-10 / Sedric locator;
+- restored the original Hera reconciliation and `BS-CURRENT-DECISIONS` health-hash contract exactly;
+- preserved immutable Task2 merge/main/baseline SHAs.
+
+The restored contract then allowed PR validation to proceed into the operating-audit wrapper.
+
+### 6. Project operating audit coupled Liana historical ownership to the moving current constant
+
+`tools/run_project_operating_system_audit.py` still had:
+
+- `R3_CURRENT_DECISION = BS-CONTENT-20260811-07`;
+- registry `next_approval_counter = 7/10`;
+- Active Context current counter `7/10`;
+- Liana canon assertions using the same moving-current constant.
+
+Simply changing the current constant to D08 would have incorrectly required Decision08 inside Liana's Decision07 canon.
+
+Classification: `CONFLICT + OMISSION / MUST_FIX`.
+
+Repair separated:
+
+- `R3_SEVENTH_DECISION = BS-CONTENT-20260811-07` for Liana historical ownership;
+- `R3_CURRENT_DECISION = BS-CONTENT-20260811-08` for moving current;
+- added `R3_SEDRIC_CANON` as an audited active document and required Sedric's three axes / same-UID / anti-score / anti-fabrication protections;
+- moved registry/router audit expectations to 8/10 while retaining D01–D07 history.
+
+Focused operating-audit repair workflow:
+
+- first run `31478277919`: infrastructure-only failure because the temporary Base checkout path was outside the Actions workspace; helper did not execute;
+- corrected run `31478440248`: SUCCESS;
+- verified `tests/test_project_operating_system_audit_runner.py`, actual Base adoption audit, Sedric Decision08 contract, and Liana Decision07 historical contract together;
+- materialized repair commit: `6b45fdf37a66afb29011dc8359fb10569f034220`.
+
+### 7. One-shot audit workflow leaked generated artifacts into the branch
+
+Final changed-file recheck found two unintended retained artifacts created by the temporary audit workflow:
+
+- `base` as a gitlink pointing to Base `41a20584...`;
+- a modified generated `artifacts/base-adoption-report.json`.
+
+Neither belongs to Decision08's retained change scope.
+
+Classification: `DUPLICATE_WORK / UNINTENDED_ARTIFACT / MUST_REMOVE`.
+
+Repair:
+
+- restored `artifacts/base-adoption-report.json` to the main baseline contents;
+- removed the accidental `base` gitlink through a tree commit;
+- rechecked PR changed filenames: only planning canon/router/tests/audit/CI-registration files remain; no product code, Scene, Resource, helper workflow, gitlink, or generated report delta remains.
+
 ## Protected design result after repair
 
-Current readback now states:
+Current readback states:
 
 - `R3_R7_APPROVAL_COUNTER: 8/10`
 - `R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08`
@@ -109,6 +169,6 @@ Resolved so far:
 - `CONFLICT`: repaired.
 - `OMISSION`: repaired.
 - `COMPLEMENT_GAP`: repaired with stronger historical-order regression.
-- `DUPLICATE_WORK`: none observed in the Decision08 branch work; final same-goal PR inventory is still required at exact-head.
+- `DUPLICATE_WORK`: unintended workflow artifacts removed; same-goal PR duplication not observed.
 
-Final classification is intentionally not closed yet. It requires fresh open/recent PR recheck, exact-head full CI, merge/main readback, postmerge PR/canon recheck, and Google Sheet same-ID readback.
+Final classification is intentionally not closed yet. It requires fresh open/recent PR recheck, exact-head full CI on the retained branch head, merge/main readback, postmerge PR/canon recheck, and Google Sheet same-ID readback.
