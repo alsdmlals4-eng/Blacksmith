@@ -58,17 +58,20 @@ class AutoEnhancementCapUnlockContractTests(unittest.TestCase):
             "보호 파괴 결과가 발생하면 그 시도 해결 후 즉시 정지",
             "정밀강화 대기 지점에서 자동 진행을 멈춘다",
             "기술 돌파 대기 지점에서 자동 진행을 멈춘다",
+            "REJECTED_IMPORT",
         ):
             self.assertIn(token, canon)
 
+        # Rejected benchmark mechanisms may be named as evidence; they must not
+        # appear as enabled or owned Blacksmith contracts.
         for forbidden in (
             "AUTO_HIGH_RISK: true",
             "AUTO_VERY_HIGH_RISK: true",
             "AUTO_PRECISION_ENHANCEMENT: true",
             "AUTO_TECHNICAL_BREAKTHROUGH: true",
-            "AUTO_SUCCESS_RATE_BONUS",
-            "ANCIENT_ANVIL_GAUGE",
-            "PITY_GAUGE",
+            "AUTO_SUCCESS_RATE_BONUS: true",
+            "ANCIENT_ANVIL_GAUGE: true",
+            "PITY_GAUGE: true",
         ):
             self.assertNotIn(forbidden, canon)
 
