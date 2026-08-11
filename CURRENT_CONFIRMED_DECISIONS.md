@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-06 / R3_R7_6_OF_10 / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-07 / R3_R7_7_OF_10 / PLANNING_ONLY**
 >
 > R2 Batch 006과 Task2 기술 폐쇄는 그대로 상속한다. 이번 승인은 R3–R7 기획 재개이며 Task3 또는 일반 제품 구현 승인으로 확대하지 않는다.
 
@@ -48,8 +48,8 @@ HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
 TOOLCHAIN_CURRENT_VERSION_DECISION: BS-TOOLCHAIN-20260811-02
 GODOT_AI_CURRENT_VERSION: 3.1.4
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 6/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06
+R3_R7_APPROVAL_COUNTER: 7/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07
 NEW_PRODUCT_SCOPE: NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
@@ -96,6 +96,7 @@ PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 - `BS-CONTENT-20260811-04`: `COLLECTOR_01` 에르사 로엔 전시 증거·계보 콘텐츠. `CRAFTSMANSHIP_EVIDENCE / LIVED_HISTORY_EVIDENCE`를 전시 의도 맥락으로 공개하고 작품 한 점의 실제 제작·생애 증거를 비교한다. 새 희귀도·위신·수집가·전시 총점과 Chronicle 개수 최적화를 만들지 않으며 같은 UID의 결과를 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리한다. — `USER_APPROVED / R3_R7_4_OF_10 / PLANNING_ONLY`
 - `BS-CONTENT-20260811-05`: `GLADIATOR_01` 카시아 벨란 투기장 대표 무기·공개 생애 콘텐츠. 요청 무기 범주와 경기 맥락을 공개하고 작품 한 점을 인계하며, 직접 전투 없이 결과를 `ARENA_MATCH_STATE / EQUIPMENT_CONTRIBUTION_STATE / ITEM_UID_ARENA_LEGACY_STATE`로 분리한다. 새 투기장/명성 총점·최고 강화 자동정답·승리=좋은 작품 단순화·경기 반복 Artistry/Chronicle 파밍을 만들지 않고 같은 UID를 보존한다. legacy Kyle/iron_sword POC 고정 수치·점수식은 역사 fixture로만 유지한다. — `USER_APPROVED / R3_R7_5_OF_10 / PLANNING_ONLY`
 - `BS-CONTENT-20260811-06`: `NOBLE_01` 의례 귀족 가보 계승 복원·유산 콘텐츠. 기존 `CEREMONIAL_NOBLE` 대표 ID와 같은 작품 UID의 실제 손상·수리·소유·계승·연대기 증거를 읽고, 계승 의식 전에 어디까지 수리·복원·재작업할지 판단한다. 최대 복원·최고 Artistry를 자동 정답으로 만들지 않고 가문 위신·진품성·계승 총점을 추가하지 않으며, 결과를 `CEREMONY_READINESS_STATE / HEIRLOOM_TREATMENT_FIT_STATE / ITEM_UID_DYNASTIC_LEGACY_STATE`로 분리한다. — `USER_APPROVED / R3_R7_6_OF_10 / PLANNING_ONLY`
+- `BS-CONTENT-20260811-07`: `SOLDIER_02` 리아나 베르크 전선 지휘관 임무 적합·보호 책임 콘텐츠. 공개된 임무·위험·장비 역할을 읽고 실제 작품 UID 한 점을 선택·인계하며 직접 전술전투 없이 결과를 `MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE`로 분리한다. Marek의 소량 표준화와 Cassia의 arena contribution 책임을 보존하고, 새 command/hero/leadership/mission-fit 총점·최고 방어/강화 자동정답·작품 단독 인과·baseline permadeath·임무 반복 Artistry/Chronicle 파밍을 만들지 않으며 같은 UID를 보존한다. — `USER_APPROVED / R3_R7_7_OF_10 / PLANNING_ONLY`
 - `BS-CRAFT-20260804-04`: 보조재료 제거와 정밀강화 방식·촉매 책임 분리
 - `BS-CRAFT-20260804-05`: 촉매 수식어 씨앗·계보·진화
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`

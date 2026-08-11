@@ -1,15 +1,15 @@
 # [현재 정본] Active Context
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / SOLDIER_02_LIANA_MISSION_FIT_APPROVED / PLANNING_ONLY**
 >
 > 이 문서는 현재 상태와 다음 읽기 순서를 연결하는 압축 라우터다. 세부 Decision·과거 단계·실행 로그는 책임 원본에서 읽는다.
 
 - 갱신 기준: `2026-08-11 KST`
-- Blacksmith current main observed at Decision 06 start: `42469f6e2058efea464755ac44bec8bcd1154f0b`
-- `BASE_CURRENT_MAIN_OBSERVED`: `7ce96181d0a97930300fcc6d383dacc75ad08f6a`
+- Blacksmith current main observed at Decision 07 start: `27365bc774508bea6a1a19221fb2a3dc2d093be5`
+- `BASE_CURRENT_MAIN_OBSERVED`: `23d5b292f619022cdd8ab7a33fb1debc2d294861`
 - `PROJECT_BASE_ADAPTER_PIN`: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
-- 현재 R3–R7 승인 카운터: `6/10`
+- 현재 R3–R7 승인 카운터: `7/10`
 - Base current main 관측값과 프로젝트가 채택한 Base adapter pin은 서로 다른 증거다. 새 Base main 관측만으로 프로젝트 pin을 자동 승격하지 않는다.
 
 ```yaml
@@ -20,11 +20,11 @@ R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10
 R2_BATCH_005_MERGE: MERGED_PR109_MAIN_CANON
 R2_BATCH_006: R2_BATCH_006_APPROVED_10_OF_10
 R2_BATCH_006_MERGE: MERGED_PR120_MAIN_CANON
-R3_R7_APPROVAL_COUNTER: 6/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06
+R3_R7_APPROVAL_COUNTER: 7/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07
 PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
 PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
-R3_R7_RESUME_LOCATOR: NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED
+R3_R7_RESUME_LOCATOR: SOLDIER_02_LIANA_MISSION_FIT_APPROVED
 VERTICAL_SLICE_IMPLEMENTATION: APPROVED_TASK2_COMPLETE
 VERTICAL_SLICE_IMPLEMENTATION_EVIDENCE: VERTICAL_SLICE_IMPLEMENTATION_APPROVED
 TASK2: TASK2_MAIN_MERGED
@@ -62,34 +62,35 @@ PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 
 ## 현재 R3–R7 기획 재개 상태
 
-`BS-CONTENT-20260811-01` Nadia, `BS-CONTENT-20260811-02` Toren, `BS-CONTENT-20260811-03` Marek, `BS-CONTENT-20260811-04` Ersa, `BS-CONTENT-20260811-05` Cassia는 승인 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-06`다.
+`BS-CONTENT-20260811-01` Nadia, `BS-CONTENT-20260811-02` Toren, `BS-CONTENT-20260811-03` Marek, `BS-CONTENT-20260811-04` Ersa, `BS-CONTENT-20260811-05` Cassia, `BS-CONTENT-20260811-06` Noble01은 승인 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-07`다.
 
 ```text
-NOBLE_01 / CEREMONIAL_NOBLE
-→ 귀족 유형 첫 상세 콘텐츠
-→ HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY
-→ 기존 가보 UID + 계승 목적 공개
-→ 실제 상태·손상·과거 수리·소유·계승·Chronicle evidence 확인
-→ 기존 수리·복원·재작업 권위 안에서 개입 깊이 선택
-→ 같은 UID 인계
-→ 의식은 비직접 세계 사건
-→ CEREMONY_READINESS_STATE
- + HEIRLOOM_TREATMENT_FIT_STATE
- + ITEM_UID_DYNASTIC_LEGACY_STATE
-→ 보존·재수리·재사용·전시·후속 계승 판단 이유
+SOLDIER_02 / LIANA_BERG
+→ 기존 군인 추가 고객·전선 지휘관을 두 번째 Soldier 상세 콘텐츠로 승격
+→ FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY
+→ 임무 책임·위험·필요 장비 역할 공개
+→ 실제 작품 UID 후보 비교
+→ 한 작품 UID 선택·같은 UID 인계
+→ 전선 임무는 비직접 세계 사건
+→ MISSION_DUTY_STATE
+ + COMMANDER_RETURN_STATE
+ + ITEM_UID_FIELD_LEGACY_STATE
+→ 수리·복원·후속 강화·신작·보존·재배정 판단 이유
 ```
 
-- 기존 `ceremonial_noble` representative fixture를 재사용하고 새 이름·가문 lore를 발명하지 않는다.
-- 최대 복원·최고 Artistry를 자동 정답으로 만들지 않는다.
-- 새 가문 위신·진품성·계승 총점을 만들지 않는다.
-- 수리·복원으로 물리 흔적이 변해도 의미 있는 과거 생애 기록은 삭제하지 않는다.
-- 복원/의식 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
-- 직접 의식·귀족 가문·궁정·외교 경영을 추가하지 않는다.
-- 같은 작품 UID를 처치 전·후·의식·반환까지 보존한다.
+- Marek/Soldier01의 `SMALL_LOT_STANDARD_ORDER` multi-UID 표준화 책임을 보존한다.
+- Cassia/Gladiator01의 arena contribution/public legacy 책임을 보존한다.
+- 직접 전술전투·부대 이동/대형·실시간 병참·사상자 micromanagement를 추가하지 않는다.
+- command/hero/leadership/mission-fit 총점을 만들지 않는다.
+- 최고 방어·최고 강화가 자동 정답이 아니며 작품 하나가 임무 결과의 유일 원인이 아니다.
+- baseline Liana permadeath와 replacement loop를 추가하지 않는다.
+- 임무/승리/생환 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
+- 같은 작품 UID를 인계·현장 결과·귀환/회수까지 보존한다.
 
 책임 원본:
 
 - `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
+- `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`

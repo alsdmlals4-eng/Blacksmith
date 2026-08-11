@@ -6,7 +6,7 @@
   "stage_status": "R3_R7_DESIGN_ACTIVE",
   "product_implementation": "BLOCKED",
   "task3_implementation": "NOT_APPROVED",
-  "next_approval_counter": "6/10",
+  "next_approval_counter": "7/10",
   "inherits": [
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
@@ -344,6 +344,59 @@
           "CEREMONY_READINESS_STATE",
           "HEIRLOOM_TREATMENT_FIT_STATE",
           "ITEM_UID_DYNASTIC_LEGACY_STATE"
+        ],
+        "immediate_feedback": "THREE_STATE_SUMMARY_WITH_2_TO_4_CAUSAL_REASONS_AND_ONE_PRIMARY_NEXT_ACTION",
+        "exact_values": "NON_CANONICAL_BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED",
+        "product_implementation": "BLOCKED",
+        "task3_implementation": "NOT_APPROVED",
+        "human_playtest": "NOT_RUN"
+      }
+    },
+    {
+      "id": "BS-CONTENT-20260811-07",
+      "title": "군인 02 리아나 베르크 전선 지휘관 임무 적합·보호 책임 콘텐츠",
+      "status": "USER_APPROVED_R3_R7_7_OF_10",
+      "canon": "docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md",
+      "refines": [
+        "BS-CONTENT-20260804-01",
+        "BS-CONTENT-20260804-02"
+      ],
+      "depends_on": [
+        "BS-CUSTOMER-20260803-02",
+        "BS-CUSTOMER-20260805-01",
+        "BS-CUSTOMER-20260806-01",
+        "BS-ITEM-20260806-04",
+        "BS-ITEM-20260806-05",
+        "BS-UX-20260805-01",
+        "BS-CONTENT-20260811-03",
+        "BS-CONTENT-20260811-06"
+      ],
+      "contract": {
+        "content_id": "SOLDIER_02",
+        "customer_id": "LIANA_BERG",
+        "customer_archetype": "SOLDIER",
+        "activity_family": "FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY",
+        "content_goal": "MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY",
+        "player_role": "BLACKSMITH_COMMANDER_EQUIPMENT_DECISION_MAKER_NOT_TACTICAL_OR_UNIT_CONTROLLER",
+        "existing_liana_berg_customer_reused": true,
+        "same_item_uid_preserved": true,
+        "direct_tactical_combat": false,
+        "unit_movement_or_formation_control": false,
+        "realtime_logistics_control": false,
+        "soldier_casualty_micromanagement": false,
+        "opaque_command_hero_leadership_or_mission_fit_score": false,
+        "highest_defense_always_best": false,
+        "highest_enhancement_always_best": false,
+        "item_as_sole_cause_of_mission_result": false,
+        "baseline_permadeath_for_liana": false,
+        "death_farming_or_recruit_replacement_loop": false,
+        "mission_count_artistry_growth": false,
+        "automatic_chronicle_affix_from_win_or_survival": false,
+        "mission_farming_multiplier": false,
+        "result_axes": [
+          "MISSION_DUTY_STATE",
+          "COMMANDER_RETURN_STATE",
+          "ITEM_UID_FIELD_LEGACY_STATE"
         ],
         "immediate_feedback": "THREE_STATE_SUMMARY_WITH_2_TO_4_CAUSAL_REASONS_AND_ONE_PRIMARY_NEXT_ACTION",
         "exact_values": "NON_CANONICAL_BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED",
