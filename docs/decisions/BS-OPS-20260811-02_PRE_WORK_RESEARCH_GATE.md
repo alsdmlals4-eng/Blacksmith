@@ -95,10 +95,20 @@ PRE_WORK_RESEARCH_PACKET:
 
 ## 2026-08-11 research basis
 
-- Google Engineering Practices — Code Review / Small CLs: 시스템 맥락·테스트·문서까지 검토하고 작은 자족 변경을 선호.
-- GitHub Docs — Pull request reviews: 병합 전 품질 검토·변경 요청·지식 공유.
-- Godot Engine 4.7 official documentation — Project organization: Godot 작업은 현재 엔진 공식 관행을 우선 비교.
-- Android Developers — App/Game quality guidance: Android 게임은 사용자 가치·UX·기술 품질·안전의 플랫폼 기준을 함께 검토.
+- Google Engineering Practices — Code Review / What to look for / Small CLs
+  - `https://google.github.io/eng-practices/review/`
+  - `https://google.github.io/eng-practices/review/reviewer/looking-for.html`
+  - `https://google.github.io/eng-practices/review/developer/small-cls.html`
+  - 시스템 맥락·설계·기능·복잡도·테스트·문서까지 검토하고 작은 자족 변경을 선호한다.
+- GitHub Docs — About pull request reviews
+  - `https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews`
+  - 병합 전 품질 검토·변경 요청·지식 공유를 수행한다.
+- Godot Engine 4.7 official documentation — Project organization
+  - `https://docs.godotengine.org/en/4.7/tutorials/best_practices/project_organization.html`
+  - Godot 작업은 현재 엔진 버전에 맞는 공식 관행을 우선 비교한다.
+- Android Developers — App/Game quality guidance
+  - `https://developer.android.com/quality`
+  - Android 게임은 사용자 가치·UX·기술 품질·안전의 플랫폼 기준을 함께 검토한다.
 
 ### ADOPT
 - current official/primary evidence first
