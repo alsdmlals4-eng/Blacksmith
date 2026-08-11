@@ -1,7 +1,7 @@
 # [현재 정본] Development Gates
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-06 / NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-07 / SOLDIER_02_LIANA_MISSION_FIT_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
 >
 > R3–R7 콘텐츠 설계는 재개됐지만 Task3·일반 제품 구현 Gate는 열리지 않았다. R2·Task2 권위와 기술 폐쇄 증거는 그대로 상속한다.
 
@@ -14,8 +14,8 @@
 
 ```yaml
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 6/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06
+R3_R7_APPROVAL_COUNTER: 7/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07
 PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
 PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 R3_R7_DESIGN_GATE: USER_APPROVED_PLANNING_ONLY
@@ -82,28 +82,33 @@ fresh authority preflight
 - 저위험 maintenance에서 외부 benchmark가 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남기되 관련 공식 원본은 확인한다.
 - `BS-OPS-20260805-01`의 benchmark scope만 refine하며 TDD·early checkpoint authority는 유지한다.
 - benchmark 수치·경제·확률을 제품 정본으로 자동 승격하지 않는다.
-- R3–R7 `6/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
+- R3–R7 `7/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
 
 판정: `USER_APPROVED / REQUIRED / PLANNING_ONLY`.
 
 ## R3–R7 Planning-Only Gate
 
-현재 Decision: `BS-CONTENT-20260811-06`.
+현재 Decision: `BS-CONTENT-20260811-07`.
+Decision: `BS-CONTENT-20260811-07`.
 
 첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.
 
 ```text
-NOBLE_01 / CEREMONIAL_NOBLE
-HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY
-CEREMONY_READINESS_STATE / HEIRLOOM_TREATMENT_FIT_STATE / ITEM_UID_DYNASTIC_LEGACY_STATE
+SOLDIER_02 / LIANA_BERG
+FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY
+MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE
 ```
 
-- `BS-CONTENT-20260811-01`~`05`는 승인 완료 이력으로 보존한다.
-- 기존 `ceremonial_noble` 대표 fixture를 재사용한다.
-- 최대 복원·최고 Artistry·가문 위신/진품성/계승 총점 자동 정답을 만들지 않는다.
-- 의미 있는 과거 생애 기록을 수리·복원 과정에서 삭제하지 않는다.
-- 같은 UID를 보존하고 복원/의식 반복으로 Artistry·Chronicle을 자동 성장시키지 않는다.
-- 직접 의식·귀족 가문·궁정·외교 경영을 추가하지 않는다.
+- `BS-CONTENT-20260811-01`~`06`은 승인 완료 이력으로 보존한다.
+- `BS-CONTENT-20260811-06 / NOBLE_01 / CEREMONIAL_NOBLE`은 6/10 승인 이력이며 current locator가 아니다.
+- `BS-CONTENT-20260811-07 / SOLDIER_02 / LIANA_BERG`가 현재 7/10 Decision이다.
+- 기존 `LIANA_BERG` 고객을 재사용하고 병렬 Soldier commander를 만들지 않는다.
+- Marek의 `SMALL_LOT_STANDARD_ORDER`와 Cassia의 `ARENA_SIGNATURE_WEAPON_AND_LEGACY` 책임을 보존한다.
+- 같은 UID를 보존하고 임무 성공·리아나 귀환·작품 현장 생애를 분리한다.
+- 직접 전술전투·부대 이동/대형·실시간 병참·사상자 micromanagement를 추가하지 않는다.
+- command/hero/leadership/mission-fit 총점과 최고 방어·최고 강화 자동정답을 만들지 않는다.
+- 작품 하나를 임무 결과의 유일 원인으로 만들지 않는다.
+- baseline Liana permadeath/replacement loop와 임무 반복 Artistry/Chronicle farming을 추가하지 않는다.
 - 제품 구현은 `BLOCKED`, Task3 구현은 `NOT_APPROVED`다.
 
 ## Canon Gate

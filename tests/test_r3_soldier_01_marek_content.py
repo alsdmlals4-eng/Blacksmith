@@ -22,13 +22,19 @@ class Soldier01MarekContentContractTests(unittest.TestCase):
         self.assertEqual("R3_R7_DESIGN_ACTIVE", registry.get("stage_status"))
         self.assertEqual("BLOCKED", registry.get("product_implementation"))
         self.assertEqual("NOT_APPROVED", registry.get("task3_implementation"))
-        self.assertEqual("6/10", registry.get("next_approval_counter"))
+        self.assertEqual("7/10", registry.get("next_approval_counter"))
 
         decisions = {item["id"]: item for item in registry.get("current_decisions", [])}
-        self.assertIn("BS-CONTENT-20260811-01", decisions)
-        self.assertIn("BS-CONTENT-20260811-02", decisions)
-        self.assertIn("BS-CONTENT-20260811-03", decisions)
-        self.assertIn("BS-CONTENT-20260811-04", decisions)
+        for decision_id in (
+            "BS-CONTENT-20260811-01",
+            "BS-CONTENT-20260811-02",
+            "BS-CONTENT-20260811-03",
+            "BS-CONTENT-20260811-04",
+            "BS-CONTENT-20260811-05",
+            "BS-CONTENT-20260811-06",
+            "BS-CONTENT-20260811-07",
+        ):
+            self.assertIn(decision_id, decisions)
 
         decision = decisions.get("BS-CONTENT-20260811-03", {})
         self.assertIn("USER_APPROVED_R3_R7_3_OF_10", decision.get("status", ""))
@@ -87,7 +93,7 @@ class Soldier01MarekContentContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, canon)
 
-    def test_current_routers_preserve_marek_history_while_noble01_is_current(self) -> None:
+    def test_current_routers_preserve_marek_history_while_liana_is_current(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
@@ -99,23 +105,26 @@ class Soldier01MarekContentContractTests(unittest.TestCase):
             "BS-CONTENT-20260811-02",
             "BS-CONTENT-20260811-03",
             "BS-CONTENT-20260811-04",
+            "BS-CONTENT-20260811-05",
+            "BS-CONTENT-20260811-06",
+            "BS-CONTENT-20260811-07",
         ):
             self.assertIn(decision_id, current)
 
         for text in (active, start_here, roadmap, gates):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
-            self.assertIn("R3_R7_APPROVAL_COUNTER: 6/10", text)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06", text)
+            self.assertIn("R3_R7_APPROVAL_COUNTER: 7/10", text)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07", text)
             self.assertIn("BS-CONTENT-20260811-03", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
 
         for text in (active, start_here, roadmap):
-            self.assertIn("GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED", text)
+            self.assertIn("SOLDIER_02_LIANA_MISSION_FIT_APPROVED", text)
 
         self.assertIn("Marek", active)
-        self.assertIn("SOLDIER_01 / MAREK_OLDEN", start_here)
+        self.assertIn("BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md", start_here)
         self.assertIn("### 3/10 — `BS-CONTENT-20260811-03`", roadmap)
         self.assertIn("BS-CONTENT-20260811-03", gates)
 

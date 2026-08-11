@@ -1,15 +1,15 @@
 # [현재 정본] Blacksmith 시작 지점
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-06 / NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-07 / SOLDIER_02_LIANA_MISSION_FIT_APPROVED / PLANNING_ONLY**
 >
 > Task2 기술 작업은 폐쇄 상태를 유지한다. R3–R7 기획은 재개됐지만 새 제품 Task나 Task3 구현은 별도 사용자 승인 없이는 추론하지 않는다.
 
 ## 현재 상태
 
 ```yaml
-BLACKSMITH_CURRENT_MAIN_OBSERVED_AT_DECISION_06_START: 42469f6e2058efea464755ac44bec8bcd1154f0b
-BASE_CURRENT_MAIN_OBSERVED: 7ce96181d0a97930300fcc6d383dacc75ad08f6a
+BLACKSMITH_CURRENT_MAIN_OBSERVED_AT_DECISION_07_START: 27365bc774508bea6a1a19221fb2a3dc2d093be5
+BASE_CURRENT_MAIN_OBSERVED: 23d5b292f619022cdd8ab7a33fb1debc2d294861
 PROJECT_BASE_ADAPTER_PIN: 2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
 R2_BASELINE: R2_BATCH_006_MAIN_CANON
@@ -26,9 +26,9 @@ ANDROID_DEVICE: NOT_RUN
 ACCESSIBILITY: NOT_RUN
 PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 6/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06
-R3_R7_RESUME_LOCATOR: NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED
+R3_R7_APPROVAL_COUNTER: 7/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07
+R3_R7_RESUME_LOCATOR: SOLDIER_02_LIANA_MISSION_FIT_APPROVED
 ```
 
 `BASE_CURRENT_MAIN_OBSERVED`는 작업 시작 때 읽은 공유 Base 원격 main이다. `PROJECT_BASE_ADAPTER_PIN`은 Blacksmith가 현재 채택해 검증하는 Base 계약 pin이다. 둘은 자동 동기화 대상이 아니며, 원격 main이 전진했다고 프로젝트 pin을 임의 변경하지 않는다.
@@ -53,35 +53,36 @@ R3_R7_RESUME_LOCATOR: NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED
 
 ## 현재 R3–R7 설계 재개
 
-`BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`, `BS-CONTENT-20260811-02 / ADVENTURER_02 / TOREN_MARCH`, `BS-CONTENT-20260811-03 / SOLDIER_01 / MAREK_OLDEN`, `BS-CONTENT-20260811-04 / COLLECTOR_01 / ERSA_ROEN`, `BS-CONTENT-20260811-05 / GLADIATOR_01 / CASSIA_BELLAN`은 승인 완료 이력으로 유지한다.
+`BS-CONTENT-20260811-01`~`06`은 승인 완료 이력으로 유지한다.
 
-현재 사용자 승인 Decision: `BS-CONTENT-20260811-06`.
+현재 사용자 승인 Decision: `BS-CONTENT-20260811-07`.
+현재 연속 작업은 `BS-CONTENT-20260811-07`이다.
 
 ```text
-NOBLE_01 / CEREMONIAL_NOBLE
-HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY
-→ 기존 가보 UID + 계승 목적 공개
-→ 실제 상태·과거 수리·소유·계승 증거 확인
-→ 개입 깊이 판단
-→ 같은 UID 인계
-→ 비직접 계승 의식 결과
-→ CEREMONY_READINESS_STATE
- + HEIRLOOM_TREATMENT_FIT_STATE
- + ITEM_UID_DYNASTIC_LEGACY_STATE
-→ 같은 UID의 보존·재수리·사용·전시·후속 계승 판단
+SOLDIER_02 / LIANA_BERG
+FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY
+→ 임무 책임·위험·장비 역할 공개
+→ 실제 작품 UID 후보 비교
+→ 한 작품 UID 선택·같은 UID 인계
+→ 비직접 전선 결과
+→ MISSION_DUTY_STATE
+ + COMMANDER_RETURN_STATE
+ + ITEM_UID_FIELD_LEGACY_STATE
+→ 같은 UID의 수리·복원·강화·신작·보존·재배정 판단
 ```
 
-- 기존 `ceremonial_noble` representative fixture를 재사용한다.
-- 최대 복원·최고 Artistry·가문 위신/진품성/계승 총점은 자동 정답이 아니다.
-- 의미 있는 과거 생애 기록을 수리 과정에서 지우지 않는다.
-- 복원/의식 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
-- 직접 의식·가문·궁정·외교 경영은 추가하지 않는다.
+- Marek의 소량 표준화와 Cassia의 arena contribution 책임을 보존한다.
+- 최고 방어·최고 강화 또는 숨은 command/hero 점수를 자동 정답으로 만들지 않는다.
+- 작품 한 점이 임무 결과의 유일한 원인인 것처럼 단순화하지 않는다.
+- 직접 전술전투·부대 대형·실시간 병참·사상자 관리·baseline permadeath를 추가하지 않는다.
+- 임무 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
 - 제품 구현: `BLOCKED`.
 - Task3 구현: `NOT_APPROVED`.
 
 책임 원본:
 
 1. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
+2. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
 2. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
 3. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
 4. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
@@ -95,18 +96,19 @@ HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY
 2. `CURRENT_CONFIRMED_DECISIONS.md`
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
-7. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
-8. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-9. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-10. `ACTIVE_CONTEXT.md`
-11. `DEVELOPMENT_GATES.md`
-12. `ROADMAP.md`
-13. 실제 code/data/Scene/tests
-14. Google Sheet `00`, `01`, `02`, `04`, `13`, `50` current rows
+5. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
+6. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
+7. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+8. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
+9. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
+10. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+11. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
+12. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+13. `ACTIVE_CONTEXT.md`
+14. `DEVELOPMENT_GATES.md`
+15. `ROADMAP.md`
+16. 실제 code/data/Scene/tests
+17. Google Sheet `00`, `01`, `02`, `04`, `13`, `50` current rows
 
 ## Task2 폐쇄 증거
 
@@ -141,6 +143,8 @@ HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY
 - `BS-CONTENT-20260811-04`는 같은 작품 UID와 기존 제작·생애 증거를 권위로 유지한다.
 - `BS-CONTENT-20260811-05`는 경기 승패와 작품 기여를 분리하고 직접 투기장 조작·불투명 총점·반복 파밍을 추가하지 않는다.
 - `BS-CONTENT-20260811-05`는 같은 작품 UID와 legacy POC 비권위 경계를 유지한다.
+- `BS-CONTENT-20260811-06`은 same-UID 가보 생애와 절제된 복원 판단을 유지하고 history erasure·복원 farming을 금지한다.
+- `BS-CONTENT-20260811-07`은 Marek/Cassia 책임 경계를 보존하고 직접 전투·부대 지휘·baseline permadeath·숨은 총점·작품 단독 인과·임무 farming을 금지한다.
 - GUT 9.7.1은 GDScript test authority다.
 - HiGodot은 승인된 Godot persistent authoring authority다.
 - Hera는 enabled non-authoritative이며 authoring/mutation authority는 `NONE`이다.
@@ -148,22 +152,22 @@ HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY
 
 ## 다음 작업
 
-현재 연속 작업은 `BS-CONTENT-20260811-06`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `5/10`에서 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
+현재 연속 작업은 `BS-CONTENT-20260811-07`의 회귀 검증, 적대 검토, exact-head CI, PR 병합, GitHub·Sheet same-ID 동기화와 postmerge readback까지다. 그 작업이 닫힌 뒤 다음 신규 R3–R7 Decision은 승인 카운터 `8/10`에서 사용자 기획 승인을 받아 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
 
-<!-- BS-CONTENT-20260811-05 CURRENT -->
-## R3–R7 current 5/10 — Cassia Gladiator01
+<!-- BS-CONTENT-20260811-07 CURRENT -->
+## R3–R7 current 7/10 — Liana Soldier02
 
 ```text
 R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 5/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05
-R3_R7_RESUME_LOCATOR: GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED
+R3_R7_APPROVAL_COUNTER: 7/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07
+R3_R7_RESUME_LOCATOR: SOLDIER_02_LIANA_MISSION_FIT_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
-Nadia 1/10, Toren 2/10, Marek 3/10, Ersa 4/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-05`이다.
+Nadia 1/10, Toren 2/10, Marek 3/10, Ersa 4/10, Cassia 5/10, Noble01 6/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-07`이다.
 
-`GLADIATOR_01 / CASSIA_BELLAN / ARENA_SIGNATURE_WEAPON_AND_LEGACY`는 경기 승패와 작품 기여와 같은 UID 공개 생애를 분리해 돌려준다. 직접 전투·팀/길드 경영·배팅·불투명 총점·경기 반복 성장 파밍은 현재 범위가 아니다.
+`SOLDIER_02 / LIANA_BERG / FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY`는 한 명의 지휘관, 한 번의 공개 임무 책임, 한 작품 UID의 handoff와 결과를 소유한다. `MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE`는 서로 분리한다.
 
-현재 연속 작업은 `BS-CONTENT-20260811-05`이다.
+현재 연속 작업은 `BS-CONTENT-20260811-07`이다.
