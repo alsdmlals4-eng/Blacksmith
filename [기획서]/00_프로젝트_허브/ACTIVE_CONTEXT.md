@@ -37,14 +37,23 @@
 CURRENT_STAGE: PHASE_C_IMPLEMENTATION
 WORK_MODE: BUILD_REVIEW
 STATE_OBSERVED_AT_MAIN: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486
-BASE_CURRENT_MAIN_OBSERVED_AT_HANDOFF: 1d6cc79ae95ffb67ba4de618f010a6540fc6e02c
+BASE_CURRENT_MAIN_OBSERVED_AT_HANDOFF: 449b83c6f1afdf191327a52a8e71d11b4fba7eb3
 BASE_SAME_GOAL_DEDICATED_ENV_AUTHORITY: 6d2feba2bc49fda2d8d273248b55087853615d5d
 PROJECT_BASE_ADAPTER_PIN: 2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b
+WORK_INSTRUCTION: V4_5_R2_CURRENT_CANON
+PROJECT_LOCAL_PATH: C:\\Users\\user\\Documents\\GitHub\\Ninza\\Blacksmith
+GODOT_PROJECT_PATH: C:/Users/user/Documents/GitHub/Ninza/Blacksmith
 PLANNING_COMPLETE: USER_DECLARED
+R3_R7_DESIGN_ACTIVE: true
 R3_R7_PLANNING_BATCH: CLOSED_AT_9_OF_10
 R3_R7_APPROVAL_COUNTER: 9/10
 R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
 R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED
+R2_CHECKPOINT_005: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
+R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10
+R2_BATCH_006: R2_BATCH_006_APPROVED_10_OF_10
+TASK2: TASK2_MAIN_MERGED
+POSTMERGE_CLOSURE: POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE
 P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS
 P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS
 PERSISTENT_MUTATION_GATE: OPEN
@@ -62,6 +71,10 @@ ACCESSIBILITY: NOT_RUN
 PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 ```
 
+현재 R3–R7 승인 카운터: `9/10`.
+
+`PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`)와 project binding `BS-OPS-20260811-01`은 계속 현재 작업지시 권위다. `BS-OPS-20260811-02` pre-work research Gate와 `BS-OPS-20260811-03` Phase C/runtime binding을 그 위에 적용한다.
+
 `BASE_CURRENT_MAIN_OBSERVED_AT_HANDOFF`와 `PROJECT_BASE_ADAPTER_PIN`은 서로 다른 증거다. Base remote가 전진해도 project pin을 자동 승격하지 않는다. 새 세션은 이 파일의 관측 SHA를 latest truth로 가정하지 않고 `RESUME_RULE`대로 GitHub main과 open PR을 먼저 재조회한다.
 
 ## 현재 승인 콘텐츠 구현 입력
@@ -69,6 +82,7 @@ PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 R3–R7 기획은 승인된 9건에서 닫혔다. 다음 ID는 current implementation input이며 세부 책임은 각 canon 파일과 `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`이 소유한다.
 
 ```text
+R3_R7_DESIGN_ACTIVE
 BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN
 BS-CONTENT-20260811-02 / ADVENTURER_02 / TOREN_MARCH
 BS-CONTENT-20260811-03 / SOLDIER_01 / MAREK_OLDEN
@@ -87,6 +101,7 @@ BS-CONTENT-20260811-09 / GLADIATOR_02 / KYLE_VAREN
 - 새 hidden total score, rarity/prestige/fame/lineage total score를 편의상 만들지 않는다.
 - 최고 강화·최고 Artistry·가장 오래된 작품·가장 많은 Chronicle을 보편적 자동 정답으로 만들지 않는다.
 - `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`를 임의 해결하지 않는다.
+- `BS-UX-20260805-01` 모바일 고객 카드의 progressive disclosure와 설명 가능한 판단 계약을 유지한다.
 
 ## Phase C 다음 실행
 
@@ -109,7 +124,7 @@ P2_FOUNDATION_DATA_AND_STATE_CONTRACTS
 LRN-BS-HANDOFF-001:
   classification: SPLIT
   problem: PR157 이후 live runtime은 PASS인데 current router가 P0-required 상태에 머무를 수 있음
-  project_application: CURRENT_CONFIRMED_DECISIONS + ACTIVE_CONTEXT + DEVELOPMENT_GATES + machine regression
+  project_application: CURRENT_CONFIRMED_DECISIONS + ACTIVE_CONTEXT + DEVELOPMENT_GATES + START_HERE + ROADMAP + AGENTS + machine regression
   base_existing_solution: REUSE BCP-2026-013 / BCP-2026-016
 LRN-BS-SHEET-001:
   classification: SPLIT
@@ -136,22 +151,32 @@ LRN-BS-EXEC-SURFACE-001:
 2. `CURRENT_CONFIRMED_DECISIONS.md`
 3. 이 `ACTIVE_CONTEXT.md`
 4. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-5. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-6. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-7. D01–D09 분야별 canon
-8. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-9. 실제 code/data/Scene/tests
-10. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `10_제품방향`, `13_주요인물`, `50_메인콘텐츠`, `99_변경이력`
+5. `[기획서]/00_프로젝트_허브/START_HERE.md`
+6. `[기획서]/00_프로젝트_허브/ROADMAP.md`
+7. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
+8. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
+9. D01–D09 분야별 canon
+10. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+11. 실제 code/data/Scene/tests
+12. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `10_제품방향`, `13_주요인물`, `50_메인콘텐츠`, `99_변경이력`
 
 ## 역사 호환 앵커
 
-아래 문자열은 current action을 지시하지 않고 과거 R2 폐쇄를 찾기 위한 compatibility locator다.
+아래 문자열은 current action을 지시하지 않고 과거 R2/R3 폐쇄와 machine consumer를 찾기 위한 compatibility locator다.
 
 ```text
 R2 체크포인트 004
 R2_CHECKPOINT_004
+R2_CHECKPOINT_005
+R2_CHECKPOINT_005_CLOSED_MAIN_CANON
 R2_BATCH_005_CLOSED_10_OF_10
+R2_BATCH_006_APPROVED_10_OF_10
 BS-CRAFT-20260805-02
+BS-UX-20260805-01
+TASK2_MAIN_MERGED
+POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE
+HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED
+HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED
 7a46fa38586a42f268cd0432744203049649ddd5
 HISTORICAL_PRODUCT_IMPLEMENTATION: 제품 구현: `BLOCKED`
 ```
