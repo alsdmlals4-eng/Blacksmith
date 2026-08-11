@@ -1,0 +1,44 @@
+name: Decision08 materialize once
+
+on:
+  push:
+    branches:
+      - docs/r3-collector-02-sedric-archival-accession
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: docs/r3-collector-02-sedric-archival-accession
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Materialize approved Decision08
+        run: python tools/decision08_materialize.py
+      - name: Verify focused GREEN before commit
+        run: |
+          python -m unittest tests.test_r3_collector_02_sedric_content -v
+          python tests/check_project_core_alignment_current.py
+      - name: Remove one-shot helpers and semantic RED runner
+        run: |
+          rm tools/decision08_materialize.py
+          rm .github/workflows/decision08-materialize-once.yml
+          rm .github/workflows/decision08-semantic-red.yml
+      - name: Commit materialized planning canon
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "docs: materialize Sedric archival accession as R3 8 of 10"
+          git push origin HEAD:docs/r3-collector-02-sedric-archival-accession
