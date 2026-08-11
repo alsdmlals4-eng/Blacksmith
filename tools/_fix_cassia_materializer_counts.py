@@ -23,6 +23,9 @@ needle = '''    if rel == "tests/test_r3_collector_01_ersa_content.py":
 replacement = needle + '''    if rel == "tests/test_r3_soldier_01_marek_content.py":
         text = text.replace('self.assertEqual("4/10", registry.get("next_approval_counter"))', 'self.assertEqual("5/10", registry.get("next_approval_counter"))')
         text = text.replace("test_current_routers_preserve_marek_history_while_ersa_is_current", "test_current_routers_preserve_marek_history_while_cassia_is_current")
+    if rel == "tests/check_project_core_alignment_current.py":
+        text = text.replace("현재 R3–R7 승인 카운터: `4/10`", "현재 R3–R7 승인 카운터: `5/10`")
+        text = text.replace('            "BS-CONTENT-20260811-04",\n', '            "BS-CONTENT-20260811-04",\n            "BS-CONTENT-20260811-05",\n')
 '''
 count = text.count(needle)
 if count != 1:
@@ -31,4 +34,4 @@ text = text.replace(needle, replacement)
 
 p.write_text(text, encoding="utf-8")
 Path(__file__).unlink()
-print("materializer count guards and Marek current consumer corrected")
+print("materializer current consumer updates corrected")
