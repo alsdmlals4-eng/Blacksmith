@@ -1,0 +1,58 @@
+name: Normalize Toren Current Decisions EOF
+
+on:
+  push:
+    branches:
+      - agent/r3-toren-adventurer-02-design
+    paths:
+      - ".github/workflows/fix-toren-current-decisions-eof.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: agent/r3-toren-adventurer-02-design
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Normalize EOF and health digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+
+          current = Path('CURRENT_CONFIRMED_DECISIONS.md')
+          health_path = Path('docs/PROJECT_OPERATING_HEALTH.json')
+
+          text = current.read_text(encoding='utf-8')
+          current.write_text(text.rstrip('\n') + '\n', encoding='utf-8')
+          digest = hashlib.sha256(current.read_bytes()).hexdigest()
+
+          health = json.loads(health_path.read_text(encoding='utf-8'))
+          records = {item['id']: item for item in health['evidence']['operating']}
+          records['BS-CURRENT-DECISIONS']['sha256'] = digest
+          health_path.write_text(json.dumps(health, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('CURRENT_DECISIONS_SHA256=' + digest)
+          PY
+
+          git diff --check origin/main...HEAD || true
+          python -m unittest \
+            tests.test_project_adapter_long_lived_pr_baseline \
+            tests.test_r3_adventurer_01_nadia_content \
+            tests.test_r3_adventurer_02_toren_content -v
+
+          git rm .github/workflows/fix-toren-current-decisions-eof.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CURRENT_CONFIRMED_DECISIONS.md docs/PROJECT_OPERATING_HEALTH.json
+          git commit -m "docs: normalize Toren current decisions evidence"
+          git push origin HEAD:agent/r3-toren-adventurer-02-design
