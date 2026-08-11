@@ -31,4 +31,4 @@ jobs:
           git diff --cached --check
           git commit -m "docs: materialize Kyle continuity as R3 9 of 10"
           git push origin HEAD:docs/r3-gladiator-02-kyle-veteran-continuity
-# connector retrigger after router-specific locator repair
+# connector retrigger after explicit owner-token repair
