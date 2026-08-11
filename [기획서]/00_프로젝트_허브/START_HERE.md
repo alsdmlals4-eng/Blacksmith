@@ -26,8 +26,8 @@ ANDROID_DEVICE: NOT_RUN
 ACCESSIBILITY: NOT_RUN
 PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 5/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05
+R3_R7_APPROVAL_COUNTER: 6/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06
 R3_R7_RESUME_LOCATOR: GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED
 ```
 
@@ -145,7 +145,7 @@ ARENA_SIGNATURE_WEAPON_AND_LEGACY
 
 ## 다음 작업
 
-현재 연속 작업은 `BS-CONTENT-20260811-05`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `5/10`에서 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
+현재 연속 작업은 `BS-CONTENT-20260811-06`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `5/10`에서 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
 
 <!-- BS-CONTENT-20260811-05 CURRENT -->
 ## R3–R7 current 5/10 — Cassia Gladiator01
@@ -164,3 +164,15 @@ Nadia 1/10, Toren 2/10, Marek 3/10, Ersa 4/10은 승인 이력으로 유지한�
 `GLADIATOR_01 / CASSIA_BELLAN / ARENA_SIGNATURE_WEAPON_AND_LEGACY`는 경기 승패와 작품 기여와 같은 UID 공개 생애를 분리해 돌려준다. 직접 전투·팀/길드 경영·배팅·불투명 총점·경기 반복 성장 파밍은 현재 범위가 아니다.
 
 현재 연속 작업은 `BS-CONTENT-20260811-05`이다.
+
+<!-- BS-CONTENT-20260811-06 -->
+> `NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED`
+>
+> `R3_R7_DESIGN_ACTIVE`
+> `R3_R7_APPROVAL_COUNTER: 6/10`
+> `R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06`
+> `PRODUCT_IMPLEMENTATION: BLOCKED`
+> `TASK3_IMPLEMENTATION: NOT_APPROVED`
+>
+> 기존 `CEREMONIAL_NOBLE`와 같은 작품 UID의 상태·수리·계승 이력을 바탕으로 계승 전 개입 깊이를 판단한다. 최대 복원·최고 Artistry·가문 위신/진품성 총점 자동 정답을 만들지 않으며, 직접 의식·가문·궁정·외교 경영을 추가하지 않는다.
+
