@@ -45,6 +45,31 @@ def repair_core_alignment() -> None:
     active_anchor = '            "BS-CONTENT-20260811-05",\n            "PRODUCT_IMPLEMENTATION: BLOCKED",'
     active_replacement = '            "BS-CONTENT-20260811-05",\n            "BS-CONTENT-20260811-06",\n            "BS-CONTENT-20260811-07",\n            "PRODUCT_IMPLEMENTATION: BLOCKED",'
     text = replace_once(text, active_anchor, active_replacement, "core alignment active decisions")
+
+    stale_active_cleanup_anchor = '    active_tokens.remove("제품 구현: `BLOCKED`")\n'
+    stale_active_cleanup = '''    active_tokens.remove("제품 구현: `BLOCKED`")
+    for stale_token in (
+        "R3_R7_APPROVAL_COUNTER: 6/10",
+        "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06",
+        "R3_R7_RESUME_LOCATOR: NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED",
+    ):
+        if stale_token in active_tokens:
+            active_tokens.remove(stale_token)
+'''
+    text = replace_once(text, stale_active_cleanup_anchor, stale_active_cleanup, "core alignment stale active cleanup")
+    write(path, text)
+
+
+def repair_gates_history() -> None:
+    path = "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
+    text = read(path)
+    anchor = "- `BS-CONTENT-20260811-01`~`06`은 승인 완료 이력으로 보존한다.\n"
+    replacement = (
+        anchor
+        + "- `BS-CONTENT-20260811-06 / NOBLE_01 / CEREMONIAL_NOBLE`은 6/10 승인 이력이며 current locator가 아니다.\n"
+        + "- `BS-CONTENT-20260811-07 / SOLDIER_02 / LIANA_BERG`가 현재 7/10 Decision이다.\n"
+    )
+    text = replace_once(text, anchor, replacement, "gates Decision06 history")
     write(path, text)
 
 
@@ -72,4 +97,5 @@ def repair_roadmap() -> None:
 if __name__ == "__main__":
     repair_health()
     repair_core_alignment()
+    repair_gates_history()
     repair_roadmap()
