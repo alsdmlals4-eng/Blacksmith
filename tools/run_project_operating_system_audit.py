@@ -90,7 +90,7 @@ def configure_current_assertions() -> None:
         "Task3 구현: `NOT_APPROVED`",
     )
     assertions[R3_TOREN_CANON] = (
-        R3_CURRENT_DECISION,
+        R3_SECOND_DECISION,
         "ADVENTURER_02",
         "TOREN_MARCH",
         "JOURNEY_CONTINUITY_AND_RELIABILITY",
