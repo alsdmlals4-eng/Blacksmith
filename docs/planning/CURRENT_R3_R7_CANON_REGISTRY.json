@@ -6,7 +6,7 @@
   "stage_status": "R3_R7_DESIGN_ACTIVE",
   "product_implementation": "BLOCKED",
   "task3_implementation": "NOT_APPROVED",
-  "next_approval_counter": "5/10",
+  "next_approval_counter": "6/10",
   "inherits": [
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
@@ -300,6 +300,57 @@
         "task3_implementation": "NOT_APPROVED",
         "human_playtest": "NOT_RUN"
       }
+    },
+    {
+      "id": "BS-CONTENT-20260811-06",
+      "title": "귀족 01 의례 귀족 가보 계승 복원·유산 콘텐츠",
+      "status": "USER_APPROVED_R3_R7_6_OF_10",
+      "canon": "docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md",
+      "refines": [
+        "BS-CONTENT-20260804-01",
+        "BS-CONTENT-20260804-02"
+      ],
+      "depends_on": [
+        "BS-CUSTOMER-20260803-02",
+        "BS-CUSTOMER-20260805-01",
+        "BS-UX-20260805-01",
+        "BS-CRAFT-20260804-06",
+        "BS-CRAFT-20260805-01",
+        "BS-CRAFT-20260805-02",
+        "BS-CONTENT-20260811-04",
+        "BS-CONTENT-20260811-05"
+      ],
+      "contract": {
+        "content_id": "NOBLE_01",
+        "customer_id": "CEREMONIAL_NOBLE",
+        "customer_archetype": "NOBLE",
+        "activity_family": "HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY",
+        "content_goal": "PRESERVE_MEANINGFUL_HISTORY_WHILE_PREPARING_FOR_SUCCESSION",
+        "player_role": "BLACKSMITH_HEIRLOOM_TREATMENT_DECISION_MAKER_NOT_HOUSE_OR_CEREMONY_CONTROLLER",
+        "existing_ceremonial_noble_representative_reused": true,
+        "new_named_noble_lore": false,
+        "same_item_uid_preserved": true,
+        "full_restoration_always_best": false,
+        "highest_artistry_always_best": false,
+        "opaque_house_prestige_or_authenticity_score": false,
+        "history_erasure_on_repair": false,
+        "restoration_count_artistry_growth": false,
+        "automatic_chronicle_affix_from_ceremony_or_restoration": false,
+        "restoration_farming_multiplier": false,
+        "direct_ceremony_minigame": false,
+        "noble_house_management": false,
+        "court_or_diplomacy_management": false,
+        "result_axes": [
+          "CEREMONY_READINESS_STATE",
+          "HEIRLOOM_TREATMENT_FIT_STATE",
+          "ITEM_UID_DYNASTIC_LEGACY_STATE"
+        ],
+        "immediate_feedback": "THREE_STATE_SUMMARY_WITH_2_TO_4_CAUSAL_REASONS_AND_ONE_PRIMARY_NEXT_ACTION",
+        "exact_values": "NON_CANONICAL_BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED",
+        "product_implementation": "BLOCKED",
+        "task3_implementation": "NOT_APPROVED",
+        "human_playtest": "NOT_RUN"
+      }
     }
   ],
   "benchmark_context": [
@@ -422,6 +473,27 @@
       "decision": "ADOPT",
       "use": "observed choice behavior plus neutral recall of match-versus-item contribution",
       "avoid": "leading self-report-only validation"
+    },
+    {
+      "source": "American Institute for Conservation Code of Ethics and Guidelines for Practice",
+      "decision_id": "BS-CONTENT-20260811-06",
+      "decision": "ADAPT",
+      "use": "examine condition, compare intervention alternatives/risks, preserve treatment history",
+      "avoid": "literal museum-conservation simulation"
+    },
+    {
+      "source": "The Metropolitan Museum of Art ceremonial and presentation arms context",
+      "decision_id": "BS-CONTENT-20260811-06",
+      "decision": "ADAPT",
+      "use": "ceremonial metalwork can carry social and dynastic meaning beyond combat power",
+      "avoid": "prestige score as a universal value proxy"
+    },
+    {
+      "source": "Blacksmith Master Steam product page",
+      "decision_id": "BS-CONTENT-20260811-06",
+      "decision": "REJECT",
+      "use": "contrast benchmark",
+      "avoid": "production-chain, staff, and shop-management expansion"
     }
   ],
   "protected_boundaries": [

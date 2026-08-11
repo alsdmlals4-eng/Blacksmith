@@ -24,7 +24,7 @@ class Gladiator01CassiaContentContractTests(unittest.TestCase):
         self.assertEqual("R3_R7_DESIGN_ACTIVE", registry.get("stage_status"))
         self.assertEqual("BLOCKED", registry.get("product_implementation"))
         self.assertEqual("NOT_APPROVED", registry.get("task3_implementation"))
-        self.assertEqual("5/10", registry.get("next_approval_counter"))
+        self.assertEqual("6/10", registry.get("next_approval_counter"))
 
         decisions = {item["id"]: item for item in registry.get("current_decisions", [])}
         for decision_id in (
@@ -104,7 +104,7 @@ class Gladiator01CassiaContentContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, canon)
 
-    def test_current_routers_move_to_five_of_ten_without_opening_product_code(self) -> None:
+    def test_current_routers_preserve_cassia_history_while_noble01_is_current(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
@@ -122,8 +122,8 @@ class Gladiator01CassiaContentContractTests(unittest.TestCase):
 
         for text in (active, start_here, roadmap, gates):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
-            self.assertIn("R3_R7_APPROVAL_COUNTER: 5/10", text)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05", text)
+            self.assertIn("R3_R7_APPROVAL_COUNTER: 6/10", text)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
@@ -131,10 +131,10 @@ class Gladiator01CassiaContentContractTests(unittest.TestCase):
         for text in (active, start_here, roadmap):
             self.assertIn("GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED", text)
 
-        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-05`", active)
-        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-05`", start_here)
-        self.assertIn("현재 승인 카운터: `5/10`.", roadmap)
-        self.assertIn("Decision: `BS-CONTENT-20260811-05`.", gates)
+        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-06`", active)
+        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-06`", start_here)
+        self.assertIn("현재 승인 카운터: `6/10`.", roadmap)
+        self.assertIn("Decision: `BS-CONTENT-20260811-06`.", gates)
 
     def test_legacy_gladiator_poc_remains_historical_fixture_not_decision05_authority(self) -> None:
         self.assertTrue(LEGACY_CUSTOMER.is_file())

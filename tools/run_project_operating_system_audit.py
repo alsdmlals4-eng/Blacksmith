@@ -16,11 +16,13 @@ R3_TOREN_CANON = "docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RAN
 R3_MAREK_CANON = "docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md"
 R3_ERSA_CANON = "docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md"
 R3_CASSIA_CANON = "docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md"
+R3_NOBLE_CANON = "docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md"
 R3_FIRST_DECISION = "BS-CONTENT-20260811-01"
 R3_SECOND_DECISION = "BS-CONTENT-20260811-02"
 R3_THIRD_DECISION = "BS-CONTENT-20260811-03"
 R3_FOURTH_DECISION = "BS-CONTENT-20260811-04"
-R3_CURRENT_DECISION = "BS-CONTENT-20260811-05"
+R3_FIFTH_DECISION = "BS-CONTENT-20260811-05"
+R3_CURRENT_DECISION = "BS-CONTENT-20260811-06"
 
 
 def classify_planned_references(findings: list[audit.Finding]) -> None:
@@ -72,11 +74,12 @@ def configure_current_assertions() -> None:
         '"stage_status": "R3_R7_DESIGN_ACTIVE"',
         '"product_implementation": "BLOCKED"',
         '"task3_implementation": "NOT_APPROVED"',
-        '"next_approval_counter": "5/10"',
+        '"next_approval_counter": "6/10"',
         f'"id": "{R3_FIRST_DECISION}"',
         f'"id": "{R3_SECOND_DECISION}"',
         f'"id": "{R3_THIRD_DECISION}"',
         f'"id": "{R3_FOURTH_DECISION}"',
+        f'"id": "{R3_FIFTH_DECISION}"',
         f'"id": "{R3_CURRENT_DECISION}"',
         '"content_id": "COLLECTOR_01"',
         '"customer_id": "ERSA_ROEN"',
@@ -88,6 +91,12 @@ def configure_current_assertions() -> None:
         '"activity_family": "ARENA_SIGNATURE_WEAPON_AND_LEGACY"',
         '"same_item_uid_preserved": true',
         '"opaque_arena_score": false',
+        '"content_id": "NOBLE_01"',
+        '"customer_id": "CEREMONIAL_NOBLE"',
+        '"activity_family": "HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY"',
+        '"same_item_uid_preserved": true',
+        '"full_restoration_always_best": false',
+        '"history_erasure_on_repair": false',
     )
     assertions[R3_NADIA_CANON] = (
         R3_FIRST_DECISION,
@@ -142,7 +151,7 @@ def configure_current_assertions() -> None:
         "Task3 구현: `NOT_APPROVED`",
     )
     assertions[R3_CASSIA_CANON] = (
-        R3_CURRENT_DECISION,
+        R3_FIFTH_DECISION,
         "GLADIATOR_01",
         "CASSIA_BELLAN",
         "ARENA_SIGNATURE_WEAPON_AND_LEGACY",
@@ -153,6 +162,22 @@ def configure_current_assertions() -> None:
         "NO_DIRECT_ARENA_COMBAT",
         "NO_OPAQUE_ARENA_SCORE",
         "LEGACY_GLADIATOR_POC_NON_AUTHORITATIVE_FOR_DECISION05",
+        "제품 구현: `BLOCKED`",
+        "Task3 구현: `NOT_APPROVED`",
+    )
+
+    assertions[R3_NOBLE_CANON] = (
+        R3_CURRENT_DECISION,
+        "NOBLE_01",
+        "CEREMONIAL_NOBLE",
+        "HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY",
+        "CEREMONY_READINESS_STATE",
+        "HEIRLOOM_TREATMENT_FIT_STATE",
+        "ITEM_UID_DYNASTIC_LEGACY_STATE",
+        "SAME_ITEM_UID_PRESERVED",
+        "NO_FULL_RESTORATION_ALWAYS_BEST",
+        "NO_HISTORY_ERASURE_ON_REPAIR",
+        "NO_NOBLE_HOUSE_MANAGEMENT",
         "제품 구현: `BLOCKED`",
         "Task3 구현: `NOT_APPROVED`",
     )
@@ -170,7 +195,7 @@ def configure_current_assertions() -> None:
         "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
         "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
         "R3_R7_DESIGN_ACTIVE",
-        "R3_R7_APPROVAL_COUNTER: 5/10",
+        "R3_R7_APPROVAL_COUNTER: 6/10",
         f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
         R3_THIRD_DECISION,
         "TASK3_IMPLEMENTATION: NOT_APPROVED",
@@ -207,20 +232,21 @@ def configure_current_assertions() -> None:
             R3_SECOND_DECISION,
             R3_THIRD_DECISION,
             R3_FOURTH_DECISION,
+            R3_FIFTH_DECISION,
             R3_CURRENT_DECISION,
             f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
-            "GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED",
+            "NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED",
             "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ):
             if token not in tokens:
                 tokens.append(token)
-        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `5/10`" not in tokens:
-            tokens.append("현재 R3–R7 승인 카운터: `5/10`")
+        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `6/10`" not in tokens:
+            tokens.append("현재 R3–R7 승인 카운터: `6/10`")
         assertions[path] = tuple(tokens)
 
     audit.REQUIRED_ASSERTIONS = assertions
     current_docs = list(audit.ACTIVE_DOCS)
-    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON, R3_ERSA_CANON, R3_CASSIA_CANON):
+    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON, R3_ERSA_CANON, R3_CASSIA_CANON, R3_NOBLE_CANON):
         if path not in current_docs:
             current_docs.append(path)
     audit.ACTIVE_DOCS = tuple(current_docs)

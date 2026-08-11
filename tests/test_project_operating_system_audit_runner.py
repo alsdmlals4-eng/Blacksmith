@@ -87,20 +87,24 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         marek = audit.REQUIRED_ASSERTIONS[runner.R3_MAREK_CANON]
         ersa = audit.REQUIRED_ASSERTIONS[runner.R3_ERSA_CANON]
         cassia = audit.REQUIRED_ASSERTIONS[runner.R3_CASSIA_CANON]
+        noble = audit.REQUIRED_ASSERTIONS[runner.R3_NOBLE_CANON]
         self.assertIn('"stage_status": "R3_R7_DESIGN_ACTIVE"', registry)
         self.assertIn('"product_implementation": "BLOCKED"', registry)
         self.assertIn('"task3_implementation": "NOT_APPROVED"', registry)
-        self.assertIn('"next_approval_counter": "5/10"', registry)
+        self.assertIn('"next_approval_counter": "6/10"', registry)
         for decision_id in (
             '"id": "BS-CONTENT-20260811-01"',
             '"id": "BS-CONTENT-20260811-02"',
             '"id": "BS-CONTENT-20260811-03"',
             '"id": "BS-CONTENT-20260811-04"',
             '"id": "BS-CONTENT-20260811-05"',
+            '"id": "BS-CONTENT-20260811-06"',
         ):
             self.assertIn(decision_id, registry)
         self.assertIn('"content_id": "COLLECTOR_01"', registry)
         self.assertIn('"customer_id": "ERSA_ROEN"', registry)
+        self.assertIn('"content_id": "NOBLE_01"', registry)
+        self.assertIn('"customer_id": "CEREMONIAL_NOBLE"', registry)
         self.assertIn("BS-CONTENT-20260811-01", nadia)
         self.assertIn("직접 전투·탐험 미니게임을 추가하지 않는다", nadia)
         self.assertIn("BS-CONTENT-20260811-02", toren)
@@ -115,6 +119,10 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertIn("ARENA_SIGNATURE_WEAPON_AND_LEGACY", cassia)
         self.assertIn("EQUIPMENT_CONTRIBUTION_STATE", cassia)
         self.assertIn("SAME_ITEM_UID_PRESERVED", cassia)
+        self.assertIn("BS-CONTENT-20260811-06", noble)
+        self.assertIn("HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY", noble)
+        self.assertIn("NO_FULL_RESTORATION_ALWAYS_BEST", noble)
+        self.assertIn("NO_HISTORY_ERASURE_ON_REPAIR", noble)
         for path in (
             runner.R3_REGISTRY,
             runner.R3_NADIA_CANON,
@@ -122,6 +130,7 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
             runner.R3_MAREK_CANON,
             runner.R3_ERSA_CANON,
             runner.R3_CASSIA_CANON,
+            runner.R3_NOBLE_CANON,
         ):
             self.assertIn(path, audit.ACTIVE_DOCS)
 
@@ -132,8 +141,8 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertIn("VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE", tokens)
         self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED", tokens)
         self.assertIn("R3_R7_DESIGN_ACTIVE", tokens)
-        self.assertIn("R3_R7_APPROVAL_COUNTER: 5/10", tokens)
-        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05", tokens)
+        self.assertIn("R3_R7_APPROVAL_COUNTER: 6/10", tokens)
+        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06", tokens)
         self.assertIn("BS-CONTENT-20260811-03", tokens)
         self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("VERTICAL_SLICE_CODE_GATE: USER_APPROVED", tokens)
@@ -155,15 +164,17 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
                 "BS-CONTENT-20260811-02",
                 "BS-CONTENT-20260811-03",
                 "BS-CONTENT-20260811-04",
+                "BS-CONTENT-20260811-05",
+                "BS-CONTENT-20260811-06",
             ):
                 self.assertIn(decision_id, tokens)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05", tokens)
-            self.assertIn("GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED", tokens)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06", tokens)
+            self.assertIn("NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED", tokens)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("R2_CHECKPOINT_005", start)
         self.assertNotIn("현재 승인 카운터: `0/10`", active)
         self.assertNotIn("제품 구현: `BLOCKED`", active)
-        self.assertIn("현재 R3–R7 승인 카운터: `5/10`", active)
+        self.assertIn("현재 R3–R7 승인 카운터: `6/10`", active)
 
 
 if __name__ == "__main__":
