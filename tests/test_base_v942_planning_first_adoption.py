@@ -164,7 +164,8 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         root = ROOT_DECISIONS.read_text(encoding="utf-8")
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
 
-        # Domain owners keep the detailed artistry contract.
+        # R2 domain owners preserve their historical planning blocker and exact
+        # detailed artistry contract. That snapshot is not the live Phase C router.
         for text in (game_bible, root):
             self.assertIn("예술성 27", text)
             self.assertIn("고정 설계 최대치 없음", text)
@@ -173,12 +174,16 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
             self.assertNotIn("예술성 7/10", text)
             self.assertNotIn("예술성 1~10", text)
 
-        # Active Context is intentionally a compressed handoff router rather
-        # than a duplicate of every domain-canon detail.
+        # Active Context is the live continuation router and must supersede the
+        # historical R2/R3 blocked state without erasing history locators.
         for token in (
             "TASK2_MAIN_MERGED",
             "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE",
-            "PRODUCT_IMPLEMENTATION: BLOCKED",
+            "PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON",
+            "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED",
+            "P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS",
+            "P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS",
+            "PERSISTENT_MUTATION_GATE: OPEN",
             "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
             "PR81_REFERENCE_ONLY_DO_NOT_MERGE",
         ):
