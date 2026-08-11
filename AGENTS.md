@@ -31,7 +31,7 @@ GitHub가 기획 정본이다. Google Sheet는 같은 Decision ID·경로·Commi
 → 같은 승인 범위는 재승인 없이 병합 / 새 planning conflict·scope expansion만 사용자 Decision
 ```
 
-### PRE_WORK_RESEARCH_GATE — 벤치마킹·현업 조사
+### PRE_WORK_RESEARCH_GATE — 벤치마킹·현업 비교·조사
 
 Decision `BS-OPS-20260811-02`. 모든 의미 있는 작업은 fresh authority preflight 뒤 실제 설계·정본·구현·테스트·설정·자산 변경 전에 벤치마킹과 최신 현업/공식/1차 자료 조사를 수행한다. 이 Decision은 `BS-OPS-20260805-01`의 benchmark scope만 refine하며 기존 TDD·early checkpoint 권위는 유지한다.
 
