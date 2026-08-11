@@ -15,13 +15,15 @@ REGISTRY = ROOT / "docs" / "planning" / "CURRENT_R2_CANON_REGISTRY.json"
 
 
 class Checkpoint005MainCanonFinalizationTest(unittest.TestCase):
-    def test_current_authority_docs_use_final_closed_state(self) -> None:
+    def test_current_authority_docs_preserve_closed_r2_and_route_live_phase_c(self) -> None:
         required = (
             "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
             "R2_BATCH_005_CLOSED_10_OF_10",
             "R2_BATCH_006_APPROVED_10_OF_10",
-            "PRODUCT_IMPLEMENTATION: BLOCKED",
-            "VERTICAL_SLICE_IMPLEMENTATION: APPROVED",
+            "PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON",
+            "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED",
+            "P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS",
+            "P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS",
             "HUMAN_PLAYTEST: NOT_RUN",
         )
         forbidden = (
@@ -44,12 +46,9 @@ class Checkpoint005MainCanonFinalizationTest(unittest.TestCase):
             for marker in forbidden:
                 self.assertNotIn(marker, text, f"{path} retains stale marker {marker}")
 
-    def test_registry_records_merged_closure_and_next_batch(self) -> None:
+    def test_registry_remains_immutable_r2_snapshot(self) -> None:
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
-        self.assertEqual(
-            registry["stage_status"],
-            "R2_BATCH_006_APPROVED_MAIN_CANON",
-        )
+        self.assertEqual(registry["stage_status"], "R2_BATCH_006_APPROVED_MAIN_CANON")
         checkpoint = registry["immutable_merge_evidence"]["checkpoint_005"]
         self.assertEqual(checkpoint["closure_pr"], 117)
         self.assertEqual(
