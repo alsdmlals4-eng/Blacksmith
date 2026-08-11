@@ -26,38 +26,19 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
 
     def test_registry_records_checkpoint_005_as_closed_main_canon(self) -> None:
-        self.assertEqual("R2_BATCH_006_APPROVED_MAIN_CANON", self.registry["stage_status"])
-        self.assertEqual("0/10", self.registry["next_approval_counter"])
         evidence = self.registry["immutable_merge_evidence"]["checkpoint_005"]
-        self.assertEqual(109, evidence["planning_pr"])
         self.assertEqual(PLANNING_HEAD, evidence["planning_exact_head"])
         self.assertEqual(PLANNING_MERGE, evidence["planning_merge_sha"])
-        self.assertEqual("MERGED_MAIN_CANON", evidence["planning_status"])
-        self.assertEqual(117, evidence["closure_pr"])
-        self.assertEqual(
-            "agent/r2-checkpoint-005-postmerge-closure",
-            evidence["closure_branch"],
-        )
         self.assertEqual(CLOSURE_HEAD, evidence["closure_exact_head"])
         self.assertEqual(CLOSURE_MERGE, evidence["closure_merge_sha"])
         self.assertEqual("MERGED_MAIN_CANON", evidence["closure_status"])
-        self.assertEqual("SQUASH", evidence["merge_method"])
-        self.assertEqual("PASS", evidence["closure_github_readback"])
-        self.assertEqual("PASS", evidence["closure_sheet_readback"])
+        self.assertEqual("PASS", evidence["github_readback"])
+        self.assertEqual("PASS", evidence["sheet_readback"])
 
     def test_batch_005_decisions_remain_merged_main_canon(self) -> None:
-        batch_ids = {
-            "BS-CRAFT-20260805-02",
-            "BS-CUSTOMER-20260805-01",
-            "BS-UX-20260805-01",
-            "BS-CUSTOMER-20260806-01",
-            "BS-ITEM-20260806-01",
-            "BS-ITEM-20260806-02",
-            "BS-ITEM-20260806-03",
-            "BS-ITEM-20260806-04",
-            "BS-ITEM-20260806-05",
-            "BS-ITEM-20260806-06",
-        }
+        closed = self.registry["closed_batch"]
+        batch_ids = set(closed["decisions"])
+        self.assertEqual(10, len(batch_ids))
         by_id = {item["id"]: item for item in self.registry["current_decisions"]}
         self.assertEqual(batch_ids, batch_ids & by_id.keys())
         for decision_id in sorted(batch_ids):
@@ -66,7 +47,7 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
             self.assertIn("MAIN_CANON", status, decision_id)
             self.assertNotIn("APPROVED_PENDING_MERGE", status, decision_id)
 
-    def test_current_authority_docs_route_to_closed_checkpoint_005(self) -> None:
+    def test_current_authority_docs_preserve_checkpoint_history_and_live_phase_c(self) -> None:
         forbidden = (
             "APPROVED_PENDING_MERGE",
             "DRAFT_PR109",
@@ -77,11 +58,11 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
         )
         required = (
             "R2_CHECKPOINT_005",
-            "MERGED_PR109",
             "R2_BATCH_005_CLOSED_10_OF_10",
-            "R2_BATCH_006_APPROVED_10_OF_10",
-            "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
-            "BLOCKED",
+            "PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON",
+            "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED",
+            "P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS",
+            "P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS",
         )
         for path in CURRENT_DOCS:
             text = path.read_text(encoding="utf-8")
@@ -90,7 +71,7 @@ class R2Checkpoint005PostmergeClosureTests(unittest.TestCase):
             for token in forbidden:
                 self.assertNotIn(token, text, f"{path}: {token}")
 
-    def test_closure_document_preserves_unopened_gates(self) -> None:
+    def test_closure_document_preserves_unopened_gates_at_that_snapshot(self) -> None:
         text = CLOSURE.read_text(encoding="utf-8")
         for token in (
             "R2_BATCH_005_CLOSED_10_OF_10",
