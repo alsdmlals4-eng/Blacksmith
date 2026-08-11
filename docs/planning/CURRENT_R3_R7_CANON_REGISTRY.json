@@ -6,7 +6,7 @@
   "stage_status": "R3_R7_DESIGN_ACTIVE",
   "product_implementation": "BLOCKED",
   "task3_implementation": "NOT_APPROVED",
-  "next_approval_counter": "4/10",
+  "next_approval_counter": "5/10",
   "inherits": [
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
@@ -252,6 +252,54 @@
         "task3_implementation": "NOT_APPROVED",
         "human_playtest": "NOT_RUN"
       }
+    },
+    {
+      "id": "BS-CONTENT-20260811-05",
+      "title": "검투사 01 카시아 벨란 투기장 대표 무기·공개 생애 콘텐츠",
+      "status": "USER_APPROVED_R3_R7_5_OF_10",
+      "canon": "docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md",
+      "refines": [
+        "BS-CONTENT-20260804-01",
+        "BS-CONTENT-20260804-02"
+      ],
+      "depends_on": [
+        "BS-CUSTOMER-20260803-02",
+        "BS-CUSTOMER-20260805-01",
+        "BS-CUSTOMER-20260806-01",
+        "BS-ITEM-20260806-04",
+        "BS-UX-20260805-01",
+        "BS-CRAFT-20260804-06",
+        "BS-CONTENT-20260811-04"
+      ],
+      "contract": {
+        "content_id": "GLADIATOR_01",
+        "customer_id": "CASSIA_BELLAN",
+        "customer_archetype": "GLADIATOR",
+        "activity_family": "ARENA_SIGNATURE_WEAPON_AND_LEGACY",
+        "content_goal": "ARENA_RENOWN_THROUGH_EXPLAINABLE_EQUIPMENT_CONTRIBUTION",
+        "player_role": "BLACKSMITH_EQUIPMENT_DECISION_MAKER_NOT_ARENA_CONTROLLER",
+        "direct_arena_combat": false,
+        "gladiator_team_or_guild_management": false,
+        "betting_system": false,
+        "opaque_arena_score": false,
+        "single_highest_enhancement_always_best": false,
+        "win_equals_good_item_collapse": false,
+        "same_item_uid_preserved": true,
+        "match_count_artistry_growth": false,
+        "automatic_chronicle_affix_from_win_or_appearance": false,
+        "match_farming_multiplier": false,
+        "legacy_gladiator_poc_status": "NON_AUTHORITATIVE_HISTORICAL_FIXTURE",
+        "result_axes": [
+          "ARENA_MATCH_STATE",
+          "EQUIPMENT_CONTRIBUTION_STATE",
+          "ITEM_UID_ARENA_LEGACY_STATE"
+        ],
+        "immediate_feedback": "THREE_STATE_SUMMARY_WITH_2_TO_4_CAUSAL_REASONS_AND_ONE_PRIMARY_NEXT_ACTION",
+        "exact_values": "NON_CANONICAL_BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED",
+        "product_implementation": "BLOCKED",
+        "task3_implementation": "NOT_APPROVED",
+        "human_playtest": "NOT_RUN"
+      }
     }
   ],
   "benchmark_context": [
@@ -338,6 +386,42 @@
       "decision": "ADOPT",
       "use": "meaningful intuitive responsive user experience",
       "avoid": "opaque score chasing that hides causal fit"
+    },
+    {
+      "source": "Gladiator Guild Manager official Steam page",
+      "decision": "ADAPT",
+      "use": "pre-event equipment choice with automated consequence",
+      "avoid": "fighter positioning behavior orders and guild management"
+    },
+    {
+      "source": "Battle Brothers official developer features",
+      "decision": "ADAPT",
+      "use": "equipment suitability materially affects combat outcome",
+      "avoid": "direct tactical combat and mercenary-company control"
+    },
+    {
+      "source": "Crusader Kings III: Tours & Tournaments official Paradox page",
+      "decision": "ADAPT",
+      "use": "public tournament renown and preparation context",
+      "avoid": "tournament-hosting gameplay as Blacksmith core"
+    },
+    {
+      "source": "Apple Human Interface Guidelines feedback guidance",
+      "decision": "ADOPT",
+      "use": "clear decomposed status outcome and next-action feedback",
+      "avoid": "single opaque success score"
+    },
+    {
+      "source": "Android Developers user experience quality guidance",
+      "decision": "ADOPT",
+      "use": "intuitive meaningful state hierarchy",
+      "avoid": "score chasing that hides causal fit"
+    },
+    {
+      "source": "Games User Research playtest method guidance",
+      "decision": "ADOPT",
+      "use": "observed choice behavior plus neutral recall of match-versus-item contribution",
+      "avoid": "leading self-report-only validation"
     }
   ],
   "protected_boundaries": [
@@ -370,6 +454,16 @@
     "NO_AUTOMATIC_CHRONICLE_AFFIX_FROM_DISPLAY",
     "BLACKSMITH_ITEM_DECISION_MAKER_NOT_CURATOR_CONTROLLER",
     "NO_DIRECT_EXHIBITION_MINIGAME",
-    "NO_GALLERY_DECORATION_OR_VISITOR_MANAGEMENT_CORE"
+    "NO_GALLERY_DECORATION_OR_VISITOR_MANAGEMENT_CORE",
+    "NO_DIRECT_ARENA_COMBAT",
+    "NO_GLADIATOR_TEAM_OR_GUILD_MANAGEMENT",
+    "NO_BETTING_SYSTEM",
+    "NO_OPAQUE_ARENA_SCORE",
+    "NO_WIN_EQUALS_GOOD_ITEM_COLLAPSE",
+    "NO_MATCH_COUNT_ARTISTRY_GROWTH",
+    "NO_AUTOMATIC_CHRONICLE_AFFIX_FROM_WIN_OR_APPEARANCE",
+    "NO_MATCH_FARMING_MULTIPLIER",
+    "LEGACY_GLADIATOR_POC_NON_AUTHORITATIVE_FOR_DECISION05",
+    "BLACKSMITH_EQUIPMENT_DECISION_MAKER_NOT_ARENA_CONTROLLER"
   ]
 }
