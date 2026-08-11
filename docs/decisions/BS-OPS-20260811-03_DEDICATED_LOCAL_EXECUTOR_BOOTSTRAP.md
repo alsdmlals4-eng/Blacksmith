@@ -146,3 +146,35 @@ BOOTSTRAP_MINIMUM_PREFLIGHT_ONLY
 ```
 
 The executor launch is additionally pinned with `codex -C C:\Users\user\Documents\GitHub\Ninza\Blacksmith`. A dedicated PowerShell is a fresh PowerShell process with the Blacksmith environment injected; it is not a second PowerShell installation.
+
+## Postmerge hardening — strict project/editor/port isolation
+
+`POST_CHANGE_MONITOR_LOOP` after PR #155 found two material complement gaps in the local launcher:
+
+1. a non-dedicated Godot executable could already target the exact Blacksmith project while the bootstrap started the dedicated editor, creating duplicate same-project editors;
+2. when no exact dedicated Blacksmith editor was alive, a retained listener that merely looked like godot-ai could be accepted without proving it belonged to Blacksmith.
+
+These violate the user's strict project-port isolation rule. The same Decision `BS-OPS-20260811-03` is hardened without adding product scope.
+
+```text
+NON_DEDICATED_BLACKSMITH_EDITOR_CONFLICT_FAIL_CLOSED
+MULTIPLE_DEDICATED_BLACKSMITH_EDITORS_FAIL_CLOSED
+UNVERIFIED_RETAINED_SERVER_REUSE_FORBIDDEN
+PORT_CONFLICT_FAIL_CLOSED
+```
+
+New behavior:
+
+- enumerate Godot processes that target the exact Blacksmith path;
+- allow at most one exact dedicated Blacksmith editor;
+- any other Godot executable targeting Blacksmith stops the bootstrap without killing it;
+- if the exact dedicated editor is absent, any occupied 8006/9506 listener stops the bootstrap, even when its process resembles godot-ai;
+- retained listener reuse is allowed only as part of an already-running exact dedicated Blacksmith editor session, and still does not replace the required fresh HiGodot receipt inside Codex.
+
+Semantic RED evidence for this hardening:
+
+- PR #156 test-only head `a9fd56b97e53675278a625c0fbbb7346bd33a622`
+- PR validation run `31498561843`
+- Python job `93802395639`
+- checkout/Base/Python/PowerShell parser/project-core/existing bootstrap tests all passed before the new isolation test;
+- the new isolation test failed specifically because `NON_DEDICATED_BLACKSMITH_EDITOR_CONFLICT_FAIL_CLOSED` and the stricter orphan-port policy were not yet implemented.
