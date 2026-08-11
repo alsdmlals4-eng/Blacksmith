@@ -6,7 +6,7 @@
   "stage_status": "R3_R7_DESIGN_ACTIVE",
   "product_implementation": "BLOCKED",
   "task3_implementation": "NOT_APPROVED",
-  "next_approval_counter": "3/10",
+  "next_approval_counter": "4/10",
   "inherits": [
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
@@ -203,6 +203,55 @@
         "task3_implementation": "NOT_APPROVED",
         "human_playtest": "NOT_RUN"
       }
+    },
+    {
+      "id": "BS-CONTENT-20260811-04",
+      "title": "수집가 01 에르사 로엔 전시 증거·계보 콘텐츠",
+      "status": "USER_APPROVED_R3_R7_4_OF_10",
+      "canon": "docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md",
+      "refines": [
+        "BS-CONTENT-20260804-01",
+        "BS-CONTENT-20260804-02"
+      ],
+      "depends_on": [
+        "BS-CUSTOMER-20260803-02",
+        "BS-CUSTOMER-20260805-01",
+        "BS-UX-20260805-01",
+        "BS-CRAFT-20260804-06",
+        "BS-CRAFT-20260805-01",
+        "BS-CRAFT-20260805-02",
+        "BS-CONTENT-20260811-03"
+      ],
+      "contract": {
+        "content_id": "COLLECTOR_01",
+        "customer_id": "ERSA_ROEN",
+        "customer_archetype": "COLLECTOR",
+        "activity_family": "EXHIBITION_EVIDENCE_AND_PROVENANCE",
+        "content_goal": "PUBLIC_MEANING_THROUGH_CRAFT_AND_LIFECYCLE_EVIDENCE",
+        "player_role": "BLACKSMITH_ITEM_AND_EVIDENCE_DECISION_MAKER_NOT_CURATOR_CONTROLLER",
+        "exhibition_intent_families": [
+          "CRAFTSMANSHIP_EVIDENCE",
+          "LIVED_HISTORY_EVIDENCE"
+        ],
+        "opaque_collector_or_exhibition_score": false,
+        "chronicle_count_optimization": false,
+        "oldest_item_always_best": false,
+        "highest_artistry_always_best": false,
+        "highest_enhancement_always_best": false,
+        "exhibition_count_artistry_growth": false,
+        "automatic_chronicle_affix_from_display": false,
+        "same_item_uid_preserved": true,
+        "direct_exhibition_minigame": false,
+        "gallery_or_visitor_management": false,
+        "result_axes": [
+          "EXHIBITION_RECEPTION_STATE",
+          "EXHIBIT_THESIS_FIT_STATE",
+          "ITEM_UID_PUBLIC_LEGACY_STATE"
+        ],
+        "product_implementation": "BLOCKED",
+        "task3_implementation": "NOT_APPROVED",
+        "human_playtest": "NOT_RUN"
+      }
     }
   ],
   "benchmark_context": [
@@ -259,6 +308,36 @@
       "decision": "ADAPT",
       "use": "explicit common standard and repeatable process",
       "avoid": "industrial statistical-control simulation"
+    },
+    {
+      "source": "Strange Horticulture official Steam page",
+      "decision": "ADAPT",
+      "use": "context-driven interpretation of a collection and evidence",
+      "avoid": "exploration puzzle or hidden lore quiz as Blacksmith core"
+    },
+    {
+      "source": "Tiny Bookshop official Steam page",
+      "decision": "ADAPT",
+      "use": "match a person and situation to the right object using understandable context",
+      "avoid": "gallery decoration or unrelated cozy-shop management as Collector core"
+    },
+    {
+      "source": "Crusader Kings III: Royal Court official Paradox page",
+      "decision": "ADAPT",
+      "use": "crafted relics heirlooms display and history-bearing artifacts",
+      "avoid": "single grandeur or prestige axis"
+    },
+    {
+      "source": "Apple Human Interface Guidelines feedback guidance",
+      "decision": "ADOPT",
+      "use": "clear action result status and next-step feedback",
+      "avoid": "opaque result state"
+    },
+    {
+      "source": "Google Play functionality content and user experience guidance",
+      "decision": "ADOPT",
+      "use": "meaningful intuitive responsive user experience",
+      "avoid": "opaque score chasing that hides causal fit"
     }
   ],
   "protected_boundaries": [
@@ -278,6 +357,19 @@
     "NO_DIRECT_TACTICAL_COMBAT",
     "NO_FREE_ITEM_CLONING",
     "SMALL_LOT_PER_ITEM_UID_COST_RESULT_PRESERVED",
-    "NO_OPAQUE_STANDARDIZATION_SCORE"
+    "NO_OPAQUE_STANDARDIZATION_SCORE",
+    "NO_RARITY_SCORE",
+    "NO_PRESTIGE_SCORE",
+    "NO_COLLECTOR_SCORE",
+    "NO_EXHIBITION_SCORE",
+    "NO_CHRONICLE_COUNT_OPTIMIZATION",
+    "NO_OLDEST_ITEM_ALWAYS_BEST",
+    "NO_HIGHEST_ARTISTRY_ALWAYS_BEST",
+    "NO_HIGHEST_ENHANCEMENT_ALWAYS_BEST",
+    "NO_EXHIBITION_COUNT_ARTISTRY_GROWTH",
+    "NO_AUTOMATIC_CHRONICLE_AFFIX_FROM_DISPLAY",
+    "BLACKSMITH_ITEM_DECISION_MAKER_NOT_CURATOR_CONTROLLER",
+    "NO_DIRECT_EXHIBITION_MINIGAME",
+    "NO_GALLERY_DECORATION_OR_VISITOR_MANAGEMENT_CORE"
   ]
 }
