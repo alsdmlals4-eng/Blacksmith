@@ -15,6 +15,20 @@ for old, new in replacements.items():
     if count != 1:
         raise RuntimeError(f"expected one materializer line for {old!r}, got {count}")
     text = text.replace(old, new)
+
+needle = '''    if rel == "tests/test_r3_collector_01_ersa_content.py":
+        text = text.replace('self.assertEqual("4/10", registry.get("next_approval_counter"))', 'self.assertEqual("5/10", registry.get("next_approval_counter"))')
+        text = text.replace("test_current_routers_move_to_four_of_ten_without_opening_product_code", "test_current_routers_preserve_ersa_history_while_cassia_is_current")
+'''
+replacement = needle + '''    if rel == "tests/test_r3_soldier_01_marek_content.py":
+        text = text.replace('self.assertEqual("4/10", registry.get("next_approval_counter"))', 'self.assertEqual("5/10", registry.get("next_approval_counter"))')
+        text = text.replace("test_current_routers_preserve_marek_history_while_ersa_is_current", "test_current_routers_preserve_marek_history_while_cassia_is_current")
+'''
+count = text.count(needle)
+if count != 1:
+    raise RuntimeError(f"expected one collector current-consumer block, got {count}")
+text = text.replace(needle, replacement)
+
 p.write_text(text, encoding="utf-8")
 Path(__file__).unlink()
-print("materializer count guards corrected")
+print("materializer count guards and Marek current consumer corrected")
