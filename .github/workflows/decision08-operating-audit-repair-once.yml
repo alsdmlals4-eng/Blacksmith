@@ -23,7 +23,7 @@ jobs:
         with:
           repository: alsdmlals4-eng/Base
           ref: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
-          path: ../base
+          path: base
           persist-credentials: false
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -34,7 +34,7 @@ jobs:
       - name: Verify operating audit and Sedric current contract
         run: |
           python -m unittest tests/test_project_operating_system_audit_runner.py -v
-          python tools/run_project_operating_system_audit.py --base-root ../base --report artifacts/base-adoption-report.json
+          python tools/run_project_operating_system_audit.py --base-root base --report artifacts/base-adoption-report.json
           python -m unittest tests.test_r3_collector_02_sedric_content -v
           python -m unittest tests.test_r3_soldier_02_liana_content -v
       - name: Preserve workflow for connector deletion and remove helper
