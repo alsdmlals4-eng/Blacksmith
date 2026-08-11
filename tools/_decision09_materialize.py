@@ -244,7 +244,22 @@ def update_gates() -> None:
     write(path, text)
 
 
+def normalize_canon_responsibility_ids() -> None:
+    path = CANON
+    text = read(path)
+    text = text.replace(
+        "Cassia / `GLADIATOR_01`의 질문:",
+        "Cassia / `CASSIA_BELLAN / GLADIATOR_01 / ARENA_SIGNATURE_WEAPON_AND_LEGACY`의 질문:",
+    )
+    text = text.replace(
+        "Noble01 / `CEREMONIAL_NOBLE`은",
+        "Noble01 / `CEREMONIAL_NOBLE / HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY`은",
+    )
+    write(path, text)
+
+
 def main() -> None:
+    normalize_canon_responsibility_ids()
     update_registry()
     update_current_decisions()
     update_active()
