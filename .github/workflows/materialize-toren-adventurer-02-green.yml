@@ -28,7 +28,6 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from __future__ import annotations
-
           import hashlib
           import json
           from pathlib import Path
@@ -48,7 +47,6 @@ jobs:
                   raise SystemExit(f'{label} anchor missing: {old[:120]}')
               return text.replace(old, new, 1)
 
-          # Canon: approved spec is the content source; only role/status heading changes.
           spec = spec_path.read_text(encoding='utf-8')
           canon = replace_once(
               spec,
@@ -64,7 +62,6 @@ jobs:
           )
           canon_path.write_text(canon, encoding='utf-8')
 
-          # Registry: preserve Nadia and append the user-approved second decision.
           registry = json.loads(registry_path.read_text(encoding='utf-8'))
           registry['next_approval_counter'] = '2/10'
           ids = {d['id'] for d in registry.get('current_decisions', [])}
@@ -102,27 +99,14 @@ jobs:
                       'DURABILITY_AND_KNOWN_EXPOSURE',
                       'APPROVED_CONTEXT_FUNCTION_FIT',
                   ],
-                  'existing_item_owners': [
-                      'WEIGHT',
-                      'DURABILITY',
-                      'ENVIRONMENTAL_SEALING',
-                      'FIELD_SERVICEABILITY',
-                  ],
+                  'existing_item_owners': ['WEIGHT', 'DURABILITY', 'ENVIRONMENTAL_SEALING', 'FIELD_SERVICEABILITY'],
                   'schedule_type': 'PERSONAL_SCHEDULE',
                   'activation': 'CUSTOMER_VISIT_PLUS_EQUIPMENT_HANDOFF',
                   'personal_schedule_progression': 'ONE_END_OF_DAY_CHECK_MAXIMUM_WHILE_ACTIVE',
-                  'structural_states': [
-                      'PREP_AND_DEPARTURE',
-                      'EXPOSURE_AND_ROUTE_ADAPTATION',
-                      'ARRIVAL_AND_ITEM_ASSESSMENT',
-                  ],
+                  'structural_states': ['PREP_AND_DEPARTURE', 'EXPOSURE_AND_ROUTE_ADAPTATION', 'ARRIVAL_AND_ITEM_ASSESSMENT'],
                   'universal_fixed_day_count': False,
                   'destination_identity': 'CONTENT_INSTANCE_DATA_NOT_GLOBAL_CANON',
-                  'result_axes': [
-                      'JOURNEY_ARRIVAL_STATE',
-                      'ROUTE_EXPOSURE_STATE',
-                      'ITEM_UID_LIFECYCLE_STATE',
-                  ],
+                  'result_axes': ['JOURNEY_ARRIVAL_STATE', 'ROUTE_EXPOSURE_STATE', 'ITEM_UID_LIFECYCLE_STATE'],
                   'immediate_feedback': 'SHORT_CAUSAL_RESULT_WITH_2_TO_4_REASONS',
                   'delayed_feedback': 'SAME_UID_REVISIT_REPAIR_RESTORE_FOLLOWUP_ENHANCEMENT_OR_NEXT_ROUTE_CRAFT',
                   'chronicle_affix_auto_grant': False,
@@ -130,11 +114,7 @@ jobs:
                   'full_item_destruction_baseline': 'NOT_IN_BASELINE_UNLESS_SEPARATE_EXPLICIT_HIGH_RISK_CHOICE',
                   'exact_values': 'BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED',
                   'product_implementation': 'BLOCKED',
-                  'customer_information_layers': [
-                      'DEFAULT_CUSTOMER_CARD',
-                      'POST_EQUIPMENT_DECISION_LAYER',
-                      'DETAIL_VIEW',
-                  ],
+                  'customer_information_layers': ['DEFAULT_CUSTOMER_CARD', 'POST_EQUIPMENT_DECISION_LAYER', 'DETAIL_VIEW'],
                   'reason_priority': 'LOAD_GATE_THEN_ENHANCEMENT_THEN_MATCHED_CONTEXT_FUNCTION_THEN_DURABILITY_EXPOSURE_THEN_SMALL_CUSTOMER_CONTEXT',
                   'test_fixture_status': 'NON_CANONICAL_BASELINE_TEST_FIXTURE',
                   'playtest_evidence': 'OBSERVED_BEHAVIOR_PLUS_NEUTRAL_RECALL',
@@ -170,45 +150,39 @@ jobs:
                   registry['protected_boundaries'].append(boundary)
           registry_path.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
-          # Current Decisions: move the current locator to 2/10 while preserving Nadia history.
           current = current_path.read_text(encoding='utf-8')
-          current = replace_once(
-              current,
-              '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-01 / R3_R7_1_OF_10 / PLANNING_ONLY**',
-              '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / R3_R7_2_OF_10 / PLANNING_ONLY**',
-              'current heading',
-          )
+          current = replace_once(current, '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-01 / R3_R7_1_OF_10 / PLANNING_ONLY**', '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / R3_R7_2_OF_10 / PLANNING_ONLY**', 'current heading')
           current = replace_once(current, 'R3_R7_APPROVAL_COUNTER: 1/10', 'R3_R7_APPROVAL_COUNTER: 2/10', 'current counter')
           current = replace_once(current, 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01', 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02', 'current decision')
           nadia_line = '- `BS-CONTENT-20260811-01`: `ADVENTURER_01` 나디아 벤 유적 탐사 개인 일정. `생환 + 회수`를 목표로 작품 한 점을 맡기고, 하루 종료당 최대 한 번 진행하며, 같은 UID의 즉시 인과 결과와 지연 생애·복원·후속 강화 이유를 만든다. 직접 전투·탐험 미니게임과 단일 항상최적 장비 정답은 추가하지 않는다. — `USER_APPROVED / R3_R7_1_OF_10 / MERGED_PR142_MAIN_CANON / PLANNING_ONLY`'
           toren_line = '- `BS-CONTENT-20260811-02`: `ADVENTURER_02` 토렌 마치 장거리 여정 개인 일정. 여정 지속성·신뢰성을 목표로 기존 중량·강화·내구도·실제 관련 환경/현장정비 기능을 비교하며, 직접 여행 조작·새 신뢰성/수리성 원수치·자동 마모세를 추가하지 않고 같은 UID의 마모·현장 유지보수·손상 결과를 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다. — `USER_APPROVED / R3_R7_2_OF_10 / PLANNING_ONLY`'
           current = replace_once(current, nadia_line, nadia_line + '\n' + toren_line, 'Nadia current-decisions anchor')
-          current = current.rstrip() + '''
+          toren_section = '\n'.join((
+              '',
+              '## 18. R3–R7 두 번째 상세 콘텐츠 — 토렌 마치 장거리 여정',
+              '',
+              'Decision: `BS-CONTENT-20260811-02`.',
+              '',
+              '```text',
+              'ADVENTURER_02 / TOREN_MARCH',
+              '장거리 여정 개인 일정',
+              'JOURNEY_CONTINUITY_AND_RELIABILITY',
+              '```',
+              '',
+              '- 플레이어는 토렌을 직접 이동시키거나 지도에서 경로를 선택하지 않고 작품 한 점을 비교·인계한다.',
+              '- 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않고 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY`의 현재 소유권을 소비한다.',
+              '- `OVERWEIGHT`는 배정 불가 Gate이며 강화는 일반 사건 성공의 주효과를 유지한다.',
+              '- 환경·현장정비 기능은 실제 결속 맥락에서만 `ELIGIBILITY / RISK_MITIGATION / SPECIFIC_INTERACTION`으로 작동한다.',
+              '- 자동 매일 내구도 감소나 루틴 완료 강제 수리를 만들지 않는다.',
+              '- 일정은 `PREP_AND_DEPARTURE → EXPOSURE_AND_ROUTE_ADAPTATION → ARRIVAL_AND_ITEM_ASSESSMENT` 구조이며 고정 3일 계약이 아니다.',
+              '- 결과는 `JOURNEY_ARRIVAL_STATE / ROUTE_EXPOSURE_STATE / ITEM_UID_LIFECYCLE_STATE`를 분리하고 같은 UID를 수리·복원·후속 강화·다음 여정 신작 판단으로 돌려보낸다.',
+              '- 정확한 기간·확률·마모량·수리량·보상·비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.',
+              '- 제품 구현: `BLOCKED`.',
+              '- Task3 구현: `NOT_APPROVED`.',
+              '',
+          ))
+          current_path.write_text(current.rstrip() + toren_section + '\n', encoding='utf-8')
 
-## 18. R3–R7 두 번째 상세 콘텐츠 — 토렌 마치 장거리 여정
-
-Decision: `BS-CONTENT-20260811-02`.
-
-```text
-ADVENTURER_02 / TOREN_MARCH
-장거리 여정 개인 일정
-JOURNEY_CONTINUITY_AND_RELIABILITY
-```
-
-- 플레이어는 토렌을 직접 이동시키거나 지도에서 경로를 선택하지 않고 작품 한 점을 비교·인계한다.
-- 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않고 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY`의 현재 소유권을 소비한다.
-- `OVERWEIGHT`는 배정 불가 Gate이며 강화는 일반 사건 성공의 주효과를 유지한다.
-- 환경·현장정비 기능은 실제 결속 맥락에서만 `ELIGIBILITY / RISK_MITIGATION / SPECIFIC_INTERACTION`으로 작동한다.
-- 자동 매일 내구도 감소나 루틴 완료 강제 수리를 만들지 않는다.
-- 일정은 `PREP_AND_DEPARTURE → EXPOSURE_AND_ROUTE_ADAPTATION → ARRIVAL_AND_ITEM_ASSESSMENT` 구조이며 고정 3일 계약이 아니다.
-- 결과는 `JOURNEY_ARRIVAL_STATE / ROUTE_EXPOSURE_STATE / ITEM_UID_LIFECYCLE_STATE`를 분리하고 같은 UID를 수리·복원·후속 강화·다음 여정 신작 판단으로 돌려보낸다.
-- 정확한 기간·확률·마모량·수리량·보상·비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
-- 제품 구현: `BLOCKED`.
-- Task3 구현: `NOT_APPROVED`.
-'''
-          current_path.write_text(current.rstrip() + '\n', encoding='utf-8')
-
-          # Active Context: current locator moves to Toren, Nadia remains explicit completed history.
           active = active_path.read_text(encoding='utf-8')
           active = replace_once(active, '> **R3_R7_DESIGN_ACTIVE / ADVENTURER_01_DETAIL_APPROVED / PLANNING_ONLY**', '> **R3_R7_DESIGN_ACTIVE / ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED / PLANNING_ONLY**', 'active heading')
           active = replace_once(active, 'Blacksmith current main observed at design resume: `68540e6cd288aff138b1ea4c5b1feeb9e0653947`', 'Blacksmith current main observed at Decision 02 start: `cb5ceff127bf4f2adb38b34ebaa092d97111fa94`', 'active observed main')
@@ -220,35 +194,31 @@ JOURNEY_CONTINUITY_AND_RELIABILITY
           active = replace_once(active, '1. `BS-CONTENT-20260811-01`의 GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.', '1. `BS-CONTENT-20260811-02`의 GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.', 'active continuation decision')
           active = replace_once(active, '2. TDD RED→GREEN과 적대적 검토로 직접 탐험 게임화·단일 장비 정답·고정 일정 일수·자동 수식어 지급 회귀를 차단한다.', '2. TDD RED→GREEN과 적대적 검토로 직접 여행 게임화·새 신뢰성/수리성 원수치·자동 마모세·Nadia 재스킨 회귀를 차단한다.', 'active continuation risks')
           active = replace_once(active, '5. 다음 R3–R7 신규 Decision은 현재 승인 카운터 `1/10`에서 이어간다.', '5. 다음 R3–R7 신규 Decision은 현재 승인 카운터 `2/10`에서 이어간다.', 'active next counter')
-          marker = '책임 원본:\n\n- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`\n- `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`'
-          replacement = '''첫 Decision `BS-CONTENT-20260811-01`의 Nadia 정본은 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-02`다.
-
-```text
-ADVENTURER_02 / TOREN_MARCH
-→ 장거리 길잡이
-→ 여정 지속성 + 신뢰성
-→ 작품 한 점 인계
-→ 환경 노출·경로 적응은 비직접 일정 사건
-→ 도착·환경 대응·같은 UID 작품 상태 결과
-→ 수리·복원·후속 강화·다음 여정용 신작 이유
-```
-
-책임 원본:
-
-- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-- `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-- `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`'''
-          active = replace_once(active, marker, replacement, 'active responsibility list')
-          active = replace_once(
-              active,
-              '5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`',
-              '5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`\n7. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`',
-              'active read order',
-          )
+          active_marker = '책임 원본:\n\n- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`\n- `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`'
+          active_replacement = '\n'.join((
+              '첫 Decision `BS-CONTENT-20260811-01`의 Nadia 정본은 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-02`다.',
+              '',
+              '```text',
+              'ADVENTURER_02 / TOREN_MARCH',
+              '→ 장거리 길잡이',
+              '→ 여정 지속성 + 신뢰성',
+              '→ 작품 한 점 인계',
+              '→ 환경 노출·경로 적응은 비직접 일정 사건',
+              '→ 도착·환경 대응·같은 UID 작품 상태 결과',
+              '→ 수리·복원·후속 강화·다음 여정용 신작 이유',
+              '```',
+              '',
+              '책임 원본:',
+              '',
+              '- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`',
+              '- `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`',
+              '- `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`',
+          ))
+          active = replace_once(active, active_marker, active_replacement, 'active responsibility list')
+          active = replace_once(active, '5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`', '5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`\n7. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`', 'active read order')
           active = active.replace('7. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`\n8. Google Sheet', '8. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`\n9. Google Sheet', 1)
           active_path.write_text(active, encoding='utf-8')
 
-          # Start Here: mirror current Toren route and continuation truthfully.
           start = start_path.read_text(encoding='utf-8')
           start = replace_once(start, '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-01 / PLANNING_ONLY**', '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED / PLANNING_ONLY**', 'start heading')
           start = replace_once(start, 'BLACKSMITH_CURRENT_MAIN_OBSERVED_AT_RESUME: 68540e6cd288aff138b1ea4c5b1feeb9e0653947', 'BLACKSMITH_CURRENT_MAIN_OBSERVED_AT_DECISION_02_START: cb5ceff127bf4f2adb38b34ebaa092d97111fa94', 'start observed main')
@@ -256,70 +226,61 @@ ADVENTURER_02 / TOREN_MARCH
           start = replace_once(start, 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01', 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02', 'start current decision')
           start = replace_once(start, 'R3_R7_RESUME_LOCATOR: ADVENTURER_01_DETAIL_APPROVED', 'R3_R7_RESUME_LOCATOR: ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED', 'start resume locator')
           start_anchor = '책임 원본:\n\n1. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`\n2. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`'
-          start_replacement = '''첫 Decision `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`은 승인 완료 이력으로 유지한다.
-
-현재 사용자 승인 Decision: `BS-CONTENT-20260811-02`.
-
-```text
-ADVENTURER_02 / TOREN_MARCH
-장거리 여정 지속성·신뢰성
-→ 기존 중량·강화·내구도·실제 관련 환경/현장정비 기능 비교
-→ 작품 한 점 인계
-→ 비직접 여정 진행
-→ 도착·경로 노출·같은 UID 작품 상태 결과
-→ 수리·복원·후속 강화·다음 여정 신작 이유
-```
-
-- 직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다.
-- 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다.
-- 자동 매일 내구도 감소·루틴 수리세를 만들지 않는다.
-- 정확한 값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
-- 제품 구현: `BLOCKED`.
-- Task3 구현: `NOT_APPROVED`.
-
-책임 원본:
-
-1. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-2. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-3. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`'''
+          start_replacement = '\n'.join((
+              '첫 Decision `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`은 승인 완료 이력으로 유지한다.',
+              '',
+              '현재 사용자 승인 Decision: `BS-CONTENT-20260811-02`.',
+              '',
+              '```text',
+              'ADVENTURER_02 / TOREN_MARCH',
+              '장거리 여정 지속성·신뢰성',
+              '→ 기존 중량·강화·내구도·실제 관련 환경/현장정비 기능 비교',
+              '→ 작품 한 점 인계',
+              '→ 비직접 여정 진행',
+              '→ 도착·경로 노출·같은 UID 작품 상태 결과',
+              '→ 수리·복원·후속 강화·다음 여정 신작 이유',
+              '```',
+              '',
+              '- 직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다.',
+              '- 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다.',
+              '- 자동 매일 내구도 감소·루틴 수리세를 만들지 않는다.',
+              '- 정확한 값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.',
+              '- 제품 구현: `BLOCKED`.',
+              '- Task3 구현: `NOT_APPROVED`.',
+              '',
+              '책임 원본:',
+              '',
+              '1. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`',
+              '2. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`',
+              '3. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`',
+          ))
           start = replace_once(start, start_anchor, start_replacement, 'start responsibility list')
-          start = replace_once(
-              start,
-              '5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`',
-              '5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`\n7. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`',
-              'start read order',
-          )
+          start = replace_once(start, '5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`', '5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`\n6. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`\n7. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`', 'start read order')
           start = start.replace('7. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`\n8. Google Sheet', '8. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`\n9. Google Sheet', 1)
-          start = replace_once(
-              start,
-              '현재 연속 작업은 `BS-CONTENT-20260811-01`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `1/10`에서 이어간다.',
-              '현재 연속 작업은 `BS-CONTENT-20260811-02`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `2/10`에서 이어간다.',
-              'start continuation',
-          )
+          start = replace_once(start, '현재 연속 작업은 `BS-CONTENT-20260811-01`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `1/10`에서 이어간다.', '현재 연속 작업은 `BS-CONTENT-20260811-02`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `2/10`에서 이어간다.', 'start continuation')
           start_path.write_text(start, encoding='utf-8')
 
-          # Roadmap: Decision 02 is current planning canon, still no product implementation.
           roadmap = roadmap_path.read_text(encoding='utf-8')
           roadmap = replace_once(roadmap, '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-01 / PLANNING_ONLY**', '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED / PLANNING_ONLY**', 'roadmap heading')
           roadmap = replace_once(roadmap, 'CURRENT_STAGE_STATUS: R3_R7_1_OF_10_MERGED_PR142_MAIN_CANON', 'CURRENT_STAGE_STATUS: R3_R7_2_OF_10_USER_APPROVED_PLANNING_CANON', 'roadmap stage status')
           roadmap = replace_once(roadmap, 'R3_R7_APPROVAL_COUNTER: 1/10', 'R3_R7_APPROVAL_COUNTER: 2/10', 'roadmap counter')
           roadmap = replace_once(roadmap, 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01', 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02\nR3_R7_RESUME_LOCATOR: ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED', 'roadmap current decision')
-          roadmap = roadmap.rstrip() + '''
+          roadmap_section = '\n'.join((
+              '',
+              '## R3–R7 Decision 02 — 토렌 마치 장거리 여정',
+              '',
+              '- Decision: `BS-CONTENT-20260811-02 / R3_R7_2_OF_10`',
+              '- Content: `ADVENTURER_02 / TOREN_MARCH`',
+              '- 목표: `JOURNEY_CONTINUITY_AND_RELIABILITY`',
+              '- 기존 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY`만 소비하고 새 신뢰성·수리성 원수치를 만들지 않는다.',
+              '- 직접 여행·지도 경로·생존 미니게임과 자동 마모세를 추가하지 않는다.',
+              '- 결과는 도착·경로 노출·같은 UID 작품 상태를 분리해 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다.',
+              '- 제품 구현: `BLOCKED`.',
+              '- Task3 구현: `NOT_APPROVED`.',
+              '',
+          ))
+          roadmap_path.write_text(roadmap.rstrip() + roadmap_section + '\n', encoding='utf-8')
 
-## R3–R7 Decision 02 — 토렌 마치 장거리 여정
-
-- Decision: `BS-CONTENT-20260811-02 / R3_R7_2_OF_10`
-- Content: `ADVENTURER_02 / TOREN_MARCH`
-- 목표: `JOURNEY_CONTINUITY_AND_RELIABILITY`
-- 기존 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY`만 소비하고 새 신뢰성·수리성 원수치를 만들지 않는다.
-- 직접 여행·지도 경로·생존 미니게임과 자동 마모세를 추가하지 않는다.
-- 결과는 도착·경로 노출·같은 UID 작품 상태를 분리해 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다.
-- 제품 구현: `BLOCKED`.
-- Task3 구현: `NOT_APPROVED`.
-'''
-          roadmap_path.write_text(roadmap.rstrip() + '\n', encoding='utf-8')
-
-          # Current Decisions changed, so refresh only its operating-health digest.
           health = json.loads(health_path.read_text(encoding='utf-8'))
           digest = hashlib.sha256(current_path.read_bytes()).hexdigest()
           records = {item['id']: item for item in health['evidence']['operating']}
