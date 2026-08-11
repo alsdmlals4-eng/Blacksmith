@@ -7,7 +7,6 @@ const ErrorCodes := preload("res://addons/godot_ai/utils/error_codes.gd")
 
 const NodeHandler := preload("res://addons/godot_ai/handlers/node_handler.gd")
 const RUN_READY_WAIT_SEC := 3.0
-const MAIN_SCENE_SETTING := "application/run/main_scene"
 
 ## ProjectSettings keys that decide what the engine EXECUTES at project
 ## startup. `McpPathValidator._reject_sensitive_write` already refuses direct
@@ -74,25 +73,12 @@ static func startup_execution_key_refusal(key: String) -> String:
 var _connection: McpConnection
 var _debugger_plugin
 var _editor_log_buffer
-var _project_settings_save: Callable = Callable()
 
 
-func _init(
-	connection: McpConnection = null,
-	debugger_plugin = null,
-	editor_log_buffer = null,
-	project_settings_save: Callable = Callable()
-) -> void:
+func _init(connection: McpConnection = null, debugger_plugin = null, editor_log_buffer = null) -> void:
 	_connection = connection
 	_debugger_plugin = debugger_plugin
 	_editor_log_buffer = editor_log_buffer
-	_project_settings_save = project_settings_save
-
-
-func _save_project_settings() -> int:
-	if _project_settings_save.is_valid():
-		return int(_project_settings_save.call())
-	return ProjectSettings.save()
 
 
 func get_project_setting(params: Dictionary) -> Dictionary:
@@ -138,7 +124,7 @@ func set_project_setting(params: Dictionary) -> Dictionary:
 	if had_setting and typeof(old_value) == TYPE_INT and typeof(value) == TYPE_FLOAT and float(int(value)) == value:
 		value = int(value)
 	ProjectSettings.set_setting(key, value)
-	var err := _save_project_settings()
+	var err := ProjectSettings.save()
 	if err != OK:
 		if had_setting:
 			ProjectSettings.set_setting(key, old_value)
@@ -154,58 +140,6 @@ func set_project_setting(params: Dictionary) -> Dictionary:
 			"type": type_string(typeof(value)),
 			"undoable": false,
 			"reason": "ProjectSettings changes are saved to disk",
-		}
-	}
-
-
-func set_main_scene(params: Dictionary) -> Dictionary:
-	if not params.has("scene"):
-		return ErrorCodes.make(ErrorCodes.MISSING_REQUIRED_PARAM, "Missing required param: scene")
-
-	var raw_scene = params.get("scene")
-	if typeof(raw_scene) != TYPE_STRING:
-		return ErrorCodes.make(ErrorCodes.WRONG_TYPE, "scene must be a String")
-
-	var scene := str(raw_scene).strip_edges()
-	if scene.is_empty():
-		return ErrorCodes.make(ErrorCodes.MISSING_REQUIRED_PARAM, "Missing required param: scene")
-
-	var path_validation := McpPathValidator.path_error(scene, "scene")
-	if path_validation != null:
-		return path_validation
-
-	if scene.get_extension().to_lower() != "tscn":
-		return ErrorCodes.make(ErrorCodes.VALUE_OUT_OF_RANGE, "scene must be a .tscn path")
-
-	if not ResourceLoader.exists(scene):
-		return ErrorCodes.make(ErrorCodes.RESOURCE_NOT_FOUND, "Scene not found: %s" % scene)
-
-	var resource := ResourceLoader.load(scene, "PackedScene")
-	if not resource is PackedScene:
-		return ErrorCodes.make(ErrorCodes.WRONG_TYPE, "scene must load as PackedScene: %s" % scene)
-
-	var had_setting := ProjectSettings.has_setting(MAIN_SCENE_SETTING)
-	var old_value = ProjectSettings.get_setting(MAIN_SCENE_SETTING) if had_setting else null
-	ProjectSettings.set_setting(MAIN_SCENE_SETTING, scene)
-	var err := _save_project_settings()
-	if err != OK:
-		if had_setting:
-			ProjectSettings.set_setting(MAIN_SCENE_SETTING, old_value)
-		else:
-			ProjectSettings.clear(MAIN_SCENE_SETTING)
-		return ErrorCodes.make(
-			ErrorCodes.INTERNAL_ERROR,
-			"Failed to save main scene setting (error %d)" % err
-		)
-
-	return {
-		"data": {
-			"key": MAIN_SCENE_SETTING,
-			"old_value": NodeHandler._serialize_value(old_value),
-			"value": scene,
-			"type": "String",
-			"undoable": false,
-			"reason": "Dedicated validated main-scene route",
 		}
 	}
 
