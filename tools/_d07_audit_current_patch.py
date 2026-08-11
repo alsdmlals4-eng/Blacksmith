@@ -81,7 +81,7 @@ def patch_runner() -> None:
     )
 '''
     text = replace_once(text, noble_block, liana_block, "runner Liana canon assertions")
-    text = replace_once(text, '            "R3_R7_APPROVAL_COUNTER: 6/10",', '            "R3_R7_APPROVAL_COUNTER: 7/10",', "runner gate counter")
+    text = replace_once(text, '        "R3_R7_APPROVAL_COUNTER: 6/10",', '        "R3_R7_APPROVAL_COUNTER: 7/10",', "runner gate counter")
     text = replace_once(
         text,
         "            R3_FIFTH_DECISION,\n            R3_CURRENT_DECISION,\n",
