@@ -131,7 +131,7 @@ class Collector02SedricArchivalAccessionContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, canon)
 
-    def test_current_routers_move_to_eight_of_ten_without_opening_product_code(self) -> None:
+    def test_current_routers_preserve_sedric_history_and_route_phase_c(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
@@ -154,8 +154,10 @@ class Collector02SedricArchivalAccessionContractTests(unittest.TestCase):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
             self.assertIn("R3_R7_APPROVAL_COUNTER: 9/10", text)
             self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09", text)
-            self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
-            self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
+            self.assertIn("PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", text)
+            self.assertIn("TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED", text)
+            self.assertIn("P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS", text)
+            self.assertIn("P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
 
         for text in (active, start_here, roadmap):
