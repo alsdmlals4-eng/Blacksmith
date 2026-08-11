@@ -95,7 +95,19 @@ PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 
 ## 현재 구현 입력
 
-R3–R7 승인 batch는 9/10에서 닫혔다. `BS-CONTENT-20260811-01`~`09`를 구현 입력으로 사용하고 승인되지 않은 Decision10을 만들지 않는다. 세부 책임은 `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`과 각 canon 파일에 있다.
+R3–R7 승인 batch는 9/10에서 닫혔다. 승인되지 않은 Decision10을 만들지 않는다. 세부 책임은 `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`과 각 canon 파일에 있다.
+
+```text
+BS-CONTENT-20260811-01
+BS-CONTENT-20260811-02
+BS-CONTENT-20260811-03
+BS-CONTENT-20260811-04
+BS-CONTENT-20260811-05
+BS-CONTENT-20260811-06
+BS-CONTENT-20260811-07
+BS-CONTENT-20260811-08
+BS-CONTENT-20260811-09
+```
 
 보호:
 - same UID lifecycle/history/provenance 보존
