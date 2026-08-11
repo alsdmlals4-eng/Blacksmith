@@ -108,6 +108,32 @@ Repair:
 - update only current handoff/current-decision assertions to bounded Phase C entry;
 - require historical R3 blocked tokens to remain discoverable as history.
 
+### Finding 5 — initializer current test and lower Development Gates still exposed planning-only state as current
+
+Classification: `CONFLICT + COMPLEMENT_GAP / MUST_FIX`.
+
+Evidence:
+- PR validation run `31496211022`
+- Godot 4.7.1 headless job: SUCCESS
+- PowerShell parser: PASS
+- bootstrap contract including Base #288: `5/5 PASS`
+- Hera postmerge closure: PASS
+- failure: initializer current-router test still required `ENTRY_STATE_GATE: PASS_R3_R7_PLANNING_ONLY_PRODUCT_SCOPE_STILL_REQUIRED`.
+
+Adversarial log review additionally found lower current-facing Development Gates sections still saying general product was blocked even though the top current summary had moved to Phase C.
+
+Repair workflow:
+- run `31496516490`
+- job `93795490874`
+- result: SUCCESS
+
+Repair:
+- current `ENTRY_STATE_GATE` / general product / R3 state / Task3 / new-scope assertions moved to bounded Phase C;
+- R3 `Planning-Only Gate` relabeled explicitly as historical, closed at 9/10;
+- Product Implementation Gate now states Phase C is open only within existing approved canon and requires P0 + fresh HiGodot receipt;
+- Missing-State current block now reflects Phase C entry, user-deferred images, separately gated Task3, and new-scope approval requirement;
+- original initializer decision/entry snapshot remains historical and unchanged.
+
 ## Base #288 same-goal upstream reconciliation
 
 During this PR, Base main advanced to:
