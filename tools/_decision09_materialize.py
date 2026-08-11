@@ -131,7 +131,8 @@ def update_current_decisions() -> None:
         f"> **R3_R7_DESIGN_ACTIVE / {D09} / R3_R7_9_OF_10 / PLANNING_ONLY**",
         label=path,
     )
-    text = replace_current_tokens(text, path)
+    text = require_replace(text, "R3_R7_APPROVAL_COUNTER: 8/10", "R3_R7_APPROVAL_COUNTER: 9/10", label=path)
+    text = require_replace(text, f"R3_R7_CURRENT_DECISION: {D08}", f"R3_R7_CURRENT_DECISION: {D09}", label=path)
     lines = text.splitlines()
     if any(line.startswith(f"- `{D09}`:") for line in lines):
         raise RuntimeError("Decision09 bullet unexpectedly already exists")
