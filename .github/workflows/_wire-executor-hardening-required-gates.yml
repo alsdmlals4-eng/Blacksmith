@@ -1,0 +1,36 @@
+name: Wire Executor Hardening Required Gates
+
+on:
+  push:
+    branches:
+      - ops/blacksmith-local-executor-postmerge-hardening
+    paths:
+      - .github/workflows/_wire-executor-hardening-required-gates.yml
+      - tools/_wire_executor_hardening_required_gates.py
+
+permissions:
+  contents: write
+
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ops/blacksmith-local-executor-postmerge-hardening
+          fetch-depth: 0
+      - name: Wire executor hardening to required gates
+        run: python tools/_wire_executor_hardening_required_gates.py
+      - name: Remove one-shot wiring helpers
+        run: |
+          rm tools/_wire_executor_hardening_required_gates.py
+          rm .github/workflows/_wire-executor-hardening-required-gates.yml
+      - name: Commit gate wiring
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "ci: validate dedicated executor changes across authority gates"
+          git push origin HEAD:ops/blacksmith-local-executor-postmerge-hardening
