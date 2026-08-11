@@ -95,7 +95,8 @@ class Adventurer02TorenContentContractTests(unittest.TestCase):
             "FIXTURE_B_BALANCED_DURABLE",
             "FIXTURE_C_CONTEXT_FUNCTION",
             "OBSERVED_BEHAVIOR_PLUS_NEUTRAL_RECALL",
-            "FIELD_SERVICEABILITY를 완전 복원이나 상시 성공 보너스로 오해하지 않는가",
+            "FIELD_SERVICEABILITY",
+            "완전 복원이나 상시 성공 보너스로 오해하지 않는가",
             "돌아온 작품은 이전 작품과 어떤 관계인가요?",
             "48dp",
         ):
