@@ -20,17 +20,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Make resume locator optional where a router does not own it
+      - name: Make canon responsibility IDs explicit before focused GREEN
         run: |
           python - <<'PY'
           from pathlib import Path
           p = Path('tools/_decision09_materialize.py')
           s = p.read_text(encoding='utf-8')
-          old = '''    text = require_replace(\n        text,\n        "R3_R7_RESUME_LOCATOR: COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED",\n        "R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED",\n        label=label,\n    )'''
-          new = '''    old_locator = "R3_R7_RESUME_LOCATOR: COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED"\n    if old_locator in text:\n        text = text.replace(\n            old_locator,\n            "R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED",\n        )'''
-          if s.count(old) != 1:
-              raise SystemExit(f'expected one locator block, got {s.count(old)}')
-          s = s.replace(old, new)
+          anchor = 'def main() -> None:\n'
+          patch = '''def normalize_canon_responsibility_ids() -> None:\n    path = CANON\n    text = read(path)\n    text = text.replace(\n        "Cassia / `GLADIATOR_01`의 질문:",\n        "Cassia / `CASSIA_BELLAN / GLADIATOR_01 / ARENA_SIGNATURE_WEAPON_AND_LEGACY`의 질문:",\n    )\n    text = text.replace(\n        "Noble01 / `CEREMONIAL_NOBLE`은",\n        "Noble01 / `CEREMONIAL_NOBLE / HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY`은",\n    )\n    write(path, text)\n\n\n'''
+          if 'def normalize_canon_responsibility_ids()' in s:
+              raise SystemExit('canon normalizer already exists')
+          if anchor not in s:
+              raise SystemExit('main anchor missing')
+          s = s.replace(anchor, patch + anchor, 1)
+          s = s.replace('    update_registry()\n', '    normalize_canon_responsibility_ids()\n    update_registry()\n', 1)
           p.write_text(s, encoding='utf-8')
           PY
           python -m py_compile tools/_decision09_materialize.py
@@ -40,5 +43,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tools/_decision09_materialize.py
           git diff --cached --check
-          git commit -m "fix: allow router-specific Decision09 locators"
+          git commit -m "fix: name Decision09 preserved responsibility owners"
           git push origin HEAD:docs/r3-gladiator-02-kyle-veteran-continuity
