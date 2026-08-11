@@ -1,0 +1,44 @@
+name: Decision09 materializer repair
+
+on:
+  push:
+    branches:
+      - docs/r3-gladiator-02-kyle-veteran-continuity
+    paths:
+      - '.github/workflows/decision09-fix-materializer.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/r3-gladiator-02-kyle-veteran-continuity
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Scope resume-locator replacement to hub routers
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('tools/_decision09_materialize.py')
+          s = p.read_text(encoding='utf-8')
+          old = '    text = replace_current_tokens(text, path)\n    lines = text.splitlines()'
+          new = '''    text = require_replace(text, "R3_R7_APPROVAL_COUNTER: 8/10", "R3_R7_APPROVAL_COUNTER: 9/10", label=path)\n    text = require_replace(text, f"R3_R7_CURRENT_DECISION: {D08}", f"R3_R7_CURRENT_DECISION: {D09}", label=path)\n    lines = text.splitlines()'''
+          if s.count(old) < 1:
+              raise SystemExit('expected update_current_decisions anchor missing')
+          s = s.replace(old, new, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+          python -m py_compile tools/_decision09_materialize.py
+      - name: Commit helper repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/_decision09_materialize.py
+          git diff --cached --check
+          git commit -m "fix: scope Decision09 router materializer"
+          git push origin HEAD:docs/r3-gladiator-02-kyle-veteran-continuity
