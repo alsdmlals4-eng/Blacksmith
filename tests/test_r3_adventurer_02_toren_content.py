@@ -124,6 +124,10 @@ class Adventurer02TorenContentContractTests(unittest.TestCase):
         self.assertIn("BS-CONTENT-20260811-01", active)
         self.assertIn("BS-CONTENT-20260811-01", start_here)
         self.assertIn("BS-CONTENT-20260811-01", roadmap)
+        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-02`", active)
+        self.assertNotIn("1. `BS-CONTENT-20260811-01`의 GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.", active)
+        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-02`", start_here)
+        self.assertNotIn("현재 연속 작업은 `BS-CONTENT-20260811-01`", start_here)
         self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", gates)
         self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", gates)
 
