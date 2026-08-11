@@ -8,9 +8,9 @@
   "project": {
     "project_skill_count": 3,
     "required_entrypoint_count": 8,
-    "active_document_count": 31,
-    "local_reference_count": 135,
-    "head": "f2056e2cac69a0b9f2e408abc61afce41b01c498"
+    "active_document_count": 32,
+    "local_reference_count": 141,
+    "head": "0d6599573fce4658fb131e57b7428733bbe3b3b4"
   },
   "finding_counts": {
     "errors": 0,

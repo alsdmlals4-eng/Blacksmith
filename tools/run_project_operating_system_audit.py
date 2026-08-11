@@ -18,13 +18,15 @@ R3_ERSA_CANON = "docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_E
 R3_CASSIA_CANON = "docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md"
 R3_NOBLE_CANON = "docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md"
 R3_LIANA_CANON = "docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md"
+R3_SEDRIC_CANON = "docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md"
 R3_FIRST_DECISION = "BS-CONTENT-20260811-01"
 R3_SECOND_DECISION = "BS-CONTENT-20260811-02"
 R3_THIRD_DECISION = "BS-CONTENT-20260811-03"
 R3_FOURTH_DECISION = "BS-CONTENT-20260811-04"
 R3_FIFTH_DECISION = "BS-CONTENT-20260811-05"
 R3_SIXTH_DECISION = "BS-CONTENT-20260811-06"
-R3_CURRENT_DECISION = "BS-CONTENT-20260811-07"
+R3_SEVENTH_DECISION = "BS-CONTENT-20260811-07"
+R3_CURRENT_DECISION = "BS-CONTENT-20260811-08"
 
 
 def classify_planned_references(findings: list[audit.Finding]) -> None:
@@ -76,13 +78,14 @@ def configure_current_assertions() -> None:
         '"stage_status": "R3_R7_DESIGN_ACTIVE"',
         '"product_implementation": "BLOCKED"',
         '"task3_implementation": "NOT_APPROVED"',
-        '"next_approval_counter": "7/10"',
+        '"next_approval_counter": "8/10"',
         f'"id": "{R3_FIRST_DECISION}"',
         f'"id": "{R3_SECOND_DECISION}"',
         f'"id": "{R3_THIRD_DECISION}"',
         f'"id": "{R3_FOURTH_DECISION}"',
         f'"id": "{R3_FIFTH_DECISION}"',
         f'"id": "{R3_SIXTH_DECISION}"',
+        f'"id": "{R3_SEVENTH_DECISION}"',
         f'"id": "{R3_CURRENT_DECISION}"',
         '"content_id": "COLLECTOR_01"',
         '"customer_id": "ERSA_ROEN"',
@@ -193,7 +196,7 @@ def configure_current_assertions() -> None:
     )
 
     assertions[R3_LIANA_CANON] = (
-        R3_CURRENT_DECISION,
+        R3_SEVENTH_DECISION,
         "SOLDIER_02",
         "LIANA_BERG",
         "FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY",
@@ -204,6 +207,26 @@ def configure_current_assertions() -> None:
         "NO_DIRECT_TACTICAL_COMBAT",
         "NO_ITEM_AS_SOLE_CAUSE_OF_MISSION_RESULT",
         "NO_BASELINE_PERMADEATH_FOR_LIANA",
+        "제품 구현: `BLOCKED`",
+        "Task3 구현: `NOT_APPROVED`",
+    )
+
+    assertions[R3_SEDRIC_CANON] = (
+        R3_CURRENT_DECISION,
+        "COLLECTOR_02",
+        "SEDRIC_VAEL",
+        "ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY",
+        "ARCHIVE_ACCESSION_STATE",
+        "PROVENANCE_DOCUMENTATION_STATE",
+        "ITEM_UID_CUSTODY_LEGACY_STATE",
+        "SAME_ITEM_UID_PRESERVED",
+        "ERSA_EXHIBITION_RESPONSIBILITY_PRESERVED",
+        "NOBLE01_TREATMENT_DEPTH_RESPONSIBILITY_PRESERVED",
+        "NO_AUTHENTICITY_TOTAL_SCORE",
+        "NO_DOCUMENT_FABRICATION",
+        "NO_UNRECORDED_HISTORY_AUTOFILL",
+        "NO_MUSEUM_MANAGEMENT_SIM",
+        "P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED",
         "제품 구현: `BLOCKED`",
         "Task3 구현: `NOT_APPROVED`",
     )
@@ -260,6 +283,7 @@ def configure_current_assertions() -> None:
             R3_FOURTH_DECISION,
             R3_FIFTH_DECISION,
             R3_SIXTH_DECISION,
+            R3_SEVENTH_DECISION,
             R3_CURRENT_DECISION,
             f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
             "COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED",
@@ -267,13 +291,13 @@ def configure_current_assertions() -> None:
         ):
             if token not in tokens:
                 tokens.append(token)
-        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `7/10`" not in tokens:
-            tokens.append("현재 R3–R7 승인 카운터: `7/10`")
+        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `8/10`" not in tokens:
+            tokens.append("현재 R3–R7 승인 카운터: `8/10`")
         assertions[path] = tuple(tokens)
 
     audit.REQUIRED_ASSERTIONS = assertions
     current_docs = list(audit.ACTIVE_DOCS)
-    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON, R3_ERSA_CANON, R3_CASSIA_CANON, R3_NOBLE_CANON, R3_LIANA_CANON):
+    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON, R3_ERSA_CANON, R3_CASSIA_CANON, R3_NOBLE_CANON, R3_LIANA_CANON, R3_SEDRIC_CANON):
         if path not in current_docs:
             current_docs.append(path)
     audit.ACTIVE_DOCS = tuple(current_docs)

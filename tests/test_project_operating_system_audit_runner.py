@@ -89,10 +89,11 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         cassia = audit.REQUIRED_ASSERTIONS[runner.R3_CASSIA_CANON]
         noble = audit.REQUIRED_ASSERTIONS[runner.R3_NOBLE_CANON]
         liana = audit.REQUIRED_ASSERTIONS[runner.R3_LIANA_CANON]
+        sedric = audit.REQUIRED_ASSERTIONS[runner.R3_SEDRIC_CANON]
         self.assertIn('"stage_status": "R3_R7_DESIGN_ACTIVE"', registry)
         self.assertIn('"product_implementation": "BLOCKED"', registry)
         self.assertIn('"task3_implementation": "NOT_APPROVED"', registry)
-        self.assertIn('"next_approval_counter": "7/10"', registry)
+        self.assertIn('"next_approval_counter": "8/10"', registry)
         for decision_id in (
             '"id": "BS-CONTENT-20260811-01"',
             '"id": "BS-CONTENT-20260811-02"',
@@ -101,6 +102,7 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
             '"id": "BS-CONTENT-20260811-05"',
             '"id": "BS-CONTENT-20260811-06"',
             '"id": "BS-CONTENT-20260811-07"',
+            '"id": "BS-CONTENT-20260811-08"',
         ):
             self.assertIn(decision_id, registry)
         self.assertIn('"content_id": "COLLECTOR_01"', registry)
@@ -136,6 +138,16 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertIn("NO_DIRECT_TACTICAL_COMBAT", liana)
         self.assertIn("NO_ITEM_AS_SOLE_CAUSE_OF_MISSION_RESULT", liana)
         self.assertIn("NO_BASELINE_PERMADEATH_FOR_LIANA", liana)
+        self.assertIn("BS-CONTENT-20260811-08", sedric)
+        self.assertIn("COLLECTOR_02", sedric)
+        self.assertIn("SEDRIC_VAEL", sedric)
+        self.assertIn("ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY", sedric)
+        self.assertIn("ARCHIVE_ACCESSION_STATE", sedric)
+        self.assertIn("PROVENANCE_DOCUMENTATION_STATE", sedric)
+        self.assertIn("ITEM_UID_CUSTODY_LEGACY_STATE", sedric)
+        self.assertIn("SAME_ITEM_UID_PRESERVED", sedric)
+        self.assertIn("NO_AUTHENTICITY_TOTAL_SCORE", sedric)
+        self.assertIn("NO_DOCUMENT_FABRICATION", sedric)
         for path in (
             runner.R3_REGISTRY,
             runner.R3_NADIA_CANON,
@@ -145,6 +157,7 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
             runner.R3_CASSIA_CANON,
             runner.R3_NOBLE_CANON,
             runner.R3_LIANA_CANON,
+            runner.R3_SEDRIC_CANON,
         ):
             self.assertIn(path, audit.ACTIVE_DOCS)
 
@@ -189,7 +202,7 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertNotIn("R2_CHECKPOINT_005", start)
         self.assertNotIn("현재 승인 카운터: `0/10`", active)
         self.assertNotIn("제품 구현: `BLOCKED`", active)
-        self.assertIn("현재 R3–R7 승인 카운터: `7/10`", active)
+        self.assertIn("현재 R3–R7 승인 카운터: `8/10`", active)
 
 
 if __name__ == "__main__":
