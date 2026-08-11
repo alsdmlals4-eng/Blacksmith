@@ -26,7 +26,7 @@ jobs:
         with:
           repository: alsdmlals4-eng/Base
           ref: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
-          path: ../base
+          path: .tmp/base
           persist-credentials: false
 
       - name: Apply Decision07 audit assertions
@@ -35,10 +35,11 @@ jobs:
       - name: Verify audit meta-contract and live wrapper
         run: |
           python -m unittest tests/test_project_operating_system_audit_runner.py -v
-          python tools/run_project_operating_system_audit.py --base-root ../base --report artifacts/base-adoption-report.json
+          python tools/run_project_operating_system_audit.py --base-root .tmp/base --report artifacts/base-adoption-report.json
 
-      - name: Remove one-shot patch tools
+      - name: Remove temporary Base and one-shot patch tools
         run: |
+          rm -rf .tmp
           rm tools/_d07_audit_current_patch.py
           rm .github/workflows/d07-audit-current-patch.yml
 
