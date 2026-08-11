@@ -94,6 +94,78 @@ Repair rule:
 - only Development Gates / Start Here / Active Context current assertions move to bounded Phase C entry;
 - `BS-OPS-20260811-03`, planning-complete, P0 bootstrap-required, historical R3 blockers, and Task3 separate gate are all asserted together.
 
+### Finding 4 — Hera postmerge closure mixed Task2 history with the new current Phase C router
+
+Classification: `CONFLICT / MUST_FIX`.
+
+Evidence:
+- PR validation run `31495310383`
+- all contracts through Hera vendor reconciliation passed;
+- failure was the Hera postmerge current-router test still requiring the old planning-only R3 current gate.
+
+Repair:
+- preserve the historical Task2/Hera closure evidence unchanged;
+- update only current handoff/current-decision assertions to bounded Phase C entry;
+- require historical R3 blocked tokens to remain discoverable as history.
+
+## Base #288 same-goal upstream reconciliation
+
+During this PR, Base main advanced to:
+
+`6d2feba2bc49fda2d8d273248b55087853615d5d` — `docs: require project-dedicated local execution environment (#288)`.
+
+Classification: `COMPLEMENT_GAP / MUST_FIX` because this upstream commit directly owns the same local-executor goal.
+
+New shared invariants:
+- `ASSUME_PREVIOUS_POWERSHELL_CLOSED`
+- `PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST`
+- `CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST`
+- explicit executor targeting with `codex -C <exact project/worktree>`
+
+### Base #288 semantic RED
+
+Test-only head:
+`e6c4456c6e0f5987cc5d9e6a3501f321e805938c`
+
+PR validation:
+- run `31495709662`
+- Python job `93792813268`
+
+Verified before failure:
+- checkout/Python: PASS
+- PowerShell parser: PASS
+- project core: PASS
+- existing R3 history/current tests: PASS
+
+New bootstrap contract:
+- two pre-existing safety tests: PASS
+- three new Base #288 reconciliation tests: FAIL
+
+Exact semantic failures:
+- design lacked Base #288 SHA/invariants;
+- current Decision/authority lacked Base #288 invariants;
+- launcher lacked the shared fresh-shell tokens and explicit `-C` project binding.
+
+This was a valid second semantic RED introduced specifically for the newly arrived same-goal Base authority.
+
+### Base #288 GREEN materialization
+
+One-shot reconciliation workflow:
+- run `31496092257`
+- job `93794051910`
+- result: SUCCESS
+- materialized branch head: `05450f1e17216b0b52d384b9380dcc96f5ce342e`
+
+Reconciliation applied:
+- launcher now declares the three Base #288 invariants and uses `codex -C` with the exact Blacksmith path;
+- spec, plan, and Decision record Base #288 and downstream concrete binding;
+- current routers carry dedicated-environment invariants;
+- Active/Start current Base observation advanced from the old Decision09-time Base SHA to Base #288;
+- pre-planning-complete lower sections were relabeled as historical snapshots;
+- Hera current-router assertions were separated from historical Task2/Hera evidence;
+- `BS-CURRENT-DECISIONS` operating-health digest was refreshed;
+- temporary reconciliation helper/workflow were removed in the same materialized commit.
+
 ## Evidence boundary
 
 PowerShell Core parser has already reported `PowerShell parser: PASS` in GitHub CI. This proves parse validity only.
