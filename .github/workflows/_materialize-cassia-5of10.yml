@@ -6,6 +6,7 @@ on:
       - plan/r3-gladiator-01-cassia-5of10
     paths:
       - tools/_materialize_cassia_5of10.py
+      - tools/_fix_cassia_materializer_counts.py
       - .github/workflows/_materialize-cassia-5of10.yml
 
 permissions:
@@ -26,6 +27,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Correct fail-closed marker counts
+        run: python tools/_fix_cassia_materializer_counts.py
       - name: Apply approved planning canon
         run: python tools/_materialize_cassia_5of10.py
       - name: Verify focused current contracts before commit
