@@ -90,6 +90,8 @@ fresh authority preflight
 
 현재 Decision: `BS-CONTENT-20260811-05`.
 
+첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.
+
 ```text
 GLADIATOR_01 / CASSIA_BELLAN
 ARENA_SIGNATURE_WEAPON_AND_LEGACY
@@ -250,7 +252,7 @@ CORRUPT_PRIMARY_VALID_BACKUP = PRESERVE_VALID_BACKUP_WHEN_PRIMARY_CORRUPT
 
 일반 제품 구현은 `BLOCKED`다. 버티컬 슬라이스는 R2 Batch 006이 승인한 namespace와 사용자 승인 Task에서만 허용한다. Task2의 승인 범위는 병합·postmerge CI closure까지 완료됐으며, 이를 다음 Task나 일반 제품 Gate 개방으로 해석하지 않는다. `BS-VS-INIT-20260808-01`, `BS-HIGODOT-20260808-01`, `BS-HIGODOT-EXEC-20260808-01`, `BS-TOOLCHAIN-20260809-01`은 각자의 승인 범위를 넘어 확장되지 않는다.
 
-`BS-CONTENT-20260811-01`, `BS-CONTENT-20260811-02`, `BS-CONTENT-20260811-03`, 현재 `BS-CONTENT-20260811-04`는 planning-only Decision이다. 이 승인들만으로 제품 구현, Task3, HiGodot authoring scope를 개방하지 않는다.
+`BS-CONTENT-20260811-01`, `BS-CONTENT-20260811-02`, `BS-CONTENT-20260811-03`, `BS-CONTENT-20260811-04`, 현재 `BS-CONTENT-20260811-05`는 planning-only Decision이다. 이 승인들만으로 제품 구현, Task3, HiGodot authoring scope를 개방하지 않는다.
 
 ## Three Affix Gate
 
