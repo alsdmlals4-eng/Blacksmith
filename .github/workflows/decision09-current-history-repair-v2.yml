@@ -1,0 +1,48 @@
+name: Decision09 current-history repair v2
+
+on:
+  push:
+    branches:
+      - docs/r3-gladiator-02-kyle-veteran-continuity
+    paths:
+      - 'tools/_decision09_current_history_repair.py'
+      - '.github/workflows/decision09-current-history-repair-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: docs/r3-gladiator-02-kyle-veteran-continuity
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Repair current-history ownership
+        run: python tools/_decision09_current_history_repair.py
+      - name: Compile repaired Python consumers
+        run: python -m py_compile tools/run_project_operating_system_audit.py tests/check_project_core_alignment_current.py tests/test_hera_postmerge_closure_contract.py tests/test_project_operating_system_audit_runner.py
+      - name: Run focused current-history regression
+        run: |
+          python -m unittest \
+            tests.test_r3_gladiator_02_kyle_content \
+            tests.test_r3_collector_02_sedric_content \
+            tests.test_r3_soldier_02_liana_content \
+            tests.test_r3_collector_01_ersa_content \
+            tests.test_r3_soldier_01_marek_content \
+            tests.test_r3_gladiator_01_cassia_content \
+            tests.test_r3_noble_01_heirloom_succession_content \
+            tests.test_auto_enhancement_cap_unlock \
+            tests.test_project_operating_system_audit_runner -v
+          python tests/check_project_core_alignment_current.py
+      - name: Commit repaired current-history state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "test: preserve R3 history while Kyle is current"
+          git push origin HEAD:docs/r3-gladiator-02-kyle-veteran-continuity
