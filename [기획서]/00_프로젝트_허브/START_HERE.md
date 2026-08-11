@@ -53,7 +53,7 @@ R3_R7_RESUME_LOCATOR: ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED
 
 ## 현재 R3–R7 설계 재개
 
-사용자 승인 Decision: `BS-CONTENT-20260811-01`.
+첫 승인 완료 Decision: `BS-CONTENT-20260811-01`.
 
 ```text
 ADVENTURER_01 / NADIA_VENN
@@ -110,11 +110,11 @@ ADVENTURER_02 / TOREN_MARCH
 5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
 6. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
 7. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-7. `ACTIVE_CONTEXT.md`
-8. `DEVELOPMENT_GATES.md`
-9. `ROADMAP.md`
-10. 실제 code/data/Scene/tests
-11. Google Sheet `00`, `01`, `02`, `04`, `13`, `50` current rows
+8. `ACTIVE_CONTEXT.md`
+9. `DEVELOPMENT_GATES.md`
+10. `ROADMAP.md`
+11. 실제 code/data/Scene/tests
+12. Google Sheet `00`, `01`, `02`, `04`, `13`, `50` current rows
 
 ## Task2 폐쇄 증거
 
@@ -140,6 +140,9 @@ ADVENTURER_02 / TOREN_MARCH
 - 일반 제품 구현은 `BLOCKED`다.
 - Task2 완료 또는 R3–R7 기획 재개는 Task3 구현 승인으로 자동 확장되지 않는다.
 - `BS-CONTENT-20260811-01`은 대장장이의 작품 선택·인과 판독·같은 UID 생애 환류를 보호한다.
+- `BS-CONTENT-20260811-02`는 직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다.
+- `BS-CONTENT-20260811-02`는 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다.
+- `BS-CONTENT-20260811-02`는 자동 매일 내구도 감소·루틴 수리세를 만들지 않는다.
 - GUT 9.7.1은 GDScript test authority다.
 - HiGodot은 승인된 Godot persistent authoring authority다.
 - Hera는 enabled non-authoritative이며 authoring/mutation authority는 `NONE`이다.

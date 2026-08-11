@@ -154,7 +154,7 @@ Add a second `current_decisions` entry with:
 {
   "id": "BS-CONTENT-20260811-02",
   "title": "모험가 02 토렌 마치 장거리 여정 지속성·신뢰성 콘텐츠",
-  "status": "USER_APPROVED_R3_R7_2_OF_10_MAIN_CANON",
+  "status": "USER_APPROVED_R3_R7_2_OF_10",
   "canon": "docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md"
 }
 ```

@@ -7,7 +7,7 @@
 
 ```yaml
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
-CURRENT_STAGE_STATUS: R3_R7_2_OF_10_USER_APPROVED_PLANNING_CANON
+CURRENT_STAGE_STATUS: R3_R7_2_OF_10_USER_APPROVED_PLANNING_ONLY
 R2_CHECKPOINT_005: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
 R2_BATCH_005: CLOSED_10_OF_10
 R2_BATCH_005_STATE: R2_BATCH_005_CLOSED_10_OF_10
@@ -50,7 +50,7 @@ HUMAN_PLAYTEST: NOT_RUN
 
 ## R3–R7 현재 설계 배치
 
-현재 승인 카운터: `1/10`.
+현재 승인 카운터: `2/10`.
 
 ### 1/10 — `BS-CONTENT-20260811-01`
 
@@ -76,6 +76,27 @@ ADVENTURER_01 / NADIA_VENN
 
 정확한 기간·확률·보상·손실·복구 비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
 
+### 2/10 — `BS-CONTENT-20260811-02`
+
+```text
+ADVENTURER_02 / TOREN_MARCH
+토렌 마치 장거리 여정 개인 일정
+JOURNEY_CONTINUITY_AND_RELIABILITY
+```
+
+목표:
+
+- 기존 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY`만 소비해 장거리 환경 노출과 작품 신뢰성을 판단한다.
+- 직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다.
+- 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다.
+- 자동 매일 내구도 감소·루틴 수리세를 만들지 않는다.
+- 결과는 도착·경로 노출·같은 UID 작품 상태를 분리하고 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다.
+- 정확한 기간·확률·마모량·수리량·보상·비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+
+책임 원본:
+
+- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
+- `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
 ## R3 — 버티컬 슬라이스 기반
 
 - 최신 정본 전용 데이터 Schema
@@ -86,7 +107,7 @@ ADVENTURER_01 / NADIA_VENN
 
 기존 POC의 구형 품질·보조재료·범용 수식어 구조는 재사용하지 않는다.
 
-현재 `BS-CONTENT-20260811-01`은 이 단계의 **콘텐츠 설계**만 구체화한다. 실제 제품 구현은 열지 않는다.
+`BS-CONTENT-20260811-01`은 1/10 완료 이력이며 현재 `BS-CONTENT-20260811-02`가 두 번째 **콘텐츠 설계**를 구체화한다. 둘 모두 실제 제품 구현을 열지 않는다.
 
 ## R4 — 콘텐츠와 경제
 
@@ -122,7 +143,7 @@ ADVENTURER_01 / NADIA_VENN
 - 고객 결과와 작품 선택의 인과를 설명한다.
 - 같은 작품의 변화와 다음 행동을 기억한다.
 
-`BS-CONTENT-20260811-01`의 플레이테스트는 작품 선택 행동과 중립적 회상 인터뷰를 함께 사용한다. 실제 playable scope와 사람 검증은 아직 `NOT_RUN`이다.
+`BS-CONTENT-20260811-01`과 `BS-CONTENT-20260811-02`의 플레이테스트는 작품 선택 행동과 중립적 회상 인터뷰를 함께 사용한다. 실제 playable scope와 사람 검증은 아직 `NOT_RUN`이다.
 
 ## R8 — 적대적 최종 검토
 
@@ -138,6 +159,7 @@ ADVENTURER_01 / NADIA_VENN
 ```yaml
 R3_R7_DESIGN_ACTIVE: true
 BS-CONTENT-20260811-01: USER_APPROVED_PLANNING_ONLY
+BS-CONTENT-20260811-02: USER_APPROVED_PLANNING_ONLY
 PRODUCT_IMPLEMENTATION: BLOCKED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 HUMAN_PLAYTEST: NOT_RUN
@@ -154,14 +176,3 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 ```
 
 일반 수식어 A·B와 보조재료 슬롯은 재도입하지 않는다.
-## R3–R7 Decision 02 — 토렌 마치 장거리 여정
-
-- Decision: `BS-CONTENT-20260811-02 / R3_R7_2_OF_10`
-- Content: `ADVENTURER_02 / TOREN_MARCH`
-- 목표: `JOURNEY_CONTINUITY_AND_RELIABILITY`
-- 기존 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY`만 소비하고 새 신뢰성·수리성 원수치를 만들지 않는다.
-- 직접 여행·지도 경로·생존 미니게임과 자동 마모세를 추가하지 않는다.
-- 결과는 도착·경로 노출·같은 UID 작품 상태를 분리해 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다.
-- 제품 구현: `BLOCKED`.
-- Task3 구현: `NOT_APPROVED`.
-
