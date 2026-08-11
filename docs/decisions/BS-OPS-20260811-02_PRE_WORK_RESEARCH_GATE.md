@@ -137,6 +137,16 @@ Blacksmith는 조사 결과를 단순 링크 목록이 아니라 `ADOPT / ADAPT 
 5. `BS-OPS-20260805-01` 중복 권위 → benchmark scope refinement만 수행, TDD/early checkpoint 보존.
 6. merge wording drift → `BS-OPS-20260811-01`/v4.5 r2의 같은 승인 범위 merge authority를 복구하고 새 기획 충돌·범위 확장만 사용자 Decision으로 남긴다.
 
+## TDD and validation evidence
+
+- RED head: `5da2f829517cd665ccb8279a8d141b9541a5de38`
+- RED workflow: PR validation `31448642426`, job `93648192711`
+- RED reason: `tests/test_pre_work_research_gate.py`가 책임 Decision 파일 부재 때문에 `FileNotFoundError`로 실패했고 기존 core-alignment 검사는 통과했다.
+- Materialization commit: `ffddfb9426ad00618afb8f025cc8b7a7a914763b`
+- Adversarial ripple findings: 기존 compatibility anchor `벤치마킹·현업 비교` 보존 누락과 `CURRENT_CONFIRMED_DECISIONS.md` health SHA 파생증거 stale을 발견했다.
+- Ripple resolution: compatibility token을 새 heading에 보존하고 `BS-CURRENT-DECISIONS` health SHA를 실제 bytes에 맞게 갱신한다. `OM-L3`를 낮추거나 테스트를 약화하지 않는다.
+- Final exact-head workflow 결과와 merge/readback 증거는 PR #146의 최종 검증 및 Google Sheet same-ID sync에서 기록한다.
+
 ## Protected boundaries
 
 - `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` v4.5 r2 원문은 이번 Decision에서 수정하지 않는다.
