@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / R3_R7_2_OF_10 / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-03 / R3_R7_3_OF_10 / PLANNING_ONLY**
 >
 > R2 Batch 006과 Task2 기술 폐쇄는 그대로 상속한다. 이번 승인은 R3–R7 기획 재개이며 Task3 또는 일반 제품 구현 승인으로 확대하지 않는다.
 
@@ -46,8 +46,8 @@ CURRENT_TECHNICAL_BASELINE: fa9595b2df95897c915331a1cb5d9b1a583611f0
 HIGODOT_EXECUTION_DECISION: BS-HIGODOT-EXEC-20260808-01
 HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 2/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02
+R3_R7_APPROVAL_COUNTER: 3/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03
 NEW_PRODUCT_SCOPE: NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
@@ -90,6 +90,7 @@ PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
 - `BS-CONTENT-20260811-01`: `ADVENTURER_01` 나디아 벤 유적 탐사 개인 일정. `생환 + 회수`를 목표로 작품 한 점을 맡기고, 하루 종료당 최대 한 번 진행하며, 같은 UID의 즉시 인과 결과와 지연 생애·복원·후속 강화 이유를 만든다. 직접 전투·탐험 미니게임과 단일 항상최적 장비 정답은 추가하지 않는다. — `USER_APPROVED / R3_R7_1_OF_10 / MERGED_PR142_MAIN_CANON / PLANNING_ONLY`
 - `BS-CONTENT-20260811-02`: `ADVENTURER_02` 토렌 마치 장거리 여정 개인 일정. 여정 지속성·신뢰성을 목표로 기존 중량·강화·내구도·실제 관련 환경/현장정비 기능을 비교하며, 직접 여행 조작·새 신뢰성/수리성 원수치·자동 마모세를 추가하지 않고 같은 UID의 마모·현장 유지보수·손상 결과를 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다. — `USER_APPROVED / R3_R7_2_OF_10 / PLANNING_ONLY`
+- `BS-CONTENT-20260811-03`: `SOLDIER_01` 마레크 올덴 소량 표준 주문. 기준품 한 점을 직접 만든 뒤 반복 설정은 압축할 수 있지만 약 10개 baseline fixture의 각 작품은 독립 UID·비용·작업·단조·강화·연대기를 유지한다. 결과는 `UNIT_MISSION_STATE / STANDARD_ADOPTION_STATE / BATCH_ITEM_LIFECYCLE_STATE`로 분리하며 직접 전술 전투·실시간 병참·작업자 생산라인·무료 복제를 추가하지 않는다. — `USER_APPROVED / R3_R7_3_OF_10 / PLANNING_ONLY`
 - `BS-CRAFT-20260804-04`: 보조재료 제거와 정밀강화 방식·촉매 책임 분리
 - `BS-CRAFT-20260804-05`: 촉매 수식어 씨앗·계보·진화
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
@@ -100,6 +101,7 @@ PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 - `BS-OPS-20260804-02`: 정본 드리프트·구형 문서 상태 관리
 - `BS-OPS-20260805-01`: 벤치마킹·조기 체크포인트·상시 TDD
 - `BS-OPS-20260811-02`: 모든 의미 있는 작업 전에 fresh preflight → 벤치마킹 → 최신 현업/공식/1차 자료 → `ADOPT / ADAPT / REJECT / DIFFERENTIATOR` → 정본 충돌 → 적대 pre-check를 요구한다. 작업 유형별 조사 강도를 적용하고 `BENCHMARK_NOT_APPLICABLE`은 저위험 작업에서 사유를 남긴 제한적 예외다. `BS-OPS-20260805-01`의 benchmark scope만 refine하며 TDD·early checkpoint는 그대로 보존한다. — `USER_APPROVED / PRE_WORK_RESEARCH_GATE / PLANNING_ONLY`
+- `BS-CORE-20260811-01`: 기존 저위험 연속강화를 성장형 `AUTO_ENHANCEMENT_CAP_UNLOCK`으로 refine한다. 초기 `수동 15회 → AUTO_CAP +20`을 보존하고, 이후 분야별 기술 돌파보다 한 10강 밴드 뒤까지 목표 지정 자동 강화를 해금한다. 정상 확률·비용·자원·UID 이력을 보존하고 `HIGH / VERY_HIGH`, 정밀강화, 기술 돌파, 무보호 파괴 가능 시도는 자동화하지 않는다. — `USER_APPROVED_DIRECTION / PLANNING_ONLY`
 - `BS-HERA-20260808-01`: Hera Agent Godot 1.0.0 vendor tree의 main 존재와 당시 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE` 상태를 확정한 reconciliation Decision이다. authoring/mutation authority를 `NONE`으로 유지한다. 현재 plugin 활성화 상태는 `BS-TOOLCHAIN-20260809-01`이 후속으로 대체하지만 이 역사 증거와 Hera 권위 `NONE`은 유지된다. — `USER_APPROVED_RECONCILIATION / MERGED_PR132_MAIN_CANON / HISTORICAL_ACTIVATION_STATE`
 - `BS-HIGODOT-20260808-01`: HiGodot production authoring 권위를 `FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY / USER_APPROVED_ACTIVE`로 활성화한다. 현재 승인은 `TASK2_SCOPED_AUTHORING_ONLY`이며 일반 제품 구현은 `BLOCKED`로 유지한다. `.tscn`·Resource·`project.godot`은 실제 HiGodot production authoring execution path와 저작 provenance 없이 일반 코드 편집·GitHub API 텍스트 치환으로 우회하지 않는다. 현재 실행 경로는 `BLOCKED_UNAVAILABLE_OR_UNVERIFIED`; GUT는 sole test authority, Hera authority는 `NONE`, PR #131 병합은 별도 승인이다. — `USER_APPROVED_PRODUCTION_AUTHORING_ACTIVATION / SCENE_PROJECT_GREEN_BLOCKED_PENDING_COMPLIANT_EXECUTION_PATH`
 - `BS-TOOLCHAIN-20260809-01`: Godot AI vendor/runtime을 `3.1.3`으로 전환하고 GUT 9.7.1 및 Hera Agent Godot 1.0.0 editor plugin 활성화를 승인한다. 현재 plugin 활성화 상태는 `Godot AI + GUT + Hera`이며, 이는 권위 확장이 아니다. HiGodot은 `TASK2_SCOPED_AUTHORING_ONLY` Godot 직렬화 저작 권위, GUT은 `SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY`, Hera는 `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE / AUTHORITY_NONE`을 유지한다. Hera의 tracked/serialized mutation은 별도 범위 승인 전 금지한다. — `USER_APPROVED_ACTIVE / GITHUB_VENDOR_3_1_3_AND_EDITOR_PLUGIN_STATE_READBACK_PROVEN`
@@ -425,5 +427,35 @@ JOURNEY_CONTINUITY_AND_RELIABILITY
 - 일정은 `PREP_AND_DEPARTURE → EXPOSURE_AND_ROUTE_ADAPTATION → ARRIVAL_AND_ITEM_ASSESSMENT` 구조이며 고정 3일 계약이 아니다.
 - 결과는 `JOURNEY_ARRIVAL_STATE / ROUTE_EXPOSURE_STATE / ITEM_UID_LIFECYCLE_STATE`를 분리하고 같은 UID를 수리·복원·후속 강화·다음 여정 신작 판단으로 돌려보낸다.
 - 정확한 기간·확률·마모량·수리량·보상·비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+- 제품 구현: `BLOCKED`.
+- Task3 구현: `NOT_APPROVED`.
+
+## 19. R3–R7 세 번째 상세 콘텐츠 — 마레크 올덴 소량 표준 주문
+
+Decision: `BS-CONTENT-20260811-03`.
+
+```text
+SOLDIER_01 / MAREK_OLDEN
+SMALL_LOT_STANDARD_ORDER
+UNIT_READINESS_AND_STANDARD_FIT
+```
+
+- 첫 검증 수량은 `ORDER_QUANTITY = 10 / NON_CANONICAL_BASELINE_TEST_PRESET`다.
+- 기준품 뒤 반복 설정은 압축할 수 있지만 각 작품의 UID·비용·작업·단조·강화·연대기는 독립한다.
+- 결과는 `UNIT_MISSION_STATE / STANDARD_ADOPTION_STATE / BATCH_ITEM_LIFECYCLE_STATE`로 분리한다.
+- 직접 전술 전투·실시간 병참·작업자 생산라인·무료 복제·불투명 표준화 점수는 추가하지 않는다.
+- 제품 구현: `BLOCKED`.
+- Task3 구현: `NOT_APPROVED`.
+
+## 20. 자동 강화 최대치 해금
+
+Decision: `BS-CORE-20260811-01 / AUTO_ENHANCEMENT_CAP_UNLOCK`.
+
+- 기존 `수동 강화 15회 뒤 해금 / +1~+20` 저위험 연속강화를 보존한다.
+- 이후 해당 분야의 수동 기술 돌파보다 한 10강 밴드 뒤까지 자동 상한을 해금한다.
+- 플레이어가 목표 강화 수치를 지정하며 목표는 해당 분야 `AUTO_CAP` 이하만 가능하다.
+- 자동 시도는 정상 강화 확률·비용·자원·작업 기회비용·동일 UID 이력을 그대로 사용한다.
+- `HIGH / VERY_HIGH`, 정밀강화, 기술 돌파, 무보호 파괴 가능 시도는 수동 전용이다.
+- 이 시스템 Decision은 R3 콘텐츠 승인 카운터를 증가시키지 않는다.
 - 제품 구현: `BLOCKED`.
 - Task3 구현: `NOT_APPROVED`.

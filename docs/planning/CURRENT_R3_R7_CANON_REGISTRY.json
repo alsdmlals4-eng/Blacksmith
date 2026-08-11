@@ -6,7 +6,7 @@
   "stage_status": "R3_R7_DESIGN_ACTIVE",
   "product_implementation": "BLOCKED",
   "task3_implementation": "NOT_APPROVED",
-  "next_approval_counter": "2/10",
+  "next_approval_counter": "3/10",
   "inherits": [
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
@@ -155,6 +155,54 @@
         "same_uid_visible_in_result": true,
         "approval_source_main": "cb5ceff127bf4f2adb38b34ebaa092d97111fa94"
       }
+    },
+    {
+      "id": "BS-CONTENT-20260811-03",
+      "title": "군인 01 마레크 올덴 소량 표준 납품 콘텐츠",
+      "status": "USER_APPROVED_R3_R7_3_OF_10",
+      "canon": "docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md",
+      "refines": [
+        "BS-CONTENT-20260804-01",
+        "BS-CONTENT-20260804-02"
+      ],
+      "depends_on": [
+        "BS-CUSTOMER-20260803-02",
+        "BS-CUSTOMER-20260806-01",
+        "BS-ITEM-20260806-04",
+        "BS-ITEM-20260806-05",
+        "BS-UX-20260805-01",
+        "BS-CORE-20260811-01",
+        "BS-CONTENT-20260811-02"
+      ],
+      "contract": {
+        "content_id": "SOLDIER_01",
+        "customer_id": "MAREK_OLDEN",
+        "customer_archetype": "SOLDIER",
+        "activity_family": "SMALL_LOT_STANDARD_ORDER",
+        "content_goal": "UNIT_READINESS_AND_STANDARD_FIT",
+        "player_role": "BLACKSMITH_SMALL_LOT_EQUIPMENT_DECISION_MAKER_NOT_LOGISTICS_OR_COMBAT_CONTROLLER",
+        "baseline_order_quantity": 10,
+        "order_quantity_status": "NON_CANONICAL_BASELINE_TEST_FIXTURE",
+        "reference_item_required": true,
+        "per_item_uid_preserved": true,
+        "per_item_cost_and_result_preserved": true,
+        "free_item_cloning": false,
+        "worker_or_production_line_system": false,
+        "direct_tactical_combat": false,
+        "realtime_logistics_control": false,
+        "opaque_standardization_score": false,
+        "single_highest_enhancement_always_best": false,
+        "low_enhancement_target": "NON_CANONICAL_BASELINE_TEST_PRESET",
+        "auto_enhancement_cap_owner": "BS-CORE-20260811-01",
+        "result_axes": [
+          "UNIT_MISSION_STATE",
+          "STANDARD_ADOPTION_STATE",
+          "BATCH_ITEM_LIFECYCLE_STATE"
+        ],
+        "product_implementation": "BLOCKED",
+        "task3_implementation": "NOT_APPROVED",
+        "human_playtest": "NOT_RUN"
+      }
     }
   ],
   "benchmark_context": [
@@ -187,6 +235,30 @@
       "decision": "ADAPT",
       "use": "persistent equipment returns from environmental exposure with repair/upgrade reasons",
       "avoid": "mandatory maintenance tax or vehicle-survival loop"
+    },
+    {
+      "source": "Blacksmith Master official Steam page",
+      "decision": "ADAPT",
+      "use": "small-order and production-throughput context",
+      "avoid": "worker production-line or industrial mass-production core"
+    },
+    {
+      "source": "Anvil Saga official Steam page",
+      "decision": "ADAPT",
+      "use": "customer order to crafted output to world consequence",
+      "avoid": "broad shop-simulation scope drift"
+    },
+    {
+      "source": "Battle Brothers official features",
+      "decision": "ADAPT",
+      "use": "equipment suitability affects group outcome",
+      "avoid": "direct tactical combat and soldier-management gameplay"
+    },
+    {
+      "source": "Lean Enterprise Institute standardized work guidance",
+      "decision": "ADAPT",
+      "use": "explicit common standard and repeatable process",
+      "avoid": "industrial statistical-control simulation"
     }
   ],
   "protected_boundaries": [
@@ -199,6 +271,13 @@
     "PR81_REFERENCE_ONLY_DO_NOT_MERGE",
     "NO_DIRECT_TRAVEL_OR_ROUTE_MINIGAME",
     "NO_NEW_RELIABILITY_PORTABILITY_REPAIRABILITY_RAW_STAT",
-    "NO_ROUTINE_AUTOMATIC_WEAR_TAX"
+    "NO_ROUTINE_AUTOMATIC_WEAR_TAX",
+    "NO_THREE_DIGIT_MASS_PRODUCTION_CORE",
+    "NO_WORKER_OR_PRODUCTION_LINE_SYSTEM_FROM_SOLDIER_01",
+    "NO_REALTIME_LOGISTICS_CONTROL",
+    "NO_DIRECT_TACTICAL_COMBAT",
+    "NO_FREE_ITEM_CLONING",
+    "SMALL_LOT_PER_ITEM_UID_COST_RESULT_PRESERVED",
+    "NO_OPAQUE_STANDARDIZATION_SCORE"
   ]
 }

@@ -41,6 +41,6 @@ def test_current_merge_policy_and_product_blocks_do_not_regress():
 
     assert "같은 승인 범위" in agents
     assert "재승인" in agents
-    assert "R3_R7_APPROVAL_COUNTER: 2/10" in gates
+    assert "R3_R7_APPROVAL_COUNTER: 3/10" in gates
     assert "PRODUCT_IMPLEMENTATION: BLOCKED" in gates
     assert "TASK3_IMPLEMENTATION: NOT_APPROVED" in gates

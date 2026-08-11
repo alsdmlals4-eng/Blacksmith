@@ -92,6 +92,8 @@ jobs:
           python -m pip install --disable-pip-version-check pytest==8.3.5
           python tests/check_project_core_alignment_current.py
           python -m pytest tests/test_pre_work_research_gate.py -q
+          python -m unittest tests.test_r3_soldier_01_marek_content -v
+          python -m unittest tests.test_auto_enhancement_cap_unlock -v
           python -m unittest tests/test_ci_workflow_structure.py
           python -m pytest tests/test_higodot_gut_authority_gate.py -q
           python -m pytest tests/test_higodot_production_authoring_activation.py -q
