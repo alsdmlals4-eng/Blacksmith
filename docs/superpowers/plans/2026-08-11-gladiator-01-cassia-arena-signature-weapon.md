@@ -59,3 +59,12 @@
 - Inspect PR diff and review/thread/comment state.
 - Merge under inherited same-approved-scope authority only after exact-head technical validation.
 - Postmerge read back main/current canon and synchronize the same `BS-CONTENT-20260811-05` to the live Google Sheet with independent readback.
+
+## TDD evidence
+
+- Semantic RED head: `9a262945191cf87e2b992b0f402daaa81b95093f`.
+- RED cause: the newly CI-wired Cassia contract failed only because the Decision05 canon/current routing was absent; prior R3 contracts and infrastructure reached the new test successfully.
+- Materialized GREEN head: `ac8cabe55ce5a190dd532c0efb39be6c3cf4aa16`.
+- Focused GREEN at materialization: Cassia `4/4`, Ersa `4/4`, Marek `4/4`, and project-core current alignment all passed.
+- Temporary materializer, count-fix helper, and materializer workflow self-deleted before the materialized commit; none are part of the resulting planning diff.
+- This evidence commit intentionally triggers exact-head PR validation for the final review head; exact-head workflow results remain the merge gate.
