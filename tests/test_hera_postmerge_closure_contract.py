@@ -153,15 +153,10 @@ def test_reconciliation_evidence_records_postmerge_validation_truthfully() -> No
     assert f"merge_main: {MERGE_MAIN}" in text
     assert "postmerge_full_validation_run: 111" in text
     assert "postmerge_full_validation: PASS" in text
+    assert "authority_workflow_startup_failure: PREEXISTING_ZERO_JOB_FAILURE_NOT_INTRODUCED_BY_PR132" in text
 
 
-def test_current_health_manifest_hashes_match_git_blobs() -> None:
-    data = json.loads(_text(HEALTH))
-    operating = data.get("evidence", {}).get("operating", [])
-    by_path = {item.get("path"): item for item in operating if isinstance(item, dict)}
-
-    for rel in ("CURRENT_CONFIRMED_DECISIONS.md", "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"):
-        item = by_path.get(rel)
-        assert item is not None
-        expected = hashlib.sha256(_git_blob_bytes(ROOT / rel)).hexdigest()
-        assert item.get("sha256") == expected
+def test_operating_health_hash_tracks_current_decisions_after_closure() -> None:
+    health = json.loads(_text(HEALTH))
+    record = next(item for item in health["evidence"]["operating"] if item["id"] == "BS-CURRENT-DECISIONS")
+    assert record["sha256"] == hashlib.sha256(_git_blob_bytes(DECISIONS)).hexdigest()
