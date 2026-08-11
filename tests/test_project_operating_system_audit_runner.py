@@ -84,24 +84,39 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         registry = audit.REQUIRED_ASSERTIONS[runner.R3_REGISTRY]
         nadia = audit.REQUIRED_ASSERTIONS[runner.R3_NADIA_CANON]
         toren = audit.REQUIRED_ASSERTIONS[runner.R3_TOREN_CANON]
+        marek = audit.REQUIRED_ASSERTIONS[runner.R3_MAREK_CANON]
+        ersa = audit.REQUIRED_ASSERTIONS[runner.R3_ERSA_CANON]
         self.assertIn('"stage_status": "R3_R7_DESIGN_ACTIVE"', registry)
         self.assertIn('"product_implementation": "BLOCKED"', registry)
         self.assertIn('"task3_implementation": "NOT_APPROVED"', registry)
-        self.assertIn('"next_approval_counter": "3/10"', registry)
-        self.assertIn('"id": "BS-CONTENT-20260811-01"', registry)
-        self.assertIn('"id": "BS-CONTENT-20260811-02"', registry)
-        self.assertIn('"id": "BS-CONTENT-20260811-03"', registry)
-        self.assertIn('"content_id": "SOLDIER_01"', registry)
-        self.assertIn('"customer_id": "MAREK_OLDEN"', registry)
+        self.assertIn('"next_approval_counter": "4/10"', registry)
+        for decision_id in (
+            '"id": "BS-CONTENT-20260811-01"',
+            '"id": "BS-CONTENT-20260811-02"',
+            '"id": "BS-CONTENT-20260811-03"',
+            '"id": "BS-CONTENT-20260811-04"',
+        ):
+            self.assertIn(decision_id, registry)
+        self.assertIn('"content_id": "COLLECTOR_01"', registry)
+        self.assertIn('"customer_id": "ERSA_ROEN"', registry)
         self.assertIn("BS-CONTENT-20260811-01", nadia)
         self.assertIn("직접 전투·탐험 미니게임을 추가하지 않는다", nadia)
         self.assertIn("BS-CONTENT-20260811-02", toren)
         self.assertIn("JOURNEY_CONTINUITY_AND_RELIABILITY", toren)
         self.assertIn("FIELD_SERVICEABILITY", toren)
-        self.assertIn(runner.R3_REGISTRY, audit.ACTIVE_DOCS)
-        self.assertIn(runner.R3_NADIA_CANON, audit.ACTIVE_DOCS)
-        self.assertIn(runner.R3_TOREN_CANON, audit.ACTIVE_DOCS)
-        self.assertIn(runner.R3_MAREK_CANON, audit.ACTIVE_DOCS)
+        self.assertIn("BS-CONTENT-20260811-03", marek)
+        self.assertIn("SMALL_LOT_STANDARD_ORDER", marek)
+        self.assertIn("BS-CONTENT-20260811-04", ersa)
+        self.assertIn("EXHIBITION_EVIDENCE_AND_PROVENANCE", ersa)
+        self.assertIn("SAME_ITEM_UID_PRESERVED", ersa)
+        for path in (
+            runner.R3_REGISTRY,
+            runner.R3_NADIA_CANON,
+            runner.R3_TOREN_CANON,
+            runner.R3_MAREK_CANON,
+            runner.R3_ERSA_CANON,
+        ):
+            self.assertIn(path, audit.ACTIVE_DOCS)
 
     def test_gate_assertions_keep_general_block_and_task2_closed_scope(self) -> None:
         runner.configure_current_assertions()
@@ -110,8 +125,9 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertIn("VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE", tokens)
         self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED", tokens)
         self.assertIn("R3_R7_DESIGN_ACTIVE", tokens)
-        self.assertIn("R3_R7_APPROVAL_COUNTER: 3/10", tokens)
-        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03", tokens)
+        self.assertIn("R3_R7_APPROVAL_COUNTER: 4/10", tokens)
+        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04", tokens)
+        self.assertIn("BS-CONTENT-20260811-03", tokens)
         self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("VERTICAL_SLICE_CODE_GATE: USER_APPROVED", tokens)
         self.assertNotIn("CODEX_IMPLEMENTATION_GATE: BLOCKED", tokens)
@@ -127,15 +143,20 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
             self.assertIn("POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE", tokens)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", tokens)
             self.assertIn("R3_R7_DESIGN_ACTIVE", tokens)
-            self.assertIn("BS-CONTENT-20260811-01", tokens)
-            self.assertIn("BS-CONTENT-20260811-02", tokens)
-            self.assertIn("BS-CONTENT-20260811-03", tokens)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03", tokens)
+            for decision_id in (
+                "BS-CONTENT-20260811-01",
+                "BS-CONTENT-20260811-02",
+                "BS-CONTENT-20260811-03",
+                "BS-CONTENT-20260811-04",
+            ):
+                self.assertIn(decision_id, tokens)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04", tokens)
+            self.assertIn("COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED", tokens)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("R2_CHECKPOINT_005", start)
         self.assertNotIn("현재 승인 카운터: `0/10`", active)
         self.assertNotIn("제품 구현: `BLOCKED`", active)
-        self.assertIn("현재 R3–R7 승인 카운터: `3/10`", active)
+        self.assertIn("현재 R3–R7 승인 카운터: `4/10`", active)
 
 
 if __name__ == "__main__":
