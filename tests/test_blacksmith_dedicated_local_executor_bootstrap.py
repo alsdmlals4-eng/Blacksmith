@@ -123,6 +123,20 @@ class BlacksmithDedicatedLocalExecutorBootstrapTests(unittest.TestCase):
         for token in forbidden:
             self.assertNotIn(token, text)
 
+    def test_launcher_rejects_duplicate_project_editor_and_unverified_orphan_ports(self) -> None:
+        self.assertTrue(SCRIPT.is_file(), str(SCRIPT))
+        text = SCRIPT.read_text(encoding="utf-8")
+        for token in (
+            "NON_DEDICATED_BLACKSMITH_EDITOR_CONFLICT_FAIL_CLOSED",
+            "UNVERIFIED_RETAINED_SERVER_REUSE_FORBIDDEN",
+            "Find-ConflictingBlacksmithEditor",
+        ):
+            self.assertIn(token, text)
+        self.assertNotIn(
+            "Recognizable retained godot-ai listener detected; dedicated editor will be started for fresh adoption/readiness verification.",
+            text,
+        )
+
     def test_launcher_does_not_author_product_files(self) -> None:
         self.assertTrue(SCRIPT.is_file(), str(SCRIPT))
         text = SCRIPT.read_text(encoding="utf-8")
