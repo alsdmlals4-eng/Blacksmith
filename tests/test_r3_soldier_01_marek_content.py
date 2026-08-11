@@ -16,18 +16,19 @@ GATES = HUB / "DEVELOPMENT_GATES.md"
 
 
 class Soldier01MarekContentContractTests(unittest.TestCase):
-    def test_r3_registry_promotes_marek_as_approved_third_content_decision(self) -> None:
+    def test_r3_registry_preserves_marek_as_approved_third_content_decision(self) -> None:
         self.assertTrue(REGISTRY.is_file())
         registry = json.loads(REGISTRY.read_text(encoding="utf-8")) if REGISTRY.is_file() else {}
         self.assertEqual("R3_R7_DESIGN_ACTIVE", registry.get("stage_status"))
         self.assertEqual("BLOCKED", registry.get("product_implementation"))
         self.assertEqual("NOT_APPROVED", registry.get("task3_implementation"))
-        self.assertEqual("3/10", registry.get("next_approval_counter"))
+        self.assertEqual("4/10", registry.get("next_approval_counter"))
 
         decisions = {item["id"]: item for item in registry.get("current_decisions", [])}
         self.assertIn("BS-CONTENT-20260811-01", decisions)
         self.assertIn("BS-CONTENT-20260811-02", decisions)
         self.assertIn("BS-CONTENT-20260811-03", decisions)
+        self.assertIn("BS-CONTENT-20260811-04", decisions)
 
         decision = decisions.get("BS-CONTENT-20260811-03", {})
         self.assertIn("USER_APPROVED_R3_R7_3_OF_10", decision.get("status", ""))
@@ -86,7 +87,7 @@ class Soldier01MarekContentContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, canon)
 
-    def test_current_routers_move_to_three_of_ten_without_opening_product_code(self) -> None:
+    def test_current_routers_preserve_marek_history_while_ersa_is_current(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
@@ -97,24 +98,26 @@ class Soldier01MarekContentContractTests(unittest.TestCase):
             "BS-CONTENT-20260811-01",
             "BS-CONTENT-20260811-02",
             "BS-CONTENT-20260811-03",
+            "BS-CONTENT-20260811-04",
         ):
             self.assertIn(decision_id, current)
 
         for text in (active, start_here, roadmap, gates):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
-            self.assertIn("R3_R7_APPROVAL_COUNTER: 3/10", text)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03", text)
+            self.assertIn("R3_R7_APPROVAL_COUNTER: 4/10", text)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04", text)
+            self.assertIn("BS-CONTENT-20260811-03", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
 
         for text in (active, start_here, roadmap):
-            self.assertIn("SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED", text)
+            self.assertIn("COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED", text)
 
-        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-03`", active)
-        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-03`", start_here)
-        self.assertIn("현재 승인 카운터: `3/10`.", roadmap)
-        self.assertIn("Decision: `BS-CONTENT-20260811-03`.", gates)
+        self.assertIn("Marek", active)
+        self.assertIn("SOLDIER_01 / MAREK_OLDEN", start_here)
+        self.assertIn("### 3/10 — `BS-CONTENT-20260811-03`", roadmap)
+        self.assertIn("BS-CONTENT-20260811-03", gates)
 
     def test_marek_does_not_turn_auto_enhancement_into_content_owned_power(self) -> None:
         canon = CANON.read_text(encoding="utf-8") if CANON.is_file() else ""
