@@ -112,14 +112,16 @@ class Adventurer02TorenContentContractTests(unittest.TestCase):
         self.assertIn("BS-CONTENT-20260811-01", current)
         self.assertIn("BS-CONTENT-20260811-02", current)
 
-        for text in (active, start_here, roadmap):
+        for text in (active, start_here, roadmap, gates):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
             self.assertIn("R3_R7_APPROVAL_COUNTER: 2/10", text)
             self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02", text)
-            self.assertIn("ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
+
+        for text in (active, start_here, roadmap):
+            self.assertIn("ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED", text)
 
         self.assertIn("BS-CONTENT-20260811-01", active)
         self.assertIn("BS-CONTENT-20260811-01", start_here)
@@ -128,8 +130,12 @@ class Adventurer02TorenContentContractTests(unittest.TestCase):
         self.assertNotIn("1. `BS-CONTENT-20260811-01`의 GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.", active)
         self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-02`", start_here)
         self.assertNotIn("현재 연속 작업은 `BS-CONTENT-20260811-01`", start_here)
-        self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", gates)
-        self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", gates)
+
+        self.assertIn("Decision: `BS-CONTENT-20260811-02`.", gates)
+        self.assertIn("ADVENTURER_02 / TOREN_MARCH", gates)
+        self.assertIn("직접 이동·지도 경로 선택·실시간 생존 조작 추가", gates)
+        self.assertIn("새 신뢰성·휴대성·수리 용이성 원수치 추가", gates)
+        self.assertIn("자동 매일 내구도 감소·루틴 수리세 추가", gates)
 
     def test_current_routers_do_not_mix_toren_current_state_with_nadia_current_labels(self) -> None:
         active = ACTIVE.read_text(encoding="utf-8")
