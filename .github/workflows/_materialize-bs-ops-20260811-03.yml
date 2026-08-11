@@ -1,0 +1,36 @@
+name: Materialize BS OPS 20260811 03
+
+on:
+  push:
+    branches:
+      - ops/blacksmith-dedicated-local-executor-bootstrap
+    paths:
+      - .github/workflows/_materialize-bs-ops-20260811-03.yml
+      - tools/_materialize_bs_ops_20260811_03.py
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ops/blacksmith-dedicated-local-executor-bootstrap
+          fetch-depth: 0
+      - name: Materialize Phase C authority
+        run: python tools/_materialize_bs_ops_20260811_03.py
+      - name: Remove one-shot authoring helpers
+        run: |
+          rm tools/_materialize_bs_ops_20260811_03.py
+          rm .github/workflows/_materialize-bs-ops-20260811-03.yml
+      - name: Commit materialized authority
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "docs: close planning and open bounded Phase C entry"
+          git push origin HEAD:ops/blacksmith-dedicated-local-executor-bootstrap
