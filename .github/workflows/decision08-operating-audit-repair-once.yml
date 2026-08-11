@@ -1,0 +1,52 @@
+name: Decision08 operating audit repair once
+
+on:
+  push:
+    branches:
+      - docs/r3-collector-02-sedric-archival-accession
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Blacksmith
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: docs/r3-collector-02-sedric-archival-accession
+      - name: Check out pinned Base
+        uses: actions/checkout@v4
+        with:
+          repository: alsdmlals4-eng/Base
+          ref: 41a20584dd2ee51d917e5c9d7cab6838e1ceba7e
+          path: ../base
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Repair operating audit historical/current separation
+        run: python tools/decision08_operating_audit_repair.py
+      - name: Verify operating audit and Sedric current contract
+        run: |
+          python -m unittest tests/test_project_operating_system_audit_runner.py -v
+          python tools/run_project_operating_system_audit.py --base-root ../base --report artifacts/base-adoption-report.json
+          python -m unittest tests.test_r3_collector_02_sedric_content -v
+          python -m unittest tests.test_r3_soldier_02_liana_content -v
+      - name: Preserve workflow for connector deletion and remove helper
+        run: |
+          git checkout HEAD -- .github/workflows/decision08-operating-audit-repair-once.yml
+          rm tools/decision08_operating_audit_repair.py
+      - name: Commit operating audit repair
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --check
+          git commit -m "test: align operating audit with Decision08 current"
+          git push origin HEAD:docs/r3-collector-02-sedric-archival-accession
