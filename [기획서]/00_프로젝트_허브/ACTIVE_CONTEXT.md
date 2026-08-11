@@ -1,15 +1,15 @@
 # [현재 정본] Active Context
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED / PLANNING_ONLY**
 >
 > 이 문서는 현재 상태와 다음 읽기 순서를 연결하는 압축 라우터다. 세부 Decision·과거 단계·실행 로그는 책임 원본에서 읽는다.
 
 - 갱신 기준: `2026-08-11 KST`
-- Blacksmith current main observed at Decision 02 start: `cb5ceff127bf4f2adb38b34ebaa092d97111fa94`
+- Blacksmith current main observed at Decision 04 start: `1e60cf163191d547b96ffc392e3da24d072b7956`
 - `BASE_CURRENT_MAIN_OBSERVED`: `315c66eea9614c284b9c11c4d522141065dfa4b0`
 - `PROJECT_BASE_ADAPTER_PIN`: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
-- 현재 R3–R7 승인 카운터: `3/10`
+- 현재 R3–R7 승인 카운터: `4/10`
 - Base current main 관측값과 프로젝트가 채택한 Base adapter pin은 서로 다른 증거다. 새 Base main 관측만으로 프로젝트 pin을 자동 승격하지 않는다.
 
 ```yaml
@@ -20,11 +20,11 @@ R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10
 R2_BATCH_005_MERGE: MERGED_PR109_MAIN_CANON
 R2_BATCH_006: R2_BATCH_006_APPROVED_10_OF_10
 R2_BATCH_006_MERGE: MERGED_PR120_MAIN_CANON
-R3_R7_APPROVAL_COUNTER: 3/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03
+R3_R7_APPROVAL_COUNTER: 4/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
 PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
 PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
-R3_R7_RESUME_LOCATOR: SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED
+R3_R7_RESUME_LOCATOR: COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED
 VERTICAL_SLICE_IMPLEMENTATION: APPROVED_TASK2_COMPLETE
 VERTICAL_SLICE_IMPLEMENTATION_EVIDENCE: VERTICAL_SLICE_IMPLEMENTATION_APPROVED
 TASK2: TASK2_MAIN_MERGED
@@ -62,37 +62,35 @@ PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 
 ## 현재 R3–R7 기획 재개 상태
 
-사용자가 권장안 A를 승인해 `BS-CONTENT-20260811-01`을 R3–R7 재개 첫 Decision으로 연다.
+`BS-CONTENT-20260811-01` Nadia, `BS-CONTENT-20260811-02` Toren, `BS-CONTENT-20260811-03` Marek는 승인 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-04`다.
 
 ```text
-ADVENTURER_01
-→ NADIA_VENN / 나디아 벤
-→ 유적 탐사 개인 일정
-→ 생환 + 회수
-→ 작품 한 점 인계
-→ 하루 종료당 최대 한 번 진행
-→ 즉시 인과 결과
-→ 같은 UID의 지연 생애 결과
-→ 복원·후속 강화·새 제작 이유
+COLLECTOR_01 / ERSA_ROEN
+→ 수집가 대표 고객
+→ EXHIBITION_EVIDENCE_AND_PROVENANCE
+→ CRAFTSMANSHIP_EVIDENCE 또는 LIVED_HISTORY_EVIDENCE 전시 의도 공개
+→ 후보 작품의 실제 UID 증거 비교
+→ 같은 작품 UID 한 점 + 기존 증거 2~4개 강조
+→ 전시는 비직접 세계 사건
+→ EXHIBITION_RECEPTION_STATE
+ + EXHIBIT_THESIS_FIT_STATE
+ + ITEM_UID_PUBLIC_LEGACY_STATE
+→ 후속 제작·복원·판매·재전시 이유
 ```
 
-첫 Decision `BS-CONTENT-20260811-01`의 Nadia 정본은 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-03`다.
-
-```text
-ADVENTURER_02 / TOREN_MARCH
-→ 장거리 길잡이
-→ 여정 지속성 + 신뢰성
-→ 작품 한 점 인계
-→ 환경 노출·경로 적응은 비직접 일정 사건
-→ 도착·환경 대응·같은 UID 작품 상태 결과
-→ 수리·복원·후속 강화·다음 여정용 신작 이유
-```
+- 새 `RARITY_SCORE / PRESTIGE_SCORE / COLLECTOR_SCORE / EXHIBITION_SCORE`를 만들지 않는다.
+- Chronicle 개수·최고 예술성·최고 강화·가장 오래된 작품을 자동 정답으로 만들지 않는다.
+- 전시 횟수나 전시 자체로 `ARTISTRY`를 자동 성장시키거나 `CHRONICLE_AFFIX`를 자동 부여하지 않는다.
+- 플레이어는 작품·증거를 고르는 대장장이이며 전시관·관람객을 직접 운영하지 않는다.
+- 같은 작품 UID의 제작·소유·손상·복원·Chronicle/provenance 증거를 보존한다.
 
 책임 원본:
 
 - `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
 - `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
 
 이 승인은 **기획 재개 승인**이다. Task3 또는 일반 제품 구현 승인이 아니다.
 
@@ -117,6 +115,9 @@ ADVENTURER_02 / TOREN_MARCH
 - `BS-CONTENT-20260811-02`는 직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다.
 - `BS-CONTENT-20260811-02`는 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다.
 - `BS-CONTENT-20260811-02`는 자동 매일 내구도 감소·루틴 수리세를 만들지 않는다.
+- `BS-CONTENT-20260811-03`은 소량 주문에서도 개별 UID·비용·결과를 보존하고 공장·전술·실시간 병참으로 확장하지 않는다.
+- `BS-CONTENT-20260811-04`는 희귀도/위신/수집가/전시 총점과 Chronicle 개수 최적화를 만들지 않는다.
+- `BS-CONTENT-20260811-04`는 전시 횟수만으로 예술성 또는 Chronicle을 자동 성장시키지 않는다.
 - 같은 UID의 작품 생애를 유지한다.
 - 모든 개인 일정에 고정 3일 결과·4일 재방문을 재도입하지 않는다.
 - 사람 플레이테스트·Android 실기기·접근성은 실제 실행 전 `NOT_RUN`.
@@ -139,6 +140,8 @@ BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10
 BS-ITEM-20260806-06 / R2_BATCH_005_10_OF_10
 BS-CONTENT-20260811-01 / R3_R7_1_OF_10
 BS-CONTENT-20260811-02 / R3_R7_2_OF_10
+BS-CONTENT-20260811-03 / R3_R7_3_OF_10
+BS-CONTENT-20260811-04 / R3_R7_4_OF_10
 BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 ```
 
@@ -151,11 +154,11 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 
 ## 다음 실행 순서
 
-1. `BS-CONTENT-20260811-02`의 GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
-2. TDD RED→GREEN과 적대적 검토로 직접 여행 게임화·새 신뢰성/수리성 원수치·자동 마모세·Nadia 재스킨 회귀를 차단한다.
-3. 같은 범위 PR의 exact-head CI·리뷰·Sheet readback을 확인한다.
+1. `BS-CONTENT-20260811-04`의 exact-head CI·적대 검토·GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
+2. TDD RED→GREEN으로 Ersa 전시 증거 계약과 current/history 라우팅을 검증한다.
+3. 희귀도/위신 총점·Chronicle 개수 최적화·전시 farming·큐레이터 게임화·UID 손실을 적대적으로 차단한다.
 4. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.
-5. 다음 R3–R7 신규 Decision은 현재 승인 카운터 `2/10`에서 이어간다.
+5. 다음 R3–R7 신규 Decision은 현재 승인 카운터 `4/10`에서 이어간다.
 
 ## 먼저 읽을 파일
 
@@ -163,11 +166,13 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 2. `CURRENT_CONFIRMED_DECISIONS.md`
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
-7. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-8. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-9. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
+5. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
+6. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
+7. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+8. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
+9. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+10. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+11. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
 
 ## 현재 프로젝트 작업지시문 바인딩
 
@@ -186,20 +191,20 @@ TASK3_IMPLEMENTATION: NOT_APPROVED
 
 첨부 v4.5 r2 source의 `Switchy-Express-Cargo-Puzzle` 경로는 source provenance를 위해 수정하지 않고 보존한다. 현재 실행은 `BS-OPS-20260811-01`의 Blacksmith override를 따른다.
 
-<!-- BS-CONTENT-20260811-03 CURRENT -->
-## R3–R7 current 3/10 — Marek Soldier01
+<!-- BS-CONTENT-20260811-04 CURRENT -->
+## R3–R7 current 4/10 — Ersa Collector01
 
 ```text
 R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 3/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03
-R3_R7_RESUME_LOCATOR: SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED
+R3_R7_APPROVAL_COUNTER: 4/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
+R3_R7_RESUME_LOCATOR: COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
-`BS-CONTENT-20260811-01` Nadia와 `BS-CONTENT-20260811-02` Toren은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-03`이다.
+Nadia 1/10, Toren 2/10, Marek 3/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-04`이다.
 
-`SOLDIER_01 / MAREK_OLDEN / SMALL_LOT_STANDARD_ORDER`는 기준품 + 소량 반복 제작을 사용하며, 첫 `ORDER_QUANTITY = 10`은 `NON_CANONICAL_BASELINE_TEST_PRESET`이다. 개별 UID·비용·단조·강화·연대기를 유지하고 직접 전술 전투·실시간 병참·작업자 생산라인·무료 복제를 추가하지 않는다.
+`COLLECTOR_01 / ERSA_ROEN / EXHIBITION_EVIDENCE_AND_PROVENANCE`는 `CRAFTSMANSHIP_EVIDENCE` 또는 `LIVED_HISTORY_EVIDENCE` 전시 의도와 작품에 실제 존재하는 증거를 비교한다. 숨은 총점이나 단일 최대 수치가 정답이 아니다.
 
-`BS-CORE-20260811-01 / AUTO_ENHANCEMENT_CAP_UNLOCK`은 별도 시스템 Decision이며 R3 콘텐츠 카운터를 올리지 않는다. 기존 +20 저위험 자동강화를 보존하고 수동 분야 돌파보다 한 10강 밴드 뒤에서 목표 지정 자동 상한을 해금한다.
+같은 UID의 결과는 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리한다. 전시는 비직접 세계 사건이며 플레이어는 대장장이·작품 증거 선택자로 남는다.

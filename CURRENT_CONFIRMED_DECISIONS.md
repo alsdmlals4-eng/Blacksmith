@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-03 / R3_R7_3_OF_10 / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-04 / R3_R7_4_OF_10 / PLANNING_ONLY**
 >
 > R2 Batch 006과 Task2 기술 폐쇄는 그대로 상속한다. 이번 승인은 R3–R7 기획 재개이며 Task3 또는 일반 제품 구현 승인으로 확대하지 않는다.
 
@@ -46,8 +46,8 @@ CURRENT_TECHNICAL_BASELINE: fa9595b2df95897c915331a1cb5d9b1a583611f0
 HIGODOT_EXECUTION_DECISION: BS-HIGODOT-EXEC-20260808-01
 HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 3/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03
+R3_R7_APPROVAL_COUNTER: 4/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
 NEW_PRODUCT_SCOPE: NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
@@ -91,6 +91,7 @@ PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 - `BS-CONTENT-20260811-01`: `ADVENTURER_01` 나디아 벤 유적 탐사 개인 일정. `생환 + 회수`를 목표로 작품 한 점을 맡기고, 하루 종료당 최대 한 번 진행하며, 같은 UID의 즉시 인과 결과와 지연 생애·복원·후속 강화 이유를 만든다. 직접 전투·탐험 미니게임과 단일 항상최적 장비 정답은 추가하지 않는다. — `USER_APPROVED / R3_R7_1_OF_10 / MERGED_PR142_MAIN_CANON / PLANNING_ONLY`
 - `BS-CONTENT-20260811-02`: `ADVENTURER_02` 토렌 마치 장거리 여정 개인 일정. 여정 지속성·신뢰성을 목표로 기존 중량·강화·내구도·실제 관련 환경/현장정비 기능을 비교하며, 직접 여행 조작·새 신뢰성/수리성 원수치·자동 마모세를 추가하지 않고 같은 UID의 마모·현장 유지보수·손상 결과를 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다. — `USER_APPROVED / R3_R7_2_OF_10 / PLANNING_ONLY`
 - `BS-CONTENT-20260811-03`: `SOLDIER_01` 마레크 올덴 소량 표준 주문. 기준품 한 점을 직접 만든 뒤 반복 설정은 압축할 수 있지만 약 10개 baseline fixture의 각 작품은 독립 UID·비용·작업·단조·강화·연대기를 유지한다. 결과는 `UNIT_MISSION_STATE / STANDARD_ADOPTION_STATE / BATCH_ITEM_LIFECYCLE_STATE`로 분리하며 직접 전술 전투·실시간 병참·작업자 생산라인·무료 복제를 추가하지 않는다. — `USER_APPROVED / R3_R7_3_OF_10 / PLANNING_ONLY`
+- `BS-CONTENT-20260811-04`: `COLLECTOR_01` 에르사 로엔 전시 증거·계보 콘텐츠. `CRAFTSMANSHIP_EVIDENCE / LIVED_HISTORY_EVIDENCE`를 전시 의도 맥락으로 공개하고 작품 한 점의 실제 제작·생애 증거를 비교한다. 새 희귀도·위신·수집가·전시 총점과 Chronicle 개수 최적화를 만들지 않으며 같은 UID의 결과를 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리한다. — `USER_APPROVED / R3_R7_4_OF_10 / PLANNING_ONLY`
 - `BS-CRAFT-20260804-04`: 보조재료 제거와 정밀강화 방식·촉매 책임 분리
 - `BS-CRAFT-20260804-05`: 촉매 수식어 씨앗·계보·진화
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
@@ -409,6 +410,7 @@ ADVENTURER_01 / NADIA_VENN
 - Registry: `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`.
 - 제품 구현: `BLOCKED`.
 - Task3 구현: `NOT_APPROVED`.
+
 ## 18. R3–R7 두 번째 상세 콘텐츠 — 토렌 마치 장거리 여정
 
 Decision: `BS-CONTENT-20260811-02`.
@@ -457,5 +459,27 @@ Decision: `BS-CORE-20260811-01 / AUTO_ENHANCEMENT_CAP_UNLOCK`.
 - 자동 시도는 정상 강화 확률·비용·자원·작업 기회비용·동일 UID 이력을 그대로 사용한다.
 - `HIGH / VERY_HIGH`, 정밀강화, 기술 돌파, 무보호 파괴 가능 시도는 수동 전용이다.
 - 이 시스템 Decision은 R3 콘텐츠 승인 카운터를 증가시키지 않는다.
+- 제품 구현: `BLOCKED`.
+- Task3 구현: `NOT_APPROVED`.
+
+## 21. R3–R7 네 번째 상세 콘텐츠 — 에르사 로엔 전시 증거·계보
+
+Decision: `BS-CONTENT-20260811-04`.
+
+```text
+COLLECTOR_01 / ERSA_ROEN
+EXHIBITION_EVIDENCE_AND_PROVENANCE
+CRAFTSMANSHIP_EVIDENCE / LIVED_HISTORY_EVIDENCE
+```
+
+- 플레이어는 전시관 운영자가 아니라 대장장이이며, 공개된 전시 의도에 맞춰 같은 작품 UID 한 점과 그 작품에 이미 존재하는 제작·생애 증거를 선택한다.
+- `CRAFTSMANSHIP_EVIDENCE`는 제작 등급·Artistry·단조·마감·촉매·재작업 provenance 등 실제 제작 증거를, `LIVED_HISTORY_EVIDENCE`는 소유·세계 사용·손상·분실·회수·수리·복원·Chronicle 등 실제 생애 증거를 소비한다.
+- `RARITY_SCORE / PRESTIGE_SCORE / COLLECTOR_SCORE / EXHIBITION_SCORE`를 추가하지 않는다.
+- Chronicle 개수·가장 오래된 작품·최고 예술성·최고 강화를 보편적 자동 정답으로 만들지 않는다.
+- 전시 횟수 또는 전시 자체만으로 `ARTISTRY`가 증가하거나 `CHRONICLE_AFFIX`가 자동 부여되지 않는다.
+- 결과는 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리하며 2~4개의 실제 원인을 설명한다.
+- 같은 작품 UID를 전시 전·중·후 보존하고 후속 제작·복원·판매·재전시 판단으로 환류한다.
+- 직접 전시 미니게임·전시관 장식·방문객 관리·경매·실시간 큐레이터 조작을 추가하지 않는다.
+- 책임 원본: `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`.
 - 제품 구현: `BLOCKED`.
 - Task3 구현: `NOT_APPROVED`.

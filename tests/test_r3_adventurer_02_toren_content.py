@@ -16,17 +16,22 @@ GATES = HUB / "DEVELOPMENT_GATES.md"
 
 
 class Adventurer02TorenContentContractTests(unittest.TestCase):
-    def test_r3_registry_promotes_the_approved_second_content_decision(self) -> None:
+    def test_r3_registry_preserves_the_approved_second_content_decision(self) -> None:
         self.assertTrue(REGISTRY.is_file())
         registry = json.loads(REGISTRY.read_text(encoding="utf-8")) if REGISTRY.is_file() else {}
         self.assertEqual("R3_R7_DESIGN_ACTIVE", registry.get("stage_status"))
         self.assertEqual("BLOCKED", registry.get("product_implementation"))
         self.assertEqual("NOT_APPROVED", registry.get("task3_implementation"))
-        self.assertEqual("3/10", registry.get("next_approval_counter"))
+        self.assertEqual("4/10", registry.get("next_approval_counter"))
 
         decisions = {item["id"]: item for item in registry.get("current_decisions", [])}
-        self.assertIn("BS-CONTENT-20260811-01", decisions)
-        self.assertIn("BS-CONTENT-20260811-02", decisions)
+        for decision_id in (
+            "BS-CONTENT-20260811-01",
+            "BS-CONTENT-20260811-02",
+            "BS-CONTENT-20260811-03",
+            "BS-CONTENT-20260811-04",
+        ):
+            self.assertIn(decision_id, decisions)
 
         decision = decisions.get("BS-CONTENT-20260811-02", {})
         self.assertIn("USER_APPROVED_R3_R7_2_OF_10", decision.get("status", ""))
@@ -102,42 +107,39 @@ class Adventurer02TorenContentContractTests(unittest.TestCase):
         ):
             self.assertIn(token, canon)
 
-    def test_current_entrypoints_move_to_two_of_ten_without_opening_product_code(self) -> None:
+    def test_current_entrypoints_preserve_toren_history_while_ersa_is_current(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
         roadmap = ROADMAP.read_text(encoding="utf-8")
         gates = GATES.read_text(encoding="utf-8")
 
-        self.assertIn("BS-CONTENT-20260811-01", current)
-        self.assertIn("BS-CONTENT-20260811-02", current)
+        for decision_id in (
+            "BS-CONTENT-20260811-01",
+            "BS-CONTENT-20260811-02",
+            "BS-CONTENT-20260811-03",
+            "BS-CONTENT-20260811-04",
+        ):
+            self.assertIn(decision_id, current)
 
         for text in (active, start_here, roadmap, gates):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
-            self.assertIn("R3_R7_APPROVAL_COUNTER: 3/10", text)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03", text)
+            self.assertIn("R3_R7_APPROVAL_COUNTER: 4/10", text)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04", text)
+            self.assertIn("BS-CONTENT-20260811-02", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
 
         for text in (active, start_here, roadmap):
-            self.assertIn("SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED", text)
+            self.assertIn("COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED", text)
 
-        self.assertIn("BS-CONTENT-20260811-01", active)
-        self.assertIn("BS-CONTENT-20260811-01", start_here)
-        self.assertIn("BS-CONTENT-20260811-01", roadmap)
-        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-03`", active)
-        self.assertNotIn("1. `BS-CONTENT-20260811-01`의 GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.", active)
-        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-03`", start_here)
-        self.assertNotIn("현재 연속 작업은 `BS-CONTENT-20260811-01`", start_here)
+        self.assertIn("BS-CONTENT-20260811-02", active)
+        self.assertIn("ADVENTURER_02 / TOREN_MARCH", start_here)
+        self.assertIn("### 2/10 — `BS-CONTENT-20260811-02`", roadmap)
+        self.assertIn("BS-CONTENT-20260811-02", gates)
 
-        self.assertIn("Decision: `BS-CONTENT-20260811-02`.", gates)
-        self.assertIn("ADVENTURER_02 / TOREN_MARCH", gates)
-        self.assertIn("직접 이동·지도 경로 선택·실시간 생존 조작 추가", gates)
-        self.assertIn("새 신뢰성·휴대성·수리 용이성 원수치 추가", gates)
-        self.assertIn("자동 매일 내구도 감소·루틴 수리세 추가", gates)
-
-    def test_current_routers_do_not_mix_toren_current_state_with_nadia_current_labels(self) -> None:
+    def test_current_routers_preserve_toren_boundaries_without_making_toren_current(self) -> None:
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
         roadmap = ROADMAP.read_text(encoding="utf-8")
@@ -152,15 +154,15 @@ class Adventurer02TorenContentContractTests(unittest.TestCase):
 
         self.assertNotIn("사용자 승인 Decision: `BS-CONTENT-20260811-01`.", start_here)
         self.assertIn("첫 승인 완료 Decision: `BS-CONTENT-20260811-01`.", start_here)
-        self.assertIn("8. `ACTIVE_CONTEXT.md`", start_here)
-        self.assertIn("9. `DEVELOPMENT_GATES.md`", start_here)
-        self.assertIn("10. `ROADMAP.md`", start_here)
-        self.assertNotIn("7. `ACTIVE_CONTEXT.md`", start_here)
+        self.assertIn("10. `ACTIVE_CONTEXT.md`", start_here)
+        self.assertIn("11. `DEVELOPMENT_GATES.md`", start_here)
+        self.assertIn("12. `ROADMAP.md`", start_here)
 
-        self.assertIn("현재 승인 카운터: `3/10`.", roadmap)
+        self.assertIn("현재 승인 카운터: `4/10`.", roadmap)
         self.assertNotIn("현재 승인 카운터: `1/10`.", roadmap)
         self.assertIn("### 2/10 — `BS-CONTENT-20260811-02`", roadmap)
         self.assertIn("BS-CONTENT-20260811-02: USER_APPROVED_PLANNING_ONLY", roadmap)
+        self.assertIn("BS-CONTENT-20260811-04: USER_APPROVED_PLANNING_ONLY", roadmap)
         self.assertNotIn("CURRENT_STAGE_STATUS: R3_R7_2_OF_10_USER_APPROVED_PLANNING_CANON", roadmap)
 
 

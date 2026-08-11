@@ -25,8 +25,9 @@ BASE_CURRENT_MAIN_OBSERVED = "315c66eea9614c284b9c11c4d522141065dfa4b0"
 PROJECT_BASE_ADAPTER_PIN = "2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b"
 INITIALIZER_DECISION_ID = "BS-VS-INIT-20260808-01"
 R3_FIRST_DECISION_ID = "BS-CONTENT-20260811-01"
-R3_CURRENT_DECISION_ID = "BS-CONTENT-20260811-03"
-R3_CURRENT_RESUME_LOCATOR = "SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED"
+R3_THIRD_DECISION_ID = "BS-CONTENT-20260811-03"
+R3_CURRENT_DECISION_ID = "BS-CONTENT-20260811-04"
+R3_CURRENT_RESUME_LOCATOR = "COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED"
 
 
 def _text(path: Path) -> str:
@@ -84,6 +85,7 @@ def test_handoff_router_records_current_main_and_r3_planning_only_boundary() -> 
         assert "PR81_REFERENCE_ONLY_DO_NOT_MERGE" in text
         assert "R3_R7_DESIGN_ACTIVE" in text
         assert R3_FIRST_DECISION_ID in text
+        assert R3_THIRD_DECISION_ID in text
         assert R3_CURRENT_DECISION_ID in text
         assert R3_CURRENT_RESUME_LOCATOR in text
         assert "PRODUCT_IMPLEMENTATION: BLOCKED" in text
@@ -130,7 +132,8 @@ def test_current_decision_router_preserves_task2_technical_baseline_and_r3_scope
     assert "NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED" in current
     assert "R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE" in current
     assert f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION_ID}" in current
-    assert "R3_R7_APPROVAL_COUNTER: 3/10" in current
+    assert "R3_R7_APPROVAL_COUNTER: 4/10" in current
+    assert R3_THIRD_DECISION_ID in text
     assert "TASK3_IMPLEMENTATION: NOT_APPROVED" in current
     assert "PRODUCT_IMPLEMENTATION: BLOCKED" in current
 

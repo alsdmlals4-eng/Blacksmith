@@ -1,7 +1,7 @@
 # [현재 정본] Development Gates
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-04 / COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
 >
 > R3–R7 콘텐츠 설계는 재개됐지만 Task3·일반 제품 구현 Gate는 열리지 않았다. R2·Task2 권위와 기술 폐쇄 증거는 그대로 상속한다.
 
@@ -14,8 +14,8 @@
 
 ```yaml
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 3/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03
+R3_R7_APPROVAL_COUNTER: 4/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
 PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
 PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 R3_R7_DESIGN_GATE: USER_APPROVED_PLANNING_ONLY
@@ -60,6 +60,8 @@ IMAGE_PRODUCT_GATE: BLOCKED_NOT_PRODUCT_READY
 IMAGE_LIST_SCHEMA_GATE: SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS
 ```
 
+`GODOT_AI_VERSION: 3.1.3`은 현재 저장소에 실제 반영된 toolchain 상태를 기록한다. 사용자가 알려준 upstream `3.1.4` 업데이트는 별도 toolchain Decision/검증 전까지 이 콘텐츠 Decision에서 자동 승격하지 않는다.
+
 ## Pre-Work Research Gate
 
 Decision: `BS-OPS-20260811-02`.
@@ -79,7 +81,7 @@ fresh authority preflight
 - 저위험 maintenance에서 외부 benchmark가 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남기되 관련 공식 원본은 확인한다.
 - `BS-OPS-20260805-01`의 benchmark scope만 refine하며 TDD·early checkpoint authority는 유지한다.
 - benchmark 수치·경제·확률을 제품 정본으로 자동 승격하지 않는다.
-- R3–R7 `2/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
+- R3–R7 `4/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
 
 판정: `USER_APPROVED / REQUIRED / PLANNING_ONLY`.
 
@@ -87,11 +89,12 @@ fresh authority preflight
 
 첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.
 
-Decision: `BS-CONTENT-20260811-02`.
+현재 Decision: `BS-CONTENT-20260811-04`.
 
 ```text
-ADVENTURER_02 / TOREN_MARCH
-JOURNEY_CONTINUITY_AND_RELIABILITY
+COLLECTOR_01 / ERSA_ROEN
+EXHIBITION_EVIDENCE_AND_PROVENANCE
+CRAFTSMANSHIP_EVIDENCE / LIVED_HISTORY_EVIDENCE
 ```
 
 허용:
@@ -99,17 +102,20 @@ JOURNEY_CONTINUITY_AND_RELIABILITY
 - 고객·상황·작품 선택·결과·같은 UID 생애 환류의 기획 정본 작성
 - 벤치마킹·적대적 검토·테스트 계약·Google Sheet 동기화
 - 비정본 `BASELINE_TEST_PRESET` 후보와 플레이테스트 설계
-- 기존 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY` 승인 책임을 실제 관련 맥락에서 소비
+- 기존 제작 등급·`ARTISTRY`·단조/마감/재작업 provenance와 소유·손상·회수·수리·복원·Chronicle 증거를 실제 존재하는 범위에서 소비
+- 전시 의도를 `CRAFTSMANSHIP_EVIDENCE / LIVED_HISTORY_EVIDENCE` 맥락으로 공개하고 작품 한 점의 기존 증거 적합을 비교
+- 결과를 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분해
 
 차단:
 
 - Task3 제품 Script/Data/Scene/Resource 구현
 - `project.godot` 또는 Godot persistent serialized surface 변경
-- 직접 이동·지도 경로 선택·실시간 생존 조작 추가
-- 새 신뢰성·휴대성·수리 용이성 원수치 추가
-- 자동 매일 내구도 감소·루틴 수리세 추가
-- 모든 개인 일정에 고정 3일 결과·4일 재방문 재도입
-- 일상 사건 완료만으로 `CHRONICLE_AFFIX`·예술성 자동 지급
+- `RARITY_SCORE / PRESTIGE_SCORE / COLLECTOR_SCORE / EXHIBITION_SCORE` 추가
+- Chronicle 개수·최고 예술성·최고 강화·가장 오래된 작품을 보편적 자동 정답으로 사용
+- 전시 횟수·전시 자체로 `ARTISTRY` 자동 증가
+- 전시 자체만으로 `CHRONICLE_AFFIX` 자동 부여
+- 직접 전시 배치·전시관 장식·방문객 관리·경매·실시간 큐레이터 조작
+- 같은 작품 UID를 전시용 복제/대체품으로 치환
 
 판정: `R3_R7_DESIGN_ACTIVE / PRODUCT_IMPLEMENTATION_BLOCKED / TASK3_IMPLEMENTATION_NOT_APPROVED`.
 
@@ -245,7 +251,7 @@ CORRUPT_PRIMARY_VALID_BACKUP = PRESERVE_VALID_BACKUP_WHEN_PRIMARY_CORRUPT
 
 일반 제품 구현은 `BLOCKED`다. 버티컬 슬라이스는 R2 Batch 006이 승인한 namespace와 사용자 승인 Task에서만 허용한다. Task2의 승인 범위는 병합·postmerge CI closure까지 완료됐으며, 이를 다음 Task나 일반 제품 Gate 개방으로 해석하지 않는다. `BS-VS-INIT-20260808-01`, `BS-HIGODOT-20260808-01`, `BS-HIGODOT-EXEC-20260808-01`, `BS-TOOLCHAIN-20260809-01`은 각자의 승인 범위를 넘어 확장되지 않는다.
 
-`BS-CONTENT-20260811-01`과 현재 `BS-CONTENT-20260811-02`는 planning-only Decision이다. 이 승인들만으로 제품 구현, Task3, HiGodot authoring scope를 개방하지 않는다.
+`BS-CONTENT-20260811-01`, `BS-CONTENT-20260811-02`, `BS-CONTENT-20260811-03`, 현재 `BS-CONTENT-20260811-04`는 planning-only Decision이다. 이 승인들만으로 제품 구현, Task3, HiGodot authoring scope를 개방하지 않는다.
 
 ## Three Affix Gate
 
@@ -330,7 +336,7 @@ HiGodot Task2 production provenance는 실제로 검증·병합됐지만 그 성
 ```yaml
 GENERAL_PRODUCT: BLOCKED
 R3_R7_DESIGN: ACTIVE_PLANNING_ONLY
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
 SCOPED_VERTICAL_SLICE: TASK2_COMPLETE_NO_NEW_TASK_INFERRED
 TASK1: PR130_MERGED_MAIN_CANON
 PR122: CLOSED_SUPERSEDED_UNMERGED
@@ -363,22 +369,22 @@ Task2의 script와 serialized surface는 모두 main에 병합되고 postmerge C
 
 `READY`·`AWAITING`·`IN_REVIEW`·`APPROVED` 같은 일반 문자열은 범위·근거 SHA·검증 상태가 없으면 진입 허용으로 사용할 수 없다.
 
-<!-- BS-CONTENT-20260811-03 CURRENT -->
-## R3–R7 current 3/10 — Marek Soldier01
+<!-- BS-CONTENT-20260811-04 CURRENT -->
+## R3–R7 current 4/10 — Ersa Collector01
 
 ```text
 R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 3/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03
-R3_R7_RESUME_LOCATOR: SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED
+R3_R7_APPROVAL_COUNTER: 4/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
+R3_R7_RESUME_LOCATOR: COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
-`BS-CONTENT-20260811-01` Nadia와 `BS-CONTENT-20260811-02` Toren은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-03`이다.
+Nadia 1/10, Toren 2/10, Marek 3/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-04`이다.
 
-`SOLDIER_01 / MAREK_OLDEN / SMALL_LOT_STANDARD_ORDER`는 기준품 + 소량 반복 제작을 사용하며, 첫 `ORDER_QUANTITY = 10`은 `NON_CANONICAL_BASELINE_TEST_PRESET`이다. 개별 UID·비용·단조·강화·연대기를 유지하고 직접 전술 전투·실시간 병참·작업자 생산라인·무료 복제를 추가하지 않는다.
+`COLLECTOR_01 / ERSA_ROEN / EXHIBITION_EVIDENCE_AND_PROVENANCE`는 작품에 실제 존재하는 제작·생애 증거와 공개된 전시 의도를 맞춘다. 숨은 희귀도/위신 총점이나 Chronicle 개수는 정답이 아니다.
 
-`BS-CORE-20260811-01 / AUTO_ENHANCEMENT_CAP_UNLOCK`은 별도 시스템 Decision이며 R3 콘텐츠 카운터를 올리지 않는다. 기존 +20 저위험 자동강화를 보존하고 수동 분야 돌파보다 한 10강 밴드 뒤에서 목표 지정 자동 상한을 해금한다.
+전시 결과는 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리하며 같은 작품 UID를 보존한다. 전시 실행은 비직접 세계 사건이고 플레이어는 대장장이·작품 증거 선택자로 남는다.
 
-Decision: `BS-CONTENT-20260811-03`.
+Decision: `BS-CONTENT-20260811-04`.
