@@ -55,8 +55,11 @@ class ProjectTotalInstructionV45R2CanonTests(unittest.TestCase):
         self.assertIn("WORK_INSTRUCTION: V4_5_R2_CURRENT_CANON", active)
         self.assertIn("PROJECT_LOCAL_PATH: C:\\Users\\user\\Documents\\GitHub\\Ninza\\Blacksmith", active)
         self.assertIn("GODOT_PROJECT_PATH: C:/Users/user/Documents/GitHub/Ninza/Blacksmith", active)
-        self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", active)
-        self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", active)
+        self.assertIn("PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", active)
+        self.assertIn("TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED", active)
+        self.assertIn("P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS", active)
+        self.assertIn("P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS", active)
+        self.assertIn("PHASE_C_NEXT_PACKAGE: P2_FOUNDATION_DATA_AND_STATE_CONTRACTS", active)
 
 
 if __name__ == "__main__":
