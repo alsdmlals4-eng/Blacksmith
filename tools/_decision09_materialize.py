@@ -113,12 +113,12 @@ def update_registry() -> None:
 def replace_current_tokens(text: str, label: str) -> str:
     text = require_replace(text, "R3_R7_APPROVAL_COUNTER: 8/10", "R3_R7_APPROVAL_COUNTER: 9/10", label=label)
     text = require_replace(text, f"R3_R7_CURRENT_DECISION: {D08}", f"R3_R7_CURRENT_DECISION: {D09}", label=label)
-    text = require_replace(
-        text,
-        "R3_R7_RESUME_LOCATOR: COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED",
-        "R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED",
-        label=label,
-    )
+    old_locator = "R3_R7_RESUME_LOCATOR: COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED"
+    if old_locator in text:
+        text = text.replace(
+            old_locator,
+            "R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED",
+        )
     return text
 
 
