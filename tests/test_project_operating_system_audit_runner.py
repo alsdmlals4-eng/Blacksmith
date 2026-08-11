@@ -79,7 +79,7 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertNotIn('"stage_status":"R2_CHECKPOINT_005_CLOSED_MAIN_CANON"', tokens)
         self.assertNotIn('"status":"NOT_STARTED"', tokens)
 
-    def test_r3_planning_authority_is_audited_without_opening_product_scope(self) -> None:
+    def test_r3_planning_authority_remains_historical_while_phase_c_router_is_separate(self) -> None:
         runner.configure_current_assertions()
         registry = audit.REQUIRED_ASSERTIONS[runner.R3_REGISTRY]
         nadia = audit.REQUIRED_ASSERTIONS[runner.R3_NADIA_CANON]
@@ -174,17 +174,23 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         ):
             self.assertIn(path, audit.ACTIVE_DOCS)
 
-    def test_gate_assertions_keep_general_block_and_task2_closed_scope(self) -> None:
+    def test_gate_assertions_keep_task2_history_and_open_only_bounded_phase_c_scope(self) -> None:
         runner.configure_current_assertions()
         tokens = audit.REQUIRED_ASSERTIONS["[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"]
-        self.assertIn("GENERAL_PRODUCT_IMPLEMENTATION: BLOCKED", tokens)
+        self.assertIn("GENERAL_PRODUCT_IMPLEMENTATION: APPROVED_WITHIN_EXISTING_CANON_NEW_SCOPE_REQUIRES_DECISION", tokens)
+        self.assertIn("PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", tokens)
         self.assertIn("VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE", tokens)
         self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED", tokens)
         self.assertIn("R3_R7_DESIGN_ACTIVE", tokens)
         self.assertIn("R3_R7_APPROVAL_COUNTER: 9/10", tokens)
         self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09", tokens)
         self.assertIn("BS-CONTENT-20260811-03", tokens)
-        self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
+        self.assertIn("BS-OPS-20260811-03", tokens)
+        self.assertIn("PLANNING_COMPLETE: USER_DECLARED", tokens)
+        self.assertIn("P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING", tokens)
+        self.assertIn("TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED", tokens)
+        self.assertIn("HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED", tokens)
+        self.assertIn("HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("VERTICAL_SLICE_CODE_GATE: USER_APPROVED", tokens)
         self.assertNotIn("CODEX_IMPLEMENTATION_GATE: BLOCKED", tokens)
 
@@ -197,7 +203,11 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
             self.assertNotIn("고정 설계 최대치 없음", tokens)
             self.assertIn("TASK2_MAIN_MERGED", tokens)
             self.assertIn("POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE", tokens)
-            self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", tokens)
+            self.assertIn("PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", tokens)
+            self.assertIn("P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING", tokens)
+            self.assertIn("BS-OPS-20260811-03", tokens)
+            self.assertIn("PLANNING_COMPLETE: USER_DECLARED", tokens)
+            self.assertIn("HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED", tokens)
             self.assertIn("R3_R7_DESIGN_ACTIVE", tokens)
             for decision_id in (
                 "BS-CONTENT-20260811-01",
@@ -213,7 +223,8 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
                 self.assertIn(decision_id, tokens)
             self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09", tokens)
             self.assertIn("GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED", tokens)
-            self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
+            self.assertIn("TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED", tokens)
+            self.assertIn("HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("R2_CHECKPOINT_005", start)
         self.assertNotIn("현재 승인 카운터: `0/10`", active)
         self.assertNotIn("제품 구현: `BLOCKED`", active)
