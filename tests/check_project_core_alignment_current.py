@@ -131,8 +131,10 @@ def main() -> int:
             "BS-CONTENT-20260811-02",
             "BS-CONTENT-20260811-03",
             "BS-CONTENT-20260811-04",
-            "R3_R7_APPROVAL_COUNTER: 5/10",
-            "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05",
+            "BS-CONTENT-20260811-05",
+            "R3_R7_APPROVAL_COUNTER: 6/10",
+            "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06",
+            "NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED",
             "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ]
     )
@@ -143,15 +145,16 @@ def main() -> int:
     active_tokens.remove("제품 구현: `BLOCKED`")
     active_tokens.extend(
         [
-            "현재 R3–R7 승인 카운터: `5/10`",
+            "현재 R3–R7 승인 카운터: `6/10`",
             "R3_R7_DESIGN_ACTIVE",
-            "R3_R7_APPROVAL_COUNTER: 5/10",
-            "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05",
-            "R3_R7_RESUME_LOCATOR: GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED",
+            "R3_R7_APPROVAL_COUNTER: 6/10",
+            "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06",
+            "R3_R7_RESUME_LOCATOR: NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED",
             "BS-CONTENT-20260811-01",
             "BS-CONTENT-20260811-02",
             "BS-CONTENT-20260811-03",
             "BS-CONTENT-20260811-04",
+            "BS-CONTENT-20260811-05",
             "PRODUCT_IMPLEMENTATION: BLOCKED",
             "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ]
