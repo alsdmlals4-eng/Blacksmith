@@ -214,8 +214,8 @@ TASK3_IMPLEMENTATION: NOT_APPROVED
 
 첨부 v4.5 r2 source의 `Switchy-Express-Cargo-Puzzle` 경로는 source provenance를 위해 수정하지 않고 보존한다. 현재 실행은 `BS-OPS-20260811-01`의 Blacksmith override를 따른다.
 
-<!-- BS-CONTENT-20260811-07 CURRENT -->
-## R3–R7 current 7/10 — Liana Soldier02
+<!-- BS-CONTENT-20260811-08 CURRENT -->
+## R3–R7 current 8/10 — Sedric Collector02
 
 ```text
 R3_R7_DESIGN_ACTIVE
@@ -226,8 +226,8 @@ PRODUCT_IMPLEMENTATION: BLOCKED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
-Nadia 1/10, Toren 2/10, Marek 3/10, Ersa 4/10, Cassia 5/10, Noble01 6/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-07`이다.
+Nadia 1/10, Toren 2/10, Marek 3/10, Ersa 4/10, Cassia 5/10, Noble01 6/10, Liana 7/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-08`이다.
 
-`SOLDIER_02 / LIANA_BERG / FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY`는 공개된 임무 책임·위험·필요 장비 역할과 실제 작품 UID 증거를 비교해 한 작품을 인계한다. 전선 임무는 비직접 사건이며 `MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE`를 분리해 돌려준다.
+`COLLECTOR_02 / SEDRIC_VAEL / ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY`는 공개된 archival purpose와 실제 작품 UID의 provenance·custody·생애 근거를 비교해 한 작품을 인계한다. accession은 비직접 사건이며 `ARCHIVE_ACCESSION_STATE / PROVENANCE_DOCUMENTATION_STATE / ITEM_UID_CUSTODY_LEGACY_STATE`를 분리해 돌려준다.
 
-Marek의 multi-UID 소량 표준화, Cassia의 arena contribution, Noble01의 heirloom restoration 책임은 각각 유지한다. 제품 구현과 Task3는 계속 차단한다.
+Ersa의 exhibition evidence/thesis, Noble01의 physical treatment depth, Liana의 commander mission-fit 책임은 각각 승인 이력으로 유지한다. 같은 UID, anti-score, anti-fabrication, anti-management, anti-farming 경계를 보존하며 제품 구현과 Task3는 계속 차단한다.

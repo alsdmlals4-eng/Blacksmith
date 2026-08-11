@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 시작 지점
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-07 / COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-08 / COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED / PLANNING_ONLY**
 >
 > Task2 기술 작업은 폐쇄 상태를 유지한다. R3–R7 기획은 재개됐지만 새 제품 Task나 Task3 구현은 별도 사용자 승인 없이는 추론하지 않는다.
 
@@ -157,7 +157,7 @@ ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY
 
 ## 다음 작업
 
-현재 연속 작업은 `BS-CONTENT-20260811-07`의 회귀 검증, 적대 검토, exact-head CI, PR 병합, GitHub·Sheet same-ID 동기화와 postmerge readback까지다. 그 작업이 닫힌 뒤 다음 신규 R3–R7 Decision은 승인 카운터 `8/10`에서 사용자 기획 승인을 받아 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
+현재 연속 작업은 `BS-CONTENT-20260811-08`의 회귀 검증, 적대 검토, exact-head CI, PR 병합, GitHub·Sheet same-ID 동기화와 postmerge readback까지다. 그 작업이 닫힌 뒤 다음 신규 R3–R7 Decision은 승인 카운터 `9/10`에서 사용자 기획 승인을 받아 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
 
 <!-- BS-CONTENT-20260811-08 CURRENT -->
 ## R3–R7 current 8/10 — Sedric Collector02
