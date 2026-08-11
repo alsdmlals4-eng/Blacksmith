@@ -124,15 +124,15 @@ class Adventurer02TorenContentContractTests(unittest.TestCase):
 
         for text in (active, start_here, roadmap, gates):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
-            self.assertIn("R3_R7_APPROVAL_COUNTER: 4/10", text)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04", text)
+            self.assertIn("R3_R7_APPROVAL_COUNTER: 5/10", text)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05", text)
             self.assertIn("BS-CONTENT-20260811-02", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
 
         for text in (active, start_here, roadmap):
-            self.assertIn("COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED", text)
+            self.assertIn("GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED", text)
 
         self.assertIn("BS-CONTENT-20260811-02", active)
         self.assertIn("ADVENTURER_02 / TOREN_MARCH", start_here)
@@ -158,7 +158,7 @@ class Adventurer02TorenContentContractTests(unittest.TestCase):
         self.assertIn("11. `DEVELOPMENT_GATES.md`", start_here)
         self.assertIn("12. `ROADMAP.md`", start_here)
 
-        self.assertIn("현재 승인 카운터: `4/10`.", roadmap)
+        self.assertIn("현재 승인 카운터: `5/10`.", roadmap)
         self.assertNotIn("현재 승인 카운터: `1/10`.", roadmap)
         self.assertIn("### 2/10 — `BS-CONTENT-20260811-02`", roadmap)
         self.assertIn("BS-CONTENT-20260811-02: USER_APPROVED_PLANNING_ONLY", roadmap)

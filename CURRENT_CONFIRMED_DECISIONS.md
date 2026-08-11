@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-04 / R3_R7_4_OF_10 / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-05 / R3_R7_5_OF_10 / PLANNING_ONLY**
 >
 > R2 Batch 006과 Task2 기술 폐쇄는 그대로 상속한다. 이번 승인은 R3–R7 기획 재개이며 Task3 또는 일반 제품 구현 승인으로 확대하지 않는다.
 
@@ -48,8 +48,8 @@ HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
 TOOLCHAIN_CURRENT_VERSION_DECISION: BS-TOOLCHAIN-20260811-02
 GODOT_AI_CURRENT_VERSION: 3.1.4
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 4/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
+R3_R7_APPROVAL_COUNTER: 5/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05
 NEW_PRODUCT_SCOPE: NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
@@ -94,6 +94,7 @@ PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 - `BS-CONTENT-20260811-02`: `ADVENTURER_02` 토렌 마치 장거리 여정 개인 일정. 여정 지속성·신뢰성을 목표로 기존 중량·강화·내구도·실제 관련 환경/현장정비 기능을 비교하며, 직접 여행 조작·새 신뢰성/수리성 원수치·자동 마모세를 추가하지 않고 같은 UID의 마모·현장 유지보수·손상 결과를 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다. — `USER_APPROVED / R3_R7_2_OF_10 / PLANNING_ONLY`
 - `BS-CONTENT-20260811-03`: `SOLDIER_01` 마레크 올덴 소량 표준 주문. 기준품 한 점을 직접 만든 뒤 반복 설정은 압축할 수 있지만 약 10개 baseline fixture의 각 작품은 독립 UID·비용·작업·단조·강화·연대기를 유지한다. 결과는 `UNIT_MISSION_STATE / STANDARD_ADOPTION_STATE / BATCH_ITEM_LIFECYCLE_STATE`로 분리하며 직접 전술 전투·실시간 병참·작업자 생산라인·무료 복제를 추가하지 않는다. — `USER_APPROVED / R3_R7_3_OF_10 / PLANNING_ONLY`
 - `BS-CONTENT-20260811-04`: `COLLECTOR_01` 에르사 로엔 전시 증거·계보 콘텐츠. `CRAFTSMANSHIP_EVIDENCE / LIVED_HISTORY_EVIDENCE`를 전시 의도 맥락으로 공개하고 작품 한 점의 실제 제작·생애 증거를 비교한다. 새 희귀도·위신·수집가·전시 총점과 Chronicle 개수 최적화를 만들지 않으며 같은 UID의 결과를 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리한다. — `USER_APPROVED / R3_R7_4_OF_10 / PLANNING_ONLY`
+- `BS-CONTENT-20260811-05`: `GLADIATOR_01` 카시아 벨란 투기장 대표 무기·공개 생애 콘텐츠. 요청 무기 범주와 경기 맥락을 공개하고 작품 한 점을 인계하며, 직접 전투 없이 결과를 `ARENA_MATCH_STATE / EQUIPMENT_CONTRIBUTION_STATE / ITEM_UID_ARENA_LEGACY_STATE`로 분리한다. 새 투기장/명성 총점·최고 강화 자동정답·승리=좋은 작품 단순화·경기 반복 Artistry/Chronicle 파밍을 만들지 않고 같은 UID를 보존한다. legacy Kyle/iron_sword POC 고정 수치·점수식은 역사 fixture로만 유지한다. — `USER_APPROVED / R3_R7_5_OF_10 / PLANNING_ONLY`
 - `BS-CRAFT-20260804-04`: 보조재료 제거와 정밀강화 방식·촉매 책임 분리
 - `BS-CRAFT-20260804-05`: 촉매 수식어 씨앗·계보·진화
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
@@ -484,5 +485,25 @@ CRAFTSMANSHIP_EVIDENCE / LIVED_HISTORY_EVIDENCE
 - 같은 작품 UID를 전시 전·중·후 보존하고 후속 제작·복원·판매·재전시 판단으로 환류한다.
 - 직접 전시 미니게임·전시관 장식·방문객 관리·경매·실시간 큐레이터 조작을 추가하지 않는다.
 - 책임 원본: `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`.
+- 제품 구현: `BLOCKED`.
+- Task3 구현: `NOT_APPROVED`.
+
+## 22. R3–R7 다섯 번째 상세 콘텐츠 — 카시아 벨란 투기장 대표 무기·공개 생애
+
+Decision: `BS-CONTENT-20260811-05`.
+
+```text
+GLADIATOR_01 / CASSIA_BELLAN
+ARENA_SIGNATURE_WEAPON_AND_LEGACY
+ARENA_MATCH_STATE / EQUIPMENT_CONTRIBUTION_STATE / ITEM_UID_ARENA_LEGACY_STATE
+```
+
+- 플레이어는 카시아를 직접 조작하지 않고 공개된 무기 범주·경기 맥락을 읽어 같은 작품 UID 한 점을 선택·인계한다.
+- 경기 승패와 작품의 실제 기여를 분리한다. 승리=좋은 작품, 패배=나쁜 작품으로 단순화하지 않는다.
+- 새 `ARENA_SCORE / FAME_SCORE / GLADIATOR_SCORE / SIGNATURE_SCORE`를 만들지 않는다.
+- 최고 강화·최고 명성·가장 오래된 작품을 보편적 자동 정답으로 만들지 않는다.
+- 경기/승리 횟수만으로 `ARTISTRY`를 올리거나 `CHRONICLE_AFFIX`를 자동 부여하지 않는다.
+- `data/customers/gladiator_poc.json`, `data/world/gladiator_match_poc.json`의 Kyle/iron_sword 고정 수치와 점수식은 역사 POC fixture이며 Decision05 권위가 아니다.
+- 책임 원본: `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`.
 - 제품 구현: `BLOCKED`.
 - Task3 구현: `NOT_APPROVED`.

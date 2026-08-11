@@ -1,15 +1,15 @@
 # [현재 정본] Blacksmith 시작 지점
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-04 / COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-05 / GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED / PLANNING_ONLY**
 >
 > Task2 기술 작업은 폐쇄 상태를 유지한다. R3–R7 기획은 재개됐지만 새 제품 Task나 Task3 구현은 별도 사용자 승인 없이는 추론하지 않는다.
 
 ## 현재 상태
 
 ```yaml
-BLACKSMITH_CURRENT_MAIN_OBSERVED_AT_DECISION_04_START: 1e60cf163191d547b96ffc392e3da24d072b7956
-BASE_CURRENT_MAIN_OBSERVED: 315c66eea9614c284b9c11c4d522141065dfa4b0
+BLACKSMITH_CURRENT_MAIN_OBSERVED_AT_DECISION_05_START: 98c0e1f26e51eeb01c04b742b535d7a3a1345c35
+BASE_CURRENT_MAIN_OBSERVED: 8e7d85b1b1272002a8086c502a41073888cb3318
 PROJECT_BASE_ADAPTER_PIN: 2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
 R2_BASELINE: R2_BATCH_006_MAIN_CANON
@@ -26,9 +26,9 @@ ANDROID_DEVICE: NOT_RUN
 ACCESSIBILITY: NOT_RUN
 PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 4/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
-R3_R7_RESUME_LOCATOR: COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED
+R3_R7_APPROVAL_COUNTER: 5/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05
+R3_R7_RESUME_LOCATOR: GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED
 ```
 
 `BASE_CURRENT_MAIN_OBSERVED`는 작업 시작 때 읽은 공유 Base 원격 main이다. `PROJECT_BASE_ADAPTER_PIN`은 Blacksmith가 현재 채택해 검증하는 Base 계약 pin이다. 둘은 자동 동기화 대상이 아니며, 원격 main이 전진했다고 프로젝트 pin을 임의 변경하지 않는다.
@@ -53,49 +53,28 @@ R3_R7_RESUME_LOCATOR: COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED
 
 ## 현재 R3–R7 설계 재개
 
-첫 승인 완료 Decision: `BS-CONTENT-20260811-01`.
+`BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`, `BS-CONTENT-20260811-02 / ADVENTURER_02 / TOREN_MARCH`, `BS-CONTENT-20260811-03 / SOLDIER_01 / MAREK_OLDEN`, `BS-CONTENT-20260811-04 / COLLECTOR_01 / ERSA_ROEN`은 승인 완료 이력으로 유지한다.
+
+현재 사용자 승인 Decision: `BS-CONTENT-20260811-05`.
 
 ```text
-ADVENTURER_01 / NADIA_VENN
-나디아 벤 유적 탐사 개인 일정
-생환 + 회수
-→ 작품 한 점 인계
-→ 하루 종료당 최대 한 번 진행
-→ 즉시 인과 결과
-→ 같은 UID의 지연 생애
-→ 복원·후속 강화·새 제작 이유
+GLADIATOR_01 / CASSIA_BELLAN
+ARENA_SIGNATURE_WEAPON_AND_LEGACY
+→ 요청 무기 범주 + 경기 맥락 공개
+→ 같은 UID 작품 한 점 선택·인계
+→ 비직접 경기 결과
+→ ARENA_MATCH_STATE
+ + EQUIPMENT_CONTRIBUTION_STATE
+ + ITEM_UID_ARENA_LEGACY_STATE
+→ 같은 UID의 수리·복원·후속 강화·재대결 신작·보존·전시 판단
 ```
 
-- 직접 전투·탐험 미니게임은 추가하지 않는다.
-- 단일 항상최적 장비 정답은 만들지 않는다.
-- 구조 상태를 고정 3일 일정으로 해석하지 않는다.
-- 사건 완료만으로 연대기 수식어·예술성을 자동 지급하지 않는다.
-- 정확한 기간·확률·보상·손실은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
-- 제품 구현: `BLOCKED`.
-- Task3 구현: `NOT_APPROVED`.
-
-`BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`, `BS-CONTENT-20260811-02 / ADVENTURER_02 / TOREN_MARCH`, `BS-CONTENT-20260811-03 / SOLDIER_01 / MAREK_OLDEN`은 승인 완료 이력으로 유지한다.
-
-현재 사용자 승인 Decision: `BS-CONTENT-20260811-04`.
-
-```text
-COLLECTOR_01 / ERSA_ROEN
-EXHIBITION_EVIDENCE_AND_PROVENANCE
-→ CRAFTSMANSHIP_EVIDENCE 또는 LIVED_HISTORY_EVIDENCE 전시 의도 공개
-→ 후보 작품의 실제 UID 증거 비교
-→ 같은 UID 작품 한 점 + 기존 증거 2~4개 강조
-→ 비직접 전시 결과
-→ EXHIBITION_RECEPTION_STATE
- + EXHIBIT_THESIS_FIT_STATE
- + ITEM_UID_PUBLIC_LEGACY_STATE
-→ 같은 UID의 후속 제작·복원·판매·재전시 판단 이유
-```
-
-- `RARITY_SCORE / PRESTIGE_SCORE / COLLECTOR_SCORE / EXHIBITION_SCORE`를 만들지 않는다.
-- Chronicle 개수·최고 예술성·최고 강화·가장 오래된 작품을 자동 정답으로 만들지 않는다.
-- 전시 횟수나 전시 자체로 `ARTISTRY`를 자동 성장시키거나 `CHRONICLE_AFFIX`를 자동 부여하지 않는다.
-- 플레이어는 작품·증거를 선택하는 대장장이이며 전시관/방문객을 직접 운영하지 않는다.
-- 같은 작품 UID를 전시 전·중·후 보존한다.
+- 직접 전투·위치 지정·행동 명령·팀/길드 경영·배팅은 추가하지 않는다.
+- 새 투기장/명성/검투사/시그니처 총점을 만들지 않는다.
+- 경기 승패와 작품 기여를 분리하고 최고 강화나 승리를 자동 정답으로 만들지 않는다.
+- 경기 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
+- 같은 작품 UID를 보존한다.
+- legacy Kyle/iron_sword POC 고정 수치와 점수식은 Decision05 권위가 아니다.
 - 제품 구현: `BLOCKED`.
 - Task3 구현: `NOT_APPROVED`.
 
@@ -105,7 +84,8 @@ EXHIBITION_EVIDENCE_AND_PROVENANCE
 2. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
 3. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
 4. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
-5. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
+5. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+6. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
 
 ## 처음 읽을 순서
 
@@ -113,7 +93,8 @@ EXHIBITION_EVIDENCE_AND_PROVENANCE
 2. `CURRENT_CONFIRMED_DECISIONS.md`
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
+5. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+6. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
 6. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
 7. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
 8. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
@@ -155,6 +136,8 @@ EXHIBITION_EVIDENCE_AND_PROVENANCE
 - `BS-CONTENT-20260811-04`는 희귀도/위신/수집가/전시 총점과 Chronicle 개수 최적화를 만들지 않는다.
 - `BS-CONTENT-20260811-04`는 전시 횟수만으로 예술성 또는 Chronicle을 자동 성장시키지 않는다.
 - `BS-CONTENT-20260811-04`는 같은 작품 UID와 기존 제작·생애 증거를 권위로 유지한다.
+- `BS-CONTENT-20260811-05`는 경기 승패와 작품 기여를 분리하고 직접 투기장 조작·불투명 총점·반복 파밍을 추가하지 않는다.
+- `BS-CONTENT-20260811-05`는 같은 작품 UID와 legacy POC 비권위 경계를 유지한다.
 - GUT 9.7.1은 GDScript test authority다.
 - HiGodot은 승인된 Godot persistent authoring authority다.
 - Hera는 enabled non-authoritative이며 authoring/mutation authority는 `NONE`이다.
@@ -162,24 +145,22 @@ EXHIBITION_EVIDENCE_AND_PROVENANCE
 
 ## 다음 작업
 
-현재 연속 작업은 `BS-CONTENT-20260811-04`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `4/10`에서 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
+현재 연속 작업은 `BS-CONTENT-20260811-05`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `5/10`에서 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
 
-<!-- BS-CONTENT-20260811-04 CURRENT -->
-## R3–R7 current 4/10 — Ersa Collector01
+<!-- BS-CONTENT-20260811-05 CURRENT -->
+## R3–R7 current 5/10 — Cassia Gladiator01
 
 ```text
 R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 4/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
-R3_R7_RESUME_LOCATOR: COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED
+R3_R7_APPROVAL_COUNTER: 5/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05
+R3_R7_RESUME_LOCATOR: GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
-Nadia 1/10, Toren 2/10, Marek 3/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-04`이다.
+Nadia 1/10, Toren 2/10, Marek 3/10, Ersa 4/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-05`이다.
 
-`COLLECTOR_01 / ERSA_ROEN / EXHIBITION_EVIDENCE_AND_PROVENANCE`는 `CRAFTSMANSHIP_EVIDENCE`와 `LIVED_HISTORY_EVIDENCE`를 전시 요청의 맥락으로 사용한다. 작품의 기존 증거만 비교하며 숨은 위신 총점·Chronicle 개수·최고 수치 하나를 정답으로 사용하지 않는다.
+`GLADIATOR_01 / CASSIA_BELLAN / ARENA_SIGNATURE_WEAPON_AND_LEGACY`는 경기 승패와 작품 기여와 같은 UID 공개 생애를 분리해 돌려준다. 직접 전투·팀/길드 경영·배팅·불투명 총점·경기 반복 성장 파밍은 현재 범위가 아니다.
 
-같은 UID의 공개 전시 결과는 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리해 돌려준다. 전시 실행은 비직접 세계 사건이며 플레이어는 작품과 증거를 선택하는 대장장이로 남는다.
-
-현재 연속 작업은 `BS-CONTENT-20260811-04`이다.
+현재 연속 작업은 `BS-CONTENT-20260811-05`이다.
