@@ -49,7 +49,7 @@ TDD_GATE: RED_GREEN_REFACTOR_REQUIRED
 CODEX_IMPLEMENTATION_GATE: PHASE_C_ENTRY_APPROVED_EXISTING_CANON_ONLY_P0_BOOTSTRAP_FIRST
 VERTICAL_SLICE_PLAN_GATE: TASK2_COMPLETE_NO_NEW_TASK_INFERRED
 VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE
-HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED
+HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED
 TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED
 LATEST_RUNTIME_VALIDATION_GATE: HISTORICAL_POC_ONLY
 ANDROID_DEVICE_GATE: NOT_RUN
@@ -106,11 +106,11 @@ fresh authority preflight
 - 저위험 maintenance에서 외부 benchmark가 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남기되 관련 공식 원본은 확인한다.
 - `BS-OPS-20260805-01`의 benchmark scope만 refine하며 TDD·early checkpoint authority는 유지한다.
 - benchmark 수치·경제·확률을 제품 정본으로 자동 승격하지 않는다.
-- R3–R7 `9/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
+- R3–R7 planning은 사용자 `기획 완료`로 9/10에서 닫혔다. 현재 제품 구현은 기존 승인 canon 범위의 Phase C만 허용되고, Task3·신규 범위는 별도 승인 대상이다.
 
-판정: `USER_APPROVED / REQUIRED / PLANNING_ONLY`.
+판정: `USER_APPROVED / REQUIRED / PHASE_C_EXISTING_CANON_ONLY`.
 
-## R3–R7 Planning-Only Gate
+## Historical R3–R7 Planning-Only Gate — closed at 9/10
 
 현재 Decision: `BS-CONTENT-20260811-09`.
 Decision: `BS-CONTENT-20260811-09`.
@@ -277,9 +277,9 @@ CORRUPT_PRIMARY_VALID_BACKUP = PRESERVE_VALID_BACKUP_WHEN_PRIMARY_CORRUPT
 
 ## Product Implementation Gate
 
-일반 제품 구현은 `BLOCKED`다. 버티컬 슬라이스는 R2 Batch 006이 승인한 namespace와 사용자 승인 Task에서만 허용한다. Task2의 승인 범위는 병합·postmerge CI closure까지 완료됐으며, 이를 다음 Task나 일반 제품 Gate 개방으로 해석하지 않는다. `BS-VS-INIT-20260808-01`, `BS-HIGODOT-20260808-01`, `BS-HIGODOT-EXEC-20260808-01`, `BS-TOOLCHAIN-20260809-01`은 각자의 승인 범위를 넘어 확장되지 않는다.
+사용자 `기획 완료`와 `BS-OPS-20260811-03`에 따라 **이미 승인된 current canon 범위의 제품 구현만** `PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON`이다. 첫 영속 Godot 저작 전에 `P0_LOCAL_EXECUTOR_BOOTSTRAP`과 Codex 내부 fresh HiGodot project/session/version/readiness receipt가 필수다. Task2의 역사 범위는 그대로 보존하며, `BS-VS-INIT-20260808-01`, `BS-HIGODOT-20260808-01`, `BS-HIGODOT-EXEC-20260808-01`, `BS-TOOLCHAIN-20260809-01`의 과거 승인 범위를 임의 확장하지 않는다.
 
-`BS-CONTENT-20260811-01`~`BS-CONTENT-20260811-09`는 planning-only Decision이며 현재 Decision은 `BS-CONTENT-20260811-09`다. 이 승인들만으로 제품 구현, Task3, HiGodot authoring scope를 개방하지 않는다.
+`BS-CONTENT-20260811-01`~`BS-CONTENT-20260811-09`는 완료된 기획 정본이며 Phase C 구현 입력이다. 승인되지 않은 신규 게임 시스템·범위 확대는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON`, Task3는 `TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED`다.
 
 ## Three Affix Gate
 
@@ -342,8 +342,8 @@ HERA_PLUGIN_ENABLED: true
 HERA_AUTHORITY: NONE
 HERA_ADOPTION: VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE
 SAME_FILE_DUAL_AUTHORITY: FORBIDDEN
-NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED
-TASK3_IMPLEMENTATION: NOT_APPROVED
+NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON
+TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED
 ```
 
 HiGodot Task2 production provenance는 실제로 검증·병합됐지만 그 성공은 Task2 범위에만 해당한다. GUT editor plugin 활성화 상태는 formal test authority와 일치하지만 Godot authoring authority를 추가하지 않는다. Hera는 editor에서 활성화됐으나 `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`이며, 별도 범위 승인 전에는 HiGodot/GUT 권위를 대체하거나 Git 추적 저작 surface를 수정할 수 없다. Hera headless lifecycle은 CI에서 UI·autoload·HTTP server를 만들지 않도록 fail-closed한다.
@@ -362,8 +362,8 @@ HiGodot Task2 production provenance는 실제로 검증·병합됐지만 그 성
 현재 판정:
 
 ```yaml
-GENERAL_PRODUCT: BLOCKED
-R3_R7_DESIGN: ACTIVE_PLANNING_ONLY
+GENERAL_PRODUCT: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON
+R3_R7_DESIGN: PLANNING_COMPLETE_CLOSED_AT_9_OF_10
 R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
 SCOPED_VERTICAL_SLICE: TASK2_COMPLETE_NO_NEW_TASK_INFERRED
 TASK1: PR130_MERGED_MAIN_CANON
@@ -383,16 +383,16 @@ GUT_PLUGIN_ENABLED: true
 HERA_PLUGIN_ENABLED: true
 HERA_AUTHORITY: NONE
 HERA_ADOPTION: VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE
-PRODUCT_IMAGE: BLOCKED_NOT_PRODUCT_READY
+PRODUCT_IMAGE: DEFERRED_BY_USER
 IMAGE_GENERATED: NOT_RUN
 IMAGE_RIGHTS: NOT_RUN
 IMAGE_RUNTIME: NOT_RUN
 IMAGE_LIST_SCHEMA: SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS
 IMAGE_ASSET_COMPLETION: BLOCKED_NOT_GENERATED_AND_RIGHTS_NOT_RUN
 GUT_ADOPTION: FORMALLY_ADOPTED_ACTIVE
-NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED
+NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON
 ```
 
-Task2의 script와 serialized surface는 모두 main에 병합되고 postmerge CI가 폐쇄됐다. R3–R7 설계 재개는 이 제품 구현 폐쇄 상태를 변경하지 않는다. 이미지 목록의 열 정렬 복구나 engine-native UI 사용은 제품 이미지 생성·권리·가독성·런타임 Gate를 개방하지 않는다. 새 제품 Task는 별도 사용자 범위 승인 전 진입하지 않는다.
+Task2의 script와 serialized surface는 모두 main에 병합되고 postmerge CI가 폐쇄됐다. 이후 R3–R7 9/10 기획이 완료되어 현재는 기존 승인 canon 범위의 Phase C entry만 열렸다. 이미지 생성은 사용자가 보류했으므로 이미지 생성·권리·가독성·런타임 증거는 여전히 `NOT_RUN`/deferred다. 승인 canon 밖 신규 제품 Task와 Task3는 별도 사용자 범위 승인 전 진입하지 않는다.
 
 `READY`·`AWAITING`·`IN_REVIEW`·`APPROVED` 같은 일반 문자열은 범위·근거 SHA·검증 상태가 없으면 진입 허용으로 사용할 수 없다.
