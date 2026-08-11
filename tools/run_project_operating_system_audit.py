@@ -14,9 +14,11 @@ R3_REGISTRY = "docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json"
 R3_NADIA_CANON = "docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md"
 R3_TOREN_CANON = "docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md"
 R3_MAREK_CANON = "docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md"
+R3_ERSA_CANON = "docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md"
 R3_FIRST_DECISION = "BS-CONTENT-20260811-01"
 R3_SECOND_DECISION = "BS-CONTENT-20260811-02"
-R3_CURRENT_DECISION = "BS-CONTENT-20260811-03"
+R3_THIRD_DECISION = "BS-CONTENT-20260811-03"
+R3_CURRENT_DECISION = "BS-CONTENT-20260811-04"
 
 
 def classify_planned_references(findings: list[audit.Finding]) -> None:
@@ -68,15 +70,16 @@ def configure_current_assertions() -> None:
         '"stage_status": "R3_R7_DESIGN_ACTIVE"',
         '"product_implementation": "BLOCKED"',
         '"task3_implementation": "NOT_APPROVED"',
-        '"next_approval_counter": "3/10"',
+        '"next_approval_counter": "4/10"',
         f'"id": "{R3_FIRST_DECISION}"',
         f'"id": "{R3_SECOND_DECISION}"',
+        f'"id": "{R3_THIRD_DECISION}"',
         f'"id": "{R3_CURRENT_DECISION}"',
-        '"content_id": "SOLDIER_01"',
-        '"customer_id": "MAREK_OLDEN"',
-        '"activity_family": "SMALL_LOT_STANDARD_ORDER"',
-        '"per_item_uid_preserved": true',
-        '"free_item_cloning": false',
+        '"content_id": "COLLECTOR_01"',
+        '"customer_id": "ERSA_ROEN"',
+        '"activity_family": "EXHIBITION_EVIDENCE_AND_PROVENANCE"',
+        '"same_item_uid_preserved": true',
+        '"opaque_collector_or_exhibition_score": false',
     )
     assertions[R3_NADIA_CANON] = (
         R3_FIRST_DECISION,
@@ -102,9 +105,8 @@ def configure_current_assertions() -> None:
         "제품 구현: `BLOCKED`",
         "Task3 구현: `NOT_APPROVED`",
     )
-
     assertions[R3_MAREK_CANON] = (
-        R3_CURRENT_DECISION,
+        R3_THIRD_DECISION,
         "SOLDIER_01",
         "MAREK_OLDEN",
         "SMALL_LOT_STANDARD_ORDER",
@@ -113,6 +115,21 @@ def configure_current_assertions() -> None:
         "UNIT_MISSION_STATE",
         "STANDARD_ADOPTION_STATE",
         "BATCH_ITEM_LIFECYCLE_STATE",
+        "제품 구현: `BLOCKED`",
+        "Task3 구현: `NOT_APPROVED`",
+    )
+    assertions[R3_ERSA_CANON] = (
+        R3_CURRENT_DECISION,
+        "COLLECTOR_01",
+        "ERSA_ROEN",
+        "EXHIBITION_EVIDENCE_AND_PROVENANCE",
+        "CRAFTSMANSHIP_EVIDENCE",
+        "LIVED_HISTORY_EVIDENCE",
+        "EXHIBITION_RECEPTION_STATE",
+        "EXHIBIT_THESIS_FIT_STATE",
+        "ITEM_UID_PUBLIC_LEGACY_STATE",
+        "SAME_ITEM_UID_PRESERVED",
+        "NO_CHRONICLE_COUNT_OPTIMIZATION",
         "제품 구현: `BLOCKED`",
         "Task3 구현: `NOT_APPROVED`",
     )
@@ -130,8 +147,9 @@ def configure_current_assertions() -> None:
         "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
         "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
         "R3_R7_DESIGN_ACTIVE",
-        "R3_R7_APPROVAL_COUNTER: 3/10",
+        "R3_R7_APPROVAL_COUNTER: 4/10",
         f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
+        R3_THIRD_DECISION,
         "TASK3_IMPLEMENTATION: NOT_APPROVED",
     ):
         if token not in gate_tokens:
@@ -164,19 +182,21 @@ def configure_current_assertions() -> None:
             "R3_R7_DESIGN_ACTIVE",
             R3_FIRST_DECISION,
             R3_SECOND_DECISION,
+            R3_THIRD_DECISION,
             R3_CURRENT_DECISION,
             f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
+            "COLLECTOR_01_ERSA_EXHIBITION_EVIDENCE_APPROVED",
             "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ):
             if token not in tokens:
                 tokens.append(token)
-        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `3/10`" not in tokens:
-            tokens.append("현재 R3–R7 승인 카운터: `3/10`")
+        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `4/10`" not in tokens:
+            tokens.append("현재 R3–R7 승인 카운터: `4/10`")
         assertions[path] = tuple(tokens)
 
     audit.REQUIRED_ASSERTIONS = assertions
     current_docs = list(audit.ACTIVE_DOCS)
-    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON):
+    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON, R3_MAREK_CANON, R3_ERSA_CANON):
         if path not in current_docs:
             current_docs.append(path)
     audit.ACTIVE_DOCS = tuple(current_docs)
