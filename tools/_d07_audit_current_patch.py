@@ -14,6 +14,13 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
     return text.replace(old, new, 1)
 
 
+def replace_exact_count(text: str, old: str, new: str, expected: int, label: str) -> str:
+    count = text.count(old)
+    if count != expected:
+        raise RuntimeError(f"{label}: expected {expected} matches, got {count}")
+    return text.replace(old, new)
+
+
 def patch_runner() -> None:
     text = RUNNER.read_text(encoding="utf-8")
     text = replace_once(
@@ -137,14 +144,19 @@ def patch_test() -> None:
         "meta active docs Liana",
     )
     text = replace_once(text, '        self.assertIn("R3_R7_APPROVAL_COUNTER: 6/10", tokens)', '        self.assertIn("R3_R7_APPROVAL_COUNTER: 7/10", tokens)', "meta gate counter")
-    text = replace_once(text, '        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06", tokens)', '        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07", tokens)', "meta gate current decision")
+    text = replace_exact_count(
+        text,
+        '        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06", tokens)',
+        '        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07", tokens)',
+        2,
+        "meta gate/router current decision",
+    )
     text = replace_once(
         text,
         "                \"BS-CONTENT-20260811-06\",\n",
         "                \"BS-CONTENT-20260811-06\",\n                \"BS-CONTENT-20260811-07\",\n",
         "meta router D07 history",
     )
-    text = replace_once(text, '            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06", tokens)', '            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07", tokens)', "meta router current decision")
     text = replace_once(text, '            self.assertIn("NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED", tokens)', '            self.assertIn("SOLDIER_02_LIANA_MISSION_FIT_APPROVED", tokens)', "meta router locator")
     text = replace_once(text, '        self.assertIn("현재 R3–R7 승인 카운터: `6/10`", active)', '        self.assertIn("현재 R3–R7 승인 카운터: `7/10`", active)', "meta active counter")
     TEST.write_text(text, encoding="utf-8", newline="\n")
