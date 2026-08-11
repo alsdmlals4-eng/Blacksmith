@@ -1,31 +1,44 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
-<!-- BS_OPS_20260811_03_PHASE_C_ENTRY -->
-> **PLANNING_COMPLETE / BS-OPS-20260811-03 / PHASE_B_FINAL_REVIEW_COMPLETE / PHASE_C_ENTRY_APPROVED**
+<!-- BS_OPS_20260811_03_PHASE_C_LIVE_CONTINUATION -->
+> **PLANNING_COMPLETE / BS-OPS-20260811-03 / PHASE_C_EXISTING_APPROVED_CANON / LOCAL_RUNTIME_GATE_OPEN**
 >
-> `ASSUME_PREVIOUS_POWERSHELL_CLOSED` / `PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST` / `CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST`
+> 사용자 승인 기획은 R3–R7 `9/10`에서 닫혔고 승인되지 않은 Decision10을 만들지 않는다. `PR #155` Phase C entry, `PR #156` executor isolation hardening, `PR #157` runtime/bootstrap fix가 main에 병합됐다. 실제 Windows local receipt에서 전용 Godot 4.7.1, Godot-AI 3.1.4, HTTP `8006`, WS `9506`, dedicated `CODEX_HOME`, exact Blacksmith session 1개와 editor/project readback이 PASS했다.
 >
-> `BASE_DEDICATED_ENV_MAIN_OBSERVED: 6d2feba2bc49fda2d8d273248b55087853615d5d`
+> `STATE_OBSERVED_AT_MAIN: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486`
 >
-> 사용자가 `기획 완료`를 명시했다. R3–R7 기획 배치는 승인된 9/10에서 닫으며, 승인되지 않은 Decision10을 만들지 않는다. 이미 승인된 정본 구현만 Phase C로 진입하고 신규 제품 범위는 별도 Decision이 필요하다.
+> `RESUME_RULE: FETCH_LATEST_MAIN_BEFORE_USE`
 >
-> `PLANNING_COMPLETE: USER_DECLARED` / `R3_R7_PLANNING_BATCH: CLOSED_AT_9_OF_10` / `PHASE_B_FINAL_REVIEW: COMPLETE`
+> `P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS`
+>
+> `P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS`
+>
+> `PERSISTENT_MUTATION_GATE: OPEN`
+>
+> `PHASE_C_NEXT_PACKAGE: P2_FOUNDATION_DATA_AND_STATE_CONTRACTS`
+>
+> `CURRENT_EXECUTION_SURFACE: REUSE_LIVE_DEDICATED_CODEX_WHEN_FRESH`
+>
+> `BOOTSTRAP_REENTRY_POLICY: ONLY_WHEN_RUNTIME_ENVELOPE_EXPIRED_OR_RECOVERY_REQUIRED`
+>
+> `SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE`
 >
 > `PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON`
 >
 > `TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED`
 >
-> `P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING`
->
 > `IMAGE_GENERATION: DEFERRED_BY_USER`
 >
-> 전용 로컬 실행환경: self-contained Godot 4.7.1 (`_sc_`) → HiGodot HTTP `8006` / WS `9506` → `C:\Users\user\.codex-blacksmith` → exact Blacksmith 경로에서 Codex. 포트/process 존재는 readiness PASS가 아니며 Codex 내부 fresh HiGodot receipt 전 persistent mutation 금지.
-
+> `P1_BS_CT_06_TAXONOMY_AMBIGUITY: DEFERRED`
+>
+> `HUMAN_PLAYTEST: NOT_RUN / ANDROID_DEVICE: NOT_RUN / ACCESSIBILITY: NOT_RUN`
+>
+> 현재 전용 Codex/Godot/HiGodot 세션이 계속 살아 있고 fresh identity가 유지되는 동안 Codex 내부에서 끝나는 동일 승인 범위 작업은 PowerShell bootstrap을 반복하지 않는다. 세션/포트/프로세스 identity가 만료되거나 recovery가 필요할 때만 Blacksmith 전용 bootstrap을 다시 수행한다. GitHub가 기획 정본이며 Google Sheet current mirror는 broad replacement가 아니라 targeted range write + live/history readback으로 동기화한다.
 
 <!-- R3_R7_PLANNING_BATCH_HISTORICAL_CLOSED_AT_9_OF_10 -->
 > **HISTORICAL_R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-09 / R3_R7_9_OF_10 / PLANNING_ONLY**
 >
-> 아래 블록은 `기획 완료` 이전 R3–R7 9/10 planning snapshot이다. 당시 `PRODUCT_IMPLEMENTATION: BLOCKED` / `TASK3_IMPLEMENTATION: NOT_APPROVED`였으며, 현재 Phase C gate는 위 `BS-OPS-20260811-03`이 소유한다.
+> 아래 블록은 `기획 완료` 이전 R3–R7 9/10 planning snapshot이다. 당시 `PRODUCT_IMPLEMENTATION: BLOCKED` / `TASK3_IMPLEMENTATION: NOT_APPROVED`였으며, 현재 Phase C gate는 위 `BS-OPS-20260811-03` live continuation이 소유한다.
 
 <!-- R2_BATCH_006_CURRENT_AUTHORITY -->
 > **R2_BATCH_006_APPROVED_MAIN_CANON**
@@ -57,7 +70,7 @@
 >
 > 버티컬 슬라이스 구현: `APPROVED / MERGED_PR120_MAIN_CANON / VERTICAL_SLICE_IMPLEMENTATION_APPROVED`
 
-## 현재 운영 폐쇄 상태
+## 역사 운영 폐쇄 상태 — PR157 이전 호환 snapshot
 
 ```yaml
 BLACKSMITH_BASELINE_MAIN_BEFORE_HANDOFF_REFRESH: fa9595b2df95897c915331a1cb5d9b1a583611f0
