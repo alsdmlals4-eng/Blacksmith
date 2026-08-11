@@ -1,0 +1,43 @@
+name: Repair Cassia Gate History Once
+
+on:
+  push:
+    branches:
+      - plan/r3-gladiator-01-cassia-5of10
+    paths:
+      - tools/_repair_cassia_gate_history.py
+      - .github/workflows/_repair-cassia-gate-history.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repair-cassia-gate-history
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Repair gate history/current pointer
+        run: python tools/_repair_cassia_gate_history.py
+      - name: Verify affected contracts
+        run: |
+          python -m unittest tests.test_vertical_slice_new_campaign_initializer_authority -v
+          python -m unittest tests.test_r3_gladiator_01_cassia_content -v
+      - name: Commit repaired planning gate
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet && { echo 'No repair changes'; exit 1; }
+          git commit -m 'docs: preserve Decision01 history in Cassia current gate'
+          git push origin HEAD:${GITHUB_REF_NAME}
