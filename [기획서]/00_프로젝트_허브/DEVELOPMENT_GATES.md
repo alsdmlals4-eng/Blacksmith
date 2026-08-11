@@ -1,91 +1,92 @@
 # [현재 정본] Development Gates
 
-<!-- BS_OPS_20260811_03_PHASE_C_ENTRY -->
-> **PLANNING_COMPLETE / BS-OPS-20260811-03 / PHASE_B_FINAL_REVIEW_COMPLETE / PHASE_C_ENTRY_APPROVED**
+<!-- BS_OPS_20260811_03_PHASE_C_LIVE_CONTINUATION -->
+> **PLANNING_COMPLETE / BS-OPS-20260811-03 / PHASE_C_EXISTING_APPROVED_CANON / LOCAL_RUNTIME_GATE_OPEN**
 >
-> `ASSUME_PREVIOUS_POWERSHELL_CLOSED` / `PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST` / `CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST`
+> `STATE_OBSERVED_AT_MAIN: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486`
 >
-> `BASE_DEDICATED_ENV_MAIN_OBSERVED: 6d2feba2bc49fda2d8d273248b55087853615d5d`
+> `RESUME_RULE: FETCH_LATEST_MAIN_BEFORE_USE`
 >
-> 사용자가 `기획 완료`를 명시했다. R3–R7 기획 배치는 승인된 9/10에서 닫으며, 승인되지 않은 Decision10을 만들지 않는다. 이미 승인된 정본 구현만 Phase C로 진입하고 신규 제품 범위는 별도 Decision이 필요하다.
+> `P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS`
 >
-> `PLANNING_COMPLETE: USER_DECLARED` / `R3_R7_PLANNING_BATCH: CLOSED_AT_9_OF_10` / `PHASE_B_FINAL_REVIEW: COMPLETE`
+> `P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS`
 >
-> `PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON`
+> `PERSISTENT_MUTATION_GATE: OPEN`
 >
-> `TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED`
+> `PHASE_C_NEXT_PACKAGE: P2_FOUNDATION_DATA_AND_STATE_CONTRACTS`
 >
-> `P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING`
+> `CURRENT_EXECUTION_SURFACE: REUSE_LIVE_DEDICATED_CODEX_WHEN_FRESH`
 >
-> `IMAGE_GENERATION: DEFERRED_BY_USER`
+> `BOOTSTRAP_REENTRY_POLICY: ONLY_WHEN_RUNTIME_ENVELOPE_EXPIRED_OR_RECOVERY_REQUIRED`
 >
-> 전용 로컬 실행환경: self-contained Godot 4.7.1 (`_sc_`) → HiGodot HTTP `8006` / WS `9506` → `C:\Users\user\.codex-blacksmith` → exact Blacksmith 경로에서 Codex. 포트/process 존재는 readiness PASS가 아니며 Codex 내부 fresh HiGodot receipt 전 persistent mutation 금지.
-
-
-<!-- R3_R7_PLANNING_BATCH_HISTORICAL_CLOSED_AT_9_OF_10 -->
-> **HISTORICAL_R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-09 / GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
->
-> R3–R7 콘텐츠 설계는 재개됐지만 Task3·일반 제품 구현 Gate는 열리지 않았다. R2·Task2 권위와 기술 폐쇄 증거는 그대로 상속한다.
-
-<!-- R2_BATCH_006_CURRENT_AUTHORITY -->
-> **R2_BATCH_006_APPROVED_MAIN_CANON / SCOPED_VERTICAL_SLICE_ONLY**
->
-> `R2_CHECKPOINT_005_CLOSED_MAIN_CANON / R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109_MAIN_CANON / R2_BATCH_006_APPROVED_10_OF_10 / MERGED_PR120_MAIN_CANON`
+> `SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE`
 
 ## Current Gate Summary
 
 ```yaml
-CURRENT_STAGE: PHASE_C_IMPLEMENTATION_ENTRY
+CURRENT_STAGE: PHASE_C_IMPLEMENTATION
+PLANNING_COMPLETE: USER_DECLARED
+R3_R7_PLANNING_BATCH: CLOSED_AT_9_OF_10
 R3_R7_APPROVAL_COUNTER: 9/10
 R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
 PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
 PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
-R3_R7_DESIGN_GATE: USER_APPROVED_PLANNING_COMPLETE_CLOSED_AT_9_OF_10
 R2_STATUS: R2_BATCH_006_APPROVED_MAIN_CANON
 R2_CHECKPOINT_005: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
-R2_BATCH_005: CLOSED_10_OF_10
+R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10
 R2_BATCH_006: APPROVED_10_OF_10
 TDD_GATE: RED_GREEN_REFACTOR_REQUIRED
-CODEX_IMPLEMENTATION_GATE: PHASE_C_ENTRY_APPROVED_EXISTING_CANON_ONLY_P0_BOOTSTRAP_FIRST
-VERTICAL_SLICE_PLAN_GATE: TASK2_COMPLETE_NO_NEW_TASK_INFERRED
-VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE
+CODEX_IMPLEMENTATION_GATE: PHASE_C_EXISTING_CANON_P0_P1_PASS_LIVE_RUNTIME_REUSE_ALLOWED
+ENTRY_STATE_GATE: PASS_PLANNING_COMPLETE_PHASE_C_EXISTING_CANON_P0_P1_PASS
+P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS
+P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS
+LOCAL_RUNTIME_GATE: PASS
+LATEST_RUNTIME_VALIDATION_GATE: PR157_LOCAL_LIVE_RECEIPT_PASS
+DEDICATED_GODOT_4_7_1: PASS
+GODOT_AI_3_1_4: PASS
+HIGODOT_HTTP_8006: PASS
+HIGODOT_WS_9506: PASS
+DEDICATED_CODEX_HOME: PASS
+EXACT_BLACKSMITH_SESSION_COUNT: 1
+PERSISTENT_MUTATION_GATE: OPEN
+PHASE_C_NEXT_PACKAGE: P2_FOUNDATION_DATA_AND_STATE_CONTRACTS
+CURRENT_EXECUTION_SURFACE: REUSE_LIVE_DEDICATED_CODEX_WHEN_FRESH
+BOOTSTRAP_REENTRY_POLICY: ONLY_WHEN_RUNTIME_ENVELOPE_EXPIRED_OR_RECOVERY_REQUIRED
+SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE
+GENERAL_PRODUCT_IMPLEMENTATION: APPROVED_WITHIN_EXISTING_CANON_NEW_SCOPE_REQUIRES_DECISION
+PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON
+NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON
+HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED
 HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED
 TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED
-LATEST_RUNTIME_VALIDATION_GATE: HISTORICAL_POC_ONLY
+IMAGE_PRODUCT_GATE: DEFERRED_BY_USER
+HUMAN_PLAYTEST: NOT_RUN
 ANDROID_DEVICE_GATE: NOT_RUN
 ACCESSIBILITY_GATE: NOT_RUN
 PERFORMANCE_GATE: NOT_RUN
-HUMAN_PLAYTEST: NOT_RUN
-HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED
-PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON
-GENERAL_PRODUCT_IMPLEMENTATION: APPROVED_WITHIN_EXISTING_CANON_NEW_SCOPE_REQUIRES_DECISION
+VERTICAL_SLICE_PLAN_GATE: TASK2_COMPLETE_NO_NEW_TASK_INFERRED
+VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE
 VERTICAL_SLICE_IMPLEMENTATION: APPROVED_TASK2_COMPLETE_SCOPED_ONLY
 VERTICAL_SLICE_IMPLEMENTATION_APPROVED: SCOPED_ONLY
-PR131: MERGED_MAIN_CANON_a61a0bceec4254c4b78350980275cc9a903f9042
-PR132: MERGED_MAIN_CANON_29b06e323185e436d709fcdf638f445b9099266e
-TASK2: MAIN_MERGED_POSTMERGE_CI_CLOSURE_COMPLETE
-HIGODOT_ACTIVATION_DECISION: BS-HIGODOT-20260808-01
-TOOLCHAIN_ACTIVATION_DECISION: BS-TOOLCHAIN-20260809-01
-TOOLCHAIN_CURRENT_VERSION_DECISION: BS-TOOLCHAIN-20260811-02
 GODOT_AI_VERSION: 3.1.4
 HIGODOT_AUTHORING_AUTHORITY: FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY
-HIGODOT_PRODUCTION_ACTIVATION: USER_APPROVED_ACTIVE
-HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
 GUT_TEST_AUTHORITY: FORMALLY_ADOPTED_ACTIVE
-GUT_PLUGIN_ENABLED: true
-HERA_AGENT_DECISION: BS-HERA-20260808-01
-HERA_AGENT_STATE: VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE
-HERA_AGENT_PLUGIN_ENABLED: true
 HERA_AGENT_AUTHORITY: NONE
-INITIALIZER_DECISION: BS-VS-INIT-20260808-01
-INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED
-ENTRY_STATE_GATE: PASS_PLANNING_COMPLETE_PHASE_C_EXISTING_CANON_P0_BOOTSTRAP_REQUIRED
-NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON
-IMAGE_PRODUCT_GATE: DEFERRED_BY_USER
-IMAGE_LIST_SCHEMA_GATE: SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS
 ```
 
-`BS-TOOLCHAIN-20260811-02`에 따라 현재 저장소의 Godot AI vendor는 공식 upstream `v3.1.4`와 exact tree 정합 상태다. `BS-TOOLCHAIN-20260809-01`과 Task2의 `3.1.3` 실행 증거는 역사로 보존하며, 완료된 Task2 전용 `set_main_scene` vendor overlay는 current upstream-exact vendor에서 재도입하지 않는다. 미래 main-scene 영속 변경은 새 범위 Decision이 필요하다.
+## Phase C Runtime / Authoring Gate
+
+Decision: `BS-OPS-20260811-03`.
+
+- PR #155 established the dedicated Blacksmith envelope and Phase C entry.
+- PR #156 made non-dedicated/duplicate editor and unverified port states fail closed.
+- PR #157 fixed deterministic Codex TOML writing and permitted cleanup only for an exact reverified retained Blacksmith godot-ai PID while preserving foreign/unknown processes.
+- Fresh local receipt passed Godot 4.7.1, Godot-AI 3.1.4, HTTP 8006, WS 9506, dedicated `CODEX_HOME`, one exact project session, editor state, hierarchy, and project settings.
+- Bootstrap process/listener presence alone is never authoring proof. The current PASS is the observed fresh HiGodot receipt.
+- While the same exact dedicated session remains live/fresh, Codex may continue directly. Re-enter bootstrap only when the runtime envelope is expired or recovery is required.
+- Persistent Godot Scene/Resource/project-setting authoring stays under HiGodot authority.
+
+판정: `PASS / PERSISTENT_MUTATION_GATE_OPEN_WITHIN_EXISTING_APPROVED_CANON`.
 
 ## Pre-Work Research Gate
 
@@ -100,299 +101,147 @@ fresh authority preflight
 → design/canon/implementation/TDD work
 ```
 
-- 모든 의미 있는 작업에서 `REQUIRED_BEFORE_MEANINGFUL_WORK`.
-- 게임/콘텐츠/UX/경제는 직접·인접 유사작과 현업/플랫폼 근거를 함께 비교한다.
-- 기술/Godot/Android/GitHub/CI는 current 공식/1차 자료와 프로젝트 버전 호환성을 우선한다.
-- 저위험 maintenance에서 외부 benchmark가 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남기되 관련 공식 원본은 확인한다.
-- `BS-OPS-20260805-01`의 benchmark scope만 refine하며 TDD·early checkpoint authority는 유지한다.
-- benchmark 수치·경제·확률을 제품 정본으로 자동 승격하지 않는다.
-- R3–R7 planning은 사용자 `기획 완료`로 9/10에서 닫혔다. 현재 제품 구현은 기존 승인 canon 범위의 Phase C만 허용되고, Task3·신규 범위는 별도 승인 대상이다.
+저위험 maintenance에서 외부 benchmark가 실질적으로 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남긴다. 기술·GitHub·Godot·Android·CI 변경은 current 공식/1차 자료와 프로젝트 버전 호환성을 우선한다. 벤치마크 수치·경제·확률은 제품 정본으로 자동 승격하지 않는다.
 
-판정: `USER_APPROVED / REQUIRED / PHASE_C_EXISTING_CANON_ONLY`.
+판정: `USER_APPROVED / REQUIRED`.
 
-## Historical R3–R7 Planning-Only Gate — closed at 9/10
+## Phase C Package Gate
 
-현재 Decision: `BS-CONTENT-20260811-09`.
-Decision: `BS-CONTENT-20260811-09`.
-
-첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.
-
-승인 이력:
-
-- `BS-CONTENT-20260811-01`
-- `BS-CONTENT-20260811-02`
-- `BS-CONTENT-20260811-03`
-- `BS-CONTENT-20260811-04`
-- `BS-CONTENT-20260811-05`
-- `BS-CONTENT-20260811-06`
-- `BS-CONTENT-20260811-07`
-- `BS-CONTENT-20260811-08`
+현재 next executable package는 `P2_FOUNDATION_DATA_AND_STATE_CONTRACTS`다.
 
 ```text
-GLADIATOR_02 / KYLE_VAREN
-VETERAN_COMEBACK_EQUIPMENT_CONTINUITY_AND_SUCCESSION
-VETERAN_RETURN_STATE / EQUIPMENT_CONTINUITY_STATE / ITEM_UID_LINEAGE_STATE
+P2 current-state readback
+→ Existing Solution First
+→ shared foundation slice 1개
+→ semantic RED
+→ minimal GREEN
+→ affected regression
+→ GUT / Godot 4.7.1 / HiGodot
+→ exact-head PR
+→ postmerge readback
 ```
 
-- `BS-CONTENT-20260811-01`~`08`은 승인 완료 이력으로 보존한다.
-- `BS-CONTENT-20260811-08 / COLLECTOR_02 / SEDRIC_VAEL`은 8/10 승인 이력이며 current locator가 아니다.
-- `BS-CONTENT-20260811-09 / GLADIATOR_02 / KYLE_VAREN`가 현재 9/10 Decision이다.
-- actual prior Kyle item record가 continuity branch의 근거다. 존재하지 않는 history/item을 생성하지 않는다.
-- hard serviceability/eligibility가 sentiment보다 먼저다.
-- keep path는 same UID를 유지한다. replacement는 old UID/history를 보존하고 new UID로 시작한다.
-- old history/progression을 replacement UID에 복사하지 않는다.
-- Cassia arena-fit/equipment-contribution과 Noble01 treatment-depth 책임을 보존한다.
-- legacy `gladiator_kyle / iron_sword` fixed score formula는 historical non-authoritative fixture다.
-- old/new automatic-best, sentiment/veteran/lineage score, direct arena/roster/training/injury/betting, baseline permadeath, comeback farming을 추가하지 않는다.
-- `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`는 이번 Decision으로 해결하지 않는다.
-- 제품 구현은 `BLOCKED`, Task3 구현은 `NOT_APPROVED`다.
+- 승인된 D01–D09의 의미를 바꾸지 않는다.
+- 새 gameplay system, opaque total score, new economy/timing thresholds를 발명하지 않는다.
+- Task3를 Phase C 승인과 혼동하지 않는다.
+- `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`를 임의 해결하지 않는다.
+- 이미지 생성은 사용자 보류 상태다.
 
-## Canon Gate
+판정: `READY_FOR_P2_EXISTING_APPROVED_CANON_ONLY`.
 
-버티컬 슬라이스를 포함한 모든 새 구현은 다음을 동시에 지켜야 한다.
+## Approved R3–R7 Input Gate
 
-- 제작 등급 5단계와 동일 UID 고정
-- 예술성 비음수 정수·고정 설계 최대치 없음
+```text
+BS-CONTENT-20260811-01
+BS-CONTENT-20260811-02
+BS-CONTENT-20260811-03
+BS-CONTENT-20260811-04
+BS-CONTENT-20260811-05
+BS-CONTENT-20260811-06
+BS-CONTENT-20260811-07
+BS-CONTENT-20260811-08
+BS-CONTENT-20260811-09
+GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED
+```
+
+D01–D09는 구현 입력이며 각 분야 canon과 `CURRENT_R3_R7_CANON_REGISTRY.json`이 상세 책임을 소유한다. 직접 전투/탐험/전술/투기장/전시관/박물관/가문 경영, 새 hidden total score, history overwrite, UID rewrite를 추가하지 않는다.
+
+## Save·UID Gate
+
+필수 보존:
+- 고유 작품 UID
+- 주재료·장비군·역할 프로필
+- 제작 등급·예술성·역할 원수치·중량
 - `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
-- 보조재료 슬롯 없음
-- 일반 강화 한 입력 한 결과
-- 정밀강화 `+10/+20/+30/+40/+50`
-- 장비군별 주재료·역할·기본 중량
-- 역할 수치 프리셋 `5/10/15`
-- 기능 용량과 명시적 재작업 레시피
-- 고객 최대 중량 `STRENGTH × 10`
-- 모바일 3단계 정보 공개와 설명 가능한 핵심 원인
-- 개인 일정·세계 일정 분리
-- 작품 UID 변동 장부와 연대기
+- 강화 단계·정밀강화 이정표
+- 기능과 기능 용량
+- 손상·복원·소유권·고객 결과
+- 모든 변동 원인 장부
+
+저장·로드 재추첨, old UID history를 replacement UID로 복사, history overwrite는 금지한다.
 
 판정: `REQUIRED`.
-
-## R2_CHECKPOINT_004 Historical Evidence
-
-- planning main: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7`
-- closure main: `7a46fa38586a42f268cd0432744203049649ddd5`
-- 현재 활성 상태가 아니라 제작 등급·예술성 계약의 불변 출처다.
 
 ## Artistry Generation·Growth·Valuation Gate
 
 Decision: `BS-CRAFT-20260805-02`.
 
 ```text
-artistry = UID persisted non-negative integer
-artistry_value = CONTEXT_DERIVED_NOT_PERSISTED
-customer_artistry_fit = CONTEXT_DERIVED_NOT_PERSISTED
 NON_NEGATIVE_INTEGER_NO_FIXED_DESIGN_MAXIMUM
+ADDITIVE_COMPONENTS_WITH_PIECEWISE_DIMINISHING_MARGINAL_VALUE
+IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 ```
 
-- 예술성은 제작 등급·일반 강화·판매·전시·소유권·명성으로 자동 증가하지 않는다.
-- 최초 생성과 후속 성장 원천을 분리한다.
-- 시장 가치 기여는 가산 후 구간별 한계 가치가 점감한다.
-- 동일 원인 이중 계산과 저비용 반복 파밍을 금지한다.
-- 정확한 값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
-
-판정: `USER_APPROVED / MERGED_PR109_MAIN_CANON / IMPLEMENTATION_BLOCKED`.
-
-## Historical POC Gate
-
-현재 Godot 프로젝트는 실행·파싱·씬 스모크·모델·통합 테스트가 통과하는 역사 POC다. 다음은 새 정본 구현으로 승격하지 않는다.
-
-- 구형 `STANDARD / GOOD / PERFECT` 품질
-- 보조재료 입력과 관련 재고
-- 범용 수식어 배열
-- 고정 계약 일수 중심 고객 평가
-- 과거 정확한 확률·공격 배율·경제 수치
-
-판정: `REFERENCE_ONLY / REUSE_BY_PORT_NOT_BY_AUTHORITY`.
-
-## Vertical Slice Readiness Gate
-
-판정: `TASK2_MAIN_MERGED / POSTMERGE_CI_CLOSURE_COMPLETE / NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED`.
-
-필수 선행 조건:
-
-1. 대표 콘텐츠 경로를 전체 콘텐츠와 구분한다.
-2. 최신 정본 전용 Item UID·Save Schema를 사용한다.
-3. 정확한 수치를 테스트 프리셋으로 격리한다.
-4. 기존 POC 구형 모델을 새 Schema에 직접 혼합하지 않는다.
-5. 앱 시작 씬을 테스트 씬과 분리한다.
-6. 자동 검증과 사람 플레이테스트 결과를 별도로 기록한다.
-
-Task 1은 PR #130으로 main canon에 병합됐다. PR #122는 `CLOSED_SUPERSEDED_UNMERGED`이며 재사용·병합하지 않는다. PR #132 Hera reconciliation, PR #133 closure, PR #134 cross-platform regression fix도 main canon이다. `BS-VS-INIT-20260808-01`로 새 캠페인 initializer authority가 해소됐고, `BS-HIGODOT-20260808-01` 및 `BS-HIGODOT-EXEC-20260808-01`에 따라 Task2 serialized surface는 HiGodot PROVE→PUBLISH provenance를 거쳐 PR #131로 main `a61a0bceec4254c4b78350980275cc9a903f9042`에 병합됐다. 이후 PR #139와 #140이 같은 범위의 CI 회귀를 복구했으며 제품 serialized bytes는 다시 저작하지 않았다. 현재 기술 기준선 `fa9595b2df95897c915331a1cb5d9b1a583611f0`에서 Full validation `31344872151`, Live-Editor Pilot `31344872263`, authority workflow `31344719243`가 SUCCESS다. Task2는 폐쇄됐고 새 제품 Task는 사용자 승인 전 시작하지 않는다.
-
-## TDD Gate
-
-모든 변경은 다음 순서를 따른다.
-
-```text
-RED → GREEN → REFACTOR → exact-head CI → review readback
-```
-
-HiGodot·GUT·Hera 권위 변경도 정책·상태 snapshot·변경 경계를 기계 판독 테스트로 보호한다. GUT 9.7.1의 formal adoption과 runtime CI는 이미 main canon이며, 새 권위 변경은 별도 Decision과 exact-head 증거 없이 주장하지 않는다.
-
-## Save·UID Gate
-
-버티컬 슬라이스 최소 저장 항목:
-
-- 고유 작품 UID
-- 주재료·장비군·역할 프로필
-- 제작 등급·예술성·역할 원수치·중량
-- 세 수식어 슬롯
-- 강화 단계·정밀강화 사용 이정표
-- 기능과 기능 용량
-- 손상·복원·소유권·고객 결과
-- 모든 변동 원인 장부
-
-저장·로드 재추첨은 금지한다.
-
-새 캠페인 초기화 Decision: `BS-VS-INIT-20260808-01`.
-
-```text
-RUN_ID = RUN-<32_LOWER_HEX> from one CRYPTO_128_BIT_TOKEN
-RUN_RNG_SEED = first unsigned u32 from the same token
-SAVED_AT_UTC = UTC_ISO_8601_SECONDS_Z
-INITIALIZER_OWNER = VS_RUN_INITIALIZER_SERVICE
-FIRST_SAVE = REQUIRED_BEFORE_CAMPAIGN_READY
-CORRUPT_PRIMARY_VALID_BACKUP = PRESERVE_VALID_BACKUP_WHEN_PRIMARY_CORRUPT
-```
-
-- Crypto token은 신규 run identity/seed 초기화에 한 번만 사용하며 gameplay roll stream이 아니다.
-- `run_rng_seed`는 저장 후 load에서 재생성하지 않는다.
-- 첫 저장 실패 시 MainMenu에 남고 campaign-ready를 발생시키지 않는다.
-- UI가 save 파일을 직접 삭제·rename·overwrite하지 않는다.
-- corrupt primary와 valid backup이 함께 있으면 새 게임 교체가 valid backup을 덮어쓰거나 poison하지 않는다.
-
-판정: `TASK1_MAIN_CANON / BS-VS-INIT-20260808-01_USER_APPROVED / PR130_MERGED / HUMAN_AND_ANDROID_NOT_RUN`.
-
-## Human Playtest Gate
-
-필수 검증:
-
-- 강화 지속·중단 고민
-- 등급·예술성·촉매·연대기 구분
-- 고객 결과의 원인 설명
-- 모바일 정보 과부하 여부
-- 같은 UID에 대한 애착과 다음 행동
-
-판정: `NOT_RUN`.
-
-## Product Implementation Gate
-
-사용자 `기획 완료`와 `BS-OPS-20260811-03`에 따라 **이미 승인된 current canon 범위의 제품 구현만** `PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON`이다. 첫 영속 Godot 저작 전에 `P0_LOCAL_EXECUTOR_BOOTSTRAP`과 Codex 내부 fresh HiGodot project/session/version/readiness receipt가 필수다. Task2의 역사 범위는 그대로 보존하며, `BS-VS-INIT-20260808-01`, `BS-HIGODOT-20260808-01`, `BS-HIGODOT-EXEC-20260808-01`, `BS-TOOLCHAIN-20260809-01`의 과거 승인 범위를 임의 확장하지 않는다.
-
-`BS-CONTENT-20260811-01`~`BS-CONTENT-20260811-09`는 완료된 기획 정본이며 Phase C 구현 입력이다. 승인되지 않은 신규 게임 시스템·범위 확대는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON`, Task3는 `TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED`다.
-
-## Three Affix Gate
-
-```text
-GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
-```
-
-세 슬롯의 생성·진화·덮어쓰기 책임을 분리한다. 판정: `REQUIRED`.
-
-## Benchmark Gate
-
-- 새 Decision과 수치 프리셋은 유사 게임·현업 사례 비교를 먼저 수행한다.
-- 결과는 `채택 / 수정 채택 / 비채택 / 차별점 / 남은 불확실성`으로 기록한다.
-- 프로젝트 코어와 충돌하는 유명 사례는 비채택한다.
-
-판정: `REQUIRED_BY_BS-OPS-20260805-01`.
-
-## Historical Forging Validation Gate
-
-다음은 현재 제품 구현 승인이 아니라 보존해야 하는 `[역사 증거]`다.
-
-- 최신 역사 구현 배지: `POC v0.6.4 · main · 2026.07.23.1`
-- 제작 모델 7건
-- 제작 결과 통합 6건
-- 정확한 구형 품질·피버 수치는 `LEGACY_IMPLEMENTED_VALUE / BASELINE_TEST_PRESET`
-
-판정: `HISTORICAL_EVIDENCE / PRODUCT_IMPLEMENTATION_BLOCKED`.
+예술성은 제작 등급·일반 강화·판매·전시·소유권·명성으로 자동 증가하지 않는다. 최초 생성과 후속 성장 원천을 분리하고, 같은 원인의 이중 계산과 저비용 반복 파밍을 금지한다. 정확한 값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
 
 ## HiGodot·GUT·Hera Authority Gate
-
-Decision: `BS-OPS-20260806-10 / BS-TEST-20260806-01 / BS-HIGODOT-20260808-01 / BS-HIGODOT-EXEC-20260808-01 / BS-HERA-20260808-01 / BS-TOOLCHAIN-20260809-01`.
-
-- `HIGODOT_SOLE_AUTHORING_AUTHORITY`: `BS-HIGODOT-20260808-01` 사용자 승인으로 HiGodot production authoring 권위가 활성화됐다. Scene·Node·Resource·Godot 프로젝트 설정은 HiGodot만 저작한다.
-- `GUT_SOLE_TEST_AUTHORITY`: GUT 9.7.1은 `FORMALLY_ADOPTED_ACTIVE`이며 GDScript 단위·통합 테스트의 단일 프레임워크 권위다. `BS-TOOLCHAIN-20260809-01`에 따라 editor plugin도 활성화됐지만 Godot 저작 권위는 부여되지 않는다.
-- `HERA_ENABLED_NON_AUTHORITATIVE`: Hera Agent Godot 1.0.0 editor plugin은 `BS-TOOLCHAIN-20260809-01`로 활성화됐으나 authoring/mutation authority는 계속 `NONE`이다. headless CI에서는 server/UI/autoload construction 전에 inert return해야 한다.
-- `ENTRY_GATE_FAIL_CLOSED`: 결정 원장·미확정/감사·이미지 목록/검수·열린 PR exact-head 상태가 모두 현재가 아니면 진입을 차단한다.
-- `FILE_AUTHORITY_MANIFEST_REQUIRED_FOR_MIXED_SURFACE_PR`: HiGodot-owned surface가 PR에 들어오기 전 파일별 저작 provenance manifest가 필요하다.
-
-현재 상태:
 
 ```yaml
 HIGODOT: FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY
 HIGODOT_PRODUCTION_ACTIVATION: USER_APPROVED_ACTIVE
-HIGODOT_TASK_SCOPE: TASK2_COMPLETED_SCOPED_AUTHORITY
-HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
 GODOT_AI_VERSION: 3.1.4
 GUT_VENDOR: PRESENT_9_7_1
 GUT_PLUGIN_ENABLED: true
-GUT_CONFIG_PRESENT: true
-GUT_PROJECT_TEST_ROOT_PRESENT: true
 GUT_RUNTIME_CI: true
 GUT_FORMAL_AUTHORITY: FORMALLY_ADOPTED_ACTIVE
-GUT_SOURCE: bitwes/Gut@v9.7.1
-GUT_COMMIT: aeb5d4f3f7f0a6c9b5e178876d6c99b791fda605
-GUT_LICENSE: MIT
-GUT_GODOT_COMPATIBILITY: 4.7.x
-GUT_RUNTIME_TRACKED_MUTATION: FORBIDDEN
 HERA_VENDOR: PRESENT_1_0_0
 HERA_PLUGIN_ENABLED: true
 HERA_AUTHORITY: NONE
-HERA_ADOPTION: VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE
 SAME_FILE_DUAL_AUTHORITY: FORBIDDEN
-NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON
-TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED
 ```
 
-HiGodot Task2 production provenance는 실제로 검증·병합됐지만 그 성공은 Task2 범위에만 해당한다. GUT editor plugin 활성화 상태는 formal test authority와 일치하지만 Godot authoring authority를 추가하지 않는다. Hera는 editor에서 활성화됐으나 `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`이며, 별도 범위 승인 전에는 HiGodot/GUT 권위를 대체하거나 Git 추적 저작 surface를 수정할 수 없다. Hera headless lifecycle은 CI에서 UI·autoload·HTTP server를 만들지 않도록 fail-closed한다.
+HiGodot은 Godot persistent authoring authority, GUT 9.7.1은 GDScript test authority, Hera는 enabled non-authoritative다. 동일 파일 이중 권위와 출처 미상 tracked mutation을 허용하지 않는다.
 
-## Missing-State Entry Gate
-
-진입 전 실제로 읽어야 하는 Sheet:
-
-- `00_프로젝트_허브`
-- `01_작업순서`
-- `02_현재_확정결정`
-- `04_누락_충돌_감사`
-- `71_이미지기획_생성목록`
-- `72_이미지검수_승인로그`
-
-현재 판정:
+## Human / Device Gate
 
 ```yaml
-GENERAL_PRODUCT: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON
-R3_R7_DESIGN: PLANNING_COMPLETE_CLOSED_AT_9_OF_10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
-SCOPED_VERTICAL_SLICE: TASK2_COMPLETE_NO_NEW_TASK_INFERRED
-TASK1: PR130_MERGED_MAIN_CANON
-PR122: CLOSED_SUPERSEDED_UNMERGED
-PR131: MERGED_MAIN_CANON_a61a0bceec4254c4b78350980275cc9a903f9042
-PR132: MERGED_MAIN_CANON_29b06e323185e436d709fcdf638f445b9099266e
-TASK2: MAIN_MERGED_POSTMERGE_CI_CLOSURE_COMPLETE
-TASK3_IMPLEMENTATION: NOT_APPROVED
-INITIALIZER_DECISION: BS-VS-INIT-20260808-01
-INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED
-HIGODOT_ACTIVATION_DECISION: BS-HIGODOT-20260808-01
-TOOLCHAIN_ACTIVATION_DECISION: BS-TOOLCHAIN-20260809-01
-HIGODOT_AUTHORITY: FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY
-HIGODOT_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
-GODOT_AI_VERSION: 3.1.4
-GUT_PLUGIN_ENABLED: true
-HERA_PLUGIN_ENABLED: true
-HERA_AUTHORITY: NONE
-HERA_ADOPTION: VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE
-PRODUCT_IMAGE: DEFERRED_BY_USER
-IMAGE_GENERATED: NOT_RUN
-IMAGE_RIGHTS: NOT_RUN
-IMAGE_RUNTIME: NOT_RUN
-IMAGE_LIST_SCHEMA: SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS
-IMAGE_ASSET_COMPLETION: BLOCKED_NOT_GENERATED_AND_RIGHTS_NOT_RUN
-GUT_ADOPTION: FORMALLY_ADOPTED_ACTIVE
-NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON
+HUMAN_PLAYTEST: NOT_RUN
+ANDROID_DEVICE: NOT_RUN
+ACCESSIBILITY: NOT_RUN
+PERFORMANCE: NOT_RUN
 ```
 
-Task2의 script와 serialized surface는 모두 main에 병합되고 postmerge CI가 폐쇄됐다. 이후 R3–R7 9/10 기획이 완료되어 현재는 기존 승인 canon 범위의 Phase C entry만 열렸다. 이미지 생성은 사용자가 보류했으므로 이미지 생성·권리·가독성·런타임 증거는 여전히 `NOT_RUN`/deferred다. 승인 canon 밖 신규 제품 Task와 Task3는 별도 사용자 범위 승인 전 진입하지 않는다.
+자동 테스트 성공을 사람 플레이/실기기/접근성 PASS로 승격하지 않는다.
 
-`READY`·`AWAITING`·`IN_REVIEW`·`APPROVED` 같은 일반 문자열은 범위·근거 SHA·검증 상태가 없으면 진입 허용으로 사용할 수 없다.
+## Sheet Synchronization Gate
+
+`SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE`.
+
+- GitHub current canon과 같은 Decision ID를 사용한다.
+- current mirror는 정확한 target range로만 갱신한다.
+- broad find/replace로 historical evidence SHA/PR/status를 덮어쓰지 않는다.
+- write 뒤 current landmark와 historical landmark를 함께 readback한다.
+- live와 history가 충돌하면 GitHub authority를 기준으로 current mirror만 교정하고 history는 보존한다.
+
+판정: `REQUIRED_AFTER_LRN-BS-SHEET-001`.
+
+## Historical Compatibility Anchors
+
+아래는 current action이 아니라 과거 검증/consumer 호환을 위한 locator다.
+
+```text
+R2_CHECKPOINT_004
+R2_BATCH_005_CLOSED_10_OF_10
+Artistry Generation·Growth·Valuation Gate
+HISTORICAL_CODEX_IMPLEMENTATION_GATE: CODEX_IMPLEMENTATION_GATE: BLOCKED
+HISTORICAL_PRODUCT_IMPLEMENTATION: 제품 구현: `BLOCKED`
+```
+
+R2 checkpoint 004 planning/closure evidence: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / 7a46fa38586a42f268cd0432744203049649ddd5`.
+
+## Completion Gate
+
+```text
+semantic RED
+→ minimal GREEN
+→ affected regression
+→ exact current validation identity
+→ PR review/adversarial loop
+→ merge
+→ new-main readback
+→ POST_CHANGE_MONITOR_LOOP
+→ targeted Sheet readback
+→ Continuation/Handoff reconcile when stale
+```
+
+`PASS`는 실제 현재 SHA/merge/readback 증거가 있을 때만 기록한다. `NOT_RUN`과 `BLOCKED_UNVERIFIED`를 숨기지 않는다.
