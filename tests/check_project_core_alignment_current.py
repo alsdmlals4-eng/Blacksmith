@@ -14,6 +14,9 @@ R2 = ROOT / "docs/planning/CURRENT_R2_CANON_REGISTRY.json"
 CURRENT_DECISIONS = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 ACTIVE_CONTEXT = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 DEVELOPMENT_GATES = ROOT / "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
+START_HERE = ROOT / "[기획서]/00_프로젝트_허브/START_HERE.md"
+ROADMAP = ROOT / "[기획서]/00_프로젝트_허브/ROADMAP.md"
+AGENTS = ROOT / "AGENTS.md"
 EXPECTED_BATCH_006 = [
     "BS-VS-20260806-01",
     "BS-SAVE-20260806-01",
@@ -27,7 +30,7 @@ EXPECTED_BATCH_006 = [
     "BS-CHRONICLE-20260806-01",
 ]
 
-PHASE_C_CONTINUATION_TOKENS = (
+PHASE_C_OPERATIONAL_TOKENS = (
     "P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS",
     "P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS",
     "PERSISTENT_MUTATION_GATE: OPEN",
@@ -35,8 +38,17 @@ PHASE_C_CONTINUATION_TOKENS = (
     "CURRENT_EXECUTION_SURFACE: REUSE_LIVE_DEDICATED_CODEX_WHEN_FRESH",
     "BOOTSTRAP_REENTRY_POLICY: ONLY_WHEN_RUNTIME_ENVELOPE_EXPIRED_OR_RECOVERY_REQUIRED",
     "SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE",
-    "STATE_OBSERVED_AT_MAIN: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486",
     "RESUME_RULE: FETCH_LATEST_MAIN_BEFORE_USE",
+)
+PHASE_C_STATE_TOKENS = PHASE_C_OPERATIONAL_TOKENS + (
+    "STATE_OBSERVED_AT_MAIN: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486",
+)
+LIVE_STATE_DOCS = (
+    CURRENT_DECISIONS,
+    ACTIVE_CONTEXT,
+    DEVELOPMENT_GATES,
+    START_HERE,
+    ROADMAP,
 )
 
 
@@ -107,25 +119,51 @@ def check_current_batch_006(failures: list[str], registry: dict[str, Any]) -> No
             failures.append(f"{decision_id} must be approved and merged main canon")
 
 
+def live_prefix(path: Path, text: str) -> str:
+    if path in (CURRENT_DECISIONS, START_HERE, ROADMAP):
+        marker = "<!-- R3_R7_PLANNING_BATCH_HISTORICAL_CLOSED_AT_9_OF_10 -->"
+        return text.split(marker, 1)[0]
+    if path == DEVELOPMENT_GATES:
+        return text.split("## Historical Compatibility Anchors", 1)[0]
+    if path == ACTIVE_CONTEXT:
+        return text.split("## 역사 호환 앵커", 1)[0]
+    return text
+
+
 def check_phase_c_continuation(failures: list[str]) -> None:
-    stale_live_token = "P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING"
-    historical_marker = "<!-- R3_R7_PLANNING_BATCH_HISTORICAL_CLOSED_AT_9_OF_10 -->"
-    for path in (CURRENT_DECISIONS, ACTIVE_CONTEXT, DEVELOPMENT_GATES):
+    stale_live_tokens = (
+        "P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING",
+        "PRODUCT_IMPLEMENTATION: BLOCKED",
+        "TASK3_IMPLEMENTATION: NOT_APPROVED",
+    )
+    for path in LIVE_STATE_DOCS:
         try:
             text = path.read_text(encoding="utf-8")
         except OSError as exc:
             failures.append(f"cannot read {path.relative_to(ROOT)}: {exc}")
             continue
-        live_prefix = text.split(historical_marker, 1)[0]
-        for token in PHASE_C_CONTINUATION_TOKENS:
-            if token not in live_prefix:
+        current = live_prefix(path, text)
+        for token in PHASE_C_STATE_TOKENS:
+            if token not in current:
                 failures.append(
                     f"{path.relative_to(ROOT)} live continuation must contain {token!r}"
                 )
-        if stale_live_token in live_prefix:
-            failures.append(
-                f"{path.relative_to(ROOT)} live continuation must not retain stale P0-required state"
-            )
+        for token in stale_live_tokens:
+            if token in current:
+                failures.append(
+                    f"{path.relative_to(ROOT)} live continuation must not retain stale token {token!r}"
+                )
+
+    try:
+        agents = AGENTS.read_text(encoding="utf-8")
+    except OSError as exc:
+        failures.append(f"cannot read {AGENTS.relative_to(ROOT)}: {exc}")
+        return
+    for token in PHASE_C_OPERATIONAL_TOKENS:
+        if token not in agents:
+            failures.append(f"AGENTS.md current operating contract must contain {token!r}")
+    if "현재 일반 제품 구현은 `BLOCKED`" in agents:
+        failures.append("AGENTS.md must not route current work through the superseded general-product BLOCKED gate")
 
 
 def make_checkpoint_005_compatibility_view(registry: dict[str, Any]) -> dict[str, Any]:
