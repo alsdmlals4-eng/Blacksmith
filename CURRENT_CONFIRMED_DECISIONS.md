@@ -45,6 +45,8 @@ POSTMERGE: POSTMERGE_CI_CLOSURE_COMPLETE
 CURRENT_TECHNICAL_BASELINE: fa9595b2df95897c915331a1cb5d9b1a583611f0
 HIGODOT_EXECUTION_DECISION: BS-HIGODOT-EXEC-20260808-01
 HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
+TOOLCHAIN_CURRENT_VERSION_DECISION: BS-TOOLCHAIN-20260811-02
+GODOT_AI_CURRENT_VERSION: 3.1.4
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
 R3_R7_APPROVAL_COUNTER: 4/10
 R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-04
@@ -106,6 +108,7 @@ PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 - `BS-HERA-20260808-01`: Hera Agent Godot 1.0.0 vendor tree의 main 존재와 당시 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE` 상태를 확정한 reconciliation Decision이다. authoring/mutation authority를 `NONE`으로 유지한다. 현재 plugin 활성화 상태는 `BS-TOOLCHAIN-20260809-01`이 후속으로 대체하지만 이 역사 증거와 Hera 권위 `NONE`은 유지된다. — `USER_APPROVED_RECONCILIATION / MERGED_PR132_MAIN_CANON / HISTORICAL_ACTIVATION_STATE`
 - `BS-HIGODOT-20260808-01`: HiGodot production authoring 권위를 `FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY / USER_APPROVED_ACTIVE`로 활성화한다. 현재 승인은 `TASK2_SCOPED_AUTHORING_ONLY`이며 일반 제품 구현은 `BLOCKED`로 유지한다. `.tscn`·Resource·`project.godot`은 실제 HiGodot production authoring execution path와 저작 provenance 없이 일반 코드 편집·GitHub API 텍스트 치환으로 우회하지 않는다. 현재 실행 경로는 `BLOCKED_UNAVAILABLE_OR_UNVERIFIED`; GUT는 sole test authority, Hera authority는 `NONE`, PR #131 병합은 별도 승인이다. — `USER_APPROVED_PRODUCTION_AUTHORING_ACTIVATION / SCENE_PROJECT_GREEN_BLOCKED_PENDING_COMPLIANT_EXECUTION_PATH`
 - `BS-TOOLCHAIN-20260809-01`: Godot AI vendor/runtime을 `3.1.3`으로 전환하고 GUT 9.7.1 및 Hera Agent Godot 1.0.0 editor plugin 활성화를 승인한다. 현재 plugin 활성화 상태는 `Godot AI + GUT + Hera`이며, 이는 권위 확장이 아니다. HiGodot은 `TASK2_SCOPED_AUTHORING_ONLY` Godot 직렬화 저작 권위, GUT은 `SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY`, Hera는 `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE / AUTHORITY_NONE`을 유지한다. Hera의 tracked/serialized mutation은 별도 범위 승인 전 금지한다. — `USER_APPROVED_ACTIVE / GITHUB_VENDOR_3_1_3_AND_EDITOR_PLUGIN_STATE_READBACK_PROVEN`
+- `BS-TOOLCHAIN-20260811-02`: 현재 Godot AI vendor를 공식 `v3.1.4` exact upstream tree로 승격한다. Task2의 실제 `3.1.3` 실행·PROVE·PUBLISH 증거는 역사로 유지하고, Task2 전용 `set_main_scene` vendor overlay는 현재 vendor에서 재도입하지 않는다. GUT 9.7.1·Hera 비권위 상태·HiGodot scoped authoring authority·제품/Task3 차단은 변경하지 않는다. — `USER_APPROVED / CURRENT_VENDOR_3_1_4 / EXACT_UPSTREAM_V3_1_4 / PRODUCT_BLOCKED / TASK3_NOT_APPROVED`
 
 ## 3. 제작 등급
 

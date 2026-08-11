@@ -140,7 +140,9 @@ Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분�
 
 `BS-HERA-20260808-01`: Hera Agent Godot 1.0.0 vendor tree의 main 존재와 당시 비활성 상태를 확정한 역사적 reconciliation Decision이다. 당시 상태 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE`는 보존한다.
 
-`BS-TOOLCHAIN-20260809-01`: 사용자가 Godot AI 3.1.3 전환과 GUT·Hera editor plugin 활성화를 승인했다. 현재 GitHub 상태는 Godot AI `3.1.3`, GUT editor plugin enabled, Hera editor plugin enabled이며 Hera의 현재 상태는 `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`다. 이 활성화는 권위 확장이 아니다. HiGodot은 계속 `TASK2_SCOPED_AUTHORING_ONLY` Godot 직렬화 저작 권위이고, GUT은 계속 `SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY`, Hera authoring/mutation authority는 계속 `NONE`이다. Hera가 별도 범위 승인을 받기 전에는 `.tscn`·Resource·`project.godot` 또는 기타 추적 제품 surface를 저작·수정할 수 없다.
+`BS-TOOLCHAIN-20260809-01`: 사용자가 Godot AI 3.1.3 전환과 GUT·Hera editor plugin 활성화를 승인했다. 당시 검증된 GitHub 상태는 Godot AI `3.1.3`, GUT editor plugin enabled, Hera editor plugin enabled였으며 Hera 상태는 `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`였다. 이 활성화는 권위 확장이 아니다. HiGodot은 계속 `TASK2_SCOPED_AUTHORING_ONLY` Godot 직렬화 저작 권위이고, GUT은 계속 `SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY`, Hera authoring/mutation authority는 계속 `NONE`이다. 이 Decision의 3.1.3 버전 사실은 Task2 실행 역사로 보존되며 현재 vendor 버전은 `BS-TOOLCHAIN-20260811-02`가 대체한다.
+
+`BS-TOOLCHAIN-20260811-02`: 사용자의 최신 3.1.4 업데이트 승인을 current version authority로 적용한다. 현재 `addons/godot_ai`는 공식 `v3.1.4` exact upstream vendor이며, `BS-TOOLCHAIN-20260809-01`의 3.1.3은 GUT/Hera 활성화와 Task2 실행의 역사 baseline으로 남는다. 완료된 Task2 전용 `set_main_scene` vendor overlay는 current vendor에 재포크하지 않으며 미래 영속 main-scene 변경은 새 범위 Decision이 필요하다. GUT 9.7.1 sole test authority, Hera authority `NONE`, 제품/Task3 차단은 그대로다.
 
 GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. 같은 파일의 이중 권위와 출처 미상 변경은 실패 처리한다. Hera 또한 별도 범위 승인 전에는 Git 추적 제품·저작 surface를 수정할 권위가 없다.
 
