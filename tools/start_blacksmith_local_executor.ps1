@@ -74,16 +74,57 @@ function Get-ListenerDiagnostics([int]$Port) {
     return $rows
 }
 
-function Find-ExactBlacksmithEditor {
+function Test-CommandLineTargetsBlacksmith([string]$CommandLine) {
+    if ([string]::IsNullOrWhiteSpace($CommandLine)) {
+        return $false
+    }
+    $cmd = $CommandLine.ToLowerInvariant()
+    $needles = @(
+        (Normalize-Path $Project),
+        $Project.ToLowerInvariant(),
+        ($Project -replace '\\', '/').ToLowerInvariant()
+    ) | Select-Object -Unique
+    foreach ($needle in $needles) {
+        if (-not [string]::IsNullOrWhiteSpace($needle) -and $cmd.Contains($needle)) {
+            return $true
+        }
+    }
+    return $false
+}
+
+function Get-BlacksmithGodotEditors {
+    $matches = @()
+    foreach ($proc in @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)) {
+        $name = ([string]$proc.Name).ToLowerInvariant()
+        $exe = if ($proc.ExecutablePath) { Normalize-Path ([string]$proc.ExecutablePath) } else { '' }
+        $exeName = if ($exe) { [System.IO.Path]::GetFileName($exe).ToLowerInvariant() } else { '' }
+        $isGodot = (($name.StartsWith('godot') -and $name.EndsWith('.exe')) -or ($exeName.StartsWith('godot') -and $exeName.EndsWith('.exe')))
+        if (-not $isGodot) {
+            continue
+        }
+        if (-not (Test-CommandLineTargetsBlacksmith ([string]$proc.CommandLine))) {
+            continue
+        }
+        $matches += $proc
+    }
+    return $matches
+}
+
+function Find-ExactBlacksmithEditors {
     if (-not (Test-Path -LiteralPath $GodotExe -PathType Leaf)) {
-        return $null
+        return @()
     }
     $expectedExe = Normalize-Path $GodotExe
-    $expectedProject = Normalize-Path $Project
-    foreach ($proc in @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.Name -ieq 'Godot_v4.7.1-stable_win64.exe' })) {
+    return @(Get-BlacksmithGodotEditors | Where-Object {
+        $_.ExecutablePath -and (Normalize-Path ([string]$_.ExecutablePath)) -eq $expectedExe
+    })
+}
+
+function Find-ConflictingBlacksmithEditor {
+    $expectedExe = Normalize-Path $GodotExe
+    foreach ($proc in @(Get-BlacksmithGodotEditors)) {
         $exe = if ($proc.ExecutablePath) { Normalize-Path ([string]$proc.ExecutablePath) } else { '' }
-        $cmd = if ($proc.CommandLine) { ([string]$proc.CommandLine).ToLowerInvariant() } else { '' }
-        if ($exe -eq $expectedExe -and $cmd.Contains($expectedProject)) {
+        if ($exe -ne $expectedExe) {
             return $proc
         }
     }
@@ -117,13 +158,11 @@ function Assert-SafePortState($ExactEditor) {
         }
     }
 
-    # If the editor was closed while keep_server_on_exit was enabled, the server
-    # can remain. Only accept that orphan when every occupied listener identifies
-    # itself as godot-ai; the freshly started dedicated editor must then adopt it.
-    $unrecognized = @($occupied | Where-Object { -not (Test-RecognizableGodotAiListener $_) })
-    if (-not $ExactEditor -and $unrecognized.Count -eq 0) {
-        Write-Step 'Recognizable retained godot-ai listener detected; dedicated editor will be started for fresh adoption/readiness verification.'
-        return
+    # UNVERIFIED_RETAINED_SERVER_REUSE_FORBIDDEN: without the exact dedicated
+    # Blacksmith editor alive, an existing 8006/9506 listener cannot be proven to
+    # belong to this project. Even a process that looks like godot-ai is rejected.
+    if (-not $ExactEditor) {
+        Write-Host 'UNVERIFIED_RETAINED_SERVER_REUSE_FORBIDDEN'
     }
 
     Write-Host 'PORT_CONFLICT_FAIL_CLOSED'
@@ -319,7 +358,21 @@ if (-not $codexCommand) {
 }
 
 Ensure-DedicatedGodot
-$exactEditor = Find-ExactBlacksmithEditor
+$exactEditors = @(Find-ExactBlacksmithEditors)
+if ($exactEditors.Count -gt 1) {
+    Write-Host 'MULTIPLE_DEDICATED_BLACKSMITH_EDITORS_FAIL_CLOSED'
+    foreach ($editor in $exactEditors) {
+        Write-Host ("PID {0} Name={1}`n  Executable={2}`n  CommandLine={3}" -f $editor.ProcessId, $editor.Name, $editor.ExecutablePath, $editor.CommandLine)
+    }
+    Fail-Bootstrap 'More than one dedicated Blacksmith Godot editor targets the same project. Close duplicates manually; no process was stopped.'
+}
+$exactEditor = if ($exactEditors.Count -eq 1) { $exactEditors[0] } else { $null }
+$conflictingEditor = Find-ConflictingBlacksmithEditor
+if ($conflictingEditor) {
+    Write-Host 'NON_DEDICATED_BLACKSMITH_EDITOR_CONFLICT_FAIL_CLOSED'
+    Write-Host ("PID {0} Name={1}`n  Executable={2}`n  CommandLine={3}" -f $conflictingEditor.ProcessId, $conflictingEditor.Name, $conflictingEditor.ExecutablePath, $conflictingEditor.CommandLine)
+    Fail-Bootstrap 'Blacksmith is already open in a non-dedicated Godot executable. Close that editor manually before starting the dedicated environment; no process was stopped.'
+}
 Assert-SafePortState $exactEditor
 
 if (-not $exactEditor) {
