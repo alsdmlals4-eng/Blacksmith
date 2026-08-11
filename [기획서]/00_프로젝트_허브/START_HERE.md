@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 시작 지점
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED / PLANNING_ONLY**
 >
 > Task2 기술 작업은 폐쇄 상태를 유지한다. R3–R7 기획은 재개됐지만 새 제품 Task나 Task3 구현은 별도 사용자 승인 없이는 추론하지 않는다.
 
@@ -26,9 +26,9 @@ ANDROID_DEVICE: NOT_RUN
 ACCESSIBILITY: NOT_RUN
 PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 2/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02
-R3_R7_RESUME_LOCATOR: ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED
+R3_R7_APPROVAL_COUNTER: 3/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03
+R3_R7_RESUME_LOCATOR: SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED
 ```
 
 `BASE_CURRENT_MAIN_OBSERVED`는 작업 시작 때 읽은 공유 Base 원격 main이다. `PROJECT_BASE_ADAPTER_PIN`은 Blacksmith가 현재 채택해 검증하는 Base 계약 pin이다. 둘은 자동 동기화 대상이 아니며, 원격 main이 전진했다고 프로젝트 pin을 임의 변경하지 않는다.
@@ -150,4 +150,24 @@ ADVENTURER_02 / TOREN_MARCH
 
 ## 다음 작업
 
-현재 연속 작업은 `BS-CONTENT-20260811-02`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `2/10`에서 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
+현재 연속 작업은 `BS-CONTENT-20260811-03`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `2/10`에서 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
+
+<!-- BS-CONTENT-20260811-03 CURRENT -->
+## R3–R7 current 3/10 — Marek Soldier01
+
+```text
+R3_R7_DESIGN_ACTIVE
+R3_R7_APPROVAL_COUNTER: 3/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-03
+R3_R7_RESUME_LOCATOR: SOLDIER_01_MAREK_SMALL_LOT_STANDARD_ORDER_APPROVED
+PRODUCT_IMPLEMENTATION: BLOCKED
+TASK3_IMPLEMENTATION: NOT_APPROVED
+```
+
+`BS-CONTENT-20260811-01` Nadia와 `BS-CONTENT-20260811-02` Toren은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-03`이다.
+
+`SOLDIER_01 / MAREK_OLDEN / SMALL_LOT_STANDARD_ORDER`는 기준품 + 소량 반복 제작을 사용하며, 첫 `ORDER_QUANTITY = 10`은 `NON_CANONICAL_BASELINE_TEST_PRESET`이다. 개별 UID·비용·단조·강화·연대기를 유지하고 직접 전술 전투·실시간 병참·작업자 생산라인·무료 복제를 추가하지 않는다.
+
+`BS-CORE-20260811-01 / AUTO_ENHANCEMENT_CAP_UNLOCK`은 별도 시스템 Decision이며 R3 콘텐츠 카운터를 올리지 않는다. 기존 +20 저위험 자동강화를 보존하고 수동 분야 돌파보다 한 10강 밴드 뒤에서 목표 지정 자동 상한을 해금한다.
+
+현재 연속 작업은 `BS-CONTENT-20260811-03`이다.
