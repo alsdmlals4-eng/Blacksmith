@@ -124,7 +124,7 @@ class Soldier01MarekContentContractTests(unittest.TestCase):
             self.assertIn("SOLDIER_02_LIANA_MISSION_FIT_APPROVED", text)
 
         self.assertIn("Marek", active)
-        self.assertIn("SOLDIER_01 / MAREK_OLDEN", start_here)
+        self.assertIn("BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md", start_here)
         self.assertIn("### 3/10 — `BS-CONTENT-20260811-03`", roadmap)
         self.assertIn("BS-CONTENT-20260811-03", gates)
 
