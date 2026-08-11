@@ -50,10 +50,10 @@ def classify_planned_references(findings: list[audit.Finding]) -> None:
 def configure_current_assertions() -> None:
     """Align the long-lived audit with current R2/Task2 evidence and R3 planning authority.
 
-    R2/Task2 merge evidence remains historical/current-compatible authority. R3–R7 is
-    a planning-only layer: it is current for design routing but does not open product
-    or Task3 implementation. Earlier R3 decisions stay auditable as history while the
-    current router advances with later user-approved planning decisions.
+    R2/Task2 merge evidence remains historical/current-compatible authority. The R3–R7
+    registry/canons remain the approved planning record, while BS-OPS-20260811-03 now owns
+    the current bounded Phase C entry. Earlier planning blockers remain auditable as history;
+    current routers must require P0 bootstrap and keep new scope / Task3 separately gated.
     """
     assertions = dict(audit.REQUIRED_ASSERTIONS)
 
@@ -262,7 +262,7 @@ def configure_current_assertions() -> None:
     gates_path = "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
     gate_tokens = list(assertions[gates_path])
     gate_tokens = [
-        "GENERAL_PRODUCT_IMPLEMENTATION: BLOCKED"
+        "GENERAL_PRODUCT_IMPLEMENTATION: APPROVED_WITHIN_EXISTING_CANON_NEW_SCOPE_REQUIRES_DECISION"
         if token == "CODEX_IMPLEMENTATION_GATE: BLOCKED"
         else token
         for token in gate_tokens
@@ -275,7 +275,13 @@ def configure_current_assertions() -> None:
         "R3_R7_APPROVAL_COUNTER: 9/10",
         f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
         R3_THIRD_DECISION,
-        "TASK3_IMPLEMENTATION: NOT_APPROVED",
+        "BS-OPS-20260811-03",
+        "PLANNING_COMPLETE: USER_DECLARED",
+        "PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON",
+        "P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING",
+        "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED",
+        "HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED",
+        "HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED",
     ):
         if token not in gate_tokens:
             gate_tokens.append(token)
@@ -303,7 +309,11 @@ def configure_current_assertions() -> None:
         for token in (
             "TASK2_MAIN_MERGED",
             "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE",
-            "PRODUCT_IMPLEMENTATION: BLOCKED",
+            "PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON",
+            "P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING",
+            "BS-OPS-20260811-03",
+            "PLANNING_COMPLETE: USER_DECLARED",
+            "HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED",
             "R3_R7_DESIGN_ACTIVE",
             R3_FIRST_DECISION,
             R3_SECOND_DECISION,
@@ -316,7 +326,8 @@ def configure_current_assertions() -> None:
             R3_CURRENT_DECISION,
             f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
             "GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED",
-            "TASK3_IMPLEMENTATION: NOT_APPROVED",
+            "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED",
+            "HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED",
         ):
             if token not in tokens:
                 tokens.append(token)

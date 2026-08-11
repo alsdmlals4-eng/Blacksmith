@@ -24,6 +24,9 @@ def test_user_approved_higodot_production_authoring_is_current_authority() -> No
     assert policy["higodot"]["current_state"] == "FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY"
     assert policy["higodot"]["production_activation"] == "USER_APPROVED_ACTIVE"
     assert policy["higodot"]["policy_role"] == "SOLE_GODOT_AUTHORING_AUTHORITY"
+    # Historical activation-scope snapshot: HiGodot activation itself did not
+    # authorize general product implementation. Later Phase C entry is owned by
+    # BS-OPS-20260811-03 and does not rewrite this activation evidence.
     assert policy["remaining_blockers"]["general_product_implementation"] == "BLOCKED"
     assert policy["hera"]["authoring_authority"] == "NONE"
 
@@ -47,4 +50,15 @@ def test_activation_is_scoped_and_recorded_in_current_canon() -> None:
         assert marker in decision
 
     assert "HIGODOT_AUTHORING_AUTHORITY: FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY" in gates
-    assert "GENERAL_PRODUCT_IMPLEMENTATION: BLOCKED" in gates
+    assert "BS-OPS-20260811-03" in gates
+    assert "PLANNING_COMPLETE: USER_DECLARED" in gates
+    assert (
+        "GENERAL_PRODUCT_IMPLEMENTATION: APPROVED_WITHIN_EXISTING_CANON_NEW_SCOPE_REQUIRES_DECISION"
+        in gates
+    )
+    assert (
+        "PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON"
+        in gates
+    )
+    assert "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED" in gates
+    assert "HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED" in gates

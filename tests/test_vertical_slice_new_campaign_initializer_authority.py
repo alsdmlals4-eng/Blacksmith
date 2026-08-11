@@ -52,7 +52,7 @@ class VerticalSliceNewCampaignInitializerAuthorityTests(unittest.TestCase):
         self.assertIn("INITIALIZER_DECISION: BS-VS-INIT-20260808-01", text)
         self.assertIn("INITIALIZER_AUTHORITY: RESOLVED_USER_APPROVED", text)
         self.assertIn(
-            "ENTRY_STATE_GATE: PASS_R3_R7_PLANNING_ONLY_PRODUCT_SCOPE_STILL_REQUIRED",
+            "ENTRY_STATE_GATE: PASS_PLANNING_COMPLETE_PHASE_C_EXISTING_CANON_P0_BOOTSTRAP_REQUIRED",
             text,
         )
         self.assertIn(
@@ -62,18 +62,21 @@ class VerticalSliceNewCampaignInitializerAuthorityTests(unittest.TestCase):
         self.assertIn("TASK2: MAIN_MERGED_POSTMERGE_CI_CLOSURE_COMPLETE", text)
         self.assertIn("HIGODOT_ACTIVATION_DECISION: BS-HIGODOT-20260808-01", text)
         self.assertIn("HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED", text)
-        self.assertIn("GENERAL_PRODUCT: BLOCKED", text)
-        self.assertIn("R3_R7_DESIGN: ACTIVE_PLANNING_ONLY", text)
+        self.assertIn("GENERAL_PRODUCT: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", text)
+        self.assertIn("R3_R7_DESIGN: PLANNING_COMPLETE_CLOSED_AT_9_OF_10", text)
         self.assertIn("R3_R7_APPROVAL_COUNTER: 9/10", text)
         self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09", text)
         self.assertIn("BS-CONTENT-20260811-03", text)
         self.assertIn("BS-CONTENT-20260811-08", text)
+        self.assertIn("BS-OPS-20260811-03", text)
+        self.assertIn("PLANNING_COMPLETE: USER_DECLARED", text)
+        self.assertIn("P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING", text)
         self.assertIn(
             "첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.",
             text,
         )
-        self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
-        self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED", text)
+        self.assertIn("TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED", text)
+        self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON", text)
 
 
 if __name__ == "__main__":
