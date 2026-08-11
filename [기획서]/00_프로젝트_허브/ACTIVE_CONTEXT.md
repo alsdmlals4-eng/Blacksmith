@@ -128,6 +128,9 @@ SOLDIER_02 / LIANA_BERG
 - `BS-CONTENT-20260811-05`는 경기 승패와 작품 기여를 분리하고 경기 반복으로 예술성 또는 Chronicle을 자동 성장시키지 않는다.
 - `BS-CONTENT-20260811-06`은 최대 복원·최고 Artistry·가문 위신/진품성 총점 자동 정답을 만들지 않는다.
 - `BS-CONTENT-20260811-06`은 의미 있는 과거 생애 기록을 지우거나 복원/의식 반복으로 예술성·Chronicle을 자동 성장시키지 않는다.
+- `BS-CONTENT-20260811-07`은 Marek의 소량 표준화와 Cassia의 arena contribution 책임을 침범하지 않는다.
+- `BS-CONTENT-20260811-07`은 직접 전술전투·부대 이동/대형·실시간 병참·사상자 micromanagement·baseline Liana permadeath를 추가하지 않는다.
+- `BS-CONTENT-20260811-07`은 command/hero/leadership/mission-fit 총점, 최고 방어/강화 자동 정답, 작품 단독 인과, 임무 반복 Artistry/Chronicle 파밍을 만들지 않는다.
 - 같은 UID의 작품 생애를 유지한다.
 - 모든 개인 일정에 고정 3일 결과·4일 재방문을 재도입하지 않는다.
 - 사람 플레이테스트·Android 실기기·접근성은 실제 실행 전 `NOT_RUN`.
@@ -154,6 +157,7 @@ BS-CONTENT-20260811-03 / R3_R7_3_OF_10
 BS-CONTENT-20260811-04 / R3_R7_4_OF_10
 BS-CONTENT-20260811-05 / R3_R7_5_OF_10
 BS-CONTENT-20260811-06 / R3_R7_6_OF_10
+BS-CONTENT-20260811-07 / R3_R7_7_OF_10
 BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 ```
 
@@ -166,10 +170,10 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 
 ## 다음 실행 순서
 
-1. `BS-CONTENT-20260811-05`의 RED→GREEN 계약, 적대 검토, exact-head CI, GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
-2. 경기 승패와 장비 기여가 실제로 분리되는지, same UID와 legacy POC 비권위 경계가 유지되는지 검증한다.
+1. `BS-CONTENT-20260811-07`의 RED→GREEN 회귀, 적대 검토, exact-head CI, GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
+2. Marek multi-UID 표준화와 Liana single-commander duty-fit이 분리되는지, 임무·귀환·same-UID field legacy 3축이 유지되는지 검증한다.
 3. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.
-4. 다음 R3–R7 신규 Decision은 현재 승인 카운터 `5/10`에서 이어간다.
+4. Decision07 merge·Sheet readback 뒤 다음 신규 R3–R7 Decision은 `8/10` 사용자 기획 승인 Gate에서 이어간다.
 
 ## 먼저 읽을 파일
 
@@ -177,14 +181,16 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 2. `CURRENT_CONFIRMED_DECISIONS.md`
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
-7. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
-8. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-9. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-10. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-11. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
+5. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
+6. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
+7. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+8. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
+9. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
+10. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+11. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
+12. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+13. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+14. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
 
 ## 현재 프로젝트 작업지시문 바인딩
 
@@ -203,20 +209,20 @@ TASK3_IMPLEMENTATION: NOT_APPROVED
 
 첨부 v4.5 r2 source의 `Switchy-Express-Cargo-Puzzle` 경로는 source provenance를 위해 수정하지 않고 보존한다. 현재 실행은 `BS-OPS-20260811-01`의 Blacksmith override를 따른다.
 
-<!-- BS-CONTENT-20260811-04 CURRENT -->
-## R3–R7 current 4/10 — Ersa Collector01
+<!-- BS-CONTENT-20260811-07 CURRENT -->
+## R3–R7 current 7/10 — Liana Soldier02
 
 ```text
 R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 5/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-05
-R3_R7_RESUME_LOCATOR: GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED
+R3_R7_APPROVAL_COUNTER: 7/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07
+R3_R7_RESUME_LOCATOR: SOLDIER_02_LIANA_MISSION_FIT_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
-Nadia 1/10, Toren 2/10, Marek 3/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-04`이다.
+Nadia 1/10, Toren 2/10, Marek 3/10, Ersa 4/10, Cassia 5/10, Noble01 6/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-07`이다.
 
-`COLLECTOR_01 / ERSA_ROEN / EXHIBITION_EVIDENCE_AND_PROVENANCE`는 `CRAFTSMANSHIP_EVIDENCE` 또는 `LIVED_HISTORY_EVIDENCE` 전시 의도와 작품에 실제 존재하는 증거를 비교한다. 숨은 총점이나 단일 최대 수치가 정답이 아니다.
+`SOLDIER_02 / LIANA_BERG / FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY`는 공개된 임무 책임·위험·필요 장비 역할과 실제 작품 UID 증거를 비교해 한 작품을 인계한다. 전선 임무는 비직접 사건이며 `MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE`를 분리해 돌려준다.
 
-같은 UID의 결과는 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리한다. 전시는 비직접 세계 사건이며 플레이어는 대장장이·작품 증거 선택자로 남는다.
+Marek의 multi-UID 소량 표준화, Cassia의 arena contribution, Noble01의 heirloom restoration 책임은 각각 유지한다. 제품 구현과 Task3는 계속 차단한다.
