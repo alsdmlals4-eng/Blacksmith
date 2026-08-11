@@ -23,6 +23,41 @@ jobs:
           python-version: '3.12'
       - name: Repair current-history ownership
         run: python tools/_decision09_current_history_repair.py
+      - name: Restore historical discoverability and audit current literal
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          start_path = Path('[기획서]/00_프로젝트_허브/START_HERE.md')
+          start = start_path.read_text(encoding='utf-8')
+          marker = '- 역사 위치 표기: Liana 7/10, Sedric 8/10, Kyle 9/10.\n'
+          anchor = '- `BS-CONTENT-20260811-09`은 Cassia arena-fit·Noble01 treatment-depth 책임을 보존하고 old/new UID history overwrite·legacy score 부활·gladiator-management drift·comeback farming을 금지한다.\n'
+          if marker not in start:
+              if anchor not in start:
+                  raise SystemExit('START_HERE D09 protection anchor missing')
+              start = start.replace(anchor, anchor + marker, 1)
+          start_path.write_text(start, encoding='utf-8')
+
+          gates_path = Path('[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md')
+          gates = gates_path.read_text(encoding='utf-8')
+          history = '''승인 이력:\n\n- `BS-CONTENT-20260811-01`\n- `BS-CONTENT-20260811-02`\n- `BS-CONTENT-20260811-03`\n- `BS-CONTENT-20260811-04`\n- `BS-CONTENT-20260811-05`\n- `BS-CONTENT-20260811-06`\n- `BS-CONTENT-20260811-07`\n- `BS-CONTENT-20260811-08`\n\n'''
+          gate_anchor = '첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.\n\n'
+          if history not in gates:
+              if gate_anchor not in gates:
+                  raise SystemExit('DEVELOPMENT_GATES history anchor missing')
+              gates = gates.replace(gate_anchor, gate_anchor + history, 1)
+          gates_path.write_text(gates, encoding='utf-8')
+
+          audit_test_path = Path('tests/test_project_operating_system_audit_runner.py')
+          audit_test = audit_test_path.read_text(encoding='utf-8')
+          old = 'self.assertIn(\'"next_approval_counter": "8/10"\', registry)'
+          new = 'self.assertIn(\'"next_approval_counter": "9/10"\', registry)'
+          if old in audit_test:
+              audit_test = audit_test.replace(old, new)
+          if new not in audit_test:
+              raise SystemExit('audit registry counter assertion was not updated')
+          audit_test_path.write_text(audit_test, encoding='utf-8')
+          PY
       - name: Compile repaired Python consumers
         run: python -m py_compile tools/run_project_operating_system_audit.py tests/check_project_core_alignment_current.py tests/test_hera_postmerge_closure_contract.py tests/test_project_operating_system_audit_runner.py
       - name: Run focused current-history regression
