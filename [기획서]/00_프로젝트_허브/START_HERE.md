@@ -1,14 +1,14 @@
 # [현재 정본] Blacksmith 시작 지점
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-01 / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED / PLANNING_ONLY**
 >
 > Task2 기술 작업은 폐쇄 상태를 유지한다. R3–R7 기획은 재개됐지만 새 제품 Task나 Task3 구현은 별도 사용자 승인 없이는 추론하지 않는다.
 
 ## 현재 상태
 
 ```yaml
-BLACKSMITH_CURRENT_MAIN_OBSERVED_AT_RESUME: 68540e6cd288aff138b1ea4c5b1feeb9e0653947
+BLACKSMITH_CURRENT_MAIN_OBSERVED_AT_DECISION_02_START: cb5ceff127bf4f2adb38b34ebaa092d97111fa94
 BASE_CURRENT_MAIN_OBSERVED: 315c66eea9614c284b9c11c4d522141065dfa4b0
 PROJECT_BASE_ADAPTER_PIN: 2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
@@ -26,9 +26,9 @@ ANDROID_DEVICE: NOT_RUN
 ACCESSIBILITY: NOT_RUN
 PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 1/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01
-R3_R7_RESUME_LOCATOR: ADVENTURER_01_DETAIL_APPROVED
+R3_R7_APPROVAL_COUNTER: 2/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02
+R3_R7_RESUME_LOCATOR: ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED
 ```
 
 `BASE_CURRENT_MAIN_OBSERVED`는 작업 시작 때 읽은 공유 Base 원격 main이다. `PROJECT_BASE_ADAPTER_PIN`은 Blacksmith가 현재 채택해 검증하는 Base 계약 pin이다. 둘은 자동 동기화 대상이 아니며, 원격 main이 전진했다고 프로젝트 pin을 임의 변경하지 않는다.
@@ -53,7 +53,7 @@ R3_R7_RESUME_LOCATOR: ADVENTURER_01_DETAIL_APPROVED
 
 ## 현재 R3–R7 설계 재개
 
-사용자 승인 Decision: `BS-CONTENT-20260811-01`.
+첫 승인 완료 Decision: `BS-CONTENT-20260811-01`.
 
 ```text
 ADVENTURER_01 / NADIA_VENN
@@ -74,10 +74,32 @@ ADVENTURER_01 / NADIA_VENN
 - 제품 구현: `BLOCKED`.
 - Task3 구현: `NOT_APPROVED`.
 
+첫 Decision `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`은 승인 완료 이력으로 유지한다.
+
+현재 사용자 승인 Decision: `BS-CONTENT-20260811-02`.
+
+```text
+ADVENTURER_02 / TOREN_MARCH
+장거리 여정 지속성·신뢰성
+→ 기존 중량·강화·내구도·실제 관련 환경/현장정비 기능 비교
+→ 작품 한 점 인계
+→ 비직접 여정 진행
+→ 도착·경로 노출·같은 UID 작품 상태 결과
+→ 수리·복원·후속 강화·다음 여정 신작 이유
+```
+
+- 직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다.
+- 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다.
+- 자동 매일 내구도 감소·루틴 수리세를 만들지 않는다.
+- 정확한 값은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+- 제품 구현: `BLOCKED`.
+- Task3 구현: `NOT_APPROVED`.
+
 책임 원본:
 
 1. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
 2. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
+3. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
 
 ## 처음 읽을 순서
 
@@ -86,12 +108,13 @@ ADVENTURER_01 / NADIA_VENN
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
 5. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-7. `ACTIVE_CONTEXT.md`
-8. `DEVELOPMENT_GATES.md`
-9. `ROADMAP.md`
-10. 실제 code/data/Scene/tests
-11. Google Sheet `00`, `01`, `02`, `04`, `13`, `50` current rows
+6. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+7. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+8. `ACTIVE_CONTEXT.md`
+9. `DEVELOPMENT_GATES.md`
+10. `ROADMAP.md`
+11. 실제 code/data/Scene/tests
+12. Google Sheet `00`, `01`, `02`, `04`, `13`, `50` current rows
 
 ## Task2 폐쇄 증거
 
@@ -117,6 +140,9 @@ ADVENTURER_01 / NADIA_VENN
 - 일반 제품 구현은 `BLOCKED`다.
 - Task2 완료 또는 R3–R7 기획 재개는 Task3 구현 승인으로 자동 확장되지 않는다.
 - `BS-CONTENT-20260811-01`은 대장장이의 작품 선택·인과 판독·같은 UID 생애 환류를 보호한다.
+- `BS-CONTENT-20260811-02`는 직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다.
+- `BS-CONTENT-20260811-02`는 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다.
+- `BS-CONTENT-20260811-02`는 자동 매일 내구도 감소·루틴 수리세를 만들지 않는다.
 - GUT 9.7.1은 GDScript test authority다.
 - HiGodot은 승인된 Godot persistent authoring authority다.
 - Hera는 enabled non-authoritative이며 authoring/mutation authority는 `NONE`이다.
@@ -124,4 +150,4 @@ ADVENTURER_01 / NADIA_VENN
 
 ## 다음 작업
 
-현재 연속 작업은 `BS-CONTENT-20260811-01`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `1/10`에서 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.
+현재 연속 작업은 `BS-CONTENT-20260811-02`의 GitHub·Sheet 동기화, exact-head 검증, 적대적 검토까지다. 다음 신규 R3–R7 Decision은 승인 카운터 `2/10`에서 이어간다. 제품 코드·Scene·Resource·Task3는 별도 사용자 승인 전 시작하지 않는다.

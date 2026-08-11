@@ -24,7 +24,9 @@ CURRENT_HANDOFF_MAIN = "68540e6cd288aff138b1ea4c5b1feeb9e0653947"
 BASE_CURRENT_MAIN_OBSERVED = "315c66eea9614c284b9c11c4d522141065dfa4b0"
 PROJECT_BASE_ADAPTER_PIN = "2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b"
 INITIALIZER_DECISION_ID = "BS-VS-INIT-20260808-01"
-R3_DECISION_ID = "BS-CONTENT-20260811-01"
+R3_FIRST_DECISION_ID = "BS-CONTENT-20260811-01"
+R3_CURRENT_DECISION_ID = "BS-CONTENT-20260811-02"
+R3_CURRENT_RESUME_LOCATOR = "ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED"
 
 
 def _text(path: Path) -> str:
@@ -81,8 +83,9 @@ def test_handoff_router_records_current_main_and_r3_planning_only_boundary() -> 
         assert "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE" in text
         assert "PR81_REFERENCE_ONLY_DO_NOT_MERGE" in text
         assert "R3_R7_DESIGN_ACTIVE" in text
-        assert R3_DECISION_ID in text
-        assert "ADVENTURER_01_DETAIL_APPROVED" in text
+        assert R3_FIRST_DECISION_ID in text
+        assert R3_CURRENT_DECISION_ID in text
+        assert R3_CURRENT_RESUME_LOCATOR in text
         assert "PRODUCT_IMPLEMENTATION: BLOCKED" in text
         assert "TASK3_IMPLEMENTATION: NOT_APPROVED" in text
         assert "HUMAN_PLAYTEST: NOT_RUN" in text
@@ -91,6 +94,10 @@ def test_handoff_router_records_current_main_and_r3_planning_only_boundary() -> 
         assert "ADVENTURER_01_DETAIL_PENDING" not in text
         assert "NON_CANONICAL_RESUME_LOCATOR" not in text
 
+    # Decision 01 remains discoverable as the first approved R3 history, while
+    # current routing is allowed to advance to later approved planning decisions.
+    assert "ADVENTURER_01" in active
+    assert "ADVENTURER_01" in start
     assert "R2_BATCH_006_NOT_STARTED_0_OF_10" not in start
     assert "POSTMERGE_CLOSURE_PENDING" not in start
     assert "Task 1 Schema·UID·SaveEnvelope TDD" not in active
@@ -122,9 +129,14 @@ def test_current_decision_router_preserves_task2_technical_baseline_and_r3_scope
     assert TASK2_TECHNICAL_BASELINE in current
     assert "NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED" in current
     assert "R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE" in current
-    assert f"R3_R7_CURRENT_DECISION: {R3_DECISION_ID}" in current
+    assert f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION_ID}" in current
+    assert "R3_R7_APPROVAL_COUNTER: 2/10" in current
     assert "TASK3_IMPLEMENTATION: NOT_APPROVED" in current
     assert "PRODUCT_IMPLEMENTATION: BLOCKED" in current
+
+    # The first R3 decision remains historical/current-canon evidence elsewhere;
+    # it is not required to remain the current router forever.
+    assert R3_FIRST_DECISION_ID in text
 
     # Historical activation-stage wording remains legitimate evidence below the
     # current closure router; this test intentionally does not require its deletion.

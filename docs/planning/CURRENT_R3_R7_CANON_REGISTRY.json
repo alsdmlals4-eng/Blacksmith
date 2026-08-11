@@ -6,7 +6,7 @@
   "stage_status": "R3_R7_DESIGN_ACTIVE",
   "product_implementation": "BLOCKED",
   "task3_implementation": "NOT_APPROVED",
-  "next_approval_counter": "1/10",
+  "next_approval_counter": "2/10",
   "inherits": [
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
@@ -78,6 +78,83 @@
         "same_uid_visible_in_result": true,
         "approved_main": "13f878589b4849defb97d2c4509e7bf50bcb507d"
       }
+    },
+    {
+      "id": "BS-CONTENT-20260811-02",
+      "title": "모험가 02 토렌 마치 장거리 여정 지속성·신뢰성 콘텐츠",
+      "status": "USER_APPROVED_R3_R7_2_OF_10",
+      "canon": "docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md",
+      "refines": [
+        "BS-CONTENT-20260804-01",
+        "BS-CONTENT-20260804-02"
+      ],
+      "depends_on": [
+        "BS-WORLD-20260803-03",
+        "BS-CUSTOMER-20260803-02",
+        "BS-CUSTOMER-20260806-01",
+        "BS-ITEM-20260806-04",
+        "BS-UX-20260805-01",
+        "BS-CORE-20260803-04",
+        "BS-CONTENT-20260811-01"
+      ],
+      "contract": {
+        "content_id": "ADVENTURER_02",
+        "customer_id": "TOREN_MARCH",
+        "customer_archetype": "ADVENTURER",
+        "activity_family": "LONG_RANGE_JOURNEY",
+        "content_goal": "JOURNEY_CONTINUITY_AND_RELIABILITY",
+        "player_role": "BLACKSMITH_EQUIPMENT_DECISION_MAKER_NOT_TRAVEL_CONTROLLER",
+        "direct_travel_or_route_minigame": false,
+        "single_always_best_equipment_answer": false,
+        "new_reliability_or_repairability_raw_stat": false,
+        "routine_automatic_wear_tax": false,
+        "primary_decision_axes": [
+          "LOAD_GATE_AND_PORTABILITY",
+          "ENHANCEMENT_LEVEL_AND_GENERAL_SUCCESS",
+          "DURABILITY_AND_KNOWN_EXPOSURE",
+          "APPROVED_CONTEXT_FUNCTION_FIT"
+        ],
+        "existing_item_owners": [
+          "WEIGHT",
+          "DURABILITY",
+          "ENVIRONMENTAL_SEALING",
+          "FIELD_SERVICEABILITY"
+        ],
+        "schedule_type": "PERSONAL_SCHEDULE",
+        "activation": "CUSTOMER_VISIT_PLUS_EQUIPMENT_HANDOFF",
+        "personal_schedule_progression": "ONE_END_OF_DAY_CHECK_MAXIMUM_WHILE_ACTIVE",
+        "structural_states": [
+          "PREP_AND_DEPARTURE",
+          "EXPOSURE_AND_ROUTE_ADAPTATION",
+          "ARRIVAL_AND_ITEM_ASSESSMENT"
+        ],
+        "universal_fixed_day_count": false,
+        "destination_identity": "CONTENT_INSTANCE_DATA_NOT_GLOBAL_CANON",
+        "result_axes": [
+          "JOURNEY_ARRIVAL_STATE",
+          "ROUTE_EXPOSURE_STATE",
+          "ITEM_UID_LIFECYCLE_STATE"
+        ],
+        "immediate_feedback": "SHORT_CAUSAL_RESULT_WITH_2_TO_4_REASONS",
+        "delayed_feedback": "SAME_UID_REVISIT_REPAIR_RESTORE_FOLLOWUP_ENHANCEMENT_OR_NEXT_ROUTE_CRAFT",
+        "chronicle_affix_auto_grant": false,
+        "artistry_auto_growth": false,
+        "full_item_destruction_baseline": "NOT_IN_BASELINE_UNLESS_SEPARATE_EXPLICIT_HIGH_RISK_CHOICE",
+        "exact_values": "BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED",
+        "product_implementation": "BLOCKED",
+        "customer_information_layers": [
+          "DEFAULT_CUSTOMER_CARD",
+          "POST_EQUIPMENT_DECISION_LAYER",
+          "DETAIL_VIEW"
+        ],
+        "reason_priority": "LOAD_GATE_THEN_ENHANCEMENT_THEN_MATCHED_CONTEXT_FUNCTION_THEN_DURABILITY_EXPOSURE_THEN_SMALL_CUSTOMER_CONTEXT",
+        "test_fixture_status": "NON_CANONICAL_BASELINE_TEST_FIXTURE",
+        "playtest_evidence": "OBSERVED_BEHAVIOR_PLUS_NEUTRAL_RECALL",
+        "auto_recommended_best_item": false,
+        "minimum_touch_target": "48dp",
+        "same_uid_visible_in_result": true,
+        "approval_source_main": "cb5ceff127bf4f2adb38b34ebaa092d97111fa94"
+      }
     }
   ],
   "benchmark_context": [
@@ -98,6 +175,18 @@
       "decision": "ADOPT",
       "use": "observed behavior plus neutral interview or recall evidence",
       "avoid": "self-report-only fun validation"
+    },
+    {
+      "source": "Death Stranding Director's Cut official beginner guidance",
+      "decision": "ADAPT",
+      "use": "visible trip load/environment preparation before departure",
+      "avoid": "direct traversal, balance, or map-route gameplay"
+    },
+    {
+      "source": "Pacific Drive official Steam page",
+      "decision": "ADAPT",
+      "use": "persistent equipment returns from environmental exposure with repair/upgrade reasons",
+      "avoid": "mandatory maintenance tax or vehicle-survival loop"
     }
   ],
   "protected_boundaries": [
@@ -107,6 +196,9 @@
     "NO_UNIVERSAL_FIXED_DAY_COUNT",
     "NO_AFFIX_OR_ARTISTRY_AUTOGRANT_FROM_ROUTINE_EVENT",
     "SAME_ITEM_UID_LIFECYCLE_PRESERVED",
-    "PR81_REFERENCE_ONLY_DO_NOT_MERGE"
+    "PR81_REFERENCE_ONLY_DO_NOT_MERGE",
+    "NO_DIRECT_TRAVEL_OR_ROUTE_MINIGAME",
+    "NO_NEW_RELIABILITY_PORTABILITY_REPAIRABILITY_RAW_STAT",
+    "NO_ROUTINE_AUTOMATIC_WEAR_TAX"
   ]
 }

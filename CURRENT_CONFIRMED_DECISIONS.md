@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith Current Confirmed Decisions
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-01 / R3_R7_1_OF_10 / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / R3_R7_2_OF_10 / PLANNING_ONLY**
 >
 > R2 Batch 006과 Task2 기술 폐쇄는 그대로 상속한다. 이번 승인은 R3–R7 기획 재개이며 Task3 또는 일반 제품 구현 승인으로 확대하지 않는다.
 
@@ -46,8 +46,8 @@ CURRENT_TECHNICAL_BASELINE: fa9595b2df95897c915331a1cb5d9b1a583611f0
 HIGODOT_EXECUTION_DECISION: BS-HIGODOT-EXEC-20260808-01
 HIGODOT_PRODUCTION_EXECUTION_PATH: PROVEN_TASK2_COMPLETED
 R3_R7_DESIGN_STATE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 1/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01
+R3_R7_APPROVAL_COUNTER: 2/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02
 NEW_PRODUCT_SCOPE: NEW_PRODUCT_SCOPE_USER_DECISION_REQUIRED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
@@ -87,6 +87,7 @@ ANDROID_DEVICE: NOT_RUN
 - `BS-CONTENT-20260804-01`: 고객 결과·작품 UID 상태·다음 제작 환류
 - `BS-CONTENT-20260804-02`: 검투사·모험가·군인·귀족과 초기 콘텐츠 가족
 - `BS-CONTENT-20260811-01`: `ADVENTURER_01` 나디아 벤 유적 탐사 개인 일정. `생환 + 회수`를 목표로 작품 한 점을 맡기고, 하루 종료당 최대 한 번 진행하며, 같은 UID의 즉시 인과 결과와 지연 생애·복원·후속 강화 이유를 만든다. 직접 전투·탐험 미니게임과 단일 항상최적 장비 정답은 추가하지 않는다. — `USER_APPROVED / R3_R7_1_OF_10 / MERGED_PR142_MAIN_CANON / PLANNING_ONLY`
+- `BS-CONTENT-20260811-02`: `ADVENTURER_02` 토렌 마치 장거리 여정 개인 일정. 여정 지속성·신뢰성을 목표로 기존 중량·강화·내구도·실제 관련 환경/현장정비 기능을 비교하며, 직접 여행 조작·새 신뢰성/수리성 원수치·자동 마모세를 추가하지 않고 같은 UID의 마모·현장 유지보수·손상 결과를 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다. — `USER_APPROVED / R3_R7_2_OF_10 / PLANNING_ONLY`
 - `BS-CRAFT-20260804-04`: 보조재료 제거와 정밀강화 방식·촉매 책임 분리
 - `BS-CRAFT-20260804-05`: 촉매 수식어 씨앗·계보·진화
 - `BS-CRAFT-20260804-06`: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`
@@ -401,5 +402,25 @@ ADVENTURER_01 / NADIA_VENN
 - 정확한 기간·확률·보상·손실·복구 비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
 - 책임 원본: `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`.
 - Registry: `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`.
+- 제품 구현: `BLOCKED`.
+- Task3 구현: `NOT_APPROVED`.
+## 18. R3–R7 두 번째 상세 콘텐츠 — 토렌 마치 장거리 여정
+
+Decision: `BS-CONTENT-20260811-02`.
+
+```text
+ADVENTURER_02 / TOREN_MARCH
+장거리 여정 개인 일정
+JOURNEY_CONTINUITY_AND_RELIABILITY
+```
+
+- 플레이어는 토렌을 직접 이동시키거나 지도에서 경로를 선택하지 않고 작품 한 점을 비교·인계한다.
+- 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않고 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY`의 현재 소유권을 소비한다.
+- `OVERWEIGHT`는 배정 불가 Gate이며 강화는 일반 사건 성공의 주효과를 유지한다.
+- 환경·현장정비 기능은 실제 결속 맥락에서만 `ELIGIBILITY / RISK_MITIGATION / SPECIFIC_INTERACTION`으로 작동한다.
+- 자동 매일 내구도 감소나 루틴 완료 강제 수리를 만들지 않는다.
+- 일정은 `PREP_AND_DEPARTURE → EXPOSURE_AND_ROUTE_ADAPTATION → ARRIVAL_AND_ITEM_ASSESSMENT` 구조이며 고정 3일 계약이 아니다.
+- 결과는 `JOURNEY_ARRIVAL_STATE / ROUTE_EXPOSURE_STATE / ITEM_UID_LIFECYCLE_STATE`를 분리하고 같은 UID를 수리·복원·후속 강화·다음 여정 신작 판단으로 돌려보낸다.
+- 정확한 기간·확률·마모량·수리량·보상·비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
 - 제품 구현: `BLOCKED`.
 - Task3 구현: `NOT_APPROVED`.

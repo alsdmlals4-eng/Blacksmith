@@ -16,12 +16,18 @@ GATES = HUB / "DEVELOPMENT_GATES.md"
 
 
 class Adventurer01NadiaContentContractTests(unittest.TestCase):
-    def test_r3_registry_promotes_the_approved_first_content_decision(self) -> None:
+    def test_r3_registry_preserves_the_approved_first_content_decision(self) -> None:
         self.assertTrue(REGISTRY.is_file())
         registry = json.loads(REGISTRY.read_text(encoding="utf-8")) if REGISTRY.is_file() else {}
         self.assertEqual("R3_R7_DESIGN_ACTIVE", registry.get("stage_status"))
         self.assertEqual("BLOCKED", registry.get("product_implementation"))
-        self.assertEqual("1/10", registry.get("next_approval_counter"))
+
+        counter = registry.get("next_approval_counter", "")
+        numerator, separator, denominator = counter.partition("/")
+        self.assertEqual("/", separator)
+        self.assertEqual("10", denominator)
+        self.assertGreaterEqual(int(numerator), 1)
+
         decisions = {item["id"]: item for item in registry.get("current_decisions", [])}
         self.assertIn("BS-CONTENT-20260811-01", decisions)
         decision = decisions.get("BS-CONTENT-20260811-01", {})
@@ -86,7 +92,7 @@ class Adventurer01NadiaContentContractTests(unittest.TestCase):
         self.assertNotIn("AUTO_RECOMMENDED_BEST_ITEM: true", canon)
         self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", canon)
 
-    def test_stable_entrypoints_record_the_decision_without_opening_product_code(self) -> None:
+    def test_stable_entrypoints_preserve_nadia_history_without_requiring_it_to_stay_current(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
@@ -96,21 +102,21 @@ class Adventurer01NadiaContentContractTests(unittest.TestCase):
         self.assertIn("BS-CONTENT-20260811-01", current)
         self.assertIn("MERGED_PR142_MAIN_CANON", current)
         self.assertNotIn("USER_APPROVED / R3_R7_1_OF_10 / PENDING_MERGE / PLANNING_ONLY", current)
-        self.assertIn("R3_R7_DESIGN_ACTIVE", active)
-        self.assertIn("ADVENTURER_01_DETAIL_APPROVED", active)
-        self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", active)
-        self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", active)
 
-        for text in (start_here, roadmap, gates):
+        for text in (active, start_here, roadmap):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
             self.assertIn("BS-CONTENT-20260811-01", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
 
-        self.assertIn("MERGED_PR142_MAIN_CANON", roadmap)
+        self.assertIn(
+            "docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md",
+            active,
+        )
         self.assertNotIn("R3_R7_1_OF_10_PENDING_MERGE", roadmap)
         self.assertNotIn("R3_R7_DESIGN_PAUSED", start_here)
         self.assertNotIn("ADVENTURER_01_DETAIL_PENDING", start_here)
+        self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", gates)
         self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", gates)
 
 

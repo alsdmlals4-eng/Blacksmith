@@ -1,7 +1,7 @@
 # [현재 정본] Development Gates
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-01 / PLANNING_ONLY / PRODUCT_BLOCKED**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
 >
 > R3–R7 콘텐츠 설계는 재개됐지만 Task3·일반 제품 구현 Gate는 열리지 않았다. R2·Task2 권위와 기술 폐쇄 증거는 그대로 상속한다.
 
@@ -14,8 +14,8 @@
 
 ```yaml
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 1/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01
+R3_R7_APPROVAL_COUNTER: 2/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02
 R3_R7_DESIGN_GATE: USER_APPROVED_PLANNING_ONLY
 R2_STATUS: R2_BATCH_006_APPROVED_MAIN_CANON
 R2_CHECKPOINT_005: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
@@ -60,11 +60,13 @@ IMAGE_LIST_SCHEMA_GATE: SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS
 
 ## R3–R7 Planning-Only Gate
 
-Decision: `BS-CONTENT-20260811-01`.
+첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.
+
+Decision: `BS-CONTENT-20260811-02`.
 
 ```text
-ADVENTURER_01 / NADIA_VENN
-생환 + 회수
+ADVENTURER_02 / TOREN_MARCH
+JOURNEY_CONTINUITY_AND_RELIABILITY
 ```
 
 허용:
@@ -72,12 +74,15 @@ ADVENTURER_01 / NADIA_VENN
 - 고객·상황·작품 선택·결과·같은 UID 생애 환류의 기획 정본 작성
 - 벤치마킹·적대적 검토·테스트 계약·Google Sheet 동기화
 - 비정본 `BASELINE_TEST_PRESET` 후보와 플레이테스트 설계
+- 기존 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY` 승인 책임을 실제 관련 맥락에서 소비
 
 차단:
 
 - Task3 제품 Script/Data/Scene/Resource 구현
 - `project.godot` 또는 Godot persistent serialized surface 변경
-- 직접 전투·탐험 미니게임 추가
+- 직접 이동·지도 경로 선택·실시간 생존 조작 추가
+- 새 신뢰성·휴대성·수리 용이성 원수치 추가
+- 자동 매일 내구도 감소·루틴 수리세 추가
 - 모든 개인 일정에 고정 3일 결과·4일 재방문 재도입
 - 일상 사건 완료만으로 `CHRONICLE_AFFIX`·예술성 자동 지급
 
@@ -215,7 +220,7 @@ CORRUPT_PRIMARY_VALID_BACKUP = PRESERVE_VALID_BACKUP_WHEN_PRIMARY_CORRUPT
 
 일반 제품 구현은 `BLOCKED`다. 버티컬 슬라이스는 R2 Batch 006이 승인한 namespace와 사용자 승인 Task에서만 허용한다. Task2의 승인 범위는 병합·postmerge CI closure까지 완료됐으며, 이를 다음 Task나 일반 제품 Gate 개방으로 해석하지 않는다. `BS-VS-INIT-20260808-01`, `BS-HIGODOT-20260808-01`, `BS-HIGODOT-EXEC-20260808-01`, `BS-TOOLCHAIN-20260809-01`은 각자의 승인 범위를 넘어 확장되지 않는다.
 
-`BS-CONTENT-20260811-01`은 planning-only Decision이다. 이 Decision의 승인만으로 제품 구현, Task3, HiGodot authoring scope를 개방하지 않는다.
+`BS-CONTENT-20260811-01`과 현재 `BS-CONTENT-20260811-02`는 planning-only Decision이다. 이 승인들만으로 제품 구현, Task3, HiGodot authoring scope를 개방하지 않는다.
 
 ## Three Affix Gate
 
@@ -300,7 +305,7 @@ HiGodot Task2 production provenance는 실제로 검증·병합됐지만 그 성
 ```yaml
 GENERAL_PRODUCT: BLOCKED
 R3_R7_DESIGN: ACTIVE_PLANNING_ONLY
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02
 SCOPED_VERTICAL_SLICE: TASK2_COMPLETE_NO_NEW_TASK_INFERRED
 TASK1: PR130_MERGED_MAIN_CANON
 PR122: CLOSED_SUPERSEDED_UNMERGED
