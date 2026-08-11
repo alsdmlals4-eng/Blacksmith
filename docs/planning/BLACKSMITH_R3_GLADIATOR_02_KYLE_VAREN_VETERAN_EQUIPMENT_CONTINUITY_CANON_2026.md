@@ -122,7 +122,7 @@ Kyle와의 관계 수치 자체나 legacy PoC score도 자동 정답이 아니�
 CASSIA_ARENA_FIT_RESPONSIBILITY_PRESERVED
 ```
 
-Cassia / `GLADIATOR_01`의 질문:
+Cassia / `CASSIA_BELLAN / GLADIATOR_01 / ARENA_SIGNATURE_WEAPON_AND_LEGACY`의 질문:
 
 > 이번 공개 경기 맥락에 어떤 실제 작품이 설명 가능하게 적합한가?
 
@@ -140,7 +140,7 @@ Decision09는 Cassia의 경기 적합·장비 기여 결과 축을 복제하지 
 NOBLE01_TREATMENT_DEPTH_RESPONSIBILITY_PRESERVED
 ```
 
-Noble01 / `CEREMONIAL_NOBLE`은 기존 가보를 물리적으로 어디까지 수리·복원·재작업할지 판단하는 treatment depth를 소유한다.
+Noble01 / `CEREMONIAL_NOBLE / HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY`은 기존 가보를 물리적으로 어디까지 수리·복원·재작업할지 판단하는 treatment depth를 소유한다.
 
 Decision09는 새로운 `COMEBACK_RESTORATION_DEPTH`, `VETERAN_REPAIR_SCORE`, `RETIREMENT_REPAIR_TREE`를 만들지 않는다. 필요한 repair/restoration은 기존 owner의 결과를 읽거나 기존 작업으로 넘긴다.
 

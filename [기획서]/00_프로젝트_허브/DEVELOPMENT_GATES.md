@@ -1,7 +1,7 @@
 # [현재 정본] Development Gates
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-08 / COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-09 / GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
 >
 > R3–R7 콘텐츠 설계는 재개됐지만 Task3·일반 제품 구현 Gate는 열리지 않았다. R2·Task2 권위와 기술 폐쇄 증거는 그대로 상속한다.
 
@@ -14,8 +14,8 @@
 
 ```yaml
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 8/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08
+R3_R7_APPROVAL_COUNTER: 9/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
 PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
 PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 R3_R7_DESIGN_GATE: USER_APPROVED_PLANNING_ONLY
@@ -82,34 +82,33 @@ fresh authority preflight
 - 저위험 maintenance에서 외부 benchmark가 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남기되 관련 공식 원본은 확인한다.
 - `BS-OPS-20260805-01`의 benchmark scope만 refine하며 TDD·early checkpoint authority는 유지한다.
 - benchmark 수치·경제·확률을 제품 정본으로 자동 승격하지 않는다.
-- R3–R7 `8/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
+- R3–R7 `9/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
 
 판정: `USER_APPROVED / REQUIRED / PLANNING_ONLY`.
 
 ## R3–R7 Planning-Only Gate
 
-현재 Decision: `BS-CONTENT-20260811-08`.
-Decision: `BS-CONTENT-20260811-08`.
+현재 Decision: `BS-CONTENT-20260811-09`.
+Decision: `BS-CONTENT-20260811-09`.
 
 첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.
 
 ```text
-COLLECTOR_02 / SEDRIC_VAEL
-ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY
-ARCHIVE_ACCESSION_STATE / PROVENANCE_DOCUMENTATION_STATE / ITEM_UID_CUSTODY_LEGACY_STATE
+GLADIATOR_02 / KYLE_VAREN
+VETERAN_COMEBACK_EQUIPMENT_CONTINUITY_AND_SUCCESSION
+VETERAN_RETURN_STATE / EQUIPMENT_CONTINUITY_STATE / ITEM_UID_LINEAGE_STATE
 ```
 
-- `BS-CONTENT-20260811-01`~`07`은 승인 완료 이력으로 보존한다.
-- `BS-CONTENT-20260811-06 / NOBLE_01 / CEREMONIAL_NOBLE`은 6/10 승인 이력이며 current locator가 아니다.
-- `BS-CONTENT-20260811-07 / SOLDIER_02 / LIANA_BERG`는 7/10 승인 이력이며 current locator가 아니다.
-- `BS-CONTENT-20260811-08 / COLLECTOR_02 / SEDRIC_VAEL`가 현재 8/10 Decision이다.
-- 기존 `SEDRIC_VAEL` 고객을 재사용하고 새 Collector/Noble 대표를 만들지 않는다.
-- Ersa의 `EXHIBITION_EVIDENCE_AND_PROVENANCE`와 Noble01의 `HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY` 책임을 보존한다.
-- 같은 UID를 보존하고 accession·provenance documentation·custody legacy를 분리한다.
-- authenticity/provenance/archive aggregate score와 최고 Artistry·가장 오래된 작품·가장 많은 Chronicle·최고 강화 자동정답을 만들지 않는다.
-- 누락 provenance를 창작/autofill하지 않는다.
-- archive storage·museum·visitor·staff/shelf·preservation environment·loan logistics management를 추가하지 않는다.
-- accession/review 반복 Artistry/Chronicle farming을 추가하지 않는다.
+- `BS-CONTENT-20260811-01`~`08`은 승인 완료 이력으로 보존한다.
+- `BS-CONTENT-20260811-08 / COLLECTOR_02 / SEDRIC_VAEL`은 8/10 승인 이력이며 current locator가 아니다.
+- `BS-CONTENT-20260811-09 / GLADIATOR_02 / KYLE_VAREN`가 현재 9/10 Decision이다.
+- actual prior Kyle item record가 continuity branch의 근거다. 존재하지 않는 history/item을 생성하지 않는다.
+- hard serviceability/eligibility가 sentiment보다 먼저다.
+- keep path는 same UID를 유지한다. replacement는 old UID/history를 보존하고 new UID로 시작한다.
+- old history/progression을 replacement UID에 복사하지 않는다.
+- Cassia arena-fit/equipment-contribution과 Noble01 treatment-depth 책임을 보존한다.
+- legacy `gladiator_kyle / iron_sword` fixed score formula는 historical non-authoritative fixture다.
+- old/new automatic-best, sentiment/veteran/lineage score, direct arena/roster/training/injury/betting, baseline permadeath, comeback farming을 추가하지 않는다.
 - `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`는 이번 Decision으로 해결하지 않는다.
 - 제품 구현은 `BLOCKED`, Task3 구현은 `NOT_APPROVED`다.
 
