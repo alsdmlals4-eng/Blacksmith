@@ -1,7 +1,7 @@
 # [현재 정본] Development Gates
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-07 / SOLDIER_02_LIANA_MISSION_FIT_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-08 / COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
 >
 > R3–R7 콘텐츠 설계는 재개됐지만 Task3·일반 제품 구현 Gate는 열리지 않았다. R2·Task2 권위와 기술 폐쇄 증거는 그대로 상속한다.
 
@@ -14,8 +14,8 @@
 
 ```yaml
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 7/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07
+R3_R7_APPROVAL_COUNTER: 8/10
+R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08
 PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
 PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 R3_R7_DESIGN_GATE: USER_APPROVED_PLANNING_ONLY
@@ -82,33 +82,35 @@ fresh authority preflight
 - 저위험 maintenance에서 외부 benchmark가 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남기되 관련 공식 원본은 확인한다.
 - `BS-OPS-20260805-01`의 benchmark scope만 refine하며 TDD·early checkpoint authority는 유지한다.
 - benchmark 수치·경제·확률을 제품 정본으로 자동 승격하지 않는다.
-- R3–R7 `7/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
+- R3–R7 `8/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
 
 판정: `USER_APPROVED / REQUIRED / PLANNING_ONLY`.
 
 ## R3–R7 Planning-Only Gate
 
-현재 Decision: `BS-CONTENT-20260811-07`.
-Decision: `BS-CONTENT-20260811-07`.
+현재 Decision: `BS-CONTENT-20260811-08`.
+Decision: `BS-CONTENT-20260811-08`.
 
 첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.
 
 ```text
-SOLDIER_02 / LIANA_BERG
-FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY
-MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE
+COLLECTOR_02 / SEDRIC_VAEL
+ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY
+ARCHIVE_ACCESSION_STATE / PROVENANCE_DOCUMENTATION_STATE / ITEM_UID_CUSTODY_LEGACY_STATE
 ```
 
-- `BS-CONTENT-20260811-01`~`06`은 승인 완료 이력으로 보존한다.
+- `BS-CONTENT-20260811-01`~`07`은 승인 완료 이력으로 보존한다.
 - `BS-CONTENT-20260811-06 / NOBLE_01 / CEREMONIAL_NOBLE`은 6/10 승인 이력이며 current locator가 아니다.
-- `BS-CONTENT-20260811-07 / SOLDIER_02 / LIANA_BERG`가 현재 7/10 Decision이다.
-- 기존 `LIANA_BERG` 고객을 재사용하고 병렬 Soldier commander를 만들지 않는다.
-- Marek의 `SMALL_LOT_STANDARD_ORDER`와 Cassia의 `ARENA_SIGNATURE_WEAPON_AND_LEGACY` 책임을 보존한다.
-- 같은 UID를 보존하고 임무 성공·리아나 귀환·작품 현장 생애를 분리한다.
-- 직접 전술전투·부대 이동/대형·실시간 병참·사상자 micromanagement를 추가하지 않는다.
-- command/hero/leadership/mission-fit 총점과 최고 방어·최고 강화 자동정답을 만들지 않는다.
-- 작품 하나를 임무 결과의 유일 원인으로 만들지 않는다.
-- baseline Liana permadeath/replacement loop와 임무 반복 Artistry/Chronicle farming을 추가하지 않는다.
+- `BS-CONTENT-20260811-07 / SOLDIER_02 / LIANA_BERG`는 7/10 승인 이력이며 current locator가 아니다.
+- `BS-CONTENT-20260811-08 / COLLECTOR_02 / SEDRIC_VAEL`가 현재 8/10 Decision이다.
+- 기존 `SEDRIC_VAEL` 고객을 재사용하고 새 Collector/Noble 대표를 만들지 않는다.
+- Ersa의 `EXHIBITION_EVIDENCE_AND_PROVENANCE`와 Noble01의 `HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY` 책임을 보존한다.
+- 같은 UID를 보존하고 accession·provenance documentation·custody legacy를 분리한다.
+- authenticity/provenance/archive aggregate score와 최고 Artistry·가장 오래된 작품·가장 많은 Chronicle·최고 강화 자동정답을 만들지 않는다.
+- 누락 provenance를 창작/autofill하지 않는다.
+- archive storage·museum·visitor·staff/shelf·preservation environment·loan logistics management를 추가하지 않는다.
+- accession/review 반복 Artistry/Chronicle farming을 추가하지 않는다.
+- `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`는 이번 Decision으로 해결하지 않는다.
 - 제품 구현은 `BLOCKED`, Task3 구현은 `NOT_APPROVED`다.
 
 ## Canon Gate
