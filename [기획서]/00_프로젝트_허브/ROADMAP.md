@@ -1,388 +1,134 @@
 # [현재 정본] Blacksmith Roadmap
 
-<!-- BS_OPS_20260811_03_PHASE_C_ENTRY -->
-> **PLANNING_COMPLETE / BS-OPS-20260811-03 / PHASE_B_FINAL_REVIEW_COMPLETE / PHASE_C_ENTRY_APPROVED**
+<!-- BS_OPS_20260811_03_PHASE_C_LIVE_CONTINUATION -->
+> **PLANNING_COMPLETE / BS-OPS-20260811-03 / PHASE_C_EXISTING_APPROVED_CANON / LOCAL_RUNTIME_GATE_OPEN**
 >
-> `ASSUME_PREVIOUS_POWERSHELL_CLOSED` / `PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST` / `CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST`
+> `STATE_OBSERVED_AT_MAIN: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486`
 >
-> `BASE_DEDICATED_ENV_MAIN_OBSERVED: 6d2feba2bc49fda2d8d273248b55087853615d5d`
+> `RESUME_RULE: FETCH_LATEST_MAIN_BEFORE_USE`
 >
-> 사용자가 `기획 완료`를 명시했다. R3–R7 기획 배치는 승인된 9/10에서 닫으며, 승인되지 않은 Decision10을 만들지 않는다. 이미 승인된 정본 구현만 Phase C로 진입하고 신규 제품 범위는 별도 Decision이 필요하다.
+> `P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS`
 >
-> `PLANNING_COMPLETE: USER_DECLARED` / `R3_R7_PLANNING_BATCH: CLOSED_AT_9_OF_10` / `PHASE_B_FINAL_REVIEW: COMPLETE`
+> `P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS`
 >
-> `PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON`
+> `PERSISTENT_MUTATION_GATE: OPEN`
 >
-> `TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED`
+> `PHASE_C_NEXT_PACKAGE: P2_FOUNDATION_DATA_AND_STATE_CONTRACTS`
 >
-> `P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING`
+> `CURRENT_EXECUTION_SURFACE: REUSE_LIVE_DEDICATED_CODEX_WHEN_FRESH`
 >
-> `IMAGE_GENERATION: DEFERRED_BY_USER`
+> `BOOTSTRAP_REENTRY_POLICY: ONLY_WHEN_RUNTIME_ENVELOPE_EXPIRED_OR_RECOVERY_REQUIRED`
 >
-> 전용 로컬 실행환경: self-contained Godot 4.7.1 (`_sc_`) → HiGodot HTTP `8006` / WS `9506` → `C:\Users\user\.codex-blacksmith` → exact Blacksmith 경로에서 Codex. 포트/process 존재는 readiness PASS가 아니며 Codex 내부 fresh HiGodot receipt 전 persistent mutation 금지.
+> `SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE`
 
-
-<!-- R3_R7_PLANNING_BATCH_HISTORICAL_CLOSED_AT_9_OF_10 -->
-> **HISTORICAL_R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-09 / GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED / PLANNING_ONLY**
->
-> R2 Batch 006과 Task2 완료 상태를 기반으로 R3–R7 콘텐츠 기획을 재개한다. 제품 구현 Gate는 계속 닫혀 있다.
+## Current delivery path
 
 ```yaml
-CURRENT_STAGE: PHASE_C_IMPLEMENTATION_ENTRY
-CURRENT_STAGE_STATUS: PLANNING_COMPLETE_PHASE_B_REVIEW_COMPLETE_PHASE_C_ENTRY_APPROVED
-R2_CHECKPOINT_005: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
-R2_BATCH_005: CLOSED_10_OF_10
-R2_BATCH_005_STATE: R2_BATCH_005_CLOSED_10_OF_10
-R2_BATCH_005_MERGE: MERGED_PR109_MAIN_CANON
-R2_BATCH_006: APPROVED_10_OF_10
-R2_BATCH_006_STATE: R2_BATCH_006_APPROVED_10_OF_10
+CURRENT_STAGE: PHASE_C_IMPLEMENTATION
+PLANNING_COMPLETE: USER_DECLARED
+R3_R7_DESIGN_ACTIVE: true
+R3_R7_PLANNING_BATCH: CLOSED_AT_9_OF_10
 R3_R7_APPROVAL_COUNTER: 9/10
 R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
 R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED
-HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED
+R2_BASELINE: R2_BATCH_006_APPROVED_MAIN_CANON
+R2_CHECKPOINT_005: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
+R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10
+TASK2: TASK2_MAIN_MERGED
+POSTMERGE_CLOSURE: POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE
+P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS
+P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS
+PERSISTENT_MUTATION_GATE: OPEN
+PHASE_C_NEXT_PACKAGE: P2_FOUNDATION_DATA_AND_STATE_CONTRACTS
+CURRENT_EXECUTION_SURFACE: REUSE_LIVE_DEDICATED_CODEX_WHEN_FRESH
+BOOTSTRAP_REENTRY_POLICY: ONLY_WHEN_RUNTIME_ENVELOPE_EXPIRED_OR_RECOVERY_REQUIRED
+SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE
 PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON
-HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED
+NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON
 TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED
-VERTICAL_SLICE_IMPLEMENTATION: APPROVED_TASK2_COMPLETE
-VERTICAL_SLICE_IMPLEMENTATION_EVIDENCE: VERTICAL_SLICE_IMPLEMENTATION_APPROVED
+IMAGE_GENERATION: DEFERRED_BY_USER
 HUMAN_PLAYTEST: NOT_RUN
+ANDROID_DEVICE: NOT_RUN
+ACCESSIBILITY: NOT_RUN
 ```
 
-## R0–R2 — 완료된 기획 기반
+## Completed foundation before Phase C
 
-- 프로젝트 코어와 권위 체계
-- 직접 단조·제작 등급 5단계·예술성
-- 등급·촉매·연대기 3수식어
-- 일반 강화와 다섯 정밀강화 이정표
-- 작품 역할·중량·기능 용량·재작업 레시피
-- 고객 능력·장비 적합·모바일 정보 계층
-- 개인 일정·세계 일정 분리와 작품 생애 환류
+- R0–R2: 프로젝트 코어, 직접 단조, 제작 등급, Artistry, 세 Affix, 강화/정밀강화, 중량/역할/기능, 고객 적합, 모바일 정보 계층, 일정/작품 lifecycle.
+- `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109_MAIN_CANON`.
+- `R2_BATCH_006_APPROVED_10_OF_10 / MERGED_PR120_MAIN_CANON`.
+- Task2 serialized vertical slice / postmerge closure complete.
+- PR #155 Phase C entry, PR #156 dedicated executor isolation, PR #157 runtime/bootstrap hardening + fresh live receipt complete.
 
-상태: `R2_BATCH_006_APPROVED_MAIN_CANON / R2_BATCH_006_APPROVED_10_OF_10 / TASK2_MAIN_MERGED / VERTICAL_SLICE_IMPLEMENTATION_APPROVED`.
-
-## 불변 체크포인트 이력
-
-- `R2_CHECKPOINT_004`: 제작 등급 5단계·예술성 원수치 정제와 후속 폐쇄를 완료했다.
-- `R2_CHECKPOINT_005 / R2_CHECKPOINT_005_CLOSED_MAIN_CANON`: `BS-CRAFT-20260805-02`를 포함한 승인 10건과 작품 역할·기능 레시피 Gate를 폐쇄했다.
-- `R2_BATCH_005_CLOSED_10_OF_10 / MERGED_PR109_MAIN_CANON`: Batch 005 승인과 main 병합을 보존하는 호환 앵커다.
-- `R2_BATCH_006 / R2_BATCH_006_APPROVED_10_OF_10`: 대표 버티컬 슬라이스 계획과 승인 범위를 main canon으로 병합했다.
-- 체크포인트 004 planning/closure main: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / 7a46fa38586a42f268cd0432744203049649ddd5`
-- 체크포인트 005 planning/closure main: `31384d6397d798d2ac46bd3fb23ea2f4b0d67ad9 / 06f03323c1309d8da0e6f5b9f4680a20ce388126`
-- Batch 006 merge main: `a8a94343c78a68bf7bb14b411e7741f43b257138`
-
-이 항목은 현재 활성 카운터가 아니라 재현 가능한 병합 증거다. R3–R7 설계 활성화는 이 역사/호환 토큰을 폐기하지 않는다.
-
-## R3–R7 현재 설계 배치
-
-현재 승인 카운터: `9/10`.
-
-### 1/10 — `BS-CONTENT-20260811-01`
+## Approved R3–R7 implementation inputs
 
 ```text
-ADVENTURER_01 / NADIA_VENN
-나디아 벤 유적 탐사 개인 일정
-생환 + 회수
+1/9  BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN
+2/9  BS-CONTENT-20260811-02 / ADVENTURER_02 / TOREN_MARCH
+3/9  BS-CONTENT-20260811-03 / SOLDIER_01 / MAREK_OLDEN
+4/9  BS-CONTENT-20260811-04 / COLLECTOR_01 / ERSA_ROEN
+5/9  BS-CONTENT-20260811-05 / GLADIATOR_01 / CASSIA_BELLAN
+6/9  BS-CONTENT-20260811-06 / NOBLE_01 / CEREMONIAL_NOBLE
+7/9  BS-CONTENT-20260811-07 / SOLDIER_02 / LIANA_BERG
+8/9  BS-CONTENT-20260811-08 / COLLECTOR_02 / SEDRIC_VAEL
+9/9  BS-CONTENT-20260811-09 / GLADIATOR_02 / KYLE_VAREN
 ```
 
-목표:
+세부 gameplay/canon 책임은 `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`과 각 분야 canon에 있으며 Roadmap이 복제하지 않는다.
 
-- 대장장이가 고객의 목적·위험을 읽고 작품 한 점을 선택한다.
-- 강화 단계가 주효과이되 중량 배정 가능 여부와 실제 관련 환경·유틸리티 기능이 설명 가능한 trade-off를 만든다.
-- 직접 전투·탐험 미니게임 없이 하루 종료당 최대 한 번 개인 일정이 진행된다.
-- 귀환·회수·작품 UID 상태를 분리하고 같은 UID의 복원·후속 강화·새 제작 이유로 환류한다.
-- 구조 상태를 전역 고정 3일 계약으로 만들지 않는다.
-- 일상 사건 완료만으로 연대기 수식어·예술성을 자동 지급하지 않는다.
+공통 보호:
+- same UID history/provenance 유지
+- replacement old UID/history 보존 + distinct new UID
+- 직접 탐험/전투/전술/투기장/전시/박물관/가문 경영 범위 추가 금지
+- new opaque total score 금지
+- highest-stat/oldest/most-Chronicle 자동 정답 금지
+- farming으로 Artistry/Chronicle 자동 성장 금지
+- `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`
 
-책임 원본:
-
-- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-- `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-
-정확한 기간·확률·보상·손실·복구 비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
-
-### 2/10 — `BS-CONTENT-20260811-02`
+## Phase C package sequence
 
 ```text
-ADVENTURER_02 / TOREN_MARCH
-토렌 마치 장거리 여정 개인 일정
-JOURNEY_CONTINUITY_AND_RELIABILITY
+P0_LOCAL_EXECUTOR_BOOTSTRAP                  PASS
+P1_AUTHORITY_AND_CURRENT_STATE_READBACK      PASS
+P2_FOUNDATION_DATA_AND_STATE_CONTRACTS       READY_NEXT
+P3_APPROVED_CONTENT_VERTICAL_IMPLEMENTATION  NOT_STARTED
+P4_RUNTIME_UX_AND_FEEDBACK                    NOT_STARTED
+P5_GUT_AFFECTED_FULL_REGRESSION               NOT_STARTED
+P6_HERA_LIVE_QA_IF_REQUIRED                   NOT_STARTED
+P7_EXACT_HEAD_PR_AND_POSTMERGE_READBACK       NOT_STARTED
+P8_USER_LOCAL_FETCH_PULL_PROJECT_PLAY         NOT_STARTED
 ```
 
-목표:
+### P2 — next executable
 
-- 기존 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY`만 소비해 장거리 환경 노출과 작품 신뢰성을 판단한다.
-- 직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다.
-- 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다.
-- 자동 매일 내구도 감소·루틴 수리세를 만들지 않는다.
-- 결과는 도착·경로 노출·같은 UID 작품 상태를 분리하고 수리·복원·후속 강화·다음 여정 신작 이유로 환류한다.
-- 정확한 기간·확률·마모량·수리량·보상·비용은 `BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
+- current data/model/save/lifecycle/event/customer/item UID owner를 먼저 조사한다.
+- 여러 D01–D09가 공유하는 가장 작은 foundation gap 한 개만 선택한다.
+- Existing Solution First: `REUSE → ABSORB → REFACTOR → BUILD_NEW`.
+- semantic RED → minimal GREEN → affected regression.
+- Godot persistent serialization이 필요하면 current exact HiGodot authoring authority를 사용한다.
+- 새 substantive gameplay Decision이 필요하면 해당 slice만 `USER_DECISION_REQUIRED`로 격리한다.
 
-책임 원본:
+### P3–P4
 
-- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-- `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+P2 foundation을 소비해 승인된 콘텐츠를 bounded vertical slice로 구현하고, 기존 설명 가능한 원인/feedback surface를 확장한다. 새 score authority나 unapproved direct-control gameplay를 만들지 않는다.
 
-### 3/10 — `BS-CONTENT-20260811-03`
+### P5–P8
+
+GUT/HiGodot affected regression → 필요 시 Hera observational QA → exact-head PR/postmerge → 사용자 local Project Play. 사람 플레이·Android 실기기·접근성은 실제 수행 전 `NOT_RUN`이다.
+
+## First core vertical slice locator
+
+`첫 코어 버티컬 슬라이스`의 역사 목표는 대표 작품 한 점의 제작→강화→고객/일정→같은 UID 결과/복원→다음 제작 판단이었다. 현재 구현은 이미 승인된 canon과 Phase C package boundary 안에서 이 방향을 점진적으로 확장한다.
+
+<!-- R3_R7_PLANNING_BATCH_HISTORICAL_CLOSED_AT_9_OF_10 -->
+## Historical compatibility / closed planning state
+
+아래는 `기획 완료` 전 planning/current consumer의 역사 locator이며 현재 구현 Gate가 아니다.
 
 ```text
-SOLDIER_01 / MAREK_OLDEN
-SMALL_LOT_STANDARD_ORDER
-UNIT_READINESS_AND_STANDARD_FIT
-```
-
-목표:
-
-- 기준품 + 소량 반복 제작으로 군인 유형을 검증하되 작품을 익명 stack으로 만들지 않는다.
-- 첫 약 10개 fixture는 `NON_CANONICAL_BASELINE_TEST_PRESET`이고 각 작품 UID·비용·단조·강화·생애 결과를 보존한다.
-- 직접 전술 전투·실시간 병참·작업자 생산라인·무료 복제를 추가하지 않는다.
-- 결과는 `UNIT_MISSION_STATE / STANDARD_ADOPTION_STATE / BATCH_ITEM_LIFECYCLE_STATE`를 분리한다.
-
-책임 원본:
-
-- `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
-
-### 4/10 — `BS-CONTENT-20260811-04`
-
-```text
-COLLECTOR_01 / ERSA_ROEN
-EXHIBITION_EVIDENCE_AND_PROVENANCE
-PUBLIC_MEANING_THROUGH_CRAFT_AND_LIFECYCLE_EVIDENCE
-```
-
-목표:
-
-- `CRAFTSMANSHIP_EVIDENCE / LIVED_HISTORY_EVIDENCE`를 전시 의도 맥락으로 사용해 전투 밖에서도 작품 선택→세계 결과→같은 UID 생애 환류가 성립하는지 증명한다.
-- 새 희귀도·위신·수집가·전시 총점을 만들지 않는다.
-- Chronicle 개수, 최고 예술성, 최고 강화, 가장 오래된 작품 하나를 보편적 정답으로 만들지 않는다.
-- 전시 횟수/전시 자체로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
-- 전시 실행은 비직접 세계 사건이며 플레이어는 대장장이·작품 증거 선택자로 남는다.
-- 결과는 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리한다.
-
-책임 원본:
-
-- `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
-
-### 5/10 — `BS-CONTENT-20260811-05`
-
-```text
-GLADIATOR_01 / CASSIA_BELLAN
-ARENA_SIGNATURE_WEAPON_AND_LEGACY
-ARENA_RENOWN_THROUGH_EXPLAINABLE_EQUIPMENT_CONTRIBUTION
-```
-
-목표:
-
-- 공개된 무기 범주·경기 맥락을 읽고 같은 작품 UID 한 점을 인계한다.
-- 직접 전투 없이 `ARENA_MATCH_STATE / EQUIPMENT_CONTRIBUTION_STATE / ITEM_UID_ARENA_LEGACY_STATE`를 분리한다.
-- 새 투기장/명성/검투사/시그니처 총점, 최고 강화 자동정답, 승리=좋은 작품 단순화를 만들지 않는다.
-- 경기/승리 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
-- legacy Kyle/iron_sword POC 수치와 점수식은 역사 fixture로 유지한다.
-
-책임 원본:
-
-- `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
-
-### 6/10 — `BS-CONTENT-20260811-06`
-
-```text
-NOBLE_01 / CEREMONIAL_NOBLE
-HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY
-CEREMONY_READINESS_STATE / HEIRLOOM_TREATMENT_FIT_STATE / ITEM_UID_DYNASTIC_LEGACY_STATE
-```
-
-목표:
-
-- 기존 가보 UID의 실제 상태·손상·과거 수리·소유·계승·Chronicle evidence와 공개된 계승 목적을 읽고 개입 깊이를 판단한다.
-- 최대 복원·최고 Artistry를 자동 정답으로 만들지 않고 새 가문 위신·진품성·계승 총점을 추가하지 않는다.
-- 물리 흔적을 처치하더라도 의미 있는 과거 생애 기록을 삭제하지 않는다.
-- 같은 UID를 처치 전·후·의식·반환까지 보존한다.
-- 복원/의식 반복으로 Artistry 또는 Chronicle Affix를 자동 성장시키지 않는다.
-- 직접 의식·귀족 가문·궁정·외교 경영을 추가하지 않는다.
-
-책임 원본:
-
-- `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
-
-### 7/10 — `BS-CONTENT-20260811-07`
-
-```text
-SOLDIER_02 / LIANA_BERG
-FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY
-MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE
-```
-
-목표:
-
-- 공개된 지휘 책임·임무 위험·필요 장비 역할과 실제 작품 UID 근거를 비교해 한 작품을 맡긴다.
-- Marek의 multi-UID 소량 표준화와 Cassia의 arena contribution 책임을 보존한다.
-- 직접 전술전투·부대 이동/대형·실시간 병참·사상자 micromanagement를 추가하지 않는다.
-- command/hero/leadership/mission-fit 총점, 최고 방어/강화 자동정답, 작품 단독 인과를 만들지 않는다.
-- baseline Liana permadeath/replacement loop와 임무 반복 Artistry/Chronicle farming을 추가하지 않는다.
-- 같은 UID를 인계·현장 결과·귀환/회수까지 보존한다.
-
-책임 원본:
-
-- `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
-
-### 8/10 — `BS-CONTENT-20260811-08`
-
-```text
-COLLECTOR_02 / SEDRIC_VAEL
-ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY
-ARCHIVE_ACCESSION_STATE / PROVENANCE_DOCUMENTATION_STATE / ITEM_UID_CUSTODY_LEGACY_STATE
-```
-
-목표:
-
-- 공개된 archival purpose와 작품 UID에 실제 기록된 provenance/custody/lifecycle evidence를 비교해 한 작품을 인계한다.
-- Ersa의 공개 전시 책임과 Noble01의 물리적 treatment-depth 책임을 보존한다.
-- 진품성·provenance completeness·archive prestige 총점과 최고 Artistry/가장 오래된 작품/가장 많은 Chronicle/최고 강화 자동정답을 만들지 않는다.
-- 기록 조작·누락 이력 autofill과 archive/museum/storage/visitor/staff/loan-logistics management를 추가하지 않는다.
-- 같은 UID를 보존하며 accession/review 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
-- `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`는 별도 사용자 결정 전 유지한다.
-
-책임 원본:
-
-- `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
-
-### 9/10 — `BS-CONTENT-20260811-09`
-
-```text
-GLADIATOR_02 / KYLE_VAREN
-VETERAN_COMEBACK_EQUIPMENT_CONTINUITY_AND_SUCCESSION
-VETERAN_RETURN_STATE / EQUIPMENT_CONTINUITY_STATE / ITEM_UID_LINEAGE_STATE
-```
-
-목표:
-
-- 실제 prior Kyle 작품의 현재 상태와 생애 기록을 읽고 현역 유지 또는 은퇴·교체를 판단한다.
-- hard serviceability/eligibility가 감성보다 먼저다.
-- keep path는 same UID를 보존하고 replacement path는 old UID/history를 보존한 채 distinct new UID로 시작한다.
-- Cassia의 arena-fit/equipment-contribution 책임과 Noble01의 treatment-depth 책임을 침범하지 않는다.
-- legacy Kyle/iron_sword fixed 수치·score formula를 current canon으로 부활시키지 않는다.
-- old/new item 자동정답·sentiment/veteran/lineage score·직접 arena/roster/training/injury 관리·반복 progression farming을 추가하지 않는다.
-- `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`는 별도 승인까지 보류한다.
-
-책임 원본:
-
-- `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`
-- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-
-## R3 — 버티컬 슬라이스 기반
-
-- 최신 정본 전용 데이터 Schema
-- 작품 UID와 저장·로드
-- 단일 앱 셸과 화면 전환
-- 대표 제작·강화·고객·일정·연대기 경로
-- 원인 설명 로그와 로컬 검증 데이터
-
-기존 POC의 구형 품질·보조재료·범용 수식어 구조는 재사용하지 않는다.
-
-`BS-CONTENT-20260811-01`부터 `BS-CONTENT-20260811-09`까지는 R3–R7 상세 **콘텐츠 설계** 승인이다. 어느 Decision도 실제 제품 구현을 열지 않는다.
-
-## R4 — 콘텐츠와 경제
-
-- 장비군·주재료·기능·고객 확장
-- 판매·증여·복원·상속 소유권 상태
-- 가격·예술성·수요 점감
-- 피로도·장기 성장·세계 일정
-
-## R5–R6 — 모바일 제품화
-
-- Android 세로형 UX
-- 접근성·성능·저사양 검증
-- 아트·오디오·피드백
-- 세이브 migration과 복구
-
-## R7 — 첫 코어 버티컬 슬라이스
-
-```text
-대표 작품 한 점 직접 단조
-→ 제작 등급·예술성·역할·중량 확인
-→ 일반 강화 지속·중단
-→ 대표 정밀강화와 촉매 계보
-→ 고객에게 배정하고 성공률·핵심 원인 확인
-→ 결과·연대기·손상 또는 복원
-→ 같은 UID로 재방문
-→ 다음 제작 판단
-```
-
-필수 행동 증거:
-
-- 플레이어가 강화 지속·중단을 고민한다.
-- 등급·예술성·촉매·연대기의 원인을 구분한다.
-- 고객 결과와 작품 선택의 인과를 설명한다.
-- 같은 작품의 변화와 다음 행동을 기억한다.
-
-R3–R7 상세 콘텐츠 플레이테스트는 작품 선택 행동과 중립적 회상 인터뷰를 함께 사용한다. 실제 playable scope와 사람 검증은 아직 `NOT_RUN`이다.
-
-## R8 — 적대적 최종 검토
-
-- 핵심 재미와 모바일 복잡도
-- 현재 정본·구형 문서·PR·데이터 충돌
-- 저장·migration·접근성·성능
-- 내부 테스트와 외부 사람 플레이테스트
-
-## 구현 Gate
-
-현재 상태:
-
-```yaml
-R3_R7_DESIGN_ACTIVE: true
-BS-CONTENT-20260811-01: USER_APPROVED_PLANNING_ONLY
-BS-CONTENT-20260811-02: USER_APPROVED_PLANNING_ONLY
-BS-CONTENT-20260811-03: USER_APPROVED_PLANNING_ONLY
-BS-CONTENT-20260811-04: USER_APPROVED_PLANNING_ONLY
-BS-CONTENT-20260811-05: USER_APPROVED_PLANNING_ONLY
-BS-CONTENT-20260811-06: USER_APPROVED_PLANNING_ONLY
-BS-CONTENT-20260811-07: USER_APPROVED_PLANNING_ONLY
-BS-CONTENT-20260811-08: USER_APPROVED_PLANNING_ONLY
-BS-CONTENT-20260811-09: USER_APPROVED_PLANNING_ONLY
-PRODUCT_IMPLEMENTATION: BLOCKED
-TASK3_IMPLEMENTATION: NOT_APPROVED
-HUMAN_PLAYTEST: NOT_RUN
-VERTICAL_SLICE_TASK2: COMPLETE
-NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED
-```
-
-R3–R7 기획 재개는 제품 코드·Scene·Resource·Godot authoring 범위를 자동으로 열지 않는다.
-
-## 세 수식어 불변 계약
-
-```text
-GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
-```
-
-일반 수식어 A·B와 보조재료 슬롯은 재도입하지 않는다.
-
-### 7/10 — `BS-CONTENT-20260811-07`
-
-```text
-SOLDIER_02 / LIANA_BERG
-FRONTLINE_COMMANDER_MISSION_FIT_AND_PROTECTIVE_RESPONSIBILITY
-MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE
-```
-
-목표:
-
-- 기존 Liana 고객을 한 명의 전선 지휘관 책임 콘텐츠로 상세화한다.
-- 공개된 임무·위험·필요 역할과 실제 작품 UID 증거를 비교해 한 작품을 인계한다.
-- Marek의 multi-UID 소량 표준화와 Cassia의 arena contribution 책임을 침범하지 않는다.
-- 임무 성공·리아나 귀환·같은 UID 작품 생애를 별도 결과로 유지한다.
-- 최고 방어·최고 강화·command/hero/leadership/mission-fit 총점을 자동 정답으로 만들지 않는다.
-- 직접 전술전투·대형/이동·실시간 병참·사상자 관리·baseline permadeath·replacement loop를 추가하지 않는다.
-- 작품 단독 인과와 임무 반복 Artistry/Chronicle farming을 금지한다.
-- 정확 임무·임계값·부상·경제·보상·분포는 `NON_CANONICAL_BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED`다.
-
-책임 원본:
-
-- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-- `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
-
-<!-- BS-CONTENT-20260811-09 CURRENT -->
-## R3–R7 current 9/10 — Kyle Gladiator02
-
-```text
+R2_CHECKPOINT_004
+R2_BATCH_005_CLOSED_10_OF_10
+BS-CRAFT-20260805-02
 R3_R7_DESIGN_ACTIVE
 R3_R7_APPROVAL_COUNTER: 9/10
 R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
@@ -390,3 +136,7 @@ R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED
 PRODUCT_IMPLEMENTATION: BLOCKED
 TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
+
+R2 checkpoint 004: `789c73f38003f40dde5e9a99cd7dcb3ca03863f7 / 7a46fa38586a42f268cd0432744203049649ddd5`.
+
+D01–D09 상세 planning text, R2/R3–R7 세부 design, 과거 exact-head CI는 각 canon/Registry/GitHub history가 책임진다. 승인 10건은 최대치였고 batch는 사용자 `기획 완료` 선언으로 9건에서 닫혔다.
