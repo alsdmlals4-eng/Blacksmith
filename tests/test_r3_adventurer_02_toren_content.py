@@ -131,6 +131,32 @@ class Adventurer02TorenContentContractTests(unittest.TestCase):
         self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", gates)
         self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", gates)
 
+    def test_current_routers_do_not_mix_toren_current_state_with_nadia_current_labels(self) -> None:
+        active = ACTIVE.read_text(encoding="utf-8")
+        start_here = START_HERE.read_text(encoding="utf-8")
+        roadmap = ROADMAP.read_text(encoding="utf-8")
+
+        for token in (
+            "직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다",
+            "새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다",
+            "자동 매일 내구도 감소·루틴 수리세를 만들지 않는다",
+        ):
+            self.assertIn(token, active)
+            self.assertIn(token, start_here)
+
+        self.assertNotIn("사용자 승인 Decision: `BS-CONTENT-20260811-01`.", start_here)
+        self.assertIn("첫 승인 완료 Decision: `BS-CONTENT-20260811-01`.", start_here)
+        self.assertIn("8. `ACTIVE_CONTEXT.md`", start_here)
+        self.assertIn("9. `DEVELOPMENT_GATES.md`", start_here)
+        self.assertIn("10. `ROADMAP.md`", start_here)
+        self.assertNotIn("7. `ACTIVE_CONTEXT.md`", start_here)
+
+        self.assertIn("현재 승인 카운터: `2/10`.", roadmap)
+        self.assertNotIn("현재 승인 카운터: `1/10`.", roadmap)
+        self.assertIn("### 2/10 — `BS-CONTENT-20260811-02`", roadmap)
+        self.assertIn("BS-CONTENT-20260811-02: USER_APPROVED_PLANNING_ONLY", roadmap)
+        self.assertNotIn("CURRENT_STAGE_STATUS: R3_R7_2_OF_10_USER_APPROVED_PLANNING_CANON", roadmap)
+
 
 if __name__ == "__main__":
     unittest.main()
