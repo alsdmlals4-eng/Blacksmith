@@ -166,6 +166,14 @@ class Collector02SedricArchivalAccessionContractTests(unittest.TestCase):
         self.assertIn("현재 승인 카운터: `8/10`.", roadmap)
         self.assertIn("Decision: `BS-CONTENT-20260811-08`.", gates)
 
+        d06_heading = "### 6/10 — `BS-CONTENT-20260811-06`"
+        d07_heading = "### 7/10 — `BS-CONTENT-20260811-07`"
+        d08_heading = "### 8/10 — `BS-CONTENT-20260811-08`"
+        self.assertIn(d07_heading, roadmap)
+        self.assertLess(roadmap.index(d06_heading), roadmap.index(d07_heading))
+        self.assertLess(roadmap.index(d07_heading), roadmap.index(d08_heading))
+        self.assertIn("SOLDIER_02 / LIANA_BERG", roadmap[roadmap.index(d07_heading):roadmap.index(d08_heading)])
+
 
 if __name__ == "__main__":
     unittest.main()
