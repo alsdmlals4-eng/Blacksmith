@@ -37,11 +37,14 @@ def repair_core_alignment() -> None:
     text = text.replace('"R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06"', '"R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07"')
     text = text.replace('"NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED"', '"SOLDIER_02_LIANA_MISSION_FIT_APPROVED"')
     text = text.replace('"현재 R3–R7 승인 카운터: `6/10`"', '"현재 R3–R7 승인 카운터: `7/10`"')
-    first = '            "BS-CONTENT-20260811-05",\n            "R3_R7_APPROVAL_COUNTER: 7/10",'
-    second = '            "BS-CONTENT-20260811-05",\n            "BS-CONTENT-20260811-06",\n            "BS-CONTENT-20260811-07",\n            "R3_R7_APPROVAL_COUNTER: 7/10",'
-    if text.count(first) != 2:
-        raise RuntimeError(f"core alignment decision-list anchor count was {text.count(first)}, expected 2")
-    text = text.replace(first, second)
+
+    gate_anchor = '            "BS-CONTENT-20260811-05",\n            "R3_R7_APPROVAL_COUNTER: 7/10",'
+    gate_replacement = '            "BS-CONTENT-20260811-05",\n            "BS-CONTENT-20260811-06",\n            "BS-CONTENT-20260811-07",\n            "R3_R7_APPROVAL_COUNTER: 7/10",'
+    text = replace_once(text, gate_anchor, gate_replacement, "core alignment gate decisions")
+
+    active_anchor = '            "BS-CONTENT-20260811-05",\n            "PRODUCT_IMPLEMENTATION: BLOCKED",'
+    active_replacement = '            "BS-CONTENT-20260811-05",\n            "BS-CONTENT-20260811-06",\n            "BS-CONTENT-20260811-07",\n            "PRODUCT_IMPLEMENTATION: BLOCKED",'
+    text = replace_once(text, active_anchor, active_replacement, "core alignment active decisions")
     write(path, text)
 
 
