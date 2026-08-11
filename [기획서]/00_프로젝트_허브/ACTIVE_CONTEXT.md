@@ -1,259 +1,159 @@
 # [현재 정본] Active Context
 
-<!-- BS_OPS_20260811_03_PHASE_C_ENTRY -->
-> **PLANNING_COMPLETE / BS-OPS-20260811-03 / PHASE_B_FINAL_REVIEW_COMPLETE / PHASE_C_ENTRY_APPROVED**
+<!-- BS_OPS_20260811_03_PHASE_C_LIVE_CONTINUATION -->
+> **PLANNING_COMPLETE / BS-OPS-20260811-03 / PHASE_C_EXISTING_APPROVED_CANON / LOCAL_RUNTIME_GATE_OPEN**
 >
-> `ASSUME_PREVIOUS_POWERSHELL_CLOSED` / `PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST` / `CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST`
+> `STATE_OBSERVED_AT_MAIN: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486`
 >
-> `BASE_DEDICATED_ENV_MAIN_OBSERVED: 6d2feba2bc49fda2d8d273248b55087853615d5d`
+> `RESUME_RULE: FETCH_LATEST_MAIN_BEFORE_USE`
 >
-> 사용자가 `기획 완료`를 명시했다. R3–R7 기획 배치는 승인된 9/10에서 닫으며, 승인되지 않은 Decision10을 만들지 않는다. 이미 승인된 정본 구현만 Phase C로 진입하고 신규 제품 범위는 별도 Decision이 필요하다.
+> `P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS`
 >
-> `PLANNING_COMPLETE: USER_DECLARED` / `R3_R7_PLANNING_BATCH: CLOSED_AT_9_OF_10` / `PHASE_B_FINAL_REVIEW: COMPLETE`
+> `P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS`
+>
+> `PERSISTENT_MUTATION_GATE: OPEN`
+>
+> `PHASE_C_NEXT_PACKAGE: P2_FOUNDATION_DATA_AND_STATE_CONTRACTS`
+>
+> `CURRENT_EXECUTION_SURFACE: REUSE_LIVE_DEDICATED_CODEX_WHEN_FRESH`
+>
+> `BOOTSTRAP_REENTRY_POLICY: ONLY_WHEN_RUNTIME_ENVELOPE_EXPIRED_OR_RECOVERY_REQUIRED`
+>
+> `SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE`
 >
 > `PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON`
 >
 > `TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED`
 >
-> `P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING`
->
 > `IMAGE_GENERATION: DEFERRED_BY_USER`
 >
-> 전용 로컬 실행환경: self-contained Godot 4.7.1 (`_sc_`) → HiGodot HTTP `8006` / WS `9506` → `C:\Users\user\.codex-blacksmith` → exact Blacksmith 경로에서 Codex. 포트/process 존재는 readiness PASS가 아니며 Codex 내부 fresh HiGodot receipt 전 persistent mutation 금지.
-
-
-<!-- R3_R7_PLANNING_BATCH_HISTORICAL_CLOSED_AT_9_OF_10 -->
-> **HISTORICAL_R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-09 / GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED / PLANNING_ONLY**
+> `P1_BS_CT_06_TAXONOMY_AMBIGUITY: DEFERRED`
 >
-> 이 문서는 현재 상태와 다음 읽기 순서를 연결하는 압축 라우터다. 세부 Decision·과거 단계·실행 로그는 책임 원본에서 읽는다.
+> 현재 Blacksmith 전용 live envelope는 PR #157 receipt에서 Godot 4.7.1, Godot-AI 3.1.4, HTTP 8006, WS 9506, dedicated `CODEX_HOME`, exact Blacksmith session 1개, `editor_state`, hierarchy, project settings까지 PASS했다. 동일 세션이 fresh한 동안 Codex 내부 작업은 PowerShell bootstrap 재실행 없이 이어간다. 세션/포트/process identity가 만료되거나 복구가 필요할 때만 전용 bootstrap으로 재진입한다.
 
-- 갱신 기준: `2026-08-11 KST`
-- Blacksmith current main observed at Decision 09 start: `80b35b9fc914853428e991c4130edc87dd260083`
-- `BASE_CURRENT_MAIN_OBSERVED`: `6d2feba2bc49fda2d8d273248b55087853615d5d`
-- `PROJECT_BASE_ADAPTER_PIN`: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
-- 현재 R3–R7 승인 카운터: `9/10`
-- Base current main 관측값과 프로젝트가 채택한 Base adapter pin은 서로 다른 증거다. 새 Base main 관측만으로 프로젝트 pin을 자동 승격하지 않는다.
+## 현재 기준선
 
 ```yaml
-CURRENT_STAGE: PHASE_C_IMPLEMENTATION_ENTRY
-R2_BASELINE: R2_BATCH_006_MAIN_CANON
-R2_CHECKPOINT_005: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
-R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10
-R2_BATCH_005_MERGE: MERGED_PR109_MAIN_CANON
-R2_BATCH_006: R2_BATCH_006_APPROVED_10_OF_10
-R2_BATCH_006_MERGE: MERGED_PR120_MAIN_CANON
+CURRENT_STAGE: PHASE_C_IMPLEMENTATION
+WORK_MODE: BUILD_REVIEW
+STATE_OBSERVED_AT_MAIN: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486
+BASE_CURRENT_MAIN_OBSERVED_AT_HANDOFF: 1d6cc79ae95ffb67ba4de618f010a6540fc6e02c
+BASE_SAME_GOAL_DEDICATED_ENV_AUTHORITY: 6d2feba2bc49fda2d8d273248b55087853615d5d
+PROJECT_BASE_ADAPTER_PIN: 2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b
+PLANNING_COMPLETE: USER_DECLARED
+R3_R7_PLANNING_BATCH: CLOSED_AT_9_OF_10
 R3_R7_APPROVAL_COUNTER: 9/10
 R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
-PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
-PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED
-VERTICAL_SLICE_IMPLEMENTATION: APPROVED_TASK2_COMPLETE
-VERTICAL_SLICE_IMPLEMENTATION_EVIDENCE: VERTICAL_SLICE_IMPLEMENTATION_APPROVED
-TASK2: TASK2_MAIN_MERGED
-POSTMERGE_CLOSURE: POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE
-WORK_MODE: BUILD_REVIEW
-HISTORICAL_R3_PRODUCT_IMPLEMENTATION: BLOCKED
+P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS
+P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS
+PERSISTENT_MUTATION_GATE: OPEN
+PHASE_C_NEXT_PACKAGE: P2_FOUNDATION_DATA_AND_STATE_CONTRACTS
+CURRENT_EXECUTION_SURFACE: REUSE_LIVE_DEDICATED_CODEX_WHEN_FRESH
+BOOTSTRAP_REENTRY_POLICY: ONLY_WHEN_RUNTIME_ENVELOPE_EXPIRED_OR_RECOVERY_REQUIRED
+SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE
 PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON
 NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED_BEYOND_EXISTING_APPROVED_CANON
-HISTORICAL_R3_TASK3_IMPLEMENTATION: NOT_APPROVED
 TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED
+IMAGE_GENERATION: DEFERRED_BY_USER
 HUMAN_PLAYTEST: NOT_RUN
 ANDROID_DEVICE: NOT_RUN
 ACCESSIBILITY: NOT_RUN
 PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 ```
 
-## 현재 완료 상태
+`BASE_CURRENT_MAIN_OBSERVED_AT_HANDOFF`와 `PROJECT_BASE_ADAPTER_PIN`은 서로 다른 증거다. Base remote가 전진해도 project pin을 자동 승격하지 않는다. 새 세션은 이 파일의 관측 SHA를 latest truth로 가정하지 않고 `RESUME_RULE`대로 GitHub main과 open PR을 먼저 재조회한다.
 
-- R0–R2 기획 기반과 R2 Batch 006은 main canon이다.
-- Task 1 UID·SaveEnvelope는 main 정본으로 병합됐다.
-- Task 2 MainMenu → BlacksmithApp → Workshop 시작 경로와 `project.godot application/run/main_scene` 전환은 HiGodot provenance를 거쳐 병합됐다.
-- `BS-HIGODOT-EXEC-20260808-01` Task2 제품 provenance:
-  - PROVE input: `02420ebd3bcdd86776c4ab70824738aa4071a168`
-  - PROVE run: `31341840236`
-  - provenance artifact: `9046072682`
-  - serialized publish commit: `8afb9a439df46eec3568a75d7f2536b89e1edaba`
-  - approved PR branch head: `345cf339e2af754d447099dd8e1b278b80b849d5`
-  - Task2 merge main: `a61a0bceec4254c4b78350980275cc9a903f9042`
-- 후속 CI 복구는 제품 직렬화 bytes를 바꾸지 않았다.
-  - PR #139 merge main: `7ccee408cf5c936ae9302a986fa0c786e0247078`
-  - PR #140 merge/current technical baseline before handoff refresh: `fa9595b2df95897c915331a1cb5d9b1a583611f0`
-  - PR #141 handoff refresh main: `68540e6cd288aff138b1ea4c5b1feeb9e0653947`
-  - Full validation: run `31357963490` SUCCESS
-  - Live-Editor Pilot: run `31357963734` attempt 2 SUCCESS
-- 역사 POC 회귀 증거는 현재 제품 PASS가 아니다: `POC v0.6.4 · main · 2026.07.23.1 / 제작 모델 7건 / 통합 6건 / HISTORICAL_EVIDENCE_ONLY`.
-- 역사 POC 강화 데이터 소유권 locator: `enhancement_balance.json`은 failure/risk를, `enhancement_milestones.json`은 milestone 정의를 소유한다. 이 문자열은 구형 데이터의 책임 위치를 보존하는 호환 앵커일 뿐 현재 R3 제품 밸런스 확정이나 제품 구현 승인을 뜻하지 않는다.
+## 현재 승인 콘텐츠 구현 입력
 
-## 역사 snapshot — `기획 완료` 직전 R3–R7 9/10 기획 상태
-
-`BS-CONTENT-20260811-01`~`08`은 승인 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-09`이다.
+R3–R7 기획은 승인된 9건에서 닫혔다. 다음 ID는 current implementation input이며 세부 책임은 각 canon 파일과 `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`이 소유한다.
 
 ```text
-GLADIATOR_02 / KYLE_VAREN
-→ 기존 구형 PoC 계승 고객을 두 번째 Gladiator-family 상세 콘텐츠로 승격
-→ VETERAN_COMEBACK_EQUIPMENT_CONTINUITY_AND_SUCCESSION
-→ 실제 prior Kyle item record + comeback 목적 공개
-→ old UID current state·실제 lifecycle evidence + hard serviceability/eligibility 확인
-→ KEEP_IN_SERVICE 또는 RETIRE_AND_REPLACE
-→ 비직접 comeback/arena world event
-→ VETERAN_RETURN_STATE
- + EQUIPMENT_CONTINUITY_STATE
- + ITEM_UID_LINEAGE_STATE
-→ 실제 원인 2~4개 + 주 후속 행동 1개
+BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN
+BS-CONTENT-20260811-02 / ADVENTURER_02 / TOREN_MARCH
+BS-CONTENT-20260811-03 / SOLDIER_01 / MAREK_OLDEN
+BS-CONTENT-20260811-04 / COLLECTOR_01 / ERSA_ROEN
+BS-CONTENT-20260811-05 / GLADIATOR_01 / CASSIA_BELLAN
+BS-CONTENT-20260811-06 / NOBLE_01 / CEREMONIAL_NOBLE
+BS-CONTENT-20260811-07 / SOLDIER_02 / LIANA_BERG
+BS-CONTENT-20260811-08 / COLLECTOR_02 / SEDRIC_VAEL
+BS-CONTENT-20260811-09 / GLADIATOR_02 / KYLE_VAREN
 ```
 
-- Cassia/Gladiator01의 current-match arena fit·equipment contribution 책임을 보존한다.
-- Noble01/기존 repair owner의 treatment-depth 책임을 보존한다.
-- keep path는 같은 UID를 유지한다.
-- replacement는 old UID/history를 보존하고 new UID로 시작하며 history/progression을 복사하지 않는다.
-- 오래된 작품·새 작품·최고 강화·최고 Artistry·가장 많은 Chronicle이 자동 정답이 아니다.
-- sentiment/veteran/lineage 총점을 추가하지 않는다.
-- legacy `gladiator_kyle / iron_sword` fixed data와 score formula는 historical non-authoritative fixture다.
-- 직접 arena combat·roster/guild·training/injury management·betting·baseline permadeath를 추가하지 않는다.
-- comeback/replacement 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
-- `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`를 이번 Decision에서 재정의하지 않는다.
+보호 경계:
+- 같은 UID 작품 생애·손상·복원·소유·provenance를 보존한다.
+- replacement는 old UID/history를 보존하고 distinct new UID로 시작한다.
+- 직접 탐험/전투/전술/투기장/전시관/박물관/가문 경영으로 범위를 확장하지 않는다.
+- 새 hidden total score, rarity/prestige/fame/lineage total score를 편의상 만들지 않는다.
+- 최고 강화·최고 Artistry·가장 오래된 작품·가장 많은 Chronicle을 보편적 자동 정답으로 만들지 않는다.
+- `P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED`를 임의 해결하지 않는다.
 
-책임 원본:
-
-- `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`
-- `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-- `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
-- `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
-- `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
-- `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
-- `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
-- `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
-- `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
-- `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-
-이 문장은 `기획 완료` 직전 Decision09의 **역사적 기획 재개 경계**다. 현재 Phase C 구현 Gate는 상단 `BS-OPS-20260811-03`이 소유하며, Task3는 여전히 별도 승인 대상이다.
-
-## 현재 권위와 보호 경계
-
-1. `AGENTS.md`
-2. `CURRENT_CONFIRMED_DECISIONS.md`
-3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-6. R3–R7 분야별 승인 책임 원본
-7. 이 문서와 `START_HERE.md`, `DEVELOPMENT_GATES.md`, `ROADMAP.md`
-8. 실제 code/data/Scene/tests
-9. Google Sheet — 같은 Decision과 상태를 연결하는 소비처
-
-불변 보호:
-
-- PR #81 전체 병합 금지.
-- 일반 제품 구현은 `BLOCKED`.
-- Task2 완료나 R3–R7 기획 재개를 Task3 구현 승인으로 해석하지 않는다.
-- `BS-CONTENT-20260811-01`은 직접 전투·탐험 미니게임을 추가하지 않는다.
-- `BS-CONTENT-20260811-02`는 직접 이동·지도 경로 선택·실시간 생존 조작을 추가하지 않는다.
-- `BS-CONTENT-20260811-02`는 새 신뢰성·휴대성·수리 용이성 원수치를 만들지 않는다.
-- `BS-CONTENT-20260811-02`는 자동 매일 내구도 감소·루틴 수리세를 만들지 않는다.
-- `BS-CONTENT-20260811-03`은 소량 주문에서도 개별 UID·비용·결과를 보존하고 공장·전술·실시간 병참으로 확장하지 않는다.
-- `BS-CONTENT-20260811-04`는 희귀도/위신/수집가/전시 총점과 Chronicle 개수 최적화를 만들지 않는다.
-- `BS-CONTENT-20260811-04`는 전시 횟수만으로 예술성 또는 Chronicle을 자동 성장시키지 않는다.
-- `BS-CONTENT-20260811-05`는 직접 투기장 전투·팀/길드 경영·배팅·불투명 투기장 총점을 추가하지 않는다.
-- `BS-CONTENT-20260811-05`는 경기 승패와 작품 기여를 분리하고 경기 반복으로 예술성 또는 Chronicle을 자동 성장시키지 않는다.
-- `BS-CONTENT-20260811-06`은 최대 복원·최고 Artistry·가문 위신/진품성 총점 자동 정답을 만들지 않는다.
-- `BS-CONTENT-20260811-06`은 의미 있는 과거 생애 기록을 지우거나 복원/의식 반복으로 예술성·Chronicle을 자동 성장시키지 않는다.
-- `BS-CONTENT-20260811-07`은 Marek의 소량 표준화와 Cassia의 arena contribution 책임을 침범하지 않는다.
-- `BS-CONTENT-20260811-07`은 직접 전술전투·부대 이동/대형·실시간 병참·사상자 micromanagement·baseline Liana permadeath를 추가하지 않는다.
-- `BS-CONTENT-20260811-07`은 command/hero/leadership/mission-fit 총점, 최고 방어/강화 자동 정답, 작품 단독 인과, 임무 반복 Artistry/Chronicle 파밍을 만들지 않는다.
-- 같은 UID의 작품 생애를 유지한다.
-- 모든 개인 일정에 고정 3일 결과·4일 재방문을 재도입하지 않는다.
-- 사람 플레이테스트·Android 실기기·접근성은 실제 실행 전 `NOT_RUN`.
-- HiGodot은 승인된 Godot persistent authoring 권위, GUT 9.7.1은 GDScript test 권위, Hera는 enabled non-authoritative / `AUTHORITY_NONE`이다.
-
-- `BS-CONTENT-20260811-08`은 Ersa 전시·Noble01 처치 책임을 침범하지 않고, 숨은 archive/provenance 총점·기록 조작·museum 관리·same-UID 훼손·accession farming을 금지한다.
-
-## 승인 Decision 호환 인덱스
-
-아래 표기는 Active Context가 도메인 본책을 복제하기 위한 것이 아니라 재개 locator다. 상세 내용은 Current Decisions와 각 Registry가 책임진다.
+## Phase C 다음 실행
 
 ```text
-BS-CRAFT-20260805-02 / R2_BATCH_005_1_OF_10
-BS-CUSTOMER-20260805-01 / R2_BATCH_005_2_OF_10
-BS-UX-20260805-01 / R2_BATCH_005_3_OF_10
-BS-CUSTOMER-20260806-01 / R2_BATCH_005_4_OF_10
-BS-ITEM-20260806-01 / R2_BATCH_005_5_OF_10
-BS-ITEM-20260806-02 / R2_BATCH_005_6_OF_10
-BS-ITEM-20260806-03 / R2_BATCH_005_7_OF_10
-BS-ITEM-20260806-04 / R2_BATCH_005_8_OF_10
-BS-ITEM-20260806-05 / R2_BATCH_005_9_OF_10
-BS-ITEM-20260806-06 / R2_BATCH_005_10_OF_10
-BS-CONTENT-20260811-01 / R3_R7_1_OF_10
-BS-CONTENT-20260811-02 / R3_R7_2_OF_10
-BS-CONTENT-20260811-03 / R3_R7_3_OF_10
-BS-CONTENT-20260811-04 / R3_R7_4_OF_10
-BS-CONTENT-20260811-05 / R3_R7_5_OF_10
-BS-CONTENT-20260811-06 / R3_R7_6_OF_10
-BS-CONTENT-20260811-07 / R3_R7_7_OF_10
-BS-CONTENT-20260811-08 / R3_R7_8_OF_10
-BS-CONTENT-20260811-09 / R3_R7_9_OF_10
-BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
+P2_FOUNDATION_DATA_AND_STATE_CONTRACTS
+→ Existing Solution First inventory
+→ 가장 작은 공통 foundation slice 1개 선택
+→ semantic RED
+→ 최소 GREEN
+→ affected regression / GUT / Godot 4.7.1 / HiGodot
+→ exact-head PR
+→ postmerge readback
 ```
 
-## 불변 체크포인트 호환 이력
+새 substantive gameplay Decision이 필요하면 그 지점만 `USER_DECISION_REQUIRED`로 격리한다. 이미 승인된 P2 범위는 재승인을 요구하지 않는다. Task3는 별도 승인 없이 시작하지 않는다.
 
-- R2 체크포인트 004·005와 Batch 006은 삭제 금지 이력이며 R3–R7 설계의 상속 기반이다.
-- `R2_CHECKPOINT_004 / MERGED_PR106 / MAIN_CANON`
-- checkpoint 004 closure squash merge: `7a46fa38586a42f268cd0432744203049649ddd5`
-- Batch 006 merge main: `a8a94343c78a68bf7bb14b411e7741f43b257138`
+## 현재 Handoff / Learning Closure
 
-## 다음 실행 순서
+```yaml
+LRN-BS-HANDOFF-001:
+  classification: SPLIT
+  problem: PR157 이후 live runtime은 PASS인데 current router가 P0-required 상태에 머무를 수 있음
+  project_application: CURRENT_CONFIRMED_DECISIONS + ACTIVE_CONTEXT + DEVELOPMENT_GATES + machine regression
+  base_existing_solution: REUSE BCP-2026-013 / BCP-2026-016
+LRN-BS-SHEET-001:
+  classification: SPLIT
+  problem: broad Sheet replacement가 historical PR156 SHA까지 바꾼 사례
+  project_application: TARGETED_RANGES_ONLY + live/history landmark readback
+  base_existing_solution: REUSE BCP-2026-016
+LRN-BS-RUNTIME-001:
+  classification: BASE_CANDIDATE_REUSE
+  problem: retained godot-ai / stale PID-session-port authority
+  project_application: PR157 merged runtime hardening + live receipt
+  base_existing_solution: REUSE BCP-2026-015
+LRN-BS-EXEC-SURFACE-001:
+  classification: SPLIT_REUSE
+  problem: valid live dedicated session에서 불필요한 bootstrap 반복
+  project_application: live Codex reuse + bounded re-entry policy
+  base_existing_solution: REUSE existing dedicated-runtime/handoff owners
+```
 
-1. `BS-CONTENT-20260811-09`의 focused GREEN 뒤 D01–D08 역사/current consumer 회귀를 닫는다.
-2. Kyle continuity가 Cassia arena-fit과 Noble01 treatment-depth를 침범하지 않고 old/new UID history 경계를 지키는지 적대 검토한다.
-3. 하나의 exact reviewed head에서 Python·Godot·Base·BCA·GUT·HiGodot·Adapter Gate를 모두 GREEN으로 만든다.
-4. PR #154 병합과 같은 Decision ID의 Google Sheet sync/readback을 닫은 뒤에만 다음 신규 R3–R7 Decision `10/10` 사용자 기획 승인 Gate로 이동한다.
-5. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.
+새 broad project Skill은 만들지 않는다. 기존 current-state owner와 `tests/check_project_core_alignment_current.py`에 흡수한다.
 
 ## 먼저 읽을 파일
 
 1. `AGENTS.md`
 2. `CURRENT_CONFIRMED_DECISIONS.md`
-3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
-7. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
-8. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
-9. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
-10. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
-11. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
-12. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
-13. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-14. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-15. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-16. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
+3. 이 `ACTIVE_CONTEXT.md`
+4. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+5. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
+6. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
+7. D01–D09 분야별 canon
+8. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+9. 실제 code/data/Scene/tests
+10. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `10_제품방향`, `13_주요인물`, `50_메인콘텐츠`, `99_변경이력`
 
-## 현재 프로젝트 작업지시문 바인딩
+## 역사 호환 앵커
 
-```yaml
-WORK_INSTRUCTION: V4_5_R2_CURRENT_CANON
-WORK_INSTRUCTION_PATH: PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md
-WORK_INSTRUCTION_DECISION: BS-OPS-20260811-01
-PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
-PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
-PROJECT_REPOSITORY: alsdmlals4-eng/Blacksmith
-PROJECT_LOCAL_PATH: C:\Users\user\Documents\GitHub\Ninza\Blacksmith
-GODOT_PROJECT_PATH: C:/Users/user/Documents/GitHub/Ninza/Blacksmith
-PRODUCT_IMPLEMENTATION: BLOCKED
-TASK3_IMPLEMENTATION: NOT_APPROVED
-```
-
-첨부 v4.5 r2 source의 `Switchy-Express-Cargo-Puzzle` 경로는 source provenance를 위해 수정하지 않고 보존한다. 현재 실행은 `BS-OPS-20260811-01`의 Blacksmith override를 따른다.
-
-<!-- BS-CONTENT-20260811-09 CURRENT -->
-## R3–R7 current 9/10 — Kyle Gladiator02
+아래 문자열은 current action을 지시하지 않고 과거 R2 폐쇄를 찾기 위한 compatibility locator다.
 
 ```text
-R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 9/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
-R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED
-PRODUCT_IMPLEMENTATION: BLOCKED
-TASK3_IMPLEMENTATION: NOT_APPROVED
+R2 체크포인트 004
+R2_CHECKPOINT_004
+R2_BATCH_005_CLOSED_10_OF_10
+BS-CRAFT-20260805-02
+7a46fa38586a42f268cd0432744203049649ddd5
+HISTORICAL_PRODUCT_IMPLEMENTATION: 제품 구현: `BLOCKED`
 ```
 
-현재 Decision은 `BS-CONTENT-20260811-09`이다. `GLADIATOR_02 / KYLE_VAREN`은 실제 prior item의 현역 지속 또는 은퇴·교체 판단을 소유한다.
+Task2 PROVE/PUBLISH, PR #139/#140/#141, R3 D01–D09의 상세 과거 실행 로그는 해당 Decision/canon/receipt/GitHub history에서 읽는다. 이 Active Context는 live continuation router만 소유한다.
