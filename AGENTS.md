@@ -13,6 +13,9 @@ SHEET_SYNC_WRITE_POLICY: TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE
 RESUME_RULE: FETCH_LATEST_MAIN_BEFORE_USE
 PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON
 TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED
+HIGODOT_SOLE_AUTHORING_AUTHORITY
+GUT_SOLE_TEST_AUTHORITY
+ENTRY_GATE_FAIL_CLOSED
 ```
 
 ## 1. 권위 순서
@@ -143,6 +146,7 @@ Android·Google Play 출시에서는 콘텐츠 등급, target audience, Families
 
 - `HIGODOT_SOLE_AUTHORING_AUTHORITY`: `BS-HIGODOT-20260808-01`에서 HiGodot production authoring authority가 활성화됐다. 당시 Task2-scoped activation은 역사 증거이며 현재 저작 범위는 `BS-OPS-20260811-03`의 Phase C existing-approved-canon Gate가 제한한다.
 - `GUT_SOLE_TEST_AUTHORITY`: GUT 9.7.1은 `FORMALLY_ADOPTED_ACTIVE` GDScript test authority다.
+- `ENTRY_GATE_FAIL_CLOSED`: exact Blacksmith project/session/version/authority identity가 fresh하게 묶이지 않으면 persistent mutation을 시작하지 않는다.
 - `HERA_AGENT_AUTHORITY: NONE`: Hera는 enabled non-authoritative이며 별도 승인 없이 tracked mutation을 만들지 않는다.
 - 현재 Godot AI vendor는 `BS-TOOLCHAIN-20260811-02`에 따른 exact upstream `3.1.4`; Task2의 3.1.3 runtime은 historical provenance다.
 
