@@ -17,13 +17,13 @@ VERTICAL_SLICE = ROOT / "data/vertical_slice/vertical_slice_preset.json"
 
 
 class Noble01HeirloomSuccessionContentContractTests(unittest.TestCase):
-    def test_r3_registry_promotes_ceremonial_noble_as_approved_sixth_content_decision(self) -> None:
+    def test_r3_registry_preserves_ceremonial_noble_as_approved_sixth_content_decision(self) -> None:
         self.assertTrue(REGISTRY.is_file())
         registry = json.loads(REGISTRY.read_text(encoding="utf-8")) if REGISTRY.is_file() else {}
         self.assertEqual("R3_R7_DESIGN_ACTIVE", registry.get("stage_status"))
         self.assertEqual("BLOCKED", registry.get("product_implementation"))
         self.assertEqual("NOT_APPROVED", registry.get("task3_implementation"))
-        self.assertEqual("6/10", registry.get("next_approval_counter"))
+        self.assertEqual("7/10", registry.get("next_approval_counter"))
 
         decisions = {item["id"]: item for item in registry.get("current_decisions", [])}
         for decision_id in (
@@ -33,6 +33,7 @@ class Noble01HeirloomSuccessionContentContractTests(unittest.TestCase):
             "BS-CONTENT-20260811-04",
             "BS-CONTENT-20260811-05",
             "BS-CONTENT-20260811-06",
+            "BS-CONTENT-20260811-07",
         ):
             self.assertIn(decision_id, decisions)
 
@@ -112,7 +113,7 @@ class Noble01HeirloomSuccessionContentContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, canon)
 
-    def test_current_routers_move_to_six_of_ten_without_opening_product_code(self) -> None:
+    def test_current_routers_preserve_noble01_history_while_liana_is_current(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
@@ -126,24 +127,27 @@ class Noble01HeirloomSuccessionContentContractTests(unittest.TestCase):
             "BS-CONTENT-20260811-04",
             "BS-CONTENT-20260811-05",
             "BS-CONTENT-20260811-06",
+            "BS-CONTENT-20260811-07",
         ):
             self.assertIn(decision_id, current)
 
         for text in (active, start_here, roadmap, gates):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
-            self.assertIn("R3_R7_APPROVAL_COUNTER: 6/10", text)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06", text)
+            self.assertIn("R3_R7_APPROVAL_COUNTER: 7/10", text)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07", text)
+            self.assertIn("BS-CONTENT-20260811-06", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
 
         for text in (active, start_here, roadmap):
-            self.assertIn("NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED", text)
+            self.assertIn("SOLDIER_02_LIANA_MISSION_FIT_APPROVED", text)
 
-        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-06`", active)
-        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-06`", start_here)
-        self.assertIn("현재 승인 카운터: `6/10`.", roadmap)
-        self.assertIn("Decision: `BS-CONTENT-20260811-06`.", gates)
+        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-07`", active)
+        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-07`", start_here)
+        self.assertIn("현재 승인 카운터: `7/10`.", roadmap)
+        self.assertIn("Decision: `BS-CONTENT-20260811-07`.", gates)
+        self.assertIn("### 6/10 — `BS-CONTENT-20260811-06`", roadmap)
 
     def test_decision06_reuses_existing_ceremonial_noble_fixture(self) -> None:
         self.assertTrue(VERTICAL_SLICE.is_file())
