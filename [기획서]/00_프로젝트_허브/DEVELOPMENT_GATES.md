@@ -1,7 +1,7 @@
 # [현재 정본] Development Gates
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-05 / GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
+> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-06 / NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**
 >
 > R3–R7 콘텐츠 설계는 재개됐지만 Task3·일반 제품 구현 Gate는 열리지 않았다. R2·Task2 권위와 기술 폐쇄 증거는 그대로 상속한다.
 
@@ -82,7 +82,7 @@ fresh authority preflight
 - 저위험 maintenance에서 외부 benchmark가 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남기되 관련 공식 원본은 확인한다.
 - `BS-OPS-20260805-01`의 benchmark scope만 refine하며 TDD·early checkpoint authority는 유지한다.
 - benchmark 수치·경제·확률을 제품 정본으로 자동 승격하지 않는다.
-- R3–R7 `5/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
+- R3–R7 `6/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
 
 판정: `USER_APPROVED / REQUIRED / PLANNING_ONLY`.
 
@@ -93,32 +93,18 @@ fresh authority preflight
 첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.
 
 ```text
-GLADIATOR_01 / CASSIA_BELLAN
-ARENA_SIGNATURE_WEAPON_AND_LEGACY
-ARENA_MATCH_STATE / EQUIPMENT_CONTRIBUTION_STATE / ITEM_UID_ARENA_LEGACY_STATE
+NOBLE_01 / CEREMONIAL_NOBLE
+HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY
+CEREMONY_READINESS_STATE / HEIRLOOM_TREATMENT_FIT_STATE / ITEM_UID_DYNASTIC_LEGACY_STATE
 ```
 
-허용:
-
-- 고객·경기 맥락·작품 선택·비직접 결과·같은 UID 생애 환류의 기획 정본 작성
-- 벤치마킹·적대 검토·테스트 계약·Google Sheet 동기화
-- 공개된 무기 범주·경기 맥락과 기존 작품 속성의 설명 가능한 적합 비교
-- 결과를 경기 상태·장비 기여·같은 UID 공개 생애로 분해
-- 비정본 exact timing/threshold/economy/result fixture와 사람 플레이테스트 설계
-
-차단:
-
-- Task3 제품 Script/Data/Scene/Resource 구현
-- `project.godot` 또는 Godot persistent serialized surface 변경
-- 직접 검투사 전투·위치 지정·행동 명령
-- 검투사 팀/길드/로스터 경영과 배팅
-- 새 `ARENA_SCORE / FAME_SCORE / GLADIATOR_SCORE / SIGNATURE_SCORE`
-- 최고 강화 또는 경기 승리를 보편적 자동 정답으로 사용
-- 경기/승리 반복으로 `ARTISTRY` 자동 증가 또는 `CHRONICLE_AFFIX` 자동 부여
-- 같은 작품 UID를 경기용 복제/대체품으로 치환
-- legacy Kyle/iron_sword POC 고정 수치·score formula를 Decision05 권위로 승격
-
-판정: `R3_R7_DESIGN_ACTIVE / PRODUCT_IMPLEMENTATION_BLOCKED / TASK3_IMPLEMENTATION_NOT_APPROVED`.
+- `BS-CONTENT-20260811-01`~`05`는 승인 완료 이력으로 보존한다.
+- 기존 `ceremonial_noble` 대표 fixture를 재사용한다.
+- 최대 복원·최고 Artistry·가문 위신/진품성/계승 총점 자동 정답을 만들지 않는다.
+- 의미 있는 과거 생애 기록을 수리·복원 과정에서 삭제하지 않는다.
+- 같은 UID를 보존하고 복원/의식 반복으로 Artistry·Chronicle을 자동 성장시키지 않는다.
+- 직접 의식·귀족 가문·궁정·외교 경영을 추가하지 않는다.
+- 제품 구현은 `BLOCKED`, Task3 구현은 `NOT_APPROVED`다.
 
 ## Canon Gate
 
@@ -385,14 +371,3 @@ TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
 Decision05는 planning-only다. 직접 전투·team/guild management·betting·opaque arena score·match farming·legacy POC authority promotion은 차단한다.
-
-<!-- BS-CONTENT-20260811-06 -->
-> `NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED`
->
-> `R3_R7_DESIGN_ACTIVE`
-> `R3_R7_APPROVAL_COUNTER: 6/10`
-> `R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06`
-> `PRODUCT_IMPLEMENTATION: BLOCKED`
-> `TASK3_IMPLEMENTATION: NOT_APPROVED`
->
-> 기존 `CEREMONIAL_NOBLE`와 같은 작품 UID의 상태·수리·계승 이력을 바탕으로 계승 전 개입 깊이를 판단한다. 최대 복원·최고 Artistry·가문 위신/진품성 총점 자동 정답을 만들지 않으며, 직접 의식·가문·궁정·외교 경영을 추가하지 않는다.

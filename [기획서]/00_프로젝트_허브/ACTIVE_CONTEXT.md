@@ -1,15 +1,15 @@
 # [현재 정본] Active Context
 
 <!-- R3_R7_DESIGN_RESUMED -->
-> **R3_R7_DESIGN_ACTIVE / GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED / PLANNING_ONLY**
+> **R3_R7_DESIGN_ACTIVE / NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED / PLANNING_ONLY**
 >
 > 이 문서는 현재 상태와 다음 읽기 순서를 연결하는 압축 라우터다. 세부 Decision·과거 단계·실행 로그는 책임 원본에서 읽는다.
 
 - 갱신 기준: `2026-08-11 KST`
-- Blacksmith current main observed at Decision 05 start: `98c0e1f26e51eeb01c04b742b535d7a3a1345c35`
-- `BASE_CURRENT_MAIN_OBSERVED`: `8e7d85b1b1272002a8086c502a41073888cb3318`
+- Blacksmith current main observed at Decision 06 start: `42469f6e2058efea464755ac44bec8bcd1154f0b`
+- `BASE_CURRENT_MAIN_OBSERVED`: `7ce96181d0a97930300fcc6d383dacc75ad08f6a`
 - `PROJECT_BASE_ADAPTER_PIN`: `2a6ced23f6d6de1fb6e0a281c7138beb03f1a13b`
-- 현재 R3–R7 승인 카운터: `5/10`
+- 현재 R3–R7 승인 카운터: `6/10`
 - Base current main 관측값과 프로젝트가 채택한 Base adapter pin은 서로 다른 증거다. 새 Base main 관측만으로 프로젝트 pin을 자동 승격하지 않는다.
 
 ```yaml
@@ -24,7 +24,7 @@ R3_R7_APPROVAL_COUNTER: 6/10
 R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06
 PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
 PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
-R3_R7_RESUME_LOCATOR: GLADIATOR_01_CASSIA_ARENA_SIGNATURE_WEAPON_APPROVED
+R3_R7_RESUME_LOCATOR: NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED
 VERTICAL_SLICE_IMPLEMENTATION: APPROVED_TASK2_COMPLETE
 VERTICAL_SLICE_IMPLEMENTATION_EVIDENCE: VERTICAL_SLICE_IMPLEMENTATION_APPROVED
 TASK2: TASK2_MAIN_MERGED
@@ -62,27 +62,30 @@ PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 
 ## 현재 R3–R7 기획 재개 상태
 
-`BS-CONTENT-20260811-01` Nadia, `BS-CONTENT-20260811-02` Toren, `BS-CONTENT-20260811-03` Marek, `BS-CONTENT-20260811-04` Ersa는 승인 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-06`다.
+`BS-CONTENT-20260811-01` Nadia, `BS-CONTENT-20260811-02` Toren, `BS-CONTENT-20260811-03` Marek, `BS-CONTENT-20260811-04` Ersa, `BS-CONTENT-20260811-05` Cassia는 승인 완료 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-06`다.
 
 ```text
-GLADIATOR_01 / CASSIA_BELLAN
-→ 검투사 대표 고객
-→ ARENA_SIGNATURE_WEAPON_AND_LEGACY
-→ 요청 무기 범주 + 경기 맥락 공개
-→ 같은 작품 UID 한 점 선택·인계
-→ 경기는 비직접 세계 사건
-→ ARENA_MATCH_STATE
- + EQUIPMENT_CONTRIBUTION_STATE
- + ITEM_UID_ARENA_LEGACY_STATE
-→ 원인 2~4개 + 주 후속 행동 1개
+NOBLE_01 / CEREMONIAL_NOBLE
+→ 귀족 유형 첫 상세 콘텐츠
+→ HEIRLOOM_SUCCESSION_RESTORATION_AND_LEGACY
+→ 기존 가보 UID + 계승 목적 공개
+→ 실제 상태·손상·과거 수리·소유·계승·Chronicle evidence 확인
+→ 기존 수리·복원·재작업 권위 안에서 개입 깊이 선택
+→ 같은 UID 인계
+→ 의식은 비직접 세계 사건
+→ CEREMONY_READINESS_STATE
+ + HEIRLOOM_TREATMENT_FIT_STATE
+ + ITEM_UID_DYNASTIC_LEGACY_STATE
+→ 보존·재수리·재사용·전시·후속 계승 판단 이유
 ```
 
-- 직접 검투사 전투·위치 지정·행동 명령·팀/길드 경영·배팅을 추가하지 않는다.
-- 경기 승패와 작품의 실제 기여를 분리하고 최고 강화/승리를 자동 정답으로 만들지 않는다.
-- 새 투기장·명성·검투사·시그니처 총점을 만들지 않는다.
-- 경기 횟수나 승리 자체로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
-- 같은 작품 UID를 경기 전·중·후 보존한다.
-- legacy Kyle/iron_sword POC 수치와 score formula는 현재 Decision05 권위가 아니다.
+- 기존 `ceremonial_noble` representative fixture를 재사용하고 새 이름·가문 lore를 발명하지 않는다.
+- 최대 복원·최고 Artistry를 자동 정답으로 만들지 않는다.
+- 새 가문 위신·진품성·계승 총점을 만들지 않는다.
+- 수리·복원으로 물리 흔적이 변해도 의미 있는 과거 생애 기록은 삭제하지 않는다.
+- 복원/의식 반복으로 `ARTISTRY` 또는 `CHRONICLE_AFFIX`를 자동 성장시키지 않는다.
+- 직접 의식·귀족 가문·궁정·외교 경영을 추가하지 않는다.
+- 같은 작품 UID를 처치 전·후·의식·반환까지 보존한다.
 
 책임 원본:
 
@@ -92,6 +95,7 @@ GLADIATOR_01 / CASSIA_BELLAN
 - `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
 
 이 승인은 **기획 재개 승인**이다. Task3 또는 일반 제품 구현 승인이 아니다.
 
@@ -121,6 +125,8 @@ GLADIATOR_01 / CASSIA_BELLAN
 - `BS-CONTENT-20260811-04`는 전시 횟수만으로 예술성 또는 Chronicle을 자동 성장시키지 않는다.
 - `BS-CONTENT-20260811-05`는 직접 투기장 전투·팀/길드 경영·배팅·불투명 투기장 총점을 추가하지 않는다.
 - `BS-CONTENT-20260811-05`는 경기 승패와 작품 기여를 분리하고 경기 반복으로 예술성 또는 Chronicle을 자동 성장시키지 않는다.
+- `BS-CONTENT-20260811-06`은 최대 복원·최고 Artistry·가문 위신/진품성 총점 자동 정답을 만들지 않는다.
+- `BS-CONTENT-20260811-06`은 의미 있는 과거 생애 기록을 지우거나 복원/의식 반복으로 예술성·Chronicle을 자동 성장시키지 않는다.
 - 같은 UID의 작품 생애를 유지한다.
 - 모든 개인 일정에 고정 3일 결과·4일 재방문을 재도입하지 않는다.
 - 사람 플레이테스트·Android 실기기·접근성은 실제 실행 전 `NOT_RUN`.
@@ -146,6 +152,7 @@ BS-CONTENT-20260811-02 / R3_R7_2_OF_10
 BS-CONTENT-20260811-03 / R3_R7_3_OF_10
 BS-CONTENT-20260811-04 / R3_R7_4_OF_10
 BS-CONTENT-20260811-05 / R3_R7_5_OF_10
+BS-CONTENT-20260811-06 / R3_R7_6_OF_10
 BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 ```
 
@@ -212,14 +219,3 @@ Nadia 1/10, Toren 2/10, Marek 3/10은 승인 이력으로 유지한다. 현재 D
 `COLLECTOR_01 / ERSA_ROEN / EXHIBITION_EVIDENCE_AND_PROVENANCE`는 `CRAFTSMANSHIP_EVIDENCE` 또는 `LIVED_HISTORY_EVIDENCE` 전시 의도와 작품에 실제 존재하는 증거를 비교한다. 숨은 총점이나 단일 최대 수치가 정답이 아니다.
 
 같은 UID의 결과는 `EXHIBITION_RECEPTION_STATE / EXHIBIT_THESIS_FIT_STATE / ITEM_UID_PUBLIC_LEGACY_STATE`로 분리한다. 전시는 비직접 세계 사건이며 플레이어는 대장장이·작품 증거 선택자로 남는다.
-
-<!-- BS-CONTENT-20260811-06 -->
-> `NOBLE_01_HEIRLOOM_SUCCESSION_RESTORATION_APPROVED`
->
-> `R3_R7_DESIGN_ACTIVE`
-> `R3_R7_APPROVAL_COUNTER: 6/10`
-> `R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-06`
-> `PRODUCT_IMPLEMENTATION: BLOCKED`
-> `TASK3_IMPLEMENTATION: NOT_APPROVED`
->
-> 기존 `CEREMONIAL_NOBLE`와 같은 작품 UID의 상태·수리·계승 이력을 바탕으로 계승 전 개입 깊이를 판단한다. 최대 복원·최고 Artistry·가문 위신/진품성 총점 자동 정답을 만들지 않으며, 직접 의식·가문·궁정·외교 경영을 추가하지 않는다.
