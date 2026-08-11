@@ -47,7 +47,7 @@ class R2Batch006MainCanonClosureTests(unittest.TestCase):
             self.assertEqual(item["status"], "USER_APPROVED_MERGED_PR120_MAIN_CANON")
             self.assertEqual(item["authority"], "MAIN_CANON")
 
-    def test_current_authority_opens_only_vertical_slice_implementation(self) -> None:
+    def test_registry_snapshot_stays_r2_while_live_router_is_phase_c(self) -> None:
         current = json.loads(CURRENT_REGISTRY.read_text(encoding="utf-8"))
         self.assertEqual(current["stage_status"], "R2_BATCH_006_APPROVED_MAIN_CANON")
         self.assertEqual(current["product_implementation"], "BLOCKED")
@@ -62,9 +62,11 @@ class R2Batch006MainCanonClosureTests(unittest.TestCase):
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
         for text in (decisions, active):
             self.assertIn("R2_BATCH_006_APPROVED_10_OF_10", text)
-            self.assertIn("MERGED_PR120_MAIN_CANON", text)
-            self.assertIn("VERTICAL_SLICE_IMPLEMENTATION_APPROVED", text)
             self.assertNotIn("R2_BATCH_006_NOT_STARTED_0_OF_10", text)
+            self.assertIn("PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", text)
+            self.assertIn("TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED", text)
+            self.assertIn("P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS", text)
+            self.assertIn("P1_AUTHORITY_AND_CURRENT_STATE_READBACK: PASS", text)
 
 
 if __name__ == "__main__":
