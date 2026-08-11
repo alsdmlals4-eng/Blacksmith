@@ -6,7 +6,7 @@
   "stage_status": "R3_R7_DESIGN_ACTIVE",
   "product_implementation": "BLOCKED",
   "task3_implementation": "NOT_APPROVED",
-  "next_approval_counter": "7/10",
+  "next_approval_counter": "8/10",
   "inherits": [
     "docs/planning/CURRENT_R2_CANON_REGISTRY.json",
     "docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md"
@@ -403,6 +403,69 @@
         "product_implementation": "BLOCKED",
         "task3_implementation": "NOT_APPROVED",
         "human_playtest": "NOT_RUN"
+      }
+    },
+    {
+      "id": "BS-CONTENT-20260811-08",
+      "title": "수집가 02 세드릭 바엘 기록 보관 인계·출처·custody 콘텐츠",
+      "status": "USER_APPROVED_R3_R7_8_OF_10",
+      "canon": "docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md",
+      "refines": [
+        "BS-CONTENT-20260804-01",
+        "BS-CONTENT-20260804-02"
+      ],
+      "depends_on": [
+        "BS-CUSTOMER-20260803-02",
+        "BS-CUSTOMER-20260805-01",
+        "BS-UX-20260805-01",
+        "BS-CRAFT-20260804-06",
+        "BS-CRAFT-20260805-01",
+        "BS-CRAFT-20260805-02",
+        "BS-CONTENT-20260811-04",
+        "BS-CONTENT-20260811-06",
+        "BS-CONTENT-20260811-07"
+      ],
+      "contract": {
+        "content_id": "COLLECTOR_02",
+        "customer_id": "SEDRIC_VAEL",
+        "customer_archetype": "COLLECTOR",
+        "activity_family": "ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY",
+        "content_goal": "ARCHIVAL_STEWARDSHIP_THROUGH_EXPLAINABLE_PROVENANCE_AND_CUSTODY",
+        "player_role": "BLACKSMITH_ITEM_AND_HISTORY_DECISION_MAKER_NOT_ARCHIVE_MANAGER",
+        "existing_sedric_vael_customer_reused": true,
+        "same_item_uid_preserved": true,
+        "ersa_exhibition_responsibility_preserved": true,
+        "noble01_treatment_depth_responsibility_preserved": true,
+        "opaque_authenticity_provenance_or_archive_score": false,
+        "oldest_item_always_best": false,
+        "highest_artistry_always_best": false,
+        "most_chronicle_events_always_best": false,
+        "highest_enhancement_always_best": false,
+        "document_fabrication": false,
+        "unrecorded_history_autofill": false,
+        "accession_count_artistry_growth": false,
+        "appraisal_or_review_count_artistry_growth": false,
+        "automatic_chronicle_affix_from_archiving": false,
+        "archive_storage_management": false,
+        "museum_management_sim": false,
+        "visitor_management": false,
+        "staff_or_shelf_management": false,
+        "preservation_environment_simulation": false,
+        "loan_logistics_management": false,
+        "result_axes": [
+          "ARCHIVE_ACCESSION_STATE",
+          "PROVENANCE_DOCUMENTATION_STATE",
+          "ITEM_UID_CUSTODY_LEGACY_STATE"
+        ],
+        "feedback": "THREE_STATE_SUMMARY_TWO_TO_FOUR_ACTUAL_REASONS_ONE_PRIMARY_NEXT_ACTION",
+        "exact_values": "NON_CANONICAL_BASELINE_TEST_PRESET_USER_PLAYTEST_REQUIRED",
+        "taxonomy_ambiguity": "P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED",
+        "product_implementation": "BLOCKED",
+        "task3_implementation": "NOT_APPROVED",
+        "human_playtest": "NOT_RUN",
+        "android_device": "NOT_RUN",
+        "accessibility": "NOT_RUN",
+        "planning_source_main": "7005a939e003f7248e7d2546c4266bb5d144f90a"
       }
     }
   ],

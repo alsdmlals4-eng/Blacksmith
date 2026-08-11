@@ -221,7 +221,7 @@ def configure_current_assertions() -> None:
         "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
         "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
         "R3_R7_DESIGN_ACTIVE",
-        "R3_R7_APPROVAL_COUNTER: 7/10",
+        "R3_R7_APPROVAL_COUNTER: 8/10",
         f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
         R3_THIRD_DECISION,
         "TASK3_IMPLEMENTATION: NOT_APPROVED",
@@ -262,7 +262,7 @@ def configure_current_assertions() -> None:
             R3_SIXTH_DECISION,
             R3_CURRENT_DECISION,
             f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
-            "SOLDIER_02_LIANA_MISSION_FIT_APPROVED",
+            "COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED",
             "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ):
             if token not in tokens:

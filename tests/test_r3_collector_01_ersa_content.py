@@ -22,7 +22,7 @@ class Collector01ErsaContentContractTests(unittest.TestCase):
         self.assertEqual("R3_R7_DESIGN_ACTIVE", registry.get("stage_status"))
         self.assertEqual("BLOCKED", registry.get("product_implementation"))
         self.assertEqual("NOT_APPROVED", registry.get("task3_implementation"))
-        self.assertEqual("7/10", registry.get("next_approval_counter"))
+        self.assertEqual("8/10", registry.get("next_approval_counter"))
 
         decisions = {item["id"]: item for item in registry.get("current_decisions", [])}
         for decision_id in (
@@ -125,14 +125,14 @@ class Collector01ErsaContentContractTests(unittest.TestCase):
 
         for text in (active, start_here, roadmap, gates):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
-            self.assertIn("R3_R7_APPROVAL_COUNTER: 7/10", text)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07", text)
+            self.assertIn("R3_R7_APPROVAL_COUNTER: 8/10", text)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
 
         for text in (active, start_here, roadmap):
-            self.assertIn("SOLDIER_02_LIANA_MISSION_FIT_APPROVED", text)
+            self.assertIn("COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED", text)
 
         self.assertIn("현재 Decision은 `BS-CONTENT-20260811-07`", active)
         self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-07`", start_here)

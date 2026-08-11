@@ -155,8 +155,8 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
         self.assertIn("VERTICAL_SLICE_CODE_GATE: TASK2_MAIN_MERGED_NO_NEW_PRODUCT_SCOPE", tokens)
         self.assertIn("NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED", tokens)
         self.assertIn("R3_R7_DESIGN_ACTIVE", tokens)
-        self.assertIn("R3_R7_APPROVAL_COUNTER: 7/10", tokens)
-        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07", tokens)
+        self.assertIn("R3_R7_APPROVAL_COUNTER: 8/10", tokens)
+        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08", tokens)
         self.assertIn("BS-CONTENT-20260811-03", tokens)
         self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("VERTICAL_SLICE_CODE_GATE: USER_APPROVED", tokens)
@@ -183,8 +183,8 @@ class CurrentAssertionConfigurationTests(unittest.TestCase):
                 "BS-CONTENT-20260811-07",
             ):
                 self.assertIn(decision_id, tokens)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-07", tokens)
-            self.assertIn("SOLDIER_02_LIANA_MISSION_FIT_APPROVED", tokens)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08", tokens)
+            self.assertIn("COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED", tokens)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)
         self.assertNotIn("R2_CHECKPOINT_005", start)
         self.assertNotIn("현재 승인 카운터: `0/10`", active)
