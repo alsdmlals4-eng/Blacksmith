@@ -20,24 +20,29 @@ GitHub가 기획 정본이다. Google Sheet는 같은 Decision ID·경로·Commi
 
 ```text
 현재 권위·변경 경계 확인
-→ 벤치마킹·현업 비교
+→ PRE_WORK_RESEARCH_GATE: 벤치마킹·현업/공식/1차 자료 조사
+→ ADOPT / ADAPT / REJECT / DIFFERENTIATOR + 정본 충돌 + 적대 pre-check
 → brainstorming·적대적 검토
 → RED: 실패 계약 테스트 작성·의도한 실패 관측
 → GREEN: 최소 정본·구현 변경
 → REFACTOR: 중복·구형 참조 정리
 → exact-head 전체 검증
 → GitHub·Sheet readback
-→ 명시적 사용자 승인 뒤 병합
+→ 같은 승인 범위는 재승인 없이 병합 / 새 planning conflict·scope expansion만 사용자 Decision
 ```
 
-### 벤치마킹·현업 비교
+### PRE_WORK_RESEARCH_GATE — 벤치마킹·현업 조사
 
-질문·추천·새 시스템 설계 전에 관련 현업 사례와 유사 게임을 비교한다.
+Decision `BS-OPS-20260811-02`. 모든 의미 있는 작업은 fresh authority preflight 뒤 실제 설계·정본·구현·테스트·설정·자산 변경 전에 벤치마킹과 최신 현업/공식/1차 자료 조사를 수행한다. 이 Decision은 `BS-OPS-20260805-01`의 benchmark scope만 refine하며 기존 TDD·early checkpoint 권위는 유지한다.
 
-- `채택 / 수정 채택 / 비채택 / 차별점 / 남은 불확실성`을 기록한다.
-- 유명 사례라도 프로젝트 코어와 충돌하면 비채택한다.
-- 출처와 확인 날짜를 PR 또는 정본에 남긴다.
-- 표면 기능이 아니라 플레이어 판단·정보 구조·제작 비용을 비교한다.
+- 게임 기획·콘텐츠·UX·경제·시장 포지셔닝: 직접/인접 유사작 2개 이상 + 현업/공식/1차 자료 2개 이상을 기본으로 한다. 핵심 시스템·경제·출시·권리·접근성 등 고위험 작업은 유사 사례 3개 이상 + 공식/1차 자료 2개 이상을 기본으로 한다.
+- 기술·Godot·Android·GitHub·CI·tooling·performance: current 공식/1차 자료 1개 이상 + 유사 구현/추가 공식 자료 1개 이상과 프로젝트 버전 호환성을 확인한다.
+- 저위험 maintenance·좁은 문서/metadata repair: 현재 정본·최근 PR·공식 책임 원본을 다시 읽고, 외부 비교가 실질적으로 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남긴다. 관련 공식/1차 자료가 존재하면 최소 1개 확인한다.
+- 모든 경우 `ADOPT / ADAPT / REJECT / DIFFERENTIATOR / 남은 불확실성`과 정본 충돌·적대 pre-check를 기록한다.
+- 유명 사례라도 프로젝트 코어와 충돌하면 `REJECT`한다.
+- 출처와 확인 날짜를 PR·정본·Decision·감사 기록 중 하나에 남긴다.
+- 벤치마크의 수치·확률·경제·보상은 Blacksmith 정본으로 자동 역수입하지 않는다.
+- 검색 요약·과거 채팅·메모리·2차 블로그만으로 시간민감 정본 결론을 확정하지 않는다.
 
 ### 작업마다 TDD
 
@@ -63,7 +68,7 @@ RED → GREEN → REFACTOR
   - `SESSION_END`: 세션 종료로 정본 유실 위험
   - `LARGE_CANON_IMPACT`: 다수 권위 문서·Registry·후속 설계에 큰 영향
 - 조기 체크포인트도 적대적 감사·changed files·리뷰·CI·Sheet readback을 생략하지 않는다.
-- 병합에는 명시적 사용자 승인이 필요하다.
+- 같은 승인 범위는 exact technical validation 뒤 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확장만 별도 사용자 Decision이 필요하다.
 - 병합 뒤 main SHA와 Sheet를 다시 읽어 최종 동기화한다.
 
 ## 4. 현재 코어 보호
@@ -145,6 +150,7 @@ GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/
 
 - 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`)
 - 프로젝트 바인딩 override Decision: `BS-OPS-20260811-01`
+- 선행 조사 Gate Decision: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`
 - 첨부 source의 Switchy-Express 경로는 원문 보존 역사값이며, 현재 Blacksmith 실행 경로는 `BS-OPS-20260811-01`의 사용자 최신 바인딩을 따른다.
 - 같은 승인 범위는 기술 재검증 후 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확대만 별도 사용자 Decision이 필요하다.
 - `PRODUCT_IMPLEMENTATION: BLOCKED`, `TASK3_IMPLEMENTATION: NOT_APPROVED`를 유지한다.

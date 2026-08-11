@@ -16,6 +16,8 @@
 CURRENT_STAGE: R3_R7_DESIGN_ACTIVE
 R3_R7_APPROVAL_COUNTER: 2/10
 R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02
+PRE_WORK_RESEARCH_DECISION: BS-OPS-20260811-02
+PRE_WORK_RESEARCH_GATE: REQUIRED_BEFORE_MEANINGFUL_WORK
 R3_R7_DESIGN_GATE: USER_APPROVED_PLANNING_ONLY
 R2_STATUS: R2_BATCH_006_APPROVED_MAIN_CANON
 R2_CHECKPOINT_005: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
@@ -57,6 +59,29 @@ NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED
 IMAGE_PRODUCT_GATE: BLOCKED_NOT_PRODUCT_READY
 IMAGE_LIST_SCHEMA_GATE: SCHEMA_ALIGNMENT_REPAIRED_READBACK_PASS
 ```
+
+## Pre-Work Research Gate
+
+Decision: `BS-OPS-20260811-02`.
+
+```text
+fresh authority preflight
+→ benchmark + current professional/official/primary research
+→ ADOPT / ADAPT / REJECT / DIFFERENTIATOR
+→ canon/Sheet conflict check
+→ adversarial pre-check
+→ design/canon/implementation/TDD work
+```
+
+- 모든 의미 있는 작업에서 `REQUIRED_BEFORE_MEANINGFUL_WORK`.
+- 게임/콘텐츠/UX/경제는 직접·인접 유사작과 현업/플랫폼 근거를 함께 비교한다.
+- 기술/Godot/Android/GitHub/CI는 current 공식/1차 자료와 프로젝트 버전 호환성을 우선한다.
+- 저위험 maintenance에서 외부 benchmark가 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남기되 관련 공식 원본은 확인한다.
+- `BS-OPS-20260805-01`의 benchmark scope만 refine하며 TDD·early checkpoint authority는 유지한다.
+- benchmark 수치·경제·확률을 제품 정본으로 자동 승격하지 않는다.
+- R3–R7 `2/10`, 제품/Task3 차단은 이 Gate로 변경되지 않는다.
+
+판정: `USER_APPROVED / REQUIRED / PLANNING_ONLY`.
 
 ## R3–R7 Planning-Only Gate
 
