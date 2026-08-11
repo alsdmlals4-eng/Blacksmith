@@ -67,4 +67,7 @@
 - Materialized GREEN head: `ac8cabe55ce5a190dd532c0efb39be6c3cf4aa16`.
 - Focused GREEN at materialization: Cassia `4/4`, Ersa `4/4`, Marek `4/4`, and project-core current alignment all passed.
 - Temporary materializer, count-fix helper, and materializer workflow self-deleted before the materialized commit; none are part of the resulting planning diff.
-- This evidence commit intentionally triggers exact-head PR validation for the final review head; exact-head workflow results remain the merge gate.
+- Exact-head `c1b3336206104ab447e7b3e2ff79de5c3545850f` advanced all R3/Cassia/Hera current-router contracts and the Godot 4.7.1 suite, then exposed one regression introduced by the planning-gate rewrite: the Decision01 first-approved-history sentence had been dropped from `DEVELOPMENT_GATES.md`.
+- Gate-history repair run `31461497303` restored that Decision01 history marker and advanced the remaining product-gate current pointer from Decision04 to Decision05; affected initializer and Cassia contracts passed before commit.
+- Repaired planning head: `500e7c94a544561ff8d12da795a8d2c9a85c68c6`; its temporary repair script/workflow are absent from the resulting tree.
+- This evidence commit is the fresh exact-head CI trigger. Merge remains blocked until every workflow on this exact head is green and PR review/diff readback is clean.
