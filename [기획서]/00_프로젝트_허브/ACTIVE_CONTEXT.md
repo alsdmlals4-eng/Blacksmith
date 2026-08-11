@@ -94,8 +94,13 @@ GLADIATOR_02 / KYLE_VAREN
 - `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`
 - `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
 - `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
-- `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
 - `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+- `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
 
 이 승인은 **기획 재개 승인**이다. Task3 또는 일반 제품 구현 승인이 아니다.
 
@@ -173,10 +178,11 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 
 ## 다음 실행 순서
 
-1. `BS-CONTENT-20260811-08`의 RED→GREEN 회귀, 적대 검토, exact-head CI, GitHub·Sheet 동일 Decision ID 동기화를 끝낸다.
-2. Sedric archival accession이 Ersa exhibition과 Noble01 treatment-depth를 침범하지 않고, same-UID provenance/custody 3축과 anti-score·anti-fabrication·anti-management·anti-farming 경계를 유지하는지 검증한다.
-3. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.
-4. Decision08 merge·Sheet readback 뒤 다음 신규 R3–R7 Decision은 `9/10` 사용자 기획 승인 Gate에서 이어간다.
+1. `BS-CONTENT-20260811-09`의 focused GREEN 뒤 D01–D08 역사/current consumer 회귀를 닫는다.
+2. Kyle continuity가 Cassia arena-fit과 Noble01 treatment-depth를 침범하지 않고 old/new UID history 경계를 지키는지 적대 검토한다.
+3. 하나의 exact reviewed head에서 Python·Godot·Base·BCA·GUT·HiGodot·Adapter Gate를 모두 GREEN으로 만든다.
+4. PR #154 병합과 같은 Decision ID의 Google Sheet sync/readback을 닫은 뒤에만 다음 신규 R3–R7 Decision `10/10` 사용자 기획 승인 Gate로 이동한다.
+5. 새 제품 Task는 `NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED`와 `TASK3_IMPLEMENTATION: NOT_APPROVED`가 별도 사용자 승인으로 해소되기 전 시작하지 않는다.
 
 ## 먼저 읽을 파일
 
@@ -184,17 +190,18 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 2. `CURRENT_CONFIRMED_DECISIONS.md`
 3. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 4. `docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
-6. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
-7. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
-8. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
-9. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
-10. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
-11. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
-12. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
-13. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-14. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-15. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
+5. `docs/planning/BLACKSMITH_R3_GLADIATOR_02_KYLE_VAREN_VETERAN_EQUIPMENT_CONTINUITY_CANON_2026.md`
+6. `docs/planning/BLACKSMITH_R3_COLLECTOR_02_SEDRIC_VAEL_ARCHIVAL_ACCESSION_CANON_2026.md`
+7. `docs/planning/BLACKSMITH_R3_SOLDIER_02_LIANA_BERG_FRONTLINE_COMMANDER_MISSION_FIT_CANON_2026.md`
+8. `docs/planning/BLACKSMITH_R3_NOBLE_01_CEREMONIAL_NOBLE_HEIRLOOM_SUCCESSION_RESTORATION_CANON_2026.md`
+9. `docs/planning/BLACKSMITH_R3_GLADIATOR_01_CASSIA_BELLAN_ARENA_SIGNATURE_WEAPON_CANON_2026.md`
+10. `docs/planning/BLACKSMITH_R3_COLLECTOR_01_ERSA_ROEN_EXHIBITION_EVIDENCE_CANON_2026.md`
+11. `docs/planning/BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md`
+12. `docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md`
+13. `docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md`
+14. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+15. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+16. Google Sheet `00_프로젝트_허브`, `01_작업순서`, `02_현재_확정결정`, `04_누락_충돌_감사`, `13_주요인물`, `50_메인콘텐츠`
 
 ## 현재 프로젝트 작업지시문 바인딩
 
@@ -212,24 +219,6 @@ TASK3_IMPLEMENTATION: NOT_APPROVED
 ```
 
 첨부 v4.5 r2 source의 `Switchy-Express-Cargo-Puzzle` 경로는 source provenance를 위해 수정하지 않고 보존한다. 현재 실행은 `BS-OPS-20260811-01`의 Blacksmith override를 따른다.
-
-<!-- BS-CONTENT-20260811-08 CURRENT -->
-## R3–R7 current 8/10 — Sedric Collector02
-
-```text
-R3_R7_DESIGN_ACTIVE
-R3_R7_APPROVAL_COUNTER: 9/10
-R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09
-R3_R7_RESUME_LOCATOR: GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED
-PRODUCT_IMPLEMENTATION: BLOCKED
-TASK3_IMPLEMENTATION: NOT_APPROVED
-```
-
-Nadia 1/10, Toren 2/10, Marek 3/10, Ersa 4/10, Cassia 5/10, Noble01 6/10, Liana 7/10은 승인 이력으로 유지한다. 현재 Decision은 `BS-CONTENT-20260811-09`이다.
-
-`COLLECTOR_02 / SEDRIC_VAEL / ARCHIVAL_ACCESSION_PROVENANCE_AND_CUSTODY`는 공개된 archival purpose와 실제 작품 UID의 provenance·custody·생애 근거를 비교해 한 작품을 인계한다. accession은 비직접 사건이며 `ARCHIVE_ACCESSION_STATE / PROVENANCE_DOCUMENTATION_STATE / ITEM_UID_CUSTODY_LEGACY_STATE`를 분리해 돌려준다.
-
-Ersa의 exhibition evidence/thesis, Noble01의 physical treatment depth, Liana의 commander mission-fit 책임은 각각 승인 이력으로 유지한다. 같은 UID, anti-score, anti-fabrication, anti-management, anti-farming 경계를 보존하며 제품 구현과 Task3는 계속 차단한다.
 
 <!-- BS-CONTENT-20260811-09 CURRENT -->
 ## R3–R7 current 9/10 — Kyle Gladiator02

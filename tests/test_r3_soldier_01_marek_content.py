@@ -22,7 +22,7 @@ class Soldier01MarekContentContractTests(unittest.TestCase):
         self.assertEqual("R3_R7_DESIGN_ACTIVE", registry.get("stage_status"))
         self.assertEqual("BLOCKED", registry.get("product_implementation"))
         self.assertEqual("NOT_APPROVED", registry.get("task3_implementation"))
-        self.assertEqual("8/10", registry.get("next_approval_counter"))
+        self.assertEqual("9/10", registry.get("next_approval_counter"))
 
         decisions = {item["id"]: item for item in registry.get("current_decisions", [])}
         for decision_id in (
@@ -113,15 +113,15 @@ class Soldier01MarekContentContractTests(unittest.TestCase):
 
         for text in (active, start_here, roadmap, gates):
             self.assertIn("R3_R7_DESIGN_ACTIVE", text)
-            self.assertIn("R3_R7_APPROVAL_COUNTER: 8/10", text)
-            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-08", text)
+            self.assertIn("R3_R7_APPROVAL_COUNTER: 9/10", text)
+            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-09", text)
             self.assertIn("BS-CONTENT-20260811-03", text)
             self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", text)
             self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", text)
             self.assertNotIn("TASK3_IMPLEMENTATION_APPROVED", text)
 
         for text in (active, start_here, roadmap):
-            self.assertIn("COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED", text)
+            self.assertIn("GLADIATOR_02_KYLE_VETERAN_CONTINUITY_APPROVED", text)
 
         self.assertIn("Marek", active)
         self.assertIn("BLACKSMITH_R3_SOLDIER_01_MAREK_OLDEN_SMALL_LOT_STANDARD_ORDER_CANON_2026.md", start_here)
