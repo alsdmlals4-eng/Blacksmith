@@ -21,217 +21,59 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: "3.12"
-      - name: Align current gate and operating audit
+      - name: Align current development gate
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
 
-          root = Path('.')
-          gates_path = root / '[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md'
-          runner_path = root / 'tools/run_project_operating_system_audit.py'
-          runner_test_path = root / 'tests/test_project_operating_system_audit_runner.py'
+          path = Path('[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md')
+          text = path.read_text(encoding='utf-8')
 
-          def replace_once(text: str, old: str, new: str, label: str) -> str:
+          def once(old: str, new: str, label: str) -> None:
+              global text
               if old not in text:
-                  raise SystemExit(f'{label} anchor missing: {old[:160]}')
-              return text.replace(old, new, 1)
+                  raise SystemExit(f'{label} anchor missing: {old}')
+              text = text.replace(old, new, 1)
 
-          gates = gates_path.read_text(encoding='utf-8')
-          gates = replace_once(
-              gates,
+          once(
               '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-01 / PLANNING_ONLY / PRODUCT_BLOCKED**',
               '> **R3_R7_DESIGN_ACTIVE / BS-CONTENT-20260811-02 / ADVENTURER_02_TOREN_LONG_RANGE_RELIABILITY_APPROVED / PLANNING_ONLY / PRODUCT_BLOCKED**',
-              'gate heading',
+              'heading',
           )
-          gates = replace_once(gates, 'R3_R7_APPROVAL_COUNTER: 1/10', 'R3_R7_APPROVAL_COUNTER: 2/10', 'gate counter')
-          gates = replace_once(gates, 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01', 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02', 'gate current decision summary')
-
-          old_planning = '''## R3–R7 Planning-Only Gate
-
-Decision: `BS-CONTENT-20260811-01`.
-
-```text
-ADVENTURER_01 / NADIA_VENN
-생환 + 회수
-```
-
-허용:
-
-- 고객·상황·작품 선택·결과·같은 UID 생애 환류의 기획 정본 작성
-- 벤치마킹·적대적 검토·테스트 계약·Google Sheet 동기화
-- 비정본 `BASELINE_TEST_PRESET` 후보와 플레이테스트 설계
-
-차단:
-
-- Task3 제품 Script/Data/Scene/Resource 구현
-- `project.godot` 또는 Godot persistent serialized surface 변경
-- 직접 전투·탐험 미니게임 추가
-- 모든 개인 일정에 고정 3일 결과·4일 재방문 재도입
-- 일상 사건 완료만으로 `CHRONICLE_AFFIX`·예술성 자동 지급
-
-판정: `R3_R7_DESIGN_ACTIVE / PRODUCT_IMPLEMENTATION_BLOCKED / TASK3_IMPLEMENTATION_NOT_APPROVED`.
-'''
-          new_planning = '''## R3–R7 Planning-Only Gate
-
-첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.
-
-현재 Decision: `BS-CONTENT-20260811-02`.
-
-```text
-ADVENTURER_02 / TOREN_MARCH
-JOURNEY_CONTINUITY_AND_RELIABILITY
-```
-
-허용:
-
-- 고객·상황·작품 선택·결과·같은 UID 생애 환류의 기획 정본 작성
-- 벤치마킹·적대적 검토·테스트 계약·Google Sheet 동기화
-- 비정본 `BASELINE_TEST_PRESET` 후보와 플레이테스트 설계
-- 기존 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY`의 승인 책임을 실제 관련 맥락에서 소비
-
-차단:
-
-- Task3 제품 Script/Data/Scene/Resource 구현
-- `project.godot` 또는 Godot persistent serialized surface 변경
-- 직접 이동·지도 경로 선택·실시간 생존 조작 추가
-- 새 신뢰성·휴대성·수리 용이성 원수치 추가
-- 자동 매일 내구도 감소·루틴 수리세 추가
-- 모든 개인 일정에 고정 3일 결과·4일 재방문 재도입
-- 일상 사건 완료만으로 `CHRONICLE_AFFIX`·예술성 자동 지급
-
-판정: `R3_R7_DESIGN_ACTIVE / R3_R7_2_OF_10 / PRODUCT_IMPLEMENTATION_BLOCKED / TASK3_IMPLEMENTATION_NOT_APPROVED`.
-'''
-          gates = replace_once(gates, old_planning, new_planning, 'planning-only gate section')
-          gates = replace_once(
-              gates,
+          once('R3_R7_APPROVAL_COUNTER: 1/10', 'R3_R7_APPROVAL_COUNTER: 2/10', 'counter')
+          text = text.replace('R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01', 'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02')
+          once(
+              'Decision: `BS-CONTENT-20260811-01`.\n\n```text\nADVENTURER_01 / NADIA_VENN\n생환 + 회수\n```',
+              '첫 승인 완료 Decision: `BS-CONTENT-20260811-01 / ADVENTURER_01 / NADIA_VENN`.\n\nDecision: `BS-CONTENT-20260811-02`.\n\n```text\nADVENTURER_02 / TOREN_MARCH\nJOURNEY_CONTINUITY_AND_RELIABILITY\n```',
+              'planning decision block',
+          )
+          once(
+              '- 비정본 `BASELINE_TEST_PRESET` 후보와 플레이테스트 설계',
+              '- 비정본 `BASELINE_TEST_PRESET` 후보와 플레이테스트 설계\n- 기존 `WEIGHT / DURABILITY / ENVIRONMENTAL_SEALING / FIELD_SERVICEABILITY` 승인 책임을 실제 관련 맥락에서 소비',
+              'allowed owners',
+          )
+          once(
+              '- 직접 전투·탐험 미니게임 추가',
+              '- 직접 이동·지도 경로 선택·실시간 생존 조작 추가\n- 새 신뢰성·휴대성·수리 용이성 원수치 추가\n- 자동 매일 내구도 감소·루틴 수리세 추가',
+              'Toren blocked scope',
+          )
+          once(
               '`BS-CONTENT-20260811-01`은 planning-only Decision이다. 이 Decision의 승인만으로 제품 구현, Task3, HiGodot authoring scope를 개방하지 않는다.',
               '`BS-CONTENT-20260811-01`과 현재 `BS-CONTENT-20260811-02`는 planning-only Decision이다. 이 승인들만으로 제품 구현, Task3, HiGodot authoring scope를 개방하지 않는다.',
-              'product gate R3 decisions',
+              'product gate planning boundary',
           )
-          gates = replace_once(
-              gates,
-              'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01\nSCOPED_VERTICAL_SLICE:',
-              'R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02\nSCOPED_VERTICAL_SLICE:',
-              'missing-state current decision',
-          )
-          gates_path.write_text(gates, encoding='utf-8')
-
-          runner = runner_path.read_text(encoding='utf-8')
-          runner = replace_once(
-              runner,
-              'R3_NADIA_CANON = "docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md"\nR3_DECISION = "BS-CONTENT-20260811-01"',
-              'R3_NADIA_CANON = "docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md"\nR3_TOREN_CANON = "docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md"\nR3_FIRST_DECISION = "BS-CONTENT-20260811-01"\nR3_CURRENT_DECISION = "BS-CONTENT-20260811-02"',
-              'audit R3 constants',
-          )
-          old_registry_assertions = '''    assertions[R3_REGISTRY] = (
-        '\"stage_status\": \"R3_R7_DESIGN_ACTIVE\"',
-        '\"product_implementation\": \"BLOCKED\"',
-        '\"task3_implementation\": \"NOT_APPROVED\"',
-        '\"next_approval_counter\": \"1/10\"',
-        f'\"id\": \"{R3_DECISION}\"',
-        '\"content_id\": \"ADVENTURER_01\"',
-        '\"customer_id\": \"NADIA_VENN\"',
-        '\"direct_combat_or_exploration_minigame\": false',
-        '\"single_always_best_equipment_answer\": false',
-    )
-'''
-          new_registry_assertions = '''    assertions[R3_REGISTRY] = (
-        '\"stage_status\": \"R3_R7_DESIGN_ACTIVE\"',
-        '\"product_implementation\": \"BLOCKED\"',
-        '\"task3_implementation\": \"NOT_APPROVED\"',
-        '\"next_approval_counter\": \"2/10\"',
-        f'\"id\": \"{R3_FIRST_DECISION}\"',
-        f'\"id\": \"{R3_CURRENT_DECISION}\"',
-        '\"content_id\": \"ADVENTURER_02\"',
-        '\"customer_id\": \"TOREN_MARCH\"',
-        '\"direct_travel_or_route_minigame\": false',
-        '\"new_reliability_or_repairability_raw_stat\": false',
-        '\"routine_automatic_wear_tax\": false',
-    )
-'''
-          runner = replace_once(runner, old_registry_assertions, new_registry_assertions, 'audit R3 registry assertions')
-          nadia_end = '''    assertions[R3_NADIA_CANON] = (
-        R3_DECISION,
-        "ADVENTURER_01",
-        "NADIA_VENN",
-        "생환 + 회수",
-        "같은 UID",
-        "직접 전투·탐험 미니게임을 추가하지 않는다",
-        "BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED",
-        "제품 구현: `BLOCKED`",
-        "Task3 구현: `NOT_APPROVED`",
-    )
-'''
-          nadia_new = '''    assertions[R3_NADIA_CANON] = (
-        R3_FIRST_DECISION,
-        "ADVENTURER_01",
-        "NADIA_VENN",
-        "생환 + 회수",
-        "같은 UID",
-        "직접 전투·탐험 미니게임을 추가하지 않는다",
-        "BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED",
-        "제품 구현: `BLOCKED`",
-        "Task3 구현: `NOT_APPROVED`",
-    )
-    assertions[R3_TOREN_CANON] = (
-        R3_CURRENT_DECISION,
-        "ADVENTURER_02",
-        "TOREN_MARCH",
-        "JOURNEY_CONTINUITY_AND_RELIABILITY",
-        "ENVIRONMENTAL_SEALING",
-        "FIELD_SERVICEABILITY",
-        "직접 이동·지도 경로 선택·실시간 생존 조작을 요구하지 않는다",
-        "자동 매일 내구도 감소 금지",
-        "BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED",
-        "제품 구현: `BLOCKED`",
-        "Task3 구현: `NOT_APPROVED`",
-    )
-'''
-          runner = replace_once(runner, nadia_end, nadia_new, 'audit canon assertions')
-          runner = runner.replace('f"R3_R7_CURRENT_DECISION: {R3_DECISION}"', 'f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}"', 1)
-          runner = replace_once(
-              runner,
-              '            R3_DECISION,\n            "TASK3_IMPLEMENTATION: NOT_APPROVED",',
-              '            R3_FIRST_DECISION,\n            R3_CURRENT_DECISION,\n            "R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02",\n            "TASK3_IMPLEMENTATION: NOT_APPROVED",',
-              'audit router decision tokens',
-          )
-          runner = replace_once(
-              runner,
-              '        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `1/10`" not in tokens:\n            tokens.append("현재 R3–R7 승인 카운터: `1/10`")',
-              '        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `2/10`" not in tokens:\n            tokens.append("현재 R3–R7 승인 카운터: `2/10`")',
-              'audit active counter',
-          )
-          runner = replace_once(
-              runner,
-              '    for path in (R3_REGISTRY, R3_NADIA_CANON):',
-              '    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON):',
-              'audit active docs',
-          )
-          runner_path.write_text(runner, encoding='utf-8')
-
-          test = runner_test_path.read_text(encoding='utf-8')
-          test = replace_once(test, '        canon = audit.REQUIRED_ASSERTIONS[runner.R3_NADIA_CANON]\n', '        nadia = audit.REQUIRED_ASSERTIONS[runner.R3_NADIA_CANON]\n        toren = audit.REQUIRED_ASSERTIONS[runner.R3_TOREN_CANON]\n', 'runner test canon variables')
-          test = replace_once(test, '        self.assertIn(\'"next_approval_counter": "1/10"\', registry)\n        self.assertIn(\'"id": "BS-CONTENT-20260811-01"\', registry)\n        self.assertIn("BS-CONTENT-20260811-01", canon)\n        self.assertIn("직접 전투·탐험 미니게임을 추가하지 않는다", canon)\n        self.assertIn(runner.R3_REGISTRY, audit.ACTIVE_DOCS)\n        self.assertIn(runner.R3_NADIA_CANON, audit.ACTIVE_DOCS)', '        self.assertIn(\'"next_approval_counter": "2/10"\', registry)\n        self.assertIn(\'"id": "BS-CONTENT-20260811-01"\', registry)\n        self.assertIn(\'"id": "BS-CONTENT-20260811-02"\', registry)\n        self.assertIn(\'"content_id": "ADVENTURER_02"\', registry)\n        self.assertIn("BS-CONTENT-20260811-01", nadia)\n        self.assertIn("직접 전투·탐험 미니게임을 추가하지 않는다", nadia)\n        self.assertIn("BS-CONTENT-20260811-02", toren)\n        self.assertIn("JOURNEY_CONTINUITY_AND_RELIABILITY", toren)\n        self.assertIn(runner.R3_REGISTRY, audit.ACTIVE_DOCS)\n        self.assertIn(runner.R3_NADIA_CANON, audit.ACTIVE_DOCS)\n        self.assertIn(runner.R3_TOREN_CANON, audit.ACTIVE_DOCS)', 'runner test R3 assertions')
-          test = replace_once(test, '        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-01", tokens)', '        self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02", tokens)\n        self.assertIn("R3_R7_APPROVAL_COUNTER: 2/10", tokens)', 'runner test gate current')
-          test = replace_once(test, '            self.assertIn("BS-CONTENT-20260811-01", tokens)\n            self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)', '            self.assertIn("BS-CONTENT-20260811-01", tokens)\n            self.assertIn("BS-CONTENT-20260811-02", tokens)\n            self.assertIn("R3_R7_CURRENT_DECISION: BS-CONTENT-20260811-02", tokens)\n            self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", tokens)', 'runner test router decisions')
-          test = replace_once(test, '        self.assertIn("현재 R3–R7 승인 카운터: `1/10`", active)', '        self.assertIn("현재 R3–R7 승인 카운터: `2/10`", active)', 'runner test active counter')
-          runner_test_path.write_text(test, encoding='utf-8')
+          path.write_text(text, encoding='utf-8')
           PY
 
           python -m unittest tests.test_r3_adventurer_02_toren_content -v
           python -m unittest tests/test_project_operating_system_audit_runner.py -v
-          python tools/run_project_operating_system_audit.py --base-root ../base --report artifacts/base-adoption-report.json || true
 
-          # Remove temporary RED/GREEN proof workflows before final diff.
           git rm .github/workflows/prove-toren-development-gate-red.yml
           git rm .github/workflows/fix-toren-development-gate-green.yml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            '[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md' \
-            tools/run_project_operating_system_audit.py \
-            tests/test_project_operating_system_audit_runner.py
-          git commit -m "docs: advance Toren development gate and operating audit"
+          git add '[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md'
+          git commit -m "docs: advance Toren development gate"
           git push origin HEAD:agent/r3-toren-adventurer-02-design
