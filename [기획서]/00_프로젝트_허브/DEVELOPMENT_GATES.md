@@ -100,6 +100,8 @@ MISSION_DUTY_STATE / COMMANDER_RETURN_STATE / ITEM_UID_FIELD_LEGACY_STATE
 ```
 
 - `BS-CONTENT-20260811-01`~`06`은 승인 완료 이력으로 보존한다.
+- `BS-CONTENT-20260811-06 / NOBLE_01 / CEREMONIAL_NOBLE`은 6/10 승인 이력이며 current locator가 아니다.
+- `BS-CONTENT-20260811-07 / SOLDIER_02 / LIANA_BERG`가 현재 7/10 Decision이다.
 - 기존 `LIANA_BERG` 고객을 재사용하고 병렬 Soldier commander를 만들지 않는다.
 - Marek의 `SMALL_LOT_STANDARD_ORDER`와 Cassia의 `ARENA_SIGNATURE_WEAPON_AND_LEGACY` 책임을 보존한다.
 - 같은 UID를 보존하고 임무 성공·리아나 귀환·작품 현장 생애를 분리한다.
