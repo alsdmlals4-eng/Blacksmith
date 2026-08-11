@@ -10,6 +10,7 @@ SCRIPT = ROOT / "tools/start_blacksmith_local_executor.ps1"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 ACTIVE = ROOT / "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md"
 GATES = ROOT / "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"
+BASE_DEDICATED_ENV_MAIN = "6d2feba2bc49fda2d8d273248b55087853615d5d"
 
 
 class BlacksmithDedicatedLocalExecutorBootstrapTests(unittest.TestCase):
@@ -21,6 +22,13 @@ class BlacksmithDedicatedLocalExecutorBootstrapTests(unittest.TestCase):
         self.assertIn("USER_EXPLICIT_PLANNING_COMPLETE_DECLARATION", design)
         self.assertIn("R3_R7_9_OF_10", design)
         self.assertIn("PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", design)
+        self.assertIn(BASE_DEDICATED_ENV_MAIN, design)
+        for token in (
+            "ASSUME_PREVIOUS_POWERSHELL_CLOSED",
+            "PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST",
+            "CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST",
+        ):
+            self.assertIn(token, design)
 
     def test_current_authority_records_planning_complete_phase_c_entry(self) -> None:
         self.assertTrue(DECISION.is_file(), str(DECISION))
@@ -38,6 +46,10 @@ class BlacksmithDedicatedLocalExecutorBootstrapTests(unittest.TestCase):
             "P0_LOCAL_EXECUTOR_BOOTSTRAP: REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING",
             "IMAGE_GENERATION: DEFERRED_BY_USER",
             "P1_BS_CT_06_TAXONOMY_AMBIGUITY_DEFERRED",
+            "ASSUME_PREVIOUS_POWERSHELL_CLOSED",
+            "PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST",
+            "CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST",
+            BASE_DEDICATED_ENV_MAIN,
         ]
         for token in required:
             self.assertIn(token, decision)
@@ -49,6 +61,8 @@ class BlacksmithDedicatedLocalExecutorBootstrapTests(unittest.TestCase):
                 text,
             )
             self.assertIn("TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED", text)
+            self.assertIn("PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST", text)
+            self.assertIn("ASSUME_PREVIOUS_POWERSHELL_CLOSED", text)
 
     def test_launcher_uses_exact_isolated_blacksmith_bindings(self) -> None:
         self.assertTrue(SCRIPT.is_file(), str(SCRIPT))
@@ -75,6 +89,10 @@ class BlacksmithDedicatedLocalExecutorBootstrapTests(unittest.TestCase):
             "--version",
             "4.7.1",
             "project.godot",
+            "ASSUME_PREVIOUS_POWERSHELL_CLOSED",
+            "PROJECT_DEDICATED_LOCAL_EXECUTION_ENVIRONMENT_FIRST",
+            "CREATE_OR_REPAIR_DEDICATED_LOCAL_ENVIRONMENT_FIRST",
+            "$codexCommand.Source -C $Project",
         ]
         for token in required:
             self.assertIn(token, text)
