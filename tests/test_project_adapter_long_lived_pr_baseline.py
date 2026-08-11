@@ -54,7 +54,11 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         }
         record = records["BS-CURRENT-DECISIONS"]
         self.assertEqual("CURRENT_CONFIRMED_DECISIONS.md", record["source"])
-        actual = hashlib.sha256(CURRENT.read_bytes()).hexdigest()
+        # Git's system-level core.autocrlf may materialize this tracked Markdown
+        # file as CRLF on Windows even though the authoritative Git blob is LF.
+        # Evidence hashes therefore use the canonical LF representation.
+        canonical_bytes = CURRENT.read_bytes().replace(b"\r\n", b"\n")
+        actual = hashlib.sha256(canonical_bytes).hexdigest()
         self.assertEqual(actual, record["sha256"])
 
     def test_operating_maturity_has_three_valid_operating_records(self) -> None:

@@ -22,6 +22,7 @@ $ExpectedGodotVersion = '4.7.1'
 $GodotZipName = 'Godot_v4.7.1-stable_win64.exe.zip'
 $OfficialGodotZip = 'https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_win64.exe.zip'
 $ManagedCodexMarker = '# BLACKSMITH_DEDICATED_PROFILE_MANAGED'
+$ExpectedBlacksmithGodotAiPidFile = 'app_userdata/Blacksmith/godot_ai_server.pid'
 $BootstrapWaitSeconds = 90
 
 function Write-Step([string]$Message) {
@@ -139,6 +140,76 @@ function Test-RecognizableGodotAiListener($Row) {
     return ($cmd.Contains('godot-ai') -or $cmd.Contains('godot_ai'))
 }
 
+function Test-VerifiedBlacksmithRetainedServer {
+    # OLD_BLACKSMITH_RETAINED_SERVER is the sole cleanup candidate.  The two
+    # listeners must be a single, exact Blacksmith godot-ai server; all partial,
+    # foreign, and ambiguous states remain fail-closed.
+    $http = @(Get-ListenerDiagnostics $HttpPort)
+    $ws = @(Get-ListenerDiagnostics $WsPort)
+    if ($http.Count -ne 1 -or $ws.Count -ne 1) {
+        return $null
+    }
+    if ($http[0].PID -ne $ws[0].PID) {
+        return $null
+    }
+
+    $row = $http[0]
+    $cmd = ([string]$row.CommandLine).ToLowerInvariant()
+    $normalizedCommandLine = $cmd -replace '\\', '/'
+    $hasGodotAi = $cmd.Contains('godot-ai') -or $cmd.Contains('godot_ai')
+    $hasHttpPort = $cmd -match '(?i)(?:^|\s)--port\s+8006(?:\s|$)'
+    $hasWsPort = $cmd -match '(?i)(?:^|\s)--ws-port\s+9506(?:\s|$)'
+    $hasBlacksmithPidFile = $normalizedCommandLine.Contains($ExpectedBlacksmithGodotAiPidFile.ToLowerInvariant())
+    if (-not ($hasGodotAi -and $hasHttpPort -and $hasWsPort -and $hasBlacksmithPidFile)) {
+        return $null
+    }
+
+    $proc = Get-ProcessRecord ([int]$row.PID)
+    if (-not $proc -or ([string]$proc.CommandLine).ToLowerInvariant() -ne $cmd) {
+        return $null
+    }
+    return [pscustomobject]@{
+        PID = [int]$row.PID
+        CommandLine = $cmd
+    }
+}
+
+function Wait-ForPortsReleased {
+    $deadline = (Get-Date).AddSeconds(15)
+    do {
+        if (@(Get-PortListeners $HttpPort).Count -eq 0 -and @(Get-PortListeners $WsPort).Count -eq 0) {
+            return $true
+        }
+        Start-Sleep -Milliseconds 500
+    } while ((Get-Date) -lt $deadline)
+    return $false
+}
+
+function Clear-VerifiedBlacksmithRetainedServer($Verified) {
+    # Re-identify immediately before termination to reduce PID reuse/TOCTOU.
+    $verified = Test-VerifiedBlacksmithRetainedServer
+    if (-not $verified -or $verified.PID -ne $Verified.PID) {
+        Write-Host 'UNVERIFIED_RETAINED_SERVER_REUSE_FORBIDDEN'
+        Fail-Bootstrap 'Retained Blacksmith server identity changed before cleanup. No process was stopped.'
+    }
+
+    # A Blacksmith editor could have appeared after the first startup snapshot.
+    # Its presence invalidates retained cleanup; leave every process untouched.
+    $exactEditorsNow = @(Find-ExactBlacksmithEditors)
+    $conflictingEditorNow = Find-ConflictingBlacksmithEditor
+    if ($exactEditorsNow.Count -ne 0 -or $conflictingEditorNow) {
+        Write-Host 'RETAINED_SERVER_CLEANUP_EDITOR_RACE_FAIL_CLOSED'
+        Fail-Bootstrap 'A Blacksmith editor appeared before retained-server cleanup. No process was stopped.'
+    }
+
+    Write-Step "OLD_BLACKSMITH_RETAINED_SERVER: stopping verified listener PID $($verified.PID)."
+    Stop-Process -Id $verified.PID -ErrorAction Stop
+    if (-not (Wait-ForPortsReleased)) {
+        Write-Host 'PORT_CONFLICT_FAIL_CLOSED'
+        Fail-Bootstrap 'Verified retained server stopped but HTTP 8006 / WS 9506 did not both release within the bounded wait.'
+    }
+}
+
 function Assert-SafePortState($ExactEditor) {
     $occupied = @()
     foreach ($port in @($HttpPort, $WsPort)) {
@@ -154,6 +225,14 @@ function Assert-SafePortState($ExactEditor) {
         $unknown = @($occupied | Where-Object { -not (Test-RecognizableGodotAiListener $_) })
         if ($unknown.Count -eq 0) {
             Write-Step 'EXACT_BLACKSMITH_EDITOR_REUSE: dedicated editor and recognizable godot-ai listeners found.'
+            return
+        }
+    }
+
+    if (-not $ExactEditor) {
+        $verifiedRetained = Test-VerifiedBlacksmithRetainedServer
+        if ($verifiedRetained) {
+            Clear-VerifiedBlacksmithRetainedServer $verifiedRetained
             return
         }
     }
@@ -298,22 +377,24 @@ function Ensure-DedicatedCodexHome {
         }
     }
 
-    $config = @"
-$ManagedCodexMarker
-approval_policy = "never"
-sandbox_mode = "workspace-write"
-
-[sandbox_workspace_write]
-network_access = true
-
-[mcp_servers.godot-ai]
-url = "http://127.0.0.1:8006/mcp"
-enabled = true
-required = true
-startup_timeout_sec = 60
-tool_timeout_sec = 360
-"@
-    Set-Content -LiteralPath $configPath -Value $config -Encoding UTF8
+    $configLines = @(
+        $ManagedCodexMarker
+        'approval_policy = "never"'
+        'sandbox_mode = "workspace-write"'
+        ''
+        '[sandbox_workspace_write]'
+        'network_access = true'
+        ''
+        '[mcp_servers.godot-ai]'
+        'url = "http://127.0.0.1:8006/mcp"'
+        'enabled = true'
+        'required = true'
+        'startup_timeout_sec = 60'
+        'tool_timeout_sec = 360'
+    )
+    $config = [string]::Join("`n", $configLines) + "`n"
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($configPath, $config, $utf8NoBom)
     Write-Step "Dedicated CODEX_HOME ready: $CodexHome"
 }
 

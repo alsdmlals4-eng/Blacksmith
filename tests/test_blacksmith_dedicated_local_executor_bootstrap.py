@@ -111,8 +111,8 @@ class BlacksmithDedicatedLocalExecutorBootstrapTests(unittest.TestCase):
             self.assertIn(token, text)
 
         forbidden = [
-            "Stop-Process",
             "taskkill",
+            "Stop-Process -Name",
             "git reset",
             "git restore",
             "git clean",
@@ -122,6 +122,58 @@ class BlacksmithDedicatedLocalExecutorBootstrapTests(unittest.TestCase):
         ]
         for token in forbidden:
             self.assertNotIn(token, text)
+
+    def test_launcher_writes_managed_codex_toml_as_lf_only_utf8_without_bom(self) -> None:
+        text = SCRIPT.read_text(encoding="utf-8")
+        start = text.index("function Ensure-DedicatedCodexHome")
+        end = text.index("function Wait-ForDedicatedListeners", start)
+        writer = text[start:end]
+
+        for token in (
+            "$configLines = @(",
+            '[string]::Join("`n", $configLines)',
+            "System.Text.UTF8Encoding($false)",
+            "[System.IO.File]::WriteAllText($configPath, $config, $utf8NoBom)",
+            "$ManagedCodexMarker",
+            'url = "http://127.0.0.1:8006/mcp"',
+            'approval_policy = "never"',
+            'sandbox_mode = "workspace-write"',
+            "network_access = true",
+            "startup_timeout_sec = 60",
+            "tool_timeout_sec = 360",
+            "UNMANAGED_CODEX_CONFIG_FAIL_CLOSED",
+        ):
+            self.assertIn(token, writer)
+        self.assertNotIn("Set-Content", writer)
+        self.assertNotIn('@"', writer)
+
+    def test_launcher_cleans_only_a_verified_retained_blacksmith_server(self) -> None:
+        text = SCRIPT.read_text(encoding="utf-8")
+        for token in (
+            "function Test-VerifiedBlacksmithRetainedServer",
+            "function Clear-VerifiedBlacksmithRetainedServer",
+            "OLD_BLACKSMITH_RETAINED_SERVER",
+            "app_userdata/Blacksmith/godot_ai_server.pid",
+            "--port\\s+8006",
+            "--ws-port\\s+9506",
+            "Stop-Process -Id $verified.PID",
+            "Wait-ForPortsReleased",
+            "UNVERIFIED_RETAINED_SERVER_REUSE_FORBIDDEN",
+            "RETAINED_SERVER_CLEANUP_EDITOR_RACE_FAIL_CLOSED",
+            "PORT_CONFLICT_FAIL_CLOSED",
+        ):
+            self.assertIn(token, text)
+        self.assertNotIn("Stop-Process -Name", text)
+
+    def test_retained_server_cleanup_rechecks_editor_absence_before_stop(self) -> None:
+        text = SCRIPT.read_text(encoding="utf-8")
+        start = text.index("function Clear-VerifiedBlacksmithRetainedServer")
+        end = text.index("function Assert-SafePortState", start)
+        cleanup = text[start:end]
+        self.assertIn("Find-ExactBlacksmithEditors", cleanup)
+        self.assertIn("Find-ConflictingBlacksmithEditor", cleanup)
+        self.assertLess(cleanup.index("Find-ExactBlacksmithEditors"), cleanup.index("Stop-Process -Id"))
+        self.assertLess(cleanup.index("Find-ConflictingBlacksmithEditor"), cleanup.index("Stop-Process -Id"))
 
     def test_launcher_rejects_duplicate_project_editor_and_unverified_orphan_ports(self) -> None:
         self.assertTrue(SCRIPT.is_file(), str(SCRIPT))
