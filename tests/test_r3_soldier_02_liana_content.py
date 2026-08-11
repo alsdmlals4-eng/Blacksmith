@@ -124,7 +124,7 @@ class Soldier02LianaMissionFitContentContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, canon)
 
-    def test_current_routers_move_to_seven_of_ten_without_opening_product_code(self) -> None:
+    def test_current_routers_preserve_liana_history_while_sedric_is_current(self) -> None:
         current = CURRENT.read_text(encoding="utf-8")
         active = ACTIVE.read_text(encoding="utf-8")
         start_here = START_HERE.read_text(encoding="utf-8")
@@ -153,10 +153,12 @@ class Soldier02LianaMissionFitContentContractTests(unittest.TestCase):
         for text in (active, start_here, roadmap):
             self.assertIn("COLLECTOR_02_SEDRIC_ARCHIVAL_ACCESSION_APPROVED", text)
 
-        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-07`", active)
-        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-07`", start_here)
-        self.assertIn("현재 승인 카운터: `7/10`.", roadmap)
-        self.assertIn("Decision: `BS-CONTENT-20260811-07`.", gates)
+        self.assertIn("현재 Decision은 `BS-CONTENT-20260811-08`", active)
+        self.assertIn("현재 연속 작업은 `BS-CONTENT-20260811-08`", start_here)
+        self.assertIn("현재 승인 카운터: `8/10`.", roadmap)
+        self.assertIn("Decision: `BS-CONTENT-20260811-08`.", gates)
+        self.assertIn("BS-CONTENT-20260811-07 / R3_R7_7_OF_10", active)
+        self.assertIn("Liana 7/10", start_here)
 
 
 if __name__ == "__main__":
