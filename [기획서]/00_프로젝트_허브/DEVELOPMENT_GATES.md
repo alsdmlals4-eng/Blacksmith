@@ -37,6 +37,9 @@ R2_CHECKPOINT_005: R2_CHECKPOINT_005_CLOSED_MAIN_CANON
 R2_BATCH_005: R2_BATCH_005_CLOSED_10_OF_10
 R2_BATCH_006: APPROVED_10_OF_10
 TDD_GATE: RED_GREEN_REFACTOR_REQUIRED
+HIGODOT_SOLE_AUTHORING_AUTHORITY: true
+GUT_SOLE_TEST_AUTHORITY: true
+ENTRY_GATE_FAIL_CLOSED: true
 CODEX_IMPLEMENTATION_GATE: PHASE_C_EXISTING_CANON_P0_P1_PASS_LIVE_RUNTIME_REUSE_ALLOWED
 ENTRY_STATE_GATE: PASS_PLANNING_COMPLETE_PHASE_C_EXISTING_CANON_P0_P1_PASS
 P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS
@@ -86,6 +89,7 @@ Decision: `BS-OPS-20260811-03`.
 - Bootstrap process/listener presence alone is never authoring proof. The current PASS is the observed fresh HiGodot receipt.
 - While the same exact dedicated session remains live/fresh, Codex may continue directly. Re-enter bootstrap only when the runtime envelope is expired or recovery is required.
 - Persistent Godot Scene/Resource/project-setting authoring stays under HiGodot authority.
+- `ENTRY_GATE_FAIL_CLOSED`: exact project/session/version/authority identity가 fresh하게 묶이지 않으면 persistent mutation을 시작하지 않는다.
 
 판정: `PASS / PERSISTENT_MUTATION_GATE_OPEN_WITHIN_EXISTING_APPROVED_CANON`.
 
@@ -179,6 +183,9 @@ IGNORE / SECONDARY / PRIMARY / REQUIREMENT
 ## HiGodot·GUT·Hera Authority Gate
 
 ```yaml
+HIGODOT_SOLE_AUTHORING_AUTHORITY: true
+GUT_SOLE_TEST_AUTHORITY: true
+ENTRY_GATE_FAIL_CLOSED: true
 HIGODOT: FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY
 HIGODOT_PRODUCTION_ACTIVATION: USER_APPROVED_ACTIVE
 GODOT_AI_VERSION: 3.1.4
