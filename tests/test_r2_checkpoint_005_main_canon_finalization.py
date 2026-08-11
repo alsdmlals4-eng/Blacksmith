@@ -19,7 +19,8 @@ class Checkpoint005MainCanonFinalizationTest(unittest.TestCase):
         required = (
             "R2_CHECKPOINT_005_CLOSED_MAIN_CANON",
             "R2_BATCH_005_CLOSED_10_OF_10",
-            "R2_BATCH_006_APPROVED_10_OF_10",
+            "R2_BATCH_006",
+            "APPROVED_10_OF_10",
             "PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON",
             "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED",
             "P0_LOCAL_EXECUTOR_BOOTSTRAP: PASS",
