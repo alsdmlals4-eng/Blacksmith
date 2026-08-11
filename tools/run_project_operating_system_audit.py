@@ -12,7 +12,9 @@ import audit_project_operating_system as audit
 PLANNED_REFERENCE_PREFIX = "docs/superpowers/plans/"
 R3_REGISTRY = "docs/planning/CURRENT_R3_R7_CANON_REGISTRY.json"
 R3_NADIA_CANON = "docs/planning/BLACKSMITH_R3_ADVENTURER_01_NADIA_VENN_RUINS_SURVIVAL_RECOVERY_CANON_2026.md"
-R3_DECISION = "BS-CONTENT-20260811-01"
+R3_TOREN_CANON = "docs/planning/BLACKSMITH_R3_ADVENTURER_02_TOREN_MARCH_LONG_RANGE_RELIABILITY_CANON_2026.md"
+R3_FIRST_DECISION = "BS-CONTENT-20260811-01"
+R3_CURRENT_DECISION = "BS-CONTENT-20260811-02"
 
 
 def classify_planned_references(findings: list[audit.Finding]) -> None:
@@ -36,7 +38,8 @@ def configure_current_assertions() -> None:
 
     R2/Task2 merge evidence remains historical/current-compatible authority. R3–R7 is
     a planning-only layer: it is current for design routing but does not open product
-    or Task3 implementation.
+    or Task3 implementation. Earlier R3 decisions stay auditable as history while the
+    current router advances with later user-approved planning decisions.
     """
     assertions = dict(audit.REQUIRED_ASSERTIONS)
 
@@ -63,20 +66,35 @@ def configure_current_assertions() -> None:
         '"stage_status": "R3_R7_DESIGN_ACTIVE"',
         '"product_implementation": "BLOCKED"',
         '"task3_implementation": "NOT_APPROVED"',
-        '"next_approval_counter": "1/10"',
-        f'"id": "{R3_DECISION}"',
-        '"content_id": "ADVENTURER_01"',
-        '"customer_id": "NADIA_VENN"',
-        '"direct_combat_or_exploration_minigame": false',
-        '"single_always_best_equipment_answer": false',
+        '"next_approval_counter": "2/10"',
+        f'"id": "{R3_FIRST_DECISION}"',
+        f'"id": "{R3_CURRENT_DECISION}"',
+        '"content_id": "ADVENTURER_02"',
+        '"customer_id": "TOREN_MARCH"',
+        '"direct_travel_or_route_minigame": false',
+        '"new_reliability_or_repairability_raw_stat": false',
+        '"routine_automatic_wear_tax": false',
     )
     assertions[R3_NADIA_CANON] = (
-        R3_DECISION,
+        R3_FIRST_DECISION,
         "ADVENTURER_01",
         "NADIA_VENN",
         "생환 + 회수",
         "같은 UID",
         "직접 전투·탐험 미니게임을 추가하지 않는다",
+        "BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED",
+        "제품 구현: `BLOCKED`",
+        "Task3 구현: `NOT_APPROVED`",
+    )
+    assertions[R3_TOREN_CANON] = (
+        R3_CURRENT_DECISION,
+        "ADVENTURER_02",
+        "TOREN_MARCH",
+        "JOURNEY_CONTINUITY_AND_RELIABILITY",
+        "ENVIRONMENTAL_SEALING",
+        "FIELD_SERVICEABILITY",
+        "직접 이동·지도 경로 선택·실시간 생존 조작을 요구하지 않는다",
+        "자동 매일 내구도 감소 금지",
         "BASELINE_TEST_PRESET / USER_PLAYTEST_REQUIRED",
         "제품 구현: `BLOCKED`",
         "Task3 구현: `NOT_APPROVED`",
@@ -95,7 +113,8 @@ def configure_current_assertions() -> None:
         "VERTICAL_SLICE_IMPLEMENTATION_APPROVED",
         "NEW_PRODUCT_SCOPE: USER_DECISION_REQUIRED",
         "R3_R7_DESIGN_ACTIVE",
-        f"R3_R7_CURRENT_DECISION: {R3_DECISION}",
+        "R3_R7_APPROVAL_COUNTER: 2/10",
+        f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
         "TASK3_IMPLEMENTATION: NOT_APPROVED",
     ):
         if token not in gate_tokens:
@@ -126,18 +145,20 @@ def configure_current_assertions() -> None:
             "POSTMERGE_CONTINUOUS_CI_CLOSURE_COMPLETE",
             "PRODUCT_IMPLEMENTATION: BLOCKED",
             "R3_R7_DESIGN_ACTIVE",
-            R3_DECISION,
+            R3_FIRST_DECISION,
+            R3_CURRENT_DECISION,
+            f"R3_R7_CURRENT_DECISION: {R3_CURRENT_DECISION}",
             "TASK3_IMPLEMENTATION: NOT_APPROVED",
         ):
             if token not in tokens:
                 tokens.append(token)
-        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `1/10`" not in tokens:
-            tokens.append("현재 R3–R7 승인 카운터: `1/10`")
+        if path.endswith("ACTIVE_CONTEXT.md") and "현재 R3–R7 승인 카운터: `2/10`" not in tokens:
+            tokens.append("현재 R3–R7 승인 카운터: `2/10`")
         assertions[path] = tuple(tokens)
 
     audit.REQUIRED_ASSERTIONS = assertions
     current_docs = list(audit.ACTIVE_DOCS)
-    for path in (R3_REGISTRY, R3_NADIA_CANON):
+    for path in (R3_REGISTRY, R3_NADIA_CANON, R3_TOREN_CANON):
         if path not in current_docs:
             current_docs.append(path)
     audit.ACTIVE_DOCS = tuple(current_docs)
