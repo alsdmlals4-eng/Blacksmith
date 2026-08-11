@@ -8,6 +8,9 @@ on:
       - '\[기획서\]/00_프로젝트_허브/DEVELOPMENT_GATES.md'
       - docs/planning/BLACKSMITH_HIGODOT_GUT_AUTHORITY_AND_ENTRY_GATE_SPEC_2026-08-06.md
       - docs/testing/HIGODOT_GUT_AUTHORITY_POLICY.json
+      - tools/start_blacksmith_local_executor.ps1
+      - tests/test_blacksmith_dedicated_local_executor_bootstrap.py
+      - docs/decisions/BS-OPS-20260811-03_DEDICATED_LOCAL_EXECUTOR_BOOTSTRAP.md
       - docs/operations/BLACKSMITH_ENTRY_GATE_SNAPSHOT_2026-08-06.json
       - tests/test_higodot_gut_authority_gate.py
       - .github/workflows/validate-higodot-gut-authority-gate.yml
