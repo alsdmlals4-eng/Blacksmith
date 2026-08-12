@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "fa9595b2df95897c915331a1cb5d9b1a583611f0",
+  "decision_ids": [
+    "BS-OPS-20260811-03",
+    "BS-VS-P2-20260813-01"
+  ],
+  "approved_paths": [
+    "data/vertical_slice/content_result_contract.json",
+    "scripts/vertical_slice/domain/vs_content_result_record.gd",
+    "scripts/vertical_slice/domain/vs_save_envelope.gd"
+  ],
+  "approval_source": "USER_REQUEST_AND_GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE",
+  "approval_time": "2026-08-13T02:27:03+09:00",
+  "scope_summary": "Exact P2 CONTENT_RESULT_V1 foundation only. No scene/resource/project settings, customer or schedule resolution, probability, reward, economy, aggregate score, Artistry growth, Chronicle grant, Task3, Decision10, or new product scope."
+}
