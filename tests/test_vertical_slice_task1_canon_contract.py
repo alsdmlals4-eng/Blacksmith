@@ -96,9 +96,9 @@ SAVE_FIELDS = [
 FORBIDDEN_NEW_NAMESPACE_TOKENS = (
     "secondary_material",
     '"affixes"',
-    "STANDARD",
-    "GOOD",
-    "PERFECT",
+    '"STANDARD"',
+    '"GOOD"',
+    '"PERFECT"',
     '"RARE"',
 )
 
