@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "artifact_role": "BLACKSMITH_PHASE_C_LIVE_CONTINUATION",
+  "decision_id": "BS-OPS-20260811-03",
+  "checkpoint": {
+    "source_main_sha": "e3c99ff8d550c9d8022014996c09f4300a99e186",
+    "captured_date_kst": "2026-08-13",
+    "resume_rule": "FETCH_LATEST_MAIN_BEFORE_USE"
+  },
+  "pr158": {
+    "number": 158,
+    "head_sha": "3fe96ab91acd8a780fd59d343e3bac40a9096306",
+    "failed_validation_run": 31522085320,
+    "disposition": "CLOSED_SUPERSEDED_UNMERGED",
+    "branch_role": "HISTORICAL_REFERENCE_ONLY",
+    "valid_intent_policy": "REIMPLEMENT_MINIMALLY_FROM_LATEST_MAIN"
+  },
+  "phase_c": {
+    "scope": "APPROVED_WITHIN_EXISTING_CANON_ONLY",
+    "next_package": "P2_FOUNDATION_DATA_AND_STATE_CONTRACTS",
+    "product_writer_gate": "SEPARATE_A2_CONTRACT_REQUIRED",
+    "task3": "NOT_SEPARATELY_APPROVED",
+    "image_generation": "DEFERRED_BY_USER"
+  },
+  "runtime": {
+    "receipt_path": "docs/superpowers/receipts/2026-08-12-bs-ops-20260811-03-local-runtime-and-bootstrap-fix.md",
+    "receipt_pr": 157,
+    "receipt_merge_sha": "8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486",
+    "observed_at_local": "2026-08-12T01:08:11+09:00",
+    "last_observed_receipt_status": "PASS_AT_RECORDED_RECEIPT",
+    "current_freshness": "NOT_RECHECKED_IN_THIS_GITHUB_SESSION",
+    "persistent_mutation_gate": "RECHECK_REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING",
+    "reuse_policy": "REUSE_ONLY_AFTER_FRESH_EXACT_BLACKSMITH_IDENTITY_RECEIPT",
+    "bootstrap_reentry_policy": "WHEN_EXPIRED_CONFLICTED_OR_RECOVERY_REQUIRED"
+  },
+  "protected_paths": [
+    "data/",
+    "scripts/",
+    "scenes/",
+    "assets/",
+    "addons/",
+    "project.godot"
+  ],
+  "semantic_protections": [
+    "PROJECT_CORE",
+    "CRAFTING_AND_ENHANCEMENT_MEANING",
+    "ECONOMY_AND_PROBABILITY_AUTHORITY",
+    "ITEM_UID_AND_LIFECYCLE",
+    "SAVE_COMPATIBILITY",
+    "MAJOR_UX_AND_INPUT_MEANING",
+    "APPROVED_CONTENT_CAUSALITY"
+  ],
+  "leases": [],
+  "a3_auto_merge_allowlist": [],
+  "scheduler_runtime_provider": "NOT_CONFIGURED",
+  "sheet_sync_write_policy": "TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE",
+  "non_claims": [
+    "CURRENT_LOCAL_GODOT_PROCESS_READY",
+    "PERSISTENT_GODOT_AUTHORING_EXECUTED",
+    "ANDROID_DEVICE_PASS",
+    "ACCESSIBILITY_PASS",
+    "PERFORMANCE_PASS",
+    "HUMAN_PLAYTEST_PASS",
+    "TASK3_APPROVED",
+    "NEW_PRODUCT_SCOPE_APPROVED"
+  ],
+  "next_action": {
+    "mode": "A0_SHADOW",
+    "task": "P2_FOUNDATION_DATA_AND_STATE_CONTRACTS_READBACK_AND_SEPARATE_A2_CONTRACT",
+    "product_mutation": "NOT_AUTHORIZED_BY_THIS_ARTIFACT"
+  }
+}
