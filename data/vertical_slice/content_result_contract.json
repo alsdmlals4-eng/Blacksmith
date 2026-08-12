@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "record_type": "CONTENT_RESULT_V1",
+  "authority": "BS-VS-P2-20260813-01_EXISTING_R3_D01_D09_CANON_ONLY",
+  "save_container": "active_run.resolved_events",
+  "implements_result_resolution": false,
+  "implements_customer_or_schedule_logic": false,
+  "changes_save_schema_version": false,
+  "uid_pattern": "^BSI-[0-9a-f]{32}$",
+  "state_token_pattern": "^[A-Z0-9_]+$",
+  "reason_count": {
+    "minimum": 2,
+    "maximum": 4
+  },
+  "required_fields": [
+    "schema_version",
+    "record_type",
+    "event_id",
+    "source_decision_id",
+    "content_id",
+    "customer_id",
+    "occurred_at_game_day",
+    "item_refs",
+    "result_axes",
+    "causal_reasons",
+    "primary_next_action"
+  ],
+  "item_ref_required_fields": [
+    "role",
+    "uid"
+  ],
+  "allowed_item_roles": [
+    "PRIMARY_ITEM",
+    "BATCH_ITEM",
+    "LEGACY_ITEM",
+    "REPLACEMENT_ITEM"
+  ],
+  "forbidden_fields": [
+    "score",
+    "total_score",
+    "fit_score",
+    "prestige_score",
+    "artistry_delta",
+    "chronicle_affix_grant",
+    "history_transfer",
+    "result_probability",
+    "reward_value"
+  ],
+  "content_contracts": [
+    {
+      "decision_id": "BS-CONTENT-20260811-01",
+      "content_id": "ADVENTURER_01",
+      "customer_id": "NADIA_VENN",
+      "result_axes": [
+        "EXPEDITION_RETURN_STATE",
+        "RECOVERY_STATE",
+        "ITEM_UID_LIFECYCLE_STATE"
+      ],
+      "item_ref_policy": "SINGLE_PRIMARY_ITEM"
+    },
+    {
+      "decision_id": "BS-CONTENT-20260811-02",
+      "content_id": "ADVENTURER_02",
+      "customer_id": "TOREN_MARCH",
+      "result_axes": [
+        "JOURNEY_ARRIVAL_STATE",
+        "ROUTE_EXPOSURE_STATE",
+        "ITEM_UID_LIFECYCLE_STATE"
+      ],
+      "item_ref_policy": "SINGLE_PRIMARY_ITEM"
+    },
+    {
+      "decision_id": "BS-CONTENT-20260811-03",
+      "content_id": "SOLDIER_01",
+      "customer_id": "MAREK_OLDEN",
+      "result_axes": [
+        "UNIT_MISSION_STATE",
+        "STANDARD_ADOPTION_STATE",
+        "BATCH_ITEM_LIFECYCLE_STATE"
+      ],
+      "item_ref_policy": "BATCH_ITEMS_ONE_OR_MORE"
+    },
+    {
+      "decision_id": "BS-CONTENT-20260811-04",
+      "content_id": "COLLECTOR_01",
+      "customer_id": "ERSA_ROEN",
+      "result_axes": [
+        "EXHIBITION_RECEPTION_STATE",
+        "EXHIBIT_THESIS_FIT_STATE",
+        "ITEM_UID_PUBLIC_LEGACY_STATE"
+      ],
+      "item_ref_policy": "SINGLE_PRIMARY_ITEM"
+    },
+    {
+      "decision_id": "BS-CONTENT-20260811-05",
+      "content_id": "GLADIATOR_01",
+      "customer_id": "CASSIA_BELLAN",
+      "result_axes": [
+        "ARENA_MATCH_STATE",
+        "EQUIPMENT_CONTRIBUTION_STATE",
+        "ITEM_UID_ARENA_LEGACY_STATE"
+      ],
+      "item_ref_policy": "SINGLE_PRIMARY_ITEM"
+    },
+    {
+      "decision_id": "BS-CONTENT-20260811-06",
+      "content_id": "NOBLE_01",
+      "customer_id": "CEREMONIAL_NOBLE",
+      "result_axes": [
+        "CEREMONY_READINESS_STATE",
+        "HEIRLOOM_TREATMENT_FIT_STATE",
+        "ITEM_UID_DYNASTIC_LEGACY_STATE"
+      ],
+      "item_ref_policy": "SINGLE_PRIMARY_ITEM"
+    },
+    {
+      "decision_id": "BS-CONTENT-20260811-07",
+      "content_id": "SOLDIER_02",
+      "customer_id": "LIANA_BERG",
+      "result_axes": [
+        "MISSION_DUTY_STATE",
+        "COMMANDER_RETURN_STATE",
+        "ITEM_UID_FIELD_LEGACY_STATE"
+      ],
+      "item_ref_policy": "SINGLE_PRIMARY_ITEM"
+    },
+    {
+      "decision_id": "BS-CONTENT-20260811-08",
+      "content_id": "COLLECTOR_02",
+      "customer_id": "SEDRIC_VAEL",
+      "result_axes": [
+        "ARCHIVE_ACCESSION_STATE",
+        "PROVENANCE_DOCUMENTATION_STATE",
+        "ITEM_UID_CUSTODY_LEGACY_STATE"
+      ],
+      "item_ref_policy": "SINGLE_PRIMARY_ITEM"
+    },
+    {
+      "decision_id": "BS-CONTENT-20260811-09",
+      "content_id": "GLADIATOR_02",
+      "customer_id": "KYLE_VAREN",
+      "result_axes": [
+        "VETERAN_RETURN_STATE",
+        "EQUIPMENT_CONTINUITY_STATE",
+        "ITEM_UID_LINEAGE_STATE"
+      ],
+      "item_ref_policy": "LEGACY_REQUIRED_OPTIONAL_DISTINCT_REPLACEMENT"
+    }
+  ]
+}
