@@ -31,6 +31,20 @@ PLANNING_COMPLETE
 - A3 auto-merge allowlist는 비어 있고 scheduler/runtime provider는 `NOT_CONFIGURED`다.
 - 이 Pilot의 Base 계약 출처는 exact main `453f790821a108a1d4f6e1f4e45f6931c2396ee0`이며, Blacksmith의 Base v9.4.3 adapter pin을 자동 변경하지 않는다.
 
+## Phase C Live Continuation
+
+Decision: `BS-OPS-20260811-03`.
+
+- 기계 상태: `docs/operations/BLACKSMITH_PHASE_C_LIVE_CONTINUATION.json`
+- 설명·보호 경계: `docs/operations/BLACKSMITH_PHASE_C_LIVE_CONTINUATION.md`
+- PR #158은 `CLOSED_SUPERSEDED_UNMERGED`이며 branch는 역사 참고만 한다.
+- 현재 Phase C 범위는 기존 승인 canon 내부로 제한한다.
+- 다음 기술 package는 `P2_FOUNDATION_DATA_AND_STATE_CONTRACTS`지만, 제품 writer는 별도 A2 계약 전에는 열지 않는다.
+- PR #157의 local runtime receipt는 기록 시점의 PASS다. 현재 process/session freshness는 GitHub에서 증명하지 못하므로 `RECHECK_REQUIRED_BEFORE_PERSISTENT_GODOT_AUTHORING`을 적용한다.
+- fresh exact Blacksmith receipt가 확인된 경우에만 전용 live session을 재사용하고, 만료·충돌·identity 불명·복구 필요 상태에서는 bootstrap으로 재진입한다.
+- Sheet는 `TARGETED_RANGES_ONLY_PRESERVE_HISTORICAL_EVIDENCE` 정책을 따르며 이번 continuation 계약에서는 Sheet write를 실행하지 않는다.
+- Task3·Decision10·신규 제품 범위는 계속 별도 사용자 Decision 대상이다.
+
 ## Blacksmith 보호
 
 제작·강화·경제·저장·승인 아트는 프로젝트 정본과 실제 파일이 소유한다. Base 기본값으로 수치나 제품 의미를 덮어쓰지 않는다.
