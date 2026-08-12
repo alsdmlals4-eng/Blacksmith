@@ -116,9 +116,9 @@ func test_reason_count_and_uniqueness_are_enforced() -> void:
 	var too_many_record = RecordScript.from_dict(too_many)
 	assert_true(too_many_record.validation_errors.has("INVALID_CAUSAL_REASON_COUNT"))
 
-	var duplicate := _nadia_record()
-	duplicate["causal_reasons"] = ["SAME_REASON", "SAME_REASON"]
-	var duplicate_record = RecordScript.from_dict(duplicate)
+	var duplicate_reasons := _nadia_record()
+	duplicate_reasons["causal_reasons"] = ["SAME_REASON", "SAME_REASON"]
+	var duplicate_record = RecordScript.from_dict(duplicate_reasons)
 	assert_true(duplicate_record.validation_errors.has("DUPLICATE_CAUSAL_REASON"))
 
 
@@ -152,9 +152,9 @@ func test_batch_accepts_unique_items_and_rejects_duplicate_uid() -> void:
 	var valid = RecordScript.from_dict(_marek_record())
 	assert_true(valid.validation_errors.is_empty(), str(valid.validation_errors))
 
-	var duplicate := _marek_record()
-	duplicate["item_refs"][1]["uid"] = UID_A
-	var duplicate_record = RecordScript.from_dict(duplicate)
+	var duplicate_batch := _marek_record()
+	duplicate_batch["item_refs"][1]["uid"] = UID_A
+	var duplicate_record = RecordScript.from_dict(duplicate_batch)
 	assert_true(duplicate_record.validation_errors.has("DUPLICATE_ITEM_UID"))
 
 
