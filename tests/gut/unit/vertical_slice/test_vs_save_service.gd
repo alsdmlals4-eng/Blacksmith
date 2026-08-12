@@ -117,7 +117,7 @@ func test_save_load_preserves_resolved_state() -> void:
 func test_typed_content_result_survives_save_load() -> void:
 	var service = SaveServiceScript.new(TEST_SAVE_PATH)
 	var envelope = _make_envelope()
-	var expected := _make_nadia_result()
+	var expected: Dictionary = _make_nadia_result()
 	envelope.active_run["resolved_events"][expected["event_id"]] = expected
 	assert_eq(service.save_envelope(envelope), OK, "typed content result save should succeed")
 	var restored = service.load_envelope()
@@ -143,7 +143,7 @@ func test_typed_content_result_key_mismatch_fails() -> void:
 
 func test_invalid_typed_content_result_is_prefixed_with_event_id() -> void:
 	var envelope = _make_envelope()
-	var invalid := _make_nadia_result()
+	var invalid: Dictionary = _make_nadia_result()
 	invalid["result_axes"].erase("RECOVERY_STATE")
 	envelope.active_run["resolved_events"][invalid["event_id"]] = invalid
 	var restored = SaveEnvelopeScript.from_dict(envelope.to_dict())
@@ -157,7 +157,7 @@ func test_invalid_typed_content_result_is_prefixed_with_event_id() -> void:
 
 func test_legacy_generic_events_remain_pass_through() -> void:
 	var envelope = _make_envelope()
-	var expected := envelope.active_run["resolved_events"].duplicate(true)
+	var expected: Dictionary = envelope.active_run["resolved_events"].duplicate(true)
 	var restored = SaveEnvelopeScript.from_dict(envelope.to_dict())
 	assert_true(restored.validation_errors.is_empty(), str(restored.validation_errors))
 	assert_eq(restored.active_run["resolved_events"], expected)
