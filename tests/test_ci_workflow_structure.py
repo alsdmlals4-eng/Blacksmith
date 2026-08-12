@@ -172,7 +172,23 @@ class LoopEngineeringPilotContractTests(unittest.TestCase):
         self.assertEqual("8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486", run["source_main_sha"])
         self.assertEqual("DISCOVER", run["loop_state"])
         self.assertEqual([], run["leases"])
-        self.assertEqual([], run["planning_gate"]["allowed_product_write_roots"])
+
+        allowed_changes = set(run["planning_gate"]["allowed_changes"])
+        self.assertEqual(
+            {
+                "docs/operations/BLACKSMITH_LOOP_ENGINEERING_PROFILE.md",
+                "docs/operations/BLACKSMITH_LOOP_RUN_CONTRACT.json",
+                "[기획서]/00_프로젝트_허브/AI_WORKFLOW.md",
+                "tests/test_ci_workflow_structure.py",
+            },
+            allowed_changes,
+        )
+        for protected_root in ("data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"):
+            self.assertFalse(
+                any(path == protected_root or path.startswith(protected_root) for path in allowed_changes),
+                protected_root,
+            )
+
         self.assertGreaterEqual(run["budget"]["max_agents"], 1)
         self.assertEqual(1, run["budget"]["max_parallel_agents"])
         self.assertIn("NOT_RUN", {item["status"] for item in run["evidence"]})
