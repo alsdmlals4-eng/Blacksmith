@@ -4,6 +4,8 @@ import json
 import unittest
 from pathlib import Path
 
+from tests.test_phase_c_live_continuation_contract import PhaseCLiveContinuationContractTests  # noqa: F401
+
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / ".github" / "workflows"
