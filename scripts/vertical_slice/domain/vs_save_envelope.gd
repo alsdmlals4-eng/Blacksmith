@@ -3,6 +3,9 @@ extends RefCounted
 
 const SCHEMA_VERSION := 1
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
+const ContentResultRecordScript = preload(
+	"res://scripts/vertical_slice/domain/vs_content_result_record.gd"
+)
 const REQUIRED_FIELDS := [
 	"schema_version",
 	"preset_version",
@@ -62,6 +65,7 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 		for field_name in ACTIVE_RUN_REQUIRED_FIELDS:
 			if not envelope.active_run.has(field_name):
 				envelope.validation_errors.append("MISSING_ACTIVE_RUN_FIELD:%s" % field_name)
+		_validate_typed_resolved_events(envelope)
 	else:
 		envelope.validation_errors.append("INVALID_FIELD_TYPE:active_run")
 
@@ -95,6 +99,30 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 
 	envelope._validate_values()
 	return envelope
+
+
+static func _validate_typed_resolved_events(envelope: VSSaveEnvelope) -> void:
+	var raw_resolved_events: Variant = envelope.active_run.get("resolved_events", {})
+	if not raw_resolved_events is Dictionary:
+		return
+
+	for raw_event_key in raw_resolved_events.keys():
+		var event_key := str(raw_event_key)
+		var raw_event: Variant = raw_resolved_events[raw_event_key]
+		if not raw_event is Dictionary:
+			continue
+		if str(raw_event.get("record_type", "")) != ContentResultRecordScript.RECORD_TYPE:
+			continue
+
+		var record = ContentResultRecordScript.from_dict(raw_event)
+		if record.event_id != event_key:
+			record.validation_errors.append("CONTENT_RESULT_EVENT_KEY_MISMATCH")
+		for error_code in record.validation_errors:
+			envelope.validation_errors.append(
+				"CONTENT_RESULT:%s:%s" % [event_key, error_code]
+			)
+		if record.validation_errors.is_empty():
+			envelope.active_run["resolved_events"][raw_event_key] = record.to_dict()
 
 
 static func _normalize_dictionary(value: Dictionary) -> Dictionary:
