@@ -131,11 +131,14 @@ class CiWorkflowStructureTests(unittest.TestCase):
 
 
 class LoopEngineeringPilotContractTests(unittest.TestCase):
-    def test_profile_is_shadow_first_and_a2_is_fail_closed(self) -> None:
+    def test_profile_records_completed_shadow_and_fail_closed_a2(self) -> None:
         profile = LOOP_PROFILE.read_text(encoding="utf-8")
         for token in (
             "BS-OPS-20260813-LOOP-01",
             "BASE_LOOP_CONTRACT_COMMIT: 453f790821a108a1d4f6e1f4e45f6931c2396ee0",
+            "adoption_baseline_sha: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486",
+            "latest_shadow_source_main_sha: 50cd459964c274fdc46e5d0be25bb31d929452da",
+            "shadow_checkpoint_status: COMPLETE_DEFERRED_BY_PROTECTED_PR158",
             "current_stage: SHADOW",
             "current_effective_autonomy: A0_OBSERVE",
             "default_autonomy_after_shadow: A2_EXECUTE_ISOLATED",
@@ -160,7 +163,7 @@ class LoopEngineeringPilotContractTests(unittest.TestCase):
         ):
             self.assertIn(protected, profile)
 
-    def test_initial_run_contract_is_locked_bounded_and_read_only(self) -> None:
+    def test_shadow_checkpoint_is_completed_deferred_and_read_only(self) -> None:
         run = json.loads(LOOP_RUN.read_text(encoding="utf-8"))
         self.assertEqual(1, run["schema_version"])
         self.assertEqual("loop-engineering-run", run["contract_role"])
@@ -169,9 +172,15 @@ class LoopEngineeringPilotContractTests(unittest.TestCase):
         self.assertEqual("PLANNING_LOCKED", run["planning_gate"]["status"])
         self.assertTrue(run["planning_gate"]["loop_ready"])
         self.assertEqual("A0_OBSERVE", run["autonomy_tier"])
-        self.assertEqual("8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486", run["source_main_sha"])
-        self.assertEqual("DISCOVER", run["loop_state"])
+        self.assertEqual("50cd459964c274fdc46e5d0be25bb31d929452da", run["source_main_sha"])
+        self.assertEqual("DEFERRED", run["loop_state"])
+        self.assertEqual("NO_DRIFT", run["design_drift_status"])
         self.assertEqual([], run["leases"])
+        self.assertEqual([], run["task_queues"]["ready_tasks"])
+        self.assertEqual([], run["task_queues"]["deferred_tasks"])
+        self.assertEqual(1, len(run["task_queues"]["completed_tasks"]))
+        self.assertEqual("BS-LOOP-SHADOW-001", run["task_queues"]["completed_tasks"][0]["task_id"])
+        self.assertEqual("COMPLETED", run["task_queues"]["completed_tasks"][0]["status"])
 
         allowed_changes = set(run["planning_gate"]["allowed_changes"])
         self.assertEqual(
@@ -189,10 +198,19 @@ class LoopEngineeringPilotContractTests(unittest.TestCase):
                 protected_root,
             )
 
-        self.assertGreaterEqual(run["budget"]["max_agents"], 1)
-        self.assertEqual(1, run["budget"]["max_parallel_agents"])
-        self.assertIn("NOT_RUN", {item["status"] for item in run["evidence"]})
-        self.assertIn("USER_DECISION_REQUIRED", {item["classification"] for item in run["blockers"]})
+        evidence = {item["evidence_id"]: item for item in run["evidence"]}
+        self.assertEqual("PASS", evidence["BS-LOOP-E1-STATIC"]["status"])
+        self.assertEqual("PASS", evidence["BS-LOOP-E2-TEST"]["status"])
+        self.assertEqual("PASS", evidence["BS-LOOP-E3-RUNTIME"]["status"])
+        self.assertEqual("NOT_RUN", evidence["BS-LOOP-E6-HUMAN"]["status"])
+
+        finding_ids = {item["finding_id"] for item in run["findings"]}
+        self.assertTrue({"BS-LOOP-F01-PR158", "BS-LOOP-F02-PR81"}.issubset(finding_ids))
+        blocker_classes = {item["classification"] for item in run["blockers"]}
+        self.assertIn("USER_DECISION_REQUIRED", blocker_classes)
+        self.assertIn("PROTECTED_SURFACE", blocker_classes)
+        self.assertIn("PR #158", run["next_action"])
+        self.assertEqual(2, run["budget"]["used_ci_runs"])
 
     def test_ai_workflow_routes_to_the_pilot_without_changing_base_release_pin(self) -> None:
         workflow = AI_WORKFLOW.read_text(encoding="utf-8")
