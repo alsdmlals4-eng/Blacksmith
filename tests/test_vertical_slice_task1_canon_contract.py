@@ -4,6 +4,8 @@ import json
 import unittest
 from pathlib import Path
 
+from tests.test_vertical_slice_content_result_contract import VerticalSliceContentResultContractTests  # noqa: F401
+
 ROOT = Path(__file__).resolve().parents[1]
 PRESET = ROOT / "data/vertical_slice/vertical_slice_preset.json"
 SCHEMA = ROOT / "data/vertical_slice/vertical_slice_schema.json"
