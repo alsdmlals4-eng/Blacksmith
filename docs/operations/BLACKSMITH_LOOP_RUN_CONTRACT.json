@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "contract_role": "loop-engineering-run",
+  "run_id": "BS-LOOP-20260813-PILOT-001",
+  "goal_id": "BS-OPS-20260813-LOOP-01",
+  "project_id": "BLACKSMITH",
+  "planning_gate": {
+    "status": "PLANNING_LOCKED",
+    "loop_ready": true,
+    "user_review_complete": true,
+    "adversarial_review_complete": true,
+    "planning_sources": [
+      "CURRENT_CONFIRMED_DECISIONS.md",
+      "[기획서]/00_프로젝트_허브/START_HERE.md",
+      "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
+      "[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md",
+      "docs/operations/BLACKSMITH_LOOP_ENGINEERING_PROFILE.md",
+      "Base@453f790821a108a1d4f6e1f4e45f6931c2396ee0:docs/OPERATING_MODEL.md"
+    ],
+    "objective": "Adopt and validate a shadow-first Loop Engineering pilot that reads Blacksmith canon and protected surfaces without changing product behavior, then permits a later A2 isolated implementation only for separately locked work already inside approved canon.",
+    "allowed_changes": [
+      "docs/operations/BLACKSMITH_LOOP_ENGINEERING_PROFILE.md",
+      "docs/operations/BLACKSMITH_LOOP_RUN_CONTRACT.json",
+      "[기획서]/00_프로젝트_허브/AI_WORKFLOW.md",
+      "tests/test_ci_workflow_structure.py"
+    ],
+    "acceptance_criteria": [
+      "The project profile is SHADOW-first with current effective autonomy A0_OBSERVE.",
+      "A2_EXECUTE_ISOLATED is only a post-SHADOW default and does not authorize immediate product mutation.",
+      "The A3 auto-merge allowlist remains empty and the scheduler runtime provider remains NOT_CONFIGURED.",
+      "No protected product root, Base adapter pin, workflow authority, Task3 scope, or approved game meaning changes.",
+      "The existing CI-consumed contract test passes at the exact PR head.",
+      "Unverified runtime, Android, visual, accessibility, performance, and human-play evidence remains explicitly unclaimed."
+    ],
+    "protected_behavior": [
+      "Blacksmith project core and Android portrait crafting experience remain unchanged.",
+      "Crafting, enhancement, economy, probability, item UID lifecycle, save compatibility, major UX, and input meaning remain unchanged.",
+      "Task3 remains NOT_SEPARATELY_APPROVED and new product scope remains USER_DECISION_REQUIRED.",
+      "Godot persistent authoring remains behind P0_LOCAL_EXECUTOR_BOOTSTRAP and a fresh HiGodot receipt.",
+      "The Blacksmith Base v9.4.3 adapter pin and protected baseline remain unchanged."
+    ],
+    "exclusions": [
+      "No writes under data/, scripts/, scenes/, assets/, addons/, or project.godot.",
+      "No new gameplay feature, Decision10, Task3 implementation, balance change, save migration, image generation, or approved-art change.",
+      "No repository workflow, ruleset, permission, secret, or external paid action change.",
+      "No scheduler, webhook, daemon, or 24/7 agent runtime installation.",
+      "No A3 automatic merge permission."
+    ]
+  },
+  "autonomy_tier": "A0_OBSERVE",
+  "source_main_sha": "8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486",
+  "expected_head_sha": null,
+  "loop_state": "DISCOVER",
+  "task_queues": {
+    "ready_tasks": [
+      {
+        "task_id": "BS-LOOP-SHADOW-001",
+        "objective": "Perform a read-only authority, open-work, protected-surface, and validation-gap readback for the next separately approved Blacksmith implementation package.",
+        "status": "READY",
+        "depends_on": [],
+        "resource_domains": [
+          "BLACKSMITH_CANON_READBACK",
+          "BLACKSMITH_PROTECTED_SURFACE_MAP",
+          "BLACKSMITH_VALIDATION_GAP_MAP"
+        ],
+        "justification": {
+          "problem": "Phase C implementation may be decomposed incorrectly or drift into protected product scope unless the current canon, actual implementation, open work, and validation gaps are read together.",
+          "evidence": "Blacksmith canon permits Phase C work only inside existing approved scope while Task3 and new product scope remain separately gated.",
+          "player_or_user_value": "Reduces repeated technical questions and prevents autonomous work from changing the approved crafting experience, UID history, or save/UX meaning.",
+          "risk_if_ignored": "An agent could duplicate active work, use a stale main SHA, or turn an implementation HOW decision into an unapproved product decision.",
+          "expected_outcome": "A read-only SHADOW report containing justified task candidates, dependencies, resource locks, evidence requirements, defer decisions, and explicit user-decision blockers."
+        },
+        "verification": [
+          "Confirm the exact current main SHA before and after the readback.",
+          "Compare START_HERE, CURRENT_CONFIRMED_DECISIONS, ACTIVE_CONTEXT, DEVELOPMENT_GATES, ROADMAP, open PRs/branches, and actual code/data/scene/test state.",
+          "Verify that no persistent repository or external-system mutation occurs during SHADOW.",
+          "Run an independent adversarial review against protected product and governance surfaces."
+        ]
+      }
+    ],
+    "deferred_tasks": [],
+    "completed_tasks": []
+  },
+  "leases": [],
+  "budget": {
+    "max_agents": 2,
+    "max_parallel_agents": 1,
+    "max_model_calls": 12,
+    "max_repair_cycles": 2,
+    "max_ci_runs": 3,
+    "used_model_calls": 0,
+    "used_repair_cycles": 0,
+    "used_ci_runs": 0
+  },
+  "evidence": [
+    {
+      "evidence_id": "BS-LOOP-E0-LOCK",
+      "level": "E0_CONTRACT",
+      "status": "PASS",
+      "subject": "Narrow Blacksmith Loop Engineering pilot planning lock",
+      "source": "User request plus existing PLANNING_COMPLETE and Phase C canon"
+    },
+    {
+      "evidence_id": "BS-LOOP-E1-STATIC",
+      "level": "E1_STATIC",
+      "status": "NOT_RUN",
+      "subject": "Profile, run contract, protected-root diff, and exact-head static validation",
+      "source": "Pending final PR head validation"
+    },
+    {
+      "evidence_id": "BS-LOOP-E2-TEST",
+      "level": "E2_TEST",
+      "status": "NOT_RUN",
+      "subject": "CI-consumed Loop Engineering pilot contract regression",
+      "source": "Pending final PR head validation"
+    },
+    {
+      "evidence_id": "BS-LOOP-E3-RUNTIME",
+      "level": "E3_RUNTIME",
+      "status": "NOT_RUN",
+      "subject": "Godot runtime",
+      "source": "No product runtime mutation in this pilot adoption"
+    },
+    {
+      "evidence_id": "BS-LOOP-E6-HUMAN",
+      "level": "E6_HUMAN_PLAYTEST",
+      "status": "NOT_RUN",
+      "subject": "Human playtest",
+      "source": "No player-facing behavior change in this pilot adoption"
+    }
+  ],
+  "findings": [],
+  "design_drift_status": "NOT_CHECKED",
+  "approval_refs": [
+    "USER_REQUEST_2026-08-13_BLACKSMITH_LOOP_PILOT",
+    "BS-OPS-20260811-03_PHASE_C_ENTRY"
+  ],
+  "blockers": [
+    {
+      "blocker_id": "BS-LOOP-B01-PRODUCT-SCOPE",
+      "classification": "USER_DECISION_REQUIRED",
+      "summary": "Any Task3, Decision10, new product feature, project-core, economy, save, major UX, input, content-meaning, or protected-root mutation requires a separately locked user-approved contract.",
+      "status": "DEFERRED"
+    },
+    {
+      "blocker_id": "BS-LOOP-B02-PERSISTENT-GODOT-AUTHORING",
+      "classification": "PROTECTED_SURFACE",
+      "summary": "Persistent Godot authoring is unavailable to SHADOW and remains blocked until P0_LOCAL_EXECUTOR_BOOTSTRAP plus a fresh Codex-side HiGodot receipt pass.",
+      "status": "DEFERRED"
+    }
+  ],
+  "improvement_candidates": [],
+  "next_action": "Validate the pilot artifacts at the exact PR head, independently review the diff for product/governance drift, then run BS-LOOP-SHADOW-001 as a read-only follow-up before proposing any A2 task."
+}

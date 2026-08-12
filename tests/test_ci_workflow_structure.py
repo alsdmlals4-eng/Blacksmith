@@ -7,6 +7,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOWS = ROOT / ".github" / "workflows"
+LOOP_PROFILE = ROOT / "docs" / "operations" / "BLACKSMITH_LOOP_ENGINEERING_PROFILE.md"
+LOOP_RUN = ROOT / "docs" / "operations" / "BLACKSMITH_LOOP_RUN_CONTRACT.json"
+AI_WORKFLOW = ROOT / "[기획서]" / "00_프로젝트_허브" / "AI_WORKFLOW.md"
 
 
 def read(name: str) -> str:
@@ -125,6 +128,84 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("재사용 Workflow", policy)
         self.assertIn("test_equipment_lifecycle_poc.gd", policy)
         self.assertIn("equipment_lifecycle_poc.tscn", policy)
+
+
+class LoopEngineeringPilotContractTests(unittest.TestCase):
+    def test_profile_is_shadow_first_and_a2_is_fail_closed(self) -> None:
+        profile = LOOP_PROFILE.read_text(encoding="utf-8")
+        for token in (
+            "BS-OPS-20260813-LOOP-01",
+            "BASE_LOOP_CONTRACT_COMMIT: 453f790821a108a1d4f6e1f4e45f6931c2396ee0",
+            "current_stage: SHADOW",
+            "current_effective_autonomy: A0_OBSERVE",
+            "default_autonomy_after_shadow: A2_EXECUTE_ISOLATED",
+            "a3_auto_merge_allowlist: []",
+            "scheduler_runtime_provider: NOT_CONFIGURED",
+            "P0_LOCAL_EXECUTOR_BOOTSTRAP",
+            "PRODUCT_WRITES_PROHIBITED_IN_SHADOW",
+            "TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED",
+        ):
+            self.assertIn(token, profile)
+
+        for protected in (
+            "data/",
+            "scripts/",
+            "scenes/",
+            "assets/",
+            "addons/",
+            "project.godot",
+            "project_core",
+            "save_compatibility",
+            "major_ux_meaning",
+        ):
+            self.assertIn(protected, profile)
+
+    def test_initial_run_contract_is_locked_bounded_and_read_only(self) -> None:
+        run = json.loads(LOOP_RUN.read_text(encoding="utf-8"))
+        self.assertEqual(1, run["schema_version"])
+        self.assertEqual("loop-engineering-run", run["contract_role"])
+        self.assertEqual("BS-OPS-20260813-LOOP-01", run["goal_id"])
+        self.assertEqual("BLACKSMITH", run["project_id"])
+        self.assertEqual("PLANNING_LOCKED", run["planning_gate"]["status"])
+        self.assertTrue(run["planning_gate"]["loop_ready"])
+        self.assertEqual("A0_OBSERVE", run["autonomy_tier"])
+        self.assertEqual("8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486", run["source_main_sha"])
+        self.assertEqual("DISCOVER", run["loop_state"])
+        self.assertEqual([], run["leases"])
+
+        allowed_changes = set(run["planning_gate"]["allowed_changes"])
+        self.assertEqual(
+            {
+                "docs/operations/BLACKSMITH_LOOP_ENGINEERING_PROFILE.md",
+                "docs/operations/BLACKSMITH_LOOP_RUN_CONTRACT.json",
+                "[기획서]/00_프로젝트_허브/AI_WORKFLOW.md",
+                "tests/test_ci_workflow_structure.py",
+            },
+            allowed_changes,
+        )
+        for protected_root in ("data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"):
+            self.assertFalse(
+                any(path == protected_root or path.startswith(protected_root) for path in allowed_changes),
+                protected_root,
+            )
+
+        self.assertGreaterEqual(run["budget"]["max_agents"], 1)
+        self.assertEqual(1, run["budget"]["max_parallel_agents"])
+        self.assertIn("NOT_RUN", {item["status"] for item in run["evidence"]})
+        self.assertIn("USER_DECISION_REQUIRED", {item["classification"] for item in run["blockers"]})
+
+    def test_ai_workflow_routes_to_the_pilot_without_changing_base_release_pin(self) -> None:
+        workflow = AI_WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("BLACKSMITH_LOOP_ENGINEERING_PROFILE.md", workflow)
+        self.assertIn("BLACKSMITH_LOOP_RUN_CONTRACT.json", workflow)
+        self.assertIn("SHADOW → A2_EXECUTE_ISOLATED", workflow)
+
+        adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
+        self.assertEqual("9.4.3", adapter["base_release"]["version"])
+        self.assertEqual(
+            ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
+            adapter["protected_paths"],
+        )
 
 
 if __name__ == "__main__":
