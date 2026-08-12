@@ -10,7 +10,9 @@ loop_engineering_profile:
   profile_role: BLACKSMITH_PROJECT_LOOP_ENGINEERING_PILOT
   adoption_status: PILOT_ACTIVE
   BASE_LOOP_CONTRACT_COMMIT: 453f790821a108a1d4f6e1f4e45f6931c2396ee0
-  blacksmith_source_main_sha: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486
+  adoption_baseline_sha: 8e9a9cf8b0b053b5bfc5667b9a1070d3b45c3486
+  latest_shadow_source_main_sha: 50cd459964c274fdc46e5d0be25bb31d929452da
+  shadow_checkpoint_status: COMPLETE_DEFERRED_BY_PROTECTED_PR158
 
   planning_gate_required: PLANNING_LOCKED
   current_stage: SHADOW
@@ -38,9 +40,30 @@ loop_engineering_profile:
 
 사용자의 `블랙스미스에서 해보자` 요청은 이 운영 Pilot의 승인 근거다. 이는 Task3·신규 제품 범위·게임 코어 변경 승인이 아니다.
 
-## 2. 현재 허용 변경
+## 2. 첫 SHADOW checkpoint
 
-이번 Pilot 도입 PR의 writer 범위는 다음 네 경로뿐이다.
+`BS-LOOP-SHADOW-001`은 `50cd459964c274fdc46e5d0be25bb31d929452da` 기준으로 읽기 전용 실행을 완료했다.
+
+```text
+current main·정본·보호면 readback
+→ 열린 PR·Branch 확인
+→ PR #158 protected authority collision 확인
+→ PR #81 reference-only 확인
+→ 제품 writer lease 0
+→ NO_DRIFT
+→ A2_PRODUCT_EXECUTION_DEFERRED
+```
+
+관찰 결과:
+
+- PR #158은 Phase C continuation/P2 라우팅을 소유한다고 주장하지만 `AGENTS.md`, 현재 결정, Active Context, Development Gates, Roadmap, Start Here를 변경하는 Draft다. 병합 전 주장은 현재 main 정본이 아니며 보호면 검토 없이 A2가 소비할 수 없다.
+- PR #81은 `REFERENCE ONLY · DO NOT MERGE`이며 구현 입력으로 사용하지 않는다.
+- 별도 A2 제품 Task를 만들면 #158과 중복·권한 충돌이 생기므로 product writer lease를 만들지 않았다.
+- 이 checkpoint는 제품 의미를 바꾸지 않았고 `NO_DRIFT`다.
+
+## 3. 현재 허용 변경
+
+Pilot 운영·checkpoint writer 범위는 다음 경로뿐이다.
 
 ```text
 docs/operations/BLACKSMITH_LOOP_ENGINEERING_PROFILE.md
@@ -51,7 +74,7 @@ tests/test_ci_workflow_structure.py
 
 SHADOW 실행 중에는 persistent 제품 변경을 하지 않는다. 조사·분류·정본 readback·작업 정당화·검증 계획만 기록한다.
 
-## 3. 보호면
+## 4. 보호면
 
 다음 repository root는 SHADOW에서 읽기 전용이며 A2에서도 별도 승인된 작업 계약·resource lock·검증 없이는 변경할 수 없다.
 
@@ -90,7 +113,7 @@ semantic_resource_locks:
 - repository workflow·ruleset·권한 변경
 - 이미지 생성 또는 승인 자산 변경
 
-## 4. SHADOW 계약
+## 5. SHADOW 계약
 
 SHADOW는 `A0_OBSERVE`다.
 
@@ -118,17 +141,18 @@ WORK_JUSTIFICATION_GATE:
 
 승인된 acceptance criterion, 실제 bug/regression, 검증된 canon drift, 승인 구현의 기술 의존성 중 어느 것에도 연결되지 않으면 `IMPROVEMENT_CANDIDATE / DEFER`다.
 
-## 5. A2 승격 Gate
+## 6. A2 승격 Gate
 
 SHADOW에서 A2로 승격하려면 다음을 모두 충족해야 한다.
 
 1. Pilot Profile과 Run Contract의 exact-head CI가 PASS다.
-2. 도입 PR diff에 보호된 제품 root 변경이 0개다.
-3. 현재 main SHA와 Run의 `source_main_sha`가 일치하거나 최신 main으로 재조정됐다.
+2. 변경 diff에 보호된 제품 root 변경이 0개다.
+3. 현재 main SHA와 새 Run의 `source_main_sha`가 일치한다.
 4. P0/P1 적대적 finding과 unresolved review thread가 0개다.
 5. Builder와 최종 Verifier/Critic 역할을 분리한다.
 6. 첫 A2 Task가 이미 승인된 Blacksmith canon 범위에 있고 별도 `LOOP_RUN_CONTRACT`로 잠긴다.
 7. Godot persistent authoring이 필요하면 `P0_LOCAL_EXECUTOR_BOOTSTRAP`과 Codex 내부 fresh HiGodot receipt를 먼저 통과한다.
+8. PR #158이 병합·대체·종료된 뒤 새 main에서 protected authority collision이 사라졌는지 다시 읽는다.
 
 A2는 다음까지만 허용한다.
 
@@ -143,13 +167,13 @@ exact main에서 격리 Branch/Worktree 생성
 
 A2가 project core, player experience, major UX, save/data 의미, Task3 또는 새 제품 범위를 바꿔야만 진행할 수 있으면 `PLANNING_CONFLICT / USER_DECISION_REQUIRED`다.
 
-## 6. A3·지속 실행·자기개선
+## 7. A3·지속 실행·자기개선
 
 - `a3_auto_merge_allowlist: []`는 fail-closed 기본값이다. 이번 Pilot에서 자동 병합 범주를 만들지 않는다.
 - `scheduler_runtime_provider: NOT_CONFIGURED`다. 이 파일은 24/7 scheduler, webhook, daemon 또는 상시 Agent를 설치하지 않는다.
 - 실행 경험은 `Learning != Canon`이다. 반복 관찰은 `IMPROVEMENT_CANDIDATE`로 남기고 공용 변경은 기존 BCP 경계를 거친다.
 
-## 7. Evidence ceiling
+## 8. Evidence ceiling
 
 ```text
 E0_CONTRACT       Pilot 계약 존재
@@ -161,9 +185,9 @@ E5_PLAY           실제 플레이
 E6_HUMAN_PLAYTEST 사람 플레이테스트
 ```
 
-이번 도입 PR의 목표 ceiling은 E2다. Godot runtime, Android 실기기, 시각 결과, 사람 플레이테스트는 제품 변경이 없으므로 실행하지 않으며 각각 `NOT_RUN` 또는 `HUMAN_NOT_RUN`으로 유지한다.
+PR #159과 병합 main `50cd459...`에서 E1·E2와 기존 Godot headless 회귀 E3는 PASS다. 이는 새 플레이 경험의 runtime 검증이 아니라 기존 프로젝트 회귀 호환 증거다. Android 실기기, 새 시각 결과, 접근성, 성능, 실제 플레이와 사람 플레이테스트는 `NOT_RUN`이다.
 
-## 8. 실패·중지·롤백
+## 9. 실패·중지·롤백
 
 다음은 즉시 해당 Task를 중지한다.
 
@@ -175,9 +199,9 @@ E6_HUMAN_PLAYTEST 사람 플레이테스트
 - `RETRY_LIMIT`
 - `NO_PROGRESS`
 
-Rollback은 이 도입 PR의 네 경로를 이전 main 상태로 되돌리는 것이다. 제품 root를 건드리지 않았으므로 제품 save/data/runtime rollback은 발생하지 않는다.
+Rollback은 Pilot 운영 경로를 이전 main 상태로 되돌리는 것이다. 제품 root를 건드리지 않았으므로 제품 save/data/runtime rollback은 발생하지 않는다.
 
-## 9. 검증
+## 10. 검증
 
 ```text
 python -m unittest tests/test_ci_workflow_structure.py -v
