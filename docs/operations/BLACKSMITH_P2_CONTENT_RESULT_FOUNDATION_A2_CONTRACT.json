@@ -4,16 +4,21 @@
   "decision_id": "BS-VS-P2-20260813-01",
   "goal_id": "P2_CONTENT_RESULT_FOUNDATION",
   "project_id": "BLACKSMITH",
-  "status": "IMPLEMENTED_PENDING_EXACT_HEAD_VALIDATION",
+  "status": "MERGED_MAIN_VALIDATED",
   "source_main_sha": "35d86bf88497e09ebe59d37a2ab5a0b32f1e595f",
   "autonomy_tier": "A2_EXECUTE_ISOLATED",
   "branch": "feat/p2-content-result-foundation-20260813",
   "execution_state": {
     "implementation_pr": 162,
     "tdd_red_head": "3632f2efc8a48a9506f1ceae548891c9c95c07da",
-    "branch_product_state": "IMPLEMENTED",
-    "exact_head_validation": "PENDING",
-    "main_canon": "NOT_YET_MERGED"
+    "branch_product_state": "SQUASH_MERGED",
+    "exact_head_validation": "PASS",
+    "exact_head": "b0118e980df06c641c6b19372f364fa52a94b394",
+    "main_canon": "78eeb4c442a917051b327ddc050f9337b41516b0",
+    "postmerge_full_validation_run": 31653614060,
+    "postmerge_full_validation": "PASS",
+    "live_editor_pilot_run": 31653614171,
+    "live_editor_pilot": "PASS"
   },
   "objective": "Validate and persist approved D01-D09 content result identity, item UID references, three result axes, causal reasons, and one next action inside the existing resolved_events save container without implementing customer, schedule, probability, reward, or scene behavior.",
   "player_value": [
@@ -81,7 +86,8 @@
     "observed_base_validator_commit": "4ec410e611152294f3f2685570fca6019c7abcfa",
     "observed_behavior": "The current canonical protected patterns data/ and scripts/ are evaluated with fnmatch semantics and do not classify descendant file changes such as data/vertical_slice/... or scripts/vertical_slice/... as one protected-path error.",
     "this_pr_action": "Do not change adapter policy or workflows in this product PR. Remove the stale one-shot approval manifest and label, retain the user-approved A2 scope contract, audit the exact PR diff, and require all remaining exact-head CI gates.",
-    "follow_up": "Promote recursive protected-path matching semantics to a separate Base governance fix before the next protected product package."
+    "follow_up": "Promote recursive protected-path matching semantics to a separate Base governance fix before the next protected product package.",
+    "follow_up_issue": "alsdmlals4-eng/Base#314"
   },
   "tdd": {
     "required": true,
@@ -100,10 +106,10 @@
     "post-merge main full validation and readback"
   ],
   "evidence_ceiling": {
-    "contract": "REQUIRED",
-    "static": "REQUIRED",
-    "test": "REQUIRED",
-    "runtime": "GODOT_HEADLESS_PARSE_AND_GUT_REQUIRED",
+    "contract": "PASS",
+    "static": "PASS",
+    "test": "PASS",
+    "runtime": "GODOT_HEADLESS_PARSE_AND_GUT_PASS",
     "visual": "NOT_APPLICABLE_NO_VISUAL_CHANGE",
     "play": "NOT_RUN",
     "human_playtest": "NOT_RUN",
@@ -117,5 +123,5 @@
     "scope_classification": "EXISTING_APPROVED_CANON_TECHNICAL_FOUNDATION_ONLY",
     "merge_authority": "APPROVED_ITEM_INHERITS_MERGE_AUTHORITY_AFTER_EXACT_HEAD_GREEN_AND_ADVERSARIAL_REVIEW"
   },
-  "rollback": "Revert the exact allowed diff and retain save schema version 1. No one-shot protected-change approval manifest is retained by this package."
+  "rollback": "Revert the PR #162 squash merge to remove the product package. Save schema remains version 1 and no migration rollback is required. Revert the postmerge closure PR separately to restore the prior operational state documents."
 }

@@ -2,9 +2,25 @@
 
 Decision: `BS-VS-P2-20260813-01`
 
-Status: `USER_APPROVED / PHASE_C_EXISTING_CANON_ONLY / IMPLEMENTED_ON_PR_162 / EXACT_HEAD_VALIDATION_REQUIRED`
+Status: `MERGED_MAIN_CANON / POSTMERGE_FULL_VALIDATION_PASS / PHASE_C_EXISTING_CANON_ONLY`
 
 > 이 문서는 현재 설계 정본이다. 최초 구현 계획의 일회성 `PROJECT_PROTECTED_CHANGE_APPROVAL` 단계는 현행 어댑터의 하위 경로 감지 방식과 충돌하여 폐기됐다. 실제 처리와 후속 기준은 8절 및 A2 실행 계약을 우선한다.
+
+## 0. Postmerge Closure
+
+```text
+IMPLEMENTATION_PR: 162
+TDD_RED_HEAD: 3632f2efc8a48a9506f1ceae548891c9c95c07da
+EXACT_HEAD: b0118e980df06c641c6b19372f364fa52a94b394
+MERGED_MAIN_CANON: 78eeb4c442a917051b327ddc050f9337b41516b0
+```
+
+- Full Validation run `31653614060`: `PASS`
+- Live-Editor Pilot run `31653614171`: `PASS`
+- Base 보호 경로 후속: `alsdmlals4-eng/Base#314`
+- Android 실기기·사람 플레이테스트·접근성·성능·Sheet 동기화: `NOT_RUN`
+
+P2 A2 제품 Writer Lease는 병합과 postmerge 검증으로 폐쇄됐다. 다음 Phase C 제품 패키지는 자동 선택하지 않으며 별도 A0 SHADOW와 승인된 A2 계약이 필요하다.
 
 ## 1. Goal
 
@@ -173,15 +189,15 @@ HiGodot-owned surfaces `project.godot`, `*.tscn`, `*.tres`, `*.res`, node graph,
 1. 프로젝트 회귀 테스트는 이전 Task2에서 소비된 전역 일회성 파일 `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`이 존재하면 실패한다.
 2. Base validator commit `4ec410e611152294f3f2685570fca6019c7abcfa`의 현재 protected pattern `data/`, `scripts/`는 `fnmatch` 방식에서 하위 파일을 한 개의 protected-path error로 분류하지 못한다. 따라서 매니페스트와 라벨을 추가해도 승인 reconciler가 사용할 정확한 오류가 만들어지지 않는다.
 
-현재 PR의 최소 처리:
+PR #162의 최소 처리:
 
 - 일회성 매니페스트 삭제.
 - `approved-protected-change` 라벨 제거.
-- 어댑터·워크플로·보호 정책 자체는 이 제품 PR에서 변경하지 않음.
+- 어댑터·워크플로·보호 정책 자체는 제품 PR에서 변경하지 않음.
 - 사용자 승인 A2 계약, 정확 PR 변경 경로 감사, Python/GUT/Godot/기타 CI를 요구.
-- 재귀적 보호 경로 의미 수정은 별도 Base 승격 후보로 분리.
+- 재귀적 보호 경로 의미 수정은 `alsdmlals4-eng/Base#314`로 분리.
 
-이 처리로 보호 정책을 승인 없이 약화하거나 제품 범위를 확장하지 않는다. 현재 검증기가 실제로 적용하는 계약과 PR의 명시적 승인 범위를 일치시키고, 검증기 결함 수정은 독립 작업으로 남긴다.
+이 처리로 보호 정책을 승인 없이 약화하거나 제품 범위를 확장하지 않았다. 현재 검증기가 실제로 적용하는 계약과 PR의 명시적 승인 범위를 일치시키고, 검증기 결함 수정은 독립 작업으로 남겼다.
 
 ## 9. Files
 
@@ -204,21 +220,32 @@ Documentation:
 - `docs/superpowers/specs/2026-08-13-blacksmith-content-result-foundation-design.md`
 - `docs/superpowers/plans/2026-08-13-blacksmith-content-result-foundation.md` — 최초 실행 계획 및 RED 절차 기록. 8절의 실제 gate deviation은 이 정본 설계를 우선한다.
 
-No scene/resource/project settings files are changed.
+No scene/resource/project settings files were changed.
 
 ## 10. Acceptance
 
-- Data contract is an exact structural mirror of current D01–D09 decision/content/customer/result-axis tuples.
-- Valid D01, D03, and D09 records pass.
-- Wrong decision/customer/axis set fails.
-- Invalid/duplicate UID references fail according to policy.
-- Unknown score/progression fields fail.
-- Existing generic resolved events continue to load unchanged.
-- Typed result records survive save/load without reroll or key drift.
-- Python, GUT, Godot import/parse, current Project Base Adapter validation, and project regression suites pass at exact PR head.
-- Exact PR changed paths remain inside the approved A2 contract and contain no HiGodot-owned surface.
-- Android device, visual result, accessibility, performance, and human playtest remain `NOT_RUN`.
+확인된 완료 기준:
+
+- Data contract가 current D01–D09 decision/content/customer/result-axis tuple을 정확히 반영한다.
+- Valid D01, D03, D09 레코드가 통과한다.
+- 잘못된 decision/customer/axis set이 실패한다.
+- 정책별 invalid/duplicate UID 참조가 실패한다.
+- unknown score/progression field가 실패한다.
+- 기존 generic resolved event가 변경 없이 load된다.
+- typed result record가 reroll이나 key drift 없이 save/load된다.
+- Python, GUT, Godot import/parse, Project Base Adapter, Base adoption, BCA, Thin Adapter가 exact head에서 PASS했다.
+- postmerge Full Validation과 Live-Editor Pilot이 PASS했다.
+- PR changed paths는 승인된 A2 범위에만 있었고 HiGodot-owned surface는 없었다.
+
+증거 한계:
+
+- Android device: `NOT_RUN`
+- visual result: `NOT_APPLICABLE_NO_VISUAL_CHANGE`
+- accessibility: `NOT_RUN`
+- performance: `NOT_RUN`
+- human playtest: `NOT_RUN`
+- Sheet synchronization: `NOT_RUN`
 
 ## 11. Rollback
 
-Revert the created contract/domain/test files and restore `vs_save_envelope.gd`, `test_vs_save_service.gd`, and the Python test router. Save schema remains version 1, so no migration rollback is required. Any save containing `CONTENT_RESULT_V1` remains plain Dictionary data to older code, but release use is not authorized before the package is merged and validated.
+PR #162 squash merge를 revert하면 생성된 contract/domain/test 파일과 `vs_save_envelope.gd`, `test_vs_save_service.gd`, Python test router 변경을 되돌릴 수 있다. Save schema remains version 1이므로 migration rollback은 필요하지 않다. Postmerge 폐쇄 문서는 별도 closure PR을 revert해 이전 운영 상태로 복원한다.
