@@ -6,6 +6,7 @@ const UidServiceScript = preload("res://scripts/vertical_slice/services/vs_uid_s
 const SaveServiceScript = preload("res://scripts/vertical_slice/services/vs_save_service.gd")
 
 const TEST_SAVE_PATH := "user://blacksmith_vertical_slice_task1_gut.json"
+const ITEM_UID := "BSI-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
 
 func before_each() -> void:
@@ -18,7 +19,7 @@ func after_each() -> void:
 
 func _make_item():
 	var item = ItemScript.new()
-	item.uid = "BSI-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	item.uid = ITEM_UID
 	item.birth_rng_seed = 818181
 	item.primary_material_id = "meteor_iron"
 	item.equipment_group = "SWORD"
@@ -40,6 +41,28 @@ func _make_item():
 	return item
 
 
+func _make_nadia_result() -> Dictionary:
+	return {
+		"schema_version": 1,
+		"record_type": "CONTENT_RESULT_V1",
+		"event_id": "nadia-result-001",
+		"source_decision_id": "BS-CONTENT-20260811-01",
+		"content_id": "ADVENTURER_01",
+		"customer_id": "NADIA_VENN",
+		"occurred_at_game_day": 4,
+		"item_refs": [
+			{"role": "PRIMARY_ITEM", "uid": ITEM_UID},
+		],
+		"result_axes": {
+			"EXPEDITION_RETURN_STATE": "RETURNED",
+			"RECOVERY_STATE": "PARTIAL_RECOVERY",
+			"ITEM_UID_LIFECYCLE_STATE": "DAMAGED_RETURN",
+		},
+		"causal_reasons": ["LOAD_GATE_PASSED", "UTILITY_MATCHED"],
+		"primary_next_action": "REPAIR_ITEM",
+	}
+
+
 func _make_envelope():
 	var envelope = SaveEnvelopeScript.new()
 	envelope.saved_at_utc = "2026-08-07T00:00:00Z"
@@ -52,7 +75,7 @@ func _make_envelope():
 			"arena_result": {"rng_seed": 414141, "result": "DAMAGED"},
 		},
 	}
-	envelope.customer_state = {"gladiator": {"assigned_uid": "BSI-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}}
+	envelope.customer_state = {"gladiator": {"assigned_uid": ITEM_UID}}
 	envelope.schedule_state = {"arena": {"resolved": true}}
 	envelope.global_ledger_sequence = 2
 	assert_eq(envelope.add_item(_make_item()), OK, "valid item should enter envelope")
@@ -82,13 +105,62 @@ func test_save_load_preserves_resolved_state() -> void:
 	assert_eq(restored.customer_state, envelope.customer_state, "customer state changed")
 	assert_eq(restored.schedule_state, envelope.schedule_state, "schedule state changed")
 	assert_eq(restored.global_ledger_sequence, 2, "global ledger sequence changed")
-	var item = restored.get_item("BSI-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	var item = restored.get_item(ITEM_UID)
 	assert_true(item != null, "saved item missing")
 	if item != null:
 		assert_eq(item.birth_rng_seed, 818181, "birth seed rerolled")
 		assert_eq(item.crafting_grade, "CRAFT_LEGENDARY", "crafting grade rerolled")
 		assert_eq(item.enhancement_level, 10, "enhancement level changed")
 		assert_eq(item.damage_state, "DAMAGED", "damage result changed")
+
+
+func test_typed_content_result_survives_save_load() -> void:
+	var service = SaveServiceScript.new(TEST_SAVE_PATH)
+	var envelope = _make_envelope()
+	var expected: Dictionary = _make_nadia_result()
+	envelope.active_run["resolved_events"][expected["event_id"]] = expected
+	assert_eq(service.save_envelope(envelope), OK, "typed content result save should succeed")
+	var restored = service.load_envelope()
+	assert_true(restored.validation_errors.is_empty(), str(restored.validation_errors))
+	assert_eq(
+		restored.active_run["resolved_events"][expected["event_id"]],
+		expected,
+		"typed content result changed during round trip"
+	)
+
+
+func test_typed_content_result_key_mismatch_fails() -> void:
+	var envelope = _make_envelope()
+	envelope.active_run["resolved_events"]["wrong-key"] = _make_nadia_result()
+	var restored = SaveEnvelopeScript.from_dict(envelope.to_dict())
+	assert_true(
+		restored.validation_errors.has(
+			"CONTENT_RESULT:wrong-key:CONTENT_RESULT_EVENT_KEY_MISMATCH"
+		),
+		str(restored.validation_errors)
+	)
+
+
+func test_invalid_typed_content_result_is_prefixed_with_event_id() -> void:
+	var envelope = _make_envelope()
+	var invalid: Dictionary = _make_nadia_result()
+	invalid["result_axes"].erase("RECOVERY_STATE")
+	envelope.active_run["resolved_events"][invalid["event_id"]] = invalid
+	var restored = SaveEnvelopeScript.from_dict(envelope.to_dict())
+	assert_true(
+		restored.validation_errors.has(
+			"CONTENT_RESULT:nadia-result-001:RESULT_AXIS_SET_MISMATCH"
+		),
+		str(restored.validation_errors)
+	)
+
+
+func test_legacy_generic_events_remain_pass_through() -> void:
+	var envelope = _make_envelope()
+	var expected: Dictionary = envelope.active_run["resolved_events"].duplicate(true)
+	var restored = SaveEnvelopeScript.from_dict(envelope.to_dict())
+	assert_true(restored.validation_errors.is_empty(), str(restored.validation_errors))
+	assert_eq(restored.active_run["resolved_events"], expected)
 
 
 func test_atomic_paths_are_clean_after_success() -> void:
