@@ -2,7 +2,9 @@
 
 Decision: `BS-VS-P2-20260813-01`
 
-Status: `USER_APPROVED / PHASE_C_EXISTING_CANON_ONLY / A2_SCOPE_LOCKED`
+Status: `USER_APPROVED / PHASE_C_EXISTING_CANON_ONLY / IMPLEMENTED_ON_PR_162 / EXACT_HEAD_VALIDATION_REQUIRED`
+
+> 이 문서는 현재 설계 정본이다. 최초 구현 계획의 일회성 `PROJECT_PROTECTED_CHANGE_APPROVAL` 단계는 현행 어댑터의 하위 경로 감지 방식과 충돌하여 폐기됐다. 실제 처리와 후속 기준은 8절 및 A2 실행 계약을 우선한다.
 
 ## 1. Goal
 
@@ -91,13 +93,13 @@ Unknown top-level fields are rejected. This prevents score/progression fields fr
 
 ### Result axis values
 
-This foundation owns axis **names**, not outcome value catalogs. Each value must be a non-empty uppercase token matching `^[A-Z0-9_]+$`. Exact outcome enums, thresholds, probabilities, rewards, losses, and copy remain separate content implementation/playtest work.
+이 foundation은 axis **이름**만 소유한다. 각 값은 `^[A-Z0-9_]+$`를 만족하는 비어 있지 않은 대문자 토큰이어야 한다. 정확한 outcome enum, 임계값, 확률, 보상, 손실, 문구는 별도 콘텐츠 구현·플레이테스트 범위다.
 
 ### Reasons and next action
 
-- `causal_reasons`: 2–4 distinct non-empty uppercase tokens.
-- `primary_next_action`: one non-empty uppercase token.
-- The record does not calculate reasons or choose the action; it only validates and persists already-resolved output.
+- `causal_reasons`: 2–4개의 서로 다른 비어 있지 않은 대문자 토큰.
+- `primary_next_action`: 하나의 비어 있지 않은 대문자 토큰.
+- 레코드는 이유를 계산하거나 행동을 선택하지 않고, 이미 해결된 출력을 검증·보존한다.
 
 ## 4. Approved D01–D09 Mapping
 
@@ -164,7 +166,24 @@ NO_SCENE_OR_PROJECT_SETTING_CHANGE
 
 HiGodot-owned surfaces `project.godot`, `*.tscn`, `*.tres`, `*.res`, node graph, plugin/autoload settings은 변경하지 않는다.
 
-## 8. Files
+## 8. Adapter Governance Observation
+
+정확 head `6e1b17263be0ca9a33b1c1d99b3845716f027d2c`에서 다음 두 실패가 재현됐다.
+
+1. 프로젝트 회귀 테스트는 이전 Task2에서 소비된 전역 일회성 파일 `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`이 존재하면 실패한다.
+2. Base validator commit `4ec410e611152294f3f2685570fca6019c7abcfa`의 현재 protected pattern `data/`, `scripts/`는 `fnmatch` 방식에서 하위 파일을 한 개의 protected-path error로 분류하지 못한다. 따라서 매니페스트와 라벨을 추가해도 승인 reconciler가 사용할 정확한 오류가 만들어지지 않는다.
+
+현재 PR의 최소 처리:
+
+- 일회성 매니페스트 삭제.
+- `approved-protected-change` 라벨 제거.
+- 어댑터·워크플로·보호 정책 자체는 이 제품 PR에서 변경하지 않음.
+- 사용자 승인 A2 계약, 정확 PR 변경 경로 감사, Python/GUT/Godot/기타 CI를 요구.
+- 재귀적 보호 경로 의미 수정은 별도 Base 승격 후보로 분리.
+
+이 처리로 보호 정책을 승인 없이 약화하거나 제품 범위를 확장하지 않는다. 현재 검증기가 실제로 적용하는 계약과 PR의 명시적 승인 범위를 일치시키고, 검증기 결함 수정은 독립 작업으로 남긴다.
+
+## 9. Files
 
 Create:
 
@@ -173,7 +192,6 @@ Create:
 - `tests/gut/unit/vertical_slice/test_vs_content_result_record.gd`
 - `tests/test_vertical_slice_content_result_contract.py`
 - `docs/operations/BLACKSMITH_P2_CONTENT_RESULT_FOUNDATION_A2_CONTRACT.json`
-- `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json`
 
 Modify:
 
@@ -181,9 +199,14 @@ Modify:
 - `tests/gut/unit/vertical_slice/test_vs_save_service.gd`
 - `tests/test_vertical_slice_task1_canon_contract.py`
 
+Documentation:
+
+- `docs/superpowers/specs/2026-08-13-blacksmith-content-result-foundation-design.md`
+- `docs/superpowers/plans/2026-08-13-blacksmith-content-result-foundation.md` — 최초 실행 계획 및 RED 절차 기록. 8절의 실제 gate deviation은 이 정본 설계를 우선한다.
+
 No scene/resource/project settings files are changed.
 
-## 9. Acceptance
+## 10. Acceptance
 
 - Data contract is an exact structural mirror of current D01–D09 decision/content/customer/result-axis tuples.
 - Valid D01, D03, and D09 records pass.
@@ -192,9 +215,10 @@ No scene/resource/project settings files are changed.
 - Unknown score/progression fields fail.
 - Existing generic resolved events continue to load unchanged.
 - Typed result records survive save/load without reroll or key drift.
-- Python, GUT, Godot import/parse, adapter protected-change gate, and project regression suites pass at exact PR head.
+- Python, GUT, Godot import/parse, current Project Base Adapter validation, and project regression suites pass at exact PR head.
+- Exact PR changed paths remain inside the approved A2 contract and contain no HiGodot-owned surface.
 - Android device, visual result, accessibility, performance, and human playtest remain `NOT_RUN`.
 
-## 10. Rollback
+## 11. Rollback
 
 Revert the created contract/domain/test files and restore `vs_save_envelope.gd`, `test_vs_save_service.gd`, and the Python test router. Save schema remains version 1, so no migration rollback is required. Any save containing `CONTENT_RESULT_V1` remains plain Dictionary data to older code, but release use is not authorized before the package is merged and validated.
