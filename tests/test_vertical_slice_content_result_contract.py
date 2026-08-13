@@ -138,7 +138,7 @@ class VerticalSliceContentResultContractTests(unittest.TestCase):
         source = SAVE.read_text(encoding="utf-8")
         self.assertIn("vs_content_result_record.gd", source)
         self.assertIn('record_type", ""', source)
-        self.assertIn("CONTENT_RESULT_V1", source)
+        self.assertIn("ContentResultRecordScript.RECORD_TYPE", source)
         self.assertIn("CONTENT_RESULT_EVENT_KEY_MISMATCH", source)
         self.assertIn("CONTENT_RESULT:%s:%s", source)
 
