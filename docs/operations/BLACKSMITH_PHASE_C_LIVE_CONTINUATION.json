@@ -3,7 +3,7 @@
   "artifact_role": "BLACKSMITH_PHASE_C_LIVE_CONTINUATION",
   "decision_id": "BS-OPS-20260811-03",
   "checkpoint": {
-    "source_main_sha": "e3c99ff8d550c9d8022014996c09f4300a99e186",
+    "source_main_sha": "78eeb4c442a917051b327ddc050f9337b41516b0",
     "captured_date_kst": "2026-08-13",
     "resume_rule": "FETCH_LATEST_MAIN_BEFORE_USE"
   },
@@ -17,10 +17,22 @@
   },
   "phase_c": {
     "scope": "APPROVED_WITHIN_EXISTING_CANON_ONLY",
-    "next_package": "P2_FOUNDATION_DATA_AND_STATE_CONTRACTS",
-    "product_writer_gate": "SEPARATE_A2_CONTRACT_REQUIRED",
+    "completed_package": {
+      "package_id": "P2_CONTENT_RESULT_FOUNDATION",
+      "decision_id": "BS-VS-P2-20260813-01",
+      "pr": 162,
+      "exact_head": "b0118e980df06c641c6b19372f364fa52a94b394",
+      "merge_main": "78eeb4c442a917051b327ddc050f9337b41516b0",
+      "postmerge_full_validation_run": 31653614060,
+      "postmerge_full_validation": "PASS",
+      "live_editor_pilot_run": 31653614171,
+      "live_editor_pilot": "PASS"
+    },
+    "next_package": "UNSELECTED_USER_DECISION_REQUIRED",
+    "product_writer_gate": "CLOSED_NO_ACTIVE_A2",
     "task3": "NOT_SEPARATELY_APPROVED",
-    "image_generation": "DEFERRED_BY_USER"
+    "image_generation": "DEFERRED_BY_USER",
+    "base_follow_up_issue": "alsdmlals4-eng/Base#314"
   },
   "runtime": {
     "receipt_path": "docs/superpowers/receipts/2026-08-12-bs-ops-20260811-03-local-runtime-and-bootstrap-fix.md",
@@ -66,7 +78,7 @@
   ],
   "next_action": {
     "mode": "A0_SHADOW",
-    "task": "P2_FOUNDATION_DATA_AND_STATE_CONTRACTS_READBACK_AND_SEPARATE_A2_CONTRACT",
+    "task": "SELECT_NEXT_EXISTING_CANON_PACKAGE_OR_REQUEST_NEW_DECISION",
     "product_mutation": "NOT_AUTHORIZED_BY_THIS_ARTIFACT"
   }
 }
