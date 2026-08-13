@@ -1,6 +1,7 @@
 extends "res://addons/gut/test.gd"
 
 const RecordScript = preload("res://scripts/vertical_slice/domain/vs_content_result_record.gd")
+const CONTRACT_PATH := "res://data/vertical_slice/content_result_contract.json"
 
 const UID_A := "BSI-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 const UID_B := "BSI-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
@@ -71,6 +72,52 @@ func _kyle_record(with_replacement: bool = true) -> Dictionary:
 		),
 	}
 	return value
+
+
+func test_runtime_contract_matches_machine_contract() -> void:
+	var file := FileAccess.open(CONTRACT_PATH, FileAccess.READ)
+	assert_true(file != null, "content result machine contract must be readable")
+	if file == null:
+		return
+	var source := file.get_as_text()
+	file.close()
+	var parsed: Variant = JSON.parse_string(source)
+	assert_true(parsed is Dictionary, "content result machine contract must parse")
+	if not parsed is Dictionary:
+		return
+	var contract: Dictionary = parsed
+	assert_eq(RecordScript.SCHEMA_VERSION, int(contract.get("schema_version", 0)))
+	assert_eq(RecordScript.RECORD_TYPE, str(contract.get("record_type", "")))
+	assert_eq(RecordScript.UID_PATTERN, str(contract.get("uid_pattern", "")))
+	assert_eq(RecordScript.STATE_TOKEN_PATTERN, str(contract.get("state_token_pattern", "")))
+	assert_eq(RecordScript.REQUIRED_FIELDS, contract.get("required_fields", []))
+	assert_eq(
+		RecordScript.ITEM_REF_REQUIRED_FIELDS,
+		contract.get("item_ref_required_fields", [])
+	)
+	assert_eq(RecordScript.ALLOWED_ITEM_ROLES, contract.get("allowed_item_roles", []))
+
+	var raw_entries: Variant = contract.get("content_contracts", [])
+	assert_true(raw_entries is Array, "content contracts must be an array")
+	if not raw_entries is Array:
+		return
+	var declared: Dictionary = {}
+	for raw_entry in raw_entries:
+		assert_true(raw_entry is Dictionary, "each content contract must be a dictionary")
+		if not raw_entry is Dictionary:
+			continue
+		var entry: Dictionary = raw_entry
+		declared[str(entry.get("content_id", ""))] = {
+			"decision_id": str(entry.get("decision_id", "")),
+			"customer_id": str(entry.get("customer_id", "")),
+			"result_axes": entry.get("result_axes", []),
+			"item_ref_policy": str(entry.get("item_ref_policy", "")),
+		}
+	assert_eq(
+		RecordScript.CONTENT_CONTRACTS,
+		declared,
+		"runtime D01-D09 mapping drifted from the machine contract"
+	)
 
 
 func test_valid_single_item_record_round_trips() -> void:
