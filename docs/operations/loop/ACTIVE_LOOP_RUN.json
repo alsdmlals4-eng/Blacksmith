@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "contract_role": "LOOP_ACTIVE_RUN",
+  "contract_role": "LOOP_ACTIVE_RUN_POINTER",
   "project_id": "BLACKSMITH",
   "source_main_sha": "c969c8ed9c6306f60c851fc85ed97e0ffa885305",
   "active_run": null
