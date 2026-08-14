@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 from tests.test_vertical_slice_content_result_contract import VerticalSliceContentResultContractTests  # noqa: F401
-from tests.test_universal_loop_capsule_migration import UniversalLoopCapsuleMigrationTests  # noqa: F401
+from tests.test_universal_loop_a2_burnin_authority import UniversalLoopA2BurninAuthorityTests  # noqa: F401
 
 ROOT = Path(__file__).resolve().parents[1]
 PRESET = ROOT / "data/vertical_slice/vertical_slice_preset.json"
