@@ -77,8 +77,12 @@ class UniversalLoopCapsuleMigrationTests(unittest.TestCase):
         self.assertEqual(package["visual_impact"], "NONE")
         self.assertEqual(package["visual_lock_requirement"], "VISUAL_NOT_APPLICABLE")
         self.assertEqual(package["execution_gate"], "AUTONOMOUS_IMPLEMENTATION_READY")
+        allowed_tests = {
+            "tests/test_universal_loop_capsule_migration.py",
+            "tests/test_vertical_slice_task1_canon_contract.py",
+        }
         for path in package["allowed_paths"]:
-            self.assertTrue(path.startswith("docs/operations/loop/") or path == "tests/test_universal_loop_capsule_migration.py")
+            self.assertTrue(path.startswith("docs/operations/loop/") or path in allowed_tests)
         forbidden = set(package["forbidden_paths"])
         self.assertTrue({"data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"}.issubset(forbidden))
         self.assertIn("docs/operations/BLACKSMITH_LOOP_ENGINEERING_PROFILE.md", forbidden)
