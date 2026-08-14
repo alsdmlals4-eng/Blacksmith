@@ -7,14 +7,18 @@
     "name": "Godot",
     "version": "4.7.1"
   },
-  "languages": ["GDScript", "Python"],
-  "source_roots": ["scripts/", "data/", "tests/"],
+  "languages": ["Python"],
+  "source_roots": ["docs/operations/loop/burnin/"],
   "test_commands": [
     {
-      "command_id": "UNIVERSAL_LOOP_CAPSULE_MIGRATION",
-      "argv": ["python", "-m", "unittest", "tests.test_universal_loop_capsule_migration", "-v"],
+      "command_id": "A2_BURNIN_MARKER_EXACT",
+      "argv": [
+        "python",
+        "-c",
+        "from pathlib import Path; import sys; p=Path('docs/operations/loop/burnin/BS_A2_BURNIN_MARKER.txt'); sys.exit(0 if p.is_file() and p.read_text(encoding='utf-8') == 'BLACKSMITH_A2_BURNIN_V1\\n' else 9)"
+      ],
       "working_directory": ".",
-      "timeout_seconds": 600,
+      "timeout_seconds": 60,
       "network": "DENIED"
     }
   ],
@@ -29,5 +33,5 @@
     "project.godot"
   ],
   "semantic_resource_domains": ["UNIVERSAL_LOOP_OPERATIONS"],
-  "rollback_strategy": "Revert the Universal Loop Capsule migration PR; no product data migration is involved."
+  "rollback_strategy": "Discard the generated A2 candidate and revert the burn-in authority PR; no product data migration is involved."
 }

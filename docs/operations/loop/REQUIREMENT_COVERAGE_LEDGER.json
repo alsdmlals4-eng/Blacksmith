@@ -2,29 +2,19 @@
   "schema_version": 1,
   "contract_role": "LOOP_REQUIREMENT_COVERAGE_LEDGER",
   "project_id": "BLACKSMITH",
-  "package_id": "BS_LOOP_MIGRATION_PKG_001",
-  "source_main_sha": "c969c8ed9c6306f60c851fc85ed97e0ffa885305",
+  "package_id": "BS_A2_BURNIN_TEST_ONLY_PKG_001",
+  "source_main_sha": "5267f542ef6ce99f98b3b407e42b146b5672335b",
   "status": "INITIALIZED",
   "requirements": [
     {
-      "requirement_id": "BS_LOOP_MIGRATION_001",
+      "requirement_id": "BS_A2_BURNIN_TEST_ONLY_001",
       "status": "MAPPED",
-      "tasks": ["TASK_MIGRATE_UNIVERSAL_CAPSULE"],
+      "tasks": ["TASK_WRITE_EXACT_A2_BURNIN_MARKER"],
       "outputs": [
-        "docs/operations/loop/PROJECT_EXECUTION_CAPSULE.json",
-        "docs/operations/loop/PLANNING_LOCK.json",
-        "docs/operations/loop/VISUAL_LOCK.json",
-        "docs/operations/loop/RUNTIME_ADAPTER.json",
-        "docs/operations/loop/IMPLEMENTATION_PACKAGE.json",
-        "docs/operations/loop/REQUIREMENT_COVERAGE_LEDGER.json",
-        "docs/operations/loop/ACTIVE_LOOP_RUN.json",
-        "docs/operations/loop/runs/BS_LOOP_MIGRATION_001.json",
-        "tests/test_universal_loop_capsule_migration.py",
-        "tests/test_vertical_slice_task1_canon_contract.py"
+        "docs/operations/loop/burnin/BS_A2_BURNIN_MARKER.txt"
       ],
       "tests": [
-        "tests/test_universal_loop_capsule_migration.py",
-        "tests/test_vertical_slice_task1_canon_contract.py"
+        "RUNTIME_ADAPTER:A2_BURNIN_MARKER_EXACT"
       ],
       "evidence": ["E1_STATIC", "E2_TEST"]
     }

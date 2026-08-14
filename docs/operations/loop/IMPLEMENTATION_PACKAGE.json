@@ -2,20 +2,11 @@
   "schema_version": 1,
   "contract_role": "LOOP_IMPLEMENTATION_PACKAGE",
   "project_id": "BLACKSMITH",
-  "package_id": "BS_LOOP_MIGRATION_PKG_001",
-  "source_main_sha": "c969c8ed9c6306f60c851fc85ed97e0ffa885305",
-  "requirement_ids": ["BS_LOOP_MIGRATION_001"],
+  "package_id": "BS_A2_BURNIN_TEST_ONLY_PKG_001",
+  "source_main_sha": "5267f542ef6ce99f98b3b407e42b146b5672335b",
+  "requirement_ids": ["BS_A2_BURNIN_TEST_ONLY_001"],
   "allowed_paths": [
-    "docs/operations/loop/PROJECT_EXECUTION_CAPSULE.json",
-    "docs/operations/loop/PLANNING_LOCK.json",
-    "docs/operations/loop/VISUAL_LOCK.json",
-    "docs/operations/loop/RUNTIME_ADAPTER.json",
-    "docs/operations/loop/IMPLEMENTATION_PACKAGE.json",
-    "docs/operations/loop/REQUIREMENT_COVERAGE_LEDGER.json",
-    "docs/operations/loop/ACTIVE_LOOP_RUN.json",
-    "docs/operations/loop/runs/BS_LOOP_MIGRATION_001.json",
-    "tests/test_universal_loop_capsule_migration.py",
-    "tests/test_vertical_slice_task1_canon_contract.py"
+    "docs/operations/loop/burnin/BS_A2_BURNIN_MARKER.txt"
   ],
   "forbidden_paths": [
     "data/",
@@ -24,19 +15,32 @@
     "assets/",
     "addons/",
     "project.godot",
+    "CURRENT_CONFIRMED_DECISIONS.md",
+    "docs/operations/BLACKSMITH_PHASE_C_LIVE_CONTINUATION.json",
     "docs/operations/BLACKSMITH_LOOP_ENGINEERING_PROFILE.md",
-    "docs/operations/BLACKSMITH_LOOP_RUN_CONTRACT.json"
+    "docs/operations/BLACKSMITH_LOOP_RUN_CONTRACT.json",
+    "docs/operations/loop/PROJECT_EXECUTION_CAPSULE.json",
+    "docs/operations/loop/PLANNING_LOCK.json",
+    "docs/operations/loop/VISUAL_LOCK.json",
+    "docs/operations/loop/RUNTIME_ADAPTER.json",
+    "docs/operations/loop/IMPLEMENTATION_PACKAGE.json",
+    "docs/operations/loop/REQUIREMENT_COVERAGE_LEDGER.json",
+    "docs/operations/loop/ACTIVE_LOOP_RUN.json",
+    "docs/operations/loop/runs/BS_A2_BURNIN_AUTHORITY_001.json",
+    "docs/operations/loop/runs/BS_LOOP_MIGRATION_001.json"
   ],
   "visual_impact": "NONE",
   "visual_lock_requirement": "VISUAL_NOT_APPLICABLE",
   "required_evidence_levels": ["E1_STATIC", "E2_TEST"],
   "resource_locks": ["UNIVERSAL_LOOP_OPERATIONS"],
   "acceptance_criteria": [
-    "All Universal Capsule files pass the Blacksmith migration contract.",
-    "All actual migration outputs are mapped by Requirement Coverage.",
-    "No product or visual authority path changes.",
-    "Active Run remains null and no next Phase C product package is selected."
+    "The candidate diff contains exactly docs/operations/loop/burnin/BS_A2_BURNIN_MARKER.txt.",
+    "The marker content is exactly BLACKSMITH_A2_BURNIN_V1 followed by one newline.",
+    "The A2_BURNIN_MARKER_EXACT denied-network project test passes before Critic.",
+    "No product path, product canon, visual authority, Figma state, asset, scene, save, balance, economy, or gameplay file changes.",
+    "phase_c.next_package remains UNSELECTED_USER_DECISION_REQUIRED and product_writer_gate remains CLOSED_NO_ACTIVE_A2.",
+    "A3 remains disabled and Scheduler remains NOT_CONFIGURED."
   ],
-  "rollback": "Revert the migration PR; legacy Loop pilot evidence and product state remain intact.",
+  "rollback": "Discard the generated A2 worktree candidate; revert the authority PR to restore the prior migration-current authority. No product data rollback is involved.",
   "execution_gate": "AUTONOMOUS_IMPLEMENTATION_READY"
 }
