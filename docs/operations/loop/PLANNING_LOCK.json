@@ -3,37 +3,39 @@
   "contract_role": "LOOP_PLANNING_LOCK",
   "project_id": "BLACKSMITH",
   "status": "PLANNING_LOCKED",
-  "source_commit": "c969c8ed9c6306f60c851fc85ed97e0ffa885305",
+  "source_commit": "5267f542ef6ce99f98b3b407e42b146b5672335b",
   "user_review": {
     "status": "APPROVED",
-    "approval_ref": "USER_APPROVAL_UNIVERSAL_LOOP_RECOMMENDED_PLAN_20260814"
+    "approval_ref": "USER_APPROVAL_RECOMMENDED_UNATTENDED_A2_BURNIN_20260815"
   },
   "authority_sources": [
     {
       "authority_id": "BLACKSMITH_AGENTS",
       "path": "AGENTS.md",
-      "source_commit": "c969c8ed9c6306f60c851fc85ed97e0ffa885305"
+      "source_commit": "5267f542ef6ce99f98b3b407e42b146b5672335b"
     },
     {
       "authority_id": "CURRENT_DECISIONS",
       "path": "CURRENT_CONFIRMED_DECISIONS.md",
-      "source_commit": "c969c8ed9c6306f60c851fc85ed97e0ffa885305"
+      "source_commit": "5267f542ef6ce99f98b3b407e42b146b5672335b"
     },
     {
       "authority_id": "PHASE_C_LIVE",
       "path": "docs/operations/BLACKSMITH_PHASE_C_LIVE_CONTINUATION.json",
-      "source_commit": "c969c8ed9c6306f60c851fc85ed97e0ffa885305"
+      "source_commit": "5267f542ef6ce99f98b3b407e42b146b5672335b"
     }
   ],
   "approved_requirements": [
     {
-      "requirement_id": "BS_LOOP_MIGRATION_001",
-      "statement": "Adopt Universal Loop Engineering operational contracts without changing approved Blacksmith product meaning or selecting a new product package.",
+      "requirement_id": "BS_A2_BURNIN_TEST_ONLY_001",
+      "statement": "Validate the subscription-native REAL A2 Builder to deterministic denied-network project-test to read-only Critic path by creating exactly one operations marker with exact content BLACKSMITH_A2_BURNIN_V1 followed by one newline, without changing Blacksmith product meaning or selecting a Phase C product package.",
       "acceptance_criteria": [
-        "Universal Capsule metadata is present and internally consistent.",
-        "Legacy Loop pilot evidence remains historical and unchanged.",
-        "No protected product path or visual asset is modified.",
-        "The next Phase C product package remains unselected."
+        "The Builder candidate changes exactly docs/operations/loop/burnin/BS_A2_BURNIN_MARKER.txt.",
+        "The marker content is exactly BLACKSMITH_A2_BURNIN_V1 followed by one newline.",
+        "The Runtime Adapter deterministic DENIED test passes before Critic.",
+        "No protected product path, product meaning, visual authority, or existing historical Loop evidence is modified by the runtime candidate.",
+        "phase_c.next_package remains UNSELECTED_USER_DECISION_REQUIRED and product_writer_gate remains CLOSED_NO_ACTIVE_A2.",
+        "A3 remains disabled and Scheduler remains NOT_CONFIGURED."
       ]
     }
   ],
@@ -46,9 +48,10 @@
     "ART_DIRECTION remains human-approved authority."
   ],
   "excluded_scope": [
+    "phase_c.next_package remains UNSELECTED_USER_DECISION_REQUIRED.",
+    "product_writer_gate remains CLOSED_NO_ACTIVE_A2.",
     "TASK3 remains NOT_SEPARATELY_APPROVED.",
-    "NEW_PRODUCT_SCOPE remains USER_DECISION_REQUIRED.",
-    "No new Phase C product package is selected by this migration.",
-    "No Figma, image, asset, scene, gameplay, balance, economy, or save-data change is included."
+    "This A2 burn-in transport package is not the Phase C product package.",
+    "No Figma, image, asset, scene, gameplay, balance, economy, save-data, product-code, or visual-authority change is included."
   ]
 }
