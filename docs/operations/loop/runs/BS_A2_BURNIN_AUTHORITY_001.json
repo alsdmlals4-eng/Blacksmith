@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "contract_role": "LOOP_IMMUTABLE_RUN",
+  "project_id": "BLACKSMITH",
+  "run_id": "BS_A2_BURNIN_AUTHORITY_001",
+  "package_id": "BS_A2_BURNIN_TEST_ONLY_PKG_001",
+  "source_main_sha": "5267f542ef6ce99f98b3b407e42b146b5672335b",
+  "state": "CREATED",
+  "evidence": [],
+  "findings": [],
+  "design_drift_status": "NOT_CHECKED",
+  "receipt_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+}
