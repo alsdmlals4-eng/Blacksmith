@@ -35,6 +35,7 @@ class UniversalLoopCapsuleMigrationTests(unittest.TestCase):
         self.assertEqual(capsule["autonomy"], "A2_EXECUTE_ISOLATED")
         self.assertEqual(capsule["a3_auto_merge_allowlist"], [])
         self.assertEqual(capsule["scheduler_runtime_provider"], "NOT_CONFIGURED")
+        self.assertEqual(active["contract_role"], "LOOP_ACTIVE_RUN_POINTER")
         self.assertEqual(active["active_run"], None)
         for value, key in ((planning, "source_commit"), (visual, "source_commit"), (package, "source_main_sha"), (coverage, "source_main_sha"), (active, "source_main_sha"), (immutable, "source_main_sha")):
             self.assertEqual(value[key], SOURCE)
