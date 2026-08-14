@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "contract_role": "LOOP_PROJECT_EXECUTION_CAPSULE",
+  "project_id": "BLACKSMITH",
+  "status": "ADOPTED",
+  "source_main_sha": "c969c8ed9c6306f60c851fc85ed97e0ffa885305",
+  "planning_lock_path": "PLANNING_LOCK.json",
+  "visual_lock_path": "VISUAL_LOCK.json",
+  "runtime_adapter_path": "RUNTIME_ADAPTER.json",
+  "implementation_package_path": "IMPLEMENTATION_PACKAGE.json",
+  "coverage_ledger_path": "REQUIREMENT_COVERAGE_LEDGER.json",
+  "active_run_path": "ACTIVE_LOOP_RUN.json",
+  "immutable_run_path": "runs/BS_LOOP_MIGRATION_001.json",
+  "protected_surfaces": [
+    "PROJECT_CORE",
+    "CRAFTING",
+    "ITEM_UID_LIFECYCLE",
+    "SAVE_SCHEMA",
+    "MAJOR_UX",
+    "ART_DIRECTION"
+  ],
+  "semantic_resource_domains": ["UNIVERSAL_LOOP_OPERATIONS"],
+  "capabilities": [
+    "GITHUB_CANON",
+    "REQUIREMENT_COVERAGE",
+    "GODOT_GDSCRIPT",
+    "GUT_TESTING",
+    "SAVE_DATA",
+    "FIGMA_VISUAL_BIBLE",
+    "ASSET_MANIFEST"
+  ],
+  "context_isolation": {
+    "cross_project_canon_import": "FORBIDDEN",
+    "cross_project_visual_reference_import": "FORBIDDEN",
+    "cross_project_asset_import": "FORBIDDEN",
+    "cross_project_session_reuse": "FORBIDDEN"
+  },
+  "budgets": {
+    "max_agents": 2,
+    "max_parallel_agents": 1,
+    "max_ci_runs": 4,
+    "max_repair_cycles": 2
+  },
+  "autonomy": "A2_EXECUTE_ISOLATED",
+  "a3_auto_merge_allowlist": [],
+  "scheduler_runtime_provider": "NOT_CONFIGURED"
+}

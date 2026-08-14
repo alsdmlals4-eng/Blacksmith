@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "contract_role": "LOOP_IMPLEMENTATION_PACKAGE",
+  "project_id": "BLACKSMITH",
+  "package_id": "BS_LOOP_MIGRATION_PKG_001",
+  "source_main_sha": "c969c8ed9c6306f60c851fc85ed97e0ffa885305",
+  "requirement_ids": ["BS_LOOP_MIGRATION_001"],
+  "allowed_paths": [
+    "docs/operations/loop/PROJECT_EXECUTION_CAPSULE.json",
+    "docs/operations/loop/PLANNING_LOCK.json",
+    "docs/operations/loop/VISUAL_LOCK.json",
+    "docs/operations/loop/RUNTIME_ADAPTER.json",
+    "docs/operations/loop/IMPLEMENTATION_PACKAGE.json",
+    "docs/operations/loop/REQUIREMENT_COVERAGE_LEDGER.json",
+    "docs/operations/loop/ACTIVE_LOOP_RUN.json",
+    "docs/operations/loop/runs/BS_LOOP_MIGRATION_001.json",
+    "tests/test_universal_loop_capsule_migration.py",
+    "tests/test_vertical_slice_task1_canon_contract.py"
+  ],
+  "forbidden_paths": [
+    "data/",
+    "scripts/",
+    "scenes/",
+    "assets/",
+    "addons/",
+    "project.godot",
+    "docs/operations/BLACKSMITH_LOOP_ENGINEERING_PROFILE.md",
+    "docs/operations/BLACKSMITH_LOOP_RUN_CONTRACT.json"
+  ],
+  "visual_impact": "NONE",
+  "visual_lock_requirement": "VISUAL_NOT_APPLICABLE",
+  "required_evidence_levels": ["E1_STATIC", "E2_TEST"],
+  "resource_locks": ["UNIVERSAL_LOOP_OPERATIONS"],
+  "acceptance_criteria": [
+    "All Universal Capsule files pass the Blacksmith migration contract.",
+    "All actual migration outputs are mapped by Requirement Coverage.",
+    "No product or visual authority path changes.",
+    "Active Run remains null and no next Phase C product package is selected."
+  ],
+  "rollback": "Revert the migration PR; legacy Loop pilot evidence and product state remain intact.",
+  "execution_gate": "AUTONOMOUS_IMPLEMENTATION_READY"
+}

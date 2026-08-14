@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "contract_role": "LOOP_REQUIREMENT_COVERAGE_LEDGER",
+  "project_id": "BLACKSMITH",
+  "package_id": "BS_LOOP_MIGRATION_PKG_001",
+  "source_main_sha": "c969c8ed9c6306f60c851fc85ed97e0ffa885305",
+  "status": "INITIALIZED",
+  "requirements": [
+    {
+      "requirement_id": "BS_LOOP_MIGRATION_001",
+      "status": "MAPPED",
+      "tasks": ["TASK_MIGRATE_UNIVERSAL_CAPSULE"],
+      "outputs": [
+        "docs/operations/loop/PROJECT_EXECUTION_CAPSULE.json",
+        "docs/operations/loop/PLANNING_LOCK.json",
+        "docs/operations/loop/VISUAL_LOCK.json",
+        "docs/operations/loop/RUNTIME_ADAPTER.json",
+        "docs/operations/loop/IMPLEMENTATION_PACKAGE.json",
+        "docs/operations/loop/REQUIREMENT_COVERAGE_LEDGER.json",
+        "docs/operations/loop/ACTIVE_LOOP_RUN.json",
+        "docs/operations/loop/runs/BS_LOOP_MIGRATION_001.json",
+        "tests/test_universal_loop_capsule_migration.py",
+        "tests/test_vertical_slice_task1_canon_contract.py"
+      ],
+      "tests": [
+        "tests/test_universal_loop_capsule_migration.py",
+        "tests/test_vertical_slice_task1_canon_contract.py"
+      ],
+      "evidence": ["E1_STATIC", "E2_TEST"]
+    }
+  ]
+}
