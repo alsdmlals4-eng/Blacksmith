@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "contract_role": "LOOP_PLANNING_LOCK",
+  "project_id": "BLACKSMITH",
+  "status": "PLANNING_LOCKED",
+  "source_commit": "c969c8ed9c6306f60c851fc85ed97e0ffa885305",
+  "user_review": {
+    "status": "APPROVED",
+    "approval_ref": "USER_APPROVAL_UNIVERSAL_LOOP_RECOMMENDED_PLAN_20260814"
+  },
+  "authority_sources": [
+    {
+      "authority_id": "BLACKSMITH_AGENTS",
+      "path": "AGENTS.md",
+      "source_commit": "c969c8ed9c6306f60c851fc85ed97e0ffa885305"
+    },
+    {
+      "authority_id": "CURRENT_DECISIONS",
+      "path": "CURRENT_CONFIRMED_DECISIONS.md",
+      "source_commit": "c969c8ed9c6306f60c851fc85ed97e0ffa885305"
+    },
+    {
+      "authority_id": "PHASE_C_LIVE",
+      "path": "docs/operations/BLACKSMITH_PHASE_C_LIVE_CONTINUATION.json",
+      "source_commit": "c969c8ed9c6306f60c851fc85ed97e0ffa885305"
+    }
+  ],
+  "approved_requirements": [
+    {
+      "requirement_id": "BS_LOOP_MIGRATION_001",
+      "statement": "Adopt Universal Loop Engineering operational contracts without changing approved Blacksmith product meaning or selecting a new product package.",
+      "acceptance_criteria": [
+        "Universal Capsule metadata is present and internally consistent.",
+        "Legacy Loop pilot evidence remains historical and unchanged.",
+        "No protected product path or visual asset is modified.",
+        "The next Phase C product package remains unselected."
+      ]
+    }
+  ],
+  "protected_meanings": [
+    "PROJECT_CORE remains authoritative and unchanged.",
+    "CRAFTING behavior and approved vertical-slice semantics remain unchanged.",
+    "ITEM_UID lifecycle meaning remains unchanged.",
+    "SAVE schema and compatibility remain unchanged.",
+    "MAJOR_UX flow remains unchanged.",
+    "ART_DIRECTION remains human-approved authority."
+  ],
+  "excluded_scope": [
+    "TASK3 remains NOT_SEPARATELY_APPROVED.",
+    "NEW_PRODUCT_SCOPE remains USER_DECISION_REQUIRED.",
+    "No new Phase C product package is selected by this migration.",
+    "No Figma, image, asset, scene, gameplay, balance, economy, or save-data change is included."
+  ]
+}

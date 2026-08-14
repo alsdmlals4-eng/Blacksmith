@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "contract_role": "LOOP_VISUAL_LOCK",
+  "project_id": "BLACKSMITH",
+  "status": "VISUAL_NOT_APPLICABLE",
+  "source_commit": "c969c8ed9c6306f60c851fc85ed97e0ffa885305",
+  "provider": "NONE",
+  "reference_ids": [],
+  "keep": [],
+  "avoid": [],
+  "do_not_drift": [],
+  "target_platforms": ["ANDROID_PORTRAIT"],
+  "aspect_ratios": ["9:16"]
+}

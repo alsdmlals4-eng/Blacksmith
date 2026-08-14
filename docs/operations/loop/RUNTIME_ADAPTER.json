@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "contract_role": "LOOP_RUNTIME_ADAPTER",
+  "project_id": "BLACKSMITH",
+  "status": "PROJECT_ADAPTER_VALIDATED",
+  "engine": {
+    "name": "Godot",
+    "version": "4.7.1"
+  },
+  "languages": ["GDScript", "Python"],
+  "source_roots": ["scripts/", "data/", "tests/"],
+  "test_commands": [
+    {
+      "command_id": "UNIVERSAL_LOOP_CAPSULE_MIGRATION",
+      "argv": ["python", "-m", "unittest", "tests.test_universal_loop_capsule_migration", "-v"],
+      "working_directory": ".",
+      "timeout_seconds": 600,
+      "network": "DENIED"
+    }
+  ],
+  "runtime_commands": [],
+  "build_commands": [],
+  "protected_paths": [
+    "data/",
+    "scripts/",
+    "scenes/",
+    "assets/",
+    "addons/",
+    "project.godot"
+  ],
+  "semantic_resource_domains": ["UNIVERSAL_LOOP_OPERATIONS"],
+  "rollback_strategy": "Revert the Universal Loop Capsule migration PR; no product data migration is involved."
+}
