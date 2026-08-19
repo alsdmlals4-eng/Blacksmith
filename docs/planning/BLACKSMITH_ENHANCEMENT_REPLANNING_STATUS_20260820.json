@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "artifact_role": "BLACKSMITH_ENHANCEMENT_REPLANNING_STATUS",
+  "work_mode": "PLAN",
+  "planning_reopened": true,
+  "primary_core": "ENHANCEMENT_TENSION_AND_DDD",
+  "secondary_amplifier": "ITEM_UID_LIFECYCLE_MEMORY_AND_STAKES",
+  "support_content": [
+    "PRECISION_CRAFTING",
+    "CUSTOMER_AND_WORLD_LIFECYCLE"
+  ],
+  "meta_support": [
+    "ECONOMY",
+    "DAILY_WORK_CAPACITY",
+    "REPUTATION_AND_RELATIONSHIP"
+  ],
+  "approved_decisions": [
+    "BS-CORE-20260820-01"
+  ],
+  "proposed_decisions": [
+    "BS-ENHANCE-20260820-02",
+    "BS-ENHANCE-20260820-03",
+    "BS-ENHANCE-20260820-04"
+  ],
+  "recommended_next_model": "RISK_PLUS_RECOVERY_PROGRESS_WITH_MILESTONE_ONLY_RISK_CHOICE",
+  "implementation_gate": "CLOSED_UNTIL_NEW_USER_PLANNING_COMPLETE_DECLARATION",
+  "human_usability_evidence": "NOT_RUN",
+  "player_experience_evidence": "NOT_RUN",
+  "android_device": "NOT_RUN",
+  "exact_balance_numbers": "TUNABLE_NOT_FINAL"
+}
