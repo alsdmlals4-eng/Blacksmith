@@ -11,25 +11,27 @@
 충돌 시 위에 있는 문서가 우선한다.
 
 1. 사용자의 최신 지시와 승인
-2. `CURRENT_CONFIRMED_DECISIONS.md`
-3. `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
-4. `docs/planning/BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md`
-5. `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md`
-6. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-7. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-8. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
-9. `[기획서]/00_프로젝트_허브/ROADMAP.md`
-10. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-11. `docs/planning/CURRENT_R1_CANON_REGISTRY.json` — 역사적 R1 기반
-12. 상태가 표시된 과거 기획·PoC·연구·구현 계획
+2. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` — 현재 재기획 상태·2026-08-20 승인 요약
+3. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 세부 Decision·역사 장기 원장
+4. `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
+5. `docs/planning/BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md`
+6. `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md`
+7. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
+8. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+9. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
+10. `[기획서]/00_프로젝트_허브/ROADMAP.md`
+11. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+12. `docs/planning/CURRENT_R1_CANON_REGISTRY.json` — 역사적 R1 기반
+13. 상태가 표시된 과거 기획·PoC·연구·구현 계획
 
-`BS-CORE-20260820-01` 이후 사용자의 최신 재기획 승인은 과거 `PLANNING_COMPLETE`보다 우선한다. 새 `기획 완료` 선언 전 제품 구현은 다시 열지 않는다.
+`BS-CORE-20260820-01` 이후 사용자의 최신 재기획 승인은 기존 장기 원장의 과거 `PLANNING_COMPLETE`보다 우선한다. 새 `기획 완료` 선언 전 제품 구현은 다시 열지 않는다.
 
 ## 2. 현재 분야별 책임 원본
 
 ### 프로젝트 코어·현재 상태
 
-- `CURRENT_CONFIRMED_DECISIONS.md`
+- `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
+- `CURRENT_CONFIRMED_DECISIONS.md` — 세부 역사 원장
 - `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
 - `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 - `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
@@ -174,13 +176,14 @@ PR #81의 전체 병합 단위는 `[폐기]`이며, 브랜치의 고유 원문�
 
 ## 6. 구현자 확인 순서
 
-1. 최신 사용자 지시와 Current Decisions 확인
-2. 이 색인에서 분야별 최신 책임 문서 확인
-3. 강화/내구도면 2026-08-20 enhancement canon을 R2/R3의 구형 DURABILITY·failure 표현보다 우선
-4. Legacy Status Registry에서 대상 문서 상태 확인
-5. `[대체됨]`, `[보류]`, `[폐기]` 내용을 구현 요구로 사용하지 않음
-6. 정확한 숫자는 `TUNABLE / BASELINE_TEST_PRESET / CURRENT_VALIDATED / HISTORICAL_EVIDENCE`를 구분
-7. 새 `기획 완료` 선언 전 제품 경로를 수정하지 않음
+1. 최신 사용자 지시와 `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` 확인
+2. 기존 `CURRENT_CONFIRMED_DECISIONS.md`에서 세부 과거 Decision 확인
+3. 이 색인에서 분야별 최신 책임 문서 확인
+4. 강화/내구도면 2026-08-20 enhancement canon을 R2/R3의 구형 DURABILITY·failure 표현보다 우선
+5. Legacy Status Registry에서 대상 문서 상태 확인
+6. `[대체됨]`, `[보류]`, `[폐기]` 내용을 구현 요구로 사용하지 않음
+7. 정확한 숫자는 `TUNABLE / BASELINE_TEST_PRESET / CURRENT_VALIDATED / HISTORICAL_EVIDENCE`를 구분
+8. 새 `기획 완료` 선언 전 제품 경로를 수정하지 않음
 
 ## 7. 현재 열린 Decision
 
