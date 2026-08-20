@@ -1,8 +1,7 @@
 # [승인된 테스트 Budget / 튜닝중] Blacksmith CURRENT/MAX 내구도 Balance Budget
 
-- Parent: `BS-ENHANCE-20260820-05~09`
-- Pending: `BS-ENHANCE-20260820-10`
-- 상태: `09_USER_APPROVED_TEST_BUDGET / 10_PROPOSED_ONLY`
+- Parent: `BS-ENHANCE-20260820-05~10`
+- 상태: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`
 - 구현: `BLOCKED`
 - Human/Player evidence: `NOT_RUN`
 
@@ -109,9 +108,9 @@ failure_recovery_progress = unchanged
 - 일반 수리는 MAX를 복원하지 않는다.
 - 첫 Vertical Slice에는 MAX 완전 복구/대수선 기능을 넣지 않는다.
 
-## 7. BS-ENHANCE-20260820-10 — 수리 경제 대안 비교
+## 7. BS-ENHANCE-20260820-10 — 수리 경제 승인
 
-상태: `PROPOSED_ONLY / USER_DECISION_REQUIRED`
+상태: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`
 
 ### A. 최종 시장가 × 결손 CURRENT
 
@@ -144,7 +143,7 @@ repair_cost ∝ next_attempt_cost × missing_current
 
 판정: `REJECT_AS_RUNTIME_FORMULA / USE_ONLY_AS_BALANCE_REFERENCE`.
 
-### C. 안정된 수리 참조비용 + 고정 준비비 + 절대 결손 포인트 비례 — 권장
+### C. 안정된 수리 참조비용 + 고정 준비비 + 절대 결손 포인트 비례 — 채택
 
 런타임 수리비는 시장가/다음 강화비가 아니라 **수리 전용 참조비용표**를 사용한다.
 
@@ -156,7 +155,7 @@ repair_cost
 × (setup_fraction + variable_fraction × missing_current_points / 100)
 ```
 
-첫 테스트 shell:
+승인된 첫 테스트 shell:
 
 ```text
 setup_fraction    = 0.05
@@ -172,7 +171,7 @@ variable_fraction = 0.65
 | `51~75pt` | 약 `38~54% × R` |
 | `76~99pt` | 약 `54~69% × R` |
 
-숫자는 `PROPOSED_BASELINE_TEST_PRESET / NOT_FINAL`이다.
+숫자는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`이며 출시 최종 수치가 아니다.
 
 ### REPAIR_REFERENCE_COST의 의미
 
@@ -213,7 +212,7 @@ missing_current_points = 30
 
 ## 9. 자원·작업량 정책
 
-첫 Vertical Slice 권장:
+첫 Vertical Slice 승인 구조:
 
 - 새 수리 전용 화폐/토큰은 만들지 않는다.
 - 기존 골드 + 기존 구조/일반 재료 계열을 재사용한다.
@@ -321,7 +320,8 @@ customer/world history
 ## 15. 완료 경계
 
 - `BS-ENHANCE-20260820-09`는 승인된 테스트 Budget이다.
-- `BS-ENHANCE-20260820-10`은 현재 **권장 제안**이며 사용자 승인 전 제품 정본이 아니다.
-- 수리 수치는 `PROPOSED_BASELINE_TEST_PRESET / NOT_FINAL`이다.
+- `BS-ENHANCE-20260820-10`은 **USER_APPROVED**이며 C 구조를 현재 수리 경제 정본으로 사용한다.
+- `setup_fraction=0.05`, `variable_fraction=0.65`와 구간별 `R` 비율은 승인된 첫 테스트값이며 출시 최종 수치가 아니다.
+- 정확 `REPAIR_REFERENCE_COST` table과 `DAY_WORK_COST`는 후속 Balance Decision에서 정교화한다.
 - 기존 시뮬레이터·런타임에는 아직 CURRENT/MAX/수리 경제를 구현하지 않는다.
 - 제품 구현: `BLOCKED`.
