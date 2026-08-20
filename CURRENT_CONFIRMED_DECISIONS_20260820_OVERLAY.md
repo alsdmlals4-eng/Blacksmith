@@ -65,13 +65,40 @@ MASTERY           P(MAX scar | failure) 15~25%  / MAX loss 6~15
 이 숫자는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
 
 불변식:
-
 - 첫 영구 MAX 흉터는 `FIRST_STOP_POINT` 이후에만 열린다.
 - 한 시도에서 MAX scar는 최대 1회다.
 - `FAIL_CRITICAL_DAMAGE`와 `FAIL_DOWNGRADE`는 기본 중첩하지 않는다.
 - MAX 손실량을 CURRENT에 이중 차감하지 않는다.
 - 파괴는 추가 즉사 주사위가 아니라 실제 CURRENT/MAX가 0에 도달했을 때만 발생한다.
-- 플레이어에게는 조건부 수학 대신 **이번 시도의 최종 구조 손상 가능성 + 발생 시 MAX 손실 범위**를 공개한다.
+- UI에는 이번 시도의 최종 구조 손상 가능성과 발생 시 MAX 손실 범위를 공개한다.
+
+### `BS-ENHANCE-20260820-10`
+일반 수리 경제는 **안정된 수리 참조비용 + 고정 준비비 + 절대 결손 CURRENT 포인트 비례** 구조를 사용한다.
+
+```text
+missing_current_points = MAX - CURRENT
+
+repair_cost
+= REPAIR_REFERENCE_COST[structural_family, secured_band]
+× (setup_fraction + variable_fraction × missing_current_points / 100)
+```
+
+승인된 첫 테스트 shell:
+
+```text
+setup_fraction = 0.05
+variable_fraction = 0.65
+```
+
+- 일반 수리 1회로 `CURRENT = MAX`; MAX는 변하지 않는다.
+- 수리량은 `(MAX-CURRENT)/MAX` 비율이 아니라 `MAX-CURRENT` 절대 포인트다.
+- 낮은 MAX 자체에 일반 수리비 할증을 붙이지 않는다.
+- 최종 시장가·예술성·수식어·연대기·고객 수요·실제 다음 강화비를 런타임 수리 공식에 직접 넣지 않는다.
+- `REPAIR_REFERENCE_COST`는 기본 구조/주재료/확보 위험 밴드의 안정된 수리 참조값이다.
+- 부분수리·자동수리·수리 성공 RNG·수리 전용 화폐·일반 MAX 복구는 첫 Vertical Slice에서 제외한다.
+- 수리는 실패 누적 회복 진전을 초기화하지 않는다.
+
+구조는 `USER_APPROVED`; 첫 계수는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
 
 ## 현재 승인된 테스트 Band
 
@@ -93,7 +120,9 @@ MAX 1~20  : success -15pp / new effect 80%
 - failure family 전체 비율(HOLD/DOWNGRADE/DAMAGE의 정확 분배)
 - CURRENT 손실 범위의 최종값
 - MAX 구조 손상 Budget 최종값
-- 수리 비용·작업량
+- `REPAIR_REFERENCE_COST` 실제 band table
+- 수리 골드/일반 재료 분배
+- `DAY_WORK_COST` 정확 부담
 - MAX 구조 복구/대수선 필요 여부와 대가
 - 체크포인트 최종 간격
 - 파괴된 작품 memorial/successor 콘텐츠
