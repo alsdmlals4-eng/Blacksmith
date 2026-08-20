@@ -10,7 +10,7 @@
 
 ---
 
-## 1. 최신 구조 계약
+## 1. 현재 경제 구조
 
 ```text
 +0~+9      = 투자 회수 전
@@ -49,9 +49,9 @@ EXPECTED_CUMULATIVE_RESOURCE_COST
 + 실제 파괴/재제작 기대비용
 ```
 
-공방 피로도는 별도 workload 축으로 유지하고 gold-equivalent에 강제 환산하지 않는다.
+공방 피로도는 별도 workload 축이며 gold-equivalent에 강제 환산하지 않는다.
 
-별도 가치축:
+다음은 기본 강화 가격에 중복 포함하지 않는 별도 가치축이다.
 
 ```text
 정밀제작/완성도
@@ -61,9 +61,34 @@ Chronicle/역사
 거래 채널 프리미엄
 ```
 
-위 항목은 기본 강화 판매가에 중복 포함하지 않는다.
+## 3. 현재 성공률 Budget
 
-## 3. 현재 강화비 Budget
+```text
++1       100%
++2        97%
++3~+10    95% -> 86%
++11       82%
++12~+30   81% -> 72%
++31~+60   73% -> 69%
++61~+100  69% -> 64%
+```
+
+과거 `MASTERY 25~40%` working range는 current numeric authority가 아니다.
+
+작품 UID + target별 recovery:
+
+```text
++6%p / failure
+soft cap 95%
+```
+
+Hard guarantee:
+
+```text
+LEARN 2 / BUILD 4 / FIRST 4 / TENSION 5 / HIGH 6 / MASTERY 7 failures
+```
+
+## 4. 현재 강화비 Budget
 
 골드:
 
@@ -75,11 +100,9 @@ GOLD_ATTEMPT_COST(target)
 일반 재료 accounting:
 
 ```text
-shadow = 50G / unit
+shadow = 50G / balance unit
 units = ceil(target / 20)
 ```
-
-대표:
 
 | Target | Gold | Material Unit |
 |---:|---:|---:|
@@ -96,84 +119,55 @@ units = ceil(target / 20)
 | +90 | 47,310 | 5 |
 | +100 | 57,440 | 5 |
 
-## 4. 현재 기본 성공률 Budget
+## 5. 승인 누적 기대원가 Anchor
+
+20,000-run planning Monte Carlo와 독립 seed 검산을 사용했다. 후기 long-tail 때문에 raw mean은 seed마다 소폭 흔들리므로 아래 값은 **고정 planning anchor**이며, 독립 검산 허용오차는 약 `±1.5%`다.
+
+| Level | Mean Expected Cost Anchor | P90 Reference |
+|---:|---:|---:|
+| +10 | 5,779 | 6,540 |
+| +11 | 7,023 | 약 8,100 |
+| +20 | 30,713 | 36,062 |
+| +30 | 96,006 | 111,840 |
+| +40 | 219,565 | 253,525 |
+| +50 | 419,230 | — |
+| +60 | 712,986 | 814,954 |
+| +70 | 1,168,898 | — |
+| +80 | 1,907,274 | 2,958,816 |
+| +90 | 3,235,853 | 5,132,141 |
+| +100 | 5,632,657 | 10,032,418 |
+
++100 planning reference:
 
 ```text
-+1       100%
-+2        97%
-+3~+10    95% -> 86%
-+11       82%
-+12~+30   81% -> 72%
-+31~+60   71% -> 67%
-+61~+100  66% -> 60%
+mean attempts ≈ 275~280
+mean physical destruction/recraft ≈ 1.0~1.1
 ```
 
-작품 UID + target별 recovery:
-
-```text
-+6%p / failure
-soft cap 95%
-```
-
-hard guarantee:
-
-```text
-LEARN 2 / BUILD 4 / FIRST 4 / TENSION 5 / HIGH 6 / MASTERY 7 failures
-```
-
-## 5. 최신 20,000-run expected-cost evidence
-
-대표 평범한 철검, current 10~17 planning rules, reference safe-repair policy 기준.
-
-| Level | Mean Cost | P50 | P75 | P90 |
-|---:|---:|---:|---:|---:|
-| +10 | 5,770 | 5,610 | 6,060 | 6,530 |
-| +11 | 7,039 | 6,850 | 7,410 | 8,097 |
-| +20 | 30,736 | 30,138 | 32,980 | 36,080 |
-| +30 | 96,163 | 94,770 | 103,160 | 112,041 |
-| +40 | 223,091 | 219,890 | 239,324 | 259,170 |
-| +50 | 427,991 | 423,140 | 457,396 | 492,494 |
-| +60 | 728,187 | 720,715 | 775,553 | 832,155 |
-| +70 | 1,189,743 | 1,148,455 | 1,239,709 | 1,341,383 |
-| +80 | 1,942,055 | 1,734,387 | 1,904,978 | 2,978,285 |
-| +90 | 3,276,228 | 2,552,450 | 3,972,885 | 5,191,919 |
-| +100 | 5,759,280 | 4,475,112 | 6,995,326 | 10,348,306 |
-
-+100 planning evidence:
-
-```text
-mean attempts ≈ 282.7
-mean destruction/recraft ≈ 1.07
-```
-
-## 6. 현재 기본 공개시장 판매가 Budget
-
-기본 판매가는 actual player spend에 동적으로 연동하지 않는다.
+## 6. 승인 기본 공개시장 판매가 Anchor
 
 ```text
 SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
 ```
 
-Balance Lab에서 expected-cost 분포를 이용해 static level table을 생성한다.
-
-첫 앵커:
+개별 플레이어의 실제 실패 횟수나 실제 지출로 판매가가 변하지 않는다. Offline Balance Lab가 expected-cost 분포를 이용해 static level table을 생성한다.
 
 | Level | Base Market Value | Mean Expected Cost | Mean Expected Profit |
 |---:|---:|---:|---:|
 | +0 | 1,000 | 1,500 | -500 |
-| +5 | 1,900 | 2,316 | 약 -416 |
-| +9 | 4,600 | 4,753 | 약 -153 |
-| +10 | **5,800** | **5,770** | **약 +30 / break-even** |
-| +11 | 7,400 | 7,039 | 약 +361 |
-| +20 | 34,400 | 30,736 | 약 +3,664 |
-| +30 | 117,300 | 96,163 | 약 +21,137 |
-| +40 | 290,000 | 223,091 | 약 +66,909 |
-| +50 | 590,600 | 427,991 | 약 +162,609 |
-| +60 | 1,077,700 | 728,187 | 약 +349,513 |
-| +70 | 1,879,800 | 1,189,743 | 약 +690,057 |
-| +80 | 3,262,700 | 1,942,055 | 약 +1,320,645 |
-| +90 | 5,897,200 | 3,276,228 | 약 +2,620,972 |
-| +100 | **11,518,600** | **5,759,280** | **약 +5,759,320** |
+| +5 | 1,900 | 2,322 | 약 -422 |
+| +9 | 4,600 | 4,759 | 약 -159 |
+| +10 | **5,800** | **5,779** | **약 +21 / break-even** |
+| +11 | 7,400 | 7,023 | 약 +377 |
+| +20 | 34,400 | 30,713 | 약 +3,687 |
+| +30 | 117,100 | 96,006 | 약 +21,094 |
+| +40 | 285,400 | 219,565 | 약 +65,835 |
+| +50 | 578,500 | 419,230 | 약 +159,270 |
+| +60 | 1,055,200 | 712,986 | 약 +342,214 |
+| +70 | 1,846,900 | 1,168,898 | 약 +678,002 |
+| +80 | 3,204,200 | 1,907,274 | 약 +1,296,926 |
+| +90 | 5,824,500 | 3,235,853 | 약 +2,588,647 |
+| +100 | **11,265,300** | **5,632,657** | **약 +5,632,643** |
 
 검증:
 
@@ -181,12 +175,12 @@ Balance Lab에서 expected-cost 분포를 이용해 static level table을 생성
 +0~+9 expected profit < 0
 +10 expected profit ~= 0
 +11~+100 expected profit > 0
-reference table의 expected profit은 +11 이후 단조 비감소
++11 이후 anchor expected profit 단조 비감소
 ```
 
 ## 7. 위험 프리미엄 목표
 
-reference expected-cost 대비 margin target:
+Static table 생성용 목표 margin:
 
 ```text
 +10 0%
@@ -202,36 +196,20 @@ reference expected-cost 대비 margin target:
 +100 100%
 ```
 
-앵커 사이는 offline margin 보간 후 static table로 저장한다.
+이는 runtime cost-plus 공식이 아니다.
 
-후기 margin이 커지는 이유:
-- +60 이후 physical destruction/recraft long-tail 증가.
-- +80 이후 mean보다 P90 cost가 훨씬 빠르게 증가.
-- 실제 개인 지출 환급이 아니라 위험을 감수한 강화 단계 자체의 시장 프리미엄.
+## 8. 과거 2026-07 수치 지위
 
-## 8. 과거 2026-07 수치의 현재 지위
+과거 POC 가격표와 판정은 역사 증거로만 남긴다.
 
-과거 POC:
-
-| 강화 단계 | 과거 공개시장 기준가 |
-|---:|---:|
-| +0 | 1,000 |
-| +1 | 1,300 |
-| +2 | 1,550 |
-| +3 | 1,800 |
-| +4 | 2,200 |
-| +5 | 3,000 |
-| +10 | 5,000 |
-| +15 | 8,500 |
-| +20 | 14,000 |
-| +25 | 24,000 |
-| +30 | 42,000 |
-| +35 | 72,000 |
-| +40 | 125,000 |
-| +45 | 220,000 |
-| +50 | 400,000 |
-| +55 | 750,000 |
-| +60 | 1,500,000 |
+```text
+[OLD] +5 최초 흑자
+[OLD] +5~+60 평균 흑자
+[OLD] +60 마지막 명시 가격 앵커
+[OLD] decade success pattern
+[OLD] multi-step downgrade
+[OLD] destroy RNG
+```
 
 상태:
 
@@ -242,17 +220,7 @@ NOT_CURRENT_PRICE_CANON
 DO_NOT_EXTRAPOLATE_TO_+100
 ```
 
-폐기/대체된 과거 판정:
-
-```text
-[OLD] +5 최초 흑자
-[OLD] +5~+60 전체 평균 흑자
-[OLD] low MASTERY success / old destroy RNG / multi-step downgrade
-```
-
 ## 9. 가치 보정 순서
-
-기본 공개시장 가격 이후에만 별도 보정을 적용한다.
 
 1. 강화 단계 기본 market value
 2. 제작 완성도/정밀제작
@@ -261,22 +229,23 @@ DO_NOT_EXTRAPOLATE_TO_+100
 5. Chronicle/history
 6. 고객/거래 채널 배율·예산 상한
 
-동일 요소를 기준가와 보정값에 중복 반영하지 않는다.
+동일 요소를 기본가와 보정값에 중복 반영하지 않는다.
 
-## 10. 재검토 조건
+## 10. 현재 작업 순서
 
-- +10이 실제 Human test에서 본전선으로 느껴지지 않음.
-- +11 이후에도 대부분 +10에서만 판매함.
-- 반대로 최고 강화까지 누르는 것이 항상 지배전략.
-- HIGH/MASTERY 수리 반복이 강화 메인 루프를 덮음.
-- +100 평균 282.7 attempts가 실제 pacing에서 과도함.
-- +100 sale 한 번으로 macro economy가 무력화됨.
-- 실제 재료 공급이 gold curve보다 더 큰 병목이 됨.
+1. 일반 강화/수리 재료 실제 공급량·획득 경로·recipe mapping.
+2. HIGH/MASTERY 수리 절대경제 재검증.
+3. MAX 대수선 여부와 대가.
+4. DESTROYED memorial/successor UX.
+5. +100 비수치 payoff.
+6. 첫 10분 pacing/UX/Visual 연결.
+7. 정밀제작·고객/세계 payoff 연결.
+8. release-near Vertical Slice 계약.
 
 ## 11. 증거 경계
 
-- 14~17 구조: `USER_APPROVED`.
+- 14~16 구조: `USER_APPROVED / STRUCTURAL_CANON`.
 - 17 numeric curve: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
-- 20,000-run: `PLANNING_SIMULATION_EVIDENCE`.
-- runtime data: `NOT_UPDATED / BLOCKED`.
+- Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`.
+- Runtime data: `NOT_UPDATED / BLOCKED`.
 - Human/Player evidence: `NOT_RUN`.
