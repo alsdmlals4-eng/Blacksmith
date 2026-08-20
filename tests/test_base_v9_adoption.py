@@ -24,6 +24,26 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertIn("ci-gate", workflow)
         self.assertIn("adversarial-gate", workflow)
 
+    def test_base_reuse_adoption_manifest_is_planning_only_and_preserves_product_gate(self) -> None:
+        manifest = json.loads((ROOT / "docs/base-reuse-adoption.json").read_text(encoding="utf-8"))
+        self.assertEqual(
+            {
+                "schema_version": 1,
+                "base_source_commit": "8553678f70e22f193a2336b591f677dcfa5a8965",
+                "modules": {
+                    "RM-TOOL-001": {"state": "planned"},
+                    "RM-SYS-001": {"state": "not_applicable"},
+                    "RM-SYS-003": {"state": "planned"},
+                    "RM-VIS-001": {"state": "planned"},
+                    "RM-VIS-002": {"state": "planned"},
+                },
+            },
+            manifest,
+        )
+        gate = (ROOT / "docs/planning/BLACKSMITH_HIGODOT_GUT_AUTHORITY_AND_ENTRY_GATE_SPEC_2026-08-06.md").read_text(encoding="utf-8")
+        self.assertIn("product_implementation: BLOCKED", gate)
+        self.assertIn("change_scope: NO_PRODUCT_PATH_CHANGE", gate)
+
     def test_default_product_exemption_remains_task1_only(self) -> None:
         workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
         self.assertIn("^(src/|scripts/|scenes/|data/|assets/|addons/|project", workflow)
