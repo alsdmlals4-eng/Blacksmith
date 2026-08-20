@@ -6,7 +6,26 @@
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
 
-## 0. 현재 제품 계층
+## 0. 운영 동기화 규칙
+
+사용자 최신 지시에 따라 의미 있는 기획 변경마다 **현재 작업 순서 + 승인사항 + 미확정 항목**을 GitHub와 Notion 양쪽에 함께 갱신한다.
+
+```text
+GitHub
+- 이 Overlay
+- BLACKSMITH_PLANNING_AUTHORITY_INDEX.md
+- 관련 Canon
+
+Notion
+- Project Home
+- 프로젝트 전체 작업계획
+- 관련 핵심 시스템/Benchmark 페이지
+- Repo Main SHA / Sync State
+```
+
+승인 전은 `PROPOSED_ONLY`, 승인 후 main 병합 전은 `REPO_UPDATE_REQUIRED`, 병합/검증 완료 후 `SYNCED`로 구분한다.
+
+## 1. 제품 계층 — 01
 
 ```text
 PRIMARY CORE
@@ -22,43 +41,15 @@ SUPPORT
 
 DDD는 `행동 → 기대 → anticipation → 즉시 결과 → 보상/손실 → 다음 질문`의 밀도를 높이는 것이며 반복 클릭·자극량 자체를 의미하지 않는다.
 
-새 `기획 완료` 사용자 선언 전 `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, `project.godot` 제품 구현은 시작하지 않는다.
+## 2. 실패·회복·정보 공개 — 02~04
 
-## 1. 실패·회복·정보 공개 — 02~04
-
-### `BS-ENHANCE-20260820-02`
 - 기본 골격: `RISK_PLUS_RECOVERY_PROGRESS`.
-- 모든 실패는 실제 비용/손실과 같은 작품 UID의 회복 진전을 남긴다.
+- 모든 실패는 실제 비용/손실과 같은 작품 UID의 recovery를 남긴다.
 - account-wide transferable failstack은 기본 게임에서 금지.
+- 강화 전 최종 성공률·시도비·최종 outcome·CURRENT/MAX 위험·recovery·다음 checkpoint를 공개한다.
+- 숨은 위험 보정으로 긴장감을 만들지 않는다.
 
-### `BS-ENHANCE-20260820-03`
-- 고위험 실패는 작품 손상을 만들 수 있다.
-- 물리 작품 파괴와 UID/역사 삭제를 동일시하지 않는다.
-
-### `BS-ENHANCE-20260820-04`
-강화 전 최소 공개:
-
-```text
-현재 상태
-최종 성공률
-시도 비용
-최종 실패 outcome 확률
-CURRENT/MAX 위험
-현재 recovery 효과
-다음 checkpoint/이정표
-```
-
-핵심 확률을 숨겨 긴장감을 만들지 않는다.
-
-## 2. Checkpoint·CURRENT/MAX·파괴 — 05~09
-
-### `BS-ENHANCE-20260820-05`
-- 주요 확보점은 영구 DOWNGRADE floor.
-- floor 사이에서만 제한 DOWNGRADE.
-- 첫 테스트 한 번 최대 1단계 하락.
-- 큰 DOWNGRADE와 큰 durability 손상을 기본 중첩하지 않는다.
-
-### `BS-ENHANCE-20260820-06~08`
+## 3. Checkpoint·CURRENT/MAX·파괴 — 05~09
 
 ```text
 0 <= CURRENT <= MAX <= 100
@@ -68,88 +59,53 @@ MAX unchanged
 CURRENT == 0 or MAX == 0 -> physical DESTROYED
 ```
 
-- `FAIL_DAMAGE`: CURRENT 중심.
-- `FAIL_CRITICAL_DAMAGE`: CURRENT 큰 손상 + MAX 구조 흉터.
-- 물리 파괴 후에도 UID·이름·강화/소유/사건/파괴 원인·Chronicle provenance는 기록 보존.
-- 성공 강화·날짜 경과·판매/전시 자체는 durability를 자동 감소시키지 않는다.
+- DOWNGRADE는 최대 1단계, 최근 checkpoint floor 아래로 내려가지 않음.
+- `FAIL_DAMAGE`: CURRENT 중심 손상.
+- `FAIL_CRITICAL_DAMAGE`: CURRENT 심각 손상 + MAX 구조 흉터.
+- 파괴는 별도 destroy roll이 아니라 실제 CURRENT/MAX 0으로만 발생.
+- 물리 파괴 후 UID·이름·강화/소유/사건/파괴 원인·Chronicle 기록은 보존.
 
 MAX 상태 첫 테스트:
 
 ```text
-MAX 81~100: success  0pp / new effect 100%
-MAX 61~80 : success -3pp / new effect 100%
-MAX 41~60 : success -6pp / new effect 95%
-MAX 21~40 : success -10pp / new effect 90%
-MAX 1~20  : success -15pp / new effect 80%
+81~100: success  0pp / new effect 100%
+61~80 : success -3pp / new effect 100%
+41~60 : success -6pp / new effect 95%
+21~40 : success -10pp / new effect 90%
+1~20  : success -15pp / new effect 80%
 ```
 
-이미 얻은 성능은 MAX 흉터만으로 소급 삭감하지 않는다.
-
-### `BS-ENHANCE-20260820-09`
-MAX 흉터는 실패의 `CRITICAL` family에 결합한다.
-
-```text
-LEARN             0%      / MAX loss 0
-BUILD_CONFIDENCE  0%      / MAX loss 0
-FIRST_STOP_POINT  0~5%    / MAX loss 1~3
-TENSION           8~12%   / MAX loss 2~5
-HIGH_STAKES       12~20%  / MAX loss 4~10
-MASTERY           15~25%  / MAX loss 6~15
-```
-
-별도 destroy roll은 금지. 실제 CURRENT/MAX가 0에 도달했을 때만 파괴한다.
-
-## 3. 일반 CURRENT 수리 — 10~12
-
-### `BS-ENHANCE-20260820-10`
+## 4. 일반 CURRENT 수리 — 10~12
 
 ```text
 missing = MAX - CURRENT
 
-gold_cost
-= REPAIR_REFERENCE_COST
-× (0.05 + 0.65 × missing / 100)
-```
-
-- 한 번의 `REPAIR_JOB`으로 CURRENT=MAX.
-- MAX/recovery unchanged.
-- 부분수리·자동수리·수리 RNG·일반 MAX 복구는 첫 Vertical Slice 제외.
-
-### `BS-ENHANCE-20260820-11`
-
-```text
-REPAIR_REFERENCE_COST
-= STRUCTURAL_FAMILY_BASE_R
+R
+= SWORD_BASE_R 800
 × MATERIAL_STRUCTURE_MULTIPLIER
 × SECURED_BAND_MULTIPLIER
+
+gold_cost
+= R × (0.05 + 0.65 × missing / 100)
+
+required_common_material
+= max(1, ceil(missing / 25))
+
+PAYMENT = GOLD + REQUIRED_COMMON_MATERIAL
+CURRENT -> MAX
+MAX unchanged
+recovery unchanged
+REPAIR_JOB_FATIGUE_COST = 2
 ```
 
-첫 배율:
+첫 구조 배율:
 
 ```text
 material: iron 1.00 / silver 1.20 / meteor_iron 1.50
 secured: LEARN·BUILD 1.00 / FIRST 1.10 / TENSION 1.25 / HIGH 1.50 / MASTERY 1.80
-REPAIR_JOB_FATIGUE_COST = 2
 ```
 
-구형 `restore=5`와 11의 optional material offset/gold-only 규칙은 current authority가 아니다.
-
-### `BS-ENHANCE-20260820-12`
-
-```text
-SWORD_BASE_R = 800G
-COMMON_MATERIAL_SHADOW_VALUE = 50G/unit
-common_material_units = max(1, ceil((MAX-CURRENT)/25))
-PAYMENT = GOLD + REQUIRED_COMMON_MATERIAL
-```
-
-재료 수량:
-
-```text
-1~25pt 1개 / 26~50pt 2개 / 51~75pt 3개 / 76~99pt 4개
-```
-
-## 4. 실패 결과군 정확 비율 — 13
+## 5. 실패 결과군 정확 비율 — 13
 
 실패가 이미 확정된 뒤의 조건부 비율:
 
@@ -164,15 +120,13 @@ HIGH_STAKES        30 / 15 / 39 / 16
 MASTERY            20 / 20 / 40 / 20
 ```
 
-핵심:
-
 ```text
 P(CRITICAL | failure) = P(MAX scar | failure)
 ```
 
-CRITICAL 뒤 별도 MAX-scar/destroy roll을 하지 않는다.
+CRITICAL 뒤 별도 MAX-scar/destroy roll 금지.
 
-## 5. 강화 범위·경제 전환점 — 14
+## 6. 강화 범위·경제 전환점 — 14
 
 ```text
 MIN_LEVEL = +0
@@ -183,22 +137,11 @@ MAX_LEVEL = +100
 +11~+100   PROFITABLE_ENHANCEMENT_ZONE
 ```
 
-+10 누적 기대원가 포함:
++10 누적 기대원가에는 제작·강화·실패 반복·DOWNGRADE 복구·강화 유발 CURRENT 수리·해당 구간 실제 파괴/재제작 기대비용을 포함한다.
 
-```text
-기본 제작
-강화 골드/재료
-실패 반복
-DOWNGRADE 복구
-강화 유발 CURRENT 수리
-해당 구간 실제 파괴/재제작 기대비용
-```
+정밀제작·수식어·Chronicle·특수 고객/거래 채널 프리미엄은 별도 가치축이다.
 
-정밀제작·수식어·Chronicle·특수 고객/거래 채널 프리미엄은 별도 가치축.
-
-+100 이후 기본 +101/무한 초월은 별도 사용자 승인 없이는 추가하지 않는다.
-
-## 6. Target level → 경험 밴드 — 15
+## 7. Target level → 경험 밴드 — 15
 
 ```text
 TARGET +1~+2     LEARN
@@ -209,16 +152,14 @@ TARGET +31~+60   HIGH_STAKES
 TARGET +61~+100  MASTERY
 ```
 
-밴드는 current level이 아니라 **target level**에 붙인다.
+밴드는 `current_level`이 아니라 **target_level** 기준.
 
 ```text
 CURRENT +10 = FIRST_ECONOMIC_STOP_STATE
 TARGET +11  = FIRST_STOP_POINT ATTEMPT
 ```
 
-+10을 먼저 확보한 뒤 +11부터 첫 수익과 영구 구조 위험을 충돌시킨다.
-
-## 7. Checkpoint cadence — 16
+## 8. Checkpoint cadence — 16
 
 ```text
 CHECKPOINT_FLOORS = [10, 30, 60, 90]
@@ -231,37 +172,20 @@ CHECKPOINT_FLOORS = [10, 30, 60, 90]
 +30 TENSION 완료
 +60 HIGH_STAKES 완료
 +90 FINAL MASTERY PUSH staging
++100 MAX terminal
 ```
 
-Checkpoint는 오직 DOWNGRADE floor다.
-
-```text
-resolved_level = max(current_level - 1, highest_secured_floor)
-```
-
-다음은 checkpoint가 변경하지 않는다.
-
-```text
-CURRENT / MAX / MAX scar
-recovery
-attempt cost
-repair cost
-UID/history
-```
-
-중요:
+Checkpoint는 오직 DOWNGRADE floor다. CURRENT/MAX/recovery/시도비/수리비를 복구하거나 초기화하지 않는다.
 
 ```text
 BAND_BOUNDARY != CHECKPOINT_FLOOR
 ```
 
-+90은 band boundary가 아니며 최종 +91~+100 러시용 의도적 floor다.
-
-## 8. +0~+100 성공률·강화비·경제 — 17
+## 9. 성공률·회복·강화비 — 17
 
 상태: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 
-### 기본 성공률
+기본 성공률:
 
 ```text
 +1       100%
@@ -269,152 +193,127 @@ BAND_BOUNDARY != CHECKPOINT_FLOOR
 +3~+10    95% -> 86%
 +11       82%
 +12~+30   81% -> 72%
-+31~+60   71% -> 67%
-+61~+100  66% -> 60%
++31~+60   73% -> 69%
++61~+100  69% -> 64%
 ```
 
-과거 working의 `MASTERY 25~40%` 범위는 current risk와 결합 시 MAX 파괴를 과도하게 만들어 17에서 대체한다.
+과거 `MASTERY 25~40%` working range는 17에서 대체됨.
 
-### 실패 회복
+Recovery:
 
 ```text
-+6%p per failure
++6%p / same-target failure
 soft cap 95%
 owner = ITEM_UID + TARGET_LEVEL
+hard guarantee = LEARN2 / BUILD4 / FIRST4 / TENSION5 / HIGH6 / MASTERY7
 ```
 
-hard guarantee:
-
-```text
-LEARN 2 failures
-BUILD 4
-FIRST 4
-TENSION 5
-HIGH 6
-MASTERY 7
-```
-
-### 강화 시도 골드
+강화 시도비:
 
 ```text
 GOLD_ATTEMPT_COST(target)
 = round_to_10(12 * target^1.84)
+
+ordinary material balance unit
+= ceil(target / 20)
+shadow = 50G/unit
 ```
 
-대표:
+대표 골드:
 
 ```text
-+10 830G / +30 6,270G / +60 22,440G / +90 47,310G / +100 57,440G
++10 830 / +30 6,270 / +60 22,440 / +90 47,310 / +100 57,440
 ```
 
-### 일반 강화 재료
+MASTERY CURRENT 손상 첫 Budget:
 
 ```text
-COMMON_ENHANCEMENT_MATERIAL_SHADOW_VALUE = 50G/unit
-units = ceil(target / 20)
-
-+1~20 1 / +21~40 2 / +41~60 3 / +61~80 4 / +81~100 5
+DAMAGE    CURRENT -15~-25
+CRITICAL  CURRENT -35~-60
+MAX scar  MAX -6~-15
 ```
 
-이는 balance accounting bundle이며 새 player-facing currency가 아니다.
+## 10. 누적 기대원가·기본 판매가 — 17
 
-### MASTERY CURRENT 손상 첫 값
-
-```text
-DAMAGE    -15~-25 CURRENT
-CRITICAL  -35~-60 CURRENT
-MAX scar  -6~-15 MAX  # 09 유지
-```
-
-### 20,000-run 대표 철검 planning simulation
+20,000-run planning Monte Carlo와 독립 seed 재검산을 사용한다. Seed별 raw mean은 후기 long-tail로 소폭 흔들리므로 승인된 고정 anchor를 사용한다.
 
 ```text
-Level   Mean Expected Cost   P90 Cost     Base Market Value
-+10          5,770             6,530           5,800
-+20         30,736            36,080          34,400
-+30         96,163           112,041         117,300
-+40        223,091           259,170         290,000
-+50        427,991           492,494         590,600
-+60        728,187           832,155       1,077,700
-+70      1,189,743         1,341,383       1,879,800
-+80      1,942,055         2,978,285       3,262,700
-+90      3,276,228         5,191,919       5,897,200
-+100     5,759,280        10,348,306      11,518,600
-```
-
-+100 planning evidence:
-
-```text
-mean attempts ≈ 282.7
-mean physical destruction/recraft ≈ 1.07
-```
-
-기본 판매가는 actual player spend에 동적으로 연동하지 않는다.
-
-```text
+independent reproduction tolerance ≈ ±1.5%
 SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
 ```
 
-offline Balance Lab가 reference expected-cost 분포로 static level price table을 생성한다.
+| Level | Mean Expected Cost Anchor | Base Market Value |
+|---:|---:|---:|
+| +0 | 1,500 | 1,000 |
+| +5 | 2,322 | 1,900 |
+| +9 | 4,759 | 4,600 |
+| +10 | **5,779** | **5,800** |
+| +11 | 7,023 | 7,400 |
+| +20 | 30,713 | 34,400 |
+| +30 | 96,006 | 117,100 |
+| +40 | 219,565 | 285,400 |
+| +50 | 419,230 | 578,500 |
+| +60 | 712,986 | 1,055,200 |
+| +70 | 1,168,898 | 1,846,900 |
+| +80 | 1,907,274 | 3,204,200 |
+| +90 | 3,235,853 | 5,824,500 |
+| +100 | **5,632,657** | **11,265,300** |
 
-위험 프리미엄 목표:
+검증 계약:
 
 ```text
-+10 0% / +11 5% / +20 12% / +30 22% / +40 30%
-+50 38% / +60 48% / +70 58% / +80 68% / +90 80% / +100 100%
++0~+9 expected profit < 0
++10 expected profit ~= 0
++11~+100 expected profit > 0
++11 이후 anchor expected profit 단조 비감소
 ```
 
-## 9. 과거 숫자 지위
+## 11. 과거 숫자의 지위
 
-다음 2026-07 값은 current numeric canon이 아니다.
+다음은 current numeric authority가 아니다.
 
 ```text
 +5 최초 흑자
 +60 마지막 가격 앵커
-old success decade pattern
+old decade success pattern
+old MASTERY 25~40% working range
 old multi-step downgrade
 old destroy RNG
 ```
 
-상태:
+상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
+
+## 12. 현재 승인사항 요약
 
 ```text
-HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT
+01     PRIMARY CORE = 강화 긴장감 + DDD
+02~04  risk + item-UID recovery + disclosure
+05~09  checkpoint / CURRENT-MAX / destroy-at-zero
+10~12  repair economy / GOLD+MATERIAL
+13     failure family ratio
+14     +10 break-even / +100 max
+15     target-level experience bands / +10 first floor
+16     checkpoint [10,30,60,90]
+17     success / recovery / attempt cost / expected cost / static market anchors
 ```
 
-## 10. 현재 미확정 / 다음 순서
+모든 17 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 제품 data/runtime은 아직 변경하지 않는다.
 
-1. 일반 강화/수리 재료의 실제 공급량·획득 경로.
-2. 후기 HIGH/MASTERY 수리 절대경제 재검증.
-3. MAX 대수선 필요 여부와 대가.
-4. 파괴 작품 memorial/successor UX.
-5. +100 비수치 payoff.
-6. 첫 10분 실제 pacing/UX/Visual 연결.
-7. 정밀제작·고객/세계 payoff 연결.
-8. release-near Vertical Slice 계약.
+## 13. 현재 작업 순서
 
-## 11. 책임 원본
+1. `RESOURCE_SUPPLY` — 일반 강화/수리 재료 실제 공급량·획득 경로·recipe mapping.
+2. `LATE_REPAIR_ECONOMY` — HIGH/MASTERY 수리 절대경제 재검증.
+3. `MAX_OVERHAUL` — MAX 대수선 여부와 대가.
+4. `DESTRUCTION_UX` — DESTROYED memorial/successor/UID history UX.
+5. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
+6. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
+7. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+8. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
 
-1. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
-2. `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
-3. `docs/planning/BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md`
-4. `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md`
-5. `docs/planning/BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md`
-6. `docs/planning/BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md`
-7. `docs/planning/BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md`
-8. `docs/planning/BLACKSMITH_REPAIR_ABSOLUTE_ANCHOR_CANON_20260820.md`
-9. `docs/planning/BLACKSMITH_FAILURE_FAMILY_RATIO_CANON_20260820.md`
-10. `docs/planning/BLACKSMITH_ENHANCEMENT_PROGRESSION_ECONOMY_CANON_20260820.md`
-11. `docs/planning/BLACKSMITH_LEVEL_TO_EXPERIENCE_BAND_CANON_20260820.md`
-12. `docs/planning/BLACKSMITH_CHECKPOINT_CADENCE_CANON_20260820.md`
-13. `docs/planning/BLACKSMITH_ENHANCEMENT_BALANCE_CURVE_CANON_20260820.md`
-14. `docs/planning/BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md` — current curve index + historical evidence
-15. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+## 14. 증거 경계
 
-## 12. 증거 경계
-
-- 01~17 current planning authority.
-- 17 numeric values: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
-- 20,000-run model: `PLANNING_SIMULATION_EVIDENCE`.
+- 01~16 구조: `USER_APPROVED`.
+- 17 숫자: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
+- Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`.
 - Human/Player: `NOT_RUN`.
 - Runtime implementation: `BLOCKED`.
