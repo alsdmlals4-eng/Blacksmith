@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~15`
 - 제품 구현: `BLOCKED`
 
 ## 1. 충돌 시 우선순위
@@ -32,8 +32,9 @@
 
 ### 강화 진행·수익 경제
 - `BLACKSMITH_ENHANCEMENT_PROGRESSION_ECONOMY_CANON_20260820.md` — 14 `+10 본전 / +11 이후 수익 / +100 최대`.
+- `BLACKSMITH_LEVEL_TO_EXPERIENCE_BAND_CANON_20260820.md` — 15 target-level 경험 밴드 + +10 첫 경제 checkpoint floor.
 - `BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md` — 최신 구조 계약 + 2026-07 과거 가격표 재보정 증거.
-- `BLACKSMITH_ENHANCEMENT_TENSION_AND_DDD_REWARD_LADDER_20260820.md` — 경험 밴드 역할/DDD Ladder. 세부 레벨 매핑은 아직 후속.
+- `BLACKSMITH_ENHANCEMENT_TENSION_AND_DDD_REWARD_LADDER_20260820.md` — 경험 밴드 역할/DDD Ladder.
 
 ## 3. 현재 실패 결과군 권위 — 13
 
@@ -88,7 +89,48 @@ EXPECTED_NET_PROFIT(+11..+100) > 0
 
 상태: 구조 `USER_APPROVED / STRUCTURAL_CANON`; 세부 +0~+100 가격·성공률·비용 곡선은 `NOT_FINAL`.
 
-## 5. 과거 수익곡선 처리
+## 5. 현재 레벨 → 경험 밴드 권위 — 15
+
+경험 밴드는 **target level 기준**으로 선택한다.
+
+```text
+TARGET +1~+2     LEARN
+TARGET +3~+10    BUILD_CONFIDENCE
+TARGET +11       FIRST_STOP_POINT
+TARGET +12~+30   TENSION
+TARGET +31~+60   HIGH_STAKES
+TARGET +61~+100  MASTERY
+```
+
+의미:
+
+```text
+CURRENT +10 = FIRST_ECONOMIC_STOP_STATE
+TARGET +11  = FIRST_STOP_POINT ATTEMPT
+```
+
+- +10을 먼저 확보해 평균 본전을 회수한 뒤 +11부터 첫 수익과 영구 구조 위험을 충돌시킨다.
+- +10 도달 전 BUILD_CONFIDENCE는 CRITICAL 0%.
+- +11부터 FIRST_STOP failure family와 첫 MAX 흉터 가능성이 열린다.
+
+첫 checkpoint:
+
+```text
++10 = FIRST_ECONOMIC_CHECKPOINT_FLOOR
+```
+
+- +10 이후 제한 DOWNGRADE는 +10 아래로 내려가지 않는다.
+- +11 첫 시도에는 DAMAGE/CRITICAL/시도비가 남으므로 무위험 도전이 아니다.
+
+중요:
+
+```text
+BAND_BOUNDARY != CHECKPOINT_FLOOR
+```
+
++30/+60은 경험 밴드 경계일 뿐 자동 checkpoint가 아니다. +10 이후 checkpoint cadence는 16의 책임이다.
+
+## 6. 과거 수익곡선 처리
 
 2026-07 POC의:
 
@@ -109,7 +151,7 @@ DO_NOT_EXTRAPOLATE_TO_+100
 
 으로만 사용한다.
 
-## 6. 현재 수리 권위 요약
+## 7. 현재 수리 권위 요약
 
 ```text
 missing = MAX - CURRENT
@@ -144,22 +186,21 @@ HIGH 1.50
 MASTERY 1.80
 ```
 
-## 7. 현재 열린 Critical Decision
+## 8. 현재 열린 Critical Decision
 
 우선순위:
 
-1. **+0~+100 레벨 → 경험 밴드 매핑**.
-2. 체크포인트 최종 간격과 +10 경제 이정표의 checkpoint 관계.
-3. +0~+100 단계별 성공률/강화 비용/판매가/누적 기대원가.
-4. 일반 구조재료 공급량·획득 경로.
-5. CURRENT 손실 최종값 및 MASTERY 손실량.
-6. 후기 HIGH_STAKES/MASTERY 수리 경제 스케일.
-7. MAX 대수선 여부.
-8. 파괴 작품 memorial/successor.
-9. +100 비수치 payoff.
-10. 첫 10분 강화 수치와 UX.
+1. **+10 이후 checkpoint cadence**.
+2. +0~+100 단계별 성공률/강화 비용/판매가/누적 기대원가.
+3. 일반 구조재료 공급량·획득 경로.
+4. CURRENT 손실 최종값 및 MASTERY 손실량.
+5. 후기 HIGH_STAKES/MASTERY 수리 경제 스케일.
+6. MAX 대수선 여부.
+7. 파괴 작품 memorial/successor.
+8. +100 비수치 payoff.
+9. 첫 10분 강화 수치와 UX.
 
-## 8. 상태 해석
+## 9. 상태 해석
 
 | 상태 | 의미 |
 |---|---|
@@ -169,10 +210,10 @@ MASTERY 1.80
 | `PROPOSED_ONLY` | 사용자 승인 전 제안 |
 | `BLOCKED` | 제품 구현 금지 |
 
-## 9. 구현자 확인 순서
+## 10. 구현자 확인 순서
 
 1. 최신 사용자 지시 확인.
-2. Overlay와 13/14 Canon 확인.
-3. 수리면 10~12, 실패면 13, 진행/경제면 14를 우선.
+2. Overlay와 13~15 Canon 확인.
+3. 수리면 10~12, 실패면 13, 경제면 14, target band/checkpoint 시작점이면 15를 우선.
 4. 구형 data는 `HISTORICAL_EVIDENCE / REUSE_CANDIDATE`로만 사용.
 5. 새 `기획 완료` 전 제품 구현 금지.
