@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `R2_CHECKPOINT_003 / BS-OPS-20260804-02`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~06`
 - 제품 구현: `BLOCKED`
 
 > 이 파일의 2026-07-26 버전은 `[대체됨]`이며 Git 이력 `d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9`에 보존됩니다.
@@ -10,22 +10,40 @@
 
 충돌 시 위에 있는 문서가 우선한다.
 
-1. `CURRENT_CONFIRMED_DECISIONS.md`
-2. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-3. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-4. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
-5. `[기획서]/00_프로젝트_허브/ROADMAP.md`
-6. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-7. `docs/planning/CURRENT_R1_CANON_REGISTRY.json` — 역사적 R1 기반
-8. 상태가 표시된 과거 기획·PoC·연구·구현 계획
+1. 사용자의 최신 지시와 승인
+2. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` — 현재 재기획 상태·2026-08-20 승인 요약
+3. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 세부 Decision·역사 장기 원장
+4. `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
+5. `docs/planning/BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md`
+6. `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md`
+7. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
+8. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+9. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
+10. `[기획서]/00_프로젝트_허브/ROADMAP.md`
+11. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+12. `docs/planning/CURRENT_R1_CANON_REGISTRY.json` — 역사적 R1 기반
+13. 상태가 표시된 과거 기획·PoC·연구·구현 계획
+
+`BS-CORE-20260820-01` 이후 사용자의 최신 재기획 승인은 기존 장기 원장의 과거 `PLANNING_COMPLETE`보다 우선한다. 새 `기획 완료` 선언 전 제품 구현은 다시 열지 않는다.
 
 ## 2. 현재 분야별 책임 원본
 
 ### 프로젝트 코어·현재 상태
 
-- `CURRENT_CONFIRMED_DECISIONS.md`
+- `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
+- `CURRENT_CONFIRMED_DECISIONS.md` — 세부 역사 원장
+- `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
 - `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 - `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+
+### 강화·DDD·실패·내구도
+
+- `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md` — 강화 긴장감/DDD 1차 코어
+- `docs/planning/BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md` — 실패 누적 회복·UID 보존형 손상·정보 공개
+- `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md` — 체크포인트·제한 단계 하락·내구도 0~100%·0% 물리 파괴
+- `docs/planning/BLACKSMITH_ENHANCEMENT_TENSION_AND_DDD_REWARD_LADDER_20260820.md` — 튜닝 가능한 긴장 곡선/Reward Ladder
+
+이 분야에서 구형 `data/crafting/enhancement_balance.json`과 과거 PoC 수치는 `HISTORICAL_EVIDENCE / REUSE_CANDIDATE`이며 현재 제품 확정 수치가 아니다.
 
 ### 고객 정보 공개
 
@@ -61,7 +79,7 @@
 - `docs/planning/BLACKSMITH_CANON_ADVERSARIAL_REVIEW_AND_LEGACY_STATUS_2026-08-04.md`
 - `docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json`
 
-## 3. 명시적으로 대체된 구조
+## 3. 명시적으로 대체·정제된 구조
 
 ### 수식어
 
@@ -105,6 +123,35 @@ CATALYST_AFFIX empty
 CHRONICLE_AFFIX empty
 ```
 
+### 내구도
+
+```text
+[정제됨]
+DURABILITY = 정수형 작품 능력치 (예: 내구도 18)
+
+[현재 정본]
+DURABILITY_PERCENT = 0~100 정수 현재 상태
+새 작품 = 100%
+1~99% = 살아 있는 마모/손상 상태
+0% = DESTROYED
+```
+
+0%는 물리 작품 파괴이며 일반 수리/복원으로 되살리지 않는다. UID·이름·강화·소유·사건·파괴 원인·연대기 기록은 삭제하지 않는다.
+
+### 강화 실패
+
+```text
+[구형 구현/역사 증거]
+큰 단계 하락 또는 item DESTROY/zeroed runtime state
+
+[현재 기획]
+주요 체크포인트 아래 하락 금지
++ 구간 내 최대 1단계 하락부터 테스트
++ FAIL_HOLD / FAIL_DOWNGRADE / FAIL_DAMAGE / FAIL_CRITICAL_DAMAGE 분리
++ 모든 실패에 회복 진전
++ 내구도 0%일 때만 물리 작품 DESTROYED
+```
+
 ## 4. 문서 상태 해석
 
 | 표시 | 의미 |
@@ -120,6 +167,7 @@ CHRONICLE_AFFIX empty
 
 ## 5. PR 권위
 
+- PR #171: `MERGED_ENHANCEMENT_RECOVERY_AND_DDD_PLANNING / e714b864ebbdbd73c0b0714f93296044dcf619ee`
 - PR #103: `MERGED_R2_CHECKPOINT_003_CANON`
 - PR #104: `MERGED_POSTMERGE_CLOSURE`
 - PR #81: `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT / SELECTIVE_PROMOTION_HOLD`
@@ -128,12 +176,14 @@ PR #81의 전체 병합 단위는 `[폐기]`이며, 브랜치의 고유 원문�
 
 ## 6. 구현자 확인 순서
 
-1. Current Decisions와 Current R2 Registry 확인
-2. 이 색인에서 분야별 최신 책임 문서 확인
-3. Legacy Status Registry에서 대상 문서 상태 확인
-4. `[대체됨]`, `[보류]`, `[폐기]` 내용을 구현 요구로 사용하지 않음
-5. 정확한 숫자는 `BASELINE_TEST_PRESET`, `CURRENT_VALIDATED`, `HISTORICAL_EVIDENCE`를 구분
-6. 제품 경로를 수정하기 전에 R1~R8와 최종 사용자 승인 확인
+1. 최신 사용자 지시와 `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` 확인
+2. 기존 `CURRENT_CONFIRMED_DECISIONS.md`에서 세부 과거 Decision 확인
+3. 이 색인에서 분야별 최신 책임 문서 확인
+4. 강화/내구도면 2026-08-20 enhancement canon을 R2/R3의 구형 DURABILITY·failure 표현보다 우선
+5. Legacy Status Registry에서 대상 문서 상태 확인
+6. `[대체됨]`, `[보류]`, `[폐기]` 내용을 구현 요구로 사용하지 않음
+7. 정확한 숫자는 `TUNABLE / BASELINE_TEST_PRESET / CURRENT_VALIDATED / HISTORICAL_EVIDENCE`를 구분
+8. 새 `기획 완료` 선언 전 제품 경로를 수정하지 않음
 
 ## 7. 현재 열린 Decision
 
@@ -142,7 +192,8 @@ PR #81의 전체 병합 단위는 `[폐기]`이며, 브랜치의 고유 원문�
 - 작품 소유권 상태 머신
 - 모바일 조합 이름 표시
 - 첫 작품 정체성 보상 시점
-- 완전 파괴와 작품 애착 검증
+- 내구도 손실량·수리 비용/회복량·보호 수단의 정확 Balance Budget
+- 파괴된 작품을 도감/기념물/계승 콘텐츠에서 어떻게 활용할지
 - PR #81 선별 이관 순서
 
 승인 전에는 `PROPOSED_ONLY`다.
