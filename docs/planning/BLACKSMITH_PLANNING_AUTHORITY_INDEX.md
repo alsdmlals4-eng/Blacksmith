@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~10`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~11`
 - 제품 구현: `BLOCKED`
 
 ## 1. 적용 우선순위
@@ -16,12 +16,13 @@
 6. `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md`
 7. `docs/planning/BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md`
 8. `docs/planning/BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md`
-9. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-10. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-11. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
-12. `[기획서]/00_프로젝트_허브/ROADMAP.md`
-13. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-14. 상태가 표시된 과거 기획·PoC·연구·구현 계획
+9. `docs/planning/BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md`
+10. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
+11. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+12. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
+13. `[기획서]/00_프로젝트_허브/ROADMAP.md`
+14. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+15. 상태가 표시된 과거 기획·PoC·연구·구현 계획
 
 `BS-CORE-20260820-01` 이후 재기획은 과거 `PLANNING_COMPLETE / PHASE_C_ENTRY_APPROVED`보다 우선한다. 새 `기획 완료` 선언 전 제품 구현은 열지 않는다.
 
@@ -36,9 +37,10 @@
 - `BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md` — 체크포인트·CURRENT·0% 파괴
 - `BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md` — CURRENT/MAX·구조 흉터·07~09
 - `BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md` — 09 MAX scar + 10 수리 경제 승인 테스트 Budget
+- `BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md` — 11 수리 참조 구조·재료 대체·공방 피로도
 - `BLACKSMITH_ENHANCEMENT_TENSION_AND_DDD_REWARD_LADDER_20260820.md` — 긴장 곡선·Reward Ladder
 
-구형 `data/crafting/enhancement_balance.json`과 과거 PoC 수치는 `HISTORICAL_EVIDENCE / REUSE_CANDIDATE`이며 현재 제품 확정 수치가 아니다.
+구형 `data/crafting/enhancement_balance.json`, `data/progression/workshop_day_balance.json`과 과거 PoC 수치는 `HISTORICAL_EVIDENCE / REUSE_CANDIDATE`이며 현재 제품 확정 수치가 아니다. 특히 구형 `restore=5`는 11의 일반 수리 피로도 2보다 우선하지 않는다.
 
 ### 기존 R2/R3 분야
 기존 고객·세계·정밀강화·수식어·연대기 Canon은 위 2026-08-20 Decision과 충돌하지 않는 범위에서만 소비한다. 정확 파일 상태는 `BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json`을 따른다.
@@ -89,12 +91,12 @@ MASTERY           scar|failure 15~25%  / MAX loss 6~15
 
 ## 5. BS-ENHANCE-20260820-10 권위
 
-일반 수리 경제의 현재 정본은 다음이다.
+일반 수리 경제의 현재 기본 공식은 다음이다.
 
 ```text
 missing_current_points = MAX - CURRENT
 repair_cost
-= REPAIR_REFERENCE_COST[structural_family, secured_band]
+= REPAIR_REFERENCE_COST
 × (setup_fraction + variable_fraction × missing_current_points / 100)
 ```
 
@@ -115,9 +117,53 @@ variable_fraction = 0.65
 
 상태: 구조 `USER_APPROVED`; 계수 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 
-정확 `REPAIR_REFERENCE_COST` band table, 골드/일반재료 분배, `DAY_WORK_COST`는 후속 Decision이다.
+## 6. BS-ENHANCE-20260820-11 권위
 
-## 6. 문서 상태 해석
+`REPAIR_REFERENCE_COST`의 현재 상대 구조는 다음이다.
+
+```text
+R
+= STRUCTURAL_FAMILY_BASE_R
+× MATERIAL_STRUCTURE_MULTIPLIER[primary_material]
+× SECURED_BAND_MULTIPLIER[highest_secured_band]
+```
+
+주재료 구조 배율:
+
+```text
+iron         1.00
+silver       1.20
+meteor_iron  1.50
+```
+
+확보 밴드 배율:
+
+```text
+LEARN / BUILD_CONFIDENCE  1.00
+FIRST_STOP_POINT          1.10
+TENSION                   1.25
+HIGH_STAKES               1.50
+MASTERY                   1.80
+```
+
+추가 승인 첫 테스트값:
+
+```text
+OPTIONAL_COMMON_MATERIAL_OFFSET_CAP = 25%
+REPAIR_JOB_FATIGUE_COST = 2
+```
+
+- 원시 재료 가격 비율을 그대로 수리비에 복사하지 않는다.
+- R은 현재 +1 단계가 아니라 `highest_secured_band`가 바뀔 때만 변한다.
+- 같은 확보 밴드 안 제한 하락은 R을 낮추지 않는다.
+- 일반 재료는 선택적으로 견적 최대 25%를 고정 shadow value로 대체할 수 있다.
+- 재료가 없어도 100% 골드로 수리 가능하다.
+- 일반 수리 피로도 2는 구형 `restore=5` 또는 하루 전체 소비를 대체하는 최신 첫 테스트값이다.
+- `STRUCTURAL_FAMILY_BASE_R` 절대 골드 기준은 후속 절대 경제 Budget에서 정한다.
+
+상태: 구조 `USER_APPROVED`; 배율·상한·피로도는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
+
+## 7. 문서 상태 해석
 
 | 표시 | 의미 |
 |---|---|
@@ -130,15 +176,16 @@ variable_fraction = 0.65
 | `[폐기]` | 재사용 금지 |
 | `[역사 증거]` | 당시 구현·승인 과정 보존 |
 
-## 7. PR 권위
+## 8. PR 권위
 
+- PR #175: `MERGED_REPAIR_ECONOMY_CONTRACT / 03d7ed5fd47cb289ec31c6f446d316dc3b225b32`
 - PR #174: `MERGED_MAX_DURABILITY_SCAR_BUDGET / 1dbbc9089d2953ad5e846b520d89caa01718e7b1`
 - PR #173: `MERGED_MAX_DURABILITY_STRUCTURAL_SCAR / b23c6b6cb344eb968b943493902f2644c160c339`
 - PR #172: `MERGED_ENHANCEMENT_CHECKPOINT_AND_DURABILITY / c9781e73141988ea46d80f3f8200941411d5a258`
 - PR #171: `MERGED_ENHANCEMENT_RECOVERY_AND_DDD_PLANNING / e714b864ebbdbd73c0b0714f93296044dcf619ee`
 - PR #81: `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT`
 
-## 8. 구현자 확인 순서
+## 9. 구현자 확인 순서
 
 1. 최신 사용자 지시 + Overlay 확인
 2. 강화/내구도/수리면 2026-08-20 Canon과 승인 Budget 확인
@@ -146,13 +193,14 @@ variable_fraction = 0.65
 4. `TUNABLE / USER_APPROVED / USER_APPROVED_TEST_BUDGET / CURRENT_VALIDATED / HISTORICAL_EVIDENCE` 구분
 5. 새 `기획 완료` 선언 전 `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, `project.godot` 수정 금지
 
-## 9. 현재 열린 Decision
+## 10. 현재 열린 Decision
 
 - failure family 전체 정확 분배(HOLD/DOWNGRADE/DAMAGE)
 - CURRENT 손실 최종값
-- `REPAIR_REFERENCE_COST` 실제 band table
-- 수리 골드/일반재료 분배
-- `DAY_WORK_COST` 정확 부담
+- `STRUCTURAL_FAMILY_BASE_R` 절대 골드 기준값
+- 검 이외 장비군별 base R
+- 일반 재료 shadow value 최종값
+- 하루 총 피로도/작업량 출시 최종값
 - MAX 구조 복구/대수선 필요 여부와 대가
 - 체크포인트 최종 간격
 - 파괴 작품 memorial/successor 콘텐츠
