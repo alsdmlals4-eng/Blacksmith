@@ -1,58 +1,45 @@
 # [현재 승인] Blacksmith 최대 내구도 구조 손상·강화 리스크 계약
 
 - Parent: `BS-CORE-20260820-01`
-- Refines: `BS-ENHANCE-20260820-06`, `BS-ENHANCE-20260820-07`
-- Decisions: `BS-ENHANCE-20260820-07`, `BS-ENHANCE-20260820-08`
-- 사용자 승인: `2026-08-20 KST / 보호재 기본 제외 + 최대 내구도 손상으로 수리 후에도 강화 리스크 유지`
+- Refines: `BS-ENHANCE-20260820-06~08`
+- Decisions: `BS-ENHANCE-20260820-07`, `BS-ENHANCE-20260820-08`, `BS-ENHANCE-20260820-09`
+- 사용자 승인: `2026-08-20 KST / MAX 구조 손상 Balance 시작안 승인`
 - 상태: `USER_APPROVED / PLANNING_CANON`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
-- 기준 main: `c9781e73141988ea46d80f3f8200941411d5a258`
+- Human/Player evidence: `NOT_RUN`
 
 ## 1. BS-ENHANCE-20260820-07 — 별도 파괴 방지 기본 제외
 
-첫 Vertical Slice의 기본 강화에는 별도의 `0% 파괴 방지 보험`을 두지 않는다.
-
-이 Decision은 기존 제안 A를 승인하되 다음과 같이 정제한다.
+첫 Vertical Slice 기본 강화에는 별도의 `0% 파괴 방지 보험`을 두지 않는다.
 
 ```text
-안전 선택 = 현재 작품을 수리하고 멈추거나 다시 강화 준비
-도전 선택 = 현재/최대 내구도 상태를 감수하고 추가 강화
+안전 선택 = CURRENT를 MAX까지 수리하고 멈추거나 다시 준비
+도전 선택 = CURRENT/MAX 상태를 감수하고 추가 강화
 ```
 
-그러나 일반 수리가 리스크를 완전히 리셋하지 않는다. 일반 수리는 `CURRENT_DURABILITY`만 회복하고 `MAX_DURABILITY`의 구조 손상은 복구하지 않는다.
+일반 수리는 리스크를 완전히 초기화하지 않는다. `CURRENT_DURABILITY_PERCENT`만 현재 MAX까지 회복하며 구조 손상인 MAX는 복구하지 않는다.
 
-따라서 `수리 = 안전 선택`이지만 `수리 = 새 작품으로 완전 초기화`가 아니다.
-
-## 2. BS-ENHANCE-20260820-08 — 현재 내구도 + 최대 내구도 이중 구조
-
-새 작품은 다음 상태에서 시작한다.
+## 2. BS-ENHANCE-20260820-08 — CURRENT/MAX 이중 내구도
 
 ```yaml
-CURRENT_DURABILITY_PERCENT: 100
-MAX_DURABILITY_PERCENT: 100
+NEW_ITEM:
+  CURRENT_DURABILITY_PERCENT: 100
+  MAX_DURABILITY_PERCENT: 100
 ```
 
-항상 다음 불변식을 지킨다.
+불변식:
 
 ```text
 0 <= CURRENT_DURABILITY_PERCENT <= MAX_DURABILITY_PERCENT <= 100
 ```
 
-### CURRENT_DURABILITY_PERCENT
-
-- 단기 손상 상태다.
-- 강화 실패·실제 고객/세계 사건으로 감소할 수 있다.
-- 공방 일반 수리로 현재 `MAX_DURABILITY_PERCENT`까지 회복할 수 있다.
-- `0%`가 되면 물리 작품은 `DESTROYED`다.
-
-### MAX_DURABILITY_PERCENT
-
-- 작품의 누적 구조 건전성 한계다.
-- 일반 수리로 증가하지 않는다.
-- 심각한 강화 실패 또는 별도 승인된 구조 손상 사건이 감소시킨다.
-- MAX가 CURRENT 아래로 내려가면 CURRENT도 새 MAX로 clamp한다.
-- MAX가 `0%`가 되면 CURRENT도 `0%`가 되고 작품은 `DESTROYED`다.
+- `CURRENT`: 단기 생존 버퍼. 일반 수리 가능.
+- `MAX`: 누적 구조 건전성. 일반 수리 불가.
+- 일반 수리: `CURRENT = MAX`, `MAX = unchanged`.
+- MAX가 CURRENT 아래로 내려가면 CURRENT를 새 MAX로 clamp한다.
+- CURRENT 또는 MAX가 `0%`면 물리 작품은 `DESTROYED`다.
+- UID·이름·제작·강화·소유·손상·수리·파괴 원인·Chronicle provenance는 기록으로 보존한다.
 
 예:
 
@@ -63,73 +50,33 @@ MAX_DURABILITY_PERCENT: 100
 일반 수리 CURRENT 78 / MAX 78
 ```
 
-수리 후에도 작품은 새 작품 `100 / 100`으로 돌아가지 않는다.
-
-## 3. 최대 내구도 손상 소유권
-
-기본 실패 결과의 책임을 분리한다.
+## 3. 실패 outcome 책임
 
 ```text
 FAIL_HOLD
-- CURRENT 손실 없음
-- MAX 손실 없음
+- CURRENT 유지
+- MAX 유지
 
 FAIL_DOWNGRADE
 - 체크포인트 내 제한 단계 하락
 - CURRENT 기본 유지
-- MAX 손실 없음
+- MAX 유지
 
 FAIL_DAMAGE
-- CURRENT 손실
-- MAX 기본 유지
+- CURRENT 손상
+- MAX 유지
 
 FAIL_CRITICAL_DAMAGE
-- CURRENT 큰 손실
-- MAX 구조 손실 가능
-- 0% 도달 시 DESTROYED
+- CURRENT 큰 손상
+- MAX 구조 손상 가능
+- 단계 하락과 기본 중첩하지 않음
 ```
 
-일반 실패마다 MAX를 깎지 않는다. 그렇지 않으면 리스크가 긴장보다 누적 유지비 세금으로 변한다.
+일반 실패마다 MAX를 깎지 않는다. 성공 강화·단순 시간 경과·일상 사용도 자동 MAX 손상 원인이 아니다.
 
-고객/세계 사건도 단순 사용만으로 MAX를 깎지 않는다. `파손·변형·구조 균열·심각한 환경 손상`처럼 직접 인과가 있는 사건만 MAX 손상 후보가 된다.
+## 4. MAX 구조 상태가 강화에 미치는 영향
 
-## 4. 일반 수리 계약
-
-```text
-REPAIR_CURRENT
-CURRENT_DURABILITY_PERCENT = MAX_DURABILITY_PERCENT
-MAX_DURABILITY_PERCENT = unchanged
-```
-
-- 여러 번 클릭하는 수리 작업을 기본 UX로 만들지 않는다.
-- 수리 비용·작업량은 결손 CURRENT와 작품 가치에 비례하는 튜닝 후보다.
-- 일반 수리로 MAX를 올리지 않는다.
-- 첫 Vertical Slice에는 MAX 완전 복원 기능을 넣지 않는다.
-
-후속의 `STRUCTURAL_REBUILD / 대수선`은 별도 Decision 없이는 추가하지 않는다. 추가하더라도 공짜 완전 초기화가 되어서는 안 된다.
-
-## 5. 최대 내구도가 강화에 미치는 영향
-
-목표는 `수리하면 강화 리스크가 사라지는 문제`를 막는 것이다.
-
-세 가지 접근을 비교했다.
-
-### A. 성공률만 감소
-
-단순하지만 플레이가 확률표 최적화로 수렴하기 쉽다.
-
-### B. 작품 기존 성능까지 감소
-
-손상 체감은 강하지만 애착 작품이 빠르게 폐기되는 죽음의 나선 위험이 크다.
-
-### C. 성공률 페널티 우선 + 심각 손상에서 미래 강화 효과 감소 — 채택
-
-- MAX가 조금 손상됐을 때는 강화 성공 기대만 소폭 악화한다.
-- 구조 손상이 누적된 뒤에는 **앞으로 새로 얻는 강화 효과**도 약해진다.
-- 이미 획득한 공격력·방어력·수식어·과거 강화 보상을 소급 삭감하지 않는다.
-- 단순히 MAX가 낮다는 이유로 기존 고객 결과를 재작성하지 않는다.
-
-## 6. 첫 Balance Band — TUNABLE, NOT FINAL
+채택 구조는 `성공률 페널티 우선 + 심각 손상에서 미래 강화 효과 감소`다.
 
 | MAX 내구도 | 구조 상태 | 강화 성공률 보정 | 새 강화 효과 배율 |
 |---|---|---:|---:|
@@ -140,83 +87,162 @@ MAX_DURABILITY_PERCENT = unchanged
 | `1~20%` | `CRITICAL` | `-15pp` | `80%` |
 | `0%` | `DESTROYED` | 강화 불가 | 강화 불가 |
 
-이 숫자는 `TUNABLE_BASELINE_TEST_PRESET`이며 Human/Player validation 전 확정하지 않는다.
+이 표는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
 
-### 적용 원칙
+- 이미 획득한 공격력·방어력·수식어·과거 강화 보상은 소급 삭감하지 않는다.
+- `새 강화 효과 배율`은 그 시도에서 새로 얻는 성장량에만 적용한다.
+- 실패 누적 회복과 CURRENT 수리는 MAX를 복구하지 않는다.
+- MAX 저하 자체에 별도 파괴 확률 보너스를 자동 추가하지 않는다.
 
-- 성공률 페널티는 강화 전 화면에서 숨기지 않는다.
-- 실패 누적 회복은 MAX를 복구하지 않는다.
-- 실패 누적 회복이 성공률을 일부 되돌려도 `새 강화 효과 배율` 저하는 그대로 남는다.
-- MAX 손상 하나에 `성공률↓ + 기존 성능↓ + 파괴확률↑`를 동시에 기본 적용하지 않는다.
-- 최대 내구도 저하 자체로 과거 성공 보상을 소급 박탈하지 않는다.
+## 5. BS-ENHANCE-20260820-09 — MAX 구조 손상 Balance 시작 Budget
 
-## 7. 강화 효과 감소의 정확한 의미
+### 5.1 판정 방식
 
-`새 강화 효과 배율`은 **그 시도에서 성공했을 때 새로 추가되는 강화 성장량**에만 적용한다.
-
-예:
+MAX 구조 손상은 **전체 시도와 독립된 별도 즉사 주사위가 아니다. 실패가 발생한 뒤의 2차 failure-family 판정**이다.
 
 ```text
-정상 구조에서 성공 시 공격 +10
-MAX 50% / effect multiplier 95%
-→ 동일 강화 성공 시 신규 증가량은 +9~10 범위의 규칙화된 값
+강화 시도
+→ 최종 성공률로 SUCCESS / FAILURE 판정
+→ FAILURE인 경우 failure family 판정
+→ 일부 FAILURE만 FAIL_CRITICAL_DAMAGE
+→ FAIL_CRITICAL_DAMAGE일 때만 MAX 구조 손상
 ```
 
-정확한 반올림·최소 증가량은 구현 전 Balance Contract에서 정한다.
+내부 Balance 변수:
 
-이미 보유한 기존 강화 공격력은 MAX 손상으로 자동 감소하지 않는다.
+```text
+critical_scar_chance_given_failure
+max_durability_loss_when_scar
+```
 
-## 8. 강화 전 P0 정보
+플레이어 UI에서는 조건부 수학을 강요하지 않고 최종 계산된 **이번 시도의 구조 손상 가능성**을 공개한다.
 
-강화 화면은 최소 다음을 한 화면에서 읽을 수 있어야 한다.
+```text
+P(structural scar per attempt)
+= P(failure) × P(critical scar | failure)
+```
+
+### 5.2 승인된 첫 테스트 범위
+
+| 경험 밴드 | 실패 후 MAX 구조 손상 판정 | 발생 시 MAX 손실 | 상태 |
+|---|---:|---:|---|
+| `LEARN` | `0%` | `0` | 승인 시작값 |
+| `BUILD_CONFIDENCE` | `0%` | `0` | 승인 시작값 |
+| `FIRST_STOP_POINT` | `0~5%` | `-1~-3` | 승인 테스트 범위 |
+| `TENSION` | `8~12%` | `-2~-5` | 승인 테스트 범위 |
+| `HIGH_STAKES` | `12~20%` | `-4~-10` | 승인 테스트 범위 |
+| `MASTERY` | `15~25%` | `-6~-15` | 승인 테스트 범위 |
+
+이 범위는 사용자가 승인한 **공식 시뮬레이션/첫 플레이테스트 시작 Budget**이다. 범위 자체가 출시 최종 수치를 뜻하지는 않는다.
+
+### 5.3 초반 보호
+
+- `LEARN`과 `BUILD_CONFIDENCE`에서는 MAX 구조 손상이 발생하지 않는다.
+- 첫 영구 흉터는 `FIRST_STOP_POINT` 이후에만 열린다.
+- 첫 10분 경험이 `영구 손상 튜토리얼`로 변하지 않도록 한다.
+
+### 5.4 한 시도의 구조 손상 상한
+
+- 한 강화 시도에서 MAX 구조 손상 event는 최대 1회다.
+- `FAIL_CRITICAL_DAMAGE`는 `FAIL_DOWNGRADE`와 동시에 발생하지 않는다.
+- 별도 `destroy roll`을 추가하지 않는다. 파괴는 CURRENT/MAX 실제 수치가 0에 도달했을 때만 발생한다.
+
+### 5.5 CURRENT/MAX 손실 적용 순서
+
+중복 손실을 막기 위해 다음 순서를 고정한다.
+
+```text
+1. failure family 결정
+2. CURRENT direct loss 적용
+3. CRITICAL이면 MAX direct loss 적용
+4. CURRENT = min(CURRENT_after_direct_loss, MAX_after_loss)
+5. CURRENT == 0 or MAX == 0 → DESTROYED
+```
+
+MAX 손실량을 CURRENT에서 다시 한 번 별도로 빼지 않는다. MAX가 CURRENT 아래로 내려온 경우에만 clamp로 추가 영향을 받는다.
+
+## 6. Better Alternative Search
+
+### A. 시도마다 독립적으로 MAX 손상 판정
+- 성공한 시도에도 구조 손상 주사위를 붙이기 쉬워 인과가 흐려진다.
+- 비채택.
+
+### B. 실패 후 conditional critical-scar 판정 — 채택
+- 실패 안에서만 영구 흉터가 생겨 결과 인과가 읽힌다.
+- 성공률이 낮은 위험 구간에서는 per-attempt 구조 손상 위험도 자연스럽게 증가한다.
+- 채택.
+
+### C. N회 실패마다 확정 MAX 손상
+- 예측 가능하지만 실패 횟수 최적화와 조작이 메타가 되기 쉽다.
+- baseline 비채택. 필요 시 별도 사건형 시스템으로만 재검토.
+
+## 7. 강화 전 P0 정보
+
+기본 화면:
 
 ```text
 현재 강화 단계 / 체크포인트
-CURRENT 내구도 NN%
-MAX 내구도 MM%
-구조 상태 이름
-기본 성공률
-MAX 내구도에 의한 성공률 보정
+CURRENT NN% / MAX MM%
+구조 상태
 최종 성공 기대
-실패 시 CURRENT 손상 가능성
-심각 실패 시 MAX 손상 가능성
-이번 성공의 신규 강화 효과 배율
+이번 실패의 주요 결과
+이번 시도의 구조 손상 가능성
+구조 손상 시 MAX 예상 손실 범위
+신규 강화 효과 배율
 실패 누적 회복
 다음 체크포인트
 ```
 
-수학 전체를 펼치지 않고 `왜 불리해졌는지`를 2~4개 원인으로 설명한다.
+상세 보기에서만 기본 성공률→회복→MAX 페널티→failure-family 계산을 펼친다.
 
-## 9. DDD와의 연결
+## 8. Balance 튜닝 순서
 
-이중 내구도는 강화 버튼을 누르기 전 세 종류의 손실을 구분하게 한다.
+문제가 발생하면 원인을 섞지 않기 위해 다음 순서로 조정한다.
 
-```text
-단기 손실: CURRENT
-누적 흉터: MAX
-최종 손실: 0% DESTROYED
-```
+1. `critical_scar_chance_given_failure`
+2. `max_durability_loss_when_scar`
+3. CURRENT direct loss
+4. MAX 상태별 성공률 페널티
+5. 신규 강화 효과 배율
 
-따라서 플레이어 질문은 다음처럼 바뀐다.
+즉 구조 손상이 너무 자주 느껴질 때 곧바로 기존 보상이나 전체 성공률을 흔들지 않는다.
 
-> `현재 내구도는 수리하면 되지만, 최대 내구도까지 또 깎일 위험을 감수하고 이 작품을 더 밀어붙일 것인가?`
+## 9. 시뮬레이션 지표
 
-이 질문이 Blacksmith의 `멈춤 vs 추가 도전`을 강화해야 한다.
+기존 강화 시뮬레이터 재사용 시 최소 다음을 측정한다.
+
+- 경험 밴드별 `P(structural scar per attempt)`
+- 경험 밴드별 `P(structural scar | failure)`
+- 첫 MAX 흉터까지 평균/중앙 실패 횟수
+- 체크포인트 도달 전 MAX 손상률
+- N회 강화 후 MAX 분포
+- `MAX <= 60 / <= 40 / <= 20` 도달 비율
+- 구조 손상 후 계속 강화 / 수리 후 강화 / 멈춤 비율
+- CURRENT 수리 횟수와 MAX 상태의 상관
+- 파괴 원인 중 CURRENT 소진 vs MAX 소진 비율
+
+Human/Player:
+
+- 영구 흉터가 발생하기 전에 위험을 이해했는가
+- 손상 결과를 `숨은 즉사`가 아니라 자기 도전의 결과로 설명하는가
+- MAX 손상 후에도 작품을 계속 쓸 이유가 남는가
+- CURRENT 수리가 의미 있지만 완전 리셋은 아니라는 것을 이해하는가
 
 ## 10. 재검토 조건
 
-다음이 관찰되면 구조를 조정한다.
+다음이면 09 Budget을 조정한다.
 
-- MAX가 한두 번의 실패만으로 너무 빨리 내려가 애착 작품을 즉시 폐기하게 된다.
-- MAX 페널티 때문에 손상된 작품은 다시 강화할 이유가 전혀 없어진다.
-- 플레이어가 모든 시도 전에 무조건 수리해도 여전히 리스크 판단이 없다.
-- 반대로 수리가 의미 없어져 CURRENT가 장식 수치가 된다.
-- 실패 누적 회복과 MAX 성공률 페널티가 서로 상쇄되어 이해하기 어렵다.
-- 성공률·CURRENT·MAX·효과 배율을 동시에 보여줘 모바일 화면이 계산표가 된다.
+- FIRST_STOP_POINT 이전에 MAX 손상 경험이 발생한다.
+- 한두 번의 critical scar만으로 작품을 사실상 폐기한다.
+- HIGH_STAKES에서 모든 합리적 플레이가 강화 포기로 수렴한다.
+- 반대로 MAX 구조 손상이 너무 희박해 플레이어가 존재를 무시한다.
+- 구조 손상과 CURRENT 손상의 중복 계산을 플레이어가 이중 벌점으로 느낀다.
+- 구조 손상 가능성을 이해하려면 상세 수학 화면을 반드시 열어야 한다.
 
 ## 11. 증거 경계
 
-- 기존 `DURABILITY` 정수 표현은 역사 기획이며 새 `%` 이중 구조와 자동 변환하지 않는다.
-- 정확한 MAX 손실량·발생 확률·성공률 보정·효과 배율은 `NOT_FINAL`.
+- `BS-ENHANCE-20260820-09`의 범위는 **승인된 테스트 Budget**이다.
+- 출시 최종 확률·손실량은 `NOT_FINAL`.
+- 기존 simulator는 재사용 후보이며 새 CURRENT/MAX 계약을 아직 구현 검증하지 않았다.
 - Human/Player validation: `NOT_RUN`.
 - 제품 구현: `BLOCKED`.
