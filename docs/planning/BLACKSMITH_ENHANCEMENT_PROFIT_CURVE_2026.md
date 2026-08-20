@@ -1,8 +1,10 @@
-# 블랙스미스 강화 수익곡선 기준 — 2026
+# Blacksmith 강화 수익곡선 기준 — 2026
 
-> 상태: `CURRENT_STRUCTURAL_RULES + HISTORICAL_NUMERIC_EVIDENCE`
+> 상태: `CURRENT_TEST_BUDGET + HISTORICAL_NUMERIC_EVIDENCE`
 >
-> 최신 권위: `BS-PROGRESSION-20260820-14`
+> 최신 권위: `BS-PROGRESSION-20260820-14~17`
+>
+> 상세 수치 원본: `BLACKSMITH_ENHANCEMENT_BALANCE_CURVE_CANON_20260820.md`
 >
 > 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 
@@ -10,80 +12,206 @@
 
 ## 1. 최신 구조 계약
 
-현재 강화 경제의 상위 제약은 다음이다.
-
 ```text
-+0 ~ +9     = 투자 회수 전 구간
-+10         = 누적 기대원가 회수선 / BREAK_EVEN_RECOVERY_POINT
-+11 ~ +100  = 기본 기대수익 양수 가능 구간
-+100        = MAX_ENHANCEMENT_LEVEL
++0~+9      = 투자 회수 전
++10        = 평균 누적 기대원가 회수
++11~+100   = 기본 기대수익 양수 가능
++100       = 최대 강화
 ```
 
-따라서 과거 문서의 `+5 최초 흑자` 규칙은 현재 권위가 아니다.
-
-## 2. 본전/수익 판정
-
-대표 평범한 작품의 기본 공개시장 기준:
+Checkpoint:
 
 ```text
-expected_net_profit(level)
-= base_public_market_value(level)
-- expected_cumulative_cost(level)
++10 / +30 / +60 / +90
 ```
 
-`expected_cumulative_cost`에는 다음을 포함한다.
-
-- 기본 제작 골드.
-- 기본 제작 일반 재료의 승인 shadow value.
-- 강화 시도 골드/재료.
-- 실패 반복 시도.
-- 제한 DOWNGRADE 복구 시도.
-- 강화 실패 때문에 발생한 일반 CURRENT 수리의 골드+일반 구조재료 기대부담.
-- 해당 구간에서 실제 발생 가능한 파괴/재제작 기대비용.
-
-포함하지 않는 별도 가치축:
-
-- 정밀제작/완성도.
-- 수식어/촉매.
-- Chronicle/역사 가치.
-- 고객 적합도 및 거래 채널 프리미엄.
-
-따라서 특수 품질이나 고객 조건 때문에 +10 전에 실제 이익이 생길 수는 있지만, 그것은 `강화 단계 기본 회수선`을 변경하지 않는다.
-
-## 3. 현재 검증 계약
-
-후속 +0~+100 Balance Curve는 다음을 만족해야 한다.
+경험 밴드:
 
 ```text
-MAX_LEVEL = 100
-expected_profit(+0..+9) <= break-even threshold
-expected_profit(+10) ~= 0
-expected_profit(+11..+100) > 0
-+100 -> no further normal enhancement
+TARGET +1~+2     LEARN
+TARGET +3~+10    BUILD_CONFIDENCE
+TARGET +11       FIRST_STOP_POINT
+TARGET +12~+30   TENSION
+TARGET +31~+60   HIGH_STAKES
+TARGET +61~+100  MASTERY
 ```
 
-정수 가격과 Monte Carlo 오차 때문에 +10에 정확히 0골드를 강제하지 않고 작은 허용 오차를 사용한다.
-
-+11 이후 기대수익 증가폭·곡률은 아직 `NOT_FINAL`이다.
-
-## 4. 기존 기본 제작비 재사용 증거
-
-대표 철검의 과거 POC 원가 기준은 현재 재보정 입력으로 유지한다.
+## 2. 누적 기대원가 정의
 
 ```text
-제작 골드 = 500
-일반 재료 = 20개
-일반 재료 shadow value = 50 gold / unit
-기본 제작 기대원가 = 1,500 gold
+EXPECTED_CUMULATIVE_RESOURCE_COST
+= 기본 제작
++ 강화 시도 골드
++ 일반 강화 재료 shadow cost
++ 실패 반복
++ one-step DOWNGRADE 복구
++ 강화 유발 CURRENT 수리
++ 실제 파괴/재제작 기대비용
 ```
 
-`COMMON_MATERIAL_SHADOW_VALUE=50`은 `BS-ENHANCE-20260820-12`에서도 첫 테스트값으로 재사용됐다.
+공방 피로도는 별도 workload 축으로 유지하고 gold-equivalent에 강제 환산하지 않는다.
 
-이 값은 출시 최종 경제가 아니라 `RECALIBRATION_INPUT / USER_APPROVED_TEST_BUDGET`다.
+별도 가치축:
 
-## 5. 2026-07-26 공개시장 수치의 현재 지위
+```text
+정밀제작/완성도
+수식어/촉매
+Chronicle/역사
+특정 고객 적합도
+거래 채널 프리미엄
+```
 
-과거 POC는 다음 가격 앵커를 사용했다.
+위 항목은 기본 강화 판매가에 중복 포함하지 않는다.
+
+## 3. 현재 강화비 Budget
+
+골드:
+
+```text
+GOLD_ATTEMPT_COST(target)
+= round_to_10(12 * target^1.84)
+```
+
+일반 재료 accounting:
+
+```text
+shadow = 50G / unit
+units = ceil(target / 20)
+```
+
+대표:
+
+| Target | Gold | Material Unit |
+|---:|---:|---:|
+| +1 | 10 | 1 |
+| +5 | 230 | 1 |
+| +10 | 830 | 1 |
+| +20 | 2,970 | 1 |
+| +30 | 6,270 | 2 |
+| +40 | 10,640 | 2 |
+| +50 | 16,040 | 3 |
+| +60 | 22,440 | 3 |
+| +70 | 29,800 | 4 |
+| +80 | 38,090 | 4 |
+| +90 | 47,310 | 5 |
+| +100 | 57,440 | 5 |
+
+## 4. 현재 기본 성공률 Budget
+
+```text
++1       100%
++2        97%
++3~+10    95% -> 86%
++11       82%
++12~+30   81% -> 72%
++31~+60   71% -> 67%
++61~+100  66% -> 60%
+```
+
+작품 UID + target별 recovery:
+
+```text
++6%p / failure
+soft cap 95%
+```
+
+hard guarantee:
+
+```text
+LEARN 2 / BUILD 4 / FIRST 4 / TENSION 5 / HIGH 6 / MASTERY 7 failures
+```
+
+## 5. 최신 20,000-run expected-cost evidence
+
+대표 평범한 철검, current 10~17 planning rules, reference safe-repair policy 기준.
+
+| Level | Mean Cost | P50 | P75 | P90 |
+|---:|---:|---:|---:|---:|
+| +10 | 5,770 | 5,610 | 6,060 | 6,530 |
+| +11 | 7,039 | 6,850 | 7,410 | 8,097 |
+| +20 | 30,736 | 30,138 | 32,980 | 36,080 |
+| +30 | 96,163 | 94,770 | 103,160 | 112,041 |
+| +40 | 223,091 | 219,890 | 239,324 | 259,170 |
+| +50 | 427,991 | 423,140 | 457,396 | 492,494 |
+| +60 | 728,187 | 720,715 | 775,553 | 832,155 |
+| +70 | 1,189,743 | 1,148,455 | 1,239,709 | 1,341,383 |
+| +80 | 1,942,055 | 1,734,387 | 1,904,978 | 2,978,285 |
+| +90 | 3,276,228 | 2,552,450 | 3,972,885 | 5,191,919 |
+| +100 | 5,759,280 | 4,475,112 | 6,995,326 | 10,348,306 |
+
++100 planning evidence:
+
+```text
+mean attempts ≈ 282.7
+mean destruction/recraft ≈ 1.07
+```
+
+## 6. 현재 기본 공개시장 판매가 Budget
+
+기본 판매가는 actual player spend에 동적으로 연동하지 않는다.
+
+```text
+SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
+```
+
+Balance Lab에서 expected-cost 분포를 이용해 static level table을 생성한다.
+
+첫 앵커:
+
+| Level | Base Market Value | Mean Expected Cost | Mean Expected Profit |
+|---:|---:|---:|---:|
+| +0 | 1,000 | 1,500 | -500 |
+| +5 | 1,900 | 2,316 | 약 -416 |
+| +9 | 4,600 | 4,753 | 약 -153 |
+| +10 | **5,800** | **5,770** | **약 +30 / break-even** |
+| +11 | 7,400 | 7,039 | 약 +361 |
+| +20 | 34,400 | 30,736 | 약 +3,664 |
+| +30 | 117,300 | 96,163 | 약 +21,137 |
+| +40 | 290,000 | 223,091 | 약 +66,909 |
+| +50 | 590,600 | 427,991 | 약 +162,609 |
+| +60 | 1,077,700 | 728,187 | 약 +349,513 |
+| +70 | 1,879,800 | 1,189,743 | 약 +690,057 |
+| +80 | 3,262,700 | 1,942,055 | 약 +1,320,645 |
+| +90 | 5,897,200 | 3,276,228 | 약 +2,620,972 |
+| +100 | **11,518,600** | **5,759,280** | **약 +5,759,320** |
+
+검증:
+
+```text
++0~+9 expected profit < 0
++10 expected profit ~= 0
++11~+100 expected profit > 0
+reference table의 expected profit은 +11 이후 단조 비감소
+```
+
+## 7. 위험 프리미엄 목표
+
+reference expected-cost 대비 margin target:
+
+```text
++10 0%
++11 5%
++20 12%
++30 22%
++40 30%
++50 38%
++60 48%
++70 58%
++80 68%
++90 80%
++100 100%
+```
+
+앵커 사이는 offline margin 보간 후 static table로 저장한다.
+
+후기 margin이 커지는 이유:
+- +60 이후 physical destruction/recraft long-tail 증가.
+- +80 이후 mean보다 P90 cost가 훨씬 빠르게 증가.
+- 실제 개인 지출 환급이 아니라 위험을 감수한 강화 단계 자체의 시장 프리미엄.
+
+## 8. 과거 2026-07 수치의 현재 지위
+
+과거 POC:
 
 | 강화 단계 | 과거 공개시장 기준가 |
 |---:|---:|
@@ -108,68 +236,47 @@ expected_profit(+11..+100) > 0
 상태:
 
 ```text
-HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT
+HISTORICAL_NUMERIC_EVIDENCE
+RECALIBRATION_INPUT
 NOT_CURRENT_PRICE_CANON
 DO_NOT_EXTRAPOLATE_TO_+100
 ```
 
-특히 과거 다음 판정은 폐기/대체됐다.
+폐기/대체된 과거 판정:
 
 ```text
-[OLD] +5 = 최초 양의 기대수익
-[OLD] +5~+60 모든 단계 평균 흑자
+[OLD] +5 최초 흑자
+[OLD] +5~+60 전체 평균 흑자
+[OLD] low MASTERY success / old destroy RNG / multi-step downgrade
 ```
 
-최신 판정은 14를 따른다.
+## 9. 가치 보정 순서
 
-```text
-[CURRENT] +10 = 본전 회수
-[CURRENT] +11~+100 = 기본 수익 가능
-[CURRENT] +100 = 최대 강화
-```
+기본 공개시장 가격 이후에만 별도 보정을 적용한다.
 
-## 6. 가치 보정 적용 순서
-
-기본 강화 가격은 강화 단계 자체 가치만 책임진다.
-
-최종 거래 가치 후보 순서:
-
-1. 강화 단계 기본 공개시장 가치
-2. 제작 완성도·피버 가치 보정
-3. 정밀 등급·수식어 가치 보정
+1. 강화 단계 기본 market value
+2. 제작 완성도/정밀제작
+3. 수식어/촉매
 4. 손상 상태 감액
-5. 역사 가치 보정
-6. 거래 채널 배율과 예산 상한
+5. Chronicle/history
+6. 고객/거래 채널 배율·예산 상한
 
-동일 요소를 기준가와 보정치에 중복 적용하지 않는다.
+동일 요소를 기준가와 보정값에 중복 반영하지 않는다.
 
-과거 거래 채널 배율 수치는 `HISTORICAL_EVIDENCE / RETUNE_REQUIRED`다.
+## 10. 재검토 조건
 
-## 7. 다음 재산정 작업
+- +10이 실제 Human test에서 본전선으로 느껴지지 않음.
+- +11 이후에도 대부분 +10에서만 판매함.
+- 반대로 최고 강화까지 누르는 것이 항상 지배전략.
+- HIGH/MASTERY 수리 반복이 강화 메인 루프를 덮음.
+- +100 평균 282.7 attempts가 실제 pacing에서 과도함.
+- +100 sale 한 번으로 macro economy가 무력화됨.
+- 실제 재료 공급이 gold curve보다 더 큰 병목이 됨.
 
-다음 Balance Decision에서 +0~+100 전체를 다시 계산한다.
+## 11. 증거 경계
 
-필수 입력:
-
-- 승인된 경험 밴드와 failure family 비율.
-- 단계별 성공률/실패 누적 회복.
-- CURRENT/MAX 손상과 수리 경제.
-- 강화 골드/재료 비용.
-- 체크포인트/단계 하락 구조.
-
-필수 출력:
-
-- 평균/P50/P75/P90 누적원가.
-- 단계별 기본 공개시장가.
-- 단계별 expected net profit.
-- +10 break-even 검증.
-- +11 이후 profit curve.
-- +100 도달 기대비용/시간과 경제 충격.
-
-## 8. 범위와 증거 경계
-
-- `+10 본전 / +11 이후 수익 가능 / +100 최대`: `USER_APPROVED`.
-- 과거 +0~+60 가격표: `HISTORICAL_NUMERIC_EVIDENCE`.
-- 새 +0~+100 가격표: `NOT_STARTED / NOT_FINAL`.
-- Runtime data 변경: `BLOCKED`.
-- Human/Player validation: `NOT_RUN`.
+- 14~17 구조: `USER_APPROVED`.
+- 17 numeric curve: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
+- 20,000-run: `PLANNING_SIMULATION_EVIDENCE`.
+- runtime data: `NOT_UPDATED / BLOCKED`.
+- Human/Player evidence: `NOT_RUN`.
