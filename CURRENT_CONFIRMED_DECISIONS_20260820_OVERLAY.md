@@ -124,23 +124,44 @@ TENSION                   1.25
 HIGH_STAKES               1.50
 MASTERY                   1.80
 
-OPTIONAL_COMMON_MATERIAL_OFFSET_CAP = 25%
 REPAIR_JOB_FATIGUE_COST = 2
 ```
-
-불변식:
 
 - 원시 재료 판매가 비율을 수리비에 그대로 복사하지 않는다.
 - +1 현재 단계가 아니라 `highest_secured_band`가 바뀔 때만 수리 구조 복잡도가 변한다.
 - 같은 확보 밴드 안 제한 하락은 R을 낮추지 않는다.
-- 일반 재료는 선택적으로 총 견적의 최대 25%까지만 고정 shadow value로 대체한다.
-- 일반 재료가 없어도 100% 골드 지불로 수리할 수 있다.
 - 촉매·희귀 수식어 재료·MAX 복구재를 일반 CURRENT 수리에 요구하지 않는다.
 - 일반 수리는 피로도 2의 한 번 `REPAIR_JOB`으로 `CURRENT = MAX`까지 끝난다.
 - 구형 `restore=5` 또는 하루 전체 소비는 최신 일반 수리의 권위가 아니다.
-- `STRUCTURAL_FAMILY_BASE_R` 절대 골드 기준값은 아직 `NOT_FINAL`이다.
 
-구조는 `USER_APPROVED`; 배율·25% 상한·피로도 2는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
+11에서 승인했던 `OPTIONAL_COMMON_MATERIAL_OFFSET_CAP=25%`와 `100% GOLD-ONLY REPAIR`는 **12에서 대체됨**.
+
+### `BS-ENHANCE-20260820-12`
+첫 Vertical Slice 대표 검의 절대 수리 기준과 결제 구조를 확정한다.
+
+```text
+STRUCTURAL_FAMILY_BASE_R
+SWORD = 800 gold
+
+COMMON_MATERIAL_SHADOW_VALUE = 50 gold / unit
+
+common_material_units
+= max(1, ceil((MAX - CURRENT) / 25))
+
+PAYMENT
+= GOLD_COST + REQUIRED_COMMON_MATERIAL
+```
+
+- `SWORD_BASE_R=800`은 `FIRST_VERTICAL_SLICE_ABSOLUTE_ANCHOR`이며 후기 전체 경제 영구값이 아니다.
+- `COMMON_MATERIAL_SHADOW_VALUE=50`은 기존 제작·강화 경제의 shadow value를 재사용한다.
+- 모든 일반 CURRENT 수리는 **골드와 일반 구조재료를 둘 다** 소모한다.
+- 재료는 골드를 할인하지 않고, 골드는 재료를 대체하지 않는다.
+- 일반 구조재료는 절대 결손 CURRENT만 본다. 주재료 구조 배율·secured band·MAX 상태를 재료 수량에 다시 곱하지 않는다.
+- 첫 테스트 재료 수량은 `1~25pt=1 / 26~50pt=2 / 51~75pt=3 / 76~99pt=4`다.
+- 일반 구조재료는 희귀 드롭 전용이 아닌 공통 공급 자원으로 유지해야 한다.
+- `REPAIR_JOB_FATIGUE_COST=2`는 유지한다.
+
+구조는 `USER_APPROVED`; 800·50·25pt당 1개 수량표는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
 
 ## 현재 승인된 테스트 Band
 
@@ -162,9 +183,9 @@ MAX 1~20  : success -15pp / new effect 80%
 - failure family 전체 비율(HOLD/DOWNGRADE/DAMAGE의 정확 분배)
 - CURRENT 손실 범위의 최종값
 - MAX 구조 손상 Budget 최종값
-- `STRUCTURAL_FAMILY_BASE_R` 절대 골드 기준값
 - 검 이외 장비군별 base R
-- 일반 재료 shadow value 최종값
+- 후기 HIGH_STAKES/MASTERY 절대 수리 경제 스케일
+- 일반 구조재료 실제 공급량·획득 경로
 - 하루 총 피로도/작업량 출시 최종값
 - MAX 구조 복구/대수선 필요 여부와 대가
 - 체크포인트 최종 간격
@@ -179,7 +200,8 @@ MAX 1~20  : success -15pp / new effect 80%
 5. `docs/planning/BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md`
 6. `docs/planning/BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md`
 7. `docs/planning/BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md`
-8. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 세부 Decision·역사 원장
+8. `docs/planning/BLACKSMITH_REPAIR_ABSOLUTE_ANCHOR_CANON_20260820.md`
+9. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 세부 Decision·역사 원장
 
 ## 검증 경계
 
