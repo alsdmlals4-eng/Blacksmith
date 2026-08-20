@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~06`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~08`
 - 제품 구현: `BLOCKED`
 
 > 이 파일의 2026-07-26 버전은 `[대체됨]`이며 Git 이력 `d6fd9fc8ce6177c0b4ea0c41e1d9f4213c5726a9`에 보존됩니다.
@@ -16,13 +16,14 @@
 4. `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
 5. `docs/planning/BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md`
 6. `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md`
-7. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-8. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-9. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
-10. `[기획서]/00_프로젝트_허브/ROADMAP.md`
-11. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-12. `docs/planning/CURRENT_R1_CANON_REGISTRY.json` — 역사적 R1 기반
-13. 상태가 표시된 과거 기획·PoC·연구·구현 계획
+7. `docs/planning/BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md`
+8. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
+9. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
+10. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
+11. `[기획서]/00_프로젝트_허브/ROADMAP.md`
+12. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
+13. `docs/planning/CURRENT_R1_CANON_REGISTRY.json` — 역사적 R1 기반
+14. 상태가 표시된 과거 기획·PoC·연구·구현 계획
 
 `BS-CORE-20260820-01` 이후 사용자의 최신 재기획 승인은 기존 장기 원장의 과거 `PLANNING_COMPLETE`보다 우선한다. 새 `기획 완료` 선언 전 제품 구현은 다시 열지 않는다.
 
@@ -40,7 +41,8 @@
 
 - `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md` — 강화 긴장감/DDD 1차 코어
 - `docs/planning/BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md` — 실패 누적 회복·UID 보존형 손상·정보 공개
-- `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md` — 체크포인트·제한 단계 하락·내구도 0~100%·0% 물리 파괴
+- `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md` — 체크포인트·제한 단계 하락·CURRENT 내구도 0~100%·0% 물리 파괴
+- `docs/planning/BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md` — CURRENT/MAX 이중 내구도·MAX 구조 손상·강화 확률/신규 효과 페널티
 - `docs/planning/BLACKSMITH_ENHANCEMENT_TENSION_AND_DDD_REWARD_LADDER_20260820.md` — 튜닝 가능한 긴장 곡선/Reward Ladder
 
 이 분야에서 구형 `data/crafting/enhancement_balance.json`과 과거 PoC 수치는 `HISTORICAL_EVIDENCE / REUSE_CANDIDATE`이며 현재 제품 확정 수치가 아니다.
@@ -126,17 +128,21 @@ CHRONICLE_AFFIX empty
 ### 내구도
 
 ```text
-[정제됨]
+[정제됨 1]
 DURABILITY = 정수형 작품 능력치 (예: 내구도 18)
 
+[정제됨 2]
+DURABILITY_PERCENT = 단일 0~100 현재 상태
+
 [현재 정본]
-DURABILITY_PERCENT = 0~100 정수 현재 상태
-새 작품 = 100%
-1~99% = 살아 있는 마모/손상 상태
-0% = DESTROYED
+CURRENT_DURABILITY_PERCENT = 단기 현재 상태
+MAX_DURABILITY_PERCENT = 누적 구조 건전성 한계
+0 <= CURRENT <= MAX <= 100
+새 작품 = 100 / 100
+CURRENT 0 또는 MAX 0 = DESTROYED
 ```
 
-0%는 물리 작품 파괴이며 일반 수리/복원으로 되살리지 않는다. UID·이름·강화·소유·사건·파괴 원인·연대기 기록은 삭제하지 않는다.
+일반 수리는 `CURRENT = MAX`까지만 회복하며 MAX를 올리지 않는다. 심각 강화 실패/직접 구조 손상 사건만 MAX를 감소시킨다. MAX가 낮아질수록 강화 성공 기대가 악화되고, 심각 손상 구간에서는 앞으로 새로 얻는 강화 성장량도 감소한다. 기존 획득 성능은 소급 삭감하지 않는다.
 
 ### 강화 실패
 
@@ -148,8 +154,10 @@ DURABILITY_PERCENT = 0~100 정수 현재 상태
 주요 체크포인트 아래 하락 금지
 + 구간 내 최대 1단계 하락부터 테스트
 + FAIL_HOLD / FAIL_DOWNGRADE / FAIL_DAMAGE / FAIL_CRITICAL_DAMAGE 분리
++ FAIL_DAMAGE는 CURRENT 중심
++ FAIL_CRITICAL_DAMAGE만 MAX 구조 손상 후보
 + 모든 실패에 회복 진전
-+ 내구도 0%일 때만 물리 작품 DESTROYED
++ CURRENT 또는 MAX 0%일 때 물리 작품 DESTROYED
 ```
 
 ## 4. 문서 상태 해석
@@ -167,6 +175,7 @@ DURABILITY_PERCENT = 0~100 정수 현재 상태
 
 ## 5. PR 권위
 
+- PR #172: `MERGED_ENHANCEMENT_CHECKPOINT_AND_DURABILITY / c9781e73141988ea46d80f3f8200941411d5a258`
 - PR #171: `MERGED_ENHANCEMENT_RECOVERY_AND_DDD_PLANNING / e714b864ebbdbd73c0b0714f93296044dcf619ee`
 - PR #103: `MERGED_R2_CHECKPOINT_003_CANON`
 - PR #104: `MERGED_POSTMERGE_CLOSURE`
@@ -192,7 +201,8 @@ PR #81의 전체 병합 단위는 `[폐기]`이며, 브랜치의 고유 원문�
 - 작품 소유권 상태 머신
 - 모바일 조합 이름 표시
 - 첫 작품 정체성 보상 시점
-- 내구도 손실량·수리 비용/회복량·보호 수단의 정확 Balance Budget
+- CURRENT/MAX 내구도 손실량·발생 확률·수리 비용의 정확 Balance Budget
+- MAX 구조 복구/대수선 기능을 넣을지와 그 영구 대가
 - 파괴된 작품을 도감/기념물/계승 콘텐츠에서 어떻게 활용할지
 - PR #81 선별 이관 순서
 
