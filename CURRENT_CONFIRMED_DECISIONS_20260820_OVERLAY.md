@@ -1,7 +1,7 @@
 # [현재 우선 Overlay] Blacksmith 2026-08-20 Confirmed Decisions
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~15`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
@@ -263,10 +263,57 @@ DOWNGRADE 복구
 
 과거 `+5 최초 흑자 / +60 마지막 가격 앵커`는 최신 구조와 충돌하므로 `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`으로 강등한다.
 
-## 6. 현재 미확정
+## 6. 레벨 → 경험 밴드 및 첫 경제 checkpoint — 15
 
-- +0~+100 세부 레벨 → 경험 밴드 매핑.
-- 체크포인트 최종 간격.
+### `BS-PROGRESSION-20260820-15`
+경험 밴드는 **현재 레벨이 아니라 target level**에 붙인다.
+
+```text
+TARGET +1~+2     = LEARN
+TARGET +3~+10    = BUILD_CONFIDENCE
+TARGET +11       = FIRST_STOP_POINT
+TARGET +12~+30   = TENSION
+TARGET +31~+60   = HIGH_STAKES
+TARGET +61~+100  = MASTERY
+```
+
+따라서:
+
+```text
+CURRENT +10
+= FIRST_ECONOMIC_STOP_STATE
+
+TARGET +11
+= FIRST_STOP_POINT attempt
+```
+
++10을 먼저 확보해 평균 투자금을 회수한 뒤, +11부터 첫 수익을 위해 실제 영구 구조 위험을 여는 순서다.
+
+### 첫 경제 checkpoint floor
+
+```text
++10 = FIRST_ECONOMIC_CHECKPOINT_FLOOR
+```
+
+- +10 도달 후 제한 DOWNGRADE 때문에 +10 아래로 내려가지 않는다.
+- +11 첫 수익 시도에는 DAMAGE/CRITICAL·시도비가 남으므로 공짜 도전은 아니다.
+- +11에서 DOWNGRADE가 선택돼도 floor 때문에 실제 단계가 유지되면 UI는 checkpoint 보호를 반영한 최종 outcome으로 표시한다.
+
+중요:
+
+```text
+BAND_BOUNDARY != CHECKPOINT_FLOOR
+```
+
+- +30은 TENSION/HIGH 경계일 뿐 자동 checkpoint가 아니다.
+- +60은 HIGH/MASTERY 경계일 뿐 자동 checkpoint가 아니다.
+- +20/+30/+40/+50/+60/+70/+80/+90의 checkpoint 여부는 16에서 별도 결정한다.
+
++100 성공 후 기본 강화 버튼은 종료되고 보유/판매/인계/전시/Chronicle/다음 작품으로 전환한다.
+
+## 7. 현재 미확정
+
+- +10 이후 checkpoint 최종 간격/cadence.
 - +11~+100 단계별 판매가/누적 기대원가/기대수익 곡선.
 - 단계별 성공률과 강화 비용.
 - CURRENT 손실 범위 최종값 및 MASTERY 손실량.
@@ -279,7 +326,7 @@ DOWNGRADE 복구
 - +100 비수치 payoff.
 - 첫 10분 실제 강화 수치와 UX.
 
-## 7. 책임 원본
+## 8. 책임 원본
 
 1. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` — 최신 요약
 2. `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
@@ -291,12 +338,13 @@ DOWNGRADE 복구
 8. `docs/planning/BLACKSMITH_REPAIR_ABSOLUTE_ANCHOR_CANON_20260820.md`
 9. `docs/planning/BLACKSMITH_FAILURE_FAMILY_RATIO_CANON_20260820.md`
 10. `docs/planning/BLACKSMITH_ENHANCEMENT_PROGRESSION_ECONOMY_CANON_20260820.md`
-11. `docs/planning/BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md` — 최신 구조 + 과거 수치 증거
-12. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+11. `docs/planning/BLACKSMITH_LEVEL_TO_EXPERIENCE_BAND_CANON_20260820.md`
+12. `docs/planning/BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md` — 최신 구조 + 과거 수치 증거
+13. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
 
-## 8. 증거 경계
+## 9. 증거 경계
 
-- 01~14 사용자 결정: current planning authority.
+- 01~15 사용자 결정: current planning authority.
 - 테스트 비율/계수: `NOT_FINAL_PRODUCT_BALANCE`.
 - 새 +0~+100 가격/성공률 곡선: `NOT_FINAL / FOLLOW_UP_REQUIRED`.
 - 제품 구현: `BLOCKED`.
