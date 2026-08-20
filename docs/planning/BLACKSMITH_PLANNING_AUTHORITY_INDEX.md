@@ -1,255 +1,178 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~12`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14`
 - 제품 구현: `BLOCKED`
 
-## 1. 적용 우선순위
+## 1. 충돌 시 우선순위
 
-충돌 시 위에 있는 항목이 우선한다.
+1. 사용자의 최신 지시와 승인.
+2. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`.
+3. 2026-08-20 개별 Canon 문서.
+4. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장.
+5. R2/R3 Game Bible·과거 PoC·구형 data.
 
-1. 사용자의 최신 지시와 승인
-2. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` — 2026-08-20 재기획 현재 상태
-3. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 세부 Decision·역사 장기 원장
-4. `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
-5. `docs/planning/BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md`
-6. `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md`
-7. `docs/planning/BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md`
-8. `docs/planning/BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md`
-9. `docs/planning/BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md`
-10. `docs/planning/BLACKSMITH_REPAIR_ABSOLUTE_ANCHOR_CANON_20260820.md`
-11. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-12. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-13. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
-14. `[기획서]/00_프로젝트_허브/ROADMAP.md`
-15. `[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md`
-16. 상태가 표시된 과거 기획·PoC·연구·구현 계획
-
-`BS-CORE-20260820-01` 이후 재기획은 과거 `PLANNING_COMPLETE / PHASE_C_ENTRY_APPROVED`보다 우선한다. 새 `기획 완료` 선언 전 제품 구현은 열지 않는다.
+새 `기획 완료` 선언 전 `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, `project.godot` 제품 구현 변경은 금지한다.
 
 ## 2. 현재 책임 원본
 
-### 프로젝트 코어·상태
-- `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
-- `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
+### 제품 코어
+- `BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md` — 강화 긴장감 + DDD가 1차 코어.
 
-### 강화·DDD·실패·내구도·수리 경제
-- `BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md` — 실패 누적 회복·정보 공개
-- `BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md` — 체크포인트·CURRENT·0% 파괴
-- `BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md` — CURRENT/MAX·구조 흉터·07~09
-- `BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md` — 09 MAX scar + 10 수리 경제 승인 테스트 Budget
-- `BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md` — 11 수리 참조 구조·공방 피로도; **재료 결제 방식은 12가 대체**
-- `BLACKSMITH_REPAIR_ABSOLUTE_ANCHOR_CANON_20260820.md` — 12 SWORD 절대 R + 골드·일반 구조재료 동시 소모
-- `BLACKSMITH_ENHANCEMENT_TENSION_AND_DDD_REWARD_LADDER_20260820.md` — 긴장 곡선·Reward Ladder
+### 실패·회복·내구도
+- `BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md` — 02~04.
+- `BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md` — 05~06.
+- `BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md` — 07~09.
+- `BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md` — CURRENT/MAX 첫 Balance Budget.
+- `BLACKSMITH_FAILURE_FAMILY_RATIO_CANON_20260820.md` — 13 family 정확 비율.
 
-구형 `data/crafting/enhancement_balance.json`, `data/progression/workshop_day_balance.json`과 과거 PoC 수치는 `HISTORICAL_EVIDENCE / REUSE_CANDIDATE`이며 현재 제품 확정 수치가 아니다. 특히 구형 `restore=5`는 일반 수리 피로도 2보다 우선하지 않는다.
+### 수리 경제
+- `BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md` — 10~11 수리 구조/작업량. 11의 optional-material 하위 규칙은 12가 대체.
+- `BLACKSMITH_REPAIR_ABSOLUTE_ANCHOR_CANON_20260820.md` — 12 SWORD 800 + 골드·일반 구조재료 동시 소모.
 
-### 기존 R2/R3 분야
-기존 고객·세계·정밀강화·수식어·연대기 Canon은 위 2026-08-20 Decision과 충돌하지 않는 범위에서만 소비한다. 정확 파일 상태는 `BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json`을 따른다.
+### 강화 진행·수익 경제
+- `BLACKSMITH_ENHANCEMENT_PROGRESSION_ECONOMY_CANON_20260820.md` — 14 `+10 본전 / +11 이후 수익 / +100 최대`.
+- `BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md` — 최신 구조 계약 + 2026-07 과거 가격표 재보정 증거.
+- `BLACKSMITH_ENHANCEMENT_TENSION_AND_DDD_REWARD_LADDER_20260820.md` — 경험 밴드 역할/DDD Ladder. 세부 레벨 매핑은 아직 후속.
 
-## 3. 현재 내구도 권위
+## 3. 현재 실패 결과군 권위 — 13
 
-```text
-[역사]
-DURABILITY = 정수형 작품 능력치
-
-[정제]
-단일 DURABILITY_PERCENT
-
-[현재]
-CURRENT_DURABILITY_PERCENT = 단기 생존 버퍼
-MAX_DURABILITY_PERCENT = 누적 구조 건전성
-0 <= CURRENT <= MAX <= 100
-```
-
-- 새 작품 `100 / 100`.
-- 일반 수리 `CURRENT = MAX`, MAX 유지.
-- `FAIL_DAMAGE`는 CURRENT 중심.
-- `FAIL_CRITICAL_DAMAGE`만 MAX 구조 손상 후보.
-- CURRENT 또는 MAX 0%면 물리 작품 `DESTROYED`.
-- MAX 저하는 성공률과 미래 신규 강화 성장에 단계적 불이익을 줄 수 있다.
-- 기존 획득 성능은 소급 삭감하지 않는다.
-
-## 4. BS-ENHANCE-20260820-09 권위
-
-MAX 구조 손상은 실패 후 conditional failure-family 판정이다.
+조건부 실패 family table:
 
 ```text
-LEARN             scar|failure 0%      / MAX loss 0
-BUILD_CONFIDENCE  scar|failure 0%      / MAX loss 0
-FIRST_STOP_POINT  scar|failure 0~5%    / MAX loss 1~3
-TENSION           scar|failure 8~12%   / MAX loss 2~5
-HIGH_STAKES       scar|failure 12~20%  / MAX loss 4~10
-MASTERY           scar|failure 15~25%  / MAX loss 6~15
+order = HOLD / DOWNGRADE / DAMAGE / CRITICAL
+
+LEARN             100 /  0 /  0 /  0
+BUILD_CONFIDENCE   90 /  0 / 10 /  0
+FIRST_STOP_POINT   65 / 10 / 23 /  2
+TENSION            45 / 10 / 35 / 10
+HIGH_STAKES        30 / 15 / 39 / 16
+MASTERY            20 / 20 / 40 / 20
 ```
 
-상태: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
+핵심 불변식:
 
-- 첫 MAX 흉터는 FIRST_STOP_POINT 이후.
-- 한 시도 MAX scar 최대 1회.
-- DOWNGRADE와 CRITICAL 기본 중첩 금지.
+```text
+P(CRITICAL | failure) = P(MAX scar | failure)
+```
+
+- CRITICAL 뒤 별도 MAX-scar roll 금지.
 - 별도 destroy roll 금지.
-- UI에는 최종 per-attempt 구조 손상 가능성과 MAX 손실 범위를 공개.
+- DOWNGRADE와 durability 손상 기본 중첩 금지.
+- recovery는 첫 Vertical Slice에서 성공률만 변경하고 family severity는 밴드 안에서 고정.
 
-## 5. BS-ENHANCE-20260820-10 권위
+상태: 구조 `USER_APPROVED`; 수치 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 
-일반 수리 경제의 현재 기본 공식은 다음이다.
+## 4. 현재 진행·경제 권위 — 14
 
 ```text
-missing_current_points = MAX - CURRENT
-repair_cost
-= REPAIR_REFERENCE_COST
-× (setup_fraction + variable_fraction × missing_current_points / 100)
+MAX_ENHANCEMENT_LEVEL = 100
+
++0~+9      = INVESTMENT_RECOVERY_ZONE
++10        = BREAK_EVEN_RECOVERY_POINT
++11~+100   = PROFITABLE_ENHANCEMENT_ZONE
 ```
 
-- 채택안: `C / stable repair reference cost + setup + absolute missing CURRENT`.
-- 일반 수리 1회로 `CURRENT = MAX`, MAX unchanged.
-- `(MAX-CURRENT)/MAX` 비율을 가격 배율로 쓰지 않는다.
-- 낮은 MAX 자체에 일반 수리 할증 없음.
-- 최종 시장가·수식어·예술성·연대기·고객 수요·실제 next-attempt cost를 런타임 공식에서 제외.
-- 실패 누적 회복은 수리 후에도 유지.
-- 부분수리·자동수리·수리 RNG·새 수리 화폐·일반 MAX 복구는 첫 Vertical Slice 제외.
-
-승인된 첫 테스트 shell:
+대표 평범한 작품의 기본 공개시장 기준:
 
 ```text
-setup_fraction = 0.05
-variable_fraction = 0.65
+EXPECTED_NET_PROFIT(+10) ~= 0
+EXPECTED_NET_PROFIT(+11..+100) > 0
 ```
 
-상태: 구조 `USER_APPROVED`; 계수 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
+`+10 본전` 누적 기대원가에는 제작/강화/실패 반복/DOWNGRADE 복구/강화 유발 CURRENT 수리/해당 구간 파괴·재제작 기대비용을 포함한다.
 
-## 6. BS-ENHANCE-20260820-11 권위
+정밀제작·수식어·연대기·고객/거래 채널 프리미엄은 별도 가치축이며 기본 +10 회수선에 중복 포함하지 않는다.
 
-`REPAIR_REFERENCE_COST`의 현재 상대 구조는 다음이다.
+`+100` 이후 +101/무한 초월/프레스티지는 별도 사용자 승인 없이는 추가하지 않는다.
+
+상태: 구조 `USER_APPROVED / STRUCTURAL_CANON`; 세부 +0~+100 가격·성공률·비용 곡선은 `NOT_FINAL`.
+
+## 5. 과거 수익곡선 처리
+
+2026-07 POC의:
 
 ```text
-R
-= STRUCTURAL_FAMILY_BASE_R
-× MATERIAL_STRUCTURE_MULTIPLIER[primary_material]
-× SECURED_BAND_MULTIPLIER[highest_secured_band]
++5 최초 흑자
++60 마지막 명시 가격 앵커
 ```
 
-주재료 구조 배율:
+는 current canon이 아니다.
+
+기존 +0~+60 가격표는:
 
 ```text
-iron         1.00
-silver       1.20
-meteor_iron  1.50
+HISTORICAL_NUMERIC_EVIDENCE
+RECALIBRATION_INPUT
+DO_NOT_EXTRAPOLATE_TO_+100
 ```
 
-확보 밴드 배율:
+으로만 사용한다.
+
+## 6. 현재 수리 권위 요약
 
 ```text
-LEARN / BUILD_CONFIDENCE  1.00
-FIRST_STOP_POINT          1.10
-TENSION                   1.25
-HIGH_STAKES               1.50
-MASTERY                   1.80
-```
+missing = MAX - CURRENT
 
-유지되는 추가 테스트값:
-
-```text
-REPAIR_JOB_FATIGUE_COST = 2
-```
-
-- 원시 재료 가격 비율을 그대로 수리비에 복사하지 않는다.
-- R은 현재 +1 단계가 아니라 `highest_secured_band`가 바뀔 때만 변한다.
-- 같은 확보 밴드 안 제한 하락은 R을 낮추지 않는다.
-- 일반 수리 피로도 2는 구형 `restore=5` 또는 하루 전체 소비를 대체하는 최신 첫 테스트값이다.
-
-### 11에서 12로 대체된 결제 하위 규칙
-
-다음 11 규칙은 역사 증거로만 남고 현재 권위가 아니다.
-
-```text
-OPTIONAL_COMMON_MATERIAL_OFFSET_CAP = 25%
-material optional
-100% gold-only repair possible
-```
-
-현재 결제 권위는 12가 소유한다.
-
-## 7. BS-ENHANCE-20260820-12 권위
-
-첫 Vertical Slice 대표 검:
-
-```text
-STRUCTURAL_FAMILY_BASE_R
-SWORD = 800 gold
-```
-
-일반 구조재료:
-
-```text
-COMMON_MATERIAL_SHADOW_VALUE = 50 gold / unit
+gold_cost
+= (SWORD_BASE_R 800 × material_structure_mult × secured_band_mult)
+× (0.05 + 0.65 × missing / 100)
 
 common_material_units
-= max(1, ceil((MAX - CURRENT) / 25))
+= max(1, ceil(missing / 25))
+
+PAYMENT = GOLD + COMMON_MATERIAL
+REPAIR_JOB_FATIGUE_COST = 2
+CURRENT -> MAX
+MAX unchanged
+recovery unchanged
 ```
 
-결제 불변식:
+주재료 첫 배율:
 
 ```text
-GOLD_COST > 0
-COMMON_MATERIAL_UNITS >= 1
-PAYMENT = BOTH_REQUIRED
+iron 1.00 / silver 1.20 / meteor_iron 1.50
 ```
 
-- 골드는 기존 10~11 견적식을 전액 지불한다.
-- 일반 구조재료는 골드를 할인하지 않는다.
-- 골드는 일반 구조재료를 대체하지 않는다.
-- `1~25pt=1 / 26~50pt=2 / 51~75pt=3 / 76~99pt=4`를 첫 테스트 수량으로 사용한다.
-- 재료 수량은 절대 결손 CURRENT만 사용한다. 주재료 배율·secured band·MAX 상태를 다시 곱하지 않는다.
-- 일반 구조재료는 공통 공급 자원이며 희귀 촉매/수식어/MAX 복구재를 일반 CURRENT 수리에 요구하지 않는다.
-- `SWORD_BASE_R=800`은 `FIRST_VERTICAL_SLICE_ABSOLUTE_ANCHOR`이며 후기 전체 경제 영구값이 아니다.
+secured band 첫 배율:
 
-상태: 구조 `USER_APPROVED`; 800·50·수량표는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
+```text
+LEARN·BUILD 1.00
+FIRST_STOP 1.10
+TENSION 1.25
+HIGH 1.50
+MASTERY 1.80
+```
 
-## 8. 문서 상태 해석
+## 7. 현재 열린 Critical Decision
 
-| 표시 | 의미 |
+우선순위:
+
+1. **+0~+100 레벨 → 경험 밴드 매핑**.
+2. 체크포인트 최종 간격과 +10 경제 이정표의 checkpoint 관계.
+3. +0~+100 단계별 성공률/강화 비용/판매가/누적 기대원가.
+4. 일반 구조재료 공급량·획득 경로.
+5. CURRENT 손실 최종값 및 MASTERY 손실량.
+6. 후기 HIGH_STAKES/MASTERY 수리 경제 스케일.
+7. MAX 대수선 여부.
+8. 파괴 작품 memorial/successor.
+9. +100 비수치 payoff.
+10. 첫 10분 강화 수치와 UX.
+
+## 8. 상태 해석
+
+| 상태 | 의미 |
 |---|---|
-| `[현재 정본]` | 현재 후속 기획의 직접 기준 |
-| `USER_APPROVED` | 구조/방향 사용자 승인 |
-| `USER_APPROVED_TEST_BUDGET` | 테스트 시작값으로 승인, 출시 최종 수치 아님 |
-| `[부분 대체됨]` | 일부 원칙만 유지 |
-| `[대체됨]` | 최신 정본이 책임 인수 |
-| `[보류]` | 승인 전 참고 |
-| `[폐기]` | 재사용 금지 |
-| `[역사 증거]` | 당시 구현·승인 과정 보존 |
+| `USER_APPROVED` | 방향/구조 사용자 승인 |
+| `USER_APPROVED_TEST_BUDGET` | 테스트 시작값, 출시 최종값 아님 |
+| `HISTORICAL_NUMERIC_EVIDENCE` | 과거 수치 증거, current numeric canon 아님 |
+| `PROPOSED_ONLY` | 사용자 승인 전 제안 |
+| `BLOCKED` | 제품 구현 금지 |
 
-## 9. PR 권위
+## 9. 구현자 확인 순서
 
-- PR #176: `MERGED_REPAIR_REFERENCE_AND_WORKLOAD / 6c36ba52528270a4a51f88a07725ad4f678a04ec`
-- PR #175: `MERGED_REPAIR_ECONOMY_CONTRACT / 03d7ed5fd47cb289ec31c6f446d316dc3b225b32`
-- PR #174: `MERGED_MAX_DURABILITY_SCAR_BUDGET / 1dbbc9089d2953ad5e846b520d89caa01718e7b1`
-- PR #173: `MERGED_MAX_DURABILITY_STRUCTURAL_SCAR / b23c6b6cb344eb968b943493902f2644c160c339`
-- PR #172: `MERGED_ENHANCEMENT_CHECKPOINT_AND_DURABILITY / c9781e73141988ea46d80f3f8200941411d5a258`
-- PR #171: `MERGED_ENHANCEMENT_RECOVERY_AND_DDD_PLANNING / e714b864ebbdbd73c0b0714f93296044dcf619ee`
-- PR #81: `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT`
-
-## 10. 구현자 확인 순서
-
-1. 최신 사용자 지시 + Overlay 확인
-2. 강화/내구도/수리면 2026-08-20 Canon과 승인 Budget 확인
-3. 일반 수리 결제 방식은 12가 11의 optional-offset 규칙보다 우선
-4. 기존 R2/R3 문서는 최신 계약과 충돌하지 않는 범위에서만 사용
-5. `TUNABLE / USER_APPROVED / USER_APPROVED_TEST_BUDGET / CURRENT_VALIDATED / HISTORICAL_EVIDENCE` 구분
-6. 새 `기획 완료` 선언 전 `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, `project.godot` 수정 금지
-
-## 11. 현재 열린 Decision
-
-- failure family 전체 정확 분배(HOLD/DOWNGRADE/DAMAGE)
-- CURRENT 손실 최종값
-- 검 이외 장비군별 base R
-- 후기 HIGH_STAKES/MASTERY 절대 수리 경제 스케일
-- 일반 구조재료 실제 공급량·획득 경로
-- 하루 총 피로도/작업량 출시 최종값
-- MAX 구조 복구/대수선 필요 여부와 대가
-- 체크포인트 최종 간격
-- 파괴 작품 memorial/successor 콘텐츠
-- 첫 10분 강화 수치와 UX
-
-승인 전에는 `PROPOSED_ONLY`다.
+1. 최신 사용자 지시 확인.
+2. Overlay와 13/14 Canon 확인.
+3. 수리면 10~12, 실패면 13, 진행/경제면 14를 우선.
+4. 구형 data는 `HISTORICAL_EVIDENCE / REUSE_CANDIDATE`로만 사용.
+5. 새 `기획 완료` 전 제품 구현 금지.
