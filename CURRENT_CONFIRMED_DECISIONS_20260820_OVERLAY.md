@@ -1,171 +1,90 @@
 # [현재 우선 Overlay] Blacksmith 2026-08-20 Confirmed Decisions
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
-- 적용 시작: `2026-08-20 KST`
-- 이유: 기존 `CURRENT_CONFIRMED_DECISIONS.md`는 2026-08-11 Phase C 진입과 다수 과거 Decision을 장기 원장으로 보존하므로, 최신 재기획을 과거 원장을 파괴하지 않고 우선 적용하기 위한 overlay다.
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14`
+- Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
+- Human/Player validation: `NOT_RUN`
 
-## 현재 상태
+## 0. 현재 제품 계층
 
-사용자는 2026-08-20 Blacksmith 기획을 다시 열었다. 기존 `PLANNING_COMPLETE / PHASE_C_ENTRY_APPROVED`는 역사 상태이며 새 `기획 완료` 사용자 선언 전 제품 구현을 시작하지 않는다.
+Blacksmith의 1차 코어는 **강화의 긴장감 + DDD**다.
 
-## 현재 승인 Decision
+```text
+PRIMARY
+강화 전 판단
+→ 지금 멈춤 / 한 번 더 도전
+→ 짧은 anticipation
+→ 성공/실패 결과
+→ 작품 상태 변화
+→ 다음 강화 질문
 
-### `BS-CORE-20260820-01`
-Blacksmith의 1차 코어는 **강화의 긴장감 + DDD**다. 작품 UID·생애는 강화 선택의 손실·애착·기억을 증폭하며 정밀제작·고객/세계 생애는 보조 계층이다.
+SUPPORT
+작품 UID·생애
+정밀제작
+고객/세계 생애주기
+경제·하루 작업량
+```
+
+새 `기획 완료` 사용자 선언 전 제품 code/data/scene/runtime 구현은 시작하지 않는다.
+
+## 1. 강화 실패·회복·정보 공개 — 02~04
 
 ### `BS-ENHANCE-20260820-02`
-기본 실패/회복 골격은 `RISK_PLUS_RECOVERY_PROGRESS`다. 실패는 실제 비용/손실을 남기되 작품별 회복 진전을 남긴다.
+- 기본 강화 실패 골격은 `RISK_PLUS_RECOVERY_PROGRESS`.
+- 모든 실패는 같은 작품 UID에 회복 진전을 남긴다.
+- 계정 전체 transferable failstack은 기본 게임에서 사용하지 않는다.
 
 ### `BS-ENHANCE-20260820-03`
-고위험 실패는 작품 손상을 만든다. UID와 역사를 보존하며 0% 파괴의 최신 경계는 06이 소유한다.
+- 고위험 실패는 작품 손상을 만들 수 있다.
+- 물리 작품 손실과 UID/역사 기록 삭제를 동일시하지 않는다.
 
 ### `BS-ENHANCE-20260820-04`
-강화 전 성공률·비용·주요 실패·회복·다음 체크포인트를 이해 가능하게 공개한다.
+강화 전 최소 다음을 공개한다.
+
+```text
+현재 상태
+최종 성공 확률
+시도 비용
+주요 실패 결과
+현재 회복 효과
+다음 확보점
+```
+
+핵심 확률을 숨겨 긴장감을 만들지 않는다.
+
+## 2. 체크포인트·CURRENT/MAX·파괴 — 05~09
 
 ### `BS-ENHANCE-20260820-05`
-주요 강화 이정표는 확보점으로 보호하고 체크포인트 사이에서만 제한 단계 하락을 사용한다.
+- 주요 이정표는 확보점으로 보호.
+- DOWNGRADE는 확보점 사이에서만 제한적으로 사용.
+- 첫 테스트는 한 번 최대 1단계 하락.
 
 ### `BS-ENHANCE-20260820-06`
-CURRENT 내구도는 `0~100%`. `0%`에서 물리 작품은 `DESTROYED`; UID·이름·강화·소유·사건·파괴 원인·Chronicle provenance는 기록으로 보존한다.
+```text
+CURRENT_DURABILITY_PERCENT = 0~100
+CURRENT == 0 -> physical item DESTROYED
+```
+UID·이름·강화·소유·사건·파괴 원인·Chronicle provenance는 기록으로 보존한다.
 
 ### `BS-ENHANCE-20260820-07`
-첫 Vertical Slice 기본 강화에는 별도 `0% 파괴 방지 보험`을 두지 않는다. 일반 수리는 안전 선택이지만 작품을 새 상태로 초기화하지 않는다.
+첫 Vertical Slice에는 별도 0% 파괴 방지 보험을 기본 제공하지 않는다.
 
 ### `BS-ENHANCE-20260820-08`
-내구도를 CURRENT/MAX 이중 상태로 정제한다.
-
 ```text
-0 <= CURRENT_DURABILITY_PERCENT <= MAX_DURABILITY_PERCENT <= 100
+0 <= CURRENT <= MAX <= 100
+new item = 100 / 100
+normal repair = CURRENT -> MAX
+MAX = unchanged
 ```
 
-- 새 작품 `100 / 100`.
-- 일반 수리 `CURRENT = MAX`, MAX unchanged.
-- `FAIL_DAMAGE`는 CURRENT 중심.
-- `FAIL_CRITICAL_DAMAGE`만 MAX 구조 손상 후보.
-- MAX가 CURRENT 아래로 내려가면 CURRENT도 clamp.
-- CURRENT 또는 MAX 0%면 `DESTROYED`.
-- MAX가 낮아지면 강화 성공 기대가 악화되고 심각 손상에서는 앞으로 새로 얻는 강화 성장량도 감소한다.
-- 이미 획득한 성능은 MAX 손상만으로 소급 삭감하지 않는다.
+- `FAIL_DAMAGE`: CURRENT 중심 손상.
+- `FAIL_CRITICAL_DAMAGE`: CURRENT 심각 손상 + MAX 구조 흉터.
+- CURRENT 또는 MAX 0이면 물리 작품 `DESTROYED`.
+- MAX가 낮아지면 성공 기대와 미래 신규 강화 효과가 단계적으로 악화될 수 있다.
+- 이미 얻은 성능은 MAX 손상만으로 소급 삭감하지 않는다.
 
-### `BS-ENHANCE-20260820-09`
-MAX 구조 손상은 **실패 뒤 2차 failure-family 판정**으로 사용한다. 성공한 시도에 별도 구조 손상 주사위를 붙이지 않는다.
-
-승인된 첫 시뮬레이션/플레이테스트 Budget:
-
-```text
-LEARN             P(MAX scar | failure) 0%      / MAX loss 0
-BUILD_CONFIDENCE  P(MAX scar | failure) 0%      / MAX loss 0
-FIRST_STOP_POINT  P(MAX scar | failure) 0~5%    / MAX loss 1~3
-TENSION           P(MAX scar | failure) 8~12%   / MAX loss 2~5
-HIGH_STAKES       P(MAX scar | failure) 12~20%  / MAX loss 4~10
-MASTERY           P(MAX scar | failure) 15~25%  / MAX loss 6~15
-```
-
-이 숫자는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
-
-불변식:
-- 첫 영구 MAX 흉터는 `FIRST_STOP_POINT` 이후에만 열린다.
-- 한 시도에서 MAX scar는 최대 1회다.
-- `FAIL_CRITICAL_DAMAGE`와 `FAIL_DOWNGRADE`는 기본 중첩하지 않는다.
-- MAX 손실량을 CURRENT에 이중 차감하지 않는다.
-- 파괴는 추가 즉사 주사위가 아니라 실제 CURRENT/MAX가 0에 도달했을 때만 발생한다.
-- UI에는 이번 시도의 최종 구조 손상 가능성과 발생 시 MAX 손실 범위를 공개한다.
-
-### `BS-ENHANCE-20260820-10`
-일반 수리 경제는 **안정된 수리 참조비용 + 고정 준비비 + 절대 결손 CURRENT 포인트 비례** 구조를 사용한다.
-
-```text
-missing_current_points = MAX - CURRENT
-
-repair_cost
-= REPAIR_REFERENCE_COST
-× (setup_fraction + variable_fraction × missing_current_points / 100)
-```
-
-승인된 첫 테스트 shell:
-
-```text
-setup_fraction = 0.05
-variable_fraction = 0.65
-```
-
-- 일반 수리 1회로 `CURRENT = MAX`; MAX는 변하지 않는다.
-- 수리량은 `(MAX-CURRENT)/MAX` 비율이 아니라 `MAX-CURRENT` 절대 포인트다.
-- 낮은 MAX 자체에 일반 수리비 할증을 붙이지 않는다.
-- 최종 시장가·예술성·수식어·연대기·고객 수요·실제 다음 강화비를 런타임 수리 공식에 직접 넣지 않는다.
-- 부분수리·자동수리·수리 성공 RNG·수리 전용 화폐·일반 MAX 복구는 첫 Vertical Slice에서 제외한다.
-- 수리는 실패 누적 회복 진전을 초기화하지 않는다.
-
-구조는 `USER_APPROVED`; 첫 계수는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
-
-### `BS-ENHANCE-20260820-11`
-`REPAIR_REFERENCE_COST`는 **압축 구조 참조형**을 사용한다.
-
-```text
-R
-= STRUCTURAL_FAMILY_BASE_R
-× MATERIAL_STRUCTURE_MULTIPLIER[primary_material]
-× SECURED_BAND_MULTIPLIER[highest_secured_band]
-```
-
-승인된 첫 테스트 Budget:
-
-```text
-MATERIAL_STRUCTURE_MULTIPLIER
-iron         1.00
-silver       1.20
-meteor_iron  1.50
-
-SECURED_BAND_MULTIPLIER
-LEARN / BUILD_CONFIDENCE  1.00
-FIRST_STOP_POINT          1.10
-TENSION                   1.25
-HIGH_STAKES               1.50
-MASTERY                   1.80
-
-REPAIR_JOB_FATIGUE_COST = 2
-```
-
-- 원시 재료 판매가 비율을 수리비에 그대로 복사하지 않는다.
-- +1 현재 단계가 아니라 `highest_secured_band`가 바뀔 때만 수리 구조 복잡도가 변한다.
-- 같은 확보 밴드 안 제한 하락은 R을 낮추지 않는다.
-- 촉매·희귀 수식어 재료·MAX 복구재를 일반 CURRENT 수리에 요구하지 않는다.
-- 일반 수리는 피로도 2의 한 번 `REPAIR_JOB`으로 `CURRENT = MAX`까지 끝난다.
-- 구형 `restore=5` 또는 하루 전체 소비는 최신 일반 수리의 권위가 아니다.
-
-11에서 승인했던 `OPTIONAL_COMMON_MATERIAL_OFFSET_CAP=25%`와 `100% GOLD-ONLY REPAIR`는 **12에서 대체됨**.
-
-### `BS-ENHANCE-20260820-12`
-첫 Vertical Slice 대표 검의 절대 수리 기준과 결제 구조를 확정한다.
-
-```text
-STRUCTURAL_FAMILY_BASE_R
-SWORD = 800 gold
-
-COMMON_MATERIAL_SHADOW_VALUE = 50 gold / unit
-
-common_material_units
-= max(1, ceil((MAX - CURRENT) / 25))
-
-PAYMENT
-= GOLD_COST + REQUIRED_COMMON_MATERIAL
-```
-
-- `SWORD_BASE_R=800`은 `FIRST_VERTICAL_SLICE_ABSOLUTE_ANCHOR`이며 후기 전체 경제 영구값이 아니다.
-- `COMMON_MATERIAL_SHADOW_VALUE=50`은 기존 제작·강화 경제의 shadow value를 재사용한다.
-- 모든 일반 CURRENT 수리는 **골드와 일반 구조재료를 둘 다** 소모한다.
-- 재료는 골드를 할인하지 않고, 골드는 재료를 대체하지 않는다.
-- 일반 구조재료는 절대 결손 CURRENT만 본다. 주재료 구조 배율·secured band·MAX 상태를 재료 수량에 다시 곱하지 않는다.
-- 첫 테스트 재료 수량은 `1~25pt=1 / 26~50pt=2 / 51~75pt=3 / 76~99pt=4`다.
-- 일반 구조재료는 희귀 드롭 전용이 아닌 공통 공급 자원으로 유지해야 한다.
-- `REPAIR_JOB_FATIGUE_COST=2`는 유지한다.
-
-구조는 `USER_APPROVED`; 800·50·25pt당 1개 수량표는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
-
-## 현재 승인된 테스트 Band
-
-MAX 상태 페널티:
+MAX 상태 첫 테스트:
 
 ```text
 MAX 81~100: success 0pp   / new effect 100%
@@ -175,25 +94,194 @@ MAX 21~40 : success -10pp / new effect 90%
 MAX 1~20  : success -15pp / new effect 80%
 ```
 
-모두 첫 시뮬레이션/플레이테스트 입력이며 출시 최종 수치가 아니다.
+### `BS-ENHANCE-20260820-09`
+MAX 흉터는 성공 시 독립 주사위가 아니라 실패 결과군의 심각 결과에만 연결한다.
 
-## 현재 미확정
+승인 범위:
 
-- 세부 레벨→경험 밴드 최종 매핑
-- failure family 전체 비율(HOLD/DOWNGRADE/DAMAGE의 정확 분배)
-- CURRENT 손실 범위의 최종값
-- MAX 구조 손상 Budget 최종값
-- 검 이외 장비군별 base R
-- 후기 HIGH_STAKES/MASTERY 절대 수리 경제 스케일
-- 일반 구조재료 실제 공급량·획득 경로
-- 하루 총 피로도/작업량 출시 최종값
-- MAX 구조 복구/대수선 필요 여부와 대가
-- 체크포인트 최종 간격
-- 파괴된 작품 memorial/successor 콘텐츠
+```text
+LEARN             0%
+BUILD_CONFIDENCE  0%
+FIRST_STOP_POINT  0~5%
+TENSION           8~12%
+HIGH_STAKES       12~20%
+MASTERY           15~25%
+```
 
-## 책임 원본
+별도 destroy roll은 없다.
 
-1. 이 Overlay — 현재 상태와 승인 요약
+## 3. 일반 CURRENT 수리 경제 — 10~12
+
+### `BS-ENHANCE-20260820-10`
+```text
+missing_current_points = MAX - CURRENT
+
+gold_cost
+= REPAIR_REFERENCE_COST
+× (0.05 + 0.65 × missing_current_points / 100)
+```
+
+- 일반 수리 1회로 `CURRENT = MAX`.
+- MAX와 실패 누적 회복은 유지.
+- 최종 시장가/수식어/연대기/고객 수요/실제 다음 강화비를 수리 공식에 직접 넣지 않는다.
+- 부분수리·자동수리·수리 RNG·일반 MAX 복구는 첫 Vertical Slice 제외.
+
+### `BS-ENHANCE-20260820-11`
+```text
+REPAIR_REFERENCE_COST
+= STRUCTURAL_FAMILY_BASE_R
+× MATERIAL_STRUCTURE_MULTIPLIER[primary_material]
+× SECURED_BAND_MULTIPLIER[highest_secured_band]
+```
+
+주재료 구조 배율 첫 테스트:
+
+```text
+iron         1.00
+silver       1.20
+meteor_iron  1.50
+```
+
+확보 밴드 배율 첫 테스트:
+
+```text
+LEARN / BUILD_CONFIDENCE  1.00
+FIRST_STOP_POINT          1.10
+TENSION                   1.25
+HIGH_STAKES               1.50
+MASTERY                   1.80
+```
+
+```text
+REPAIR_JOB_FATIGUE_COST = 2
+```
+
+11의 과거 `optional material offset / 100% gold-only repair`는 12에서 대체됐다.
+
+### `BS-ENHANCE-20260820-12`
+첫 Vertical Slice 대표 검:
+
+```text
+SWORD_BASE_R = 800 gold
+COMMON_MATERIAL_SHADOW_VALUE = 50 gold / unit
+
+common_material_units
+= max(1, ceil((MAX - CURRENT) / 25))
+
+PAYMENT = GOLD_COST + REQUIRED_COMMON_MATERIAL
+```
+
+첫 재료 수량:
+
+```text
+1~25pt   1개
+26~50pt  2개
+51~75pt  3개
+76~99pt  4개
+```
+
+- 골드와 일반 구조재료를 둘 다 필수 소모.
+- 재료는 골드를 할인하지 않고 골드는 재료를 대체하지 않는다.
+- 재료 수량에 주재료 배율/secured band/MAX 상태를 다시 곱하지 않는다.
+- `SWORD_BASE_R=800`은 `FIRST_VERTICAL_SLICE_ABSOLUTE_ANCHOR`; 후기 전체 경제 영구값이 아니다.
+
+## 4. 실패 결과군 정확 비율 — 13
+
+### `BS-ENHANCE-20260820-13`
+실패가 이미 확정된 뒤의 조건부 family 비율:
+
+```text
+order = HOLD / DOWNGRADE / DAMAGE / CRITICAL
+
+LEARN             100 /  0 /  0 /  0
+BUILD_CONFIDENCE   90 /  0 / 10 /  0
+FIRST_STOP_POINT   65 / 10 / 23 /  2
+TENSION            45 / 10 / 35 / 10
+HIGH_STAKES        30 / 15 / 39 / 16
+MASTERY            20 / 20 / 40 / 20
+```
+
+- LEARN~HIGH_STAKES: `USER_APPROVED_TEST_BUDGET`.
+- MASTERY: `USER_APPROVED_LATE_GAME_TEST_BUDGET`; 정확 CURRENT 손실량은 후속.
+
+핵심 단일화:
+
+```text
+P(CRITICAL | failure)
+= P(MAX scar | failure)
+```
+
+CRITICAL 뒤 별도 MAX-scar roll을 하지 않는다.
+
+모든 실패에는 item-UID recovery가 증가한다. 첫 Vertical Slice에서 recovery는 성공률만 바꾸고 같은 밴드의 failure family ratio는 숨게 변경하지 않는다.
+
+## 5. 강화 범위·경제 전환점 — 14
+
+### `BS-PROGRESSION-20260820-14`
+사용자 승인 구조:
+
+```text
+MIN_LEVEL = +0
+MAX_LEVEL = +100
+
++0 ~ +9      INVESTMENT_RECOVERY_ZONE
++10          BREAK_EVEN_RECOVERY_POINT
++11 ~ +100   PROFITABLE_ENHANCEMENT_ZONE
+```
+
+`+10`은 대표 평범한 작품의 기본 공개시장 가치가 **누적 기대원가를 처음 회수하는 경제 이정표**다.
+
+```text
+EXPECTED_NET_PROFIT(+10) ~= 0
+EXPECTED_NET_PROFIT(+11..+100) > 0
+```
+
+본전 계산에는 다음을 포함한다.
+
+```text
+기본 제작비
+강화 골드/재료
+실패 반복
+DOWNGRADE 복구
+강화 때문에 발생한 일반 수리 골드+재료 기대부담
+해당 구간에서 실제 발생 가능한 파괴/재제작 기대비용
+```
+
+다음은 기본 강화 회수선과 분리한다.
+
+```text
+정밀제작/완성도
+수식어/촉매
+연대기
+특정 고객 적합도
+거래 채널 프리미엄
+```
+
+따라서 특수한 작품은 +10 이전에 실제 이익이 날 수 있지만, 그것은 강화 단계 자체의 회수선을 앞당긴 것으로 보지 않는다.
+
+`+100`은 현재 최대 강화이며 기본 +101, 무한 초월/프레스티지는 없다. 별도 사용자 승인 없이는 추가하지 않는다.
+
+과거 `+5 최초 흑자 / +60 마지막 가격 앵커`는 최신 구조와 충돌하므로 `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`으로 강등한다.
+
+## 6. 현재 미확정
+
+- +0~+100 세부 레벨 → 경험 밴드 매핑.
+- 체크포인트 최종 간격.
+- +11~+100 단계별 판매가/누적 기대원가/기대수익 곡선.
+- 단계별 성공률과 강화 비용.
+- CURRENT 손실 범위 최종값 및 MASTERY 손실량.
+- 검 이외 장비군별 base R.
+- 후기 HIGH_STAKES/MASTERY 수리 경제 스케일.
+- 일반 구조재료 공급량·획득 경로.
+- 하루 총 피로도/작업량 출시값.
+- MAX 대수선 여부와 대가.
+- 파괴 작품 memorial/successor.
+- +100 비수치 payoff.
+- 첫 10분 실제 강화 수치와 UX.
+
+## 7. 책임 원본
+
+1. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` — 최신 요약
 2. `docs/planning/BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md`
 3. `docs/planning/BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md`
 4. `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md`
@@ -201,13 +289,15 @@ MAX 1~20  : success -15pp / new effect 80%
 6. `docs/planning/BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md`
 7. `docs/planning/BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md`
 8. `docs/planning/BLACKSMITH_REPAIR_ABSOLUTE_ANCHOR_CANON_20260820.md`
-9. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 세부 Decision·역사 원장
+9. `docs/planning/BLACKSMITH_FAILURE_FAMILY_RATIO_CANON_20260820.md`
+10. `docs/planning/BLACKSMITH_ENHANCEMENT_PROGRESSION_ECONOMY_CANON_20260820.md`
+11. `docs/planning/BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md` — 최신 구조 + 과거 수치 증거
+12. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
 
-## 검증 경계
+## 8. 증거 경계
 
-- Human/Player validation: `NOT_RUN`
-- Android device: `NOT_RUN`
-- Accessibility: `NOT_RUN`
-- Performance: `NOT_RUN`
-- 출시 최종 Balance: `NOT_FINAL`
-- 제품 구현: `BLOCKED`
+- 01~14 사용자 결정: current planning authority.
+- 테스트 비율/계수: `NOT_FINAL_PRODUCT_BALANCE`.
+- 새 +0~+100 가격/성공률 곡선: `NOT_FINAL / FOLLOW_UP_REQUIRED`.
+- 제품 구현: `BLOCKED`.
+- Human/Player evidence: `NOT_RUN`.
