@@ -79,7 +79,7 @@ MASTERY           P(MAX scar | failure) 15~25%  / MAX loss 6~15
 missing_current_points = MAX - CURRENT
 
 repair_cost
-= REPAIR_REFERENCE_COST[structural_family, secured_band]
+= REPAIR_REFERENCE_COST
 × (setup_fraction + variable_fraction × missing_current_points / 100)
 ```
 
@@ -94,11 +94,53 @@ variable_fraction = 0.65
 - 수리량은 `(MAX-CURRENT)/MAX` 비율이 아니라 `MAX-CURRENT` 절대 포인트다.
 - 낮은 MAX 자체에 일반 수리비 할증을 붙이지 않는다.
 - 최종 시장가·예술성·수식어·연대기·고객 수요·실제 다음 강화비를 런타임 수리 공식에 직접 넣지 않는다.
-- `REPAIR_REFERENCE_COST`는 기본 구조/주재료/확보 위험 밴드의 안정된 수리 참조값이다.
 - 부분수리·자동수리·수리 성공 RNG·수리 전용 화폐·일반 MAX 복구는 첫 Vertical Slice에서 제외한다.
 - 수리는 실패 누적 회복 진전을 초기화하지 않는다.
 
 구조는 `USER_APPROVED`; 첫 계수는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
+
+### `BS-ENHANCE-20260820-11`
+`REPAIR_REFERENCE_COST`는 **압축 구조 참조형**을 사용한다.
+
+```text
+R
+= STRUCTURAL_FAMILY_BASE_R
+× MATERIAL_STRUCTURE_MULTIPLIER[primary_material]
+× SECURED_BAND_MULTIPLIER[highest_secured_band]
+```
+
+승인된 첫 테스트 Budget:
+
+```text
+MATERIAL_STRUCTURE_MULTIPLIER
+iron         1.00
+silver       1.20
+meteor_iron  1.50
+
+SECURED_BAND_MULTIPLIER
+LEARN / BUILD_CONFIDENCE  1.00
+FIRST_STOP_POINT          1.10
+TENSION                   1.25
+HIGH_STAKES               1.50
+MASTERY                   1.80
+
+OPTIONAL_COMMON_MATERIAL_OFFSET_CAP = 25%
+REPAIR_JOB_FATIGUE_COST = 2
+```
+
+불변식:
+
+- 원시 재료 판매가 비율을 수리비에 그대로 복사하지 않는다.
+- +1 현재 단계가 아니라 `highest_secured_band`가 바뀔 때만 수리 구조 복잡도가 변한다.
+- 같은 확보 밴드 안 제한 하락은 R을 낮추지 않는다.
+- 일반 재료는 선택적으로 총 견적의 최대 25%까지만 고정 shadow value로 대체한다.
+- 일반 재료가 없어도 100% 골드 지불로 수리할 수 있다.
+- 촉매·희귀 수식어 재료·MAX 복구재를 일반 CURRENT 수리에 요구하지 않는다.
+- 일반 수리는 피로도 2의 한 번 `REPAIR_JOB`으로 `CURRENT = MAX`까지 끝난다.
+- 구형 `restore=5` 또는 하루 전체 소비는 최신 일반 수리의 권위가 아니다.
+- `STRUCTURAL_FAMILY_BASE_R` 절대 골드 기준값은 아직 `NOT_FINAL`이다.
+
+구조는 `USER_APPROVED`; 배율·25% 상한·피로도 2는 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
 
 ## 현재 승인된 테스트 Band
 
@@ -120,9 +162,10 @@ MAX 1~20  : success -15pp / new effect 80%
 - failure family 전체 비율(HOLD/DOWNGRADE/DAMAGE의 정확 분배)
 - CURRENT 손실 범위의 최종값
 - MAX 구조 손상 Budget 최종값
-- `REPAIR_REFERENCE_COST` 실제 band table
-- 수리 골드/일반 재료 분배
-- `DAY_WORK_COST` 정확 부담
+- `STRUCTURAL_FAMILY_BASE_R` 절대 골드 기준값
+- 검 이외 장비군별 base R
+- 일반 재료 shadow value 최종값
+- 하루 총 피로도/작업량 출시 최종값
 - MAX 구조 복구/대수선 필요 여부와 대가
 - 체크포인트 최종 간격
 - 파괴된 작품 memorial/successor 콘텐츠
@@ -135,7 +178,8 @@ MAX 1~20  : success -15pp / new effect 80%
 4. `docs/planning/BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md`
 5. `docs/planning/BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md`
 6. `docs/planning/BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md`
-7. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 세부 Decision·역사 원장
+7. `docs/planning/BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md`
+8. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 세부 Decision·역사 원장
 
 ## 검증 경계
 
