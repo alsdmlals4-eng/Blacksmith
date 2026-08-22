@@ -10,11 +10,12 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 일�
 4. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
 5. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
 6. Active Context·Roadmap·Development Gates
-7. 실제 코드·data·Scene·tests
-8. Google Sheet와 파생 문서
-9. 외부 벤치마크·과거 대화·AI 추론
+7. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림
+8. `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH`: 현재 문서·JSON·code·data·Scene·tests와 실제 runtime evidence
+9. Google Sheet 등 compatibility 자료
+10. 외부 벤치마크·과거 대화·AI 추론
 
-GitHub가 기획 정본이다. Google Sheet는 같은 Decision ID·경로·Commit·검증 상태를 연결한다.
+사람용 기획·시각·비교 정본은 Notion, 구조화 기획·데이터·구현·런타임 정본은 repository가 책임진다. Google Sheet는 unique 미이관 자료가 남은 경우의 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility source이며 신규 기본 작업공간이나 runtime 증거가 아니다.
 
 ## 2. 필수 작업 순서
 
@@ -27,7 +28,7 @@ GitHub가 기획 정본이다. Google Sheet는 같은 Decision ID·경로·Commi
 → GREEN: 최소 정본·구현 변경
 → REFACTOR: 중복·구형 참조 정리
 → exact-head 전체 검증
-→ GitHub·Sheet readback
+→ GitHub·Notion/repository destination readback
 → 같은 승인 범위는 재승인 없이 병합 / 새 planning conflict·scope expansion만 사용자 Decision
 ```
 
@@ -67,9 +68,9 @@ RED → GREEN → REFACTOR
   - `HIGH_RISK_CONFLICT`: 기존 핵심 규칙과 고위험 충돌
   - `SESSION_END`: 세션 종료로 정본 유실 위험
   - `LARGE_CANON_IMPACT`: 다수 권위 문서·Registry·후속 설계에 큰 영향
-- 조기 체크포인트도 적대적 감사·changed files·리뷰·CI·Sheet readback을 생략하지 않는다.
+- 조기 체크포인트도 적대적 감사·changed files·리뷰·CI·필요한 Notion/repository destination readback을 생략하지 않는다.
 - 같은 승인 범위는 exact technical validation 뒤 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확장만 별도 사용자 Decision이 필요하다.
-- 병합 뒤 main SHA와 Sheet를 다시 읽어 최종 동기화한다.
+- 병합 뒤 main SHA와 필요한 Notion/repository destination을 다시 읽어 최종 동기화한다. Legacy Sheet가 해당 변경의 migration source인 경우에만 별도 readback한다.
 
 ## 4. 현재 코어 보호
 
@@ -113,7 +114,8 @@ project.godot
 - Godot headless
 - 변경 파일·보호 경로
 - PR 댓글·인라인 스레드
-- Google Sheet same-ID readback
+- 필요한 Notion/repository destination readback과 Project identity 확인
+- legacy Sheet가 실제 migration source인 경우 same-ID/provenance readback
 - 미실행 runtime·Android·접근성·성능·사람 플레이는 `NOT_RUN`
 
 ## 8. 플랫폼 출시·에셋 권리
@@ -146,7 +148,7 @@ Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분�
 
 GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. 같은 파일의 이중 권위와 출처 미상 변경은 실패 처리한다. Hera 또한 별도 범위 승인 전에는 Git 추적 제품·저작 surface를 수정할 권위가 없다.
 
-`READY`·`AWAITING`·`IN_REVIEW`·`APPROVED` 같은 일반 상태 문자열만으로는 진입할 수 없다. 범위, current main SHA, Sheet range, 열린 PR 상태, 미실행 검증과 차단 이유가 기계 판독 가능한 상태로 함께 기록되어야 한다.
+`READY`·`AWAITING`·`IN_REVIEW`·`APPROVED` 같은 일반 상태 문자열만으로는 진입할 수 없다. 범위, current main SHA, Project relation/Notion destination, 열린 PR 상태, 미실행 검증과 차단 이유가 기계 판독 가능한 상태로 함께 기록되어야 한다. Legacy Sheet range는 실제 migration reconciliation이 필요한 경우에만 추가한다.
 
 ## 10. 현재 프로젝트 총 작업지시문
 
