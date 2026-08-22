@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "pilot_id": "BLACKSMITH-RM-TOOL-003-INTEROP-20260822",
+  "project_id": "BLACKSMITH",
+  "source_commit": "04c52aa37ba10c43b1691ffe6269301f7e065eb0",
+  "project_simulator": "tools/simulate_enhancement_balance.py",
+  "planning_canon": "docs/planning/BLACKSMITH_ENHANCEMENT_BALANCE_CURVE_CANON_20260820.md",
+  "ownership": {
+    "project_simulator": [
+      "project rules",
+      "project data loading and fingerprints",
+      "deterministic run generation",
+      "project scenarios",
+      "project-specific detailed outcomes"
+    ],
+    "base_rm_tool_003": [
+      "generic distributions",
+      "failure-tag rates",
+      "choice-event frequencies",
+      "paired same-seed deltas",
+      "tail-run summaries",
+      "non-authoritative goal-seek ranking"
+    ]
+  },
+  "field_mapping": {
+    "input_commit": "snapshot.source_commit",
+    "input_sha256": "snapshot.input_sha256",
+    "scenario.target_level": "project adapter scenario dimension",
+    "scenario.skill_id": "project adapter variant dimension",
+    "trial.attempts": "run.metrics.attempts",
+    "trial.total_spent": "run.metrics.gold_spent",
+    "trial.destroyed": "run.failures += DESTROYED",
+    "trial.stop_reason": "project explainability metadata"
+  },
+  "disposition": "PROJECT_SIMULATOR_REUSE_PLUS_BASE_POST_PROCESSOR_ADAPT",
+  "tool_hub_surface": "DEFER_UNTIL_REPEATED_HUMAN_LAUNCH_COMPARE_BURDEN_IS_PROVEN",
+  "evidence_ceiling": [
+    "PROJECT_SIMULATOR_EXISTS",
+    "INTEROP_CONTRACT_REVIEWED",
+    "NEW_TRIAL_EXPORT_NOT_IMPLEMENTED",
+    "PRODUCT_RUNTIME_UNCHANGED",
+    "FINAL_PRODUCT_BALANCE_NOT_APPROVED",
+    "HUMAN_PLAYER_EVIDENCE_NOT_RUN"
+  ],
+  "mutates_project_data": false
+}
