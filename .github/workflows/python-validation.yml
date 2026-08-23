@@ -109,6 +109,7 @@ jobs:
           python -m pip install --disable-pip-version-check pytest==8.3.5
           python tests/check_project_core_alignment_current.py
           python -m pytest tests/test_pre_work_research_gate.py -q
+          python -m unittest tests.test_current_active_context_priority_overlay -v
           python -m unittest tests.test_r3_soldier_01_marek_content -v
           python -m unittest tests.test_r3_soldier_02_liana_content -v
           python -m unittest tests.test_r3_collector_01_ersa_content -v
@@ -118,7 +119,7 @@ jobs:
           python -m unittest tests.test_blacksmith_dedicated_local_executor_bootstrap -v
           python -m unittest tests.test_r3_noble_01_heirloom_succession_content -v
           python -m unittest tests.test_auto_enhancement_cap_unlock -v
-          python -m unittest tests/test_ci_workflow_structure.py
+          python tests/test_ci_workflow_structure.py
           python -m pytest tests/test_higodot_gut_authority_gate.py -q
           python -m pytest tests/test_higodot_production_authoring_activation.py -q
           python -m pytest tests/test_godot_ai_314_current_alignment.py -q
