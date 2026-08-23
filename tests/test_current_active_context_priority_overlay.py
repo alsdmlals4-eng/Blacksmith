@@ -25,12 +25,14 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("WORK_MODE: PLAN", head)
         self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION", head)
         self.assertNotIn("CURRENT_STAGE: PHASE_C_IMPLEMENTATION_ENTRY", head)
-        self.assertNotIn("PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", head)
+        self.assertNotIn("> `PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON`", head)
+        self.assertLess(active.index("CURRENT_PRIORITY_OVERLAY"), active.index("BS_OPS_20260811_03_PHASE_C_ENTRY_HISTORICAL"))
 
     def test_20260811_phase_c_record_is_preserved_as_history_not_current_gate(self) -> None:
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
         self.assertIn("BS-OPS-20260811-03", active)
         self.assertIn("HISTORICAL", active)
+        self.assertIn("HISTORICAL_PRODUCT_IMPLEMENTATION: PHASE_C_ENTRY_APPROVED_WITHIN_EXISTING_APPROVED_CANON", active)
         self.assertIn("CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md", active[:2500])
 
 
