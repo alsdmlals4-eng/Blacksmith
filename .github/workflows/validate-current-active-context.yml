@@ -1,0 +1,34 @@
+name: Validate Current Active Context
+
+on:
+  pull_request:
+    paths:
+      - '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
+      - 'CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md'
+      - 'docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md'
+      - 'tests/test_current_active_context_priority_overlay.py'
+      - '.github/workflows/validate-current-active-context.yml'
+  push:
+    branches: [main]
+    paths:
+      - '[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
+      - 'CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md'
+      - 'docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md'
+      - 'tests/test_current_active_context_priority_overlay.py'
+      - '.github/workflows/validate-current-active-context.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  current-active-context:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate latest planning overlay routing
+        run: python -m unittest tests.test_current_active_context_priority_overlay -v
