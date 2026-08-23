@@ -45,18 +45,25 @@ class ProjectTotalInstructionV45R2CanonTests(unittest.TestCase):
         ):
             self.assertIn(token, decision)
 
-    def test_current_routers_point_to_instruction_and_override_decision(self) -> None:
-        for path in (AGENTS, ACTIVE, DOCMAP):
+    def test_historical_instruction_stays_reachable_without_overriding_current_overlay(self) -> None:
+        # AGENTS/Documentation Map retain the immutable v4.5-r2 compatibility route.
+        for path in (AGENTS, DOCMAP):
             text = path.read_text(encoding="utf-8")
             self.assertIn("PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md", text, str(path))
             self.assertIn("BS-OPS-20260811-01", text, str(path))
 
+        # Active Context must still expose the stored instruction path for provenance,
+        # but the current execution route is the newer 2026-08-20 planning overlay.
         active = ACTIVE.read_text(encoding="utf-8")
-        self.assertIn("WORK_INSTRUCTION: V4_5_R2_CURRENT_CANON", active)
+        self.assertIn("PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md", active)
+        self.assertIn("CURRENT_PRIORITY_OVERLAY", active[:2500])
+        self.assertIn("CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md", active[:2500])
+        self.assertIn("WORK_INSTRUCTION: CURRENT_USER_TASK_OVERLAY_OVER_HISTORICAL_V4_5_R2", active)
         self.assertIn("PROJECT_LOCAL_PATH: C:\\Users\\user\\Documents\\GitHub\\Ninza\\Blacksmith", active)
         self.assertIn("GODOT_PROJECT_PATH: C:/Users/user/Documents/GitHub/Ninza/Blacksmith", active)
-        self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED", active)
+        self.assertIn("PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION", active)
         self.assertIn("TASK3_IMPLEMENTATION: NOT_APPROVED", active)
+        self.assertNotIn("WORK_INSTRUCTION: V4_5_R2_CURRENT_CANON", active)
 
 
 if __name__ == "__main__":
