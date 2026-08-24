@@ -15,7 +15,7 @@
 > RUNTIME_MUTATION_FROM_HISTORICAL_PHASE_C: FORBIDDEN
 > ```
 >
-> 최신 제품 계층은 `강화의 긴장감 + DDD`가 PRIMARY CORE이고, 작품 UID·생애 / 정밀제작 / 고객·세계 생애주기 / 경제·하루 작업량은 이를 지지하는 SUPPORT다. CURRENT/MAX 내구도·파괴·수리·checkpoint·+0~+100 test budget은 2026-08-20 개별 Canon을 따른다.
+> 최신 제품 계층은 `강화의 긴장감 + DDD`가 PRIMARY CORE이고, 작품 UID·생애 / 정밀제작 / 고객·세계 생애주기 / 경제·하루 작업량은 이를 지지하는 SUPPORT다. CURRENT/MAX 내구도·파괴·수리·checkpoint·+0~+100 test budget은 2026-08-20 개별 Canon을 따르고, 일반 강화/수리 Resource Supply는 2026-08-24 `BS-RESOURCE-20260824-18` Canon을 따른다.
 >
 > 다음 제품 구현은 새 `기획 완료` 선언과 해당 구현 Gate가 열리기 전 시작하지 않는다. 과거 Task1/Task2 구현과 runtime receipt는 구현 사실/역사 증거로 보존하지만 이 Gate를 자동으로 열지 않는다.
 
@@ -152,7 +152,7 @@ GLADIATOR_02 / KYLE_VAREN
 1. `AGENTS.md`
 2. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
 3. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
-4. 2026-08-20 분야별 Canon
+4. 2026-08-20/24 분야별 Canon
 5. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
 6. R2/R3 Game Bible·과거 PoC·구형 data/runtime — 역사/비교 증거
 7. 이 문서와 `START_HERE.md`, `DEVELOPMENT_GATES.md`, `ROADMAP.md`
@@ -221,7 +221,7 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 ## 다음 실행 순서
 
 1. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`와 `BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`를 fresh readback한다.
-2. 현재 `PLAN` 범위의 남은 기획(`RESOURCE_SUPPLY → LATE_REPAIR_ECONOMY → MAX_OVERHAUL → DESTRUCTION_UX → MAX_LEVEL_PAYOFF → FIRST_10_MINUTES → PRECISION_CUSTOMER_LINK → RELEASE_NEAR_VERTICAL_SLICE`)을 승인된 순서로 처리한다.
+2. 현재 `PLAN` 범위의 남은 기획(`LATE_REPAIR_ECONOMY → MAX_OVERHAUL → DESTRUCTION_UX → MAX_LEVEL_PAYOFF → FIRST_10_MINUTES → PRECISION_CUSTOMER_LINK → RELEASE_NEAR_VERTICAL_SLICE`)을 승인된 순서로 처리한다.
 3. 의미 있는 기획 변경은 GitHub·Notion 양쪽에 동기화하고 정본 충돌/적대 검토를 닫는다.
 4. 새 `기획 완료` 선언 전에는 제품 code/data/scenes/assets/addons/project.godot 변경을 시작하지 않는다.
 5. 구현 Gate가 열리면 그때 fresh main/open-PR/Runtime Reality를 다시 확인하고 승인된 구현 패키지만 TDD로 실행한다.
@@ -231,7 +231,7 @@ BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE
 1. `AGENTS.md`
 2. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
 3. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
-4. 관련 2026-08-20 개별 Canon
+4. 관련 2026-08-20/24 개별 Canon
 5. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
 6. 실제 code/data/Scene/tests — 구현 현실 확인 시
 
