@@ -7,6 +7,8 @@ func evaluate(_customer, item, context) -> Dictionary:
 		return _blocked("MISSING_ITEM")
 	if context == null:
 		return _blocked("MISSING_CONTEXT")
+	if not context.validation_errors.is_empty():
+		return _blocked("INVALID_CONTEXT")
 
 	var maximum_load := int(context.maximum_load())
 	var current_weight := int(item.weight_point)
