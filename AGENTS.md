@@ -1,21 +1,30 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 일반 제품 구현은 `BLOCKED`이며, `R2_BATCH_006_APPROVED_MAIN_CANON`이 승인한 버티컬 슬라이스 namespace만 제한적으로 구현할 수 있다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-02 / PLANNING_REACTIVATED`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리 작업이 그 Gate를 자동으로 열지 않는다.
 
 ## 1. 권위 순서
 
 1. 사용자의 최신 지시와 승인
 2. `AGENTS.md`
-3. `CURRENT_CONFIRMED_DECISIONS.md`
-4. `docs/planning/CURRENT_R2_CANON_REGISTRY.json`
-5. `docs/planning/BLACKSMITH_CURRENT_GAME_BIBLE_R2_2026.md`
-6. Active Context·Roadmap·Development Gates
-7. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림
-8. `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH`: 현재 문서·JSON·code·data·Scene·tests와 실제 runtime evidence
-9. Google Sheet 등 compatibility 자료
-10. 외부 벤치마크·과거 대화·AI 추론
+3. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`의 current overlay / work-state router
+4. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
+5. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
+6. 2026-08-20/24 current 분야별 Canon·current registry
+7. 실제 `code/data/Scene/Resource/tests`와 runtime evidence
+8. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림
+9. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+10. R2/R3 Game Bible·과거 PoC·구형 data/runtime — 역사·비교 증거
+11. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
+12. 외부 벤치마크·과거 대화·AI 추론
 
-사람용 기획·시각·비교 정본은 Notion, 구조화 기획·데이터·구현·런타임 정본은 repository가 책임진다. Google Sheet는 unique 미이관 자료가 남은 경우의 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility source이며 신규 기본 작업공간이나 runtime 증거가 아니다.
+현재 workspace routing:
+
+- `Notion Project Home = HUMAN_GAME_LEARNING_SURFACE`
+- `Project Registry / System Record = AI_OPERATIONAL_SURFACE`
+- `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH` = Markdown·JSON·game data·code·Scene/Resource·tests·CI/runtime truth
+- Google Sheet = unique 미이관 자료와 same-ID compatibility mirror가 필요한 경우의 migration surface. 신규 기본 기획 작업공간이나 runtime 증거가 아니다.
+
+사람용 Home에는 게임 약속·전체 Flow·플레이어 선택·시각/학습 자료를 둔다. PR/SHA/CI/task queue/pause/debug/tool/session 정보는 기존 Project Registry/System Record 또는 repository operational owner가 소유하며 Home에 복제하지 않는다.
 
 ## 2. 필수 작업 순서
 
@@ -83,10 +92,11 @@ RED → GREEN → REFACTOR
 - 예술성은 단계명이 없는 `1~10` 숫자형 무기·작품 능력치다.
 - 예술성은 전투력을 기본적으로 올리지 않는다.
 - 보조재료 슬롯과 일반 수식어 A·B는 재도입하지 않는다.
+- 2026-08-20/24 current overlay에 따라 PRIMARY CORE는 `강화의 긴장감 + DDD`이며 정밀제작·고객/세계 인과·UID/생애·내구/수리·경제는 이를 지지하는 SUPPORT다.
 
 ## 5. 보호 경로
 
-기획 승인 전 변경 금지:
+현재 `PLANNING_REACTIVATED` 단계에서 새 제품 구현 승인 전 변경 금지:
 
 ```text
 data/
@@ -97,7 +107,7 @@ addons/
 project.godot
 ```
 
-일반 제품 구현은 R1~R8와 최종 사용자 검수 및 별도 Codex Gate 전까지 `BLOCKED`다. 버티컬 슬라이스는 승인된 namespace와 Task 범위를 넘어 확장하지 않는다.
+일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이다. 과거 R2 버티컬 슬라이스 승인·Task1/Task2 runtime evidence는 역사/구현 사실로 보존하지만 현재 새 제품 구현 Gate를 자동으로 열지 않는다.
 
 ## 6. 정본·구형 문서
 
@@ -105,18 +115,20 @@ project.godot
 - `[대체됨] / [부분 대체됨] / [보류] / [폐기] / [역사 증거]`를 직접 표시한다.
 - 과거 PASS는 해당 과거 HEAD의 증거일 뿐 현재 제품 PASS가 아니다.
 - PR #81은 `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT`이다.
+- pre-existing PR #196은 `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`이며 현재 기획 정리 PR과 흡수·수정·병합하지 않는다.
 
 ## 7. 완료 증거
 
 - expected/exact HEAD 고정
-- Base adoption
+- Base adoption/current Base owner 확인
 - Python contracts
-- Godot headless
+- 변경 위험도에 해당하는 Godot/CI 검증
 - 변경 파일·보호 경로
 - PR 댓글·인라인 스레드
 - 필요한 Notion/repository destination readback과 Project identity 확인
-- legacy Sheet가 실제 migration source인 경우 same-ID/provenance readback
+- legacy Sheet가 실제 migration/same-ID reconciliation 대상이면 provenance readback
 - 미실행 runtime·Android·접근성·성능·사람 플레이는 `NOT_RUN`
+- Notion server readback은 client 실제 렌더 관찰을 대체하지 않는다.
 
 ## 8. 플랫폼 출시·에셋 권리
 
@@ -130,21 +142,36 @@ Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분�
 
 필수 권리·계약·약관 버전·플랫폼 답변이 미확인이면 `RELEASE_BLOCKED_UNVERIFIED`다. 제품 구현 BLOCKED 상태와 실제 제출·법률 검토·최종 등급 미실행 상태를 바꾸지 않는다.
 
-## 9. HiGodot·GUT·Hera 권위와 필수 진입 Gate
+## 9. Godot·Godot AI·GUT·Hera 권위와 진입 Gate
+
+### 9.1 Current host/runtime routing
+
+현재 runtime/toolchain 선택은 사용자 제공 v4.8 r4와 최신 Base owner를 따른다.
+
+- 프로젝트별 동일 Godot binary 복사본·전용 포트를 기본적으로 증식하지 않는다.
+- shared approved exact Godot pin + shared approved Godot AI exact pin + provider fixed/default ports가 기본이다.
+- 프로젝트 격리는 exact repository/worktree/project path + editor/session identity로 보장한다.
+- 과거 Blacksmith 전용 `8006/9506`은 `HISTORICAL_ONLY / DO_NOT_REUSE_AS_DEFAULT`다.
+- Godot/Godot AI/adopted tool exact version은 작업 시 official upstream을 fresh-read하고 safe-update/rollback/canary Gate를 통과한 값만 current execution pin으로 쓴다.
+- 이 planning/documentation task에서는 local Editor/session/runtime을 요구하지 않으며 실제 실행하지 않았으면 `NOT_RUN`이다.
+
+### 9.2 Historical authority / adoption records
+
+아래 exact-version·Task 범위 문장은 해당 시점의 provenance와 regression contract를 보존하는 역사 기록이다. 현재 runtime 선택을 오래된 version/port로 되돌리는 근거가 아니다.
 
 - `HIGODOT_SOLE_AUTHORING_AUTHORITY`: `BS-HIGODOT-20260808-01` 사용자 승인으로 HiGodot은 Production Scene·Node·Resource·`project.godot` 설정의 단일 저작 권위로 활성화됐다.
 - `GUT_SOLE_TEST_AUTHORITY`: GUT 9.7.1은 `BS-TEST-20260806-01` 및 postmerge closure에 따라 `FORMALLY_ADOPTED_ACTIVE`이며 GDScript 단위·통합 테스트 프레임워크의 단일 권위다.
 - `ENTRY_GATE_FAIL_CLOSED`: 결정 원장·미확정/감사·이미지 목록/검수·열린 PR exact HEAD 중 하나라도 누락·stale·schema drift이면 작업 진입을 차단한다.
 
-현재 HiGodot 권위는 `FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY`이고 production activation은 `USER_APPROVED_ACTIVE`다. 단, 현재 승인은 `TASK2_SCOPED_AUTHORING_ONLY`이며 일반 제품 Gate를 열지 않는다. 또한 실제 `.tscn`/Resource/`project.godot` 변경은 HiGodot production-authoring 실행 경로가 직접 생성한 저작 provenance가 있어야 하며, 일반 코드 편집기·GitHub Contents API·직접 텍스트 치환으로 Godot 직렬화 surface를 우회해서는 안 된다. 현재 저장소의 Live-Editor Pilot은 scratch-only/source-mutation-forbidden이므로 production 실행 경로로 간주하지 않는다.
+현재 HiGodot 권위는 `FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY`이고 production activation은 `USER_APPROVED_ACTIVE`다. 단, 당시 승인은 `TASK2_SCOPED_AUTHORING_ONLY`였으며 일반 제품 Gate를 열지 않는다. 또한 실제 `.tscn`/Resource/`project.godot` 변경은 승인된 production-authoring 실행 경로가 직접 생성한 저작 provenance가 있어야 하며, 일반 코드 편집기·GitHub Contents API·직접 텍스트 치환으로 Godot 직렬화 surface를 우회해서는 안 된다. 저장소의 Live-Editor Pilot 역사 기록은 scratch-only/source-mutation-forbidden으로 production 실행 경로가 아니다.
 
-`BS-HIGODOT-20260808-01`: HiGodot production authoring 권위를 활성화하되, 현재 Task 2에서 허용되는 Godot 저작 범위는 승인된 MainMenu / BlacksmithApp / Workshop scene과 `application/run/main_scene` 전환뿐이다. mixed-surface PR에는 `FILE_AUTHORITY_MANIFEST_REQUIRED_FOR_MIXED_SURFACE_PR`가 적용된다. 현재 production 실행 경로가 노출되지 않았거나 검증되지 않았으면 Scene/`project.godot` GREEN은 fail-closed로 중지한다.
+`BS-HIGODOT-20260808-01`: HiGodot production authoring 권위를 활성화하되, 당시 Task 2에서 허용된 Godot 저작 범위는 승인된 MainMenu / BlacksmithApp / Workshop scene과 `application/run/main_scene` 전환뿐이었다. mixed-surface PR에는 `FILE_AUTHORITY_MANIFEST_REQUIRED_FOR_MIXED_SURFACE_PR`가 적용된다. current production 실행 경로가 노출되지 않았거나 검증되지 않았으면 Scene/`project.godot` GREEN은 fail-closed로 중지한다.
 
 `BS-HERA-20260808-01`: Hera Agent Godot 1.0.0 vendor tree의 main 존재와 당시 비활성 상태를 확정한 역사적 reconciliation Decision이다. 당시 상태 `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE`는 보존한다.
 
-`BS-TOOLCHAIN-20260809-01`: 사용자가 Godot AI 3.1.3 전환과 GUT·Hera editor plugin 활성화를 승인했다. 당시 검증된 GitHub 상태는 Godot AI `3.1.3`, GUT editor plugin enabled, Hera editor plugin enabled였으며 Hera 상태는 `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`였다. 이 활성화는 권위 확장이 아니다. HiGodot은 계속 `TASK2_SCOPED_AUTHORING_ONLY` Godot 직렬화 저작 권위이고, GUT은 계속 `SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY`, Hera authoring/mutation authority는 계속 `NONE`이다. 이 Decision의 3.1.3 버전 사실은 Task2 실행 역사로 보존되며 현재 vendor 버전은 `BS-TOOLCHAIN-20260811-02`가 대체한다.
+`BS-TOOLCHAIN-20260809-01`: 사용자가 Godot AI 3.1.3 전환과 GUT·Hera editor plugin 활성화를 승인했다. 당시 검증된 GitHub 상태는 Godot AI `3.1.3`, GUT editor plugin enabled, Hera editor plugin enabled였으며 Hera 상태는 `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`였다. 이 활성화는 권위 확장이 아니다. HiGodot은 당시 `TASK2_SCOPED_AUTHORING_ONLY` Godot 직렬화 저작 권위이고, GUT은 `SOLE_GDSCRIPT_TEST_FRAMEWORK_AUTHORITY`, Hera authoring/mutation authority는 `NONE`이었다. 이 Decision의 3.1.3 버전 사실은 Task2 실행 역사 baseline이다.
 
-`BS-TOOLCHAIN-20260811-02`: 사용자의 최신 3.1.4 업데이트 승인을 current version authority로 적용한다. 현재 `addons/godot_ai`는 공식 `v3.1.4` exact upstream vendor이며, `BS-TOOLCHAIN-20260809-01`의 3.1.3은 GUT/Hera 활성화와 Task2 실행의 역사 baseline으로 남는다. 완료된 Task2 전용 `set_main_scene` vendor overlay는 current vendor에 재포크하지 않으며 미래 영속 main-scene 변경은 새 범위 Decision이 필요하다. GUT 9.7.1 sole test authority, Hera authority `NONE`, 제품/Task3 차단은 그대로다.
+`BS-TOOLCHAIN-20260811-02`: 사용자가 당시 3.1.4 업데이트를 승인한 역사 current-version record다. `addons/godot_ai` 공식 `v3.1.4` vendor 검증과 완료된 Task2 전용 `set_main_scene` overlay 처리, GUT 9.7.1 sole test authority, Hera authority `NONE`를 기록한다. 이 3.1.4 문자열은 2026-08-25 이후 current official latest/pin을 자동 결정하지 않는다.
 
 GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. 같은 파일의 이중 권위와 출처 미상 변경은 실패 처리한다. Hera 또한 별도 범위 승인 전에는 Git 추적 제품·저작 surface를 수정할 권위가 없다.
 
@@ -152,9 +179,12 @@ GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/
 
 ## 10. 현재 프로젝트 총 작업지시문
 
-- 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`)
-- 프로젝트 바인딩 override Decision: `BS-OPS-20260811-01`
+- current task execution contract: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r4_20260824.md`
+- `CURRENT_EXECUTION_CONTRACT_STATE: USER_SUPPLIED_V4_8_R4_CURRENT`
+- repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`의 v4.5 r2 내용은 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`다. 이번 작업에서 파일 자체를 조용히 v4.8로 가장하지 않으며 안전한 추후 migration 전까지 역사/충돌 증거로만 취급한다.
+- historical compatibility anchor: 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — **historical only, current execution authority 아님**.
+- current operational override Decision: `BS-OPS-20260825-02`
+- 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`
 - 선행 조사 Gate Decision: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`
-- 첨부 source의 Switchy-Express 경로는 원문 보존 역사값이며, 현재 Blacksmith 실행 경로는 `BS-OPS-20260811-01`의 사용자 최신 바인딩을 따른다.
 - 같은 승인 범위는 기술 재검증 후 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확대만 별도 사용자 Decision이 필요하다.
-- `PRODUCT_IMPLEMENTATION: BLOCKED`, `TASK3_IMPLEMENTATION: NOT_APPROVED`를 유지한다.
+- `PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`, `TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED`를 유지한다.

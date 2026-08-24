@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 from typing import Any, Callable
 
+import check_current_authority_entrypoint_contract as current_authority
 import check_project_core_alignment as legacy
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -112,6 +113,10 @@ def make_checkpoint_005_compatibility_view(registry: dict[str, Any]) -> dict[str
 
 def main() -> int:
     failures: list[str] = []
+
+    if current_authority.main() != 0:
+        failures.append("current authority entrypoint contract failed")
+
     registry = load_current(failures)
     if registry:
         check_current_batch_006(failures, registry)
