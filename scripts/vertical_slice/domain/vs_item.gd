@@ -237,7 +237,18 @@ func _validate_values() -> void:
 		validation_errors.append("INVALID_CURRENT_DURABILITY")
 	if max_durability < 0 or max_durability > 100:
 		validation_errors.append("INVALID_MAX_DURABILITY")
+	if current_durability > max_durability:
+		validation_errors.append("CURRENT_EXCEEDS_MAX")
 	if not PHYSICAL_STATES.has(physical_state):
 		validation_errors.append("INVALID_PHYSICAL_STATE:%s" % physical_state)
+	var has_zero_durability := current_durability == 0 or max_durability == 0
+	if has_zero_durability and physical_state != "DESTROYED":
+		validation_errors.append("ZERO_DURABILITY_REQUIRES_DESTROYED")
+	if physical_state == "DESTROYED" and not has_zero_durability:
+		validation_errors.append("DESTROYED_REQUIRES_ZERO_DURABILITY")
+	if enhancement_level == 100 and not max_enhancement_reached:
+		validation_errors.append("LEVEL_100_REQUIRES_MAX_ENHANCEMENT_REACHED")
+	if max_enhancement_reached and enhancement_level != 100:
+		validation_errors.append("MAX_ENHANCEMENT_REACHED_REQUIRES_LEVEL_100")
 	if owner_id.is_empty():
 		validation_errors.append("MISSING_OWNER_ID")
