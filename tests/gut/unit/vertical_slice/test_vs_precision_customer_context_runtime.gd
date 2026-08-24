@@ -235,12 +235,13 @@ func test_precision_preview_respects_milestone_and_destroyed_item_eligibility() 
 
 	item.enhancement_level = 10
 	item.highest_checkpoint = 10
-	item.used_precision_milestones = [10]
+	item.used_precision_milestones.clear()
+	item.used_precision_milestones.append(10)
 	var used = resolver.preview(item, 10, "EDGE_REINFORCEMENT", "", context)
 	assert_false(bool(used.get("allowed", true)))
 	assert_eq(used.get("reason", ""), "PRECISION_MILESTONE_ALREADY_USED")
 
-	item.used_precision_milestones = []
+	item.used_precision_milestones.clear()
 	item.current_durability = 0
 	item.physical_state = "DESTROYED"
 	var destroyed = resolver.preview(item, 10, "EDGE_REINFORCEMENT", "", context)
