@@ -24,8 +24,18 @@ func to_dict() -> Dictionary:
 
 
 func maximum_load() -> int:
-	return 0
+	return strength * 10
 
 
 func related_ability_value() -> int:
-	return 0
+	match related_ability:
+		"STRENGTH":
+			return strength
+		"DEXTERITY":
+			return dexterity
+		"CONSTITUTION":
+			return constitution
+		"JUDGMENT":
+			return judgment
+		_:
+			return 0
