@@ -66,8 +66,8 @@ func test_repair_insufficient_gold_is_atomic() -> void:
 	item.current_durability = 60
 	item.max_durability = 80
 	var quote = resolver.quote(item)
-	var before_current := item.current_durability
-	var before_max := item.max_durability
+	var before_current: int = int(item.current_durability)
+	var before_max: int = int(item.max_durability)
 	var before_recovery: Dictionary = item.enhancement_recovery_by_target.duplicate(true)
 	var result = resolver.apply(item, int(quote["gold_cost"]) - 1, int(quote["reinforcement_units"]))
 	assert_eq(result["status"], "BLOCKED")
