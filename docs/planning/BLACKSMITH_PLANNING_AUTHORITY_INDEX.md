@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 
@@ -67,6 +67,9 @@ Notion 책임면:
 - `BLACKSMITH_ENHANCEMENT_BALANCE_CURVE_CANON_20260820.md` — 17.
 - `BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md` — 경제 색인 + historical evidence.
 - `BLACKSMITH_MAX_LEVEL_PAYOFF_CANON_20260824.md` — 22. **+100 terminal identity/payoff의 최신 owner**. +100 이후 추가 power ladder가 아니라 1회 완료 연출·영구 완료 표식·동일 UID 생애 기록·recognition fact를 제공하며 새 stat/price multiplier를 만들지 않는다.
+
+### 첫 10분 온보딩
+- `BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md` — 23. **첫 세션 pacing/정보 공개/첫 STOP-PUSH 결정의 최신 owner**. 실제 canonical odds를 유지하고, +10 첫 정밀강화·checkpoint·평균 본전선 뒤 +11 구조 위험을 보여주며 STOP/PUSH 모두 정상 first-session completion으로 인정한다.
 
 ### 일반 Resource Supply
 - `BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md` — 18. `common_reinforcement_material / 보강재 / 50G / 상시 무제한 공급 / 강화 1~5 / 일반 수리 1~4`.
@@ -316,7 +319,29 @@ Runtime Reality:
 - historical `max_level=100` primitive 또는 COMPLETE 상태는 현재 Decision22 구현 증거가 아니다.
 - MAX completion lifecycle/mark/presentation runtime은 `IMPLEMENTATION_UNVERIFIED`.
 
-## 13. 누적 기대원가·판매가 권위 — 17 + 19 + 20 검증
+## 13. 첫 10분 온보딩 권위 — 23
+
+```text
+CORE_THESIS_FIRST_10_MINUTES
+```
+
+핵심 계약:
+- 첫 강화 input 약 3분 이내, 첫 +10 STOP/+11 PUSH 결정 약 10분 이내를 Human pacing 목표로 사용한다. 강제 countdown이 아니다.
+- `New Game -> 짧은 첫 작품 -> +1/+2 LEARN -> +3~+9 BUILD -> +10 정밀강화+checkpoint+평균 본전 -> +11 위험 Preview -> STOP/PUSH -> UID payoff` 순서.
+- tutorial-only scripted failure, hidden success boost, tutorial-only odds 금지.
+- 실제 실패가 발생했을 때만 same-UID recovery를 just-in-time으로 설명.
+- +10 정밀강화는 full rules 접근을 유지하되 추천 방식/촉매를 먼저 노출. hard lock 금지.
+- +10 STOP와 +11 PUSH 모두 정상 first-session completion. +11 강제 금지.
+- +11 직전 MAX/CRITICAL 구조 위험을 foreground.
+- starter-order의 exact customer/world owner는 23에서 만들지 않고 다음 `PRECISION_CUSTOMER_LINK`가 소유.
+- 후기 수리/대수선/Archive/+100 payoff/전체 고객·세계 관리/고급 경제를 첫 핵심 선택 전 강제 교육하지 않음.
+
+Runtime Reality:
+- MainMenu/BlacksmithApp shell은 historical/current runtime reuse surface로 존재.
+- 제품 Workshop은 placeholder-level이며 current-authority Forge/Enhancement 13~22 통합과 Decision23 first-10 runtime은 `IMPLEMENTATION_UNVERIFIED`.
+- Human first-10/Android validation은 `NOT_RUN`.
+
+## 14. 누적 기대원가·판매가 권위 — 17 + 19 + 20 검증
 
 17의 고정 planning anchor를 유지한다. 19와 20의 simulation은 후기 수리/대수선 변경이 거시경제를 깨지 않는지 검증하는 비교 evidence이며 static price table을 runtime actual spend와 연결하지 않는다.
 
@@ -352,7 +377,7 @@ SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
 
 출시 전에는 19+20 통합 Balance Lab로 static table을 다시 검산한다.
 
-## 14. 과거 숫자 처리
+## 15. 과거 숫자 처리
 
 Current numeric authority가 아님:
 
@@ -369,7 +394,7 @@ pre-19 MASTERY repair multiplier 1.80
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 15. 현재 승인사항
+## 16. 현재 승인사항
 
 ```text
 01     강화 긴장감 + DDD가 PRIMARY CORE
@@ -386,24 +411,25 @@ pre-19 MASTERY repair multiplier 1.80
 20     one-lifetime partial MAX overhaul / +15 / ceiling60 / 750k×material + reinforcement20 + fatigue5
 21     causal destruction / immutable archive / curated memorial / optional new-UID successor provenance / zero power inheritance
 22     +100 terminal identity / completion presentation / permanent completion mark / lifecycle fact / zero extra power multiplier
+23     first 10 minutes core-thesis sprint / real odds / +10 precision+checkpoint / +11 STOP vs PUSH / just-in-time teaching
 ```
 
-17·19·20의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`. 18·21·22는 `USER_APPROVED / PLANNING_CANON`.
+17·19·20의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`. 18·21·22·23은 `USER_APPROVED / PLANNING_CANON`.
 
-## 16. 현재 작업 순서
+## 17. 현재 작업 순서
 
-1. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual 연결.
-2. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-3. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
+1. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+2. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
 
-## 17. 구현자 확인 순서
+## 18. 구현자 확인 순서
 
 1. 최신 사용자 지시.
 2. Overlay에서 승인사항/현재 작업 순서 확인.
-3. 실패=13, 진행=14~16, 숫자=17, 일반 수리=10~12+19, 일반 재료 공급=18, MAX 대수선=20, DESTROYED UX/기록=21, +100 terminal payoff=22 Canon 소비.
+3. 실패=13, 진행=14~16, 숫자=17, 일반 수리=10~12+19, 일반 재료 공급=18, MAX 대수선=20, DESTROYED UX/기록=21, +100 terminal payoff=22, first-10 onboarding=23 Canon 소비.
 4. HIGH/MASTERY 수리 배율은 반드시 19를 우선한다.
 5. MAX 복구 예외는 반드시 20만 사용하고 일반 수리/MAX 자동복구로 확대하지 않는다.
 6. DESTROYED physical UID는 21에 따라 부활하지 않으며 successor에는 power/history를 복사하지 않는다.
 7. +100은 22에 따라 제작 등급/Artistry/내구를 변경하거나 추가 power ladder를 열지 않는다.
-8. 구형 data/runtime는 historical/reuse evidence로만 사용.
-9. 새 `기획 완료` 전 제품 구현 금지.
+8. 첫 세션은 23에 따라 tutorial-only odds/RNG 조작이나 강제 +11을 사용하지 않는다.
+9. 구형 data/runtime는 historical/reuse evidence로만 사용.
+10. 새 `기획 완료` 전 제품 구현 금지.
