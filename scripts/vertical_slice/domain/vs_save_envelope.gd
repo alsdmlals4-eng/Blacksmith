@@ -46,6 +46,7 @@ var active_run: Dictionary = {
 var items_by_uid: Dictionary = {}
 var customer_state: Dictionary = {}
 var schedule_state: Dictionary = {}
+var destroyed_history_by_uid: Dictionary = {}
 var global_ledger_sequence: int = 0
 var validation_errors: Array[String] = []
 var recovered_from_backup: bool = false
@@ -83,6 +84,12 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 		envelope.schedule_state = _normalize_dictionary(raw_schedule_state)
 	else:
 		envelope.validation_errors.append("INVALID_FIELD_TYPE:schedule_state")
+
+	var raw_destroyed_history: Variant = value.get("destroyed_history_by_uid", {})
+	if raw_destroyed_history is Dictionary:
+		envelope.destroyed_history_by_uid = _normalize_dictionary(raw_destroyed_history)
+	else:
+		envelope.validation_errors.append("INVALID_FIELD_TYPE:destroyed_history_by_uid")
 
 	var raw_items: Variant = value.get("items_by_uid", {})
 	if raw_items is Dictionary:
@@ -169,6 +176,7 @@ func to_dict() -> Dictionary:
 		"items_by_uid": serialized_items,
 		"customer_state": customer_state.duplicate(true),
 		"schedule_state": schedule_state.duplicate(true),
+		"destroyed_history_by_uid": destroyed_history_by_uid.duplicate(true),
 		"global_ledger_sequence": global_ledger_sequence,
 	}
 
