@@ -80,8 +80,8 @@ func replace_envelope_after_confirmation(envelope) -> Error:
 
 	var primary = _load_path(save_path)
 	var backup = _load_path(backup_path)
-	var primary_valid := primary != null and primary.validation_errors.is_empty()
-	var backup_valid := backup != null and backup.validation_errors.is_empty()
+	var primary_valid: bool = primary != null and primary.validation_errors.is_empty()
+	var backup_valid: bool = backup != null and backup.validation_errors.is_empty()
 
 	if primary_valid:
 		_remove_if_exists(backup_path)
