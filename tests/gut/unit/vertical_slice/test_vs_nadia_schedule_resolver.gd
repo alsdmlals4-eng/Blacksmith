@@ -14,8 +14,11 @@ func _customer(customer_id: String = "NADIA_VENN"):
 	customer.customer_id = customer_id
 	customer.name = "Synthetic Nadia"
 	customer.role = "TEST_ROLE"
-	customer.epithet = "TEST_EPITHET"
+	customer.public_epithet = "TEST_EPITHET"
 	customer.public_standing_grade = "ELITE"
+	customer.content_id = "ADVENTURER_01"
+	customer.content_goal = "SURVIVAL_AND_RECOVERY"
+	customer.numeric_capability_profile = "SYNTHETIC_TEST_FIXTURE"
 	return customer
 
 
