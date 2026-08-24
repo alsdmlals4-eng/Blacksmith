@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23 / BS-LINK-20260824-24`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 
@@ -70,6 +70,9 @@ Notion 책임면:
 
 ### 첫 10분 온보딩
 - `BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md` — 23. **첫 세션 pacing/정보 공개/첫 STOP-PUSH 결정의 최신 owner**. 실제 canonical odds를 유지하고, +10 첫 정밀강화·checkpoint·평균 본전선 뒤 +11 구조 위험을 보여주며 STOP/PUSH 모두 정상 first-session completion으로 인정한다.
+
+### 정밀강화·고객/세계 연결
+- `BLACKSMITH_PRECISION_CUSTOMER_LINK_CANON_20260824.md` — 24. **정밀강화 결과와 고객 context/result를 연결하는 최신 owner**. `NADIA_VENN / ADVENTURER_01`을 starter-order owner로 사용하고 universal fit score/Best를 금지하며, pre-24 고객 강화 `+1pp/level`을 역사화하고 `0.30pp/level`을 첫 테스트 Budget으로 사용한다.
 
 ### 일반 Resource Supply
 - `BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md` — 18. `common_reinforcement_material / 보강재 / 50G / 상시 무제한 공급 / 강화 1~5 / 일반 수리 1~4`.
@@ -341,7 +344,30 @@ Runtime Reality:
 - 제품 Workshop은 placeholder-level이며 current-authority Forge/Enhancement 13~22 통합과 Decision23 first-10 runtime은 `IMPLEMENTATION_UNVERIFIED`.
 - Human first-10/Android validation은 `NOT_RUN`.
 
-## 14. 누적 기대원가·판매가 권위 — 17 + 19 + 20 검증
+## 14. 정밀강화·고객/세계 연결 권위 — 24
+
+```text
+DISCLOSED_CONTEXT_FIT_AND_CAUSAL_MULTI_AXIS_RESULT
+```
+
+핵심 계약:
+- starter-order owner = `NADIA_VENN / ADVENTURER_01`.
+- 고객은 exact recipe가 아니라 목적·제약·알려진 context를 공개.
+- precision preview는 직접 도움/Gate 변화/trade-off/직접 관련 없음을 설명.
+- universal fit score, Best badge, opaque auto-recommendation 금지.
+- 촉매 선택 자체는 고객 bonus가 아니며 실제 결과 affix/function이 맥락과 관련될 때만 원인으로 소비.
+- `WEIGHT`는 hard gate, enhancement는 bounded primary contribution, function은 특정 eligibility/mitigation/interaction, 고객 능력·적성은 작은 context 보정.
+- pre-24 customer enhancement `+1.00pp/level`은 `HISTORICAL_PRE_24_NUMERIC_EVIDENCE`.
+- 현재 첫 테스트 Budget: `ENHANCEMENT_EVENT_BONUS_PP = round(0.30 * enhancement_level)`, max +30pp.
+- Nadia 결과는 `EXPEDITION_RETURN_STATE / RECOVERY_STATE / ITEM_UID_LIFECYCLE_STATE`를 유지하고 causal reasons 2~4 + primary next action 1을 사용.
+- first 10 minutes는 Nadia handoff acknowledgement까지이며 full world result는 delayed personal schedule.
+
+Runtime Reality:
+- `VSContentResultRecord`는 Nadia 포함 result axes/UID/causal reasons/primary next action을 저장·검증하는 reuse primitive가 존재.
+- precision→customer preview, actual resolver, 0.30pp runtime, starter Nadia order/handoff는 `IMPLEMENTATION_UNVERIFIED`.
+- Human choice diversity/Android customer UI는 `NOT_RUN`.
+
+## 15. 누적 기대원가·판매가 권위 — 17 + 19 + 20 검증
 
 17의 고정 planning anchor를 유지한다. 19와 20의 simulation은 후기 수리/대수선 변경이 거시경제를 깨지 않는지 검증하는 비교 evidence이며 static price table을 runtime actual spend와 연결하지 않는다.
 
@@ -377,7 +403,7 @@ SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
 
 출시 전에는 19+20 통합 Balance Lab로 static table을 다시 검산한다.
 
-## 15. 과거 숫자 처리
+## 16. 과거 숫자 처리
 
 Current numeric authority가 아님:
 
@@ -390,11 +416,12 @@ old multi-step downgrade
 old destroy RNG
 pre-19 HIGH repair multiplier 1.50
 pre-19 MASTERY repair multiplier 1.80
+pre-24 customer enhancement contribution +1.00pp / level
 ```
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 16. 현재 승인사항
+## 17. 현재 승인사항
 
 ```text
 01     강화 긴장감 + DDD가 PRIMARY CORE
@@ -412,24 +439,26 @@ pre-19 MASTERY repair multiplier 1.80
 21     causal destruction / immutable archive / curated memorial / optional new-UID successor provenance / zero power inheritance
 22     +100 terminal identity / completion presentation / permanent completion mark / lifecycle fact / zero extra power multiplier
 23     first 10 minutes core-thesis sprint / real odds / +10 precision+checkpoint / +11 STOP vs PUSH / just-in-time teaching
+24     Nadia starter / disclosed context fit / no universal fit score / customer enhancement +0.30pp per level test budget / causal multi-axis result
 ```
 
-17·19·20의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`. 18·21·22·23은 `USER_APPROVED / PLANNING_CANON`.
+17·19·20·24의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`. 18·21·22·23 및 24 구조는 `USER_APPROVED / PLANNING_CANON`.
 
-## 17. 현재 작업 순서
+## 18. 현재 작업 순서
 
-1. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-2. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
+1. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
 
-## 18. 구현자 확인 순서
+## 19. 구현자 확인 순서
 
 1. 최신 사용자 지시.
 2. Overlay에서 승인사항/현재 작업 순서 확인.
-3. 실패=13, 진행=14~16, 숫자=17, 일반 수리=10~12+19, 일반 재료 공급=18, MAX 대수선=20, DESTROYED UX/기록=21, +100 terminal payoff=22, first-10 onboarding=23 Canon 소비.
+3. 실패=13, 진행=14~16, 숫자=17, 일반 수리=10~12+19, 일반 재료 공급=18, MAX 대수선=20, DESTROYED UX/기록=21, +100 terminal payoff=22, first-10 onboarding=23, precision-customer link=24 Canon 소비.
 4. HIGH/MASTERY 수리 배율은 반드시 19를 우선한다.
 5. MAX 복구 예외는 반드시 20만 사용하고 일반 수리/MAX 자동복구로 확대하지 않는다.
 6. DESTROYED physical UID는 21에 따라 부활하지 않으며 successor에는 power/history를 복사하지 않는다.
 7. +100은 22에 따라 제작 등급/Artistry/내구를 변경하거나 추가 power ladder를 열지 않는다.
 8. 첫 세션은 23에 따라 tutorial-only odds/RNG 조작이나 강제 +11을 사용하지 않는다.
-9. 구형 data/runtime는 historical/reuse evidence로만 사용.
-10. 새 `기획 완료` 전 제품 구현 금지.
+9. 고객/세계 연결은 24에 따라 universal fit score/Best를 만들지 않고, pre-24 +1pp/level을 사용하지 않는다.
+10. 고객 강화 기여 0.30pp/level은 출시 최종값이 아니라 Human/Balance 검증용 테스트 Budget이다.
+11. 구형 data/runtime는 historical/reuse evidence로만 사용.
+12. 새 `기획 완료` 전 제품 구현 금지.
