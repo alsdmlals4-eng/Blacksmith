@@ -21,6 +21,7 @@ func _context(
 	context.content_id = "SYNTHETIC_CONTENT"
 	context.primary_need = "SAFE_RETURN"
 	context.secondary_need = "RECOVERY_POSSIBILITY"
+	context.known_context.append("RUINS")
 	context.risk = risk
 	context.strength = strength
 	context.dexterity = 5
@@ -34,6 +35,27 @@ func _context(
 	return context
 
 
+func _context_dict() -> Dictionary:
+	return {
+		"schema_version": 1,
+		"customer_id": "SYNTHETIC_CUSTOMER",
+		"content_id": "SYNTHETIC_CONTENT",
+		"primary_need": "SAFE_RETURN",
+		"secondary_need": "RECOVERY_POSSIBILITY",
+		"known_context": ["RUINS"],
+		"risk": 6,
+		"strength": 4,
+		"dexterity": 5,
+		"constitution": 6,
+		"judgment": 5,
+		"weapon_proficiency": 2,
+		"related_ability": "CONSTITUTION",
+		"required_function_if_explicit": "",
+		"relevant_precision_axes": ["WEIGHT", "DURABILITY"],
+		"relevant_function_ids": [],
+	}
+
+
 func _customer(standing: String = "COMMON"):
 	var customer = CustomerProfileScript.new()
 	customer.customer_id = "SYNTHETIC_CUSTOMER"
@@ -45,6 +67,7 @@ func _item(weight: int = 40, enhancement: int = 10, function_ids: Array[String] 
 	var item = ItemScript.new()
 	item.weight_point = weight
 	item.enhancement_level = enhancement
+	item.highest_checkpoint = 10 if enhancement >= 10 else 0
 	item.physical_state = "ACTIVE"
 	for function_id in function_ids:
 		item.functions.append(function_id)
@@ -98,6 +121,8 @@ func test_allowed_assignment_is_53_percent_and_public_standing_is_neutral() -> v
 		assert_eq(int(result.get("related_ability_modifier_pp", -1)), 5)
 		assert_eq(int(result.get("proficiency_modifier_pp", -1)), 5)
 		assert_eq(int(result.get("final_primary_estimate", -1)), 53)
+		assert_false(result.has("fit_score"))
+		assert_false(result.has("best"))
 	assert_eq(common_result.get("final_primary_estimate", -1), legendary_result.get("final_primary_estimate", -2), "public standing must not alter the numeric estimate")
 
 
@@ -129,3 +154,84 @@ func test_explicit_required_function_is_a_hard_gate() -> void:
 	var present = ContextResolverScript.new().evaluate(_customer(), _item(40, 10, ["ENVIRONMENTAL_SEALING"]), context)
 	assert_eq(present.get("status", ""), "EVALUATED")
 	assert_eq(int(present.get("final_primary_estimate", -1)), 53)
+
+
+func test_context_packet_from_dict_round_trips_external_snapshot() -> void:
+	assert_true(ContextPacketScript.has_method("from_dict"), "context packet must parse external numeric snapshots")
+	var packet = ContextPacketScript.from_dict(_context_dict()) if ContextPacketScript.has_method("from_dict") else null
+	assert_not_null(packet)
+	if packet == null:
+		return
+	assert_true(packet.validation_errors.is_empty(), "approved synthetic context snapshot must validate")
+	assert_eq(packet.to_dict(), _context_dict())
+	assert_eq(packet.maximum_load(), 40)
+	assert_eq(packet.related_ability_value(), 6)
+
+
+func test_blocked_results_expose_assignment_block_reason_for_existing_task4_contract() -> void:
+	var resolver = ContextResolverScript.new()
+	var overweight = resolver.evaluate(_customer(), _item(45, 10), _context())
+	assert_eq(overweight.get("assignment_block_reason", ""), "OVERWEIGHT")
+	var function_context = _context(6, 4, 6, 2, "ENVIRONMENTAL_SEALING")
+	var missing_function = resolver.evaluate(_customer(), _item(40, 10), function_context)
+	assert_eq(missing_function.get("assignment_block_reason", ""), "REQUIRED_FUNCTION_MISSING")
+
+
+func test_precision_preview_classifies_context_relation_and_never_grants_catalyst_customer_bonus() -> void:
+	var resolver = load(PRECISION_RESOLVER_PATH).new()
+	assert_true(resolver.has_method("preview"), "precision resolver must expose preview")
+	if not resolver.has_method("preview"):
+		return
+	var context = _context()
+	var heavy = _item(45, 10)
+	var before_weight := heavy.weight_point
+	var before_used := heavy.used_precision_milestones.duplicate()
+	var light = resolver.preview(heavy, 10, "LIGHTWEIGHTING", "", context)
+	assert_true(bool(light.get("allowed", false)))
+	assert_eq(light.get("output_lane", ""), "STAT_METHOD")
+	assert_eq(light.get("changed_axis", ""), "CURRENT_WEIGHT")
+	assert_eq(int(light.get("delta", 0)), -5)
+	assert_eq(int(light.get("result_weight", -1)), 40)
+	assert_eq(light.get("context_relation", ""), "GATE_CHANGE")
+	assert_eq(heavy.weight_point, before_weight, "precision preview must not mutate item weight")
+	assert_eq(heavy.used_precision_milestones, before_used, "precision preview must not consume milestone")
+
+	var edge = resolver.preview(_item(30, 10), 10, "EDGE_REINFORCEMENT", "", context)
+	assert_true(bool(edge.get("allowed", false)))
+	assert_eq(edge.get("context_relation", ""), "NOT_DIRECTLY_RELEVANT")
+
+	var weight_up = resolver.preview(_item(30, 10), 10, "WEIGHTING", "", context)
+	assert_true(bool(weight_up.get("allowed", false)))
+	assert_eq(weight_up.get("context_relation", ""), "TRADE_OFF")
+
+	var art = resolver.preview(_item(30, 10), 10, "ARTISTIC_FINISH", "salamander_core", context)
+	assert_true(bool(art.get("allowed", false)))
+	assert_eq(art.get("context_relation", ""), "NOT_DIRECTLY_RELEVANT")
+	assert_eq(int(art.get("customer_bonus_from_catalyst_selection_pp", -1)), 0)
+	assert_false(bool(art.get("customer_bonus_granted_by_catalyst_selection", true)))
+
+
+func test_precision_preview_respects_milestone_and_destroyed_item_eligibility() -> void:
+	var resolver = load(PRECISION_RESOLVER_PATH).new()
+	assert_true(resolver.has_method("preview"), "precision resolver must expose preview")
+	if not resolver.has_method("preview"):
+		return
+	var context = _context()
+	var item = _item(30, 9)
+	var not_reached = resolver.preview(item, 10, "EDGE_REINFORCEMENT", "", context)
+	assert_false(bool(not_reached.get("allowed", true)))
+	assert_eq(not_reached.get("reason", ""), "MILESTONE_NOT_REACHED")
+
+	item.enhancement_level = 10
+	item.highest_checkpoint = 10
+	item.used_precision_milestones = [10]
+	var used = resolver.preview(item, 10, "EDGE_REINFORCEMENT", "", context)
+	assert_false(bool(used.get("allowed", true)))
+	assert_eq(used.get("reason", ""), "PRECISION_MILESTONE_ALREADY_USED")
+
+	item.used_precision_milestones = []
+	item.current_durability = 0
+	item.physical_state = "DESTROYED"
+	var destroyed = resolver.preview(item, 10, "EDGE_REINFORCEMENT", "", context)
+	assert_false(bool(destroyed.get("allowed", true)))
+	assert_eq(destroyed.get("reason", ""), "ITEM_DESTROYED")
