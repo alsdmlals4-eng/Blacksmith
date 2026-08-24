@@ -46,6 +46,8 @@ func preview(item, milestone: int, method_id: String, catalyst_id: String, conte
 		return _blocked("MISSING_ITEM")
 	if context == null:
 		return _blocked("MISSING_CONTEXT")
+	if not context.validation_errors.is_empty():
+		return _blocked("INVALID_CONTEXT")
 	if str(item.physical_state) == "DESTROYED":
 		return _blocked("ITEM_DESTROYED")
 	if not PRECISION_MILESTONES.has(milestone):
