@@ -1,7 +1,7 @@
 # [현재 우선 Overlay] Blacksmith 2026-08-20 Confirmed Decisions
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
@@ -366,7 +366,31 @@ cost:
 
 책임 원본: `docs/planning/BLACKSMITH_MAX_OVERHAUL_CANON_20260824.md`.
 
-## 14. 과거 숫자의 지위
+## 14. DESTROYED 기록·추모·후계 UX — 21
+
+사용자 승인: `2026-08-24 KST / 권장안 B`.
+
+```text
+CAUSAL_DESTRUCTION
++ IMMUTABLE_HISTORY_ARCHIVE
++ CURATED_MEMORIAL
++ OPTIONAL_SUCCESSOR_PROVENANCE
++ ZERO_POWER_INHERITANCE
+```
+
+- `CURRENT==0 or MAX==0`이면 물리 작품은 영구 `DESTROYED`이며 일반 수리·대수선·강화·판매·정상 인계로 부활하지 않는다.
+- 파괴 순간에는 `파괴 직전 CURRENT/MAX → 직접 손실 → 실제 0 도달 축 → 직접 원인`을 읽을 수 있게 표시한다.
+- 모든 파괴 UID는 불변 `DESTROYED_HISTORY_RECORD`에 자동 보존한다.
+- Archive는 오래됐다는 이유로 FIFO 삭제하지 않으며, Memorial은 Archive 중 플레이어가 중요하다고 선택한 작품을 강조하는 별도 view다.
+- 후계 작품은 나중에 실제 새 작품을 제작한 뒤 선택적으로 predecessor 관계만 연결한다. `OLD_UID != NEW_UID`이며 새 UID는 자기 제작 provenance부터 시작한다.
+- 강화 단계/checkpoint/stat/affix/Artistry/Chronicle/recovery/CURRENT/MAX/재료/가격 premium을 후계 UID에 상속하지 않는다.
+- 고객 작품이 파괴돼도 고객 identity/관계 기록은 유지하며, 새 장비는 새 UID를 사용한다.
+- 파괴 자체를 자동 Artistry/Chronicle 성장, 재료 환급, power inheritance, death-farming 보상으로 사용하지 않는다.
+- historical `enhancement_session.gd`의 별도 destroy 확률 및 파괴 시 progression/affix clear는 현재 runtime 권위가 아니며 `IMPLEMENTATION_DRIFT`다.
+
+책임 원본: `docs/planning/BLACKSMITH_DESTRUCTION_UX_CANON_20260824.md`.
+
+## 15. 과거 숫자의 지위
 
 다음은 current numeric authority가 아니다.
 
@@ -383,7 +407,7 @@ pre-19 MASTERY repair multiplier 1.80
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 15. 현재 승인사항 요약
+## 16. 현재 승인사항 요약
 
 ```text
 01     PRIMARY CORE = 강화 긴장감 + DDD
@@ -398,25 +422,26 @@ pre-19 MASTERY repair multiplier 1.80
 18     common reinforcement material / 50G / deterministic unlimited vendor supply / enhancement+repair recipe mapping
 19     late repair economy / HIGH 2.25 / MASTERY 3.00 / fresh 20k Monte Carlo
 20     one-lifetime partial MAX overhaul / +15 / ceiling 60 / 750k×material + reinforcement 20 + fatigue 5
+21     causal destruction / immutable archive / curated memorial / optional new-UID successor provenance / zero power inheritance
 ```
 
-17·19·20의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18은 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
+17·19·20의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18·21은 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
 
-## 16. 현재 작업 순서
+## 17. 현재 작업 순서
 
-1. `DESTRUCTION_UX` — DESTROYED memorial/successor/UID history UX.
-2. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
-3. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
-4. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-5. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
+1. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
+2. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
+3. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+4. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
 
-## 17. 증거 경계
+## 18. 증거 경계
 
 - 01~16 구조: `USER_APPROVED`.
 - 17 숫자: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 - 18 Resource Supply: `USER_APPROVED / PLANNING_CANON`.
 - 19 Late Repair Economy: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 - 20 MAX Overhaul: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
+- 21 Destruction UX: `USER_APPROVED / PLANNING_CANON`.
 - Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`; exact delta is policy-sensitive.
 - Human/Player: `NOT_RUN`.
-- Runtime implementation: `BLOCKED`.
+- Runtime implementation: `BLOCKED`; old destroy runtime is `IMPLEMENTATION_DRIFT`.
