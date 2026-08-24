@@ -31,6 +31,8 @@ func test_current_canon_accepts_level_100_and_all_precision_milestones() -> void
 	var item = _make_v1_compatible_item()
 	item.enhancement_level = 100
 	item.used_precision_milestones.assign([10, 20, 30, 40, 50])
+	item.highest_checkpoint = 90
+	item.max_enhancement_reached = true
 	var restored = ItemScript.from_dict(item.to_dict())
 	assert_true(
 		restored.validation_errors.is_empty(),
@@ -54,3 +56,59 @@ func test_serialized_item_exposes_current_canon_lifecycle_fields() -> void:
 			serialized.has(field_name),
 			"V2 serialized item is missing required field: %s" % field_name
 		)
+
+
+func test_current_durability_cannot_exceed_max() -> void:
+	var item = _make_v1_compatible_item()
+	item.current_durability = 81
+	item.max_durability = 80
+	var restored = ItemScript.from_dict(item.to_dict())
+	assert_true(
+		restored.validation_errors.has("CURRENT_EXCEEDS_MAX"),
+		"CURRENT must never exceed MAX"
+	)
+
+
+func test_zero_durability_requires_destroyed_state() -> void:
+	var item = _make_v1_compatible_item()
+	item.current_durability = 0
+	item.max_durability = 70
+	item.physical_state = "ACTIVE"
+	var restored = ItemScript.from_dict(item.to_dict())
+	assert_true(
+		restored.validation_errors.has("ZERO_DURABILITY_REQUIRES_DESTROYED"),
+		"CURRENT or MAX zero must be physical DESTROYED"
+	)
+
+
+func test_destroyed_state_requires_zero_durability_axis() -> void:
+	var item = _make_v1_compatible_item()
+	item.current_durability = 40
+	item.max_durability = 70
+	item.physical_state = "DESTROYED"
+	var restored = ItemScript.from_dict(item.to_dict())
+	assert_true(
+		restored.validation_errors.has("DESTROYED_REQUIRES_ZERO_DURABILITY"),
+		"physical destruction cannot come from a separate hidden destroy roll"
+	)
+
+
+func test_level_100_and_max_completion_fact_must_agree() -> void:
+	var missing_fact = _make_v1_compatible_item()
+	missing_fact.enhancement_level = 100
+	missing_fact.highest_checkpoint = 90
+	var restored_missing = ItemScript.from_dict(missing_fact.to_dict())
+	assert_true(
+		restored_missing.validation_errors.has("LEVEL_100_REQUIRES_MAX_ENHANCEMENT_REACHED"),
+		"+100 must persist the terminal completion lifecycle fact"
+	)
+
+	var impossible_fact = _make_v1_compatible_item()
+	impossible_fact.enhancement_level = 90
+	impossible_fact.highest_checkpoint = 90
+	impossible_fact.max_enhancement_reached = true
+	var restored_impossible = ItemScript.from_dict(impossible_fact.to_dict())
+	assert_true(
+		restored_impossible.validation_errors.has("MAX_ENHANCEMENT_REACHED_REQUIRES_LEVEL_100"),
+		"terminal completion fact cannot exist below +100"
+	)
