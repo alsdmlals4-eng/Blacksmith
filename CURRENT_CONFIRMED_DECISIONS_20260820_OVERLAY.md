@@ -1,7 +1,7 @@
 # [현재 우선 Overlay] Blacksmith 2026-08-20 Confirmed Decisions
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23 / BS-LINK-20260824-24`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
@@ -308,7 +308,7 @@ missing 76~99 -> 보강재 4
 - 보강재는 새 화폐가 아니라 공통 공방 재료.
 - 골드와 보강재를 모두 지불하며 상호 대체/할인하지 않음.
 - `iron / silver / meteor_iron`을 일반 보강재로 직접 소비하지 않음.
-- RNG·희귀 드롭·일일 cap·채굴/전투/고객 완료를 기본 공급 Gate로 사용하지 않음.
+- RNG·희귀 드롭·일일 cap·채굴/전투·고객 완료를 기본 공급 Gate로 사용하지 않음.
 - salvage/customer/world-event 보너스 공급은 future hook이며 아직 제품 승인 아님.
 - 제품 data/runtime는 현재 PLAN Gate 때문에 수정하지 않음.
 
@@ -430,7 +430,28 @@ CORE_THESIS_FIRST_10_MINUTES
 
 책임 원본: `docs/planning/BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md`.
 
-## 17. 과거 숫자의 지위
+## 17. 정밀강화·고객/세계 인과 연결 — 24
+
+사용자 승인: `2026-08-24 KST / 권장안 B + Nadia starter + 0.30pp/level test budget`.
+
+```text
+DISCLOSED_CONTEXT_FIT_AND_CAUSAL_MULTI_AXIS_RESULT
+```
+
+- 첫 세션 starter-order owner는 `NADIA_VENN / ADVENTURER_01`이며 목표는 기존 `SURVIVAL_AND_RECOVERY`를 소비한다.
+- 고객은 exact 강화 방식/촉매 정답이 아니라 `목적 / 제약 / 알려진 상황`을 공개한다.
+- 정밀강화 미리보기는 `이번 의뢰에 직접 도움 / Gate 변화 / trade-off / 직접 관련 없음`을 설명하며 universal fit score·Best badge·불투명 자동추천을 만들지 않는다.
+- 촉매 선택 자체는 고객 bonus가 아니다. 실제 승인된 affix/function 결과가 현재 context와 관련 있을 때만 고객 판단 원인으로 사용한다.
+- `WEIGHT`는 hard gate, enhancement는 bounded primary contribution, 승인 function은 특정 eligibility/risk mitigation/interaction, 고객 능력·적성은 작은 context 보정이다.
+- 구형 고객 `+1 enhancement level = +1pp event success`는 `HISTORICAL_PRE_24_NUMERIC_EVIDENCE`로 강등한다.
+- 새 첫 테스트 Budget은 `ENHANCEMENT_EVENT_BONUS_PP = round(0.30 × enhancement_level)`, +100에서 최대 +30pp다. 출시 최종 수치가 아니다.
+- Nadia 결과는 기존 `EXPEDITION_RETURN_STATE / RECOVERY_STATE / ITEM_UID_LIFECYCLE_STATE` 다중축을 유지하고 결과 원인 2~4개 + same UID + primary next action 1개를 사용한다.
+- 첫 10분은 Nadia 인계 acknowledgement까지이며, 완전한 탐사 결과는 기존 delayed personal schedule에서 발생한다. 가짜 즉시 세계결과를 만들지 않는다.
+- 현재 `VSContentResultRecord`는 결과 기록 primitive일 뿐 precision→customer preview/resolver, 0.30pp runtime, starter Nadia order 구현 증거가 아니다.
+
+책임 원본: `docs/planning/BLACKSMITH_PRECISION_CUSTOMER_LINK_CANON_20260824.md`.
+
+## 18. 과거 숫자의 지위
 
 다음은 current numeric authority가 아니다.
 
@@ -443,11 +464,12 @@ old multi-step downgrade
 old destroy RNG
 pre-19 HIGH repair multiplier 1.50
 pre-19 MASTERY repair multiplier 1.80
+pre-24 customer enhancement contribution +1.00pp / level
 ```
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 18. 현재 승인사항 요약
+## 19. 현재 승인사항 요약
 
 ```text
 01     PRIMARY CORE = 강화 긴장감 + DDD
@@ -465,16 +487,16 @@ pre-19 MASTERY repair multiplier 1.80
 21     causal destruction / immutable archive / curated memorial / optional new-UID successor provenance / zero power inheritance
 22     +100 terminal identity / one-time completion presentation / permanent completion mark / lifecycle fact / zero extra power multiplier
 23     first 10 minutes core-thesis sprint / real odds / +10 precision+checkpoint / +11 STOP vs PUSH / just-in-time teaching
+24     Nadia starter / disclosed context fit / no universal fit score / customer enhancement +0.30pp per level test budget / causal multi-axis result
 ```
 
-17·19·20의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18·21·22·23은 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
+17·19·20·24의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18·21·22·23 및 24의 구조는 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
 
-## 19. 현재 작업 순서
+## 20. 현재 작업 순서
 
-1. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-2. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
+1. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
 
-## 20. 증거 경계
+## 21. 증거 경계
 
 - 01~16 구조: `USER_APPROVED`.
 - 17 숫자: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
@@ -484,6 +506,7 @@ pre-19 MASTERY repair multiplier 1.80
 - 21 Destruction UX: `USER_APPROVED / PLANNING_CANON`.
 - 22 MAX Level Payoff: `USER_APPROVED / PLANNING_CANON`.
 - 23 First 10 Minutes: `USER_APPROVED / PLANNING_CANON`; timing targets are `HUMAN_NOT_RUN`.
+- 24 Precision-Customer Link structure: `USER_APPROVED / PLANNING_CANON`; `0.30pp/level`은 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 - Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`; exact delta is policy-sensitive.
 - Human/Player: `NOT_RUN`.
-- Runtime implementation: `BLOCKED`; historical Forge/Enhancement runtime is reuse evidence, not Decision23 implementation evidence.
+- Runtime implementation: `BLOCKED`; content-result record primitive is reuse evidence, not Decision24 resolver implementation evidence.
