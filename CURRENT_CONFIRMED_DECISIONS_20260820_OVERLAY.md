@@ -1,7 +1,7 @@
 # [현재 우선 Overlay] Blacksmith 2026-08-20 Confirmed Decisions
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
@@ -75,7 +75,7 @@ MAX 상태 첫 테스트:
 1~20  : success -15pp / new effect 80%
 ```
 
-## 4. 일반 CURRENT 수리 — 10~12
+## 4. 일반 CURRENT 수리 — 10~12 + 18~19
 
 ```text
 missing = MAX - CURRENT
@@ -98,12 +98,16 @@ recovery unchanged
 REPAIR_JOB_FATIGUE_COST = 2
 ```
 
-첫 구조 배율:
+현재 구조 배율:
 
 ```text
 material: iron 1.00 / silver 1.20 / meteor_iron 1.50
-secured: LEARN·BUILD 1.00 / FIRST 1.10 / TENSION 1.25 / HIGH 1.50 / MASTERY 1.80
+secured: LEARN·BUILD 1.00 / FIRST 1.10 / TENSION 1.25 / HIGH 2.25 / MASTERY 3.00
 ```
+
+- `HIGH 2.25 / MASTERY 3.00`은 `BS-REPAIR-20260824-19`가 11의 `1.50 / 1.80`을 부분 대체한 최신 테스트 Budget이다.
+- 시장가·실제 다음 강화비·MAX 상태를 일반 CURRENT 수리 runtime 공식에 직접 연결하지 않는다.
+- 19의 fresh 20,000-run에서 +100 평균 기대원가 변화는 pre-19 대비 약 `+0.095%`로 기존 거시경제 구조를 유지한다.
 
 ## 5. 실패 결과군 정확 비율 — 13
 
@@ -235,7 +239,7 @@ MAX scar  MAX -6~-15
 
 ## 10. 누적 기대원가·기본 판매가 — 17
 
-20,000-run planning Monte Carlo와 독립 seed 재검산을 사용한다. Seed별 raw mean은 후기 long-tail로 소폭 흔들리므로 승인된 고정 anchor를 사용한다.
+20,000-run planning Monte Carlo와 독립 seed 재검산을 사용한다. Seed별 raw mean은 후기 long-tail 때문에 소폭 흔들리므로 승인된 고정 anchor를 사용한다.
 
 ```text
 independent reproduction tolerance ≈ ±1.5%
@@ -307,7 +311,28 @@ missing 76~99 -> 보강재 4
 
 책임 원본: `docs/planning/BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md`.
 
-## 12. 과거 숫자의 지위
+## 12. 후기 일반 CURRENT 수리 경제 — 19
+
+사용자 승인: `2026-08-24 KST / 권장안 B`.
+
+```text
+SECURED_BAND_MULTIPLIER
+LEARN / BUILD = 1.00
+FIRST         = 1.10
+TENSION       = 1.25
+HIGH          = 2.25
+MASTERY       = 3.00
+```
+
+- 19는 10~12의 수리 공식·Base R·주재료 배율·보강재 수량·피로도 2를 유지한다.
+- 11의 `HIGH 1.50 / MASTERY 1.80`만 부분 대체한다.
+- 12의 해당 값 기반 후기 예시는 `HISTORICAL_PRE_19_NUMERIC_EVIDENCE`다.
+- fresh 20,000-run 재현: +60 `713,376`, +90 `3,246,947`, +100 `5,661,842` mean G-eq; +100 pre-19 대비 약 `+0.095%`.
+- Human/Player 검증 전 출시 최종 밸런스로 주장하지 않는다.
+
+책임 원본: `docs/planning/BLACKSMITH_LATE_REPAIR_ECONOMY_CANON_20260824.md`.
+
+## 13. 과거 숫자의 지위
 
 다음은 current numeric authority가 아니다.
 
@@ -318,11 +343,13 @@ old decade success pattern
 old MASTERY 25~40% working range
 old multi-step downgrade
 old destroy RNG
+pre-19 HIGH repair multiplier 1.50
+pre-19 MASTERY repair multiplier 1.80
 ```
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 13. 현재 승인사항 요약
+## 14. 현재 승인사항 요약
 
 ```text
 01     PRIMARY CORE = 강화 긴장감 + DDD
@@ -335,25 +362,26 @@ old destroy RNG
 16     checkpoint [10,30,60,90]
 17     success / recovery / attempt cost / expected cost / static market anchors
 18     common reinforcement material / 50G / deterministic unlimited vendor supply / enhancement+repair recipe mapping
+19     late repair economy / HIGH 2.25 / MASTERY 3.00 / fresh 20k Monte Carlo
 ```
 
-17의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18은 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
+17·19의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18은 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
 
-## 14. 현재 작업 순서
+## 15. 현재 작업 순서
 
-1. `LATE_REPAIR_ECONOMY` — HIGH/MASTERY 수리 절대경제 재검증.
-2. `MAX_OVERHAUL` — MAX 대수선 여부와 대가.
-3. `DESTRUCTION_UX` — DESTROYED memorial/successor/UID history UX.
-4. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
-5. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
-6. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-7. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
+1. `MAX_OVERHAUL` — MAX 대수선 여부와 대가.
+2. `DESTRUCTION_UX` — DESTROYED memorial/successor/UID history UX.
+3. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
+4. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
+5. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+6. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
 
-## 15. 증거 경계
+## 16. 증거 경계
 
 - 01~16 구조: `USER_APPROVED`.
 - 17 숫자: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 - 18 Resource Supply: `USER_APPROVED / PLANNING_CANON`.
+- 19 Late Repair Economy: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 - Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`.
 - Human/Player: `NOT_RUN`.
 - Runtime implementation: `BLOCKED`.
