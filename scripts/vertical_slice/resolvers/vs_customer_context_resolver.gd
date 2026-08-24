@@ -29,6 +29,7 @@ func evaluate(_customer, item, context) -> Dictionary:
 	return {
 		"status": "EVALUATED",
 		"assignment_allowed": true,
+		"assignment_block_reason": "",
 		"reason": "OK",
 		"estimate_available": true,
 		"maximum_load": maximum_load,
@@ -63,6 +64,7 @@ func _blocked(reason: String, maximum_load: int = 0, current_weight: int = 0) ->
 	return {
 		"status": "BLOCKED",
 		"assignment_allowed": false,
+		"assignment_block_reason": reason,
 		"reason": reason,
 		"estimate_available": false,
 		"maximum_load": maximum_load,
