@@ -115,14 +115,18 @@ func preview(item, target_level: int) -> Dictionary:
 	if band == "INVALID":
 		return {"allowed": false, "reason": "INVALID_TARGET_LEVEL"}
 
+	var base_success := base_success_percent(target_level)
 	var recovery_failures := int(item.enhancement_recovery_by_target.get(str(target_level), 0))
 	var recovery_bonus_pp := recovery_failures * 6
 	var hard_guarantee_count := int(HARD_GUARANTEE_FAILURES.get(band, 0))
 	var guaranteed := hard_guarantee_count > 0 and recovery_failures >= hard_guarantee_count
 	var max_penalty_pp := max_durability_penalty_pp(int(item.max_durability))
+	# Recovery has a 95% soft cap, but it must never reduce an approved base
+	# chance that is already above 95% (+1/+2). Structural MAX penalties may.
+	var recovery_soft_cap := maxf(95.0, base_success)
 	var final_success_percent: float = 100.0 if guaranteed else minf(
-		95.0,
-		base_success_percent(target_level) + float(recovery_bonus_pp + max_penalty_pp)
+		recovery_soft_cap,
+		base_success + float(recovery_bonus_pp + max_penalty_pp)
 	)
 
 	return {
@@ -130,7 +134,7 @@ func preview(item, target_level: int) -> Dictionary:
 		"reason": "",
 		"target_level": target_level,
 		"band": band,
-		"base_success_percent": base_success_percent(target_level),
+		"base_success_percent": base_success,
 		"max_penalty_pp": max_penalty_pp,
 		"recovery_failures": recovery_failures,
 		"recovery_bonus_pp": recovery_bonus_pp,
@@ -142,6 +146,90 @@ func preview(item, target_level: int) -> Dictionary:
 		"next_checkpoint": next_checkpoint_after(int(item.enhancement_level)),
 		"failure_family_ratio": failure_family_ratio(band),
 	}
+
+
+func resolve_with_rolls(item, target_level: int, rolls: Dictionary) -> Dictionary:
+	var attempt := preview(item, target_level)
+	if not bool(attempt.get("allowed", false)):
+		return {
+			"outcome": "BLOCKED",
+			"reason": str(attempt.get("reason", "INVALID_ATTEMPT")),
+		}
+
+	var success_roll_percent := float(rolls.get("success_roll_percent", 0.0))
+	var succeeded := bool(attempt.get("guaranteed", false)) or success_roll_percent < float(
+		attempt.get("final_success_percent", 0.0)
+	)
+	if succeeded:
+		_apply_success(item, target_level)
+		return {
+			"outcome": "SUCCESS",
+			"target_level": target_level,
+			"band": str(attempt.get("band", "")),
+			"final_success_percent": float(attempt.get("final_success_percent", 0.0)),
+		}
+
+	var recovery_key := str(target_level)
+	var prior_failures := int(item.enhancement_recovery_by_target.get(recovery_key, 0))
+	item.enhancement_recovery_by_target[recovery_key] = prior_failures + 1
+
+	var failure_family_roll := clampi(int(rolls.get("failure_family_roll", 0)), 0, 99)
+	var failure_family := _failure_family_for_roll(str(attempt.get("band", "")), failure_family_roll)
+	_apply_failure_family(item, failure_family, rolls)
+	_apply_causal_destruction_if_needed(item)
+
+	return {
+		"outcome": "FAILURE",
+		"failure_family": failure_family,
+		"target_level": target_level,
+		"band": str(attempt.get("band", "")),
+		"recovery_failures": int(item.enhancement_recovery_by_target.get(recovery_key, 0)),
+		"physical_state": str(item.physical_state),
+	}
+
+
+func _apply_success(item, target_level: int) -> void:
+	item.enhancement_level = target_level
+	if CHECKPOINT_FLOORS.has(target_level):
+		item.highest_checkpoint = target_level
+	item.enhancement_recovery_by_target.erase(str(target_level))
+	if target_level == 100:
+		item.max_enhancement_reached = true
+
+
+func _failure_family_for_roll(band: String, roll: int) -> String:
+	var ratios := failure_family_ratio(band)
+	var cumulative := 0
+	for family in ["HOLD", "DOWNGRADE", "DAMAGE", "CRITICAL"]:
+		cumulative += int(ratios.get(family, 0))
+		if roll < cumulative:
+			return family
+	return "HOLD"
+
+
+func _apply_failure_family(item, failure_family: String, rolls: Dictionary) -> void:
+	match failure_family:
+		"HOLD":
+			return
+		"DOWNGRADE":
+			item.enhancement_level = maxi(
+				int(item.highest_checkpoint),
+				int(item.enhancement_level) - 1
+			)
+		"DAMAGE":
+			var current_loss := maxi(0, int(rolls.get("current_loss", 0)))
+			item.current_durability = maxi(0, int(item.current_durability) - current_loss)
+		"CRITICAL":
+			var current_loss := maxi(0, int(rolls.get("current_loss", 0)))
+			var max_scar_loss := maxi(0, int(rolls.get("max_scar_loss", 0)))
+			item.current_durability = maxi(0, int(item.current_durability) - current_loss)
+			item.max_durability = maxi(0, int(item.max_durability) - max_scar_loss)
+			item.current_durability = mini(int(item.current_durability), int(item.max_durability))
+
+
+func _apply_causal_destruction_if_needed(item) -> void:
+	if int(item.current_durability) == 0 or int(item.max_durability) == 0:
+		item.physical_state = "DESTROYED"
 
 
 func _linear(x0: int, y0: float, x1: int, y1: float, x: int) -> float:
