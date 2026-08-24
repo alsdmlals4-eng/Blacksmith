@@ -21,6 +21,7 @@ The primary core is **reinforcement tension + decision-driven design (DDD)**. Pr
 - Product direction: `CURRENT_CANON`
 - Player-fun claim: `HYPOTHESIS`
 - Human usability / player experience: `NOT_RUN`
+- human usability / player experience: `NOT_RUN`
 
 ## 2. Whole-game flow
 
