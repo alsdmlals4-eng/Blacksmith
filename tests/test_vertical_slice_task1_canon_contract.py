@@ -10,6 +10,7 @@ from tests.test_universal_loop_a2_burnin_authority import UniversalLoopA2BurninA
 ROOT = Path(__file__).resolve().parents[1]
 PRESET = ROOT / "data/vertical_slice/vertical_slice_preset.json"
 SCHEMA = ROOT / "data/vertical_slice/vertical_slice_schema.json"
+NADIA = ROOT / "data/vertical_slice/customers/nadia_venn.json"
 
 GRADE_IDS = [
     "CRAFT_NORMAL",
@@ -18,6 +19,7 @@ GRADE_IDS = [
     "CRAFT_MASTERWORK",
     "CRAFT_LEGENDARY",
 ]
+STANDING_IDS = ["COMMON", "SKILLED", "ELITE", "RENOWNED", "LEGENDARY"]
 EXPECTED_PROBABILITIES = {
     "LOW": {
         "CRAFT_NORMAL": 0.85,
@@ -80,9 +82,16 @@ ITEM_FIELDS = {
     "enhancement_level",
     "enhancement_failure_streak",
     "used_precision_milestones",
-    "damage_state",
+    "damage_state",  # transitional serialized compatibility field
     "owner_id",
     "ledger",
+    "highest_checkpoint",
+    "current_durability",
+    "max_durability",
+    "enhancement_recovery_by_target",
+    "overhaul_used",
+    "max_enhancement_reached",
+    "physical_state",
 }
 SAVE_FIELDS = [
     "schema_version",
@@ -109,23 +118,36 @@ class VerticalSliceTask1CanonContractTests(unittest.TestCase):
         required = (
             PRESET,
             SCHEMA,
+            NADIA,
+            ROOT / "CURRENT_IMPLEMENTATION_GATE_20260824.md",
             ROOT / "scripts/vertical_slice/domain/vs_ledger_entry.gd",
             ROOT / "scripts/vertical_slice/domain/vs_item.gd",
+            ROOT / "scripts/vertical_slice/domain/vs_customer_profile.gd",
             ROOT / "scripts/vertical_slice/domain/vs_save_envelope.gd",
             ROOT / "scripts/vertical_slice/services/vs_uid_service.gd",
             ROOT / "scripts/vertical_slice/services/vs_save_service.gd",
             ROOT / "tests/gut/unit/vertical_slice/test_vs_item.gd",
-            ROOT / "tests/gut/unit/vertical_slice/test_vs_save_service.gd",
+            ROOT / "tests/gut/unit/vertical_slice/test_vs_item_v2_contract.gd",
+            ROOT / "tests/gut/unit/vertical_slice/test_vs_v2_save_boundary.gd",
+            ROOT / "tests/gut/unit/vertical_slice/test_vs_customer_profile_surface.gd",
         )
         for path in required:
             self.assertTrue(path.is_file(), str(path.relative_to(ROOT)))
 
-    def test_preset_matches_approved_batch_006_values(self) -> None:
+    def test_preset_matches_current_v2_runtime_boundary(self) -> None:
         preset = json.loads(PRESET.read_text(encoding="utf-8"))
-        self.assertEqual(preset["schema_version"], 1)
-        self.assertEqual(preset["preset_version"], "VS-2026.08.06-A")
-        self.assertEqual(preset["authority"], "R2_BATCH_006_APPROVED_MAIN_CANON")
+        self.assertEqual(preset["schema_version"], 2)
+        self.assertEqual(preset["preset_version"], "VS-2026.08.24-B")
+        self.assertEqual(preset["authority"], "CURRENT_IMPLEMENTATION_GATE_20260824")
         self.assertFalse(preset["is_final_balance"])
+        self.assertEqual(preset["human_playtest"], "NOT_RUN")
+        self.assertEqual(preset["representative_scope"]["equipment_groups"], ["SWORD"])
+        self.assertEqual(preset["representative_scope"]["starter_primary_material_id"], "iron")
+        self.assertEqual(preset["representative_scope"]["maximum_enhancement_level"], 100)
+        self.assertEqual(preset["representative_scope"]["precision_milestones"], [10, 20, 30, 40, 50])
+        self.assertEqual(preset["representative_scope"]["checkpoint_floors"], [10, 30, 60, 90])
+        self.assertEqual(preset["representative_scope"]["starter_customer_id"], "NADIA_VENN")
+        self.assertEqual(preset["visitor_public_standing_grades"], STANDING_IDS)
         materials = {entry["id"]: entry for entry in preset["primary_materials"]}
         self.assertEqual(set(materials), set(EXPECTED_MATERIALS))
         for material_id, expected in EXPECTED_MATERIALS.items():
@@ -134,25 +156,49 @@ class VerticalSliceTask1CanonContractTests(unittest.TestCase):
         self.assertEqual(preset["crafting_grade_probabilities"], EXPECTED_PROBABILITIES)
         for tier in EXPECTED_PROBABILITIES.values():
             self.assertAlmostEqual(sum(tier.values()), 1.0)
+        self.assertEqual(preset["save_contract"]["item_schema_version"], 2)
+        self.assertEqual(preset["save_contract"]["save_schema_version"], 2)
+        self.assertEqual(preset["save_contract"]["legacy_v1_policy"], "LEGACY_PRE_RELEASE_SAVE_FAIL_CLOSED")
 
-    def test_schema_matches_save_item_and_ledger_canon(self) -> None:
+    def test_schema_matches_current_save_item_and_ledger_canon(self) -> None:
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
-        self.assertEqual(schema["task1_active_namespaces"], [
+        self.assertEqual(schema["schema_version"], 2)
+        self.assertEqual(schema["preset_version"], "VS-2026.08.24-B")
+        self.assertEqual(schema["authority"], "CURRENT_IMPLEMENTATION_GATE_20260824")
+        self.assertTrue(schema["current_canon_implementation_approved"])
+        self.assertFalse(schema["release_near_verified"])
+        self.assertEqual(schema["current_active_namespaces"], [
             "scripts/vertical_slice/",
             "data/vertical_slice/",
-            "tests/gut/unit/vertical_slice/",
+            "scenes/vertical_slice/",
+            "tests/gut/",
         ])
-        self.assertEqual(schema["future_planned_namespaces"], ["scenes/vertical_slice/"])
-        self.assertTrue(schema["general_product_implementation_remains_blocked"])
-        self.assertTrue(schema["vertical_slice_implementation_approved"])
         self.assertEqual(set(schema["item"]["required_fields"]), ITEM_FIELDS)
         self.assertEqual(schema["item"]["crafting_grades"], GRADE_IDS)
+        self.assertEqual(schema["item"]["enhancement_range"], [0, 100])
+        self.assertEqual(schema["item"]["checkpoint_floors"], [10, 30, 60, 90])
+        self.assertEqual(schema["item"]["precision_milestones"], [10, 20, 30, 40, 50])
+        self.assertEqual(schema["item"]["physical_states"], ["ACTIVE", "DESTROYED"])
+        self.assertEqual(schema["visitor_profile"]["public_standing_grades"], STANDING_IDS)
+        self.assertFalse(schema["visitor_profile"]["standing_grade_is_power_multiplier"])
         self.assertEqual(schema["ledger_entry"]["game_day_field"], "occurred_at_game_day")
         self.assertIn("occurred_at_game_day", schema["ledger_entry"]["required_fields"])
         self.assertNotIn("game_day", schema["ledger_entry"]["required_fields"])
         self.assertEqual(schema["save_envelope"]["required_fields"], SAVE_FIELDS)
         self.assertEqual(schema["save_envelope"]["items_field"], "items_by_uid")
         self.assertFalse(schema["save_envelope"]["load_may_reroll_resolved_events"])
+        self.assertEqual(schema["save_envelope"]["legacy_v1_policy"], "LEGACY_PRE_RELEASE_SAVE_FAIL_CLOSED")
+
+    def test_nadia_identity_uses_approved_standing_without_invented_capability_numbers(self) -> None:
+        nadia = json.loads(NADIA.read_text(encoding="utf-8"))
+        self.assertEqual(nadia["customer_id"], "NADIA_VENN")
+        self.assertEqual(nadia["name"], "나디아 벤")
+        self.assertEqual(nadia["role"], "유적 탐사대장")
+        self.assertEqual(nadia["public_epithet"], "유적의 길잡이")
+        self.assertEqual(nadia["public_standing_grade"], "ELITE")
+        self.assertEqual(nadia["numeric_capability_profile"], "SEPARATE_CANON_SOURCE_REQUIRED")
+        for forbidden in ("strength", "dexterity", "constitution", "judgment"):
+            self.assertNotIn(forbidden, nadia, f"do not invent Nadia numeric capability: {forbidden}")
 
     def test_new_runtime_namespace_rejects_legacy_tokens(self) -> None:
         runtime_paths = [PRESET, SCHEMA, *sorted((ROOT / "scripts/vertical_slice").rglob("*.gd"))]
@@ -187,6 +233,9 @@ class VerticalSliceTask1CanonContractTests(unittest.TestCase):
         for relative in (
             "tests/gut/unit/vertical_slice/test_vs_item.gd",
             "tests/gut/unit/vertical_slice/test_vs_save_service.gd",
+            "tests/gut/unit/vertical_slice/test_vs_item_v2_contract.gd",
+            "tests/gut/unit/vertical_slice/test_vs_v2_save_boundary.gd",
+            "tests/gut/unit/vertical_slice/test_vs_customer_profile_surface.gd",
         ):
             source = (ROOT / relative).read_text(encoding="utf-8")
             self.assertIn('extends "res://addons/gut/test.gd"', source)
