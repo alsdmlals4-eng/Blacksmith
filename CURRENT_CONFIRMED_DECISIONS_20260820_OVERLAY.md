@@ -1,7 +1,7 @@
 # [현재 우선 Overlay] Blacksmith 2026-08-20 Confirmed Decisions
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
@@ -74,6 +74,9 @@ MAX 상태 첫 테스트:
 21~40 : success -10pp / new effect 90%
 1~20  : success -15pp / new effect 80%
 ```
+
+- 일반 CURRENT 수리는 MAX를 복구하지 않는다.
+- Decision 20의 생애 1회 부분 대수선만 승인된 예외다.
 
 ## 4. 일반 CURRENT 수리 — 10~12 + 18~19
 
@@ -332,7 +335,38 @@ MASTERY       = 3.00
 
 책임 원본: `docs/planning/BLACKSMITH_LATE_REPAIR_ECONOMY_CANON_20260824.md`.
 
-## 13. 과거 숫자의 지위
+## 13. MAX 생애 1회 부분 대수선 — 20
+
+사용자 승인: `2026-08-24 KST / 권장안 B`.
+
+```text
+eligibility:
+  highest_checkpoint >= +60
+  0 < MAX <= 40
+  OVERHAUL_USED == false
+  DESTROYED == false
+
+effect:
+  MAX = min(60, MAX + 15)
+  CURRENT = MAX
+  OVERHAUL_USED = true
+
+cost:
+  750,000G × material_structure_multiplier
+  + 보강재 20
+  + fatigue 5
+```
+
+- 같은 물리 UID 생애 1회만 허용한다.
+- 강화 단계·checkpoint·수식어·기존 성능·failure recovery·Chronicle/history를 유지한다.
+- DESTROYED 작품은 부활시키지 않는다.
+- 반복/완전 MAX 복구와 전용 희귀 복구 화폐를 만들지 않는다.
+- 대수선 후 MAX는 60을 넘지 않으므로 STRESSED/STABLE 상태로 복귀할 수 없다.
+- 승인 전 비교와 승인 후 독립 20,000-run 재구성 모두 **생애 1회 부분복구는 거시경제 영향이 작고, 반복 완전복구는 위험 곡선을 크게 약화**하는 방향을 재현했다. 정확한 release balance는 Human test와 최종 Balance Lab 대상이다.
+
+책임 원본: `docs/planning/BLACKSMITH_MAX_OVERHAUL_CANON_20260824.md`.
+
+## 14. 과거 숫자의 지위
 
 다음은 current numeric authority가 아니다.
 
@@ -349,7 +383,7 @@ pre-19 MASTERY repair multiplier 1.80
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 14. 현재 승인사항 요약
+## 15. 현재 승인사항 요약
 
 ```text
 01     PRIMARY CORE = 강화 긴장감 + DDD
@@ -363,25 +397,26 @@ pre-19 MASTERY repair multiplier 1.80
 17     success / recovery / attempt cost / expected cost / static market anchors
 18     common reinforcement material / 50G / deterministic unlimited vendor supply / enhancement+repair recipe mapping
 19     late repair economy / HIGH 2.25 / MASTERY 3.00 / fresh 20k Monte Carlo
+20     one-lifetime partial MAX overhaul / +15 / ceiling 60 / 750k×material + reinforcement 20 + fatigue 5
 ```
 
-17·19의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18은 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
+17·19·20의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18은 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
 
-## 15. 현재 작업 순서
+## 16. 현재 작업 순서
 
-1. `MAX_OVERHAUL` — MAX 대수선 여부와 대가.
-2. `DESTRUCTION_UX` — DESTROYED memorial/successor/UID history UX.
-3. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
-4. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
-5. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-6. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
+1. `DESTRUCTION_UX` — DESTROYED memorial/successor/UID history UX.
+2. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
+3. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
+4. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+5. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
 
-## 16. 증거 경계
+## 17. 증거 경계
 
 - 01~16 구조: `USER_APPROVED`.
 - 17 숫자: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 - 18 Resource Supply: `USER_APPROVED / PLANNING_CANON`.
 - 19 Late Repair Economy: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
-- Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`.
+- 20 MAX Overhaul: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
+- Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`; exact delta is policy-sensitive.
 - Human/Player: `NOT_RUN`.
 - Runtime implementation: `BLOCKED`.
