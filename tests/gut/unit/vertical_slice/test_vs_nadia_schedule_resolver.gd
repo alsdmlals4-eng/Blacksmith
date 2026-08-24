@@ -63,6 +63,17 @@ func _envelope_with_item():
 	return envelope
 
 
+func _registered_envelope():
+	var envelope = _envelope_with_item()
+	if envelope == null:
+		return null
+	var proposal: Dictionary = load(NADIA_RESOLVER_PATH).new().handoff(_customer(), envelope.get_item(ITEM_UID), _context())
+	var registered: Dictionary = load(DAY_SERVICE_PATH).new().register_handoff(envelope, proposal)
+	if str(registered.get("status", "")) != "REGISTERED":
+		return null
+	return envelope
+
+
 func test_task5_runtime_surfaces_exist() -> void:
 	assert_true(ResourceLoader.exists(NADIA_RESOLVER_PATH), "Task5 requires a Nadia schedule resolver")
 	assert_true(ResourceLoader.exists(DAY_SERVICE_PATH), "Task5 requires a day progression service")
@@ -147,3 +158,89 @@ func test_duplicate_active_handoff_is_atomic_and_does_not_replace_schedule() -> 
 	assert_eq(duplicate_result.get("status", ""), "BLOCKED")
 	assert_eq(duplicate_result.get("reason", ""), "SCHEDULE_ALREADY_ACTIVE")
 	assert_eq(envelope.to_dict(), before, "duplicate active handoff must not mutate campaign state")
+
+
+func test_advance_day_without_check_never_auto_progresses_nadia() -> void:
+	var envelope = _registered_envelope()
+	assert_not_null(envelope)
+	if envelope == null:
+		return
+	var result: Dictionary = load(DAY_SERVICE_PATH).new().advance_day(envelope, {})
+	assert_eq(result.get("status", ""), "DAY_ADVANCED")
+	assert_eq(int(envelope.active_run.get("current_day", -1)), 2)
+	var schedule: Dictionary = envelope.schedule_state.get("NADIA_VENN", {})
+	assert_eq(schedule.get("stage", ""), "PREP_AND_ENTRY")
+	assert_eq(int(schedule.get("last_checked_day", -1)), 1)
+	assert_eq(int(schedule.get("checks_completed", -1)), 0)
+	assert_true(envelope.active_run.get("resolved_events", {}).is_empty())
+
+
+func test_wait_consumes_one_end_of_day_check_and_keeps_stage() -> void:
+	var envelope = _registered_envelope()
+	assert_not_null(envelope)
+	if envelope == null:
+		return
+	var result: Dictionary = load(DAY_SERVICE_PATH).new().advance_day(envelope, {
+		"NADIA_VENN": {"action": "WAIT"},
+	})
+	assert_eq(result.get("status", ""), "DAY_ADVANCED")
+	assert_eq(int(envelope.active_run.get("current_day", -1)), 2)
+	var schedule: Dictionary = envelope.schedule_state.get("NADIA_VENN", {})
+	assert_eq(schedule.get("stage", ""), "PREP_AND_ENTRY")
+	assert_eq(int(schedule.get("last_checked_day", -1)), 2)
+	assert_eq(int(schedule.get("checks_completed", -1)), 1)
+	assert_true(envelope.active_run.get("resolved_events", {}).is_empty())
+
+
+func test_advance_moves_at_most_one_nadia_stage_per_day() -> void:
+	var envelope = _registered_envelope()
+	assert_not_null(envelope)
+	if envelope == null:
+		return
+	var service = load(DAY_SERVICE_PATH).new()
+	var day2: Dictionary = service.advance_day(envelope, {
+		"NADIA_VENN": {"action": "ADVANCE"},
+	})
+	assert_eq(day2.get("status", ""), "DAY_ADVANCED")
+	assert_eq(int(envelope.active_run.get("current_day", -1)), 2)
+	assert_eq(envelope.schedule_state.get("NADIA_VENN", {}).get("stage", ""), "EXPLORATION")
+	assert_eq(int(envelope.schedule_state.get("NADIA_VENN", {}).get("checks_completed", -1)), 1)
+
+	var day3: Dictionary = service.advance_day(envelope, {
+		"NADIA_VENN": {"action": "ADVANCE"},
+	})
+	assert_eq(day3.get("status", ""), "DAY_ADVANCED")
+	assert_eq(int(envelope.active_run.get("current_day", -1)), 3)
+	assert_eq(envelope.schedule_state.get("NADIA_VENN", {}).get("stage", ""), "WITHDRAWAL_AND_RECOVERY")
+	assert_eq(int(envelope.schedule_state.get("NADIA_VENN", {}).get("checks_completed", -1)), 2)
+	assert_true(envelope.active_run.get("resolved_events", {}).is_empty(), "stage progression must not auto-resolve Nadia")
+
+
+func test_unknown_schedule_action_is_atomic_before_day_increment() -> void:
+	var envelope = _registered_envelope()
+	assert_not_null(envelope)
+	if envelope == null:
+		return
+	var before: Dictionary = envelope.to_dict()
+	var result: Dictionary = load(DAY_SERVICE_PATH).new().advance_day(envelope, {
+		"NADIA_VENN": {"action": "SKIP_TO_RESULT"},
+	})
+	assert_eq(result.get("status", ""), "BLOCKED")
+	assert_eq(result.get("reason", ""), "UNKNOWN_SCHEDULE_ACTION")
+	assert_eq(envelope.to_dict(), before, "invalid day action must not advance day or mutate schedule")
+
+
+func test_advance_from_withdrawal_requires_explicit_resolution_payload_and_is_atomic() -> void:
+	var envelope = _registered_envelope()
+	assert_not_null(envelope)
+	if envelope == null:
+		return
+	var service = load(DAY_SERVICE_PATH).new()
+	assert_eq(service.advance_day(envelope, {"NADIA_VENN": {"action": "ADVANCE"}}).get("status", ""), "DAY_ADVANCED")
+	assert_eq(service.advance_day(envelope, {"NADIA_VENN": {"action": "ADVANCE"}}).get("status", ""), "DAY_ADVANCED")
+	assert_eq(envelope.schedule_state.get("NADIA_VENN", {}).get("stage", ""), "WITHDRAWAL_AND_RECOVERY")
+	var before: Dictionary = envelope.to_dict()
+	var blocked: Dictionary = service.advance_day(envelope, {"NADIA_VENN": {"action": "ADVANCE"}})
+	assert_eq(blocked.get("status", ""), "BLOCKED")
+	assert_eq(blocked.get("reason", ""), "RESOLUTION_PAYLOAD_REQUIRED")
+	assert_eq(envelope.to_dict(), before, "withdrawal must wait for explicit result evidence instead of auto-resolving")
