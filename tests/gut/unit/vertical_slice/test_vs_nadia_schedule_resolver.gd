@@ -5,6 +5,7 @@ const DAY_SERVICE_PATH := "res://scripts/vertical_slice/services/vs_day_progress
 const CustomerProfileScript = preload("res://scripts/vertical_slice/domain/vs_customer_profile.gd")
 const ContextPacketScript = preload("res://scripts/vertical_slice/domain/vs_customer_context_packet.gd")
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
+const RunInitializerScript = preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
 
 const ITEM_UID := "BSI-0123456789abcdef0123456789abcdef"
 
@@ -55,6 +56,13 @@ func _item(weight: int = 40, physical_state: String = "ACTIVE"):
 	return item
 
 
+func _envelope_with_item():
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	if envelope != null:
+		envelope.add_item(_item())
+	return envelope
+
+
 func test_task5_runtime_surfaces_exist() -> void:
 	assert_true(ResourceLoader.exists(NADIA_RESOLVER_PATH), "Task5 requires a Nadia schedule resolver")
 	assert_true(ResourceLoader.exists(DAY_SERVICE_PATH), "Task5 requires a day progression service")
@@ -102,3 +110,40 @@ func test_nadia_handoff_fails_closed_for_wrong_customer_invalid_context_destroye
 	var overweight: Dictionary = resolver.handoff(_customer(), _item(45), _context(4))
 	assert_eq(overweight.get("status", ""), "BLOCKED")
 	assert_eq(overweight.get("reason", ""), "OVERWEIGHT")
+
+
+func test_register_handoff_activates_personal_schedule_without_resolving_world_result() -> void:
+	var envelope = _envelope_with_item()
+	assert_not_null(envelope)
+	if envelope == null:
+		return
+	var proposal: Dictionary = load(NADIA_RESOLVER_PATH).new().handoff(_customer(), envelope.get_item(ITEM_UID), _context())
+	var result: Dictionary = load(DAY_SERVICE_PATH).new().register_handoff(envelope, proposal)
+	assert_eq(result.get("status", ""), "REGISTERED")
+	assert_eq(envelope.customer_state.get("NADIA_VENN", {}).get("assigned_uid", ""), ITEM_UID)
+	assert_eq(envelope.customer_state.get("NADIA_VENN", {}).get("status", ""), "AWAY")
+	assert_false(bool(envelope.customer_state.get("NADIA_VENN", {}).get("result_available", true)))
+	var schedule: Dictionary = envelope.schedule_state.get("NADIA_VENN", {})
+	assert_eq(schedule.get("schedule_type", ""), "PERSONAL_SCHEDULE")
+	assert_eq(schedule.get("stage", ""), "PREP_AND_ENTRY")
+	assert_eq(schedule.get("status", ""), "ACTIVE")
+	assert_eq(int(schedule.get("activated_day", -1)), 1)
+	assert_eq(int(schedule.get("last_checked_day", -1)), 1)
+	assert_eq(int(schedule.get("checks_completed", -1)), 0)
+	assert_false(schedule.has("fixed_duration_days"), "Nadia schedule must not invent a universal fixed duration")
+	assert_true(envelope.active_run.get("resolved_events", {}).is_empty(), "handoff registration must not resolve a world result")
+
+
+func test_duplicate_active_handoff_is_atomic_and_does_not_replace_schedule() -> void:
+	var envelope = _envelope_with_item()
+	assert_not_null(envelope)
+	if envelope == null:
+		return
+	var service = load(DAY_SERVICE_PATH).new()
+	var proposal: Dictionary = load(NADIA_RESOLVER_PATH).new().handoff(_customer(), envelope.get_item(ITEM_UID), _context())
+	assert_eq(service.register_handoff(envelope, proposal).get("status", ""), "REGISTERED")
+	var before: Dictionary = envelope.to_dict()
+	var duplicate: Dictionary = service.register_handoff(envelope, proposal)
+	assert_eq(duplicate.get("status", ""), "BLOCKED")
+	assert_eq(duplicate.get("reason", ""), "SCHEDULE_ALREADY_ACTIVE")
+	assert_eq(envelope.to_dict(), before, "duplicate active handoff must not mutate campaign state")
