@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 
@@ -9,7 +9,7 @@
 
 1. 사용자의 최신 지시와 승인.
 2. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`.
-3. 2026-08-20 개별 Canon 문서.
+3. 2026-08-20/24 개별 Canon 문서.
 4. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장.
 5. R2/R3 Game Bible·과거 PoC·구형 data/runtime.
 
@@ -59,6 +59,9 @@ Notion 책임면:
 - `BLACKSMITH_CHECKPOINT_CADENCE_CANON_20260820.md` — 16.
 - `BLACKSMITH_ENHANCEMENT_BALANCE_CURVE_CANON_20260820.md` — 17.
 - `BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md` — 경제 색인 + historical evidence.
+
+### 일반 Resource Supply
+- `BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md` — 18. `common_reinforcement_material / 보강재 / 50G / 상시 무제한 공급 / 강화 1~5 / 일반 수리 1~4`.
 
 ## 4. 진행 구조 권위 — 14~16
 
@@ -138,17 +141,30 @@ hard guarantee = LEARN2 / BUILD4 / FIRST4 / TENSION5 / HIGH6 / MASTERY7
 
 MAX 상태 페널티는 최종 성공률에 추가 적용한다.
 
-## 7. 강화비 권위 — 17
+## 7. 강화비·일반 재료 권위 — 17~18
 
 ```text
 GOLD_ATTEMPT_COST(target)
 = round_to_10(12 * target^1.84)
 ```
 
+17의 내부 회계 단위:
+
 ```text
 COMMON_ENHANCEMENT_MATERIAL_SHADOW_VALUE = 50G / balance unit
 units = ceil(target / 20)
 ```
+
+18에서 실제 player-facing 재료로 확정:
+
+```text
+CANONICAL_ID = common_reinforcement_material
+PLAYER_NAME_KO = 보강재
+SHOP_UNIT_PRICE = 50G
+SUPPLY = WORKSHOP_MATERIAL_VENDOR / ALWAYS_AVAILABLE / NO_CAP
+```
+
+강화 수량:
 
 ```text
 +1~20 1
@@ -158,7 +174,7 @@ units = ceil(target / 20)
 +81~100 5
 ```
 
-`balance unit`은 새 currency가 아니라 existing ordinary material을 다음 Resource Supply Decision에서 매핑하기 위한 accounting unit이다.
+`balance unit`은 플레이어에게 노출하지 않는다. 보강재는 새 currency가 아니라 실제 공통 공방 재료다.
 
 ## 8. MASTERY 손상 Budget — 17
 
@@ -170,7 +186,7 @@ MAX scar              MAX -6~-15
 
 상태: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 
-## 9. 수리 권위 — 10~12
+## 9. 일반 CURRENT 수리 권위 — 10~12 + 18
 
 ```text
 missing = MAX - CURRENT
@@ -194,6 +210,20 @@ REPAIR_JOB_FATIGUE_COST = 2
 material: iron 1.00 / silver 1.20 / meteor_iron 1.50
 secured: LEARN·BUILD 1.00 / FIRST 1.10 / TENSION 1.25 / HIGH 1.50 / MASTERY 1.80
 ```
+
+18의 실제 일반 재료 mapping:
+
+```text
+missing 1~25  -> 보강재 1
+missing 26~50 -> 보강재 2
+missing 51~75 -> 보강재 3
+missing 76~99 -> 보강재 4
+```
+
+- 골드와 보강재를 모두 지불하고 상호 대체하지 않는다.
+- 보강재 수량에 material/secured 배율을 다시 곱하지 않는다.
+- `iron / silver / meteor_iron`은 일반 보강재 직접 소비 대상이 아니다.
+- 기본 공급은 RNG/희귀 드롭/일일 cap이 아닌 상시 구매다.
 
 ## 10. 누적 기대원가·판매가 권위 — 17
 
@@ -256,25 +286,25 @@ old destroy RNG
 15     target-level band / +10 first floor
 16     checkpoint [10,30,60,90]
 17     success/recovery/attempt-cost/expected-cost/static-market anchors
+18     common reinforcement material / 50G / deterministic vendor supply / enhancement+repair mapping
 ```
 
-17의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`.
+17의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`. 18은 `USER_APPROVED / PLANNING_CANON`.
 
 ## 13. 현재 작업 순서
 
-1. `RESOURCE_SUPPLY` — 일반 강화/수리 재료의 실제 공급량·획득 경로·recipe mapping.
-2. `LATE_REPAIR_ECONOMY` — HIGH/MASTERY 수리 절대경제 재검증.
-3. `MAX_OVERHAUL` — MAX 대수선 여부와 대가.
-4. `DESTRUCTION_UX` — DESTROYED memorial/successor UX.
-5. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
-6. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual 연결.
-7. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-8. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
+1. `LATE_REPAIR_ECONOMY` — HIGH/MASTERY 수리 절대경제 재검증.
+2. `MAX_OVERHAUL` — MAX 대수선 여부와 대가.
+3. `DESTRUCTION_UX` — DESTROYED memorial/successor UX.
+4. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
+5. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual 연결.
+6. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+7. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
 
 ## 14. 구현자 확인 순서
 
 1. 최신 사용자 지시.
 2. Overlay에서 승인사항/현재 작업 순서 확인.
-3. 실패=13, 진행=14~16, 숫자=17, 수리=10~12 Canon 소비.
+3. 실패=13, 진행=14~16, 숫자=17, 수리=10~12, 일반 재료 공급=18 Canon 소비.
 4. 구형 data/runtime는 historical/reuse evidence로만 사용.
 5. 새 `기획 완료` 전 제품 구현 금지.
