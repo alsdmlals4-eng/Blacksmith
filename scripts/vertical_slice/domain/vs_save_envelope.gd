@@ -9,6 +9,9 @@ const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ContentResultRecordScript = preload(
 	"res://scripts/vertical_slice/domain/vs_content_result_record.gd"
 )
+const DestroyedHistoryRecordScript = preload(
+	"res://scripts/vertical_slice/domain/vs_destroyed_history_record.gd"
+)
 const REQUIRED_FIELDS := [
 	"schema_version",
 	"preset_version",
@@ -32,6 +35,9 @@ const INTEGER_FIELDS := [
 	"rng_seed",
 	"sequence",
 	"occurred_at_game_day",
+	"destroyed_at_game_day",
+	"before_current_durability",
+	"before_max_durability",
 ]
 
 var schema_version: int = SCHEMA_VERSION
@@ -87,7 +93,21 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 
 	var raw_destroyed_history: Variant = value.get("destroyed_history_by_uid", {})
 	if raw_destroyed_history is Dictionary:
-		envelope.destroyed_history_by_uid = _normalize_dictionary(raw_destroyed_history)
+		for raw_uid in raw_destroyed_history.keys():
+			var history_uid := str(raw_uid)
+			var raw_record: Variant = raw_destroyed_history[raw_uid]
+			if not raw_record is Dictionary:
+				envelope.validation_errors.append("INVALID_DESTROYED_HISTORY_TYPE:%s" % history_uid)
+				continue
+			var record = DestroyedHistoryRecordScript.from_dict(_normalize_dictionary(raw_record))
+			if record.uid != history_uid:
+				record.validation_errors.append("DESTROYED_HISTORY_KEY_UID_MISMATCH")
+			for error_code in record.validation_errors:
+				envelope.validation_errors.append(
+					"DESTROYED_HISTORY:%s:%s" % [history_uid, error_code]
+				)
+			if record.validation_errors.is_empty():
+				envelope.destroyed_history_by_uid[history_uid] = record.to_dict().duplicate(true)
 	else:
 		envelope.validation_errors.append("INVALID_FIELD_TYPE:destroyed_history_by_uid")
 
@@ -196,6 +216,20 @@ func add_item(item) -> Error:
 
 func get_item(item_uid: String):
 	return items_by_uid.get(item_uid)
+
+
+func archive_destroyed_record(record) -> Error:
+	if record == null:
+		return ERR_INVALID_PARAMETER
+	if not record.validation_errors.is_empty():
+		return ERR_INVALID_DATA
+	var history_uid := str(record.uid)
+	if history_uid.is_empty():
+		return ERR_INVALID_DATA
+	if destroyed_history_by_uid.has(history_uid):
+		return ERR_ALREADY_EXISTS
+	destroyed_history_by_uid[history_uid] = record.to_dict().duplicate(true)
+	return OK
 
 
 func _validate_values() -> void:
