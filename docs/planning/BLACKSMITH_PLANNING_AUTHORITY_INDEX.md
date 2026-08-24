@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 
@@ -60,12 +60,13 @@ Notion 책임면:
 ### DESTROYED 기록·추모·후계
 - `BLACKSMITH_DESTRUCTION_UX_CANON_20260824.md` — 21. **물리 파괴 이후 UX/기록/후계 관계의 최신 owner**. `DESTROYED`는 같은 physical UID의 영구 종료이며 immutable history archive를 남긴다. Memorial은 archive의 선택적 강조 view이고, successor는 새 UID와 predecessor relation만 가지며 gameplay power/history를 상속하지 않는다.
 
-### 진행·경제
+### 진행·경제·최대 강화 완료
 - `BLACKSMITH_ENHANCEMENT_PROGRESSION_ECONOMY_CANON_20260820.md` — 14.
 - `BLACKSMITH_LEVEL_TO_EXPERIENCE_BAND_CANON_20260820.md` — 15.
 - `BLACKSMITH_CHECKPOINT_CADENCE_CANON_20260820.md` — 16.
 - `BLACKSMITH_ENHANCEMENT_BALANCE_CURVE_CANON_20260820.md` — 17.
 - `BLACKSMITH_ENHANCEMENT_PROFIT_CURVE_2026.md` — 경제 색인 + historical evidence.
+- `BLACKSMITH_MAX_LEVEL_PAYOFF_CANON_20260824.md` — 22. **+100 terminal identity/payoff의 최신 owner**. +100 이후 추가 power ladder가 아니라 1회 완료 연출·영구 완료 표식·동일 UID 생애 기록·recognition fact를 제공하며 새 stat/price multiplier를 만들지 않는다.
 
 ### 일반 Resource Supply
 - `BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md` — 18. `common_reinforcement_material / 보강재 / 50G / 상시 무제한 공급 / 강화 1~5 / 일반 수리 1~4`.
@@ -294,7 +295,28 @@ Runtime Reality:
 - historical `enhancement_session.gd`의 별도 destroy 확률과 DESTROY 시 progression/affix clear는 현재 제품 권위가 아니다.
 - 현재 causal CURRENT/MAX destruction, immutable history archive, successor provenance runtime은 `IMPLEMENTATION_UNVERIFIED`.
 
-## 12. 누적 기대원가·판매가 권위 — 17 + 19 + 20 검증
+## 12. +100 최대 강화 완료 권위 — 22
+
+```text
+MAX_ENHANCEMENT_COMPLETE
+MAX_ENHANCEMENT_REACHED = true
+```
+
+핵심 계약:
+- +100이 기본 강화 terminal. +101/Prestige/reset/reroll ladder는 별도 사용자 승인 없이는 금지.
+- +100 성공 시 동일 UID에 완료 lifecycle fact를 1회 기록하고 일반 강화와 구분되는 completion presentation을 제공.
+- 영구 `MAX_COMPLETION_MARK`로 완료 사실을 식별 가능하게 함. 정확 Visual은 별도 승인 대상.
+- 제작 등급 `보통/우수/명품/걸작/전설`과 Artistry는 +100으로 변경하지 않음.
+- CURRENT/MAX·대수선 사용상태·수식어·기존 성능·history를 초기화하지 않음.
+- completion 자체로 새 stat/price multiplier, heal, overhaul reset을 지급하지 않음.
+- 후속 시스템이 읽는 `is_max_enhancement_complete=true` recognition fact만 제공하며 필수 고객/메인 콘텐츠 gate를 22에서 만들지 않음.
+- +100 이후에도 causal damage/Decision21 DESTROYED 적용.
+
+Runtime Reality:
+- historical `max_level=100` primitive 또는 COMPLETE 상태는 현재 Decision22 구현 증거가 아니다.
+- MAX completion lifecycle/mark/presentation runtime은 `IMPLEMENTATION_UNVERIFIED`.
+
+## 13. 누적 기대원가·판매가 권위 — 17 + 19 + 20 검증
 
 17의 고정 planning anchor를 유지한다. 19와 20의 simulation은 후기 수리/대수선 변경이 거시경제를 깨지 않는지 검증하는 비교 evidence이며 static price table을 runtime actual spend와 연결하지 않는다.
 
@@ -330,7 +352,7 @@ SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
 
 출시 전에는 19+20 통합 Balance Lab로 static table을 다시 검산한다.
 
-## 13. 과거 숫자 처리
+## 14. 과거 숫자 처리
 
 Current numeric authority가 아님:
 
@@ -347,7 +369,7 @@ pre-19 MASTERY repair multiplier 1.80
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 14. 현재 승인사항
+## 15. 현재 승인사항
 
 ```text
 01     강화 긴장감 + DDD가 PRIMARY CORE
@@ -363,24 +385,25 @@ pre-19 MASTERY repair multiplier 1.80
 19     late repair economy / HIGH 2.25 / MASTERY 3.00 / fresh 20k planning Monte Carlo
 20     one-lifetime partial MAX overhaul / +15 / ceiling60 / 750k×material + reinforcement20 + fatigue5
 21     causal destruction / immutable archive / curated memorial / optional new-UID successor provenance / zero power inheritance
+22     +100 terminal identity / completion presentation / permanent completion mark / lifecycle fact / zero extra power multiplier
 ```
 
-17·19·20의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`. 18·21은 `USER_APPROVED / PLANNING_CANON`.
+17·19·20의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`. 18·21·22는 `USER_APPROVED / PLANNING_CANON`.
 
-## 15. 현재 작업 순서
+## 16. 현재 작업 순서
 
-1. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
-2. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual 연결.
-3. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-4. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
+1. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual 연결.
+2. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+3. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
 
-## 16. 구현자 확인 순서
+## 17. 구현자 확인 순서
 
 1. 최신 사용자 지시.
 2. Overlay에서 승인사항/현재 작업 순서 확인.
-3. 실패=13, 진행=14~16, 숫자=17, 일반 수리=10~12+19, 일반 재료 공급=18, MAX 대수선=20, DESTROYED UX/기록=21 Canon 소비.
+3. 실패=13, 진행=14~16, 숫자=17, 일반 수리=10~12+19, 일반 재료 공급=18, MAX 대수선=20, DESTROYED UX/기록=21, +100 terminal payoff=22 Canon 소비.
 4. HIGH/MASTERY 수리 배율은 반드시 19를 우선한다.
 5. MAX 복구 예외는 반드시 20만 사용하고 일반 수리/MAX 자동복구로 확대하지 않는다.
 6. DESTROYED physical UID는 21에 따라 부활하지 않으며 successor에는 power/history를 복사하지 않는다.
-7. 구형 data/runtime는 historical/reuse evidence로만 사용.
-8. 새 `기획 완료` 전 제품 구현 금지.
+7. +100은 22에 따라 제작 등급/Artistry/내구를 변경하거나 추가 power ladder를 열지 않는다.
+8. 구형 data/runtime는 historical/reuse evidence로만 사용.
+9. 새 `기획 완료` 전 제품 구현 금지.

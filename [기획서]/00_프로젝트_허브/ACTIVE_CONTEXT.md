@@ -15,7 +15,7 @@
 > RUNTIME_MUTATION_FROM_HISTORICAL_PHASE_C: FORBIDDEN
 > ```
 >
-> 최신 제품 계층은 `강화의 긴장감 + DDD`가 PRIMARY CORE이고, 작품 UID·생애 / 정밀제작 / 고객·세계 생애주기 / 경제·하루 작업량은 이를 지지하는 SUPPORT다. CURRENT/MAX 내구도·파괴·수리·checkpoint·+0~+100 test budget은 2026-08-20 개별 Canon을 따르고, 일반 강화/수리 Resource Supply는 2026-08-24 `BS-RESOURCE-20260824-18`, 후기 HIGH/MASTERY 일반 CURRENT 수리 경제는 `BS-REPAIR-20260824-19`, MAX 생애 1회 부분 대수선은 `BS-OVERHAUL-20260824-20`, DESTROYED 기록·추모·후계 UX는 `BS-DESTRUCTION-20260824-21` Canon을 따른다.
+> 최신 제품 계층은 `강화의 긴장감 + DDD`가 PRIMARY CORE이고, 작품 UID·생애 / 정밀제작 / 고객·세계 생애주기 / 경제·하루 작업량은 이를 지지하는 SUPPORT다. CURRENT/MAX 내구도·파괴·수리·checkpoint·+0~+100 test budget은 2026-08-20 개별 Canon을 따르고, 일반 강화/수리 Resource Supply는 2026-08-24 `BS-RESOURCE-20260824-18`, 후기 HIGH/MASTERY 일반 CURRENT 수리 경제는 `BS-REPAIR-20260824-19`, MAX 생애 1회 부분 대수선은 `BS-OVERHAUL-20260824-20`, DESTROYED 기록·추모·후계 UX는 `BS-DESTRUCTION-20260824-21`, +100 최대 강화 완료 payoff는 `BS-MAX-20260824-22` Canon을 따른다.
 >
 > 다음 제품 구현은 새 `기획 완료` 선언과 해당 구현 Gate가 열리기 전 시작하지 않는다. 과거 Task1/Task2 구현과 runtime receipt는 구현 사실/역사 증거로 보존하지만 이 Gate를 자동으로 열지 않는다.
 
@@ -213,6 +213,7 @@ BS-RESOURCE-20260824-18 / RESOURCE_SUPPLY_CANON
 BS-REPAIR-20260824-19 / LATE_REPAIR_ECONOMY_CANON
 BS-OVERHAUL-20260824-20 / MAX_OVERHAUL_CANON
 BS-DESTRUCTION-20260824-21 / DESTRUCTION_UX_CANON
+BS-MAX-20260824-22 / MAX_LEVEL_PAYOFF_CANON
 ```
 
 ## 불변 체크포인트 호환 이력
@@ -225,7 +226,7 @@ BS-DESTRUCTION-20260824-21 / DESTRUCTION_UX_CANON
 ## 다음 실행 순서
 
 1. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`와 `BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`를 fresh readback한다.
-2. 현재 `PLAN` 범위의 남은 기획(`MAX_LEVEL_PAYOFF → FIRST_10_MINUTES → PRECISION_CUSTOMER_LINK → RELEASE_NEAR_VERTICAL_SLICE`)을 승인된 순서로 처리한다.
+2. 현재 `PLAN` 범위의 남은 기획(`FIRST_10_MINUTES → PRECISION_CUSTOMER_LINK → RELEASE_NEAR_VERTICAL_SLICE`)을 승인된 순서로 처리한다.
 3. 의미 있는 기획 변경은 GitHub·Notion 양쪽에 동기화하고 정본 충돌/적대 검토를 닫는다.
 4. 새 `기획 완료` 선언 전에는 제품 code/data/scenes/assets/addons/project.godot 변경을 시작하지 않는다.
 5. 구현 Gate가 열리면 그때 fresh main/open-PR/Runtime Reality를 다시 확인하고 승인된 구현 패키지만 TDD로 실행한다.
