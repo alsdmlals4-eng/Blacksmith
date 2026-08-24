@@ -68,7 +68,7 @@ func test_repair_insufficient_gold_is_atomic() -> void:
 	var quote = resolver.quote(item)
 	var before_current := item.current_durability
 	var before_max := item.max_durability
-	var before_recovery := item.enhancement_recovery_by_target.duplicate(true)
+	var before_recovery: Dictionary = item.enhancement_recovery_by_target.duplicate(true)
 	var result = resolver.apply(item, int(quote["gold_cost"]) - 1, int(quote["reinforcement_units"]))
 	assert_eq(result["status"], "BLOCKED")
 	assert_eq(result["reason"], "INSUFFICIENT_GOLD")
@@ -149,7 +149,7 @@ func test_overhaul_resource_failure_is_atomic() -> void:
 	item.highest_checkpoint = 60
 	item.current_durability = 22
 	item.max_durability = 35
-	var before := item.to_dict()
+	var before: Dictionary = item.to_dict()
 	var no_gold = resolver.apply(item, 749999, 20)
 	assert_eq(no_gold["status"], "BLOCKED")
 	assert_eq(no_gold["reason"], "INSUFFICIENT_GOLD")
