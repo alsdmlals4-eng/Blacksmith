@@ -30,6 +30,12 @@
       90
     ],
     "starter_customer_id": "NADIA_VENN",
+    "customer_ids": [
+      "gladiator",
+      "soldier",
+      "ceremonial_noble"
+    ],
+    "customer_ids_role": "HISTORICAL_COMPATIBILITY_FIXTURE_LOCATORS_NOT_STARTER_RUNTIME",
     "personal_schedule_count": 1,
     "world_schedule_count": 1
   },
