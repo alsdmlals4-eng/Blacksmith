@@ -120,7 +120,7 @@ func preview(item, target_level: int) -> Dictionary:
 	var hard_guarantee_count := int(HARD_GUARANTEE_FAILURES.get(band, 0))
 	var guaranteed := hard_guarantee_count > 0 and recovery_failures >= hard_guarantee_count
 	var max_penalty_pp := max_durability_penalty_pp(int(item.max_durability))
-	var final_success_percent := 100.0 if guaranteed else min(
+	var final_success_percent: float = 100.0 if guaranteed else minf(
 		95.0,
 		base_success_percent(target_level) + float(recovery_bonus_pp + max_penalty_pp)
 	)
