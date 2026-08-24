@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "customer_id": "NADIA_VENN",
+  "name": "나디아 벤",
+  "role": "유적 탐사대장",
+  "public_epithet": "유적의 길잡이",
+  "public_standing_grade": "ELITE",
+  "content_id": "ADVENTURER_01",
+  "content_goal": "SURVIVAL_AND_RECOVERY",
+  "numeric_capability_profile": "SEPARATE_CANON_SOURCE_REQUIRED"
+}
