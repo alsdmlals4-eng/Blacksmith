@@ -1,7 +1,7 @@
 # [현재 우선 Overlay] Blacksmith 2026-08-20 Confirmed Decisions
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
@@ -268,7 +268,46 @@ SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
 +11 이후 anchor expected profit 단조 비감소
 ```
 
-## 11. 과거 숫자의 지위
+## 11. 일반 강화·수리 Resource Supply — 18
+
+사용자 승인: `2026-08-24 KST / 권장안 B`.
+
+```text
+CANONICAL_ID = common_reinforcement_material
+PLAYER_NAME_KO = 보강재
+UNIT_PRICE = 50G
+SUPPLY = WORKSHOP_MATERIAL_VENDOR / ALWAYS_AVAILABLE / NO_CAP
+```
+
+강화 recipe:
+
+```text
++1~+20   보강재 1
++21~+40  보강재 2
++41~+60  보강재 3
++61~+80  보강재 4
++81~+100 보강재 5
+```
+
+일반 CURRENT 수리 recipe:
+
+```text
+missing 1~25  -> 보강재 1
+missing 26~50 -> 보강재 2
+missing 51~75 -> 보강재 3
+missing 76~99 -> 보강재 4
+```
+
+- 보강재는 새 화폐가 아니라 공통 공방 재료.
+- 골드와 보강재를 모두 지불하며 상호 대체/할인하지 않음.
+- `iron / silver / meteor_iron`을 일반 보강재로 직접 소비하지 않음.
+- RNG·희귀 드롭·일일 cap·채굴/전투/고객 완료를 기본 공급 Gate로 사용하지 않음.
+- salvage/customer/world-event 보너스 공급은 future hook이며 아직 제품 승인 아님.
+- 제품 data/runtime는 현재 PLAN Gate 때문에 수정하지 않음.
+
+책임 원본: `docs/planning/BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md`.
+
+## 12. 과거 숫자의 지위
 
 다음은 current numeric authority가 아니다.
 
@@ -283,7 +322,7 @@ old destroy RNG
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 12. 현재 승인사항 요약
+## 13. 현재 승인사항 요약
 
 ```text
 01     PRIMARY CORE = 강화 긴장감 + DDD
@@ -295,25 +334,26 @@ old destroy RNG
 15     target-level experience bands / +10 first floor
 16     checkpoint [10,30,60,90]
 17     success / recovery / attempt cost / expected cost / static market anchors
+18     common reinforcement material / 50G / deterministic unlimited vendor supply / enhancement+repair recipe mapping
 ```
 
-모든 17 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 제품 data/runtime은 아직 변경하지 않는다.
+17의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18은 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
 
-## 13. 현재 작업 순서
+## 14. 현재 작업 순서
 
-1. `RESOURCE_SUPPLY` — 일반 강화/수리 재료 실제 공급량·획득 경로·recipe mapping.
-2. `LATE_REPAIR_ECONOMY` — HIGH/MASTERY 수리 절대경제 재검증.
-3. `MAX_OVERHAUL` — MAX 대수선 여부와 대가.
-4. `DESTRUCTION_UX` — DESTROYED memorial/successor/UID history UX.
-5. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
-6. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
-7. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-8. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
+1. `LATE_REPAIR_ECONOMY` — HIGH/MASTERY 수리 절대경제 재검증.
+2. `MAX_OVERHAUL` — MAX 대수선 여부와 대가.
+3. `DESTRUCTION_UX` — DESTROYED memorial/successor/UID history UX.
+4. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
+5. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
+6. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+7. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
 
-## 14. 증거 경계
+## 15. 증거 경계
 
 - 01~16 구조: `USER_APPROVED`.
 - 17 숫자: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
+- 18 Resource Supply: `USER_APPROVED / PLANNING_CANON`.
 - Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`.
 - Human/Player: `NOT_RUN`.
 - Runtime implementation: `BLOCKED`.
