@@ -2,6 +2,54 @@ extends "res://addons/gut/test.gd"
 
 const NADIA_RESOLVER_PATH := "res://scripts/vertical_slice/resolvers/vs_nadia_schedule_resolver.gd"
 const DAY_SERVICE_PATH := "res://scripts/vertical_slice/services/vs_day_progression_service.gd"
+const CustomerProfileScript = preload("res://scripts/vertical_slice/domain/vs_customer_profile.gd")
+const ContextPacketScript = preload("res://scripts/vertical_slice/domain/vs_customer_context_packet.gd")
+const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
+
+const ITEM_UID := "BSI-0123456789abcdef0123456789abcdef"
+
+
+func _customer(customer_id: String = "NADIA_VENN"):
+	var customer = CustomerProfileScript.new()
+	customer.customer_id = customer_id
+	customer.name = "Synthetic Nadia"
+	customer.role = "TEST_ROLE"
+	customer.epithet = "TEST_EPITHET"
+	customer.public_standing_grade = "ELITE"
+	return customer
+
+
+func _context(strength: int = 4):
+	var context = ContextPacketScript.new()
+	context.customer_id = "NADIA_VENN"
+	context.content_id = "ADVENTURER_01"
+	context.primary_need = "SAFE_RETURN"
+	context.secondary_need = "RECOVERY_POSSIBILITY"
+	context.known_context.append("RUINS")
+	context.risk = 6
+	context.strength = strength
+	context.dexterity = 5
+	context.constitution = 6
+	context.judgment = 5
+	context.weapon_proficiency = 2
+	context.related_ability = "CONSTITUTION"
+	context.relevant_precision_axes.append("WEIGHT")
+	context.relevant_precision_axes.append("DURABILITY")
+	return context
+
+
+func _item(weight: int = 40, physical_state: String = "ACTIVE"):
+	var item = ItemScript.new()
+	item.uid = ITEM_UID
+	item.weight_point = weight
+	item.enhancement_level = 10
+	item.highest_checkpoint = 10
+	item.current_durability = 100
+	item.max_durability = 100
+	item.physical_state = physical_state
+	if physical_state == "DESTROYED":
+		item.current_durability = 0
+	return item
 
 
 func test_task5_runtime_surfaces_exist() -> void:
@@ -15,3 +63,39 @@ func test_task5_handoff_and_day_progression_api_exist() -> void:
 	assert_true(resolver.has_method("handoff"), "Nadia resolver must expose handoff")
 	assert_true(service.has_method("register_handoff"), "day progression service must register accepted handoff proposals")
 	assert_true(service.has_method("advance_day"), "day progression service must own end-of-day advancement")
+
+
+func test_nadia_handoff_creates_delayed_same_uid_schedule_proposal_without_world_result() -> void:
+	var item = _item()
+	var before := item.to_dict()
+	var result: Dictionary = load(NADIA_RESOLVER_PATH).new().handoff(_customer(), item, _context())
+	assert_eq(result.get("status", ""), "HANDOFF_ACCEPTED")
+	assert_eq(result.get("customer_id", ""), "NADIA_VENN")
+	assert_eq(result.get("content_id", ""), "ADVENTURER_01")
+	assert_eq(result.get("assigned_uid", ""), ITEM_UID)
+	assert_eq(result.get("schedule_type", ""), "PERSONAL_SCHEDULE")
+	assert_eq(result.get("initial_stage", ""), "PREP_AND_ENTRY")
+	assert_eq(result.get("schedule_status", ""), "ACTIVE")
+	assert_false(bool(result.get("result_available", true)), "handoff acknowledgement must not fake the delayed world result")
+	assert_false(result.has("result_axes"), "handoff must not resolve Nadia's three world-result axes immediately")
+	assert_eq(item.to_dict(), before, "handoff proposal must not mutate the item")
+
+
+func test_nadia_handoff_fails_closed_for_wrong_customer_invalid_context_destroyed_or_overweight_item() -> void:
+	var resolver = load(NADIA_RESOLVER_PATH).new()
+	var wrong_customer: Dictionary = resolver.handoff(_customer("OTHER_CUSTOMER"), _item(), _context())
+	assert_eq(wrong_customer.get("status", ""), "BLOCKED")
+	assert_eq(wrong_customer.get("reason", ""), "CUSTOMER_NOT_NADIA")
+
+	var invalid_context = ContextPacketScript.from_dict({})
+	var invalid: Dictionary = resolver.handoff(_customer(), _item(), invalid_context)
+	assert_eq(invalid.get("status", ""), "BLOCKED")
+	assert_eq(invalid.get("reason", ""), "INVALID_CONTEXT")
+
+	var destroyed: Dictionary = resolver.handoff(_customer(), _item(40, "DESTROYED"), _context())
+	assert_eq(destroyed.get("status", ""), "BLOCKED")
+	assert_eq(destroyed.get("reason", ""), "ITEM_DESTROYED")
+
+	var overweight: Dictionary = resolver.handoff(_customer(), _item(45), _context(4))
+	assert_eq(overweight.get("status", ""), "BLOCKED")
+	assert_eq(overweight.get("reason", ""), "OVERWEIGHT")
