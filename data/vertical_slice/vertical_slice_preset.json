@@ -1,7 +1,7 @@
 {
-  "schema_version": 1,
-  "preset_version": "VS-2026.08.06-A",
-  "authority": "R2_BATCH_006_APPROVED_MAIN_CANON",
+  "schema_version": 2,
+  "preset_version": "VS-2026.08.24-B",
+  "authority": "CURRENT_IMPLEMENTATION_GATE_20260824",
   "is_final_balance": false,
   "human_playtest": "NOT_RUN",
   "item_uid_prefix": "BSI-",
@@ -14,18 +14,38 @@
       "silver",
       "meteor_iron"
     ],
-    "maximum_enhancement_level": 10,
+    "starter_primary_material_id": "iron",
+    "maximum_enhancement_level": 100,
     "precision_milestones": [
-      10
+      10,
+      20,
+      30,
+      40,
+      50
     ],
+    "checkpoint_floors": [
+      10,
+      30,
+      60,
+      90
+    ],
+    "starter_customer_id": "NADIA_VENN",
     "customer_ids": [
       "gladiator",
       "soldier",
       "ceremonial_noble"
     ],
+    "customer_ids_role": "HISTORICAL_COMPATIBILITY_FIXTURE_LOCATORS_NOT_STARTER_RUNTIME",
     "personal_schedule_count": 1,
     "world_schedule_count": 1
   },
+  "visitor_public_standing_grades": [
+    "COMMON",
+    "SKILLED",
+    "ELITE",
+    "RENOWNED",
+    "LEGENDARY"
+  ],
   "primary_materials": [
     {
       "id": "iron",
@@ -76,20 +96,22 @@
     }
   },
   "save_contract": {
-    "item_schema_version": 1,
-    "save_schema_version": 1,
+    "item_schema_version": 2,
+    "save_schema_version": 2,
     "persist_birth_rng_seed": true,
     "persist_run_rng_seed": true,
     "persist_resolved_events": true,
     "ledger_policy": "APPEND_ONLY_CONTIGUOUS_SEQUENCE",
     "atomic_write_policy": "TEMP_FLUSH_RENAME_WITH_BACKUP",
-    "load_rerolls_resolved_events": false
+    "load_rerolls_resolved_events": false,
+    "legacy_v1_policy": "LEGACY_PRE_RELEASE_SAVE_FAIL_CLOSED"
   },
   "acceptance": {
     "uid_format": "BSI- plus 32 lowercase hexadecimal characters",
     "same_uid_after_load": true,
     "same_birth_facts_after_load": true,
     "same_resolved_events_after_load": true,
-    "backup_recovery_required": true
+    "backup_recovery_required": true,
+    "release_near_verified": false
   }
 }
