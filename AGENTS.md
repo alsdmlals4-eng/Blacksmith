@@ -1,6 +1,6 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-02 / PLANNING_REACTIVATED`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리 작업이 그 Gate를 자동으로 열지 않는다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-03 / PLANNING_REACTIVATED / LIVING_GDD_HOME`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리 작업이 그 Gate를 자동으로 열지 않는다.
 
 ## 1. 권위 순서
 
@@ -19,12 +19,25 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작�
 
 현재 workspace routing:
 
-- `Notion Project Home = HUMAN_GAME_LEARNING_SURFACE`
+- `Notion Project Home = HUMAN_PROJECT_HOME_IS_LIVING_GDD_VISUAL_DASHBOARD`
+- `HUMAN_RELEVANT_PROJECT_OUTPUTS_VIEWABLE_FROM_HOME`
+- `EXPLANATORY_VISUAL_GDD_BEFORE_DECORATIVE_ART`
 - `Project Registry / System Record = AI_OPERATIONAL_SURFACE`
 - `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH` = Markdown·JSON·game data·code·Scene/Resource·tests·CI/runtime truth
 - Google Sheet = unique 미이관 자료와 same-ID compatibility mirror가 필요한 경우의 migration surface. 신규 기본 기획 작업공간이나 runtime 증거가 아니다.
 
-사람용 Home에는 게임 약속·전체 Flow·플레이어 선택·시각/학습 자료를 둔다. PR/SHA/CI/task queue/pause/debug/tool/session 정보는 기존 Project Registry/System Record 또는 repository operational owner가 소유하며 Home에 복제하지 않는다.
+`BS-OPS-20260825-03`에 따라 사람용 Home은 단순 링크 허브가 아니다. 게임 정체성 → 플레이 구조 → 핵심 시스템 → Flow → UI/Visual 방향 → 핵심 사람용 데이터 → 콘텐츠 맥락 → 사람용 구현 현실을 스크롤 안에서 직접 이해할 수 있어야 한다. 세부 페이지는 더 깊이 보기 위한 owner이며, 핵심 이해를 대신하지 않는다.
+
+### 1.1 Human Home · Visual GDD 규칙
+
+- `STYLIZED_DARK_FORGE`는 `BS-ART-20260731-01`의 current 승인 그림체다.
+- 현재 실제 승인 대표 Blacksmith 이미지 파일은 `NOT_AVAILABLE`; 따라서 `VISUAL_GDD_GAP`을 숨기지 않는다.
+- 사용자가 2026-08-25 제공한 예시 이미지는 `REFERENCE_ONLY_LAYOUT_DENSITY`이며 Blacksmith 승인 Asset으로 승격하지 않는다.
+- 실제 승인 Visual이 없을 때는 Mermaid·Flow·System Diagram·현재 style rule·핵심 표를 이용한 explanatory Visual GDD를 우선한다.
+- 사람에게 필요한 핵심 수치·규칙·밸런스 표를 “구조화 데이터”라는 이유로 AI Workspace에만 숨기지 않는다.
+- 큰 데이터셋은 Home 전용 복제본보다 canonical linked view를 우선한다.
+- AI 작업 로그·schema/internal ID·PR/SHA/CI/evidence·local path/port/session 정보는 기존 AI/System owner가 보존한다.
+- Notion server readback은 실제 client geometry/render 관찰을 대체하지 않는다.
 
 ## 2. 필수 작업 순서
 
@@ -183,7 +196,7 @@ GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/
 - `CURRENT_EXECUTION_CONTRACT_STATE: USER_SUPPLIED_V4_8_R4_CURRENT`
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`의 v4.5 r2 내용은 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`다. 이번 작업에서 파일 자체를 조용히 v4.8로 가장하지 않으며 안전한 추후 migration 전까지 역사/충돌 증거로만 취급한다.
 - historical compatibility anchor: 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — **historical only, current execution authority 아님**.
-- current operational override Decision: `BS-OPS-20260825-02`
+- current operational override Decision: `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)
 - 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`
 - 선행 조사 Gate Decision: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`
 - 같은 승인 범위는 기술 재검증 후 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확대만 별도 사용자 Decision이 필요하다.
