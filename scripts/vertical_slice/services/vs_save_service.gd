@@ -147,12 +147,16 @@ func _load_path(path: String):
 		return null
 	var text := file.get_as_text()
 	file.close()
-	var parsed: Variant = JSON.parse_string(text)
-	if not parsed is Dictionary:
+	# JSON.parse_string() emits an engine error for expected corrupt-save fixtures,
+	# which GUT correctly treats as an unexpected runtime error. Use the parser
+	# object so corrupt pre-release/primary data is a normal validation result.
+	var parser := JSON.new()
+	var parse_error := parser.parse(text)
+	if parse_error != OK or not parser.data is Dictionary:
 		var invalid = SaveEnvelopeScript.new()
 		invalid.validation_errors.append("INVALID_JSON")
 		return invalid
-	return SaveEnvelopeScript.from_dict(parsed)
+	return SaveEnvelopeScript.from_dict(parser.data)
 
 
 func _rename(from_path: String, to_path: String) -> Error:
