@@ -1,6 +1,7 @@
 # BS-OPS-20260825-02 — Planning Reactivation + Human/AI Workspace Split
 
 - Status: `APPROVED_CURRENT_OPERATIONAL_OVERRIDE`
+- Work state: `PLANNING_REACTIVATED`
 - Approved by: user directive, 2026-08-25 KST
 - Scope: planning/documentation/authority routing only
 - Product rule delta: `NONE`
