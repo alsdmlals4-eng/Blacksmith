@@ -9,6 +9,13 @@ const CustomerProfileScript = preload("res://scripts/vertical_slice/domain/vs_cu
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
 
 
+func _script_has_method(script: Script, method_name: String) -> bool:
+	for method in script.get_script_method_list():
+		if str(method.get("name", "")) == method_name:
+			return true
+	return false
+
+
 func _context(
 	risk: int = 6,
 	strength: int = 4,
@@ -157,8 +164,12 @@ func test_explicit_required_function_is_a_hard_gate() -> void:
 
 
 func test_context_packet_from_dict_round_trips_external_snapshot() -> void:
-	assert_true(ContextPacketScript.has_method("from_dict"), "context packet must parse external numeric snapshots")
-	var packet = ContextPacketScript.from_dict(_context_dict()) if ContextPacketScript.has_method("from_dict") else null
+	var packet_script: Script = load(CONTEXT_PACKET_PATH)
+	var has_from_dict := _script_has_method(packet_script, "from_dict")
+	assert_true(has_from_dict, "context packet must parse external numeric snapshots")
+	if not has_from_dict:
+		return
+	var packet = packet_script.call("from_dict", _context_dict())
 	assert_not_null(packet)
 	if packet == null:
 		return
@@ -184,8 +195,8 @@ func test_precision_preview_classifies_context_relation_and_never_grants_catalys
 		return
 	var context = _context()
 	var heavy = _item(45, 10)
-	var before_weight := heavy.weight_point
-	var before_used := heavy.used_precision_milestones.duplicate()
+	var before_weight: int = int(heavy.weight_point)
+	var before_used: Array = heavy.used_precision_milestones.duplicate()
 	var light = resolver.preview(heavy, 10, "LIGHTWEIGHTING", "", context)
 	assert_true(bool(light.get("allowed", false)))
 	assert_eq(light.get("output_lane", ""), "STAT_METHOD")
