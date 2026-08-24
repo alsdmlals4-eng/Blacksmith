@@ -162,5 +162,7 @@ func test_success_notifies_existing_resource_and_calendar_consumers_once() -> vo
 	assert_eq(result["status"], "APPLIED")
 	assert_eq(resource_events.size(), 1, "successful maintenance must notify resource consumers once")
 	assert_eq(calendar_events.size(), 1, "successful maintenance must notify calendar consumers once")
-	assert_eq(resource_events[0], resources.snapshot())
-	assert_eq(calendar_events[0], calendar.snapshot())
+	if resource_events.size() == 1:
+		assert_eq(resource_events[0], resources.snapshot())
+	if calendar_events.size() == 1:
+		assert_eq(calendar_events[0], calendar.snapshot())
