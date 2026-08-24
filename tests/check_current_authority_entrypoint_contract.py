@@ -27,7 +27,7 @@ def main() -> int:
         "USER_SUPPLIED_V4_8_R4_CURRENT",
         "TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE",
         "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r4_20260824.md",
-        "Notion Project Home = HUMAN_GAME_LEARNING_SURFACE",
+        "Notion Project Home = HUMAN_PROJECT_HOME_IS_LIVING_GDD_VISUAL_DASHBOARD",
         "Project Registry / System Record = AI_OPERATIONAL_SURFACE",
     ]
     for token in required_agents:
