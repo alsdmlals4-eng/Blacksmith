@@ -111,18 +111,14 @@ PR81: PR81_REFERENCE_ONLY_DO_NOT_MERGE
 GLADIATOR_02 / KYLE_VAREN
 → 기존 구형 PoC 계승 고객을 두 번째 Gladiator-family 상세 콘텐츠로 승격
 → VETERAN_COMEBACK_EQUIPMENT_CONTINUITY_AND_SUCCESSION
-→ 실제 prior Kyle item record 확인
-→ comeback 목적 + 현재 필요한 장비 역할 공개
-→ 과거 작품 UID의 현재 상태·실제 생애 증거 확인
-→ hard serviceability / eligibility gate
-→ 가능한 경우 KEEP_IN_SERVICE vs RETIRE_AND_REPLACE 비교
-→ 플레이어 결정
-→ 비직접 comeback/arena world event 해결
+→ 실제 prior Kyle item record + comeback 목적 공개
+→ old UID current state·실제 lifecycle evidence + hard serviceability/eligibility 확인
+→ KEEP_IN_SERVICE 또는 RETIRE_AND_REPLACE
+→ 비직접 comeback/arena world event
 → VETERAN_RETURN_STATE
  + EQUIPMENT_CONTINUITY_STATE
  + ITEM_UID_LINEAGE_STATE
-→ 실제 원인 2~4개
-→ 주 후속 행동 1개
+→ 실제 원인 2~4개 + 주 후속 행동 1개
 ```
 
 - Cassia/Gladiator01의 current-match arena fit·equipment contribution 책임을 보존한다.
