@@ -142,6 +142,11 @@
       "resolved_events"
     ],
     "items_field": "items_by_uid",
+    "destroyed_history_field": "destroyed_history_by_uid",
+    "destroyed_history_record_type": "DESTROYED_HISTORY_V1",
+    "destroyed_history_write_policy": "REQUIRED_ON_NEW_V2_WRITES",
+    "destroyed_history_read_compatibility": "MISSING_FIELD_DEFAULTS_EMPTY_FOR_EXISTING_V2",
+    "destroyed_history_overwrite_policy": "IMMUTABLE_UID_INSERT_ONLY",
     "write_policy": "TEMP_FLUSH_RENAME_WITH_BACKUP",
     "load_may_reroll_resolved_events": false,
     "legacy_v1_policy": "LEGACY_PRE_RELEASE_SAVE_FAIL_CLOSED",
