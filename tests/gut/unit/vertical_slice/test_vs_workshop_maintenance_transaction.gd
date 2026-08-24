@@ -144,3 +144,23 @@ func test_downstream_apply_failure_rolls_back_resource_and_fatigue_spend() -> vo
 	assert_eq(item.current_durability, 50)
 	assert_eq(resources.snapshot(), before_resources)
 	assert_eq(calendar.current_fatigue, 10)
+
+
+func test_success_notifies_existing_resource_and_calendar_consumers_once() -> void:
+	var service = _service()
+	assert_not_null(service)
+	if service == null:
+		return
+	var item = _item(50, 100, 30)
+	var resources = _resources(1000, 10)
+	var calendar = _calendar(10)
+	var resource_events: Array = []
+	var calendar_events: Array = []
+	resources.changed.connect(func(snapshot): resource_events.append(snapshot))
+	calendar.changed.connect(func(snapshot): calendar_events.append(snapshot))
+	var result = service.try_repair(item, resources, calendar)
+	assert_eq(result["status"], "APPLIED")
+	assert_eq(resource_events.size(), 1, "successful maintenance must notify resource consumers once")
+	assert_eq(calendar_events.size(), 1, "successful maintenance must notify calendar consumers once")
+	assert_eq(resource_events[0], resources.snapshot())
+	assert_eq(calendar_events[0], calendar.snapshot())
