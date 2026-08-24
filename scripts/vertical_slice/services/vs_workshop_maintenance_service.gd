@@ -68,6 +68,8 @@ func _try_apply(item, resources, calendar, resolver) -> Dictionary:
 	result["gold_cost"] = gold_cost
 	result["reinforcement_units"] = reinforcement_units
 	result["fatigue_cost"] = fatigue_cost
+	resources.changed.emit(resources.snapshot())
+	calendar.changed.emit(calendar.snapshot())
 	return result
 
 
