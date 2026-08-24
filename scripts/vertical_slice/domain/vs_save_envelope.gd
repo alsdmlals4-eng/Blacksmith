@@ -1,7 +1,10 @@
 class_name VSSaveEnvelope
 extends RefCounted
 
-const SCHEMA_VERSION := 1
+const SCHEMA_VERSION := 2
+const PRESET_VERSION := "VS-2026.08.24-B"
+const LEGACY_PRE_RELEASE_SCHEMA_VERSION := 1
+const LEGACY_PRE_RELEASE_PRESET_VERSION := "VS-2026.08.06-A"
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ContentResultRecordScript = preload(
 	"res://scripts/vertical_slice/domain/vs_content_result_record.gd"
@@ -32,7 +35,7 @@ const INTEGER_FIELDS := [
 ]
 
 var schema_version: int = SCHEMA_VERSION
-var preset_version: String = "VS-2026.08.06-A"
+var preset_version: String = PRESET_VERSION
 var saved_at_utc: String = ""
 var active_run: Dictionary = {
 	"run_id": "",
@@ -188,9 +191,15 @@ func get_item(item_uid: String):
 
 
 func _validate_values() -> void:
+	if (
+		schema_version == LEGACY_PRE_RELEASE_SCHEMA_VERSION
+		and preset_version == LEGACY_PRE_RELEASE_PRESET_VERSION
+	):
+		validation_errors.append("LEGACY_PRE_RELEASE_SAVE")
+		return
 	if schema_version != SCHEMA_VERSION:
 		validation_errors.append("UNSUPPORTED_SAVE_SCHEMA:%d" % schema_version)
-	if preset_version != "VS-2026.08.06-A":
+	if preset_version != PRESET_VERSION:
 		validation_errors.append("UNSUPPORTED_PRESET_VERSION:%s" % preset_version)
 	if saved_at_utc.is_empty():
 		validation_errors.append("MISSING_SAVED_AT_UTC")
