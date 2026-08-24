@@ -60,6 +60,23 @@ func test_repair_apply_requires_gold_and_reinforcement_and_never_heals_max() -> 
 	assert_eq(applied["fatigue_cost"], 2)
 
 
+func test_repair_insufficient_gold_is_atomic() -> void:
+	var resolver = RepairScript.new()
+	var item = _item()
+	item.current_durability = 60
+	item.max_durability = 80
+	var quote = resolver.quote(item)
+	var before_current := item.current_durability
+	var before_max := item.max_durability
+	var before_recovery := item.enhancement_recovery_by_target.duplicate(true)
+	var result = resolver.apply(item, int(quote["gold_cost"]) - 1, int(quote["reinforcement_units"]))
+	assert_eq(result["status"], "BLOCKED")
+	assert_eq(result["reason"], "INSUFFICIENT_GOLD")
+	assert_eq(item.current_durability, before_current)
+	assert_eq(item.max_durability, before_max)
+	assert_eq(item.enhancement_recovery_by_target, before_recovery)
+
+
 func test_repair_is_blocked_for_full_or_destroyed_item() -> void:
 	var resolver = RepairScript.new()
 	var full = _item()
@@ -97,6 +114,7 @@ func test_overhaul_quote_and_apply_match_one_lifetime_partial_rescue() -> void:
 	assert_eq(item.enhancement_level, 65)
 	assert_eq(item.highest_checkpoint, 60)
 	assert_eq(item.enhancement_recovery_by_target, {"11": 2})
+	assert_eq(resolver.quote(item)["reason"], "MAX_ABOVE_OVERHAUL_THRESHOLD")
 
 
 func test_overhaul_eligibility_is_strict() -> void:
@@ -114,6 +132,32 @@ func test_overhaul_eligibility_is_strict() -> void:
 	item.highest_checkpoint = 60
 	item.overhaul_used = true
 	assert_eq(resolver.quote(item)["reason"], "OVERHAUL_ALREADY_USED")
+
+	var destroyed = _item()
+	destroyed.enhancement_level = 65
+	destroyed.highest_checkpoint = 60
+	destroyed.current_durability = 0
+	destroyed.max_durability = 35
+	destroyed.physical_state = "DESTROYED"
+	assert_eq(resolver.quote(destroyed)["reason"], "ITEM_DESTROYED")
+
+
+func test_overhaul_resource_failure_is_atomic() -> void:
+	var resolver = OverhaulScript.new()
+	var item = _item()
+	item.enhancement_level = 65
+	item.highest_checkpoint = 60
+	item.current_durability = 22
+	item.max_durability = 35
+	var before := item.to_dict()
+	var no_gold = resolver.apply(item, 749999, 20)
+	assert_eq(no_gold["status"], "BLOCKED")
+	assert_eq(no_gold["reason"], "INSUFFICIENT_GOLD")
+	assert_eq(item.to_dict(), before)
+	var no_material = resolver.apply(item, 750000, 19)
+	assert_eq(no_material["status"], "BLOCKED")
+	assert_eq(no_material["reason"], "INSUFFICIENT_REINFORCEMENT")
+	assert_eq(item.to_dict(), before)
 
 
 func test_destroyed_history_record_preserves_cause_zero_axis_and_item_snapshot() -> void:
@@ -155,3 +199,29 @@ func test_destroyed_archive_is_immutable_by_uid_and_round_trips_in_save() -> voi
 	assert_true(serialized["destroyed_history_by_uid"].has(item.uid))
 	var restored = SaveEnvelopeScript.from_dict(serialized)
 	assert_eq(restored.destroyed_history_by_uid[item.uid]["direct_cause"], "ENHANCEMENT_CRITICAL")
+
+
+func test_destroyed_archive_deep_copies_source_record() -> void:
+	var item = _item()
+	item.current_durability = 0
+	item.max_durability = 46
+	item.physical_state = "DESTROYED"
+	var record = DestroyedRecordScript.from_item(item, 3, "ENHANCEMENT_CRITICAL", 2, 50)
+	var envelope = SaveEnvelopeScript.new()
+	assert_eq(envelope.archive_destroyed_record(record), OK)
+	record.item_snapshot["enhancement_level"] = 99
+	record.direct_cause = "MUTATED_AFTER_ARCHIVE"
+	assert_eq(envelope.destroyed_history_by_uid[item.uid]["item_snapshot"]["enhancement_level"], 10)
+	assert_eq(envelope.destroyed_history_by_uid[item.uid]["direct_cause"], "ENHANCEMENT_CRITICAL")
+
+
+func test_existing_v2_save_without_archive_field_remains_compatible() -> void:
+	var envelope = SaveEnvelopeScript.new()
+	envelope.saved_at_utc = "2026-08-24T10:00:00Z"
+	envelope.active_run["run_id"] = "RUN-11111111111111111111111111111111"
+	envelope.active_run["run_rng_seed"] = 1234
+	var serialized = envelope.to_dict()
+	serialized.erase("destroyed_history_by_uid")
+	var restored = SaveEnvelopeScript.from_dict(serialized)
+	assert_true(restored.validation_errors.is_empty())
+	assert_true(restored.destroyed_history_by_uid.is_empty())
