@@ -1,7 +1,7 @@
 # [현재 우선 Overlay] Blacksmith 2026-08-20 Confirmed Decisions
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
@@ -409,7 +409,28 @@ MAX_ENHANCEMENT_COMPLETE
 
 책임 원본: `docs/planning/BLACKSMITH_MAX_LEVEL_PAYOFF_CANON_20260824.md`.
 
-## 16. 과거 숫자의 지위
+## 16. 첫 10분 Core Thesis 온보딩 — 23
+
+사용자 승인: `2026-08-24 KST / 권장안 B`.
+
+```text
+CORE_THESIS_FIRST_10_MINUTES
+```
+
+- `New Game → 짧은 첫 작품 제작 → +1/+2 안전 강화 → +3~+9 BUILD → +10 첫 정밀강화+checkpoint+평균 본전선 → +11 구조 위험 Preview → STOP vs PUSH → 실제 결과 → 짧은 UID/의뢰 payoff` 순서를 사용한다.
+- 첫 강화 input은 약 3분 이내, 첫 STOP/PUSH 결정은 약 10분 이내를 Human pacing 목표로 둔다. 강제 countdown은 아니다.
+- tutorial-only scripted failure, hidden success boost, 별도 tutorial odds를 만들지 않는다.
+- 실제 첫 실패가 발생했을 때만 same-UID recovery를 just-in-time으로 설명한다.
+- +10 첫 정밀강화는 full rules 접근을 유지하되 추천 방식/촉매를 먼저 보여주는 progressive disclosure를 사용한다. hard lock하지 않는다.
+- +10 STOP와 +11 PUSH 모두 정상 first-session completion이며 +11을 튜토리얼 진행 조건으로 강제하지 않는다.
+- +11 직전에 MAX/CRITICAL 구조 위험을 foreground한다.
+- Decision23은 starter-order에 바인딩할 정확 고객/세계 owner와 보상 수치를 만들지 않는다. 다음 `PRECISION_CUSTOMER_LINK`가 소유한다.
+- 후기 수리·대수선·Archive/Memorial/+100 payoff·전체 고객/세계 관리·고급 Artistry 경제는 첫 핵심 선택 전에 강제로 가르치지 않는다.
+- 현재 MainMenu/App Shell은 reuse 가능하지만 최신 Forge/Enhancement 13~22 통합 runtime과 Decision23 onboarding은 `IMPLEMENTATION_UNVERIFIED / BLOCKED`다.
+
+책임 원본: `docs/planning/BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md`.
+
+## 17. 과거 숫자의 지위
 
 다음은 current numeric authority가 아니다.
 
@@ -426,7 +447,7 @@ pre-19 MASTERY repair multiplier 1.80
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 17. 현재 승인사항 요약
+## 18. 현재 승인사항 요약
 
 ```text
 01     PRIMARY CORE = 강화 긴장감 + DDD
@@ -443,17 +464,17 @@ pre-19 MASTERY repair multiplier 1.80
 20     one-lifetime partial MAX overhaul / +15 / ceiling 60 / 750k×material + reinforcement 20 + fatigue 5
 21     causal destruction / immutable archive / curated memorial / optional new-UID successor provenance / zero power inheritance
 22     +100 terminal identity / one-time completion presentation / permanent completion mark / lifecycle fact / zero extra power multiplier
+23     first 10 minutes core-thesis sprint / real odds / +10 precision+checkpoint / +11 STOP vs PUSH / just-in-time teaching
 ```
 
-17·19·20의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18·21·22는 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
+17·19·20의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18·21·22·23은 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
 
-## 18. 현재 작업 순서
+## 19. 현재 작업 순서
 
-1. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual/feedback 연결.
-2. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-3. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
+1. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+2. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
 
-## 19. 증거 경계
+## 20. 증거 경계
 
 - 01~16 구조: `USER_APPROVED`.
 - 17 숫자: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
@@ -462,6 +483,7 @@ pre-19 MASTERY repair multiplier 1.80
 - 20 MAX Overhaul: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
 - 21 Destruction UX: `USER_APPROVED / PLANNING_CANON`.
 - 22 MAX Level Payoff: `USER_APPROVED / PLANNING_CANON`.
+- 23 First 10 Minutes: `USER_APPROVED / PLANNING_CANON`; timing targets are `HUMAN_NOT_RUN`.
 - Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`; exact delta is policy-sensitive.
 - Human/Player: `NOT_RUN`.
-- Runtime implementation: `BLOCKED`; old destroy/max-level primitives는 current implementation evidence가 아니다.
+- Runtime implementation: `BLOCKED`; historical Forge/Enhancement runtime is reuse evidence, not Decision23 implementation evidence.
