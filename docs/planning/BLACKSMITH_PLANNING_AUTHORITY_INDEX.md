@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19`
+- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
 
@@ -53,6 +53,9 @@ Notion 책임면:
 - `BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md` — 10~11.
 - `BLACKSMITH_REPAIR_ABSOLUTE_ANCHOR_CANON_20260820.md` — 12.
 - `BLACKSMITH_LATE_REPAIR_ECONOMY_CANON_20260824.md` — 19. **HIGH/MASTERY secured-band multiplier의 최신 owner**. 11의 `1.50/1.80`과 12의 해당 값 기반 후기 예시를 부분 대체한다.
+
+### MAX 구조 구제
+- `BLACKSMITH_MAX_OVERHAUL_CANON_20260824.md` — 20. **MAX 복구 예외의 최신 owner**. 일반 수리는 MAX를 복구하지 않으며, `highest_checkpoint>=60 / 0<MAX<=40 / same physical UID lifetime 1회` 조건에서만 `MAX +15 / after ceiling 60` 부분 대수선을 허용한다.
 
 ### 진행·경제
 - `BLACKSMITH_ENHANCEMENT_PROGRESSION_ECONOMY_CANON_20260820.md` — 14.
@@ -235,9 +238,39 @@ missing 76~99 -> 보강재 4
 - 시장가·실제 다음 강화비·MAX 상태는 일반 CURRENT 수리 런타임 공식에 직접 넣지 않는다.
 - 19 fresh 20,000-run: +100 mean `5,661,842G-eq`, pre-19 대비 약 `+0.095%`.
 
-## 10. 누적 기대원가·판매가 권위 — 17 + 19 검증
+## 10. MAX 생애 1회 부분 대수선 권위 — 20
 
-17의 고정 planning anchor를 유지한다. 19의 fresh simulation은 후기 수리 배율 조정이 거시경제를 깨지 않는지 검증하는 비교 evidence이며 static price table을 runtime actual spend와 연결하지 않는다.
+```text
+eligibility:
+  highest_checkpoint >= +60
+  0 < MAX <= 40
+  OVERHAUL_USED == false
+  DESTROYED == false
+
+effect:
+  MAX = min(60, MAX + 15)
+  CURRENT = MAX
+  OVERHAUL_USED = true
+
+cost:
+  750,000G × material_structure_multiplier
+  + 보강재 20
+  + fatigue 5
+```
+
+불변:
+- 같은 physical UID 생애 1회.
+- 강화 단계/checkpoint/affix/기존 성능/recovery/history 유지.
+- DESTROYED 부활 금지.
+- 반복/완전 MAX 복구 금지.
+- 대수선 후 MAX는 60 이하.
+- 일반 CURRENT 수리는 계속 MAX를 복구하지 않음.
+
+20의 planning comparison은 정책 민감도를 포함한다. 정확한 숫자보다 `lifetime partial = small macro impact / repeat full = material risk-curve erosion` 구조 결론을 사용하고, release 값은 Human test + 최종 Balance Lab에서 재생성한다.
+
+## 11. 누적 기대원가·판매가 권위 — 17 + 19 + 20 검증
+
+17의 고정 planning anchor를 유지한다. 19와 20의 simulation은 후기 수리/대수선 변경이 거시경제를 깨지 않는지 검증하는 비교 evidence이며 static price table을 runtime actual spend와 연결하지 않는다.
 
 ```text
 independent simulation tolerance ≈ ±1.5%
@@ -245,7 +278,7 @@ SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
 ```
 
 | Level | Mean Expected Cost Anchor | Base Market Value |
-|---:|---:|---:|
+|---:|---:|
 | +0 | 1,500 | 1,000 |
 | +5 | 2,322 | 1,900 |
 | +9 | 4,759 | 4,600 |
@@ -269,7 +302,9 @@ SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
 +11~+100 expected profit > 0
 ```
 
-## 11. 과거 숫자 처리
+출시 전에는 19+20 통합 Balance Lab로 static table을 다시 검산한다.
+
+## 12. 과거 숫자 처리
 
 Current numeric authority가 아님:
 
@@ -286,7 +321,7 @@ pre-19 MASTERY repair multiplier 1.80
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
 
-## 12. 현재 승인사항
+## 13. 현재 승인사항
 
 ```text
 01     강화 긴장감 + DDD가 PRIMARY CORE
@@ -300,24 +335,25 @@ pre-19 MASTERY repair multiplier 1.80
 17     success/recovery/attempt-cost/expected-cost/static-market anchors
 18     common reinforcement material / 50G / deterministic vendor supply / enhancement+repair mapping
 19     late repair economy / HIGH 2.25 / MASTERY 3.00 / fresh 20k planning Monte Carlo
+20     one-lifetime partial MAX overhaul / +15 / ceiling60 / 750k×material + reinforcement20 + fatigue5
 ```
 
-17·19의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`. 18은 `USER_APPROVED / PLANNING_CANON`.
+17·19·20의 숫자는 출시 최종이 아니라 `USER_APPROVED_TEST_BUDGET`. 18은 `USER_APPROVED / PLANNING_CANON`.
 
-## 13. 현재 작업 순서
+## 14. 현재 작업 순서
 
-1. `MAX_OVERHAUL` — MAX 대수선 여부와 대가.
-2. `DESTRUCTION_UX` — DESTROYED memorial/successor UX.
-3. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
-4. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual 연결.
-5. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
-6. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
+1. `DESTRUCTION_UX` — DESTROYED memorial/successor UX.
+2. `MAX_LEVEL_PAYOFF` — +100 비수치 payoff.
+3. `FIRST_10_MINUTES` — 첫 10분 pacing/UX/Visual 연결.
+4. `PRECISION_CUSTOMER_LINK` — 정밀제작·고객/세계 payoff 연결.
+5. `RELEASE_NEAR_VERTICAL_SLICE` — 통합 계약.
 
-## 14. 구현자 확인 순서
+## 15. 구현자 확인 순서
 
 1. 최신 사용자 지시.
 2. Overlay에서 승인사항/현재 작업 순서 확인.
-3. 실패=13, 진행=14~16, 숫자=17, 일반 수리=10~12+19, 일반 재료 공급=18 Canon 소비.
+3. 실패=13, 진행=14~16, 숫자=17, 일반 수리=10~12+19, 일반 재료 공급=18, MAX 대수선=20 Canon 소비.
 4. HIGH/MASTERY 수리 배율은 반드시 19를 우선한다.
-5. 구형 data/runtime는 historical/reuse evidence로만 사용.
-6. 새 `기획 완료` 전 제품 구현 금지.
+5. MAX 복구 예외는 반드시 20만 사용하고 일반 수리/MAX 자동복구로 확대하지 않는다.
+6. 구형 data/runtime는 historical/reuse evidence로만 사용.
+7. 새 `기획 완료` 전 제품 구현 금지.
