@@ -1,0 +1,25 @@
+name: Validate Visual GDD Canon Scrub
+
+on:
+  pull_request:
+    paths:
+      - 'docs/planning/BLACKSMITH_APPROVED_VISUAL_GDD_CANON_SCRUB_20260825.md'
+      - 'docs/planning/BLACKSMITH_VISUAL_GDD_IMPLEMENTATION_SAFE_SPEC_20260825.md'
+      - 'docs/planning/BLACKSMITH_VISUAL_GDD_IMPLEMENTATION_BINDINGS_20260825.json'
+      - 'tests/check_visual_gdd_canon_scrub_contract.py'
+      - '.github/workflows/visual-gdd-canon-scrub.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate implementation-safe Visual GDD contract
+        run: python tests/check_visual_gdd_canon_scrub_contract.py
