@@ -1,0 +1,27 @@
+name: Validate Core Simplification Canon
+
+on:
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - 'CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md'
+      - 'docs/planning/**'
+      - 'docs/superpowers/specs/**'
+      - 'docs/superpowers/plans/**'
+      - 'tests/check_core_simplification_current_contract.py'
+      - '.github/workflows/validate-core-simplification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate current core simplification authority
+        run: python tests/check_core_simplification_current_contract.py
