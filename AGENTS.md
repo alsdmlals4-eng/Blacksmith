@@ -1,24 +1,25 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-07 / PLANNING_REACTIVATED / LIVING_GDD_HOME / CORE_SIMPLIFICATION_CANON_SYNC / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리 작업이 그 Gate를 자동으로 열지 않는다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-08 / SESSION_HANDOFF / LIVING_GDD_HOME / CORE_SIMPLIFICATION_CANON_SYNC / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리·인수인계 작업이 그 Gate를 자동으로 열지 않는다.
 
-현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`이며 current owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`다.
+현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`이며 current owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
 
 ## 1. 권위 순서
 
 1. 사용자의 최신 지시와 승인
 2. `AGENTS.md`
-3. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`의 current overlay / work-state router
+3. `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md` — 새 채팅 cold-start locator; 반드시 fresh-read를 요구하며 자체가 discovery를 대체하지 않음
 4. `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
 5. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
 6. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
-7. 2026-08-20/24 current 분야별 Canon·current registry — 단, 25~27/Art03과 같은 필드가 충돌하면 역사·부분대체 증거
-8. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 현재 제품 구현 Gate가 닫힌 동안 구현 drift는 기획 의도를 덮어쓰지 않음
-9. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림
-10. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
-11. R2/R3 Game Bible·과거 PoC·구형 data/runtime — 역사·비교 증거
-12. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
-13. 외부 벤치마크·과거 대화·AI 추론
+7. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 상단 2026-08-20 snapshot은 25~27/Art03과 충돌하는 필드에서 current authority가 아니며 새 handoff/current owner보다 우선하지 않음
+8. 2026-08-20/24 분야별 Canon·current registry — 단, 25~27/Art03과 같은 필드가 충돌하면 역사·부분대체 증거
+9. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 현재 제품 구현 Gate가 닫힌 동안 구현 drift는 기획 의도를 덮어쓰지 않음
+10. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림
+11. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+12. R2/R3 Game Bible·과거 PoC·구형 data/runtime — 역사·비교 증거
+13. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
+14. 외부 벤치마크·과거 대화·AI 추론
 
 현재 workspace routing:
 
@@ -41,6 +42,7 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작�
 - 현재 실제 승인 대표 Blacksmith Visual GDD 8장은 `INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD` reference이며 final style/runtime/release asset 승인이 아니다. CURRENT/MAX 등 이번 시스템 변경과 충돌하는 내용은 `SYSTEM_SEMANTICS_STALE`이다.
 - 사용자가 2026-08-25 제공한 예시 이미지는 `REFERENCE_ONLY_LAYOUT_DENSITY`이며 Blacksmith 승인 Asset으로 승격하지 않는다.
 - 승인 Visual은 Home/Visual Bible/Asset Library에서 사람용 설계 판단 자료로 직접 접근 가능해야 하며, 이미지 안 예시 숫자·UID·문구는 current canon을 덮어쓰지 않는다.
+- `Asset Library row / Approved=true / Drive Source`는 `Notion Preview binary`와 같은 증거가 아니다. Preview readback이 없으면 `NOTION_DIRECT_IMAGE_EMBED_GAP`으로 보고하고 직접 업로드됐다고 주장하지 않는다.
 - 새 current mechanic sync 뒤 대표 재생성은 `Main Menu / Enhancement Main(+1) / +9→+10 Precision Keyword / Four-state Damage·Repair / Event-only Chronicle` 순으로 소수 화면부터 검증하며 대량 생성하지 않는다.
 - 사람에게 필요한 핵심 수치·규칙·밸런스 표를 “구조화 데이터”라는 이유로 AI Workspace에만 숨기지 않는다.
 - 큰 데이터셋은 Home 전용 복제본보다 canonical linked view를 우선한다.
@@ -210,7 +212,7 @@ GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/
 - `CURRENT_EXECUTION_CONTRACT_STATE: USER_SUPPLIED_V4_8_R4_CURRENT`
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`의 v4.5 r2 내용은 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`다. 이번 작업에서 파일 자체를 조용히 v4.8로 가장하지 않으며 안전한 추후 migration 전까지 역사/충돌 증거로만 취급한다.
 - historical compatibility anchor: 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — **historical only, current execution authority 아님**.
-- current operational override Decision: `BS-OPS-20260825-07` (core simplification canon migration), `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)
+- current operational override Decision: `BS-OPS-20260825-08` (session handoff), `BS-OPS-20260825-07` (core simplification canon migration), `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)
 - 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`
 - 선행 조사 Gate Decision: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`
 - 같은 승인 범위는 기술 재검증 후 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확대만 별도 사용자 Decision이 필요하다.
