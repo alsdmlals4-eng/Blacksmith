@@ -1,11 +1,14 @@
 # Blacksmith Visual GDD Asset Approval · 2026-08-25
 
 - Status: `USER_APPROVED_VISUAL_GDD`
-- User directive: `좋아 승인`
+- User directive: `승인 / 이후 그림체 재설계 필요`
 - Work mode: `PLAN`
-- Baseline main: `256f7ca04ccb258cbd308c7b85250a60c690cdbb`
-- Base main fresh-read: `3c3376845b9a1b7921a4260aa6259cd61533ffc4`
-- `STYLIZED_DARK_FORGE = CURRENT`
+- Baseline main: `827ac4147cc58dba22a39b4a3f7babd8079cddff`
+- Base main fresh-read: `210ec78292fa12ed7563ba743b322dd36103ae4a`
+- Art-direction Decision: `BS-ART-20260825-02`
+- `ART_STYLE_STATUS = REWORK_REQUIRED`
+- `STYLIZED_DARK_FORGE = LEGACY_VISUAL_REFERENCE_NOT_FINAL_STYLE_CANON`
+- `APPROVED_VISUAL_SCOPE = INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD`
 - `APPROVED_REPRESENTATIVE_VISUAL = AVAILABLE`
 - `FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED`
 - `RUNTIME_VALIDATION = NOT_RUN`
@@ -13,7 +16,19 @@
 
 ## Approval meaning
 
-사용자가 2026-08-25 생성된 6개 Blacksmith 설명형 Visual GDD를 승인했다. 이 승인은 **사람용 Living GDD / Visual Bible / 설계 판단용 대표 시각자료**로서의 승인이다. Godot에 바로 투입되는 final runtime asset, 최종 UI texture, release asset, 접근성/device 검증 완료를 의미하지 않는다.
+사용자가 2026-08-25 생성된 Blacksmith 설명형 Visual GDD 8개를 승인했다. 이 승인은 **사람용 Living GDD / Visual Bible / 설계 판단용 정보 구조·레이아웃·설명 의도**에 대한 승인이다.
+
+이번 사용자 피드백에 따라 기존 생성물의 검은 철/금색 장식·과밀한 패널·반복적인 판타지 UI 키트·AI 생성물 특유의 균질한 표현은 **최종 그림체 Canon으로 더 이상 사용하지 않는다.** 새 그림체는 별도 비교·승인 작업에서 결정한다.
+
+따라서:
+
+```text
+8 VISUAL GDDs = APPROVED AS INFORMATION / EXPLANATION REFERENCES
+CURRENT GENERATED ART STYLE = NOT FINAL
+NEXT ART STYLE = USER_DECISION_REQUIRED AFTER RESEARCH / COMPARISON
+```
+
+Godot에 바로 투입되는 final runtime asset, 최종 UI texture, release asset, 접근성/device 검증 완료를 의미하지 않는다.
 
 ## Approved Visual GDD manifest
 
@@ -21,34 +36,66 @@
 | --- | --- | --- | --- | --- |
 | `BS-VIS-20260820-01` | 강화 메인 화면 Visual GDD | `f18d7a58-21b4-469c-b16e-2cbeaa22530b` | `2619843ad82c640e7038acd8a0687752f46326464444f0f24e062464e6cd7066` | Google Drive `16AcZRLJnl-Hexk0m1iLAWkufYGrysrZj` |
 | `BS-VIS-20260820-02` | 강화 DDD 피드백 단계표 | `0f76cb2f-b5c0-45bf-b891-f814e5d14e16` | `606579edbc51f5a9454e4cf0f694e5f1ef4a40544488fda46512b46ed26175ce` | Google Drive `1eBmQG1uPGQcrrC7VlG_m2Kcj3RbxPvDm` |
+| `BS-VIS-20260820-04` | 강화 긴장 Band 상태 매트릭스 | `d5a862ee-0bcf-4604-930e-23ffda4a9a48` | `b675de17a0a48b5719c6bb80a4e1bf39f7a7dea99583ba2a9923d5dbb8d0b028` | Google Drive `1UUTIvitHRMjW6NVCuzJthWd3U96ZXkw_` |
 | `BS-VIS-20260820-05` | 첫 10분 DDD Storyboard | `7fa82021-aee3-49ad-84a5-01cbfb836202` | `3329e8b6c341b7482bf59afa00f652dcd930f138d78cbb2dfc04b56b67c4e84e` | Google Drive `1r0Xjfj-6iGA1yMfx4RQSUOMBLIYLkzbV` |
 | `BS-VIS-20260820-06` | CURRENT/MAX 이중 내구도 Visual GDD | `e25e6e23-c370-46b0-b9d1-013f90794c93` | `378496097011ebfbcfe80d3611309825fed119f5bd5bbee272d149923aa6bb3f` | Google Drive `1w7Xam0CGO-KFUxsYXJnL75tbEXH7AUTm` |
+| `BS-VIS-20260820-08` | MAX 구조 손상과 강화 페널티 비교 | `20e2d949-5bca-4f9d-b289-7ad26220efe1` | `8cb10166a354f13ee0117c279870bc76bb2f226a13e56e37005952aea329bdec` | Google Drive `1qDJ2Khz1I9L0FwdH-XFZ3Zf63CP0_CDp` |
 | `BS-VIS-20260820-09` | 수리 판단 카드 Visual GDD | `66aed12c-f13c-41df-b6f5-027067898713` | `b683ae966b4ca4853c9efae7a49aeab1e9e769127f3ca540db276e2e2efda915` | Google Drive `11WVoZmI2If5zrRC0ydxsaDKro9tPR1qT` |
 | `BS-VIS-20260824-10` | 정밀강화 → 고객 Context Visual GDD | `5c8090ff-898d-4a9f-80d9-4b36b3938fb6` | `c1831b39b7d48646bbd07224a301f6cbc6ede4f9da02c3e4cf6e5985f6067aa9` | Google Drive `17-UoaZsxSGPnLbJAhLHSqcfS6M-J941a` |
 
-모든 6개 행의 승인 상태는 `USER_APPROVED_VISUAL_GDD`다.
+모든 8개 행의 승인 상태는 `USER_APPROVED_VISUAL_GDD`다. 단, 승인 범위는 정보 구조와 설명형 GDD이며 생성된 그림체 자체의 미래 사용 승인이 아니다.
+
+## Art-direction override · `BS-ART-20260825-02`
+
+사용자 피드백을 다음과 같이 구현 가능한 디자인 문제로 정규화한다.
+
+- generic AI-generated dark-fantasy / mobile-fantasy look가 강함
+- 검정+금색 장식 프레임과 발광 테두리가 지나치게 균질함
+- serif 제목·아이콘·패널 ornament가 프로젝트 고유성보다 먼저 읽힘
+- 한 화면의 정보량과 장식 밀도가 높아 AI pitch-board 인상이 강함
+- 장비와 대장간 물성은 유효하지만, 표현 방식이 독자적인 Blacksmith 시각 정체성으로 충분히 소유되지 않음
+
+### 보존할 것
+
+- 장비/작품이 시각적 주인공
+- 대장간의 물성·열·마모·금속 질감
+- 따뜻한 국소 화로광과 깊은 주변 명암
+- 모바일에서 읽히는 상태·위험·선택 위계
+- 색상 외 shape/icon/text의 중복 정보 채널
+
+### 다시 설계할 것
+
+- 전체 그림체와 캐릭터/환경 렌더링 언어
+- UI frame/ornament/typography/icon family
+- black-gold 일변도 palette와 반복 glow
+- 패널 밀도와 설명형 board의 시각 호흡
+- AI-generated look을 줄이는 형태 언어·재질·선화/브러시·레이아웃 규칙
+
+대체 그림체는 이 문서에서 임의 확정하지 않는다. 다음 Art Direction 작업에서 project-owned references → Base reusable visual principles → 직접 관련 시장/현업 사례 순으로 비교한 뒤 최소 3개 실질 대안을 제시하고 사용자 승인을 받는다.
 
 ## Shared guards
 
 - 예시 이미지/외부 레퍼런스의 권리나 자산 자체를 승계하지 않는다.
-- 생성물은 `STYLIZED_DARK_FORGE` 방향을 설명하는 internal project Visual GDD로 사용한다.
-- 생성 이미지 안의 세부 수치·문구는 current canon과 충돌할 경우 **시각 예시**가 우선권을 갖지 않는다. 실제 수치 정본은 current Canon/structured data가 우선한다.
+- 8개 생성물은 현재 gameplay/UI 정보 구조를 설명하는 internal project Visual GDD로 사용한다.
+- 생성 이미지 안의 세부 수치·문구는 current canon과 충돌할 경우 **시각 예시**가 우선권을 갖지 않는다.
 - 이미지 속 예시 성공률·가격·단계값을 새 balance canon으로 자동 승격하지 않는다.
+- 기존 8개 이미지의 art style을 후속 production asset의 스타일 기준으로 자동 복제하지 않는다.
 - 실제 UI 구현 시 Human readability, Android portrait, accessibility, device/runtime 검증을 별도로 수행한다.
-- `BS-VIS-20260820-03`, `04`, `07`, `08` 및 기타 미승인 Visual brief는 자동 승인되지 않는다.
+- `BS-VIS-20260820-03`, `07` 및 기타 미승인 Visual brief는 자동 승인되지 않는다.
 
 ## Storage and destination contract
 
-- GitHub: 이 manifest가 생성물 identity/hash/approval 범위의 structured canon이다.
-- Google Drive: 6개 PNG의 durable binary copy를 보관한다.
-- Notion Asset Library: 동일 6개 Visual ID를 `Approved=true / Status=APPROVED / Decision=ADOPT`의 **Visual GDD reference asset**으로 등록한다.
-- Notion Human Home: 승인 Visual 보유 상태와 Visual Bible/Asset Library를 사람이 볼 수 있게 반영한다.
-- Google Sheet: 기존 동일 Visual ID의 승인/검수 행을 최종 승인 상태로 갱신한다.
+- GitHub: 이 manifest가 생성물 identity/hash/approval 범위와 art-style override의 structured canon이다.
+- Google Drive: 8개 PNG의 durable binary copy를 보관한다.
+- Notion Asset Library: 동일 8개 Visual ID를 `Approved=true / Status=APPROVED / Decision=ADOPT`의 **Visual GDD information reference**로 등록한다.
+- Notion Human Home / Visual Bible: 승인 Visual 보유 상태와 `ART_STYLE_REWORK_REQUIRED`를 사람이 오인 없이 볼 수 있게 반영한다.
+- Google Sheet: 동일 Visual ID의 생성/승인 상태와 `BS-ART-20260825-02`를 compatibility mirror한다.
 
 ## Evidence ceiling
 
-`USER_APPROVED_VISUAL_GDD`는 사용자의 시각자료 승인 증거다. 다음은 여전히 별도 검증이다.
+`USER_APPROVED_VISUAL_GDD`는 사용자의 설명형 시각자료 승인 증거다. 다음은 여전히 별도 검증이다.
 
+- replacement art-style selection
 - final product asset / Godot import
 - runtime screen match
 - Android device readability
