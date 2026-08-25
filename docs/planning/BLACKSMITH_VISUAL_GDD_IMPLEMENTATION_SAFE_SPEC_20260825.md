@@ -1,487 +1,304 @@
 # Blacksmith Visual GDD Implementation-Safe UI Spec · 2026-08-25
 
-- Status: `IMPLEMENTATION_SAFE_PLANNING_SPEC`
-- Parent: `BLACKSMITH_APPROVED_VISUAL_GDD_CANON_SCRUB_20260825.md`
-- Consumes: six `USER_APPROVED_VISUAL_GDD` boards
-- Work Mode: `PLAN`
-- `IMAGE_TEXT_NEVER_OVERRIDES_CANON`
-- `PRODUCT_IMPLEMENTATION = BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
+- Status: `IMPLEMENTATION_SAFE_PLANNING_SPEC / REBOUND_TO_CORE_SIMPLIFICATION`
+- Current gameplay owner: `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
+- Current art owner: `BS-ART-20260825-03 / ILLUSTRATED_WORKSHOP_BOOK`
+- Consumes: the 8 previously user-approved explanatory Visual GDD boards **for information architecture only** plus the user-selected Illustrated Workshop Book style evidence.
+- Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
 
-## 1. Core rule
-
-Approved Visual GDDs define **what must be visually understandable**. They do not define runtime values.
+## 1. Authority boundary
 
 ```text
-Visual GDD
-  -> layout / hierarchy / feedback intent
-
-Domain + resolver + content data
-  -> names / numbers / availability / actual outcome
-
-UI view-model
-  -> presentation-ready canonical values
+VISUAL -> layout / hierarchy / interaction intent / visual-language reference
+CURRENT GAME CANON -> values / states / eligibility / probability / results
 ```
 
-Runtime code must never OCR, parse, sample, or otherwise infer gameplay data from PNGs.
-
-## 2. Authority boundary
+Never resolve gameplay by reading a rasterized image.
 
 ```text
-IMAGE_TEXT_AUTHORITY = NONE
-DOMAIN_DATA_AUTHORITY = CURRENT_STRUCTURED_CANON
-RESOLVER_AUTHORITY = CURRENT_RULE_OWNER
-VISUAL_AUTHORITY = USER_APPROVED_VISUAL_GDD
+IMAGE_TEXT_AUTHORITY = NEVER
+RUNTIME_IMAGE_PARSING = FORBIDDEN
+PNG_OCR_TO_GAME_LOGIC = FORBIDDEN
 ```
 
-When an approved image and current structured canon disagree:
+The previously approved boards remain useful references for questions such as:
+
+- where the item hero belongs;
+- how STOP/PUSH actions separate;
+- how risk and cost are foregrounded;
+- how state change is shown with icon/text/shape redundancy;
+- how customer context and same-UID causality are presented.
+
+Their old CURRENT/MAX, five structural bands, MAX penalties, dated enhancement rows, and multi-precision wording are not current semantics.
+
+## 2. Current mechanic contract for all future Visuals
+
+### Enhancement
 
 ```text
-visual layout survives where possible
-current canon value/meaning wins
-conflicting raster text is ignored
+SUCCESS_LEVEL_DELTA = +1
+TARGET_LEVEL = CURRENT_LEVEL + 1
+NO_MULTI_LEVEL_SUCCESS
 ```
 
-## 3. Data-owner map
+Every enhancement surface must show exactly the next level. Do not show multi-level jump rewards.
 
-| UI concern | Current owner |
-|---|---|
-| target band | `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` Decision15 |
-| base success / attempt gold | `BLACKSMITH_ENHANCEMENT_BALANCE_CURVE_CANON_20260820.md` Decision17 |
-| failure family | overlay Decision13 |
-| CURRENT/MAX / structural state | `BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md` |
-| reinforcement material | `BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md` |
-| repair cost / fatigue | `BLACKSMITH_LATE_REPAIR_ECONOMY_CANON_20260824.md` |
-| onboarding order | `BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md` |
-| customer context | `BLACKSMITH_PRECISION_CUSTOMER_LINK_CANON_20260824.md` |
-| Nadia identity | `data/vertical_slice/customers/nadia_venn.json` |
-| +100 terminal | `BLACKSMITH_MAX_LEVEL_PAYOFF_CANON_20260824.md` |
-
-## 4. Shared view-model requirements
-
-All screens that render an item should consume a stable item identity rather than visual placeholder text.
+### Precision / keyword
 
 ```text
-ItemIdentityVM
-- item_uid
-- display_name
-- crafting_grade
-- enhancement_level
-- primary_material
-- physical_lifecycle
++9 -> +10 = ONLY_PRECISION_ENHANCEMENT
+SUCCESS +10 -> ITEM_KEYWORD exactly one
+ITEM_KEYWORD machine owner = CATALYST_AFFIX
+NO_FOURTH_AFFIX_SLOT
 ```
 
-If a field has no current exact source, the UI must either omit it or show approved non-numeric copy. Do not invent a value to fill the layout.
+Normal enhancement UI is used for all other targets.
 
----
-
-# 5. Enhancement Main VM · `BS-VIS-20260820-01`
-
-## Required semantic fields
+### Damage
 
 ```text
-EnhancementDecisionVM
-- item: ItemIdentityVM
-- current_level
-- target_level
-- target_band
-- highest_checkpoint
-- next_checkpoint
-- base_success_rate
-- recovery_bonus_pp
-- max_structure_success_modifier_pp
-- final_success_rate
-- attempt_gold_cost
-- reinforcement_material_required
-- current_durability
-- max_durability
-- max_structure_state
-- new_enhancement_effect_multiplier
-- failure_outcomes[]
-- structural_scar_probability_per_attempt
-- structural_scar_loss_range
-- stop_action
-- push_action
+NORMAL -> MINOR -> MAJOR -> DESTROYED
+ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE
+CURRENT_MAX_AUTHORITY = SUPERSEDED
 ```
 
-### UI binding rules
+Do not show CURRENT/MAX bars, MAX percentages, STABLE/STRESSED/DAMAGED/FRACTURED/CRITICAL five-band state, MAX penalty, or structural-scar multipliers as current UI.
 
-- `final_success_rate` is the prominent player-facing rate.
-- `base_success_rate`, recovery, and MAX modifier belong in detail disclosure, not duplicate headline numbers.
-- `attempt_gold_cost` and `reinforcement_material_required` are separate mandatory costs.
-- `current_durability` and `max_durability` are never merged.
-- `failure_outcomes[]` must be sourced from current failure-family rules.
-- first structural-risk decision is `current_level=10 / target_level=11`.
+### Enhancement damage gate
 
 ```text
-TARGET +11 = FIRST_STOP_POINT
+TARGET <= +10: ENHANCEMENT_DAMAGE = 0
+TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE
+MONOTONIC_NON_DECREASING_DAMAGE_RISK
 ```
 
-### CTA semantics
+Until exact probabilities are approved:
 
-Generic enhancement can use concise STOP/PUSH wording. At the first-stop tutorial decision, the approved semantic copy is:
+- +10-or-below screen must not imply damage from enhancement failure;
+- +11+ screen can say damage is possible;
+- do not invent an exact damage percent;
+- high-level risk can increase in wording/icon/frame emphasis as target rises, but visual emphasis must not pretend to be a numeric probability scale.
+
+### Customer/world damage
 
 ```text
-STOP  = 이 작품을 지킨다
-PUSH  = +11에 도전한다
+CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE
+PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE
 ```
 
-Exact final copy may be polished later, but both actions remain legal progression.
+Customer handoff/purchase UI must not show automatic wear. Event-result UI can show a one-step damage delta only when the actual event resolver/content owner produced it.
 
----
-
-# 6. DDD Feedback Presentation · `BS-VIS-20260820-02`
-
-DDD presentation reads current target band; it must not own probability thresholds.
+### Chronicle
 
 ```text
-FeedbackContext
-- target_band
-- success_or_failure
-- failure_family_if_any
-- structural_scar_occurred
-- checkpoint_reached
-- max_completion_reached
-- reduced_motion_enabled
+ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE
+MEANINGFUL_EVENT_HISTORY_ONLY
 ```
 
-Required presentation sequence:
+No default timeline of `+6 success / 25 days ago`, etc. Internal timestamps can exist without player-facing routine rows.
+
+## 3. Current art direction · Illustrated Workshop Book
 
 ```text
-anticipation
--> impact
--> result
--> next_question
-```
-
-Relative intensity should rise when the decision is materially more consequential, but **exact time, shake, flash, camera, and audio amplitude are not yet canonical**.
-
-Do not encode generated `0.6s / 0.8s / 1.2s / 1.8s / 2.0s+` values as constants.
-
-Current gameplay bands:
-
-```text
-LEARN +1~+2
-BUILD_CONFIDENCE +3~+10
-FIRST_STOP_POINT +11
-TENSION +12~+30
-HIGH_STAKES +31~+60
-MASTERY +61~+100
-```
-
-Accessibility requirement: risk level cannot be communicated only by color, flash, or shake. Reduced-motion mode must retain information via copy/icon/frame/state changes.
-
----
-
-# 7. First 10 Minutes State Machine · `BS-VIS-20260820-05`
-
-```text
-ONBOARDING_00_WORKSHOP
--> ONBOARDING_01_FIRST_CRAFT
--> ONBOARDING_02_LEARN_1_2
--> ONBOARDING_03_BUILD_3_9
--> ONBOARDING_04_PRECISION_10
--> ONBOARDING_05_FIRST_STOP_PREVIEW_11
--> ONBOARDING_06_STOP_OR_PUSH
--> ONBOARDING_07_ACTUAL_OUTCOME
--> ONBOARDING_08_NADIA_ACK
--> CORE_THESIS_FIRST_SESSION_COMPLETE
-```
-
-The delayed expedition result is **not** a required state before first-session completion.
-
-```text
-DELAYED_RESULT = POST_FIRST_10_MINUTES_SCHEDULE
-```
-
-### Invariants
-
-```text
-NO_SCRIPTED_FAILURE
-NO_HIDDEN_SUCCESS_BOOST
-NO_TUTORIAL_ONLY_ODDS
-NO_FORCED_+11
-CHECKPOINT_IS_DOWNGRADE_FLOOR_NOT_SAVE_POINT
-```
-
-The runtime `ITEM_UID` must persist across craft, enhancement, STOP/PUSH result, handoff, delayed result, repair/detail, and lifecycle history.
-
-Any generated UID, reward, trust, reputation, or exact dialogue on the Visual GDD is a `VARIABLE_PLACEHOLDER` until an owner supplies it.
-
----
-
-# 8. Durability VM · `BS-VIS-20260820-06`
-
-```text
-DurabilityVM
-- current
-- max
-- is_destroyed
-- max_structure_state
-- max_success_modifier_pp
-- new_effect_multiplier
-- repair_available
-- overhaul_available
-```
-
-Core invariant:
-
-```text
-0 <= CURRENT <= MAX <= 100
-```
-
-Destruction:
-
-```text
-is_destroyed = (CURRENT == 0) OR (MAX == 0)
-```
-
-Normal repair:
-
-```text
-NORMAL_REPAIR: CURRENT = MAX
-MAX = unchanged
-```
-
-Structural state owner:
-
-```text
-MAX determines structure state
-```
-
-Current test-budget table:
-
-```text
-MAX 81~100 -> STABLE    /  0pp / new effect 100%
-MAX 61~80  -> STRESSED  / -3pp / new effect 100%
-MAX 41~60  -> DAMAGED   / -6pp / new effect 95%
-MAX 21~40  -> FRACTURED / -10pp / new effect 90%
-MAX 1~20   -> CRITICAL  / -15pp / new effect 80%
-MAX 0      -> DESTROYED
-```
-
-These numbers remain current planning/test-budget values, not final release balance.
-
-The UI must not imply that MAX damage retroactively reduces stats already earned.
-
----
-
-# 9. Repair Decision VM · `BS-VIS-20260820-09`
-
-```text
-RepairDecisionVM
-- item: ItemIdentityVM
-- current_before
-- max_before
-- current_after
-- max_after
-- gold_cost
-- reinforcement_material_required
-- workshop_fatigue_cost
-- continue_without_repair_allowed
-- continue_without_repair_risk_summary
-```
-
-Canonical result:
-
-```text
-current_after = max_before
-max_after = max_before
-```
-
-Player-facing payment:
-
-```text
-GOLD + 보강재
-```
-
-```text
-PLAYER_REPAIR_MATERIAL = 보강재
-```
-
-Gold cost owner:
-
-```text
-missing = MAX - CURRENT
-R = 800 * material_structure_multiplier * secured_band_multiplier
-gold_cost = round(R * (0.05 + 0.65 * missing / 100))
-reinforcement_material_required = max(1, ceil(missing / 25))
-workshop_fatigue_cost = 2
-```
-
-### Success-rate guard
-
-Normal repair changes CURRENT, not MAX. Current success penalties are MAX-based.
-
-```text
-REPAIR_DOES_NOT_CHANGE_SUCCESS_RATE_WHEN_MAX_UNCHANGED
-```
-
-Do not show a green success-rate increase caused solely by CURRENT repair.
-
-Instead, explain the real benefit: more CURRENT buffer and lower immediate risk of reaching CURRENT 0 after future damage.
-
----
-
-# 10. Precision Customer Context VM · `BS-VIS-20260824-10`
-
-```text
-CustomerContextVM
-- customer_id
-- content_id
-- public_name
-- public_role
-- public_epithet
-- public_standing_grade
-- primary_need
-- secondary_need
-- known_context[]
-- current_total_weight
-- maximum_load_if_available
-- hard_load_gate_state
-- required_function_if_explicit
-- direct_help_reasons[]
-- gate_changes[]
-- tradeoffs[]
-- unrelated_reasons[]
-- approximate_primary_estimate_if_assignable
-```
-
-Current starter:
-
-```text
-customer_id = NADIA_VENN
-content_id = ADVENTURER_01
-content_goal = SURVIVAL_AND_RECOVERY
-primary_need = SAFE_RETURN
-secondary_need = RECOVERY_POSSIBILITY
-required_function_if_explicit = NONE
-```
-
-Nadia exact numeric profile remains unresolved:
-
-```text
-NADIA_NUMERIC_CAPABILITY = SEPARATE_CANON_SOURCE_REQUIRED
-```
-
-Therefore `maximum_load_if_available` is nullable until the real numeric owner exists.
-
-### Decision order
-
-```text
-1. HARD GATE
-2. enhancement bounded contribution
-3. relevant precision/function fit
-4. small ability/proficiency context if real data exists
-```
-
-Current test-budget contribution:
-
-```text
-round(0.30 * enhancement_level) pp
-```
-
-No total fit score is created from `direct_help / gate_change / trade-off / unrelated` rows. Generated `3/5`, `2/5`, `1/5`, `7/20`, attack deltas, and expedition numbers are not runtime values.
-
-### Delayed result VM
-
-```text
-CustomerDelayedResultVM
-- customer_id
-- item_uid
-- EXPEDITION_RETURN_STATE
-- RECOVERY_STATE
-- ITEM_UID_LIFECYCLE_STATE
-- causal_reasons[2..4]
-- primary_next_action
-```
-
-Preview cannot reveal future resolved result.
-
----
-
-# 11. +100 terminal presentation
-
-If an enhancement success reaches +100:
-
-```text
-MAX_ENHANCEMENT_COMPLETE
-MAX_ENHANCEMENT_REACHED = true
-```
-
-Presentation is one-time and distinct, but grants no automatic power/heal/reset beyond the already-resolved +100 enhancement result.
-
-The DDD layer must not map this to an invented probability tier or prestige loop.
-
----
-
-# 12. Runtime consumption rules
-
-Implementation, when the project gate opens, should follow this pattern:
-
-```text
-resolver/domain -> view-model adapter -> UI scene
-```
-
-Do not:
-
-```text
-PNG -> OCR -> UI values
-Visual GDD number -> hardcoded constant
-Visual GDD quest line -> content canon
-Visual GDD portrait -> final release asset without separate approval
-```
-
-Suggested separation:
-
-```text
-DOMAIN
-- item / durability / enhancement / customer result
-
-RESOLVERS
-- enhancement
-- repair
-- precision/customer context
-- delayed Nadia result
-
-VIEW-MODEL ADAPTERS
-- EnhancementDecisionVM
-- DurabilityVM
-- RepairDecisionVM
-- CustomerContextVM
-
-UI
-- renders approved hierarchy and style
-```
-
-## 13. Verification contract for future implementation
-
-Automated tests must eventually prove:
-
-- target +11 is FIRST_STOP_POINT
-- final success displayed equals resolver output
-- checkpoint does not mutate success/recovery/CURRENT/MAX
-- normal repair produces CURRENT=MAX and leaves MAX unchanged
-- repair uses gold + `common_reinforcement_material`
-- normal repair alone does not change success probability when MAX is unchanged
-- MAX band drives structure penalty
-- CURRENT==0 or MAX==0 destroys the physical item
-- first-session PUSH uses actual result, not scripted success
-- Nadia hard gate executes before soft estimate
-- no exact Nadia numeric capability is invented
-- no total fit score / Best badge
-- delayed result is schedule-driven and same-UID
-
-Human/device tests must separately prove readability, timing, reduced-motion/accessibility, and first-session comprehension.
-
-## 14. Evidence ceiling
-
-```text
-CANON_SCRUB = COMPLETE
-IMPLEMENTATION_SAFE_SPEC = COMPLETE
-RUNTIME_IMPLEMENTATION = NOT_RUN
+ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK
+ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION
 FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED
-HUMAN_PLAYTEST = NOT_RUN
-ANDROID = NOT_RUN
-ACCESSIBILITY = NOT_RUN
-PRODUCT_IMPLEMENTATION = BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION
+```
+
+Visual grammar:
+
+- hand-drawn workshop notebook / field-guide feeling;
+- paper, leather, iron, wood, graphite/ink and restrained wash material cues;
+- warm localized forge atmosphere, not full-screen orange glow;
+- large functional shapes before micro-decoration;
+- modern readable Korean text hierarchy even when frames look handmade;
+- item/workpiece remains the visual hero;
+- states use text + icon/shape/mark redundancy, not color alone;
+- ornament budget is limited and tied to workshop tools, maker marks, paper clips, stamps, sketches, or material evidence;
+- generated pseudo-text, random runes, gratuitous black/gold fantasy filigree, and dense AI-style annotation clutter are forbidden.
+
+## 4. Representative screen set after mechanic sync
+
+Do not bulk-regenerate all old Visuals. Validate these five first.
+
+### 4.1 Main Menu
+
+Purpose:
+
+```text
+identity + resume/new-game entry + workshop fantasy
+```
+
+Requirements:
+
+- hand-drawn workshop environment or notebook/workbench framing;
+- title readable without ornate gold treatment;
+- primary actions unmistakable;
+- Modak may act as warm companion if consistent with approved mascot direction;
+- no CURRENT/MAX or system-heavy diagnostic information.
+
+### 4.2 Enhancement Main · ordinary +1
+
+Player question:
+
+> 이번 +1 시도를 할 것인가, 멈출 것인가?
+
+P0 information:
+
+```text
+item identity / current enhancement
+next target = current + 1
+final success expectation
+cost = gold + reinforcement material
+current DamageState
+failure outcome summary
+recovery state when relevant
+STOP / ENHANCE(+1)
+```
+
+For target <=+10, do not list enhancement-damage risk.
+For target >=+11, disclose `실패 시 손상 가능`; exact percent only after approved curve exists.
+
+### 4.3 +9 -> +10 Precision Keyword
+
+P0:
+
+```text
+current +9 -> target +10
+material context
+method
+one catalyst
+compatible keyword direction / trade-off
+success expectation
+cost
+success creates one ITEM_KEYWORD
+```
+
+No later Precision milestone teaser implying +20/+30/+40/+50 repeat.
+
+### 4.4 Four-state Damage / Repair decision
+
+P0 state display:
+
+```text
+NORMAL
+MINOR
+MAJOR
+DESTROYED
+```
+
+Use at least two non-color signals among text, icon silhouette, cracks/marks, edge treatment, stamp, paper note, item drawing change.
+
+Repair action is `PENDING_NEW_REPAIR_MODEL`. Do not draw exact repair cost or exact state recovery until approved.
+
+### 4.5 Event-only Item Chronicle
+
+Show meaningful events such as:
+
+```text
+제작됨
++10 정밀강화 키워드 획득
+경미/중대 손상 사건
+중요 수리 (future approved model)
+고객 인계
+고객/세계 결과
+파괴
+Memorial / successor relation
+```
+
+Do not pad the page with every enhancement click or relative-day labels for routine attempts.
+
+## 5. Previous approved Visual GDD status
+
+| Visual ID | Prior role | Current safe use |
+|---|---|---|
+| `BS-VIS-20260820-01` | Enhancement Main | `LAYOUT_REFERENCE`; values/states must be regenerated |
+| `BS-VIS-20260820-02` | DDD Feedback Ladder | `FEEDBACK_REFERENCE`; remove old damage-family semantics |
+| `BS-VIS-20260820-04` | Tension Band Matrix | `HIERARCHY_REFERENCE`; no old damage %/CURRENT/MAX |
+| `BS-VIS-20260820-05` | First 10 Minutes | `FLOW_REFERENCE`; +10 keyword/+11 damage gate needs regeneration |
+| `BS-VIS-20260820-06` | CURRENT/MAX | `SYSTEM_SEMANTICS_STALE`; do not implement dual durability |
+| `BS-VIS-20260820-08` | MAX Penalty | `SYSTEM_SEMANTICS_STALE`; no current MAX penalty system |
+| `BS-VIS-20260820-09` | Repair Decision | `LAYOUT_REFERENCE`; repair semantics/cost pending |
+| `BS-VIS-20260824-10` | Precision -> Customer Context | `CAUSAL_LAYOUT_REFERENCE`; precision cadence must be +9->+10 only |
+
+These existing Asset records remain historical/user-approved explanatory references; `Approved=true` does not mean their old system text is current game canon or current product art.
+
+## 6. Data binding contract
+
+Runtime/UI implementation after the product Gate opens must bind to structured view models, never image text.
+
+Proposed semantic properties:
+
+```text
+item.uid
+item.enhancement_level
+item.item_keyword
+item.damage_state
+item.physical_state
+
+EnhancementPreview.target_level
+EnhancementPreview.final_success_percent
+EnhancementPreview.gold_cost
+EnhancementPreview.reinforcement_units
+EnhancementPreview.damage_possible
+EnhancementPreview.damage_probability_percent?  # only after approval
+EnhancementPreview.recovery
+
+CustomerResult.item_uid
+CustomerResult.result_axes
+CustomerResult.causal_reasons
+CustomerResult.damage_state_before?
+CustomerResult.damage_state_after?
+CustomerResult.primary_next_action
+```
+
+Question-mark fields are optional until their owner is approved/implemented.
+
+## 7. Accessibility / mobile
+
+For Android portrait:
+
+- important state name is written, not only colored;
+- primary actions target ≥48dp in implementation;
+- paper texture cannot reduce text contrast below acceptable readability;
+- handwritten decorative lettering is not used for dense body text;
+- damage state needs semantic text plus shape/icon signal;
+- STOP vs PUSH/ENHANCE must remain distinguishable in grayscale;
+- actual client/device validation remains `NOT_RUN` until observed.
+
+## 8. Forbidden implementation interpretations
+
+```text
+read numbers from approved PNG
+restore CURRENT/MAX because old Visual has two bars
+restore +20/+30/+40/+50 Precision because old Visual mentions milestones
+show exact +11+ damage % before approval
+make purchase itself damage an item
+reuse old MAX penalty table for MINOR/MAJOR
+show routine dated enhancement rows as Chronicle canon
+add a fourth keyword/affix slot
+copy old black/gold ornament into the new current style
+```
+
+## 9. Current unresolved visual inputs
+
+```text
+DAMAGE_PROBABILITY_CURVE = NOT_FINAL
+MINOR_MAJOR_REPAIR_MODEL = NOT_DECIDED
+CUSTOMER_EVENT_DAMAGE_POLICY = NOT_FINAL
+MAJOR_ENHANCEMENT_ELIGIBILITY = NOT_DECIDED
+```
+
+The representative Visual set can be regenerated only to the level supported by these decisions. Missing numbers must be omitted/placeholder-labelled rather than invented.
+
+## 10. Evidence ceiling
+
+```text
+ART_DIRECTION_SELECTION = USER_APPROVED
+REPRESENTATIVE_STYLE_BOARD = HUMAN_APPROVED_DIRECTION_EVIDENCE
+CURRENT_SYSTEM_VISUAL_REGENERATION = NOT_RUN_AFTER_MECHANIC_SYNC
+PRODUCT_ASSET_APPROVAL = NOT_GRANTED
+RUNTIME_BINDING = NOT_RUN
+ANDROID_ACCESSIBILITY = NOT_RUN
+NOTION_CLIENT_RENDER = NOT_RUN
 ```
