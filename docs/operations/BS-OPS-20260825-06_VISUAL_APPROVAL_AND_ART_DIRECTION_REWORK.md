@@ -2,7 +2,7 @@
 
 - Date: `2026-08-25 KST`
 - Work Mode: `PLAN`
-- Status: `IN_PROGRESS / PR206`
+- Status: `READY_FOR_MERGE_AFTER_FINAL_EXACT_HEAD`
 - Baseline Blacksmith main: `827ac4147cc58dba22a39b4a3f7babd8079cddff`
 - Base fresh-read at start: `210ec78292fa12ed7563ba743b322dd36103ae4a`
 - Open pre-existing PR: `#196 OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
@@ -89,14 +89,14 @@ Blacksmith current Visuals / Asset / Reference / Benchmark
 Reuse learning handoff for this operation:
 - selected_modules: `PROJECT_OWNED_APPROVED_VISUAL_GDDS`
 - reuse_mode: `REUSE_EXISTING_PROJECT_IMPLEMENTATION / INFORMATION_CONTRACT`
-- project_paths_changed: approval manifest, art-direction decision, AGENTS, focused approval test, this ops receipt
-- verification_evidence: `RED observed; GREEN pending at authoring time; postmerge readback required`
+- project_paths_changed: approval manifest, art-direction decision, AGENTS, Living-GDD regression contract, focused approval test, this ops receipt
+- verification_evidence: `RED run 32803221350 job 97668137506; GREEN approval workflow 32803955477; PR validation 32803955684 attempt after retry SUCCESS`
 - evidence_ceiling: `Notion client render / Human comparative style test / Android / runtime NOT_RUN`
 - rollback: revert PR #206 and restore previous Visual/style-status projections
 - project_only_lessons: separate information-architecture approval from art-style approval
 - base_promotion_candidates: `NONE`
 
-## 5. TDD receipt
+## 5. TDD / validation receipt
 
 ### RED
 
@@ -114,7 +114,24 @@ Checkout and Python setup succeeded. This is the intended RED.
 
 ### GREEN
 
-`PENDING_EXACT_HEAD_VALIDATION`
+Validated content head before this receipt-only update: `8183043a481d8e8814c7fa27a9633d24dabb52f0`.
+
+Successful workflows:
+- `Validate Visual GDD Asset Approval` run `32803955477` — SUCCESS
+- `Validate HiGodot GUT Authority Gate` run `32803955484` — SUCCESS
+- `Validate Blacksmith BCA Adoption` run `32803955487` — SUCCESS
+- `Validate Project Base Adapter` run `32803955521` — SUCCESS
+- `Validate Thin Adapter Migration` run `32803955495` — SUCCESS
+- `Validate platform release and asset rights` run `32803955474` — SUCCESS
+- `Validate Base v9 adoption` run `32803955478` — SUCCESS
+- `PR validation` run `32803955684` — SUCCESS after retrying only the failed Godot job
+
+PR validation evidence:
+- Python code/document/contracts job: SUCCESS, including current authority, Living GDD, game/lifecycle data, Task1/Task2, forging, enhancement and balance contracts.
+- Godot first attempt failed **only** during official Godot 4.7.1 download with `curl (92) HTTP/2 ... CANCEL`; import/tests had not begun.
+- Same code, failed Godot job rerun: SUCCESS through download, import/parse, scene smoke, HiGodot main-scene command contract, and Godot model/integration suites.
+
+Therefore the download failure is classified as external transient transfer failure, not a repository regression.
 
 ## 6. Adversarial review · minimum five full loops
 
@@ -124,21 +141,27 @@ Attack: Visual approval could accidentally become final product/style approval.
 
 Refinement: manifest and Notion records explicitly split information-GDD approval from final style/runtime asset approval.
 
-Result: `PASS_PENDING_GREEN`.
+Verification: focused approval workflow + Notion Asset readback.
+
+Result: `PASS`.
 
 ### Loop 2 · stale art authority
 
 Attack: root `AGENTS.md` still called `STYLIZED_DARK_FORGE` current and said no approved representative images existed.
 
-Refinement: route `BS-ART-20260825-02`, 8 approved Visual GDDs, and `REWORK_REQUIRED` at the entrypoint.
+Refinement: route `BS-ART-20260825-02`, 8 approved Visual GDDs, and `REWORK_REQUIRED` at the entrypoint. Update the Living-GDD regression test so Decision03 keeps its historical snapshot while the current entrypoint requires the new art status.
 
-Result: `PASS_PENDING_GREEN`.
+Verification: Python document/contracts job SUCCESS.
+
+Result: `PASS`.
 
 ### Loop 3 · binary identity / destination integrity
 
 Attack: image approval without durable identity could be unrecoverable.
 
-Refinement: generation ID + SHA-256 + durable Drive ID + Notion Asset record are recorded for both 04 and 08.
+Refinement: generation ID + SHA-256 + durable Drive ID + Notion Asset record are recorded for both 04 and 08; earlier six keep their existing identity records.
+
+Verification: Drive upload receipts + Notion Asset record readback + manifest contract.
 
 Result: `PASS`.
 
@@ -148,15 +171,19 @@ Attack: repeating the user's shorthand as a nationality label would not create a
 
 Refinement: normalize it into concrete failures: template-like black/gold ornament, repeated amber glow, generic generated iconography, dense AI pitch-board composition, insufficient project-specific rendering identity.
 
+Verification: art-direction decision and Human Home/Visual Bible projection separate retained principles from reopened style choices.
+
 Result: `PASS`.
 
 ### Loop 5 · future production drift
 
 Attack: subsequent images could continue cloning the same rejected style because the existing eight images are approved.
 
-Refinement: subsequent production may reuse their information architecture only; replacement art direction requires research, >=3 alternatives, user approval, and representative regeneration before bulk asset work.
+Refinement: subsequent production may reuse their information architecture only; replacement art direction requires research, >=3 alternatives, user approval, and representative regeneration before bulk asset work. Existing six Notion Asset records were also updated to carry `ART_STYLE_STATUS=REWORK_REQUIRED`.
 
-Result: `PASS_PENDING_POSTMERGE`.
+Verification: Home/Visual Bible/Asset Library readback and next-gate routing.
+
+Result: `PASS_PENDING_POSTMERGE_MAIN_READBACK`.
 
 ## 7. Evidence boundary
 
@@ -166,14 +193,16 @@ Verified / observable:
 - Notion Asset record creation,
 - user approval of Visual GDDs,
 - user direction to redesign art style,
-- repository RED evidence.
+- TDD RED and exact code/content GREEN evidence,
+- server-side Notion Home/Visual Bible/Asset metadata updates,
+- Sheet compatibility mirror writes.
 
 Not verified:
 - replacement style quality,
 - Notion client-side visual geometry,
 - Android readability,
 - accessibility,
-- Godot/runtime match,
+- local Godot Editor/session behavior,
 - Human comparative evaluation of future alternatives.
 
 No claim above these ceilings is allowed.
