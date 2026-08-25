@@ -14,8 +14,11 @@ AGENTS_TOKENS = (
     "HUMAN_PROJECT_HOME_IS_LIVING_GDD_VISUAL_DASHBOARD",
     "HUMAN_RELEVANT_PROJECT_OUTPUTS_VIEWABLE_FROM_HOME",
     "EXPLANATORY_VISUAL_GDD_BEFORE_DECORATIVE_ART",
-    "STYLIZED_DARK_FORGE",
-    "VISUAL_GDD_GAP",
+    "BS-ART-20260825-02",
+    "ART_STYLE_STATUS = REWORK_REQUIRED",
+    "STYLIZED_DARK_FORGE = LEGACY_VISUAL_REFERENCE_NOT_FINAL_STYLE_CANON",
+    "INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD",
+    "8 AVAILABLE",
 )
 
 DECISION_TOKENS = (
@@ -59,7 +62,7 @@ def main() -> int:
     spec = read(SPEC, failures)
 
     require_tokens("AGENTS.md", agents, AGENTS_TOKENS, failures)
-    require_tokens("Decision 03", decision, DECISION_TOKENS, failures)
+    require_tokens("Decision 03 historical snapshot", decision, DECISION_TOKENS, failures)
     require_tokens("Living GDD spec", spec, SPEC_TOKENS, failures)
 
     if failures:
