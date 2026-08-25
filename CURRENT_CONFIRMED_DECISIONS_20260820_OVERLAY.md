@@ -1,10 +1,75 @@
-# [현재 우선 Overlay] Blacksmith 2026-08-20 Confirmed Decisions
+# [현재 우선 Overlay] Blacksmith Confirmed Decisions
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
-- 기준: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23 / BS-LINK-20260824-24`
+- current owner: `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
+- current override Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
+- historical/partial basis: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23 / BS-LINK-20260824-24`
 - Work Mode: `PLAN`
-- 제품 구현: `BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION`
+- 제품 구현: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
+
+## -1. 2026-08-25 CURRENT OVERRIDE · Decisions 25~27 / Art03
+
+아래 2026-08-20/24 상세 섹션은 승인 당시의 구조·수치와 비교 근거를 보존한다. **같은 필드를 다룰 때는 이 override와 `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`가 우선**하며, 구형 CURRENT/MAX·다중 정밀강화·수리/대수선 퍼센트 공식·날짜별 강화 로그는 current fallback이 아니다.
+
+Required current routing tokens:
+
+```text
+BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md
+BS-ENHANCE-20260825-25
+BS-DAMAGE-20260825-26
+BS-CHRONICLE-20260825-27
+BS-ART-20260825-03
+```
+
+Current simplified contract:
+
+```text
+SUCCESS_LEVEL_DELTA = +1
++9 -> +10 = PRECISION_ENHANCEMENT
++10 PRECISION SUCCESS -> exactly one ITEM_KEYWORD
+ITEM_KEYWORD machine owner = CATALYST_AFFIX
+NO_FOURTH_AFFIX_SLOT
+
+DAMAGE_STATE = NORMAL -> MINOR -> MAJOR -> DESTROYED
+ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE
+TARGET <= +10: ENHANCEMENT_DAMAGE = 0
+TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE
+MONOTONIC_NON_DECREASING_DAMAGE_RISK
+EXACT_DAMAGE_CURVE = TUNABLE_NOT_FINAL
+CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE
+PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE
+CURRENT_MAX_AUTHORITY = SUPERSEDED
+
+ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE
+MEANINGFUL_EVENT_HISTORY_ONLY
+
+ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK
+ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION
+FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED
+```
+
+Preserved where not conflicting:
+
+```text
+PRIMARY CORE = 강화 긴장감 + DDD / STOP vs PUSH
+same UID lifecycle and delayed customer/world causality
+same-target recovery
+CHECKPOINT_FLOORS = [10,30,60,90]
++10 secured/break-even role
++11 first salient risk decision
++100 terminal
+existing success / attempt-cost / enhancement reinforcement-material test budgets where independent of old durability
+```
+
+Open gates; do not invent or fall back to old CURRENT/MAX formulas:
+
+```text
+DAMAGE_PROBABILITY_CURVE = USER_APPROVAL_REQUIRED
+CUSTOMER_EVENT_DAMAGE_POLICY = CONTENT_OWNER_DECISION_REQUIRED
+MINOR_MAJOR_REPAIR_MODEL = USER_APPROVAL_REQUIRED
+MAJOR_ENHANCEMENT_ELIGIBILITY = USER_APPROVAL_REQUIRED
+```
 
 ## 0. 운영 동기화 규칙
 
@@ -41,15 +106,17 @@ SUPPORT
 
 DDD는 `행동 → 기대 → anticipation → 즉시 결과 → 보상/손실 → 다음 질문`의 밀도를 높이는 것이며 반복 클릭·자극량 자체를 의미하지 않는다.
 
-## 2. 실패·회복·정보 공개 — 02~04
+## 2. 실패·회복·정보 공개 — 02~04 · `PARTIALLY_SUPERSEDED`
 
 - 기본 골격: `RISK_PLUS_RECOVERY_PROGRESS`.
 - 모든 실패는 실제 비용/손실과 같은 작품 UID의 recovery를 남긴다.
 - account-wide transferable failstack은 기본 게임에서 금지.
-- 강화 전 최종 성공률·시도비·최종 outcome·CURRENT/MAX 위험·recovery·다음 checkpoint를 공개한다.
+- 과거 강화 전 정보에는 CURRENT/MAX 위험이 포함됐으나, current damage disclosure는 4단계 damage state와 +11 이후 damage risk를 사용한다.
 - 숨은 위험 보정으로 긴장감을 만들지 않는다.
 
-## 3. Checkpoint·CURRENT/MAX·파괴 — 05~09
+## 3. Checkpoint·CURRENT/MAX·파괴 — 05~09 · `HISTORICAL_DURABILITY_EVIDENCE`
+
+아래 수치 이중 내구 계약은 Decision26 이후 current gameplay authority가 아니다.
 
 ```text
 0 <= CURRENT <= MAX <= 100
@@ -59,13 +126,11 @@ MAX unchanged
 CURRENT == 0 or MAX == 0 -> physical DESTROYED
 ```
 
-- DOWNGRADE는 최대 1단계, 최근 checkpoint floor 아래로 내려가지 않음.
-- `FAIL_DAMAGE`: CURRENT 중심 손상.
-- `FAIL_CRITICAL_DAMAGE`: CURRENT 심각 손상 + MAX 구조 흉터.
-- 파괴는 별도 destroy roll이 아니라 실제 CURRENT/MAX 0으로만 발생.
-- 물리 파괴 후 UID·이름·강화/소유/사건/파괴 원인·Chronicle 기록은 보존.
+- DOWNGRADE는 최대 1단계, 최근 checkpoint floor 아래로 내려가지 않음 — 이 checkpoint 원리는 유지.
+- `FAIL_DAMAGE`/`FAIL_CRITICAL_DAMAGE`와 MAX 구조 흉터 구분은 current damage resolution에서 대체됨.
+- 물리 파괴 후 UID·이름·강화/소유/사건/파괴 원인·Chronicle 기록을 보존한다는 생애 원리는 유지.
 
-MAX 상태 첫 테스트:
+과거 MAX 상태 테스트:
 
 ```text
 81~100: success  0pp / new effect 100%
@@ -75,10 +140,11 @@ MAX 상태 첫 테스트:
 1~20  : success -15pp / new effect 80%
 ```
 
-- 일반 CURRENT 수리는 MAX를 복구하지 않는다.
-- Decision 20의 생애 1회 부분 대수선만 승인된 예외다.
+현재는 `HISTORICAL_TEST_BUDGET`; MINOR/MAJOR에 자동 이식하지 않는다.
 
-## 4. 일반 CURRENT 수리 — 10~12 + 18~19
+## 4. 일반 CURRENT 수리 — 10~12 + 18~19 · `SUPERSEDED_PENDING_NEW_REPAIR_MODEL`
+
+과거 공식:
 
 ```text
 missing = MAX - CURRENT
@@ -101,20 +167,18 @@ recovery unchanged
 REPAIR_JOB_FATIGUE_COST = 2
 ```
 
-현재 구조 배율:
+과거 구조 배율:
 
 ```text
 material: iron 1.00 / silver 1.20 / meteor_iron 1.50
 secured: LEARN·BUILD 1.00 / FIRST 1.10 / TENSION 1.25 / HIGH 2.25 / MASTERY 3.00
 ```
 
-- `HIGH 2.25 / MASTERY 3.00`은 `BS-REPAIR-20260824-19`가 11의 `1.50 / 1.80`을 부분 대체한 최신 테스트 Budget이다.
-- 시장가·실제 다음 강화비·MAX 상태를 일반 CURRENT 수리 runtime 공식에 직접 연결하지 않는다.
-- 19의 fresh 20,000-run에서 +100 평균 기대원가 변화는 pre-19 대비 약 `+0.095%`로 기존 거시경제 구조를 유지한다.
+이 수리 공식과 배율은 새 `MINOR_MAJOR_REPAIR_MODEL` 승인 전 current 구현 fallback으로 사용하지 않는다. 일반 강화용 공통 보강재 공급 계약은 별도 유지 가능하다.
 
-## 5. 실패 결과군 정확 비율 — 13
+## 5. 실패 결과군 정확 비율 — 13 · `HISTORICAL_DAMAGE_BUDGET`
 
-실패가 이미 확정된 뒤의 조건부 비율:
+과거 실패가 이미 확정된 뒤의 조건부 비율:
 
 ```text
 order = HOLD / DOWNGRADE / DAMAGE / CRITICAL
@@ -127,11 +191,7 @@ HIGH_STAKES        30 / 15 / 39 / 16
 MASTERY            20 / 20 / 40 / 20
 ```
 
-```text
-P(CRITICAL | failure) = P(MAX scar | failure)
-```
-
-CRITICAL 뒤 별도 MAX-scar/destroy roll 금지.
+Decision26 이후 이 DAMAGE/CRITICAL 비율은 새 +11~+100 damage curve의 암묵적 기본값이 아니다. `TARGET <= +10` 강화 손상은 0이며, +11 이후 확률은 별도 후속 승인 대상이다.
 
 ## 6. 강화 범위·경제 전환점 — 14
 
@@ -144,7 +204,7 @@ MAX_LEVEL = +100
 +11~+100   PROFITABLE_ENHANCEMENT_ZONE
 ```
 
-+10 누적 기대원가에는 제작·강화·실패 반복·DOWNGRADE 복구·강화 유발 CURRENT 수리·해당 구간 실제 파괴/재제작 기대비용을 포함한다.
++10 경제 확보 역할은 유지하되, 과거 기대원가가 CURRENT/MAX 수리·파괴 비용을 포함했다는 점 때문에 숫자 anchor는 새 damage/repair 모델 후 재검산 대상이다.
 
 정밀제작·수식어·Chronicle·특수 고객/거래 채널 프리미엄은 별도 가치축이다.
 
@@ -166,6 +226,8 @@ CURRENT +10 = FIRST_ECONOMIC_STOP_STATE
 TARGET +11  = FIRST_STOP_POINT ATTEMPT
 ```
 
+경험 밴드는 유지하지만 과거 밴드별 DAMAGE/CRITICAL 비율은 Decision26에 의해 대체됐다.
+
 ## 8. Checkpoint cadence — 16
 
 ```text
@@ -182,7 +244,7 @@ CHECKPOINT_FLOORS = [10, 30, 60, 90]
 +100 MAX terminal
 ```
 
-Checkpoint는 오직 DOWNGRADE floor다. CURRENT/MAX/recovery/시도비/수리비를 복구하거나 초기화하지 않는다.
+Checkpoint는 오직 DOWNGRADE floor다. recovery/시도비/강화비를 리셋하지 않는다. 구형 CURRENT/MAX/수리비 리셋 언급은 더 이상 적용 대상이 아니다.
 
 ```text
 BAND_BOUNDARY != CHECKPOINT_FLOOR
@@ -203,8 +265,6 @@ BAND_BOUNDARY != CHECKPOINT_FLOOR
 +31~+60   73% -> 69%
 +61~+100  69% -> 64%
 ```
-
-과거 `MASTERY 25~40%` working range는 17에서 대체됨.
 
 Recovery:
 
@@ -232,22 +292,11 @@ shadow = 50G/unit
 +10 830 / +30 6,270 / +60 22,440 / +90 47,310 / +100 57,440
 ```
 
-MASTERY CURRENT 손상 첫 Budget:
-
-```text
-DAMAGE    CURRENT -15~-25
-CRITICAL  CURRENT -35~-60
-MAX scar  MAX -6~-15
-```
+과거 MASTERY CURRENT/MAX 손상 Budget은 `HISTORICAL_NUMERIC_EVIDENCE`이며 새 4단계 damage probability/repair에 자동 이식하지 않는다.
 
 ## 10. 누적 기대원가·기본 판매가 — 17
 
-20,000-run planning Monte Carlo와 독립 seed 재검산을 사용한다. Seed별 raw mean은 후기 long-tail 때문에 소폭 흔들리므로 승인된 고정 anchor를 사용한다.
-
-```text
-independent reproduction tolerance ≈ ±1.5%
-SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
-```
+20,000-run planning Monte Carlo와 독립 seed 재검산을 사용한 과거 anchor다. 새 damage/repair 모델이 경제에 영향을 주므로 release/current balance 재검산 전까지 `PRE_SIMPLIFICATION_ECONOMIC_EVIDENCE`로 취급한다.
 
 | Level | Mean Expected Cost Anchor | Base Market Value |
 |---:|---:|---:|
@@ -266,18 +315,9 @@ SALE_PRICE_RUNTIME != ACTUAL_PLAYER_SPEND
 | +90 | 3,235,853 | 5,824,500 |
 | +100 | **5,632,657** | **11,265,300** |
 
-검증 계약:
++10 break-even / +11 이후 profit-zone이라는 구조 의도는 유지하지만, 정확 숫자는 새 repair/damage curve 뒤 재검산한다.
 
-```text
-+0~+9 expected profit < 0
-+10 expected profit ~= 0
-+11~+100 expected profit > 0
-+11 이후 anchor expected profit 단조 비감소
-```
-
-## 11. 일반 강화·수리 Resource Supply — 18
-
-사용자 승인: `2026-08-24 KST / 권장안 B`.
+## 11. 일반 강화·수리 Resource Supply — 18 · `PARTIALLY_PRESERVED`
 
 ```text
 CANONICAL_ID = common_reinforcement_material
@@ -286,7 +326,7 @@ UNIT_PRICE = 50G
 SUPPLY = WORKSHOP_MATERIAL_VENDOR / ALWAYS_AVAILABLE / NO_CAP
 ```
 
-강화 recipe:
+강화 recipe는 current planning input으로 유지:
 
 ```text
 +1~+20   보강재 1
@@ -296,160 +336,122 @@ SUPPLY = WORKSHOP_MATERIAL_VENDOR / ALWAYS_AVAILABLE / NO_CAP
 +81~+100 보강재 5
 ```
 
-일반 CURRENT 수리 recipe:
-
-```text
-missing 1~25  -> 보강재 1
-missing 26~50 -> 보강재 2
-missing 51~75 -> 보강재 3
-missing 76~99 -> 보강재 4
-```
+구형 CURRENT 결손 기반 **수리** 보강재 recipe는 `SUPERSEDED_PENDING_NEW_REPAIR_MODEL`이다.
 
 - 보강재는 새 화폐가 아니라 공통 공방 재료.
-- 골드와 보강재를 모두 지불하며 상호 대체/할인하지 않음.
+- 골드와 보강재를 모두 지불하며 상호 대체/할인하지 않음 — 강화 recipe에 적용.
 - `iron / silver / meteor_iron`을 일반 보강재로 직접 소비하지 않음.
 - RNG·희귀 드롭·일일 cap·채굴/전투·고객 완료를 기본 공급 Gate로 사용하지 않음.
 - salvage/customer/world-event 보너스 공급은 future hook이며 아직 제품 승인 아님.
-- 제품 data/runtime는 현재 PLAN Gate 때문에 수정하지 않음.
 
 책임 원본: `docs/planning/BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md`.
 
-## 12. 후기 일반 CURRENT 수리 경제 — 19
+## 12. 후기 일반 CURRENT 수리 경제 — 19 · `HISTORICAL_PRE_SIMPLIFICATION_EVIDENCE`
 
-사용자 승인: `2026-08-24 KST / 권장안 B`.
-
-```text
-SECURED_BAND_MULTIPLIER
-LEARN / BUILD = 1.00
-FIRST         = 1.10
-TENSION       = 1.25
-HIGH          = 2.25
-MASTERY       = 3.00
-```
-
-- 19는 10~12의 수리 공식·Base R·주재료 배율·보강재 수량·피로도 2를 유지한다.
-- 11의 `HIGH 1.50 / MASTERY 1.80`만 부분 대체한다.
-- 12의 해당 값 기반 후기 예시는 `HISTORICAL_PRE_19_NUMERIC_EVIDENCE`다.
-- fresh 20,000-run 재현: +60 `713,376`, +90 `3,246,947`, +100 `5,661,842` mean G-eq; +100 pre-19 대비 약 `+0.095%`.
-- Human/Player 검증 전 출시 최종 밸런스로 주장하지 않는다.
+Decision19의 배율과 20,000-run은 구형 CURRENT/MAX 수리 정책의 민감도 증거로 보존한다. 새 MINOR/MAJOR 수리 모델의 숫자로 자동 이식하지 않는다.
 
 책임 원본: `docs/planning/BLACKSMITH_LATE_REPAIR_ECONOMY_CANON_20260824.md`.
 
-## 13. MAX 생애 1회 부분 대수선 — 20
+## 13. MAX 생애 1회 부분 대수선 — 20 · `SUPERSEDED_PENDING_NEW_REPAIR_MODEL`
 
-사용자 승인: `2026-08-24 KST / 권장안 B`.
-
-```text
-eligibility:
-  highest_checkpoint >= +60
-  0 < MAX <= 40
-  OVERHAUL_USED == false
-  DESTROYED == false
-
-effect:
-  MAX = min(60, MAX + 15)
-  CURRENT = MAX
-  OVERHAUL_USED = true
-
-cost:
-  750,000G × material_structure_multiplier
-  + 보강재 20
-  + fatigue 5
-```
-
-- 같은 물리 UID 생애 1회만 허용한다.
-- 강화 단계·checkpoint·수식어·기존 성능·failure recovery·Chronicle/history를 유지한다.
-- DESTROYED 작품은 부활시키지 않는다.
-- 반복/완전 MAX 복구와 전용 희귀 복구 화폐를 만들지 않는다.
-- 대수선 후 MAX는 60을 넘지 않으므로 STRESSED/STABLE 상태로 복귀할 수 없다.
-- 승인 전 비교와 승인 후 독립 20,000-run 재구성 모두 **생애 1회 부분복구는 거시경제 영향이 작고, 반복 완전복구는 위험 곡선을 크게 약화**하는 방향을 재현했다. 정확한 release balance는 Human test와 최종 Balance Lab 대상이다.
+과거 MAX +15 / ceiling 60 / 750k×material + 보강재20 + fatigue5 구조는 CURRENT/MAX 삭제와 함께 current repair authority에서 내려간다. 생애 1회 특별 복구라는 설계 원리는 후속 MAJOR repair/overhaul 비교 후보가 될 수 있지만 자동 채택하지 않는다.
 
 책임 원본: `docs/planning/BLACKSMITH_MAX_OVERHAUL_CANON_20260824.md`.
 
-## 14. DESTROYED 기록·추모·후계 UX — 21
+## 14. DESTROYED 기록·추모·후계 UX — 21 · `PARTIALLY_PRESERVED`
 
-사용자 승인: `2026-08-24 KST / 권장안 B`.
+유지되는 핵심:
 
 ```text
-CAUSAL_DESTRUCTION
-+ IMMUTABLE_HISTORY_ARCHIVE
-+ CURATED_MEMORIAL
-+ OPTIONAL_SUCCESSOR_PROVENANCE
-+ ZERO_POWER_INHERITANCE
+PHYSICAL_ITEM_DIES
+HISTORY_DOES_NOT_DIE
+IMMUTABLE_HISTORY_ARCHIVE
+CURATED_MEMORIAL
+OPTIONAL_NEW_UID_SUCCESSOR
+ZERO_POWER_INHERITANCE
 ```
 
-- `CURRENT==0 or MAX==0`이면 물리 작품은 영구 `DESTROYED`이며 일반 수리·대수선·강화·판매·정상 인계로 부활하지 않는다.
-- 파괴 순간에는 `파괴 직전 CURRENT/MAX → 직접 손실 → 실제 0 도달 축 → 직접 원인`을 읽을 수 있게 표시한다.
-- 모든 파괴 UID는 불변 `DESTROYED_HISTORY_RECORD`에 자동 보존한다.
-- Archive는 오래됐다는 이유로 FIFO 삭제하지 않으며, Memorial은 Archive 중 플레이어가 중요하다고 선택한 작품을 강조하는 별도 view다.
-- 후계 작품은 나중에 실제 새 작품을 제작한 뒤 선택적으로 predecessor 관계만 연결한다. `OLD_UID != NEW_UID`이며 새 UID는 자기 제작 provenance부터 시작한다.
-- 강화 단계/checkpoint/stat/affix/Artistry/Chronicle/recovery/CURRENT/MAX/재료/가격 premium을 후계 UID에 상속하지 않는다.
-- 고객 작품이 파괴돼도 고객 identity/관계 기록은 유지하며, 새 장비는 새 UID를 사용한다.
-- 파괴 자체를 자동 Artistry/Chronicle 성장, 재료 환급, power inheritance, death-farming 보상으로 사용하지 않는다.
-- historical `enhancement_session.gd`의 별도 destroy 확률 및 파괴 시 progression/affix clear는 현재 runtime 권위가 아니며 `IMPLEMENTATION_DRIFT`다.
+구형 CURRENT/MAX 0 도달 축·직전 퍼센트 표시는 current destruction trigger가 아니다. 이제 `MAJOR -> DESTROYED` 한 단계 transition 또는 eligible customer/world event damage가 terminal state에 도달할 수 있다.
 
-책임 원본: `docs/planning/BLACKSMITH_DESTRUCTION_UX_CANON_20260824.md`.
+- DESTROYED는 같은 physical UID의 영구 종료이며 강화·수리·판매·정상 인계로 부활하지 않는다.
+- Archive는 age-based FIFO 삭제 금지.
+- successor는 새 UID, predecessor relation만 허용하며 gameplay power/history를 상속하지 않는다.
+- 고객 작품 파괴 시 고객 identity/관계 기록은 유지한다.
+
+책임 원본: `docs/planning/BLACKSMITH_DESTRUCTION_UX_CANON_20260824.md` — CURRENT/MAX-specific 필드는 historical evidence.
 
 ## 15. +100 최대 강화 완료 Payoff — 22
 
-사용자 승인: `2026-08-24 KST / 권장안 B`.
+사용자 승인 구조를 유지한다.
 
 ```text
 MAX_ENHANCEMENT_COMPLETE
 ```
 
-- +100은 기본 강화의 진짜 terminal이며 +101/Prestige/reset형 후속 강화는 별도 사용자 승인 없이는 만들지 않는다.
-- +100 성공 시 같은 UID에 `MAX_ENHANCEMENT_REACHED` 생애 사실을 1회 기록하고 일반 강화와 구분되는 1회 완성 연출을 제공한다.
-- 영구 `MAX_COMPLETION_MARK`로 작품 카드/이름/생애 화면에서 완료 사실을 식별 가능하게 하되 정확 Visual은 별도 승인 대상이다.
-- +100을 제작 등급 `걸작/전설`로 재명명하지 않으며 제작 등급과 Artistry를 변경하지 않는다.
-- CURRENT/MAX·대수선 사용상태·수식어·기존 성능·Chronicle/history를 초기화하지 않는다. 흉터 있는 +100도 정상 완료 상태다.
-- completion 자체로 attack/success/artistry/affix/추가 market multiplier/CURRENT·MAX heal/overhaul reset을 지급하지 않는다.
-- `is_max_enhancement_complete=true` recognition fact만 후속 고객/세계/전시 시스템이 읽을 수 있게 한다. Decision22가 필수 고객/메인 콘텐츠 gate·자동 명성/호감/전시 성공을 만들지는 않는다.
-- +100 이후 작품은 보유/판매/고객·세계 인계/기록/후속 작품으로 이어지며, 이후 causal damage와 Decision21 DESTROYED 규칙을 그대로 적용받는다.
+- +100은 기본 강화 terminal이고 +101/Prestige/reset형 후속 강화는 별도 승인 없이는 만들지 않는다.
+- 같은 UID에 완료 사실을 기록하고 별도 완료 연출/표식을 제공할 수 있다.
+- completion 자체로 추가 power multiplier나 damage heal을 주지 않는다.
+- +100 이후에도 고객/세계 인계와 4단계 damage/DESTROYED 규칙을 적용받는다.
 
 책임 원본: `docs/planning/BLACKSMITH_MAX_LEVEL_PAYOFF_CANON_20260824.md`.
 
-## 16. 첫 10분 Core Thesis 온보딩 — 23
+## 16. 첫 10분 Core Thesis 온보딩 — 23 · `PARTIALLY_SUPERSEDED`
 
-사용자 승인: `2026-08-24 KST / 권장안 B`.
+Current interpretation:
 
 ```text
-CORE_THESIS_FIRST_10_MINUTES
+New Game
+→ 짧은 첫 작품 제작
+→ +1/+2 LEARN
+→ +3~+9 ordinary BUILD
+→ +9 -> +10 Precision Enhancement
+→ +10 성공 시 ITEM_KEYWORD 1개 생성 + checkpoint + break-even state
+→ +11 첫 damage-eligible risk Preview
+→ STOP vs PUSH
+→ same UID payoff
 ```
 
-- `New Game → 짧은 첫 작품 제작 → +1/+2 안전 강화 → +3~+9 BUILD → +10 첫 정밀강화+checkpoint+평균 본전선 → +11 구조 위험 Preview → STOP vs PUSH → 실제 결과 → 짧은 UID/의뢰 payoff` 순서를 사용한다.
-- 첫 강화 input은 약 3분 이내, 첫 STOP/PUSH 결정은 약 10분 이내를 Human pacing 목표로 둔다. 강제 countdown은 아니다.
-- tutorial-only scripted failure, hidden success boost, 별도 tutorial odds를 만들지 않는다.
-- 실제 첫 실패가 발생했을 때만 same-UID recovery를 just-in-time으로 설명한다.
-- +10 첫 정밀강화는 full rules 접근을 유지하되 추천 방식/촉매를 먼저 보여주는 progressive disclosure를 사용한다. hard lock하지 않는다.
-- +10 STOP와 +11 PUSH 모두 정상 first-session completion이며 +11을 튜토리얼 진행 조건으로 강제하지 않는다.
-- +11 직전에 MAX/CRITICAL 구조 위험을 foreground한다.
-- Decision23은 starter-order에 바인딩할 정확 고객/세계 owner와 보상 수치를 만들지 않는다. 다음 `PRECISION_CUSTOMER_LINK`가 소유한다.
-- 후기 수리·대수선·Archive/Memorial/+100 payoff·전체 고객/세계 관리·고급 Artistry 경제는 첫 핵심 선택 전에 강제로 가르치지 않는다.
-- 현재 MainMenu/App Shell은 reuse 가능하지만 최신 Forge/Enhancement 13~22 통합 runtime과 Decision23 onboarding은 `IMPLEMENTATION_UNVERIFIED / BLOCKED`다.
+- 첫 강화 input 약 3분/첫 STOP-PUSH 약 10분은 Human pacing 목표.
+- tutorial-only scripted failure, hidden success boost, 별도 tutorial odds 금지.
+- +10 이전 강화 실패 손상은 0.
+- +11에서부터 실패 시 손상 가능성을 foreground하되 exact percent는 curve 승인 전 표시하지 않는다.
+- CURRENT/MAX teaching과 MAX/CRITICAL structural-scar teaching은 current onboarding에서 제거된다.
+- +11을 튜토리얼 진행 조건으로 강제하지 않는다.
 
-책임 원본: `docs/planning/BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md`.
+책임 원본: `docs/planning/BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md` — 위 current override가 동일 필드에서 우선.
 
-## 17. 정밀강화·고객/세계 인과 연결 — 24
+## 17. 정밀강화·고객/세계 인과 연결 — 24 · `PARTIALLY_SUPERSEDED`
 
-사용자 승인: `2026-08-24 KST / 권장안 B + Nadia starter + 0.30pp/level test budget`.
+유지:
 
 ```text
 DISCLOSED_CONTEXT_FIT_AND_CAUSAL_MULTI_AXIS_RESULT
+NADIA_VENN / ADVENTURER_01 starter
+목적 / 제약 / 알려진 상황
+NO_UNIVERSAL_FIT_SCORE
+NO_BEST_BADGE
+same UID delayed result
 ```
 
-- 첫 세션 starter-order owner는 `NADIA_VENN / ADVENTURER_01`이며 목표는 기존 `SURVIVAL_AND_RECOVERY`를 소비한다.
-- 고객은 exact 강화 방식/촉매 정답이 아니라 `목적 / 제약 / 알려진 상황`을 공개한다.
-- 정밀강화 미리보기는 `이번 의뢰에 직접 도움 / Gate 변화 / trade-off / 직접 관련 없음`을 설명하며 universal fit score·Best badge·불투명 자동추천을 만들지 않는다.
-- 촉매 선택 자체는 고객 bonus가 아니다. 실제 승인된 affix/function 결과가 현재 context와 관련 있을 때만 고객 판단 원인으로 사용한다.
-- `WEIGHT`는 hard gate, enhancement는 bounded primary contribution, 승인 function은 특정 eligibility/risk mitigation/interaction, 고객 능력·적성은 작은 context 보정이다.
-- 구형 고객 `+1 enhancement level = +1pp event success`는 `HISTORICAL_PRE_24_NUMERIC_EVIDENCE`로 강등한다.
-- 새 첫 테스트 Budget은 `ENHANCEMENT_EVENT_BONUS_PP = round(0.30 × enhancement_level)`, +100에서 최대 +30pp다. 출시 최종 수치가 아니다.
-- Nadia 결과는 기존 `EXPEDITION_RETURN_STATE / RECOVERY_STATE / ITEM_UID_LIFECYCLE_STATE` 다중축을 유지하고 결과 원인 2~4개 + same UID + primary next action 1개를 사용한다.
-- 첫 10분은 Nadia 인계 acknowledgement까지이며, 완전한 탐사 결과는 기존 delayed personal schedule에서 발생한다. 가짜 즉시 세계결과를 만들지 않는다.
-- 현재 `VSContentResultRecord`는 결과 기록 primitive일 뿐 precision→customer preview/resolver, 0.30pp runtime, starter Nadia order 구현 증거가 아니다.
+정밀강화 cadence만 current Decision25로 교정:
 
-책임 원본: `docs/planning/BLACKSMITH_PRECISION_CUSTOMER_LINK_CANON_20260824.md`.
+```text
++9 -> +10 only Precision Enhancement
++10 success -> ITEM_KEYWORD
+```
+
+고객 구매/인계 뒤 실제 delayed event에서:
+
+```text
+CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE
+PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE
+```
+
+eligible event는 same UID damage를 최대 한 단계 진행시킬 수 있고, 실제 발생했다면 causal reason/Chronicle에 남긴다. event eligibility와 확률은 후속 content Decision이다.
+
+구형 `0.30pp/level`은 계속 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`이며 이번 Decision이 바꾸지 않는다.
+
+책임 원본: `docs/planning/BLACKSMITH_PRECISION_CUSTOMER_LINK_CANON_20260824.md` — old multi-precision wording은 부분 대체.
 
 ## 18. 과거 숫자의 지위
 
@@ -465,6 +467,8 @@ old destroy RNG
 pre-19 HIGH repair multiplier 1.50
 pre-19 MASTERY repair multiplier 1.80
 pre-24 customer enhancement contribution +1.00pp / level
+all CURRENT/MAX loss and structural-scar tables as current damage authority
+old DAMAGE/CRITICAL family ratios as the new +11~+100 damage curve
 ```
 
 상태: `HISTORICAL_NUMERIC_EVIDENCE / RECALIBRATION_INPUT`.
@@ -473,40 +477,39 @@ pre-24 customer enhancement contribution +1.00pp / level
 
 ```text
 01     PRIMARY CORE = 강화 긴장감 + DDD
-02~04  risk + item-UID recovery + disclosure
-05~09  checkpoint / CURRENT-MAX / destroy-at-zero
-10~12  repair economy / GOLD+MATERIAL
-13     failure family ratio
-14     +10 break-even / +100 max
-15     target-level experience bands / +10 first floor
+14     +10 break-even role / +100 max structure intent
+15     target-level experience bands; damage ratios superseded
 16     checkpoint [10,30,60,90]
-17     success / recovery / attempt cost / expected cost / static market anchors
-18     common reinforcement material / 50G / deterministic unlimited vendor supply / enhancement+repair recipe mapping
-19     late repair economy / HIGH 2.25 / MASTERY 3.00 / fresh 20k Monte Carlo
-20     one-lifetime partial MAX overhaul / +15 / ceiling 60 / 750k×material + reinforcement 20 + fatigue 5
-21     causal destruction / immutable archive / curated memorial / optional new-UID successor provenance / zero power inheritance
-22     +100 terminal identity / one-time completion presentation / permanent completion mark / lifecycle fact / zero extra power multiplier
-23     first 10 minutes core-thesis sprint / real odds / +10 precision+checkpoint / +11 STOP vs PUSH / just-in-time teaching
-24     Nadia starter / disclosed context fit / no universal fit score / customer enhancement +0.30pp per level test budget / causal multi-axis result
+17     success / recovery / attempt cost test budgets; durability-dependent economics need recheck
+18     common reinforcement material enhancement supply preserved; old repair mapping stale
+21     physical destruction/archive/memorial/new-UID successor principles preserved
+22     +100 terminal identity preserved
+23     onboarding pacing preserved; CURRENT/MAX teaching replaced
+24     Nadia/customer causal structure preserved; precision cadence replaced; world-event damage hook added
+25     +1 success only / +9→+10 only Precision / one keyword
+26     NORMAL→MINOR→MAJOR→DESTROYED / +11+ rising failure damage / eligible world-event damage
+27     player Chronicle = meaningful events only, no routine dated attempt log
+Art03  ILLUSTRATED_WORKSHOP_BOOK = USER_APPROVED_DIRECTION
 ```
 
-17·19·20·24의 숫자는 `NOT_FINAL_PRODUCT_BALANCE`; 18·21·22·23 및 24의 구조는 `USER_APPROVED / PLANNING_CANON`. 제품 data/runtime은 아직 변경하지 않는다.
+정확 damage curve, MINOR/MAJOR repair, customer-event damage numbers는 `NOT_FINAL / FOLLOW_UP_DECISION_REQUIRED`. 제품 data/runtime은 아직 변경하지 않는다.
 
 ## 20. 현재 작업 순서
 
-1. `RELEASE_NEAR_VERTICAL_SLICE` — 기획 완료 직전 통합 계약.
+1. `CORE_SIMPLIFICATION_CANON_MIGRATION` — Decisions 25~27 / Art03를 GitHub·Notion·Sheet current surfaces에 동기화.
+2. `DAMAGE_PROBABILITY_CURVE`.
+3. `MINOR_MAJOR_REPAIR_MODEL` + `MAJOR_ENHANCEMENT_ELIGIBILITY`.
+4. `CUSTOMER_EVENT_DAMAGE_POLICY`.
+5. `REPRESENTATIVE_VISUAL_REGENERATION_AFTER_SYSTEM_SYNC`.
+6. 사용자 `CURRENT_PLANNING_COMPLETE_DECLARATION` 전 제품 runtime 구현 금지.
 
 ## 21. 증거 경계
 
-- 01~16 구조: `USER_APPROVED`.
-- 17 숫자: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
-- 18 Resource Supply: `USER_APPROVED / PLANNING_CANON`.
-- 19 Late Repair Economy: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
-- 20 MAX Overhaul: `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
-- 21 Destruction UX: `USER_APPROVED / PLANNING_CANON`.
-- 22 MAX Level Payoff: `USER_APPROVED / PLANNING_CANON`.
-- 23 First 10 Minutes: `USER_APPROVED / PLANNING_CANON`; timing targets are `HUMAN_NOT_RUN`.
-- 24 Precision-Customer Link structure: `USER_APPROVED / PLANNING_CANON`; `0.30pp/level`은 `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`.
-- Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`; exact delta is policy-sensitive.
+- `BS-ENHANCE-20260825-25`: `USER_APPROVED / PLANNING_CANON`.
+- `BS-DAMAGE-20260825-26`: `USER_APPROVED / STRUCTURAL_CANON`; 숫자 curve/event probability는 `NOT_FINAL`.
+- `BS-CHRONICLE-20260825-27`: `USER_APPROVED / PLANNING_CANON`.
+- `BS-ART-20260825-03`: `USER_APPROVED_DIRECTION`; final product asset/runtime approval은 아님.
+- older CURRENT/MAX / repair / overhaul / damage-family numeric evidence: historical/partially superseded.
+- Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`; 새 damage/repair 모델 뒤 재검산 필요.
 - Human/Player: `NOT_RUN`.
-- Runtime implementation: `BLOCKED`; content-result record primitive is reuse evidence, not Decision24 resolver implementation evidence.
+- Runtime implementation of Decisions25~27/Art03 mechanics: `NOT_RUN / BLOCKED`; current V2 runtime의 CURRENT/MAX·다중 precision은 implementation drift/history다.

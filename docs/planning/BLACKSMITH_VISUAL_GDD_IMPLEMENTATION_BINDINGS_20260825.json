@@ -1,170 +1,153 @@
 {
-  "schema_version": 1,
-  "status": "IMPLEMENTATION_SAFE_PLANNING_SPEC",
+  "schema_version": 2,
+  "status": "IMPLEMENTATION_SAFE_PLANNING_SPEC_REBOUND_TO_CORE_SIMPLIFICATION",
   "date": "2026-08-25 KST",
-  "baseline_main": "2c84793773e74a5b4cdcf9888f972d664d2b8060",
-  "base_main": "3c3376845b9a1b7921a4260aa6259cd61533ffc4",
-  "image_text_authority": "NEVER",
-  "image_text_guard": "IMAGE_TEXT_NEVER_OVERRIDES_CANON",
-  "runtime_image_parsing": "FORBIDDEN",
+  "current_owner": "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+  "decision_ids": [
+    "BS-ENHANCE-20260825-25",
+    "BS-DAMAGE-20260825-26",
+    "BS-CHRONICLE-20260825-27",
+    "BS-ART-20260825-03"
+  ],
   "product_implementation": "BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION",
-  "visuals": {
-    "BS-VIS-20260820-01": {
-      "approval": "USER_APPROVED_VISUAL_GDD",
-      "role": "ENHANCEMENT_MAIN_VISUAL_REFERENCE",
-      "raster_values_authoritative": false,
-      "classes": ["KEEP", "CANON_VALUE", "VARIABLE_PLACEHOLDER", "CONFLICT_REMOVE"],
-      "critical_scrub": [
-        "TARGET +11 = FIRST_STOP_POINT",
-        "generated success rates are non-authoritative",
-        "generated attempt costs are non-authoritative",
-        "checkpoint does not grant success-rate bonus"
-      ]
+  "global_guards": {
+    "image_text_authority": "NEVER",
+    "runtime_image_parsing": "FORBIDDEN",
+    "ocr_to_game_logic": "FORBIDDEN",
+    "current_max_authority": "SUPERSEDED",
+    "multi_level_success": "FORBIDDEN",
+    "fourth_affix_slot_for_keyword": "FORBIDDEN",
+    "routine_enhancement_history_in_player_chronicle": "FORBIDDEN"
+  },
+  "enhancement": {
+    "success_level_delta": 1,
+    "target_rule": "CURRENT_LEVEL_PLUS_ONE",
+    "precision_transition": {
+      "current_level": 9,
+      "target_level": 10,
+      "is_only_precision_enhancement": true,
+      "success_creates_item_keyword": true,
+      "keyword_cardinality_max": 1,
+      "keyword_machine_owner": "CATALYST_AFFIX"
     },
-    "BS-VIS-20260820-02": {
-      "approval": "USER_APPROVED_VISUAL_GDD",
-      "role": "DDD_FEEDBACK_LADDER_VISUAL_REFERENCE",
-      "raster_values_authoritative": false,
-      "classes": ["KEEP", "CANON_VALUE", "VARIABLE_PLACEHOLDER", "CONFLICT_REMOVE"],
-      "critical_scrub": [
-        "generated probability bands are not gameplay bands",
-        "feedback intensity binds target-level experience band",
-        "generated exact animation timings remain placeholders"
-      ]
-    },
-    "BS-VIS-20260820-05": {
-      "approval": "USER_APPROVED_VISUAL_GDD",
-      "role": "FIRST_10_MINUTES_STORYBOARD_REFERENCE",
-      "raster_values_authoritative": false,
-      "classes": ["KEEP", "CANON_VALUE", "VARIABLE_PLACEHOLDER", "CONFLICT_REMOVE"],
-      "critical_scrub": [
-        "no scripted +11 success",
-        "CHECKPOINT_IS_DOWNGRADE_FLOOR_NOT_SAVE_POINT",
-        "DELAYED_RESULT = POST_FIRST_10_MINUTES_SCHEDULE",
-        "generated UID reward trust reputation values are placeholders"
-      ]
-    },
-    "BS-VIS-20260820-06": {
-      "approval": "USER_APPROVED_VISUAL_GDD",
-      "role": "CURRENT_MAX_DURABILITY_VISUAL_REFERENCE",
-      "raster_values_authoritative": false,
-      "classes": ["KEEP", "CANON_VALUE", "VARIABLE_PLACEHOLDER", "CONFLICT_REMOVE"],
-      "critical_scrub": [
-        "MAX determines structure state",
-        "NORMAL_REPAIR: CURRENT = MAX",
-        "MAX remains unchanged under normal repair"
-      ]
-    },
-    "BS-VIS-20260820-09": {
-      "approval": "USER_APPROVED_VISUAL_GDD",
-      "role": "REPAIR_DECISION_CARD_VISUAL_REFERENCE",
-      "raster_values_authoritative": false,
-      "classes": ["KEEP", "CANON_VALUE", "VARIABLE_PLACEHOLDER", "CONFLICT_REMOVE"],
-      "critical_scrub": [
-        "PLAYER_REPAIR_MATERIAL = 보강재",
-        "generated ingot wood leather bundle is rejected",
-        "normal repair is CURRENT=MAX not partial repair",
-        "REPAIR_DOES_NOT_CHANGE_SUCCESS_RATE_WHEN_MAX_UNCHANGED"
-      ]
-    },
-    "BS-VIS-20260824-10": {
-      "approval": "USER_APPROVED_VISUAL_GDD",
-      "role": "PRECISION_CUSTOMER_CONTEXT_VISUAL_REFERENCE",
-      "raster_values_authoritative": false,
-      "classes": ["KEEP", "CANON_VALUE", "VARIABLE_PLACEHOLDER", "CONFLICT_REMOVE"],
-      "critical_scrub": [
-        "starter customer is NADIA_VENN",
-        "NADIA_NUMERIC_CAPABILITY = SEPARATE_CANON_SOURCE_REQUIRED",
-        "no total fit score",
-        "generated quest weight score attack expedition values are placeholders",
-        "full world result remains delayed"
-      ]
+    "other_precision_milestones": [],
+    "damage_gate": {
+      "target_le_10": "IMPOSSIBLE_FROM_ENHANCEMENT_FAILURE",
+      "target_ge_11": "POSSIBLE_ON_FAILURE",
+      "curve_rule": "MONOTONIC_NON_DECREASING_WITH_TARGET_LEVEL",
+      "exact_curve": "NOT_FINAL_USER_APPROVAL_REQUIRED"
     }
   },
-  "bindings": {
-    "enhancement": {
-      "band_owner": "target_level",
-      "bands": {
-        "LEARN": [1, 2],
-        "BUILD_CONFIDENCE": [3, 10],
-        "FIRST_STOP_POINT": [11, 11],
-        "TENSION": [12, 30],
-        "HIGH_STAKES": [31, 60],
-        "MASTERY": [61, 100]
-      },
-      "first_stop_target": 11,
-      "checkpoint_floors": [10, 30, 60, 90],
-      "checkpoint_semantics": "DOWNGRADE_FLOOR_ONLY",
-      "attempt_gold_formula": "round_to_10(12 * target^1.84)",
-      "material_id": "common_reinforcement_material",
-      "player_material_name_ko": "보강재",
-      "final_success_source": "ENHANCEMENT_RESOLVER_OUTPUT",
-      "failure_family_source": "CURRENT_FAILURE_FAMILY_RULES"
-    },
-    "durability": {
-      "invariant": "0<=CURRENT<=MAX<=100",
-      "structure_state_owner": "MAX",
-      "destroy_rule": "CURRENT==0 OR MAX==0",
-      "normal_repair": "CURRENT=MAX;MAX=UNCHANGED",
-      "states": ["STABLE", "STRESSED", "DAMAGED", "FRACTURED", "CRITICAL", "DESTROYED"],
-      "state_threshold_status": "USER_APPROVED_TEST_BUDGET_NOT_FINAL_PRODUCT_BALANCE"
-    },
-    "repair": {
-      "player_material_id": "common_reinforcement_material",
-      "player_material_name_ko": "보강재",
-      "normal_repair_effect": "CURRENT=MAX;MAX=UNCHANGED",
-      "recovery_effect": "UNCHANGED",
-      "workshop_fatigue_cost": 2,
-      "success_rate_effect_when_max_unchanged": "NONE",
-      "gold_formula": "round(800 * material_structure_multiplier * secured_band_multiplier * (0.05 + 0.65 * (MAX-CURRENT) / 100))",
-      "material_count_formula": "max(1, ceil((MAX-CURRENT)/25))",
-      "primary_material_is_standard_repair_consumable": false
-    },
-    "onboarding": {
-      "first_stop_target": 11,
-      "checkpoint_semantics": "DOWNGRADE_FLOOR_ONLY",
-      "delayed_result_timing": "POST_FIRST_10_MINUTES_SCHEDULE",
-      "scripted_outcome": false,
-      "hidden_success_boost": false,
-      "tutorial_only_odds": false,
-      "forced_push": false
-    },
-    "customer_context": {
-      "starter_customer_id": "NADIA_VENN",
-      "content_id": "ADVENTURER_01",
-      "content_goal": "SURVIVAL_AND_RECOVERY",
-      "primary_need": "SAFE_RETURN",
-      "secondary_need": "RECOVERY_POSSIBILITY",
-      "numeric_capability_profile": "SEPARATE_CANON_SOURCE_REQUIRED",
-      "required_function_if_explicit": "NONE",
-      "hard_load_gate": "CURRENT_TOTAL_WEIGHT <= NADIA_MAXIMUM_LOAD",
-      "total_fit_score": false,
-      "best_badge": false,
-      "enhancement_event_bonus_test_budget": "round(0.30 * enhancement_level) pp",
-      "result_axes": ["EXPEDITION_RETURN_STATE", "RECOVERY_STATE", "ITEM_UID_LIFECYCLE_STATE"],
-      "causal_reason_count": [2, 4],
-      "primary_next_action_count": 1
-    }
+  "damage": {
+    "authority": "CATEGORICAL_STATE_MACHINE",
+    "states": [
+      "NORMAL",
+      "MINOR",
+      "MAJOR",
+      "DESTROYED"
+    ],
+    "event_transition": "ADVANCE_EXACTLY_ONE_STATE",
+    "hidden_numeric_current_max": false,
+    "minor_major_auto_success_penalty": false,
+    "minor_major_auto_new_effect_multiplier": false,
+    "repair_model": "NOT_DECIDED",
+    "major_enhancement_eligibility": "NOT_DECIDED"
   },
-  "evidence": {
-    "visual_user_approval": "VERIFIED",
-    "canon_scrub": "DOCUMENTED",
-    "implementation_safe_spec": "DOCUMENTED",
-    "runtime": "NOT_RUN",
-    "local_editor": "NOT_RUN",
+  "customer_world_event_damage": {
+    "possible_if_event_eligible": true,
+    "purchase_or_handoff_itself_causes_damage": false,
+    "max_state_advance_per_damage_event": 1,
+    "event_eligibility": "CONTENT_OWNER_DECISION_REQUIRED",
+    "event_damage_numbers": "NOT_FINAL",
+    "same_uid_required": true,
+    "causal_reason_required_when_damage_occurs": true
+  },
+  "chronicle": {
+    "player_facing_mode": "MEANINGFUL_EVENTS_ONLY",
+    "routine_enhancement_attempt_rows": false,
+    "relative_days_for_routine_enhancement": false,
+    "internal_provenance_time_allowed": true,
+    "meaningful_event_classes": [
+      "ITEM_CREATED",
+      "PRECISION_KEYWORD_CREATED",
+      "DAMAGE_STATE_CHANGED_BY_ENHANCEMENT",
+      "DAMAGE_STATE_CHANGED_BY_CUSTOMER_WORLD_EVENT",
+      "SIGNIFICANT_REPAIR_OR_OVERHAUL",
+      "OWNER_OR_CUSTOMER_HANDOFF",
+      "CUSTOMER_WORLD_CONSEQUENCE",
+      "DESTROYED",
+      "MEMORIAL_OR_SUCCESSOR_LINK"
+    ]
+  },
+  "art_direction": {
+    "id": "ILLUSTRATED_WORKSHOP_BOOK",
+    "status": "USER_APPROVED_DIRECTION",
+    "final_product_asset_approval": false,
+    "principles": [
+      "HAND_DRAWN_WORKSHOP_NOTEBOOK",
+      "PAPER_LEATHER_IRON_WOOD_MATERIAL_CUES",
+      "WARM_LOCAL_WORKSHOP_LIGHT",
+      "MODERN_READABLE_INTERACTION_HIERARCHY",
+      "ITEM_AS_VISUAL_HERO",
+      "NON_COLOR_REDUNDANT_STATE_SIGNALS",
+      "LIMITED_FUNCTIONAL_ORNAMENT"
+    ],
+    "forbidden": [
+      "GENERIC_BLACK_GOLD_ORNATE_TEMPLATE",
+      "FULL_SCREEN_UNIFORM_AMBER_GLOW",
+      "PSEUDO_TEXT_OR_RANDOM_RUNES",
+      "DECORATION_OVER_INFORMATION",
+      "DENSE_AI_ANNOTATION_CLUTTER"
+    ]
+  },
+  "previous_visual_gdd_status": {
+    "BS-VIS-20260820-01": "LAYOUT_REFERENCE_SYSTEM_VALUES_STALE",
+    "BS-VIS-20260820-02": "FEEDBACK_REFERENCE_DAMAGE_SEMANTICS_STALE",
+    "BS-VIS-20260820-04": "HIERARCHY_REFERENCE_DAMAGE_VALUES_STALE",
+    "BS-VIS-20260820-05": "FLOW_REFERENCE_REGEN_REQUIRED",
+    "BS-VIS-20260820-06": "CURRENT_MAX_SYSTEM_SEMANTICS_STALE",
+    "BS-VIS-20260820-08": "MAX_PENALTY_SYSTEM_SEMANTICS_STALE",
+    "BS-VIS-20260820-09": "LAYOUT_REFERENCE_REPAIR_MODEL_PENDING",
+    "BS-VIS-20260824-10": "CAUSAL_LAYOUT_REFERENCE_PRECISION_CADENCE_STALE"
+  },
+  "representative_regeneration_order": [
+    "MAIN_MENU",
+    "ENHANCEMENT_MAIN_PLUS_ONE_ONLY",
+    "PLUS_9_TO_PLUS_10_PRECISION_KEYWORD",
+    "FOUR_STATE_DAMAGE_REPAIR",
+    "EVENT_ONLY_ITEM_CHRONICLE"
+  ],
+  "view_model_contract": {
+    "item": [
+      "uid",
+      "enhancement_level",
+      "item_keyword",
+      "damage_state",
+      "physical_state"
+    ],
+    "enhancement_preview": [
+      "target_level",
+      "final_success_percent",
+      "gold_cost",
+      "reinforcement_units",
+      "damage_possible",
+      "damage_probability_percent_optional_after_approval",
+      "recovery"
+    ],
+    "customer_result": [
+      "item_uid",
+      "result_axes",
+      "causal_reasons",
+      "damage_state_before_optional",
+      "damage_state_after_optional",
+      "primary_next_action"
+    ]
+  },
+  "evidence_ceiling": {
+    "current_system_visual_regeneration_after_mechanic_sync": "NOT_RUN",
+    "runtime_binding": "NOT_RUN",
+    "android_accessibility": "NOT_RUN",
     "human_playtest": "NOT_RUN",
-    "android": "NOT_RUN",
-    "accessibility": "NOT_RUN",
-    "final_product_asset_approval": "NOT_GRANTED"
-  },
-  "sources": [
-    "CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md",
-    "docs/planning/BLACKSMITH_ENHANCEMENT_BALANCE_CURVE_CANON_20260820.md",
-    "docs/planning/BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md",
-    "docs/planning/BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md",
-    "docs/planning/BLACKSMITH_LATE_REPAIR_ECONOMY_CANON_20260824.md",
-    "docs/planning/BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md",
-    "docs/planning/BLACKSMITH_PRECISION_CUSTOMER_LINK_CANON_20260824.md",
-    "data/vertical_slice/customers/nadia_venn.json"
-  ]
+    "notion_client_geometry": "NOT_RUN"
+  }
 }
