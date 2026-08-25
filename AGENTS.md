@@ -1,6 +1,6 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-03 / PLANNING_REACTIVATED / LIVING_GDD_HOME`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리 작업이 그 Gate를 자동으로 열지 않는다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-06 / PLANNING_REACTIVATED / LIVING_GDD_HOME / 8_VISUAL_GDDS_APPROVED / ART_STYLE_REWORK_REQUIRED`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리 작업이 그 Gate를 자동으로 열지 않는다.
 
 ## 1. 권위 순서
 
@@ -30,10 +30,13 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작�
 
 ### 1.1 Human Home · Visual GDD 규칙
 
-- `STYLIZED_DARK_FORGE`는 `BS-ART-20260731-01`의 current 승인 그림체다.
-- 현재 실제 승인 대표 Blacksmith 이미지 파일은 `NOT_AVAILABLE`; 따라서 `VISUAL_GDD_GAP`을 숨기지 않는다.
+- current art-direction Decision은 `BS-ART-20260825-02`다.
+- `ART_STYLE_STATUS = REWORK_REQUIRED`.
+- `STYLIZED_DARK_FORGE = LEGACY_VISUAL_REFERENCE_NOT_FINAL_STYLE_CANON`; `BS-ART-20260731-01`의 forge materiality·item-first·warm local light 원리는 참고하되 생성된 black/gold ornate presentation을 최종 그림체로 자동 재사용하지 않는다.
+- 현재 실제 승인 대표 Blacksmith Visual GDD는 `8 AVAILABLE`; 승인 범위는 `INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD`이며 final style/runtime/release asset 승인이 아니다.
 - 사용자가 2026-08-25 제공한 예시 이미지는 `REFERENCE_ONLY_LAYOUT_DENSITY`이며 Blacksmith 승인 Asset으로 승격하지 않는다.
-- 실제 승인 Visual이 없을 때는 Mermaid·Flow·System Diagram·현재 style rule·핵심 표를 이용한 explanatory Visual GDD를 우선한다.
+- 승인 Visual은 Home/Visual Bible/Asset Library에서 사람용 설계 판단 자료로 직접 접근 가능해야 하며, 이미지 안 예시 숫자·UID·문구는 current canon을 덮어쓰지 않는다.
+- 다음 그림체 선정은 project Asset/Reference/Benchmark → Base visual reuse principles → 직접 관련 외부 사례 순으로 조사하고 최소 3개 실질 대안을 비교한 뒤 사용자 승인을 받아야 한다.
 - 사람에게 필요한 핵심 수치·규칙·밸런스 표를 “구조화 데이터”라는 이유로 AI Workspace에만 숨기지 않는다.
 - 큰 데이터셋은 Home 전용 복제본보다 canonical linked view를 우선한다.
 - AI 작업 로그·schema/internal ID·PR/SHA/CI/evidence·local path/port/session 정보는 기존 AI/System owner가 보존한다.
@@ -196,7 +199,7 @@ GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/
 - `CURRENT_EXECUTION_CONTRACT_STATE: USER_SUPPLIED_V4_8_R4_CURRENT`
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`의 v4.5 r2 내용은 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`다. 이번 작업에서 파일 자체를 조용히 v4.8로 가장하지 않으며 안전한 추후 migration 전까지 역사/충돌 증거로만 취급한다.
 - historical compatibility anchor: 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — **historical only, current execution authority 아님**.
-- current operational override Decision: `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)
+- current operational override Decision: `BS-OPS-20260825-06` (04/08 Visual approval + art-style status), `BS-ART-20260825-02` (art-direction rework), `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)
 - 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`
 - 선행 조사 Gate Decision: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`
 - 같은 승인 범위는 기술 재검증 후 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확대만 별도 사용자 Decision이 필요하다.
