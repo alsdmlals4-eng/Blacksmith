@@ -1,0 +1,23 @@
+name: Validate P0 Visual 04/08 Review
+
+on:
+  pull_request:
+    paths:
+      - 'docs/planning/BLACKSMITH_P0_VISUAL_04_08_REVIEW_20260825.md'
+      - 'tests/check_p0_visual_04_08_review_contract.py'
+      - '.github/workflows/p0-visual-04-08-review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate P0 Visual 04/08 review contract
+        run: python tests/check_p0_visual_04_08_review_contract.py
