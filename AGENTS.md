@@ -1,21 +1,24 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-06 / PLANNING_REACTIVATED / LIVING_GDD_HOME / 8_VISUAL_GDDS_APPROVED / ART_STYLE_REWORK_REQUIRED`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리 작업이 그 Gate를 자동으로 열지 않는다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-07 / PLANNING_REACTIVATED / LIVING_GDD_HOME / CORE_SIMPLIFICATION_CANON_SYNC / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리 작업이 그 Gate를 자동으로 열지 않는다.
+
+현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`이며 current owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`다.
 
 ## 1. 권위 순서
 
 1. 사용자의 최신 지시와 승인
 2. `AGENTS.md`
 3. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`의 current overlay / work-state router
-4. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
-5. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
-6. 2026-08-20/24 current 분야별 Canon·current registry
-7. 실제 `code/data/Scene/Resource/tests`와 runtime evidence
-8. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림
-9. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
-10. R2/R3 Game Bible·과거 PoC·구형 data/runtime — 역사·비교 증거
-11. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
-12. 외부 벤치마크·과거 대화·AI 추론
+4. `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
+5. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
+6. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
+7. 2026-08-20/24 current 분야별 Canon·current registry — 단, 25~27/Art03과 같은 필드가 충돌하면 역사·부분대체 증거
+8. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 현재 제품 구현 Gate가 닫힌 동안 구현 drift는 기획 의도를 덮어쓰지 않음
+9. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림
+10. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+11. R2/R3 Game Bible·과거 PoC·구형 data/runtime — 역사·비교 증거
+12. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
+13. 외부 벤치마크·과거 대화·AI 추론
 
 현재 workspace routing:
 
@@ -30,13 +33,15 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작�
 
 ### 1.1 Human Home · Visual GDD 규칙
 
-- current art-direction Decision은 `BS-ART-20260825-02`다.
-- `ART_STYLE_STATUS = REWORK_REQUIRED`.
-- `STYLIZED_DARK_FORGE = LEGACY_VISUAL_REFERENCE_NOT_FINAL_STYLE_CANON`; `BS-ART-20260731-01`의 forge materiality·item-first·warm local light 원리는 참고하되 생성된 black/gold ornate presentation을 최종 그림체로 자동 재사용하지 않는다.
-- 현재 실제 승인 대표 Blacksmith Visual GDD는 `8 AVAILABLE`; 승인 범위는 `INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD`이며 final style/runtime/release asset 승인이 아니다.
+- current art-direction Decision은 `BS-ART-20260825-03`다.
+- `ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK`.
+- `ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION`.
+- 손그림 공방 노트, 종이·가죽·철·목재 물성, 따뜻한 공방 분위기, 현대적 판독 가능한 상호작용 계층을 current direction으로 사용한다.
+- 기존 `STYLIZED_DARK_FORGE`/검정·금색 생성형 보드는 `LEGACY_VISUAL_REFERENCE_NOT_FINAL_STYLE_CANON`이며 정보구조 참고 외 자동 재사용하지 않는다.
+- 현재 실제 승인 대표 Blacksmith Visual GDD 8장은 `INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD` reference이며 final style/runtime/release asset 승인이 아니다. CURRENT/MAX 등 이번 시스템 변경과 충돌하는 내용은 `SYSTEM_SEMANTICS_STALE`이다.
 - 사용자가 2026-08-25 제공한 예시 이미지는 `REFERENCE_ONLY_LAYOUT_DENSITY`이며 Blacksmith 승인 Asset으로 승격하지 않는다.
 - 승인 Visual은 Home/Visual Bible/Asset Library에서 사람용 설계 판단 자료로 직접 접근 가능해야 하며, 이미지 안 예시 숫자·UID·문구는 current canon을 덮어쓰지 않는다.
-- 다음 그림체 선정은 project Asset/Reference/Benchmark → Base visual reuse principles → 직접 관련 외부 사례 순으로 조사하고 최소 3개 실질 대안을 비교한 뒤 사용자 승인을 받아야 한다.
+- 새 current mechanic sync 뒤 대표 재생성은 `Main Menu / Enhancement Main(+1) / +9→+10 Precision Keyword / Four-state Damage·Repair / Event-only Chronicle` 순으로 소수 화면부터 검증하며 대량 생성하지 않는다.
 - 사람에게 필요한 핵심 수치·규칙·밸런스 표를 “구조화 데이터”라는 이유로 AI Workspace에만 숨기지 않는다.
 - 큰 데이터셋은 Home 전용 복제본보다 canonical linked view를 우선한다.
 - AI 작업 로그·schema/internal ID·PR/SHA/CI/evidence·local path/port/session 정보는 기존 AI/System owner가 보존한다.
@@ -101,14 +106,19 @@ RED → GREEN → REFACTOR
 
 - 강화 성공·실패와 멈춤·추가 도전이 즉각 반복 재미다.
 - 작품은 UID·소유·손상·복원·사건·연대기를 유지한다.
-- 일반 강화는 한 입력에 한 결과다.
-- 정밀강화는 주재료 맥락 + 강화 방식 + 촉매 한 개다.
-- 수식어는 `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX` 세 슬롯이다.
+- 일반 강화는 한 입력에 한 결과이며 성공 시 `SUCCESS_LEVEL_DELTA = +1`이다.
+- current Precision Enhancement cadence는 `+9 -> +10 = PRECISION_ENHANCEMENT` 하나뿐이다. 성공한 +10에서 플레이어용 `ITEM_KEYWORD` 하나가 생성되고 machine owner는 기존 `CATALYST_AFFIX`다. 네 번째 affix 슬롯을 만들지 않는다.
+- 수식어 machine slot은 `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX` 세 슬롯을 유지한다.
+- 손상 정본은 `NORMAL -> MINOR -> MAJOR -> DESTROYED` 한 축이다. 숨은 CURRENT/MAX 수치축을 current gameplay authority로 두지 않는다.
+- `TARGET <= +10` 강화 실패에서는 손상이 발생하지 않는다. `TARGET >= +11` 실패부터 손상 가능성이 열리며, target이 높아질수록 조건부 손상 확률은 `MONOTONIC_NON_DECREASING_DAMAGE_RISK`를 따른다. 정확 수치는 `NOT_FINAL / USER_APPROVAL_REQUIRED`다.
+- `CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE`; 고객의 구매·인계 자체가 손상을 발생시키지 않으며 실제 지연 이벤트의 사용 결과가 same UID 손상을 한 단계 진행시킬 수 있다.
+- player-facing Chronicle은 `ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE`; 날짜별 강화 성공/실패 나열 대신 제작·키워드·손상·중요 수리·인계·세계 결과·파괴 같은 의미 사건만 보여준다.
 - 제작 등급은 `보통 / 우수 / 명품 / 걸작 / 전설` 다섯 단계의 출생 완성도다.
 - 예술성은 단계명이 없는 `1~10` 숫자형 무기·작품 능력치다.
 - 예술성은 전투력을 기본적으로 올리지 않는다.
 - 보조재료 슬롯과 일반 수식어 A·B는 재도입하지 않는다.
-- 2026-08-20/24 current overlay에 따라 PRIMARY CORE는 `강화의 긴장감 + DDD`이며 정밀제작·고객/세계 인과·UID/생애·내구/수리·경제는 이를 지지하는 SUPPORT다.
+- PRIMARY CORE는 `강화의 긴장감 + DDD`이며 정밀제작·고객/세계 인과·UID/생애·손상/수리·경제는 이를 지지하는 SUPPORT다.
+- `DAMAGE_PROBABILITY_CURVE / MINOR_MAJOR_REPAIR_MODEL / CUSTOMER_EVENT_DAMAGE_POLICY / MAJOR_ENHANCEMENT_ELIGIBILITY`는 후속 승인 Gate이며 구형 CURRENT/MAX 공식을 자동 fallback으로 쓰지 않는다.
 
 ## 5. 보호 경로
 
@@ -123,13 +133,14 @@ addons/
 project.godot
 ```
 
-일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이다. 과거 R2 버티컬 슬라이스 승인·Task1/Task2 runtime evidence는 역사/구현 사실로 보존하지만 현재 새 제품 구현 Gate를 자동으로 열지 않는다.
+일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이다. 과거 R2 버티컬 슬라이스 승인·Task1/Task2 runtime evidence는 역사/구현 사실로 보존하지만 현재 새 제품 구현 Gate를 자동으로 열지 않는다. 현재 V2 runtime에 남은 CURRENT/MAX 및 다중 Precision milestone은 구현 사실/드리프트이지 최신 기획 의도가 아니다.
 
 ## 6. 정본·구형 문서
 
 - 한 질문에는 활성 책임 원본 하나만 둔다.
 - `[대체됨] / [부분 대체됨] / [보류] / [폐기] / [역사 증거]`를 직접 표시한다.
 - 과거 PASS는 해당 과거 HEAD의 증거일 뿐 현재 제품 PASS가 아니다.
+- `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`와 충돌하는 CURRENT/MAX·다중 정밀강화·날짜별 Chronicle 표현은 역사/부분대체 증거다.
 - PR #81은 `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT`이다.
 - pre-existing PR #196은 `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`이며 현재 기획 정리 PR과 흡수·수정·병합하지 않는다.
 
@@ -199,7 +210,7 @@ GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/
 - `CURRENT_EXECUTION_CONTRACT_STATE: USER_SUPPLIED_V4_8_R4_CURRENT`
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`의 v4.5 r2 내용은 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`다. 이번 작업에서 파일 자체를 조용히 v4.8로 가장하지 않으며 안전한 추후 migration 전까지 역사/충돌 증거로만 취급한다.
 - historical compatibility anchor: 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — **historical only, current execution authority 아님**.
-- current operational override Decision: `BS-OPS-20260825-06` (04/08 Visual approval + art-style status), `BS-ART-20260825-02` (art-direction rework), `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)
+- current operational override Decision: `BS-OPS-20260825-07` (core simplification canon migration), `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)
 - 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`
 - 선행 조사 Gate Decision: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`
 - 같은 승인 범위는 기술 재검증 후 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확대만 별도 사용자 Decision이 필요하다.
