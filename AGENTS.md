@@ -251,6 +251,7 @@ project.godot
 - `.tscn`/Resource/`project.godot` 변경은 승인 production-authoring provenance가 있어야 하며 GitHub Contents API/직접 텍스트 치환으로 Godot 직렬화 surface를 우회하지 않는다.
 - `BS-HERA-20260808-01`: `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE` 역사 record.
 - `BS-TOOLCHAIN-20260809-01`: Godot AI 3.1.3 역사 baseline, GUT editor plugin enabled, Hera enabled non-authoritative.
+- current Hera state = `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`; Hera authoring/mutation authority remains `NONE`.
 - `BS-TOOLCHAIN-20260811-02`: Godot AI 3.1.4 역사 current-version record; 새 작업의 최신 pin을 자동 결정하지 않는다.
 - GUT runtime은 Git 추적 파일을 수정할 수 없고 HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. Hera authoring/mutation authority는 별도 승인 전 `NONE`.
 
