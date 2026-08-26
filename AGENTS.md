@@ -52,7 +52,7 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작�
 
 ```text
 현재 권위·변경 경계 확인
-→ PRE_WORK_RESEARCH_GATE
+→ PRE_WORK_RESEARCH_GATE: 벤치마킹·현업 비교·조사
 → ADOPT / ADAPT / REJECT / DIFFERENTIATOR + 정본 충돌 + 적대 pre-check
 → brainstorming·적대적 검토
 → RED: 실패 계약 테스트 작성·의도한 실패 관측
@@ -63,7 +63,7 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작�
 → 같은 승인 범위는 재승인 없이 병합 / 새 planning conflict·scope expansion만 사용자 Decision
 ```
 
-### PRE_WORK_RESEARCH_GATE
+### PRE_WORK_RESEARCH_GATE — 벤치마킹·현업 비교
 
 Decision `BS-OPS-20260811-02`.
 
