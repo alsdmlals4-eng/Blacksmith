@@ -27,10 +27,9 @@ REQUIRED_OWNER = [
     "+9 -> +10 = PRECISION_ENHANCEMENT",
     "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC",
     "DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW",
-    "NORMAL -> MINOR -> MAJOR -> DESTROYED",
+    "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)",
     "TARGET <= +10: ENHANCEMENT_DAMAGE = 0",
     "TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE",
-    "DAMAGE_CURVE_ANCHORS_PERCENT = [11:5, 30:6, 60:7, 90:8, 100:10]",
     "DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS",
     "MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES",
     "CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE",
@@ -95,6 +94,7 @@ def main() -> None:
     assert "PR #207 = MERGED_TO_MAIN" in handoff_text
     assert "CURRENT_PLANNING_WORK = CUSTOMER_WORLD_EVENT_DAMAGE_POLICY" in handoff_text
     assert "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC" in handoff_text
+    assert "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)" in handoff_text
 
     authority_text = AUTHORITY_INDEX.read_text(encoding="utf-8")
     assert "1. CUSTOMER_WORLD_EVENT_DAMAGE_POLICY" in authority_text
@@ -102,7 +102,7 @@ def main() -> None:
     assert "DURABILITY_REPAIR_STRUCTURE = USER_APPROVED / BS-REPAIR-20260826-29" in authority_text
     assert "DURABILITY_REPAIR_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE" in authority_text
 
-    # Decision28 remains an immutable approved target-level probability record.
+    # Decision28 remains the exact target-level probability owner.
     assert DAMAGE_DECISION.exists(), "missing Decision28 damage curve decision record"
     decision_text = DAMAGE_DECISION.read_text(encoding="utf-8")
     require_tokens(
@@ -127,8 +127,8 @@ def main() -> None:
     assert curve["target_max"] == 100
     assert curve["interpolation"] == "PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS"
     assert curve["rounding_authority"] == "NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED"
-    # damage_advance_steps is retained as Decision28 historical scope; Decision29
-    # supersedes the current mechanical state-step interpretation.
+    # Retained as Decision28 historical scope. Decision29 supersedes current
+    # mechanical state-step resolution with numeric CURRENT loss.
     assert curve["damage_advance_steps"] == 1
     assert curve["failure_consequence_composition"] == "NOT_DECIDED_BY_THIS_DECISION"
     assert curve["runtime_implementation"] == "BLOCKED_NOT_RUN"
@@ -160,6 +160,9 @@ def main() -> None:
             "USER_APPROVED_STRUCTURAL_CANON",
             "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC",
             "DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW",
+            "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)",
+            "4/4 with BASE_MAX 5 = MINOR",
+            "2/2 with BASE_MAX 5 = MAJOR",
             "MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES",
             "TEMP_TEST_BUDGET",
         ],
@@ -168,6 +171,7 @@ def main() -> None:
     durability = json.loads(DURABILITY_MODEL.read_text(encoding="utf-8"))
     assert durability["decision_id"] == "BS-REPAIR-20260826-29"
     assert durability["authority"]["durability"] == "CURRENT_MAX_BASE_MAX_NUMERIC"
+    assert durability["durability_state_derivation"]["effective_durability_ratio"] == "min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)"
     assert durability["major_enhancement_allowed"] is True
     assert durability["max_durability_recovery"] == "NOT_APPROVED"
     assert durability["runtime_implementation"] == "BLOCKED_NOT_RUN"
