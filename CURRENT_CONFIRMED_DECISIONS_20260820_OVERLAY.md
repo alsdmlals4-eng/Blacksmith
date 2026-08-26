@@ -2,15 +2,15 @@
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
 - current owner: `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
-- current override Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
+- current override Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
 - historical/partial basis: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23 / BS-LINK-20260824-24`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
 
-## -1. 2026-08-25 CURRENT OVERRIDE · Decisions 25~27 / Art03
+## -1. CURRENT OVERRIDE · Decisions 25~28 / Art03
 
-아래 2026-08-20/24 상세 섹션은 승인 당시의 구조·수치와 비교 근거를 보존한다. **같은 필드를 다룰 때는 이 override와 `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`가 우선**하며, 구형 CURRENT/MAX·다중 정밀강화·수리/대수선 퍼센트 공식·날짜별 강화 로그는 current fallback이 아니다.
+아래 2026-08-20/24 상세 섹션은 승인 당시의 구조·수치와 비교 근거를 보존한다. **같은 필드를 다룰 때는 이 override와 `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`가 우선**하며, 구형 CURRENT/MAX·다중 정밀강화·수리/대수선 퍼센트 공식·날짜별 강화 로그·구형 DAMAGE/CRITICAL 비율은 current fallback이 아니다.
 
 Required current routing tokens:
 
@@ -18,6 +18,7 @@ Required current routing tokens:
 BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md
 BS-ENHANCE-20260825-25
 BS-DAMAGE-20260825-26
+BS-DAMAGE-20260826-28
 BS-CHRONICLE-20260825-27
 BS-ART-20260825-03
 ```
@@ -36,7 +37,11 @@ ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE
 TARGET <= +10: ENHANCEMENT_DAMAGE = 0
 TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE
 MONOTONIC_NON_DECREASING_DAMAGE_RISK
-EXACT_DAMAGE_CURVE = TUNABLE_NOT_FINAL
+P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)
+DAMAGE_CURVE_ANCHORS_PERCENT = [11:5, 30:6, 60:7, 90:8, 100:10]
+DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS
+DAMAGE_CURVE_ROUNDING = NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED
+FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED_BY_THIS_DECISION
 CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE
 PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE
 CURRENT_MAX_AUTHORITY = SUPERSEDED
@@ -62,13 +67,14 @@ CHECKPOINT_FLOORS = [10,30,60,90]
 existing success / attempt-cost / enhancement reinforcement-material test budgets where independent of old durability
 ```
 
-Open gates; do not invent or fall back to old CURRENT/MAX formulas:
+Open gates; do not invent or fall back to old CURRENT/MAX or DAMAGE/CRITICAL formulas:
 
 ```text
-DAMAGE_PROBABILITY_CURVE = USER_APPROVAL_REQUIRED
 CUSTOMER_EVENT_DAMAGE_POLICY = CONTENT_OWNER_DECISION_REQUIRED
 MINOR_MAJOR_REPAIR_MODEL = USER_APPROVAL_REQUIRED
 MAJOR_ENHANCEMENT_ELIGIBILITY = USER_APPROVAL_REQUIRED
+FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
+UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 ```
 
 ## 0. 운영 동기화 규칙
@@ -80,6 +86,7 @@ GitHub
 - 이 Overlay
 - BLACKSMITH_PLANNING_AUTHORITY_INDEX.md
 - 관련 Canon
+- Decision-specific machine-readable owner when applicable
 
 Notion
 - Project Home
@@ -111,8 +118,9 @@ DDD는 `행동 → 기대 → anticipation → 즉시 결과 → 보상/손실 �
 - 기본 골격: `RISK_PLUS_RECOVERY_PROGRESS`.
 - 모든 실패는 실제 비용/손실과 같은 작품 UID의 recovery를 남긴다.
 - account-wide transferable failstack은 기본 게임에서 금지.
-- 과거 강화 전 정보에는 CURRENT/MAX 위험이 포함됐으나, current damage disclosure는 4단계 damage state와 +11 이후 damage risk를 사용한다.
+- 과거 강화 전 정보에는 CURRENT/MAX 위험이 포함됐으나, current damage disclosure는 4단계 damage state와 Decision28의 +11~+100 conditional damage curve를 사용한다.
 - 숨은 위험 보정으로 긴장감을 만들지 않는다.
+- Decision28 수치는 `P(damage advance | enhancement failure, target)`이며 per-attempt unconditional damage 확률로 잘못 표시하지 않는다.
 
 ## 3. Checkpoint·CURRENT/MAX·파괴 — 05~09 · `HISTORICAL_DURABILITY_EVIDENCE`
 
@@ -191,7 +199,7 @@ HIGH_STAKES        30 / 15 / 39 / 16
 MASTERY            20 / 20 / 40 / 20
 ```
 
-Decision26 이후 이 DAMAGE/CRITICAL 비율은 새 +11~+100 damage curve의 암묵적 기본값이 아니다. `TARGET <= +10` 강화 손상은 0이며, +11 이후 확률은 별도 후속 승인 대상이다.
+Decision26 이후 이 DAMAGE/CRITICAL 비율은 current damage resolution에서 대체됐고 Decision28의 새 curve도 이 표에서 도출하지 않았다. 현재 `TARGET <= +10` 강화 손상은 0, +11 이후 conditional damage 확률은 `5% / 6% / 7% / 8% / 10%` 앵커와 exact piecewise-linear interpolation이 소유한다. 이 역사 표는 damage와 downgrade의 동시/배타 composition도 결정하지 않는다.
 
 ## 6. 강화 범위·경제 전환점 — 14
 
@@ -226,7 +234,7 @@ CURRENT +10 = FIRST_ECONOMIC_STOP_STATE
 TARGET +11  = FIRST_STOP_POINT ATTEMPT
 ```
 
-경험 밴드는 유지하지만 과거 밴드별 DAMAGE/CRITICAL 비율은 Decision26에 의해 대체됐다.
+경험 밴드는 유지하지만 과거 밴드별 DAMAGE/CRITICAL 비율은 Decision26/28에 의해 대체됐다.
 
 ## 8. Checkpoint cadence — 16
 
@@ -292,7 +300,7 @@ shadow = 50G/unit
 +10 830 / +30 6,270 / +60 22,440 / +90 47,310 / +100 57,440
 ```
 
-과거 MASTERY CURRENT/MAX 손상 Budget은 `HISTORICAL_NUMERIC_EVIDENCE`이며 새 4단계 damage probability/repair에 자동 이식하지 않는다.
+과거 MASTERY CURRENT/MAX 손상 Budget은 `HISTORICAL_NUMERIC_EVIDENCE`이며 Decision28 또는 새 4단계 repair에 자동 이식하지 않는다.
 
 ## 10. 누적 기대원가·기본 판매가 — 17
 
@@ -315,7 +323,7 @@ shadow = 50G/unit
 | +90 | 3,235,853 | 5,824,500 |
 | +100 | **5,632,657** | **11,265,300** |
 
-+10 break-even / +11 이후 profit-zone이라는 구조 의도는 유지하지만, 정확 숫자는 새 repair/damage curve 뒤 재검산한다.
++10 break-even / +11 이후 profit-zone이라는 구조 의도는 유지하지만, 정확 숫자는 Decision28 + 새 repair model 반영 뒤 재검산한다.
 
 ## 11. 일반 강화·수리 Resource Supply — 18 · `PARTIALLY_PRESERVED`
 
@@ -414,7 +422,7 @@ New Game
 - 첫 강화 input 약 3분/첫 STOP-PUSH 약 10분은 Human pacing 목표.
 - tutorial-only scripted failure, hidden success boost, 별도 tutorial odds 금지.
 - +10 이전 강화 실패 손상은 0.
-- +11에서부터 실패 시 손상 가능성을 foreground하되 exact percent는 curve 승인 전 표시하지 않는다.
+- +11 실패의 conditional damage chance는 Decision28에 따라 **5%**다. 이후 +30 6%, +60 7%, +90 8%, +100 10% 앵커 사이 exact linear interpolation으로 상승한다.
 - CURRENT/MAX teaching과 MAX/CRITICAL structural-scar teaching은 current onboarding에서 제거된다.
 - +11을 튜토리얼 진행 조건으로 강제하지 않는다.
 
@@ -478,7 +486,7 @@ old DAMAGE/CRITICAL family ratios as the new +11~+100 damage curve
 ```text
 01     PRIMARY CORE = 강화 긴장감 + DDD
 14     +10 break-even role / +100 max structure intent
-15     target-level experience bands; damage ratios superseded
+15     target-level experience bands; old damage ratios superseded
 16     checkpoint [10,30,60,90]
 17     success / recovery / attempt cost test budgets; durability-dependent economics need recheck
 18     common reinforcement material enhancement supply preserved; old repair mapping stale
@@ -487,29 +495,30 @@ old DAMAGE/CRITICAL family ratios as the new +11~+100 damage curve
 23     onboarding pacing preserved; CURRENT/MAX teaching replaced
 24     Nadia/customer causal structure preserved; precision cadence replaced; world-event damage hook added
 25     +1 success only / +9→+10 only Precision / one keyword
-26     NORMAL→MINOR→MAJOR→DESTROYED / +11+ rising failure damage / eligible world-event damage
+26     NORMAL→MINOR→MAJOR→DESTROYED / +11+ enhancement-failure damage gate / eligible world-event damage
+28     P(damage advance | enhancement failure, target): +11 5% / +30 6% / +60 7% / +90 8% / +100 10%; exact piecewise-linear interpolation
 27     player Chronicle = meaningful events only, no routine dated attempt log
 Art03  ILLUSTRATED_WORKSHOP_BOOK = USER_APPROVED_DIRECTION
 ```
 
-정확 damage curve, MINOR/MAJOR repair, customer-event damage numbers는 `NOT_FINAL / FOLLOW_UP_DECISION_REQUIRED`. 제품 data/runtime은 아직 변경하지 않는다.
+Decision28 damage curve는 `USER_APPROVED_PLANNING_CANON`. MINOR/MAJOR repair, MAJOR enhancement eligibility, customer-event damage numbers, failure consequence composition, UI rounding은 `NOT_FINAL / FOLLOW_UP_DECISION_REQUIRED`. 제품 data/runtime은 아직 변경하지 않는다.
 
 ## 20. 현재 작업 순서
 
-1. `CORE_SIMPLIFICATION_CANON_MIGRATION` — Decisions 25~27 / Art03를 GitHub·Notion·Sheet current surfaces에 동기화.
-2. `DAMAGE_PROBABILITY_CURVE`.
-3. `MINOR_MAJOR_REPAIR_MODEL` + `MAJOR_ENHANCEMENT_ELIGIBILITY`.
-4. `CUSTOMER_EVENT_DAMAGE_POLICY`.
-5. `REPRESENTATIVE_VISUAL_REGENERATION_AFTER_SYSTEM_SYNC`.
-6. 사용자 `CURRENT_PLANNING_COMPLETE_DECLARATION` 전 제품 runtime 구현 금지.
+1. `MINOR_MAJOR_REPAIR_MODEL` + `MAJOR_ENHANCEMENT_ELIGIBILITY`.
+2. `CUSTOMER_EVENT_DAMAGE_POLICY`.
+3. `FAILURE_CONSEQUENCE_COMPOSITION` + `UI_DAMAGE_PERCENT_ROUNDING` — implementation-safe spec에 필요할 경우 명시적으로 확정.
+4. `REPRESENTATIVE_VISUAL_REGENERATION_AFTER_SYSTEM_SYNC`.
+5. 사용자 `CURRENT_PLANNING_COMPLETE_DECLARATION` 전 제품 runtime 구현 금지.
 
 ## 21. 증거 경계
 
 - `BS-ENHANCE-20260825-25`: `USER_APPROVED / PLANNING_CANON`.
-- `BS-DAMAGE-20260825-26`: `USER_APPROVED / STRUCTURAL_CANON`; 숫자 curve/event probability는 `NOT_FINAL`.
+- `BS-DAMAGE-20260825-26`: `USER_APPROVED / STRUCTURAL_CANON`.
+- `BS-DAMAGE-20260826-28`: `USER_APPROVED / PLANNING_CANON`; exact enhancement-failure conditional damage curve만 소유하며 repair/customer-event/failure-composition/UI rounding은 미확정.
 - `BS-CHRONICLE-20260825-27`: `USER_APPROVED / PLANNING_CANON`.
 - `BS-ART-20260825-03`: `USER_APPROVED_DIRECTION`; final product asset/runtime approval은 아님.
 - older CURRENT/MAX / repair / overhaul / damage-family numeric evidence: historical/partially superseded.
-- Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`; 새 damage/repair 모델 뒤 재검산 필요.
+- Monte Carlo: `PLANNING_SIMULATION_EVIDENCE`; Decision28 + 새 repair 모델 뒤 경제 재검산 필요.
 - Human/Player: `NOT_RUN`.
-- Runtime implementation of Decisions25~27/Art03 mechanics: `NOT_RUN / BLOCKED`; current V2 runtime의 CURRENT/MAX·다중 precision은 implementation drift/history다.
+- Runtime implementation of Decisions25~28/Art03 mechanics: `NOT_RUN / BLOCKED`; current V2 runtime의 CURRENT/MAX·다중 precision은 implementation drift/history다.
