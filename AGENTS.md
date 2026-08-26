@@ -1,8 +1,8 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-08 / POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고 현재 기획·문서·인수인계 작업이 그 Gate를 자동으로 열지 않는다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-08 / POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_AND_VISUAL_REQUIREMENT_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고 현재 기획·문서·인수인계 작업이 그 Gate를 자동으로 열지 않는다.
 
-현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision31 repair-economy owner는 `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
+현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve and Decision32 failure-resolution owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision31 repair-economy owner는 `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
 
 ## 1. 권위 순서
 
@@ -13,18 +13,18 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작�
 5. `docs/decisions/BS-DAMAGE-20260826-30_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY.md` + `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
 6. `docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
 7. `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`
-8. `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`
-8. `docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md` + `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
-9. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
-10. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
-11. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 최신 override와 충돌하는 상단 역사 snapshot은 current authority가 아님
-12. 2026-08-20/24 분야별 Canon·current registry — Decisions25~30/Art03~04와 같은 필드가 충돌하면 역사·부분대체 evidence
-13. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 구현 drift가 최신 승인 기획을 덮어쓰지 않음
-14. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference
-15. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
-16. R2/R3 Game Bible·과거 PoC·구형 data/runtime
-17. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
-18. 외부 벤치마크·과거 대화·AI 추론
+8. `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — Decision28 exact curve + Decision32 failure-resolution/display owner
+9. `docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md` + `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
+10. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
+11. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
+12. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 최신 override와 충돌하는 상단 역사 snapshot은 current authority가 아님
+13. 2026-08-20/24 분야별 Canon·current registry — Decisions25~32/Art03~04와 같은 필드가 충돌하면 역사·부분대체 evidence
+14. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 implementation drift가 최신 승인 기획을 덮어쓰지 않음
+15. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference
+16. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+17. R2/R3 Game Bible·과거 PoC·구형 data/runtime
+18. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
+19. 외부 벤치마크·과거 대화·AI 추론
 
 현재 workspace routing:
 
@@ -165,7 +165,7 @@ P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, EFFECTIVE_STATE)
 = Decision28_base_probability(TARGET) * Decision29_state_multiplier(EFFECTIVE_STATE)
 ```
 
-모든 확률은 여전히 enhancement failure에 조건부다. `FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED`, `UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED`.
+모든 확률은 여전히 enhancement failure에 조건부다. `BS-ENHANCE-20260826-32`에 따라 실패 결과는 `FAILED_HOLD` 또는 `FAILED_DAMAGE` 하나이며 단계 하락·별도 CRITICAL은 금지한다. 화면은 성공/실패·유지/실패·손상의 최종 시도 확률을 소수 첫째 자리 반올림으로 표시하고, 실제 판정은 정확값을 유지한다.
 
 ### 4.3 Repair / MAX scar
 
