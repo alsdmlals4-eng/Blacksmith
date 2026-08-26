@@ -34,9 +34,20 @@ REPAIR_PAYMENT = GOLD + 1 common_reinforcement_material
 Definitions:
 
 - `R_BAND` is the authored, secured enhancement-band reference for the item. It is an explicit simulation input, not the current sell price, a forecast next-attempt price, or a MAX/scar multiplier.
+- `R_BAND` now uses the approved **mutable test baseline** below. It is a fixed gold-only normal-enhancement reference by primary material and secured band; it may change after human playtesting or new balance evidence. It is not a shipping price table.
 - `BASE_MAX` remains the Decision 29 base maximum (the test reference is 5 until a later rebase). The denominator never moves after a scar.
 - `common_reinforcement_material` is the always-available common resource defined by the common-resource supply canon. It grants no repair-price discount.
 - The initial sensitivity sweep holds setup at `0.05` and tests loss coefficients `0.50 / 0.65 / 0.80` under identical deterministic inputs. The `0.65` curve is the approved initial test baseline, not a shipping price table.
+
+| Secured band | Iron | Silver | Meteor iron |
+|---|---:|---:|---:|
+| `+0~10` | 125 | 145 | 170 |
+| `+11~30` | 160 | 185 | 215 |
+| `+31~60` | 220 | 255 | 295 |
+| `+61~90` | 300 | 345 | 405 |
+| `+91~100` | 400 | 460 | 540 |
+
+The earlier `R_BAND = 100` sweep remains historical normalized sensitivity evidence only. It does not override this mutable test baseline.
 
 Destroyed items (`CURRENT = 0`) and full items (`CURRENT = MAX`) are ineligible for repair. A major-damage item remains eligible for enhancement under Decision 29; this decision does not make repair mandatory.
 
