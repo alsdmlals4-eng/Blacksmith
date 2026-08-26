@@ -109,13 +109,10 @@ class CiWorkflowStructureTests(unittest.TestCase):
 
     def test_workshop_ui_protected_change_manifest_is_exact(self) -> None:
         path = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-        self.assertTrue(path.exists(), "workshop UI change requires an exact protected-change approval")
-        approval = json.loads(path.read_text(encoding="utf-8"))
-        self.assertEqual("APPROVED", approval["status"])
-        self.assertIn("GITHUB-ISSUE-228", approval["decision_ids"])
+        self.assertFalse(path.exists(), "consumed workshop UI approval must not remain active")
         adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
         self.assertEqual(
-            "cc4a5fca9484b3516639a77d2f7b7a6db0b2fb7a",
+            "103e0a52bee1e0b4e3e72a8410eff5cc7c25ab24",
             adapter["protected_baseline"]["commit"],
         )
         self.assertEqual(
