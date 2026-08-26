@@ -69,6 +69,9 @@ def main() -> None:
     assert "Current task PR: `#207" not in handoff_text
 
     assert "POSTMERGE_PLANNING / DAMAGE_PROBABILITY_CURVE_NEXT" in agents
+    assert "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT" in agents
+    assert "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r5.4_SUPERSET_FINAL_20260826.md" in agents
+    assert "USER_SUPPLIED_V4_8_R4_CURRENT" not in agents
 
     authority_text = AUTHORITY_INDEX.read_text(encoding="utf-8")
     assert "1. DAMAGE_PROBABILITY_CURVE" in authority_text
