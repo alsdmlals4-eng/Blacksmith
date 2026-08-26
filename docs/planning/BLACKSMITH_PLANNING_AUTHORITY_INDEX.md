@@ -10,9 +10,9 @@
 
 1. 사용자의 최신 지시와 승인.
 2. `AGENTS.md`.
-3. `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md` — Decisions25~29 / Art03 current player/system meaning.
-4. `BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json` — current numeric durability/repair owner.
-5. `BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — target-level damage base curve owner.
+3. `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md` — Decisions25~29 / Art03 integrated meaning.
+4. `BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json` — current durability/repair owner.
+5. `BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — target-level base damage curve owner.
 6. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` current override.
 7. 2026-08-20/24 개별 Canon — 새 owner와 충돌하지 않는 필드만 current; 충돌 필드는 역사/부분대체 evidence.
 8. 실제 runtime/data/test evidence — 구현 사실을 증명하지만 PLAN Gate의 implementation drift가 최신 승인 기획을 덮어쓰지 않는다.
@@ -31,7 +31,7 @@ BS-ART-20260825-03
 
 새 `기획 완료` 사용자 선언 전 제품 `data/scripts/scenes/assets/addons/project.godot` 변경은 금지한다.
 
-## 2. 현재 핵심 계약
+## 2. Current core contract
 
 ### Enhancement / Precision
 
@@ -44,27 +44,38 @@ ITEM_KEYWORD machine owner = CATALYST_AFFIX
 NO_FOURTH_AFFIX_SLOT
 ```
 
-+20/+30/+40/+50은 current Precision Enhancement milestone이 아니다.
-
-### Durability / Damage / Repair
-
-Decision29이 같은 필드에서 Decision26의 pure four-state authority를 부분대체한다.
+### Durability / derived state · Decision29
 
 ```text
 DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC
 DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW
+BASE_MAX_DURABILITY = immutable birth durability
 0 <= CURRENT_DURABILITY <= MAX_DURABILITY <= BASE_MAX_DURABILITY
 MAX_DURABILITY_FLOOR = 1
-NORMAL = CURRENT_DURABILITY == MAX_DURABILITY
-MINOR = 0.50 < CURRENT_DURABILITY / MAX_DURABILITY < 1.00
-MAJOR = 0 < CURRENT_DURABILITY / MAX_DURABILITY <= 0.50
+CURRENT_CONDITION_RATIO = CURRENT_DURABILITY / MAX_DURABILITY
+STRUCTURAL_CONDITION_RATIO = MAX_DURABILITY / BASE_MAX_DURABILITY
+EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)
 DESTROYED = CURRENT_DURABILITY == 0
+NORMAL = EFFECTIVE_DURABILITY_RATIO == 1.00
+MINOR = 0.50 < EFFECTIVE_DURABILITY_RATIO < 1.00
+MAJOR = 0 < EFFECTIVE_DURABILITY_RATIO <= 0.50
 CURRENT_MAX_AUTHORITY = SUPERSEDED = HISTORICAL_DECISION26_ONLY
 ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE = SUPERSEDED_BY_DECISION29
 DAMAGE_EVENT_CURRENT_LOSS = 1 / TEMP_TEST_BUDGET
 ```
 
-Decision28 target base curve remains:
+`CURRENT/MAX` 현재 손상과 `MAX/BASE_MAX` 구조 흉터를 별도 패널티로 중첩하지 않는다. 둘 중 더 나쁜 비율 하나가 current effective state와 enhancement modifier를 소유한다.
+
+Reference:
+
+```text
+5/5/5 -> NORMAL
+4/4/5 -> MINOR
+2/2/5 -> MAJOR
+1/1/5 -> MAJOR
+```
+
+### Damage curve · Decision28 + Decision29 modifier
 
 ```text
 TARGET <= +10: ENHANCEMENT_DAMAGE = 0
@@ -75,7 +86,7 @@ DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS
 DAMAGE_CURVE_ROUNDING = NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED
 ```
 
-Decision29 temporary durability modifiers:
+Temporary effective-state modifiers:
 
 ```text
 NORMAL success 0pp / new effect ×1.00 / damage risk ×1.00
@@ -84,23 +95,24 @@ MAJOR  success -7pp / new effect ×0.75 / damage risk ×1.75
 DURABILITY_MODIFIERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
 ```
 
-Hard guarantee remains 100%. Effect multiplier applies only newly added ordinary enhancement effect. Existing stats, +1 level delta and +10 keyword count are not reduced.
-
 ```text
-P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, STATE)
-= Decision28_base_probability(TARGET) * Decision29_state_multiplier(STATE)
+P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, EFFECTIVE_STATE)
+= Decision28_base_probability(TARGET) * Decision29_state_multiplier(EFFECTIVE_STATE)
 ```
 
-Repair contract:
+Hard guarantee remains 100%; modifier does not change +1 level delta, existing stats or +10 keyword cardinality.
+
+### Repair / probabilistic structural scar
 
 ```text
 REPAIR_ELIGIBLE = 0 < CURRENT_DURABILITY < MAX_DURABILITY
 DESTROYED_REPAIR_ALLOWED = FALSE
+FULL_DURABILITY_REPAIR_ALLOWED = FALSE
 MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES
 MAX_DURABILITY_RECOVERY = NOT_APPROVED
 ```
 
-Temporary quality:
+Temporary repair quality:
 
 ```text
 EXCELLENT 20% -> post-scar MAX 100%
@@ -111,82 +123,55 @@ REPAIR_MINIMUM_CURRENT_GAIN_WHEN_POSSIBLE = 1
 
 Temporary `MAX -1` scar chance:
 
-| pre-repair state | +0~10 | +11~30 | +31~60 | +61~90 | +91~100 |
+| Pre-repair effective state | +0~10 | +11~30 | +31~60 | +61~90 | +91~100 |
 |---|---:|---:|---:|---:|---:|
 | MINOR | 10% | 15% | 20% | 25% | 30% |
 | MAJOR | 25% | 30% | 35% | 40% | 45% |
 
-All detailed Decision29 numbers are `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. `MAX_DURABILITY_FLOOR=1`; repair cannot directly destroy the item.
-
-`FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED`; `UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED`.
+All detailed Decision29 values are `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. Repair economy remains `NOT_FINAL / FOLLOWUP_REBASE_REQUIRED`.
 
 ### Customer/world damage
 
 ```text
 CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE
 PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE
+CUSTOMER_EVENT_DAMAGE_POLICY = NOT_FINAL
 ```
 
-Customer-event eligibility and exact probabilities remain unresolved. A later event damage implementation must feed the same Decision29 numeric durability authority rather than recreate a second damage state machine.
+Later event damage must feed the same numeric durability resolver.
 
-### Chronicle
+### Chronicle / Art
 
 ```text
 ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE
 MEANINGFUL_EVENT_HISTORY_ONLY
-```
-
-Durability damage, meaningful repair and MAX structural scar may be Chronicle events; routine enhancement clicks are not.
-
-### Art direction
-
-```text
 ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK
 ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION
 FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED
 ```
 
-## 3. Current owner map
+## 3. Historical owner boundary
 
-### 3.1 Current simplified owner
+Preserved where non-conflicting:
 
-- `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md` — current integrated meaning.
-- `BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` — Decision29 rationale, benchmark, structural rules, temp Budget boundaries.
-- `BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json` — Decision29 machine-readable model.
-- `BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` — Decision28 target curve rationale/scope.
-- `BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — Decision28 target anchors/interpolation.
+- `BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md` — enhancement tension + DDD.
+- `BLACKSMITH_ENHANCEMENT_PROGRESSION_ECONOMY_CANON_20260820.md` — +10 break-even / +100 range intent; exact economics need Decision29 rebase.
+- `BLACKSMITH_LEVEL_TO_EXPERIENCE_BAND_CANON_20260820.md` — target bands.
+- `BLACKSMITH_CHECKPOINT_CADENCE_CANON_20260820.md` — floors `[10,30,60,90]`.
+- existing success/recovery/attempt-cost/common reinforcement-material values — planning inputs pending Decision29 sensitivity recheck.
+- physical UID death/archive/memorial/new-UID successor principles remain current.
 
-### 3.2 Preserved progression where non-conflicting
+Historical only where conflicting:
 
-- `BLACKSMITH_CORE_ENHANCEMENT_DDD_HIERARCHY_20260820.md` — PRIMARY CORE enhancement tension + DDD.
-- `BLACKSMITH_ENHANCEMENT_PROGRESSION_ECONOMY_CANON_20260820.md` — +10 break-even / +100 range; economy needs Decision29 rebase.
-- `BLACKSMITH_LEVEL_TO_EXPERIENCE_BAND_CANON_20260820.md` — target bands only.
-- `BLACKSMITH_CHECKPOINT_CADENCE_CANON_20260820.md` — `CHECKPOINT_FLOORS=[10,30,60,90]`.
-- `BLACKSMITH_ENHANCEMENT_BALANCE_CURVE_CANON_20260820.md` — success/recovery/attempt-cost planning inputs where non-conflicting.
-- `BLACKSMITH_COMMON_RESOURCE_SUPPLY_CANON_20260824.md` — enhancement supply where non-conflicting.
-- `BLACKSMITH_MAX_LEVEL_PAYOFF_CANON_20260824.md` — +100 terminal identity/payoff.
+- old 0~100 CURRENT/MAX scale and STABLE/STRESSED/DAMAGED/FRACTURED/CRITICAL MAX bands;
+- old MAX success/effect penalties;
+- old DAMAGE/CRITICAL family ratios;
+- old CURRENT→MAX repair pricing/material/fatigue formulas;
+- old MAX +15/cap60 overhaul;
+- old multi-precision cadence;
+- old Visual GDD system numbers.
 
-### 3.3 Durability / repair historical evidence
-
-- `BLACKSMITH_ENHANCEMENT_FAILURE_RECOVERY_DAMAGE_DISCLOSURE_CANON_20260820.md` — disclosure/recovery principles only where non-conflicting.
-- `BLACKSMITH_ENHANCEMENT_CHECKPOINT_AND_DURABILITY_CANON_20260820.md` — checkpoint parts retained; old durability numbers historical.
-- `BLACKSMITH_MAX_DURABILITY_STRUCTURAL_SCAR_CANON_20260820.md` — historical; not Decision29.
-- `BLACKSMITH_DURABILITY_BALANCE_BUDGET_WORKING_20260820.md` — old budget only.
-- `BLACKSMITH_FAILURE_FAMILY_RATIO_CANON_20260820.md` — old DAMAGE/CRITICAL composition historical.
-- `BLACKSMITH_REPAIR_REFERENCE_AND_WORKLOAD_CANON_20260820.md` / `BLACKSMITH_REPAIR_ABSOLUTE_ANCHOR_CANON_20260820.md` / `BLACKSMITH_LATE_REPAIR_ECONOMY_CANON_20260824.md` — old repair economy evidence; formulas not fallback.
-- `BLACKSMITH_MAX_OVERHAUL_CANON_20260824.md` — `SUPERSEDED`; no current MAX recovery approved.
-
-### 3.4 Destruction / item life
-
-Physical UID death, immutable archive, curated memorial, optional new-UID successor and zero power inheritance remain current principles. Current terminal trigger is numeric:
-
-```text
-CURRENT_DURABILITY == 0 -> DESTROYED
-```
-
-### 3.5 First session / customer causality
-
-Pacing, STOP/PUSH and delayed same-UID causality remain. CURRENT/MAX teaching must now use Decision29's **visible current numeric model**, not the historical hidden MAX-scar model.
+Decision29 does not resurrect those historical values simply because numeric durability is current again.
 
 ## 4. Preserved progression anchors
 
@@ -201,57 +186,35 @@ CHECKPOINT_FLOORS = [10,30,60,90]
 
 Experience bands remain LEARN / BUILD_CONFIDENCE / FIRST_STOP_POINT / TENSION / HIGH_STAKES / MASTERY.
 
-## 5. Success / recovery / resource status
-
-Existing planning input remains unless Decision29 sensitivity later changes it:
+Existing planning success/recovery inputs:
 
 ```text
-+1       100%
-+2        97%
-+3~+10    95% -> 86%
-+11       82%
-+12~+30   81% -> 72%
-+31~+60   73% -> 69%
-+61~+100  69% -> 64%
++1 100%
++2 97%
++3~+10 95% -> 86%
++11 82%
++12~+30 81% -> 72%
++31~+60 73% -> 69%
++61~+100 69% -> 64%
 recovery = +6pp / same-target failure
 soft cap 95%
 hard guarantee = LEARN2 / BUILD4 / FIRST4 / TENSION5 / HIGH6 / MASTERY7
 ```
 
-Common reinforcement material planning input:
+These are not final product balance after Decision29.
 
-```text
-+1~20 1
-+21~40 2
-+41~60 3
-+61~80 4
-+81~100 5
-```
-
-Decision29 requires economy/sensitivity revalidation before final balance claims.
-
-## 6. Current unresolved gates
+## 5. Current unresolved gates
 
 ```text
 CUSTOMER_EVENT_DAMAGE_POLICY
-- eligible event classes
-- event-specific probability/deterministic causes
-- same numeric durability resolver integration
-
-REPAIR_ECONOMY_REBASE
-- gold/material/fatigue cost after Decision29
-- sensitivity of repair vs damaged push vs stop
-
+REPAIR_ECONOMY_REBASE + durability/economy sensitivity simulation
 FAILURE_CONSEQUENCE_COMPOSITION
-- whether failed enhancement can combine damage with DOWNGRADE/HOLD/other consequence
-
 UI_DAMAGE_PERCENT_ROUNDING
-- display precision only; no second resolver probability authority
 ```
 
-Decision29 closes `MINOR_MAJOR_REPAIR_MODEL` structural behavior and `MAJOR_ENHANCEMENT_ELIGIBILITY`. Exact tuning remains temporary.
+Decision29 closes structural repair behavior and MAJOR enhancement eligibility; exact detailed tuning remains temporary.
 
-## 7. Current work order
+## 6. Current work order
 
 ```text
 1. CUSTOMER_WORLD_EVENT_DAMAGE_POLICY
@@ -263,24 +226,20 @@ Decision29 closes `MINOR_MAJOR_REPAIR_MODEL` structural behavior and `MAJOR_ENHA
 7. runtime implementation plan refresh and TDD migration
 ```
 
-## 8. Runtime reality / drift
+## 7. Runtime reality / drift
 
-Current V2 runtime includes `current_durability`, `max_durability` and old failure/repair semantics. Field-name overlap does not prove Decision29 implementation.
+Current V2 runtime contains similar durability fields but old semantics. Field-name overlap is not Decision29 implementation evidence.
 
 ```text
 RUNTIME_IMPLEMENTATION_OF_NEW_CORE = NOT_RUN / BLOCKED
 OLD_V2_RUNTIME = IMPLEMENTATION_DRIFT / HISTORICAL_RUNTIME_TRUTH
 ```
 
-Do not mutate protected product paths while Work Mode remains PLAN.
+## 8. Operational sync / evidence ceiling
 
-## 9. Operational synchronization
+Meaningful planning changes update GitHub current owner/index/handoff, Notion Human current surfaces and AI/System metadata. Google Sheet remains migration-only same-ID compatibility.
 
-Meaningful planning changes update current GitHub owner/index/handoff, Notion Human Home + Enhancement/Durability/Economy views, AI/System operational metadata, and migration-only Sheet same-ID row when needed.
-
-Pre-existing PR #196 remains `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`.
-
-## 10. Evidence ceiling
+PR #196 remains `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`.
 
 ```text
 PLANNING_DESIGN = USER_APPROVED
