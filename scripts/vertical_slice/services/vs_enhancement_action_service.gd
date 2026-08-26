@@ -50,10 +50,9 @@ func resolve_with_rolls(
 
 	var staged_record = null
 	if str(staged_item.physical_state) == "DESTROYED":
-		var failure_family := str(result.get("failure_family", ""))
-		if failure_family.is_empty():
+		var direct_cause := _destruction_cause_for_result(str(result.get("outcome", "")))
+		if direct_cause.is_empty():
 			return _blocked("MISSING_DESTRUCTION_CAUSE")
-		var direct_cause := "ENHANCEMENT_%s" % failure_family
 		staged_record = DestroyedHistoryRecordScript.from_item(
 			staged_item,
 			game_day,
@@ -78,8 +77,16 @@ func _commit_enhancement_state(item, staged_item) -> void:
 	item.enhancement_recovery_by_target = staged_item.enhancement_recovery_by_target.duplicate(true)
 	item.current_durability = int(staged_item.current_durability)
 	item.max_durability = int(staged_item.max_durability)
+	item.base_max_durability = int(staged_item.base_max_durability)
+	item.repair_job_available = bool(staged_item.repair_job_available)
 	item.max_enhancement_reached = bool(staged_item.max_enhancement_reached)
 	item.physical_state = str(staged_item.physical_state)
+
+
+func _destruction_cause_for_result(outcome: String) -> String:
+	if outcome == "FAILED_DAMAGE":
+		return "ENHANCEMENT_DAMAGE"
+	return ""
 
 
 func _blocked(reason: String) -> Dictionary:

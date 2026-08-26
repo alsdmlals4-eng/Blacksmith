@@ -1,8 +1,10 @@
 class_name VSSaveEnvelope
 extends RefCounted
 
-const SCHEMA_VERSION := 2
-const PRESET_VERSION := "VS-2026.08.24-B"
+const SCHEMA_VERSION := 3
+const PRESET_VERSION := "VS-2026.08.26-C"
+const LEGACY_V2_SCHEMA_VERSION := 2
+const LEGACY_V2_PRESET_VERSION := "VS-2026.08.24-B"
 const LEGACY_PRE_RELEASE_SCHEMA_VERSION := 1
 const LEGACY_PRE_RELEASE_PRESET_VERSION := "VS-2026.08.06-A"
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
@@ -126,6 +128,10 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 			envelope.items_by_uid[item.uid] = item
 	else:
 		envelope.validation_errors.append("INVALID_FIELD_TYPE:items_by_uid")
+
+	if envelope.schema_version == LEGACY_V2_SCHEMA_VERSION and envelope.preset_version == LEGACY_V2_PRESET_VERSION:
+		envelope.schema_version = SCHEMA_VERSION
+		envelope.preset_version = PRESET_VERSION
 
 	envelope._validate_values()
 	return envelope

@@ -26,8 +26,8 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("LEGACY_COMPATIBILITY_ROUTER", agents)
         self.assertIn("BS-OPS-20260825-08", handoff)
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", handoff)
-        self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", handoff)
-        self.assertIn("CURRENT_PLANNING_WORK = DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE", handoff)
+        self.assertIn("CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826", handoff)
+        self.assertIn("CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS", handoff)
 
         self.assertIn("CURRENT_PRIORITY_OVERLAY", overlay)
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", overlay)
@@ -38,6 +38,7 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
             "BS-REPAIR-20260826-29",
             "BS-REPAIR-20260826-31",
             "BS-DAMAGE-20260826-30",
+            "BS-ENHANCE-20260826-32",
             "BS-CHRONICLE-20260825-27",
             "BS-ART-20260825-03",
             "BS-ART-20260826-04",
@@ -76,7 +77,7 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         )
 
         self.assertIn("ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER", agents)
-        self.assertIn("Decisions25~30/Art03~04", agents)
+        self.assertIn("Decisions25~32/Art03~04", agents)
         self.assertNotIn("25~27/Art03", agents)
 
 

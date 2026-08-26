@@ -12,7 +12,7 @@ ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
 APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
-OPERATING_CONTRACT_BASELINE = "1bdf5f4b436b114253e86d897c7ef15514103f8f"
+OPERATING_CONTRACT_BASELINE = "cd32f21eda13cae600b952b39b46fda62eee5c70"
 BASE_RELEASE_VERSION = "9.4.4"
 HEALTH_EVIDENCE_HASHES = {
     "BS-ADAPTER-MIGRATION-20260806": "f074e5c72cb7e8da2d89c5893daa2439db4111d97d92ca9a9a97bed5cfa85e65",
@@ -57,7 +57,7 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         self.assertNotIn("printf 'PROTECTED_BASE_SHA=%s\n' \"$PROTECTED_BASE_SHA\"", text)
         self.assertFalse(any(line.startswith("' \"") for line in text.splitlines()))
 
-    def test_current_main_is_the_protected_baseline_and_retires_one_shot_approval(self) -> None:
+    def test_consumed_runtime_mvp_approval_is_retired(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
         self.assertEqual(OPERATING_CONTRACT_BASELINE, adapter["protected_baseline"]["commit"])
         self.assertFalse(APPROVAL.exists())

@@ -91,7 +91,7 @@ def main() -> None:
         require_tokens(text, [DECISION_ID], path.name)
 
     handoff_text = HANDOFF.read_text(encoding="utf-8")
-    assert "CURRENT_PLANNING_WORK = DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE" in handoff_text
+    assert "CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS" in handoff_text
 
     print("customer world event damage policy current contract: PASS")
 

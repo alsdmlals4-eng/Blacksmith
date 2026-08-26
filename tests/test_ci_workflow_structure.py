@@ -107,12 +107,12 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json", workflow)
         self.assertNotIn("python .base-contract/tools/check_project_operating_contract.py", workflow)
 
-    def test_consumed_task2_protected_change_manifest_is_retired(self) -> None:
+    def test_consumed_runtime_mvp_protected_change_manifest_is_retired(self) -> None:
         path = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-        self.assertFalse(path.exists(), "consumed one-shot protected-change approval must be retired")
+        self.assertFalse(path.exists(), "consumed protected-change approval must be retired")
         adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
         self.assertEqual(
-            "1bdf5f4b436b114253e86d897c7ef15514103f8f",
+            "cd32f21eda13cae600b952b39b46fda62eee5c70",
             adapter["protected_baseline"]["commit"],
         )
         self.assertEqual(

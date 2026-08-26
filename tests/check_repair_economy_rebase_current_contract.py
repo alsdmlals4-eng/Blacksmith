@@ -80,7 +80,7 @@ def main() -> None:
     assert model["decision_id"] == DECISION_ID
     assert model["status"] == "USER_APPROVED_PLANNING_CANON"
     assert model["scope"] == "PLANNING_ONLY"
-    assert model["runtime_status"] == "BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION"
+    assert model["runtime_status"] == "MVP_CORE_IMPLEMENTED_GODOT_GUT_VERIFIED_20260826"
 
     repair_job = model["repair_job"]
     assert repair_job["unit"] == "boolean_per_item_uid"
@@ -88,6 +88,9 @@ def main() -> None:
     assert repair_job["multiple_damage_before_repair"] == "remains_true_no_stacking"
     assert repair_job["consumed_on"] == "repair_start_regardless_of_quality_or_scar"
     assert repair_job["reopens_on"] == "later_resolved_actual_damage_event_that_reduces_current"
+
+    assert model["implementation_contract"]["runtime_mvp_status"] == "IMPLEMENTED_GODOT_GUT_VERIFIED_20260826"
+    assert model["implementation_contract"]["ui_integration"] == "NOT_RUN"
 
     payment = model["payment"]
     assert payment["formula"] == "GOLD = ceil(R_BAND * (0.05 + 0.65 * ((MAX - CURRENT) / BASE_MAX)))"
@@ -100,6 +103,16 @@ def main() -> None:
         "grants_discount": False,
     }
     assert payment["r_band"]["explicit_simulation_input"] is True
+    assert payment["r_band"]["status"] == "USER_APPROVED_MUTABLE_TEST_BASELINE"
+    assert payment["r_band"]["change_policy"] == "MAY_CHANGE_AFTER_HUMAN_PLAYTEST_OR_NEW_BALANCE_EVIDENCE"
+    assert payment["r_band"]["reference_definition"] == "fixed_gold_only_standard_enhancement_reference_by_primary_material_and_secured_band"
+    assert payment["r_band"]["table"] == {
+        "PLUS_0_10": {"iron": 125, "silver": 145, "meteor_iron": 170},
+        "PLUS_11_30": {"iron": 160, "silver": 185, "meteor_iron": 215},
+        "PLUS_31_60": {"iron": 220, "silver": 255, "meteor_iron": 295},
+        "PLUS_61_90": {"iron": 300, "silver": 345, "meteor_iron": 405},
+        "PLUS_91_100": {"iron": 400, "silver": 460, "meteor_iron": 540},
+    }
     assert payment["r_band"]["prohibited_sources"] == [
         "current_sell_price",
         "forecast_next_attempt_price",
@@ -123,6 +136,17 @@ def main() -> None:
 
     for path in (OVERLAY, CORE, AUTHORITY, AGENTS, HANDOFF):
         require_tokens(path.read_text(encoding="utf-8"), [DECISION_ID], path.name)
+    require_tokens(
+        HANDOFF.read_text(encoding="utf-8"),
+        [
+            "REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW",
+            "b=.65 / USER_APPROVED_FIRST_TEST_DEFAULT",
+            "R_BAND_TEST_TABLE = USER_APPROVED_MUTABLE_BASELINE",
+            "R_BAND=100 / HISTORICAL_NORMALIZED_SENSITIVITY_INPUT_ONLY",
+            "HUMAN_PLAYTEST = NOT_RUN",
+        ],
+        "Decision31 handoff",
+    )
     require_tokens(
         CORE.read_text(encoding="utf-8"),
         ["BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json"],

@@ -4,7 +4,7 @@
   "title": "Repair Economy Rebase and Sensitivity Contract",
   "status": "USER_APPROVED_PLANNING_CANON",
   "scope": "PLANNING_ONLY",
-  "runtime_status": "BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION",
+  "runtime_status": "MVP_CORE_IMPLEMENTED_GODOT_GUT_VERIFIED_20260826",
   "numeric_status": "TEMPORARY_TEST_BUDGET_NOT_FINAL_PRODUCT_BALANCE",
   "overlays_decision": "BS-REPAIR-20260826-29",
   "repair_job": {
@@ -27,6 +27,36 @@
     "r_band": {
       "source": "authored_secured_enhancement_band_reference",
       "explicit_simulation_input": true,
+      "status": "USER_APPROVED_MUTABLE_TEST_BASELINE",
+      "change_policy": "MAY_CHANGE_AFTER_HUMAN_PLAYTEST_OR_NEW_BALANCE_EVIDENCE",
+      "reference_definition": "fixed_gold_only_standard_enhancement_reference_by_primary_material_and_secured_band",
+      "table": {
+        "PLUS_0_10": {
+          "iron": 125,
+          "silver": 145,
+          "meteor_iron": 170
+        },
+        "PLUS_11_30": {
+          "iron": 160,
+          "silver": 185,
+          "meteor_iron": 215
+        },
+        "PLUS_31_60": {
+          "iron": 220,
+          "silver": 255,
+          "meteor_iron": 295
+        },
+        "PLUS_61_90": {
+          "iron": 300,
+          "silver": 345,
+          "meteor_iron": 405
+        },
+        "PLUS_91_100": {
+          "iron": 400,
+          "silver": 460,
+          "meteor_iron": 540
+        }
+      },
       "prohibited_sources": [
         "current_sell_price",
         "forecast_next_attempt_price",
@@ -81,7 +111,8 @@
     ]
   },
   "implementation_contract": {
-    "no_runtime_or_ui_work_authorized": true,
+    "runtime_mvp_status": "IMPLEMENTED_GODOT_GUT_VERIFIED_20260826",
+    "ui_integration": "NOT_RUN",
     "future_quote_must_show": [
       "current_max_base_max",
       "eligibility",
@@ -92,11 +123,11 @@
     ]
   },
   "not_decided": [
-    "live_r_band_price_table",
+    "shipping_r_band_price_table",
     "final_gold_targets",
     "product_ready_material_recipe",
     "human_play_simulation_results",
-    "runtime_implementation"
+    "repair_ui_integration"
   ],
   "provenance": {
     "evidence_mode": "ADAPT_ONLY",

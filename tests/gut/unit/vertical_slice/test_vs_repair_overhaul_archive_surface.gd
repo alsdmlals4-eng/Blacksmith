@@ -34,8 +34,8 @@ func test_machine_schema_describes_archive_without_breaking_existing_v2_reads() 
 	var save_contract: Dictionary = parsed.get("save_envelope", {})
 	assert_eq(save_contract.get("destroyed_history_field", ""), "destroyed_history_by_uid")
 	assert_eq(save_contract.get("destroyed_history_record_type", ""), "DESTROYED_HISTORY_V1")
-	assert_eq(save_contract.get("destroyed_history_write_policy", ""), "REQUIRED_ON_NEW_V2_WRITES")
-	assert_eq(save_contract.get("destroyed_history_read_compatibility", ""), "MISSING_FIELD_DEFAULTS_EMPTY_FOR_EXISTING_V2")
+	assert_eq(save_contract.get("destroyed_history_write_policy", ""), "REQUIRED_ON_NEW_V3_WRITES")
+	assert_eq(save_contract.get("destroyed_history_read_compatibility", ""), "MISSING_FIELD_DEFAULTS_EMPTY_FOR_EXISTING_V2_THEN_MIGRATE_TO_V3")
 	assert_eq(save_contract.get("destroyed_history_overwrite_policy", ""), "IMMUTABLE_UID_INSERT_ONLY")
 	assert_false(
 		Array(save_contract.get("required_fields", [])).has("destroyed_history_by_uid"),

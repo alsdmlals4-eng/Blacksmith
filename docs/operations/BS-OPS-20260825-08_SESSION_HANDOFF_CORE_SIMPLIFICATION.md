@@ -2,16 +2,35 @@
 
 - Decision ID: `BS-OPS-20260825-08`
 - Date: `2026-08-25 KST`, current update `2026-08-26 KST`
-- Status: `CURRENT_SESSION_HANDOFF / GPT_WORK_TRANSFER / POSTMERGE_PLANNING_ONLY`
+- Status: `CURRENT_SESSION_HANDOFF / CODEX_RUNTIME_MVP_IMPLEMENTATION_ACTIVE`
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_PLANNING_WORK = DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE`
+- `CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
 - Pre-existing protected PR: `#196 / OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
-- Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
+- Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
 
-## 0. GPT Work transfer · 2026-08-26
+## 0. Runtime MVP checkpoint · 2026-08-26
+
+The user declared the current planning complete and authorized Godot implementation against the current canon. GitHub Issue `#224` owns the first runtime slice.
+
+```text
+RUNTIME_MVP = ITEM_V3 + SAVE_V3_MIGRATION + ENHANCEMENT_FAILURE + REPAIR_ECONOMY
+ITEM_DURABILITY = CURRENT / MAX / BASE_MAX = 5
+FAILURE_OUTCOMES = FAILED_HOLD | FAILED_DAMAGE
+REPAIR = one actual-damage job + R_BAND gold + one common reinforcement material
+OVERHAUL = SUPERSEDED
+V2_SAVE = READ_MIGRATE_TO_V3 / NEXT_WRITE_V3
+GODOT_GUT_CORE_VERIFICATION = PASS
+RUNTIME_UI_INTEGRATION = NOT_RUN
+CUSTOMER_WORLD_EVENT_RUNTIME = NOT_RUN
+HUMAN_PLAYTEST = NOT_RUN
+OPERATING_CONTRACT_BASELINE = cd32f21eda13cae600b952b39b46fda62eee5c70
+PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED
+```
+
+## 1. GPT Work transfer · 2026-08-26
 
 User directive: future Blacksmith work moves from the current chat to **ChatGPT Work**. This changes the working surface, not project authority.
 
@@ -30,9 +49,9 @@ Base current handoff checkpoint at transfer start: `06669fe9c6a3ccd6f3b0d19c5757
 
 `BS-OPS-20260826-32 / MERGED_PR215` restores the Work entry gate after current Base validation exposed an obsolete protected baseline and stale raw-byte health-evidence records. The repair advanced only the metadata baseline to merged Blacksmith main `1bdf5f4b436b114253e86d897c7ef15514103f8f`, adopted released Base v9.4.4 and current Base validator `43b3ffb2c5b026e3d4a38dab2338585894d36f61`, and regenerated derived adapter views. PR #215 merged at `c51c1c358714dde3fc5c04156c9e77e28c8f4b10`; runtime, Android, accessibility, performance, and human-play evidence remain `NOT_RUN`. The Google Sheet remains `MIGRATION_ONLY_COMPATIBILITY` and is not written by this repair. No `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, or `project.godot` path is in scope; PR #196 remains read-only.
 
-### Decision31 deterministic sensitivity · Issue #216
+### Decision31 deterministic sensitivity · Issues #216, #218
 
-`BS-OPS-20260826-33 / DECISION31_SENSITIVITY_DELIVERY` records the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. It cannot create a live R_BAND table or product implementation approval. Future user-approved images require a dual-storage receipt: Notion record plus exact project-local binary path with SHA-256 and actual-game consumer ID. No image is created or written to `assets/` until the current product gate permits it.
+`BS-OPS-20260826-33 / DECISION31_SENSITIVITY_DELIVERY` records the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. `b=.65 / USER_APPROVED_FIRST_TEST_DEFAULT`; `R_BAND=100 / HISTORICAL_NORMALIZED_SENSITIVITY_INPUT_ONLY`; `b=.50/.80` remain comparison curves only. `R_BAND_TEST_TABLE = USER_APPROVED_MUTABLE_BASELINE`: +0~10 `125/145/170`, +11~30 `160/185/215`, +31~60 `220/255/295`, +61~90 `300/345/405`, +91~100 `400/460/540` for iron/silver/meteor iron. The table may change after human playtesting or new balance evidence; it is not a shipping price table. `HUMAN_PLAYTEST = NOT_RUN` until the first controlled experience check. This cannot create a product implementation approval. Future user-approved images require a dual-storage receipt: Notion record plus exact project-local binary path with SHA-256 and actual-game consumer ID. No image is created or written to `assets/` until the current product gate permits it.
 
 The Base policy owns the generic Work/Default-memory rule. Blacksmith does not fork that policy. Project-specific Work startup remains:
 
@@ -154,6 +173,7 @@ Current approved Decisions:
 | `BS-REPAIR-20260826-29` | Visible `CURRENT/MAX/BASE_MAX` is sole durability authority. Current damage and permanent scar collapse into one effective durability state; low effective durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement remains allowed with penalties. |
 | `BS-REPAIR-20260826-31` | Approved planning-only repair-economy overlay: one repair job per actual-damage cycle, initial normalized loss curve plus one common material, and a no-zero-recovery scar guard. The final price table remains a controlled sensitivity decision. |
 | `BS-DAMAGE-20260826-30` | Customer/world damage requires actual item use + authored event profile/cause. Purchase/handoff does not damage. One event/UID rolls at most once. `NONE/LOW/MEDIUM/HIGH/DIRECT = 0/10/20/40/100%` is temporary; probabilistic profiles use Decision29 effective-state multiplier with 95% cap; DIRECT is one deterministic Decision29 damage event. World events never directly damage MAX. |
+| `BS-ENHANCE-20260826-32` | Enhancement failure is exactly `FAILED_HOLD` or `FAILED_DAMAGE`; damage replaces hold, never stacks with downgrade or separate CRITICAL. The preview shows final per-attempt success/hold/damage outcomes at one decimal; resolver probability stays exact. |
 | `BS-CHRONICLE-20260825-27` | Player Chronicle shows meaningful lifecycle events, not routine attempt logs or schedule ticks. |
 | `BS-ART-20260825-03` | `ILLUSTRATED_WORKSHOP_BOOK / USER_APPROVED_DIRECTION`; final product asset/runtime approval remains separate. |
 | `BS-ART-20260826-04` | New generated Blacksmith images require an actual game consumer and Primary Use Gate. No new standalone explanatory GDD-sheet images; generated UI screenshots are not product assets. Existing 8 Visual GDDs remain historical information-architecture references. |
@@ -233,7 +253,7 @@ P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, EFFECTIVE_STATE)
 = Decision28_target_base * Decision29_effective_state_multiplier
 ```
 
-`FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED`; `UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED`.
+`FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE`; `UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP`.
 
 ## 5. Repair / probabilistic structural scar
 
@@ -348,12 +368,11 @@ Existing 8 Visual GDDs are `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`.
 ## 11. Next planning Gates
 
 ```text
-1. DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE
-2. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING if required
-3. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
-4. adversarial full-planning review
-5. explicit user `planning complete`
-6. runtime implementation-plan refresh + TDD migration
+1. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
+2. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
+3. adversarial full-planning review
+4. explicit user `planning complete`
+5. runtime implementation-plan refresh + TDD migration
 ```
 
 ## 12. Evidence ceiling
@@ -367,9 +386,9 @@ CUSTOMER_EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BAL
 VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04
 IMAGE_GENERATION = NOT_RUN
 ACTUAL_RUNTIME_IMAGE_CONSUMPTION = NOT_RUN
-REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / SENSITIVITY_REQUIRED
-FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
-UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
+REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / B65_DEFAULT_PLAYTEST_REQUIRED
+FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE
+UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP
 NEW_CORE_RUNTIME = NOT_RUN / BLOCKED
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_DEVICE = NOT_RUN
