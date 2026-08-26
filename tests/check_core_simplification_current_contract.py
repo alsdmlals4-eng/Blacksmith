@@ -183,7 +183,7 @@ def main() -> None:
         "conditional_damage_detail": "FAILURE_CONDITIONAL_PERCENT_ONE_DECIMAL_HALF_UP_WITH_EXACT_RESOLVER_SOURCE",
         "hard_guarantee": "SUCCESS_100.0_NO_FAILURE_OUTCOMES",
     }
-    assert curve["runtime_implementation"] == "BLOCKED_NOT_RUN"
+    assert curve["runtime_implementation"] == "MVP_CORE_IMPLEMENTED_GODOT_GUT_VERIFIED_20260826"
 
     anchors = curve["anchors_percent"]
     assert anchors == [
@@ -246,7 +246,7 @@ def main() -> None:
     assert durability["durability_state_derivation"]["effective_durability_ratio"] == "min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)"
     assert durability["major_enhancement_allowed"] is True
     assert durability["max_durability_recovery"] == "NOT_APPROVED"
-    assert durability["runtime_implementation"] == "BLOCKED_NOT_RUN"
+    assert durability["runtime_implementation"] == "MVP_CORE_IMPLEMENTED_GODOT_GUT_VERIFIED_20260826"
 
     customer_damage = json.loads(CUSTOMER_DAMAGE_MODEL.read_text(encoding="utf-8"))
     assert customer_damage["decision_id"] == "BS-DAMAGE-20260826-30"

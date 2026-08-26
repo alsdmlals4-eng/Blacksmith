@@ -1,7 +1,7 @@
 class_name VSPrecisionResolver
 extends RefCounted
 
-const PRECISION_MILESTONES := [10, 20, 30, 40, 50]
+const PRECISION_MILESTONES := [10]
 const METHOD_OUTPUTS := {
 	"EDGE_REINFORCEMENT": {
 		"output_lane": "STAT_METHOD",

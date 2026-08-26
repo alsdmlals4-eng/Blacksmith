@@ -71,5 +71,5 @@
   "repair_economy": "NOT_FINAL_FOLLOWUP_REBASE_REQUIRED",
   "failure_consequence_composition": "NOT_DECIDED",
   "ui_damage_percent_rounding": "NOT_DECIDED",
-  "runtime_implementation": "BLOCKED_NOT_RUN"
+  "runtime_implementation": "MVP_CORE_IMPLEMENTED_GODOT_GUT_VERIFIED_20260826"
 }

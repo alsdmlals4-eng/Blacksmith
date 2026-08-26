@@ -88,6 +88,8 @@ ITEM_FIELDS = {
     "highest_checkpoint",
     "current_durability",
     "max_durability",
+    "base_max_durability",
+    "repair_job_available",
     "enhancement_recovery_by_target",
     "overhaul_used",
     "max_enhancement_reached",
@@ -106,7 +108,6 @@ SAVE_FIELDS = [
 FORBIDDEN_NEW_NAMESPACE_TOKENS = (
     "secondary_material",
     '"affixes"',
-    '"STANDARD"',
     '"GOOD"',
     '"PERFECT"',
     '"RARE"',
@@ -134,17 +135,17 @@ class VerticalSliceTask1CanonContractTests(unittest.TestCase):
         for path in required:
             self.assertTrue(path.is_file(), str(path.relative_to(ROOT)))
 
-    def test_preset_matches_current_v2_runtime_boundary(self) -> None:
+    def test_preset_matches_current_v3_runtime_boundary(self) -> None:
         preset = json.loads(PRESET.read_text(encoding="utf-8"))
-        self.assertEqual(preset["schema_version"], 2)
-        self.assertEqual(preset["preset_version"], "VS-2026.08.24-B")
-        self.assertEqual(preset["authority"], "CURRENT_IMPLEMENTATION_GATE_20260824")
+        self.assertEqual(preset["schema_version"], 3)
+        self.assertEqual(preset["preset_version"], "VS-2026.08.26-C")
+        self.assertEqual(preset["authority"], "CURRENT_CANON_RUNTIME_MVP_20260826")
         self.assertFalse(preset["is_final_balance"])
         self.assertEqual(preset["human_playtest"], "NOT_RUN")
         self.assertEqual(preset["representative_scope"]["equipment_groups"], ["SWORD"])
         self.assertEqual(preset["representative_scope"]["starter_primary_material_id"], "iron")
         self.assertEqual(preset["representative_scope"]["maximum_enhancement_level"], 100)
-        self.assertEqual(preset["representative_scope"]["precision_milestones"], [10, 20, 30, 40, 50])
+        self.assertEqual(preset["representative_scope"]["precision_milestones"], [10])
         self.assertEqual(preset["representative_scope"]["checkpoint_floors"], [10, 30, 60, 90])
         self.assertEqual(preset["representative_scope"]["starter_customer_id"], "NADIA_VENN")
         self.assertEqual(preset["visitor_public_standing_grades"], STANDING_IDS)
@@ -156,15 +157,16 @@ class VerticalSliceTask1CanonContractTests(unittest.TestCase):
         self.assertEqual(preset["crafting_grade_probabilities"], EXPECTED_PROBABILITIES)
         for tier in EXPECTED_PROBABILITIES.values():
             self.assertAlmostEqual(sum(tier.values()), 1.0)
-        self.assertEqual(preset["save_contract"]["item_schema_version"], 2)
-        self.assertEqual(preset["save_contract"]["save_schema_version"], 2)
+        self.assertEqual(preset["save_contract"]["item_schema_version"], 3)
+        self.assertEqual(preset["save_contract"]["save_schema_version"], 3)
+        self.assertEqual(preset["save_contract"]["legacy_v2_policy"], "MIGRATE_TO_V3_ON_READ_WRITE_V3_ON_NEXT_SAVE")
         self.assertEqual(preset["save_contract"]["legacy_v1_policy"], "LEGACY_PRE_RELEASE_SAVE_FAIL_CLOSED")
 
     def test_schema_matches_current_save_item_and_ledger_canon(self) -> None:
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
-        self.assertEqual(schema["schema_version"], 2)
-        self.assertEqual(schema["preset_version"], "VS-2026.08.24-B")
-        self.assertEqual(schema["authority"], "CURRENT_IMPLEMENTATION_GATE_20260824")
+        self.assertEqual(schema["schema_version"], 3)
+        self.assertEqual(schema["preset_version"], "VS-2026.08.26-C")
+        self.assertEqual(schema["authority"], "CURRENT_CANON_RUNTIME_MVP_20260826")
         self.assertTrue(schema["current_canon_implementation_approved"])
         self.assertFalse(schema["release_near_verified"])
         self.assertEqual(schema["current_active_namespaces"], [
@@ -177,7 +179,8 @@ class VerticalSliceTask1CanonContractTests(unittest.TestCase):
         self.assertEqual(schema["item"]["crafting_grades"], GRADE_IDS)
         self.assertEqual(schema["item"]["enhancement_range"], [0, 100])
         self.assertEqual(schema["item"]["checkpoint_floors"], [10, 30, 60, 90])
-        self.assertEqual(schema["item"]["precision_milestones"], [10, 20, 30, 40, 50])
+        self.assertEqual(schema["item"]["schema_version"], 3)
+        self.assertEqual(schema["item"]["precision_milestones"], [10])
         self.assertEqual(schema["item"]["physical_states"], ["ACTIVE", "DESTROYED"])
         self.assertEqual(schema["visitor_profile"]["public_standing_grades"], STANDING_IDS)
         self.assertFalse(schema["visitor_profile"]["standing_grade_is_power_multiplier"])
@@ -185,6 +188,7 @@ class VerticalSliceTask1CanonContractTests(unittest.TestCase):
         self.assertIn("occurred_at_game_day", schema["ledger_entry"]["required_fields"])
         self.assertNotIn("game_day", schema["ledger_entry"]["required_fields"])
         self.assertEqual(schema["save_envelope"]["required_fields"], SAVE_FIELDS)
+        self.assertEqual(schema["save_envelope"]["schema_version"], 3)
         self.assertEqual(schema["save_envelope"]["items_field"], "items_by_uid")
         self.assertFalse(schema["save_envelope"]["load_may_reroll_resolved_events"])
         self.assertEqual(schema["save_envelope"]["legacy_v1_policy"], "LEGACY_PRE_RELEASE_SAVE_FAIL_CLOSED")

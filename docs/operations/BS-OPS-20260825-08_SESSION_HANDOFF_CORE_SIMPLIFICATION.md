@@ -2,16 +2,33 @@
 
 - Decision ID: `BS-OPS-20260825-08`
 - Date: `2026-08-25 KST`, current update `2026-08-26 KST`
-- Status: `CURRENT_SESSION_HANDOFF / GPT_WORK_TRANSFER / POSTMERGE_PLANNING_ONLY`
+- Status: `CURRENT_SESSION_HANDOFF / CODEX_RUNTIME_MVP_IMPLEMENTATION_ACTIVE`
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
 - `CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
 - Pre-existing protected PR: `#196 / OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
-- Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
+- Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
 
-## 0. GPT Work transfer · 2026-08-26
+## 0. Runtime MVP checkpoint · 2026-08-26
+
+The user declared the current planning complete and authorized Godot implementation against the current canon. GitHub Issue `#224` owns the first runtime slice.
+
+```text
+RUNTIME_MVP = ITEM_V3 + SAVE_V3_MIGRATION + ENHANCEMENT_FAILURE + REPAIR_ECONOMY
+ITEM_DURABILITY = CURRENT / MAX / BASE_MAX = 5
+FAILURE_OUTCOMES = FAILED_HOLD | FAILED_DAMAGE
+REPAIR = one actual-damage job + R_BAND gold + one common reinforcement material
+OVERHAUL = SUPERSEDED
+V2_SAVE = READ_MIGRATE_TO_V3 / NEXT_WRITE_V3
+GODOT_GUT_CORE_VERIFICATION = PASS
+RUNTIME_UI_INTEGRATION = NOT_RUN
+CUSTOMER_WORLD_EVENT_RUNTIME = NOT_RUN
+HUMAN_PLAYTEST = NOT_RUN
+```
+
+## 1. GPT Work transfer · 2026-08-26
 
 User directive: future Blacksmith work moves from the current chat to **ChatGPT Work**. This changes the working surface, not project authority.
 

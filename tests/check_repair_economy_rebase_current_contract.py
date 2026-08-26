@@ -80,7 +80,7 @@ def main() -> None:
     assert model["decision_id"] == DECISION_ID
     assert model["status"] == "USER_APPROVED_PLANNING_CANON"
     assert model["scope"] == "PLANNING_ONLY"
-    assert model["runtime_status"] == "BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION"
+    assert model["runtime_status"] == "MVP_CORE_IMPLEMENTED_GODOT_GUT_VERIFIED_20260826"
 
     repair_job = model["repair_job"]
     assert repair_job["unit"] == "boolean_per_item_uid"
@@ -88,6 +88,9 @@ def main() -> None:
     assert repair_job["multiple_damage_before_repair"] == "remains_true_no_stacking"
     assert repair_job["consumed_on"] == "repair_start_regardless_of_quality_or_scar"
     assert repair_job["reopens_on"] == "later_resolved_actual_damage_event_that_reduces_current"
+
+    assert model["implementation_contract"]["runtime_mvp_status"] == "IMPLEMENTED_GODOT_GUT_VERIFIED_20260826"
+    assert model["implementation_contract"]["ui_integration"] == "NOT_RUN"
 
     payment = model["payment"]
     assert payment["formula"] == "GOLD = ceil(R_BAND * (0.05 + 0.65 * ((MAX - CURRENT) / BASE_MAX)))"

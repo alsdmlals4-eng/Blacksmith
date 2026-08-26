@@ -1,7 +1,8 @@
 class_name VSItem
 extends RefCounted
 
-const SCHEMA_VERSION := 2
+const SCHEMA_VERSION := 3
+const BASE_MAX_DURABILITY := 5
 const LedgerEntryScript = preload("res://scripts/vertical_slice/domain/vs_ledger_entry.gd")
 const REQUIRED_FIELDS := [
 	"schema_version",
@@ -28,6 +29,8 @@ const REQUIRED_FIELDS := [
 	"highest_checkpoint",
 	"current_durability",
 	"max_durability",
+	"base_max_durability",
+	"repair_job_available",
 	"enhancement_recovery_by_target",
 	"overhaul_used",
 	"max_enhancement_reached",
@@ -44,7 +47,7 @@ const PRIMARY_MATERIAL_IDS := ["iron", "silver", "meteor_iron"]
 const LEGACY_DAMAGE_STATES := ["INTACT", "DAMAGED", "BROKEN", "RESTORED"]
 const PHYSICAL_STATES := ["ACTIVE", "DESTROYED"]
 const CHECKPOINT_FLOORS := [0, 10, 30, 60, 90]
-const PRECISION_MILESTONES := [10, 20, 30, 40, 50]
+const PRECISION_MILESTONES := [10]
 
 var schema_version: int = SCHEMA_VERSION
 var uid: String = ""
@@ -70,8 +73,10 @@ var damage_state: String = "INTACT"
 var owner_id: String = "PLAYER"
 var ledger: Array[Dictionary] = []
 var highest_checkpoint: int = 0
-var current_durability: int = 100
-var max_durability: int = 100
+var current_durability: int = BASE_MAX_DURABILITY
+var max_durability: int = BASE_MAX_DURABILITY
+var base_max_durability: int = BASE_MAX_DURABILITY
+var repair_job_available: bool = false
 var enhancement_recovery_by_target: Dictionary = {}
 var overhaul_used: bool = false
 var max_enhancement_reached: bool = false
@@ -81,11 +86,12 @@ var validation_errors: Array[String] = []
 
 static func from_dict(value: Dictionary) -> VSItem:
 	var item := VSItem.new()
+	var source_schema_version := int(value.get("schema_version", 0))
 	for field_name in REQUIRED_FIELDS:
-		if not value.has(field_name):
+		if source_schema_version >= SCHEMA_VERSION and not value.has(field_name):
 			item.validation_errors.append("MISSING_REQUIRED_FIELD:%s" % field_name)
 
-	item.schema_version = int(value.get("schema_version", 0))
+	item.schema_version = SCHEMA_VERSION
 	item.uid = str(value.get("uid", ""))
 	item.birth_rng_seed = int(value.get("birth_rng_seed", -1))
 	item.primary_material_id = str(value.get("primary_material_id", ""))
@@ -106,6 +112,8 @@ static func from_dict(value: Dictionary) -> VSItem:
 	item.highest_checkpoint = int(value.get("highest_checkpoint", -1))
 	item.current_durability = int(value.get("current_durability", -1))
 	item.max_durability = int(value.get("max_durability", -1))
+	item.base_max_durability = int(value.get("base_max_durability", BASE_MAX_DURABILITY))
+	item.repair_job_available = bool(value.get("repair_job_available", false))
 	item.overhaul_used = bool(value.get("overhaul_used", false))
 	item.max_enhancement_reached = bool(value.get("max_enhancement_reached", false))
 	item.physical_state = str(value.get("physical_state", ""))
@@ -147,6 +155,10 @@ static func from_dict(value: Dictionary) -> VSItem:
 	else:
 		item.validation_errors.append("INVALID_FIELD_TYPE:ledger")
 
+	if source_schema_version == 2:
+		item._migrate_schema_v2_durability()
+	elif source_schema_version != SCHEMA_VERSION:
+		item.validation_errors.append("UNSUPPORTED_ITEM_SCHEMA:%d" % source_schema_version)
 	item._validate_values()
 	return item
 
@@ -177,6 +189,8 @@ func to_dict() -> Dictionary:
 		"highest_checkpoint": highest_checkpoint,
 		"current_durability": current_durability,
 		"max_durability": max_durability,
+		"base_max_durability": base_max_durability,
+		"repair_job_available": repair_job_available,
 		"enhancement_recovery_by_target": enhancement_recovery_by_target.duplicate(true),
 		"overhaul_used": overhaul_used,
 		"max_enhancement_reached": max_enhancement_reached,
@@ -198,8 +212,6 @@ func append_ledger_entry(entry_value: Dictionary) -> Error:
 
 
 func _validate_values() -> void:
-	if schema_version != SCHEMA_VERSION:
-		validation_errors.append("UNSUPPORTED_ITEM_SCHEMA:%d" % schema_version)
 	var uid_regex := RegEx.new()
 	uid_regex.compile("^BSI-[0-9a-f]{32}$")
 	if uid_regex.search(uid) == null:
@@ -233,15 +245,17 @@ func _validate_values() -> void:
 		validation_errors.append("INVALID_DAMAGE_STATE:%s" % damage_state)
 	if not CHECKPOINT_FLOORS.has(highest_checkpoint):
 		validation_errors.append("INVALID_HIGHEST_CHECKPOINT:%d" % highest_checkpoint)
-	if current_durability < 0 or current_durability > 100:
+	if base_max_durability != BASE_MAX_DURABILITY:
+		validation_errors.append("INVALID_BASE_MAX_DURABILITY")
+	if current_durability < 0 or current_durability > base_max_durability:
 		validation_errors.append("INVALID_CURRENT_DURABILITY")
-	if max_durability < 0 or max_durability > 100:
+	if max_durability < 1 or max_durability > base_max_durability:
 		validation_errors.append("INVALID_MAX_DURABILITY")
 	if current_durability > max_durability:
 		validation_errors.append("CURRENT_EXCEEDS_MAX")
 	if not PHYSICAL_STATES.has(physical_state):
 		validation_errors.append("INVALID_PHYSICAL_STATE:%s" % physical_state)
-	var has_zero_durability := current_durability == 0 or max_durability == 0
+	var has_zero_durability := current_durability == 0
 	if has_zero_durability and physical_state != "DESTROYED":
 		validation_errors.append("ZERO_DURABILITY_REQUIRES_DESTROYED")
 	if physical_state == "DESTROYED" and not has_zero_durability:
@@ -252,3 +266,50 @@ func _validate_values() -> void:
 		validation_errors.append("MAX_ENHANCEMENT_REACHED_REQUIRES_LEVEL_100")
 	if owner_id.is_empty():
 		validation_errors.append("MISSING_OWNER_ID")
+
+
+func effective_durability_ratio() -> float:
+	if current_durability <= 0 or max_durability <= 0 or base_max_durability <= 0:
+		return 0.0
+	return minf(
+		float(current_durability) / float(max_durability),
+		float(max_durability) / float(base_max_durability)
+	)
+
+
+func effective_durability_state() -> String:
+	if current_durability == 0:
+		return "DESTROYED"
+	var ratio := effective_durability_ratio()
+	if is_equal_approx(ratio, 1.0):
+		return "NORMAL"
+	if ratio > 0.5:
+		return "MINOR"
+	return "MAJOR"
+
+
+func apply_damage_event() -> bool:
+	if current_durability <= 0:
+		return false
+	current_durability = maxi(0, current_durability - 1)
+	repair_job_available = true
+	if current_durability == 0:
+		physical_state = "DESTROYED"
+	return true
+
+
+func _migrate_schema_v2_durability() -> void:
+	var legacy_current := current_durability
+	var legacy_max := max_durability
+	base_max_durability = BASE_MAX_DURABILITY
+	max_durability = clampi(int(ceil(float(legacy_max) * 5.0 / 100.0)), 1, BASE_MAX_DURABILITY)
+	if legacy_current <= 0:
+		current_durability = 0
+		physical_state = "DESTROYED"
+	else:
+		current_durability = clampi(
+			int(ceil(float(legacy_current) * 5.0 / 100.0)),
+			1,
+			max_durability
+		)
+	repair_job_available = false
