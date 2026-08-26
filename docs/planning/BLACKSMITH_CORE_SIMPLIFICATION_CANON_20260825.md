@@ -258,16 +258,18 @@ Historical documents are not rewritten to erase prior decisions. Current entrypo
 
 ```text
 PLANNING_DESIGN = USER_APPROVED
-GITHUB_CURRENT_CANON_SYNC = IN_PROGRESS_UNTIL_MERGE
-NOTION_CURRENT_CANON_SYNC = REQUIRED
-SHEET_SAME_ID_MIRROR = REQUIRED
+GITHUB_CURRENT_CANON_SYNC = SYNCED / MAIN_5c29af1_POSTMERGE_READBACK_PASS
+NOTION_CURRENT_CANON_SYNC = SYNCED
+SHEET_SAME_ID_COMPATIBILITY = MIGRATION_ONLY / POSTMERGE_READBACK_PASS
 RUNTIME_IMPLEMENTATION_OF_NEW_CORE = NOT_RUN / BLOCKED
-DAMAGE_CURVE_NUMBERS = NOT_FINAL
+DAMAGE_CURVE_NUMBERS = NOT_FINAL / USER_APPROVAL_REQUIRED
 REPAIR_MODEL = NOT_DECIDED
 CUSTOMER_EVENT_DAMAGE_NUMBERS = NOT_FINAL
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_ACCESSIBILITY = NOT_RUN
 NOTION_CLIENT_GEOMETRY = NOT_RUN
 ```
+
+`MAIN_5c29af1_POSTMERGE_READBACK_PASS` records the completed Decisions25~27/Art03 migration checkpoint; it is not a permanent current-head pointer. Live repository state must always be fresh-read. Google Sheet remains migration compatibility evidence, not a default planning or runtime authority.
 
 Existing V2 runtime files that still encode CURRENT/MAX and old precision milestones are implementation drift/historical runtime truth after this planning Decision; they must not be mistaken for current desired product canon while the product implementation gate is closed.
