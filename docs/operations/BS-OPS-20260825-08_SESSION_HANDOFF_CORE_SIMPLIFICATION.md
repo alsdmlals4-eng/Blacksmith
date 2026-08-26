@@ -3,8 +3,9 @@
 - Decision ID: `BS-OPS-20260825-08`
 - Date: `2026-08-25 KST`
 - Status: `CURRENT_SESSION_HANDOFF / POSTMERGE_PLANNING_ONLY`
-- `PR #207 = MERGED_TO_MAIN / 5c29af1e0bb633f8d4513aee16987a3ff9889a4b`
-- `CURRENT_PLANNING_WORK = DAMAGE_PROBABILITY_CURVE / USER_DECISION_REQUIRED`
+- Historical checkpoint: `PR #207 = MERGED_TO_MAIN / 5c29af1e0bb633f8d4513aee16987a3ff9889a4b`
+- Later router reconciliation: `PR #208 = MERGED / CURRENT_EXECUTION_CONTRACT_R5_4`
+- `CURRENT_PLANNING_WORK = FOUR_STATE_REPAIR_MODEL + MAJOR_ENHANCEMENT_ELIGIBILITY`
 - Pre-existing protected PR: `#196 / OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
 - Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
 
@@ -29,12 +30,18 @@ Current product-design owner:
 
 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
 
+Decision28 exact curve owners:
+
+- `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md`
+- `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`
+
 Current approved Decisions:
 
 | Decision | Current meaning |
 | --- | --- |
 | `BS-ENHANCE-20260825-25` | Enhancement success always advances exactly `+1`. Only `+9 -> +10` is Precision Enhancement. Successful +10 Precision creates exactly one player-facing item keyword, machine-owned by the existing `CATALYST_AFFIX` slot. |
-| `BS-DAMAGE-20260825-26` | Replace hidden/numeric CURRENT/MAX durability authority with `NORMAL -> MINOR -> MAJOR -> DESTROYED`. One damage event advances exactly one state. Enhancement-failure damage is impossible through target +10, opens from +11, and its conditional probability must increase or remain equal as target level rises. Exact curve is not final. |
+| `BS-DAMAGE-20260825-26` | Replace hidden/numeric CURRENT/MAX durability authority with `NORMAL -> MINOR -> MAJOR -> DESTROYED`. One damage event advances exactly one state. Enhancement-failure damage is impossible through target +10 and opens from +11. |
+| `BS-DAMAGE-20260826-28` | `P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)` anchors are `+11 5% / +30 6% / +60 7% / +90 8% / +100 10%`, with exact piecewise-linear interpolation between anchors. No canonical rounding. Failure-consequence composition is not decided by this Decision. |
 | `BS-CHRONICLE-20260825-27` | Player Chronicle does not list routine enhancement success/failure or `N days ago` rows. Keep meaningful identity/lifecycle events only. Internal provenance/telemetry may retain sequence/day data. |
 | `BS-ART-20260825-03` | Current art-direction choice is `ILLUSTRATED_WORKSHOP_BOOK`: hand-drawn workshop notebook, paper/leather/iron/wood material cues, warm workshop feel, modern readable interaction hierarchy. Final product asset/runtime approval is separate. |
 
@@ -53,8 +60,21 @@ Enhancement failure:
 ```text
 TARGET <= +10: ENHANCEMENT_DAMAGE = 0
 TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE
-P(DAMAGE | FAILURE, TARGET) = LOW_AT_+11_AND_MONOTONIC_NON_DECREASING
-EXACT_CURVE = TUNABLE / NOT_FINAL_PRODUCT_BALANCE
+P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)
++11 = 5%
++30 = 6%
++60 = 7%
++90 = 8%
++100 = 10%
+INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS
+CANONICAL_ROUNDING = NONE
+```
+
+Decision28 owns only the damage-advance probability after a failure. It does not decide whether damage can occur together with DOWNGRADE, HOLD, or another failure consequence.
+
+```text
+FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED_BY_THIS_DECISION
+UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 ```
 
 Customer/world use:
@@ -70,7 +90,7 @@ Do not create hidden CURRENT/MAX points behind the four labels.
 
 ## 4. Explicitly superseded / stale current-looking material
 
-The following old semantics remain historical evidence only where they conflict with Decisions25~27:
+The following old semantics remain historical evidence only where they conflict with Decisions25~28:
 
 - numeric `CURRENT/MAX` gameplay authority;
 - `STABLE/STRESSED/DAMAGED/FRACTURED/CRITICAL` MAX bands;
@@ -78,6 +98,7 @@ The following old semantics remain historical evidence only where they conflict 
 - `CURRENT -> MAX` repair formula as current fallback;
 - MAX overhaul `+15 / cap 60` as current fallback;
 - precision milestones at `+10/+20/+30/+40/+50`;
+- old `HOLD / DOWNGRADE / DAMAGE / CRITICAL` percentages as Decision28 probability or failure-composition fallback;
 - routine enhancement attempt rows with relative-day labels;
 - approved old Visual GDD system values that contain these semantics.
 
@@ -113,25 +134,25 @@ Human Home must show current gameplay/art meaning directly. PR/SHA/test/evidence
 
 The earlier generated Visual GDD boards remain approved only for `INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD` where their system semantics do not conflict with current decisions. The selected replacement direction is `ILLUSTRATED_WORKSHOP_BOOK`.
 
-Do not reuse old CURRENT/MAX, old multi-precision cadence, or dated enhancement-log text from those images as game canon.
+Do not reuse old CURRENT/MAX, old multi-precision cadence, old unspecified/obsolete damage odds, or dated enhancement-log text from those images as game canon.
 
 Notion image storage must be verified independently from Asset metadata. An Asset Library record, `Approved=true`, hash, or Google Drive Source link does **not** by itself prove that the PNG is directly embedded in Notion `Preview`. If Preview is empty, report `NOTION_DIRECT_IMAGE_EMBED_GAP` rather than claiming the image is uploaded inside Notion.
 
 ## 8. Next planning Gates
 
-Do not invent exact values for the unresolved areas. Next order:
+Decision28 closes `DAMAGE_PROBABILITY_CURVE`. Do not invent exact values for the remaining unresolved areas. Next order:
 
 ```text
-1. DAMAGE_PROBABILITY_CURVE
-   - exact P(damage | failure, target) from +11..+100
-2. FOUR_STATE_REPAIR_MODEL
+1. FOUR_STATE_REPAIR_MODEL + MAJOR_ENHANCEMENT_ELIGIBILITY
    - MINOR repair result/cost
    - MAJOR repair result/cost
    - whether MAJOR can enhance before repair
-3. CUSTOMER_WORLD_EVENT_DAMAGE_POLICY
+2. CUSTOMER_WORLD_EVENT_DAMAGE_POLICY
    - eligible event classes
    - exact probability/rules
    - how event damage is explained in causal result
+3. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING
+   - only if required to make the implementation-safe spec unambiguous
 4. REPRESENTATIVE_VISUAL_REGENERATION
    - Main Menu
    - Enhancement Main (+1)
@@ -156,19 +177,21 @@ ACCESSIBILITY = NOT_RUN
 PERFORMANCE = NOT_RUN
 NOTION_CLIENT_GEOMETRY_RENDER = NOT_RUN
 FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED
-FINAL_DAMAGE_BALANCE = NOT_FINAL
+DAMAGE_PROBABILITY_CURVE = USER_APPROVED_PLANNING_CANON / BS-DAMAGE-20260826-28
 FOUR_STATE_REPAIR_BALANCE = NOT_DECIDED
 CUSTOMER_EVENT_DAMAGE_BALANCE = NOT_FINAL
+FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
+UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 ```
 
 ## 10. Post-merge state and next-PR rule
 
-PR #207 was validated and merged into Blacksmith main as `5c29af1e0bb633f8d4513aee16987a3ff9889a4b` on 2026-08-25 KST. It is historical completion evidence, not the current task PR.
+PR #207 was validated and merged into Blacksmith main as `5c29af1e0bb633f8d4513aee16987a3ff9889a4b` on 2026-08-25 KST. PR #208 later reconciled current routing to the r5.4 execution contract. These are historical completion evidence, not permanent live-head pointers.
 
 ```text
 CORE_SIMPLIFICATION_CANON_MIGRATION = COMPLETE
-GITHUB_NOTION_SYNC_FOR_DECISIONS25_27_ART03 = POSTMERGE_PASS
-CURRENT_PLANNING_WORK = DAMAGE_PROBABILITY_CURVE
+DAMAGE_PROBABILITY_CURVE = USER_APPROVED / BS-DAMAGE-20260826-28
+CURRENT_PLANNING_WORK = FOUR_STATE_REPAIR_MODEL + MAJOR_ENHANCEMENT_ELIGIBILITY
 PRODUCT_RUNTIME_IMPLEMENTATION = BLOCKED
 PR_196 = OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER
 ```
@@ -176,7 +199,7 @@ PR_196 = OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER
 For any new planning PR:
 
 - fresh-read current Blacksmith `main` and current Base before branching;
-- start from current completed `main`, never from #207's old head;
+- start from current completed `main`, never from a historical planning head;
 - inspect #196 only for overlap and keep it read-only;
 - keep Google Sheet migration-only unless a unique/unmigrated or same-ID compatibility reconciliation is actually required;
 - after merge, read new Blacksmith main and update the Notion System Record `Repo Main SHA` / `Sync State` when repository operational metadata changed.
@@ -189,6 +212,7 @@ This session produced reusable evidence for Base review:
 2. a visible simplification is not real if a hidden second authority (such as CURRENT/MAX under four labels) still controls gameplay;
 3. Visual GDD approval must separate information-architecture approval, gameplay-value authority, art-style approval, and final product-asset approval;
 4. Notion Asset metadata/Drive Source is not proof of direct Notion Preview embedding;
-5. when a new canon invalidates a dependent formula, mark that formula unresolved/stale rather than silently adapting it.
+5. when a new canon invalidates a dependent formula, mark that formula unresolved/stale rather than silently adapting it;
+6. conditional risk must state its conditioning event and must not be silently converted into a second unconditional probability authority.
 
 Promote only the cross-project portions through existing Base owners and Learning Logs. Project-specific enhancement/damage values stay in Blacksmith.
