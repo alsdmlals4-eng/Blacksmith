@@ -4,7 +4,7 @@
 - Date: `2026-08-25 KST`, current update `2026-08-26 KST`
 - Status: `CURRENT_SESSION_HANDOFF / GPT_WORK_TRANSFER / POSTMERGE_PLANNING_ONLY`
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW`
+- `CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
@@ -154,6 +154,7 @@ Current approved Decisions:
 | `BS-REPAIR-20260826-29` | Visible `CURRENT/MAX/BASE_MAX` is sole durability authority. Current damage and permanent scar collapse into one effective durability state; low effective durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement remains allowed with penalties. |
 | `BS-REPAIR-20260826-31` | Approved planning-only repair-economy overlay: one repair job per actual-damage cycle, initial normalized loss curve plus one common material, and a no-zero-recovery scar guard. The final price table remains a controlled sensitivity decision. |
 | `BS-DAMAGE-20260826-30` | Customer/world damage requires actual item use + authored event profile/cause. Purchase/handoff does not damage. One event/UID rolls at most once. `NONE/LOW/MEDIUM/HIGH/DIRECT = 0/10/20/40/100%` is temporary; probabilistic profiles use Decision29 effective-state multiplier with 95% cap; DIRECT is one deterministic Decision29 damage event. World events never directly damage MAX. |
+| `BS-ENHANCE-20260826-32` | Enhancement failure is exactly `FAILED_HOLD` or `FAILED_DAMAGE`; damage replaces hold, never stacks with downgrade or separate CRITICAL. The preview shows final per-attempt success/hold/damage outcomes at one decimal; resolver probability stays exact. |
 | `BS-CHRONICLE-20260825-27` | Player Chronicle shows meaningful lifecycle events, not routine attempt logs or schedule ticks. |
 | `BS-ART-20260825-03` | `ILLUSTRATED_WORKSHOP_BOOK / USER_APPROVED_DIRECTION`; final product asset/runtime approval remains separate. |
 | `BS-ART-20260826-04` | New generated Blacksmith images require an actual game consumer and Primary Use Gate. No new standalone explanatory GDD-sheet images; generated UI screenshots are not product assets. Existing 8 Visual GDDs remain historical information-architecture references. |
@@ -233,7 +234,7 @@ P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, EFFECTIVE_STATE)
 = Decision28_target_base * Decision29_effective_state_multiplier
 ```
 
-`FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED`; `UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED`.
+`FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE`; `UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP`.
 
 ## 5. Repair / probabilistic structural scar
 
@@ -349,11 +350,10 @@ Existing 8 Visual GDDs are `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`.
 
 ```text
 1. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
-2. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING if required
-3. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
-4. adversarial full-planning review
-5. explicit user `planning complete`
-6. runtime implementation-plan refresh + TDD migration
+2. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
+3. adversarial full-planning review
+4. explicit user `planning complete`
+5. runtime implementation-plan refresh + TDD migration
 ```
 
 ## 12. Evidence ceiling
@@ -368,8 +368,8 @@ VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04
 IMAGE_GENERATION = NOT_RUN
 ACTUAL_RUNTIME_IMAGE_CONSUMPTION = NOT_RUN
 REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / B65_DEFAULT_PLAYTEST_REQUIRED
-FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
-UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
+FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE
+UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP
 NEW_CORE_RUNTIME = NOT_RUN / BLOCKED
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_DEVICE = NOT_RUN

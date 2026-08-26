@@ -1,7 +1,7 @@
 {
   "decision_id": "BS-DAMAGE-20260826-28",
   "status": "USER_APPROVED_PLANNING_CANON",
-  "probability_basis": "P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)",
+  "probability_basis": "P(DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET_LEVEL)",
   "safe_through_target": 10,
   "target_min": 11,
   "target_max": 100,
@@ -13,8 +13,27 @@
     {"target": 100, "percent": 10}
   ],
   "interpolation": "PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS",
-  "rounding_authority": "NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED",
-  "damage_advance_steps": 1,
-  "failure_consequence_composition": "NOT_DECIDED_BY_THIS_DECISION",
+  "rounding_authority": "CANON_EXACT_UI_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP",
+  "damage_event_current_loss": 1,
+  "failure_consequence_composition": {
+    "status": "USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE",
+    "failed_outcomes": ["FAILED_HOLD", "FAILED_DAMAGE"],
+    "damage_replaces_hold": true,
+    "level_downgrade": "FORBIDDEN",
+    "separate_critical_outcome": "FORBIDDEN",
+    "attempt_cost": "CONSUMED_ON_ATTEMPT",
+    "same_uid_recovery": "APPLIES_ON_FAILURE_PER_EXISTING_CONTRACT",
+    "damage_current_loss": "DECISION29_CURRENT_MINUS_ONE_FLOOR_ZERO",
+    "destroyed_state": "CURRENT_EQUALS_ZERO_DECISION29"
+  },
+  "ui_damage_percent_rounding": {
+    "runtime_probability": "EXACT_NO_ROUNDING",
+    "primary_outcome_display": "FINAL_PER_ATTEMPT_SUCCESS_FAILED_HOLD_FAILED_DAMAGE",
+    "precision": "ONE_DECIMAL_PERCENT",
+    "rounding": "HALF_UP",
+    "hold_display": "100.0_MINUS_ROUNDED_SUCCESS_MINUS_ROUNDED_FAILED_DAMAGE",
+    "conditional_damage_detail": "FAILURE_CONDITIONAL_PERCENT_ONE_DECIMAL_HALF_UP_WITH_EXACT_RESOLVER_SOURCE",
+    "hard_guarantee": "SUCCESS_100.0_NO_FAILURE_OUTCOMES"
+  },
   "runtime_implementation": "BLOCKED_NOT_RUN"
 }

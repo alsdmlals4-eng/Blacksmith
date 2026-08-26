@@ -24,6 +24,7 @@ REQUIRED_OWNER = [
     "BS-DAMAGE-20260826-28",
     "BS-REPAIR-20260826-29",
     "BS-REPAIR-20260826-31",
+    "BS-ENHANCE-20260826-32",
     "BS-DAMAGE-20260826-30",
     "BS-CHRONICLE-20260825-27",
     "BS-ART-20260825-03",
@@ -36,6 +37,11 @@ REQUIRED_OWNER = [
     "TARGET <= +10: ENHANCEMENT_DAMAGE = 0",
     "TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE",
     "DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS",
+    "FAILURE_OUTCOMES = SUCCESS / FAILED_HOLD / FAILED_DAMAGE",
+    "FAILED_DAMAGE_REPLACES_FAILED_HOLD = TRUE",
+    "FAILURE_LEVEL_DOWNGRADE = FORBIDDEN",
+    "FAILURE_SEPARATE_CRITICAL_OUTCOME = FORBIDDEN",
+    "UI_OUTCOME_DISPLAY = FINAL_PER_ATTEMPT_ONE_DECIMAL_HALF_UP",
     "MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES",
     "PURCHASE_OR_HANDOFF_ITSELF_CAUSES_DAMAGE = FALSE",
     "ACTUAL_ITEM_USE_REQUIRED = TRUE",
@@ -54,6 +60,7 @@ REQUIRED_ENTRYPOINT = [
     "BS-DAMAGE-20260826-28",
     "BS-REPAIR-20260826-29",
     "BS-REPAIR-20260826-31",
+    "BS-ENHANCE-20260826-32",
     "BS-DAMAGE-20260826-30",
     "BS-CHRONICLE-20260825-27",
     "BS-ART-20260825-03",
@@ -86,6 +93,10 @@ def damage_percent_at(target: int, anchors: list[dict[str, int]]) -> Fraction:
     raise AssertionError(f"target outside approved curve: {target}")
 
 
+def round_half_up_tenth(percent: Fraction) -> Fraction:
+    return Fraction(int(percent * 10 + Fraction(1, 2)), 10)
+
+
 def main() -> None:
     assert CURRENT_OWNER.exists(), f"missing current owner: {CURRENT_OWNER.relative_to(ROOT)}"
     owner_text = CURRENT_OWNER.read_text(encoding="utf-8")
@@ -99,19 +110,20 @@ def main() -> None:
 
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION" in agents
-    assert "POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_NEXT" in agents
+    assert "POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_AND_VISUAL_REQUIREMENT_NEXT" in agents
     assert "BS-REPAIR-20260826-31" in agents
     assert "ACTUAL_GAME_CONSUMER_REQUIRED" in agents
     assert "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT" in agents
 
     handoff_text = HANDOFF.read_text(encoding="utf-8")
     assert "PR #207 = MERGED_TO_MAIN" in handoff_text
-    assert "CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW" in handoff_text
+    assert "CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS" in handoff_text
     assert "BS-REPAIR-20260826-31" in handoff_text
     assert "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC" in handoff_text
     assert "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)" in handoff_text
     assert "BS-DAMAGE-20260826-30" in handoff_text
     assert "BS-ART-20260826-04" in handoff_text
+    assert "BS-ENHANCE-20260826-32" in handoff_text
 
     authority_text = AUTHORITY_INDEX.read_text(encoding="utf-8")
     assert "1. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW" in authority_text
@@ -130,10 +142,12 @@ def main() -> None:
         decision_text,
         [
             "BS-DAMAGE-20260826-28",
-            "P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)",
+            "P(DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET_LEVEL)",
             "5% / 6% / 7% / 8% / 10%",
             "PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS",
-            "FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED_BY_THIS_DECISION",
+            "FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE",
+            "UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP",
+            "DAMAGE_EVENT_CURRENT_LOSS = 1",
             "RUNTIME_IMPLEMENTATION = BLOCKED / NOT_RUN",
         ],
         "Decision28",
@@ -142,14 +156,33 @@ def main() -> None:
     curve = json.loads(DAMAGE_CURVE.read_text(encoding="utf-8"))
     assert curve["decision_id"] == "BS-DAMAGE-20260826-28"
     assert curve["status"] == "USER_APPROVED_PLANNING_CANON"
-    assert curve["probability_basis"] == "P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)"
+    assert curve["probability_basis"] == "P(DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET_LEVEL)"
     assert curve["safe_through_target"] == 10
     assert curve["target_min"] == 11
     assert curve["target_max"] == 100
     assert curve["interpolation"] == "PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS"
-    assert curve["rounding_authority"] == "NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED"
-    assert curve["damage_advance_steps"] == 1
-    assert curve["failure_consequence_composition"] == "NOT_DECIDED_BY_THIS_DECISION"
+    assert curve["rounding_authority"] == "CANON_EXACT_UI_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP"
+    assert curve["damage_event_current_loss"] == 1
+    assert curve["failure_consequence_composition"] == {
+        "status": "USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE",
+        "failed_outcomes": ["FAILED_HOLD", "FAILED_DAMAGE"],
+        "damage_replaces_hold": True,
+        "level_downgrade": "FORBIDDEN",
+        "separate_critical_outcome": "FORBIDDEN",
+        "attempt_cost": "CONSUMED_ON_ATTEMPT",
+        "same_uid_recovery": "APPLIES_ON_FAILURE_PER_EXISTING_CONTRACT",
+        "damage_current_loss": "DECISION29_CURRENT_MINUS_ONE_FLOOR_ZERO",
+        "destroyed_state": "CURRENT_EQUALS_ZERO_DECISION29",
+    }
+    assert curve["ui_damage_percent_rounding"] == {
+        "runtime_probability": "EXACT_NO_ROUNDING",
+        "primary_outcome_display": "FINAL_PER_ATTEMPT_SUCCESS_FAILED_HOLD_FAILED_DAMAGE",
+        "precision": "ONE_DECIMAL_PERCENT",
+        "rounding": "HALF_UP",
+        "hold_display": "100.0_MINUS_ROUNDED_SUCCESS_MINUS_ROUNDED_FAILED_DAMAGE",
+        "conditional_damage_detail": "FAILURE_CONDITIONAL_PERCENT_ONE_DECIMAL_HALF_UP_WITH_EXACT_RESOLVER_SOURCE",
+        "hard_guarantee": "SUCCESS_100.0_NO_FAILURE_OUTCOMES",
+    }
     assert curve["runtime_implementation"] == "BLOCKED_NOT_RUN"
 
     anchors = curve["anchors_percent"]
@@ -168,6 +201,26 @@ def main() -> None:
     assert damage_percent_at(60, anchors) == 7
     assert damage_percent_at(90, anchors) == 8
     assert damage_percent_at(100, anchors) == 10
+
+    # Approved resolution: failure yields exactly one player-facing outcome.
+    # At +11 NORMAL with a diagnostic 82% success rate, 18% failure and 5%
+    # conditional damage become 82.0 / 17.1 / 0.9 final outcomes.
+    final_success = Fraction(82)
+    conditional_damage = Fraction(5, 100)
+    failed_damage = (100 - final_success) * conditional_damage
+    failed_hold = 100 - final_success - failed_damage
+    shown_success = round_half_up_tenth(final_success)
+    shown_damage = round_half_up_tenth(failed_damage)
+    shown_hold = Fraction(100) - shown_success - shown_damage
+    assert (shown_success, shown_hold, shown_damage) == (Fraction(82), Fraction(171, 10), Fraction(9, 10))
+    assert shown_success + shown_hold + shown_damage == 100
+
+    # Safe targets cannot yield failed damage; hard guarantee cannot yield any
+    # failure result. Display rounding never feeds resolver probability.
+    assert damage_percent_at(10, anchors) == 0
+    assert round_half_up_tenth(Fraction(20)) == 20
+    assert round_half_up_tenth(Fraction(0)) == 0
+    assert (round_half_up_tenth(Fraction(100)), Fraction(0), Fraction(0)) == (100, 0, 0)
 
     # Decision29 owns the current visible numeric durability/repair architecture.
     assert DURABILITY_DECISION.exists(), "missing Decision29 durability decision"
