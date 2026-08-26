@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "bc00040d02e422012cd616176224e1b7354ba7b4",
+  "decision_ids": [
+    "BS-ENHANCE-20260826-32",
+    "GITHUB-ISSUE-250"
+  ],
+  "approved_paths": [
+    "scripts/vertical_slice/services/vs_enhancement_action_service.gd"
+  ],
+  "approval_source": "User current-session declaration: 권장안대로 진행해; prior approved recommendation: persist resources with TEMP_TEST_BUDGET 20,000G + 보강재 10.",
+  "approval_time": "2026-08-27T03:10:00+09:00",
+  "scope_summary": "GitHub Issue #250: charge existing enhancement preview costs through a save-first transaction, returning a new saved envelope and only updating runtime workshop resources after save success."
+}
