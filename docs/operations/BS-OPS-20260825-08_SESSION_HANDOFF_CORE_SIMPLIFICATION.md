@@ -26,6 +26,10 @@ FRESH_READ_REQUIRED
 
 Base current handoff checkpoint at transfer start: `06669fe9c6a3ccd6f3b0d19c5757540bfdcc0623` (`docs: default ChatGPT project memory for Work and reuse (#724)`). Blacksmith transfer baseline main: `d17a3e0f45337c8f3031c61780729bd7590d5d58`. These SHAs are historical checkpoints; Work must fresh-read live heads instead of treating them as permanent pointers.
 
+### Operating-contract recovery · Issue #214
+
+`BS-OPS-20260826-32 / PENDING_CURRENT_TASK_PR` restores the Work entry gate after current Base validation exposed an obsolete protected baseline and stale raw-byte health-evidence records. The repair advances only the metadata baseline to merged Blacksmith main `1bdf5f4b436b114253e86d897c7ef15514103f8f`, adopts released Base v9.4.4 and current Base validator `43b3ffb2c5b026e3d4a38dab2338585894d36f61`, and regenerates derived adapter views. Exact local contract validation is `PASS`; runtime, Android, accessibility, performance, and human-play evidence remain `NOT_RUN`. The Google Sheet remains `MIGRATION_ONLY_COMPATIBILITY` and is not written by this repair. No `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, or `project.godot` path is in scope; PR #196 remains read-only.
+
 The Base policy owns the generic Work/Default-memory rule. Blacksmith does not fork that policy. Project-specific Work startup remains:
 
 ```text

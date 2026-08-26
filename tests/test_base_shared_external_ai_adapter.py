@@ -23,14 +23,14 @@ def active_routes(data: dict) -> set[str]:
 
 
 class BaseSharedExternalAIAdapterTests(unittest.TestCase):
-    def test_current_base_identity_is_v943(self) -> None:
+    def test_current_base_identity_is_v944(self) -> None:
         data = load()
         release = data["base_release"]
-        self.assertEqual("9.4.3", release["version"])
-        self.assertEqual("7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8", release["release_commit"])
-        self.assertEqual("da33a350d61b8adc52df97fccc7001708a933370", release["release_evidence_commit"])
-        self.assertEqual("0b7c94f38d959efc0fc9442274c60b2e268a3c97", release["finalization_commit"])
-        self.assertEqual("693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59", data["skill_registry"]["base"]["sha256"])
+        self.assertEqual("9.4.4", release["version"])
+        self.assertEqual("210ec78292fa12ed7563ba743b322dd36103ae4a", release["release_commit"])
+        self.assertEqual("bb61e68dc3028421b60c11b87ba2abd297ee6f78", release["release_evidence_commit"])
+        self.assertEqual("5adc196c0185951f50e49ab5e51586eff8d60886", release["finalization_commit"])
+        self.assertEqual("08f882d0c77339e8f7ff187c35b79501e0a2958ab1ff1c7aaa1c0ef8dbee45d6", data["skill_registry"]["base"]["sha256"])
 
     def test_external_ai_remains_separate_v941_boundary(self) -> None:
         data = load()

@@ -149,7 +149,7 @@ class PhaseCLiveContinuationContractTests(unittest.TestCase):
 
     def test_existing_adapter_and_runtime_receipt_remain_unchanged_authorities(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
-        self.assertEqual("9.4.3", adapter["base_release"]["version"])
+        self.assertEqual("9.4.4", adapter["base_release"]["version"])
         self.assertEqual(
             ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
             adapter["protected_paths"],
