@@ -115,7 +115,7 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("GITHUB-ISSUE-228", approval["decision_ids"])
         adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
         self.assertEqual(
-            "cd32f21eda13cae600b952b39b46fda62eee5c70",
+            "cc4a5fca9484b3516639a77d2f7b7a6db0b2fb7a",
             adapter["protected_baseline"]["commit"],
         )
         self.assertEqual(

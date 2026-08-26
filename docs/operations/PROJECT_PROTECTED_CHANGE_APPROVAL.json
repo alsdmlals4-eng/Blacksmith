@@ -2,7 +2,7 @@
   "schema_version": 1,
   "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
   "status": "APPROVED",
-  "protected_base_commit": "cd32f21eda13cae600b952b39b46fda62eee5c70",
+  "protected_base_commit": "cc4a5fca9484b3516639a77d2f7b7a6db0b2fb7a",
   "decision_ids": [
     "BS-DAMAGE-20260826-28",
     "BS-REPAIR-20260826-29",
