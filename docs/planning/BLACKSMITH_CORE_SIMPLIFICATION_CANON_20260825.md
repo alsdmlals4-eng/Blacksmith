@@ -348,7 +348,7 @@ V2 runtime field-name similarity is not Decision29/30 implementation proof. Prot
 ## 13. Next planning order
 
 ```text
-1. REPAIR_ECONOMY_PLAYTEST_PREP + R_BAND_INPUT_EVIDENCE
+1. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
 2. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING if needed
 3. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
 4. full planning adversarial review

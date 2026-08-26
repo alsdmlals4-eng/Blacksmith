@@ -4,7 +4,7 @@
 - Date: `2026-08-25 KST`, current update `2026-08-26 KST`
 - Status: `CURRENT_SESSION_HANDOFF / GPT_WORK_TRANSFER / POSTMERGE_PLANNING_ONLY`
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_PLANNING_WORK = REPAIR_ECONOMY_PLAYTEST_PREP + R_BAND_INPUT_EVIDENCE`
+- `CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
@@ -32,7 +32,7 @@ Base current handoff checkpoint at transfer start: `06669fe9c6a3ccd6f3b0d19c5757
 
 ### Decision31 deterministic sensitivity · Issues #216, #218
 
-`BS-OPS-20260826-33 / DECISION31_SENSITIVITY_DELIVERY` records the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. `b=.65 / USER_APPROVED_FIRST_TEST_DEFAULT`; `R_BAND=100 / NORMALIZED_TEST_INPUT`; `b=.50/.80` remain comparison curves only. `HUMAN_PLAYTEST = NOT_RUN` until the first controlled experience check. This cannot create a live R_BAND table or product implementation approval. Future user-approved images require a dual-storage receipt: Notion record plus exact project-local binary path with SHA-256 and actual-game consumer ID. No image is created or written to `assets/` until the current product gate permits it.
+`BS-OPS-20260826-33 / DECISION31_SENSITIVITY_DELIVERY` records the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. `b=.65 / USER_APPROVED_FIRST_TEST_DEFAULT`; `R_BAND=100 / HISTORICAL_NORMALIZED_SENSITIVITY_INPUT_ONLY`; `b=.50/.80` remain comparison curves only. `R_BAND_TEST_TABLE = USER_APPROVED_MUTABLE_BASELINE`: +0~10 `125/145/170`, +11~30 `160/185/215`, +31~60 `220/255/295`, +61~90 `300/345/405`, +91~100 `400/460/540` for iron/silver/meteor iron. The table may change after human playtesting or new balance evidence; it is not a shipping price table. `HUMAN_PLAYTEST = NOT_RUN` until the first controlled experience check. This cannot create a product implementation approval. Future user-approved images require a dual-storage receipt: Notion record plus exact project-local binary path with SHA-256 and actual-game consumer ID. No image is created or written to `assets/` until the current product gate permits it.
 
 The Base policy owns the generic Work/Default-memory rule. Blacksmith does not fork that policy. Project-specific Work startup remains:
 
@@ -348,7 +348,7 @@ Existing 8 Visual GDDs are `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`.
 ## 11. Next planning Gates
 
 ```text
-1. REPAIR_ECONOMY_PLAYTEST_PREP + R_BAND_INPUT_EVIDENCE
+1. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
 2. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING if required
 3. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
 4. adversarial full-planning review

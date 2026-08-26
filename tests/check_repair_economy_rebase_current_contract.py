@@ -100,6 +100,16 @@ def main() -> None:
         "grants_discount": False,
     }
     assert payment["r_band"]["explicit_simulation_input"] is True
+    assert payment["r_band"]["status"] == "USER_APPROVED_MUTABLE_TEST_BASELINE"
+    assert payment["r_band"]["change_policy"] == "MAY_CHANGE_AFTER_HUMAN_PLAYTEST_OR_NEW_BALANCE_EVIDENCE"
+    assert payment["r_band"]["reference_definition"] == "fixed_gold_only_standard_enhancement_reference_by_primary_material_and_secured_band"
+    assert payment["r_band"]["table"] == {
+        "PLUS_0_10": {"iron": 125, "silver": 145, "meteor_iron": 170},
+        "PLUS_11_30": {"iron": 160, "silver": 185, "meteor_iron": 215},
+        "PLUS_31_60": {"iron": 220, "silver": 255, "meteor_iron": 295},
+        "PLUS_61_90": {"iron": 300, "silver": 345, "meteor_iron": 405},
+        "PLUS_91_100": {"iron": 400, "silver": 460, "meteor_iron": 540},
+    }
     assert payment["r_band"]["prohibited_sources"] == [
         "current_sell_price",
         "forecast_next_attempt_price",
@@ -126,9 +136,10 @@ def main() -> None:
     require_tokens(
         HANDOFF.read_text(encoding="utf-8"),
         [
-            "REPAIR_ECONOMY_PLAYTEST_PREP + R_BAND_INPUT_EVIDENCE",
+            "REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW",
             "b=.65 / USER_APPROVED_FIRST_TEST_DEFAULT",
-            "R_BAND=100 / NORMALIZED_TEST_INPUT",
+            "R_BAND_TEST_TABLE = USER_APPROVED_MUTABLE_BASELINE",
+            "R_BAND=100 / HISTORICAL_NORMALIZED_SENSITIVITY_INPUT_ONLY",
             "HUMAN_PLAYTEST = NOT_RUN",
         ],
         "Decision31 handoff",
