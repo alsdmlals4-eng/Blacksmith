@@ -9,7 +9,7 @@
 
 ## 1. Decision purpose
 
-Decision26의 핵심 의도였던 "숨은 두 번째 내구도 권위 금지"는 유지한다. 다만 사용자의 최신 승인에 따라 **숫자 내구도 자체를 다시 보이는 단일 gameplay authority로 채택**한다.
+Decision26의 핵심 의도였던 **숨은 두 번째 내구도 권위 금지**는 유지한다. 다만 사용자의 최신 승인에 따라 숫자 내구도 자체를 다시 **보이는 단일 gameplay authority**로 채택한다.
 
 ```text
 DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC
@@ -17,7 +17,7 @@ DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW
 NO_HIDDEN_SECOND_DURABILITY_AUTHORITY = TRUE
 ```
 
-`NORMAL / MINOR / MAJOR / DESTROYED`는 별도 상태머신이 아니라 숫자 내구도에서 파생되는 사람이 읽기 쉬운 상태명이다. 따라서 Decision26의 `CURRENT_MAX_AUTHORITY = SUPERSEDED`와 `ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE`는 최신 Decision29와 충돌하는 필드에서 부분 대체된다.
+`NORMAL / MINOR / MAJOR / DESTROYED`는 별도 상태머신이 아니라 같은 숫자 내구도에서 파생되는 사람이 읽기 쉬운 상태명이다. Decision26의 `CURRENT_MAX_AUTHORITY = SUPERSEDED`와 `ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE`는 Decision29와 충돌하는 필드에서 부분 대체된다.
 
 ## 2. Numeric durability authority
 
@@ -27,7 +27,7 @@ BASE_MAX_DURABILITY
 = immutable provenance value
 
 MAX_DURABILITY
-= 현재 작품이 회복할 수 있는 최대 내구도
+= 현재 작품이 회복할 수 있는 구조적 최대 내구도
 
 CURRENT_DURABILITY
 = 현재 남은 내구도
@@ -42,27 +42,67 @@ Reference item only:
 REFERENCE_BASE_MAX_DURABILITY = 5
 ```
 
-`5`는 사용자가 든 대표 예시와 첫 테스트 Budget을 위한 기준값이며 모든 아이템 family의 출시 고정값을 뜻하지 않는다. 재료/아이템 family별 birth durability 차이는 별도 데이터 Decision이 필요하다.
+`5`는 사용자가 든 대표 예시와 첫 테스트 Budget을 위한 기준값이며 모든 아이템 family의 출시 고정값이 아니다. 재료/아이템 family별 birth durability 차이는 별도 데이터 Decision이 필요하다.
 
-`BASE_MAX_DURABILITY - MAX_DURABILITY`는 작품에 남은 구조 흉터를 설명하는 provenance 값이며 별도 숨은 전투 페널티 축으로 중복 사용하지 않는다.
+### 2.1 Why MAX scars must remain mechanically relevant
 
-## 3. Derived damage states
+수리 결과가 `1/5 -> 4/4`가 되었을 때 `CURRENT/MAX`만 보면 다시 100% 상태이지만, `MAX/BASE_MAX = 4/5`라는 영구 구조 흉터가 남는다. 이 작품을 pristine `5/5`와 완전히 같게 취급하면 MAX 감소가 이름뿐인 패널티가 된다.
+
+따라서 같은 세 숫자에서 두 비율을 계산하고 **더 나쁜 쪽 하나만** 최종 내구도 상태 판정에 사용한다.
 
 ```text
-NORMAL = CURRENT_DURABILITY == MAX_DURABILITY
-MINOR = 0.50 < CURRENT_DURABILITY / MAX_DURABILITY < 1.00
-MAJOR = 0 < CURRENT_DURABILITY / MAX_DURABILITY <= 0.50
-DESTROYED = CURRENT_DURABILITY == 0
+CURRENT_CONDITION_RATIO = CURRENT_DURABILITY / MAX_DURABILITY
+STRUCTURAL_CONDITION_RATIO = MAX_DURABILITY / BASE_MAX_DURABILITY
+EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)
 ```
 
-Reference `MAX=5`:
+이 구조는 두 개의 독립 권위를 만들지 않는다. 입력은 모두 `CURRENT / MAX / BASE_MAX` 한 묶음이고, 최종 enhancement modifier owner도 `EFFECTIVE_DURABILITY_RATIO` 하나뿐이다.
 
-| CURRENT/MAX | Derived state |
-|---|---|
-| `5/5` | `NORMAL` |
-| `4/5`, `3/5` | `MINOR` |
-| `2/5`, `1/5` | `MAJOR` |
-| `0/5` | `DESTROYED` |
+금지:
+
+```text
+CURRENT state penalty + MAX scar penalty를 각각 별도 곱셈
+hidden scar score
+old MAX band success penalty 자동 부활
+```
+
+## 3. Derived player-facing states
+
+`CURRENT == 0`은 다른 비율 계산보다 우선해 terminal이다.
+
+```text
+DESTROYED = CURRENT_DURABILITY == 0
+
+if CURRENT_DURABILITY > 0:
+    CURRENT_CONDITION_RATIO = CURRENT_DURABILITY / MAX_DURABILITY
+    STRUCTURAL_CONDITION_RATIO = MAX_DURABILITY / BASE_MAX_DURABILITY
+    EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)
+
+NORMAL = EFFECTIVE_DURABILITY_RATIO == 1.00
+MINOR = 0.50 < EFFECTIVE_DURABILITY_RATIO < 1.00
+MAJOR = 0 < EFFECTIVE_DURABILITY_RATIO <= 0.50
+```
+
+Reference `BASE_MAX = 5`:
+
+| CURRENT/MAX/BASE_MAX | Effective ratio | Derived state | Meaning |
+|---|---:|---|---|
+| `5/5/5` | 1.00 | `NORMAL` | pristine |
+| `4/5/5` | 0.80 | `MINOR` | current damage |
+| `3/5/5` | 0.60 | `MINOR` | current damage |
+| `2/5/5` | 0.40 | `MAJOR` | severe current damage |
+| `1/5/5` | 0.20 | `MAJOR` | severe current damage |
+| `4/4/5` | 0.80 | `MINOR` | fully repaired but permanent MAX scar remains |
+| `2/2/5` | 0.40 | `MAJOR` | fully repaired but severe structural scar remains |
+| `1/1/5` | 0.20 | `MAJOR` | floor-level structural life remains |
+| `0/5/5` | 0.00 | `DESTROYED` | physical UID terminal |
+
+Compatibility anchors required by tests/docs:
+
+```text
+4/4 with BASE_MAX 5 = MINOR
+2/2 with BASE_MAX 5 = MAJOR
+```
 
 `DESTROYED` is terminal for the physical UID. History/archive/successor principles remain current; destroyed items cannot be repaired back into the same physical UID.
 
@@ -75,9 +115,9 @@ ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE = SUPERSEDED_BY_DECISION29
 DAMAGE_EVENT_CURRENT_LOSS = 1
 ```
 
-`DAMAGE_EVENT_CURRENT_LOSS = 1` is a `TEMP_TEST_BUDGET`, not final product balance. A damage event reduces `CURRENT_DURABILITY` by one, floored at zero. The resulting player-facing state is then derived from the new `CURRENT/MAX` ratio.
+`DAMAGE_EVENT_CURRENT_LOSS = 1` is a `TEMP_TEST_BUDGET`, not final product balance. A damage event reduces `CURRENT_DURABILITY` by one, floored at zero. The derived state is recalculated afterward from the numeric authority.
 
-Decision28 still owns the base conditional probability of an enhancement-failure damage event:
+Decision28 still owns the target-level base conditional probability of an enhancement-failure damage event:
 
 ```text
 P(BASE_DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET_LEVEL)
@@ -89,11 +129,11 @@ P(BASE_DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET_LEVEL)
 INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS
 ```
 
-Decision29 does **not** replace these anchors. It applies a temporary current-durability multiplier after the Decision28 target curve is resolved.
+Decision29 does **not** replace these anchors. It applies one temporary modifier selected from the derived effective durability state.
 
-## 5. Low durability enhancement modifiers · temporary Budget
+## 5. Low effective durability enhancement modifiers · temporary Budget
 
-The structure is user-approved; the exact values below are delegated temporary tuning numbers.
+The structural relationship is user-approved; the exact values below are delegated temporary tuning numbers.
 
 | Derived state | Success delta | New enhancement effect | Decision28 damage-risk multiplier |
 |---|---:|---:|---:|
@@ -105,6 +145,8 @@ The structure is user-approved; the exact values below are delegated temporary t
 TEMP_TEST_BUDGET = TRUE
 FINAL_PRODUCT_BALANCE = NOT_APPROVED
 ```
+
+The state is derived from `EFFECTIVE_DURABILITY_RATIO`, so both short-term CURRENT loss and permanent MAX scar can keep an item in MINOR/MAJOR. They do not stack as separate penalties.
 
 ### 5.1 Success probability
 
@@ -126,14 +168,14 @@ EXISTING_ITEM_STATS = unchanged by this multiplier
 ITEM_KEYWORD_CARDINALITY / +10 CREATION_GATE = unchanged
 ```
 
-A damaged item can still succeed and gains exactly one enhancement level. Durability only reduces the newly added ordinary enhancement effect magnitude under this temporary Budget; it does not retroactively erase existing power or change the +10 keyword count.
+A damaged/scarred item can still succeed and gains exactly one enhancement level. Durability only reduces the newly added ordinary enhancement effect magnitude under this temporary Budget; it does not retroactively erase existing power or change +10 keyword count.
 
 ### 5.3 Damage risk
 
 ```text
-P(FINAL_DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET, STATE)
+P(FINAL_DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET, EFFECTIVE_STATE)
 = Decision28_base_probability(TARGET)
-* durability_damage_risk_multiplier(STATE)
+* durability_damage_risk_multiplier(EFFECTIVE_STATE)
 ```
 
 Examples:
@@ -155,11 +197,11 @@ MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES
 DESTROYED_ENHANCEMENT_ELIGIBILITY = FALSE
 ```
 
-A MAJOR item may still be pushed. This deliberately preserves the player's risky choice instead of turning repair into a mandatory gate. The cost of pushing is the lower success chance, lower new-effect quality, higher damage-event probability, and shorter remaining durability buffer.
+A MAJOR item may still be pushed. This deliberately preserves the player's risky choice instead of turning repair into a mandatory gate. The cost of pushing is lower success chance, lower new-effect quality, higher damage-event probability, and shorter remaining CURRENT buffer. A structurally scarred full item can also remain MAJOR if `MAX/BASE_MAX <= 50%`.
 
 ## 7. Repair resolution
 
-Repair is available only while the physical item still exists.
+Repair is available only while the physical item still exists and CURRENT is below MAX.
 
 ```text
 REPAIR_ELIGIBLE = 0 < CURRENT_DURABILITY < MAX_DURABILITY
@@ -167,12 +209,14 @@ DESTROYED_REPAIR_ALLOWED = FALSE
 FULL_DURABILITY_REPAIR_ALLOWED = FALSE
 ```
 
-A repair resolves two related but distinct outputs:
+A repair resolves two related outputs:
 
 1. CURRENT recovery quality;
 2. probability of a permanent `MAX_DURABILITY - 1` structural scar.
 
-The player should see both the expected recovery band and the structural-scar risk before confirmation. Hidden MAX loss is forbidden.
+The player should see both the expected recovery band and structural-scar risk before confirmation. Hidden MAX loss is forbidden.
+
+A fully repaired but already scarred item (`CURRENT == MAX < BASE_MAX`) cannot spam repair to reroll MAX because full-durability repair is not eligible and MAX recovery is not approved.
 
 ## 8. Repair quality · temporary Budget
 
@@ -196,13 +240,13 @@ quality_target = ceil(POST_SCAR_MAX * quality_ratio)
 NEW_CURRENT = min(POST_SCAR_MAX, max(min(OLD_CURRENT + 1, POST_SCAR_MAX), quality_target))
 ```
 
-This prevents a repair from randomly doing zero healing when there is still room to recover. If a MAX scar itself lowers the new MAX to the old CURRENT, the item can become full at the lower structural ceiling.
+This prevents a repair from randomly doing zero healing when recovery space remains. If a MAX scar lowers the new MAX to old CURRENT, the item can become full at the lower structural ceiling — but its derived state still reflects `MAX/BASE_MAX`.
 
 Exact quality odds may later incorporate blacksmith skill/tools/material condition. They are intentionally not final here.
 
 ## 9. Probabilistic MAX structural scar · temporary Budget
 
-`MAX_DURABILITY` does not drop on every repair. A successful repair job independently exposes a structural-scar chance based on **pre-repair damage state + current enhancement level band**.
+`MAX_DURABILITY` does not drop on every repair. A repair job exposes structural-scar chance based on **pre-repair effective damage state + current enhancement level band**.
 
 ### 9.1 Enhancement bands for repair scar risk
 
@@ -227,17 +271,17 @@ MAX_DURABILITY_FLOOR = 1
 MAX_SCAR_CHANCE = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
 ```
 
-When `MAX_DURABILITY == 1`, structural-scar probability is forced to zero because repair cannot reduce MAX below the approved floor. Physical destruction remains owned by `CURRENT_DURABILITY == 0`, not by a repair reducing MAX to zero.
+When `MAX_DURABILITY == 1`, structural-scar probability is forced to zero because repair cannot reduce MAX below the floor. Physical destruction remains `CURRENT_DURABILITY == 0`, not repair reducing MAX to zero.
 
-The exact table is deliberately temporary. The approved structural rule is only that worse damage state and higher enhancement level must not make repair scar risk lower.
+The exact table is deliberately temporary. The approved structural rule is that worse effective state and higher enhancement band must not make repair scar risk lower.
 
 ## 10. Reference examples
 
-### 10.1 User example
+### 10.1 User example · scar triggers
 
 ```text
 BASE_MAX = 5
-CURRENT/MAX = 1/5  # MAJOR
+CURRENT/MAX = 1/5  # effective MAJOR
 repair at a band whose structural-scar roll triggers
 MAX 5 -> 4
 ```
@@ -250,21 +294,42 @@ STANDARD  -> 3/4
 POOR      -> 2/4
 ```
 
-This preserves the user's intended `1/5 -> repair -> possible 4/4` outcome without making `MAX -1` automatic on every repair.
+The important follow-up is that `4/4/5` is **not pristine**:
+
+```text
+CURRENT_CONDITION_RATIO = 4/4 = 1.00
+STRUCTURAL_CONDITION_RATIO = 4/5 = 0.80
+EFFECTIVE_DURABILITY_RATIO = 0.80
+4/4 with BASE_MAX 5 = MINOR
+```
+
+So MAX scar remains a real future enhancement penalty even after excellent repair.
 
 ### 10.2 Repair without scar
 
 ```text
 1/5 MAJOR
 MAX scar roll does not trigger
-EXCELLENT -> 5/5
-STANDARD  -> 4/5
-POOR      -> 3/5
+EXCELLENT -> 5/5/5 = NORMAL
+STANDARD  -> 4/5/5 = MINOR
+POOR      -> 3/5/5 = MINOR
 ```
+
+### 10.3 Deep structural scar
+
+```text
+CURRENT/MAX/BASE_MAX = 2/2/5
+CURRENT_CONDITION_RATIO = 1.00
+STRUCTURAL_CONDITION_RATIO = 0.40
+EFFECTIVE_DURABILITY_RATIO = 0.40
+2/2 with BASE_MAX 5 = MAJOR
+```
+
+A heavily scarred item can be fully repaired and still remain a risky MAJOR workpiece. This is intentional.
 
 ## 11. Repair economy boundary
 
-This Decision closes the **structural repair behavior and MAJOR enhancement eligibility** gate. It does not silently restore old CURRENT/MAX repair-price formulas.
+Decision29 closes structural repair behavior and MAJOR enhancement eligibility. It does not silently restore old CURRENT/MAX repair-price formulas.
 
 ```text
 REPAIR_GOLD_COST = NOT_FINAL / FOLLOWUP_REBASE_REQUIRED
@@ -273,21 +338,22 @@ MAX_DURABILITY_RECOVERY = NOT_APPROVED
 OLD_MAX_OVERHAUL_PLUS15_CAP60 = SUPERSEDED / HISTORICAL_ONLY
 ```
 
-The historical repair-cost documents remain comparison evidence only. A later economy pass must test whether repair cost plus probabilistic structural scar makes repair neither an automatic answer nor a trap.
+A later economy pass must test whether repair cost + scar risk makes repair neither an automatic answer nor a trap.
 
 ## 12. Benchmark disposition · fresh 2026-08-26
 
 ### Stars Reach — ADAPT
 
-Official update text states that repair has a chance to reduce maximum durability and that this chance rises with damage/wear and lower current max durability.
+Official update text states repair has a chance to reduce maximum durability and that chance rises with damage/wear and lower current max durability.
 
 ADAPT:
 - probabilistic permanent repair scar;
-- damage condition influences scar risk;
-- warn players before broken state.
+- condition influences scar risk;
+- max-durability loss remains meaningful after repair;
+- warn players before high-risk repair.
 
 REJECT:
-- copy its exact `10%` max-durability reduction amount/probability.
+- copying its exact durability-loss values/probability.
 
 Source: `https://starsreach.com/home/?query-8-page=3`
 
@@ -296,13 +362,13 @@ Source: `https://starsreach.com/home/?query-8-page=3`
 Official Black Desert guides separate current durability from maximum durability, document maximum-durability loss from enhancement, and provide explicit maximum-durability recovery systems.
 
 ADAPT:
-- visible current/max durability distinction;
-- structural durability matters to enhancement lifecycle.
+- visible current/max distinction;
+- structural durability matters to item lifecycle.
 
 REJECT:
 - importing its exact durability scale or same-item/Memory Fragment recovery economy;
 - making repeat MAX recovery a default Blacksmith maintenance loop;
-- silently locking MAJOR enhancement merely because another game has a low-max enhancement gate.
+- importing exact low-max enhancement rules.
 
 Sources:
 - `https://www.kr.playblackdesert.com/ko-KR/Wiki?wikiNo=20`
@@ -317,7 +383,7 @@ ADAPT:
 - avoid needless multi-click maintenance friction.
 
 REJECT:
-- over-repair/full reversibility as Blacksmith's structural-scar baseline, because it erases the intended lifetime tension of a specific UID workpiece.
+- over-repair/full reversibility as Blacksmith's structural-scar baseline because it erases the intended lifetime tension of a specific UID workpiece.
 
 Source: `https://na.finalfantasyxiv.com/uiguide/equipment/equipment-repair/equipment_repair_myself.html`
 
@@ -325,27 +391,31 @@ Source: `https://na.finalfantasyxiv.com/uiguide/equipment/equipment-repair/equip
 
 ### Loop 1 — Is numeric durability a hidden second authority?
 
-No. Decision29 makes `CURRENT/MAX/BASE_MAX` visible and mechanically authoritative; state labels are derived only. No independent state transition table may override the numbers.
+No. Decision29 makes `CURRENT/MAX/BASE_MAX` visible and mechanically authoritative. State labels are derived only. No independent state transition table may override the numbers.
 
-### Loop 2 — Are low-durability penalties triple-punishing the same fact?
+### Loop 2 — Did MAX scar become cosmetic after a perfect repair?
 
-The three penalties serve different player questions: success chance = whether the push works, new-effect multiplier = quality of the new gain, damage multiplier = risk of worsening the item's life. Initial values are intentionally modest and temporary. `MAX/BASE_MAX` does not add a fourth hidden success/effect penalty.
+Initial candidate failed this attack: `4/4` would have returned to NORMAL if only `CURRENT/MAX` were used. Refined model uses `min(CURRENT/MAX, MAX/BASE_MAX)`, so `4/4/5 = MINOR` and `2/2/5 = MAJOR`. MAX scars remain mechanically meaningful without adding a second penalty stack.
 
-### Loop 3 — Does repair become mandatory?
+### Loop 3 — Are low-durability penalties triple-punishing the same fact?
 
-No. `MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES`. The player can repair, push damaged, or stop/handoff. Repair itself has structural-scar risk, so it is not an automatic dominant action.
+The three modifiers serve different questions: success chance = whether push works, new-effect multiplier = quality of new gain, damage multiplier = risk of worsening life. They all come from **one effective state**, not separate current/scar penalties. Initial values are modest and temporary.
 
-### Loop 4 — Can repair itself destroy the physical UID?
+### Loop 4 — Does repair become mandatory?
 
-No under this first model. MAX cannot fall below 1 and destroyed repair is forbidden. Physical destruction is still `CURRENT == 0` from an actual damage event.
+No. `MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES`. Player can repair, push damaged/scarred, or stop/handoff. Repair itself has structural-scar risk.
 
-### Loop 5 — Does Decision29 silently replace Decision28 probability authority?
+### Loop 5 — Can repair destroy the physical UID or reroll MAX recovery?
 
-No. Decision28 remains the target-level base conditional curve. Decision29 provides a temporary multiplicative state modifier. UI rounding remains unresolved and cannot change resolver odds.
+No under this model. MAX cannot fall below 1, destroyed repair is forbidden, full-durability repair is ineligible, and MAX recovery is not approved. Physical destruction remains `CURRENT == 0` from a damage event.
 
-### Loop 6 — Does temporary tuning masquerade as final balance?
+### Loop 6 — Does Decision29 silently replace Decision28 probability authority?
 
-No. Success penalties, effect multipliers, damage multipliers, repair quality probabilities, `DAMAGE_EVENT_CURRENT_LOSS=1`, and repair MAX-scar table are all explicitly `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. They require simulation and human playtest before final balance.
+No. Decision28 remains target-level base conditional curve. Decision29 provides one temporary multiplier from effective durability state. UI rounding remains unresolved and cannot change resolver odds.
+
+### Loop 7 — Does temporary tuning masquerade as final balance?
+
+No. Success penalties, effect multipliers, damage multipliers, repair quality odds, `DAMAGE_EVENT_CURRENT_LOSS=1`, and MAX-scar table are all `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`; simulation and human playtest are required before final balance.
 
 ## 14. Evidence ceiling and next gates
 
