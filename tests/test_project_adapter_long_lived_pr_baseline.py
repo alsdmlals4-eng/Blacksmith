@@ -11,7 +11,7 @@ WORKFLOW = ROOT / ".github/workflows/validate-project-base-adapter.yml"
 ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
-OPERATING_CONTRACT_BASELINE = "6735edd969caba163e2c42d377f73d6edf5a740d"
+OPERATING_CONTRACT_BASELINE = "bc00040d02e422012cd616176224e1b7354ba7b4"
 BASE_RELEASE_VERSION = "9.4.4"
 HEALTH_EVIDENCE_HASHES = {
     "BS-ADAPTER-MIGRATION-20260806": "f074e5c72cb7e8da2d89c5893daa2439db4111d97d92ca9a9a97bed5cfa85e65",
@@ -56,16 +56,10 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         self.assertNotIn("printf 'PROTECTED_BASE_SHA=%s\n' \"$PROTECTED_BASE_SHA\"", text)
         self.assertFalse(any(line.startswith("' \"") for line in text.splitlines()))
 
-    def test_workshop_resource_persistence_protected_change_approval_is_current(self) -> None:
+    def test_workshop_resource_persistence_protected_change_approval_is_retired(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
-        self.assertEqual("6735edd969caba163e2c42d377f73d6edf5a740d", adapter["protected_baseline"]["commit"])
-        approval = json.loads(
-            (ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        self.assertEqual("APPROVED", approval["status"])
-        self.assertIn("GITHUB-ISSUE-247", approval["decision_ids"])
+        self.assertEqual("bc00040d02e422012cd616176224e1b7354ba7b4", adapter["protected_baseline"]["commit"])
+        self.assertFalse((ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json").exists())
 
     def test_adapter_uses_the_released_reuse_first_base_contract(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
