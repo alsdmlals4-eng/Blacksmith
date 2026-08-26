@@ -53,6 +53,12 @@ class BaseV9AdoptionTests(unittest.TestCase):
         self.assertNotIn("^(scripts|scenes|data)/vertical_slice/", workflow)
         self.assertNotIn("^addons/.*", workflow)
 
+    def test_exact_manifest_bridge_requires_the_external_approval_label(self) -> None:
+        workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
+        self.assertIn("EXTERNAL_APPROVAL", workflow)
+        self.assertIn("PROJECT_PROTECTED_CHANGE_APPROVAL.json", workflow)
+        self.assertIn("approved-protected-paths.txt", workflow)
+
     def test_toolchain_repair_exception_is_one_shot_and_exact(self) -> None:
         workflow = (ROOT / ".github/workflows/validate-base-v9-adoption.yml").read_text(encoding="utf-8")
         for token in (
