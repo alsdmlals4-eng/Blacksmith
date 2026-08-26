@@ -27,7 +27,7 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("BS-OPS-20260825-08", handoff)
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", handoff)
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", handoff)
-        self.assertIn("CURRENT_PLANNING_WORK = DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE", handoff)
+        self.assertIn("CURRENT_PLANNING_WORK = REPAIR_ECONOMY_PLAYTEST_PREP + R_BAND_INPUT_EVIDENCE", handoff)
 
         self.assertIn("CURRENT_PRIORITY_OVERLAY", overlay)
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", overlay)
