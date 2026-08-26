@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "afb3fc1c0e78121470f8f56eccbb2b0d8217f601",
+  "decision_ids": [
+    "BS-ENHANCE-20260825-25",
+    "GITHUB-ISSUE-235"
+  ],
+  "approved_paths": [
+    "scripts/forging/canonical_first_item_input_adapter.gd"
+  ],
+  "approval_source": "User current-session declaration: 현재 기획 완료 선언, 정본 기준 Godot 구현 진행; continuation approved by 권장안대로 진행.",
+  "approval_time": "2026-08-27T00:35:00+09:00",
+  "scope_summary": "GitHub Issue #235: translate a resolved legacy forge grade into the canonical first-item birth input at one boundary, without passing legacy grade identifiers into the current vertical-slice model."
+}

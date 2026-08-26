@@ -57,10 +57,16 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         self.assertNotIn("printf 'PROTECTED_BASE_SHA=%s\n' \"$PROTECTED_BASE_SHA\"", text)
         self.assertFalse(any(line.startswith("' \"") for line in text.splitlines()))
 
-    def test_first_item_forge_protected_change_approval_is_retired(self) -> None:
+    def test_forge_result_adapter_protected_change_approval_is_active(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
         self.assertEqual("afb3fc1c0e78121470f8f56eccbb2b0d8217f601", adapter["protected_baseline"]["commit"])
-        self.assertFalse(APPROVAL.exists())
+        approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
+        self.assertEqual("APPROVED", approval["status"])
+        self.assertEqual("afb3fc1c0e78121470f8f56eccbb2b0d8217f601", approval["protected_base_commit"])
+        self.assertEqual(
+            ["scripts/forging/canonical_first_item_input_adapter.gd"],
+            approval["approved_paths"],
+        )
 
     def test_adapter_uses_the_released_reuse_first_base_contract(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
