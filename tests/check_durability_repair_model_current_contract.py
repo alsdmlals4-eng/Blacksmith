@@ -19,6 +19,19 @@ def require_tokens(text: str, tokens: list[str], label: str) -> None:
     assert not missing, f"{label} missing tokens: {missing}"
 
 
+def derived_state(current: int, maximum: int, base_maximum: int) -> str:
+    if current == 0:
+        return "DESTROYED"
+    current_condition = current / maximum
+    structural_condition = maximum / base_maximum
+    effective = min(current_condition, structural_condition)
+    if effective == 1.0:
+        return "NORMAL"
+    if effective > 0.5:
+        return "MINOR"
+    return "MAJOR"
+
+
 def main() -> None:
     assert DECISION.exists(), f"missing Decision29 owner: {DECISION.relative_to(ROOT)}"
     assert MODEL.exists(), f"missing machine-readable durability model: {MODEL.relative_to(ROOT)}"
@@ -33,10 +46,15 @@ def main() -> None:
             "BASE_MAX_DURABILITY",
             "MAX_DURABILITY",
             "CURRENT_DURABILITY",
-            "NORMAL = CURRENT_DURABILITY == MAX_DURABILITY",
-            "MINOR = 0.50 < CURRENT_DURABILITY / MAX_DURABILITY < 1.00",
-            "MAJOR = 0 < CURRENT_DURABILITY / MAX_DURABILITY <= 0.50",
+            "CURRENT_CONDITION_RATIO = CURRENT_DURABILITY / MAX_DURABILITY",
+            "STRUCTURAL_CONDITION_RATIO = MAX_DURABILITY / BASE_MAX_DURABILITY",
+            "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)",
+            "NORMAL = EFFECTIVE_DURABILITY_RATIO == 1.00",
+            "MINOR = 0.50 < EFFECTIVE_DURABILITY_RATIO < 1.00",
+            "MAJOR = 0 < EFFECTIVE_DURABILITY_RATIO <= 0.50",
             "DESTROYED = CURRENT_DURABILITY == 0",
+            "4/4 with BASE_MAX 5 = MINOR",
+            "2/2 with BASE_MAX 5 = MAJOR",
             "MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES",
             "MAX_DURABILITY_FLOOR = 1",
             "MAX_DURABILITY_RECOVERY = NOT_APPROVED",
@@ -54,11 +72,28 @@ def main() -> None:
     assert model["destroyed_repair_allowed"] is False
     assert model["major_enhancement_allowed"] is True
 
+    derivation = model["durability_state_derivation"]
+    assert derivation == {
+        "current_condition_ratio": "CURRENT_DURABILITY / MAX_DURABILITY",
+        "structural_condition_ratio": "MAX_DURABILITY / BASE_MAX_DURABILITY",
+        "effective_durability_ratio": "min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)",
+        "destroyed_override": "CURRENT_DURABILITY == 0",
+    }
+
     states = model["durability_states"]
-    assert states["NORMAL"] == {"current_equals_max": True}
-    assert states["MINOR"] == {"ratio_gt": 0.5, "ratio_lt": 1.0}
-    assert states["MAJOR"] == {"ratio_gt": 0.0, "ratio_lte": 0.5}
+    assert states["NORMAL"] == {"effective_ratio_equals": 1.0}
+    assert states["MINOR"] == {"effective_ratio_gt": 0.5, "effective_ratio_lt": 1.0}
+    assert states["MAJOR"] == {"effective_ratio_gt": 0.0, "effective_ratio_lte": 0.5}
     assert states["DESTROYED"] == {"current_equals": 0}
+
+    # A repaired item with permanent MAX loss must remain structurally worse than pristine.
+    assert derived_state(5, 5, 5) == "NORMAL"
+    assert derived_state(4, 4, 5) == "MINOR"
+    assert derived_state(2, 2, 5) == "MAJOR"
+    assert derived_state(1, 1, 5) == "MAJOR"
+    assert derived_state(3, 5, 5) == "MINOR"
+    assert derived_state(2, 5, 5) == "MAJOR"
+    assert derived_state(0, 5, 5) == "DESTROYED"
 
     modifiers = model["enhancement_modifiers"]
     assert modifiers["NORMAL"] == {"success_delta_pp": 0, "new_effect_multiplier": 1.0, "damage_risk_multiplier": 1.0}
@@ -94,6 +129,7 @@ def main() -> None:
         [
             "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC",
             "DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW",
+            "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)",
             "ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE = SUPERSEDED_BY_DECISION29",
             "CURRENT_MAX_AUTHORITY = SUPERSEDED = HISTORICAL_DECISION26_ONLY",
         ],
