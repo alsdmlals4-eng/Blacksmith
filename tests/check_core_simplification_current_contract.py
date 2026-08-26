@@ -23,6 +23,7 @@ REQUIRED_OWNER = [
     "BS-DAMAGE-20260825-26",
     "BS-DAMAGE-20260826-28",
     "BS-REPAIR-20260826-29",
+    "BS-REPAIR-20260826-31",
     "BS-DAMAGE-20260826-30",
     "BS-CHRONICLE-20260825-27",
     "BS-ART-20260825-03",
@@ -52,6 +53,7 @@ REQUIRED_ENTRYPOINT = [
     "BS-DAMAGE-20260825-26",
     "BS-DAMAGE-20260826-28",
     "BS-REPAIR-20260826-29",
+    "BS-REPAIR-20260826-31",
     "BS-DAMAGE-20260826-30",
     "BS-CHRONICLE-20260825-27",
     "BS-ART-20260825-03",
@@ -97,20 +99,24 @@ def main() -> None:
 
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION" in agents
-    assert "POSTMERGE_PLANNING / REPAIR_ECONOMY_REBASE_NEXT" in agents
+    assert "POSTMERGE_PLANNING / REPAIR_ECONOMY_SENSITIVITY_NEXT" in agents
+    assert "BS-REPAIR-20260826-31" in agents
     assert "ACTUAL_GAME_CONSUMER_REQUIRED" in agents
     assert "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT" in agents
 
     handoff_text = HANDOFF.read_text(encoding="utf-8")
     assert "PR #207 = MERGED_TO_MAIN" in handoff_text
-    assert "CURRENT_PLANNING_WORK = REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY" in handoff_text
+    assert "CURRENT_PLANNING_WORK = DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE" in handoff_text
+    assert "BS-REPAIR-20260826-31" in handoff_text
     assert "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC" in handoff_text
     assert "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)" in handoff_text
     assert "BS-DAMAGE-20260826-30" in handoff_text
     assert "BS-ART-20260826-04" in handoff_text
 
     authority_text = AUTHORITY_INDEX.read_text(encoding="utf-8")
-    assert "1. REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY" in authority_text
+    assert "1. DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE" in authority_text
+    assert "BS-REPAIR-20260826-31" in authority_text
+    assert "REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / SENSITIVITY_REQUIRED" in authority_text
     assert "DAMAGE_CURVE_NUMBERS = USER_APPROVED / BS-DAMAGE-20260826-28" in authority_text
     assert "DURABILITY_REPAIR_STRUCTURE = USER_APPROVED / BS-REPAIR-20260826-29" in authority_text
     assert "DURABILITY_REPAIR_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE" in authority_text
