@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "dda59b1dc802a00213828b022c48593fd5044f0b",
+  "decision_ids": [
+    "BS-ENHANCE-20260825-25",
+    "GITHUB-ISSUE-241"
+  ],
+  "approved_paths": [
+    "scripts/vertical_slice/ui/vs_main_menu.gd"
+  ],
+  "approval_source": "User current-session declaration: 현재 기획 완료 선언, 정본 기준 Godot 구현 진행; continuation approved by 권장안대로 진행.",
+  "approval_time": "2026-08-27T01:45:00+09:00",
+  "scope_summary": "GitHub Issue #241: wire the existing main menu, forging screen, first-forge completion service, and Workshop app into one first-session player flow."
+}
