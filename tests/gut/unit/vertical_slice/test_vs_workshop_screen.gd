@@ -69,6 +69,13 @@ func test_screen_repair_refreshes_the_bound_item_and_disables_repeat_repair() ->
 	screen.free()
 
 
+func test_screen_hides_scar_risk_when_guard_must_skip_the_scar() -> void:
+	var screen = load(SCREEN_PATH).new()
+	screen.configure_context(_item(4, 5), ResourcesScript.new(100, {"common_reinforcement_material": 1}))
+	assert_eq(screen.view_state()["repair_scar_summary"], "MAX 흉터 가능성: 0%")
+	screen.free()
+
+
 func test_screen_refreshes_visible_durability_after_an_enhancement_damage_event() -> void:
 	var item = _item()
 	var screen = SCREEN_SCENE.instantiate()
