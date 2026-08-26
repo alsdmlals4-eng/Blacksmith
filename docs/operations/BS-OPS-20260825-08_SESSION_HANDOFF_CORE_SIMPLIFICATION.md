@@ -2,11 +2,105 @@
 
 - Decision ID: `BS-OPS-20260825-08`
 - Date: `2026-08-25 KST`, current update `2026-08-26 KST`
-- Status: `CURRENT_SESSION_HANDOFF / POSTMERGE_PLANNING_ONLY`
-- Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`
+- Status: `CURRENT_SESSION_HANDOFF / GPT_WORK_TRANSFER / POSTMERGE_PLANNING_ONLY`
+- Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
 - `CURRENT_PLANNING_WORK = REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY`
+- `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
+- `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
+- `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
 - Pre-existing protected PR: `#196 / OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
 - Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
+
+## 0. GPT Work transfer · 2026-08-26
+
+User directive: future Blacksmith work moves from the current chat to **ChatGPT Work**. This changes the working surface, not project authority.
+
+```text
+GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK
+GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY
+GPT_WORK_POLICY_OWNER = BASE_CURRENT
+PROJECT_CANON_AUTHORITY = UNCHANGED
+MEMORY_IS_NOT_CURRENT_TRUTH = TRUE
+FRESH_READ_REQUIRED
+```
+
+Base current handoff checkpoint at transfer start: `06669fe9c6a3ccd6f3b0d19c5757540bfdcc0623` (`docs: default ChatGPT project memory for Work and reuse (#724)`). Blacksmith transfer baseline main: `d17a3e0f45337c8f3031c61780729bd7590d5d58`. These SHAs are historical checkpoints; Work must fresh-read live heads instead of treating them as permanent pointers.
+
+The Base policy owns the generic Work/Default-memory rule. Blacksmith does not fork that policy. Project-specific Work startup remains:
+
+```text
+1. fresh-read Base current main + relevant owner docs
+2. fresh-read Blacksmith AGENTS.md + this handoff + default branch/latest commit/open PRs
+3. fresh-read Notion Human Home / Core Detail / Visual Bible / Production Handoff / AI System Record
+4. fresh-read Google Sheet only as migration compatibility evidence
+5. report GitHub/Notion/Sheet authority drift before mutation
+6. preserve PR #196 as OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER
+7. resume only the currently selected approved/queued work
+```
+
+### Image-work transfer state
+
+The 2026-08-26 consumer-first image audit completed **without generating a new image**. The eight existing Visual GDD images remain historical information-architecture references, not product assets.
+
+```text
+HISTORICAL_APPROVED_VISUAL_GDD = 8
+PRODUCT_IMAGE_ASSET_APPROVAL = 0
+IMPLEMENTATION_READY_IMAGE_ASSET = 0
+ACTUAL_RUNTIME_IMAGE_CONSUMPTION = 0
+RUNTIME_VERIFIED_IMAGE_ASSET = 0
+IMAGE_GENERATION = NOT_RUN
+IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK
+```
+
+Current concrete runtime/planned consumers found in the repository:
+
+- `scenes/vertical_slice/main_menu.tscn` — actual startup Main Menu surface.
+- `scenes/vertical_slice/screens/vs_workshop_screen.tscn` — Workshop surface.
+- portrait target: `720 × 1280` viewport.
+
+Existing-solution result:
+
+- Reuse current `ILLUSTRATED_WORKSHOP_BOOK` style canon as-is.
+- Adapt old Visual GDDs only for layout/information hierarchy/feedback structure.
+- Keep Godot native `Control`/`Button`/`Panel`/`ProgressBar` for UI structure instead of redrawing those controls as raster images.
+- No current Blacksmith production PNG/JPG/WebP was found in the repository audit; GUT plugin SVGs are not Blacksmith product art.
+- `docs/planning/BLACKSMITH_VISUAL_GDD_IMPLEMENTATION_BINDINGS_20260825.json` is stale implementation-planning evidence where it still encodes Decision26-era categorical/no-numeric durability semantics. Do not use those fields over Decision29/30.
+- Google Sheet `71_이미지기획_생성목록` and `72_이미지검수_승인로그` are migration/history surfaces. Old `BS-IMG-001~005` queue labels do not become the current production queue.
+
+### Remaining Image Goal queue
+
+| Order | Goal | Priority | Current state | Production intent |
+| ---: | --- | --- | --- | --- |
+| 1 | `IMG-01 · Workpiece Hero + lifecycle/damage state family` | P0 | `READY_FOR_USER_GOAL_APPROVAL / NOT_GENERATED` | Shared workpiece hero for Workshop, later enhancement/repair/inventory/customer-result/Chronicle. Required family: NORMAL/MINOR/MAJOR/DESTROYED. |
+| 2 | `IMG-02 · Workshop Environment Layer Pack` | P0 | `READY_FOR_USER_GOAL_APPROVAL / NOT_GENERATED` | Reusable 9:16 workshop room base + workbench/anvil foreground + forge/firebox element for Main Menu and Workshop. |
+| 3 | `IMG-03 · Functional Workshop Mark/Icon Family` | P1 | `DEFER_UNTIL_EXACT_CONSUMER_SLOT` | Enhancement/durability/repair/danger/Chronicle marks after exact UI nodes exist. |
+| 4 | `IMG-04 · +9→+10 Precision Asset Pack` | P1 | `DEFER / CANON_AND_CONSUMER_DETAIL_REQUIRED` | Catalyst/keyword/focus assets only after exact current precision consumer/resource IDs exist. |
+| 5 | `IMG-05 · Release Identity Pack` | P3 | `DEFER_RELEASE / PLATFORM_SPEC_RECHECK_REQUIRED` | App/store identity only after runtime visual lock; real runtime screenshots, not generated fake screenshots. |
+
+The first future image action is **not automatic generation**. If the user explicitly selects `IMG-01` for production in Work, the first candidate is:
+
+```text
+NORMAL_WORKPIECE_HERO_MASTER
+→ text brief against current item/style canon
+→ Image Conversation Approval Gate
+→ generate exactly one NORMAL master
+→ review identity/readability
+→ only then derive MINOR → MAJOR → DESTROYED by identity-preserving edits
+```
+
+Do not treat this transfer message as approval to generate `NORMAL_WORKPIECE_HERO_MASTER`, the remaining variants, or any other image.
+
+### Codex integration handoff order after image approval
+
+```text
+CODEX-IMG-01 Workpiece State Integration
+→ CODEX-IMG-02 Workshop Environment Integration
+→ CODEX-IMG-03 Functional Icon Integration
+→ CODEX-IMG-04 Precision Asset Integration
+→ CODEX-IMG-05 Distribution Asset Packaging
+```
+
+Codex integration does not bypass the current product implementation gate. Approved images may be prepared/registered, but protected product paths remain blocked until the current planning-complete declaration opens implementation.
 
 ## 1. Cold-start rule
 
