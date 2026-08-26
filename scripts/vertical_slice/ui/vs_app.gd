@@ -22,6 +22,26 @@ const DECLARED_TRANSITIONS := {
 
 var current_state := "WORKSHOP"
 var _destinations: Dictionary = {}
+var _campaign_envelope = null
+var _workshop_resources = null
+
+
+func configure_campaign(envelope, resources, maintenance_service = null) -> bool:
+	if envelope == null or not envelope.validation_errors.is_empty() or resources == null:
+		return false
+	var selected_item_uid := str(envelope.active_run.get("selected_item_uid", ""))
+	if selected_item_uid.is_empty():
+		if not envelope.items_by_uid.is_empty():
+			return false
+		_campaign_envelope = envelope
+		_workshop_resources = resources
+		return configure_workshop_context(null, resources, maintenance_service)
+	var selected_item = envelope.get_item(selected_item_uid)
+	if selected_item == null:
+		return false
+	_campaign_envelope = envelope
+	_workshop_resources = resources
+	return configure_workshop_context(selected_item, resources, maintenance_service)
 
 
 func configure_workshop_context(item, resources, maintenance_service = null) -> bool:

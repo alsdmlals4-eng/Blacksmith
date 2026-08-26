@@ -4,6 +4,8 @@ const APP_PATH := "res://scripts/vertical_slice/ui/vs_app.gd"
 const APP_SCENE := preload("res://scenes/vertical_slice/vertical_slice_app.tscn")
 const ItemScript := preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
+const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
+const ItemBirthServiceScript := preload("res://scripts/vertical_slice/services/vs_item_birth_service.gd")
 
 
 func _new_app():
@@ -69,3 +71,21 @@ func test_app_binds_workshop_context_and_refreshes_after_damage() -> void:
 	app.refresh_workshop_after_enhancement()
 	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "2 / 5 / 5")
 	assert_false(screen.get_node("WorkshopLayout/RepairButton").disabled)
+
+
+func test_campaign_configuration_binds_the_persisted_selected_item_to_workshop() -> void:
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	var birth: Dictionary = ItemBirthServiceScript.new().commit_first_forge(envelope, {
+		"weapon_id": "iron_sword",
+		"base_attack": 20,
+		"crafting_grade": "CRAFT_NORMAL",
+		"artistry": 0,
+	})
+	assert_eq(birth.get("status", ""), "APPLIED")
+	var app = APP_SCENE.instantiate()
+	add_child_autofree(app)
+
+	assert_true(app.configure_campaign(envelope, ResourcesScript.new()))
+	var screen = app.get_node("ScreenHost/WorkshopScreen")
+	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "5 / 5 / 5")
+	assert_eq(screen.get_node("WorkshopLayout/DurabilityStateLabel").text, "상태: NORMAL")

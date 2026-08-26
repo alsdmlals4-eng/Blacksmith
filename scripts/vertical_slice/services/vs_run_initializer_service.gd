@@ -18,6 +18,7 @@ func create_candidate_envelope():
 		"run_rng_seed": token.decode_u32(0),
 		"current_day": 1,
 		"resolved_events": {},
+		"selected_item_uid": "",
 	}
 	envelope.items_by_uid = {}
 	envelope.customer_state = {}

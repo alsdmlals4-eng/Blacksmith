@@ -50,6 +50,7 @@ var active_run: Dictionary = {
 	"run_rng_seed": 0,
 	"current_day": 1,
 	"resolved_events": {},
+	"selected_item_uid": "",
 }
 var items_by_uid: Dictionary = {}
 var customer_state: Dictionary = {}
@@ -74,6 +75,8 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 	var raw_active_run: Variant = value.get("active_run", {})
 	if raw_active_run is Dictionary:
 		envelope.active_run = _normalize_dictionary(raw_active_run)
+		if not envelope.active_run.has("selected_item_uid"):
+			envelope.active_run["selected_item_uid"] = ""
 		for field_name in ACTIVE_RUN_REQUIRED_FIELDS:
 			if not envelope.active_run.has(field_name):
 				envelope.validation_errors.append("MISSING_ACTIVE_RUN_FIELD:%s" % field_name)
@@ -259,5 +262,8 @@ func _validate_values() -> void:
 		validation_errors.append("INVALID_CURRENT_DAY")
 	if not active_run.get("resolved_events", {}) is Dictionary:
 		validation_errors.append("INVALID_RESOLVED_EVENTS")
+	var selected_item_uid := str(active_run.get("selected_item_uid", ""))
+	if not selected_item_uid.is_empty() and not items_by_uid.has(selected_item_uid):
+		validation_errors.append("SELECTED_ITEM_NOT_FOUND:%s" % selected_item_uid)
 	if global_ledger_sequence < 0:
 		validation_errors.append("INVALID_GLOBAL_LEDGER_SEQUENCE")
