@@ -6,6 +6,7 @@ const RepairResolverScript = preload("res://scripts/vertical_slice/resolvers/vs_
 const MaintenanceServiceScript = preload("res://scripts/vertical_slice/services/vs_workshop_maintenance_service.gd")
 const EnhancementResolverScript = preload("res://scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd")
 const EnhancementActionServiceScript = preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
+const WorkshopBackgroundTexture = preload("res://assets/ui/workshop/workshop_enhancement_background_v1.png")
 
 signal enhancement_saved(envelope, result: Dictionary)
 
@@ -18,6 +19,7 @@ var _campaign_envelope = null
 
 
 func _ready() -> void:
+	_ensure_illustrated_background()
 	_ensure_enhancement_controls()
 	var repair_button := get_node_or_null("WorkshopLayout/RepairButton") as Button
 	if repair_button != null and not repair_button.pressed.is_connected(_on_repair_pressed):
@@ -226,3 +228,21 @@ func _ensure_enhancement_controls() -> void:
 		layout.add_child(node)
 		layout.move_child(node, repair_index)
 		repair_index += 1
+
+
+func _ensure_illustrated_background() -> void:
+	var fallback := get_node_or_null("WorkshopBackground") as ColorRect
+	if fallback != null:
+		fallback.visible = false
+	var background := get_node_or_null("WorkshopIllustratedBackground") as TextureRect
+	if background == null:
+		background = TextureRect.new()
+		background.name = "WorkshopIllustratedBackground"
+		background.z_index = -1
+		background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		add_child(background)
+		move_child(background, 0)
+	background.texture = WorkshopBackgroundTexture
