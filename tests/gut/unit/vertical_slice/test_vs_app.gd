@@ -8,6 +8,14 @@ const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_
 const ItemBirthServiceScript := preload("res://scripts/vertical_slice/services/vs_item_birth_service.gd")
 
 
+class FakeSaveService extends RefCounted:
+	var saved_envelope = null
+
+	func save_envelope(envelope) -> Error:
+		saved_envelope = envelope
+		return OK
+
+
 func _new_app():
 	if not ResourceLoader.exists(APP_PATH):
 		return null
@@ -108,3 +116,25 @@ func test_applied_first_forge_completion_rebinds_the_workshop_item() -> void:
 	assert_true(app.apply_first_forge_completion({"status": "APPLIED", "envelope": envelope}, ResourcesScript.new()))
 	var screen = app.get_node("ScreenHost/WorkshopScreen")
 	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "5 / 5 / 5")
+
+
+func test_campaign_adopts_the_saved_envelope_after_a_workshop_enhancement() -> void:
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	var birth: Dictionary = ItemBirthServiceScript.new().commit_first_forge(envelope, {
+		"weapon_id": "iron_sword",
+		"base_attack": 20,
+		"crafting_grade": "CRAFT_NORMAL",
+		"artistry": 0,
+	})
+	assert_eq(birth.get("status", ""), "APPLIED")
+	var resources = ResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var save_service := FakeSaveService.new()
+	var app = APP_SCENE.instantiate()
+	add_child_autofree(app)
+	assert_true(app.configure_campaign(envelope, resources, null, null, save_service))
+	var screen = app.get_node("ScreenHost/WorkshopScreen")
+	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0})
+	assert_eq(result.get("outcome", ""), "SUCCESS")
+	assert_same(app._campaign_envelope, save_service.saved_envelope)
+	var saved_item = app._campaign_envelope.get_item(str(app._campaign_envelope.active_run["selected_item_uid"]))
+	assert_eq(saved_item.enhancement_level, 1)

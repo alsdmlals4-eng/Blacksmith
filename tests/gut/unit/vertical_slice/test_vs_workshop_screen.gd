@@ -5,6 +5,8 @@ const SCREEN_PATH := "res://scripts/vertical_slice/ui/vs_workshop_screen.gd"
 const SCREEN_SCENE := preload("res://scenes/vertical_slice/screens/vs_workshop_screen.tscn")
 const ItemScript := preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
+const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
+const EnhancementActionServiceScript := preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 
 
 class TrackingMaintenanceService extends RefCounted:
@@ -22,6 +24,14 @@ class TrackingMaintenanceService extends RefCounted:
 		return {"status": "BLOCKED", "reason": "TRACKED_DETERMINISTIC_REPAIR"}
 
 
+class FakeSaveService extends RefCounted:
+	var saved_envelope = null
+
+	func save_envelope(envelope) -> Error:
+		saved_envelope = envelope
+		return OK
+
+
 func _item(current: int = 3, maximum: int = 5):
 	var item = ItemScript.new()
 	item.uid = "UI-ITEM-001"
@@ -33,6 +43,15 @@ func _item(current: int = 3, maximum: int = 5):
 	item.current_durability = current
 	item.repair_job_available = true
 	return item
+
+
+func _enhancement_envelope():
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	var item = _item(5, 5)
+	item.uid = "BSI-11223344556677889900aabbccddeeff"
+	envelope.items_by_uid[item.uid] = item
+	envelope.active_run["selected_item_uid"] = item.uid
+	return envelope
 
 
 func test_screen_exposes_current_durability_and_repair_quote() -> void:
@@ -107,3 +126,32 @@ func test_repair_button_uses_randomized_maintenance_path_not_test_rolls() -> voi
 	assert_eq(tracking_service.random_repair_calls, 1)
 	assert_eq(tracking_service.deterministic_repair_calls, 0)
 	assert_eq(screen.get_node("WorkshopLayout/RepairMessageLabel").text, "수리 불가: TRACKED_RANDOM_REPAIR")
+
+
+func test_workshop_displays_next_enhancement_outcomes_and_commits_saved_attempt() -> void:
+	var envelope = _enhancement_envelope()
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	var resources = ResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var save_service := FakeSaveService.new()
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(
+		item,
+		resources,
+		null,
+		EnhancementActionServiceScript.new(),
+		save_service,
+		envelope
+	)
+	var state: Dictionary = screen.view_state()
+	assert_true(state.get("enhancement_allowed", false))
+	assert_eq(state.get("enhancement_target_level", -1), 12)
+	assert_true(str(state.get("enhancement_outcomes_summary", "")).contains("성공"))
+	assert_true(str(state.get("enhancement_cost_summary", "")).contains("Gold"))
+	assert_true(screen.has_node("WorkshopLayout/EnhancementButton"))
+	assert_gte(screen.get_node("WorkshopLayout/EnhancementButton").custom_minimum_size.y, 64.0)
+	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0})
+	assert_eq(result.get("outcome", ""), "SUCCESS")
+	assert_not_null(save_service.saved_envelope)
+	assert_eq(screen.view_state().get("enhancement_target_level", -1), 13)
+	assert_eq(resources.snapshot(), save_service.saved_envelope.resource_snapshot())
