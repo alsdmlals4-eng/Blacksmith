@@ -30,8 +30,8 @@ func test_initializer_creates_valid_empty_campaign_envelope() -> void:
 	if envelope == null:
 		return
 	assert_true(envelope.validation_errors.is_empty(), "new campaign envelope must validate before persistence")
-	assert_eq(envelope.schema_version, 2, "current implementation must use V2 save schema")
-	assert_eq(envelope.preset_version, "VS-2026.08.24-B", "current implementation must use V2 preset")
+	assert_eq(envelope.schema_version, 3, "current implementation must use V3 save schema")
+	assert_eq(envelope.preset_version, "VS-2026.08.26-C", "current implementation must use V3 preset")
 	assert_eq(int(envelope.active_run.get("current_day", 0)), 1, "new campaign starts on day 1")
 	assert_eq(envelope.active_run.get("resolved_events", {}), {}, "initializer must not resolve gameplay events")
 	assert_true(envelope.items_by_uid.is_empty(), "initializer must not create an item")

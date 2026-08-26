@@ -344,20 +344,24 @@ ACTUAL_RUNTIME_IMAGE_CONSUMPTION = NOT_RUN
 REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / B65_DEFAULT_PLAYTEST_REQUIRED
 FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE
 UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP
-RUNTIME_IMPLEMENTATION_OF_NEW_CORE = NOT_RUN / BLOCKED
+USER_CURRENT_PLANNING_COMPLETE_DECLARATION = 2026-08-26
+RUNTIME_IMPLEMENTATION_OF_NEW_CORE = MVP_CORE_IMPLEMENTED / GODOT_GUT_VERIFIED
+RUNTIME_IMPLEMENTATION_SCOPE = ITEM_V3 + SAVE_V3_MIGRATION + ENHANCEMENT_FAILURE + REPAIR_ECONOMY
+RUNTIME_UI_INTEGRATION = NOT_RUN
+CUSTOMER_WORLD_EVENT_RUNTIME = NOT_RUN
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_ACCESSIBILITY = NOT_RUN
 NOTION_CLIENT_GEOMETRY = NOT_RUN
 ```
 
-V2 runtime field-name similarity is not Decision29/30 implementation proof. Protected product paths remain untouched while PLAN gate is closed.
+This implementation proof is limited to the listed MVP core paths. It does not prove customer/world-event integration, mobile UI, Android behavior, accessibility, performance, art consumption, or human play.
 
-## 13. Next planning order
+## 13. Next implementation order
 
 ```text
-1. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
-2. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
-3. full planning adversarial review
-4. CURRENT_PLANNING_COMPLETE user declaration
-5. runtime implementation plan refresh and TDD migration
+1. Enhancement and repair UI state integration using the current resolver previews
+2. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
+3. Customer/world-event damage runtime integration
+4. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
+5. Android, accessibility, performance, and human-play validation
 ```

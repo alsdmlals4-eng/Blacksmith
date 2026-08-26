@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "1bdf5f4b436b114253e86d897c7ef15514103f8f",
+  "decision_ids": [
+    "BS-DAMAGE-20260826-28",
+    "BS-REPAIR-20260826-29",
+    "BS-REPAIR-20260826-31",
+    "BS-ENHANCE-20260826-32",
+    "GITHUB-ISSUE-224"
+  ],
+  "approved_paths": [
+    "data/vertical_slice/vertical_slice_preset.json",
+    "data/vertical_slice/vertical_slice_schema.json",
+    "scripts/vertical_slice/domain/vs_item.gd",
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd",
+    "scripts/vertical_slice/resolvers/vs_overhaul_resolver.gd",
+    "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
+    "scripts/vertical_slice/resolvers/vs_repair_resolver.gd",
+    "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
+    "scripts/vertical_slice/services/vs_save_service.gd",
+    "scripts/vertical_slice/services/vs_workshop_maintenance_service.gd"
+  ],
+  "approval_source": "User current-session declaration: 현재 기획 완료 선언, 정본 기준 Godot 구현 진행; PR #225 has the approved-protected-change label.",
+  "approval_time": "2026-08-26T13:40:00+09:00",
+  "scope_summary": "GitHub Issue #224: implement the canonical CURRENT/MAX/BASE_MAX durability, exclusive enhancement failure, and one-job repair runtime MVP exactly on the listed protected paths."
+}

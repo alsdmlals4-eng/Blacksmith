@@ -1,7 +1,7 @@
 {
-  "schema_version": 2,
-  "preset_version": "VS-2026.08.24-B",
-  "authority": "CURRENT_IMPLEMENTATION_GATE_20260824",
+  "schema_version": 3,
+  "preset_version": "VS-2026.08.26-C",
+  "authority": "CURRENT_CANON_RUNTIME_MVP_20260826",
   "is_final_balance": false,
   "human_playtest": "NOT_RUN",
   "item_uid_prefix": "BSI-",
@@ -17,11 +17,7 @@
     "starter_primary_material_id": "iron",
     "maximum_enhancement_level": 100,
     "precision_milestones": [
-      10,
-      20,
-      30,
-      40,
-      50
+      10
     ],
     "checkpoint_floors": [
       10,
@@ -96,14 +92,15 @@
     }
   },
   "save_contract": {
-    "item_schema_version": 2,
-    "save_schema_version": 2,
+    "item_schema_version": 3,
+    "save_schema_version": 3,
     "persist_birth_rng_seed": true,
     "persist_run_rng_seed": true,
     "persist_resolved_events": true,
     "ledger_policy": "APPEND_ONLY_CONTIGUOUS_SEQUENCE",
     "atomic_write_policy": "TEMP_FLUSH_RENAME_WITH_BACKUP",
     "load_rerolls_resolved_events": false,
+    "legacy_v2_policy": "MIGRATE_TO_V3_ON_READ_WRITE_V3_ON_NEXT_SAVE",
     "legacy_v1_policy": "LEGACY_PRE_RELEASE_SAVE_FAIL_CLOSED"
   },
   "acceptance": {
