@@ -53,6 +53,15 @@ func test_screen_exposes_current_durability_and_repair_quote() -> void:
 	screen.free()
 
 
+func test_workshop_scene_keeps_the_first_item_hierarchy_and_large_repair_action() -> void:
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	assert_eq(screen.get_node("WorkshopLayout/WorkshopTitle").text, "첫 작품 · 철검")
+	assert_true(screen.get_node("WorkshopBackground").visible)
+	assert_eq(screen.get_node("WorkshopLayout/DurabilityTitleLabel").text, "작품 상태")
+	assert_gte(screen.get_node("WorkshopLayout/RepairButton").custom_minimum_size.y, 64.0)
+
+
 func test_screen_repair_refreshes_the_bound_item_and_disables_repeat_repair() -> void:
 	if not ResourceLoader.exists(SCREEN_PATH):
 		fail_test("Workshop screen controller must exist")

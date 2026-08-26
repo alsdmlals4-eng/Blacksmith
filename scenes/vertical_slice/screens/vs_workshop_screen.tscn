@@ -1,15 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://clv5jcaguskve"]
+[gd_scene format=3 uid="uid://clv5jcaguskve"]
 
-[ext_resource type="Script" path="res://scripts/vertical_slice/ui/vs_workshop_screen.gd" id="1_workshop"]
+[ext_resource type="Script" uid="uid://btva7l83h5muk" path="res://scripts/vertical_slice/ui/vs_workshop_screen.gd" id="1_workshop"]
 
 [node name="WorkshopScreen" type="Control" unique_id=1051693238]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_workshop")
 
-[node name="WorkshopLayout" type="VBoxContainer" parent="."]
+[node name="WorkshopLayout" type="VBoxContainer" parent="." unique_id=1843911132]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,47 +20,68 @@ offset_left = 32.0
 offset_top = 48.0
 offset_right = -32.0
 offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 16
 
-[node name="WorkshopTitle" type="Label" parent="WorkshopLayout"]
+[node name="WorkshopTitle" type="Label" parent="WorkshopLayout" unique_id=660416112]
 layout_mode = 2
-text = "작업대"
+theme_override_colors/font_color = Color(0.94, 0.84, 0.66, 1)
+theme_override_font_sizes/font_size = 32
+text = "첫 작품 · 철검"
 horizontal_alignment = 1
 
-[node name="DurabilityTitleLabel" type="Label" parent="WorkshopLayout"]
+[node name="DurabilityTitleLabel" type="Label" parent="WorkshopLayout" unique_id=2098787653]
 layout_mode = 2
-text = "내구도  CURRENT / MAX / BASE_MAX"
+theme_override_colors/font_color = Color(0.75, 0.65, 0.53, 1)
+theme_override_font_sizes/font_size = 18
+text = "작품 상태"
 
-[node name="DurabilityValueLabel" type="Label" parent="WorkshopLayout"]
+[node name="DurabilityValueLabel" type="Label" parent="WorkshopLayout" unique_id=1072482081]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.92, 0.83, 1)
+theme_override_font_sizes/font_size = 36
 text = "작품 선택 필요"
 
-[node name="DurabilityStateLabel" type="Label" parent="WorkshopLayout"]
+[node name="DurabilityStateLabel" type="Label" parent="WorkshopLayout" unique_id=710994131]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.72, 0.55, 1)
+theme_override_font_sizes/font_size = 20
 text = "상태: UNAVAILABLE"
 
-[node name="RepairQuoteLabel" type="Label" parent="WorkshopLayout"]
+[node name="RepairQuoteLabel" type="Label" parent="WorkshopLayout" unique_id=549061894]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.92, 0.83, 1)
+theme_override_font_sizes/font_size = 20
 text = "수리 불가: MISSING_ITEM"
 
-[node name="RepairQualityLabel" type="Label" parent="WorkshopLayout"]
+[node name="RepairQualityLabel" type="Label" parent="WorkshopLayout" unique_id=1460673456]
 layout_mode = 2
-text = ""
+theme_override_font_sizes/font_size = 17
 
-[node name="RepairScarLabel" type="Label" parent="WorkshopLayout"]
+[node name="RepairScarLabel" type="Label" parent="WorkshopLayout" unique_id=56206824]
 layout_mode = 2
-text = ""
+theme_override_font_sizes/font_size = 17
 
-[node name="RepairJobLabel" type="Label" parent="WorkshopLayout"]
+[node name="RepairJobLabel" type="Label" parent="WorkshopLayout" unique_id=476868171]
 layout_mode = 2
-text = ""
+theme_override_font_sizes/font_size = 17
 
-[node name="RepairButton" type="Button" parent="WorkshopLayout"]
-custom_minimum_size = Vector2(0, 48)
+[node name="RepairButton" type="Button" parent="WorkshopLayout" unique_id=1103533691]
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.92, 0.83, 1)
+theme_override_font_sizes/font_size = 22
 disabled = true
 text = "수리 실행"
 
-[node name="RepairMessageLabel" type="Label" parent="WorkshopLayout"]
+[node name="RepairMessageLabel" type="Label" parent="WorkshopLayout" unique_id=306860401]
 layout_mode = 2
-text = ""
+
+[node name="WorkshopBackground" type="ColorRect" parent="." unique_id=810873163]
+z_index = -1
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.169, 0.129, 0.11, 1)
