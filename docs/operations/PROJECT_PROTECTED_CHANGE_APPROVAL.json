@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "cd32f21eda13cae600b952b39b46fda62eee5c70",
+  "decision_ids": [
+    "BS-DAMAGE-20260826-28",
+    "BS-REPAIR-20260826-29",
+    "BS-REPAIR-20260826-31",
+    "BS-ENHANCE-20260826-32",
+    "GITHUB-ISSUE-228"
+  ],
+  "approved_paths": [
+    "scenes/vertical_slice/screens/vs_workshop_screen.tscn",
+    "scripts/vertical_slice/ui/vs_app.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd.uid"
+  ],
+  "approval_source": "User current-session declaration: 현재 기획 완료 선언, 정본 기준 Godot 구현 진행; continuation approved by 권장안대로 진행.",
+  "approval_time": "2026-08-26T23:30:00+09:00",
+  "scope_summary": "GitHub Issue #228: bind the canonical CURRENT/MAX/BASE_MAX durability and one-job repair state to the existing Workshop screen only."
+}
