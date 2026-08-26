@@ -107,9 +107,21 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json", workflow)
         self.assertNotIn("python .base-contract/tools/check_project_operating_contract.py", workflow)
 
-    def test_workshop_ui_protected_change_manifest_is_exact(self) -> None:
+    def test_first_item_forge_protected_change_manifest_is_exact(self) -> None:
         path = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-        self.assertFalse(path.exists(), "consumed workshop UI approval must not remain active")
+        approval = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual("APPROVED", approval["status"])
+        self.assertEqual("103e0a52bee1e0b4e3e72a8410eff5cc7c25ab24", approval["protected_base_commit"])
+        self.assertEqual(["GITHUB-ISSUE-232"], approval["decision_ids"][-1:])
+        self.assertEqual(
+            [
+                "scripts/vertical_slice/domain/vs_save_envelope.gd",
+                "scripts/vertical_slice/services/vs_run_initializer_service.gd",
+                "scripts/vertical_slice/services/vs_item_birth_service.gd",
+                "scripts/vertical_slice/ui/vs_app.gd",
+            ],
+            approval["approved_paths"],
+        )
         adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
         self.assertEqual(
             "103e0a52bee1e0b4e3e72a8410eff5cc7c25ab24",
