@@ -7,6 +7,7 @@ const ItemScript := preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
 const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
 const EnhancementActionServiceScript := preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
+const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v1.png")
 
 
 class TrackingMaintenanceService extends RefCounted:
@@ -69,14 +70,27 @@ func test_screen_exposes_current_durability_and_repair_quote() -> void:
 	assert_eq(state.get("repair_quality_summary", ""), "예상 회복: 최상 100% / 표준 75% / 미흡 50%")
 	assert_eq(state.get("repair_scar_summary", ""), "MAX 흉터 가능성: 10%")
 	assert_eq(state.get("repair_job_summary", ""), "수리하면 다음 실제 손상 전까지 다시 수리할 수 없습니다")
-	screen.free()
+
+
+func test_workshop_uses_the_illustrated_background_as_a_noninteractive_runtime_layer() -> void:
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	var background := screen.get_node_or_null("WorkshopIllustratedBackground") as TextureRect
+	assert_not_null(background)
+	if background == null:
+		return
+	assert_eq(background.texture, WorkshopBackgroundTexture)
+	assert_eq(background.mouse_filter, Control.MOUSE_FILTER_IGNORE)
+	assert_eq(background.z_index, -1)
+	assert_eq(background.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
+	assert_eq(background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
 
 
 func test_workshop_scene_keeps_the_first_item_hierarchy_and_large_repair_action() -> void:
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	assert_eq(screen.get_node("WorkshopLayout/WorkshopTitle").text, "첫 작품 · 철검")
-	assert_true(screen.get_node("WorkshopBackground").visible)
+	assert_false(screen.get_node("WorkshopBackground").visible)
 	assert_eq(screen.get_node("WorkshopLayout/DurabilityTitleLabel").text, "작품 상태")
 	assert_gte(screen.get_node("WorkshopLayout/RepairButton").custom_minimum_size.y, 64.0)
 

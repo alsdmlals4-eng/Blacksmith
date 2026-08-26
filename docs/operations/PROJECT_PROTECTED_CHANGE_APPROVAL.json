@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "387aabb0e9ee54234198b33592ccc802941de6f0",
+  "decision_ids": [
+    "BS-ART-20260825-03",
+    "BS-ART-20260826-04",
+    "GITHUB-ISSUE-256"
+  ],
+  "approved_paths": [
+    "assets/ui/workshop/workshop_enhancement_background_v1.png",
+    "assets/ui/workshop/workshop_enhancement_background_v1.png.import",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "User current-session explicit approval: 이미지도 만들라고.",
+  "approval_time": "2026-08-27T06:00:00+09:00",
+  "scope_summary": "GitHub Issue #256: create one original illustrated workshop background with a real WorkshopScreen consumer, keep it noninteractive behind existing UI, and register the final artifact in the project's local and Notion asset records."
+}
