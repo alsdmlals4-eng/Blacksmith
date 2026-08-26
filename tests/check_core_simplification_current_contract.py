@@ -10,6 +10,8 @@ DAMAGE_CURVE = ROOT / "docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_2026082
 DAMAGE_DECISION = ROOT / "docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md"
 DURABILITY_MODEL = ROOT / "docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json"
 DURABILITY_DECISION = ROOT / "docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md"
+CUSTOMER_DAMAGE_MODEL = ROOT / "docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json"
+VISUAL_CONSUMER_MODEL = ROOT / "docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json"
 ENTRYPOINTS = [
     ROOT / "AGENTS.md",
     ROOT / "CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md",
@@ -21,8 +23,10 @@ REQUIRED_OWNER = [
     "BS-DAMAGE-20260825-26",
     "BS-DAMAGE-20260826-28",
     "BS-REPAIR-20260826-29",
+    "BS-DAMAGE-20260826-30",
     "BS-CHRONICLE-20260825-27",
     "BS-ART-20260825-03",
+    "BS-ART-20260826-04",
     "SUCCESS_LEVEL_DELTA = +1",
     "+9 -> +10 = PRECISION_ENHANCEMENT",
     "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC",
@@ -32,10 +36,14 @@ REQUIRED_OWNER = [
     "TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE",
     "DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS",
     "MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES",
-    "CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE",
-    "PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE",
+    "PURCHASE_OR_HANDOFF_ITSELF_CAUSES_DAMAGE = FALSE",
+    "ACTUAL_ITEM_USE_REQUIRED = TRUE",
+    "MAX_DAMAGE_ROLLS_PER_EVENT_PER_UID = 1",
+    "WORLD_EVENT_MAX_DURABILITY_DAMAGE = FALSE",
     "ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE",
     "ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK",
+    "ACTUAL_GAME_CONSUMER_REQUIRED = TRUE",
+    "NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE",
 ]
 
 REQUIRED_ENTRYPOINT = [
@@ -44,14 +52,17 @@ REQUIRED_ENTRYPOINT = [
     "BS-DAMAGE-20260825-26",
     "BS-DAMAGE-20260826-28",
     "BS-REPAIR-20260826-29",
+    "BS-DAMAGE-20260826-30",
     "BS-CHRONICLE-20260825-27",
     "BS-ART-20260825-03",
+    "BS-ART-20260826-04",
 ]
 
 FORBIDDEN_CURRENT = [
     "CURRENT/MAX = CURRENT_DURABILITY_AUTHORITY",
     "PRECISION_MILESTONES = [10, 20, 30, 40, 50]",
     "POSTMERGE_PLANNING / FOUR_STATE_REPAIR_MODEL_NEXT",
+    "POSTMERGE_PLANNING / CUSTOMER_EVENT_DAMAGE_POLICY_NEXT",
 ]
 
 
@@ -86,21 +97,25 @@ def main() -> None:
 
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION" in agents
-    assert "ART_STYLE_STATUS = REWORK_REQUIRED" not in agents
-    assert "POSTMERGE_PLANNING / CUSTOMER_EVENT_DAMAGE_POLICY_NEXT" in agents
+    assert "POSTMERGE_PLANNING / REPAIR_ECONOMY_REBASE_NEXT" in agents
+    assert "ACTUAL_GAME_CONSUMER_REQUIRED" in agents
     assert "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT" in agents
 
     handoff_text = HANDOFF.read_text(encoding="utf-8")
     assert "PR #207 = MERGED_TO_MAIN" in handoff_text
-    assert "CURRENT_PLANNING_WORK = CUSTOMER_WORLD_EVENT_DAMAGE_POLICY" in handoff_text
+    assert "CURRENT_PLANNING_WORK = REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY" in handoff_text
     assert "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC" in handoff_text
     assert "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)" in handoff_text
+    assert "BS-DAMAGE-20260826-30" in handoff_text
+    assert "BS-ART-20260826-04" in handoff_text
 
     authority_text = AUTHORITY_INDEX.read_text(encoding="utf-8")
-    assert "1. CUSTOMER_WORLD_EVENT_DAMAGE_POLICY" in authority_text
+    assert "1. REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY" in authority_text
     assert "DAMAGE_CURVE_NUMBERS = USER_APPROVED / BS-DAMAGE-20260826-28" in authority_text
     assert "DURABILITY_REPAIR_STRUCTURE = USER_APPROVED / BS-REPAIR-20260826-29" in authority_text
     assert "DURABILITY_REPAIR_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE" in authority_text
+    assert "CUSTOMER_WORLD_EVENT_DAMAGE_POLICY = USER_APPROVED / BS-DAMAGE-20260826-30" in authority_text
+    assert "VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04" in authority_text
 
     # Decision28 remains the exact target-level probability owner.
     assert DAMAGE_DECISION.exists(), "missing Decision28 damage curve decision record"
@@ -127,8 +142,6 @@ def main() -> None:
     assert curve["target_max"] == 100
     assert curve["interpolation"] == "PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS"
     assert curve["rounding_authority"] == "NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED"
-    # Retained as Decision28 historical scope. Decision29 supersedes current
-    # mechanical state-step resolution with numeric CURRENT loss.
     assert curve["damage_advance_steps"] == 1
     assert curve["failure_consequence_composition"] == "NOT_DECIDED_BY_THIS_DECISION"
     assert curve["runtime_implementation"] == "BLOCKED_NOT_RUN"
@@ -175,6 +188,17 @@ def main() -> None:
     assert durability["major_enhancement_allowed"] is True
     assert durability["max_durability_recovery"] == "NOT_APPROVED"
     assert durability["runtime_implementation"] == "BLOCKED_NOT_RUN"
+
+    customer_damage = json.loads(CUSTOMER_DAMAGE_MODEL.read_text(encoding="utf-8"))
+    assert customer_damage["decision_id"] == "BS-DAMAGE-20260826-30"
+    assert customer_damage["actual_item_use_required"] is True
+    assert customer_damage["max_damage_rolls_per_event_per_uid"] == 1
+    assert customer_damage["world_event_max_durability_damage"] is False
+
+    visual_consumer = json.loads(VISUAL_CONSUMER_MODEL.read_text(encoding="utf-8"))
+    assert visual_consumer["decision_id"] == "BS-ART-20260826-04"
+    assert visual_consumer["actual_game_consumer_required"] is True
+    assert visual_consumer["new_explanatory_gdd_sheet_image_target"] is False
 
     print("core simplification current contract: PASS")
 
