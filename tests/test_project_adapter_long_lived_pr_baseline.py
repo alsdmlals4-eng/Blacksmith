@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -14,11 +15,18 @@ CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 OPERATING_CONTRACT_BASELINE = "1bdf5f4b436b114253e86d897c7ef15514103f8f"
 BASE_RELEASE_VERSION = "9.4.4"
 HEALTH_EVIDENCE_HASHES = {
-    "BS-ADAPTER-MIGRATION-20260806": "d4c1552d8800d7d31e748e329c4b9b75d72d5ae3eba1f37161c736dfbda330fa",
-    "BS-CURRENT-DECISIONS": "c0e22413528db5d395e086fcd339f52fdc98d2130b7a2af069ccf390e8ddf487",
-    "BS-R1-CANON-REGISTRY": "d7f4367b7148c4386d812e9f3f249bc4f3e3868cabb0e75cd00ec179636256d6",
-    "BS-SHEET-AUTHORITY-20260806": "866a3540fc0d1e90eab19b66b3e9357484eb438f592726db747ad9f8c5ee1eee",
-    "BS-STATIC-RECOVERY-REPORT": "bb8abe56a82c02d2578fba45e6a32258c64009d447db357469faed66f503a392",
+    "BS-ADAPTER-MIGRATION-20260806": "f074e5c72cb7e8da2d89c5893daa2439db4111d97d92ca9a9a97bed5cfa85e65",
+    "BS-CURRENT-DECISIONS": "21faa7af4ff651d9f6c20dba4830a89d077b3d8335552d720774055e49230f1b",
+    "BS-R1-CANON-REGISTRY": "e7712f841e665f65b8634baa077085090ff916b34ba322eef6563c5f54d09051",
+    "BS-SHEET-AUTHORITY-20260806": "7c935c3ae3afd0e2f24f8849bef6a1d6c1952fdd83be52043e5466148433f792",
+    "BS-STATIC-RECOVERY-REPORT": "916ef973ffac0922f9c74c5233ed9421e1ed96767c14a3f0b7b5257f4e1616ad",
+}
+CANONICAL_LF_EVIDENCE_SOURCES = {
+    "CURRENT_CONFIRMED_DECISIONS.md",
+    "docs/operations/BLACKSMITH_ADAPTER_MIGRATION_STATE_2026-08-06.json",
+    "docs/operations/BLACKSMITH_SHEET_AUTHORITY_EVIDENCE_2026-08-06.json",
+    "docs/operations/BS-OPS-20260802-01_FINAL_REPORT.md",
+    "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
 }
 
 
@@ -58,7 +66,7 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
         self.assertEqual(BASE_RELEASE_VERSION, adapter["base_release"]["version"])
 
-    def test_health_evidence_hashes_use_exact_raw_bytes(self) -> None:
+    def test_health_evidence_hashes_use_canonical_git_bytes(self) -> None:
         health = json.loads(HEALTH.read_text(encoding="utf-8"))
         records = {
             item["id"]: item
@@ -72,7 +80,20 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
             record = records[record_id]
             source = ROOT / record["source"]
             self.assertEqual(expected_hash, record["sha256"])
-            self.assertEqual(expected_hash, hashlib.sha256(source.read_bytes()).hexdigest())
+            canonical = subprocess.run(
+                ["git", "show", f"HEAD:{source.relative_to(ROOT).as_posix()}"],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+            ).stdout
+            self.assertEqual(expected_hash, hashlib.sha256(canonical).hexdigest())
+
+    def test_health_evidence_sources_are_checked_out_with_lf(self) -> None:
+        attributes = ROOT / ".gitattributes"
+        self.assertTrue(attributes.exists())
+        lines = set(attributes.read_text(encoding="utf-8").splitlines())
+        for source in CANONICAL_LF_EVIDENCE_SOURCES:
+            self.assertIn(f"{source} text eol=lf", lines)
 
     def test_operating_maturity_has_three_valid_operating_records(self) -> None:
         health = json.loads(HEALTH.read_text(encoding="utf-8"))
