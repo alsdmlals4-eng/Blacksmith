@@ -32,12 +32,14 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", overlay)
         self.assertIn("BS-ENHANCE-20260825-25", overlay)
         self.assertIn("BS-DAMAGE-20260825-26", overlay)
+        self.assertIn("BS-DAMAGE-20260826-28", overlay)
         self.assertIn("BS-CHRONICLE-20260825-27", overlay)
         self.assertIn("BS-ART-20260825-03", overlay)
 
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", authority)
         self.assertIn("BS-ENHANCE-20260825-25", current_owner)
         self.assertIn("BS-DAMAGE-20260825-26", current_owner)
+        self.assertIn("BS-DAMAGE-20260826-28", current_owner)
 
         self.assertLess(
             agents.index("BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md"),
@@ -62,7 +64,8 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         # Current routing explicitly demotes this frozen snapshot instead of
         # making history mutable every time a successor decision lands.
         self.assertIn("ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER", agents)
-        self.assertIn("25~27/Art03", agents)
+        self.assertIn("25~28/Art03", agents)
+        self.assertNotIn("25~27/Art03", agents)
 
 
 if __name__ == "__main__":
