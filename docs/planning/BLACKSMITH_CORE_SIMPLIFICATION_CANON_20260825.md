@@ -9,12 +9,13 @@
 
 ## 1. Current ownership
 
-This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 enhancement-failure damage probability, Decision29 repair/scar model, Decision30 customer/world-event damage policy, Chronicle inclusion, Art03 direction and Art04 actual-game image consumer gate.
+This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 enhancement-failure damage probability, Decision29 repair/scar model, Decision31 repair-economy sensitivity overlay, Decision30 customer/world-event damage policy, Chronicle inclusion, Art03 direction and Art04 actual-game image consumer gate.
 
 Decision-specific machine owners:
 
 - `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`
 - `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
+- `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`
 - `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
 - `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
 
