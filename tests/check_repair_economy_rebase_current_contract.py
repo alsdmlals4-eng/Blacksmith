@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DECISION_ID = "BS-REPAIR-20260826-31"
 DECISION = ROOT / "docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md"
 MODEL = ROOT / "docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json"
+REPORT = ROOT / "docs/research/BLACKSMITH_REPAIR_ECONOMY_SENSITIVITY_REPORT_20260826.md"
 OVERLAY = ROOT / "CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md"
 CORE = ROOT / "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md"
 AUTHORITY = ROOT / "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md"
@@ -36,8 +37,25 @@ def resolve_repair(
 def main() -> None:
     assert DECISION.exists(), f"missing Decision31 owner: {DECISION.relative_to(ROOT)}"
     assert MODEL.exists(), f"missing repair economy model: {MODEL.relative_to(ROOT)}"
+    assert REPORT.exists(), f"missing sensitivity report: {REPORT.relative_to(ROOT)}"
 
     decision_text = DECISION.read_text(encoding="utf-8")
+    report_text = REPORT.read_text(encoding="utf-8")
+    require_tokens(
+        report_text,
+        [
+            "R_BAND = 100",
+            "b = 0.50 / 0.65 / 0.80",
+            "TEST_IN_PLAY",
+            "NOT_FINAL_PRODUCT_BALANCE",
+            "15 / 18 / 21",
+            "25 / 31 / 37",
+            "35 / 44 / 53",
+            "45 / 57 / 69",
+        ],
+        "sensitivity report",
+    )
+    assert "final price table" not in report_text.lower()
     require_tokens(
         decision_text,
         [
