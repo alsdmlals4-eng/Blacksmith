@@ -32,7 +32,7 @@ Base current handoff checkpoint at transfer start: `06669fe9c6a3ccd6f3b0d19c5757
 
 ### Decision31 deterministic sensitivity · Issue #216
 
-`BS-OPS-20260826-33 / PENDING_CURRENT_TASK_PR` runs the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. It cannot create a live R_BAND table or product implementation approval. Future user-approved images require a dual-storage receipt: Notion record plus exact project-local binary path with SHA-256 and actual-game consumer ID. No image is created or written to `assets/` until the current product gate permits it.
+`BS-OPS-20260826-33 / DECISION31_SENSITIVITY_DELIVERY` records the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. It cannot create a live R_BAND table or product implementation approval. Future user-approved images require a dual-storage receipt: Notion record plus exact project-local binary path with SHA-256 and actual-game consumer ID. No image is created or written to `assets/` until the current product gate permits it.
 
 The Base policy owns the generic Work/Default-memory rule. Blacksmith does not fork that policy. Project-specific Work startup remains:
 
