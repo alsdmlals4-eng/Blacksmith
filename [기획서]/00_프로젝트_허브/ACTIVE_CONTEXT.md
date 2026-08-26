@@ -1,5 +1,22 @@
 # [현재 정본] Active Context
 
+<!-- BS-REPAIR-20260826-31_CURRENT_PATCH -->
+> **CURRENT PATCH / 2026-08-26 / Decision31**
+>
+> Repair economy is now `USER_APPROVED_TEST_CONTRACT / SENSITIVITY_REQUIRED`, not a runtime implementation approval.
+>
+> ```yaml
+> CURRENT_REPAIR_ECONOMY_OWNER: docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md
+> CURRENT_REPAIR_MODEL: docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json
+> REPAIR_JOB: one boolean per UID after actual damage lowers CURRENT
+> INITIAL_CURVE: ceil(R_BAND * (0.05 + 0.65 * ((MAX-CURRENT)/BASE_MAX))) + 1 common_reinforcement_material
+> SCAR_SAFETY: block only zero-recovery scar; no reroll
+> NEXT_GATE: deterministic b=0.50/0.65/0.80 sensitivity + R_BAND input evidence
+> PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION
+> ```
+>
+> Decision29 still owns CURRENT/MAX/BASE_MAX, repair quality, scar bands, and effective state. Historical repair/overhaul price models remain non-current.
+
 <!-- BS_CURRENT_PRIORITY_OVERLAY_20260820 -->
 > **CURRENT_PRIORITY_OVERLAY / 2026-08-20 PLANNING AUTHORITY**
 >
