@@ -1,0 +1,108 @@
+{
+  "decision_id": "BS-REPAIR-20260826-31",
+  "title": "Repair Economy Rebase and Sensitivity Contract",
+  "status": "USER_APPROVED_PLANNING_CANON",
+  "scope": "PLANNING_ONLY",
+  "runtime_status": "BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION",
+  "numeric_status": "TEMPORARY_TEST_BUDGET_NOT_FINAL_PRODUCT_BALANCE",
+  "overlays_decision": "BS-REPAIR-20260826-29",
+  "repair_job": {
+    "key": "REPAIR_JOB_AVAILABLE",
+    "unit": "boolean_per_item_uid",
+    "opens_on": "resolved_actual_damage_event_that_reduces_current",
+    "multiple_damage_before_repair": "remains_true_no_stacking",
+    "consumed_on": "repair_start_regardless_of_quality_or_scar",
+    "reopens_on": "later_resolved_actual_damage_event_that_reduces_current"
+  },
+  "eligibility": {
+    "formula": "0 < CURRENT < MAX AND REPAIR_JOB_AVAILABLE",
+    "destroyed": "ineligible",
+    "full": "ineligible",
+    "major_damage_enhancement": "remains_eligible_per_decision_29"
+  },
+  "payment": {
+    "formula": "GOLD = ceil(R_BAND * (0.05 + 0.65 * ((MAX - CURRENT) / BASE_MAX)))",
+    "payment": "GOLD + 1 common_reinforcement_material",
+    "r_band": {
+      "source": "authored_secured_enhancement_band_reference",
+      "explicit_simulation_input": true,
+      "prohibited_sources": [
+        "current_sell_price",
+        "forecast_next_attempt_price",
+        "max_multiplier",
+        "scar_multiplier"
+      ]
+    },
+    "base_max_denominator": "decision_29_base_max",
+    "common_material": {
+      "id": "common_reinforcement_material",
+      "quantity": 1,
+      "availability": "always_available",
+      "grants_discount": false
+    }
+  },
+  "scar_rounding_safety": {
+    "decision_29_quality_and_scar_probabilities": "preserved",
+    "candidate_post_scar_max": "decision_29_selected_scar_result",
+    "blocking_condition": "candidate_post_scar_max <= OLD_CURRENT",
+    "blocking_outcome": "skip_scar_without_quality_or_scar_reroll",
+    "quality_target": "ceil(POST_SCAR_MAX * QUALITY_RATIO)",
+    "new_current": "min(POST_SCAR_MAX, max(OLD_CURRENT + 1, QUALITY_TARGET))",
+    "invariant": "eligible_paid_repair_gives_at_least_one_current_point"
+  },
+  "sensitivity": {
+    "baseline_setup_coefficient": 0.05,
+    "baseline_loss_coefficient": 0.65,
+    "loss_coefficient_sweep": [
+      0.5,
+      0.65,
+      0.8
+    ],
+    "comparison_controls": [
+      "same_deterministic_event_sequence",
+      "same_item_uid",
+      "same_quality_scar_stream",
+      "same_r_band_input",
+      "one_economic_variable_at_a_time"
+    ],
+    "required_outputs": [
+      "gold",
+      "material_use",
+      "recovery",
+      "scar_skips",
+      "repair_job_consumption",
+      "player_decision_outcome"
+    ],
+    "required_invariants": [
+      "no_eligible_repair_zero_current_gain",
+      "no_repeat_repair_without_later_actual_damage",
+      "preserve_decision_29_damage_quality_scar_and_enhancement_invariants"
+    ]
+  },
+  "implementation_contract": {
+    "no_runtime_or_ui_work_authorized": true,
+    "future_quote_must_show": [
+      "current_max_base_max",
+      "eligibility",
+      "gold_and_common_material_payment",
+      "expected_quality_recovery",
+      "max_scar_risk",
+      "repair_job_consumption"
+    ]
+  },
+  "not_decided": [
+    "live_r_band_price_table",
+    "final_gold_targets",
+    "product_ready_material_recipe",
+    "human_play_simulation_results",
+    "runtime_implementation"
+  ],
+  "provenance": {
+    "evidence_mode": "ADAPT_ONLY",
+    "references": [
+      "https://starsreach.com/before-the-frontier/",
+      "https://www.naeu.playblackdesert.com/en-US/Wiki?wikiNo=172",
+      "https://news.blizzard.com/en-us/article/24244466/diablo-iv-patch-notes-2-5"
+    ]
+  }
+}
