@@ -9,10 +9,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github/workflows/validate-project-base-adapter.yml"
 ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
-APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
-OPERATING_CONTRACT_BASELINE = "dda59b1dc802a00213828b022c48593fd5044f0b"
+OPERATING_CONTRACT_BASELINE = "ba631a60afce6ef7f98b8eaf94cf0ad5ca1a9f1c"
 BASE_RELEASE_VERSION = "9.4.4"
 HEALTH_EVIDENCE_HASHES = {
     "BS-ADAPTER-MIGRATION-20260806": "f074e5c72cb7e8da2d89c5893daa2439db4111d97d92ca9a9a97bed5cfa85e65",
@@ -57,12 +56,10 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         self.assertNotIn("printf 'PROTECTED_BASE_SHA=%s\n' \"$PROTECTED_BASE_SHA\"", text)
         self.assertFalse(any(line.startswith("' \"") for line in text.splitlines()))
 
-    def test_first_forge_screen_flow_protected_change_approval_is_active(self) -> None:
+    def test_first_forge_screen_flow_protected_change_approval_is_retired(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
-        self.assertEqual("dda59b1dc802a00213828b022c48593fd5044f0b", adapter["protected_baseline"]["commit"])
-        approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
-        self.assertEqual("APPROVED", approval["status"])
-        self.assertEqual(["scripts/vertical_slice/ui/vs_main_menu.gd"], approval["approved_paths"])
+        self.assertEqual("ba631a60afce6ef7f98b8eaf94cf0ad5ca1a9f1c", adapter["protected_baseline"]["commit"])
+        self.assertFalse((ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json").exists())
 
     def test_adapter_uses_the_released_reuse_first_base_contract(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
