@@ -1,19 +1,64 @@
-[gd_scene format=3 uid="uid://clv5jcaguskve"]
+[gd_scene load_steps=2 format=3 uid="uid://clv5jcaguskve"]
+
+[ext_resource type="Script" path="res://scripts/vertical_slice/ui/vs_workshop_screen.gd" id="1_workshop"]
 
 [node name="WorkshopScreen" type="Control" unique_id=1051693238]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource("1_workshop")
 
-[node name="WorkshopTitle" type="Label" parent="." unique_id=577405217]
-layout_mode = 0
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -46.0
-offset_top = -11.5
-offset_right = 46.0
-offset_bottom = 11.5
-text = "WORKSHOP"
+[node name="WorkshopLayout" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 48.0
+offset_right = -32.0
+offset_bottom = -48.0
+theme_override_constants/separation = 16
+
+[node name="WorkshopTitle" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = "작업대"
+horizontal_alignment = 1
+
+[node name="DurabilityTitleLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = "내구도  CURRENT / MAX / BASE_MAX"
+
+[node name="DurabilityValueLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = "작품 선택 필요"
+
+[node name="DurabilityStateLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = "상태: UNAVAILABLE"
+
+[node name="RepairQuoteLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = "수리 불가: MISSING_ITEM"
+
+[node name="RepairQualityLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = ""
+
+[node name="RepairScarLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = ""
+
+[node name="RepairJobLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = ""
+
+[node name="RepairButton" type="Button" parent="WorkshopLayout"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+disabled = true
+text = "수리 실행"
+
+[node name="RepairMessageLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = ""

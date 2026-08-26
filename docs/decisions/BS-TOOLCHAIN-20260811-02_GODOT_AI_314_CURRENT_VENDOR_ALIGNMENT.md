@@ -1,5 +1,7 @@
 # BS-TOOLCHAIN-20260811-02 — Godot AI 3.1.4 Current Vendor Alignment
 
+> Historical record. Superseded as the current vendor identity by `BS-TOOLCHAIN-20260826-33`; it remains accurate evidence for the former 3.1.4 state.
+
 ## Decision
 
 `BS-TOOLCHAIN-20260811-02 / GODOT_AI_314_CURRENT_VENDOR_ALIGNMENT`

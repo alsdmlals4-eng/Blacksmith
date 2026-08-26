@@ -14,11 +14,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0}
-      - run: |
+      - env:
+          EXTERNAL_APPROVAL: ${{ contains(github.event.pull_request.labels.*.name, 'approved-protected-change') }}
+        run: |
           set -euo pipefail
           git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" > changed.txt
           grep -E '^(src/|scripts/|scenes/|data/|assets/|addons/|project\.godot$)' changed.txt \
             | grep -Ev '^(scripts|data)/vertical_slice/' > protected-product-paths.txt || true
+
+          # The exact-manifest validator independently verifies this label, baseline,
+          # and the complete protected diff. This bridge keeps the older Base-v9
+          # guard aligned without adding a broad scene or addon exemption.
+          if [ "$EXTERNAL_APPROVAL" = "true" ] \
+             && [ -f docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json ]; then
+            python -c 'import json; from pathlib import Path; print("\n".join(json.loads(Path("docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json").read_text(encoding="utf-8"))["approved_paths"]))' \
+              > approved-protected-paths.txt
+            grep -Fxv -f approved-protected-paths.txt protected-product-paths.txt \
+              > protected-product-paths.remaining.txt || true
+            mv protected-product-paths.remaining.txt protected-product-paths.txt
+          fi
 
           # One-shot approved repair: pull_request.number == 138 / BS-TOOLCHAIN-20260809-01.
           # It is valid only against the exact accepted protected baseline below and
