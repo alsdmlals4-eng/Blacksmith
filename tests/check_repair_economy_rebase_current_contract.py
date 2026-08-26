@@ -124,6 +124,16 @@ def main() -> None:
     for path in (OVERLAY, CORE, AUTHORITY, AGENTS, HANDOFF):
         require_tokens(path.read_text(encoding="utf-8"), [DECISION_ID], path.name)
     require_tokens(
+        HANDOFF.read_text(encoding="utf-8"),
+        [
+            "REPAIR_ECONOMY_PLAYTEST_PREP + R_BAND_INPUT_EVIDENCE",
+            "b=.65 / USER_APPROVED_FIRST_TEST_DEFAULT",
+            "R_BAND=100 / NORMALIZED_TEST_INPUT",
+            "HUMAN_PLAYTEST = NOT_RUN",
+        ],
+        "Decision31 handoff",
+    )
+    require_tokens(
         CORE.read_text(encoding="utf-8"),
         ["BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json"],
         "current core owner",
