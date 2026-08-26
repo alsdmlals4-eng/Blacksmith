@@ -1,4 +1,5 @@
 {
+  "contract_schema_version": 1,
   "decision_id": "BS-REPAIR-20260826-31",
   "title": "Repair Economy Rebase and Sensitivity Contract",
   "status": "USER_APPROVED_PLANNING_CANON",
