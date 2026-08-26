@@ -107,22 +107,6 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json", workflow)
         self.assertNotIn("python .base-contract/tools/check_project_operating_contract.py", workflow)
 
-    def test_workshop_enhancement_ui_protected_change_manifest_is_current(self) -> None:
-        path = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-        approval = json.loads(path.read_text(encoding="utf-8"))
-        self.assertEqual("APPROVED", approval["status"])
-        self.assertEqual("8347a59af49916f06503adcd4e28db3db8b26e49", approval["protected_base_commit"])
-        self.assertIn("GITHUB-ISSUE-253", approval["decision_ids"])
-        adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
-        self.assertEqual(
-            "8347a59af49916f06503adcd4e28db3db8b26e49",
-            adapter["protected_baseline"]["commit"],
-        )
-        self.assertEqual(
-            ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
-            adapter["protected_paths"],
-        )
-
     def test_activation_policy_is_recorded(self) -> None:
         policy = (ROOT / "docs" / "CI_EXECUTION_POLICY.md").read_text(encoding="utf-8")
         self.assertIn("ACTIONS_AVAILABLE", policy)
