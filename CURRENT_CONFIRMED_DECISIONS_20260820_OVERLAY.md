@@ -2,15 +2,53 @@
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
 - current owner: `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
-- current override Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
+- current override Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-DAMAGE-20260826-30 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`
 - historical/partial basis: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23 / BS-LINK-20260824-24`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
 
+## -3. CURRENT OVERRIDE · Decision30 + Art04
+
+Decision30은 Decision26의 고객/세계 손상 hook을 실제 사용 원인 기반 정책으로 닫는다. Art04는 Art03의 스타일을 바꾸지 않고 신규 이미지 제작 대상을 **실제 게임 consumer가 있는 이미지**로 제한한다.
+
+```text
+BS-DAMAGE-20260826-30
+PURCHASE_OR_HANDOFF_ITSELF_CAUSES_DAMAGE = FALSE
+ACTUAL_ITEM_USE_REQUIRED = TRUE
+MAX_DAMAGE_ROLLS_PER_EVENT_PER_UID = 1
+MISSION_OUTCOME_AND_ITEM_DAMAGE = INDEPENDENT_AXES
+WORLD_EVENT_MAX_DURABILITY_DAMAGE = FALSE
+NO_UNIVERSAL_CUSTOMER_DAMAGE_PERCENT
+
+NONE = 0%
+LOW = 10%
+MEDIUM = 20%
+HIGH = 40%
+DIRECT = 100%
+PROBABILISTIC_DAMAGE_CAP = 95%
+EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
+```
+
+`NONE/LOW/MEDIUM/HIGH`는 Decision29의 effective-state damage-risk multiplier를 재사용한다. `DIRECT`는 Decision29 damage event 1회를 확정한다. world/customer event는 MAX를 직접 손상시키지 않는다.
+
+```text
+BS-ART-20260826-04
+ACTUAL_GAME_CONSUMER_REQUIRED = TRUE
+NEW_EXPLANATORY_GDD_SHEET_IMAGE_TARGET = FALSE
+NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE
+GENERATED_UI_SCREENSHOT_MOCKUP_AS_PRODUCT_ASSET = FALSE
+FULL_FRAME_IMAGE_ALLOWED_ONLY_IF_RUNTIME_CONSUMES_FULL_FRAME = TRUE
+PRIMARY_USE_GATE_REQUIRED = TRUE
+NO_CONSUMER = CUT_OR_DEFER
+EXISTING_VISUAL_GDD_8 = HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY
+```
+
+새 이미지 후보는 actual consumer metadata + Visual Requirement/Delete Test + 별도 Image Conversation Approval Gate를 통과해야 한다. consumer 후보 화면명은 자동 생성 목록이 아니다.
+
 ## -2. CURRENT OVERRIDE · Decision29
 
-Decision29은 사용자의 최신 승인에 따라 Decision26의 내구도 architecture 일부를 바꾼다. 과거 CURRENT/MAX 모델을 그대로 되살리는 것이 아니라 **새 보이는 숫자 내구도 + 새 수리/흉터 규칙**을 current authority로 둔다.
+Decision29은 Decision26의 내구도 architecture 일부를 바꾼다. 과거 CURRENT/MAX 모델을 그대로 되살리는 것이 아니라 **새 보이는 숫자 내구도 + 새 수리/흉터 규칙**을 current authority로 둔다.
 
 Required current routing tokens:
 
@@ -20,8 +58,10 @@ BS-ENHANCE-20260825-25
 BS-DAMAGE-20260825-26
 BS-DAMAGE-20260826-28
 BS-REPAIR-20260826-29
+BS-DAMAGE-20260826-30
 BS-CHRONICLE-20260825-27
 BS-ART-20260825-03
+BS-ART-20260826-04
 ```
 
 Current durability contract:
@@ -90,7 +130,7 @@ FULL_DURABILITY_REPAIR_ALLOWED = FALSE
 REPAIR_ECONOMY = NOT_FINAL / FOLLOWUP_REBASE_REQUIRED
 ```
 
-## -1. CURRENT OVERRIDE · Decisions25~29 / Art03
+## -1. CURRENT OVERRIDE · Decisions25~30 / Art03~04
 
 Current simplified contract:
 
@@ -112,16 +152,22 @@ FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
 
 CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE
 PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE
+PURCHASE_OR_HANDOFF_ITSELF_CAUSES_DAMAGE = FALSE
+ACTUAL_ITEM_USE_REQUIRED = TRUE
+MAX_DAMAGE_ROLLS_PER_EVENT_PER_UID = 1
 
 ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE
 MEANINGFUL_EVENT_HISTORY_ONLY
 
 ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK
 ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION
+ACTUAL_GAME_CONSUMER_REQUIRED = TRUE
+NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE
+PRIMARY_USE_GATE_REQUIRED = TRUE
 FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED
 ```
 
-Decision28 target anchors stay user-approved. Decision29 modifies current damage risk only through the one effective durability state and does not create a second target-level curve or a separate MAX-scar penalty stack.
+Decision28 target anchors remain approved. Decision29 owns the effective durability modifier/resolution. Decision30 owns customer/world eligibility/profile/composition without copying Decision28 target odds. Art04 makes explanatory Visual GDD sheets historical references, not future image-production targets.
 
 Preserved where not conflicting:
 
@@ -133,16 +179,16 @@ CHECKPOINT_FLOORS = [10,30,60,90]
 +10 secured/break-even role
 +11 first salient risk decision
 +100 terminal
-existing success / attempt-cost / resource test budgets pending Decision29 sensitivity recheck
+existing success / attempt-cost / resource test budgets pending durability/economy sensitivity recheck
 ```
 
 Open gates:
 
 ```text
-CUSTOMER_EVENT_DAMAGE_POLICY = CONTENT_OWNER_DECISION_REQUIRED
-REPAIR_ECONOMY_REBASE = REQUIRED
+REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY = REQUIRED
 FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
 UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
+ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS = REQUIRED_BEFORE_IMAGE_GENERATION
 ```
 
 ## 0. 운영 동기화 규칙
@@ -151,7 +197,7 @@ Meaningful planning changes update GitHub current owner/index/handoff, Notion Hu
 
 ## Historical ledger boundary
 
-아래 `## 1`~`## 21`은 2026-08-20/24와 Decision28 시점의 **frozen historical/provenance ledger**를 원문 보존한다. 아래에 `current`라고 쓰인 문장도 해당 시점의 표현이며, Decision29과 충돌하는 경우 위 `CURRENT OVERRIDE`와 current owner가 항상 우선한다. 역사 섹션의 숫자·수리식·MAX band·`한 damage event = 한 상태` 표현을 Decision29 fallback으로 사용하지 않는다.
+아래 `## 1`~`## 21`은 2026-08-20/24와 Decision28 시점의 **frozen historical/provenance ledger**를 원문 보존한다. 아래에 `current`라고 쓰인 문장도 해당 시점의 표현이며, Decisions29~30/Art04와 충돌하는 경우 위 `CURRENT OVERRIDE`와 current owner가 항상 우선한다. 역사 섹션의 숫자·수리식·MAX band·`한 damage event = 한 상태`·설명용 Visual GDD 생산 표현을 최신 fallback으로 사용하지 않는다.
 
 ## 1. 제품 계층 — 01
 
