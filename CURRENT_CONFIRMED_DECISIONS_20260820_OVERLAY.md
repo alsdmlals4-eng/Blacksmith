@@ -2,11 +2,29 @@
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
 - current owner: `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
-- current override Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-DAMAGE-20260826-30 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`
+- current override Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`
 - historical/partial basis: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23 / BS-LINK-20260824-24`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
+
+## -4. CURRENT OVERRIDE · Decision31 repair economy overlay
+
+Decision31 closes the approved **planning test contract** for repair economics while keeping product prices and runtime work open.
+
+```text
+BS-REPAIR-20260826-31
+REPAIR_JOB_AVAILABLE = boolean_per_item_uid_after_resolved_actual_damage_reduces_CURRENT
+REPAIR_ELIGIBLE = 0 < CURRENT < MAX AND REPAIR_JOB_AVAILABLE
+REPAIR_JOB_CONSUMED_ON_REPAIR_START = TRUE
+GOLD = ceil(R_BAND * (0.05 + 0.65 * ((MAX-CURRENT)/BASE_MAX)))
+REPAIR_PAYMENT = GOLD + 1 common_reinforcement_material
+R_BAND != sell_price / next_attempt_price / MAX_multiplier / scar_multiplier
+NO_ZERO_RECOVERY_SCAR = skip_without_reroll
+SENSITIVITY = b 0.50 / 0.65 / 0.80 with identical deterministic inputs
+```
+
+Decision29 remains owner of numeric durability, quality probabilities, scar-band chance, and derived state. Decision31 owns only job gating, economy source/formula, safety rounding, and sensitivity contract. All numeric economics are temporary test budgets, not final product balance.
 
 ## -3. CURRENT OVERRIDE · Decision30 + Art04
 
@@ -58,6 +76,7 @@ BS-ENHANCE-20260825-25
 BS-DAMAGE-20260825-26
 BS-DAMAGE-20260826-28
 BS-REPAIR-20260826-29
+BS-REPAIR-20260826-31
 BS-DAMAGE-20260826-30
 BS-CHRONICLE-20260825-27
 BS-ART-20260825-03
@@ -127,10 +146,10 @@ All detailed Decision29 probabilities/modifiers/`CURRENT -1` event amount are `T
 MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES
 DESTROYED_REPAIR_ALLOWED = FALSE
 FULL_DURABILITY_REPAIR_ALLOWED = FALSE
-REPAIR_ECONOMY = NOT_FINAL / FOLLOWUP_REBASE_REQUIRED
+REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / SENSITIVITY_REQUIRED
 ```
 
-## -1. CURRENT OVERRIDE · Decisions25~30 / Art03~04
+## -1. CURRENT OVERRIDE · Decisions25~31 / Art03~04
 
 Current simplified contract:
 
@@ -167,7 +186,7 @@ PRIMARY_USE_GATE_REQUIRED = TRUE
 FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED
 ```
 
-Decision28 target anchors remain approved. Decision29 owns the effective durability modifier/resolution. Decision30 owns customer/world eligibility/profile/composition without copying Decision28 target odds. Art04 makes explanatory Visual GDD sheets historical references, not future image-production targets.
+Decision28 target anchors remain approved. Decision29 owns the effective durability modifier and structural repair resolution; Decision31 owns the repair-economy overlay and its test-only sensitivity. Decision30 owns customer/world eligibility/profile/composition without copying Decision28 target odds. Art04 makes explanatory Visual GDD sheets historical references, not future image-production targets.
 
 Preserved where not conflicting:
 

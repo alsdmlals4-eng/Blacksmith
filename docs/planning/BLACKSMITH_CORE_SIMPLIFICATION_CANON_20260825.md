@@ -1,6 +1,6 @@
 # [현재 정본] Blacksmith Core Simplification Canon · 2026-08-25
 
-- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-DAMAGE-20260826-30 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`
+- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`
 - Status: `USER_APPROVED / CURRENT_PLANNING_CANON`
 - Work Mode: `PLAN`
 - Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
@@ -9,12 +9,13 @@
 
 ## 1. Current ownership
 
-This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 enhancement-failure damage probability, Decision29 repair/scar model, Decision30 customer/world-event damage policy, Chronicle inclusion, Art03 direction and Art04 actual-game image consumer gate.
+This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 enhancement-failure damage probability, Decision29 repair/scar model, Decision31 repair-economy sensitivity overlay, Decision30 customer/world-event damage policy, Chronicle inclusion, Art03 direction and Art04 actual-game image consumer gate.
 
 Decision-specific machine owners:
 
 - `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`
 - `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
+- `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`
 - `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
 - `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
 
@@ -137,10 +138,12 @@ FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
 UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 ```
 
-## 5. Repair / probabilistic MAX scar · `BS-REPAIR-20260826-29`
+## 5. Repair / probabilistic MAX scar + economy overlay · `BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31`
 
 ```text
-REPAIR_ELIGIBLE = 0 < CURRENT_DURABILITY < MAX_DURABILITY
+REPAIR_JOB_AVAILABLE = true after a resolved actual damage event lowers CURRENT; one boolean per UID
+REPAIR_ELIGIBLE = 0 < CURRENT_DURABILITY < MAX_DURABILITY AND REPAIR_JOB_AVAILABLE
+REPAIR_JOB_CONSUMED_ON_REPAIR_START = TRUE
 DESTROYED_REPAIR_ALLOWED = FALSE
 FULL_DURABILITY_REPAIR_ALLOWED = FALSE
 MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES
@@ -189,7 +192,7 @@ POOR      -> 2/4/5 -> MAJOR
 
 Without scar: EXCELLENT `5/5/5 NORMAL`, STANDARD `4/5/5 MINOR`, POOR `3/5/5 MINOR`.
 
-Repair gold/material/fatigue economy is still `NOT_FINAL / FOLLOWUP_REBASE_REQUIRED`. Old CURRENT→MAX price formulas and old `MAX +15 / cap60` overhaul are historical only.
+Decision31 locks a temporary test payment: `GOLD = ceil(R_BAND * (0.05 + 0.65 * ((MAX-CURRENT)/BASE_MAX)))`; each repair also uses exactly one always-available `common_reinforcement_material`. `R_BAND` is an authored secured enhancement-band reference, never sell price, next-attempt price, MAX, or scar multiplier. A scar that would make a positive Current gain impossible is skipped without reroll, then `NEW_CURRENT = min(POST_SCAR_MAX, max(OLD_CURRENT + 1, ceil(POST_SCAR_MAX * QUALITY_RATIO)))`. Final price tables remain open; run the controlled `b=0.50/0.65/0.80` sensitivity sweep before any product-balance decision. Old CURRENT→MAX price formulas and old `MAX +15 / cap60` overhaul are historical only.
 
 ## 6. Customer/world event damage · `BS-DAMAGE-20260826-30`
 
@@ -331,7 +334,7 @@ CUSTOMER_EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BAL
 VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04
 IMAGE_GENERATION = NOT_RUN
 ACTUAL_RUNTIME_IMAGE_CONSUMPTION = NOT_RUN
-REPAIR_ECONOMY = NOT_FINAL
+REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / SENSITIVITY_REQUIRED
 FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
 UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 RUNTIME_IMPLEMENTATION_OF_NEW_CORE = NOT_RUN / BLOCKED
@@ -345,7 +348,7 @@ V2 runtime field-name similarity is not Decision29/30 implementation proof. Prot
 ## 13. Next planning order
 
 ```text
-1. REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY
+1. DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE
 2. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING if needed
 3. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
 4. full planning adversarial review
