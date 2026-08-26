@@ -4,7 +4,7 @@
 - Date: `2026-08-25 KST`, current update `2026-08-26 KST`
 - Status: `CURRENT_SESSION_HANDOFF / GPT_WORK_TRANSFER / POSTMERGE_PLANNING_ONLY`
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_PLANNING_WORK = DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE`
+- `CURRENT_PLANNING_WORK = REPAIR_ECONOMY_PLAYTEST_PREP + R_BAND_INPUT_EVIDENCE`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
@@ -30,9 +30,9 @@ Base current handoff checkpoint at transfer start: `06669fe9c6a3ccd6f3b0d19c5757
 
 `BS-OPS-20260826-32 / MERGED_PR215` restores the Work entry gate after current Base validation exposed an obsolete protected baseline and stale raw-byte health-evidence records. The repair advanced only the metadata baseline to merged Blacksmith main `1bdf5f4b436b114253e86d897c7ef15514103f8f`, adopted released Base v9.4.4 and current Base validator `43b3ffb2c5b026e3d4a38dab2338585894d36f61`, and regenerated derived adapter views. PR #215 merged at `c51c1c358714dde3fc5c04156c9e77e28c8f4b10`; runtime, Android, accessibility, performance, and human-play evidence remain `NOT_RUN`. The Google Sheet remains `MIGRATION_ONLY_COMPATIBILITY` and is not written by this repair. No `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, or `project.godot` path is in scope; PR #196 remains read-only.
 
-### Decision31 deterministic sensitivity · Issue #216
+### Decision31 deterministic sensitivity · Issues #216, #218
 
-`BS-OPS-20260826-33 / DECISION31_SENSITIVITY_DELIVERY` records the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. It cannot create a live R_BAND table or product implementation approval. Future user-approved images require a dual-storage receipt: Notion record plus exact project-local binary path with SHA-256 and actual-game consumer ID. No image is created or written to `assets/` until the current product gate permits it.
+`BS-OPS-20260826-33 / DECISION31_SENSITIVITY_DELIVERY` records the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. `b=.65 / USER_APPROVED_FIRST_TEST_DEFAULT`; `R_BAND=100 / NORMALIZED_TEST_INPUT`; `b=.50/.80` remain comparison curves only. `HUMAN_PLAYTEST = NOT_RUN` until the first controlled experience check. This cannot create a live R_BAND table or product implementation approval. Future user-approved images require a dual-storage receipt: Notion record plus exact project-local binary path with SHA-256 and actual-game consumer ID. No image is created or written to `assets/` until the current product gate permits it.
 
 The Base policy owns the generic Work/Default-memory rule. Blacksmith does not fork that policy. Project-specific Work startup remains:
 
@@ -348,7 +348,7 @@ Existing 8 Visual GDDs are `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`.
 ## 11. Next planning Gates
 
 ```text
-1. DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE
+1. REPAIR_ECONOMY_PLAYTEST_PREP + R_BAND_INPUT_EVIDENCE
 2. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING if required
 3. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
 4. adversarial full-planning review
@@ -367,7 +367,7 @@ CUSTOMER_EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BAL
 VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04
 IMAGE_GENERATION = NOT_RUN
 ACTUAL_RUNTIME_IMAGE_CONSUMPTION = NOT_RUN
-REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / SENSITIVITY_REQUIRED
+REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / B65_DEFAULT_PLAYTEST_REQUIRED
 FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
 UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 NEW_CORE_RUNTIME = NOT_RUN / BLOCKED
