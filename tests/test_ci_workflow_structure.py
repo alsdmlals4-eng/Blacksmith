@@ -107,23 +107,12 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json", workflow)
         self.assertNotIn("python .base-contract/tools/check_project_operating_contract.py", workflow)
 
-    def test_first_forge_completion_protected_change_manifest_is_active(self) -> None:
+    def test_first_forge_completion_protected_change_manifest_is_retired(self) -> None:
         path = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-        approval = json.loads(path.read_text(encoding="utf-8"))
-        self.assertEqual("APPROVED", approval["status"])
-        self.assertEqual("443090f43c2b04c659297e39fec4d5c9a6c8c84c", approval["protected_base_commit"])
-        self.assertEqual(["GITHUB-ISSUE-238"], approval["decision_ids"][-1:])
-        self.assertEqual(
-            [
-                "scripts/forging/canonical_first_item_input_adapter.gd",
-                "scripts/vertical_slice/services/vs_first_forge_completion_service.gd",
-                "scripts/vertical_slice/ui/vs_app.gd",
-            ],
-            approval["approved_paths"],
-        )
+        self.assertFalse(path.exists(), "consumed first-forge completion approval must not remain active")
         adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
         self.assertEqual(
-            "443090f43c2b04c659297e39fec4d5c9a6c8c84c",
+            "dda59b1dc802a00213828b022c48593fd5044f0b",
             adapter["protected_baseline"]["commit"],
         )
         self.assertEqual(

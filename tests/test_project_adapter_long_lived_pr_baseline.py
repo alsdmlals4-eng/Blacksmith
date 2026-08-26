@@ -12,7 +12,7 @@ ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
 APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
-OPERATING_CONTRACT_BASELINE = "443090f43c2b04c659297e39fec4d5c9a6c8c84c"
+OPERATING_CONTRACT_BASELINE = "dda59b1dc802a00213828b022c48593fd5044f0b"
 BASE_RELEASE_VERSION = "9.4.4"
 HEALTH_EVIDENCE_HASHES = {
     "BS-ADAPTER-MIGRATION-20260806": "f074e5c72cb7e8da2d89c5893daa2439db4111d97d92ca9a9a97bed5cfa85e65",
@@ -57,19 +57,10 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         self.assertNotIn("printf 'PROTECTED_BASE_SHA=%s\n' \"$PROTECTED_BASE_SHA\"", text)
         self.assertFalse(any(line.startswith("' \"") for line in text.splitlines()))
 
-    def test_first_forge_completion_protected_change_approval_is_active(self) -> None:
+    def test_first_forge_completion_protected_change_approval_is_retired(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
-        self.assertEqual("443090f43c2b04c659297e39fec4d5c9a6c8c84c", adapter["protected_baseline"]["commit"])
-        approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
-        self.assertEqual("APPROVED", approval["status"])
-        self.assertEqual(
-            [
-                "scripts/forging/canonical_first_item_input_adapter.gd",
-                "scripts/vertical_slice/services/vs_first_forge_completion_service.gd",
-                "scripts/vertical_slice/ui/vs_app.gd",
-            ],
-            approval["approved_paths"],
-        )
+        self.assertEqual("dda59b1dc802a00213828b022c48593fd5044f0b", adapter["protected_baseline"]["commit"])
+        self.assertFalse(APPROVAL.exists())
 
     def test_adapter_uses_the_released_reuse_first_base_contract(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
