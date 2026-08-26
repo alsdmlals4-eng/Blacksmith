@@ -10,12 +10,26 @@
   "max_durability_floor": 1,
   "max_durability_recovery": "NOT_APPROVED",
   "damage_event_current_loss": 1,
+  "durability_state_derivation": {
+    "current_condition_ratio": "CURRENT_DURABILITY / MAX_DURABILITY",
+    "structural_condition_ratio": "MAX_DURABILITY / BASE_MAX_DURABILITY",
+    "effective_durability_ratio": "min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)",
+    "destroyed_override": "CURRENT_DURABILITY == 0"
+  },
   "durability_states": {
-    "NORMAL": {"current_equals_max": true},
-    "MINOR": {"ratio_gt": 0.5, "ratio_lt": 1.0},
-    "MAJOR": {"ratio_gt": 0.0, "ratio_lte": 0.5},
+    "NORMAL": {"effective_ratio_equals": 1.0},
+    "MINOR": {"effective_ratio_gt": 0.5, "effective_ratio_lt": 1.0},
+    "MAJOR": {"effective_ratio_gt": 0.0, "effective_ratio_lte": 0.5},
     "DESTROYED": {"current_equals": 0}
   },
+  "reference_state_examples": [
+    {"current": 5, "max": 5, "base_max": 5, "state": "NORMAL"},
+    {"current": 4, "max": 4, "base_max": 5, "state": "MINOR"},
+    {"current": 2, "max": 2, "base_max": 5, "state": "MAJOR"},
+    {"current": 1, "max": 1, "base_max": 5, "state": "MAJOR"},
+    {"current": 3, "max": 5, "base_max": 5, "state": "MINOR"},
+    {"current": 2, "max": 5, "base_max": 5, "state": "MAJOR"}
+  ],
   "enhancement_modifiers": {
     "NORMAL": {"success_delta_pp": 0, "new_effect_multiplier": 1.0, "damage_risk_multiplier": 1.0},
     "MINOR": {"success_delta_pp": -3, "new_effect_multiplier": 0.9, "damage_risk_multiplier": 1.25},
@@ -25,7 +39,7 @@
   "success_level_delta": 1,
   "item_keyword_creation_gate_unchanged": true,
   "damage_probability_owner": "BS-DAMAGE-20260826-28",
-  "damage_probability_composition": "DECISION28_TARGET_BASE_TIMES_DURABILITY_STATE_MULTIPLIER",
+  "damage_probability_composition": "DECISION28_TARGET_BASE_TIMES_EFFECTIVE_DURABILITY_STATE_MULTIPLIER",
   "major_enhancement_allowed": true,
   "destroyed_enhancement_allowed": false,
   "repair_eligibility": "0 < CURRENT_DURABILITY < MAX_DURABILITY",
