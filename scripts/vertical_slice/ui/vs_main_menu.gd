@@ -124,7 +124,7 @@ func apply_completed_first_forge_result(completed_forge_result: Dictionary) -> v
 	_clear_active_surface()
 	_active_app = AppScene.instantiate()
 	add_child(_active_app)
-	if not _active_app.apply_first_forge_completion(completion, _resources):
+	if not _active_app.apply_first_forge_completion(completion, _resources, null, null, _save_service):
 		_show_menu_message("작업대를 열 수 없습니다.")
 
 
@@ -204,7 +204,7 @@ func _on_continue_pressed() -> void:
 	_set_menu_visible(false)
 	_active_app = AppScene.instantiate()
 	add_child(_active_app)
-	if not _active_app.configure_campaign(envelope, _resources):
+	if not _active_app.configure_campaign(envelope, _resources, null, null, _save_service):
 		_show_menu_message("작업대를 열 수 없습니다.")
 
 

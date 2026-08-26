@@ -26,7 +26,7 @@ var _campaign_envelope = null
 var _workshop_resources = null
 
 
-func configure_campaign(envelope, resources, maintenance_service = null) -> bool:
+func configure_campaign(envelope, resources, maintenance_service = null, enhancement_action_service = null, save_service = null) -> bool:
 	if envelope == null or not envelope.validation_errors.is_empty() or resources == null:
 		return false
 	var selected_item_uid := str(envelope.active_run.get("selected_item_uid", ""))
@@ -35,27 +35,33 @@ func configure_campaign(envelope, resources, maintenance_service = null) -> bool
 			return false
 		_campaign_envelope = envelope
 		_workshop_resources = resources
-		return configure_workshop_context(null, resources, maintenance_service)
+		return configure_workshop_context(null, resources, maintenance_service, enhancement_action_service, save_service, envelope)
 	var selected_item = envelope.get_item(selected_item_uid)
 	if selected_item == null:
 		return false
 	_campaign_envelope = envelope
 	_workshop_resources = resources
-	return configure_workshop_context(selected_item, resources, maintenance_service)
+	return configure_workshop_context(selected_item, resources, maintenance_service, enhancement_action_service, save_service, envelope)
 
 
-func apply_first_forge_completion(completion: Dictionary, resources, maintenance_service = null) -> bool:
+func apply_first_forge_completion(completion: Dictionary, resources, maintenance_service = null, enhancement_action_service = null, save_service = null) -> bool:
 	if str(completion.get("status", "")) != "APPLIED":
 		return false
-	return configure_campaign(completion.get("envelope", null), resources, maintenance_service)
+	return configure_campaign(completion.get("envelope", null), resources, maintenance_service, enhancement_action_service, save_service)
 
 
-func configure_workshop_context(item, resources, maintenance_service = null) -> bool:
+func configure_workshop_context(item, resources, maintenance_service = null, enhancement_action_service = null, save_service = null, campaign_envelope = null) -> bool:
 	var workshop_screen := get_node_or_null("ScreenHost/WorkshopScreen")
 	if workshop_screen == null or not workshop_screen.has_method("configure_context"):
 		return false
-	workshop_screen.call("configure_context", item, resources, maintenance_service)
+	workshop_screen.call("configure_context", item, resources, maintenance_service, enhancement_action_service, save_service, campaign_envelope)
+	if workshop_screen.has_signal("enhancement_saved") and not workshop_screen.enhancement_saved.is_connected(_on_workshop_enhancement_saved):
+		workshop_screen.enhancement_saved.connect(_on_workshop_enhancement_saved)
 	return true
+
+
+func _on_workshop_enhancement_saved(envelope, _result: Dictionary) -> void:
+	_campaign_envelope = envelope
 
 
 func refresh_workshop_after_enhancement() -> bool:
