@@ -20,6 +20,19 @@ def require_tokens(text: str, tokens: list[str], label: str) -> None:
     assert not missing, f"{label} missing tokens: {missing}"
 
 
+def resolve_repair(
+    old_current: int,
+    maximum: int,
+    quality_ratio: float,
+    candidate_post_scar_max: int,
+) -> tuple[int, int, bool]:
+    scar_skipped = candidate_post_scar_max <= old_current
+    post_scar_max = maximum if scar_skipped else candidate_post_scar_max
+    quality_target = -(-int(post_scar_max * quality_ratio * 100) // 100)
+    new_current = min(post_scar_max, max(old_current + 1, quality_target))
+    return post_scar_max, new_current, scar_skipped
+
+
 def main() -> None:
     assert DECISION.exists(), f"missing Decision31 owner: {DECISION.relative_to(ROOT)}"
     assert MODEL.exists(), f"missing repair economy model: {MODEL.relative_to(ROOT)}"
@@ -92,6 +105,23 @@ def main() -> None:
 
     for path in (OVERLAY, CORE, AUTHORITY, AGENTS, HANDOFF):
         require_tokens(path.read_text(encoding="utf-8"), [DECISION_ID], path.name)
+    require_tokens(
+        CORE.read_text(encoding="utf-8"),
+        ["BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json"],
+        "current core owner",
+    )
+
+    # Scar safety is behavioral: a blocking scar is skipped, never rerolled,
+    # and every eligible repair outcome must improve Current.
+    quality_cases = {"EXCELLENT": 1.0, "STANDARD": 0.75, "POOR": 0.5}
+    for label, ratio in quality_cases.items():
+        post, new_current, skipped = resolve_repair(1, 5, ratio, 4)
+        assert (post, skipped) == (4, False), label
+        assert new_current > 1, (label, post, new_current)
+
+        post, new_current, skipped = resolve_repair(4, 5, ratio, 4)
+        assert (post, skipped) == (5, True), label
+        assert new_current > 4, (label, post, new_current)
 
     print("repair economy rebase current contract: PASS")
 
