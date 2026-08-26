@@ -43,7 +43,7 @@ Current approved Decisions:
 | `BS-ENHANCE-20260825-25` | Every enhancement success is exactly `+1`; only `+9 -> +10` is Precision; successful +10 creates one player-facing item keyword via existing `CATALYST_AFFIX`. |
 | `BS-DAMAGE-20260825-26` | Historical structural simplification that removed the old hidden CURRENT/MAX model. Its no-numeric-authority and one-state-per-event fields are now partially superseded by Decision29. |
 | `BS-DAMAGE-20260826-28` | Target-level base conditional damage-event chance after enhancement failure: `+11 5% / +30 6% / +60 7% / +90 8% / +100 10%`, exact piecewise-linear between anchors. |
-| `BS-REPAIR-20260826-29` | Visible numeric `CURRENT/MAX/BASE_MAX` becomes the sole durability authority; NORMAL/MINOR/MAJOR/DESTROYED are derived views. Low durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement is allowed with penalties. |
+| `BS-REPAIR-20260826-29` | Visible `CURRENT/MAX/BASE_MAX` is sole durability authority. Current damage `CURRENT/MAX` and permanent scar `MAX/BASE_MAX` collapse into one effective durability state; low effective durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement remains allowed with penalties. |
 | `BS-CHRONICLE-20260825-27` | Player Chronicle shows meaningful lifecycle events, not routine attempt logs. |
 | `BS-ART-20260825-03` | `ILLUSTRATED_WORKSHOP_BOOK / USER_APPROVED_DIRECTION`; final product asset/runtime approval remains separate. |
 
@@ -63,16 +63,32 @@ BASE_MAX_DURABILITY = immutable birth durability
 0 <= CURRENT_DURABILITY <= MAX_DURABILITY <= BASE_MAX_DURABILITY
 MAX_DURABILITY_FLOOR = 1
 DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW
-NORMAL = CURRENT_DURABILITY == MAX_DURABILITY
-MINOR = 0.50 < CURRENT_DURABILITY / MAX_DURABILITY < 1.00
-MAJOR = 0 < CURRENT_DURABILITY / MAX_DURABILITY <= 0.50
+CURRENT_CONDITION_RATIO = CURRENT_DURABILITY / MAX_DURABILITY
+STRUCTURAL_CONDITION_RATIO = MAX_DURABILITY / BASE_MAX_DURABILITY
+EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)
 DESTROYED = CURRENT_DURABILITY == 0
+NORMAL = EFFECTIVE_DURABILITY_RATIO == 1.00
+MINOR = 0.50 < EFFECTIVE_DURABILITY_RATIO < 1.00
+MAJOR = 0 < EFFECTIVE_DURABILITY_RATIO <= 0.50
 CURRENT_MAX_AUTHORITY = SUPERSEDED = HISTORICAL_DECISION26_ONLY
 ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE = SUPERSEDED_BY_DECISION29
 DAMAGE_EVENT_CURRENT_LOSS = 1 / TEMP_TEST_BUDGET
 ```
 
-Numeric durability is visible and sole mechanical authority. Derived labels must not become a second independent state machine.
+Numeric durability is visible and sole mechanical authority. Current damage and permanent structural scar are **not separate penalty stacks**; the worse ratio becomes one effective state.
+
+Reference `BASE_MAX=5`:
+
+```text
+5/5/5 -> NORMAL
+4/5/5 -> MINOR
+2/5/5 -> MAJOR
+4/4/5 -> MINOR
+2/2/5 -> MAJOR
+1/1/5 -> MAJOR
+```
+
+A perfect repair therefore does not erase a MAX scar mechanically.
 
 ## 4. Enhancement-failure damage
 
@@ -91,7 +107,7 @@ INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS
 CANONICAL_ROUNDING = NONE
 ```
 
-Decision29 state modifier is temporary:
+Decision29 effective-state modifier is temporary:
 
 ```text
 NORMAL: success 0pp / new effect ×1.00 / damage risk ×1.00
@@ -99,7 +115,12 @@ MINOR:  success -3pp / new effect ×0.90 / damage risk ×1.25
 MAJOR:  success -7pp / new effect ×0.75 / damage risk ×1.75
 ```
 
-Final damage-event chance remains conditional on enhancement failure and equals Decision28 target base × Decision29 state multiplier.
+Final damage-event chance remains conditional on enhancement failure:
+
+```text
+P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, EFFECTIVE_STATE)
+= Decision28_target_base * Decision29_effective_state_multiplier
+```
 
 `FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED`; `UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED`.
 
@@ -108,6 +129,7 @@ Final damage-event chance remains conditional on enhancement failure and equals 
 ```text
 REPAIR_ELIGIBLE = 0 < CURRENT_DURABILITY < MAX_DURABILITY
 DESTROYED_REPAIR_ALLOWED = FALSE
+FULL_DURABILITY_REPAIR_ALLOWED = FALSE
 MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES
 MAX_DURABILITY_RECOVERY = NOT_APPROVED
 ```
@@ -121,24 +143,26 @@ POOR      20% -> post-scar MAX 50%
 minimum CURRENT gain when possible = 1
 ```
 
-Temporary MAX -1 scar chance:
+Temporary MAX -1 scar chance uses **pre-repair effective state + enhancement band**:
 
 | State | +0~10 | +11~30 | +31~60 | +61~90 | +91~100 |
 |---|---:|---:|---:|---:|---:|
 | MINOR | 10% | 15% | 20% | 25% | 30% |
 | MAJOR | 25% | 30% | 35% | 40% | 45% |
 
-All these detailed Decision29 values are `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. Repair gold/material/fatigue economy is not closed by Decision29 and requires a rebase.
+All detailed Decision29 values are `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. Repair gold/material/fatigue economy is not closed and requires a rebase.
 
 Reference user example:
 
 ```text
-BASE_MAX 5, CURRENT/MAX 1/5 MAJOR
-scar roll triggers -> MAX 5 -> 4
-EXCELLENT 4/4 / STANDARD 3/4 / POOR 2/4
+BASE_MAX=5, CURRENT/MAX=1/5 MAJOR
+scar triggers -> MAX 5 -> 4
+EXCELLENT -> 4/4/5 -> MINOR
+STANDARD  -> 3/4/5 -> MINOR
+POOR      -> 2/4/5 -> MAJOR
 ```
 
-MAX loss is probabilistic, not automatic.
+MAX loss is probabilistic, not automatic, and remains meaningful after repair because `MAX/BASE_MAX` contributes to effective state.
 
 ## 6. Customer/world use
 
@@ -193,7 +217,7 @@ Human pages show current gameplay meaning; PR/SHA/test receipts and runtime evid
 
 ## 10. Visual state
 
-`ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK`. Existing black/gold Visual GDD boards are information-architecture references. Old durability numbers/formulas inside them remain stale. New representative durability visual must show current visible CURRENT/MAX, derived state, damaged-push modifiers, repair quality and possible MAX scar without presenting temp numbers as final release balance.
+`ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK`. Existing black/gold Visual GDD boards are information-architecture references. Old durability numbers/formulas inside them remain stale. New representative durability visual must show current visible CURRENT/MAX/BASE_MAX, effective state, damaged/scarred push modifiers, repair quality and possible MAX scar without presenting temp numbers as final release balance.
 
 ## 11. Next planning Gates
 
