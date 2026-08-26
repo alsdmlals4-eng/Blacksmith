@@ -1,0 +1,20 @@
+{
+  "decision_id": "BS-DAMAGE-20260826-28",
+  "status": "USER_APPROVED_PLANNING_CANON",
+  "probability_basis": "P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)",
+  "safe_through_target": 10,
+  "target_min": 11,
+  "target_max": 100,
+  "anchors_percent": [
+    {"target": 11, "percent": 5},
+    {"target": 30, "percent": 6},
+    {"target": 60, "percent": 7},
+    {"target": 90, "percent": 8},
+    {"target": 100, "percent": 10}
+  ],
+  "interpolation": "PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS",
+  "rounding_authority": "NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED",
+  "damage_advance_steps": 1,
+  "failure_consequence_composition": "NOT_DECIDED_BY_THIS_DECISION",
+  "runtime_implementation": "BLOCKED_NOT_RUN"
+}
