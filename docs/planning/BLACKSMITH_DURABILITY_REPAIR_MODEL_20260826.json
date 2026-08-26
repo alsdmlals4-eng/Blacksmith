@@ -1,0 +1,61 @@
+{
+  "decision_id": "BS-REPAIR-20260826-29",
+  "status": "USER_APPROVED_STRUCTURAL_CANON_TEMP_TEST_BUDGET_NOT_FINAL_PRODUCT_BALANCE",
+  "authority": {
+    "durability": "CURRENT_MAX_BASE_MAX_NUMERIC",
+    "damage_state": "DERIVED_PLAYER_FACING_VIEW",
+    "hidden_second_authority_allowed": false
+  },
+  "reference_base_max_durability": 5,
+  "max_durability_floor": 1,
+  "max_durability_recovery": "NOT_APPROVED",
+  "damage_event_current_loss": 1,
+  "durability_states": {
+    "NORMAL": {"current_equals_max": true},
+    "MINOR": {"ratio_gt": 0.5, "ratio_lt": 1.0},
+    "MAJOR": {"ratio_gt": 0.0, "ratio_lte": 0.5},
+    "DESTROYED": {"current_equals": 0}
+  },
+  "enhancement_modifiers": {
+    "NORMAL": {"success_delta_pp": 0, "new_effect_multiplier": 1.0, "damage_risk_multiplier": 1.0},
+    "MINOR": {"success_delta_pp": -3, "new_effect_multiplier": 0.9, "damage_risk_multiplier": 1.25},
+    "MAJOR": {"success_delta_pp": -7, "new_effect_multiplier": 0.75, "damage_risk_multiplier": 1.75}
+  },
+  "hard_guarantee_overrides_durability_success_penalty": true,
+  "success_level_delta": 1,
+  "item_keyword_creation_gate_unchanged": true,
+  "damage_probability_owner": "BS-DAMAGE-20260826-28",
+  "damage_probability_composition": "DECISION28_TARGET_BASE_TIMES_DURABILITY_STATE_MULTIPLIER",
+  "major_enhancement_allowed": true,
+  "destroyed_enhancement_allowed": false,
+  "repair_eligibility": "0 < CURRENT_DURABILITY < MAX_DURABILITY",
+  "destroyed_repair_allowed": false,
+  "repair_quality_temp_budget": [
+    {"id": "EXCELLENT", "probability_percent": 20, "target_current_ratio": 1.0},
+    {"id": "STANDARD", "probability_percent": 60, "target_current_ratio": 0.75},
+    {"id": "POOR", "probability_percent": 20, "target_current_ratio": 0.5}
+  ],
+  "repair_minimum_current_gain_when_possible": 1,
+  "repair_max_scar_amount_on_trigger": 1,
+  "repair_max_scar_chance_percent_temp_budget": {
+    "MINOR": {
+      "PLUS_0_10": 10,
+      "PLUS_11_30": 15,
+      "PLUS_31_60": 20,
+      "PLUS_61_90": 25,
+      "PLUS_91_100": 30
+    },
+    "MAJOR": {
+      "PLUS_0_10": 25,
+      "PLUS_11_30": 30,
+      "PLUS_31_60": 35,
+      "PLUS_61_90": 40,
+      "PLUS_91_100": 45
+    }
+  },
+  "repair_max_scar_when_max_at_floor": 0,
+  "repair_economy": "NOT_FINAL_FOLLOWUP_REBASE_REQUIRED",
+  "failure_consequence_composition": "NOT_DECIDED",
+  "ui_damage_percent_rounding": "NOT_DECIDED",
+  "runtime_implementation": "BLOCKED_NOT_RUN"
+}
