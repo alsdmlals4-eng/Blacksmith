@@ -1,6 +1,6 @@
 # [현재 정본] Blacksmith Core Simplification Canon · 2026-08-25
 
-- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
+- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
 - Status: `USER_APPROVED / CURRENT_PLANNING_CANON`
 - Work Mode: `PLAN`
 - Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
@@ -17,6 +17,7 @@ PRECISION_ENHANCEMENT_CADENCE
 ITEM_KEYWORD_CREATION_GATE
 DAMAGE_STATE_AUTHORITY
 ENHANCEMENT_DAMAGE_GATE
+DAMAGE_PROBABILITY_CURVE
 CUSTOMER_WORLD_EVENT_DAMAGE_HOOK
 PLAYER_FACING_CHRONICLE_INCLUSION
 ART_DIRECTION_SELECTION
@@ -68,7 +69,7 @@ The existing material context + enhancement method + one catalyst responsibiliti
 
 Keyword evolution/mutation after +10 is not approved by this Decision. Ordinary enhancement does not create extra keywords.
 
-## 3. `BS-DAMAGE-20260825-26` · Four-state damage
+## 3. `BS-DAMAGE-20260825-26` + `BS-DAMAGE-20260826-28` · Four-state damage
 
 ### 3.1 One authoritative state machine
 
@@ -82,7 +83,7 @@ There is no hidden numeric CURRENT/MAX gameplay authority behind these labels. `
 
 `MINOR` and `MAJOR` do not automatically inherit old MAX-based success penalties or new-effect multipliers.
 
-### 3.2 Enhancement-failure damage gate
+### 3.2 Enhancement-failure damage gate and approved probability curve
 
 ```text
 TARGET <= +10: ENHANCEMENT_DAMAGE = 0
@@ -90,14 +91,35 @@ TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE
 MONOTONIC_NON_DECREASING_DAMAGE_RISK
 ```
 
-Damage cannot occur from enhancement failure through target +10. From target +11 onward, a failed enhancement has a non-zero conditional chance to advance one damage state. That conditional chance must be monotonic non-decreasing as target enhancement level rises.
+Damage cannot occur from enhancement failure through target +10. From target +11 onward, a failed enhancement has a conditional chance to advance exactly one damage state.
+
+Decision `BS-DAMAGE-20260826-28` closes the exact conditional probability gate:
 
 ```text
-EXACT_ENHANCEMENT_DAMAGE_CURVE = TUNABLE_NOT_FINAL
-DAMAGE_PROBABILITY_CURVE = USER_APPROVAL_REQUIRED
+PROBABILITY_BASIS = P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)
+DAMAGE_PROBABILITY_CURVE = USER_APPROVED / BS-DAMAGE-20260826-28
+DAMAGE_CURVE_ANCHORS_PERCENT = [11:5, 30:6, 60:7, 90:8, 100:10]
+DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS
+DAMAGE_CURVE_ROUNDING = NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED
 ```
 
-No exact +11~+100 probability anchors, interpolation, or caps are approved yet. Old `DAMAGE/CRITICAL` percentages are historical comparison evidence only and are not an implicit fallback.
+For each target between adjacent anchors, the canonical percentage is exact linear interpolation:
+
+```text
+P_percent(t) = p_a + (p_b - p_a) * (t - a) / (b - a)
+```
+
+Machine-readable owner:
+
+`docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`
+
+Old `DAMAGE/CRITICAL` percentages are historical comparison evidence only and are not an implicit fallback. The approved curve owns only whether one damage advance occurs after enhancement failure; it does not silently define the rest of failure composition.
+
+```text
+FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED_BY_THIS_DECISION
+```
+
+Whether damage may co-occur with DOWNGRADE/HOLD or another failure consequence must be explicitly resolved before runtime migration. UI percentage rounding is also not approved by Decision28; display rounding must not create a second resolver authority.
 
 ### 3.3 Customer/world event damage
 
@@ -202,11 +224,12 @@ NEW_GAME
 -> SUCCESS CREATES ONE ITEM KEYWORD
 -> +10 SECURED / BREAK-EVEN STATE
 -> +11 FIRST DAMAGE-ELIGIBLE STOP/PUSH RISK
+-> FAILURE DAMAGE CHANCE AT +11 = 5% CONDITIONAL ON FAILURE
 -> STOP OR PUSH
 -> HANDOFF / DELAYED SAME-UID RESULT
 ```
 
-Do not teach CURRENT/MAX. At +11, disclose that failure can damage the item; do not display an invented exact damage probability until the new curve is approved.
+Do not teach CURRENT/MAX. At +11, disclose that a failed attempt has a 5% conditional chance to advance one damage state. Any rounded UI representation beyond the exact canonical curve requires a separate display decision and must not change resolver odds.
 
 ## 8. `BS-ART-20260825-03` · Current art direction
 
@@ -248,7 +271,7 @@ Event-only Item Chronicle
 | `BLACKSMITH_FAILURE_FAMILY_RATIO_CANON_20260820.md` damage/critical split | `SUPERSEDED_FOR_CURRENT_DAMAGE_RESOLUTION`; historical budget only |
 | CURRENT/MAX repair owners and `BLACKSMITH_MAX_OVERHAUL_CANON_20260824.md` | `SUPERSEDED_PENDING_NEW_REPAIR_MODEL` |
 | `BLACKSMITH_R2_PRECISION_ENHANCEMENT_METHOD_AND_CATALYST_STRUCTURE_CANON_2026.md` precision cadence | `PARTIALLY_SUPERSEDED`; method/material/catalyst responsibilities reusable at +10 only |
-| `BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md` CURRENT/MAX teaching | `PARTIALLY_SUPERSEDED`; pacing and STOP/PUSH thesis retained |
+| `BLACKSMITH_FIRST_10_MINUTES_CANON_20260824.md` CURRENT/MAX teaching | `PARTIALLY_SUPERSEDED`; pacing and STOP/PUSH thesis retained; pre-Decision28 unspecified +11 probability is superseded by the approved curve |
 | `BLACKSMITH_PRECISION_CUSTOMER_LINK_CANON_20260824.md` multi-milestone precision wording | `PARTIALLY_SUPERSEDED`; customer context and delayed same-UID causality retained |
 | Visual GDD 06/08 CURRENT/MAX semantics | `SYSTEM_SEMANTICS_STALE`; information-layout reference only |
 
@@ -262,14 +285,16 @@ GITHUB_CURRENT_CANON_SYNC = SYNCED / MAIN_5c29af1_POSTMERGE_READBACK_PASS
 NOTION_CURRENT_CANON_SYNC = SYNCED
 SHEET_SAME_ID_COMPATIBILITY = MIGRATION_ONLY / POSTMERGE_READBACK_PASS
 RUNTIME_IMPLEMENTATION_OF_NEW_CORE = NOT_RUN / BLOCKED
-DAMAGE_CURVE_NUMBERS = NOT_FINAL / USER_APPROVAL_REQUIRED
+DAMAGE_CURVE_NUMBERS = USER_APPROVED / BS-DAMAGE-20260826-28
 REPAIR_MODEL = NOT_DECIDED
 CUSTOMER_EVENT_DAMAGE_NUMBERS = NOT_FINAL
+FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
+UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_ACCESSIBILITY = NOT_RUN
 NOTION_CLIENT_GEOMETRY = NOT_RUN
 ```
 
-`MAIN_5c29af1_POSTMERGE_READBACK_PASS` records the completed Decisions25~27/Art03 migration checkpoint; it is not a permanent current-head pointer. Live repository state must always be fresh-read. Google Sheet remains migration compatibility evidence, not a default planning or runtime authority.
+`MAIN_5c29af1_POSTMERGE_READBACK_PASS` records the completed Decisions25~27/Art03 migration checkpoint; it is not a permanent current-head pointer. Live repository state must always be fresh-read. Google Sheet remains migration compatibility evidence, not a default planning or runtime authority. Decision28 planning approval does not claim runtime implementation or final repair/economy validation.
 
-Existing V2 runtime files that still encode CURRENT/MAX and old precision milestones are implementation drift/historical runtime truth after this planning Decision; they must not be mistaken for current desired product canon while the product implementation gate is closed.
+Existing V2 runtime files that still encode CURRENT/MAX and old precision milestones are implementation drift/historical runtime truth after these planning Decisions; they must not be mistaken for current desired product canon while the product implementation gate is closed.
