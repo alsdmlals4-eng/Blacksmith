@@ -11,15 +11,15 @@ PLUGIN = ROOT / "addons/godot_ai/plugin.gd"
 PROJECT_HANDLER = ROOT / "addons/godot_ai/handlers/project_handler.gd"
 PROJECT = ROOT / "project.godot"
 POLICY = ROOT / "docs/testing/HIGODOT_GUT_AUTHORITY_POLICY.json"
-DECISION = ROOT / "docs/decisions/BS-TOOLCHAIN-20260811-02_GODOT_AI_314_CURRENT_VENDOR_ALIGNMENT.md"
+DECISION = ROOT / "docs/decisions/BS-TOOLCHAIN-20260826-33_GODOT_AI_320_CURRENT_VENDOR_ALIGNMENT.md"
 HISTORICAL_BRIDGE = ROOT / "tools/higodot_task2_bridge.py"
 HISTORICAL_DECISION = ROOT / "docs/decisions/BS-TOOLCHAIN-20260809-01_GODOT_AI_313_HERA_GUT_PLUGIN_ACTIVATION.md"
 
-CURRENT_DECISION_ID = "BS-TOOLCHAIN-20260811-02"
+CURRENT_DECISION_ID = "BS-TOOLCHAIN-20260826-33"
 HISTORICAL_DECISION_ID = "BS-TOOLCHAIN-20260809-01"
-UPSTREAM_TAG_COMMIT = "96cc8b8c3d25ce487e24801d01d5214fea150349"
-UPSTREAM_ADDON_TREE = "69010571e11123dfc4e09483f80cb9e6ca93511a"
-CURRENT_VERSION = "3.1.4"
+UPSTREAM_TAG_COMMIT = "42c44e4d02ca1836a0e1866361509d3a14d83b0c"
+UPSTREAM_ADDON_TREE = "66a9df59a92f0029efcd35c22fea355c93e8fe49"
+CURRENT_VERSION = "3.2.0"
 HISTORICAL_TASK2_VERSION = "3.1.3"
 EXPECTED_MAIN_SCENE = "res://scenes/vertical_slice/main_menu.tscn"
 
@@ -35,23 +35,22 @@ def _plugin_version() -> str:
     return match.group(1)
 
 
-def test_current_vendor_is_314_and_new_decision_records_official_identity() -> None:
+def test_current_vendor_is_320_and_new_decision_records_official_identity() -> None:
     assert _plugin_version() == CURRENT_VERSION
     decision = _text(DECISION)
     for token in (
         CURRENT_DECISION_ID,
-        "GODOT_AI_314_CURRENT_VENDOR_ALIGNMENT",
-        "v3.1.4",
+        "GODOT_AI_320_CURRENT_VENDOR_ALIGNMENT",
+        "v3.2.0",
         UPSTREAM_TAG_COMMIT,
         UPSTREAM_ADDON_TREE,
-        "EXACT_UPSTREAM_V3_1_4",
-        "PRODUCT_IMPLEMENTATION: BLOCKED",
-        "TASK3_IMPLEMENTATION: NOT_APPROVED",
+        "EXACT_UPSTREAM_V3_2_0",
+        "PRODUCT_IMPLEMENTATION_SCOPE: UNCHANGED",
     ):
         assert token in decision
 
 
-def test_current_policy_distinguishes_314_vendor_from_313_task2_history() -> None:
+def test_current_policy_distinguishes_320_vendor_from_313_task2_history() -> None:
     policy = json.loads(_text(POLICY))
     assert CURRENT_DECISION_ID in policy["decision_ids"]
     assert HISTORICAL_DECISION_ID in policy["decision_ids"]
@@ -59,10 +58,10 @@ def test_current_policy_distinguishes_314_vendor_from_313_task2_history() -> Non
     higodot = policy["higodot"]
     assert higodot["installed_plugin_version"] == CURRENT_VERSION
     assert higodot["current_version_decision_id"] == CURRENT_DECISION_ID
-    assert higodot["upstream_tag"] == "v3.1.4"
+    assert higodot["upstream_tag"] == "v3.2.0"
     assert higodot["upstream_tag_commit"] == UPSTREAM_TAG_COMMIT
     assert higodot["upstream_vendor_tree_sha"] == UPSTREAM_ADDON_TREE
-    assert higodot["vendor_alignment"] == "EXACT_UPSTREAM_V3_1_4"
+    assert higodot["vendor_alignment"] == "EXACT_UPSTREAM_V3_2_0"
     assert higodot["historical_task2_toolchain_version"] == HISTORICAL_TASK2_VERSION
     assert higodot["task2_only_main_scene_vendor_overlay"] == "HISTORICAL_PROVEN_RETIRED_FROM_CURRENT_VENDOR"
     assert higodot["future_main_scene_mutation"] == "NEW_SCOPE_DECISION_REQUIRED"

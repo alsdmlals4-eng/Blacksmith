@@ -307,7 +307,8 @@ project.godot
 - `BS-HERA-20260808-01`: `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE` 역사 record.
 - `BS-TOOLCHAIN-20260809-01`: Godot AI 3.1.3 역사 baseline, GUT editor plugin enabled, Hera enabled non-authoritative.
 - current Hera state = `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`; Hera authoring/mutation authority remains `NONE`.
-- `BS-TOOLCHAIN-20260811-02`: Godot AI 3.1.4 역사 current-version record; 새 작업의 최신 pin을 자동 결정하지 않는다.
+- `BS-TOOLCHAIN-20260811-02`: Godot AI 3.1.4 역사 current-version record.
+- `BS-TOOLCHAIN-20260826-33`: Godot AI 3.2.0 current vendor identity; 새 작업의 최신 pin을 자동 결정하지 않는다.
 - GUT runtime은 Git 추적 파일을 수정할 수 없고 HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. Hera authoring/mutation authority는 별도 승인 전 `NONE`.
 
 ## 10. 현재 프로젝트 총 작업지시문
@@ -317,7 +318,7 @@ project.godot
 - previous `v4.8-r4` is `HISTORICAL_SUPERSEDED_BY_R5_4`.
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` v4.5 r2는 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`.
 - historical compatibility anchor: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — historical only.
-- current operational override Decisions: `BS-OPS-20260825-08`, `BS-OPS-20260825-07`, `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-REPAIR-20260826-29`, `BS-DAMAGE-20260826-30`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-ART-20260826-04`, `BS-OPS-20260825-03`, `BS-OPS-20260825-02`.
+- current operational override Decisions: `BS-OPS-20260825-08`, `BS-OPS-20260825-07`, `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-REPAIR-20260826-29`, `BS-DAMAGE-20260826-30`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-ART-20260826-04`, `BS-OPS-20260825-03`, `BS-OPS-20260825-02`, `BS-TOOLCHAIN-20260826-33`.
 - 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`.
 - 선행 조사 Gate: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`.
 - `PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`, `TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED` 유지.
