@@ -74,6 +74,29 @@ def main() -> None:
         text = path.read_text(encoding="utf-8")
         require_tokens(text, [DECISION_ID], path.name)
 
+    handoff = HANDOFF.read_text(encoding="utf-8")
+    require_tokens(
+        handoff,
+        [
+            "GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK",
+            "GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY",
+            "GPT_WORK_POLICY_OWNER = BASE_CURRENT",
+            "PROJECT_CANON_AUTHORITY = UNCHANGED",
+            "IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK",
+            "IMG-01",
+            "NORMAL_WORKPIECE_HERO_MASTER",
+            "IMG-02",
+            "IMG-03",
+            "IMG-04",
+            "IMG-05",
+            "PRODUCT_IMAGE_ASSET_APPROVAL = 0",
+            "IMPLEMENTATION_READY_IMAGE_ASSET = 0",
+            "RUNTIME_VERIFIED_IMAGE_ASSET = 0",
+            "FRESH_READ_REQUIRED",
+        ],
+        "GPT Work handoff",
+    )
+
     agents = AGENTS.read_text(encoding="utf-8")
     require_tokens(
         agents,
