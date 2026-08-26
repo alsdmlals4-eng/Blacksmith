@@ -34,16 +34,24 @@ func view_state() -> Dictionary:
 			"repair_reason": "MISSING_ITEM",
 			"repair_gold_cost": 0,
 			"repair_material_units": 0,
+			"repair_quality_summary": "",
+			"repair_scar_summary": "",
+			"repair_job_summary": "",
 		}
 	var quote: Dictionary = RepairResolverScript.new().quote(_item)
+	var recovery: Dictionary = quote.get("quality_recovery_percent", {})
+	var repair_allowed := bool(quote.get("allowed", false))
 	return {
 		"has_item": true,
 		"durability_text": "%d / %d / %d" % [int(_item.current_durability), int(_item.max_durability), int(_item.base_max_durability)],
 		"durability_state": str(_item.effective_durability_state()),
-		"repair_allowed": bool(quote.get("allowed", false)),
+		"repair_allowed": repair_allowed,
 		"repair_reason": str(quote.get("reason", "")),
 		"repair_gold_cost": int(quote.get("gold_cost", 0)),
 		"repair_material_units": int(quote.get("reinforcement_units", 0)),
+		"repair_quality_summary": "예상 회복: 최상 %d%% / 표준 %d%% / 미흡 %d%%" % [int(recovery.get("EXCELLENT", 0)), int(recovery.get("STANDARD", 0)), int(recovery.get("POOR", 0))] if repair_allowed else "",
+		"repair_scar_summary": "MAX 흉터 가능성: %d%%" % int(quote.get("max_scar_chance_percent", 0)) if repair_allowed else "",
+		"repair_job_summary": "수리하면 다음 실제 손상 전까지 다시 수리할 수 없습니다" if repair_allowed and bool(quote.get("repair_job_consumed_on_start", false)) else "",
 	}
 
 
@@ -57,12 +65,22 @@ func request_repair_with_rolls(rolls: Dictionary) -> Dictionary:
 	return result
 
 
+func request_repair() -> Dictionary:
+	if _item == null or _resources == null:
+		return {"status": "BLOCKED", "reason": "MISSING_WORKSHOP_CONTEXT"}
+	if _maintenance_service == null:
+		_maintenance_service = MaintenanceServiceScript.new()
+	var result: Dictionary = _maintenance_service.try_repair(_item, _resources)
+	_refresh_controls()
+	return result
+
+
 func refresh_after_enhancement() -> void:
 	_refresh_controls()
 
 
 func _on_repair_pressed() -> void:
-	var result := request_repair_with_rolls({})
+	var result := request_repair()
 	var message := get_node_or_null("WorkshopLayout/RepairMessageLabel") as Label
 	if message != null:
 		message.text = "수리 완료" if str(result.get("status", "")) == "APPLIED" else "수리 불가: %s" % str(result.get("reason", "UNKNOWN"))
@@ -73,6 +91,9 @@ func _refresh_controls() -> void:
 	var durability := get_node_or_null("WorkshopLayout/DurabilityValueLabel") as Label
 	var condition := get_node_or_null("WorkshopLayout/DurabilityStateLabel") as Label
 	var quote := get_node_or_null("WorkshopLayout/RepairQuoteLabel") as Label
+	var quality := get_node_or_null("WorkshopLayout/RepairQualityLabel") as Label
+	var scar := get_node_or_null("WorkshopLayout/RepairScarLabel") as Label
+	var job := get_node_or_null("WorkshopLayout/RepairJobLabel") as Label
 	var repair_button := get_node_or_null("WorkshopLayout/RepairButton") as Button
 	if durability != null:
 		durability.text = str(state["durability_text"])
@@ -80,5 +101,11 @@ func _refresh_controls() -> void:
 		condition.text = "상태: %s" % str(state["durability_state"])
 	if quote != null:
 		quote.text = "수리: %d Gold · 보강재 %d개" % [int(state["repair_gold_cost"]), int(state["repair_material_units"])] if bool(state["repair_allowed"]) else "수리 불가: %s" % str(state["repair_reason"])
+	if quality != null:
+		quality.text = str(state["repair_quality_summary"])
+	if scar != null:
+		scar.text = str(state["repair_scar_summary"])
+	if job != null:
+		job.text = str(state["repair_job_summary"])
 	if repair_button != null:
 		repair_button.disabled = not bool(state["repair_allowed"])

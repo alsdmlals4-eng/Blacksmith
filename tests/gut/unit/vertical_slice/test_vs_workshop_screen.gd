@@ -7,6 +7,21 @@ const ItemScript := preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
 
 
+class TrackingMaintenanceService extends RefCounted:
+	var random_repair_calls := 0
+	var deterministic_repair_calls := 0
+
+
+	func try_repair(_item, _resources, _calendar = null) -> Dictionary:
+		random_repair_calls += 1
+		return {"status": "BLOCKED", "reason": "TRACKED_RANDOM_REPAIR"}
+
+
+	func try_repair_with_rolls(_item, _resources, _rolls: Dictionary) -> Dictionary:
+		deterministic_repair_calls += 1
+		return {"status": "BLOCKED", "reason": "TRACKED_DETERMINISTIC_REPAIR"}
+
+
 func _item(current: int = 3, maximum: int = 5):
 	var item = ItemScript.new()
 	item.uid = "UI-ITEM-001"
@@ -32,6 +47,9 @@ func test_screen_exposes_current_durability_and_repair_quote() -> void:
 	assert_true(state["repair_allowed"])
 	assert_eq(state["repair_gold_cost"], 39)
 	assert_eq(state["repair_material_units"], 1)
+	assert_eq(state.get("repair_quality_summary", ""), "예상 회복: 최상 100% / 표준 75% / 미흡 50%")
+	assert_eq(state.get("repair_scar_summary", ""), "MAX 흉터 가능성: 10%")
+	assert_eq(state.get("repair_job_summary", ""), "수리하면 다음 실제 손상 전까지 다시 수리할 수 없습니다")
 	screen.free()
 
 
@@ -61,3 +79,15 @@ func test_screen_refreshes_visible_durability_after_an_enhancement_damage_event(
 	screen.refresh_after_enhancement()
 	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "2 / 5 / 5")
 	assert_true(screen.get_node("WorkshopLayout/RepairButton").disabled == false)
+
+
+func test_repair_button_uses_randomized_maintenance_path_not_test_rolls() -> void:
+	var item = _item()
+	var tracking_service = TrackingMaintenanceService.new()
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(item, ResourcesScript.new(100, {"common_reinforcement_material": 1}), tracking_service)
+	screen._on_repair_pressed()
+	assert_eq(tracking_service.random_repair_calls, 1)
+	assert_eq(tracking_service.deterministic_repair_calls, 0)
+	assert_eq(screen.get_node("WorkshopLayout/RepairMessageLabel").text, "수리 불가: TRACKED_RANDOM_REPAIR")

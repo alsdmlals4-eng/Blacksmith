@@ -22,7 +22,7 @@ func quote(item) -> Dictionary:
 	var reference := int(R_BAND[band][material])
 	var burden := SETUP_FRACTION + VARIABLE_FRACTION * (float(missing) / float(item.base_max_durability))
 	var gold_cost := int(ceil(float(reference) * burden))
-	return {"allowed": true, "reason": "", "base_max": int(item.base_max_durability), "missing_current": missing, "r_band": reference, "r_band_key": band, "gold_cost": gold_cost, "reinforcement_units": REINFORCEMENT_UNITS, "result_current": int(item.max_durability), "result_max": int(item.max_durability)}
+	return {"allowed": true, "reason": "", "base_max": int(item.base_max_durability), "missing_current": missing, "r_band": reference, "r_band_key": band, "gold_cost": gold_cost, "reinforcement_units": REINFORCEMENT_UNITS, "result_current": int(item.max_durability), "result_max": int(item.max_durability), "quality_recovery_percent": {"EXCELLENT": 100, "STANDARD": 75, "POOR": 50}, "max_scar_chance_percent": _scar_chance(item), "repair_job_consumed_on_start": true}
 
 
 func apply_with_rolls(item, available_gold: int, available_reinforcement: int, rolls: Dictionary) -> Dictionary:

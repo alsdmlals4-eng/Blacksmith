@@ -41,6 +41,18 @@ text = "상태: UNAVAILABLE"
 layout_mode = 2
 text = "수리 불가: MISSING_ITEM"
 
+[node name="RepairQualityLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = ""
+
+[node name="RepairScarLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = ""
+
+[node name="RepairJobLabel" type="Label" parent="WorkshopLayout"]
+layout_mode = 2
+text = ""
+
 [node name="RepairButton" type="Button" parent="WorkshopLayout"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
