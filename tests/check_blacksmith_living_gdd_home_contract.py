@@ -8,17 +8,28 @@ ROOT = Path(__file__).resolve().parents[1]
 AGENTS = ROOT / "AGENTS.md"
 DECISION = ROOT / "docs/operations/BS-OPS-20260825-03_BLACKSMITH_LIVING_GDD_HOME.md"
 SPEC = ROOT / "docs/superpowers/specs/2026-08-25-blacksmith-living-gdd-home-design.md"
+VISUAL_APPROVAL = ROOT / "docs/planning/BLACKSMITH_VISUAL_GDD_ASSET_APPROVAL_2026-08-25.md"
 
 AGENTS_TOKENS = (
     "BS-OPS-20260825-03",
     "HUMAN_PROJECT_HOME_IS_LIVING_GDD_VISUAL_DASHBOARD",
     "HUMAN_RELEVANT_PROJECT_OUTPUTS_VIEWABLE_FROM_HOME",
-    "EXPLANATORY_VISUAL_GDD_BEFORE_DECORATIVE_ART",
+    "EXPLANATORY_VISUAL_GDD_BEFORE_DECORATIVE_ART = HISTORICAL_PRE_DECISION04",
     "BS-ART-20260825-03",
+    "BS-ART-20260826-04",
     "ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK",
     "ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION",
-    "INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD",
+    "ACTUAL_GAME_CONSUMER_REQUIRED",
+    "NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE",
+    "PRIMARY_USE_GATE_REQUIRED",
+    "HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY",
     "SYSTEM_SEMANTICS_STALE",
+)
+
+VISUAL_HISTORY_TOKENS = (
+    "INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD",
+    "EXISTING_VISUAL_GDD_8 = HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY",
+    "FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED",
 )
 
 DECISION_TOKENS = (
@@ -60,8 +71,10 @@ def main() -> int:
     agents = read(AGENTS, failures)
     decision = read(DECISION, failures)
     spec = read(SPEC, failures)
+    visual_history = read(VISUAL_APPROVAL, failures)
 
-    require_tokens("AGENTS.md", agents, AGENTS_TOKENS, failures)
+    require_tokens("AGENTS.md current visual contract", agents, AGENTS_TOKENS, failures)
+    require_tokens("Visual GDD historical approval", visual_history, VISUAL_HISTORY_TOKENS, failures)
     require_tokens("Decision 03 historical snapshot", decision, DECISION_TOKENS, failures)
     require_tokens("Living GDD spec", spec, SPEC_TOKENS, failures)
 
