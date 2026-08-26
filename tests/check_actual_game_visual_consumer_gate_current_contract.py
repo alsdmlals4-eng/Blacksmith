@@ -74,6 +74,24 @@ def main() -> None:
         text = path.read_text(encoding="utf-8")
         require_tokens(text, [DECISION_ID], path.name)
 
+    handoff = HANDOFF.read_text(encoding="utf-8")
+    require_tokens(
+        handoff,
+        [
+            "GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK",
+            "GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY",
+            "IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK",
+            "IMG-01",
+            "NORMAL_WORKPIECE_HERO_MASTER",
+            "IMG-02",
+            "PRODUCT_IMAGE_ASSET_APPROVAL = 0",
+            "IMPLEMENTATION_READY_IMAGE_ASSET = 0",
+            "RUNTIME_VERIFIED_IMAGE_ASSET = 0",
+            "FRESH_READ_REQUIRED",
+        ],
+        "GPT Work handoff",
+    )
+
     agents = AGENTS.read_text(encoding="utf-8")
     require_tokens(
         agents,
@@ -81,8 +99,10 @@ def main() -> None:
             "ACTUAL_GAME_CONSUMER_REQUIRED",
             "NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE",
             "PRIMARY_USE_GATE_REQUIRED",
+            "GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK",
+            "GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY",
         ],
-        "AGENTS visual gate",
+        "AGENTS visual/work gate",
     )
 
     print("actual game visual consumer gate current contract: PASS")
