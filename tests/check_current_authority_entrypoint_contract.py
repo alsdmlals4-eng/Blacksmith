@@ -24,10 +24,12 @@ def main() -> int:
         "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
         "CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장",
         "BS-OPS-20260825-02",
+        "BS-DAMAGE-20260826-28",
+        "docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json",
         "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT",
         "TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE",
         "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r5.4_SUPERSET_FINAL_20260826.md",
-        "POSTMERGE_PLANNING / DAMAGE_PROBABILITY_CURVE_NEXT",
+        "POSTMERGE_PLANNING / FOUR_STATE_REPAIR_MODEL_NEXT",
         "Notion Project Home = HUMAN_PROJECT_HOME_IS_LIVING_GDD_VISUAL_DASHBOARD",
         "Project Registry / System Record = AI_OPERATIONAL_SURFACE",
         "Google Sheet = unique 미이관 자료와 same-ID compatibility mirror가 필요한 경우의 migration surface",
@@ -37,6 +39,8 @@ def main() -> int:
 
     if "USER_SUPPLIED_V4_8_R4_CURRENT" in agents:
         failures.append("AGENTS.md must not keep superseded r4 as the current execution contract")
+    if "POSTMERGE_PLANNING / DAMAGE_PROBABILITY_CURVE_NEXT" in agents:
+        failures.append("AGENTS.md must not route to the already-approved Decision28 damage curve")
 
     overlay_pos = agents.find("CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md")
     legacy_pos = agents.find("CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장")
