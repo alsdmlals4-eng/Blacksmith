@@ -7,10 +7,13 @@ on:
       - 'CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md'
       - 'docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md'
       - 'docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json'
+      - 'docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md'
+      - 'docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json'
       - 'docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md'
       - 'docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md'
       - 'docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md'
       - 'tests/check_durability_repair_model_current_contract.py'
+      - 'tests/check_repair_economy_rebase_current_contract.py'
       - '.github/workflows/validate-durability-repair-model.yml'
   workflow_dispatch:
 
@@ -26,4 +29,6 @@ jobs:
         with:
           python-version: '3.12'
       - name: Validate current durability repair authority
-        run: python tests/check_durability_repair_model_current_contract.py
+        run: |
+          python tests/check_durability_repair_model_current_contract.py
+          python tests/check_repair_economy_rebase_current_contract.py
