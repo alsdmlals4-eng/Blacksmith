@@ -1,36 +1,55 @@
 # Blacksmith Visual GDD Asset Approval · 2026-08-25
 
-- Status: `USER_APPROVED_VISUAL_GDD`
-- User directive: `승인 / 이후 그림체 재설계 필요`
+- Status: `USER_APPROVED_VISUAL_GDD / HISTORICAL_INFORMATION_REFERENCE`
+- User directive at creation: `승인 / 이후 그림체 재설계 필요`
 - Work mode: `PLAN`
 - Baseline main: `827ac4147cc58dba22a39b4a3f7babd8079cddff`
-- Base main fresh-read: `210ec78292fa12ed7563ba743b322dd36103ae4a`
-- Art-direction Decision: `BS-ART-20260825-02`
-- `ART_STYLE_STATUS = REWORK_REQUIRED`
+- Base main fresh-read at creation: `210ec78292fa12ed7563ba743b322dd36103ae4a`
+- Historical art-direction Decision: `BS-ART-20260825-02`
+- Current style owner: `BS-ART-20260825-03 / ILLUSTRATED_WORKSHOP_BOOK`
+- Current image-delivery owner: `BS-ART-20260826-04 / ACTUAL_GAME_IMAGE_CONSUMER_GATE`
+- `ART_STYLE_STATUS = HISTORICAL_REWORK_BRIDGE`
 - `STYLIZED_DARK_FORGE = LEGACY_VISUAL_REFERENCE_NOT_FINAL_STYLE_CANON`
-- `APPROVED_VISUAL_SCOPE = INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD`
-- `APPROVED_REPRESENTATIVE_VISUAL = AVAILABLE`
+- `APPROVED_VISUAL_SCOPE = INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD / HISTORICAL_ONLY`
+- `EXISTING_VISUAL_GDD_8 = HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`
 - `FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED`
 - `RUNTIME_VALIDATION = NOT_RUN`
 - `PRODUCT_IMPLEMENTATION = BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
 
-## Approval meaning
+## Current Decision04 override
 
-사용자가 2026-08-25 생성된 Blacksmith 설명형 Visual GDD 8개를 승인했다. 이 승인은 **사람용 Living GDD / Visual Bible / 설계 판단용 정보 구조·레이아웃·설명 의도**에 대한 승인이다.
-
-이번 사용자 피드백에 따라 기존 생성물의 검은 철/금색 장식·과밀한 패널·반복적인 판타지 UI 키트·AI 생성물 특유의 균질한 표현은 **최종 그림체 Canon으로 더 이상 사용하지 않는다.** 새 그림체는 별도 비교·승인 작업에서 결정한다.
-
-따라서:
+The user has now clarified that Blacksmith image production is **not measured by explanatory sheets**. New images must have an actual game consumer.
 
 ```text
-8 VISUAL GDDs = APPROVED AS INFORMATION / EXPLANATION REFERENCES
-CURRENT GENERATED ART STYLE = NOT FINAL
-NEXT ART STYLE = USER_DECISION_REQUIRED AFTER RESEARCH / COMPARISON
+BS-ART-20260826-04
+ACTUAL_GAME_CONSUMER_REQUIRED = TRUE
+NEW_EXPLANATORY_GDD_SHEET_IMAGE_TARGET = FALSE
+GENERATED_UI_SCREENSHOT_MOCKUP_AS_PRODUCT_ASSET = FALSE
+FULL_FRAME_IMAGE_ALLOWED_ONLY_IF_RUNTIME_CONSUMES_FULL_FRAME = TRUE
+PRIMARY_USE_GATE_REQUIRED = TRUE
+NO_CONSUMER = CUT_OR_DEFER
+```
+
+Therefore this manifest is retained for identity/hash/provenance of the old eight Visual GDDs, but those images are **not templates or quota targets for future generation**.
+
+## Approval meaning at the time
+
+사용자가 2026-08-25 생성된 Blacksmith 설명형 Visual GDD 8개를 승인했다. 이 승인은 당시 **사람용 Living GDD / Visual Bible / 설계 판단용 정보 구조·레이아웃·설명 의도**에 대한 승인이다.
+
+이후 Art03에서 `ILLUSTRATED_WORKSHOP_BOOK` 방향이 선택됐고, Decision04에서 신규 이미지 제작 기준은 actual game consumer로 좁혀졌다.
+
+따라서 현재 의미:
+
+```text
+8 VISUAL GDDs = HISTORICAL INFORMATION / EXPLANATION REFERENCES
+CURRENT GENERATED ART STYLE = NOT FINAL PRODUCT ASSET
+NEW EXPLANATORY GDD SHEET IMAGE GENERATION = NOT A CURRENT TARGET
+NEW IMAGE CANDIDATE -> ACTUAL GAME CONSUMER REQUIRED
 ```
 
 Godot에 바로 투입되는 final runtime asset, 최종 UI texture, release asset, 접근성/device 검증 완료를 의미하지 않는다.
 
-## Approved Visual GDD manifest
+## Approved Visual GDD manifest · historical provenance
 
 | Visual ID | Name | Generation ID | SHA-256 | Durable copy |
 | --- | --- | --- | --- | --- |
@@ -43,11 +62,11 @@ Godot에 바로 투입되는 final runtime asset, 최종 UI texture, release ass
 | `BS-VIS-20260820-09` | 수리 판단 카드 Visual GDD | `66aed12c-f13c-41df-b6f5-027067898713` | `b683ae966b4ca4853c9efae7a49aeab1e9e769127f3ca540db276e2e2efda915` | Google Drive `11WVoZmI2If5zrRC0ydxsaDKro9tPR1qT` |
 | `BS-VIS-20260824-10` | 정밀강화 → 고객 Context Visual GDD | `5c8090ff-898d-4a9f-80d9-4b36b3938fb6` | `c1831b39b7d48646bbd07224a301f6cbc6ede4f9da02c3e4cf6e5985f6067aa9` | Google Drive `17-UoaZsxSGPnLbJAhLHSqcfS6M-J941a` |
 
-모든 8개 행의 승인 상태는 `USER_APPROVED_VISUAL_GDD`다. 단, 승인 범위는 정보 구조와 설명형 GDD이며 생성된 그림체 자체의 미래 사용 승인이 아니다.
+모든 8개 행은 당시 `USER_APPROVED_VISUAL_GDD`였지만 현재 future-generation 의미는 `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`다.
 
-## Art-direction override · `BS-ART-20260825-02`
+## Historical Art-direction override · `BS-ART-20260825-02`
 
-사용자 피드백을 다음과 같이 구현 가능한 디자인 문제로 정규화한다.
+당시 사용자 피드백을 다음과 같이 구현 가능한 디자인 문제로 정규화했다.
 
 - generic AI-generated dark-fantasy / mobile-fantasy look가 강함
 - 검정+금색 장식 프레임과 발광 테두리가 지나치게 균질함
@@ -63,20 +82,17 @@ Godot에 바로 투입되는 final runtime asset, 최종 UI texture, release ass
 - 모바일에서 읽히는 상태·위험·선택 위계
 - 색상 외 shape/icon/text의 중복 정보 채널
 
-### 다시 설계할 것
+### 현재 추가 보호선
 
-- 전체 그림체와 캐릭터/환경 렌더링 언어
-- UI frame/ornament/typography/icon family
-- black-gold 일변도 palette와 반복 glow
-- 패널 밀도와 설명형 board의 시각 호흡
-- AI-generated look을 줄이는 형태 언어·재질·선화/브러시·레이아웃 규칙
-
-대체 그림체는 이 문서에서 임의 확정하지 않는다. 다음 Art Direction 작업에서 project-owned references → Base reusable visual principles → 직접 관련 시장/현업 사례 순으로 비교한 뒤 최소 3개 실질 대안을 제시하고 사용자 승인을 받는다.
+- UI 구조·정보 위계·상호작용 설계가 필요하면 structured/editable surface를 사용하고 설명용 screenshot raster를 제품 asset으로 만들지 않는다.
+- full-frame art는 실제 runtime이 그 full frame을 소비할 때만 eligible하다.
+- consumer가 없는 candidate는 `CUT / DEFER / REBRIEF`하며 Notion 설명 자료로 자동 전용하지 않는다.
+- actual consumer candidate도 consumer metadata + Visual Requirement/Delete Test + 별도 Image Conversation Approval Gate 없이는 자동 생성하지 않는다.
 
 ## Shared guards
 
 - 예시 이미지/외부 레퍼런스의 권리나 자산 자체를 승계하지 않는다.
-- 8개 생성물은 현재 gameplay/UI 정보 구조를 설명하는 internal project Visual GDD로 사용한다.
+- 8개 생성물은 historical project Visual GDD information reference로 보존한다.
 - 생성 이미지 안의 세부 수치·문구는 current canon과 충돌할 경우 **시각 예시**가 우선권을 갖지 않는다.
 - 이미지 속 예시 성공률·가격·단계값을 새 balance canon으로 자동 승격하지 않는다.
 - 기존 8개 이미지의 art style을 후속 production asset의 스타일 기준으로 자동 복제하지 않는다.
@@ -85,19 +101,20 @@ Godot에 바로 투입되는 final runtime asset, 최종 UI texture, release ass
 
 ## Storage and destination contract
 
-- GitHub: 이 manifest가 생성물 identity/hash/approval 범위와 art-style override의 structured canon이다.
+- GitHub: 이 manifest는 old generated visual identity/hash/approval history를 보존한다.
 - Google Drive: 8개 PNG의 durable binary copy를 보관한다.
-- Notion Asset Library: 동일 8개 Visual ID를 `Approved=true / Status=APPROVED / Decision=ADOPT`의 **Visual GDD information reference**로 등록한다.
-- Notion Human Home / Visual Bible: 승인 Visual 보유 상태와 `ART_STYLE_REWORK_REQUIRED`를 사람이 오인 없이 볼 수 있게 반영한다.
-- Google Sheet: 동일 Visual ID의 생성/승인 상태와 `BS-ART-20260825-02`를 compatibility mirror한다.
+- Notion Asset Library: 동일 8개 Visual ID는 historical information reference로 유지할 수 있다.
+- Notion Human Home / Visual Bible: current Art03 style + Decision04 actual-consumer rule을 사람이 오인 없이 볼 수 있어야 한다.
+- Google Sheet: compatibility-only; active visual production workspace가 아니다.
 
 ## Evidence ceiling
 
-`USER_APPROVED_VISUAL_GDD`는 사용자의 설명형 시각자료 승인 증거다. 다음은 여전히 별도 검증이다.
+`USER_APPROVED_VISUAL_GDD`는 과거 설명형 시각자료 승인 증거다. `BS-ART-20260826-04`는 신규 이미지 delivery policy만 승인하며 다음은 여전히 별도 검증이다.
 
-- replacement art-style selection
+- actual consumer requirement selection
+- image generation
 - final product asset / Godot import
-- runtime screen match
+- runtime screen match / actual runtime consumption
 - Android device readability
 - accessibility
 - performance
