@@ -129,6 +129,8 @@ Decision-specific owners:
 - `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
 - `docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md`
 - `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
+- `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md`
+- `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`
 - `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md`
 - `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`
 - `docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md`
@@ -142,6 +144,7 @@ Current approved Decisions:
 | `BS-DAMAGE-20260825-26` | Historical structural simplification. Its no-numeric-authority and one-state-per-event fields are partially superseded by Decision29; its customer/world damage hook is refined by Decision30. |
 | `BS-DAMAGE-20260826-28` | Target-level base conditional damage-event chance after enhancement failure: `+11 5% / +30 6% / +60 7% / +90 8% / +100 10%`, exact piecewise-linear between anchors. |
 | `BS-REPAIR-20260826-29` | Visible `CURRENT/MAX/BASE_MAX` is sole durability authority. Current damage and permanent scar collapse into one effective durability state; low effective durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement remains allowed with penalties. |
+| `BS-REPAIR-20260826-31` | Approved planning-only repair-economy overlay: one repair job per actual-damage cycle, initial normalized loss curve plus one common material, and a no-zero-recovery scar guard. The final price table remains a controlled sensitivity decision. |
 | `BS-DAMAGE-20260826-30` | Customer/world damage requires actual item use + authored event profile/cause. Purchase/handoff does not damage. One event/UID rolls at most once. `NONE/LOW/MEDIUM/HIGH/DIRECT = 0/10/20/40/100%` is temporary; probabilistic profiles use Decision29 effective-state multiplier with 95% cap; DIRECT is one deterministic Decision29 damage event. World events never directly damage MAX. |
 | `BS-CHRONICLE-20260825-27` | Player Chronicle shows meaningful lifecycle events, not routine attempt logs or schedule ticks. |
 | `BS-ART-20260825-03` | `ILLUSTRATED_WORKSHOP_BOOK / USER_APPROVED_DIRECTION`; final product asset/runtime approval remains separate. |
@@ -227,7 +230,9 @@ P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, EFFECTIVE_STATE)
 ## 5. Repair / probabilistic structural scar
 
 ```text
-REPAIR_ELIGIBLE = 0 < CURRENT_DURABILITY < MAX_DURABILITY
+REPAIR_JOB_AVAILABLE = true after a resolved actual damage event lowers CURRENT; one boolean per UID
+REPAIR_ELIGIBLE = 0 < CURRENT_DURABILITY < MAX_DURABILITY AND REPAIR_JOB_AVAILABLE
+REPAIR_JOB_CONSUMED_ON_REPAIR_START = TRUE
 DESTROYED_REPAIR_ALLOWED = FALSE
 FULL_DURABILITY_REPAIR_ALLOWED = FALSE
 MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES
@@ -250,7 +255,7 @@ Temporary MAX -1 scar chance uses **pre-repair effective state + enhancement ban
 | MINOR | 10% | 15% | 20% | 25% | 30% |
 | MAJOR | 25% | 30% | 35% | 40% | 45% |
 
-All detailed Decision29 values are `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. Repair gold/material/fatigue economy is not closed and requires a rebase.
+Decision29 values remain `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. Decision31 has now approved the planning test contract: `ceil(R_BAND * (0.05 + 0.65 * ((MAX-CURRENT)/BASE_MAX))) + 1 common_reinforcement_material`, one repair job per actual-damage cycle, no MAX/scar price multiplier, and a no-zero-recovery scar skip. Final prices require controlled sensitivity, not runtime work.
 
 ## 6. Customer/world use · Decision30
 
@@ -335,7 +340,7 @@ Existing 8 Visual GDDs are `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`.
 ## 11. Next planning Gates
 
 ```text
-1. REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY
+1. DURABILITY_ECONOMY_SENSITIVITY + R_BAND_INPUT_EVIDENCE
 2. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING if required
 3. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
 4. adversarial full-planning review
@@ -354,7 +359,7 @@ CUSTOMER_EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BAL
 VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04
 IMAGE_GENERATION = NOT_RUN
 ACTUAL_RUNTIME_IMAGE_CONSUMPTION = NOT_RUN
-REPAIR_ECONOMY = NOT_FINAL
+REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / SENSITIVITY_REQUIRED
 FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
 UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 NEW_CORE_RUNTIME = NOT_RUN / BLOCKED
