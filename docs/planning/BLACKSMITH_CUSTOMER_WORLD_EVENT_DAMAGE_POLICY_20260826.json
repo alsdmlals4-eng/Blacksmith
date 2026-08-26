@@ -1,0 +1,58 @@
+{
+  "decision_id": "BS-DAMAGE-20260826-30",
+  "status": "USER_APPROVED_STRUCTURAL_CANON_TEMP_TEST_BUDGET_NOT_FINAL_PRODUCT_BALANCE",
+  "purchase_or_handoff_itself_causes_damage": false,
+  "actual_item_use_required": true,
+  "same_physical_uid_required": true,
+  "event_damage_profile_required": true,
+  "event_causal_reason_required": true,
+  "max_damage_rolls_per_event_per_uid": 1,
+  "damage_profiles_temp_budget_percent": {
+    "NONE": 0,
+    "LOW": 10,
+    "MEDIUM": 20,
+    "HIGH": 40,
+    "DIRECT": 100
+  },
+  "probabilistic_profiles": ["NONE", "LOW", "MEDIUM", "HIGH"],
+  "deterministic_profiles": ["DIRECT"],
+  "probabilistic_damage_cap_percent": 95,
+  "durability_multiplier_owner": "BS-REPAIR-20260826-29",
+  "durability_multiplier_source": "docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json#enhancement_modifiers.*.damage_risk_multiplier",
+  "probabilistic_damage_composition": "MIN(PROBABILISTIC_DAMAGE_CAP, PROFILE_BASE_PERCENT * DECISION29_EFFECTIVE_STATE_DAMAGE_RISK_MULTIPLIER)",
+  "direct_profile_composition": "100_PERCENT_ONE_DAMAGE_EVENT_NO_DURABILITY_MULTIPLIER",
+  "damage_resolution_owner": "BS-REPAIR-20260826-29",
+  "world_event_max_durability_damage": false,
+  "world_event_current_damage_amount": "INHERIT_DECISION29_DAMAGE_EVENT_CURRENT_LOSS",
+  "mission_outcome_and_item_damage_independent": true,
+  "no_universal_customer_damage_percent": true,
+  "no_opaque_combined_fit_damage_score": true,
+  "non_damage_causes": [
+    "PURCHASE",
+    "HANDOFF",
+    "OWNERSHIP_DURATION",
+    "MISSION_TURN_IN",
+    "CUSTOMER_RELATION_CHANGE",
+    "UI_MENU_INTERACTION",
+    "SCHEDULE_TICK_WITHOUT_ACTUAL_ITEM_USE"
+  ],
+  "explicit_relevant_protection_profile_shift": {
+    "enabled": true,
+    "max_steps": 1,
+    "requires_event_specific_relevance": true,
+    "universal_keyword_damage_bonus_allowed": false,
+    "direct_profile_mitigated_by_generic_keyword": false,
+    "exact_keyword_hazard_mappings": "CONTENT_OWNER_FOLLOWUP"
+  },
+  "player_disclosure": {
+    "universal_numeric_percent_on_every_customer_card": false,
+    "known_hazard_qualitative_risk_allowed": true,
+    "post_event_actual_cause_required_when_damage_occurs": true,
+    "same_uid_before_after_required_when_damage_occurs": true
+  },
+  "chronicle": {
+    "meaningful_world_event_damage_candidate": true,
+    "routine_schedule_tick_is_player_chronicle": false
+  },
+  "runtime_implementation": "BLOCKED_NOT_RUN"
+}
