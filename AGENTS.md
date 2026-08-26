@@ -104,19 +104,29 @@ DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW
 BASE_MAX_DURABILITY = immutable birth durability
 0 <= CURRENT_DURABILITY <= MAX_DURABILITY <= BASE_MAX_DURABILITY
 MAX_DURABILITY_FLOOR = 1
-NORMAL = CURRENT_DURABILITY == MAX_DURABILITY
-MINOR = 0.50 < CURRENT_DURABILITY / MAX_DURABILITY < 1.00
-MAJOR = 0 < CURRENT_DURABILITY / MAX_DURABILITY <= 0.50
+CURRENT_CONDITION_RATIO = CURRENT_DURABILITY / MAX_DURABILITY
+STRUCTURAL_CONDITION_RATIO = MAX_DURABILITY / BASE_MAX_DURABILITY
+EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)
 DESTROYED = CURRENT_DURABILITY == 0
+NORMAL = EFFECTIVE_DURABILITY_RATIO == 1.00
+MINOR = 0.50 < EFFECTIVE_DURABILITY_RATIO < 1.00
+MAJOR = 0 < EFFECTIVE_DURABILITY_RATIO <= 0.50
 CURRENT_MAX_AUTHORITY = SUPERSEDED = HISTORICAL_DECISION26_ONLY
 ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE = SUPERSEDED_BY_DECISION29
 ```
 
-숫자 CURRENT/MAX는 숨은 보조축이 아니라 **보이는 유일한 gameplay durability authority**다. 네 상태는 숫자에서 파생되는 player-facing view다.
+숫자 CURRENT/MAX/BASE_MAX는 숨은 보조축이 아니라 **보이는 유일한 gameplay durability authority**다. CURRENT 손상과 MAX 흉터를 별도 패널티로 중첩하지 않고 둘 중 더 나쁜 비율 하나가 effective state를 소유한다.
+
+```text
+5/5/5 -> NORMAL
+4/4/5 -> MINOR
+2/2/5 -> MAJOR
+1/1/5 -> MAJOR
+```
 
 `DAMAGE_EVENT_CURRENT_LOSS = 1`은 `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
 
-### 4.2 Decision28 target risk + Decision29 durability modifier
+### 4.2 Decision28 target risk + Decision29 effective durability modifier
 
 ```text
 TARGET <= +10: ENHANCEMENT_DAMAGE = 0
@@ -126,7 +136,7 @@ P(BASE_DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET_LEVEL)
 DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS
 ```
 
-Decision28 anchors are 유지된다. Decision29 temporary state modifiers:
+Decision28 anchors are 유지된다. Decision29 temporary effective-state modifiers:
 
 ```text
 NORMAL: success 0pp / new effect ×1.00 / damage risk ×1.00
@@ -138,8 +148,8 @@ DURABILITY_MODIFIERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
 Hard guarantee는 실제 100% 성공을 유지한다. 효과 배율은 새 ordinary enhancement effect에만 적용하고 기존 스탯·+1 레벨·+10 keyword cardinality를 줄이지 않는다.
 
 ```text
-P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, STATE)
-= Decision28_base_probability(TARGET) * Decision29_state_multiplier(STATE)
+P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, EFFECTIVE_STATE)
+= Decision28_base_probability(TARGET) * Decision29_state_multiplier(EFFECTIVE_STATE)
 ```
 
 모든 확률은 여전히 enhancement failure에 조건부다. `FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED`, `UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED`.
@@ -149,6 +159,7 @@ P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, STATE)
 ```text
 REPAIR_ELIGIBLE = 0 < CURRENT_DURABILITY < MAX_DURABILITY
 DESTROYED_REPAIR_ALLOWED = FALSE
+FULL_DURABILITY_REPAIR_ALLOWED = FALSE
 MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES
 MAX_DURABILITY_RECOVERY = NOT_APPROVED
 ```
@@ -162,7 +173,7 @@ POOR      20% -> post-scar MAX 50%
 REPAIR_MINIMUM_CURRENT_GAIN_WHEN_POSSIBLE = 1
 ```
 
-임시 MAX -1 scar chance:
+임시 MAX -1 scar chance는 **수리 전 effective state + 강화 구간**으로 정한다.
 
 ```text
             +0~10  +11~30  +31~60  +61~90  +91~100
@@ -172,7 +183,7 @@ MAX_SCAR_AMOUNT_ON_TRIGGER = -1
 MAX_DURABILITY_FLOOR = 1
 ```
 
-모든 상세 수치는 `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. 수리비·재료비는 `NOT_FINAL / FOLLOWUP_REBASE_REQUIRED`이며 구형 CURRENT→MAX 수리비 공식과 `MAX +15 / cap60` 대수선은 fallback이 아니다.
+모든 상세 수치는 `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. `4/4/5`처럼 CURRENT가 MAX까지 회복돼도 MAX/BASE_MAX가 0.8이므로 MINOR가 남고 구조 흉터는 실제 강화 패널티로 유지된다. 수리비·재료비는 `NOT_FINAL / FOLLOWUP_REBASE_REQUIRED`이며 구형 CURRENT→MAX 수리비 공식과 `MAX +15 / cap60` 대수선은 fallback이 아니다.
 
 ### 4.4 Other current rules
 
