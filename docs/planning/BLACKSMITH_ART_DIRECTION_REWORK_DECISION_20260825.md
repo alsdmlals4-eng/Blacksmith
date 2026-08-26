@@ -1,17 +1,35 @@
 # Blacksmith Art Direction Rework Decision · 2026-08-25
 
 - Decision ID: `BS-ART-20260825-02`
-- Status: `USER_APPROVED / ART_STYLE_REWORK_REQUIRED`
+- Status: `USER_APPROVED / ART_STYLE_REWORK_REQUIRED / HISTORICAL_BRIDGE`
 - Work Mode: `PLAN`
 - Replaces: the **final-style status only** of `BS-ART-20260731-01 / STYLIZED_DARK_FORGE`
 - Does not replace: approved gameplay/UI information hierarchy, DDD semantics, durability semantics, or the eight approved Visual GDD information references
 - Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
+- Current style successor: `BS-ART-20260825-03 / ILLUSTRATED_WORKSHOP_BOOK`
+- Current image-delivery successor: `BS-ART-20260826-04 / ACTUAL_GAME_IMAGE_CONSUMER_GATE`
 
-## User decision
+## Current successor override · `BS-ART-20260826-04`
 
-The currently generated Blacksmith visuals are approved as explanatory Visual GDDs, but the user explicitly wants the art style changed later because the current presentation reads as too generic/AI-generated and insufficiently distinctive.
+This file remains the historical bridge that reopened art direction. It is **not** the current image-delivery owner.
 
-Canonical status:
+```text
+BS-ART-20260826-04
+ACTUAL_GAME_CONSUMER_REQUIRED = TRUE
+NEW_EXPLANATORY_GDD_SHEET_IMAGE_TARGET = FALSE
+GENERATED_UI_SCREENSHOT_MOCKUP_AS_PRODUCT_ASSET = FALSE
+PRIMARY_USE_GATE_REQUIRED = TRUE
+NO_CONSUMER = CUT_OR_DEFER
+EXISTING_VISUAL_GDD_8 = HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY
+```
+
+The user's current rule is that Blacksmith does not produce new images merely to explain the design. A new generated image must map to an actual game consumer. Art03 owns style; Decision04 owns consumer/delivery eligibility.
+
+## User decision at this historical bridge
+
+The currently generated Blacksmith visuals were approved as explanatory Visual GDDs, but the user explicitly wanted the art style changed because the presentation read as too generic/AI-generated and insufficiently distinctive.
+
+Historical canonical status at the time:
 
 ```text
 ART_STYLE_STATUS = REWORK_REQUIRED
@@ -20,16 +38,18 @@ APPROVED_VISUAL_SCOPE = INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD
 REPLACEMENT_ART_STYLE = USER_DECISION_REQUIRED
 ```
 
-## What remains approved
+`REPLACEMENT_ART_STYLE = USER_DECISION_REQUIRED` was later closed by `BS-ART-20260825-03`. `APPROVED_VISUAL_SCOPE` remains a description of the old eight reference boards, not a current production target.
+
+## What remains useful as historical reference
 
 - item/workpiece as the visual hero
 - tactile forge materiality and evidence of heat, wear, damage, repair
 - warm localized forge light against darker surroundings
 - clear STOP/PUSH, risk, durability, and context hierarchy
 - non-color redundancy for warnings and state
-- approved Visual GDD layout/information intent
+- approved Visual GDD layout/information intent as history/reference only
 
-## What is reopened
+## What was reopened
 
 - character/environment rendering language
 - line/brush/shape language
@@ -51,21 +71,21 @@ The phrase used by the user is treated as shorthand for a design-quality problem
 4. multiple boards share an overly similar dark-fantasy AI presentation;
 5. the forge/material idea is strong, but the project lacks a sufficiently ownable rendering and UI language.
 
-## Next art-direction gate
+## Historical next art-direction gate
 
-Do not generate a replacement style by simply changing a prompt adjective.
-
-The next art-direction task must:
+The old gate below is preserved as history; Art03 and Decision04 now supersede its unresolved status.
 
 1. reuse the eight approved Visual GDDs only for information architecture;
 2. inspect existing project Asset/Reference/Benchmark surfaces first;
 3. inspect current Base visual reuse principles without auto-adopting project-foreign skins;
 4. benchmark relevant commercial/indie UI and illustration directions;
-5. present at least three materially different Blacksmith art-direction alternatives;
+5. present materially different Blacksmith art-direction alternatives;
 6. compare readability, uniqueness, mobile fit, production cost, animation/VFX compatibility, and AI-look risk;
 7. obtain user approval before any style becomes current canon;
-8. regenerate only representative Visuals first, not the whole asset set.
+8. do not regenerate the whole asset set automatically.
+
+Current replacement for item 8 is stronger: **new image work begins only after an actual game consumer requirement exists and a separate Image Conversation Approval Gate is passed.**
 
 ## Evidence boundary
 
-This decision is a user preference/visual-quality direction, not a runtime validation result. Human comparative review of replacement directions is required before a new style becomes `CURRENT`.
+This historical decision is a user preference/visual-quality direction, not a runtime validation result. `BS-ART-20260825-03` owns current style direction and `BS-ART-20260826-04` owns current image-consumer/delivery eligibility.

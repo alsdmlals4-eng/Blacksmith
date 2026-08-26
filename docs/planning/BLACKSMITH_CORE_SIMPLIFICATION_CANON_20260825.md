@@ -1,6 +1,6 @@
 # [현재 정본] Blacksmith Core Simplification Canon · 2026-08-25
 
-- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
+- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-DAMAGE-20260826-30 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`
 - Status: `USER_APPROVED / CURRENT_PLANNING_CANON`
 - Work Mode: `PLAN`
 - Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
@@ -9,12 +9,14 @@
 
 ## 1. Current ownership
 
-This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 damage probability, Decision29 repair/scar model, Chronicle inclusion and art direction.
+This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 enhancement-failure damage probability, Decision29 repair/scar model, Decision30 customer/world-event damage policy, Chronicle inclusion, Art03 direction and Art04 actual-game image consumer gate.
 
 Decision-specific machine owners:
 
 - `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`
 - `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
+- `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
+- `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
 
 Historical CURRENT/MAX values, MAX bands, old repair/overhaul formulas, old DAMAGE/CRITICAL ratios and multi-precision cadence are not fallback authority.
 
@@ -189,16 +191,51 @@ Without scar: EXCELLENT `5/5/5 NORMAL`, STANDARD `4/5/5 MINOR`, POOR `3/5/5 MINO
 
 Repair gold/material/fatigue economy is still `NOT_FINAL / FOLLOWUP_REBASE_REQUIRED`. Old CURRENT→MAX price formulas and old `MAX +15 / cap60` overhaul are historical only.
 
-## 6. Customer/world event damage
+## 6. Customer/world event damage · `BS-DAMAGE-20260826-30`
+
+Purchase or handoff itself never damages the item. Damage requires actual use, an authored event damage profile and an authored causal reason.
 
 ```text
-CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE
-PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE
-CUSTOMER_EVENT_DAMAGE_POLICY = CONTENT_OWNER_DECISION_REQUIRED
-CUSTOMER_EVENT_DAMAGE_NUMBERS = NOT_FINAL
+PURCHASE_OR_HANDOFF_ITSELF_CAUSES_DAMAGE = FALSE
+ACTUAL_ITEM_USE_REQUIRED = TRUE
+MAX_DAMAGE_ROLLS_PER_EVENT_PER_UID = 1
+MISSION_OUTCOME_AND_ITEM_DAMAGE = INDEPENDENT_AXES
+WORLD_EVENT_MAX_DURABILITY_DAMAGE = FALSE
+NO_UNIVERSAL_CUSTOMER_DAMAGE_PERCENT
 ```
 
-Later event damage must feed the same numeric durability resolver; it must not create a second damage state machine.
+Temporary event profiles:
+
+```text
+NONE = 0%
+LOW = 10%
+MEDIUM = 20%
+HIGH = 40%
+DIRECT = 100%
+EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
+PROBABILISTIC_DAMAGE_CAP = 95%
+```
+
+For `NONE/LOW/MEDIUM/HIGH`, final event damage chance uses the **same Decision29 effective-state damage-risk multiplier** and caps at 95%:
+
+```text
+P(EVENT_DAMAGE | PROFILE, EFFECTIVE_STATE)
+= min(95%, PROFILE_BASE_PERCENT * Decision29_damage_risk_multiplier(EFFECTIVE_STATE))
+```
+
+Under current temporary Decision29 multipliers:
+
+| Profile | NORMAL | MINOR | MAJOR |
+|---|---:|---:|---:|
+| LOW | 10% | 12.5% | 17.5% |
+| MEDIUM | 20% | 25% | 35% |
+| HIGH | 40% | 50% | 70% |
+
+`DIRECT=100%` means one deterministic Decision29 damage event and does not use the probabilistic cap/multiplier. If triggered, Decision29 owns `CURRENT` damage and state re-derivation; world events never directly create `MAX -1` scar.
+
+An explicitly relevant item keyword/function may reduce a probabilistic profile by at most one tier only when the event declares that causal relevance. There is no universal keyword damage bonus and a generic keyword does not mitigate `DIRECT`.
+
+Detailed event profile numbers are temporary. Runtime implementation remains blocked.
 
 ## 7. Chronicle · `BS-CHRONICLE-20260825-27`
 
@@ -207,7 +244,7 @@ ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE
 MEANINGFUL_EVENT_HISTORY_ONLY
 ```
 
-Player Chronicle may retain creation, +10 keyword, durability damage, meaningful repair, MAX scar, handoff, world consequence, destruction, memorial/successor. Routine attempt clicks remain internal provenance/telemetry.
+Player Chronicle may retain creation, +10 keyword, durability damage, meaningful repair, MAX scar, handoff, world consequence, destruction, memorial/successor. Routine attempt clicks and schedule ticks remain internal provenance/telemetry.
 
 ## 8. Preserved product thesis
 
@@ -223,9 +260,9 @@ CHECKPOINT_FLOORS = [10,30,60,90]
 CUSTOMER_WORLD_RESULT = DELAYED_SAME_UID_CAUSALITY
 ```
 
-Decision29 adds a repair/push/stop choice inside the same core rather than creating a maintenance game as a second core.
+Decision29 adds a repair/push/stop choice inside the same core rather than creating a maintenance game as a second core. Decision30 makes world damage a causal result of actual use rather than a generic ownership tax.
 
-Existing success/recovery/attempt-cost/resource/economic values remain planning inputs and require Decision29 sensitivity revalidation.
+Existing success/recovery/attempt-cost/resource/economic values remain planning inputs and require Decision29/30 sensitivity revalidation.
 
 ## 9. First-session interpretation
 
@@ -239,12 +276,15 @@ NEW_GAME
 -> +11 first damage-eligible STOP/PUSH
 -> if damaged/scarred: show CURRENT/MAX/BASE_MAX + effective state
 -> REPAIR / PUSH DAMAGED / STOP
--> HANDOFF / DELAYED SAME-UID RESULT
+-> HANDOFF
+-> later actual-use event may resolve event-specific same-UID damage
 ```
 
-Do not teach obsolete hidden MAX bands; teach current visible numeric durability.
+Do not teach obsolete hidden MAX bands; teach current visible numeric durability. Do not fake an immediate world event just to demonstrate damage.
 
-## 10. Art direction · `BS-ART-20260825-03`
+## 10. Art direction + actual-game image consumer gate
+
+Current style direction remains:
 
 ```text
 ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK
@@ -252,16 +292,32 @@ ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION
 FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED
 ```
 
-Representative regeneration after system sync: Main Menu; Enhancement Main with visible durability; +9→+10 Precision Keyword; Durability/Repair/Structural Scar; event-only Chronicle. Old boards are information-architecture reference only where system semantics conflict.
+`BS-ART-20260826-04` changes the **visual delivery target**, not Art03's style:
+
+```text
+ACTUAL_GAME_CONSUMER_REQUIRED = TRUE
+NEW_EXPLANATORY_GDD_SHEET_IMAGE_TARGET = FALSE
+NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE
+PRIMARY_USE_GATE_REQUIRED = TRUE
+NO_CONSUMER = CUT_OR_DEFER
+GENERATED_UI_SCREENSHOT_MOCKUP_AS_PRODUCT_ASSET = FALSE
+FULL_FRAME_IMAGE_ALLOWED_ONLY_IF_RUNTIME_CONSUMES_FULL_FRAME = TRUE
+```
+
+The existing 8 Visual GDD images remain `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`. New image work starts from an actual product consumer slot and required consumer metadata, not from a desire to create another explanation sheet.
+
+Current consumer locators such as Main Menu, Enhancement, Precision +10, Durability/Repair, Customer World Result and Chronicle are **candidates only**. Each must pass Visual Requirement/Delete Test and a separate image-conversation approval Gate before any generation. Structured Notion/Figma/Godot layout work is preferred over fake generated screenshots for UI design.
 
 ## 11. Supersession boundary
 
 - Decision26 no-numeric-authority and one-state-per-event fields: `PARTIALLY_SUPERSEDED_BY_BS-REPAIR-20260826-29`.
+- Decision26 customer/world-event hook is refined by `BS-DAMAGE-20260826-30` for eligibility/profile/probability composition.
 - Historical 0~100 CURRENT/MAX scale, old MAX bands/success/effect penalties: historical only.
 - Old repair formulas and `MAX +15 / cap60` overhaul: historical/superseded; not fallback.
 - Old DAMAGE/CRITICAL family ratios: historical; not Decision28/29 authority.
 - Old multi-precision cadence: partially superseded; +10-only current.
 - Old Visual GDD numeric durability values: `SYSTEM_SEMANTICS_STALE`.
+- Existing Visual GDD 8: historical information-architecture references; not new image-batch templates or runtime assets.
 
 ## 12. Implementation Reality Gate
 
@@ -270,8 +326,12 @@ PLANNING_DESIGN = USER_APPROVED
 DAMAGE_CURVE_NUMBERS = USER_APPROVED / BS-DAMAGE-20260826-28
 DURABILITY_REPAIR_STRUCTURE = USER_APPROVED / BS-REPAIR-20260826-29
 DURABILITY_REPAIR_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
+CUSTOMER_WORLD_EVENT_DAMAGE_POLICY = USER_APPROVED / BS-DAMAGE-20260826-30
+CUSTOMER_EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
+VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04
+IMAGE_GENERATION = NOT_RUN
+ACTUAL_RUNTIME_IMAGE_CONSUMPTION = NOT_RUN
 REPAIR_ECONOMY = NOT_FINAL
-CUSTOMER_EVENT_DAMAGE_NUMBERS = NOT_FINAL
 FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
 UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 RUNTIME_IMPLEMENTATION_OF_NEW_CORE = NOT_RUN / BLOCKED
@@ -280,16 +340,15 @@ ANDROID_ACCESSIBILITY = NOT_RUN
 NOTION_CLIENT_GEOMETRY = NOT_RUN
 ```
 
-V2 runtime field-name similarity is not Decision29 implementation proof. Protected product paths remain untouched while PLAN gate is closed.
+V2 runtime field-name similarity is not Decision29/30 implementation proof. Protected product paths remain untouched while PLAN gate is closed.
 
 ## 13. Next planning order
 
 ```text
-1. CUSTOMER_WORLD_EVENT_DAMAGE_POLICY
-2. REPAIR_ECONOMY_REBASE + durability/economy sensitivity simulation
-3. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING if needed
-4. REPRESENTATIVE_VISUAL_REGENERATION_AFTER_SYSTEM_SYNC
-5. full planning adversarial review
-6. CURRENT_PLANNING_COMPLETE user declaration
-7. runtime implementation plan refresh and TDD migration
+1. REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY
+2. FAILURE_CONSEQUENCE_COMPOSITION + UI_DAMAGE_PERCENT_ROUNDING if needed
+3. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
+4. full planning adversarial review
+5. CURRENT_PLANNING_COMPLETE user declaration
+6. runtime implementation plan refresh and TDD migration
 ```

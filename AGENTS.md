@@ -1,8 +1,8 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-08 / POSTMERGE_PLANNING / CUSTOMER_EVENT_DAMAGE_POLICY_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고 현재 기획·문서·인수인계 작업이 그 Gate를 자동으로 열지 않는다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-08 / POSTMERGE_PLANNING / REPAIR_ECONOMY_REBASE_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고 현재 기획·문서·인수인계 작업이 그 Gate를 자동으로 열지 않는다.
 
-현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
+현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-DAMAGE-20260826-30 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
 
 ## 1. 권위 순서
 
@@ -10,43 +10,55 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작�
 2. `AGENTS.md`
 3. `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md` — fresh-read cold-start locator
 4. `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
-5. `docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
-6. `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`
-7. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
-8. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
-9. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 최신 override와 충돌하는 상단 역사 snapshot은 current authority가 아님
-10. 2026-08-20/24 분야별 Canon·current registry — Decisions25~29/Art03과 같은 필드가 충돌하면 역사·부분대체 evidence
-11. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 구현 drift가 최신 승인 기획을 덮어쓰지 않음
-12. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference
-13. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
-14. R2/R3 Game Bible·과거 PoC·구형 data/runtime
-15. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
-16. 외부 벤치마크·과거 대화·AI 추론
+5. `docs/decisions/BS-DAMAGE-20260826-30_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY.md` + `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
+6. `docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
+7. `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`
+8. `docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md` + `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
+9. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
+10. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
+11. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 최신 override와 충돌하는 상단 역사 snapshot은 current authority가 아님
+12. 2026-08-20/24 분야별 Canon·current registry — Decisions25~30/Art03~04와 같은 필드가 충돌하면 역사·부분대체 evidence
+13. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 구현 drift가 최신 승인 기획을 덮어쓰지 않음
+14. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference
+15. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+16. R2/R3 Game Bible·과거 PoC·구형 data/runtime
+17. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
+18. 외부 벤치마크·과거 대화·AI 추론
 
 현재 workspace routing:
 
 - `Notion Project Home = HUMAN_PROJECT_HOME_IS_LIVING_GDD_VISUAL_DASHBOARD`
 - `HUMAN_RELEVANT_PROJECT_OUTPUTS_VIEWABLE_FROM_HOME`
-- `EXPLANATORY_VISUAL_GDD_BEFORE_DECORATIVE_ART`
+- `EXPLANATORY_VISUAL_GDD_BEFORE_DECORATIVE_ART = HISTORICAL_PRE_DECISION04`
+- `ACTUAL_GAME_CONSUMER_REQUIRED`
+- `NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE`
+- `PRIMARY_USE_GATE_REQUIRED`
 - `Project Registry / System Record = AI_OPERATIONAL_SURFACE`
 - `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH` = Markdown·JSON·game data·code·Scene/Resource·tests·CI/runtime truth
 - Google Sheet = unique 미이관 자료와 same-ID compatibility mirror가 필요한 경우의 migration surface. 신규 기본 기획 작업공간이나 runtime 증거가 아니다.
 
 `BS-OPS-20260825-03`에 따라 사람용 Home은 단순 링크 허브가 아니다. 게임 정체성 → 플레이 구조 → 핵심 시스템 → Flow → UI/Visual 방향 → 핵심 사람용 데이터 → 콘텐츠 맥락 → 사람용 구현 현실을 스크롤 안에서 직접 이해할 수 있어야 한다.
 
-### 1.1 Human Home · Visual GDD 규칙
+### 1.1 Human Home · Visual 규칙
 
 - current art-direction Decision은 `BS-ART-20260825-03`.
+- current image-delivery Decision은 `BS-ART-20260826-04`.
 - `ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK`.
 - `ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION`.
 - 손그림 공방 노트, 종이·가죽·철·목재 물성, 따뜻한 공방 분위기, 현대적 판독 가능한 상호작용 계층을 사용한다.
+- `ACTUAL_GAME_CONSUMER_REQUIRED = TRUE`: 신규 생성 이미지는 실제 게임 UI/flow/runtime slot이라는 consumer가 있어야 한다.
+- `NEW_EXPLANATORY_GDD_SHEET_IMAGE_TARGET = FALSE`: Notion 설명이 필요하면 Mermaid/표/텍스트 등 구조화 표현을 우선하며 신규 설명용 raster sheet를 생산하지 않는다.
+- `GENERATED_UI_SCREENSHOT_MOCKUP_AS_PRODUCT_ASSET = FALSE`: generated fake screenshot은 layout discussion reference일 수 있으나 제품 asset이 아니다.
+- `FULL_FRAME_IMAGE_ALLOWED_ONLY_IF_RUNTIME_CONSUMES_FULL_FRAME = TRUE`.
+- `NO_CONSUMER = CUT_OR_DEFER`: consumer가 사라진 후보를 설명 자료로 자동 전용하지 않는다.
 - 기존 `STYLIZED_DARK_FORGE`/검정·금색 생성형 보드는 `LEGACY_VISUAL_REFERENCE_NOT_FINAL_STYLE_CANON`; 정보구조 참고 외 자동 재사용하지 않는다.
-- 기존 8개 Visual GDD는 `INFORMATION_ARCHITECTURE_AND_EXPLANATORY_GDD` reference이며 final style/runtime/release asset 승인이 아니다. old CURRENT/MAX 값·old MAX penalty·구형 precision·날짜별 강화 로그는 `SYSTEM_SEMANTICS_STALE`이다. Decision29이 숫자 내구도를 다시 도입했다고 해서 구형 수치/공식이 되살아나는 것은 아니다.
+- 기존 8개 Visual GDD는 `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`이며 final style/runtime/release asset 승인이 아니다. old CURRENT/MAX 값·old MAX penalty·구형 precision·날짜별 강화 로그는 `SYSTEM_SEMANTICS_STALE`이다.
 - 사용자가 제공한 예시 이미지는 `REFERENCE_ONLY_LAYOUT_DENSITY`이며 승인 Asset으로 승격하지 않는다.
 - 사람에게 필요한 핵심 수치·규칙·밸런스 표를 AI Workspace에만 숨기지 않는다.
 - `Asset Library row / Approved=true / Drive Source`는 `Notion Preview binary` 증거가 아니다.
 - Notion server readback은 실제 client geometry/render 관찰을 대체하지 않는다.
-- 대표 재생성은 current mechanic sync 뒤 `Main Menu / Enhancement Main(+1 + visible durability) / +9→+10 Precision Keyword / Durability·Repair·Structural Scar / Event-only Chronicle` 순으로 소수 화면부터 검증한다.
+- 실제 이미지 생성 전 `consumer_id / consumer_surface / runtime_asset_role / primary_use / implementation_owner_or_path / target_aspect_resolution / state_family_requirement / fallback_if_unconsumed`를 가진 Visual Requirement를 만들고 별도 Image Conversation Approval Gate를 통과한다.
+- `MAIN_MENU / ENHANCEMENT_MAIN / PRECISION_+9_TO_+10 / DURABILITY_REPAIR / CUSTOMER_WORLD_RESULT / ITEM_CHRONICLE`는 consumer 후보 locator일 뿐 자동 이미지 생성 목록이 아니다.
 
 ## 2. 필수 작업 순서
 
@@ -185,9 +197,36 @@ MAX_DURABILITY_FLOOR = 1
 
 모든 상세 수치는 `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. `4/4/5`처럼 CURRENT가 MAX까지 회복돼도 MAX/BASE_MAX가 0.8이므로 MINOR가 남고 구조 흉터는 실제 강화 패널티로 유지된다. 수리비·재료비는 `NOT_FINAL / FOLLOWUP_REBASE_REQUIRED`이며 구형 CURRENT→MAX 수리비 공식과 `MAX +15 / cap60` 대수선은 fallback이 아니다.
 
-### 4.4 Other current rules
+### 4.4 Decision30 customer/world event damage
 
-- `CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE`; 구매/인계 자체는 damage가 아니다. 정확 event eligibility/probability는 후속 Gate.
+```text
+BS-DAMAGE-20260826-30
+PURCHASE_OR_HANDOFF_ITSELF_CAUSES_DAMAGE = FALSE
+ACTUAL_ITEM_USE_REQUIRED = TRUE
+MAX_DAMAGE_ROLLS_PER_EVENT_PER_UID = 1
+MISSION_OUTCOME_AND_ITEM_DAMAGE = INDEPENDENT_AXES
+WORLD_EVENT_MAX_DURABILITY_DAMAGE = FALSE
+NO_UNIVERSAL_CUSTOMER_DAMAGE_PERCENT
+```
+
+임시 event profile:
+
+```text
+NONE = 0%
+LOW = 10%
+MEDIUM = 20%
+HIGH = 40%
+DIRECT = 100%
+PROBABILISTIC_DAMAGE_CAP = 95%
+EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
+```
+
+`NONE/LOW/MEDIUM/HIGH`는 Decision29 effective-state damage-risk multiplier를 재사용한다. `DIRECT`는 확률형 cap/multiplier를 거치지 않고 Decision29 damage event 1회를 확정한다. world/customer event는 MAX를 직접 깎지 않으며 실제 damage가 발생하면 Decision29이 CURRENT와 derived state를 소유한다.
+
+명시적으로 관련된 item keyword/function은 event가 causal relevance를 선언한 경우에만 probabilistic profile을 최대 1단계 낮출 수 있다. universal keyword damage bonus는 금지하고 generic keyword로 DIRECT를 완화하지 않는다.
+
+### 4.5 Other current rules
+
 - `ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE`; 제작·키워드·손상·MAX scar 수리·인계·세계 결과·파괴 등 의미 사건만 player Chronicle.
 - 제작 등급은 `보통 / 우수 / 명품 / 걸작 / 전설`.
 - 예술성은 단계명 없는 `1~10`, 전투력을 기본적으로 올리지 않는다.
@@ -213,8 +252,10 @@ project.godot
 - 한 질문에는 활성 책임 원본 하나만 둔다.
 - `[대체됨] / [부분 대체됨] / [보류] / [폐기] / [역사 증거]`를 직접 표시한다.
 - Decision26의 `CURRENT_MAX_AUTHORITY = SUPERSEDED`와 one-state-per-event는 Decision29에 의해 같은 필드에서 부분대체됐다.
+- Decision26의 customer/world-event damage hook은 Decision30이 eligibility/profile/probability composition을 refine한다.
 - 구형 CURRENT/MAX 수치·MAX penalty·repair price·overhaul 공식은 Decision29이 아니다.
 - 구형 `HOLD / DOWNGRADE / DAMAGE / CRITICAL` 비율은 Decision28/29 확률 또는 failure composition fallback이 아니다.
+- 기존 Visual GDD 8은 `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`; 신규 설명용 이미지 batch template이 아니다.
 - `CURRENT_CONFIRMED_DECISIONS.md`는 역사 원장이다.
 - PR #81은 `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT`.
 - pre-existing PR #196은 `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`; 현재 PR과 흡수·수정·병합하지 않는다.
@@ -273,7 +314,7 @@ project.godot
 - previous `v4.8-r4` is `HISTORICAL_SUPERSEDED_BY_R5_4`.
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` v4.5 r2는 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`.
 - historical compatibility anchor: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — historical only.
-- current operational override Decisions: `BS-OPS-20260825-08`, `BS-OPS-20260825-07`, `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-REPAIR-20260826-29`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-OPS-20260825-03`, `BS-OPS-20260825-02`.
+- current operational override Decisions: `BS-OPS-20260825-08`, `BS-OPS-20260825-07`, `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-REPAIR-20260826-29`, `BS-DAMAGE-20260826-30`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-ART-20260826-04`, `BS-OPS-20260825-03`, `BS-OPS-20260825-02`.
 - 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`.
 - 선행 조사 Gate: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`.
 - `PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`, `TASK3_IMPLEMENTATION: NOT_SEPARATELY_APPROVED` 유지.

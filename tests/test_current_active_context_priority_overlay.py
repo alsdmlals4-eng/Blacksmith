@@ -27,7 +27,7 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("BS-OPS-20260825-08", handoff)
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", handoff)
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", handoff)
-        self.assertIn("CURRENT_PLANNING_WORK = CUSTOMER_WORLD_EVENT_DAMAGE_POLICY", handoff)
+        self.assertIn("CURRENT_PLANNING_WORK = REPAIR_ECONOMY_REBASE + DURABILITY_ECONOMY_SENSITIVITY", handoff)
 
         self.assertIn("CURRENT_PRIORITY_OVERLAY", overlay)
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", overlay)
@@ -36,15 +36,22 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
             "BS-DAMAGE-20260825-26",
             "BS-DAMAGE-20260826-28",
             "BS-REPAIR-20260826-29",
+            "BS-DAMAGE-20260826-30",
             "BS-CHRONICLE-20260825-27",
             "BS-ART-20260825-03",
+            "BS-ART-20260826-04",
         ):
             self.assertIn(decision, overlay)
 
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", authority)
         self.assertIn("BS-REPAIR-20260826-29", authority)
+        self.assertIn("BS-DAMAGE-20260826-30", authority)
+        self.assertIn("BS-ART-20260826-04", authority)
         self.assertIn("DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC", authority)
+        self.assertIn("ACTUAL_GAME_CONSUMER_REQUIRED = TRUE", authority)
         self.assertIn("BS-REPAIR-20260826-29", current_owner)
+        self.assertIn("BS-DAMAGE-20260826-30", current_owner)
+        self.assertIn("BS-ART-20260826-04", current_owner)
         self.assertIn("DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW", current_owner)
 
         self.assertLess(
@@ -66,7 +73,7 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         )
 
         self.assertIn("ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER", agents)
-        self.assertIn("Decisions25~29/Art03", agents)
+        self.assertIn("Decisions25~30/Art03~04", agents)
         self.assertNotIn("25~27/Art03", agents)
 
 

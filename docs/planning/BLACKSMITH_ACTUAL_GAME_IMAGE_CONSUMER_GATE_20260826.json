@@ -1,0 +1,52 @@
+{
+  "decision_id": "BS-ART-20260826-04",
+  "status": "USER_APPROVED_PROJECT_VISUAL_DELIVERY_CANON",
+  "art_direction_owner": "BS-ART-20260825-03",
+  "actual_game_consumer_required": true,
+  "new_explanatory_gdd_sheet_image_target": false,
+  "generated_ui_screenshot_mockup_as_product_asset": false,
+  "full_frame_image_allowed_only_if_runtime_consumes_full_frame": true,
+  "primary_use_gate_required": true,
+  "no_consumer_disposition": "CUT_OR_DEFER",
+  "existing_visual_gdd_8_status": "HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY",
+  "required_consumer_metadata": [
+    "consumer_id",
+    "consumer_surface",
+    "runtime_asset_role",
+    "primary_use",
+    "implementation_owner_or_path",
+    "target_aspect_resolution",
+    "state_family_requirement",
+    "fallback_if_unconsumed"
+  ],
+  "ui_layout_prototype_is_not_generated_raster_asset": true,
+  "notion_explanatory_diagram_may_use_structured_flow_not_generated_sheet": true,
+  "image_generation_requires_separate_conversation_approval_gate": true,
+  "automatic_generation_from_candidate_consumer_list": false,
+  "candidate_consumer_locators_not_auto_requirements": [
+    "MAIN_MENU",
+    "ENHANCEMENT_MAIN",
+    "PRECISION_+9_TO_+10",
+    "DURABILITY_REPAIR",
+    "CUSTOMER_WORLD_RESULT",
+    "ITEM_CHRONICLE"
+  ],
+  "eligible_runtime_asset_role_examples": [
+    "SCREEN_BACKGROUND",
+    "EVENT_ILLUSTRATION",
+    "ITEM_PORTRAIT_OR_ICON",
+    "CUSTOMER_PORTRAIT_OR_EVENT_VIGNETTE",
+    "UI_ORNAMENT_OR_FRAME",
+    "STATE_VARIANT_ASSET",
+    "FULL_FRAME_STATIC_ART_IF_RUNTIME_CONSUMES_IT_AS_FULL_FRAME"
+  ],
+  "forbidden_new_generation_targets": [
+    "STANDALONE_EXPLANATION_BOARD",
+    "TEXT_HEAVY_GDD_SHEET_RENDERED_AS_IMAGE",
+    "FAKE_GAMEPLAY_SCREENSHOT_ONLY_FOR_LAYOUT_EXPLANATION",
+    "NOTION_ONLY_COMPARISON_SHEET",
+    "CONCEPT_COLLAGE_WITHOUT_MAPPED_PRODUCT_SLOT"
+  ],
+  "image_generation": "NOT_RUN",
+  "actual_runtime_consumption": "NOT_RUN"
+}
