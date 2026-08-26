@@ -47,6 +47,12 @@ func test_first_forge_screen_completion_opens_workshop_with_saved_selected_item(
 	)
 	var envelope = initializer.create_candidate_envelope()
 	assert_true(menu.begin_first_forge(envelope), "empty current campaign must open the first forge")
+	assert_eq(menu._resources.gold, 20000, "first forge must restore saved TEMP_TEST_BUDGET gold")
+	assert_eq(
+		menu._resources.get_material_count("common_reinforcement_material"),
+		10,
+		"first forge must restore saved TEMP_TEST_BUDGET reinforcement material"
+	)
 	await get_tree().process_frame
 	assert_true(menu.has_active_first_forge(), "first forge screen must be mounted")
 
