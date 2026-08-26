@@ -1,8 +1,8 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-08 / POSTMERGE_PLANNING / DAMAGE_PROBABILITY_CURVE_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리·인수인계 작업이 그 Gate를 자동으로 열지 않는다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-08 / POSTMERGE_PLANNING / FOUR_STATE_REPAIR_MODEL_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리·인수인계 작업이 그 Gate를 자동으로 열지 않는다.
 
-현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`이며 current owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
+현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`이며 current owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`다. Decision28 exact curve의 기계 판독 owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`이고, 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
 
 ## 1. 권위 순서
 
@@ -10,16 +10,17 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작�
 2. `AGENTS.md`
 3. `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md` — 새 채팅 cold-start locator; 반드시 fresh-read를 요구하며 자체가 discovery를 대체하지 않음
 4. `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
-5. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
-6. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
-7. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 상단 2026-08-20 snapshot은 25~27/Art03과 충돌하는 필드에서 current authority가 아니며 새 handoff/current owner보다 우선하지 않음
-8. 2026-08-20/24 분야별 Canon·current registry — 단, 25~27/Art03과 같은 필드가 충돌하면 역사·부분대체 증거
-9. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 현재 제품 구현 Gate가 닫힌 동안 구현 drift는 기획 의도를 덮어쓰지 않음
-10. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림
-11. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
-12. R2/R3 Game Bible·과거 PoC·구형 data/runtime — 역사·비교 증거
-13. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
-14. 외부 벤치마크·과거 대화·AI 추론
+5. `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — Decision28 exact curve owner
+6. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
+7. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
+8. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 상단 2026-08-20 snapshot은 25~28/Art03과 충돌하는 필드에서 current authority가 아니며 새 handoff/current owner보다 우선하지 않음
+9. 2026-08-20/24 분야별 Canon·current registry — 단, 25~28/Art03과 같은 필드가 충돌하면 역사·부분대체 증거
+10. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 현재 제품 구현 Gate가 닫힌 동안 구현 drift는 최신 승인 기획을 덮어쓰지 않음
+11. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference와 사람이 수정하는 전체 그림
+12. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+13. R2/R3 Game Bible·과거 PoC·구형 data/runtime — 역사·비교 증거
+14. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
+15. 외부 벤치마크·과거 대화·AI 추론
 
 현재 workspace routing:
 
@@ -112,7 +113,9 @@ RED → GREEN → REFACTOR
 - current Precision Enhancement cadence는 `+9 -> +10 = PRECISION_ENHANCEMENT` 하나뿐이다. 성공한 +10에서 플레이어용 `ITEM_KEYWORD` 하나가 생성되고 machine owner는 기존 `CATALYST_AFFIX`다. 네 번째 affix 슬롯을 만들지 않는다.
 - 수식어 machine slot은 `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX` 세 슬롯을 유지한다.
 - 손상 정본은 `NORMAL -> MINOR -> MAJOR -> DESTROYED` 한 축이다. 숨은 CURRENT/MAX 수치축을 current gameplay authority로 두지 않는다.
-- `TARGET <= +10` 강화 실패에서는 손상이 발생하지 않는다. `TARGET >= +11` 실패부터 손상 가능성이 열리며, target이 높아질수록 조건부 손상 확률은 `MONOTONIC_NON_DECREASING_DAMAGE_RISK`를 따른다. 정확 수치는 `NOT_FINAL / USER_APPROVAL_REQUIRED`다.
+- `TARGET <= +10` 강화 실패에서는 손상이 발생하지 않는다. `TARGET >= +11` 실패부터 손상 가능성이 열리며 `P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)`의 승인 앵커는 `+11 5% / +30 6% / +60 7% / +90 8% / +100 10%`, 인접 앵커 사이는 exact piecewise-linear interpolation이다. `BS-DAMAGE-20260826-28`이 이 수치를 소유한다.
+- 한 damage event는 정확히 한 상태만 진행한다. Decision28은 손상 판정 확률만 소유하며 `FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED_BY_THIS_DECISION`; 손상과 DOWNGRADE/HOLD의 동시 발생 여부를 추론하지 않는다.
+- canonical 확률에는 반올림이 없다. `UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED`이며 향후 표시 반올림이 resolver 확률을 바꾸면 안 된다.
 - `CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE`; 고객의 구매·인계 자체가 손상을 발생시키지 않으며 실제 지연 이벤트의 사용 결과가 same UID 손상을 한 단계 진행시킬 수 있다.
 - player-facing Chronicle은 `ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE`; 날짜별 강화 성공/실패 나열 대신 제작·키워드·손상·중요 수리·인계·세계 결과·파괴 같은 의미 사건만 보여준다.
 - 제작 등급은 `보통 / 우수 / 명품 / 걸작 / 전설` 다섯 단계의 출생 완성도다.
@@ -120,7 +123,7 @@ RED → GREEN → REFACTOR
 - 예술성은 전투력을 기본적으로 올리지 않는다.
 - 보조재료 슬롯과 일반 수식어 A·B는 재도입하지 않는다.
 - PRIMARY CORE는 `강화의 긴장감 + DDD`이며 정밀제작·고객/세계 인과·UID/생애·손상/수리·경제는 이를 지지하는 SUPPORT다.
-- `DAMAGE_PROBABILITY_CURVE / MINOR_MAJOR_REPAIR_MODEL / CUSTOMER_EVENT_DAMAGE_POLICY / MAJOR_ENHANCEMENT_ELIGIBILITY`는 후속 승인 Gate이며 구형 CURRENT/MAX 공식을 자동 fallback으로 쓰지 않는다.
+- `MINOR_MAJOR_REPAIR_MODEL / CUSTOMER_EVENT_DAMAGE_POLICY / MAJOR_ENHANCEMENT_ELIGIBILITY / FAILURE_CONSEQUENCE_COMPOSITION / UI_DAMAGE_PERCENT_ROUNDING`는 후속 승인·구현안전 Gate이며 구형 CURRENT/MAX 또는 DAMAGE/CRITICAL 공식을 자동 fallback으로 쓰지 않는다.
 
 ## 5. 보호 경로
 
@@ -143,6 +146,7 @@ project.godot
 - `[대체됨] / [부분 대체됨] / [보류] / [폐기] / [역사 증거]`를 직접 표시한다.
 - 과거 PASS는 해당 과거 HEAD의 증거일 뿐 현재 제품 PASS가 아니다.
 - `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`와 충돌하는 CURRENT/MAX·다중 정밀강화·날짜별 Chronicle 표현은 역사/부분대체 증거다.
+- 구형 `HOLD / DOWNGRADE / DAMAGE / CRITICAL` 조건부 비율은 Decision28 확률곡선이나 failure composition의 fallback이 아니다.
 - PR #81은 `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT`이다.
 - pre-existing PR #196은 `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`이며 현재 기획 정리 PR과 흡수·수정·병합하지 않는다.
 
@@ -213,7 +217,7 @@ GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/
 - previous user-supplied `v4.8-r4` contract is `HISTORICAL_SUPERSEDED_BY_R5_4` and cannot override the current r5.4 contract.
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`의 v4.5 r2 내용은 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`다. 이번 작업에서 파일 자체를 조용히 v4.8로 가장하지 않으며 안전한 추후 migration 전까지 역사/충돌 증거로만 취급한다.
 - historical compatibility anchor: 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — **historical only, current execution authority 아님**.
-- current operational override Decision: `BS-OPS-20260825-08` (session handoff), `BS-OPS-20260825-07` (core simplification canon migration), `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)
+- current operational override Decision: `BS-OPS-20260825-08` (session handoff), `BS-OPS-20260825-07` (core simplification canon migration), `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)
 - 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`
 - 선행 조사 Gate Decision: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`
 - 같은 승인 범위는 기술 재검증 후 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확대만 별도 사용자 Decision이 필요하다.
