@@ -1,6 +1,6 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
-- 상태: `CURRENT_AUTHORITY_INDEX`
+- 상태: `CURRENT_AUTHORITY_INDEX / POSTMERGE_PLANNING`
 - current decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
 - current owner: `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
 - Work Mode: `PLAN`
@@ -227,14 +227,15 @@ These are not implementation defaults. Old CURRENT/MAX formulas are prohibited a
 
 ## 7. Current work order
 
+Core simplification canon migration is complete on merged main `5c29af1e0bb633f8d4513aee16987a3ff9889a4b`. That SHA is completion evidence, not a permanent live-head pointer.
+
 ```text
-1. CORE_SIMPLIFICATION_CANON_MIGRATION
-2. DAMAGE_PROBABILITY_CURVE
-3. MINOR_MAJOR_REPAIR_MODEL + MAJOR_ENHANCEMENT_ELIGIBILITY
-4. CUSTOMER_EVENT_DAMAGE_POLICY
-5. REPRESENTATIVE_VISUAL_REGENERATION_AFTER_SYSTEM_SYNC
-6. CURRENT_PLANNING_COMPLETE user declaration
-7. runtime implementation plan refresh and TDD migration
+1. DAMAGE_PROBABILITY_CURVE
+2. MINOR_MAJOR_REPAIR_MODEL + MAJOR_ENHANCEMENT_ELIGIBILITY
+3. CUSTOMER_EVENT_DAMAGE_POLICY
+4. REPRESENTATIVE_VISUAL_REGENERATION_AFTER_SYSTEM_SYNC
+5. CURRENT_PLANNING_COMPLETE user declaration
+6. runtime implementation plan refresh and TDD migration
 ```
 
 ## 8. Runtime reality / drift
@@ -268,7 +269,7 @@ AI/System
 - Decision IDs / PR / SHA / evidence ceiling / unresolved gates
 
 Google Sheet
-- same-ID compatibility rows only
+- migration-only unique/unmigrated or same-ID compatibility rows when actually needed; never active planning/runtime canon
 ```
 
 Pre-existing PR #196 remains `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`.
@@ -277,8 +278,8 @@ Pre-existing PR #196 remains `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`.
 
 ```text
 PLANNING_DESIGN = USER_APPROVED
-CURRENT_CANON_MIGRATION = IN_PROGRESS_UNTIL_PR_MERGE
-DAMAGE_CURVE_NUMBERS = NOT_FINAL
+CURRENT_CANON_MIGRATION = COMPLETE / MAIN_5c29af1_POSTMERGE_READBACK_PASS
+DAMAGE_CURVE_NUMBERS = NOT_FINAL / USER_APPROVAL_REQUIRED
 REPAIR_MODEL = NOT_DECIDED
 CUSTOMER_EVENT_DAMAGE_NUMBERS = NOT_FINAL
 RUNTIME_IMPLEMENTATION = NOT_RUN / BLOCKED

@@ -1,6 +1,6 @@
 # Blacksmith AI 작업 규칙
 
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-08 / SESSION_HANDOFF / LIVING_GDD_HOME / CORE_SIMPLIFICATION_CANON_SYNC / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리·인수인계 작업이 그 Gate를 자동으로 열지 않는다.
+Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. 현재 작업 상태는 `BS-OPS-20260825-08 / POSTMERGE_PLANNING / DAMAGE_PROBABILITY_CURVE_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK`이며 `WORK_MODE: PLAN`이다. 일반 제품 구현은 `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`이고, 현재 기획·문서 정리·인수인계 작업이 그 Gate를 자동으로 열지 않는다.
 
 현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`이며 current owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
 
@@ -124,7 +124,7 @@ RED → GREEN → REFACTOR
 
 ## 5. 보호 경로
 
-현재 `PLANNING_REACTIVATED` 단계에서 새 제품 구현 승인 전 변경 금지:
+현재 `PLAN / POSTMERGE_PLANNING` 단계에서 새 제품 구현 승인 전 변경 금지:
 
 ```text
 data/
@@ -175,7 +175,7 @@ Android·Google Play 출시에서는 콘텐츠 등급과 target audience를 분�
 
 ### 9.1 Current host/runtime routing
 
-현재 runtime/toolchain 선택은 사용자 제공 v4.8 r4와 최신 Base owner를 따른다.
+현재 runtime/toolchain 선택은 사용자 제공 v4.8 r5.4와 최신 Base owner를 따른다.
 
 - 프로젝트별 동일 Godot binary 복사본·전용 포트를 기본적으로 증식하지 않는다.
 - shared approved exact Godot pin + shared approved Godot AI exact pin + provider fixed/default ports가 기본이다.
@@ -208,8 +208,9 @@ GUT runtime은 Git 추적 파일을 수정할 수 없고, HiGodot은 `tests/gut/
 
 ## 10. 현재 프로젝트 총 작업지시문
 
-- current task execution contract: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r4_20260824.md`
-- `CURRENT_EXECUTION_CONTRACT_STATE: USER_SUPPLIED_V4_8_R4_CURRENT`
+- current task execution contract: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r5.4_SUPERSET_FINAL_20260826.md`
+- `CURRENT_EXECUTION_CONTRACT_STATE: USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT`
+- previous user-supplied `v4.8-r4` contract is `HISTORICAL_SUPERSEDED_BY_R5_4` and cannot override the current r5.4 contract.
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md`의 v4.5 r2 내용은 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`다. 이번 작업에서 파일 자체를 조용히 v4.8로 가장하지 않으며 안전한 추후 migration 전까지 역사/충돌 증거로만 취급한다.
 - historical compatibility anchor: 작업지시문 정본: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — **historical only, current execution authority 아님**.
 - current operational override Decision: `BS-OPS-20260825-08` (session handoff), `BS-OPS-20260825-07` (core simplification canon migration), `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-OPS-20260825-03` (Home/Visual projection), `BS-OPS-20260825-02` (planning reactivation/workspace split)

@@ -2,8 +2,9 @@
 
 - Decision ID: `BS-OPS-20260825-08`
 - Date: `2026-08-25 KST`
-- Status: `CURRENT_SESSION_HANDOFF / PLANNING_ONLY`
-- Current task PR: `#207 / plan/core-simplification-20260825`
+- Status: `CURRENT_SESSION_HANDOFF / POSTMERGE_PLANNING_ONLY`
+- `PR #207 = MERGED_TO_MAIN / 5c29af1e0bb633f8d4513aee16987a3ff9889a4b`
+- `CURRENT_PLANNING_WORK = DAMAGE_PROBABILITY_CURVE / USER_DECISION_REQUIRED`
 - Pre-existing protected PR: `#196 / OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
 - Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
 
@@ -14,13 +15,13 @@ Do not resume from chat memory alone. Before mutation:
 ```text
 1. fresh-read Base current main and relevant owner docs
 2. fresh-read Blacksmith default branch / latest commit / open PRs
-3. fresh-read Google Sheet current mirror
+3. fresh-read Google Sheet only as migration compatibility evidence for unique/unmigrated or same-ID drift; do not promote it to active canon
 4. fresh-read Notion Human Home / Core Detail / Visual Bible / AI System Record
 5. report authority conflicts before mutation
 6. preserve #196 read-only unless the user explicitly changes that boundary
 ```
 
-The next chat should treat this handoff as a locator, not as a substitute for fresh authority discovery.
+The next chat should treat this handoff as a locator, not as a substitute for fresh authority discovery. Any SHA written in this handoff is historical/post-merge evidence; the live repository head must always be re-read.
 
 ## 2. Current planning authority
 
@@ -160,16 +161,25 @@ FOUR_STATE_REPAIR_BALANCE = NOT_DECIDED
 CUSTOMER_EVENT_DAMAGE_BALANCE = NOT_FINAL
 ```
 
-## 10. Current PR and merge rule
+## 10. Post-merge state and next-PR rule
 
-PR #207 is the current planning/synchronization PR. It may be merged only after the exact current head has all required project workflows GREEN, current Base/main and Blacksmith/main are re-read, changed paths are reviewed, and #196 remains untouched.
+PR #207 was validated and merged into Blacksmith main as `5c29af1e0bb633f8d4513aee16987a3ff9889a4b` on 2026-08-25 KST. It is historical completion evidence, not the current task PR.
 
-After merge:
+```text
+CORE_SIMPLIFICATION_CANON_MIGRATION = COMPLETE
+GITHUB_NOTION_SYNC_FOR_DECISIONS25_27_ART03 = POSTMERGE_PASS
+CURRENT_PLANNING_WORK = DAMAGE_PROBABILITY_CURVE
+PRODUCT_RUNTIME_IMPLEMENTATION = BLOCKED
+PR_196 = OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER
+```
 
-- read new Blacksmith main;
-- set Notion System Record `Repo Main SHA` and `Sync State=SYNCED`;
-- replace Sheet premerge markers with the merged main SHA and `POSTMERGE_READBACK_PASS`;
-- record the final Base current main used for handoff.
+For any new planning PR:
+
+- fresh-read current Blacksmith `main` and current Base before branching;
+- start from current completed `main`, never from #207's old head;
+- inspect #196 only for overlap and keep it read-only;
+- keep Google Sheet migration-only unless a unique/unmigrated or same-ID compatibility reconciliation is actually required;
+- after merge, read new Blacksmith main and update the Notion System Record `Repo Main SHA` / `Sync State` when repository operational metadata changed.
 
 ## 11. Base learning/promotion handoff
 

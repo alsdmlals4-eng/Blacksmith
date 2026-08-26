@@ -2,10 +2,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CURRENT_OWNER = ROOT / "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md"
+HANDOFF = ROOT / "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md"
+AUTHORITY_INDEX = ROOT / "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md"
 ENTRYPOINTS = [
     ROOT / "AGENTS.md",
     ROOT / "CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md",
-    ROOT / "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
+    AUTHORITY_INDEX,
 ]
 
 REQUIRED_OWNER = [
@@ -58,6 +60,28 @@ def main() -> None:
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION" in agents
     assert "ART_STYLE_STATUS = REWORK_REQUIRED" not in agents
+
+    # Post-merge fresh-read routing must not send a new session back into the
+    # already-merged #207 synchronization workstream.
+    handoff_text = HANDOFF.read_text(encoding="utf-8")
+    assert "PR #207 = MERGED_TO_MAIN" in handoff_text
+    assert "CURRENT_PLANNING_WORK = DAMAGE_PROBABILITY_CURVE" in handoff_text
+    assert "Current task PR: `#207" not in handoff_text
+
+    assert "POSTMERGE_PLANNING / DAMAGE_PROBABILITY_CURVE_NEXT" in agents
+    assert "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT" in agents
+    assert "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r5.4_SUPERSET_FINAL_20260826.md" in agents
+    assert "USER_SUPPLIED_V4_8_R4_CURRENT" not in agents
+
+    authority_text = AUTHORITY_INDEX.read_text(encoding="utf-8")
+    assert "1. DAMAGE_PROBABILITY_CURVE" in authority_text
+    assert "CURRENT_CANON_MIGRATION = COMPLETE" in authority_text
+    assert "CORE_SIMPLIFICATION_CANON_MIGRATION\n2. DAMAGE_PROBABILITY_CURVE" not in authority_text
+
+    assert "GITHUB_CURRENT_CANON_SYNC = SYNCED" in owner_text
+    assert "NOTION_CURRENT_CANON_SYNC = SYNCED" in owner_text
+    assert "SHEET_SAME_ID_COMPATIBILITY = MIGRATION_ONLY / POSTMERGE_READBACK_PASS" in owner_text
+    assert "GITHUB_CURRENT_CANON_SYNC = IN_PROGRESS_UNTIL_MERGE" not in owner_text
 
     print("core simplification current contract: PASS")
 
