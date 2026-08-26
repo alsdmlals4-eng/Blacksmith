@@ -89,3 +89,22 @@ func test_campaign_configuration_binds_the_persisted_selected_item_to_workshop()
 	var screen = app.get_node("ScreenHost/WorkshopScreen")
 	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "5 / 5 / 5")
 	assert_eq(screen.get_node("WorkshopLayout/DurabilityStateLabel").text, "상태: NORMAL")
+
+
+func test_applied_first_forge_completion_rebinds_the_workshop_item() -> void:
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	var birth: Dictionary = ItemBirthServiceScript.new().commit_first_forge(envelope, {
+		"weapon_id": "iron_sword",
+		"base_attack": 22,
+		"crafting_grade": "CRAFT_SUPERIOR",
+		"artistry": 3,
+	})
+	assert_eq(birth.get("status", ""), "APPLIED")
+	var app = APP_SCENE.instantiate()
+	add_child_autofree(app)
+	assert_true(app.has_method("apply_first_forge_completion"), "app needs an explicit first-forge completion boundary")
+	if not app.has_method("apply_first_forge_completion"):
+		return
+	assert_true(app.apply_first_forge_completion({"status": "APPLIED", "envelope": envelope}, ResourcesScript.new()))
+	var screen = app.get_node("ScreenHost/WorkshopScreen")
+	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "5 / 5 / 5")

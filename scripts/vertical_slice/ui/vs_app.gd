@@ -44,6 +44,12 @@ func configure_campaign(envelope, resources, maintenance_service = null) -> bool
 	return configure_workshop_context(selected_item, resources, maintenance_service)
 
 
+func apply_first_forge_completion(completion: Dictionary, resources, maintenance_service = null) -> bool:
+	if str(completion.get("status", "")) != "APPLIED":
+		return false
+	return configure_campaign(completion.get("envelope", null), resources, maintenance_service)
+
+
 func configure_workshop_context(item, resources, maintenance_service = null) -> bool:
 	var workshop_screen := get_node_or_null("ScreenHost/WorkshopScreen")
 	if workshop_screen == null or not workshop_screen.has_method("configure_context"):
