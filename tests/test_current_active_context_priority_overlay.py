@@ -27,19 +27,25 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("BS-OPS-20260825-08", handoff)
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", handoff)
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", handoff)
+        self.assertIn("CURRENT_PLANNING_WORK = CUSTOMER_WORLD_EVENT_DAMAGE_POLICY", handoff)
 
         self.assertIn("CURRENT_PRIORITY_OVERLAY", overlay)
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", overlay)
-        self.assertIn("BS-ENHANCE-20260825-25", overlay)
-        self.assertIn("BS-DAMAGE-20260825-26", overlay)
-        self.assertIn("BS-DAMAGE-20260826-28", overlay)
-        self.assertIn("BS-CHRONICLE-20260825-27", overlay)
-        self.assertIn("BS-ART-20260825-03", overlay)
+        for decision in (
+            "BS-ENHANCE-20260825-25",
+            "BS-DAMAGE-20260825-26",
+            "BS-DAMAGE-20260826-28",
+            "BS-REPAIR-20260826-29",
+            "BS-CHRONICLE-20260825-27",
+            "BS-ART-20260825-03",
+        ):
+            self.assertIn(decision, overlay)
 
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", authority)
-        self.assertIn("BS-ENHANCE-20260825-25", current_owner)
-        self.assertIn("BS-DAMAGE-20260825-26", current_owner)
-        self.assertIn("BS-DAMAGE-20260826-28", current_owner)
+        self.assertIn("BS-REPAIR-20260826-29", authority)
+        self.assertIn("DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC", authority)
+        self.assertIn("BS-REPAIR-20260826-29", current_owner)
+        self.assertIn("DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW", current_owner)
 
         self.assertLess(
             agents.index("BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md"),
@@ -50,8 +56,6 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
         agents = AGENTS.read_text(encoding="utf-8")
 
-        # The old router is retained for provenance/compatibility. It is not
-        # rewritten to pretend its 2026-08-20 snapshot is today's authority.
         self.assertIn("CURRENT_PRIORITY_OVERLAY", active[:2500])
         self.assertIn("BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION", active[:2500])
         self.assertIn("BS-OPS-20260811-03", active)
@@ -61,10 +65,8 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
             active,
         )
 
-        # Current routing explicitly demotes this frozen snapshot instead of
-        # making history mutable every time a successor decision lands.
         self.assertIn("ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER", agents)
-        self.assertIn("25~28/Art03", agents)
+        self.assertIn("Decisions25~29/Art03", agents)
         self.assertNotIn("25~27/Art03", agents)
 
 

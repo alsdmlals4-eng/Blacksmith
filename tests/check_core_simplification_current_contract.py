@@ -8,6 +8,8 @@ HANDOFF = ROOT / "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLI
 AUTHORITY_INDEX = ROOT / "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md"
 DAMAGE_CURVE = ROOT / "docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json"
 DAMAGE_DECISION = ROOT / "docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md"
+DURABILITY_MODEL = ROOT / "docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json"
+DURABILITY_DECISION = ROOT / "docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md"
 ENTRYPOINTS = [
     ROOT / "AGENTS.md",
     ROOT / "CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md",
@@ -18,16 +20,18 @@ REQUIRED_OWNER = [
     "BS-ENHANCE-20260825-25",
     "BS-DAMAGE-20260825-26",
     "BS-DAMAGE-20260826-28",
+    "BS-REPAIR-20260826-29",
     "BS-CHRONICLE-20260825-27",
     "BS-ART-20260825-03",
     "SUCCESS_LEVEL_DELTA = +1",
     "+9 -> +10 = PRECISION_ENHANCEMENT",
-    "NORMAL -> MINOR -> MAJOR -> DESTROYED",
+    "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC",
+    "DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW",
+    "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)",
     "TARGET <= +10: ENHANCEMENT_DAMAGE = 0",
     "TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE",
-    "MONOTONIC_NON_DECREASING_DAMAGE_RISK",
-    "DAMAGE_CURVE_ANCHORS_PERCENT = [11:5, 30:6, 60:7, 90:8, 100:10]",
     "DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS",
+    "MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES",
     "CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE",
     "PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE",
     "ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE",
@@ -39,6 +43,7 @@ REQUIRED_ENTRYPOINT = [
     "BS-ENHANCE-20260825-25",
     "BS-DAMAGE-20260825-26",
     "BS-DAMAGE-20260826-28",
+    "BS-REPAIR-20260826-29",
     "BS-CHRONICLE-20260825-27",
     "BS-ART-20260825-03",
 ]
@@ -46,6 +51,7 @@ REQUIRED_ENTRYPOINT = [
 FORBIDDEN_CURRENT = [
     "CURRENT/MAX = CURRENT_DURABILITY_AUTHORITY",
     "PRECISION_MILESTONES = [10, 20, 30, 40, 50]",
+    "POSTMERGE_PLANNING / FOUR_STATE_REPAIR_MODEL_NEXT",
 ]
 
 
@@ -81,25 +87,22 @@ def main() -> None:
     agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
     assert "ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION" in agents
     assert "ART_STYLE_STATUS = REWORK_REQUIRED" not in agents
+    assert "POSTMERGE_PLANNING / CUSTOMER_EVENT_DAMAGE_POLICY_NEXT" in agents
+    assert "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT" in agents
 
-    # Post-merge fresh-read routing must not send a new session back into the
-    # already-merged #207 synchronization workstream.
     handoff_text = HANDOFF.read_text(encoding="utf-8")
     assert "PR #207 = MERGED_TO_MAIN" in handoff_text
-    assert "CURRENT_PLANNING_WORK = FOUR_STATE_REPAIR_MODEL + MAJOR_ENHANCEMENT_ELIGIBILITY" in handoff_text
-    assert "Current task PR: `#207" not in handoff_text
-
-    assert "POSTMERGE_PLANNING / FOUR_STATE_REPAIR_MODEL_NEXT" in agents
-    assert "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT" in agents
-    assert "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r5.4_SUPERSET_FINAL_20260826.md" in agents
-    assert "USER_SUPPLIED_V4_8_R4_CURRENT" not in agents
+    assert "CURRENT_PLANNING_WORK = CUSTOMER_WORLD_EVENT_DAMAGE_POLICY" in handoff_text
+    assert "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC" in handoff_text
+    assert "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)" in handoff_text
 
     authority_text = AUTHORITY_INDEX.read_text(encoding="utf-8")
-    assert "1. MINOR_MAJOR_REPAIR_MODEL + MAJOR_ENHANCEMENT_ELIGIBILITY" in authority_text
-    assert "DAMAGE_PROBABILITY_CURVE = USER_APPROVED / BS-DAMAGE-20260826-28" in authority_text
-    assert "DAMAGE_CURVE_NUMBERS = USER_APPROVED" in authority_text
-    assert "DAMAGE_CURVE_NUMBERS = NOT_FINAL / USER_APPROVAL_REQUIRED" not in authority_text
+    assert "1. CUSTOMER_WORLD_EVENT_DAMAGE_POLICY" in authority_text
+    assert "DAMAGE_CURVE_NUMBERS = USER_APPROVED / BS-DAMAGE-20260826-28" in authority_text
+    assert "DURABILITY_REPAIR_STRUCTURE = USER_APPROVED / BS-REPAIR-20260826-29" in authority_text
+    assert "DURABILITY_REPAIR_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE" in authority_text
 
+    # Decision28 remains the exact target-level probability owner.
     assert DAMAGE_DECISION.exists(), "missing Decision28 damage curve decision record"
     decision_text = DAMAGE_DECISION.read_text(encoding="utf-8")
     require_tokens(
@@ -115,7 +118,6 @@ def main() -> None:
         "Decision28",
     )
 
-    assert DAMAGE_CURVE.exists(), "missing machine-readable damage curve"
     curve = json.loads(DAMAGE_CURVE.read_text(encoding="utf-8"))
     assert curve["decision_id"] == "BS-DAMAGE-20260826-28"
     assert curve["status"] == "USER_APPROVED_PLANNING_CANON"
@@ -125,6 +127,8 @@ def main() -> None:
     assert curve["target_max"] == 100
     assert curve["interpolation"] == "PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS"
     assert curve["rounding_authority"] == "NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED"
+    # Retained as Decision28 historical scope. Decision29 supersedes current
+    # mechanical state-step resolution with numeric CURRENT loss.
     assert curve["damage_advance_steps"] == 1
     assert curve["failure_consequence_composition"] == "NOT_DECIDED_BY_THIS_DECISION"
     assert curve["runtime_implementation"] == "BLOCKED_NOT_RUN"
@@ -146,10 +150,31 @@ def main() -> None:
     assert damage_percent_at(90, anchors) == 8
     assert damage_percent_at(100, anchors) == 10
 
-    assert "GITHUB_CURRENT_CANON_SYNC = SYNCED" in owner_text
-    assert "NOTION_CURRENT_CANON_SYNC = SYNCED" in owner_text
-    assert "SHEET_SAME_ID_COMPATIBILITY = MIGRATION_ONLY / POSTMERGE_READBACK_PASS" in owner_text
-    assert "GITHUB_CURRENT_CANON_SYNC = IN_PROGRESS_UNTIL_MERGE" not in owner_text
+    # Decision29 owns the current visible numeric durability/repair architecture.
+    assert DURABILITY_DECISION.exists(), "missing Decision29 durability decision"
+    durability_text = DURABILITY_DECISION.read_text(encoding="utf-8")
+    require_tokens(
+        durability_text,
+        [
+            "BS-REPAIR-20260826-29",
+            "USER_APPROVED_STRUCTURAL_CANON",
+            "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC",
+            "DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW",
+            "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)",
+            "4/4 with BASE_MAX 5 = MINOR",
+            "2/2 with BASE_MAX 5 = MAJOR",
+            "MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES",
+            "TEMP_TEST_BUDGET",
+        ],
+        "Decision29",
+    )
+    durability = json.loads(DURABILITY_MODEL.read_text(encoding="utf-8"))
+    assert durability["decision_id"] == "BS-REPAIR-20260826-29"
+    assert durability["authority"]["durability"] == "CURRENT_MAX_BASE_MAX_NUMERIC"
+    assert durability["durability_state_derivation"]["effective_durability_ratio"] == "min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)"
+    assert durability["major_enhancement_allowed"] is True
+    assert durability["max_durability_recovery"] == "NOT_APPROVED"
+    assert durability["runtime_implementation"] == "BLOCKED_NOT_RUN"
 
     print("core simplification current contract: PASS")
 

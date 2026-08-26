@@ -2,15 +2,15 @@
 
 - 상태: `CURRENT_PRIORITY_OVERLAY`
 - current owner: `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
-- current override Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
+- current override Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03`
 - historical/partial basis: `BS-CORE-20260820-01 / BS-ENHANCE-20260820-02~13 / BS-PROGRESSION-20260820-14~17 / BS-RESOURCE-20260824-18 / BS-REPAIR-20260824-19 / BS-OVERHAUL-20260824-20 / BS-DESTRUCTION-20260824-21 / BS-MAX-20260824-22 / BS-ONBOARD-20260824-23 / BS-LINK-20260824-24`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
 - Human/Player validation: `NOT_RUN`
 
-## -1. CURRENT OVERRIDE · Decisions 25~28 / Art03
+## -2. CURRENT OVERRIDE · Decision29
 
-아래 2026-08-20/24 상세 섹션은 승인 당시의 구조·수치와 비교 근거를 보존한다. **같은 필드를 다룰 때는 이 override와 `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`가 우선**하며, 구형 CURRENT/MAX·다중 정밀강화·수리/대수선 퍼센트 공식·날짜별 강화 로그·구형 DAMAGE/CRITICAL 비율은 current fallback이 아니다.
+Decision29은 사용자의 최신 승인에 따라 Decision26의 내구도 architecture 일부를 바꾼다. 과거 CURRENT/MAX 모델을 그대로 되살리는 것이 아니라 **새 보이는 숫자 내구도 + 새 수리/흉터 규칙**을 current authority로 둔다.
 
 Required current routing tokens:
 
@@ -19,9 +19,78 @@ BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md
 BS-ENHANCE-20260825-25
 BS-DAMAGE-20260825-26
 BS-DAMAGE-20260826-28
+BS-REPAIR-20260826-29
 BS-CHRONICLE-20260825-27
 BS-ART-20260825-03
 ```
+
+Current durability contract:
+
+```text
+DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC
+DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW
+BASE_MAX_DURABILITY = immutable birth durability
+0 <= CURRENT_DURABILITY <= MAX_DURABILITY <= BASE_MAX_DURABILITY
+MAX_DURABILITY_FLOOR = 1
+CURRENT_CONDITION_RATIO = CURRENT_DURABILITY / MAX_DURABILITY
+STRUCTURAL_CONDITION_RATIO = MAX_DURABILITY / BASE_MAX_DURABILITY
+EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)
+DESTROYED = CURRENT_DURABILITY == 0
+NORMAL = EFFECTIVE_DURABILITY_RATIO == 1.00
+MINOR = 0.50 < EFFECTIVE_DURABILITY_RATIO < 1.00
+MAJOR = 0 < EFFECTIVE_DURABILITY_RATIO <= 0.50
+CURRENT_MAX_AUTHORITY = SUPERSEDED = HISTORICAL_DECISION26_ONLY
+ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE = SUPERSEDED_BY_DECISION29
+DAMAGE_EVENT_CURRENT_LOSS = 1 / TEMP_TEST_BUDGET
+```
+
+`CURRENT/MAX`의 현재 손상과 `MAX/BASE_MAX`의 영구 흉터는 별도 보정으로 중첩하지 않는다. 둘 중 더 나쁜 비율 하나가 effective state를 소유한다.
+
+```text
+5/5/5 -> NORMAL
+4/4/5 -> MINOR
+2/2/5 -> MAJOR
+1/1/5 -> MAJOR
+```
+
+Decision29 temporary enhancement modifiers:
+
+```text
+NORMAL: success 0pp / new effect ×1.00 / damage risk ×1.00
+MINOR:  success -3pp / new effect ×0.90 / damage risk ×1.25
+MAJOR:  success -7pp / new effect ×0.75 / damage risk ×1.75
+```
+
+Decision29 temporary repair quality:
+
+```text
+EXCELLENT 20% -> post-scar MAX 100%
+STANDARD 60% -> post-scar MAX 75%
+POOR 20% -> post-scar MAX 50%
+REPAIR_MINIMUM_CURRENT_GAIN_WHEN_POSSIBLE = 1
+```
+
+Decision29 temporary MAX scar chance, using **pre-repair effective state + enhancement band**:
+
+```text
+            +0~10  +11~30  +31~60  +61~90  +91~100
+MINOR         10%      15%      20%      25%       30%
+MAJOR         25%      30%      35%      40%       45%
+MAX_SCAR_AMOUNT_ON_TRIGGER = -1
+MAX_DURABILITY_FLOOR = 1
+MAX_DURABILITY_RECOVERY = NOT_APPROVED
+```
+
+All detailed Decision29 probabilities/modifiers/`CURRENT -1` event amount are `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. Structural direction is user-approved; final tuning requires simulation and human playtest.
+
+```text
+MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES
+DESTROYED_REPAIR_ALLOWED = FALSE
+FULL_DURABILITY_REPAIR_ALLOWED = FALSE
+REPAIR_ECONOMY = NOT_FINAL / FOLLOWUP_REBASE_REQUIRED
+```
+
+## -1. CURRENT OVERRIDE · Decisions25~29 / Art03
 
 Current simplified contract:
 
@@ -32,19 +101,17 @@ SUCCESS_LEVEL_DELTA = +1
 ITEM_KEYWORD machine owner = CATALYST_AFFIX
 NO_FOURTH_AFFIX_SLOT
 
-DAMAGE_STATE = NORMAL -> MINOR -> MAJOR -> DESTROYED
-ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE
 TARGET <= +10: ENHANCEMENT_DAMAGE = 0
 TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE
-MONOTONIC_NON_DECREASING_DAMAGE_RISK
-P(DAMAGE_ADVANCE | ENHANCEMENT_FAILURE, TARGET_LEVEL)
+P(BASE_DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET_LEVEL)
 DAMAGE_CURVE_ANCHORS_PERCENT = [11:5, 30:6, 60:7, 90:8, 100:10]
 DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS
 DAMAGE_CURVE_ROUNDING = NONE_CANON_EXACT_UI_ROUNDING_NOT_DECIDED
-FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED_BY_THIS_DECISION
+P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, EFFECTIVE_STATE) = Decision28_base * Decision29_effective_state_multiplier
+FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
+
 CUSTOMER_WORLD_EVENT_DAMAGE = POSSIBLE_IF_EVENT_ELIGIBLE
 PURCHASE_ITSELF_CAUSES_DAMAGE = FALSE
-CURRENT_MAX_AUTHORITY = SUPERSEDED
 
 ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE
 MEANINGFUL_EVENT_HISTORY_ONLY
@@ -53,6 +120,8 @@ ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK
 ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION
 FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED
 ```
+
+Decision28 target anchors stay user-approved. Decision29 modifies current damage risk only through the one effective durability state and does not create a second target-level curve or a separate MAX-scar penalty stack.
 
 Preserved where not conflicting:
 
@@ -64,38 +133,25 @@ CHECKPOINT_FLOORS = [10,30,60,90]
 +10 secured/break-even role
 +11 first salient risk decision
 +100 terminal
-existing success / attempt-cost / enhancement reinforcement-material test budgets where independent of old durability
+existing success / attempt-cost / resource test budgets pending Decision29 sensitivity recheck
 ```
 
-Open gates; do not invent or fall back to old CURRENT/MAX or DAMAGE/CRITICAL formulas:
+Open gates:
 
 ```text
 CUSTOMER_EVENT_DAMAGE_POLICY = CONTENT_OWNER_DECISION_REQUIRED
-MINOR_MAJOR_REPAIR_MODEL = USER_APPROVAL_REQUIRED
-MAJOR_ENHANCEMENT_ELIGIBILITY = USER_APPROVAL_REQUIRED
+REPAIR_ECONOMY_REBASE = REQUIRED
 FAILURE_CONSEQUENCE_COMPOSITION = NOT_DECIDED
 UI_DAMAGE_PERCENT_ROUNDING = NOT_DECIDED
 ```
 
 ## 0. 운영 동기화 규칙
 
-사용자 최신 지시에 따라 의미 있는 기획 변경마다 **현재 작업 순서 + 승인사항 + 미확정 항목**을 GitHub와 Notion 양쪽에 함께 갱신한다.
+Meaningful planning changes update GitHub current owner/index/handoff, Notion Human current surfaces and AI/System operational metadata. Google Sheet remains migration-only and receives a same-ID compatibility row only when required.
 
-```text
-GitHub
-- 이 Overlay
-- BLACKSMITH_PLANNING_AUTHORITY_INDEX.md
-- 관련 Canon
-- Decision-specific machine-readable owner when applicable
+## Historical ledger boundary
 
-Notion
-- Project Home
-- 프로젝트 전체 작업계획
-- 관련 핵심 시스템/Benchmark 페이지
-- Repo Main SHA / Sync State
-```
-
-승인 전은 `PROPOSED_ONLY`, 승인 후 main 병합 전은 `REPO_UPDATE_REQUIRED`, 병합/검증 완료 후 `SYNCED`로 구분한다.
+아래 `## 1`~`## 21`은 2026-08-20/24와 Decision28 시점의 **frozen historical/provenance ledger**를 원문 보존한다. 아래에 `current`라고 쓰인 문장도 해당 시점의 표현이며, Decision29과 충돌하는 경우 위 `CURRENT OVERRIDE`와 current owner가 항상 우선한다. 역사 섹션의 숫자·수리식·MAX band·`한 damage event = 한 상태` 표현을 Decision29 fallback으로 사용하지 않는다.
 
 ## 1. 제품 계층 — 01
 
