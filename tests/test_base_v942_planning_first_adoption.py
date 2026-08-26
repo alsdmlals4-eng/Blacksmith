@@ -31,13 +31,16 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         cls.registry = load_json(R2_REGISTRY)
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
-    def test_base_v943_contract_remains_pinned(self) -> None:
+    def test_base_v944_contract_preserves_the_historical_v943_subcontract(self) -> None:
         adapter = load_json(ADAPTER)
         release = adapter["base_release"]
-        self.assertEqual("9.4.3", release["version"])
-        self.assertEqual("7dd1a4f80388bc5faca767ff74a3eb32dc9d0ac8", release["release_commit"])
-        self.assertEqual("da33a350d61b8adc52df97fccc7001708a933370", release["release_evidence_commit"])
-        self.assertEqual("0b7c94f38d959efc0fc9442274c60b2e268a3c97", release["finalization_commit"])
+        self.assertEqual("9.4.4", release["version"])
+        self.assertEqual("210ec78292fa12ed7563ba743b322dd36103ae4a", release["release_commit"])
+        self.assertEqual("bb61e68dc3028421b60c11b87ba2abd297ee6f78", release["release_evidence_commit"])
+        self.assertEqual("5adc196c0185951f50e49ab5e51586eff8d60886", release["finalization_commit"])
+        first_prompt = adapter["shared_overrides"]["managing-project-intake-and-work-contract"]["first_prompt_governance"]
+        self.assertEqual("base-v9.4.3.lock.json", first_prompt["base_release_lock"])
+        self.assertEqual("0b7c94f38d959efc0fc9442274c60b2e268a3c97", first_prompt["base_release_finalization_commit"])
         migration = load_json(MIGRATION_STATE)
         preserved = migration["migrated_adapter_root_fields"]["project_operating_state"]
         self.assertEqual("BLOCKED", preserved["product_implementation"])

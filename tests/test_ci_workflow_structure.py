@@ -101,7 +101,7 @@ class CiWorkflowStructureTests(unittest.TestCase):
 
     def test_project_base_adapter_uses_exact_approved_protected_change_gate(self) -> None:
         workflow = read("validate-project-base-adapter.yml")
-        self.assertIn("ref: 4ec410e611152294f3f2685570fca6019c7abcfa", workflow)
+        self.assertIn("ref: 43b3ffb2c5b026e3d4a38dab2338585894d36f61", workflow)
         self.assertIn("check_approved_project_operating_contract.py", workflow)
         self.assertIn("approved-protected-change", workflow)
         self.assertIn("docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json", workflow)
@@ -112,7 +112,7 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertFalse(path.exists(), "consumed one-shot protected-change approval must be retired")
         adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
         self.assertEqual(
-            "fa9595b2df95897c915331a1cb5d9b1a583611f0",
+            "1bdf5f4b436b114253e86d897c7ef15514103f8f",
             adapter["protected_baseline"]["commit"],
         )
         self.assertEqual(
@@ -214,14 +214,14 @@ class LoopEngineeringPilotContractTests(unittest.TestCase):
         self.assertIn("PR #158", run["next_action"])
         self.assertEqual(2, run["budget"]["used_ci_runs"])
 
-    def test_ai_workflow_routes_to_the_pilot_without_changing_base_release_pin(self) -> None:
+    def test_ai_workflow_routes_to_the_pilot_with_current_base_release_pin(self) -> None:
         workflow = AI_WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("BLACKSMITH_LOOP_ENGINEERING_PROFILE.md", workflow)
         self.assertIn("BLACKSMITH_LOOP_RUN_CONTRACT.json", workflow)
         self.assertIn("SHADOW → A2_EXECUTE_ISOLATED", workflow)
 
         adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
-        self.assertEqual("9.4.3", adapter["base_release"]["version"])
+        self.assertEqual("9.4.4", adapter["base_release"]["version"])
         self.assertEqual(
             ["data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"],
             adapter["protected_paths"],
