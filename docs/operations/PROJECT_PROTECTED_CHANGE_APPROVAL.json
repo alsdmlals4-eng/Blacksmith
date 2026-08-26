@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "ba631a60afce6ef7f98b8eaf94cf0ad5ca1a9f1c",
+  "decision_ids": [
+    "BS-ART-20260825-03",
+    "GITHUB-ISSUE-244"
+  ],
+  "approved_paths": [
+    "scenes/vertical_slice/screens/vs_workshop_screen.tscn"
+  ],
+  "approval_source": "User current-session declaration: 현재 기획 완료 선언, 정본 기준 Godot 구현 진행; continuation approved by 권장안대로 진행.",
+  "approval_time": "2026-08-27T02:15:00+09:00",
+  "scope_summary": "GitHub Issue #244: improve the existing Workshop Screen's first-item hierarchy, portrait readability, touch target, and illustrated-workshop-book color direction without changing game rules, data, economy, or flow."
+}
