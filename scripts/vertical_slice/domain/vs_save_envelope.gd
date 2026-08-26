@@ -1,8 +1,10 @@
 class_name VSSaveEnvelope
 extends RefCounted
 
-const SCHEMA_VERSION := 3
-const PRESET_VERSION := "VS-2026.08.26-C"
+const SCHEMA_VERSION := 4
+const PRESET_VERSION := "VS-2026.08.27-D"
+const LEGACY_V3_SCHEMA_VERSION := 3
+const LEGACY_V3_PRESET_VERSION := "VS-2026.08.26-C"
 const LEGACY_V2_SCHEMA_VERSION := 2
 const LEGACY_V2_PRESET_VERSION := "VS-2026.08.24-B"
 const LEGACY_PRE_RELEASE_SCHEMA_VERSION := 1
@@ -22,6 +24,7 @@ const REQUIRED_FIELDS := [
 	"items_by_uid",
 	"customer_state",
 	"schedule_state",
+	"workshop_resources",
 	"global_ledger_sequence",
 ]
 const ACTIVE_RUN_REQUIRED_FIELDS := [
@@ -40,6 +43,7 @@ const INTEGER_FIELDS := [
 	"destroyed_at_game_day",
 	"before_current_durability",
 	"before_max_durability",
+	"gold",
 ]
 
 var schema_version: int = SCHEMA_VERSION
@@ -55,6 +59,7 @@ var active_run: Dictionary = {
 var items_by_uid: Dictionary = {}
 var customer_state: Dictionary = {}
 var schedule_state: Dictionary = {}
+var workshop_resources: Dictionary = starter_workshop_resources()
 var destroyed_history_by_uid: Dictionary = {}
 var global_ledger_sequence: int = 0
 var validation_errors: Array[String] = []
@@ -63,7 +68,10 @@ var recovered_from_backup: bool = false
 
 static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 	var envelope := VSSaveEnvelope.new()
+	var source_schema_version := int(value.get("schema_version", 0))
 	for field_name in REQUIRED_FIELDS:
+		if field_name == "workshop_resources" and source_schema_version < SCHEMA_VERSION:
+			continue
 		if not value.has(field_name):
 			envelope.validation_errors.append("MISSING_REQUIRED_FIELD:%s" % field_name)
 
@@ -95,6 +103,15 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 		envelope.schedule_state = _normalize_dictionary(raw_schedule_state)
 	else:
 		envelope.validation_errors.append("INVALID_FIELD_TYPE:schedule_state")
+
+	if source_schema_version >= SCHEMA_VERSION:
+		var raw_workshop_resources: Variant = value.get("workshop_resources", {})
+		if raw_workshop_resources is Dictionary:
+			envelope.workshop_resources = _normalize_workshop_resources(raw_workshop_resources)
+		else:
+			envelope.validation_errors.append("INVALID_FIELD_TYPE:workshop_resources")
+	else:
+		envelope.workshop_resources = starter_workshop_resources()
 
 	var raw_destroyed_history: Variant = value.get("destroyed_history_by_uid", {})
 	if raw_destroyed_history is Dictionary:
@@ -132,7 +149,13 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 	else:
 		envelope.validation_errors.append("INVALID_FIELD_TYPE:items_by_uid")
 
-	if envelope.schema_version == LEGACY_V2_SCHEMA_VERSION and envelope.preset_version == LEGACY_V2_PRESET_VERSION:
+	if (
+		envelope.schema_version == LEGACY_V2_SCHEMA_VERSION
+		and envelope.preset_version == LEGACY_V2_PRESET_VERSION
+	) or (
+		envelope.schema_version == LEGACY_V3_SCHEMA_VERSION
+		and envelope.preset_version == LEGACY_V3_PRESET_VERSION
+	):
 		envelope.schema_version = SCHEMA_VERSION
 		envelope.preset_version = PRESET_VERSION
 
@@ -191,6 +214,29 @@ static func _normalize_array(value: Array) -> Array:
 	return normalized
 
 
+static func starter_workshop_resources() -> Dictionary:
+	return {
+		"gold": 20000,
+		"material_stock": {
+			"common_reinforcement_material": 10,
+		},
+	}
+
+
+static func _normalize_workshop_resources(value: Dictionary) -> Dictionary:
+	var normalized := _normalize_dictionary(value)
+	var raw_stock: Variant = normalized.get("material_stock", {})
+	if raw_stock is Dictionary:
+		var normalized_stock: Dictionary = {}
+		for raw_material_id in raw_stock:
+			var quantity: Variant = raw_stock[raw_material_id]
+			if quantity is float and quantity == floor(quantity):
+				quantity = int(quantity)
+			normalized_stock[str(raw_material_id)] = quantity
+		normalized["material_stock"] = normalized_stock
+	return normalized
+
+
 func to_dict() -> Dictionary:
 	var serialized_items: Dictionary = {}
 	for item_id in items_by_uid:
@@ -205,6 +251,7 @@ func to_dict() -> Dictionary:
 		"items_by_uid": serialized_items,
 		"customer_state": customer_state.duplicate(true),
 		"schedule_state": schedule_state.duplicate(true),
+		"workshop_resources": resource_snapshot(),
 		"destroyed_history_by_uid": destroyed_history_by_uid.duplicate(true),
 		"global_ledger_sequence": global_ledger_sequence,
 	}
@@ -225,6 +272,10 @@ func add_item(item) -> Error:
 
 func get_item(item_uid: String):
 	return items_by_uid.get(item_uid)
+
+
+func resource_snapshot() -> Dictionary:
+	return workshop_resources.duplicate(true)
 
 
 func archive_destroyed_record(record) -> Error:
@@ -267,3 +318,18 @@ func _validate_values() -> void:
 		validation_errors.append("SELECTED_ITEM_NOT_FOUND:%s" % selected_item_uid)
 	if global_ledger_sequence < 0:
 		validation_errors.append("INVALID_GLOBAL_LEDGER_SEQUENCE")
+	if not workshop_resources.has("gold"):
+		validation_errors.append("MISSING_WORKSHOP_RESOURCE_GOLD")
+	elif not workshop_resources.get("gold") is int or int(workshop_resources.get("gold", -1)) < 0:
+		validation_errors.append("INVALID_WORKSHOP_RESOURCE_GOLD")
+	var material_stock: Variant = workshop_resources.get("material_stock", null)
+	if not material_stock is Dictionary:
+		validation_errors.append("INVALID_WORKSHOP_RESOURCE_STOCK")
+		return
+	for raw_material_id in material_stock:
+		var material_id := str(raw_material_id)
+		var quantity: Variant = material_stock[raw_material_id]
+		if material_id.is_empty():
+			validation_errors.append("INVALID_WORKSHOP_RESOURCE_ID")
+		if not quantity is int or int(quantity) < 0:
+			validation_errors.append("INVALID_WORKSHOP_RESOURCE_QUANTITY:%s" % material_id)

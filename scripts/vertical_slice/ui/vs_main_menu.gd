@@ -83,6 +83,7 @@ func start_new_game_after_confirmation():
 	campaign_ready = save_error == OK
 	if campaign_ready:
 		_campaign_envelope = candidate
+		_restore_resources_from_envelope(candidate)
 	return save_error
 
 
@@ -97,6 +98,9 @@ func begin_first_forge(envelope) -> bool:
 		return false
 	_ensure_flow_services()
 	_campaign_envelope = envelope
+	if not _restore_resources_from_envelope(envelope):
+		_show_menu_message("공방 재화 정보를 불러올 수 없습니다.")
+		return false
 	_clear_active_surface()
 	_set_menu_visible(false)
 	_active_forge = ForgingScreenScript.new()
@@ -149,6 +153,22 @@ func _ensure_flow_services() -> void:
 		_completion_service = FirstForgeCompletionServiceScript.new()
 
 
+func _restore_resources_from_envelope(envelope) -> bool:
+	if envelope == null or not envelope.has_method("resource_snapshot"):
+		return false
+	var snapshot: Variant = envelope.resource_snapshot()
+	if not snapshot is Dictionary:
+		return false
+	var material_stock: Variant = snapshot.get("material_stock", null)
+	if not material_stock is Dictionary:
+		return false
+	var gold: Variant = snapshot.get("gold", null)
+	if not gold is int or int(gold) < 0:
+		return false
+	_resources = WorkshopResourcesScript.new(int(gold), material_stock.duplicate(true))
+	return true
+
+
 func _connect_menu_actions() -> void:
 	var new_game_button := get_node_or_null("MenuLayout/NewGameButton")
 	if new_game_button != null and not new_game_button.pressed.is_connected(_on_new_game_pressed):
@@ -174,6 +194,9 @@ func _on_continue_pressed() -> void:
 		_show_menu_message("이전 저장을 불러올 수 없습니다.")
 		return
 	_campaign_envelope = envelope
+	if not _restore_resources_from_envelope(envelope):
+		_show_menu_message("공방 재화 정보를 불러올 수 없습니다.")
+		return
 	if str(envelope.active_run.get("selected_item_uid", "")).is_empty():
 		begin_first_forge(envelope)
 		return
