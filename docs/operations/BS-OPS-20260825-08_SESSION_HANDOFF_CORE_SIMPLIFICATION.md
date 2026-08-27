@@ -4,7 +4,7 @@
 - Date: `2026-08-25 KST`, current update `2026-08-27 KST`
 - Status: `CURRENT_SESSION_HANDOFF / CODEX_RUNTIME_MVP_IMPLEMENTATION_ACTIVE`
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_RUNTIME_FOLLOWUP = CUSTOMER_ACTUAL_USE_FLOW_CALLER_AND_SCHEDULER_UNDECIDED`
+- `CURRENT_RUNTIME_FOLLOWUP = CUSTOMER_EVENT_SCHEDULER_AND_PLAYER_ENTRY_UNDECIDED`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
@@ -27,10 +27,11 @@ RUNTIME_UI_INTEGRATION = WORKSHOP_DURABILITY_REPAIR_BINDING_IMPLEMENTED
 CUSTOMER_WORLD_EVENT_RESOLUTION = IMPLEMENTED_PR268
 CUSTOMER_WORLD_RESULT_FACT_PERSISTENCE = IMPLEMENTED_PR272
 CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278
-CUSTOMER_WORLD_RESULT_FLOW_CALLER_AND_SCHEDULER = NOT_RUN
+CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286
+CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN
 HUMAN_PLAYTEST = NOT_RUN
-OPERATING_CONTRACT_BASELINE = 744b773bccffbdaab9c8db1c60b7933c91044c4a
-PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR280
+OPERATING_CONTRACT_BASELINE = b2f3b994c92eee68eafbab1a90a8084e2924553c
+PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR288
 ```
 
 `PR #268` implemented the Decision30 actual-use resolver: purchase/handoff never damages,
@@ -40,10 +41,12 @@ and effective profile, CURRENT/MAX before-and-after values, and repair-job avail
 the same content result. `PR #278` adds the read-only customer/world result surface: it
 shows the same stored fact for the resolved event UID, including CURRENT/MAX before-and-after,
 and offers only a return-to-workshop repair hint. It neither rerolls nor recomputes the event
-and never mutates the stored result. The actual customer-flow caller and scheduler remain
-`NOT_RUN`. `PR #280` advances only the protected operating baseline and retires the one-shot
-approval record. Android, accessibility, visual client inspection, performance, and human
-play remain `NOT_RUN`.
+and never mutates the stored result. `PR #286` adds the save-first customer-flow caller:
+it resolves on a cloned envelope, saves that candidate, then presents that same stored result
+only after save succeeds. The event scheduler and player-facing customer entry remain `NOT_RUN`.
+`PR #288` advances only the protected operating baseline and retires the one-shot approval
+record. Android, accessibility, visual client inspection, performance, and human play remain
+`NOT_RUN`.
 
 ## 1. GPT Work transfer · 2026-08-26
 
@@ -346,14 +349,16 @@ Decision29 does not revive old durability values. Decision30 owns current custom
 
 The current V3 vertical slice now implements the approved item durability, save migration,
 enhancement-failure, repair-economy, customer actual-use resolver, persisted result fact,
-and read-only result surface. The surface has a presentation entry API only: the customer-flow
-caller and scheduler are not implemented. V2 runtime/data outside the migrated slice remains
+and read-only result surface. A customer-flow caller now resolves and saves a cloned envelope
+before presenting the same stored UID result; the scheduler and player-facing customer entry
+are not implemented. V2 runtime/data outside the migrated slice remains
 historical runtime evidence and must not override current canon.
 
 ```text
-NEW_CORE_RUNTIME = PARTIALLY_IMPLEMENTED / PR224_THROUGH_PR278
+NEW_CORE_RUNTIME = PARTIALLY_IMPLEMENTED / PR224_THROUGH_PR286
 CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278 / STORED_FACT_READ_ONLY
-CUSTOMER_WORLD_RESULT_FLOW_CALLER_AND_SCHEDULER = NOT_RUN
+CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286 / SAVE_FIRST_CLONED_ENVELOPE
+CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN
 OLD_V2_RUNTIME = HISTORICAL_RUNTIME_TRUTH_OUTSIDE_V3_MIGRATED_SLICE
 ```
 
@@ -411,9 +416,10 @@ ACTUAL_RUNTIME_IMAGE_CONSUMPTION = NOT_RUN
 REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / B65_DEFAULT_PLAYTEST_REQUIRED
 FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE
 UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP
-NEW_CORE_RUNTIME = PARTIALLY_IMPLEMENTED / PR224_THROUGH_PR278
+NEW_CORE_RUNTIME = PARTIALLY_IMPLEMENTED / PR224_THROUGH_PR286
 CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278 / STORED_FACT_READ_ONLY
-CUSTOMER_WORLD_RESULT_FLOW_CALLER_AND_SCHEDULER = NOT_RUN
+CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286 / SAVE_FIRST_CLONED_ENVELOPE
+CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_DEVICE = NOT_RUN
 ACCESSIBILITY = NOT_RUN

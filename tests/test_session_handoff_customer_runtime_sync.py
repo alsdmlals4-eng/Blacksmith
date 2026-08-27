@@ -17,24 +17,25 @@ class CustomerRuntimeHandoffSyncContractTest(unittest.TestCase):
         handoff = HANDOFF_PATH.read_text(encoding="utf-8")
 
         self.assertIn(
-            "CURRENT_RUNTIME_FOLLOWUP = CUSTOMER_ACTUAL_USE_FLOW_CALLER_AND_SCHEDULER_UNDECIDED",
+            "CURRENT_RUNTIME_FOLLOWUP = CUSTOMER_EVENT_SCHEDULER_AND_PLAYER_ENTRY_UNDECIDED",
             handoff,
         )
         self.assertIn("CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278", handoff)
         self.assertIn(
-            "CUSTOMER_WORLD_RESULT_FLOW_CALLER_AND_SCHEDULER = NOT_RUN", handoff
+            "CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286", handoff
         )
+        self.assertIn("CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN", handoff)
         self.assertIn("same stored fact", handoff)
 
     def test_handoff_records_the_retired_approval_and_current_baseline(self):
         handoff = HANDOFF_PATH.read_text(encoding="utf-8")
 
         self.assertIn(
-            "OPERATING_CONTRACT_BASELINE = 744b773bccffbdaab9c8db1c60b7933c91044c4a",
+            "OPERATING_CONTRACT_BASELINE = b2f3b994c92eee68eafbab1a90a8084e2924553c",
             handoff,
         )
         self.assertIn(
-            "PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR280", handoff
+            "PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR288", handoff
         )
 
 
