@@ -74,7 +74,144 @@ final_asset_record: assets/ASSET_MANIFEST.json#ASSET-WORKSHOP-BACKGROUND-V2
 reference_similarity_status: NOT_APPLICABLE
 proof_hash: A3D305D28AEF0AABA374C7B435DC8ED0EA6F23F16A26BFA992D87682025382B5
 status: RELEASE_BLOCKED_UNVERIFIED
-notes: Project asset approval and static runtime binding are approved; release-rights review, Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN.
+notes: Project asset approval plus Workshop static and Main Menu dynamic runtime bindings are approved; release-rights review, Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN.
+```
+
+## Current asset record · ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1
+
+```yaml
+asset_id: ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1
+category: OTHER
+name: Workpiece durability state atlas v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creation_date: 2026-08-28 KST
+source_location: Built-in image generation artifact exec-b6622a40-8552-4cf3-86c3-355898d3540a; corrected opaque-background revision of the original state atlas
+asset_path: assets/ui/workshop/workpiece_durability_state_atlas_v1.png
+actual_consumer: VSWorkshopScreen / WorkshopLayout/WorkpieceDurabilityHero
+consumer_surface: res://scenes/vertical_slice/screens/vs_workshop_screen.tscn
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original production brief, state-family selection, consumer mapping, and dynamic runtime atlas binding
+reference_sources: Current Blacksmith art direction only; no third-party visual source was supplied as image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, logos, runes, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1
+reference_similarity_status: NOT_APPLICABLE
+proof_hash: FA296911D634BF80F78DAF41A564A067BE3990C4FAB4988CFB8A5792573258FA
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: Project asset approval and dynamic NORMAL/MINOR/MAJOR/DESTROYED runtime binding are approved; release-rights review, Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN.
+```
+
+## Current asset record · ASSET-FIRST-FORGE-BACKGROUND-V1
+
+```yaml
+asset_id: ASSET-FIRST-FORGE-BACKGROUND-V1
+category: OTHER
+name: First forge background v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creation_date: 2026-08-28 KST
+source_location: Built-in image generation artifact exec-db9184a2-a9e8-4265-81a6-8748ceb8b5e3
+asset_path: assets/ui/workshop/first_forge_background_v1.png
+actual_consumer: ForgingScreen / FirstForgeIllustratedBackground
+consumer_surface: res://scripts/ui/forging_screen.gd
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original production brief, selection, consumer mapping, runtime binding, and readability-veil integration
+reference_sources: Approved Blacksmith workshop background v2 only; no third-party visual source was supplied as image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, logos, runes, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-FIRST-FORGE-BACKGROUND-V1
+reference_similarity_status: NOT_APPLICABLE
+proof_hash: A575D0CDD0A8A487C74E12751647E959495E6182A374BB145B9AD98AF4E64954
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: Project asset approval plus dynamic runtime binding and noninteractive readability veil are approved; release-rights review, Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN.
+```
+
+## Current asset record · ASSET-ILLUSTRATED-WORKSHOP-BOOK-REFERENCE-V1
+
+```yaml
+asset_id: ASSET-ILLUSTRATED-WORKSHOP-BOOK-REFERENCE-V1
+category: PRODUCTION_VISUAL_REFERENCE
+name: Illustrated Workshop Book production reference v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creation_date: 2026-08-28 KST
+source_location: Built-in image generation artifact exec-4515fbf7-2250-4f2b-a0fb-6350c5714c5b
+asset_path: assets/visual_reference/illustrated_workshop_book_reference_v1.png
+actual_consumer: NONE_BY_DESIGN
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original production brief, reference selection, and category boundary declaration
+reference_sources: Current Blacksmith art direction plus project-owned v2 workshop and durability-atlas assets only
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, logos, runes, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-ILLUSTRATED-WORKSHOP-BOOK-REFERENCE-V1
+reference_similarity_status: NOT_APPLICABLE
+proof_hash: A05A3E3A30CEFA458305DABC1BA69A95AA71B580EAFDE6713B5A38C806051D1E
+status: PRODUCTION_REFERENCE_APPROVED_NOT_RUNTIME
+notes: May guide art production only. It is not a runtime or public marketing asset.
+```
+
+## Current asset record · ASSET-BLACKSMITH-KEY-ART-MASTER-V1
+
+```yaml
+asset_id: ASSET-BLACKSMITH-KEY-ART-MASTER-V1
+category: RELEASE_MARKETING_MASTER
+name: Blacksmith key art master v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creation_date: 2026-08-28 KST
+source_location: Built-in image generation artifact exec-dd7c69a3-5331-48e2-827c-5e14ed532d60
+asset_path: assets/marketing/blacksmith_key_art_master_v1.png
+actual_consumer: NONE_BY_DESIGN
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original production brief, selection, and release-category boundary declaration
+reference_sources: Project-owned first-forge background only
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, logos, runes, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-BLACKSMITH-KEY-ART-MASTER-V1
+reference_similarity_status: NOT_APPLICABLE
+proof_hash: DBF22D182C8B38F752BA5564E644733EE44DEB9D2E51B0991A13F9A89D3515E3
+status: RELEASE_DRAFT_NOT_PLATFORM_READY
+notes: Master art only. It requires current platform specs, title treatment, rights review, and final review before any external use.
+```
+
+## Current asset record · ASSET-BLACKSMITH-APP-ICON-MASTER-V1
+
+```yaml
+asset_id: ASSET-BLACKSMITH-APP-ICON-MASTER-V1
+category: RELEASE_MARKETING_MASTER
+name: Blacksmith app icon master v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creation_date: 2026-08-28 KST
+source_location: Built-in image generation artifact exec-1eee9e1d-7bd0-4fc3-85c4-9e6971b990ab
+asset_path: assets/marketing/blacksmith_app_icon_master_v1.png
+actual_consumer: NONE_BY_DESIGN
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original production brief, selection, and release-category boundary declaration
+reference_sources: Project-owned durability state atlas only
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, logos, runes, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-BLACKSMITH-APP-ICON-MASTER-V1
+reference_similarity_status: NOT_APPLICABLE
+proof_hash: A014266240C5D1CF79646F7570056200E1C713B986C39E2C0D9917C66FABC1B0
+status: RELEASE_DRAFT_NOT_PLATFORM_READY
+notes: Square source master only. It requires current platform specs, safe-zone export, rights review, and final review before external use.
 ```
 
 ## Reference-to-original

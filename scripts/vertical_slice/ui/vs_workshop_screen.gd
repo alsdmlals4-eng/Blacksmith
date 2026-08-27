@@ -7,6 +7,7 @@ const MaintenanceServiceScript = preload("res://scripts/vertical_slice/services/
 const EnhancementResolverScript = preload("res://scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd")
 const EnhancementActionServiceScript = preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const WorkshopBackgroundTexture = preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
+const WorkpieceDurabilityStateAtlasTexture = preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
 signal enhancement_saved(envelope, result: Dictionary)
 
@@ -20,6 +21,7 @@ var _campaign_envelope = null
 
 func _ready() -> void:
 	_ensure_illustrated_background()
+	_ensure_workpiece_durability_hero()
 	_ensure_enhancement_controls()
 	var repair_button := get_node_or_null("WorkshopLayout/RepairButton") as Button
 	if repair_button != null and not repair_button.pressed.is_connected(_on_repair_pressed):
@@ -145,6 +147,7 @@ func _on_enhancement_pressed() -> void:
 
 
 func _refresh_controls() -> void:
+	_ensure_workpiece_durability_hero()
 	_ensure_enhancement_controls()
 	var state := view_state()
 	var durability := get_node_or_null("WorkshopLayout/DurabilityValueLabel") as Label
@@ -274,3 +277,43 @@ func _ensure_illustrated_background() -> void:
 		add_child(background)
 		move_child(background, 0)
 	background.texture = WorkshopBackgroundTexture
+
+
+func _ensure_workpiece_durability_hero() -> void:
+	var layout := get_node_or_null("WorkshopLayout") as VBoxContainer
+	if layout == null:
+		return
+	var hero := layout.get_node_or_null("WorkpieceDurabilityHero") as TextureRect
+	if hero == null:
+		hero = TextureRect.new()
+		hero.name = "WorkpieceDurabilityHero"
+		hero.custom_minimum_size = Vector2(0, 176)
+		hero.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		hero.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		hero.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		layout.add_child(hero)
+		layout.move_child(hero, min(1, layout.get_child_count() - 1))
+	if _item == null:
+		hero.visible = false
+		return
+	var state := str(_item.effective_durability_state())
+	hero.visible = true
+	hero.texture = _workpiece_texture_for_durability_state(state)
+	hero.tooltip_text = "작품 상태: %s" % _player_facing_durability_state(state)
+
+
+func _workpiece_texture_for_durability_state(state: String) -> AtlasTexture:
+	var cell_width := int(WorkpieceDurabilityStateAtlasTexture.get_width() / 2)
+	var cell_height := int(WorkpieceDurabilityStateAtlasTexture.get_height() / 2)
+	var origin := Vector2.ZERO
+	match state:
+		"MINOR":
+			origin = Vector2(cell_width, 0)
+		"MAJOR":
+			origin = Vector2(0, cell_height)
+		"DESTROYED":
+			origin = Vector2(cell_width, cell_height)
+	var texture := AtlasTexture.new()
+	texture.atlas = WorkpieceDurabilityStateAtlasTexture
+	texture.region = Rect2(origin, Vector2(cell_width, cell_height))
+	return texture

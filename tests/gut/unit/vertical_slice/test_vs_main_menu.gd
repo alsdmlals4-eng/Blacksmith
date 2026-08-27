@@ -2,7 +2,7 @@ extends "res://addons/gut/test.gd"
 
 const MAIN_MENU_PATH := "res://scripts/vertical_slice/ui/vs_main_menu.gd"
 const MAIN_MENU_SCENE := preload("res://scenes/vertical_slice/main_menu.tscn")
-const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v1.png")
+const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 
 
 class FakeEnvelope:

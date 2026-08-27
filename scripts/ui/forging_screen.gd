@@ -2,8 +2,8 @@ extends Control
 
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
 const PrecisionGaugeScript = preload("res://scripts/ui/precision_gauge.gd")
+const FirstForgeBackgroundTexture = preload("res://assets/ui/workshop/first_forge_background_v1.png")
 
-const BG := Color("#17191f")
 const PANEL := Color("#252932")
 const PANEL_ALT := Color("#303641")
 const TEXT := Color("#f4f1e8")
@@ -55,11 +55,23 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _build_interface() -> void:
-	var background := ColorRect.new()
-	background.color = BG
+	var background := TextureRect.new()
+	background.name = "FirstForgeIllustratedBackground"
+	background.texture = FirstForgeBackgroundTexture
+	background.z_index = -2
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	add_child(background)
+
+	var veil := ColorRect.new()
+	veil.name = "FirstForgeReadabilityVeil"
+	veil.color = Color(0.08, 0.06, 0.04, 0.58)
+	veil.z_index = -1
+	veil.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(veil)
 
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
