@@ -8,7 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = ROOT / "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json"
-RUNTIME_BACKGROUND = ROOT / "assets/ui/workshop/workshop_enhancement_background_v1.png"
+RUNTIME_BACKGROUND = ROOT / "assets/ui/workshop/workshop_enhancement_background_v2.png"
+ASSET_MANIFEST = ROOT / "assets/ASSET_MANIFEST.json"
 
 
 class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
@@ -17,7 +18,8 @@ class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
         model = json.loads(MODEL.read_text(encoding="utf-8"))
 
         self.assertEqual(model["issue"], "#291")
-        self.assertEqual(model["image_generation"], "NOT_RUN")
+        self.assertEqual(model["delivery_issue"], "#293")
+        self.assertEqual(model["image_generation"], "USER_APPROVED_RUNTIME_ASSET_EXECUTED_20260828")
         self.assertTrue(model["no_automatic_generation_from_gaps"])
         self.assertEqual(model["runtime_visual_validation"], "NOT_RUN")
 
@@ -62,39 +64,39 @@ class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
             if row["coverage_status"] == "NOT_APPLICABLE":
                 self.assertTrue(row["blockers"])
 
-        self.assertEqual(rows["MAIN_MENU"]["coverage_status"], "GAP_BLOCKING")
+        self.assertEqual(rows["MAIN_MENU"]["coverage_status"], "COVERED_EXISTING")
         self.assertEqual(rows["FIRST_FORGE"]["coverage_status"], "COVERED_EXISTING")
-        self.assertEqual(rows["WORKSHOP"]["coverage_status"], "GAP_BLOCKING")
+        self.assertEqual(rows["WORKSHOP"]["coverage_status"], "COVERED_PROJECT_ASSET_APPROVED")
         self.assertEqual(rows["ENHANCEMENT_IN_WORKSHOP"]["coverage_status"], "COVERED_EXISTING")
         self.assertEqual(rows["CUSTOMER_WORLD_RESULT"]["coverage_status"], "COVERED_EXISTING")
         self.assertEqual(rows["SETTINGS_OVERLAY"]["coverage_status"], "GAP_NONBLOCKING")
         self.assertEqual(rows["PRECISION_PLUS_9_TO_10"]["coverage_status"], "DEFERRED_BY_DECISION")
         self.assertEqual(rows["ITEM_CHRONICLE"]["coverage_status"], "DEFERRED_BY_DECISION")
 
-    def test_existing_runtime_raster_is_described_without_approval_promotion(self) -> None:
+    def test_user_approved_runtime_raster_has_a_durable_provenance_record(self) -> None:
         self.assertTrue(MODEL.is_file(), MODEL)
         self.assertTrue(RUNTIME_BACKGROUND.is_file(), RUNTIME_BACKGROUND)
         model = json.loads(MODEL.read_text(encoding="utf-8"))
         assets = {row["asset_id"]: row for row in model["asset_coverage"]}
-        asset = assets["ASSET-WORKSHOP-BACKGROUND-V1"]
+        asset = assets["ASSET-WORKSHOP-BACKGROUND-V2"]
 
-        self.assertEqual(asset["production_mode"], "EXISTING_PROJECT_RASTER")
-        self.assertEqual(asset["asset_lifecycle_state"], "LEGACY_RUNTIME_BOUND_UNVERIFIED")
-        self.assertEqual(asset["approval_state"], "UNVERIFIED_NOT_PROMOTED")
+        self.assertEqual(asset["production_mode"], "AI_GENERATED_PROJECT_RASTER")
+        self.assertEqual(asset["asset_lifecycle_state"], "PROJECT_ASSET_APPROVED")
+        self.assertEqual(asset["approval_state"], "USER_APPROVED_IMAGE_GENERATION_20260828")
         self.assertEqual(asset["runtime_consumption"], "IMPLEMENTED_STATIC_BINDING")
         self.assertEqual(
             asset["rights_and_provenance"],
-            "NO_MATCHING_CURRENT_APPROVAL_OR_PROVENANCE_RECORD_FOUND",
+            "PROJECT_RECORD_PRESENT_RELEASE_RIGHTS_REVIEW_PENDING",
         )
         self.assertEqual(asset["sha256"], hashlib.sha256(RUNTIME_BACKGROUND.read_bytes()).hexdigest().upper())
         self.assertEqual(asset["dimensions"], "941x1672")
-        self.assertEqual(asset["consumer_ids"], ["MAIN_MENU", "WORKSHOP"])
+        self.assertEqual(asset["consumer_ids"], ["WORKSHOP"])
 
         queue = {row["queue_id"]: row for row in model["runtime_asset_family_queue"]}
-        self.assertEqual(queue["RUNTIME-EXISTING-01"]["image_generation"], "NOT_AUTHORIZED")
+        self.assertEqual(queue["RUNTIME-CURRENT-01"]["image_generation"], "EXECUTED")
         self.assertEqual(
             model["adversarial_review"]["asset_completeness"],
-            "EXPLICIT_P0_APPROVAL_PROVENANCE_BLOCKER",
+            "PROJECT_ASSET_APPROVED_RUNTIME_CLIENT_VALIDATION_PENDING",
         )
         p0_findings = {
             row["finding_id"]: row
@@ -102,7 +104,30 @@ class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
             if row["severity"] == "P0"
         }
         self.assertIn("BS-VIS-AUDIT-20260827-02", p0_findings)
-        self.assertIn("do not generate, replace, or mark approved", p0_findings["BS-VIS-AUDIT-20260827-02"]["disposition"])
+        self.assertIn("legacy", p0_findings["BS-VIS-AUDIT-20260827-02"]["disposition"].lower())
+
+    def test_runtime_asset_manifest_matches_the_promoted_background_bytes(self) -> None:
+        self.assertTrue(ASSET_MANIFEST.is_file(), ASSET_MANIFEST)
+        self.assertTrue(RUNTIME_BACKGROUND.is_file(), RUNTIME_BACKGROUND)
+        manifest = json.loads(ASSET_MANIFEST.read_text(encoding="utf-8"))
+        records = {row["asset_id"]: row for row in manifest["asset_records"]}
+        record = records["ASSET-WORKSHOP-BACKGROUND-V2"]
+        requirements = {row["requirement_id"]: row for row in manifest["visual_requirements"]}
+        requirement = requirements[record["requirement_id"]]
+
+        self.assertEqual(record["status"], "PROJECT_ASSET_APPROVED")
+        self.assertEqual(record["tracked_asset_path"], "assets/ui/workshop/workshop_enhancement_background_v2.png")
+        self.assertEqual(record["actual_consumer"], ["WORKSHOP"])
+        self.assertIn("MAIN_MENU_REBIND_DEFERRED", record["delivery_incident"])
+        self.assertEqual(record["sha256"], hashlib.sha256(RUNTIME_BACKGROUND.read_bytes()).hexdigest().upper())
+        self.assertEqual(requirement["consumer_id"], "WORKSHOP")
+        self.assertEqual(requirement["consumer_surface"], "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn")
+        self.assertEqual(requirement["runtime_asset_role"], "WorkshopIllustratedBackground TextureRect")
+        self.assertEqual(requirement["primary_use"], "Portrait illustrated workshop background behind native Godot text and controls")
+        self.assertEqual(requirement["implementation_owner_or_path"], "res://scripts/vertical_slice/ui/vs_workshop_screen.gd")
+        self.assertEqual(requirement["target_aspect_resolution"], "PORTRAIT_941x1672")
+        self.assertEqual(requirement["state_family_requirement"], "STATIC_BACKGROUND_ONLY")
+        self.assertEqual(requirement["fallback_if_unconsumed"], "REVERT_TO_EXISTING_GODOT_COLORRECT_FALLBACK")
 
 
 if __name__ == "__main__":

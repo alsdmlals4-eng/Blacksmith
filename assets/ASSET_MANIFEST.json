@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "project": "BLACKSMITH",
+  "visual_requirements": [
+    {
+      "requirement_id": "BS-ART-20260826-04/WORKSHOP_BACKGROUND/20260828",
+      "consumer_id": "WORKSHOP",
+      "consumer_surface": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn",
+      "runtime_asset_role": "WorkshopIllustratedBackground TextureRect",
+      "primary_use": "Portrait illustrated workshop background behind native Godot text and controls",
+      "implementation_owner_or_path": "res://scripts/vertical_slice/ui/vs_workshop_screen.gd",
+      "target_aspect_resolution": "PORTRAIT_941x1672",
+      "state_family_requirement": "STATIC_BACKGROUND_ONLY",
+      "fallback_if_unconsumed": "REVERT_TO_EXISTING_GODOT_COLORRECT_FALLBACK",
+      "approval_reference": "User: 필요한 이미지들 제작해 / 정본화하고 이미지 제작 시작해",
+      "approval_state": "USER_APPROVED_IMAGE_GENERATION_20260828"
+    }
+  ],
+  "asset_records": [
+    {
+      "asset_id": "ASSET-WORKSHOP-BACKGROUND-V2",
+      "requirement_id": "BS-ART-20260826-04/WORKSHOP_BACKGROUND/20260828",
+      "status": "PROJECT_ASSET_APPROVED",
+      "sha256": "A3D305D28AEF0AABA374C7B435DC8ED0EA6F23F16A26BFA992D87682025382B5",
+      "dimensions": "941x1672",
+      "format": "PNG",
+      "project_relative_source_path": "assets/ui/workshop/workshop_enhancement_background_v2.png",
+      "tracked_asset_path": "assets/ui/workshop/workshop_enhancement_background_v2.png",
+      "actual_consumer": ["WORKSHOP"],
+      "runtime_slot": ["WorkshopIllustratedBackground"],
+      "provenance_and_rights": "AI_GENERATED_BY_BUILT_IN_IMAGE_TOOL; USER_APPROVED_IMAGE_GENERATION_20260828; RELEASE_RIGHTS_REVIEW_PENDING",
+      "approval_reference": "User: 필요한 이미지들 제작해 / 정본화하고 이미지 제작 시작해",
+      "generation_artifact": "exec-1d090f17-e5a3-4097-a27c-dc5b4e61b072",
+      "replacement_policy": "NONDESTRUCTIVE_V2; V1_RETAINED_AS_UNVERIFIED_LEGACY",
+      "runtime_evidence": "STATIC_BINDING_VERIFIED; GODOT_CLIENT_RENDER_ANDROID_ACCESSIBILITY_HUMAN_REVIEW_NOT_RUN",
+      "delivery_incident": "BLACKSMITH_HIGODOT_SESSION_UNAVAILABLE; MAIN_MENU_REBIND_DEFERRED; WORKSHOP_ONLY_SCOPE_PRESERVED"
+    }
+  ]
+}
