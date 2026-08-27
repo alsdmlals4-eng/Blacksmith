@@ -1,5 +1,32 @@
 # Blacksmith Session Handoff · Core Simplification
 
+> **Current override · 2026-08-28 KST.** This section supersedes any
+> contradictory runtime-active wording below. The current authority is
+> `POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_AND_VISUAL_REQUIREMENT_NEXT`;
+> `WORK_MODE = PLAN`; and
+> `PRODUCT_IMPLEMENTATION = BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`.
+> Previous Runtime MVP descriptions remain implementation-history evidence only.
+
+### POST_VISUAL_DELIVERY_OPERATING_CONTRACT_RECOVERY
+
+`OPERATING_CONTRACT_RECOVERY_ISSUE_299` records the post-PR #298 metadata
+recovery. The approved visual-family delivery merged at current main
+`626f4a652c9cf86b4b6b2d6e6d3d9c503b295adc`, while the adapter still named
+its predecessor `004e519a8891e3ef897cb32f67c58082a9d6a696`; the normal local
+entry gate therefore failed closed. The recovery advances only the adapter
+baseline to that exact accepted main, records nine existing generated
+GDScript UID sidecars, and uses a one-shot approval manifest for the three
+UIDs under protected `scripts/` paths. It does not change a GDScript body,
+Scene, data file, image, economy rule, or runtime behavior.
+
+The first PR #300 check started before its `approved-protected-change` label
+was present, so its external-approval input was `false`. A synchronized
+documentation commit is required to make the exact same approved head run
+with the existing label. After merge, retire the consumed manifest and
+advance the baseline again in a metadata-only follow-up before treating the
+ordinary local entry gate as recovered. Runtime, Android, accessibility,
+performance, Notion client-render, and human-play evidence remain `NOT_RUN`.
+
 - Decision ID: `BS-OPS-20260825-08`
 - Date: `2026-08-25 KST`, current update `2026-08-27 KST`
 - Status: `CURRENT_SESSION_HANDOFF / CODEX_RUNTIME_MVP_IMPLEMENTATION_ACTIVE`
