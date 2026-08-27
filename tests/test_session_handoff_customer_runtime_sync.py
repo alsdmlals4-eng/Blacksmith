@@ -31,11 +31,11 @@ class CustomerRuntimeHandoffSyncContractTest(unittest.TestCase):
         handoff = HANDOFF_PATH.read_text(encoding="utf-8")
 
         self.assertIn(
-            "OPERATING_CONTRACT_BASELINE = b2f3b994c92eee68eafbab1a90a8084e2924553c",
+            "OPERATING_CONTRACT_BASELINE = 004e519a8891e3ef897cb32f67c58082a9d6a696",
             handoff,
         )
         self.assertIn(
-            "PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR288", handoff
+            "PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR294", handoff
         )
 
 
