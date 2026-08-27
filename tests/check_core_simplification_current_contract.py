@@ -117,7 +117,8 @@ def main() -> None:
 
     handoff_text = HANDOFF.read_text(encoding="utf-8")
     assert "PR #207 = MERGED_TO_MAIN" in handoff_text
-    assert "CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS" in handoff_text
+    assert "CURRENT_RUNTIME_FOLLOWUP = CUSTOMER_EVENT_SCHEDULER_AND_PLAYER_ENTRY_UNDECIDED" in handoff_text
+    assert "Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`" in handoff_text
     assert "BS-REPAIR-20260826-31" in handoff_text
     assert "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC" in handoff_text
     assert "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)" in handoff_text
