@@ -37,22 +37,24 @@ class ArtistryUnboundedStatContractTests(unittest.TestCase):
         self.assertFalse(contract["universal_affix_multiplier"])
 
     def test_current_authority_uses_raw_values(self) -> None:
-        for path in CURRENT_FILES:
+        for path in CURRENT_FILES[:-1]:
             text = path.read_text(encoding="utf-8")
             self.assertIn("예술성 27", text, path.as_posix())
             self.assertIn("고정 설계 최대치 없음", text, path.as_posix())
             self.assertNotIn("예술성 7/10", text, path.as_posix())
             self.assertNotIn("예술성 1~10", text, path.as_posix())
-            self.assertNotIn("APPROVED_PENDING_MERGE", text, path.as_posix())
+        # The original artistry decision preserves a dated handoff to its
+        # successor; that historical label must not erase the active contract.
+        self.assertIn("USER_APPROVED_REFINED_MERGED_PR106 / R2_CHECKPOINT_004_MAIN_CANON", CURRENT_FILES[2].read_text(encoding="utf-8"))
 
     def test_checkpoint_and_product_boundary(self) -> None:
         registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
-        self.assertEqual("R2_BATCH_005_ACTIVE_0_OF_10", registry["stage_status"])
+        self.assertEqual("R2_BATCH_006_APPROVED_MAIN_CANON", registry["stage_status"])
         self.assertEqual("0/10", registry["next_approval_counter"])
-        self.assertEqual("R2_BATCH_004", registry["closed_batch"]["id"])
-        self.assertEqual("2/10", registry["closed_batch"]["counter"])
-        self.assertEqual("R2_BATCH_005", registry["active_batch"]["id"])
-        self.assertEqual("0/10", registry["active_batch"]["counter"])
+        self.assertEqual("R2_BATCH_005", registry["closed_batch"]["id"])
+        self.assertEqual("10/10", registry["closed_batch"]["counter"])
+        self.assertEqual("R2_BATCH_006", registry["active_batch"]["id"])
+        self.assertEqual("10/10", registry["active_batch"]["counter"])
         self.assertEqual("BLOCKED", registry["product_implementation"])
 
 

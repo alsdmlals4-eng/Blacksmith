@@ -12,12 +12,12 @@ class BaseV94BlacksmithAdoptionTests(unittest.TestCase):
     def test_identity_routes_and_project_skills(self) -> None:
         adapter = json.loads((ROOT / 'skills/PROJECT_BASE_ADAPTER.json').read_text(encoding='utf-8'))
         snapshot = json.loads((ROOT / 'skills/PROJECT_SKILL_SNAPSHOT.json').read_text(encoding='utf-8'))
-        self.assertEqual('9.4.0', adapter['base_release']['version'])
-        self.assertEqual('3f2c4a624d302b704c1b5322eb5c9f34ad55abb9', adapter['base_release']['release_commit'])
-        self.assertEqual('ff117d24d5bdb121314e109a6aa9b4f552e0fdc1', adapter['base_release']['release_evidence_commit'])
-        self.assertEqual('693a0dff3f054ecdd653079909e044211473838e73dd9aff07734d1ce5694c59', adapter['skill_registry']['base']['sha256'])
+        self.assertEqual('9.4.4', adapter['base_release']['version'])
+        self.assertEqual('210ec78292fa12ed7563ba743b322dd36103ae4a', adapter['base_release']['release_commit'])
+        self.assertEqual('bb61e68dc3028421b60c11b87ba2abd297ee6f78', adapter['base_release']['release_evidence_commit'])
+        self.assertEqual('08f882d0c77339e8f7ff187c35b79501e0a2958ab1ff1c7aaa1c0ef8dbee45d6', adapter['skill_registry']['base']['sha256'])
         self.assertIn('optimizing-ai-model-and-prompt-costs', {item['route_id'] for item in adapter['routing']['base_routes']})
-        self.assertEqual({'blacksmith-engineering', 'blacksmith-game-design', 'blacksmith-qa'}, {item['route_id'] for item in adapter['routing']['project_routes']})
+        self.assertEqual({'blacksmith-game-design', 'blacksmith-qa'}, {item['route_id'] for item in adapter['routing']['project_routes']})
         self.assertEqual('BASE_SHARED', snapshot['effective_routes']['optimizing-ai-model-and-prompt-costs']['source'])
         self.assertEqual(['data/', 'scripts/', 'scenes/', 'assets/', 'addons/', 'project.godot'], adapter['protected_paths'])
 
@@ -28,7 +28,7 @@ class BaseV94BlacksmithAdoptionTests(unittest.TestCase):
         for file in ('skills/BASE_V9_ADAPTER.json', 'skills/PROJECT_BASE_SKILL_ADAPTER.json'):
             view = json.loads((ROOT / file).read_text(encoding='utf-8'))
             self.assertEqual(sha, view['canonical_source_sha256'])
-            self.assertEqual('9.4.0', view['base_release']['version'])
+            self.assertEqual('9.4.4', view['base_release']['version'])
 
     def test_ai_ui_and_evidence_limits(self) -> None:
         ai = (ROOT / '[기획서]/00_프로젝트_허브/AI_WORKFLOW.md').read_text(encoding='utf-8')
