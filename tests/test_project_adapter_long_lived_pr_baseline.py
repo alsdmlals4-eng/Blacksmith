@@ -11,7 +11,8 @@ WORKFLOW = ROOT / ".github/workflows/validate-project-base-adapter.yml"
 ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
-OPERATING_CONTRACT_BASELINE = "004e519a8891e3ef897cb32f67c58082a9d6a696"
+HANDOFF = ROOT / "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md"
+OPERATING_CONTRACT_BASELINE = "626f4a652c9cf86b4b6b2d6e6d3d9c503b295adc"
 BASE_RELEASE_VERSION = "9.4.4"
 HEALTH_EVIDENCE_HASHES = {
     "BS-ADAPTER-MIGRATION-20260806": "f074e5c72cb7e8da2d89c5893daa2439db4111d97d92ca9a9a97bed5cfa85e65",
@@ -109,6 +110,11 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         health = json.loads(HEALTH.read_text(encoding="utf-8"))
         self.assertEqual("OM-L3", health["operating_maturity"])
         self.assertEqual(3, len(health["evidence"]["operating"]))
+
+    def test_handoff_records_post_visual_delivery_contract_recovery(self) -> None:
+        text = HANDOFF.read_text(encoding="utf-8")
+        self.assertIn("OPERATING_CONTRACT_RECOVERY_ISSUE_299", text)
+        self.assertIn("POST_VISUAL_DELIVERY_OPERATING_CONTRACT_RECOVERY", text)
 
 
 if __name__ == "__main__":
