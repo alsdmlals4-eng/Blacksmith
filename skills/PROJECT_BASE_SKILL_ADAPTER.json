@@ -13,7 +13,7 @@
     "version": "9.4.4"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "6a4613532d3f2beb5c7c480114cd41121d6a795f6c6fa943f526434ccaea9b0c",
+  "canonical_source_sha256": "09af8f53ce8f93436c838ebdade0263f477cbc69bc2565878c363273cbbcaebe",
   "canonical_sources": [
     "[기획서]/",
     "docs/UX_UI_SYSTEM.md",
@@ -34,7 +34,7 @@
   "generated": true,
   "hash_definition": "RAW_FILE_BYTES_SHA256",
   "legacy_source": "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json",
-  "legacy_source_sha256": "adbff9163ce0e464094b37b8e3a0416062c235ac21e9a740bf84107e3205c151",
+  "legacy_source_sha256": "c8f67ffd101e880af0e0e9171c76a32349b1a980fc5acaddf1d8f6524fa25205",
   "license_record": "docs/technical/THIRD_PARTY_LICENSES.md",
   "lifecycle": "ONE_CYCLE",
   "project": {
