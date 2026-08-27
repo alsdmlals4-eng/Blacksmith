@@ -1,10 +1,10 @@
 # Blacksmith Session Handoff · Core Simplification
 
 - Decision ID: `BS-OPS-20260825-08`
-- Date: `2026-08-25 KST`, current update `2026-08-26 KST`
+- Date: `2026-08-25 KST`, current update `2026-08-27 KST`
 - Status: `CURRENT_SESSION_HANDOFF / CODEX_RUNTIME_MVP_IMPLEMENTATION_ACTIVE`
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS`
+- `CURRENT_RUNTIME_FOLLOWUP = CUSTOMER_ACTUAL_USE_RESULT_SURFACE_AND_FLOW_UNDECIDED`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
@@ -23,12 +23,23 @@ REPAIR = one actual-damage job + R_BAND gold + one common reinforcement material
 OVERHAUL = SUPERSEDED
 V2_SAVE = READ_MIGRATE_TO_V3 / NEXT_WRITE_V3
 GODOT_GUT_CORE_VERIFICATION = PASS
-RUNTIME_UI_INTEGRATION = WORKSHOP_DURABILITY_REPAIR_BINDING_IMPLEMENTED / ITEM_SOURCE_CALLER_PENDING
-CUSTOMER_WORLD_EVENT_RUNTIME = NOT_RUN
+RUNTIME_UI_INTEGRATION = WORKSHOP_DURABILITY_REPAIR_BINDING_IMPLEMENTED
+CUSTOMER_WORLD_EVENT_RESOLUTION = IMPLEMENTED_PR268
+CUSTOMER_WORLD_RESULT_FACT_PERSISTENCE = IMPLEMENTED_PR272
+CUSTOMER_WORLD_RESULT_SURFACE_AND_SCHEDULER = NOT_RUN
 HUMAN_PLAYTEST = NOT_RUN
-OPERATING_CONTRACT_BASELINE = 103e0a52bee1e0b4e3e72a8410eff5cc7c25ab24
-PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR_229
+OPERATING_CONTRACT_BASELINE = 2b7d39bd5a9a66918d169c77e71a9d59816956d3
+PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR274
 ```
+
+`PR #268` implemented the Decision30 actual-use resolver: purchase/handoff never damages,
+one resolved event may cause at most one CURRENT-only damage event for the same item UID,
+and no actual-use event directly scars MAX. `PR #272` persists the resolved cause, declared
+and effective profile, CURRENT/MAX before-and-after values, and repair-job availability in
+the same content result. A player-facing customer/world result screen and a scheduler or
+handoff caller are not implemented by these PRs. `PR #274` advances only the protected
+operating baseline and retires the one-shot approval record. Android, accessibility,
+performance, visual client inspection, and human play remain `NOT_RUN`.
 
 ## 1. GPT Work transfer · 2026-08-26
 
