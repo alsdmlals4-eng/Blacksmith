@@ -287,6 +287,35 @@ Decision29 adds a repair/push/stop choice inside the same core rather than creat
 
 Existing success/recovery/attempt-cost/resource/economic values remain planning inputs and require Decision29/30 sensitivity revalidation.
 
+### 8.1 Phase-1 representative Slice · user-approved 2026-08-28
+
+```text
+PHASE_1_SLICE_VARIANT = B_ENHANCEMENT_FIRST_SAME_UID_LIFECYCLE
+PHASE_1_ENHANCEMENT_PATH = +0_TO_+10_INDIVIDUAL_ATTEMPTS
+PHASE_1_RISK_WINDOW = +11_TO_+15_MULTIPLE_STOP_PUSH_OPPORTUNITIES
+PHASE_1_LIFECYCLE_CLOSURE = ONE_SAME_UID_CUSTOMER_ACTUAL_USE_RESULT
+PHASE_1_CUSTOMER_SCOPE = ONE_CUSTOMER / ONE_EVENT / ONE_ITEM_UID
+PHASE_1_REPAIR_SCOPE = ONE_ELIGIBLE_REPAIR_DECISION_IF_ACTUAL_DAMAGE
+DO_NOT_REPLACE_ENHANCEMENT_PLAY_WITH_SINGLE_RISK_DEMO = TRUE
+DO_NOT_FAKE_DAMAGE_FOR_DEMONSTRATION = TRUE
+```
+
+The player begins with one item UID and experiences ordinary enhancement as
+individual +1 attempts through +10. `+9 -> +10` remains the sole Precision
+Enhancement and produces exactly one item keyword on success. The Slice then
+offers targets `+11` through `+15` as multiple STOP/PUSH opportunities; the
+player may stop after any decision and is never forced to reach `+15`.
+
+After the player chooses to hand off the item, one customer actual-use result
+may close the same UID's lifecycle arc. Customer result is not an additional
+enhancement substitute, nor is damage scripted merely to demonstrate repair.
+If actual damage occurs, the existing one-job repair rule may present its
+single recovery decision before the player returns to the enhancement loop.
+
+This is a Phase-1 experience contract, not current runtime completion. Exact
+session duration, attempt timing, resources, economy, and customer-event
+scheduling remain unimplemented or undecided until their appropriate gates.
+
 ## 9. First-session interpretation
 
 ```text
