@@ -52,6 +52,8 @@ def main() -> None:
     assert model["primary_use_gate_required"] is True
     assert model["no_consumer_disposition"] == "CUT_OR_DEFER"
     assert model["existing_visual_gdd_8_status"] == "HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY"
+    assert model["actual_runtime_consumption"] == "IMPLEMENTED_STATIC_BINDING_UNVERIFIED"
+    assert model["current_coverage_record"] == "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json"
 
     required = model["required_consumer_metadata"]
     assert required == [
@@ -91,6 +93,7 @@ def main() -> None:
             "IMG-05",
             "PRODUCT_IMAGE_ASSET_APPROVAL = 0",
             "IMPLEMENTATION_READY_IMAGE_ASSET = 0",
+            "ACTUAL_RUNTIME_IMAGE_CONSUMPTION = 1 / LEGACY_RUNTIME_BOUND_UNVERIFIED",
             "RUNTIME_VERIFIED_IMAGE_ASSET = 0",
             "FRESH_READ_REQUIRED",
         ],

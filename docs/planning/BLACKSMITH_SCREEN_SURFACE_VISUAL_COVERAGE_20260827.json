@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "status": "CURRENT_SCREEN_SURFACE_AND_VISUAL_COVERAGE_EVIDENCE_RECORD",
+  "date": "2026-08-27 KST",
+  "issue": "#291",
+  "scope": "CURRENT_VERTICAL_SLICE_AND_DECLARED_CURRENT_SCREEN_FAMILIES",
+  "authority_boundary": {
+    "screen_coverage_owner": "THIS_RECORD",
+    "image_policy_owner": "docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json",
+    "art_direction_owner": "BS-ART-20260825-03 / ILLUSTRATED_WORKSHOP_BOOK",
+    "runtime_truth_owner": "project.godot + scenes/vertical_slice + scripts/vertical_slice",
+    "asset_rights_owner": "docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md",
+    "not_a_second_asset_canon": true
+  },
+  "target": {
+    "orientation": "PORTRAIT",
+    "viewport": "720x1280",
+    "platform": "ANDROID"
+  },
+  "image_generation": "NOT_RUN",
+  "no_automatic_generation_from_gaps": true,
+  "runtime_visual_validation": "NOT_RUN",
+  "screen_inventory": [
+    {
+      "screen_id": "MAIN_MENU",
+      "screen_family": "MAIN_MENU_SYSTEM",
+      "screen_name": "메인 메뉴",
+      "project_stage": "CURRENT_VERTICAL_SLICE_IMPLEMENTED",
+      "priority": "P0",
+      "flow_entry": "project.godot main_scene",
+      "flow_exit": "NEW_GAME_OR_CONTINUE_TO_FIRST_FORGE_OR_WORKSHOP",
+      "player_goal": "새 대장간을 시작하거나 저장된 작업으로 돌아간다",
+      "player_question": "지금 새 작품을 시작할까, 이어서 작업할까",
+      "consumer_kind": "GAME_RUNTIME",
+      "consumer_surface": "res://scenes/vertical_slice/main_menu.tscn",
+      "screen_design_reference": "Godot Control/VBox layout; historical Visual GDD is layout-only reference",
+      "runtime_consumer": "MenuIllustratedBackground TextureRect consumes ASSET-WORKSHOP-BACKGROUND-V1",
+      "existing_evidence": "scene texture binding + GUT test_vs_main_menu + 941x1672 local PNG hash",
+      "coverage_status": "GAP_BLOCKING",
+      "notion_destination": "블랙스미스 · Home / 02 · 비주얼 바이블 / Asset Library",
+      "repository_destination": "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
+      "blockers": "Existing background is runtime-bound but approval and provenance are UNVERIFIED_NOT_PROMOTED; no replacement or generation is authorized."
+    },
+    {
+      "screen_id": "FIRST_FORGE",
+      "screen_family": "ONBOARDING_FORGE",
+      "screen_name": "첫 작품 제작",
+      "project_stage": "CURRENT_VERTICAL_SLICE_IMPLEMENTED",
+      "priority": "P0",
+      "flow_entry": "MainMenu new/continue without selected item",
+      "flow_exit": "FIRST_FORGE_COMPLETION_TO_WORKSHOP",
+      "player_goal": "첫 작품을 만들고 작업대로 진입한다",
+      "player_question": "어떤 첫 작품을 만들어 강화 여정을 시작할까",
+      "consumer_kind": "GAME_RUNTIME",
+      "consumer_surface": "res://scripts/ui/forging_screen.gd",
+      "screen_design_reference": "Godot-generated Control surface; no standalone raster slot identified",
+      "runtime_consumer": "ForgingScreen instantiated by VSMainMenu",
+      "existing_evidence": "VSMainMenu begin_first_forge flow and first-forge GUT contracts",
+      "coverage_status": "COVERED_EXISTING",
+      "notion_destination": "블랙스미스 · Home / Flow",
+      "repository_destination": "scripts/ui/forging_screen.gd",
+      "blockers": "No runtime visual render captured; human and Android readability remain NOT_RUN."
+    },
+    {
+      "screen_id": "WORKSHOP",
+      "screen_family": "CORE_WORKBENCH",
+      "screen_name": "작업대",
+      "project_stage": "CURRENT_VERTICAL_SLICE_IMPLEMENTED",
+      "priority": "P0",
+      "flow_entry": "First forge completion or continued campaign",
+      "flow_exit": "Enhancement attempt, repair action, or customer/result flow",
+      "player_goal": "작품의 상태를 읽고 강화 또는 수리를 선택한다",
+      "player_question": "지금 밀어붙일까, 수리할까",
+      "consumer_kind": "GAME_RUNTIME",
+      "consumer_surface": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn",
+      "screen_design_reference": "Decision29/31 numeric durability and repair information hierarchy",
+      "runtime_consumer": "VSWorkshopScreen dynamically creates WorkshopIllustratedBackground using ASSET-WORKSHOP-BACKGROUND-V1",
+      "existing_evidence": "VSWorkshopScreen preload and GUT workshop-screen contracts",
+      "coverage_status": "GAP_BLOCKING",
+      "notion_destination": "블랙스미스 · Home / 03 · Visual · UX · Assets",
+      "repository_destination": "scripts/vertical_slice/ui/vs_workshop_screen.gd",
+      "blockers": "Shared background has the same unverified approval/provenance blocker; 17px explanatory text needs runtime readability validation."
+    },
+    {
+      "screen_id": "ENHANCEMENT_IN_WORKSHOP",
+      "screen_family": "CORE_ACTION_PANEL",
+      "screen_name": "작업대 내 강화 패널",
+      "project_stage": "CURRENT_VERTICAL_SLICE_IMPLEMENTED",
+      "priority": "P0",
+      "flow_entry": "Selected item in Workshop",
+      "flow_exit": "Resolved enhancement remains in Workshop",
+      "player_goal": "다음 강화의 비용과 성공·유지·손상 결과를 비교한다",
+      "player_question": "이 확률과 위험을 감수하고 시도할까",
+      "consumer_kind": "GAME_RUNTIME",
+      "consumer_surface": "VSWorkshopScreen/_ensure_enhancement_controls",
+      "screen_design_reference": "Decision28/29/32 final outcome disclosure",
+      "runtime_consumer": "Godot Label/Button controls only; no raster asset slot identified",
+      "existing_evidence": "VSWorkshopScreen view_state and enhancement GUT contracts",
+      "coverage_status": "COVERED_EXISTING",
+      "notion_destination": "02 · Enhancement · Durability · Economy",
+      "repository_destination": "scripts/vertical_slice/ui/vs_workshop_screen.gd",
+      "blockers": "No new icon or generated screenshot is justified; actual input/readability validation remains NOT_RUN."
+    },
+    {
+      "screen_id": "CUSTOMER_WORLD_RESULT",
+      "screen_family": "EVENT_RESULT",
+      "screen_name": "고객 실제 사용 결과",
+      "project_stage": "CURRENT_VERTICAL_SLICE_IMPLEMENTED",
+      "priority": "P0",
+      "flow_entry": "Saved resolved actual-use event",
+      "flow_exit": "Return-to-workshop repair hint",
+      "player_goal": "같은 UID의 실제 사용 결과와 다음 행동을 이해한다",
+      "player_question": "손상이 있었고 이제 무엇을 해야 할까",
+      "consumer_kind": "GAME_RUNTIME",
+      "consumer_surface": "res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn",
+      "screen_design_reference": "Decision30 actual-use consequence and read-only result contract",
+      "runtime_consumer": "Godot ColorRect/Label controls only; no raster asset slot identified",
+      "existing_evidence": "VSCustomerResultScreen parsing contract and PR #278/#286 flow evidence",
+      "coverage_status": "COVERED_EXISTING",
+      "notion_destination": "06 · Production · Handoff",
+      "repository_destination": "scenes/vertical_slice/screens/vs_customer_result_screen.tscn",
+      "blockers": "Customer event scheduler/player entry and runtime visual inspection are NOT_RUN."
+    },
+    {
+      "screen_id": "SETTINGS_OVERLAY",
+      "screen_family": "SYSTEM_OVERLAY",
+      "screen_name": "설정 오버레이",
+      "project_stage": "IMPLEMENTED_STUB",
+      "priority": "P2",
+      "flow_entry": "Main menu settings control",
+      "flow_exit": "Return to Main Menu",
+      "player_goal": "설정을 열고 닫는다",
+      "player_question": "이 설정이 현재 플레이에 어떤 선택을 제공하는가",
+      "consumer_kind": "GAME_RUNTIME",
+      "consumer_surface": "res://scenes/vertical_slice/main_menu.tscn#SettingsOverlay",
+      "screen_design_reference": "Godot PanelContainer placeholder",
+      "runtime_consumer": "SettingsOverlay node exists but SettingsButton has no connected runtime action",
+      "existing_evidence": "main_menu scene + VSMainMenu set_settings_open method",
+      "coverage_status": "GAP_NONBLOCKING",
+      "notion_destination": "블랙스미스 · Home / Flow",
+      "repository_destination": "scenes/vertical_slice/main_menu.tscn",
+      "blockers": "No settings interaction contract or implementation scope is approved; no image is required."
+    },
+    {
+      "screen_id": "PRECISION_PLUS_9_TO_10",
+      "screen_family": "SPECIAL_ENHANCEMENT",
+      "screen_name": "+9→+10 정밀 강화",
+      "project_stage": "DECLARED_CURRENT_CANON_NOT_IMPLEMENTED_AS_SEPARATE_SURFACE",
+      "priority": "P1",
+      "flow_entry": "Enhancement target +10",
+      "flow_exit": "Workshop or customer context",
+      "player_goal": "유일한 정밀 강화와 keyword 결과를 판독한다",
+      "player_question": "이 촉매와 작품 정체성을 선택할까",
+      "consumer_kind": "PLANNED_GAME_SURFACE",
+      "consumer_surface": "No separate current scene/node",
+      "screen_design_reference": "Decision25 precision boundary; historical Visual GDD is stale cadence reference only",
+      "runtime_consumer": "No exact consumer slot",
+      "existing_evidence": "Current canon and VSWorkshopScreen ordinary enhancement controls",
+      "coverage_status": "DEFERRED_BY_DECISION",
+      "notion_destination": "02 · Enhancement · Durability · Economy",
+      "repository_destination": "docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json",
+      "blockers": "Exact scene, component states, and consumer metadata are absent; candidate assets must not be generated."
+    },
+    {
+      "screen_id": "ITEM_CHRONICLE",
+      "screen_family": "ITEM_HISTORY",
+      "screen_name": "작품 연대기",
+      "project_stage": "DECLARED_CURRENT_CANON_NOT_IMPLEMENTED",
+      "priority": "P1",
+      "flow_entry": "Item detail",
+      "flow_exit": "Return to item detail or workshop",
+      "player_goal": "의미 있는 작품 생애 사건을 회고한다",
+      "player_question": "이 작품이 어떤 이력과 가치를 쌓아 왔는가",
+      "consumer_kind": "PLANNED_GAME_SURFACE",
+      "consumer_surface": "No current scene/node",
+      "screen_design_reference": "Decision27 meaningful events only",
+      "runtime_consumer": "No exact consumer slot",
+      "existing_evidence": "Current canon only",
+      "coverage_status": "DEFERRED_BY_DECISION",
+      "notion_destination": "블랙스미스 · Home / Core systems",
+      "repository_destination": "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+      "blockers": "No runtime surface or state-family contract exists; no explanatory raster or asset queue is allowed."
+    }
+  ],
+  "asset_coverage": [
+    {
+      "asset_id": "ASSET-WORKSHOP-BACKGROUND-V1",
+      "production_mode": "EXISTING_PROJECT_RASTER",
+      "asset_lifecycle_state": "LEGACY_RUNTIME_BOUND_UNVERIFIED",
+      "approval_state": "UNVERIFIED_NOT_PROMOTED",
+      "runtime_consumption": "IMPLEMENTED_STATIC_BINDING",
+      "repository_path": "assets/ui/workshop/workshop_enhancement_background_v1.png",
+      "sha256": "BA9D00B4244299956AC00C1700BBB05B69071574C079D736DB06CDA3A3F796E6",
+      "dimensions": "941x1672",
+      "consumer_ids": ["MAIN_MENU", "WORKSHOP"],
+      "primary_use": "Portrait illustrated workshop background behind native Godot text and controls",
+      "state_family_requirement": "STATIC_BACKGROUND_ONLY",
+      "fallback_if_unconsumed": "REVERT_TO_EXISTING_GODOT_COLORRECT_FALLBACK",
+      "rights_and_provenance": "NO_MATCHING_CURRENT_APPROVAL_OR_PROVENANCE_RECORD_FOUND",
+      "validation": "Static path/binding/hash verified; Godot client render, Android readability, and human review NOT_RUN"
+    }
+  ],
+  "runtime_asset_family_queue": [
+    {
+      "queue_id": "RUNTIME-EXISTING-01",
+      "asset_id": "ASSET-WORKSHOP-BACKGROUND-V1",
+      "disposition": "RECONCILE_APPROVAL_AND_PROVENANCE_BEFORE_PROMOTION_OR_REPLACEMENT",
+      "image_generation": "NOT_AUTHORIZED"
+    },
+    {
+      "queue_id": "RUNTIME-FUTURE-01",
+      "asset_family": "Precision visual treatment",
+      "disposition": "DEFER_UNTIL_EXACT_CONSUMER_SLOT",
+      "image_generation": "NOT_AUTHORIZED"
+    },
+    {
+      "queue_id": "RUNTIME-FUTURE-02",
+      "asset_family": "Chronicle visual treatment",
+      "disposition": "DEFER_UNTIL_EXACT_CONSUMER_SLOT",
+      "image_generation": "NOT_AUTHORIZED"
+    }
+  ],
+  "screen_design_reference_queue": [
+    {
+      "screen_id": "SETTINGS_OVERLAY",
+      "needed_decision": "Approve or remove the stub before any UI polish",
+      "design_reference_mode": "GODOT_UI_TEXT_ONLY"
+    },
+    {
+      "screen_id": "PRECISION_PLUS_9_TO_10",
+      "needed_decision": "Define exact scene, entry, exit, component states, and accessibility cues",
+      "design_reference_mode": "STRUCTURED_FLOW_AND_GODOT_UI_FIRST"
+    },
+    {
+      "screen_id": "ITEM_CHRONICLE",
+      "needed_decision": "Define item-detail entry and meaningful-event presentation before visual requirements",
+      "design_reference_mode": "STRUCTURED_FLOW_AND_GODOT_UI_FIRST"
+    }
+  ],
+  "correction_log": [
+    {
+      "finding_id": "BS-VIS-AUDIT-20260827-01",
+      "severity": "P0",
+      "finding": "Current documents describe runtime image consumption as NOT_RUN while a project-local raster is bound by actual current runtime paths.",
+      "evidence": "main_menu.tscn TextureRect binding; VSWorkshopScreen preload; GUT preloads; SHA-256 verified.",
+      "disposition": "Correct documentation to implemented static binding without promoting approval, provenance, or visual-quality status."
+    },
+    {
+      "finding_id": "BS-VIS-AUDIT-20260827-02",
+      "severity": "P0",
+      "finding": "Existing runtime raster lacks a matching current approval/provenance record.",
+      "evidence": "No matching reference found in ASSET_RIGHTS_AND_PROVENANCE_RECORD or current asset record search.",
+      "disposition": "Explicit blocker; do not generate, replace, or mark approved in this audit."
+    },
+    {
+      "finding_id": "BS-VIS-AUDIT-20260827-03",
+      "severity": "P2",
+      "finding": "Settings overlay exists as a stub but has no button connection or approved settings contract.",
+      "evidence": "MainMenu scene contains SettingsButton/SettingsOverlay; VSMainMenu only exposes set_settings_open.",
+      "disposition": "Leave unchanged; track as a nonblocking design/implementation gap."
+    }
+  ],
+  "adversarial_review": {
+    "screen_completeness": "PASS_WITH_DECLARED_DEFERRED_SURFACES",
+    "player_judgement": "PASS_FOR_IMPLEMENTED_SURFACES; runtime readability NOT_RUN",
+    "asset_completeness": "EXPLICIT_P0_APPROVAL_PROVENANCE_BLOCKER",
+    "overproduction_prevention": "PASS_NO_IMAGE_GENERATION_OR_NEW_REQUIREMENTS",
+    "source_of_truth_runtime_consistency": "PARTIAL_STALE_CLAIMS_IDENTIFIED_FOR_CORRECTION"
+  }
+}

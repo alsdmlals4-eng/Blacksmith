@@ -91,7 +91,7 @@ The 2026-08-26 consumer-first image audit completed **without generating a new i
 HISTORICAL_APPROVED_VISUAL_GDD = 8
 PRODUCT_IMAGE_ASSET_APPROVAL = 0
 IMPLEMENTATION_READY_IMAGE_ASSET = 0
-ACTUAL_RUNTIME_IMAGE_CONSUMPTION = 0
+ACTUAL_RUNTIME_IMAGE_CONSUMPTION = 1 / LEGACY_RUNTIME_BOUND_UNVERIFIED
 RUNTIME_VERIFIED_IMAGE_ASSET = 0
 IMAGE_GENERATION = NOT_RUN
 IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK
@@ -108,7 +108,7 @@ Existing-solution result:
 - Reuse current `ILLUSTRATED_WORKSHOP_BOOK` style canon as-is.
 - Adapt old Visual GDDs only for layout/information hierarchy/feedback structure.
 - Keep Godot native `Control`/`Button`/`Panel`/`ProgressBar` for UI structure instead of redrawing those controls as raster images.
-- No current Blacksmith production PNG/JPG/WebP was found in the repository audit; GUT plugin SVGs are not Blacksmith product art.
+- Screen/asset audit correction (2026-08-27): `assets/ui/workshop/workshop_enhancement_background_v1.png` is a current project-local PNG bound by both Main Menu and Workshop. It is `LEGACY_RUNTIME_BOUND_UNVERIFIED`, not an approved or runtime-visual-verified product asset; see `docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json`. The earlier no-PNG statement is historical audit evidence only.
 - `docs/planning/BLACKSMITH_VISUAL_GDD_IMPLEMENTATION_BINDINGS_20260825.json` is stale implementation-planning evidence where it still encodes Decision26-era categorical/no-numeric durability semantics. Do not use those fields over Decision29/30.
 - Google Sheet `71_이미지기획_생성목록` and `72_이미지검수_승인로그` are migration/history surfaces. Old `BS-IMG-001~005` queue labels do not become the current production queue.
 
@@ -412,7 +412,7 @@ CUSTOMER_WORLD_EVENT_DAMAGE_POLICY = USER_APPROVED / BS-DAMAGE-20260826-30
 CUSTOMER_EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
 VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04
 IMAGE_GENERATION = NOT_RUN
-ACTUAL_RUNTIME_IMAGE_CONSUMPTION = NOT_RUN
+ACTUAL_RUNTIME_IMAGE_CONSUMPTION = IMPLEMENTED_STATIC_PROJECT_RASTER_BINDING / VISUAL_RUNTIME_VALIDATION_NOT_RUN
 REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / B65_DEFAULT_PLAYTEST_REQUIRED
 FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE
 UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP

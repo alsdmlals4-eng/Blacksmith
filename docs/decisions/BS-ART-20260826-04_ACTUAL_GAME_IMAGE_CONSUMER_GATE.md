@@ -232,7 +232,12 @@ No. `CUT / DEFER / REBRIEF`가 기본이다.
 ```text
 VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04
 IMAGE_GENERATION = NOT_RUN
-ACTUAL_RUNTIME_CONSUMPTION = NOT_RUN
+ACTUAL_RUNTIME_CONSUMPTION = IMPLEMENTED_STATIC_PROJECT_RASTER_BINDING / VISUAL_RUNTIME_VALIDATION_NOT_RUN
 PROJECT_ASSET_APPROVAL = NOT_GRANTED_BY_THIS_DECISION
 ART_DIRECTION = BS-ART-20260825-03 / USER_APPROVED_DIRECTION
 ```
+
+The current binding and its unverified lifecycle/provenance boundary are recorded in
+`docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json`. This readback
+does not promote the existing raster to an approved project asset or authorize replacement,
+reuse, or image generation.

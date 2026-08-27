@@ -48,5 +48,6 @@
     "CONCEPT_COLLAGE_WITHOUT_MAPPED_PRODUCT_SLOT"
   ],
   "image_generation": "NOT_RUN",
-  "actual_runtime_consumption": "NOT_RUN"
+  "actual_runtime_consumption": "IMPLEMENTED_STATIC_BINDING_UNVERIFIED",
+  "current_coverage_record": "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json"
 }
