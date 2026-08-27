@@ -32,6 +32,7 @@ CANONICAL_LF_EVIDENCE_SOURCES = {
 class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
     def test_workflow_compares_actual_pr_head_not_merge_head(self) -> None:
         text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("ref: ${{ github.event.pull_request.head.sha }}", text)
         self.assertIn("PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}", text)
         self.assertIn('"$PR_BASE_SHA"..."$PR_HEAD_SHA"', text)
         self.assertNotIn('"$PR_BASE_SHA"...HEAD', text)
