@@ -11,7 +11,7 @@ WORKFLOW = ROOT / ".github/workflows/validate-project-base-adapter.yml"
 ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
-OPERATING_CONTRACT_BASELINE = "744b773bccffbdaab9c8db1c60b7933c91044c4a"
+OPERATING_CONTRACT_BASELINE = "08fde81bcb7ef4c9ae4783b1a14c6009938486c6"
 BASE_RELEASE_VERSION = "9.4.4"
 HEALTH_EVIDENCE_HASHES = {
     "BS-ADAPTER-MIGRATION-20260806": "f074e5c72cb7e8da2d89c5893daa2439db4111d97d92ca9a9a97bed5cfa85e65",
@@ -66,6 +66,10 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
     def test_adapter_uses_the_released_reuse_first_base_contract(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
         self.assertEqual(BASE_RELEASE_VERSION, adapter["base_release"]["version"])
+        self.assertEqual(
+            OPERATING_CONTRACT_BASELINE,
+            adapter["protected_baseline"]["commit"],
+        )
 
     def test_health_evidence_hashes_use_canonical_git_bytes(self) -> None:
         health = json.loads(HEALTH.read_text(encoding="utf-8"))
