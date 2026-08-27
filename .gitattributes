@@ -3,3 +3,7 @@ docs/operations/BLACKSMITH_ADAPTER_MIGRATION_STATE_2026-08-06.json text eol=lf
 docs/operations/BLACKSMITH_SHEET_AUTHORITY_EVIDENCE_2026-08-06.json text eol=lf
 docs/operations/BS-OPS-20260802-01_FINAL_REPORT.md text eol=lf
 docs/planning/CURRENT_R1_CANON_REGISTRY.json text eol=lf
+skills/PROJECT_BASE_ADAPTER.json text eol=lf
+docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json text eol=lf
+docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json text eol=lf
+[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json text eol=lf

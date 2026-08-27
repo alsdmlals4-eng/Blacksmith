@@ -27,11 +27,18 @@ CANONICAL_LF_EVIDENCE_SOURCES = {
     "docs/operations/BS-OPS-20260802-01_FINAL_REPORT.md",
     "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
 }
+GENERATED_VIEW_SOURCE_INPUTS = {
+    "skills/PROJECT_BASE_ADAPTER.json",
+    "docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json",
+    "docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json",
+    "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
+}
 
 
 class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
     def test_workflow_compares_actual_pr_head_not_merge_head(self) -> None:
         text = WORKFLOW.read_text(encoding="utf-8")
+        self.assertIn("ref: ${{ github.event.pull_request.head.sha }}", text)
         self.assertIn("PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}", text)
         self.assertIn('"$PR_BASE_SHA"..."$PR_HEAD_SHA"', text)
         self.assertNotIn('"$PR_BASE_SHA"...HEAD', text)
@@ -87,6 +94,11 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         self.assertTrue(attributes.exists())
         lines = set(attributes.read_text(encoding="utf-8").splitlines())
         for source in CANONICAL_LF_EVIDENCE_SOURCES:
+            self.assertIn(f"{source} text eol=lf", lines)
+
+    def test_generated_view_source_inputs_are_checked_out_with_lf(self) -> None:
+        lines = set((ROOT / ".gitattributes").read_text(encoding="utf-8").splitlines())
+        for source in GENERATED_VIEW_SOURCE_INPUTS:
             self.assertIn(f"{source} text eol=lf", lines)
 
     def test_operating_maturity_has_three_valid_operating_records(self) -> None:

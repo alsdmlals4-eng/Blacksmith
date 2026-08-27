@@ -78,6 +78,17 @@ class CiWorkflowStructureTests(unittest.TestCase):
         self.assertIn("scenes/main/main.tscn", godot)
         self.assertIn("Upload failure logs only", godot)
 
+    def test_godot_downloads_force_http_1_1_after_transport_resets(self) -> None:
+        for workflow in ("godot-validation.yml", "gut-validation.yml"):
+            source = read(workflow)
+            self.assertIn("--retry-all-errors", source)
+            self.assertIn(
+                "https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/"
+                "Godot_v4.7.1-stable_linux.x86_64.zip",
+                source,
+            )
+            self.assertIn("c7ff14fd28472c8d4f193043de30278dcf7e5241a1dcf7566b02e27addaa33ba", source)
+
     def test_full_validation_owns_matrix_and_heavy_base_suite(self) -> None:
         full = read("full-validation.yml")
         self.assertIn("ubuntu-latest", full)
