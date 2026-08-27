@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "08fde81bcb7ef4c9ae4783b1a14c6009938486c6",
+  "decision_ids": [
+    "BS-DAMAGE-20260826-30",
+    "BS-REPAIR-20260826-29",
+    "USER_RUNTIME_IMPLEMENTATION_AUTHORIZATION_20260826"
+  ],
+  "approved_paths": [
+    "scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd",
+    "scripts/vertical_slice/ui/vs_app.gd"
+  ],
+  "approval_source": "User-approved current-canon Godot implementation and continuous in-scope execution authorization in this chat.",
+  "approval_time": "2026-08-27T23:45:00+09:00",
+  "scope_summary": "Resolve one authored customer actual-use event in a cloned save envelope, persist it, and present only the same stored UID result from CUSTOMER to RESULT; no scheduler, new customer UI, reroll, automatic repair, MAX scar, image generation, or PR #196 change."
+}
