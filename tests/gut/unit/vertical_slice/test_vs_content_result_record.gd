@@ -176,6 +176,31 @@ func test_primary_next_action_must_be_uppercase_token() -> void:
 	assert_true(record.validation_errors.has("INVALID_PRIMARY_NEXT_ACTION"))
 
 
+func test_partial_durability_consequence_is_rejected() -> void:
+	var value := _nadia_record()
+	value["durability_consequence"] = {"actual_item_use": true}
+	var record = RecordScript.from_dict(value)
+	assert_true(record.validation_errors.has("INVALID_DURABILITY_CONSEQUENCE_FIELDS"))
+
+
+func test_durability_consequence_field_types_are_enforced() -> void:
+	var value := _nadia_record()
+	value["durability_consequence"] = {
+		"actual_item_use": "yes",
+		"damage_applied": true,
+		"damage_cause": "CAVE_IN_DIRECT_HIT",
+		"declared_damage_profile": "DIRECT",
+		"effective_damage_profile": "DIRECT",
+		"before_current_durability": 5,
+		"after_current_durability": 4,
+		"before_max_durability": 5,
+		"after_max_durability": 5,
+		"repair_job_available": true,
+	}
+	var record = RecordScript.from_dict(value)
+	assert_true(record.validation_errors.has("INVALID_DURABILITY_CONSEQUENCE_TYPE:actual_item_use"))
+
+
 func test_invalid_uid_is_rejected() -> void:
 	var value := _nadia_record()
 	value["item_refs"][0]["uid"] = "bad-uid"

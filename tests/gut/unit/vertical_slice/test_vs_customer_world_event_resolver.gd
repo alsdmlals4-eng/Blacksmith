@@ -86,6 +86,22 @@ func test_direct_actual_use_applies_one_current_damage_and_persists_same_uid_res
 		[{"role": "PRIMARY_ITEM", "uid": ITEM_UID}],
 		"persisted customer result must retain the same item UID"
 	)
+	assert_eq(
+		envelope.active_run["resolved_events"].get("nadia-actual-use-001", {}).get("durability_consequence", {}),
+		{
+			"actual_item_use": true,
+			"damage_applied": true,
+			"damage_cause": "CAVE_IN_DIRECT_HIT",
+			"declared_damage_profile": "DIRECT",
+			"effective_damage_profile": "DIRECT",
+			"before_current_durability": 5,
+			"after_current_durability": 4,
+			"before_max_durability": 5,
+			"after_max_durability": 5,
+			"repair_job_available": true,
+		},
+		"same-UID result must persist the factual durability consequence for a later result surface"
+	)
 
 
 func test_handoff_without_actual_use_persists_result_but_never_damages() -> void:

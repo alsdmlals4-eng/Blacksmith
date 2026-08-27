@@ -60,6 +60,18 @@ func _make_nadia_result() -> Dictionary:
 		},
 		"causal_reasons": ["LOAD_GATE_PASSED", "UTILITY_MATCHED"],
 		"primary_next_action": "REPAIR_ITEM",
+		"durability_consequence": {
+			"actual_item_use": true,
+			"damage_applied": true,
+			"damage_cause": "CAVE_IN_DIRECT_HIT",
+			"declared_damage_profile": "DIRECT",
+			"effective_damage_profile": "DIRECT",
+			"before_current_durability": 5,
+			"after_current_durability": 4,
+			"before_max_durability": 5,
+			"after_max_durability": 5,
+			"repair_job_available": true,
+		},
 	}
 
 
