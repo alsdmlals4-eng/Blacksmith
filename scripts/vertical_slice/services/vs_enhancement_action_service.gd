@@ -140,6 +140,7 @@ func _commit_enhancement_state(item, staged_item) -> void:
 	item.repair_job_available = bool(staged_item.repair_job_available)
 	item.max_enhancement_reached = bool(staged_item.max_enhancement_reached)
 	item.physical_state = str(staged_item.physical_state)
+	item.catalyst_affix = str(staged_item.catalyst_affix)
 
 
 func _destruction_cause_for_result(outcome: String) -> String:

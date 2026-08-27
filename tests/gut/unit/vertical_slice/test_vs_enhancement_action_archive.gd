@@ -86,6 +86,20 @@ func test_failed_hold_does_not_create_archive() -> void:
 	assert_false(envelope.destroyed_history_by_uid.has(item.uid))
 
 
+func test_direct_precision_success_commits_the_single_catalyst_keyword() -> void:
+	var envelope = SaveEnvelopeScript.new()
+	var item = _item()
+	item.enhancement_level = 9
+	item.highest_checkpoint = 0
+	envelope.items_by_uid[item.uid] = item
+	var result = load(SERVICE_PATH).new().resolve_with_rolls(
+		envelope, item.uid, 10, {"success_roll_percent": 0.0, "damage_roll_percent": 99.0}, 3
+	)
+	assert_eq(result["outcome"], "SUCCESS")
+	assert_eq(item.enhancement_level, 10)
+	assert_eq(item.catalyst_affix, "PRECISION_KEYWORD_PENDING_CONTENT")
+
+
 func test_saved_enhancement_success_commits_result_and_resource_cost_together() -> void:
 	var envelope = _valid_envelope_with_item()
 	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
