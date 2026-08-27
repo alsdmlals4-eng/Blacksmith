@@ -27,7 +27,7 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("BS-OPS-20260825-08", handoff)
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", handoff)
         self.assertIn("CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826", handoff)
-        self.assertIn("CURRENT_PLANNING_WORK = REPAIR_ECONOMY_HUMAN_PLAYTEST + ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS", handoff)
+        self.assertIn("CUSTOMER_WORLD_RESULT_SURFACE_AND_SCHEDULER = NOT_RUN", handoff)
 
         self.assertIn("CURRENT_PRIORITY_OVERLAY", overlay)
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", overlay)
