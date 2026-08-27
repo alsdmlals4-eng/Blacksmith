@@ -10,7 +10,7 @@ APP_SCENE = ROOT / "scenes/vertical_slice/vertical_slice_app.tscn"
 WORKSHOP = ROOT / "scenes/vertical_slice/screens/vs_workshop_screen.tscn"
 MENU_SCRIPT = ROOT / "scripts/vertical_slice/ui/vs_main_menu.gd"
 APP_SCRIPT = ROOT / "scripts/vertical_slice/ui/vs_app.gd"
-APPROVED_WORKSHOP_BACKGROUND = "res://assets/ui/workshop/workshop_enhancement_background_v1.png"
+RUNTIME_WORKSHOP_BACKGROUND = "res://assets/ui/workshop/workshop_enhancement_background_v1.png"
 
 
 class VerticalSliceTask2AppShellContractTests(unittest.TestCase):
@@ -40,10 +40,10 @@ class VerticalSliceTask2AppShellContractTests(unittest.TestCase):
             "SOLE_GODOT_AUTHORING_AUTHORITY",
         )
 
-    def test_task2_uses_only_the_approved_workshop_background_as_a_scene_asset(self) -> None:
+    def test_task2_binds_only_the_runtime_workshop_background_as_a_scene_asset(self) -> None:
         self.assertTrue(MAIN_MENU.is_file(), str(MAIN_MENU))
         main_menu_text = MAIN_MENU.read_text(encoding="utf-8")
-        self.assertIn(APPROVED_WORKSHOP_BACKGROUND, main_menu_text)
+        self.assertIn(RUNTIME_WORKSHOP_BACKGROUND, main_menu_text)
         self.assertIn('name="MenuIllustratedBackground"', main_menu_text)
         for path in [APP_SCENE, WORKSHOP]:
             self.assertTrue(path.is_file(), str(path))

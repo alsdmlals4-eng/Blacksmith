@@ -63,9 +63,13 @@ class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
                 self.assertTrue(row["blockers"])
 
         self.assertEqual(rows["MAIN_MENU"]["coverage_status"], "GAP_BLOCKING")
+        self.assertEqual(rows["FIRST_FORGE"]["coverage_status"], "COVERED_EXISTING")
         self.assertEqual(rows["WORKSHOP"]["coverage_status"], "GAP_BLOCKING")
+        self.assertEqual(rows["ENHANCEMENT_IN_WORKSHOP"]["coverage_status"], "COVERED_EXISTING")
         self.assertEqual(rows["CUSTOMER_WORLD_RESULT"]["coverage_status"], "COVERED_EXISTING")
+        self.assertEqual(rows["SETTINGS_OVERLAY"]["coverage_status"], "GAP_NONBLOCKING")
         self.assertEqual(rows["PRECISION_PLUS_9_TO_10"]["coverage_status"], "DEFERRED_BY_DECISION")
+        self.assertEqual(rows["ITEM_CHRONICLE"]["coverage_status"], "DEFERRED_BY_DECISION")
 
     def test_existing_runtime_raster_is_described_without_approval_promotion(self) -> None:
         self.assertTrue(MODEL.is_file(), MODEL)
@@ -78,9 +82,27 @@ class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
         self.assertEqual(asset["asset_lifecycle_state"], "LEGACY_RUNTIME_BOUND_UNVERIFIED")
         self.assertEqual(asset["approval_state"], "UNVERIFIED_NOT_PROMOTED")
         self.assertEqual(asset["runtime_consumption"], "IMPLEMENTED_STATIC_BINDING")
+        self.assertEqual(
+            asset["rights_and_provenance"],
+            "NO_MATCHING_CURRENT_APPROVAL_OR_PROVENANCE_RECORD_FOUND",
+        )
         self.assertEqual(asset["sha256"], hashlib.sha256(RUNTIME_BACKGROUND.read_bytes()).hexdigest().upper())
         self.assertEqual(asset["dimensions"], "941x1672")
         self.assertEqual(asset["consumer_ids"], ["MAIN_MENU", "WORKSHOP"])
+
+        queue = {row["queue_id"]: row for row in model["runtime_asset_family_queue"]}
+        self.assertEqual(queue["RUNTIME-EXISTING-01"]["image_generation"], "NOT_AUTHORIZED")
+        self.assertEqual(
+            model["adversarial_review"]["asset_completeness"],
+            "EXPLICIT_P0_APPROVAL_PROVENANCE_BLOCKER",
+        )
+        p0_findings = {
+            row["finding_id"]: row
+            for row in model["correction_log"]
+            if row["severity"] == "P0"
+        }
+        self.assertIn("BS-VIS-AUDIT-20260827-02", p0_findings)
+        self.assertIn("do not generate, replace, or mark approved", p0_findings["BS-VIS-AUDIT-20260827-02"]["disposition"])
 
 
 if __name__ == "__main__":
