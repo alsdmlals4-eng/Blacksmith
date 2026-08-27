@@ -5,6 +5,9 @@
 - current owner: `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
 - Work Mode: `PLAN`
 - 제품 구현: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
+- Current Phase: `PHASE_1_PLANNING_CO_DESIGN`
+- Current accepted frontier: `CANONIZATION_AND_CORE_EXPERIENCE_REVIEW`
+- Runtime evidence may document merged history, but never grants a new product mutation.
 
 ## 1. 충돌 시 우선순위
 
@@ -262,10 +265,11 @@ Decision29 closes structural repair behavior and MAJOR enhancement eligibility; 
 
 ## 7. Runtime reality / drift
 
-Current V2 runtime contains similar durability/customer fields but old semantics. Field-name overlap is not Decision29/30 implementation evidence.
+Current V2 runtime contains similar durability/customer fields but old semantics. Field-name overlap is not Decision29/30 implementation evidence. Later V3/vertical-slice work is retained only as historical automated evidence during the current Phase-1 review and does not override planning authority.
 
 ```text
-RUNTIME_IMPLEMENTATION_OF_NEW_CORE = NOT_RUN / BLOCKED
+CURRENT_PHASE = PHASE_1_PLANNING_CO_DESIGN
+RUNTIME_IMPLEMENTATION_OF_NEW_CORE = HISTORICAL_AUTOMATED_EVIDENCE_NOT_NEW_MUTATION_AUTHORITY
 OLD_V2_RUNTIME = IMPLEMENTATION_DRIFT / HISTORICAL_RUNTIME_TRUTH
 ```
 
