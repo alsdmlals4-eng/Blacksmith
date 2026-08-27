@@ -20,11 +20,12 @@ UIDs under protected `scripts/` paths. It does not change a GDScript body,
 Scene, data file, image, economy rule, or runtime behavior.
 
 The first PR #300 check started before its `approved-protected-change` label
-was present, so its external-approval input was `false`. A synchronized
-documentation commit is required to make the exact same approved head run
-with the existing label. After merge, retire the consumed manifest and
-advance the baseline again in a metadata-only follow-up before treating the
-ordinary local entry gate as recovered. Runtime, Android, accessibility,
+was present, so its external-approval input was `false`. The synchronized
+head ran with the label and all required checks passed; PR #300 then merged
+at `1c1e8860533227a44f3c46c21ef8ead0f1cf902f`. The metadata-only follow-up
+`ORDINARY_ENTRY_GATE_RESTORATION_ISSUE_301` retires that consumed manifest
+and advances the baseline to the exact merge SHA before the ordinary local
+entry gate can be treated as recovered. Runtime, Android, accessibility,
 performance, Notion client-render, and human-play evidence remain `NOT_RUN`.
 
 - Decision ID: `BS-OPS-20260825-08`
