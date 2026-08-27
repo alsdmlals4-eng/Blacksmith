@@ -64,7 +64,7 @@ func test_main_menu_uses_the_illustrated_workshop_background_and_korean_touch_ac
 	var menu = MAIN_MENU_SCENE.instantiate()
 	add_child_autofree(menu)
 	var background := menu.get_node_or_null("MenuIllustratedBackground") as TextureRect
-	assert_not_null(background, "main menu must consume the approved illustrated workshop background")
+	assert_not_null(background, "main menu must consume the runtime-bound illustrated workshop background")
 	if background == null:
 		return
 	assert_eq(background.texture, WorkshopBackgroundTexture)
