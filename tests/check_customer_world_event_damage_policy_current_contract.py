@@ -91,8 +91,8 @@ def main() -> None:
         require_tokens(text, [DECISION_ID], path.name)
 
     handoff_text = HANDOFF.read_text(encoding="utf-8")
-    assert "CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278" in handoff_text
-    assert "CUSTOMER_WORLD_RESULT_FLOW_CALLER_AND_SCHEDULER = NOT_RUN" in handoff_text
+    assert "CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286" in handoff_text
+    assert "CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN" in handoff_text
 
     print("customer world event damage policy current contract: PASS")
 
