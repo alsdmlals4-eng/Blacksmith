@@ -96,6 +96,18 @@ func resolve(envelope, item_uid: String, event: Dictionary, damage_roll_percent:
 
 	if bool(actual_item_use) and not record.causal_reasons.has(damage_cause):
 		record.causal_reasons.append(damage_cause)
+	record.durability_consequence = {
+		"actual_item_use": bool(actual_item_use),
+		"damage_applied": damage_applied,
+		"damage_cause": damage_cause,
+		"declared_damage_profile": declared_profile,
+		"effective_damage_profile": effective_profile,
+		"before_current_durability": before_current,
+		"after_current_durability": int(item.current_durability),
+		"before_max_durability": before_max,
+		"after_max_durability": int(item.max_durability),
+		"repair_job_available": bool(item.repair_job_available),
+	}
 	envelope.active_run["resolved_events"][record.event_id] = record.to_dict()
 	return {
 		"status": "APPLIED",

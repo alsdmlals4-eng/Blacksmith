@@ -18,6 +18,19 @@ const REQUIRED_FIELDS := [
 	"causal_reasons",
 	"primary_next_action",
 ]
+const DURABILITY_CONSEQUENCE_FIELDS := [
+	"actual_item_use",
+	"damage_applied",
+	"damage_cause",
+	"declared_damage_profile",
+	"effective_damage_profile",
+	"before_current_durability",
+	"after_current_durability",
+	"before_max_durability",
+	"after_max_durability",
+	"repair_job_available",
+]
+const OPTIONAL_FIELDS := ["durability_consequence"]
 const ITEM_REF_REQUIRED_FIELDS := ["role", "uid"]
 const ALLOWED_ITEM_ROLES := [
 	"PRIMARY_ITEM",
@@ -129,6 +142,7 @@ var item_refs: Array[Dictionary] = []
 var result_axes: Dictionary = {}
 var causal_reasons: Array[String] = []
 var primary_next_action: String = ""
+var durability_consequence: Dictionary = {}
 var validation_errors: Array[String] = []
 
 
@@ -139,7 +153,7 @@ static func from_dict(value: Dictionary) -> VSContentResultRecord:
 			record.validation_errors.append("MISSING_REQUIRED_FIELD:%s" % field_name)
 	for raw_field_name in value.keys():
 		var field_name := str(raw_field_name)
-		if not REQUIRED_FIELDS.has(field_name):
+		if not REQUIRED_FIELDS.has(field_name) and not OPTIONAL_FIELDS.has(field_name):
 			record.validation_errors.append("UNKNOWN_FIELD:%s" % field_name)
 
 	record.schema_version = int(value.get("schema_version", 0))
@@ -161,12 +175,18 @@ static func from_dict(value: Dictionary) -> VSContentResultRecord:
 		record.validation_errors.append("INVALID_FIELD_TYPE:primary_next_action")
 		record.primary_next_action = str(raw_next_action)
 
+	var raw_durability_consequence: Variant = value.get("durability_consequence", {})
+	if raw_durability_consequence is Dictionary:
+		record.durability_consequence = raw_durability_consequence.duplicate(true)
+	else:
+		record.validation_errors.append("INVALID_FIELD_TYPE:durability_consequence")
+
 	record._validate_values()
 	return record
 
 
 func to_dict() -> Dictionary:
-	return {
+	var result := {
 		"schema_version": schema_version,
 		"record_type": record_type,
 		"event_id": event_id,
@@ -179,6 +199,9 @@ func to_dict() -> Dictionary:
 		"causal_reasons": causal_reasons.duplicate(),
 		"primary_next_action": primary_next_action,
 	}
+	if not durability_consequence.is_empty():
+		result["durability_consequence"] = durability_consequence.duplicate(true)
+	return result
 
 
 func _read_item_refs(raw_item_refs: Variant) -> void:
@@ -258,6 +281,7 @@ func _validate_values() -> void:
 	_validate_item_refs()
 	_validate_result_axis_values()
 	_validate_causal_reasons()
+	_validate_durability_consequence()
 	if not _matches_token(primary_next_action):
 		validation_errors.append("INVALID_PRIMARY_NEXT_ACTION")
 
@@ -337,6 +361,37 @@ func _validate_causal_reasons() -> void:
 			validation_errors.append("DUPLICATE_CAUSAL_REASON")
 		else:
 			seen_reasons[reason] = true
+
+
+func _validate_durability_consequence() -> void:
+	if durability_consequence.is_empty():
+		return
+	var actual_fields: Array = durability_consequence.keys()
+	var expected_fields: Array = DURABILITY_CONSEQUENCE_FIELDS.duplicate()
+	actual_fields.sort()
+	expected_fields.sort()
+	if actual_fields != expected_fields:
+		validation_errors.append("INVALID_DURABILITY_CONSEQUENCE_FIELDS")
+		return
+	for field_name in ["actual_item_use", "damage_applied", "repair_job_available"]:
+		if not durability_consequence[field_name] is bool:
+			validation_errors.append("INVALID_DURABILITY_CONSEQUENCE_TYPE:%s" % field_name)
+	for field_name in ["damage_cause", "declared_damage_profile", "effective_damage_profile"]:
+		if not durability_consequence[field_name] is String:
+			validation_errors.append("INVALID_DURABILITY_CONSEQUENCE_TYPE:%s" % field_name)
+	for field_name in [
+		"before_current_durability",
+		"after_current_durability",
+		"before_max_durability",
+		"after_max_durability",
+	]:
+		var raw_value: Variant = durability_consequence[field_name]
+		if not raw_value is int and not raw_value is float:
+			validation_errors.append("INVALID_DURABILITY_CONSEQUENCE_TYPE:%s" % field_name)
+		elif is_nan(float(raw_value)) or is_inf(float(raw_value)) or floor(float(raw_value)) != float(raw_value):
+			validation_errors.append("INVALID_DURABILITY_CONSEQUENCE_TYPE:%s" % field_name)
+		else:
+			durability_consequence[field_name] = int(raw_value)
 
 
 static func _matches_token(value: String) -> bool:
