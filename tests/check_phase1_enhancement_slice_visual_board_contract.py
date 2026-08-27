@@ -18,6 +18,8 @@ def main() -> None:
             "PHASE_1_ENHANCEMENT_PATH = +0_TO_+10_INDIVIDUAL_ATTEMPTS",
             "PHASE_1_RISK_WINDOW = +11_TO_+15_MULTIPLE_STOP_PUSH_OPPORTUNITIES",
             "PHASE_1_LIFECYCLE_CLOSURE = ONE_SAME_UID_CUSTOMER_ACTUAL_USE_RESULT",
+            "PHASE_1_TARGET_SESSION_DURATION = 6_TO_8_MINUTES",
+            "PHASE_1_DURATION_STATUS = EXPERIENCE_HYPOTHESIS_NOT_RUNTIME_TIMER",
         ),
     )
     require_tokens(
@@ -37,6 +39,7 @@ def main() -> None:
             "PANEL_04 = PRECISION_AND_RISK_RUN",
             "PANEL_05 = CUSTOMER_WORLD_RESULT",
             "DO_NOT_FAKE_DAMAGE_FOR_DEMONSTRATION = TRUE",
+            "TARGET_PLAYER_TIME = 6_TO_8_MINUTES / PHASE_1_HYPOTHESIS",
         ),
     )
     require_tokens(
@@ -44,6 +47,7 @@ def main() -> None:
         (
             "CURRENT_PHASE_1_SLICE = B_ENHANCEMENT_FIRST_SAME_UID_LIFECYCLE",
             "PHASE_1_ENHANCEMENT_WINDOW = +0_TO_+10 + +11_TO_+15",
+            "PHASE_1_TARGET_SESSION_DURATION = 6_TO_8_MINUTES",
         ),
     )
     print("phase1 enhancement slice visual board contract: PASS")
