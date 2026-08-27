@@ -160,9 +160,9 @@ func _refresh_controls() -> void:
 	if durability != null:
 		durability.text = str(state["durability_text"])
 	if condition != null:
-		condition.text = "상태: %s" % str(state["durability_state"])
+		condition.text = "상태: %s" % _player_facing_durability_state(str(state["durability_state"]))
 	if quote != null:
-		quote.text = "수리: %d Gold · 보강재 %d개" % [int(state["repair_gold_cost"]), int(state["repair_material_units"])] if bool(state["repair_allowed"]) else "수리 불가: %s" % str(state["repair_reason"])
+		quote.text = "수리: %d Gold · 보강재 %d개" % [int(state["repair_gold_cost"]), int(state["repair_material_units"])] if bool(state["repair_allowed"]) else "수리 불가: %s" % _player_facing_repair_reason(str(state["repair_reason"]))
 	if quality != null:
 		quality.text = str(state["repair_quality_summary"])
 	if scar != null:
@@ -181,6 +181,34 @@ func _refresh_controls() -> void:
 
 func _has_enhancement_context() -> bool:
 	return _item != null and _resources != null and _campaign_envelope != null and _save_service != null and _enhancement_action_service != null
+
+
+func _player_facing_durability_state(state: String) -> String:
+	match state:
+		"NORMAL":
+			return "정상"
+		"MINOR":
+			return "경미 손상"
+		"MAJOR":
+			return "심각 손상"
+		"DESTROYED":
+			return "파괴됨"
+		_:
+			return "작품 없음"
+
+
+func _player_facing_repair_reason(reason: String) -> String:
+	match reason:
+		"REPAIR_JOB_UNAVAILABLE":
+			return "실제 손상 후 수리 가능"
+		"FULL_DURABILITY":
+			return "현재 내구도가 가득 참"
+		"ITEM_DESTROYED":
+			return "파괴된 작품은 수리할 수 없음"
+		"MISSING_ITEM":
+			return "작품을 선택하세요"
+		_:
+			return reason
 
 
 func _enhancement_outcomes_summary(enhancement: Dictionary) -> String:

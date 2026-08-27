@@ -91,6 +91,20 @@ func set_settings_open(value: bool) -> void:
 	settings_open = value
 
 
+func player_facing_save_status() -> String:
+	match save_status:
+		STATUS_PRIMARY_OK:
+			return "저장됨 · 이어하기 가능"
+		STATUS_RECOVERED_BACKUP:
+			return "백업 저장 복구됨 · 이어하기 가능"
+		STATUS_SAVE_UNAVAILABLE:
+			return "저장 파일 없음 · 새 대장간을 시작하세요"
+		STATUS_UNCHECKED:
+			return "저장 상태 확인 중"
+		_:
+			return save_status
+
+
 func begin_first_forge(envelope) -> bool:
 	if envelope == null or not envelope.validation_errors.is_empty():
 		return false
@@ -243,7 +257,7 @@ func _set_menu_visible(visible: bool) -> void:
 func _refresh_menu_controls() -> void:
 	var status_label := get_node_or_null("MenuLayout/SaveStatusLabel")
 	if status_label != null:
-		status_label.text = save_status
+		status_label.text = player_facing_save_status()
 	var continue_button := get_node_or_null("MenuLayout/ContinueButton")
 	if continue_button != null:
 		continue_button.disabled = not continue_enabled
