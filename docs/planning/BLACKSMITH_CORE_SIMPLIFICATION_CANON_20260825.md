@@ -261,14 +261,27 @@ Player Chronicle may retain creation, +10 keyword, durability damage, meaningful
 ```text
 PRIMARY_CORE = ENHANCEMENT_TENSION + DDD
 PLAYER_QUESTION = STOP_OR_PUSH
+PRIMARY_PLAYABLE_CONTENT = REPEATED_ENHANCEMENT_JUDGMENT_AND_FEEDBACK
+CUSTOMER_ITEM_LIFECYCLE = DIFFERENTIATING_CONTEXT_FOR_ENHANCEMENT_CHOICES
+LIFECYCLE_ROLE = MAKE_ENHANCEMENT_OUTCOMES_PERSONAL_AND_MEMORABLE
+SLICE_RULE = DO_NOT_REPLACE_ENHANCEMENT_PLAY_WITH_A_SINGLE_RISK_DEMO
+ENHANCEMENT_CADENCE_AND_SESSION_LENGTH = UNDECIDED / PHASE_1_GRILL_ME
 ITEM_UID_IDENTITY = PRESERVED
 RECOVERY_OWNER = ITEM_UID + TARGET_LEVEL
 CHECKPOINT_FLOORS = [10,30,60,90]
 +10 = FIRST_ECONOMIC_SECURED_BREAK_EVEN_STATE
 +11 = FIRST_SALIENT_STOP_PUSH_RISK_DECISION
 +100 = MAX_ENHANCEMENT_TERMINAL
-CUSTOMER_WORLD_RESULT = DELAYED_SAME_UID_CAUSALITY
+CUSTOMER_WORLD_RESULT = DELAYED_SAME_UID_CAUSALITY_AFTER_MEANINGFUL_ENHANCEMENT_PLAY
 ```
+
+Enhancement is the repeated, enjoyable main content. Customer and item-lifecycle
+content is neither an alternative main loop nor a replacement for enhancement
+play: it differentiates the game by carrying the same UID's enhancement choices
+into ownership, actual use, repair, and Chronicle. A representative slice must
+therefore let the player enjoy a meaningful run of enhancement judgment and
+feedback before showing a same-UID lifecycle consequence. The exact cadence,
+session duration, and minimum enhancement volume remain a Phase-1 user decision.
 
 Decision29 adds a repair/push/stop choice inside the same core rather than creating a maintenance game as a second core. Decision30 makes world damage a causal result of actual use rather than a generic ownership tax.
 
