@@ -43,7 +43,7 @@ class R2Checkpoint004CanonAuditTests(unittest.TestCase):
         self.assertIn("Planning-first `101`", text)
         self.assertIn("Base `579`", text)
         self.assertIn("PR validation `1170`", text)
-        self.assertIn("R2_BATCH_005 / 0_OF_10", text)
+        self.assertIn("R2_BATCH_005: ACTIVE / 0_OF_10", text)
         self.assertIn("제품 구현: `BLOCKED`", text)
 
 

@@ -173,6 +173,11 @@ def test_pull_request_trigger_is_scoped_to_adoption_surface() -> None:
         assert f"      - {path}\n" in text
 
 
-def test_change_surface_is_bounded_to_four_adoption_files() -> None:
+def test_adoption_slice_change_surface_is_bounded_to_four_files() -> None:
     changed = _changed_paths_from_main()
-    assert changed <= ALLOWED_PATHS, f"forbidden changed paths: {sorted(changed - ALLOWED_PATHS)}"
+    # This boundary applies when the live-editor adoption slice itself changes.
+    # Unrelated maintenance PRs must not be rejected merely because this
+    # repository-wide test is included in their validation suite.
+    adoption_payload_paths = ALLOWED_PATHS - {"tests/test_godot_live_editor_adoption.py"}
+    if changed & adoption_payload_paths:
+        assert changed <= ALLOWED_PATHS, f"forbidden changed paths: {sorted(changed - ALLOWED_PATHS)}"

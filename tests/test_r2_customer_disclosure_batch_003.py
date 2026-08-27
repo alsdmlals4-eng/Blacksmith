@@ -17,22 +17,30 @@ class R2Checkpoint004ClosureTests(unittest.TestCase):
         cls.registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
         cls.decisions = {item["id"]: item for item in cls.registry["current_decisions"]}
 
-    def test_checkpoint_004_is_closed_and_batch_005_starts_empty(self) -> None:
-        closed = self.registry["closed_batch"]
-        self.assertEqual("R2_BATCH_004", closed["id"])
-        self.assertEqual(2, closed["approved_decisions"])
-        self.assertEqual("2/10", closed["counter"])
+    def test_checkpoint_004_history_is_preserved_after_later_batches_close(self) -> None:
+        checkpoint_004 = self.registry["immutable_merge_evidence"]["checkpoint_004"]
+        self.assertEqual(106, checkpoint_004["planning_pr"])
+        self.assertEqual(107, checkpoint_004["closure_pr"])
+        self.assertEqual("MERGED_MAIN_CANON", checkpoint_004["closure_status"])
         self.assertEqual(
             ["BS-CRAFT-20260804-07", "BS-CRAFT-20260805-01"],
-            closed["decisions"],
+            [
+                self.decisions["BS-CRAFT-20260804-07"]["id"],
+                self.decisions["BS-CRAFT-20260805-01"]["id"],
+            ],
         )
-        self.assertEqual("USER_APPROVED_EARLY_CHECKPOINT", closed["closure_reason"])
+
+        closed_current = self.registry["closed_batch"]
+        self.assertEqual("R2_BATCH_005", closed_current["id"])
+        self.assertEqual(10, closed_current["approved_decisions"])
+        self.assertEqual("10/10", closed_current["counter"])
+        self.assertEqual(10, len(closed_current["decisions"]))
 
         active = self.registry["active_batch"]
-        self.assertEqual("R2_BATCH_005", active["id"])
-        self.assertEqual(0, active["approved_decisions"])
-        self.assertEqual("0/10", active["counter"])
-        self.assertEqual([], active["decisions"])
+        self.assertEqual("R2_BATCH_006", active["id"])
+        self.assertEqual(10, active["approved_decisions"])
+        self.assertEqual("10/10", active["counter"])
+        self.assertEqual(10, len(active["decisions"]))
         self.assertEqual(10, active["maximum_size"])
 
     def test_three_affix_slots_remain_independent(self) -> None:
