@@ -96,7 +96,7 @@ func test_campaign_configuration_binds_the_persisted_selected_item_to_workshop()
 	assert_true(app.configure_campaign(envelope, ResourcesScript.new()))
 	var screen = app.get_node("ScreenHost/WorkshopScreen")
 	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "5 / 5 / 5")
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityStateLabel").text, "상태: NORMAL")
+	assert_eq(screen.get_node("WorkshopLayout/DurabilityStateLabel").text, "상태: 정상")
 
 
 func test_applied_first_forge_completion_rebinds_the_workshop_item() -> void:
