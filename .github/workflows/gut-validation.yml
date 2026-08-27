@@ -83,7 +83,7 @@ jobs:
         shell: bash
         run: |
           GODOT_ARCHIVE="Godot_v4.7.1-stable_linux.x86_64.zip"
-          curl -L --fail --retry 3 \
+          curl -L --fail --retry 3 --http1.1 \
             -o "$GODOT_ARCHIVE" \
             "https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7.1"
           unzip -q "$GODOT_ARCHIVE"
