@@ -3,6 +3,7 @@
   "status": "CURRENT_SCREEN_SURFACE_AND_VISUAL_COVERAGE_EVIDENCE_RECORD",
   "date": "2026-08-27 KST",
   "issue": "#291",
+  "delivery_issue": "#293",
   "scope": "CURRENT_VERTICAL_SLICE_AND_DECLARED_CURRENT_SCREEN_FAMILIES",
   "authority_boundary": {
     "screen_coverage_owner": "THIS_RECORD",
@@ -17,7 +18,7 @@
     "viewport": "720x1280",
     "platform": "ANDROID"
   },
-  "image_generation": "NOT_RUN",
+  "image_generation": "USER_APPROVED_RUNTIME_ASSET_EXECUTED_20260828",
   "no_automatic_generation_from_gaps": true,
   "runtime_visual_validation": "NOT_RUN",
   "screen_inventory": [
@@ -34,12 +35,12 @@
       "consumer_kind": "GAME_RUNTIME",
       "consumer_surface": "res://scenes/vertical_slice/main_menu.tscn",
       "screen_design_reference": "Godot Control/VBox layout; historical Visual GDD is layout-only reference",
-      "runtime_consumer": "MenuIllustratedBackground TextureRect consumes ASSET-WORKSHOP-BACKGROUND-V1",
-      "existing_evidence": "scene texture binding + GUT test_vs_main_menu + 941x1672 local PNG hash",
-      "coverage_status": "GAP_BLOCKING",
+      "runtime_consumer": "MenuIllustratedBackground TextureRect consumes legacy ASSET-WORKSHOP-BACKGROUND-V1; scene mutation is deferred to the required HiGodot authoring path",
+      "existing_evidence": "scene texture binding + GUT test_vs_main_menu; v1 remains unverified legacy evidence",
+      "coverage_status": "COVERED_EXISTING",
       "notion_destination": "블랙스미스 · Home / 02 · 비주얼 바이블 / Asset Library",
       "repository_destination": "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
-      "blockers": "Existing background is runtime-bound but approval and provenance are UNVERIFIED_NOT_PROMOTED; no replacement or generation is authorized."
+      "blockers": "HiGodot scene-authoring session is required before promoting this screen to v2; Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN."
     },
     {
       "screen_id": "FIRST_FORGE",
@@ -74,12 +75,12 @@
       "consumer_kind": "GAME_RUNTIME",
       "consumer_surface": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn",
       "screen_design_reference": "Decision29/31 numeric durability and repair information hierarchy",
-      "runtime_consumer": "VSWorkshopScreen dynamically creates WorkshopIllustratedBackground using ASSET-WORKSHOP-BACKGROUND-V1",
-      "existing_evidence": "VSWorkshopScreen preload and GUT workshop-screen contracts",
-      "coverage_status": "GAP_BLOCKING",
+      "runtime_consumer": "VSWorkshopScreen dynamically creates WorkshopIllustratedBackground using ASSET-WORKSHOP-BACKGROUND-V2",
+      "existing_evidence": "VSWorkshopScreen preload, GUT workshop-screen contracts, and project-owned PNG hash",
+      "coverage_status": "COVERED_PROJECT_ASSET_APPROVED",
       "notion_destination": "블랙스미스 · Home / 03 · Visual · UX · Assets",
       "repository_destination": "scripts/vertical_slice/ui/vs_workshop_screen.gd",
-      "blockers": "Shared background has the same unverified approval/provenance blocker; 17px explanatory text needs runtime readability validation."
+      "blockers": "17px explanatory text, Godot client rendering, Android readability, and human visual review remain NOT_RUN."
     },
     {
       "screen_id": "ENHANCEMENT_IN_WORKSHOP",
@@ -188,24 +189,46 @@
       "production_mode": "EXISTING_PROJECT_RASTER",
       "asset_lifecycle_state": "LEGACY_RUNTIME_BOUND_UNVERIFIED",
       "approval_state": "UNVERIFIED_NOT_PROMOTED",
-      "runtime_consumption": "IMPLEMENTED_STATIC_BINDING",
+      "runtime_consumption": "IMPLEMENTED_STATIC_BINDING_LEGACY_MAIN_MENU_ONLY",
       "repository_path": "assets/ui/workshop/workshop_enhancement_background_v1.png",
       "sha256": "BA9D00B4244299956AC00C1700BBB05B69071574C079D736DB06CDA3A3F796E6",
       "dimensions": "941x1672",
-      "consumer_ids": ["MAIN_MENU", "WORKSHOP"],
+      "consumer_ids": ["MAIN_MENU"],
       "primary_use": "Portrait illustrated workshop background behind native Godot text and controls",
       "state_family_requirement": "STATIC_BACKGROUND_ONLY",
       "fallback_if_unconsumed": "REVERT_TO_EXISTING_GODOT_COLORRECT_FALLBACK",
       "rights_and_provenance": "NO_MATCHING_CURRENT_APPROVAL_OR_PROVENANCE_RECORD_FOUND",
       "validation": "Static path/binding/hash verified; Godot client render, Android readability, and human review NOT_RUN"
+    },
+    {
+      "asset_id": "ASSET-WORKSHOP-BACKGROUND-V2",
+      "production_mode": "AI_GENERATED_PROJECT_RASTER",
+      "asset_lifecycle_state": "PROJECT_ASSET_APPROVED",
+      "approval_state": "USER_APPROVED_IMAGE_GENERATION_20260828",
+      "runtime_consumption": "IMPLEMENTED_STATIC_BINDING",
+      "repository_path": "assets/ui/workshop/workshop_enhancement_background_v2.png",
+      "sha256": "A3D305D28AEF0AABA374C7B435DC8ED0EA6F23F16A26BFA992D87682025382B5",
+      "dimensions": "941x1672",
+      "consumer_ids": ["WORKSHOP"],
+      "primary_use": "Portrait illustrated workshop background behind native Godot text and controls",
+      "state_family_requirement": "STATIC_BACKGROUND_ONLY",
+      "fallback_if_unconsumed": "REVERT_TO_EXISTING_GODOT_COLORRECT_FALLBACK",
+      "rights_and_provenance": "PROJECT_RECORD_PRESENT_RELEASE_RIGHTS_REVIEW_PENDING",
+      "validation": "Static path/binding/hash verified; Godot client render, Android readability, accessibility, and human review NOT_RUN"
     }
   ],
   "runtime_asset_family_queue": [
     {
-      "queue_id": "RUNTIME-EXISTING-01",
+      "queue_id": "RUNTIME-LEGACY-01",
       "asset_id": "ASSET-WORKSHOP-BACKGROUND-V1",
-      "disposition": "RECONCILE_APPROVAL_AND_PROVENANCE_BEFORE_PROMOTION_OR_REPLACEMENT",
+      "disposition": "RETAIN_AS_UNVERIFIED_LEGACY_EVIDENCE_DO_NOT_REPROMOTE",
       "image_generation": "NOT_AUTHORIZED"
+    },
+    {
+      "queue_id": "RUNTIME-CURRENT-01",
+      "asset_id": "ASSET-WORKSHOP-BACKGROUND-V2",
+      "disposition": "PROJECT_ASSET_APPROVED_AND_BOUND_TO_WORKSHOP_PENDING_RUNTIME_VISUAL_VALIDATION",
+      "image_generation": "EXECUTED"
     },
     {
       "queue_id": "RUNTIME-FUTURE-01",
@@ -250,7 +273,7 @@
       "severity": "P0",
       "finding": "Existing runtime raster lacks a matching current approval/provenance record.",
       "evidence": "No matching reference found in ASSET_RIGHTS_AND_PROVENANCE_RECORD or current asset record search.",
-      "disposition": "Explicit blocker; do not generate, replace, or mark approved in this audit."
+      "disposition": "Legacy v1 remains unverified and is still consumed by MAIN_MENU only; do not re-promote it beyond that historical scene binding."
     },
     {
       "finding_id": "BS-VIS-AUDIT-20260827-03",
@@ -258,13 +281,20 @@
       "finding": "Settings overlay exists as a stub but has no button connection or approved settings contract.",
       "evidence": "MainMenu scene contains SettingsButton/SettingsOverlay; VSMainMenu only exposes set_settings_open.",
       "disposition": "Leave unchanged; track as a nonblocking design/implementation gap."
+    },
+    {
+      "finding_id": "BS-VIS-DELIVERY-20260828-01",
+      "severity": "P1",
+      "finding": "A Blacksmith HiGodot MCP session was unavailable, and direct desktop automation did not reliably target the Godot editor.",
+      "evidence": "No Godot AI session was registered for Blacksmith; attempted UI input was detected in a non-target foreground surface and was stopped before any project mutation.",
+      "disposition": "Bind v2 only through the existing WORKSHOP script consumer; retain MAIN_MENU on legacy v1 until a verified HiGodot authoring session is available."
     }
   ],
   "adversarial_review": {
     "screen_completeness": "PASS_WITH_DECLARED_DEFERRED_SURFACES",
     "player_judgement": "PASS_FOR_IMPLEMENTED_SURFACES; runtime readability NOT_RUN",
-    "asset_completeness": "EXPLICIT_P0_APPROVAL_PROVENANCE_BLOCKER",
-    "overproduction_prevention": "PASS_NO_IMAGE_GENERATION_OR_NEW_REQUIREMENTS",
+    "asset_completeness": "PROJECT_ASSET_APPROVED_RUNTIME_CLIENT_VALIDATION_PENDING",
+    "overproduction_prevention": "PASS_ONE_USER_APPROVED_RUNTIME_ASSET_ONLY",
     "source_of_truth_runtime_consistency": "PARTIAL_STALE_CLAIMS_IDENTIFIED_FOR_CORRECTION"
   }
 }

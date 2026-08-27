@@ -7,7 +7,7 @@ const ItemScript := preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
 const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
 const EnhancementActionServiceScript := preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
-const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v1.png")
+const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 
 
 class TrackingMaintenanceService extends RefCounted:

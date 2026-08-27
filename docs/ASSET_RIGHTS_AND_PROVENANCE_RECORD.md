@@ -49,6 +49,34 @@ notes:
 
 `commercial_use`, `distribution_in_game_build`, `raw_source_redistribution`, `modification`은 서로 다른 권리다. 필요한 값이 `UNKNOWN`이거나 조건 충족 증거가 없으면 `RELEASE_BLOCKED_UNVERIFIED`다.
 
+## Current asset record · ASSET-WORKSHOP-BACKGROUND-V2
+
+```yaml
+asset_id: ASSET-WORKSHOP-BACKGROUND-V2
+category: OTHER
+name: Workshop background v2
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI built-in image generation tool
+source_url_or_path: assets/ui/workshop/workshop_enhancement_background_v2.png
+acquired_or_created_at: 2026-08-28 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: NOT_REQUIRED
+modification: UNKNOWN
+ai_model_service_version: BUILT_IN_IMAGE_TOOL_UNVERSIONED
+ai_input_rights: ORIGINAL_TEXT_BRIEF_ONLY; no third-party reference image used
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original production brief, selection, consumer mapping, and non-destructive runtime binding
+reference_sources: Current Blacksmith art direction only; legacy v1 was not used as an image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, logos, runes, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-WORKSHOP-BACKGROUND-V2
+reference_similarity_status: NOT_APPLICABLE
+proof_hash: A3D305D28AEF0AABA374C7B435DC8ED0EA6F23F16A26BFA992D87682025382B5
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: Project asset approval and static runtime binding are approved; release-rights review, Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN.
+```
+
 ## Reference-to-original
 
 ```yaml

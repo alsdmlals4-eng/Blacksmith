@@ -6,7 +6,7 @@ const RepairResolverScript = preload("res://scripts/vertical_slice/resolvers/vs_
 const MaintenanceServiceScript = preload("res://scripts/vertical_slice/services/vs_workshop_maintenance_service.gd")
 const EnhancementResolverScript = preload("res://scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd")
 const EnhancementActionServiceScript = preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
-const WorkshopBackgroundTexture = preload("res://assets/ui/workshop/workshop_enhancement_background_v1.png")
+const WorkshopBackgroundTexture = preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 
 signal enhancement_saved(envelope, result: Dictionary)
 
