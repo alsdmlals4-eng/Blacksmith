@@ -8,6 +8,7 @@ const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
 const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
 const EnhancementActionServiceScript := preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
+const WorkpieceDurabilityStateAtlasTexture := preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
 
 class TrackingMaintenanceService extends RefCounted:
@@ -84,6 +85,33 @@ func test_workshop_uses_the_illustrated_background_as_a_noninteractive_runtime_l
 	assert_eq(background.z_index, -1)
 	assert_eq(background.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
 	assert_eq(background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
+
+
+func test_workshop_displays_the_matching_workpiece_image_for_each_durability_state() -> void:
+	var item = _item(5, 5)
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
+	var hero := screen.get_node_or_null("WorkshopLayout/WorkpieceDurabilityHero") as TextureRect
+	assert_not_null(hero)
+	if hero == null:
+		return
+	assert_true(hero.texture is AtlasTexture)
+	var normal_texture := hero.texture as AtlasTexture
+	assert_eq(normal_texture.atlas, WorkpieceDurabilityStateAtlasTexture)
+	assert_eq(normal_texture.region, Rect2(0, 0, 627, 627))
+
+	item.current_durability = 3
+	screen.refresh_after_enhancement()
+	assert_eq((hero.texture as AtlasTexture).region, Rect2(627, 0, 627, 627))
+
+	item.current_durability = 2
+	screen.refresh_after_enhancement()
+	assert_eq((hero.texture as AtlasTexture).region, Rect2(0, 627, 627, 627))
+
+	item.current_durability = 0
+	screen.refresh_after_enhancement()
+	assert_eq((hero.texture as AtlasTexture).region, Rect2(627, 627, 627, 627))
 
 
 func test_workshop_scene_keeps_the_first_item_hierarchy_and_large_repair_action() -> void:

@@ -7,6 +7,7 @@ const FirstForgeCompletionServiceScript = preload("res://scripts/vertical_slice/
 const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
 const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
 const AppScene = preload("res://scenes/vertical_slice/vertical_slice_app.tscn")
+const MainMenuBackgroundTexture = preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 
 const STATUS_UNCHECKED := "UNCHECKED"
 const STATUS_PRIMARY_OK := "PRIMARY_OK"
@@ -29,6 +30,7 @@ var _active_app = null
 
 func _ready() -> void:
 	_ensure_flow_services()
+	_ensure_illustrated_background()
 	_connect_menu_actions()
 	refresh_save_state()
 	_refresh_menu_controls()
@@ -261,3 +263,10 @@ func _refresh_menu_controls() -> void:
 	var continue_button := get_node_or_null("MenuLayout/ContinueButton")
 	if continue_button != null:
 		continue_button.disabled = not continue_enabled
+
+
+func _ensure_illustrated_background() -> void:
+	var background := get_node_or_null("MenuIllustratedBackground") as TextureRect
+	if background == null:
+		return
+	background.texture = MainMenuBackgroundTexture

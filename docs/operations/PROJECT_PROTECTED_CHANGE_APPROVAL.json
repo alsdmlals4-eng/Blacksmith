@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "004e519a8891e3ef897cb32f67c58082a9d6a696",
+  "decision_ids": [
+    "BS-ART-20260825-03",
+    "BS-ART-20260826-04"
+  ],
+  "approved_paths": [
+    "assets/ASSET_MANIFEST.json",
+    "assets/marketing/blacksmith_app_icon_master_v1.png",
+    "assets/marketing/blacksmith_app_icon_master_v1.png.import",
+    "assets/marketing/blacksmith_key_art_master_v1.png",
+    "assets/marketing/blacksmith_key_art_master_v1.png.import",
+    "assets/ui/workshop/first_forge_background_v1.png",
+    "assets/ui/workshop/first_forge_background_v1.png.import",
+    "assets/ui/workshop/workpiece_durability_state_atlas_v1.png",
+    "assets/ui/workshop/workpiece_durability_state_atlas_v1.png.import",
+    "assets/visual_reference/illustrated_workshop_book_reference_v1.png",
+    "assets/visual_reference/illustrated_workshop_book_reference_v1.png.import",
+    "scripts/ui/forging_screen.gd",
+    "scripts/vertical_slice/ui/vs_main_menu.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "USER_REQUESTS_TO_CREATE_MISSING_IMAGES_AND_CONTINUE_APPROVED_WORK_AUTONOMOUSLY",
+  "approval_time": "2026-08-28T07:16:35+09:00",
+  "scope_summary": "Exact Blacksmith visual-family delivery only: approved runtime backgrounds and durability-state atlas with dynamic script bindings; separately retained production visual reference and release draft masters. No scene serialization, data, project settings, economy, gameplay rules, or existing asset overwrite beyond the generated durability-atlas correction."
+}
