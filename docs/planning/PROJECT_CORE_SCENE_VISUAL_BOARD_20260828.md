@@ -9,12 +9,18 @@ RUNTIME_ASSET_STATUS = NOT_A_RUNTIME_ASSET
 GODOT_SCENE_STATUS = NOT_A_GODOT_SCENE
 HUMAN_USABILITY_STATUS = NOT_RUN
 NEW_GENERATED_RASTER = NONE
+TARGET_PLAYER_TIME = 6_TO_8_MINUTES / PHASE_1_HYPOTHESIS
 ```
 
 This is a structured planning board, not a group of implemented screens,
 runtime images, generated fake screenshots, or a Human/Player Experience
 pass. Exact descriptions belong to this structured text and the current
 machine owners, never to pseudo-text inside an image.
+
+The target measures a first player’s active path from committing to the item
+through one same-UID customer actual-use result. It is a playtest hypothesis,
+not a timer, a speedrun target, or a reason to batch/skip approved individual
+enhancement feedback.
 
 ## 2. Slice B at a glance
 

@@ -296,6 +296,8 @@ PHASE_1_RISK_WINDOW = +11_TO_+15_MULTIPLE_STOP_PUSH_OPPORTUNITIES
 PHASE_1_LIFECYCLE_CLOSURE = ONE_SAME_UID_CUSTOMER_ACTUAL_USE_RESULT
 PHASE_1_CUSTOMER_SCOPE = ONE_CUSTOMER / ONE_EVENT / ONE_ITEM_UID
 PHASE_1_REPAIR_SCOPE = ONE_ELIGIBLE_REPAIR_DECISION_IF_ACTUAL_DAMAGE
+PHASE_1_TARGET_SESSION_DURATION = 6_TO_8_MINUTES
+PHASE_1_DURATION_STATUS = EXPERIENCE_HYPOTHESIS_NOT_RUNTIME_TIMER
 DO_NOT_REPLACE_ENHANCEMENT_PLAY_WITH_SINGLE_RISK_DEMO = TRUE
 DO_NOT_FAKE_DAMAGE_FOR_DEMONSTRATION = TRUE
 ```
@@ -312,9 +314,10 @@ enhancement substitute, nor is damage scripted merely to demonstrate repair.
 If actual damage occurs, the existing one-job repair rule may present its
 single recovery decision before the player returns to the enhancement loop.
 
-This is a Phase-1 experience contract, not current runtime completion. Exact
-session duration, attempt timing, resources, economy, and customer-event
-scheduling remain unimplemented or undecided until their appropriate gates.
+This is a Phase-1 experience contract, not current runtime completion. The
+approved 6–8 minute target is a playtest hypothesis, never a runtime countdown.
+Attempt timing, resources, economy, and customer-event scheduling remain
+unimplemented or undecided until their appropriate gates.
 
 ## 9. First-session interpretation
 
