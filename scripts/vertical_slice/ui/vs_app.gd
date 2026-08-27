@@ -7,6 +7,7 @@ const OK_TRANSITION := "OK"
 const INVALID_TRANSITION := "INVALID_TRANSITION"
 const MISSING_DESTINATION := "MISSING_DESTINATION"
 const INVALID_PAYLOAD := "INVALID_PAYLOAD"
+const CustomerResultScene = preload("res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn")
 
 const DECLARED_TRANSITIONS := {
 	"WORKSHOP": ["FORGE", "ITEM_DETAIL"],
@@ -24,6 +25,10 @@ var current_state := "WORKSHOP"
 var _destinations: Dictionary = {}
 var _campaign_envelope = null
 var _workshop_resources = null
+
+
+func _ready() -> void:
+	register_destination("RESULT", CustomerResultScene)
 
 
 func configure_campaign(envelope, resources, maintenance_service = null, enhancement_action_service = null, save_service = null) -> bool:
@@ -70,6 +75,32 @@ func refresh_workshop_after_enhancement() -> bool:
 		return false
 	workshop_screen.call("refresh_after_enhancement")
 	return true
+
+
+func present_resolved_customer_result(event_id: String) -> String:
+	if current_state != "CUSTOMER":
+		return INVALID_TRANSITION
+	if _campaign_envelope == null or not _campaign_envelope.active_run is Dictionary:
+		return INVALID_PAYLOAD
+	var resolved_events = _campaign_envelope.active_run.get("resolved_events", null)
+	if event_id.is_empty() or not resolved_events is Dictionary or not resolved_events.has(event_id):
+		return INVALID_PAYLOAD
+	var result = resolved_events[event_id]
+	var result_screen := get_node_or_null("ScreenHost/CustomerResultScreen")
+	if not result is Dictionary or result_screen == null or not result_screen.has_method("configure_resolved_result"):
+		return INVALID_PAYLOAD
+	var configured: Dictionary = result_screen.call("configure_resolved_result", result)
+	if str(configured.get("status", "")) != "APPLIED":
+		return INVALID_PAYLOAD
+	var view_state: Dictionary = result_screen.call("view_state")
+	var transition := transition_to("RESULT", {"item_uid": str(view_state.get("item_uid", ""))})
+	if transition != OK_TRANSITION:
+		return transition
+	var workshop_screen := get_node_or_null("ScreenHost/WorkshopScreen")
+	if workshop_screen != null:
+		workshop_screen.visible = false
+	result_screen.visible = true
+	return OK_TRANSITION
 
 
 func can_transition(previous_state: String, next_state: String) -> bool:
