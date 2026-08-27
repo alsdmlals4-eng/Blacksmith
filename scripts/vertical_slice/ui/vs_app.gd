@@ -8,6 +8,9 @@ const INVALID_TRANSITION := "INVALID_TRANSITION"
 const MISSING_DESTINATION := "MISSING_DESTINATION"
 const INVALID_PAYLOAD := "INVALID_PAYLOAD"
 const CustomerResultScene = preload("res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn")
+const CustomerActualUseActionServiceScript = preload(
+	"res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd"
+)
 
 const DECLARED_TRANSITIONS := {
 	"WORKSHOP": ["FORGE", "ITEM_DETAIL"],
@@ -25,6 +28,7 @@ var current_state := "WORKSHOP"
 var _destinations: Dictionary = {}
 var _campaign_envelope = null
 var _workshop_resources = null
+var _save_service = null
 
 
 func _ready() -> void:
@@ -34,6 +38,7 @@ func _ready() -> void:
 func configure_campaign(envelope, resources, maintenance_service = null, enhancement_action_service = null, save_service = null) -> bool:
 	if envelope == null or not envelope.validation_errors.is_empty() or resources == null:
 		return false
+	_save_service = save_service
 	var selected_item_uid := str(envelope.active_run.get("selected_item_uid", ""))
 	if selected_item_uid.is_empty():
 		if not envelope.items_by_uid.is_empty():
@@ -101,6 +106,32 @@ func present_resolved_customer_result(event_id: String) -> String:
 		workshop_screen.visible = false
 	result_screen.visible = true
 	return OK_TRANSITION
+
+
+func resolve_customer_actual_use_with_roll(event: Dictionary, damage_roll_percent: float) -> String:
+	if current_state != "CUSTOMER":
+		return INVALID_TRANSITION
+	if _campaign_envelope == null or _save_service == null:
+		return INVALID_PAYLOAD
+	var item_uid := str(_campaign_envelope.active_run.get("selected_item_uid", ""))
+	if item_uid.is_empty():
+		return INVALID_PAYLOAD
+	var result: Dictionary = CustomerActualUseActionServiceScript.new().resolve_and_save_with_roll(
+		_campaign_envelope,
+		item_uid,
+		event,
+		damage_roll_percent,
+		_save_service
+	)
+	if str(result.get("status", "")) != "APPLIED":
+		return str(result.get("reason", INVALID_PAYLOAD))
+	var saved_envelope = result.get("envelope", null)
+	if saved_envelope == null or str(result.get("event_id", "")).is_empty():
+		return INVALID_PAYLOAD
+	_campaign_envelope = saved_envelope
+	var saved_item = _campaign_envelope.get_item(item_uid)
+	configure_workshop_context(saved_item, _workshop_resources, null, null, _save_service, _campaign_envelope)
+	return present_resolved_customer_result(str(result["event_id"]))
 
 
 func can_transition(previous_state: String, next_state: String) -> bool:
