@@ -6,6 +6,7 @@ const SCREEN_SCENE := preload("res://scenes/vertical_slice/screens/vs_workshop_s
 const ItemScript := preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
 const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
+const SaveEnvelopeScript := preload("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
 const EnhancementActionServiceScript := preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 const WorkpieceDurabilityStateAtlasTexture := preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
@@ -56,7 +57,7 @@ func _enhancement_envelope():
 	return envelope
 
 
-func _precision_envelope(level: int = 9, catalyst_affix: String = ""):
+func _precision_envelope(level: int = 9, catalyst_affix: String = "", legacy_v3: bool = false):
 	var envelope = _enhancement_envelope()
 	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
 	item.enhancement_level = level
@@ -64,6 +65,12 @@ func _precision_envelope(level: int = 9, catalyst_affix: String = ""):
 	item.catalyst_affix = catalyst_affix
 	item.raw_role_stat = 12
 	item.weight_point = 2
+	if legacy_v3:
+		var legacy_source: Dictionary = envelope.to_dict()
+		legacy_source["schema_version"] = 3
+		legacy_source["preset_version"] = "VS-2026.08.26-C"
+		legacy_source.erase("workshop_resources")
+		return SaveEnvelopeScript.from_dict(legacy_source)
 	return envelope
 
 
@@ -287,7 +294,7 @@ func test_workshop_clears_precision_selection_after_hold_without_writing_a_tag()
 
 
 func test_workshop_exposes_one_zero_cost_placeholder_correction_without_showing_the_placeholder() -> void:
-	var envelope = _precision_envelope(10, "PRECISION_KEYWORD_PENDING_CONTENT")
+	var envelope = _precision_envelope(10, "PRECISION_KEYWORD_PENDING_CONTENT", true)
 	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
 	var resources = ResourcesScript.new(20000, {"common_reinforcement_material": 10})
 	var save_service := FakeSaveService.new()

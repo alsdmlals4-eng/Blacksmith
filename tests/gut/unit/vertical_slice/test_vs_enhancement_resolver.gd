@@ -107,7 +107,7 @@ func test_plus_ten_success_applies_exact_tag_and_method_while_hold_writes_nothin
 	var before_raw := int(item.raw_role_stat)
 	var held = resolver.resolve_with_rolls(item, 10, {
 		"success_roll_percent": 99.0,
-		"damage_roll_percent": 0.0,
+		"damage_roll_percent": -1.0,
 	}, _precision_selection())
 	assert_eq(held.get("outcome", ""), "FAILED_HOLD")
 	assert_eq(item.enhancement_level, 9)

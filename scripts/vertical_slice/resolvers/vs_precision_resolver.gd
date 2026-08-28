@@ -5,6 +5,16 @@ extends RefCounted
 const CATALOG_PATH := "res://docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json"
 const PLACEHOLDER_AFFIX := "PRECISION_KEYWORD_PENDING_CONTENT"
 const CATALYST_OWNER := "CATALYST_AFFIX"
+const EXPECTED_TAG_BY_PAIR := {
+	"EMBER_LINEAGE|EDGE_REINFORCEMENT": "TAG_EMBER_EDGE",
+	"EMBER_LINEAGE|LIGHTWEIGHTING": "TAG_EMBER_LIGHT",
+	"ANVIL_LINEAGE|EDGE_REINFORCEMENT": "TAG_ANVIL_EDGE",
+	"ANVIL_LINEAGE|LIGHTWEIGHTING": "TAG_ANVIL_LIGHT",
+}
+const EXPECTED_METHOD_EFFECTS := {
+	"EDGE_REINFORCEMENT": {"axis": "RAW_ROLE_STAT", "delta": 3},
+	"LIGHTWEIGHTING": {"axis": "WEIGHT_POINT", "delta": -3},
+}
 
 
 func catalog() -> Dictionary:
@@ -41,7 +51,7 @@ func apply_selection_success(item, selection: Dictionary) -> Dictionary:
 	}
 
 
-func backfill_preview(item, selection: Dictionary) -> Dictionary:
+func backfill_preview(item, selection: Dictionary, source_eligible: bool = false) -> Dictionary:
 	if item == null:
 		return _blocked("MISSING_ITEM")
 	if int(item.enhancement_level) < 10:
@@ -50,14 +60,16 @@ func backfill_preview(item, selection: Dictionary) -> Dictionary:
 	if affix != PLACEHOLDER_AFFIX:
 		var affix_block := _affix_backfill_block(affix)
 		return _blocked(str(affix_block.get("reason", "PRECISION_PLACEHOLDER_NOT_FOUND")))
+	if not source_eligible:
+		return _blocked("PRECISION_PLACEHOLDER_SOURCE_INELIGIBLE")
 	var resolved := _resolve_selection(selection)
 	if not bool(resolved.get("allowed", false)):
 		return resolved
 	return _preview_with_item(item, resolved)
 
 
-func backfill_placeholder(item, selection: Dictionary) -> Dictionary:
-	var preview := backfill_preview(item, selection)
+func backfill_placeholder(item, selection: Dictionary, source_eligible: bool = false) -> Dictionary:
+	var preview := backfill_preview(item, selection, source_eligible)
 	if not bool(preview.get("allowed", false)):
 		return _not_applied(str(preview.get("reason", "INVALID_PRECISION_SELECTION")))
 	_apply_resolved_selection(item, preview)
@@ -82,7 +94,7 @@ func _resolve_selection(selection: Dictionary) -> Dictionary:
 	var catalog := _load_catalog()
 	if catalog.is_empty():
 		return _blocked("PRECISION_TAG_CATALOG_UNAVAILABLE")
-	if str(catalog.get("machine_owner", "")) != CATALYST_OWNER:
+	if not _catalog_is_valid(catalog):
 		return _blocked("PRECISION_TAG_CATALOG_INVALID")
 	var method := _entry_by_id(catalog.get("methods", []), method_id)
 	if method.is_empty():
@@ -150,6 +162,66 @@ func _load_catalog() -> Dictionary:
 		return {}
 	var parsed = JSON.parse_string(file.get_as_text())
 	return parsed if parsed is Dictionary else {}
+
+
+func _catalog_is_valid(catalog: Dictionary) -> bool:
+	if str(catalog.get("machine_owner", "")) != CATALYST_OWNER:
+		return false
+	if bool(catalog.get("new_stored_field", true)):
+		return false
+	var mechanical_boundary: Variant = catalog.get("mechanical_boundary", {})
+	if not mechanical_boundary is Dictionary:
+		return false
+	if int(mechanical_boundary.get("durability_delta_in_first_catalog", -1)) != 0:
+		return false
+	var lineages: Variant = catalog.get("lineages", [])
+	var methods: Variant = catalog.get("methods", [])
+	var tags: Variant = catalog.get("tags", [])
+	if not lineages is Array:
+		return false
+	if not methods is Array:
+		return false
+	if not tags is Array:
+		return false
+	if lineages.size() != 2 or methods.size() != EXPECTED_METHOD_EFFECTS.size() or tags.size() != EXPECTED_TAG_BY_PAIR.size():
+		return false
+	var lineage_ids: Dictionary = {}
+	for raw_lineage in lineages:
+		if not raw_lineage is Dictionary:
+			return false
+		var lineage_id := str(raw_lineage.get("id", ""))
+		if lineage_id.is_empty() or lineage_ids.has(lineage_id):
+			return false
+		lineage_ids[lineage_id] = true
+	if not lineage_ids.has("EMBER_LINEAGE") or not lineage_ids.has("ANVIL_LINEAGE"):
+		return false
+	var method_ids: Dictionary = {}
+	for raw_method in methods:
+		if not raw_method is Dictionary:
+			return false
+		var method_id := str(raw_method.get("id", ""))
+		var effect: Variant = raw_method.get("effect", {})
+		if not EXPECTED_METHOD_EFFECTS.has(method_id) or not effect is Dictionary:
+			return false
+		var expected_effect: Dictionary = EXPECTED_METHOD_EFFECTS[method_id]
+		if str(effect.get("axis", "")) != str(expected_effect.get("axis", "")) or int(effect.get("delta", 0)) != int(expected_effect.get("delta", 0)):
+			return false
+		method_ids[method_id] = true
+	if method_ids.size() != EXPECTED_METHOD_EFFECTS.size():
+		return false
+	var found_pairs: Dictionary = {}
+	for raw_tag in tags:
+		if not raw_tag is Dictionary:
+			return false
+		var lineage_id := str(raw_tag.get("lineage_id", ""))
+		var method_id := str(raw_tag.get("method_id", ""))
+		var pair_key := "%s|%s" % [lineage_id, method_id]
+		if not EXPECTED_TAG_BY_PAIR.has(pair_key) or found_pairs.has(pair_key):
+			return false
+		if str(raw_tag.get("id", "")) != EXPECTED_TAG_BY_PAIR[pair_key] or str(raw_tag.get("display_name_ko", "")).is_empty() or str(raw_tag.get("machine_owner", "")) != CATALYST_OWNER:
+			return false
+		found_pairs[pair_key] = true
+	return found_pairs.size() == EXPECTED_TAG_BY_PAIR.size()
 
 
 func _entry_by_id(entries: Array, entry_id: String) -> Dictionary:

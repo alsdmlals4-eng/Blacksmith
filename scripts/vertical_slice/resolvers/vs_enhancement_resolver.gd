@@ -91,7 +91,7 @@ func resolve_with_rolls(item, target_level: int, rolls: Dictionary, precision_se
 		return {"outcome": "SUCCESS", "target_level": target_level, "band": str(attempt["band"]), "precision_tag_id": str(precision_result.get("tag_id", "")), "precision_effect_axis": str(precision_result.get("effect_axis", "")), "precision_effect_delta": int(precision_result.get("effect_delta", 0))}
 	var recovery_key := str(target_level)
 	item.enhancement_recovery_by_target[recovery_key] = int(item.enhancement_recovery_by_target.get(recovery_key, 0)) + 1
-	if float(rolls.get("damage_roll_percent", 100.0)) < float(attempt["final_damage_percent"]):
+	if target_level > 10 and float(rolls.get("damage_roll_percent", 100.0)) < float(attempt["final_damage_percent"]):
 		item.apply_damage_event()
 		return {"outcome": "FAILED_DAMAGE", "target_level": target_level, "recovery_failures": int(item.enhancement_recovery_by_target[recovery_key]), "physical_state": str(item.physical_state)}
 	return {"outcome": "FAILED_HOLD", "target_level": target_level, "recovery_failures": int(item.enhancement_recovery_by_target[recovery_key]), "physical_state": str(item.physical_state)}

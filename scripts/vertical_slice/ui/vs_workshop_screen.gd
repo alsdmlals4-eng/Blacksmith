@@ -78,9 +78,13 @@ func view_state() -> Dictionary:
 	if precision_mode == "ATTEMPT":
 		precision_preview = enhancement.get("precision_tag_preview", {})
 	elif precision_mode == "BACKFILL":
-		precision_preview = PrecisionResolverScript.new().backfill_preview(_item, precision_selection)
+		precision_preview = PrecisionResolverScript.new().backfill_preview(_item, precision_selection, true)
 		enhancement["allowed"] = false
 		enhancement["reason"] = "PRECISION_PLACEHOLDER_REQUIRES_BACKFILL"
+	elif precision_mode == "BACKFILL_INELIGIBLE":
+		precision_preview = {"allowed": false, "reason": "PRECISION_PLACEHOLDER_SOURCE_INELIGIBLE"}
+		enhancement["allowed"] = false
+		enhancement["reason"] = "PRECISION_PLACEHOLDER_SOURCE_INELIGIBLE"
 	var recovery: Dictionary = quote.get("quality_recovery_percent", {})
 	var repair_allowed := bool(quote.get("allowed", false))
 	return {
@@ -99,7 +103,7 @@ func view_state() -> Dictionary:
 		"enhancement_target_level": int(enhancement.get("target_level", 0)),
 		"enhancement_cost_summary": "비용: %d Gold · 보강재 %d개" % [int(enhancement.get("gold_cost", 0)), int(enhancement.get("reinforcement_units", 0))],
 		"enhancement_outcomes_summary": _enhancement_outcomes_summary(enhancement),
-		"precision_visible": not precision_mode.is_empty(),
+		"precision_visible": precision_mode == "ATTEMPT" or precision_mode == "BACKFILL",
 		"precision_mode": precision_mode,
 		"precision_tag_id": str(precision_preview.get("tag_id", "")),
 		"precision_preview_summary": _precision_preview_summary(precision_preview, precision_mode),
@@ -281,8 +285,12 @@ func _precision_mode() -> String:
 	if int(_item.enhancement_level) == 9:
 		return "ATTEMPT"
 	if int(_item.enhancement_level) >= 10 and str(_item.catalyst_affix) == "PRECISION_KEYWORD_PENDING_CONTENT":
-		return "BACKFILL"
+		return "BACKFILL" if _legacy_v3_precision_backfill_eligible() else "BACKFILL_INELIGIBLE"
 	return ""
+
+
+func _legacy_v3_precision_backfill_eligible() -> bool:
+	return _campaign_envelope != null and _campaign_envelope.has_method("is_legacy_v3_precision_backfill_eligible") and _campaign_envelope.is_legacy_v3_precision_backfill_eligible(str(_item.uid))
 
 
 func _precision_selection() -> Dictionary:
@@ -380,6 +388,8 @@ func _player_facing_enhancement_reason(reason: String) -> String:
 			return "선택한 정밀 조합을 확인하세요"
 		"PRECISION_PLACEHOLDER_REQUIRES_BACKFILL":
 			return "정밀 태그 정정을 먼저 완료하세요"
+		"PRECISION_PLACEHOLDER_SOURCE_INELIGIBLE":
+			return "정밀 태그 상태를 확인할 수 없습니다"
 		"CATALYST_AFFIX_ALREADY_RESOLVED":
 			return "이미 정밀 태그가 적용된 작품입니다"
 		"CATALYST_AFFIX_UNKNOWN_FAIL_CLOSED":

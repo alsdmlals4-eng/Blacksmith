@@ -156,13 +156,16 @@ func backfill_precision_tag_and_save(envelope, item_uid: String, precision_selec
 		return _blocked("INVALID_SAVE_SERVICE")
 	if envelope == null or not envelope.has_method("to_dict") or not envelope.has_method("get_item"):
 		return _blocked("INVALID_SAVE_ENVELOPE")
+	var source_eligible: bool = envelope.has_method("is_legacy_v3_precision_backfill_eligible") and envelope.is_legacy_v3_precision_backfill_eligible(item_uid)
 	var candidate = SaveEnvelopeScript.from_dict(envelope.to_dict())
 	if candidate == null or not candidate.validation_errors.is_empty():
 		return _blocked("INVALID_SAVE_ENVELOPE")
 	var staged_item = candidate.get_item(item_uid)
 	if staged_item == null:
 		return _blocked("ITEM_NOT_FOUND")
-	var backfill := PrecisionResolverScript.new().backfill_placeholder(staged_item, precision_selection)
+	if str(staged_item.catalyst_affix) == "PRECISION_KEYWORD_PENDING_CONTENT" and not source_eligible:
+		return _blocked("PRECISION_PLACEHOLDER_SOURCE_INELIGIBLE")
+	var backfill := PrecisionResolverScript.new().backfill_placeholder(staged_item, precision_selection, source_eligible)
 	if not bool(backfill.get("applied", false)):
 		return _blocked(str(backfill.get("reason", "INVALID_PRECISION_BACKFILL")))
 	var save_error: Error = save_service.save_envelope(candidate)

@@ -86,19 +86,23 @@ func test_placeholder_backfill_is_free_apply_once_and_fails_closed_for_unknown_a
 		return
 	var placeholder := _item(10)
 	placeholder.catalyst_affix = "PRECISION_KEYWORD_PENDING_CONTENT"
-	var result: Dictionary = resolver.backfill_placeholder(placeholder, _anvil_light())
+	var source_blocked: Dictionary = resolver.backfill_placeholder(placeholder, _anvil_light())
+	assert_false(bool(source_blocked.get("applied", true)))
+	assert_eq(source_blocked.get("reason", ""), "PRECISION_PLACEHOLDER_SOURCE_INELIGIBLE")
+	assert_eq(placeholder.catalyst_affix, "PRECISION_KEYWORD_PENDING_CONTENT")
+	var result: Dictionary = resolver.backfill_placeholder(placeholder, _anvil_light(), true)
 	assert_true(bool(result.get("applied", false)))
 	assert_eq(result.get("cost_or_roll", ""), "NONE")
 	assert_eq(placeholder.catalyst_affix, "TAG_ANVIL_LIGHT")
 	assert_eq(placeholder.weight_point, 0)
-	var repeat: Dictionary = resolver.backfill_placeholder(placeholder, _anvil_light())
+	var repeat: Dictionary = resolver.backfill_placeholder(placeholder, _anvil_light(), true)
 	assert_false(bool(repeat.get("applied", true)))
 	assert_eq(repeat.get("reason", ""), "CATALYST_AFFIX_ALREADY_RESOLVED")
 	assert_eq(placeholder.weight_point, 0)
 
 	var unknown := _item(10)
 	unknown.catalyst_affix = "UNKNOWN_NONEMPTY_AFFIX"
-	var unknown_result: Dictionary = resolver.backfill_placeholder(unknown, _ember_edge())
+	var unknown_result: Dictionary = resolver.backfill_placeholder(unknown, _ember_edge(), true)
 	assert_false(bool(unknown_result.get("applied", true)))
 	assert_eq(unknown_result.get("reason", ""), "CATALYST_AFFIX_UNKNOWN_FAIL_CLOSED")
 	assert_eq(unknown.catalyst_affix, "UNKNOWN_NONEMPTY_AFFIX")
