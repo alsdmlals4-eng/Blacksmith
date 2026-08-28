@@ -17,10 +17,10 @@ GRADE_KEYWORD_MACHINE_OWNER = GRADE_AFFIX
 TAG_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
 EVENT_KEYWORD_MACHINE_OWNER = CHRONICLE_AFFIX
 +10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD
-TAG_KEYWORD_SOURCE = CATALYST_LINEAGE
-TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_GOVERNS_TAG_IDENTITY
-PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_AND_DURABILITY_ONLY
-PRECISION_METHOD_CANNOT_DETERMINE_OR_MUTATE_TAG_KEYWORD = TRUE
+TAG_KEYWORD_SOURCE = CATALYST_LINEAGE_AND_PRECISION_METHOD
+TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_AND_PRECISION_METHOD_GOVERN_TAG_IDENTITY
+PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_DURABILITY_AND_TAG_RESOLUTION_CONTEXT
+PRECISION_METHOD_TAG_ROLE = TAG_IDENTITY_RESOLUTION
 PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
 EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION
 NO_NEW_STORED_FIELD_OR_FOURTH_AFFIX_SLOT = TRUE
@@ -32,10 +32,10 @@ NO_NEW_STORED_FIELD_OR_FOURTH_AFFIX_SLOT = TRUE
 **태그 키워드**를 기록한다. 이 키워드는 플레이어 자신에게 귀속되는 칭호나
 능력치가 아니며, 무기의 정체성과 이후 같은 UID 생애 기록을 위한 정보다.
 
-태그 키워드의 정체성은 **촉매 계보**가 결정한다. 즉, 정밀강화에서 유효한
-촉매 계보가 태그의 후보 가족·계보·내용 식별자 범위를 소유하며, 정밀강화
-**방식**은 태그를 선택·변경·대체하지 않는다. 방식이 줄 수 있는 영향은
-무기의 능력치와 내구도뿐이다.
+태그 키워드의 정체성은 **촉매 계보와 정밀강화 방식의 조합**이 결정한다.
+유효한 촉매 계보가 태그의 후보 가족·계보 범위를, 정밀강화 방식이 그 범위
+안에서의 태그 해석 문맥을 함께 소유한다. 방식은 무기 능력치·내구도에도
+영향을 줄 수 있지만, 등급·사건 키워드를 생성·변경·대체하지 않는다.
 
 플레이어 칭호 콘텐츠는 이후 별도 콘텐츠로 존재할 수 있으나, 이 Slice의
 `+10` 성공으로 생성·지급·표시하지 않는다.
@@ -49,7 +49,7 @@ affix field의 플레이어 언어와 생성 원인을 명확히 하는 정정�
 | 플레이어 언어 | 저장 machine owner | 생성 원인 | 불변 경계 |
 | --- | --- | --- | --- |
 | 등급 키워드 | `GRADE_AFFIX` | 최초 제작 등급 | UID 출생 후 변경하지 않는다. |
-| 태그 키워드 | `CATALYST_AFFIX` | 촉매 계보 | `+9 -> +10` 성공은 정확히 하나의 태그 키워드만 기록한다. 정밀강화 방식은 태그 정체성을 결정하지 않는다. |
+| 태그 키워드 | `CATALYST_AFFIX` | 촉매 계보 + 정밀강화 방식 | `+9 -> +10` 성공은 정확히 하나의 태그 키워드만 기록한다. 두 입력의 조합이 태그 정체성을 결정한다. |
 | 사건 키워드 | `CHRONICLE_AFFIX` | 의미 있는 실제 사용·사건·손상·복원 등 작품 생애 | 모든 handoff·표시·사건이 자동으로 부여하지는 않는다. |
 
 따라서 `+10`의 결과는 태그 키워드이지 사건 키워드·등급 키워드·플레이어
@@ -65,9 +65,9 @@ affix field의 플레이어 언어와 생성 원인을 명확히 하는 정정�
   흐름으로 계보를 확정할지는 아직 승인되지 않았다. 따라서 실제 태그 write
   또는 player-facing 태그 표시는 이 빈 계보 동작이 정해질 때까지 구현하지
   않는다.
-- 정밀강화 방식은 무기 능력치와 내구도에만 영향을 준다. 태그·등급·사건
-  키워드를 생성·변경·대체하거나 기능 재작업·예술성·환경 기능을 산출하는
-  방식 효과는 current canon이 아니다.
+- 정밀강화 방식은 무기 능력치·내구도와 태그 identity resolution에만
+  영향을 준다. 등급·사건 키워드를 생성·변경·대체하거나 기능 재작업·예술성·
+  환경 기능을 산출하는 방식 효과는 current canon이 아니다.
 - 일반 강화, `+20` 이후 milestone, 확률, 비용, 수리, 고객 피해 profile에
   새 효과를 추가하지 않는다.
 - generic keyword가 고객 실제사용 피해를 보편적으로 경감하지 않는다.
@@ -81,7 +81,7 @@ affix field의 플레이어 언어와 생성 원인을 명확히 하는 정정�
 ## 검증 계약
 
 - `+10` 성공은 item-owned `CATALYST_AFFIX` 하나만 쓴다.
-- 태그 identity는 촉매 계보에서만 해석하며 정밀강화 방식에서 해석하지 않는다.
+- 태그 identity는 촉매 계보와 정밀강화 방식의 조합으로만 해석한다.
 - 플레이어 title/칭호 필드, 보상, UI를 생성하지 않는다.
 - 실제 키워드 content row가 승인되기 전 `PRECISION_KEYWORD_PENDING_CONTENT`를
   플레이어에게 노출하지 않는다.

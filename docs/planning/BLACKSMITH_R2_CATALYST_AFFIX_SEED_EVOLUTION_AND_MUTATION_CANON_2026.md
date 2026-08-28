@@ -12,12 +12,12 @@
 > ```text
 > CURRENT_OVERRIDE_BS-ENHANCE-20260828-34
 > CURRENT_PRECISION_MILESTONE = +9_TO_+10_ONLY
-> TAG_KEYWORD_SOURCE = CATALYST_LINEAGE
+> TAG_KEYWORD_SOURCE = CATALYST_LINEAGE_AND_PRECISION_METHOD
 > EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION
 > ```
 >
 > 이 문서는 촉매가 `CATALYST_AFFIX` 계보를 소유한다는 역사적 구조 근거다.
-> 현재 `+10` 태그의 정체성은 촉매 계보에서만 정해지며, 과거의 다중 이정표,
+> 현재 `+10` 태그의 정체성은 촉매 계보와 정밀강화 방식의 조합으로 정해지며, 과거의 다중 이정표,
 > 누적 성장·변형 확률, 촉매 이름·가중치·빈 계보 fallback은 current canon이
 > 아니다. 빈 촉매 계보일 때의 선택/기본값/차단 흐름은 별도 승인 전 구현하지
 > 않는다.

@@ -53,10 +53,10 @@ GRADE_KEYWORD_MACHINE_OWNER = GRADE_AFFIX
 TAG_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
 EVENT_KEYWORD_MACHINE_OWNER = CHRONICLE_AFFIX
 +10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD
-TAG_KEYWORD_SOURCE = CATALYST_LINEAGE
-TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_GOVERNS_TAG_IDENTITY
-PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_AND_DURABILITY_ONLY
-PRECISION_METHOD_CANNOT_DETERMINE_OR_MUTATE_TAG_KEYWORD = TRUE
+TAG_KEYWORD_SOURCE = CATALYST_LINEAGE_AND_PRECISION_METHOD
+TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_AND_PRECISION_METHOD_GOVERN_TAG_IDENTITY
+PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_DURABILITY_AND_TAG_RESOLUTION_CONTEXT
+PRECISION_METHOD_TAG_ROLE = TAG_IDENTITY_RESOLUTION
 PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
 EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION
 NO_PRECISION_OR_AFFIX_OR_PROBABILITY_OR_RESOURCE_RULE_AT_+20_OR_LATER = TRUE
@@ -74,10 +74,11 @@ NO_TIMER / NO_CUSTOMER_MANAGEMENT / NO_SECOND_ITEM / NO_FAKE_DAMAGE
    remain unapproved, so this package must not manufacture a concrete keyword,
    persist an invented content ID, or present it to the player. The implementation
    placeholder `PRECISION_KEYWORD_PENDING_CONTENT` is never player-facing. A
-   tag identity is resolved only from catalyst lineage, never from the selected
-   Precision method. The method may affect only weapon stats and durability. A
-   separate user-approved catalyst-lineage/content row **and** empty-lineage
-   behavior are required before keyword write/presentation work enters scope;
+   tag identity is resolved from the catalyst-lineage and selected Precision-method
+   combination. The method may affect weapon stats, durability, and this tag-resolution
+   context only; it cannot affect grade or event keywords. A separate user-approved
+   catalyst-lineage/method/content row **and** empty-lineage behavior are required
+   before keyword write/presentation work enters scope;
    catalogue, function-rework, artistry, environmental-function, and mechanical
    keyword variations remain out of scope.
 3. `+5`, `+15`, and every later multiple of five are presentation beats only.
@@ -263,8 +264,8 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
    row and its empty-catalyst-lineage behavior are separately approved, do not
    create a concrete keyword, persist an invented content ID, or show any
    keyword/placeholder to the player. Do not create, grant, or display a player
-   title in this package. Precision-method work may alter only weapon stats and
-   durability; it may not choose or alter any keyword.
+   title in this package. Precision method may alter weapon stats, durability,
+   and Tag identity resolution only; it may not affect Grade or Event keywords.
 3. Add Handoff at `+10+`, exactly one non-economic return beat, and one Nadia
    actual-use result that resolves/saves once for the same UID.
 4. Surface conditional repair/Chronicle from the existing durability owner,
@@ -292,8 +293,8 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 2. Before a weapon-keyword content row is approved, `+10` may not expose
    `PRECISION_KEYWORD_PENDING_CONTENT`, invent a content ID, or grant a player
    title. Its `CATALYST_AFFIX` ownership boundary remains weapon-only; tag
-   identity is catalyst-lineage-only; and a Precision method cannot determine
-   or mutate tag, grade, or event keywords. `+20` and later never request
+   identity uses catalyst lineage plus Precision method; and a Precision method
+   cannot affect Grade or Event keywords. `+20` and later never request
    Precision or add an affix.
 3. The Slice cannot reach `+11..+15` only to be blocked by the old ten-unit
    material fixture under its success-path test.
