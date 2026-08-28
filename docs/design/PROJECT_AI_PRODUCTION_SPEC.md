@@ -1,9 +1,11 @@
 # Blacksmith AI Production Specification
 
+> **한국어 안내:** 이 문서는 **기술·정본 추적용** AI/구현 명세다. 사람이 게임의 장르, 시점, 핵심 재미와 플레이 흐름을 읽는 기준은 [Blacksmith 사람용 게임 기획서](BLACKSMITH_HUMAN_FACING_GDD_20260828.md)와 연결 PDF다.
+
 > **Document role:** machine-searchable current-canon planning and implementation contract. It is not a replacement for executable code, JSON owners, tests, or runtime evidence.
 >
-> **Source snapshot:** `main` / `b4a3b01e247b4c326890822d78ca5932fe6d4ff6` plus current user routing override `BS-OPS-20260828-35` / 2026-08-28 KST.
-> **Generated scope:** one AI specification paired with `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`. Notion is retired from future project work; no new raster, runtime asset, Scene, data, or GDScript change belongs to this document batch.
+> **Source snapshot:** `main` / `15554a0cb64678984fc2b312570689e9b6d81618` plus current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36` / 2026-08-28 KST.
+> **Generated scope:** this is a technical-trace companion to the human-facing GDD and `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; it does not own the human reading experience. Notion is retired from future project work; no new raster, runtime asset, Scene, data, or GDScript change belongs to this document batch.
 
 ## 00. CANON SNAPSHOT
 
@@ -38,6 +40,7 @@
 | SRC-CAN-08 | `docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md` | Grade / Tag / Event taxonomy and `+9→+10` keyword ownership. |
 | SRC-CAN-09 | `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json` and `assets/ASSET_MANIFEST.json` | Visual consumer, asset provenance, and validation state. |
 | SRC-CAN-10 | `docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md` | GitHub-only current-canon routing and post-generation visual lock policy. |
+| SRC-CAN-11 | `docs/decisions/BS-OPS-20260828-36_EVIDENCE_RESEARCH_AND_ADVERSARIAL_REVIEW_LOOP.md` | Fresh-read, current research, adversarial review, feasibility, and evidence-ceiling procedure. |
 | SRC-MIG-01 | `docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md` and `docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json` | One-time read-only Notion structure/work-product migration, GitHub destination map, and hash-verified historical visual archive. |
 | SRC-IMP-01 | `project.godot`, `scenes/vertical_slice/**`, `scripts/vertical_slice/**` | Current vertical-slice implementation reality. |
 | SRC-IMP-02 | `data/vertical_slice/**`, `data/crafting/**`, `tests/gut/unit/vertical_slice/**` | Current data and automated-test reality. |

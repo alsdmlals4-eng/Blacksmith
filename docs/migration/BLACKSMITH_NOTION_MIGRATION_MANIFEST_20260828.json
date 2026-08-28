@@ -14,8 +14,10 @@
       "source_title": "Blacksmith Project Hub",
       "disposition": "CURRENT_MAPPED",
       "repository_destinations": [
+        "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
+        "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
         "docs/design/PROJECT_AI_PRODUCTION_SPEC.md",
-        "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf"
+        "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828_PDF_RECEIPT.json"
       ]
     },
     {
@@ -23,9 +25,11 @@
       "source_title": "Blacksmith Project Home",
       "disposition": "CURRENT_MAPPED",
       "repository_destinations": [
-        "docs/design/PROJECT_AI_PRODUCTION_SPEC.md",
+        "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
         "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
-        "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md"
+        "docs/design/PROJECT_AI_PRODUCTION_SPEC.md",
+        "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md",
+        "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828_PDF_RECEIPT.json"
       ]
     },
     {

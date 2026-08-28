@@ -12,6 +12,7 @@ ROUTING = ROOT / "docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_
 RECEIPT = ROOT / "docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md"
 MANIFEST = ROOT / "docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json"
 GDD = ROOT / "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
+HUMAN_GDD = ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md"
 AGENTS = ROOT / "AGENTS.md"
 VISUAL_APPROVAL = ROOT / "docs/planning/BLACKSMITH_VISUAL_GDD_ASSET_APPROVAL_2026-08-25.md"
 
@@ -44,7 +45,7 @@ EXPECTED_ARCHIVE_HASHES = {
 
 
 def main() -> None:
-    for path in (ROUTING, RECEIPT, MANIFEST, GDD, AGENTS, VISUAL_APPROVAL):
+    for path in (ROUTING, RECEIPT, MANIFEST, GDD, HUMAN_GDD, AGENTS, VISUAL_APPROVAL):
         assert path.exists(), f"missing migration owner: {path.relative_to(ROOT)}"
 
     routing = ROUTING.read_text(encoding="utf-8")
@@ -79,6 +80,14 @@ def main() -> None:
         else:
             assert row["omission_reason"], page_id
 
+    for page_id in (
+        "3c01b237-eb1c-8141-93ae-c528c4f3c40c",
+        "3c41b237-eb1c-813f-a481-e415e3250d1c",
+    ):
+        destinations = page_map[page_id]["repository_destinations"]
+        assert "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md" in destinations
+        assert "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf" in destinations
+
     archive_map = {row["visual_id"]: row for row in manifest["historical_visual_archive"]}
     assert set(archive_map) == set(EXPECTED_ARCHIVE_HASHES)
     for visual_id, expected_hash in EXPECTED_ARCHIVE_HASHES.items():
@@ -94,6 +103,9 @@ def main() -> None:
     gdd = GDD.read_text(encoding="utf-8")
     assert "SRC-MIG-01" in gdd
     assert "BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md" in gdd
+
+    human_gdd = HUMAN_GDD.read_text(encoding="utf-8")
+    assert "사람용 게임 기획서" in human_gdd
 
     agents = AGENTS.read_text(encoding="utf-8")
     assert "NOTION_MIGRATION_RECEIPT" in agents

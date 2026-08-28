@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "receipt_id": "BS-GDD-20260828-HUMAN-PDF-01",
+  "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
+  "generated_at": "2026-08-28 KST",
+  "source_markdown": {
+    "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
+    "sha256": "500d4376d6a974b42b650bea77db40a6afa5f5d1a905e9a3e89a7b28ca73ebcb"
+  },
+  "artifact": {
+    "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
+    "sha256": "074fff213279116cf6989144dfea8fc6cbf1ca22c7eee9648638884d258f1cbf",
+    "page_count": 9,
+    "pdf_subject": "Human-facing Korean GDD",
+    "target_format": "A4"
+  },
+  "render_validation": {
+    "tool": "pypdf + Poppler pdftoppm",
+    "inspected_pages": [1, 2, 8, 9],
+    "result": "KOREAN_TEXT_AND_TABLE_LAYOUT_READABLE"
+  },
+  "provenance": {
+    "document_role": "human-facing project GDD PDF",
+    "runtime_asset": false,
+    "human_usability_or_player_experience_evidence": false
+  }
+}
