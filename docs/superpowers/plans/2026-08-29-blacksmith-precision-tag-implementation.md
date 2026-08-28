@@ -24,7 +24,7 @@
 
 ---
 
-### Task 1: Runtime catalog adapter and selection invariants — IN PROGRESS
+### Task 1: Runtime catalog adapter and selection invariants — COMPLETE
 
 **Files:**
 - Modify: `scripts/vertical_slice/resolvers/vs_precision_resolver.gd`
@@ -36,7 +36,7 @@
 - Produces: `VSPrecisionResolver.selection_preview(item, target_level, selection) -> Dictionary`; `apply_selection_success(item, selection) -> Dictionary`; `backfill_placeholder(item, selection) -> Dictionary`.
 - `selection` is only `{ "lineage_id": String, "method_id": String }`; it is never written to `VSItem`.
 
-- [ ] **Step 1: Write failing catalog tests**
+- [x] **Step 1: Write failing catalog tests**
 
 ```gdscript
 func test_catalog_resolves_each_approved_pair_and_blocks_missing_input() -> void:
@@ -52,13 +52,13 @@ func test_catalog_resolves_each_approved_pair_and_blocks_missing_input() -> void
     assert_eq(valid.get("method_delta", 0), 3)
 ```
 
-- [ ] **Step 2: Run the focused GUT file and observe RED**
+- [x] **Step 2: Run the focused GUT file and observe RED**
 
 Run: `godot --headless -d -s --path . addons/gut/gut_cmdln.gd -gdir=res://tests/gut/unit/vertical_slice -ginclude_subdirs -gselect=test_vs_precision_tag_catalog.gd -gexit`
 
 Expected: FAIL because Decision37 catalog functions do not exist and the legacy resolver permits obsolete methods.
 
-- [ ] **Step 3: Implement the catalog adapter minimally**
+- [x] **Step 3: Implement the catalog adapter minimally**
 
 ```gdscript
 func selection_preview(item, target_level: int, selection: Dictionary) -> Dictionary:
@@ -71,7 +71,7 @@ func selection_preview(item, target_level: int, selection: Dictionary) -> Dictio
 
 Remove obsolete `ARTISTIC_FINISH`, environmental/function, customer-context, weighting, and post-`+10` Precision behavior from this current Vertical Slice resolver. Preserve no behavior from it as a fallback.
 
-- [ ] **Step 4: Add success/backfill boundary tests and make them GREEN**
+- [x] **Step 4: Add success/backfill boundary tests and make them GREEN**
 
 ```gdscript
 func test_success_and_backfill_apply_one_tag_and_one_delta_once() -> void:
@@ -87,7 +87,7 @@ func test_success_and_backfill_apply_one_tag_and_one_delta_once() -> void:
 
 Run the Task 1 focused GUT command until it passes.
 
-- [ ] **Step 5: Commit the isolated catalog adapter task**
+- [x] **Step 5: Commit the isolated catalog adapter task**
 
 ```bash
 git add scripts/vertical_slice/resolvers/vs_precision_resolver.gd \
@@ -109,7 +109,7 @@ git commit -m "feat: add precision tag catalog resolver"
 - Produces: optional `selection: Dictionary = {}` parameter on preview/resolve/save APIs and `backfill_precision_tag_and_save(...) -> Dictionary`.
 - Existing callers targeting levels other than `10` remain valid without a selection argument.
 
-- [ ] **Step 1: Write failing atomicity tests**
+- [x] **Step 1: Write failing atomicity tests**
 
 ```gdscript
 func test_target_ten_missing_selection_blocks_before_resource_or_roll() -> void:
@@ -121,13 +121,13 @@ func test_target_ten_missing_selection_blocks_before_resource_or_roll() -> void:
     assert_null(save.saved_envelope)
 ```
 
-- [ ] **Step 2: Run focused resolver/action GUT files and observe RED**
+- [x] **Step 2: Run focused resolver/action GUT files and observe RED**
 
 Run: `godot --headless -d -s --path . addons/gut/gut_cmdln.gd -gdir=res://tests/gut/unit/vertical_slice -ginclude_subdirs -gselect=test_vs_enhancement_resolver.gd,test_vs_enhancement_action_archive.gd -gexit`
 
 Expected: FAIL because target ten presently writes `PRECISION_KEYWORD_PENDING_CONTENT` and resource staging has no selection gate.
 
-- [ ] **Step 3: Gate before resources and apply only on successful target ten**
+- [x] **Step 3: Gate before resources and apply only on successful target ten**
 
 ```gdscript
 var preview := EnhancementResolverScript.new().preview(source_item, target_level, selection)
@@ -138,7 +138,7 @@ if not bool(preview.get("allowed", false)):
 
 On a hold, preserve no choice or method change. On a target-ten success, call Task 1's `apply_selection_success` inside the cloned candidate item; commit `raw_role_stat`, `weight_point`, `catalyst_affix`, and existing fields atomically. Remove the placeholder write from `_apply_success`.
 
-- [ ] **Step 4: Implement and test saved placeholder backfill**
+- [x] **Step 4: Implement and test saved placeholder backfill**
 
 ```gdscript
 var result = service.backfill_precision_tag_and_save(envelope, item_uid, selection, save_service)
@@ -149,7 +149,7 @@ assert_eq(result.get("reinforcement_units", -1), 0)
 
 Verify a known Tag and unknown nonempty affix both fail closed without save or mutation; verify a second call cannot double-apply.
 
-- [ ] **Step 5: Run focused GUT files until GREEN and commit**
+- [x] **Step 5: Run focused GUT files until GREEN and commit**
 
 ```bash
 git add scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd \
@@ -170,7 +170,7 @@ git commit -m "feat: apply precision tag selections atomically"
 - Consumes: Task 1 catalog preview, Task 2 optional selection/save/backfill APIs.
 - Produces: `set_precision_selection(lineage_id, method_id) -> void`, `request_precision_backfill() -> Dictionary`, and `view_state()` keys for selected Tag, stat before/after, `내구도 변화 없음`, and block reason.
 
-- [ ] **Step 1: Write failing UI tests**
+- [x] **Step 1: Write failing UI tests**
 
 ```gdscript
 func test_plus_nine_requires_two_visible_precision_choices_before_button_enables() -> void:
@@ -183,13 +183,13 @@ func test_plus_nine_requires_two_visible_precision_choices_before_button_enables
     assert_true(screen.get_node("WorkshopLayout/PrecisionPreviewLabel").text.contains("불씨의 가벼움"))
 ```
 
-- [ ] **Step 2: Run focused UI GUT files and observe RED**
+- [x] **Step 2: Run focused UI GUT files and observe RED**
 
 Run: `godot --headless -d -s --path . addons/gut/gut_cmdln.gd -gdir=res://tests/gut/unit/vertical_slice -ginclude_subdirs -gselect=test_vs_workshop_screen.gd,test_vs_app.gd -gexit`
 
 Expected: FAIL because current Workshop has no lineage/method controls and does not forward selection data.
 
-- [ ] **Step 3: Add native Korean controls dynamically, without a scene or asset change**
+- [x] **Step 3: Add native Korean controls dynamically, without a scene or asset change**
 
 ```gdscript
 var lineage := OptionButton.new()
@@ -202,11 +202,11 @@ lineage.set_item_metadata(1, "EMBER_LINEAGE")
 
 Show the selector only for level `9 → 10` and placeholder-backfill state. It must show selection result Tag, allowed stat before/after, `내구도 변화 없음`, ordinary outcome/cost preview, and Korean block reasons. Do not add a new image, full-frame mockup, or persisted UI state.
 
-- [ ] **Step 4: Connect execute and backfill actions and make tests GREEN**
+- [x] **Step 4: Connect execute and backfill actions and make tests GREEN**
 
 Forward `_precision_selection()` into `request_enhancement_with_rolls`; clear the transient options after a hold and after success. For placeholder state, display `정밀 태그 정정` and call the no-cost action, then refresh only after saved candidate adoption.
 
-- [ ] **Step 5: Commit the UI task**
+- [x] **Step 5: Commit the UI task**
 
 ```bash
 git add scripts/vertical_slice/ui/vs_workshop_screen.gd \
@@ -225,7 +225,7 @@ git commit -m "feat: show precision tag selection in workshop"
 - Consumes: completed Tasks 1–3.
 - Produces: exact-head automated evidence; no claim of human-play, Android, accessibility, performance, or release verification.
 
-- [ ] **Step 1: Run complete local verification**
+- [x] **Step 1: Run complete local verification**
 
 ```bash
 godot --headless --editor --path . --quit
@@ -237,15 +237,15 @@ python tests/check_phase1_unified_implementation_contract.py
 python tests/check_core_simplification_current_contract.py
 ```
 
-- [ ] **Step 2: Use the live editor only if available and collect runtime evidence**
+- [x] **Step 2: Use the live editor only if available and collect runtime evidence**
 
 Run `hera status`; if an editor is available, use `hera guidance ui`, then inspect the Workshop’s controls and a level-nine selection attempt. If no live editor is available, record runtime UI as `NOT_RUN`; do not infer its state.
 
-- [ ] **Step 3: Perform adversarial review**
+- [x] **Step 3: Perform adversarial review**
 
 Confirm all of the following against exact code/tests: missing inputs cannot charge; hold cannot tag; success cannot double-apply; placeholder cannot re-roll/charge; Grade/Event never mutate; `+10` cannot damage; no obsolete method can be selected; new UI is native and Korean; no protected scope expands.
 
-- [ ] **Step 4: Commit verified evidence and deliver through GitHub**
+- [x] **Step 4: Commit verified evidence and deliver through GitHub**
 
 ```bash
 git add <only-verified-evidence-files>
@@ -261,3 +261,11 @@ Wait for exact-head required checks, squash merge only after green, read `origin
 - **Spec coverage:** Tasks 1–3 cover catalog ownership, explicit selection, atomic success/hold, backfill, UI presentation, and forbidden effects. Task 4 covers exact-head, runtime evidence ceiling, and delivery.
 - **Placeholder scan:** No TBD/TODO or deferred implementation step remains; intentionally unrun evidence is labelled `NOT_RUN` rather than treated as a future requirement.
 - **Type consistency:** All cross-task values use the same `selection` dictionary keys (`lineage_id`, `method_id`) and same known Tag IDs. The action service owns saves; the Workshop never mutates persisted selection state directly.
+
+## Execution evidence · exact implementation head `b3c690df`
+
+- **TDD:** Task 1, Task 2, Task 3, and review-hardening RED states were each observed before the corresponding GREEN change. The final GUT run passed: 29 scripts, 180 tests, 1033 assertions (one known non-task orphan remains).
+- **Static contracts:** `check_precision_tag_catalog_contract.py`, `check_phase1_unified_implementation_contract.py`, `check_core_simplification_current_contract.py`, GUT adoption, and HiGodot/GUT authority checks all passed at this head.
+- **Editor load:** Godot 4.7.1 headless editor load exited `0`. Existing invalid external-resource UID warnings and Godot-recreated unrelated UID sidecars are not included in this delivery.
+- **Adversarial findings corrected:** malformed catalog now blocks fail-closed; only a V3 migration-origin placeholder is eligible for no-cost backfill; `+10` cannot resolve as damage even when supplied an adversarial negative damage roll.
+- **Evidence ceiling:** live Blacksmith editor UI, human play, Android, accessibility, performance, and release verification are `NOT_RUN`. No image, runtime scene, or asset change was made.
