@@ -48,6 +48,11 @@ ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
 PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
 WEAPON_KEYWORD_CONTENT_ID = UNDECIDED / USER_CONTENT_DECISION_REQUIRED
 KEYWORD_PRESENTATION = DEFERRED_UNTIL_WEAPON_KEYWORD_CONTENT_ROW_APPROVED
+WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD
+GRADE_KEYWORD_MACHINE_OWNER = GRADE_AFFIX
+TAG_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
+EVENT_KEYWORD_MACHINE_OWNER = CHRONICLE_AFFIX
++10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD
 NO_PRECISION_OR_AFFIX_OR_PROBABILITY_OR_RESOURCE_RULE_AT_+20_OR_LATER = TRUE
 RETURN_BEAT = ONE_NON_ECONOMIC_WORKSHOP_MOMENT
 NO_TIMER / NO_CUSTOMER_MANAGEMENT / NO_SECOND_ITEM / NO_FAKE_DAMAGE
@@ -56,8 +61,9 @@ NO_TIMER / NO_CUSTOMER_MANAGEMENT / NO_SECOND_ITEM / NO_FAKE_DAMAGE
 1. Every success changes the level by exactly one. No multi-level success,
    downgrade, separate critical, or a fourth affix slot is allowed.
 2. A successful `+9 -> +10` is the only Precision Enhancement. It writes
-   exactly one **weapon-owned** keyword through the existing `CATALYST_AFFIX`
-   owner. The keyword belongs to the item and grants no player title; a player
+   exactly one **weapon-owned tag keyword** through the existing `CATALYST_AFFIX`
+   owner. It is not a grade keyword or event keyword. The tag keyword belongs to
+   the item and grants no player title; a player
    title is future content and is not granted by `+10`. Its content ID and copy
    remain unapproved, so this package must not manufacture a concrete keyword,
    persist an invented content ID, or present it to the player. The implementation

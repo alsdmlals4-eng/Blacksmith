@@ -35,9 +35,19 @@ TARGET_LEVEL = CURRENT_LEVEL + 1
 +10 PRECISION SUCCESS -> exactly one WEAPON_ITEM_KEYWORD
 ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY
 ITEM_KEYWORD machine owner = CATALYST_AFFIX
+WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD
+GRADE_KEYWORD_MACHINE_OWNER = GRADE_AFFIX
+TAG_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
+EVENT_KEYWORD_MACHINE_OWNER = CHRONICLE_AFFIX
++10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD
 PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
 NO_FOURTH_AFFIX_SLOT
 ```
+
+`+10`의 하나는 **태그 키워드**다. 등급 키워드는 최초 제작의
+`GRADE_AFFIX`, 사건 키워드는 의미 있는 작품 생애의 `CHRONICLE_AFFIX`가
+각각 소유한다. 세 표현은 새 슬롯이 아니라 기존 세 field의 player-facing
+분류이며, 사건 발생·handoff·표시만으로 사건 키워드를 자동 부여하지 않는다.
 
 +20/+30/+40/+50 do not reopen Precision. Durability modifiers never change the +1 level delta or +10 keyword cardinality.
 

@@ -21,6 +21,8 @@ def main() -> None:
             "BS-ENHANCE-20260828-34",
             "ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY",
             "PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10",
+            "WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD",
+            "+10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD",
             "WEAPON_KEYWORD_CONTENT_ID = UNDECIDED / USER_CONTENT_DECISION_REQUIRED",
             "KEYWORD_PRESENTATION = DEFERRED_UNTIL_WEAPON_KEYWORD_CONTENT_ROW_APPROVED",
             "PRIMARY_PLAYABLE_CONTENT = REPEATED_ENHANCEMENT_JUDGMENT_AND_FEEDBACK",
@@ -51,11 +53,19 @@ def main() -> None:
         "ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY",
         "ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX",
         "PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10",
+        "WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD",
+        "GRADE_KEYWORD_MACHINE_OWNER = GRADE_AFFIX",
+        "TAG_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX",
+        "EVENT_KEYWORD_MACHINE_OWNER = CHRONICLE_AFFIX",
+        "+10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD",
         "WEAPON_KEYWORD_CONTENT_ID = UNDECIDED / USER_CONTENT_DECISION_REQUIRED",
         "HISTORICAL_FIXTURE_OR_CUSTOMER_EPITHET_REUSE = FORBIDDEN",
     )
     missing_decision = [token for token in require_decision_tokens if token not in decision_text]
     assert not missing_decision, f"{WEAPON_KEYWORD_DECISION.name}: missing {missing_decision}"
+    taxonomy_token = "WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD"
+    assert taxonomy_token in CORE_CANON.read_text(encoding="utf-8"), "core canon must mirror weapon keyword taxonomy"
+    assert taxonomy_token in HANDOFF.read_text(encoding="utf-8"), "handoff must preserve weapon keyword taxonomy"
     assert "data-backed, localized first-slice keyword" not in CONTRACT.read_text(encoding="utf-8")
     assert "non-placeholder weapon keyword" not in CONTRACT.read_text(encoding="utf-8")
     print("phase1 unified implementation contract: PASS")

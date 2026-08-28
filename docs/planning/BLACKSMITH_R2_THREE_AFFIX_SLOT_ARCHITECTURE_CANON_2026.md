@@ -12,6 +12,12 @@ GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX
 
 정확히 세 슬롯이며 생성 원인·시점·변경 조건이 서로 다르다. 일반 수식어 A·B 구조는 `[대체됨]`이다.
 
+> **용어 정정 · `BS-ENHANCE-20260828-34` 우선:** 세 저장 슬롯은 player-facing
+> 으로 각각 **등급 키워드 / 태그 키워드 / 사건 키워드**다.
+> `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`는 그 순서의 machine owner다.
+> `+9 -> +10`의 유일한 Precision 성공은 `CATALYST_AFFIX`에 태그 키워드 하나를
+> 기록하며, 사건 키워드나 플레이어 칭호를 생성하지 않는다.
+
 ## 2. 이름 조합
 
 ```text
