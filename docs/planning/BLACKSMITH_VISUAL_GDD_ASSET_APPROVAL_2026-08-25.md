@@ -105,7 +105,7 @@ Godot에 바로 투입되는 final runtime asset, 최종 UI texture, release ass
 
 ## Storage and destination contract
 
-- GitHub: 이 manifest와 `assets/visual_reference/historical_notion_gdd/`가 old generated visual identity/hash/approval history의 현재 보존처다.
+- GitHub: 이 manifest와 `docs/migration/historical_notion_gdd/`가 old generated visual identity/hash/approval history의 현재 보존처다.
 - Google Drive와 Notion은 과거 출처/provenance로만 남으며, 이후 read/write 또는 destination readback 대상이 아니다.
 - current Art03 style + Decision04 actual-consumer rule은 GitHub GDD와 Visual Direction Lock Packet이 소유한다.
 - Google Sheet: historical compatibility-only; active visual production workspace가 아니다.

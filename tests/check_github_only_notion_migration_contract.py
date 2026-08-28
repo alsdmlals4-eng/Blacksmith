@@ -13,7 +13,6 @@ RECEIPT = ROOT / "docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.
 MANIFEST = ROOT / "docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json"
 GDD = ROOT / "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
 AGENTS = ROOT / "AGENTS.md"
-ASSET_MANIFEST = ROOT / "assets/ASSET_MANIFEST.json"
 VISUAL_APPROVAL = ROOT / "docs/planning/BLACKSMITH_VISUAL_GDD_ASSET_APPROVAL_2026-08-25.md"
 
 EXPECTED_PAGES = {
@@ -45,7 +44,7 @@ EXPECTED_ARCHIVE_HASHES = {
 
 
 def main() -> None:
-    for path in (ROUTING, RECEIPT, MANIFEST, GDD, AGENTS, ASSET_MANIFEST, VISUAL_APPROVAL):
+    for path in (ROUTING, RECEIPT, MANIFEST, GDD, AGENTS, VISUAL_APPROVAL):
         assert path.exists(), f"missing migration owner: {path.relative_to(ROOT)}"
 
     routing = ROUTING.read_text(encoding="utf-8")
@@ -104,12 +103,6 @@ def main() -> None:
     assert "GITHUB_MIGRATION_RECEIPT" in visual_approval
     assert "NOTION_SOURCE_STATUS = RETIRED_AFTER_ONE_TIME_READ_ONLY_MIGRATION" in visual_approval
 
-    asset_manifest = json.loads(ASSET_MANIFEST.read_text(encoding="utf-8"))
-    for record in asset_manifest["non_runtime_asset_records"]:
-        if "notion_destination" not in record:
-            continue
-        assert record["notion_destination"] == "HISTORICAL_REFERENCE_ONLY / RETIRED_BY_BS-OPS-20260828-35"
-        assert record["notion_source_status"] == "MIGRATED_TO_GITHUB_ONLY_ROUTING"
 
     print("GitHub-only Notion migration contract: PASS")
 

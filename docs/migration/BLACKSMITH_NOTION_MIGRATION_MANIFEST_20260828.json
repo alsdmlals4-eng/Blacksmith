@@ -103,7 +103,7 @@
       "repository_destinations": [
         "assets/ASSET_MANIFEST.json",
         "docs/planning/BLACKSMITH_VISUAL_GDD_ASSET_APPROVAL_2026-08-25.md",
-        "assets/visual_reference/historical_notion_gdd"
+        "docs/migration/historical_notion_gdd"
       ]
     },
     {
@@ -145,7 +145,7 @@
     {
       "visual_id": "BS-VIS-20260820-01",
       "source_page_id": "3c71b237-eb1c-8178-8a89-fca2818108c9",
-      "repository_path": "assets/visual_reference/historical_notion_gdd/BS-VIS-20260820-01_enhancement_main_visual_gdd.png",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-01_enhancement_main_visual_gdd.png",
       "sha256": "2619843ad82c640e7038acd8a0687752f46326464444f0f24e062464e6cd7066",
       "dimensions": "1672x941",
       "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
@@ -155,7 +155,7 @@
     {
       "visual_id": "BS-VIS-20260820-02",
       "source_page_id": "3c71b237-eb1c-8155-954e-e9cb863c2bec",
-      "repository_path": "assets/visual_reference/historical_notion_gdd/BS-VIS-20260820-02_feedback_ladder_visual_gdd.png",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-02_feedback_ladder_visual_gdd.png",
       "sha256": "606579edbc51f5a9454e4cf0f694e5f1ef4a40544488fda46512b46ed26175ce",
       "dimensions": "1672x941",
       "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
@@ -165,7 +165,7 @@
     {
       "visual_id": "BS-VIS-20260820-04",
       "source_page_id": "3c71b237-eb1c-8171-bf2a-d7c38fc643f9",
-      "repository_path": "assets/visual_reference/historical_notion_gdd/BS-VIS-20260820-04_tension_band_visual_gdd.png",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-04_tension_band_visual_gdd.png",
       "sha256": "b675de17a0a48b5719c6bb80a4e1bf39f7a7dea99583ba2a9923d5dbb8d0b028",
       "dimensions": "1448x1086",
       "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
@@ -175,7 +175,7 @@
     {
       "visual_id": "BS-VIS-20260820-05",
       "source_page_id": "3c71b237-eb1c-8142-b6c5-fa9b37d61024",
-      "repository_path": "assets/visual_reference/historical_notion_gdd/BS-VIS-20260820-05_first_ten_minutes_storyboard_visual_gdd.png",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-05_first_ten_minutes_storyboard_visual_gdd.png",
       "sha256": "3329e8b6c341b7482bf59afa00f652dcd930f138d78cbb2dfc04b56b67c4e84e",
       "dimensions": "1672x941",
       "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
@@ -185,7 +185,7 @@
     {
       "visual_id": "BS-VIS-20260820-06",
       "source_page_id": "3c71b237-eb1c-81e9-9180-d246e05d308a",
-      "repository_path": "assets/visual_reference/historical_notion_gdd/BS-VIS-20260820-06_current_max_durability_visual_gdd.png",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-06_current_max_durability_visual_gdd.png",
       "sha256": "378496097011ebfbcfe80d3611309825fed119f5bd5bbee272d149923aa6bb3f",
       "dimensions": "1672x941",
       "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
@@ -195,7 +195,7 @@
     {
       "visual_id": "BS-VIS-20260820-08",
       "source_page_id": "3c71b237-eb1c-81b3-b9eb-e34275055153",
-      "repository_path": "assets/visual_reference/historical_notion_gdd/BS-VIS-20260820-08_max_scar_visual_gdd.png",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-08_max_scar_visual_gdd.png",
       "sha256": "8cb10166a354f13ee0117c279870bc76bb2f226a13e56e37005952aea329bdec",
       "dimensions": "1448x1086",
       "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
@@ -205,7 +205,7 @@
     {
       "visual_id": "BS-VIS-20260820-09",
       "source_page_id": "3c71b237-eb1c-8136-8bde-c09e7475c94a",
-      "repository_path": "assets/visual_reference/historical_notion_gdd/BS-VIS-20260820-09_repair_decision_visual_gdd.png",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-09_repair_decision_visual_gdd.png",
       "sha256": "b683ae966b4ca4853c9efae7a49aeab1e9e769127f3ca540db276e2e2efda915",
       "dimensions": "1672x941",
       "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
@@ -215,7 +215,7 @@
     {
       "visual_id": "BS-VIS-20260824-10",
       "source_page_id": "3c71b237-eb1c-81b8-98e6-e6caddd0ae04",
-      "repository_path": "assets/visual_reference/historical_notion_gdd/BS-VIS-20260824-10_precision_customer_visual_gdd.png",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260824-10_precision_customer_visual_gdd.png",
       "sha256": "c1831b39b7d48646bbd07224a301f6cbc6ede4f9da02c3e4cf6e5985f6067aa9",
       "dimensions": "1672x941",
       "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
