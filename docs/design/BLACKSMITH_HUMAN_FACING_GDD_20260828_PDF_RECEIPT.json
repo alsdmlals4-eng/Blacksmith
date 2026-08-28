@@ -5,7 +5,8 @@
   "generated_at": "2026-08-28 KST",
   "source_markdown": {
     "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
-    "sha256": "500d4376d6a974b42b650bea77db40a6afa5f5d1a905e9a3e89a7b28ca73ebcb"
+    "sha256": "500d4376d6a974b42b650bea77db40a6afa5f5d1a905e9a3e89a7b28ca73ebcb",
+    "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
   },
   "artifact": {
     "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
