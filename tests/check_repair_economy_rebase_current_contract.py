@@ -70,10 +70,12 @@ def main() -> None:
             "skip the scar; do not reroll quality or scar",
             "NEW_CURRENT = min(",
             "b = 0.50, 0.65, 0.80",
-            "BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION",
+            "CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826",
+            "CURRENT_CANON_MVP_AUTHORIZED / EXACT_HEAD_CONTRACT_AND_TDD_REQUIRED",
         ],
         "Decision31",
     )
+    assert "BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION" not in decision_text
 
     model = json.loads(MODEL.read_text(encoding="utf-8"))
     assert model["contract_schema_version"] == 1

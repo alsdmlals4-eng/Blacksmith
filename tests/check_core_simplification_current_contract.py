@@ -164,6 +164,9 @@ def main() -> None:
         assert "CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826" in decision_text, (
             f"{decision_path.name} still lacks the current execution status"
         )
+        assert "RUNTIME_IMPLEMENTATION = NOT_RUN / BLOCKED" not in decision_text, (
+            f"{decision_path.name} still keeps a stale runtime block"
+        )
 
     weapon_keyword_decision = WEAPON_KEYWORD_DECISION.read_text(encoding="utf-8")
     require_tokens(
