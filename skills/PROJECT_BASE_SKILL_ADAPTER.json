@@ -13,7 +13,7 @@
     "version": "9.4.4"
   },
   "canonical_source": "skills/PROJECT_BASE_ADAPTER.json",
-  "canonical_source_sha256": "6dc4bac15ff46fd6dfd8d82d5ea57c78ba62d435f4191d0fd487aba5ee66b344",
+  "canonical_source_sha256": "2be4c9b0fddda320e3d7638394418ea0e97d88afd4066fda8e3f31afed202c3e",
   "canonical_sources": [
     "[기획서]/",
     "docs/UX_UI_SYSTEM.md",

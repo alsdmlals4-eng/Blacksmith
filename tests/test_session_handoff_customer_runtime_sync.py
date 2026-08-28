@@ -17,7 +17,7 @@ class CustomerRuntimeHandoffSyncContractTest(unittest.TestCase):
         handoff = HANDOFF_PATH.read_text(encoding="utf-8")
 
         self.assertIn(
-            "CURRENT_RUNTIME_FOLLOWUP = PHASE_2_PRECISION_TAG_CATALOG_TDD_IMPLEMENTATION / ACTIVE_WITHIN_CURRENT_CANON",
+            "CURRENT_RUNTIME_FOLLOWUP = SELECT_NEXT_APPROVED_CURRENT_CANON_ISSUE / NO_SCOPE_AUTOMATICALLY_OPENED",
             handoff,
         )
         self.assertIn("CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278", handoff)
