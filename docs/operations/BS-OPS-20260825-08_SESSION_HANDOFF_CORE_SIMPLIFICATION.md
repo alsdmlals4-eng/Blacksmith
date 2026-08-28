@@ -43,7 +43,7 @@ performance, Notion client-render, and human-play evidence remain `NOT_RUN`.
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
 - Pre-existing protected PR: `#196 / OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
 - Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / IMPLEMENTATION_AND_REVIEW_ALLOWED_WITHIN_APPROVED_SCOPE`
-- `BS-ENHANCE-20260828-34 / ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY / ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX / PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10`
+- `BS-ENHANCE-20260828-34 / WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD / +10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD / ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY / ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX / PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10`
 
 ## 0. Runtime MVP checkpoint · 2026-08-26
 
@@ -219,8 +219,8 @@ Current approved Decisions:
 
 | Decision | Current meaning |
 | --- | --- |
-| `BS-ENHANCE-20260825-25` | Every enhancement success is exactly `+1`; only `+9 -> +10` is Precision; successful +10 creates one weapon-owned item keyword via existing `CATALYST_AFFIX`. |
-| `BS-ENHANCE-20260828-34` | The +10 keyword belongs to the weapon, not the player. `CATALYST_AFFIX` remains its machine owner. A player title exists only as later content and is not granted by +10. |
+| `BS-ENHANCE-20260825-25` | Every enhancement success is exactly `+1`; only `+9 -> +10` is Precision; successful +10 creates one weapon-owned **tag keyword** via existing `CATALYST_AFFIX`. |
+| `BS-ENHANCE-20260828-34` | Weapon keywords are exactly Grade / Tag / Event: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`. The +10 tag keyword belongs to the weapon, not the player. A player title exists only as later content and is not granted by +10. |
 | `BS-DAMAGE-20260825-26` | Historical structural simplification. Its no-numeric-authority and one-state-per-event fields are partially superseded by Decision29; its customer/world damage hook is refined by Decision30. |
 | `BS-DAMAGE-20260826-28` | Target-level base conditional damage-event chance after enhancement failure: `+11 5% / +30 6% / +60 7% / +90 8% / +100 10%`, exact piecewise-linear between anchors. |
 | `BS-REPAIR-20260826-29` | Visible `CURRENT/MAX/BASE_MAX` is sole durability authority. Current damage and permanent scar collapse into one effective durability state; low effective durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement remains allowed with penalties. |
