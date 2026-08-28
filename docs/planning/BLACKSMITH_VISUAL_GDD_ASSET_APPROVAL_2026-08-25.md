@@ -17,6 +17,8 @@
 - `FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED`
 - `RUNTIME_VALIDATION = NOT_RUN`
 - `PRODUCT_IMPLEMENTATION = BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
+- `GITHUB_MIGRATION_RECEIPT = docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md`
+- `NOTION_SOURCE_STATUS = RETIRED_AFTER_ONE_TIME_READ_ONLY_MIGRATION`
 
 ## Current Decision04 override
 
@@ -88,8 +90,8 @@ Godot에 바로 투입되는 final runtime asset, 최종 UI texture, release ass
 
 - UI 구조·정보 위계·상호작용 설계가 필요하면 structured/editable surface를 사용하고 설명용 screenshot raster를 제품 asset으로 만들지 않는다.
 - full-frame art는 실제 runtime이 그 full frame을 소비할 때만 eligible하다.
-- consumer가 없는 candidate는 `CUT / DEFER / REBRIEF`하며 Notion 설명 자료로 자동 전용하지 않는다.
-- actual consumer candidate도 consumer metadata + Visual Requirement/Delete Test + 별도 Image Conversation Approval Gate 없이는 자동 생성하지 않는다.
+- consumer가 없는 candidate는 `CUT / DEFER / REBRIEF`하며 역사 자료로 자동 전용하지 않는다.
+- actual consumer candidate는 consumer metadata + Visual Requirement/Delete Test를 먼저 기록한다. 이 요건 뒤 candidate 생성은 사용자 사전승인 상태이며, 최종 방향/runtime 승격만 post-generation user lock을 요구한다.
 
 ## Shared guards
 
@@ -103,11 +105,10 @@ Godot에 바로 투입되는 final runtime asset, 최종 UI texture, release ass
 
 ## Storage and destination contract
 
-- GitHub: 이 manifest는 old generated visual identity/hash/approval history를 보존한다.
-- Google Drive: 8개 PNG의 durable binary copy를 보관한다.
-- Notion Asset Library: 동일 8개 Visual ID는 historical information reference로 유지할 수 있다.
-- Notion Human Home / Visual Bible: current Art03 style + Decision04 actual-consumer rule을 사람이 오인 없이 볼 수 있어야 한다.
-- Google Sheet: compatibility-only; active visual production workspace가 아니다.
+- GitHub: 이 manifest와 `docs/migration/historical_notion_gdd/`가 old generated visual identity/hash/approval history의 현재 보존처다.
+- Google Drive와 Notion은 과거 출처/provenance로만 남으며, 이후 read/write 또는 destination readback 대상이 아니다.
+- current Art03 style + Decision04 actual-consumer rule은 GitHub GDD와 Visual Direction Lock Packet이 소유한다.
+- Google Sheet: historical compatibility-only; active visual production workspace가 아니다.
 
 ## Evidence ceiling
 

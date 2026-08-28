@@ -13,3 +13,4 @@ PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md text eol=lf
 docs/archive/base-v9-legacy-inputs/BASE_V9_ADAPTER.json text eol=lf
 docs/archive/base-v9-legacy-inputs/PROJECT_BASE_SKILL_ADAPTER.json text eol=lf
 [기획서]/00_프로젝트_허브/SKILL_REGISTRY.json text eol=lf
+*.pdf binary

@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "migration_id": "BS-OPS-20260828-35/NOTION-MIGRATION",
+  "status": "COMPLETE",
+  "source_mode": "NOTION_READ_ONLY_ONE_TIME_SOURCE_MIGRATION",
+  "source_snapshot_date": "2026-08-28",
+  "future_notion_access": "NO_FUTURE_NOTION_READ_WRITE",
+  "current_canon_owner": "GITHUB_REPOSITORY_ONLY",
+  "stale_numeric_data_policy": "OMIT_UNLESS_OWNED_BY_CURRENT_CANON",
+  "destination_readback": "GITHUB_PATH_AND_HASH_VERIFIED",
+  "page_migrations": [
+    {
+      "source_page_id": "3c01b237-eb1c-8141-93ae-c528c4f3c40c",
+      "source_title": "Blacksmith Project Hub",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/design/PROJECT_AI_PRODUCTION_SPEC.md",
+        "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf"
+      ]
+    },
+    {
+      "source_page_id": "3c41b237-eb1c-813f-a481-e415e3250d1c",
+      "source_title": "Blacksmith Project Home",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/design/PROJECT_AI_PRODUCTION_SPEC.md",
+        "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
+        "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md"
+      ]
+    },
+    {
+      "source_page_id": "3c01b237-eb1c-81a1-8cd0-f8bc7eb2f420",
+      "source_title": "Project System Record",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "AGENTS.md",
+        "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md",
+        "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md"
+      ]
+    },
+    {
+      "source_page_id": "3c51b237-eb1c-81d7-80e0-d7e9fc704489",
+      "source_title": "Direction",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+        "docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md",
+        "docs/planning/BLACKSMITH_VISUAL_DIRECTION_LOCK_PACKET_20260828.md"
+      ]
+    },
+    {
+      "source_page_id": "3c01b237-eb1c-81a4-af26-c3057bfdcbbf",
+      "source_title": "Flow",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md",
+        "docs/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828.md"
+      ]
+    },
+    {
+      "source_page_id": "3c11b237-eb1c-8143-baef-ecf4e697a258",
+      "source_title": "Core Systems",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+        "docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json",
+        "docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json"
+      ]
+    },
+    {
+      "source_page_id": "3c51b237-eb1c-812b-8572-d6683dbfaf0a",
+      "source_title": "Enhancement / Economy",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json",
+        "docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json",
+        "docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json"
+      ]
+    },
+    {
+      "source_page_id": "3c01b237-eb1c-8147-abdf-fab51a8f9ad3",
+      "source_title": "Visual Bible",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/planning/BLACKSMITH_VISUAL_DIRECTION_LOCK_PACKET_20260828.md",
+        "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
+        "assets/ASSET_MANIFEST.json"
+      ]
+    },
+    {
+      "source_page_id": "3c51b237-eb1c-81cf-b5c2-f25c9f14e9b3",
+      "source_title": "Visual UX Assets",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
+        "assets/ASSET_MANIFEST.json"
+      ]
+    },
+    {
+      "source_page_id": "3c01b237-eb1c-817a-b257-cf6e2d299896",
+      "source_title": "Asset Library",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "assets/ASSET_MANIFEST.json",
+        "docs/planning/BLACKSMITH_VISUAL_GDD_ASSET_APPROVAL_2026-08-25.md",
+        "docs/migration/historical_notion_gdd"
+      ]
+    },
+    {
+      "source_page_id": "3c01b237-eb1c-8178-82e7-dd74ee265309",
+      "source_title": "Production / Handoff",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md",
+        "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
+      ]
+    },
+    {
+      "source_page_id": "3c01b237-eb1c-810a-b307-eb2cb480b81a",
+      "source_title": "Production Validation",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/design/PROJECT_AI_PRODUCTION_SPEC.md",
+        "docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md"
+      ]
+    },
+    {
+      "source_page_id": "3c01b237-eb1c-8139-a61fd9917994a726",
+      "source_title": "Reference Benchmark",
+      "disposition": "CURRENT_MAPPED",
+      "repository_destinations": [
+        "docs/design/PROJECT_AI_PRODUCTION_SPEC.md",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "source_page_id": "3c01b237-eb1c-8125-8e44-ed79bc638813",
+      "source_title": "Project Plan",
+      "disposition": "OMITTED_STALE_DATA",
+      "repository_destinations": [],
+      "omission_reason": "Historic milestones, superseded numeric tables, obsolete state models, and prior PR receipts have current GitHub owners or are not current truth."
+    }
+  ],
+  "historical_visual_archive": [
+    {
+      "visual_id": "BS-VIS-20260820-01",
+      "source_page_id": "3c71b237-eb1c-8178-8a89-fca2818108c9",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-01_enhancement_main_visual_gdd.png",
+      "sha256": "2619843ad82c640e7038acd8a0687752f46326464444f0f24e062464e6cd7066",
+      "dimensions": "1672x941",
+      "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
+      "style_canon": "NOT_FINAL_STYLE_CANON",
+      "system_semantics": "STALE_DO_NOT_IMPORT"
+    },
+    {
+      "visual_id": "BS-VIS-20260820-02",
+      "source_page_id": "3c71b237-eb1c-8155-954e-e9cb863c2bec",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-02_feedback_ladder_visual_gdd.png",
+      "sha256": "606579edbc51f5a9454e4cf0f694e5f1ef4a40544488fda46512b46ed26175ce",
+      "dimensions": "1672x941",
+      "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
+      "style_canon": "NOT_FINAL_STYLE_CANON",
+      "system_semantics": "STALE_DO_NOT_IMPORT"
+    },
+    {
+      "visual_id": "BS-VIS-20260820-04",
+      "source_page_id": "3c71b237-eb1c-8171-bf2a-d7c38fc643f9",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-04_tension_band_visual_gdd.png",
+      "sha256": "b675de17a0a48b5719c6bb80a4e1bf39f7a7dea99583ba2a9923d5dbb8d0b028",
+      "dimensions": "1448x1086",
+      "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
+      "style_canon": "NOT_FINAL_STYLE_CANON",
+      "system_semantics": "STALE_DO_NOT_IMPORT"
+    },
+    {
+      "visual_id": "BS-VIS-20260820-05",
+      "source_page_id": "3c71b237-eb1c-8142-b6c5-fa9b37d61024",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-05_first_ten_minutes_storyboard_visual_gdd.png",
+      "sha256": "3329e8b6c341b7482bf59afa00f652dcd930f138d78cbb2dfc04b56b67c4e84e",
+      "dimensions": "1672x941",
+      "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
+      "style_canon": "NOT_FINAL_STYLE_CANON",
+      "system_semantics": "STALE_DO_NOT_IMPORT"
+    },
+    {
+      "visual_id": "BS-VIS-20260820-06",
+      "source_page_id": "3c71b237-eb1c-81e9-9180-d246e05d308a",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-06_current_max_durability_visual_gdd.png",
+      "sha256": "378496097011ebfbcfe80d3611309825fed119f5bd5bbee272d149923aa6bb3f",
+      "dimensions": "1672x941",
+      "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
+      "style_canon": "NOT_FINAL_STYLE_CANON",
+      "system_semantics": "STALE_DO_NOT_IMPORT"
+    },
+    {
+      "visual_id": "BS-VIS-20260820-08",
+      "source_page_id": "3c71b237-eb1c-81b3-b9eb-e34275055153",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-08_max_scar_visual_gdd.png",
+      "sha256": "8cb10166a354f13ee0117c279870bc76bb2f226a13e56e37005952aea329bdec",
+      "dimensions": "1448x1086",
+      "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
+      "style_canon": "NOT_FINAL_STYLE_CANON",
+      "system_semantics": "STALE_DO_NOT_IMPORT"
+    },
+    {
+      "visual_id": "BS-VIS-20260820-09",
+      "source_page_id": "3c71b237-eb1c-8136-8bde-c09e7475c94a",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260820-09_repair_decision_visual_gdd.png",
+      "sha256": "b683ae966b4ca4853c9efae7a49aeab1e9e769127f3ca540db276e2e2efda915",
+      "dimensions": "1672x941",
+      "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
+      "style_canon": "NOT_FINAL_STYLE_CANON",
+      "system_semantics": "STALE_DO_NOT_IMPORT"
+    },
+    {
+      "visual_id": "BS-VIS-20260824-10",
+      "source_page_id": "3c71b237-eb1c-81b8-98e6-e6caddd0ae04",
+      "repository_path": "docs/migration/historical_notion_gdd/BS-VIS-20260824-10_precision_customer_visual_gdd.png",
+      "sha256": "c1831b39b7d48646bbd07224a301f6cbc6ede4f9da02c3e4cf6e5985f6067aa9",
+      "dimensions": "1672x941",
+      "status": "HISTORICAL_REFERENCE_ONLY_NOT_RUNTIME",
+      "style_canon": "NOT_FINAL_STYLE_CANON",
+      "system_semantics": "STALE_DO_NOT_IMPORT"
+    }
+  ]
+}

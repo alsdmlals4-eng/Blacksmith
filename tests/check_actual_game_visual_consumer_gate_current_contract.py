@@ -8,6 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DECISION_ID = "BS-ART-20260826-04"
 DECISION = ROOT / "docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md"
 MODEL = ROOT / "docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json"
+ROUTING = ROOT / "docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md"
+COVERAGE = ROOT / "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json"
 ART_OWNER = ROOT / "docs/planning/BLACKSMITH_ART_DIRECTION_REWORK_DECISION_20260825.md"
 VISUAL_APPROVAL = ROOT / "docs/planning/BLACKSMITH_VISUAL_GDD_ASSET_APPROVAL_2026-08-25.md"
 CORE = ROOT / "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md"
@@ -68,9 +70,28 @@ def main() -> None:
     ]
 
     assert model["ui_layout_prototype_is_not_generated_raster_asset"] is True
-    assert model["notion_explanatory_diagram_may_use_structured_flow_not_generated_sheet"] is True
-    assert model["image_generation_requires_separate_conversation_approval_gate"] is True
+    assert model["repository_structured_flow_may_use_text_tables_or_mermaid_not_generated_sheet"] is True
+    assert model["image_generation_requires_separate_conversation_approval_gate"] is False
+    assert model["image_generation_execution"] == "USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT"
+    assert model["post_generation_user_lock"] == "REQUIRED_FOR_FINAL_DIRECTION_OR_RUNTIME_PROMOTION"
     assert model["automatic_generation_from_candidate_consumer_list"] is False
+
+    routing = ROUTING.read_text(encoding="utf-8")
+    require_tokens(
+        routing,
+        [
+            "BS-OPS-20260828-35",
+            "GITHUB_REPOSITORY_ONLY_CURRENT_CANON = TRUE",
+            "NOTION_STATUS = HISTORICAL_REFERENCE_ONLY / NO_FUTURE_READ_WRITE_REQUIRED",
+            "IMAGE_GENERATION_EXECUTION = USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT",
+        ],
+        "GitHub-only image routing",
+    )
+
+    coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
+    for screen in coverage["screen_inventory"]:
+        assert screen["notion_destination"] is None, screen["screen_id"]
+        assert screen["repository_destination"], screen["screen_id"]
 
     for path in (ART_OWNER, VISUAL_APPROVAL, CORE, AUTHORITY, HANDOFF, AGENTS):
         text = path.read_text(encoding="utf-8")

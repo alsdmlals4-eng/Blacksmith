@@ -211,11 +211,13 @@ Open gates:
 ```text
 REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW = REQUIRED
 ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS = REQUIRED_BEFORE_IMAGE_GENERATION
+IMAGE_GENERATION_EXECUTION = USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT / BS-OPS-20260828-35
+POST_GENERATION_USER_LOCK = REQUIRED_FOR_FINAL_DIRECTION_OR_RUNTIME_PROMOTION
 ```
 
 ## 0. 운영 동기화 규칙
 
-Meaningful planning changes update GitHub current owner/index/handoff, Notion Human current surfaces and AI/System operational metadata. Google Sheet remains migration-only and receives a same-ID compatibility row only when required.
+Meaningful planning changes update GitHub current owner/index/handoff and repository AI/System operational metadata. `BS-OPS-20260828-35` retires Notion and Sheet from future sync: both remain historical/migration evidence only and receive no current write.
 
 ## Historical ledger boundary
 

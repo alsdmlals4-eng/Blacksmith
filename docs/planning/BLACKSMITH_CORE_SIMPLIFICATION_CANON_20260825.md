@@ -414,7 +414,7 @@ FULL_FRAME_IMAGE_ALLOWED_ONLY_IF_RUNTIME_CONSUMES_FULL_FRAME = TRUE
 
 The existing 8 Visual GDD images remain `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`. New image work starts from an actual product consumer slot and required consumer metadata, not from a desire to create another explanation sheet.
 
-Current consumer locators such as Main Menu, Enhancement, Precision +10, Durability/Repair, Customer World Result and Chronicle are **candidates only**. Each must pass Visual Requirement/Delete Test and a separate image-conversation approval Gate before any generation. Structured Notion/Figma/Godot layout work is preferred over fake generated screenshots for UI design.
+Current consumer locators such as Main Menu, Enhancement, Precision +10, Durability/Repair, Customer World Result and Chronicle are **candidates only**. Each must pass Visual Requirement/Delete Test before generation. Under `BS-OPS-20260828-35`, generation after that requirement is user-preauthorized; only final direction lock or runtime promotion needs the user's post-generation approval. Structured repository/Figma/Godot layout work is preferred over fake generated screenshots for UI design.
 
 ## 11. Supersession boundary
 
@@ -474,7 +474,7 @@ RUNTIME_UI_INTEGRATION = WORKSHOP_DURABILITY_REPAIR_BINDING_IMPLEMENTED / ITEM_S
 CUSTOMER_WORLD_EVENT_RUNTIME = NOT_RUN
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_ACCESSIBILITY = NOT_RUN
-NOTION_CLIENT_GEOMETRY = NOT_RUN
+NOTION_CLIENT_GEOMETRY = NOT_APPLICABLE / HISTORICAL_SURFACE_RETIRED_BY_BS-OPS-20260828-35
 ```
 
 This implementation proof is limited to the listed MVP core paths. It does not prove customer/world-event integration, mobile UI, Android behavior, accessibility, performance, art consumption, or human play.
