@@ -29,7 +29,8 @@ flowchart TD
     A[01 Main Menu\nCommit to one workpiece] --> B[02 First Forge\nCreate one UID]
     B --> C[03 Enhancement Main\n+0 to +9 individual +1 feedback]
     C --> D[04 Precision and Risk Run\n+9 to +10 keyword; +11 to +15 STOP or PUSH]
-    D -->|Stop or handoff| E[05 Customer World Result\nOne same-UID actual-use result]
+    D -->|Handoff| H[Return Beat\nOne brief non-economic workshop moment]
+    H --> E[05 Customer World Result\nOne same-UID actual-use result]
     D -->|Actual enhancement damage| F[06 Repair and Chronicle\nOne eligible repair decision]
     E --> F
     F --> C
@@ -38,6 +39,15 @@ flowchart TD
 `+11` through `+15` are available decision beats, not a forced outcome.
 Customer actual use and damage remain independent axes. A demonstration must
 not script damage simply to make the repair panel appear.
+
+```text
+POST_HANDOFF_TRANSITION = ONE_WORKSHOP_RETURN_BEAT
+NO_FAKE_WAITING_OR_CUSTOMER_MANAGEMENT_SYSTEM = TRUE
+```
+
+The return beat creates a small sense of departure and return inside the
+6–8-minute Slice. It does not add a timer, a customer list, a second item,
+or a new economy action.
 
 ## 3. Panel contracts
 
@@ -89,7 +99,7 @@ not script damage simply to make the repair panel appear.
 | Meaningful choice | Secure the +10 state, or expose the same UID to further success, `FAILED_HOLD`, or conditional `FAILED_DAMAGE`. Player may stop after every target. |
 | Required information | Exact success / hold / damage final-outcome probabilities; target level; one keyword at +10; visible durability state; repair consequence only when actually eligible. |
 | Feedback / emotion | +10 is a memorable secure milestone; later targets create readable, self-authored tension rather than opaque punishment. |
-| Next | Handoff to Customer World Result, or conditional Repair and Chronicle after actual damage. |
+| Next | Handoff → one brief Workshop Return Beat → Customer World Result, or conditional Repair and Chronicle after actual damage. |
 | Current canon evidence | Precision occurs once at +9→+10; no fourth affix; failure is exclusively HOLD or DAMAGE; Decision28/29 own risk. |
 | Undecided | Final probability copy, animation and audio language, costs, exact one-hand UI arrangement. |
 
@@ -97,12 +107,12 @@ not script damage simply to make the repair panel appear.
 
 | Field | Contract |
 |---|---|
-| Actual consumer | `res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn` and stored-result service evidence. Player-facing scheduler/entry remains `NOT_RUN`. |
+| Actual consumer | `res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn` and stored-result service evidence. The approved return beat and player-facing scheduler/entry remain `NOT_RUN`. |
 | Player goal / action | See how the previously enhanced same UID performed in actual use; relate result to the item’s history. |
 | Meaningful choice | The meaningful choice happened during enhancement and handoff. This panel explains consequence; it must not add a new unapproved customer-management system. |
 | Required information | Customer/event cause, same UID, mission outcome and damage as separate axes, `CURRENT/MAX` before/after when damage occurred, repair-job availability. |
 | Feedback / emotion | Pride, concern, or reflective ownership—“my enhancement choice travelled with this item.” |
-| Next | Conditional repair, Chronicle, or return to Workshop for the next enhancement decision. |
+| Next | Conditional repair, Chronicle, or return to Workshop for the next enhancement decision. The prior return beat is not a customer-management surface. |
 | Current canon evidence | Purchase/handoff itself never causes damage; actual use is required; one damage roll maximum per event/UID; no forced damage. |
 | Undecided | Scheduler and player entry, customer identity surface, actual client composition. |
 

@@ -298,6 +298,8 @@ PHASE_1_CUSTOMER_SCOPE = ONE_CUSTOMER / ONE_EVENT / ONE_ITEM_UID
 PHASE_1_REPAIR_SCOPE = ONE_ELIGIBLE_REPAIR_DECISION_IF_ACTUAL_DAMAGE
 PHASE_1_TARGET_SESSION_DURATION = 6_TO_8_MINUTES
 PHASE_1_DURATION_STATUS = EXPERIENCE_HYPOTHESIS_NOT_RUNTIME_TIMER
+PHASE_1_RESULT_TIMING = HANDOFF_TO_ONE_WORKSHOP_RETURN_BEAT_TO_RESULT
+PHASE_1_RETURN_BEAT = NON_ECONOMIC / NO_SECOND_ITEM / NO_CUSTOMER_MANAGEMENT
 DO_NOT_REPLACE_ENHANCEMENT_PLAY_WITH_SINGLE_RISK_DEMO = TRUE
 DO_NOT_FAKE_DAMAGE_FOR_DEMONSTRATION = TRUE
 ```
@@ -308,8 +310,11 @@ Enhancement and produces exactly one item keyword on success. The Slice then
 offers targets `+11` through `+15` as multiple STOP/PUSH opportunities; the
 player may stop after any decision and is never forced to reach `+15`.
 
-After the player chooses to hand off the item, one customer actual-use result
-may close the same UID's lifecycle arc. Customer result is not an additional
+After the player chooses to hand off the item, one brief non-economic return
+to the workshop separates the departure from the same UID's actual-use result.
+It is a pacing and ownership beat, not a wait timer, customer-management
+system, second-item task, or new economy. One customer actual-use result may
+then close the same UID's lifecycle arc. Customer result is not an additional
 enhancement substitute, nor is damage scripted merely to demonstrate repair.
 If actual damage occurs, the existing one-job repair rule may present its
 single recovery decision before the player returns to the enhancement loop.
