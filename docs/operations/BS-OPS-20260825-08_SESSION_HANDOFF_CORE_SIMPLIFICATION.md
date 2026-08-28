@@ -5,6 +5,9 @@
 > `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`;
 > `WORK_MODE = IMPLEMENTATION_AND_REVIEW`; and
 > `PRODUCT_IMPLEMENTATION = AUTHORIZED_WITHIN_CURRENT_CANON_MVP`.
+> `BS-OPS-20260828-35` additionally makes GitHub the only current canon and
+> human-GDD surface; Notion is historical-only and image generation is
+> user-preauthorized after a consumer requirement is complete.
 > New product scope remains blocked; current runtime evidence remains below the
 > Human/Android/accessibility/performance ceiling.
 
@@ -27,7 +30,8 @@ at `1c1e8860533227a44f3c46c21ef8ead0f1cf902f`. The metadata-only follow-up
 `ORDINARY_ENTRY_GATE_RESTORATION_ISSUE_301` retires that consumed manifest
 and advances the baseline to the exact merge SHA before the ordinary local
 entry gate can be treated as recovered. Runtime, Android, accessibility,
-performance, Notion client-render, and human-play evidence remain `NOT_RUN`.
+performance, and human-play evidence remain `NOT_RUN`; Notion client rendering is
+not applicable because the surface is retired.
 
 - Decision ID: `BS-OPS-20260825-08`
 - Date: `2026-08-25 KST`, current update `2026-08-27 KST`
@@ -112,16 +116,16 @@ Base current handoff checkpoint at transfer start: `06669fe9c6a3ccd6f3b0d19c5757
 
 ### Decision31 deterministic sensitivity · Issues #216, #218
 
-`BS-OPS-20260826-33 / DECISION31_SENSITIVITY_DELIVERY` records the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. `b=.65 / USER_APPROVED_FIRST_TEST_DEFAULT`; `R_BAND=100 / HISTORICAL_NORMALIZED_SENSITIVITY_INPUT_ONLY`; `b=.50/.80` remain comparison curves only. `R_BAND_TEST_TABLE = USER_APPROVED_MUTABLE_BASELINE`: +0~10 `125/145/170`, +11~30 `160/185/215`, +31~60 `220/255/295`, +61~90 `300/345/405`, +91~100 `400/460/540` for iron/silver/meteor iron. The table may change after human playtesting or new balance evidence; it is not a shipping price table. `HUMAN_PLAYTEST = NOT_RUN` until the first controlled experience check. This cannot create a product implementation approval. Future user-approved images require a dual-storage receipt: Notion record plus exact project-local binary path with SHA-256 and actual-game consumer ID. No image is created or written to `assets/` until the current product gate permits it.
+`BS-OPS-20260826-33 / DECISION31_SENSITIVITY_DELIVERY` records the approved planning-only Decision31 sweep: one fixed item UID, `R_BAND = 100` normalized input, five 5-point actual-damage/repair cycles, and `b = 0.50 / 0.65 / 0.80` as the only varied economic input. The result must report Gold, one-material use, recovery, scar skip, consumed repair job, blocked repeat repair, and player decision outcome separately. `b=.65 / USER_APPROVED_FIRST_TEST_DEFAULT`; `R_BAND=100 / HISTORICAL_NORMALIZED_SENSITIVITY_INPUT_ONLY`; `b=.50/.80` remain comparison curves only. `R_BAND_TEST_TABLE = USER_APPROVED_MUTABLE_BASELINE`: +0~10 `125/145/170`, +11~30 `160/185/215`, +31~60 `220/255/295`, +61~90 `300/345/405`, +91~100 `400/460/540` for iron/silver/meteor iron. The table may change after human playtesting or new balance evidence; it is not a shipping price table. `HUMAN_PLAYTEST = NOT_RUN` until the first controlled experience check. This cannot create a product implementation approval. Future generated candidates require a repository receipt with exact project-local binary path, SHA-256, actual-game consumer ID, and rights state. Under `BS-OPS-20260828-35`, generation after the consumer requirement is user-preauthorized; runtime promotion still requires a post-generation user lock.
 
 The Base policy owns the generic Work/Default-memory rule. Blacksmith does not fork that policy. Project-specific Work startup remains:
 
 ```text
 1. fresh-read Base current main + relevant owner docs
 2. fresh-read Blacksmith AGENTS.md + this handoff + default branch/latest commit/open PRs
-3. fresh-read Notion Human Home / Core Detail / Visual Bible / Production Handoff / AI System Record
-4. fresh-read Google Sheet only as migration compatibility evidence
-5. report GitHub/Notion/Sheet authority drift before mutation
+3. fresh-read GitHub human GDD/current visual-flow/asset repository owners
+4. treat Notion and Google Sheet as historical evidence only; do not read or write them for current work
+5. report GitHub current-owner or repository/runtime evidence drift before mutation
 6. preserve PR #196 as OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER
 7. resume only the currently selected approved/queued work
 ```
@@ -198,7 +202,7 @@ Do not resume from chat memory alone. Before mutation:
 1. fresh-read Base current main and relevant owner docs
 2. fresh-read Blacksmith default branch / latest commit / open PRs
 3. fresh-read Google Sheet only as migration compatibility evidence; never promote it to active canon
-4. fresh-read Notion Human Home / Core Detail / Visual Bible / AI System Record
+4. fresh-read GitHub human GDD/current visual-flow/asset repository owners
 5. report authority conflicts before mutation
 6. preserve #196 read-only unless user explicitly changes that boundary
 ```
@@ -409,7 +413,7 @@ OLD_V2_RUNTIME = HISTORICAL_RUNTIME_TRUTH_OUTSIDE_V3_MIGRATED_SLICE
 Further protected product changes require the normal approved-task and exact-head validation
 path; no unapproved customer-flow scheduler may be inferred from the result surface alone.
 
-## 9. Notion responsibility split
+## 9. Historical Notion responsibility split — retired by BS-OPS-20260828-35
 
 Human-facing current surfaces:
 
@@ -434,7 +438,7 @@ PRIMARY_USE_GATE_REQUIRED = TRUE
 NO_CONSUMER = CUT_OR_DEFER
 ```
 
-Existing 8 Visual GDDs are `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`. Future images are selected only after mapping to an actual game consumer. UI layout/prototype work should remain editable/structured instead of becoming a fake generated screenshot. Image generation still requires its separate conversation approval Gate.
+Existing 8 Visual GDDs are `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`. Future images are selected only after mapping to an actual game consumer. UI layout/prototype work should remain editable/structured instead of becoming a fake generated screenshot. `BS-OPS-20260828-35` pre-authorizes candidate generation after that requirement; only post-generation direction/runtime lock needs user approval.
 
 ## 11. Historical planning gates before the 2026-08-26 user declaration
 
@@ -474,7 +478,7 @@ HUMAN_PLAYTEST = NOT_RUN
 ANDROID_DEVICE = NOT_RUN
 ACCESSIBILITY = NOT_RUN
 PERFORMANCE = NOT_RUN
-NOTION_CLIENT_GEOMETRY_RENDER = NOT_RUN
+NOTION_CLIENT_GEOMETRY_RENDER = NOT_APPLICABLE / HISTORICAL_SURFACE_RETIRED_BY_BS-OPS-20260828-35
 FINAL_PRODUCT_ASSET_APPROVAL = NOT_GRANTED
 ```
 
@@ -487,6 +491,6 @@ For any planning PR:
 - exact-head required workflows GREEN;
 - review changed files/protected paths;
 - perform minimum five adversarial loops;
-- synchronize human Notion current meaning;
+- synchronize GitHub human-facing GDD/current repository meaning;
 - merge same approved scope without asking for redundant approval;
-- postmerge read new main, update System Record SHA/Sync State, then same-ID Sheet compatibility row when needed.
+- postmerge read new main and the required repository owner/path; no Notion or Sheet update is required.

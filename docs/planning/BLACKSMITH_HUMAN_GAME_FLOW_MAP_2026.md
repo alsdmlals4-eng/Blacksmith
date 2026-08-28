@@ -2,7 +2,7 @@
 
 > Documentation routing decision: `BS-OPS-20260825-02`
 >
-> This document is a structured repository companion to the human-facing Notion Project Home. It does not create new product mechanics. Current product rules remain owned by `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` and the 2026-08-20/24 domain canons.
+> This document is a structured repository companion to the GitHub human-facing GDD. `BS-OPS-20260828-35` retires Notion as a current surface. It does not create new product mechanics. Current product rules remain owned by `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` and the 2026-08-20/24 domain canons.
 
 ## 1. 30-second game understanding
 
@@ -142,11 +142,11 @@ The game should not drift into “the widest blacksmith shop simulator.” Curre
 - `While the Iron's Hot` demonstrates crafting as a world-facing problem-solving verb; adapt the consequence principle without importing exploration chores.
 - `Anvil Saga` demonstrates management + story decisions; use only as a consequence reference, not a scope target.
 
-Detailed evidence and source classification are recorded in `docs/operations/BS-OPS-20260825-02_PLANNING_REACTIVATION_AND_HUMAN_AI_WORKSPACE_SPLIT.md` and the Notion Reference/Benchmark surface.
+Detailed evidence and source classification are recorded in `docs/operations/BS-OPS-20260825-02_PLANNING_REACTIVATION_AND_HUMAN_AI_WORKSPACE_SPLIT.md` and the GitHub source registry in the current Master Production GDD.
 
-## 9. Human Project Home contract
+## 9. GitHub human-facing GDD contract
 
-The Project Home should answer, in order:
+The GitHub human-facing GDD should answer, in order:
 
 1. What is this game?
 2. What do I repeatedly do?

@@ -2,7 +2,7 @@
 
 Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-20260825-08 / POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_AND_VISUAL_REQUIREMENT_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK / WORK_MODE: PLAN / PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`은 2026-08-25 역사 상태다. 이후 사용자가 `현재 기획 완료 선언, 정본 기준 Godot 구현 진행`을 명시 승인했다. 따라서 현재 상태는 `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / WORK_MODE: IMPLEMENTATION_AND_REVIEW`이며, 승인된 current-canon MVP의 구현·검수·교정만 허용된다. 기획·문서·인수인계 작업은 새 제품 범위나 보호 경로 변경 Gate를 자동으로 열지 않는다.
 
-현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-ENHANCE-20260828-34 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve and Decision32 failure-resolution owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision31 repair-economy owner는 `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
+현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-ENHANCE-20260828-34 / BS-OPS-20260828-35 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve and Decision32 failure-resolution owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision31 repair-economy owner는 `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`, Decision35 GitHub-only/image-execution owner는 `docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
 
 ## 1. 권위 순서
 
@@ -20,25 +20,28 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 12. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 최신 override와 충돌하는 상단 역사 snapshot은 current authority가 아님
 13. 2026-08-20/24 분야별 Canon·current registry — Decisions25~32/Art03~04와 같은 필드가 충돌하면 역사·부분대체 evidence
 14. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 implementation drift가 최신 승인 기획을 덮어쓰지 않음
-15. `NOTION_HUMAN_FACING_CANON`: 사람용 Project Home·Visual/Flow·비교표·에셋/Reference
+15. `GITHUB_HUMAN_FACING_GDD_OWNER`: `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` + `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf` 및 repository Visual/Flow·비교표·에셋/Reference
 16. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
 17. R2/R3 Game Bible·과거 PoC·구형 data/runtime
 18. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
 19. 외부 벤치마크·과거 대화·AI 추론
 
-현재 workspace routing:
+현재 workspace routing (Decision `BS-OPS-20260828-35`):
 
-- `Notion Project Home = HUMAN_PROJECT_HOME_IS_LIVING_GDD_VISUAL_DASHBOARD`
-- `HUMAN_RELEVANT_PROJECT_OUTPUTS_VIEWABLE_FROM_HOME`
+- `GITHUB_REPOSITORY_ONLY_CURRENT_CANON = TRUE`
+- `GITHUB_HUMAN_FACING_GDD_OWNER = docs/design/PROJECT_AI_PRODUCTION_SPEC.md + exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`
+- `NOTION_STATUS = HISTORICAL_REFERENCE_ONLY / NO_FUTURE_READ_WRITE_REQUIRED`
+- `NOTION_DESTINATION_READBACK = NOT_APPLICABLE`
+- `IMAGE_GENERATION_EXECUTION = USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT`
+- `POST_GENERATION_USER_LOCK = REQUIRED_FOR_FINAL_DIRECTION_OR_RUNTIME_PROMOTION`
 - `EXPLANATORY_VISUAL_GDD_BEFORE_DECORATIVE_ART = HISTORICAL_PRE_DECISION04`
 - `ACTUAL_GAME_CONSUMER_REQUIRED`
 - `NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE`
 - `PRIMARY_USE_GATE_REQUIRED`
-- `Project Registry / System Record = AI_OPERATIONAL_SURFACE`
 - `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH` = Markdown·JSON·game data·code·Scene/Resource·tests·CI/runtime truth
-- Google Sheet = unique 미이관 자료와 same-ID compatibility mirror가 필요한 경우의 migration surface. 신규 기본 기획 작업공간이나 runtime 증거가 아니다.
+- Google Sheet = historical migration compatibility evidence only; future write는 요구하지 않는다.
 
-`BS-OPS-20260825-03`에 따라 사람용 Home은 단순 링크 허브가 아니다. 게임 정체성 → 플레이 구조 → 핵심 시스템 → Flow → UI/Visual 방향 → 핵심 사람용 데이터 → 콘텐츠 맥락 → 사람용 구현 현실을 스크롤 안에서 직접 이해할 수 있어야 한다.
+`BS-OPS-20260825-03`의 Notion Home 정의는 역사 기록이다. 같은 사람용 정보 구조는 GitHub GDD와 repository Visual/Flow owner에서 유지한다.
 
 ### 1.1 Human Home · Visual 규칙
 
@@ -48,7 +51,7 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 - `ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION`.
 - 손그림 공방 노트, 종이·가죽·철·목재 물성, 따뜻한 공방 분위기, 현대적 판독 가능한 상호작용 계층을 사용한다.
 - `ACTUAL_GAME_CONSUMER_REQUIRED = TRUE`: 신규 생성 이미지는 실제 게임 UI/flow/runtime slot이라는 consumer가 있어야 한다.
-- `NEW_EXPLANATORY_GDD_SHEET_IMAGE_TARGET = FALSE`: Notion 설명이 필요하면 Mermaid/표/텍스트 등 구조화 표현을 우선하며 신규 설명용 raster sheet를 생산하지 않는다.
+- `NEW_EXPLANATORY_GDD_SHEET_IMAGE_TARGET = FALSE`: GitHub 문서 설명은 Mermaid/표/텍스트 등 구조화 표현을 우선하며 신규 설명용 raster sheet를 생산하지 않는다.
 - `GENERATED_UI_SCREENSHOT_MOCKUP_AS_PRODUCT_ASSET = FALSE`: generated fake screenshot은 layout discussion reference일 수 있으나 제품 asset이 아니다.
 - `FULL_FRAME_IMAGE_ALLOWED_ONLY_IF_RUNTIME_CONSUMES_FULL_FRAME = TRUE`.
 - `NO_CONSUMER = CUT_OR_DEFER`: consumer가 사라진 후보를 설명 자료로 자동 전용하지 않는다.
@@ -56,9 +59,8 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 - 기존 8개 Visual GDD는 `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`이며 final style/runtime/release asset 승인이 아니다. old CURRENT/MAX 값·old MAX penalty·구형 precision·날짜별 강화 로그는 `SYSTEM_SEMANTICS_STALE`이다.
 - 사용자가 제공한 예시 이미지는 `REFERENCE_ONLY_LAYOUT_DENSITY`이며 승인 Asset으로 승격하지 않는다.
 - 사람에게 필요한 핵심 수치·규칙·밸런스 표를 AI Workspace에만 숨기지 않는다.
-- `Asset Library row / Approved=true / Drive Source`는 `Notion Preview binary` 증거가 아니다.
-- Notion server readback은 실제 client geometry/render 관찰을 대체하지 않는다.
-- 실제 이미지 생성 전 `consumer_id / consumer_surface / runtime_asset_role / primary_use / implementation_owner_or_path / target_aspect_resolution / state_family_requirement / fallback_if_unconsumed`를 가진 Visual Requirement를 만들고 별도 Image Conversation Approval Gate를 통과한다.
+- Historical Notion Asset Library/Preview는 현재 binary·consumer·승인 증거가 아니다.
+- 실제 이미지 생성 전 `consumer_id / consumer_surface / runtime_asset_role / primary_use / implementation_owner_or_path / target_aspect_resolution / state_family_requirement / fallback_if_unconsumed`를 가진 Visual Requirement를 만든다. 이 요건 뒤 생성은 user-preauthorized이며, 최종 확정·runtime 승격만 사후 사용자 lock을 요구한다.
 - `MAIN_MENU / ENHANCEMENT_MAIN / PRECISION_+9_TO_+10 / DURABILITY_REPAIR / CUSTOMER_WORLD_RESULT / ITEM_CHRONICLE`는 consumer 후보 locator일 뿐 자동 이미지 생성 목록이 아니다.
 
 ## 2. 필수 작업 순서
@@ -72,7 +74,7 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 → GREEN: 최소 정본·구현 변경
 → REFACTOR: 중복·구형 참조 정리
 → exact-head 전체 검증
-→ GitHub·Notion/repository destination readback
+→ GitHub remote/repository destination readback
 → 같은 승인 범위는 재승인 없이 병합 / 새 planning conflict·scope expansion만 사용자 Decision
 ```
 
@@ -98,7 +100,7 @@ RED → GREEN → REFACTOR
 - 승인 10건은 최대 배치 크기다.
 - `HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT`에서는 조기 체크포인트를 허용한다.
 - 같은 승인 범위는 exact technical validation 뒤 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확장만 별도 사용자 Decision이 필요하다.
-- 병합 뒤 main SHA와 필요한 Notion/repository destination을 다시 읽는다. Legacy Sheet는 migration/same-ID reconciliation 대상일 때만 갱신한다.
+- 병합 뒤 main SHA와 필요한 repository destination을 다시 읽는다. Historical Sheet는 migration evidence로만 보존한다.
 
 ## 4. 현재 코어 보호
 
@@ -270,10 +272,9 @@ project.godot
 - Python contracts + 관련 CI
 - changed files·보호 경로 감사
 - PR 댓글·인라인 스레드
-- 필요한 Notion/repository destination readback
-- Sheet가 실제 same-ID migration 대상일 때 provenance readback
+- 필요한 GitHub repository destination readback
+- Historical Sheet/Notion은 provenance-only이며 future readback/write 대상이 아니다.
 - 미실행 runtime·Android·접근성·성능·사람 플레이는 `NOT_RUN`
-- Notion server readback은 client 실제 렌더 관찰을 대체하지 않는다.
 
 ## 8. 플랫폼 출시·에셋 권리
 
@@ -318,7 +319,7 @@ project.godot
 - previous `v4.8-r4` is `HISTORICAL_SUPERSEDED_BY_R5_4`.
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` v4.5 r2는 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`.
 - historical compatibility anchor: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — historical only.
-- current operational override Decisions: `BS-OPS-20260825-08`, `BS-OPS-20260825-07`, `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-REPAIR-20260826-29`, `BS-DAMAGE-20260826-30`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-ART-20260826-04`, `BS-OPS-20260825-03`, `BS-OPS-20260825-02`, `BS-TOOLCHAIN-20260826-33`.
+- current operational override Decisions: `BS-OPS-20260828-35`, `BS-OPS-20260825-08`, `BS-OPS-20260825-07`, `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-REPAIR-20260826-29`, `BS-DAMAGE-20260826-30`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-ART-20260826-04`, `BS-OPS-20260825-03`, `BS-OPS-20260825-02`, `BS-TOOLCHAIN-20260826-33`.
 - 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`.
 - 선행 조사 Gate: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`.
 - current override: `PRODUCT_IMPLEMENTATION: CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`; 새 Task3 또는 범위 확장은 `NOT_SEPARATELY_APPROVED` 유지.

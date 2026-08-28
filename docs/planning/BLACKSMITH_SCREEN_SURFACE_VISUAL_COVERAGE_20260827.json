@@ -61,7 +61,7 @@
       "runtime_consumer": "VSMainMenu dynamically replaces MenuIllustratedBackground with ASSET-WORKSHOP-BACKGROUND-V2 at ready; the serialized v1 path is retained only as an unpromoted scene fallback",
       "existing_evidence": "VSMainMenu v2 preload/ready override + GUT test_vs_main_menu; v1 remains unverified legacy fallback evidence",
       "coverage_status": "COVERED_PROJECT_ASSET_APPROVED",
-      "notion_destination": "블랙스미스 · Home / 02 · 비주얼 바이블 / Asset Library",
+      "notion_destination": null,
       "repository_destination": "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
       "blockers": "Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN."
     },
@@ -81,7 +81,7 @@
       "runtime_consumer": "ForgingScreen creates FirstForgeIllustratedBackground using ASSET-FIRST-FORGE-BACKGROUND-V1 and a noninteractive readability veil",
       "existing_evidence": "VSMainMenu begin_first_forge flow, ForgingScreen runtime preload, and first-forge background GUT contract",
       "coverage_status": "COVERED_PROJECT_ASSET_APPROVED",
-      "notion_destination": "블랙스미스 · Home / Flow",
+      "notion_destination": null,
       "repository_destination": "scripts/ui/forging_screen.gd",
       "blockers": "Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN."
     },
@@ -101,7 +101,7 @@
       "runtime_consumer": "VSWorkshopScreen dynamically creates WorkshopIllustratedBackground using ASSET-WORKSHOP-BACKGROUND-V2 and WorkpieceDurabilityHero using ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1",
       "existing_evidence": "VSWorkshopScreen preloads, GUT background and NORMAL/MINOR/MAJOR/DESTROYED atlas-region contracts, and project-owned PNG hashes",
       "coverage_status": "COVERED_PROJECT_ASSET_APPROVED",
-      "notion_destination": "블랙스미스 · Home / 03 · Visual · UX · Assets",
+      "notion_destination": null,
       "repository_destination": "scripts/vertical_slice/ui/vs_workshop_screen.gd",
       "blockers": "17px explanatory text, Godot client rendering, Android readability, and human visual review remain NOT_RUN."
     },
@@ -121,7 +121,7 @@
       "runtime_consumer": "Godot Label/Button controls only; no raster asset slot identified",
       "existing_evidence": "VSWorkshopScreen view_state and enhancement GUT contracts",
       "coverage_status": "COVERED_EXISTING",
-      "notion_destination": "02 · Enhancement · Durability · Economy",
+      "notion_destination": null,
       "repository_destination": "scripts/vertical_slice/ui/vs_workshop_screen.gd",
       "blockers": "No new icon or generated screenshot is justified; actual input/readability validation remains NOT_RUN."
     },
@@ -141,7 +141,7 @@
       "runtime_consumer": "Godot ColorRect/Label controls only; no raster asset slot identified",
       "existing_evidence": "VSCustomerResultScreen parsing contract and PR #278/#286 flow evidence",
       "coverage_status": "COVERED_EXISTING",
-      "notion_destination": "06 · Production · Handoff",
+      "notion_destination": null,
       "repository_destination": "scenes/vertical_slice/screens/vs_customer_result_screen.tscn",
       "blockers": "Customer event scheduler/player entry and runtime visual inspection are NOT_RUN."
     },
@@ -161,7 +161,7 @@
       "runtime_consumer": "SettingsOverlay node exists but SettingsButton has no connected runtime action",
       "existing_evidence": "main_menu scene + VSMainMenu set_settings_open method",
       "coverage_status": "GAP_NONBLOCKING",
-      "notion_destination": "블랙스미스 · Home / Flow",
+      "notion_destination": null,
       "repository_destination": "scenes/vertical_slice/main_menu.tscn",
       "blockers": "No settings interaction contract or implementation scope is approved; no image is required."
     },
@@ -181,7 +181,7 @@
       "runtime_consumer": "No exact consumer slot",
       "existing_evidence": "Current canon and VSWorkshopScreen ordinary enhancement controls",
       "coverage_status": "DEFERRED_BY_DECISION",
-      "notion_destination": "02 · Enhancement · Durability · Economy",
+      "notion_destination": null,
       "repository_destination": "docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json",
       "blockers": "Exact scene, component states, and consumer metadata are absent; candidate assets must not be generated."
     },
@@ -201,7 +201,7 @@
       "runtime_consumer": "No exact consumer slot",
       "existing_evidence": "Current canon only",
       "coverage_status": "DEFERRED_BY_DECISION",
-      "notion_destination": "블랙스미스 · Home / Core systems",
+      "notion_destination": null,
       "repository_destination": "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
       "blockers": "No runtime surface or state-family contract exists; no explanatory raster or asset queue is allowed."
     }

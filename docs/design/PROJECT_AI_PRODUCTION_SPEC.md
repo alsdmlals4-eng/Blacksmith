@@ -2,8 +2,8 @@
 
 > **Document role:** machine-searchable current-canon planning and implementation contract. It is not a replacement for executable code, JSON owners, tests, or runtime evidence.
 >
-> **Source snapshot:** `main` / `b4a3b01e247b4c326890822d78ca5932fe6d4ff6` / 2026-08-28 KST.
-> **Generated scope:** exactly one AI specification paired with `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`. No Notion write, new raster, runtime asset, Scene, data, or GDScript change belongs to this document batch.
+> **Source snapshot:** `main` / `b4a3b01e247b4c326890822d78ca5932fe6d4ff6` plus current user routing override `BS-OPS-20260828-35` / 2026-08-28 KST.
+> **Generated scope:** one AI specification paired with `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`. Notion is retired from future project work; no new raster, runtime asset, Scene, data, or GDScript change belongs to this document batch.
 
 ## 00. CANON SNAPSHOT
 
@@ -14,6 +14,8 @@
 | Primary core | Enhancement tension plus DDD; the recurring player question is `STOP OR PUSH`. |
 | Differentiator | The same item UID carries ownership, damage, repair, handoff, actual use, meaningful events, and chronicle through a customer-facing life. |
 | Current visual direction | `ILLUSTRATED_WORKSHOP_BOOK / USER_APPROVED_DIRECTION`; warm hand-drawn workshop book, paper/leather/iron/wood material language, readable modern controls. |
+| Current project routing | `GITHUB_REPOSITORY_ONLY_CURRENT_CANON`; the repository is both the human-facing GDD and operational source. Notion is historical-only and receives no future read/write. |
+| Image execution timing | Consumer metadata first, then `USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT`; only final visual lock or runtime promotion asks the user. |
 | Canonical current owners | `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`; Decisions 28-32 and 34 JSON/decision owners listed below. |
 | Open PR boundary | PR [#196](https://github.com/alsdmlals4-eng/Blacksmith/pull/196) is `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`; it is not merged truth. |
 | Evidence ceiling | Automated contracts and selected GUT/CI evidence exist. Godot client rendering, Android, accessibility, performance, Human usability, player experience, and release readiness remain `NOT_RUN`. |
@@ -35,6 +37,7 @@
 | SRC-CAN-07 | `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json` | Decision30 actual-use event eligibility and damage composition. |
 | SRC-CAN-08 | `docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md` | Grade / Tag / Event taxonomy and `+9→+10` keyword ownership. |
 | SRC-CAN-09 | `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json` and `assets/ASSET_MANIFEST.json` | Visual consumer, asset provenance, and validation state. |
+| SRC-CAN-10 | `docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md` | GitHub-only current-canon routing and post-generation visual lock policy. |
 | SRC-IMP-01 | `project.godot`, `scenes/vertical_slice/**`, `scripts/vertical_slice/**` | Current vertical-slice implementation reality. |
 | SRC-IMP-02 | `data/vertical_slice/**`, `data/crafting/**`, `tests/gut/unit/vertical_slice/**` | Current data and automated-test reality. |
 | SRC-HIS-01 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`, R2/R3 Game Bibles, legacy POC scripts | Historical / compatibility evidence only where it conflicts with SRC-CAN owners. |
@@ -53,7 +56,7 @@
 | DEC-DRIFT-01 | Historical multiple precision milestones and catalyst evolution vs current `+9→+10 only`. | Old data and legacy code contain older milestone vocabulary. | `SUPERSEDED`: current canon allows exactly one Precision Enhancement at `+9→+10`. |
 | DEC-DRIFT-02 | Historical CURRENT/MAX bands and overhaul formulas vs Decision29 `CURRENT/MAX/BASE_MAX`. | V2 field names may resemble current ones but do not establish semantic compliance. | `SUPERSEDED`: visible numeric authority and derived effective state are Decision29 only. |
 | DEC-DRIFT-03 | Catalyst-only Tag identity vs latest direct user rule. | No approved Tag write or player presentation exists. | `CONFIRMED`: Tag identity resolves from catalyst lineage plus selected Precision method; see SYS-PRE-002. |
-| DEC-DRIFT-04 | Historical visual-GDD image production vs current consumer gate. | Three approved runtime asset families are dynamically bound; client visual review is not run. | `CONFIRMED`: no new raster is presumed from a document gap; consumer and rights status are required. |
+| DEC-DRIFT-04 | Historical visual-GDD image production and pre-generation approval vs current consumer gate. | Three approved runtime asset families are dynamically bound; client visual review is not run. | `CONFIRMED`: no document gap creates an image. Once complete consumer metadata exists, generation is pre-authorized; final direction/runtime promotion still needs post-generation user lock. |
 | DEC-DRIFT-05 | PR #196 proposed precision visitor context vs main. | Draft adds only a test file and has one failed authority check. | `OPEN_DRAFT_READ_ONLY`; do not merge, cite, or treat as implementation. |
 
 ## 02. CURRENT PROJECT STATE
@@ -485,6 +488,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | 2026-08-28 | Created source-snapshot AI production specification paired with the user PDF. | Documentation only; source main `b4a3b01`. |
 | 2026-08-28 | Records Decision34 supersession: Tag is resolved by catalyst lineage plus precision method. | Current canon; no runtime Tag write/UI added. |
 | 2026-08-28 | Records approved runtime asset families and their evidence ceiling. | No new image generation or Notion output. |
+| 2026-08-28 | Adds `BS-OPS-20260828-35`: GitHub-only current canon and user-preauthorized candidate generation after consumer requirements. | Historical Notion records remain non-current; post-generation lock remains required for final direction/runtime promotion. |
 
 ## Appendix A. Benchmark disposition
 

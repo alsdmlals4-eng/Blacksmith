@@ -20,8 +20,11 @@
     "fallback_if_unconsumed"
   ],
   "ui_layout_prototype_is_not_generated_raster_asset": true,
-  "notion_explanatory_diagram_may_use_structured_flow_not_generated_sheet": true,
-  "image_generation_requires_separate_conversation_approval_gate": true,
+  "notion_explanatory_diagram_may_use_structured_flow_not_generated_sheet": false,
+  "repository_structured_flow_may_use_text_tables_or_mermaid_not_generated_sheet": true,
+  "image_generation_requires_separate_conversation_approval_gate": false,
+  "image_generation_execution": "USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT",
+  "post_generation_user_lock": "REQUIRED_FOR_FINAL_DIRECTION_OR_RUNTIME_PROMOTION",
   "automatic_generation_from_candidate_consumer_list": false,
   "candidate_consumer_locators_not_auto_requirements": [
     "MAIN_MENU",

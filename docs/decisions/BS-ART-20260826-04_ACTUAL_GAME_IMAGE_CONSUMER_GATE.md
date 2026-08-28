@@ -1,5 +1,11 @@
 # BS-ART-20260826-04 · Actual Game Image Consumer Gate
 
+> **Current operational override — `BS-OPS-20260828-35`.** The actual-consumer,
+> primary-use, provenance, and no-explanatory-sheet rules below remain current.
+> Notion is historical-only and future generation is user-preauthorized once the
+> required consumer metadata has been recorded. The only user approval still
+> required is a post-generation lock for final direction or runtime promotion.
+
 - Date: `2026-08-26 KST`
 - User approval: `우린 '설명용 시트'가 아니라 실제 게임 소비처가 있는 이미지 기준으로 만든다.`
 - Status: `USER_APPROVED_PROJECT_VISUAL_DELIVERY_CANON`
@@ -21,7 +27,7 @@ PRIMARY_USE_GATE_REQUIRED = TRUE
 NO_CONSUMER = CUT_OR_DEFER
 ```
 
-기존 Notion Mermaid/표/텍스트 설명은 기획 커뮤니케이션에 계속 사용할 수 있다. 그러나 이를 다시 한 장짜리 생성 이미지로 만들어 "Visual GDD" 수량을 늘리는 작업은 신규 이미지 제작 목표가 아니다.
+GitHub Mermaid/표/텍스트 설명은 기획 커뮤니케이션에 사용할 수 있다. 이를 다시 한 장짜리 생성 이미지로 만들어 "Visual GDD" 수량을 늘리는 작업은 신규 이미지 제작 목표가 아니다.
 
 ## 2. What counts as an actual game consumer
 
@@ -45,7 +51,7 @@ FULL_FRAME_STATIC_ART_IF_RUNTIME_CONSUMES_IT_AS_FULL_FRAME
 standalone explanation board
 text-heavy GDD sheet rendered as image
 fake gameplay screenshot created only to explain layout
-comparison sheet whose only consumer is Notion review
+comparison sheet whose only consumer is a historical Notion review
 concept collage with no mapped product slot
 ```
 
@@ -56,7 +62,7 @@ GENERATED_UI_SCREENSHOT_MOCKUP_AS_PRODUCT_ASSET = FALSE
 UI_LAYOUT_PROTOTYPE_IS_NOT_GENERATED_RASTER_ASSET = TRUE
 ```
 
-UI 구조·정보 위계·상호작용 배치는 Notion Flow, structured screen spec, Figma/Godot 등 **편집 가능한 구조 표현**에서 설계한다. 생성형 이미지로 만든 가짜 screenshot은 layout discussion reference일 수는 있어도 제품 asset으로 승격하지 않는다.
+UI 구조·정보 위계·상호작용 배치는 GitHub Flow, structured screen spec, Figma/Godot 등 **편집 가능한 구조 표현**에서 설계한다. 생성형 이미지로 만든 가짜 screenshot은 layout discussion reference일 수는 있어도 제품 asset으로 승격하지 않는다.
 
 화면 전체를 이미지로 생성하는 것은 예외적으로 다음 조건에서만 허용한다.
 
@@ -157,26 +163,30 @@ ITEM_CHRONICLE
 AUTOMATIC_GENERATION_FROM_CANDIDATE_CONSUMER_LIST = FALSE
 ```
 
-## 8. Notion visual responsibility
+## 8. Historical Notion visual responsibility — superseded for future work
 
-Notion은 사람용 현재 그림을 소유하지만, 이것이 설명용 raster sheet 생산을 요구하지 않는다.
-
-```text
-NOTION_EXPLANATORY_DIAGRAM_MAY_USE_STRUCTURED_FLOW_NOT_GENERATED_SHEET = TRUE
-```
-
-Home/Flow/Core에서 Mermaid, 표, 텍스트를 사용해 시스템을 설명할 수 있다. 실제 게임 이미지가 존재하고 승인되면 Visual Bible/Asset record는 **그 이미지의 실제 consumer와 usage**를 표시한다.
-
-## 9. Image conversation gate remains mandatory
-
-이 Decision은 future requirement 기준을 승인한 것이지 이미지 생성 명령이 아니다.
+This records the former Notion operating model only. It does not own a current
+human-facing surface and must not receive future reads or writes.
 
 ```text
-IMAGE_GENERATION_REQUIRES_SEPARATE_CONVERSATION_APPROVAL_GATE = TRUE
-NO_AUTOMATIC_IMAGE_CHAIN = TRUE
+NOTION_EXPLANATORY_DIAGRAM_MAY_USE_STRUCTURED_FLOW_NOT_GENERATED_SHEET = HISTORICAL_ONLY
+REPOSITORY_STRUCTURED_FLOW_MAY_USE_TEXT_TABLES_OR_MERMAID_NOT_GENERATED_SHEET = TRUE
 ```
 
-따라서 consumer requirement가 확정되어도 사용자가 해당 이미지 brief를 승인하기 전 자동 생성하지 않는다.
+GitHub GDD/Flow/Core에서 Mermaid, 표, 텍스트를 사용해 시스템을 설명할 수 있다. 실제 게임 이미지가 lock되면 repository asset record는 **그 이미지의 실제 consumer와 usage**를 표시한다.
+
+## 9. Image execution and post-generation lock
+
+`BS-OPS-20260828-35` changes the approval timing without opening a consumerless image batch.
+
+```text
+IMAGE_GENERATION_EXECUTION = USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT
+PRE_GENERATION_USER_APPROVAL = NOT_REQUIRED
+POST_GENERATION_USER_LOCK = REQUIRED_FOR_FINAL_DIRECTION_OR_RUNTIME_PROMOTION
+NO_CONSUMER_IMAGE_CHAIN = TRUE
+```
+
+따라서 consumer requirement가 확정되면 agent는 candidate를 생성할 수 있다. 후보는 user lock 전까지 runtime/release asset 또는 final visual direction이 아니다.
 
 ## 10. Relation to current art direction
 

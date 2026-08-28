@@ -66,7 +66,7 @@ PROVENANCE_OWNER = docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md
 RUNTIME_ASSET_APPROVAL = PROJECT_ASSET_APPROVED_WHERE_MANIFESTED
 RELEASE_RIGHTS_STATUS = RELEASE_BLOCKED_UNVERIFIED
 REFERENCE_SIMILARITY_STATUS = NOT_APPLICABLE_FOR_CURRENT_ORIGINAL_TEXT_BRIEFS
-NEXT_VISUAL_ASSET_GATE = CONSUMER_METADATA + SEPARATE_IMAGE_CONVERSATION_APPROVAL
+NEXT_VISUAL_ASSET_GATE = CONSUMER_METADATA + USER_PREAUTHORIZED_GENERATION + POST_GENERATION_USER_LOCK
 ```
 
 All three runtime-consumed generated asset records have unresolved current
@@ -77,7 +77,7 @@ rights clearance.
 
 ## 7. Destination and readback requirement
 
-Repository owner: this file and
-`PROJECT_CORE_SCENE_VISUAL_BOARD_20260828.md`. Human-facing mirrors: Notion
-Project Home, Flow, and Visual Bible. Every future change to this packet must
-read back both the exact repository head and its human-facing destination.
+Repository owner: this file,
+`PROJECT_CORE_SCENE_VISUAL_BOARD_20260828.md`, and the GitHub human-facing GDD.
+`BS-OPS-20260828-35` retires Notion mirrors. Every future change to this packet
+must read back the exact repository head and its repository destination.
