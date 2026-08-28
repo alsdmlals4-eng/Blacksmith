@@ -12,6 +12,14 @@ DURABILITY_MODEL = ROOT / "docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_2026
 DURABILITY_DECISION = ROOT / "docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md"
 CUSTOMER_DAMAGE_MODEL = ROOT / "docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json"
 VISUAL_CONSUMER_MODEL = ROOT / "docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json"
+WEAPON_KEYWORD_DECISION = ROOT / "docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md"
+CURRENT_STATUS_DECISIONS = [
+    ROOT / "docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md",
+    ROOT / "docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md",
+    ROOT / "docs/decisions/BS-DAMAGE-20260826-30_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY.md",
+    ROOT / "docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md",
+    ROOT / "docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md",
+]
 ENTRYPOINTS = [
     ROOT / "AGENTS.md",
     ROOT / "CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md",
@@ -29,8 +37,11 @@ REQUIRED_OWNER = [
     "BS-CHRONICLE-20260825-27",
     "BS-ART-20260825-03",
     "BS-ART-20260826-04",
+    "BS-ENHANCE-20260828-34",
     "SUCCESS_LEVEL_DELTA = +1",
     "+9 -> +10 = PRECISION_ENHANCEMENT",
+    "ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY",
+    "PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10",
     "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC",
     "DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW",
     "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)",
@@ -114,12 +125,17 @@ def main() -> None:
     assert "BS-REPAIR-20260826-31" in agents
     assert "ACTUAL_GAME_CONSUMER_REQUIRED" in agents
     assert "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT" in agents
+    assert "성공 시 플레이어용 `ITEM_KEYWORD` 하나" not in agents
+    assert "WEAPON_ITEM_KEYWORD" in agents
 
     handoff_text = HANDOFF.read_text(encoding="utf-8")
     assert "PR #207 = MERGED_TO_MAIN" in handoff_text
-    assert "CURRENT_RUNTIME_FOLLOWUP = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE / USER_GATE_REQUIRED" in handoff_text
+    assert "CURRENT_RUNTIME_FOLLOWUP = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE / ACTIVE_WITHIN_CURRENT_CANON" in handoff_text
     assert "BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md" in handoff_text
-    assert "Product implementation: `HISTORICAL_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / NEW_MUTATION_BLOCKED_UNTIL_PHASE_1_AND_2_APPROVAL`" in handoff_text
+    assert "Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / IMPLEMENTATION_AND_REVIEW_ALLOWED_WITHIN_APPROVED_SCOPE`" in handoff_text
+    assert "ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY" in handoff_text
+    assert "PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10" in handoff_text
+    assert "BS-ENHANCE-20260828-34" in handoff_text
     assert "BS-REPAIR-20260826-31" in handoff_text
     assert "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC" in handoff_text
     assert "EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)" in handoff_text
@@ -128,7 +144,13 @@ def main() -> None:
     assert "BS-ENHANCE-20260826-32" in handoff_text
 
     authority_text = AUTHORITY_INDEX.read_text(encoding="utf-8")
-    assert "1. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW" in authority_text
+    assert "CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826" in authority_text
+    assert "1. Execute the approved unified contract with RED -> GREEN -> REFACTOR" in authority_text
+    assert "BS-ENHANCE-20260828-34" in authority_text
+    assert "ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY" in authority_text
+    assert "PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10" in authority_text
+    assert "KEYWORD_OWNERSHIP_FIELD_OWNER = BS-ENHANCE-20260828-34" in authority_text
+    assert "Decision34 overrides the Core Canon for keyword-ownership fields" in authority_text
     assert "BS-REPAIR-20260826-31" in authority_text
     assert "REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / B65_DEFAULT_PLAYTEST_REQUIRED" in authority_text
     assert "DAMAGE_CURVE_NUMBERS = USER_APPROVED / BS-DAMAGE-20260826-28" in authority_text
@@ -136,6 +158,30 @@ def main() -> None:
     assert "DURABILITY_REPAIR_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE" in authority_text
     assert "CUSTOMER_WORLD_EVENT_DAMAGE_POLICY = USER_APPROVED / BS-DAMAGE-20260826-30" in authority_text
     assert "VISUAL_DELIVERY_POLICY = USER_APPROVED / BS-ART-20260826-04" in authority_text
+
+    for decision_path in CURRENT_STATUS_DECISIONS:
+        decision_text = decision_path.read_text(encoding="utf-8")
+        assert "CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826" in decision_text, (
+            f"{decision_path.name} still lacks the current execution status"
+        )
+        assert "RUNTIME_IMPLEMENTATION = NOT_RUN / BLOCKED" not in decision_text, (
+            f"{decision_path.name} still keeps a stale runtime block"
+        )
+
+    weapon_keyword_decision = WEAPON_KEYWORD_DECISION.read_text(encoding="utf-8")
+    require_tokens(
+        weapon_keyword_decision,
+        [
+            "STATUS = USER_APPROVED_CURRENT",
+            "FIELD_OWNER = WEAPON_KEYWORD_OWNERSHIP",
+            "ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY",
+            "ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX",
+            "PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10",
+            "WEAPON_KEYWORD_CONTENT_ID = UNDECIDED / USER_CONTENT_DECISION_REQUIRED",
+            "HISTORICAL_FIXTURE_OR_CUSTOMER_EPITHET_REUSE = FORBIDDEN",
+        ],
+        "Decision34",
+    )
 
     # Decision28 remains the exact target-level probability owner.
     assert DAMAGE_DECISION.exists(), "missing Decision28 damage curve decision record"
@@ -150,7 +196,7 @@ def main() -> None:
             "FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE",
             "UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP",
             "DAMAGE_EVENT_CURRENT_LOSS = 1",
-            "RUNTIME_IMPLEMENTATION = BLOCKED / NOT_RUN",
+            "RUNTIME_IMPLEMENTATION = CURRENT_CANON_MVP_AUTHORIZED / EXACT_HEAD_CONTRACT_AND_TDD_REQUIRED",
         ],
         "Decision28",
     )

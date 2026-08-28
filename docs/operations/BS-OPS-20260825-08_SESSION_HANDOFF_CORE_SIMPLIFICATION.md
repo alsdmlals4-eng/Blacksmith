@@ -1,11 +1,12 @@
 # Blacksmith Session Handoff · Core Simplification
 
 > **Current override · 2026-08-28 KST.** This section supersedes any
-> contradictory runtime-active wording below. The current authority is
-> `PHASE_1_PLANNING_CO_DESIGN / CANONIZATION_AND_CORE_EXPERIENCE_REVIEW`;
-> `WORK_MODE = PLAN`; and
-> `PRODUCT_IMPLEMENTATION = BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`.
-> Previous Runtime MVP descriptions remain implementation-history evidence only.
+> contradictory planning-blocked wording below. The user-declared authority is
+> `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`;
+> `WORK_MODE = IMPLEMENTATION_AND_REVIEW`; and
+> `PRODUCT_IMPLEMENTATION = AUTHORIZED_WITHIN_CURRENT_CANON_MVP`.
+> New product scope remains blocked; current runtime evidence remains below the
+> Human/Android/accessibility/performance ceiling.
 
 ### POST_VISUAL_DELIVERY_OPERATING_CONTRACT_RECOVERY
 
@@ -30,18 +31,19 @@ performance, Notion client-render, and human-play evidence remain `NOT_RUN`.
 
 - Decision ID: `BS-OPS-20260825-08`
 - Date: `2026-08-25 KST`, current update `2026-08-27 KST`
-- Status: `CURRENT_SESSION_HANDOFF / PHASE_1_CANONIZATION_AND_CO_DESIGN`
-- Current accepted frontier: `CURRENT_ACCEPTED_FRONTIER = CANONIZATION_AND_CORE_EXPERIENCE_REVIEW`
+- Status: `CURRENT_SESSION_HANDOFF / IMPLEMENTATION_AND_REVIEW`
+- Current accepted frontier: `CURRENT_ACCEPTED_FRONTIER = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_CONTRACT_REPAIR`
 - Current core hierarchy: `CURRENT_CORE_HIERARCHY = ENHANCEMENT_PRIMARY / CUSTOMER_ITEM_LIFECYCLE_DIFFERENTIATOR`
-- Current slice thesis: `REPEATED_ENHANCEMENT_PLAY_BEFORE_SAME_UID_LIFECYCLE_RESULT`; session target is `6_TO_8_MINUTES / PLAYTEST_HYPOTHESIS`. The exact unified package owner is `docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md` and remains planning-only until the user opens Phase 2.
+- Current slice thesis: `REPEATED_ENHANCEMENT_PLAY_BEFORE_SAME_UID_LIFECYCLE_RESULT`; session target is `6_TO_8_MINUTES / PLAYTEST_HYPOTHESIS`. The exact unified package owner is `docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md`; it is active for current-canon MVP implementation and review only.
 - Current approved Slice: `CURRENT_PHASE_1_SLICE = B_ENHANCEMENT_FIRST_SAME_UID_LIFECYCLE`; `PHASE_1_ENHANCEMENT_WINDOW = +0_TO_+10 + +11_TO_+15` before one same-UID customer actual-use result; `PHASE_1_TARGET_SESSION_DURATION = 6_TO_8_MINUTES`; `PHASE_1_RESULT_TIMING = HANDOFF_TO_WORKSHOP_RETURN_BEAT_TO_RESULT`; `CRAFT_FEEDBACK_MILESTONES = EVERY_5_LEVELS / +10_SOLE_PRECISION`. The return beat is non-economic and creates no wait timer, customer-management system, or second-item task. The contract locks a temporary 30-unit starting reinforcement reserve so the approved path can reach `+11..+15`; its economy remains non-final.
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_RUNTIME_FOLLOWUP = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE / USER_GATE_REQUIRED`
+- `CURRENT_RUNTIME_FOLLOWUP = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE / ACTIVE_WITHIN_CURRENT_CANON`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
 - Pre-existing protected PR: `#196 / OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
-- Product implementation: `HISTORICAL_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / NEW_MUTATION_BLOCKED_UNTIL_PHASE_1_AND_2_APPROVAL`
+- Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / IMPLEMENTATION_AND_REVIEW_ALLOWED_WITHIN_APPROVED_SCOPE`
+- `BS-ENHANCE-20260828-34 / ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY / ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX / PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10`
 
 ## 0. Runtime MVP checkpoint · 2026-08-26
 
@@ -217,7 +219,8 @@ Current approved Decisions:
 
 | Decision | Current meaning |
 | --- | --- |
-| `BS-ENHANCE-20260825-25` | Every enhancement success is exactly `+1`; only `+9 -> +10` is Precision; successful +10 creates one player-facing item keyword via existing `CATALYST_AFFIX`. |
+| `BS-ENHANCE-20260825-25` | Every enhancement success is exactly `+1`; only `+9 -> +10` is Precision; successful +10 creates one weapon-owned item keyword via existing `CATALYST_AFFIX`. |
+| `BS-ENHANCE-20260828-34` | The +10 keyword belongs to the weapon, not the player. `CATALYST_AFFIX` remains its machine owner. A player title exists only as later content and is not granted by +10. |
 | `BS-DAMAGE-20260825-26` | Historical structural simplification. Its no-numeric-authority and one-state-per-event fields are partially superseded by Decision29; its customer/world damage hook is refined by Decision30. |
 | `BS-DAMAGE-20260826-28` | Target-level base conditional damage-event chance after enhancement failure: `+11 5% / +30 6% / +60 7% / +90 8% / +100 10%`, exact piecewise-linear between anchors. |
 | `BS-REPAIR-20260826-29` | Visible `CURRENT/MAX/BASE_MAX` is sole durability authority. Current damage and permanent scar collapse into one effective durability state; low effective durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement remains allowed with penalties. |
@@ -424,7 +427,7 @@ NO_CONSUMER = CUT_OR_DEFER
 
 Existing 8 Visual GDDs are `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`. Future images are selected only after mapping to an actual game consumer. UI layout/prototype work should remain editable/structured instead of becoming a fake generated screenshot. Image generation still requires its separate conversation approval Gate.
 
-## 11. Next planning Gates
+## 11. Historical planning gates before the 2026-08-26 user declaration
 
 ```text
 1. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
@@ -433,6 +436,12 @@ Existing 8 Visual GDDs are `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`.
 4. explicit user `planning complete`
 5. runtime implementation-plan refresh + TDD migration
 ```
+
+These gates were satisfied or superseded as entry criteria by the user's
+`CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`. Their remaining
+evidence work (Human playtest and visual-consumer validation) is still required
+for the relevant acceptance criterion; it is not a renewed product-mutation
+blocker for the approved current-canon MVP.
 
 ## 12. Evidence ceiling
 

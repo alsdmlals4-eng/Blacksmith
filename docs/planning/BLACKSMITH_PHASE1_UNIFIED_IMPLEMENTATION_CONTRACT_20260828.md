@@ -1,14 +1,15 @@
 # Blacksmith Phase 1 Unified Implementation Contract · 2026-08-28
 
 > This is the single implementation contract produced by the current Phase 1
-> planning pass. It consolidates current decisions; it does not authorize a
-> product mutation by itself.
+> planning pass. The user has since opened current-canon MVP implementation;
+> the contract remains the scope and verification boundary for that work.
 
 ```text
-CONTRACT_STATUS = PHASE_1_APPROVED_PLAN / IMPLEMENTATION_NOT_YET_AUTHORIZED
-CURRENT_PHASE = PHASE_1_PLANNING_CO_DESIGN
-CURRENT_ACCEPTED_FRONTIER = CANONIZATION_AND_CORE_EXPERIENCE_REVIEW
-PHASE_2_ENTRY_REQUIRES = USER_PLANNING_COMPLETE_DECLARATION
+CONTRACT_STATUS = CURRENT_CANON_MVP_IMPLEMENTATION_AUTHORIZED
+CURRENT_PHASE = IMPLEMENTATION_AND_REVIEW
+CURRENT_ACCEPTED_FRONTIER = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_CONTRACT_REPAIR
+PHASE_2_ENTRY = SATISFIED_BY_CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826
+WEAPON_KEYWORD_OWNERSHIP_DECISION = BS-ENHANCE-20260828-34
 ```
 
 ## 1. Decision summary
@@ -42,6 +43,11 @@ SUCCESS_LEVEL_DELTA = +1
 CRAFT_FEEDBACK_MILESTONE = EVERY_5_LEVELS
 +5 = PRESENTATION_ONLY
 +10 = PRESENTATION_PLUS_ONLY_PRECISION_AND_ONE_KEYWORD
+ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY
+ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
+PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
+WEAPON_KEYWORD_CONTENT_ID = UNDECIDED / USER_CONTENT_DECISION_REQUIRED
+KEYWORD_PRESENTATION = DEFERRED_UNTIL_WEAPON_KEYWORD_CONTENT_ROW_APPROVED
 NO_PRECISION_OR_AFFIX_OR_PROBABILITY_OR_RESOURCE_RULE_AT_+20_OR_LATER = TRUE
 RETURN_BEAT = ONE_NON_ECONOMIC_WORKSHOP_MOMENT
 NO_TIMER / NO_CUSTOMER_MANAGEMENT / NO_SECOND_ITEM / NO_FAKE_DAMAGE
@@ -50,11 +56,14 @@ NO_TIMER / NO_CUSTOMER_MANAGEMENT / NO_SECOND_ITEM / NO_FAKE_DAMAGE
 1. Every success changes the level by exactly one. No multi-level success,
    downgrade, separate critical, or a fourth affix slot is allowed.
 2. A successful `+9 -> +10` is the only Precision Enhancement. It writes
-   exactly one player-facing keyword through the existing `CATALYST_AFFIX`
-   owner. The Slice UI must never show the implementation placeholder
-   `PRECISION_KEYWORD_PENDING_CONTENT` to a player; it must show one
-   data-backed, localized first-slice keyword instead. Its final keyword
-   catalogue and mechanical variations remain out of scope.
+   exactly one **weapon-owned** keyword through the existing `CATALYST_AFFIX`
+   owner. The keyword belongs to the item and grants no player title; a player
+   title is future content and is not granted by `+10`. Its content ID and copy
+   remain unapproved, so this package must not manufacture a concrete keyword,
+   persist an invented content ID, or present it to the player. The implementation
+   placeholder `PRECISION_KEYWORD_PENDING_CONTENT` is never player-facing. A
+   separate user-approved content row is required before keyword write/presentation
+   work enters scope; its catalogue and mechanical variations remain out of scope.
 3. `+5`, `+15`, and every later multiple of five are presentation beats only.
    `+10` is intentionally two things at once: a craft-rise beat and the sole
    Precision/keyword boundary. No later multiple of five reopens Precision,
@@ -99,7 +108,7 @@ still requires its own approved consumer/provenance record.
 | First Forge | One owned workpiece | Create / continue | UID-bearing item and its journey promise | Small ownership beat | Enhancement |
 | Ordinary `+0..+9` | Next level and main attempt action | Enhance or stop | Current/target level, cost, outcome summary, resources | One crisp `+1` confirmation | Next attempt |
 | `+5` craft rise | Workpiece and `+5` mark | Continue or stop | “Craft rise” is presentation-only | Brief ink/metal accent plus result label; no modal and no new rule | Next attempt |
-| `+9 -> +10` Precision | Target `+10` and keyword promise | Execute the sole Precision attempt | Exact final outcome preview and keyword-on-success promise | Stronger, interruptible presentation and one keyword reveal on success | `+10` secured state |
+| `+9 -> +10` Precision | Target `+10` and weapon-affix ownership boundary | Execute the sole Precision attempt | Exact final outcome preview; concrete keyword copy remains unapproved | Stronger, interruptible Precision presentation only; keyword display deferred | `+10` secured state |
 | `+11..+15` risk | STOP/HANDOFF and PUSH side by side | Push one target or hand off | Exact success/hold/damage outcome, durability, cost | Result is immediate and intelligible | Next risk or handoff |
 | Return beat | The same item has left the workbench | Continue to result | Customer name, same UID, no timer | One brief non-economic workshop transition | Actual-use result |
 | Result / repair | What happened to this UID | Read result; conditional repair or return | Event cause; mission result and item damage as separate axes; before/after durability; repair eligibility | Pride, concern, or recovery—not an extra customer system | Enhancement loop / Chronicle |
@@ -173,7 +182,7 @@ or destruction.
   recipes, town structure, or surface expression.
 - **ADAPT:** The workshop’s repeated enhancement feedback into a restrained
   two-tier rhythm: compact ordinary feedback, a stronger `+5`, and a distinct
-  `+10` Precision/keyword reveal.
+  `+10` Precision presentation. Weapon-keyword copy is deferred until separately approved.
 - **REJECT:** Blacksmith Master-style staffing, mining, throughput, shop
   layout, and full production-chain management from this Slice.
 - **Differentiation:** Blacksmith turns a high-stakes enhancement decision into
@@ -228,13 +237,16 @@ TEST_ORDER = RED_CONTRACTS -> GREEN_MINIMUM_FLOW -> REFACTOR_LEGACY_BOUNDARIES
 HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 ```
 
-### In scope after Phase-2 entry
+### In scope within the current-canon MVP
 
 1. Bind the vertical-slice Workshop UI to the current resolver so the player
    can complete individual attempts, read all outcomes, and see the `+5` and
    `+10` presentation states without changing game rules.
-2. Implement one `+10` keyword presentation using the existing
-   `CATALYST_AFFIX` data owner and prevent a player-facing placeholder.
+2. Preserve the `+10` weapon-affix ownership boundary using the existing
+   item-owned `CATALYST_AFFIX` data owner. Until a first weapon-keyword content
+   row is separately approved, do not create a concrete keyword, persist an
+   invented content ID, or show any keyword/placeholder to the player. Do not
+   create, grant, or display a player title in this package.
 3. Add Handoff at `+10+`, exactly one non-economic return beat, and one Nadia
    actual-use result that resolves/saves once for the same UID.
 4. Surface conditional repair/Chronicle from the existing durability owner,
@@ -259,8 +271,10 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 
 1. A success at `+5` emits only a presentation milestone; it cannot affect
    odds, costs, inventory, affixes, or the stored item schema.
-2. A successful `+10` yields exactly one non-placeholder keyword via
-   `CATALYST_AFFIX`; `+20` and later never request Precision or add an affix.
+2. Before a weapon-keyword content row is approved, `+10` may not expose
+   `PRECISION_KEYWORD_PENDING_CONTENT`, invent a content ID, or grant a player
+   title. Its `CATALYST_AFFIX` ownership boundary remains weapon-only, and
+   `+20` and later never request Precision or add an affix.
 3. The Slice cannot reach `+11..+15` only to be blocked by the old ten-unit
    material fixture under its success-path test.
 4. Handoff is permitted for an active same UID at `+10+`, has no damage roll,
@@ -299,9 +313,10 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 ```text
 BASE_PROMOTION = NO_BASE_PROMOTION
 REASON = THE_STOP_PUSH_CADENCE_AND_SAME_UID_CUSTOMER_FLOW_ARE_BLACKSMITH_SPECIFIC
-NEXT_ACTION = USER_DECLARES_PHASE_1_COMPLETE_THEN_PHASE_2_CONTRACT_REVIEW
+NEXT_ACTION = CLOSE_P0_CONTRACT_REPAIR_THEN_CURRENT_CANON_MVP_TDD_IMPLEMENTATION
 ```
 
-This planning contract is ready for a single Phase-2 review. It does not merge
-product paths, create an implementation Issue, or open the implementation gate
-until the user explicitly declares the present planning complete.
+This contract is the active implementation boundary for the user-declared
+current-canon MVP. It does not authorize a player-title system, a concrete
+weapon-keyword content row or catalogue before separate user approval, or any
+scope outside the current Slice.

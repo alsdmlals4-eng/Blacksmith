@@ -27,7 +27,7 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("BS-OPS-20260825-08", handoff)
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", handoff)
         self.assertIn(
-            "HISTORICAL_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / NEW_MUTATION_BLOCKED_UNTIL_PHASE_1_AND_2_APPROVAL",
+            "CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / IMPLEMENTATION_AND_REVIEW_ALLOWED_WITHIN_APPROVED_SCOPE",
             handoff,
         )
         self.assertIn(
@@ -60,8 +60,12 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("BS-REPAIR-20260826-31", authority)
         self.assertIn("BS-DAMAGE-20260826-30", authority)
         self.assertIn("BS-ART-20260826-04", authority)
+        self.assertIn("BS-ENHANCE-20260828-34", authority)
         self.assertIn("DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC", authority)
         self.assertIn("ACTUAL_GAME_CONSUMER_REQUIRED = TRUE", authority)
+        self.assertIn("CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826", authority)
+        self.assertIn("ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY", authority)
+        self.assertIn("PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10", authority)
         self.assertIn("BS-REPAIR-20260826-29", current_owner)
         self.assertIn("BS-REPAIR-20260826-31", current_owner)
         self.assertIn("BS-DAMAGE-20260826-30", current_owner)
@@ -89,6 +93,15 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER", agents)
         self.assertIn("Decisions25~32/Art03~04", agents)
         self.assertNotIn("25~27/Art03", agents)
+
+    def test_current_canon_implementation_declaration_supersedes_old_planning_gate_text(self) -> None:
+        current_owner = CURRENT_OWNER.read_text(encoding="utf-8")
+        handoff = HANDOFF.read_text(encoding="utf-8")
+
+        self.assertIn("CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826", current_owner)
+        self.assertIn("CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826", handoff)
+        self.assertNotIn("without opening the product-mutation gate", current_owner)
+        self.assertNotIn("## 11. Next planning Gates", handoff)
 
 
 if __name__ == "__main__":
