@@ -7,6 +7,21 @@
 - 세분화 대상: `BS-CRAFT-20260804-04`
 - 슬롯 구조 교정: `BS-CRAFT-20260804-06`
 
+> **[부분 대체됨] / current override**
+>
+> ```text
+> CURRENT_OVERRIDE_BS-ENHANCE-20260828-34
+> CURRENT_PRECISION_MILESTONE = +9_TO_+10_ONLY
+> TAG_KEYWORD_SOURCE = CATALYST_LINEAGE
+> EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION
+> ```
+>
+> 이 문서는 촉매가 `CATALYST_AFFIX` 계보를 소유한다는 역사적 구조 근거다.
+> 현재 `+10` 태그의 정체성은 촉매 계보에서만 정해지며, 과거의 다중 이정표,
+> 누적 성장·변형 확률, 촉매 이름·가중치·빈 계보 fallback은 current canon이
+> 아니다. 빈 촉매 계보일 때의 선택/기본값/차단 흐름은 별도 승인 전 구현하지
+> 않는다.
+
 ## 1. 현재 적용 범위
 
 이 문서는 세 독립 수식어 중 `촉매 수식어 / CATALYST_AFFIX` 한 슬롯만 소유한다.

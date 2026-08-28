@@ -6,6 +6,9 @@ CONTRACT = ROOT / "docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRA
 CORE_CANON = ROOT / "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md"
 HANDOFF = ROOT / "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md"
 WEAPON_KEYWORD_DECISION = ROOT / "docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md"
+HISTORICAL_PRECISION = ROOT / "docs/planning/BLACKSMITH_R2_PRECISION_ENHANCEMENT_METHOD_AND_CATALYST_STRUCTURE_CANON_2026.md"
+HISTORICAL_CATALYST = ROOT / "docs/planning/BLACKSMITH_R2_CATALYST_AFFIX_SEED_EVOLUTION_AND_MUTATION_CANON_2026.md"
+INCIDENT = ROOT / "docs/operations/BS-INC-20260828-39_CATALYST_TAG_AND_PRECISION_METHOD_OWNERSHIP.md"
 
 
 def require_tokens(tokens: tuple[str, ...]) -> None:
@@ -22,6 +25,11 @@ def main() -> None:
             "ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY",
             "PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10",
             "WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD",
+            "TAG_KEYWORD_SOURCE = CATALYST_LINEAGE",
+            "PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_AND_DURABILITY_ONLY",
+            "PRECISION_METHOD_CANNOT_DETERMINE_OR_MUTATE_TAG_KEYWORD = TRUE",
+            "PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE",
+            "EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION",
             "+10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD",
             "WEAPON_KEYWORD_CONTENT_ID = UNDECIDED / USER_CONTENT_DECISION_REQUIRED",
             "KEYWORD_PRESENTATION = DEFERRED_UNTIL_WEAPON_KEYWORD_CONTENT_ROW_APPROVED",
@@ -54,6 +62,11 @@ def main() -> None:
         "ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX",
         "PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10",
         "WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD",
+        "TAG_KEYWORD_SOURCE = CATALYST_LINEAGE",
+        "PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_AND_DURABILITY_ONLY",
+        "PRECISION_METHOD_CANNOT_DETERMINE_OR_MUTATE_TAG_KEYWORD = TRUE",
+        "PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE",
+        "EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION",
         "GRADE_KEYWORD_MACHINE_OWNER = GRADE_AFFIX",
         "TAG_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX",
         "EVENT_KEYWORD_MACHINE_OWNER = CHRONICLE_AFFIX",
@@ -66,6 +79,22 @@ def main() -> None:
     taxonomy_token = "WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD"
     assert taxonomy_token in CORE_CANON.read_text(encoding="utf-8"), "core canon must mirror weapon keyword taxonomy"
     assert taxonomy_token in HANDOFF.read_text(encoding="utf-8"), "handoff must preserve weapon keyword taxonomy"
+    ownership_tokens = (
+        "TAG_KEYWORD_SOURCE = CATALYST_LINEAGE",
+        "PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_AND_DURABILITY_ONLY",
+        "PRECISION_METHOD_CANNOT_DETERMINE_OR_MUTATE_TAG_KEYWORD = TRUE",
+        "PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE",
+        "EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION",
+    )
+    for document in (CORE_CANON, HANDOFF):
+        document_text = document.read_text(encoding="utf-8")
+        missing = [token for token in ownership_tokens if token not in document_text]
+        assert not missing, f"{document.name}: missing {missing}"
+    for document in (HISTORICAL_PRECISION, HISTORICAL_CATALYST):
+        document_text = document.read_text(encoding="utf-8")
+        assert "CURRENT_OVERRIDE_BS-ENHANCE-20260828-34" in document_text, f"{document.name}: missing current override"
+    incident_text = INCIDENT.read_text(encoding="utf-8")
+    assert "NO_BASE_PROMOTION = PROJECT_SPECIFIC_WEAPON_KEYWORD_OWNERSHIP" in incident_text
     assert "data-backed, localized first-slice keyword" not in CONTRACT.read_text(encoding="utf-8")
     assert "non-placeholder weapon keyword" not in CONTRACT.read_text(encoding="utf-8")
     print("phase1 unified implementation contract: PASS")

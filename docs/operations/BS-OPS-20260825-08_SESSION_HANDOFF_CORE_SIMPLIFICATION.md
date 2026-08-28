@@ -45,6 +45,15 @@ performance, Notion client-render, and human-play evidence remain `NOT_RUN`.
 - Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / IMPLEMENTATION_AND_REVIEW_ALLOWED_WITHIN_APPROVED_SCOPE`
 - `BS-ENHANCE-20260828-34 / WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD / +10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD / ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY / ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX / PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10`
 
+```text
+TAG_KEYWORD_SOURCE = CATALYST_LINEAGE
+TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_GOVERNS_TAG_IDENTITY
+PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_AND_DURABILITY_ONLY
+PRECISION_METHOD_CANNOT_DETERMINE_OR_MUTATE_TAG_KEYWORD = TRUE
+PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
+EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION
+```
+
 ## 0. Runtime MVP checkpoint · 2026-08-26
 
 The user declared the current planning complete and authorized Godot implementation against the current canon. GitHub Issue `#224` owns the first runtime slice.
@@ -220,7 +229,7 @@ Current approved Decisions:
 | Decision | Current meaning |
 | --- | --- |
 | `BS-ENHANCE-20260825-25` | Every enhancement success is exactly `+1`; only `+9 -> +10` is Precision; successful +10 creates one weapon-owned **tag keyword** via existing `CATALYST_AFFIX`. |
-| `BS-ENHANCE-20260828-34` | Weapon keywords are exactly Grade / Tag / Event: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`. The +10 tag keyword belongs to the weapon, not the player. A player title exists only as later content and is not granted by +10. |
+| `BS-ENHANCE-20260828-34` | Weapon keywords are exactly Grade / Tag / Event: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`. The +10 tag keyword belongs to the weapon, not the player, and its identity is governed by catalyst lineage. Precision method affects weapon stats/durability only and cannot determine or mutate a keyword. A player title exists only as later content and is not granted by +10. Empty-lineage behavior remains unapproved, so tag writing/presentation remains out of scope. |
 | `BS-DAMAGE-20260825-26` | Historical structural simplification. Its no-numeric-authority and one-state-per-event fields are partially superseded by Decision29; its customer/world damage hook is refined by Decision30. |
 | `BS-DAMAGE-20260826-28` | Target-level base conditional damage-event chance after enhancement failure: `+11 5% / +30 6% / +60 7% / +90 8% / +100 10%`, exact piecewise-linear between anchors. |
 | `BS-REPAIR-20260826-29` | Visible `CURRENT/MAX/BASE_MAX` is sole durability authority. Current damage and permanent scar collapse into one effective durability state; low effective durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement remains allowed with penalties. |

@@ -8,6 +8,21 @@
 - 촉매 생애주기 세분화: `BS-CRAFT-20260804-05`
 - 3수식어 슬롯 교정: `BS-CRAFT-20260804-06`
 
+> **[부분 대체됨] / current override**
+>
+> ```text
+> CURRENT_OVERRIDE_BS-ENHANCE-20260828-34
+> CURRENT_PRECISION_MILESTONE = +9_TO_+10_ONLY
+> TAG_KEYWORD_SOURCE = CATALYST_LINEAGE
+> PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_AND_DURABILITY_ONLY
+> METHOD_FUNCTION_REWORK_ARTISTRY_OR_ENVIRONMENTAL_OUTPUT = SUPERSEDED
+> ```
+>
+> 이 문서의 역할 분리(촉매 계보와 방식의 분리)는 역사적 구조 근거로만
+> 보존한다. 현재 정본에서 정밀강화 방식은 태그·등급·사건 키워드나 기능,
+> 예술성, 환경 처리를 산출하지 않으며 무기 능력치와 내구도에만 영향을 준다.
+> `+20` 이후 정밀 이정표와 그 누적 규칙도 current authority가 아니다.
+
 ## 1. 책임 분리
 
 보조재료 슬롯은 사용하지 않는다.

@@ -40,6 +40,12 @@ GRADE_KEYWORD_MACHINE_OWNER = GRADE_AFFIX
 TAG_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
 EVENT_KEYWORD_MACHINE_OWNER = CHRONICLE_AFFIX
 +10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD
+TAG_KEYWORD_SOURCE = CATALYST_LINEAGE
+TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_GOVERNS_TAG_IDENTITY
+PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_AND_DURABILITY_ONLY
+PRECISION_METHOD_CANNOT_DETERMINE_OR_MUTATE_TAG_KEYWORD = TRUE
+PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
+EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION
 PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
 NO_FOURTH_AFFIX_SLOT
 ```
@@ -48,6 +54,12 @@ NO_FOURTH_AFFIX_SLOT
 `GRADE_AFFIX`, 사건 키워드는 의미 있는 작품 생애의 `CHRONICLE_AFFIX`가
 각각 소유한다. 세 표현은 새 슬롯이 아니라 기존 세 field의 player-facing
 분류이며, 사건 발생·handoff·표시만으로 사건 키워드를 자동 부여하지 않는다.
+
+태그 키워드의 후보 가족과 정체성은 `CATALYST_AFFIX`의 촉매 계보에서만
+결정한다. 정밀강화 방식은 무기 능력치와 내구도만 바꿀 수 있으며, 태그·등급·사건
+키워드의 생성·선택·변경·대체 권한이 없다. 빈 촉매 계보의 `+10` 동작은 아직
+승인되지 않았으므로, 태그 content row와 함께 별도 선택/기본값 규칙이 정해지기
+전에는 태그 write 또는 표시를 구현하지 않는다.
 
 +20/+30/+40/+50 do not reopen Precision. Durability modifiers never change the +1 level delta or +10 keyword cardinality.
 
@@ -411,6 +423,9 @@ Current consumer locators such as Main Menu, Enhancement, Precision +10, Durabil
 - Old repair formulas and `MAX +15 / cap60` overhaul: historical/superseded; not fallback.
 - Old DAMAGE/CRITICAL family ratios: historical; not Decision28/29 authority.
 - Old multi-precision cadence: partially superseded; +10-only current.
+- Historical Precision-method `FUNCTION_REWORK`, artistry, and environmental-function
+  output lanes: superseded for current method effects. The current method scope is
+  weapon stats and durability only.
 - Old Visual GDD numeric durability values: `SYSTEM_SEMANTICS_STALE`.
 - Existing Visual GDD 8: historical information-architecture references; not new image-batch templates or runtime assets.
 
