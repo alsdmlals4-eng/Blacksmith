@@ -38,6 +38,7 @@
 | SRC-CAN-08 | `docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md` | Grade / Tag / Event taxonomy and `+9→+10` keyword ownership. |
 | SRC-CAN-09 | `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json` and `assets/ASSET_MANIFEST.json` | Visual consumer, asset provenance, and validation state. |
 | SRC-CAN-10 | `docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md` | GitHub-only current-canon routing and post-generation visual lock policy. |
+| SRC-MIG-01 | `docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md` and `docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json` | One-time read-only Notion structure/work-product migration, GitHub destination map, and hash-verified historical visual archive. |
 | SRC-IMP-01 | `project.godot`, `scenes/vertical_slice/**`, `scripts/vertical_slice/**` | Current vertical-slice implementation reality. |
 | SRC-IMP-02 | `data/vertical_slice/**`, `data/crafting/**`, `tests/gut/unit/vertical_slice/**` | Current data and automated-test reality. |
 | SRC-HIS-01 | `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`, R2/R3 Game Bibles, legacy POC scripts | Historical / compatibility evidence only where it conflicts with SRC-CAN owners. |
@@ -489,6 +490,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | 2026-08-28 | Records Decision34 supersession: Tag is resolved by catalyst lineage plus precision method. | Current canon; no runtime Tag write/UI added. |
 | 2026-08-28 | Records approved runtime asset families and their evidence ceiling. | No new image generation or Notion output. |
 | 2026-08-28 | Adds `BS-OPS-20260828-35`: GitHub-only current canon and user-preauthorized candidate generation after consumer requirements. | Historical Notion records remain non-current; post-generation lock remains required for final direction/runtime promotion. |
+| 2026-08-28 | Completes the one-time Notion-to-GitHub migration receipt and preserves eight historical Visual GDD binaries with exact hashes. | No future Notion read/write; archived boards are non-runtime and cannot override current canon. |
 
 ## Appendix A. Benchmark disposition
 

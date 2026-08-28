@@ -21,10 +21,11 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 13. 2026-08-20/24 분야별 Canon·current registry — Decisions25~32/Art03~04와 같은 필드가 충돌하면 역사·부분대체 evidence
 14. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 implementation drift가 최신 승인 기획을 덮어쓰지 않음
 15. `GITHUB_HUMAN_FACING_GDD_OWNER`: `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` + `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf` 및 repository Visual/Flow·비교표·에셋/Reference
-16. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
-17. R2/R3 Game Bible·과거 PoC·구형 data/runtime
-18. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
-19. 외부 벤치마크·과거 대화·AI 추론
+16. `docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md` + `docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json` — one-time Notion structure/work-product migration and non-runtime historical visual archive; current owner가 아님
+17. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+18. R2/R3 Game Bible·과거 PoC·구형 data/runtime
+19. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
+20. 외부 벤치마크·과거 대화·AI 추론
 
 현재 workspace routing (Decision `BS-OPS-20260828-35`):
 
@@ -32,6 +33,8 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 - `GITHUB_HUMAN_FACING_GDD_OWNER = docs/design/PROJECT_AI_PRODUCTION_SPEC.md + exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`
 - `NOTION_STATUS = HISTORICAL_REFERENCE_ONLY / NO_FUTURE_READ_WRITE_REQUIRED`
 - `NOTION_DESTINATION_READBACK = NOT_APPLICABLE`
+- `NOTION_MIGRATION_RECEIPT = docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md + docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json`
+- `HISTORICAL_NOTION_VISUAL_ARCHIVE = assets/visual_reference/historical_notion_gdd / NOT_RUNTIME / NOT_FINAL_STYLE_CANON`
 - `IMAGE_GENERATION_EXECUTION = USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT`
 - `POST_GENERATION_USER_LOCK = REQUIRED_FOR_FINAL_DIRECTION_OR_RUNTIME_PROMOTION`
 - `EXPLANATORY_VISUAL_GDD_BEFORE_DECORATIVE_ART = HISTORICAL_PRE_DECISION04`
