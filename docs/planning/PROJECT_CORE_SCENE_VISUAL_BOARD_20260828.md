@@ -22,6 +22,15 @@ through one same-UID customer actual-use result. It is a playtest hypothesis,
 not a timer, a speedrun target, or a reason to batch/skip approved individual
 enhancement feedback.
 
+```text
+FIVE_LEVEL_CRAFT_RHYTHM = +5_VISUAL_RISE / +10_PRECISION_RISE
+```
+
+The five-level rhythm marks cumulative crafting satisfaction without inventing
+new systems. `+5` is a presentation-only rise; `+10` combines that rise with
+the existing sole Precision Enhancement. Later five-level milestones must not
+reopen Precision or create extra affixes.
+
 ## 2. Slice B at a glance
 
 ```mermaid
@@ -85,7 +94,7 @@ or a new economy action.
 | Player goal / action | Enjoy individual ordinary enhancement feedback from `+0` through `+9`; reach the Precision threshold. |
 | Meaningful choice | Continue a satisfying growth rhythm or preserve resources/stop. This is lower tension than the later risk run and must not falsely imply damage eligibility before `+11`. |
 | Required information | Same item UID, current target, resource/cost state where implemented, visible `CURRENT / MAX / BASE_MAX`, and legible normal enhancement outcome. |
-| Feedback / emotion | Crisp +1 confirmation, workpiece progression, growing anticipation for +10. |
+| Feedback / emotion | Crisp +1 confirmation, workpiece progression, a stronger craft-rise at +5, then growing anticipation for the distinct +10 Precision moment. |
 | Next | Precision and Risk Run at `+9 -> +10`. |
 | Current canon evidence | Every ordinary success is exactly `+1`; enhancement damage is zero through target `+10`. |
 | Undecided | Final attempt timing, resource pacing, audio/VFX, target-resolution UI composition. |
@@ -98,7 +107,7 @@ or a new economy action.
 | Player goal / action | Convert `+9 -> +10` into exactly one keyword, then make several voluntary STOP/PUSH judgments over targets `+11` to `+15`. |
 | Meaningful choice | Secure the +10 state, or expose the same UID to further success, `FAILED_HOLD`, or conditional `FAILED_DAMAGE`. Player may stop after every target. |
 | Required information | Exact success / hold / damage final-outcome probabilities; target level; one keyword at +10; visible durability state; repair consequence only when actually eligible. |
-| Feedback / emotion | +10 is a memorable secure milestone; later targets create readable, self-authored tension rather than opaque punishment. |
+| Feedback / emotion | +10 is both a five-level craft rise and the sole memorable Precision milestone; later targets create readable, self-authored tension rather than opaque punishment. |
 | Next | Handoff → one brief Workshop Return Beat → Customer World Result, or conditional Repair and Chronicle after actual damage. |
 | Current canon evidence | Precision occurs once at +9→+10; no fourth affix; failure is exclusively HOLD or DAMAGE; Decision28/29 own risk. |
 | Undecided | Final probability copy, animation and audio language, costs, exact one-hand UI arrangement. |
