@@ -10,6 +10,8 @@ CURRENT_PHASE = IMPLEMENTATION_AND_REVIEW
 CURRENT_ACCEPTED_FRONTIER = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_CONTRACT_REPAIR
 PHASE_2_ENTRY = SATISFIED_BY_CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826
 WEAPON_KEYWORD_OWNERSHIP_DECISION = BS-ENHANCE-20260828-34
+WEAPON_KEYWORD_CONTENT_AND_SELECTION_DECISION = BS-ENHANCE-20260829-37
+WEAPON_KEYWORD_IMPLEMENTATION_ISSUE = #326
 ```
 
 ## 1. Decision summary
@@ -46,8 +48,8 @@ CRAFT_FEEDBACK_MILESTONE = EVERY_5_LEVELS
 ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY
 ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
 PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
-WEAPON_KEYWORD_CONTENT_ID = UNDECIDED / USER_CONTENT_DECISION_REQUIRED
-KEYWORD_PRESENTATION = DEFERRED_UNTIL_WEAPON_KEYWORD_CONTENT_ROW_APPROVED
+WEAPON_KEYWORD_CONTENT_ID = DATA_BACKED_FIRST_TAG_CATALOG / BS-ENHANCE-20260829-37
+KEYWORD_PRESENTATION = REQUIRED_IN_WORKSHOP_PRECISION_UI / NO_NEW_RASTER
 WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD
 GRADE_KEYWORD_MACHINE_OWNER = GRADE_AFFIX
 TAG_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
@@ -58,7 +60,10 @@ TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_AND_PRECISION_METHOD_GOVERN_TAG_IDENTI
 PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_DURABILITY_AND_TAG_RESOLUTION_CONTEXT
 PRECISION_METHOD_TAG_ROLE = TAG_IDENTITY_RESOLUTION
 PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
-EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION
+EMPTY_CATALYST_LINEAGE_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL
+NO_DEFAULT_LINEAGE = TRUE
+PRECISION_SELECTION_PERSISTENCE = ATTEMPT_LOCAL_ONLY
+TAG_CATALOG_OWNER = BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json
 NO_PRECISION_OR_AFFIX_OR_PROBABILITY_OR_RESOURCE_RULE_AT_+20_OR_LATER = TRUE
 RETURN_BEAT = ONE_NON_ECONOMIC_WORKSHOP_MOMENT
 NO_TIMER / NO_CUSTOMER_MANAGEMENT / NO_SECOND_ITEM / NO_FAKE_DAMAGE
@@ -70,17 +75,22 @@ NO_TIMER / NO_CUSTOMER_MANAGEMENT / NO_SECOND_ITEM / NO_FAKE_DAMAGE
    exactly one **weapon-owned tag keyword** through the existing `CATALYST_AFFIX`
    owner. It is not a grade keyword or event keyword. The tag keyword belongs to
    the item and grants no player title; a player
-   title is future content and is not granted by `+10`. Its content ID and copy
-   remain unapproved, so this package must not manufacture a concrete keyword,
-   persist an invented content ID, or present it to the player. The implementation
-   placeholder `PRECISION_KEYWORD_PENDING_CONTENT` is never player-facing. A
+   title is future content and is not granted by `+10`. Before the attempt, the
+   player must explicitly select one of the current catalog's catalyst lineages
+   and one Precision method. A missing lineage or method blocks **before** cost
+   deduction or a roll; there is no default lineage. The selection is attempt-local:
+   a hold writes no Tag/effect and lets the player select again. On success, exactly
+   one approved composite Tag is written to `CATALYST_AFFIX` and the selected
+   method applies exactly once. The historical placeholder
+   `PRECISION_KEYWORD_PENDING_CONTENT` is never player-facing and is repaired
+   through the catalog's no-cost, no-reroll pre-release backfill path only. A
    tag identity is resolved from the catalyst-lineage and selected Precision-method
    combination. The method may affect weapon stats, durability, and this tag-resolution
-   context only; it cannot affect grade or event keywords. A separate user-approved
-   catalyst-lineage/method/content row **and** empty-lineage behavior are required
-   before keyword write/presentation work enters scope;
-   catalogue, function-rework, artistry, environmental-function, and mechanical
-   keyword variations remain out of scope.
+   context only; it cannot affect grade or event keywords. The first catalog's
+   durability delta is intentionally zero because Decision29/31 remain closed;
+   function-rework, artistry, environmental-function, universal customer damage
+   mitigation, and mechanical effects outside weapon stats/durability remain out
+   of scope.
 3. `+5`, `+15`, and every later multiple of five are presentation beats only.
    `+10` is intentionally two things at once: a craft-rise beat and the sole
    Precision/keyword boundary. No later multiple of five reopens Precision,
@@ -125,7 +135,7 @@ still requires its own approved consumer/provenance record.
 | First Forge | One owned workpiece | Create / continue | UID-bearing item and its journey promise | Small ownership beat | Enhancement |
 | Ordinary `+0..+9` | Next level and main attempt action | Enhance or stop | Current/target level, cost, outcome summary, resources | One crisp `+1` confirmation | Next attempt |
 | `+5` craft rise | Workpiece and `+5` mark | Continue or stop | “Craft rise” is presentation-only | Brief ink/metal accent plus result label; no modal and no new rule | Next attempt |
-| `+9 -> +10` Precision | Target `+10` and weapon-affix ownership boundary | Execute the sole Precision attempt | Exact final outcome preview; concrete keyword copy remains unapproved | Stronger, interruptible Precision presentation only; keyword display deferred | `+10` secured state |
+| `+9 -> +10` Precision | Target `+10` and weapon-affix ownership boundary | Select lineage + method, then execute the sole Precision attempt | Four composite Tag candidates, selected tag, stat before/after, durability change 없음, exact final outcomes and cost | Stronger, interruptible Precision presentation; on success one named Tag | `+10` secured state |
 | `+11..+15` risk | STOP/HANDOFF and PUSH side by side | Push one target or hand off | Exact success/hold/damage outcome, durability, cost | Result is immediate and intelligible | Next risk or handoff |
 | Return beat | The same item has left the workbench | Continue to result | Customer name, same UID, no timer | One brief non-economic workshop transition | Actual-use result |
 | Result / repair | What happened to this UID | Read result; conditional repair or return | Event cause; mission result and item damage as separate axes; before/after durability; repair eligibility | Pride, concern, or recovery—not an extra customer system | Enhancement loop / Chronicle |
@@ -137,7 +147,9 @@ still requires its own approved consumer/provenance record.
 - `+5`: short visual rise only. It is derived from a successful target divisible
   by five and has no saved gameplay field, probability, item statistic, or
   resource effect.
-- `+10`: may use a larger result panel, but it must be dismissible, safe under
+- `+10`: must show two explicit choices, the resolved Tag, stat before/after,
+  `내구도 변화 없음`, and the ordinary outcome/cost preview before commit. It may
+  use a larger result panel, but it must be dismissible, safe under
   repeated taps, skippable/reduced under Reduced Motion, and leave the domain
   result committed exactly once.
 - `+11..+15`: **Handoff at the current level** and **Push to the next target**
@@ -206,7 +218,8 @@ or destruction.
   a personal item biography through one bounded same-UID actual-use result.
 - **Remaining uncertainty:** Whether `+11..+15` produces enjoyable tension,
   whether the customer result is remembered, and whether the 6–8 minute path
-  fits portrait mobile use all require human play.
+  fits portrait mobile use remains `NOT_RUN`. Human play is user-deferred for
+  this implementation contract, not silently treated as passed.
 
 ## 6. Implementation drift and explicit boundary
 
@@ -251,7 +264,7 @@ marketing asset, rights clearance, or release work is contained here.
 
 ```text
 TEST_ORDER = RED_CONTRACTS -> GREEN_MINIMUM_FLOW -> REFACTOR_LEGACY_BOUNDARIES
-HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
+HUMAN_PLAYTEST = DEFERRED_BY_USER / NOT_RUN
 ```
 
 ### In scope within the current-canon MVP
@@ -259,12 +272,13 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 1. Bind the vertical-slice Workshop UI to the current resolver so the player
    can complete individual attempts, read all outcomes, and see the `+5` and
    `+10` presentation states without changing game rules.
-2. Preserve the `+10` weapon-affix ownership boundary using the existing
-   item-owned `CATALYST_AFFIX` data owner. Until a first weapon-keyword content
-   row and its empty-catalyst-lineage behavior are separately approved, do not
-   create a concrete keyword, persist an invented content ID, or show any
-   keyword/placeholder to the player. Do not create, grant, or display a player
-   title in this package. Precision method may alter weapon stats, durability,
+2. Implement the approved first 2×2 catalog from
+   `BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json` at `+9 -> +10`: explicit
+   lineage + method selection, block-before-cost-or-roll empty handling, one
+   composite Tag write on success, no write/effect on hold, and one-time
+   pre-release placeholder backfill. Preserve the existing item-owned
+   `CATALYST_AFFIX` owner; do not add a stored field, fourth slot, player title,
+   or catalyst inventory. Precision method may alter weapon stats, durability,
    and Tag identity resolution only; it may not affect Grade or Event keywords.
 3. Add Handoff at `+10+`, exactly one non-economic return beat, and one Nadia
    actual-use result that resolves/saves once for the same UID.
@@ -273,8 +287,10 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 5. Change the vertical-slice temporary reinforcement fixture from 10 to 30;
    retain the existing temporary gold budget and all current probability and
    repair-economy owners.
-6. Add tests before each behavior change, then exercise automated and manual
-   portrait flow evidence at the exact implementation head.
+6. Add tests before each behavior change, then exercise automated and Godot
+   runtime portrait flow evidence at the exact implementation head. 사람 플레이
+   검수는 사용자 지시로 이번 계약의 완료 조건이 아니다; 실행하지 않았다면
+   `NOT_RUN`으로 기록한다.
 
 ### Explicitly out of scope
 
@@ -290,12 +306,13 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 
 1. A success at `+5` emits only a presentation milestone; it cannot affect
    odds, costs, inventory, affixes, or the stored item schema.
-2. Before a weapon-keyword content row is approved, `+10` may not expose
-   `PRECISION_KEYWORD_PENDING_CONTENT`, invent a content ID, or grant a player
-   title. Its `CATALYST_AFFIX` ownership boundary remains weapon-only; tag
-   identity uses catalyst lineage plus Precision method; and a Precision method
-   cannot affect Grade or Event keywords. `+20` and later never request
-   Precision or add an affix.
+2. At `+9 -> +10`, missing lineage/method blocks before cost/roll; each valid
+   2×2 pair resolves to exactly one catalog Tag. Success writes the one Tag and
+   one method delta exactly once; hold writes neither; target `<=+10` cannot
+   damage. `PRECISION_KEYWORD_PENDING_CONTENT` is never player-facing and may
+   only be backfilled once without a new roll/cost. Its `CATALYST_AFFIX`
+   ownership boundary remains weapon-only; Grade/Event remain byte-for-byte
+   unchanged; `+20` and later never request Precision or add an affix.
 3. The Slice cannot reach `+11..+15` only to be blocked by the old ten-unit
    material fixture under its success-path test.
 4. Handoff is permitted for an active same UID at `+10+`, has no damage roll,
@@ -315,7 +332,7 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 | Source contracts | Existing canon/decision checks plus this document test pass at the exact commit. |
 | GDScript | GUT unit/integration tests for milestone, sole Precision, transition, save/no-reroll, no-damage, damage/repair, destroyed, and duplicate-input branches. |
 | Runtime | Godot project opens and the 720×1280 route works: First Forge → `+0..+10` → `+11..+15` choice → handoff → return beat → result → conditional repair/return. |
-| Human | A player can explain before pressing `+11`: “I can stop with this item, or push for one more level and risk hold/damage.” They can also explain that handoff did not damage the item. |
+| Human | `DEFERRED_BY_USER / NOT_RUN`. This is not an automated/runtime pass and does not block the current implementation package. |
 | Accessibility | Korean copy fits portrait safe area; probability, damage state, and CTA do not rely on colour, motion, or sound alone. |
 
 ## 8. Adversarial closure
@@ -326,6 +343,8 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 | Five-level beats secretly create more systems. | `+5` is presentation-only; `+10` alone remains Precision/keyword. |
 | Customer result becomes a timer or a fake damage tutorial. | One press-through return beat; actual use and real saved result only. |
 | Existing runtime drift silently wins. | Vertical Slice only imports current resolvers; legacy multi-precision sources are explicit non-authority. |
+| Empty catalyst state becomes an implicit default or a free random reward. | The +10 action is blocked before cost/roll until both inputs are explicit; there is no default or random Tag. |
+| A method quietly replaces the closed repair/durability system. | The first catalog's durability delta is zero; function/artistry/environment/customer-universal effects are forbidden. |
 | Generated art is mistaken for a completed UI. | No new art is in scope; runtime/human visual proof remains required. |
 | Economy hides the risk decision. | Temporary 30-unit reserve guarantees the success-path can reach `+15`; final economy remains unclaimed. |
 
@@ -334,10 +353,10 @@ HUMAN_PLAYTEST = REQUIRED_AFTER_AUTOMATED_GREEN
 ```text
 BASE_PROMOTION = NO_BASE_PROMOTION
 REASON = THE_STOP_PUSH_CADENCE_AND_SAME_UID_CUSTOMER_FLOW_ARE_BLACKSMITH_SPECIFIC
-NEXT_ACTION = CLOSE_P0_CONTRACT_REPAIR_THEN_CURRENT_CANON_MVP_TDD_IMPLEMENTATION
+NEXT_ACTION = CURRENT_CANON_MVP_TDD_IMPLEMENTATION_OF_APPROVED_PRECISION_TAG_CATALOG
 ```
 
 This contract is the active implementation boundary for the user-declared
-current-canon MVP. It does not authorize a player-title system, a concrete
-weapon-keyword content row or catalogue before separate user approval, or any
-scope outside the current Slice.
+current-canon MVP. It authorizes only the Decision37 precision catalog contract
+inside the current Slice; it does not authorize a player-title system, catalyst
+inventory/economy, a new affix field, or any scope outside the current Slice.

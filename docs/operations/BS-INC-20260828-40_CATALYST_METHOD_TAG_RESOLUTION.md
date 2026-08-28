@@ -1,11 +1,12 @@
 # BS-INC-20260828-40 · 촉매 계보·강화 방식 조합 태그 해석
 
 ```text
-STATUS = CLOSED_CANONICAL_REPAIR / IMPLEMENTATION_BOUNDARY_REMAINS
+STATUS = SUPERSEDED_FOR_TAG_CONTENT_AND_EMPTY_SELECTION_BY_BS-ENHANCE-20260829-37 / HISTORICAL_REPAIR_RECORD
 CLASS = USER_DIRECT_DECISION_SUPERSESSION
 DISCOVERED = 2026-08-28
 SOURCE = USER_DIRECT_DECISION
 FIELD_OWNER = BS-ENHANCE-20260828-34
+CONTENT_AND_EMPTY_SELECTION_SUPERSEDED_BY = BS-ENHANCE-20260829-37
 SUPERSEDES = BS-INC-20260828-39
 NO_BASE_PROMOTION = PROJECT_SPECIFIC_WEAPON_KEYWORD_OWNERSHIP
 ```
@@ -27,7 +28,11 @@ Tag keyword만 기록한다. 촉매 계보는 후보 가족·계보 범위를, �
 내구도에도 영향을 줄 수 있으나 Grade/Event keyword, player title, 네 번째
 affix slot, function-rework, 예술성 또는 환경 기능을 만들지 않는다.
 
-## 영향과 미결정
+## 영향과 미결정 · 역사 상태
+
+> **[대체됨]** 아래의 content/empty-selection 미결정은 2026-08-29
+> `BS-ENHANCE-20260829-37`의 첫 2×2 태그 표와 비용·굴림 전 차단 규칙으로
+> 해소됐다. 이 기록은 그 결정 전의 드리프트 발견 근거만 보존한다.
 
 - `WEAPON_KEYWORD_CONTENT_ID`, 표시 문구, 촉매 계보·방식의 실제 조합표는
   `UNDECIDED / USER_CONTENT_DECISION_REQUIRED`다.

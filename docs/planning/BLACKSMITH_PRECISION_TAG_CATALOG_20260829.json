@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "catalog_id": "BLACKSMITH_PRECISION_TAG_CATALOG_20260829",
+  "status": "USER_APPROVED_CURRENT",
+  "source_decision_id": "BS-ENHANCE-20260829-37",
+  "machine_owner": "CATALYST_AFFIX",
+  "new_stored_field": false,
+  "selection_flow": {
+    "entry_level": 9,
+    "target_level": 10,
+    "persistence": "ATTEMPT_LOCAL_ONLY",
+    "empty_lineage_behavior": "BLOCK_BEFORE_COST_OR_ROLL",
+    "missing_lineage_reason": "MISSING_CATALYST_LINEAGE",
+    "missing_method_reason": "MISSING_PRECISION_METHOD",
+    "invalid_pair_reason": "INVALID_PRECISION_TAG_COMBINATION",
+    "no_default_lineage": true,
+    "failure_preserves_selection": false,
+    "selection_consumes_inventory": false
+  },
+  "mechanical_boundary": {
+    "durability_delta_in_first_catalog": 0,
+    "forbid_function_rework": true,
+    "forbid_artistry_effect": true,
+    "forbid_environmental_function_effect": true,
+    "forbid_grade_or_event_keyword_mutation": true,
+    "forbid_universal_customer_damage_mitigation": true
+  },
+  "lineages": [
+    {
+      "id": "EMBER_LINEAGE",
+      "display_name_ko": "불씨 계보",
+      "player_meaning_ko": "열과 결단을 남기는 촉매의 가족",
+      "availability": "PERMANENT_WORKSHOP_CHOICE",
+      "consumed": false
+    },
+    {
+      "id": "ANVIL_LINEAGE",
+      "display_name_ko": "모루 계보",
+      "player_meaning_ko": "단단한 벼림의 흔적을 남기는 촉매의 가족",
+      "availability": "PERMANENT_WORKSHOP_CHOICE",
+      "consumed": false
+    }
+  ],
+  "methods": [
+    {
+      "id": "EDGE_REINFORCEMENT",
+      "display_name_ko": "날 세우기",
+      "player_meaning_ko": "무기의 역할 능력치를 높이는 정밀 벼림",
+      "effect": {
+        "axis": "RAW_ROLE_STAT",
+        "delta": 3
+      }
+    },
+    {
+      "id": "LIGHTWEIGHTING",
+      "display_name_ko": "경량 담금",
+      "player_meaning_ko": "무게를 낮추는 정밀 담금",
+      "effect": {
+        "axis": "WEIGHT_POINT",
+        "delta": -3
+      }
+    }
+  ],
+  "tags": [
+    {
+      "id": "TAG_EMBER_EDGE",
+      "display_name_ko": "불씨의 예리함",
+      "lineage_id": "EMBER_LINEAGE",
+      "method_id": "EDGE_REINFORCEMENT",
+      "machine_owner": "CATALYST_AFFIX"
+    },
+    {
+      "id": "TAG_EMBER_LIGHT",
+      "display_name_ko": "불씨의 가벼움",
+      "lineage_id": "EMBER_LINEAGE",
+      "method_id": "LIGHTWEIGHTING",
+      "machine_owner": "CATALYST_AFFIX"
+    },
+    {
+      "id": "TAG_ANVIL_EDGE",
+      "display_name_ko": "모루의 예리함",
+      "lineage_id": "ANVIL_LINEAGE",
+      "method_id": "EDGE_REINFORCEMENT",
+      "machine_owner": "CATALYST_AFFIX"
+    },
+    {
+      "id": "TAG_ANVIL_LIGHT",
+      "display_name_ko": "모루의 가벼움",
+      "lineage_id": "ANVIL_LINEAGE",
+      "method_id": "LIGHTWEIGHTING",
+      "machine_owner": "CATALYST_AFFIX"
+    }
+  ],
+  "legacy_placeholder_backfill": {
+    "placeholder": "PRECISION_KEYWORD_PENDING_CONTENT",
+    "eligibility": "PRE_RELEASE_V3_ITEM_AT_OR_ABOVE_LEVEL_10_ONLY",
+    "cost_or_roll": "NONE",
+    "effect_application": "APPLY_ONCE",
+    "unknown_nonempty_affix_behavior": "FAIL_CLOSED_NO_MUTATION"
+  },
+  "evidence_ceiling": {
+    "automated_contract": "PLANNED",
+    "godot_runtime": "NOT_RUN",
+    "android": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "human_playtest": "DEFERRED_BY_USER_NOT_RUN"
+  }
+}
