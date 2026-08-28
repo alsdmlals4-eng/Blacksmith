@@ -5,7 +5,8 @@
 - Status: `USER_APPROVED_PROJECT_VISUAL_DELIVERY_CANON`
 - Parent art direction: `BS-ART-20260825-03 / ILLUSTRATED_WORKSHOP_BOOK`
 - Base policy adaptation: `docs/GPT_IMAGE_GENERATION_AND_REVIEW_POLICY.md`
-- Work Mode: `PLAN`
+- Work Mode: `IMPLEMENTATION_AND_REVIEW`
+- Current execution: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
 - Image generation in this Decision: `NOT_RUN`
 
 ## 1. Core rule

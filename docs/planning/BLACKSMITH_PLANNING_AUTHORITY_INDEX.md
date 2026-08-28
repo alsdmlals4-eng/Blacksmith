@@ -1,28 +1,30 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
-- 상태: `CURRENT_AUTHORITY_INDEX / POSTMERGE_PLANNING`
-- current decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`
+- 상태: `CURRENT_AUTHORITY_INDEX / CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
+- current decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04 / BS-ENHANCE-20260828-34`
 - current owner: `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
-- Work Mode: `PLAN`
-- 제품 구현: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
-- Current Phase: `PHASE_1_PLANNING_CO_DESIGN`
-- Current accepted frontier: `CANONIZATION_AND_CORE_EXPERIENCE_REVIEW`
-- Runtime evidence may document merged history, but never grants a new product mutation.
+- Work Mode: `IMPLEMENTATION_AND_REVIEW`
+- 제품 구현: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
+- Current Phase: `PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_CONTRACT_REPAIR`
+- Current accepted frontier: `APPROVED_CURRENT_CANON_MVP_IMPLEMENTATION_AND_REVIEW`
+- Runtime evidence documents implementation facts but does not authorize new scope beyond the approved current-canon MVP.
+- `KEYWORD_OWNERSHIP_FIELD_OWNER = BS-ENHANCE-20260828-34`; Decision34 overrides the Core Canon for keyword-ownership fields.
 
 ## 1. 충돌 시 우선순위
 
 1. 사용자의 최신 지시와 승인.
 2. `AGENTS.md`.
-3. `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md` — Decisions25~30 / Art03~04 integrated meaning.
-4. `BS-DAMAGE-20260826-30_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY.md` + `BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json` — customer/world event damage owner.
-5. `BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json` — current durability/repair owner.
-6. `BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — target-level enhancement-failure base damage curve owner.
-7. `BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md` + `BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json` — project image consumer/delivery owner; Art03 remains style owner.
-8. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` current override.
-9. 2026-08-20/24 개별 Canon — 새 owner와 충돌하지 않는 필드만 current; 충돌 필드는 역사/부분대체 evidence.
-10. 실제 runtime/data/test evidence — 구현 사실을 증명하지만 PLAN Gate의 implementation drift가 최신 승인 기획을 덮어쓰지 않는다.
-11. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장.
-12. R2/R3 Game Bible·과거 PoC·구형 data/runtime.
+3. `BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md` — field owner for +10 weapon-keyword recipient/owner, player-title exclusion, and unapproved content; it overrides the integrated canon for those fields.
+4. `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md` — Decisions25~34 integrated meaning outside Decision34-owned keyword fields / Art03~04.
+5. `BS-DAMAGE-20260826-30_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY.md` + `BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json` — customer/world event damage owner.
+6. `BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json` — current durability/repair owner.
+7. `BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — target-level enhancement-failure base damage curve owner.
+8. `BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md` + `BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json` — project image consumer/delivery owner; Art03 remains style owner.
+9. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md` current override.
+10. 2026-08-20/24 개별 Canon — 새 owner와 충돌하지 않는 필드만 current; 충돌 필드는 역사/부분대체 evidence.
+11. 실제 runtime/data/test evidence — 구현 사실을 증명하지만 historical drift가 최신 승인 기획을 덮어쓰지 않는다.
+12. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장.
+13. R2/R3 Game Bible·과거 PoC·구형 data/runtime.
 
 ```text
 CURRENT_OWNER = docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md
@@ -36,9 +38,10 @@ BS-ENHANCE-20260826-32
 BS-CHRONICLE-20260825-27
 BS-ART-20260825-03
 BS-ART-20260826-04
+BS-ENHANCE-20260828-34
 ```
 
-새 `기획 완료` 사용자 선언 전 제품 `data/scripts/scenes/assets/addons/project.godot` 변경은 금지한다.
+현재 승인 current-canon MVP 이외의 새 제품 범위와 보호 경로 변경은 금지한다.
 
 ## 2. Current core contract
 
@@ -49,7 +52,9 @@ SUCCESS_LEVEL_DELTA = +1
 TARGET = CURRENT + 1
 +9 -> +10 = PRECISION_ENHANCEMENT
 +10 PRECISION SUCCESS -> exactly one ITEM_KEYWORD
+ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY
 ITEM_KEYWORD machine owner = CATALYST_AFFIX
+PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
 NO_FOURTH_AFFIX_SLOT
 ```
 
@@ -244,7 +249,7 @@ hard guarantee = LEARN2 / BUILD4 / FIRST4 / TENSION5 / HIGH6 / MASTERY7
 
 These are not final product balance after Decision29/30.
 
-## 5. Current unresolved gates
+## 5. Current validation and evidence gates
 
 ```text
 REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
@@ -256,20 +261,20 @@ Decision29 closes structural repair behavior and MAJOR enhancement eligibility; 
 ## 6. Current work order
 
 ```text
-1. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
-2. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
-3. full planning adversarial review
-4. CURRENT_PLANNING_COMPLETE user declaration
-5. runtime implementation plan refresh and TDD migration
+1. Execute the approved unified contract with RED -> GREEN -> REFACTOR
+2. Validate exact head, Godot, portrait, and Human evidence for changed scope
+3. Run REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW before final balance decisions
+4. Run ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS before new image production
+5. Review any new scope expansion as a separate user decision
 ```
 
 ## 7. Runtime reality / drift
 
-Current V2 runtime contains similar durability/customer fields but old semantics. Field-name overlap is not Decision29/30 implementation evidence. Later V3/vertical-slice work is retained only as historical automated evidence during the current Phase-1 review and does not override planning authority.
+Current V2 runtime contains similar durability/customer fields but old semantics. Field-name overlap is not Decision29/30 implementation evidence. Later V3/vertical-slice work is retained as automated implementation evidence and does not override planning authority or expand current approved scope.
 
 ```text
-CURRENT_PHASE = PHASE_1_PLANNING_CO_DESIGN
-RUNTIME_IMPLEMENTATION_OF_NEW_CORE = HISTORICAL_AUTOMATED_EVIDENCE_NOT_NEW_MUTATION_AUTHORITY
+CURRENT_PHASE = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_CONTRACT_REPAIR
+RUNTIME_IMPLEMENTATION_OF_NEW_CORE = PARTIALLY_IMPLEMENTED_HISTORICAL_EVIDENCE / CURRENT_CONTRACT_IMPLEMENTATION_AUTHORIZED
 OLD_V2_RUNTIME = IMPLEMENTATION_DRIFT / HISTORICAL_RUNTIME_TRUTH
 ```
 
@@ -292,7 +297,7 @@ ACTUAL_RUNTIME_IMAGE_CONSUMPTION = IMPLEMENTED_STATIC_PROJECT_RASTER_BINDING / V
 REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / B65_DEFAULT_PLAYTEST_REQUIRED
 FAILURE_CONSEQUENCE_COMPOSITION = USER_APPROVED_EXCLUSIVE_HOLD_OR_DAMAGE
 UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP
-RUNTIME_IMPLEMENTATION = NOT_RUN / BLOCKED
+RUNTIME_IMPLEMENTATION = AUTHORIZED_WITHIN_CURRENT_CANON_MVP / EXACT_KEYWORD_CONTENT_PENDING
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_ACCESSIBILITY = NOT_RUN
 NOTION_CLIENT_GEOMETRY = NOT_RUN

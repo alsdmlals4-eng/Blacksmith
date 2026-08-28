@@ -2,7 +2,7 @@
 
 Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-20260825-08 / POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_AND_VISUAL_REQUIREMENT_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK / WORK_MODE: PLAN / PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`은 2026-08-25 역사 상태다. 이후 사용자가 `현재 기획 완료 선언, 정본 기준 Godot 구현 진행`을 명시 승인했다. 따라서 현재 상태는 `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / WORK_MODE: IMPLEMENTATION_AND_REVIEW`이며, 승인된 current-canon MVP의 구현·검수·교정만 허용된다. 기획·문서·인수인계 작업은 새 제품 범위나 보호 경로 변경 Gate를 자동으로 열지 않는다.
 
-현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve and Decision32 failure-resolution owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision31 repair-economy owner는 `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
+현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-ENHANCE-20260828-34 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve and Decision32 failure-resolution owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision31 repair-economy owner는 `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
 
 ## 1. 권위 순서
 
@@ -105,7 +105,7 @@ RED → GREEN → REFACTOR
 - PRIMARY CORE는 `강화의 긴장감 + DDD`; player question은 `STOP OR PUSH`.
 - 작품은 UID·소유·손상·복원·사건·연대기를 유지한다.
 - 일반 강화 성공은 항상 `SUCCESS_LEVEL_DELTA = +1`.
-- `+9 -> +10 = PRECISION_ENHANCEMENT` 하나뿐이며 성공 시 플레이어용 `ITEM_KEYWORD` 하나, machine owner는 `CATALYST_AFFIX`. 네 번째 affix 슬롯 금지.
+- `+9 -> +10 = PRECISION_ENHANCEMENT` 하나뿐이며 성공 시 무기 귀속 `WEAPON_ITEM_KEYWORD` 하나를 위한 machine owner는 `CATALYST_AFFIX`다. `ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY`; 플레이어 칭호는 `+10` 보상이 아니며 네 번째 affix 슬롯은 금지한다.
 - machine slots는 `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`.
 
 ### 4.1 Decision29 current durability authority

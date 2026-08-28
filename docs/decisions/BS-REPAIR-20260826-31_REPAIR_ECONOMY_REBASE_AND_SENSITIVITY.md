@@ -4,7 +4,8 @@
 - Scope: planning and deterministic balance-contract work only
 - Owner: repair economy overlay for Decision 29
 - Supersedes: only the Decision 29 fields named in “Precedence”; does not replace its durability, scar-band, or repair-quality structure
-- Runtime status: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
+- Current execution: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
+- Runtime status: `CURRENT_CANON_MVP_AUTHORIZED / EXACT_HEAD_CONTRACT_AND_TDD_REQUIRED`
 - Numeric status: `TEMPORARY_TEST_BUDGET_NOT_FINAL_PRODUCT_BALANCE`
 
 ## Decision

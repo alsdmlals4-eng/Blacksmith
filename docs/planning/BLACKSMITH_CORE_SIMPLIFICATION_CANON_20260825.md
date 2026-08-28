@@ -1,15 +1,19 @@
 # [현재 정본] Blacksmith Core Simplification Canon · 2026-08-25
 
-- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`
-- Status: `USER_APPROVED / CURRENT_PLANNING_CANON`
-- Work Mode: `PLAN`
-- Product implementation: `BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
-- Runtime implementation: `NOT_RUN / IMPLEMENTATION_DRIFT_EXISTS`
+- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04 / BS-ENHANCE-20260828-34`
+- Status: `USER_APPROVED / CURRENT_CANON_MVP_IMPLEMENTATION_AUTHORIZED`
+- Work Mode: `IMPLEMENTATION_AND_REVIEW`
+- Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
+- Runtime implementation: `PARTIALLY_IMPLEMENTED_HISTORICAL_EVIDENCE / CURRENT_SLICE_CONTRACT_REPAIR_ACTIVE`
 - Human/Player validation: `NOT_RUN`
 
 ## 1. Current ownership
 
 This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 enhancement-failure damage probability, Decision29 repair/scar model, Decision31 repair-economy sensitivity overlay, Decision30 customer/world-event damage policy, Chronicle inclusion, Art03 direction and Art04 actual-game image consumer gate.
+
+For the `+10` keyword recipient, machine owner, player-title exclusion, and
+unapproved-content boundary, `BS-ENHANCE-20260828-34` is the field owner and
+overrides this integrated canon if any wording conflicts.
 
 Decision-specific machine owners:
 
@@ -28,8 +32,10 @@ SUCCESS_LEVEL_DELTA = +1
 NO_MULTI_LEVEL_SUCCESS
 TARGET_LEVEL = CURRENT_LEVEL + 1
 +9 -> +10 = PRECISION_ENHANCEMENT
-+10 PRECISION SUCCESS -> exactly one ITEM_KEYWORD
++10 PRECISION SUCCESS -> exactly one WEAPON_ITEM_KEYWORD
+ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY
 ITEM_KEYWORD machine owner = CATALYST_AFFIX
+PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
 NO_FOURTH_AFFIX_SLOT
 ```
 
@@ -262,7 +268,9 @@ Under current temporary Decision29 multipliers:
 
 An explicitly relevant item keyword/function may reduce a probabilistic profile by at most one tier only when the event declares that causal relevance. There is no universal keyword damage bonus and a generic keyword does not mitigate `DIRECT`.
 
-Detailed event profile numbers are temporary. Runtime implementation remains blocked.
+Detailed event profile numbers are temporary. Current-canon implementation may
+proceed only through the unified contract, RED-first tests, and its protected
+scope; this rule does not authorize a customer-flow expansion.
 
 ## 7. Chronicle · `BS-CHRONICLE-20260825-27`
 
@@ -282,7 +290,7 @@ PRIMARY_PLAYABLE_CONTENT = REPEATED_ENHANCEMENT_JUDGMENT_AND_FEEDBACK
 CUSTOMER_ITEM_LIFECYCLE = DIFFERENTIATING_CONTEXT_FOR_ENHANCEMENT_CHOICES
 LIFECYCLE_ROLE = MAKE_ENHANCEMENT_OUTCOMES_PERSONAL_AND_MEMORABLE
 SLICE_RULE = DO_NOT_REPLACE_ENHANCEMENT_PLAY_WITH_A_SINGLE_RISK_DEMO
-ENHANCEMENT_CADENCE_AND_SESSION_LENGTH = UNDECIDED / PHASE_1_GRILL_ME
+ENHANCEMENT_CADENCE_AND_SESSION_LENGTH = USER_APPROVED_SLICE_B / 6_TO_8_MINUTES_PLAYTEST_HYPOTHESIS
 ITEM_UID_IDENTITY = PRESERVED
 RECOVERY_OWNER = ITEM_UID + TARGET_LEVEL
 CHECKPOINT_FLOORS = [10,30,60,90]
@@ -295,10 +303,10 @@ CUSTOMER_WORLD_RESULT = DELAYED_SAME_UID_CAUSALITY_AFTER_MEANINGFUL_ENHANCEMENT_
 Enhancement is the repeated, enjoyable main content. Customer and item-lifecycle
 content is neither an alternative main loop nor a replacement for enhancement
 play: it differentiates the game by carrying the same UID's enhancement choices
-into ownership, actual use, repair, and Chronicle. A representative slice must
-therefore let the player enjoy a meaningful run of enhancement judgment and
-feedback before showing a same-UID lifecycle consequence. The exact cadence,
-session duration, and minimum enhancement volume remain a Phase-1 user decision.
+into ownership, actual use, repair, and Chronicle. The approved representative
+Slice B therefore lets the player enjoy a meaningful run of enhancement judgment
+and feedback before showing a same-UID lifecycle consequence; its 6–8 minute
+duration is a Human-playtest hypothesis, not a runtime timer.
 
 Decision29 adds a repair/push/stop choice inside the same core rather than creating a maintenance game as a second core. Decision30 makes world damage a causal result of actual use rather than a generic ownership tax.
 
@@ -401,13 +409,17 @@ Current consumer locators such as Main Menu, Enhancement, Precision +10, Durabil
 ### 12.0 2026-08-28 Phase-1 recheck override
 
 The 2026-08-26 implementation declaration and its merged runtime MVP are historical
-implementation evidence. They do not authorize a new product mutation while the
-current user-requested canonization and co-design review is open.
+implementation evidence. The user has since confirmed
+`CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`: implementation and review
+of the approved current-canon MVP may proceed. New product scope, protected-path
+changes outside the approved task, and unapproved system expansion remain blocked.
 
 ```text
-CURRENT_2026-08-28_PHASE = PHASE_1_PLANNING_CO_DESIGN
-CURRENT_ACCEPTED_FRONTIER = CANONIZATION_AND_CORE_EXPERIENCE_REVIEW
-NEW_PRODUCT_MUTATION = BLOCKED_UNTIL_PHASE_1_AND_2_APPROVAL
+CURRENT_2026-08-28_PHASE = IMPLEMENTATION_AND_REVIEW
+CURRENT_ACCEPTED_FRONTIER = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_CONTRACT_REPAIR
+CURRENT_PRODUCT_MUTATION = AUTHORIZED_WITHIN_CURRENT_CANON_MVP
+PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
+ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY
 HISTORICAL_RUNTIME_IMPLEMENTATION = AUTOMATED_EVIDENCE_ONLY_NOT_CURRENT_AUTHORITY
 ```
 
@@ -444,12 +456,12 @@ This implementation proof is limited to the listed MVP core paths. It does not p
 The current single owner for the approved Phase-1 implementation package is
 `docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md`.
 It converts the approved Slice B into a bounded implementation and validation
-contract without opening the product-mutation gate.
+contract without opening a new-product-scope gate.
 
 ## 13. Next implementation order
 
 ```text
-1. User declares the current Phase-1 planning complete
+1. Treat `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826` as the approved scope authority
 2. Review the unified implementation contract against fresh main/open-PR/runtime reality
 3. Execute its RED -> GREEN -> REFACTOR package on an isolated task branch
 4. Run exact-head automated, Godot, portrait, and Human validation gates

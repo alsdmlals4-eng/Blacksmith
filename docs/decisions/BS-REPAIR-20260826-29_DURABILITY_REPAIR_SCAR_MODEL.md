@@ -4,8 +4,9 @@
 - User approval: `수리는 현재/최대 내구도 수치로 운용하고, 낮은 내구도는 강화 성공률·새 강화효과·파손 위험에 불리하게 작용하며, 수리 결과와 MAX 손실은 확률 판정으로 처리. 세부 확률은 임시 권장안으로 진행.`
 - Status: `USER_APPROVED_STRUCTURAL_CANON / TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`
 - Parent: `BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28`
-- Work Mode: `PLAN`
-- Product runtime: `NOT_RUN / BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`
+- Work Mode: `IMPLEMENTATION_AND_REVIEW`
+- Current execution: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
+- Product runtime: `CURRENT_CANON_MVP_AUTHORIZED / EXACT_HEAD_CONTRACT_AND_TDD_REQUIRED`
 
 ## 1. Decision purpose
 
