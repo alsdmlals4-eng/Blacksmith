@@ -38,16 +38,19 @@ func _valid_context(risk: int, ability: int, proficiency: int):
 	return context
 
 
-func test_invalid_external_context_fails_closed_in_customer_and_precision_resolvers() -> void:
+func test_invalid_external_context_fails_closed_in_customer_resolver_without_affecting_precision_tag_selection() -> void:
 	var invalid = ContextPacketScript.from_dict({})
 	assert_false(invalid.validation_errors.is_empty(), "empty external context must be invalid")
 	var evaluation = ContextResolverScript.new().evaluate(_customer(), _item(), invalid)
 	assert_eq(evaluation.get("status", ""), "BLOCKED")
 	assert_eq(evaluation.get("reason", ""), "INVALID_CONTEXT")
 	assert_false(evaluation.has("final_primary_estimate"))
-	var precision = PrecisionResolverScript.new().preview(_item(), 10, "EDGE_REINFORCEMENT", "", invalid)
-	assert_false(bool(precision.get("allowed", true)))
-	assert_eq(precision.get("reason", ""), "INVALID_CONTEXT")
+	var precision = PrecisionResolverScript.new().selection_preview(_item(9), 10, {
+		"lineage_id": "EMBER_LINEAGE",
+		"method_id": "EDGE_REINFORCEMENT",
+	})
+	assert_true(bool(precision.get("allowed", false)))
+	assert_eq(precision.get("tag_id", ""), "TAG_EMBER_EDGE")
 
 
 func test_primary_estimate_respects_five_and_ninety_five_percent_clamps() -> void:
@@ -59,16 +62,18 @@ func test_primary_estimate_respects_five_and_ninety_five_percent_clamps() -> voi
 
 func test_precision_unknown_inputs_fail_closed() -> void:
 	var resolver = PrecisionResolverScript.new()
-	var context = _valid_context(5, 5, 1)
-	var bad_milestone = resolver.preview(_item(10), 15, "EDGE_REINFORCEMENT", "", context)
-	assert_false(bool(bad_milestone.get("allowed", true)))
-	assert_eq(bad_milestone.get("reason", ""), "INVALID_PRECISION_MILESTONE")
-	var retired_milestone = resolver.preview(_item(20), 20, "EDGE_REINFORCEMENT", "", context)
-	assert_false(bool(retired_milestone.get("allowed", true)))
-	assert_eq(retired_milestone.get("reason", ""), "INVALID_PRECISION_MILESTONE")
-	var bad_method = resolver.preview(_item(10), 10, "UNKNOWN_METHOD", "", context)
+	var wrong_entry = resolver.selection_preview(_item(10), 11, {
+		"lineage_id": "EMBER_LINEAGE",
+		"method_id": "EDGE_REINFORCEMENT",
+	})
+	assert_false(bool(wrong_entry.get("allowed", true)))
+	assert_eq(wrong_entry.get("reason", ""), "INVALID_PRECISION_ENTRY")
+	var bad_method = resolver.selection_preview(_item(9), 10, {
+		"lineage_id": "EMBER_LINEAGE",
+		"method_id": "UNKNOWN_METHOD",
+	})
 	assert_false(bool(bad_method.get("allowed", true)))
-	assert_eq(bad_method.get("reason", ""), "UNKNOWN_PRECISION_METHOD")
+	assert_eq(bad_method.get("reason", ""), "INVALID_PRECISION_TAG_COMBINATION")
 
 
 func test_nadia_product_data_still_refuses_unapproved_numeric_capability_invention() -> void:

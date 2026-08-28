@@ -16,13 +16,14 @@ func test_success_updates_one_level_checkpoint_and_clears_only_target_recovery()
 	var resolver = ResolverScript.new()
 	var item = _item(9)
 	item.enhancement_recovery_by_target = {"10": 2, "11": 1}
-	var result = resolver.resolve_with_rolls(item, 10, {"success_roll_percent": 0.0})
+	var result = resolver.resolve_with_rolls(item, 10, {"success_roll_percent": 0.0}, _precision_selection())
 	assert_eq(result["outcome"], "SUCCESS")
 	assert_eq(item.enhancement_level, 10)
 	assert_eq(item.highest_checkpoint, 10)
 	assert_false(item.enhancement_recovery_by_target.has("10"))
 	assert_eq(item.enhancement_recovery_by_target.get("11"), 1)
-	assert_false(item.catalyst_affix.is_empty())
+	assert_eq(item.catalyst_affix, "TAG_ANVIL_LIGHT")
+	assert_eq(item.weight_point, 0)
 
 
 func test_level_100_success_sets_terminal_lifecycle_fact() -> void:
@@ -76,3 +77,7 @@ func test_zero_current_from_damage_marks_physical_destroyed_without_max_scar() -
 	assert_eq(item.current_durability, 0)
 	assert_eq(item.max_durability, 5)
 	assert_eq(item.physical_state, "DESTROYED")
+
+
+func _precision_selection() -> Dictionary:
+	return {"lineage_id": "ANVIL_LINEAGE", "method_id": "LIGHTWEIGHTING"}

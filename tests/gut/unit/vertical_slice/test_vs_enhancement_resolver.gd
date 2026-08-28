@@ -45,7 +45,7 @@ func test_damage_curve_is_failure_conditional_and_uses_effective_state_multiplie
 	assert_almost_eq(normal["final_damage_percent"], 5.0, 0.01)
 	assert_almost_eq(minor["final_damage_percent"], 6.25, 0.01)
 	assert_almost_eq(major["final_damage_percent"], 8.75, 0.01)
-	assert_almost_eq(resolver.preview(_item(9), 10)["final_damage_percent"], 0.0, 0.01)
+	assert_almost_eq(resolver.preview(_item(9), 10, _precision_selection())["final_damage_percent"], 0.0, 0.01)
 
 
 func test_preview_displays_only_success_damage_and_hold_that_sum_to_100() -> void:
@@ -82,3 +82,48 @@ func test_preview_exposes_checkpoint_cost_material_and_no_plus_101() -> void:
 	var beyond = resolver.preview(at_max, 101)
 	assert_false(beyond["allowed"])
 	assert_eq(beyond["reason"], "MAX_ENHANCEMENT_TERMINAL")
+
+
+func test_plus_nine_to_ten_requires_a_complete_precision_selection_before_rolls() -> void:
+	var resolver = _resolver()
+	var item = _item(9)
+	var missing = resolver.preview(item, 10)
+	assert_false(bool(missing.get("allowed", true)))
+	assert_eq(missing.get("reason", ""), "MISSING_CATALYST_LINEAGE")
+	assert_eq(item.enhancement_level, 9)
+	assert_true(item.catalyst_affix.is_empty())
+
+	var selected = resolver.preview(item, 10, _precision_selection())
+	assert_true(bool(selected.get("allowed", false)))
+	assert_eq(selected.get("precision_tag_preview", {}).get("tag_id", ""), "TAG_EMBER_EDGE")
+	assert_eq(selected.get("precision_tag_preview", {}).get("effect_axis", ""), "RAW_ROLE_STAT")
+	assert_eq(selected.get("precision_tag_preview", {}).get("effect_delta", 0), 3)
+	assert_eq(selected.get("precision_tag_preview", {}).get("durability_delta", -1), 0)
+
+
+func test_plus_ten_success_applies_exact_tag_and_method_while_hold_writes_nothing() -> void:
+	var resolver = _resolver()
+	var item = _item(9)
+	var before_raw := int(item.raw_role_stat)
+	var held = resolver.resolve_with_rolls(item, 10, {
+		"success_roll_percent": 99.0,
+		"damage_roll_percent": 0.0,
+	}, _precision_selection())
+	assert_eq(held.get("outcome", ""), "FAILED_HOLD")
+	assert_eq(item.enhancement_level, 9)
+	assert_true(item.catalyst_affix.is_empty())
+	assert_eq(item.raw_role_stat, before_raw)
+
+	var success = resolver.resolve_with_rolls(item, 10, {
+		"success_roll_percent": 0.0,
+		"damage_roll_percent": 0.0,
+	}, _precision_selection())
+	assert_eq(success.get("outcome", ""), "SUCCESS")
+	assert_eq(success.get("precision_tag_id", ""), "TAG_EMBER_EDGE")
+	assert_eq(item.enhancement_level, 10)
+	assert_eq(item.catalyst_affix, "TAG_EMBER_EDGE")
+	assert_eq(item.raw_role_stat, before_raw + 3)
+
+
+func _precision_selection() -> Dictionary:
+	return {"lineage_id": "EMBER_LINEAGE", "method_id": "EDGE_REINFORCEMENT"}
