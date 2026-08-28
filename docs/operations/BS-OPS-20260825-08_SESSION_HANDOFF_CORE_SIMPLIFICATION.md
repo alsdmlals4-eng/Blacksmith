@@ -1,6 +1,6 @@
 # Blacksmith Session Handoff · Core Simplification
 
-> **Current override · 2026-08-28 KST.** This section supersedes any
+> **Current override · 2026-08-29 KST.** This section supersedes any
 > contradictory planning-blocked wording below. The user-declared authority is
 > `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`;
 > `WORK_MODE = IMPLEMENTATION_AND_REVIEW`; and
@@ -37,14 +37,14 @@ performance, and human-play evidence remain `NOT_RUN`; Notion client rendering i
 not applicable because the surface is retired.
 
 - Decision ID: `BS-OPS-20260825-08`
-- Date: `2026-08-25 KST`, current update `2026-08-27 KST`
+- Date: `2026-08-25 KST`, current update `2026-08-29 KST`
 - Status: `CURRENT_SESSION_HANDOFF / IMPLEMENTATION_AND_REVIEW`
-- Current accepted frontier: `CURRENT_ACCEPTED_FRONTIER = PHASE_2_PRECISION_TAG_CATALOG_TDD_IMPLEMENTATION`
+- Current accepted frontier: `CURRENT_ACCEPTED_FRONTIER = ISSUE_326_PRECISION_TAG_CATALOG_MERGED_MAIN_7d12070f37b664cd07fd0e369ea0e0974e41b0eb`
 - Current core hierarchy: `CURRENT_CORE_HIERARCHY = ENHANCEMENT_PRIMARY / CUSTOMER_ITEM_LIFECYCLE_DIFFERENTIATOR`
 - Current slice thesis: `REPEATED_ENHANCEMENT_PLAY_BEFORE_SAME_UID_LIFECYCLE_RESULT`; session target is `6_TO_8_MINUTES / PLAYTEST_HYPOTHESIS`. The exact unified package owner is `docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md`; it is active for current-canon MVP implementation and review only.
 - Current approved Slice: `CURRENT_PHASE_1_SLICE = B_ENHANCEMENT_FIRST_SAME_UID_LIFECYCLE`; `PHASE_1_ENHANCEMENT_WINDOW = +0_TO_+10 + +11_TO_+15` before one same-UID customer actual-use result; `PHASE_1_TARGET_SESSION_DURATION = 6_TO_8_MINUTES`; `PHASE_1_RESULT_TIMING = HANDOFF_TO_WORKSHOP_RETURN_BEAT_TO_RESULT`; `CRAFT_FEEDBACK_MILESTONES = EVERY_5_LEVELS / +10_SOLE_PRECISION`. The return beat is non-economic and creates no wait timer, customer-management system, or second-item task. The contract locks a temporary 30-unit starting reinforcement reserve so the approved path can reach `+11..+15`; its economy remains non-final.
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_RUNTIME_FOLLOWUP = PHASE_2_PRECISION_TAG_CATALOG_TDD_IMPLEMENTATION / ACTIVE_WITHIN_CURRENT_CANON`
+- `CURRENT_RUNTIME_FOLLOWUP = SELECT_NEXT_APPROVED_CURRENT_CANON_ISSUE / NO_SCOPE_AUTOMATICALLY_OPENED`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
@@ -64,6 +64,29 @@ PRECISION_SELECTION_PERSISTENCE = ATTEMPT_LOCAL_ONLY
 TAG_CATALOG_OWNER = BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json
 HUMAN_PLAYTEST = DEFERRED_BY_USER / NOT_RUN
 ```
+
+### Issue #326 implementation delivery · 2026-08-29 KST
+
+GitHub Issue `#326` implemented the approved Decision37 `+9 -> +10`
+selection gate and merged through PR `#328` at exact main
+`7d12070f37b664cd07fd0e369ea0e0974e41b0eb`. The runtime now accepts only
+the fixed `EMBER_LINEAGE` / `ANVIL_LINEAGE` × `EDGE_REINFORCEMENT` /
+`LIGHTWEIGHTING` pair, blocks missing or malformed selection before any
+cost/material/roll, writes exactly one weapon-owned `CATALYST_AFFIX` Tag
+and permitted stat delta on success, writes neither on hold, and cannot
+resolve `+10` as damage. The one no-cost/no-roll correction is restricted to
+the placeholder captured from a V3 migration origin; known or unknown
+nonempty affixes fail closed. The Workshop exposes this as native Korean
+controls and no scene, asset, image, economy, grade/event affix, player title,
+fourth affix, or stored schema field changed.
+
+`PR328_GUT = PASS / 29 scripts / 180 tests / 1033 assertions / known non-task
+orphan 1`; Decision37, unified-contract, core-contract, GUT-authority,
+HiGodot/GUT authority, and pinned Base protected-path checks passed. Godot
+4.7.1 headless editor load exited `0`. Live Blacksmith UI, human play,
+Android, accessibility, performance, and release are `NOT_RUN`. Existing
+external-resource UID and existing source warnings are not implementation
+pass claims. PR `#196` remains `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`.
 
 ## 0. Runtime MVP checkpoint · 2026-08-26
 

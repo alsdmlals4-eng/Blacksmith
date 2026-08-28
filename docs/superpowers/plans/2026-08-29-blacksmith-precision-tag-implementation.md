@@ -215,7 +215,7 @@ git add scripts/vertical_slice/ui/vs_workshop_screen.gd \
 git commit -m "feat: show precision tag selection in workshop"
 ```
 
-### Task 4: Regression gates, runtime evidence, and delivery — IN REVIEW
+### Task 4: Regression gates, runtime evidence, and delivery — COMPLETE
 
 **Files:**
 - Modify: `tests/check_precision_tag_catalog_contract.py` only if an implementation invariant needs a new static guard.
@@ -269,4 +269,5 @@ Wait for exact-head required checks, squash merge only after green, read `origin
 - **Editor load:** Godot 4.7.1 headless editor load exited `0`. Existing invalid external-resource UID warnings and Godot-recreated unrelated UID sidecars are not included in this delivery.
 - **Adversarial findings corrected:** malformed catalog now blocks fail-closed; only a V3 migration-origin placeholder is eligible for no-cost backfill; `+10` cannot resolve as damage even when supplied an adversarial negative damage roll.
 - **Evidence ceiling:** live Blacksmith editor UI, human play, Android, accessibility, performance, and release verification are `NOT_RUN`. No image, runtime scene, or asset change was made.
-- **Protected-path delivery:** PR #328 has the user-approved `approved-protected-change` label and `PROJECT_PROTECTED_CHANGE_APPROVAL.json` lists exactly the five detected GDScript paths against adapter baseline `1c1e8860533227a44f3c46c21ef8ead0f1cf902f`. The pinned Base validator passed locally. The manifest is one-shot and requires a separate post-merge closure PR that retires it and advances the adapter baseline.
+- **Protected-path delivery:** PR #328 used the user-approved `approved-protected-change` label and `PROJECT_PROTECTED_CHANGE_APPROVAL.json` listed exactly the five detected GDScript paths against adapter baseline `1c1e8860533227a44f3c46c21ef8ead0f1cf902f`. The pinned Base validator passed locally. The manifest was one-shot and is retired by this closure.
+- **Delivery closure:** PR #328 squash-merged to main as `7d12070f37b664cd07fd0e369ea0e0974e41b0eb`. This closure updates the adapter baseline to that exact main, regenerates required compatibility views, and retires the one-shot approval manifest without opening another product scope.

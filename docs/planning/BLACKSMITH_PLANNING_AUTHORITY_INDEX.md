@@ -5,8 +5,8 @@
 - current owner: `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
 - Work Mode: `IMPLEMENTATION_AND_REVIEW`
 - 제품 구현: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
-- Current Phase: `PHASE_2_PRECISION_TAG_CATALOG_TDD_IMPLEMENTATION`
-- Current accepted frontier: `APPROVED_CURRENT_CANON_MVP_IMPLEMENTATION_AND_REVIEW`
+- Current Phase: `PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_IMPLEMENTATION_AND_REVIEW`
+- Current accepted frontier: `ISSUE_326_PRECISION_TAG_CATALOG_MERGED_MAIN_7d12070f37b664cd07fd0e369ea0e0974e41b0eb`
 - Runtime evidence documents implementation facts but does not authorize new scope beyond the approved current-canon MVP.
 - `KEYWORD_OWNERSHIP_FIELD_OWNER = BS-ENHANCE-20260828-34`; Decision34 overrides the Core Canon for keyword-ownership fields. `TAG_CONTENT_AND_EMPTY_SELECTION_FIELD_OWNER = BS-ENHANCE-20260829-37`; Decision37 owns the first catalog and empty-selection flow. Tag identity is owned by catalyst lineage plus Precision method; method is limited to weapon stats, durability, and Tag-resolution context.
 
@@ -287,7 +287,7 @@ Decision29 closes structural repair behavior and MAJOR enhancement eligibility; 
 Current V2 runtime contains similar durability/customer fields but old semantics. Field-name overlap is not Decision29/30 implementation evidence. Later V3/vertical-slice work is retained as automated implementation evidence and does not override planning authority or expand current approved scope.
 
 ```text
-CURRENT_PHASE = PHASE_2_PRECISION_TAG_CATALOG_TDD_IMPLEMENTATION
+CURRENT_PHASE = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_IMPLEMENTATION_AND_REVIEW
 RUNTIME_IMPLEMENTATION_OF_NEW_CORE = PARTIALLY_IMPLEMENTED_HISTORICAL_EVIDENCE / CURRENT_CONTRACT_IMPLEMENTATION_AUTHORIZED
 OLD_V2_RUNTIME = IMPLEMENTATION_DRIFT / HISTORICAL_RUNTIME_TRUTH
 ```
