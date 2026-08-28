@@ -2,7 +2,7 @@
 
 Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-20260825-08 / POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_AND_VISUAL_REQUIREMENT_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK / WORK_MODE: PLAN / PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`은 2026-08-25 역사 상태다. 이후 사용자가 `현재 기획 완료 선언, 정본 기준 Godot 구현 진행`을 명시 승인했다. 따라서 현재 상태는 `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / WORK_MODE: IMPLEMENTATION_AND_REVIEW`이며, 승인된 current-canon MVP의 구현·검수·교정만 허용된다. 기획·문서·인수인계 작업은 새 제품 범위나 보호 경로 변경 Gate를 자동으로 열지 않는다.
 
-현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-ENHANCE-20260828-34 / BS-OPS-20260828-35 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve and Decision32 failure-resolution owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision31 repair-economy owner는 `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`, Decision35 GitHub-only/image-execution owner는 `docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
+현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-ENHANCE-20260828-34 / BS-OPS-20260828-35 / BS-OPS-20260828-36 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve and Decision32 failure-resolution owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision31 repair-economy owner는 `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`, Decision35 GitHub-only/image-execution owner는 `docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md`, Decision36 evidence/research/adversarial-review owner는 `docs/decisions/BS-OPS-20260828-36_EVIDENCE_RESEARCH_AND_ADVERSARIAL_REVIEW_LOOP.md`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
 
 ## 1. 권위 순서
 
@@ -20,7 +20,7 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 12. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 최신 override와 충돌하는 상단 역사 snapshot은 current authority가 아님
 13. 2026-08-20/24 분야별 Canon·current registry — Decisions25~32/Art03~04와 같은 필드가 충돌하면 역사·부분대체 evidence
 14. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 implementation drift가 최신 승인 기획을 덮어쓰지 않음
-15. `GITHUB_HUMAN_FACING_GDD_OWNER`: `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` + `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf` 및 repository Visual/Flow·비교표·에셋/Reference
+15. `GITHUB_HUMAN_FACING_GDD_OWNER`: `docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md` + `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; `PROJECT_AI_PRODUCTION_SPEC.md`는 기술·정본 추적용이며 repository Visual/Flow·비교표·에셋/Reference와 연결한다.
 16. `docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md` + `docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json` — one-time Notion structure/work-product migration and non-runtime historical visual archive; current owner가 아님
 17. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
 18. R2/R3 Game Bible·과거 PoC·구형 data/runtime
@@ -30,7 +30,7 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 현재 workspace routing (Decision `BS-OPS-20260828-35`):
 
 - `GITHUB_REPOSITORY_ONLY_CURRENT_CANON = TRUE`
-- `GITHUB_HUMAN_FACING_GDD_OWNER = docs/design/PROJECT_AI_PRODUCTION_SPEC.md + exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`
+- `GITHUB_HUMAN_FACING_GDD_OWNER = docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md + exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`
 - `NOTION_STATUS = HISTORICAL_REFERENCE_ONLY / NO_FUTURE_READ_WRITE_REQUIRED`
 - `NOTION_DESTINATION_READBACK = NOT_APPLICABLE`
 - `NOTION_MIGRATION_RECEIPT = docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md + docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json`
@@ -43,6 +43,14 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 - `PRIMARY_USE_GATE_REQUIRED`
 - `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH` = Markdown·JSON·game data·code·Scene/Resource·tests·CI/runtime truth
 - Google Sheet = historical migration compatibility evidence only; future write는 요구하지 않는다.
+
+현재 실질 작업 운영 규칙(Decision `BS-OPS-20260828-36`):
+
+- `FRESH_CANONICAL_READ = REQUIRED`
+- `CURRENT_EXTERNAL_RESEARCH = REQUIRED_FOR_EVERY_SUBSTANTIVE_TASK`
+- `ADVERSARIAL_REVIEW_LOOP = REQUIRED`
+- `IMPLEMENTATION_FEASIBILITY_GATE = REQUIRED`
+- `EVIDENCE_CEILING = NO_AUTO_PASS`
 
 `BS-OPS-20260825-03`의 Notion Home 정의는 역사 기록이다. 같은 사람용 정보 구조는 GitHub GDD와 repository Visual/Flow owner에서 유지한다.
 
@@ -322,7 +330,7 @@ project.godot
 - previous `v4.8-r4` is `HISTORICAL_SUPERSEDED_BY_R5_4`.
 - repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` v4.5 r2는 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`.
 - historical compatibility anchor: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — historical only.
-- current operational override Decisions: `BS-OPS-20260828-35`, `BS-OPS-20260825-08`, `BS-OPS-20260825-07`, `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-REPAIR-20260826-29`, `BS-DAMAGE-20260826-30`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-ART-20260826-04`, `BS-OPS-20260825-03`, `BS-OPS-20260825-02`, `BS-TOOLCHAIN-20260826-33`.
+- current operational override Decisions: `BS-OPS-20260828-36`, `BS-OPS-20260828-35`, `BS-OPS-20260825-08`, `BS-OPS-20260825-07`, `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-REPAIR-20260826-29`, `BS-DAMAGE-20260826-30`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-ART-20260826-04`, `BS-OPS-20260825-03`, `BS-OPS-20260825-02`, `BS-TOOLCHAIN-20260826-33`.
 - 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`.
 - 선행 조사 Gate: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`.
 - current override: `PRODUCT_IMPLEMENTATION: CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`; 새 Task3 또는 범위 확장은 `NOT_SEPARATELY_APPROVED` 유지.

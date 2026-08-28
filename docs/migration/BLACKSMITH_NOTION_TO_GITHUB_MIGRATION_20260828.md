@@ -25,8 +25,8 @@ OMITTED_STALE_DATA = NOT_IMPORTED_AS_CURRENT_TRUTH
 
 | Notion source page | Source ID | Disposition | GitHub destination / ownership |
 | --- | --- | --- | --- |
-| Blacksmith Project Hub | `3c01b237-eb1c-8141-93ae-c528c4f3c40c` | `CURRENT_MAPPED` | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`; `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf` |
-| Blacksmith Project Home | `3c41b237-eb1c-813f-a481-e415e3250d1c` | `CURRENT_MAPPED` | `docs/design/PROJECT_AI_PRODUCTION_SPEC.md`; `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; `docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md` |
+| Blacksmith Project Hub | `3c01b237-eb1c-8141-93ae-c528c4f3c40c` | `CURRENT_MAPPED` | `docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md`; `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` (기술 추적) |
+| Blacksmith Project Home | `3c41b237-eb1c-813f-a481-e415e3250d1c` | `CURRENT_MAPPED` | `docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md`; `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; `docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md`; `docs/design/PROJECT_AI_PRODUCTION_SPEC.md` (기술 추적) |
 | Project System Record | `3c01b237-eb1c-81a1-8cd0-f8bc7eb2f420` | `CURRENT_MAPPED` | `AGENTS.md`; `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`; `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md` |
 | Direction | `3c51b237-eb1c-81d7-80e0-d7e9fc704489` | `CURRENT_MAPPED` | `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`; `docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md`; `docs/planning/BLACKSMITH_VISUAL_DIRECTION_LOCK_PACKET_20260828.md` |
 | Flow | `3c01b237-eb1c-81a4-af26-c3057bfdcbbf` | `CURRENT_MAPPED` | `docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md`; `docs/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828.md` |

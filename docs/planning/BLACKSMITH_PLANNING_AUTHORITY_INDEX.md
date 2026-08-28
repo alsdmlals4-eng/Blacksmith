@@ -1,7 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
 - 상태: `CURRENT_AUTHORITY_INDEX / CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
-- current decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04 / BS-ENHANCE-20260828-34 / BS-OPS-20260828-35`
+- current decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04 / BS-ENHANCE-20260828-34 / BS-OPS-20260828-35 / BS-OPS-20260828-36`
 - current owner: `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
 - Work Mode: `IMPLEMENTATION_AND_REVIEW`
 - 제품 구현: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
@@ -291,7 +291,7 @@ OLD_V2_RUNTIME = IMPLEMENTATION_DRIFT / HISTORICAL_RUNTIME_TRUTH
 
 ## 8. Operational sync / evidence ceiling
 
-Meaningful planning changes update GitHub current owner/index/handoff and repository AI/System metadata. `BS-OPS-20260828-35` retires Notion and Sheet from future sync; both are historical/migration evidence only.
+Meaningful planning changes update GitHub current owner/index/handoff and repository AI/System metadata. `BS-OPS-20260828-35` retires Notion and Sheet from future sync; both are historical/migration evidence only. `BS-OPS-20260828-36` requires fresh canonical read, current external research, adversarial review, implementation-feasibility confirmation, and an explicit evidence ceiling for every substantive task.
 
 PR #196 remains `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`.
 

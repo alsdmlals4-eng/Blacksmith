@@ -8,6 +8,9 @@
 > `BS-OPS-20260828-35` additionally makes GitHub the only current canon and
 > human-GDD surface; Notion is historical-only and image generation is
 > user-preauthorized after a consumer requirement is complete.
+> `BS-OPS-20260828-36` requires fresh canonical read, current external research,
+> adversarial review, implementation-feasibility confirmation, and an explicit
+> evidence ceiling for every substantive task.
 > New product scope remains blocked; current runtime evidence remains below the
 > Human/Android/accessibility/performance ceiling.
 

@@ -10,7 +10,11 @@ The user has retired Notion from all future Blacksmith work. Historical Notion r
 
 ```text
 GITHUB_REPOSITORY_ONLY_CURRENT_CANON = TRUE
-GITHUB_HUMAN_FACING_GDD_OWNER = docs/design/PROJECT_AI_PRODUCTION_SPEC.md + exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf
+GITHUB_HUMAN_FACING_GDD_OWNER = docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md + exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf
+HUMAN_FACING_GDD = docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md
+HUMAN_FACING_PDF = exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf
+HUMAN_FACING_PDF_RECEIPT = docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828_PDF_RECEIPT.json
+GITHUB_TECHNICAL_TRACE_OWNER = docs/design/PROJECT_AI_PRODUCTION_SPEC.md
 GITHUB_OPERATIONAL_OWNER = docs/planning + docs/decisions + docs/operations + code/data/scenes/tests/runtime evidence
 NOTION_STATUS = HISTORICAL_REFERENCE_ONLY / NO_FUTURE_READ_WRITE_REQUIRED
 NOTION_DESTINATION_READBACK = NOT_APPLICABLE
@@ -18,6 +22,13 @@ GOOGLE_SHEET_STATUS = HISTORICAL_MIGRATION_ONLY / NO_FUTURE_WRITE_REQUIRED
 ```
 
 GitHub current owners, the current handoff, repository Asset Manifest, exact commit SHA, tests, and runtime evidence are the only durable current-routing surfaces. A historical Notion URL, record, preview, or status can prove its own past existence only; it cannot create a current requirement or overrule a repository owner.
+
+The Korean Human-Facing GDD and its PDF are the project owner's primary
+reading surface: genre, player point of view, core fun, loops, choice, visual
+language, scope, and evidence ceiling must be understandable without reading
+machine-oriented terminology. `PROJECT_AI_PRODUCTION_SPEC.md` remains a
+technical trace for structured canon, code/data/test routing, and evidence;
+it is not the primary human GDD.
 
 ## 2. Image execution policy
 
