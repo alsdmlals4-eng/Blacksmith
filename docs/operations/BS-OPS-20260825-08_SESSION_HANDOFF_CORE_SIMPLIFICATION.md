@@ -33,15 +33,15 @@ performance, Notion client-render, and human-play evidence remain `NOT_RUN`.
 - Status: `CURRENT_SESSION_HANDOFF / PHASE_1_CANONIZATION_AND_CO_DESIGN`
 - Current accepted frontier: `CURRENT_ACCEPTED_FRONTIER = CANONIZATION_AND_CORE_EXPERIENCE_REVIEW`
 - Current core hierarchy: `CURRENT_CORE_HIERARCHY = ENHANCEMENT_PRIMARY / CUSTOMER_ITEM_LIFECYCLE_DIFFERENTIATOR`
-- Current slice thesis: `REPEATED_ENHANCEMENT_PLAY_BEFORE_SAME_UID_LIFECYCLE_RESULT`; session target is `6_TO_8_MINUTES / PLAYTEST_HYPOTHESIS`, while detailed cadence remains a Phase-1 review input.
-- Current approved Slice: `CURRENT_PHASE_1_SLICE = B_ENHANCEMENT_FIRST_SAME_UID_LIFECYCLE`; `PHASE_1_ENHANCEMENT_WINDOW = +0_TO_+10 + +11_TO_+15` before one same-UID customer actual-use result; `PHASE_1_TARGET_SESSION_DURATION = 6_TO_8_MINUTES`; `PHASE_1_RESULT_TIMING = HANDOFF_TO_WORKSHOP_RETURN_BEAT_TO_RESULT`; `CRAFT_FEEDBACK_MILESTONES = EVERY_5_LEVELS / +10_SOLE_PRECISION`. The return beat is non-economic and creates no wait timer, customer-management system, or second-item task. Exact implementation timing and economy remain Phase-1 review inputs.
+- Current slice thesis: `REPEATED_ENHANCEMENT_PLAY_BEFORE_SAME_UID_LIFECYCLE_RESULT`; session target is `6_TO_8_MINUTES / PLAYTEST_HYPOTHESIS`. The exact unified package owner is `docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md` and remains planning-only until the user opens Phase 2.
+- Current approved Slice: `CURRENT_PHASE_1_SLICE = B_ENHANCEMENT_FIRST_SAME_UID_LIFECYCLE`; `PHASE_1_ENHANCEMENT_WINDOW = +0_TO_+10 + +11_TO_+15` before one same-UID customer actual-use result; `PHASE_1_TARGET_SESSION_DURATION = 6_TO_8_MINUTES`; `PHASE_1_RESULT_TIMING = HANDOFF_TO_WORKSHOP_RETURN_BEAT_TO_RESULT`; `CRAFT_FEEDBACK_MILESTONES = EVERY_5_LEVELS / +10_SOLE_PRECISION`. The return beat is non-economic and creates no wait timer, customer-management system, or second-item task. The contract locks a temporary 30-unit starting reinforcement reserve so the approved path can reach `+11..+15`; its economy remains non-final.
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_RUNTIME_FOLLOWUP = CUSTOMER_EVENT_SCHEDULER_AND_PLAYER_ENTRY_UNDECIDED`
+- `CURRENT_RUNTIME_FOLLOWUP = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE / USER_GATE_REQUIRED`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
 - Pre-existing protected PR: `#196 / OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
-- Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
+- Product implementation: `HISTORICAL_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / NEW_MUTATION_BLOCKED_UNTIL_PHASE_1_AND_2_APPROVAL`
 
 ## 0. Runtime MVP checkpoint · 2026-08-26
 

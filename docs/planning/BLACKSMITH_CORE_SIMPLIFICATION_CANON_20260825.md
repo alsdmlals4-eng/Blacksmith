@@ -441,12 +441,16 @@ NOTION_CLIENT_GEOMETRY = NOT_RUN
 
 This implementation proof is limited to the listed MVP core paths. It does not prove customer/world-event integration, mobile UI, Android behavior, accessibility, performance, art consumption, or human play.
 
+The current single owner for the approved Phase-1 implementation package is
+`docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md`.
+It converts the approved Slice B into a bounded implementation and validation
+contract without opening the product-mutation gate.
+
 ## 13. Next implementation order
 
 ```text
-1. Enhancement and repair UI state integration using the current resolver previews
-2. REPAIR_ECONOMY_HUMAN_PLAYTEST + MUTABLE_R_BAND_BASELINE_REVIEW
-3. Customer/world-event damage runtime integration
-4. ACTUAL_GAME_CONSUMER_VISUAL_REQUIREMENT_PASS
-5. Android, accessibility, performance, and human-play validation
+1. User declares the current Phase-1 planning complete
+2. Review the unified implementation contract against fresh main/open-PR/runtime reality
+3. Execute its RED -> GREEN -> REFACTOR package on an isolated task branch
+4. Run exact-head automated, Godot, portrait, and Human validation gates
 ```
