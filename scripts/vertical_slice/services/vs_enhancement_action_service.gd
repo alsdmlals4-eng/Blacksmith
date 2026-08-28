@@ -6,6 +6,9 @@ const SaveEnvelopeScript = preload("res://scripts/vertical_slice/domain/vs_save_
 const EnhancementResolverScript = preload(
 	"res://scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd"
 )
+const PrecisionResolverScript = preload(
+	"res://scripts/vertical_slice/resolvers/vs_precision_resolver.gd"
+)
 const DestroyedHistoryRecordScript = preload(
 	"res://scripts/vertical_slice/domain/vs_destroyed_history_record.gd"
 )
@@ -19,7 +22,8 @@ func resolve_and_save_with_rolls(
 	rolls: Dictionary,
 	game_day: int,
 	resources,
-	save_service
+	save_service,
+	precision_selection: Dictionary = {}
 ) -> Dictionary:
 	if resources == null or not resources.has_method("snapshot") or not resources.has_method("get_material_count"):
 		return _blocked("INVALID_RESOURCES")
@@ -31,7 +35,7 @@ func resolve_and_save_with_rolls(
 		return _blocked("RESOURCE_SAVE_DIVERGED")
 
 	var source_item = envelope.get_item(item_uid) if envelope.has_method("get_item") else null
-	var preview := EnhancementResolverScript.new().preview(source_item, target_level)
+	var preview := EnhancementResolverScript.new().preview(source_item, target_level, precision_selection)
 	if not bool(preview.get("allowed", false)):
 		return _blocked(str(preview.get("reason", "INVALID_ATTEMPT")))
 	var gold_cost := int(preview.get("gold_cost", 0))
@@ -53,7 +57,7 @@ func resolve_and_save_with_rolls(
 	staged_resources["material_stock"] = staged_stock
 	candidate.workshop_resources = staged_resources
 
-	var result := resolve_with_rolls(candidate, item_uid, target_level, rolls, game_day)
+	var result := resolve_with_rolls(candidate, item_uid, target_level, rolls, game_day, precision_selection)
 	if str(result.get("outcome", "")) == "BLOCKED":
 		return result
 	var save_error: Error = save_service.save_envelope(candidate)
@@ -74,7 +78,8 @@ func resolve_with_rolls(
 	item_uid: String,
 	target_level: int,
 	rolls: Dictionary,
-	game_day: int
+	game_day: int,
+	precision_selection: Dictionary = {}
 ) -> Dictionary:
 	if envelope == null:
 		return _blocked("MISSING_SAVE_ENVELOPE")
@@ -101,7 +106,8 @@ func resolve_with_rolls(
 	var result: Dictionary = resolver.resolve_with_rolls(
 		staged_item,
 		target_level,
-		rolls.duplicate(true)
+		rolls.duplicate(true),
+		precision_selection
 	)
 	if str(result.get("outcome", "")) == "BLOCKED":
 		result["destroyed_history_archived"] = false
@@ -141,6 +147,40 @@ func _commit_enhancement_state(item, staged_item) -> void:
 	item.max_enhancement_reached = bool(staged_item.max_enhancement_reached)
 	item.physical_state = str(staged_item.physical_state)
 	item.catalyst_affix = str(staged_item.catalyst_affix)
+	item.raw_role_stat = int(staged_item.raw_role_stat)
+	item.weight_point = int(staged_item.weight_point)
+
+
+func backfill_precision_tag_and_save(envelope, item_uid: String, precision_selection: Dictionary, save_service) -> Dictionary:
+	if save_service == null or not save_service.has_method("save_envelope"):
+		return _blocked("INVALID_SAVE_SERVICE")
+	if envelope == null or not envelope.has_method("to_dict") or not envelope.has_method("get_item"):
+		return _blocked("INVALID_SAVE_ENVELOPE")
+	var source_eligible: bool = envelope.has_method("is_legacy_v3_precision_backfill_eligible") and envelope.is_legacy_v3_precision_backfill_eligible(item_uid)
+	var candidate = SaveEnvelopeScript.from_dict(envelope.to_dict())
+	if candidate == null or not candidate.validation_errors.is_empty():
+		return _blocked("INVALID_SAVE_ENVELOPE")
+	var staged_item = candidate.get_item(item_uid)
+	if staged_item == null:
+		return _blocked("ITEM_NOT_FOUND")
+	if str(staged_item.catalyst_affix) == "PRECISION_KEYWORD_PENDING_CONTENT" and not source_eligible:
+		return _blocked("PRECISION_PLACEHOLDER_SOURCE_INELIGIBLE")
+	var backfill := PrecisionResolverScript.new().backfill_placeholder(staged_item, precision_selection, source_eligible)
+	if not bool(backfill.get("applied", false)):
+		return _blocked(str(backfill.get("reason", "INVALID_PRECISION_BACKFILL")))
+	var save_error: Error = save_service.save_envelope(candidate)
+	if save_error != OK:
+		return _blocked("SAVE_FAILED:%d" % int(save_error))
+	return {
+		"outcome": "APPLIED",
+		"reason": "",
+		"gold_cost": 0,
+		"reinforcement_units": 0,
+		"precision_tag_id": str(backfill.get("tag_id", "")),
+		"precision_effect_axis": str(backfill.get("effect_axis", "")),
+		"precision_effect_delta": int(backfill.get("effect_delta", 0)),
+		"envelope": candidate,
+	}
 
 
 func _destruction_cause_for_result(outcome: String) -> String:

@@ -6,6 +6,7 @@ const SCREEN_SCENE := preload("res://scenes/vertical_slice/screens/vs_workshop_s
 const ItemScript := preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
 const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
+const SaveEnvelopeScript := preload("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
 const EnhancementActionServiceScript := preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 const WorkpieceDurabilityStateAtlasTexture := preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
@@ -53,6 +54,23 @@ func _enhancement_envelope():
 	item.uid = "BSI-11223344556677889900aabbccddeeff"
 	envelope.items_by_uid[item.uid] = item
 	envelope.active_run["selected_item_uid"] = item.uid
+	return envelope
+
+
+func _precision_envelope(level: int = 9, catalyst_affix: String = "", legacy_v3: bool = false):
+	var envelope = _enhancement_envelope()
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	item.enhancement_level = level
+	item.highest_checkpoint = 10 if level >= 10 else 0
+	item.catalyst_affix = catalyst_affix
+	item.raw_role_stat = 12
+	item.weight_point = 2
+	if legacy_v3:
+		var legacy_source: Dictionary = envelope.to_dict()
+		legacy_source["schema_version"] = 3
+		legacy_source["preset_version"] = "VS-2026.08.26-C"
+		legacy_source.erase("workshop_resources")
+		return SaveEnvelopeScript.from_dict(legacy_source)
 	return envelope
 
 
@@ -219,3 +237,87 @@ func test_workshop_displays_next_enhancement_outcomes_and_commits_saved_attempt(
 	assert_not_null(save_service.saved_envelope)
 	assert_eq(screen.view_state().get("enhancement_target_level", -1), 13)
 	assert_eq(resources.snapshot(), save_service.saved_envelope.resource_snapshot())
+
+
+func test_workshop_requires_two_korean_precision_choices_and_previews_the_resolved_tag() -> void:
+	var envelope = _precision_envelope()
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	var resources = ResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var save_service := FakeSaveService.new()
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(item, resources, null, EnhancementActionServiceScript.new(), save_service, envelope)
+	var initial: Dictionary = screen.view_state()
+	assert_true(bool(initial.get("precision_visible", false)))
+	assert_eq(initial.get("precision_mode", ""), "ATTEMPT")
+	assert_false(bool(initial.get("enhancement_allowed", true)))
+	assert_eq(initial.get("enhancement_reason", ""), "MISSING_CATALYST_LINEAGE")
+	var lineage := screen.get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var method := screen.get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	assert_not_null(lineage)
+	assert_not_null(method)
+	assert_true(screen.get_node("WorkshopLayout/EnhancementButton").disabled)
+	if lineage == null or method == null:
+		return
+	assert_eq(lineage.get_item_text(1), "불씨 계보")
+	assert_eq(method.get_item_text(1), "날 세우기")
+	screen.set_precision_selection("EMBER_LINEAGE", "EDGE_REINFORCEMENT")
+	var selected: Dictionary = screen.view_state()
+	assert_true(bool(selected.get("enhancement_allowed", false)))
+	assert_eq(selected.get("precision_tag_id", ""), "TAG_EMBER_EDGE")
+	assert_true(str(selected.get("precision_preview_summary", "")).contains("불씨의 예리함"))
+	assert_true(str(selected.get("precision_preview_summary", "")).contains("12 → 15"))
+	assert_true(str(selected.get("precision_preview_summary", "")).contains("내구도 변화 없음"))
+	assert_false(screen.get_node("WorkshopLayout/EnhancementButton").disabled)
+	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 0.0})
+	assert_eq(result.get("outcome", ""), "SUCCESS")
+	assert_eq(save_service.saved_envelope.get_item(item.uid).catalyst_affix, "TAG_EMBER_EDGE")
+	assert_eq(lineage.get_selected(), 0, "attempt-local selection must clear after the result")
+	assert_eq(method.get_selected(), 0, "attempt-local selection must clear after the result")
+
+
+func test_workshop_clears_precision_selection_after_hold_without_writing_a_tag() -> void:
+	var envelope = _precision_envelope()
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	var resources = ResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var save_service := FakeSaveService.new()
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(item, resources, null, EnhancementActionServiceScript.new(), save_service, envelope)
+	screen.set_precision_selection("ANVIL_LINEAGE", "LIGHTWEIGHTING")
+	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 99.0, "damage_roll_percent": 0.0})
+	assert_eq(result.get("outcome", ""), "FAILED_HOLD")
+	assert_eq(save_service.saved_envelope.get_item(item.uid).enhancement_level, 9)
+	assert_true(save_service.saved_envelope.get_item(item.uid).catalyst_affix.is_empty())
+	assert_eq((screen.get_node("WorkshopLayout/PrecisionLineageOption") as OptionButton).get_selected(), 0)
+	assert_eq((screen.get_node("WorkshopLayout/PrecisionMethodOption") as OptionButton).get_selected(), 0)
+
+
+func test_workshop_exposes_one_zero_cost_placeholder_correction_without_showing_the_placeholder() -> void:
+	var envelope = _precision_envelope(10, "PRECISION_KEYWORD_PENDING_CONTENT", true)
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	var resources = ResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var save_service := FakeSaveService.new()
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(item, resources, null, EnhancementActionServiceScript.new(), save_service, envelope)
+	var initial: Dictionary = screen.view_state()
+	assert_eq(initial.get("precision_mode", ""), "BACKFILL")
+	assert_false(bool(initial.get("enhancement_allowed", true)))
+	assert_eq(initial.get("enhancement_reason", ""), "PRECISION_PLACEHOLDER_REQUIRES_BACKFILL")
+	var lineage := screen.get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var method := screen.get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var backfill_button := screen.get_node_or_null("WorkshopLayout/PrecisionBackfillButton") as Button
+	assert_not_null(backfill_button)
+	if lineage == null or method == null or backfill_button == null:
+		return
+	assert_true(backfill_button.visible)
+	assert_true(backfill_button.disabled)
+	screen.set_precision_selection("ANVIL_LINEAGE", "LIGHTWEIGHTING")
+	assert_false(backfill_button.disabled)
+	var result: Dictionary = screen.request_precision_backfill()
+	assert_eq(result.get("outcome", ""), "APPLIED")
+	assert_eq(result.get("gold_cost", -1), 0)
+	assert_eq(result.get("reinforcement_units", -1), 0)
+	assert_eq(save_service.saved_envelope.get_item(item.uid).catalyst_affix, "TAG_ANVIL_LIGHT")
+	assert_false(str(screen.get_node("WorkshopLayout/PrecisionPreviewLabel").text).contains("PRECISION_KEYWORD_PENDING_CONTENT"))

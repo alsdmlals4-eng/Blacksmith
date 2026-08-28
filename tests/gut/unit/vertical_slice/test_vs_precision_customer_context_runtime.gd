@@ -188,62 +188,44 @@ func test_blocked_results_expose_assignment_block_reason_for_existing_task4_cont
 	assert_eq(missing_function.get("assignment_block_reason", ""), "REQUIRED_FUNCTION_MISSING")
 
 
-func test_precision_preview_classifies_context_relation_and_never_grants_catalyst_customer_bonus() -> void:
+func test_precision_selection_is_customer_context_independent_and_has_no_customer_bonus() -> void:
 	var resolver = load(PRECISION_RESOLVER_PATH).new()
-	assert_true(resolver.has_method("preview"), "precision resolver must expose preview")
-	if not resolver.has_method("preview"):
+	assert_true(resolver.has_method("selection_preview"), "Decision37 precision resolver must expose selection preview")
+	if not resolver.has_method("selection_preview"):
 		return
-	var context = _context()
-	var heavy = _item(45, 10)
-	var before_weight: int = int(heavy.weight_point)
-	var before_used: Array = heavy.used_precision_milestones.duplicate()
-	var light = resolver.preview(heavy, 10, "LIGHTWEIGHTING", "", context)
+	var item = _item(45, 9)
+	var before_weight: int = int(item.weight_point)
+	var light = resolver.selection_preview(item, 10, {
+		"lineage_id": "EMBER_LINEAGE",
+		"method_id": "LIGHTWEIGHTING",
+	})
 	assert_true(bool(light.get("allowed", false)))
-	assert_eq(light.get("output_lane", ""), "STAT_METHOD")
-	assert_eq(light.get("changed_axis", ""), "CURRENT_WEIGHT")
-	assert_eq(int(light.get("delta", 0)), -5)
-	assert_eq(int(light.get("result_weight", -1)), 40)
-	assert_eq(light.get("context_relation", ""), "GATE_CHANGE")
-	assert_eq(heavy.weight_point, before_weight, "precision preview must not mutate item weight")
-	assert_eq(heavy.used_precision_milestones, before_used, "precision preview must not consume milestone")
-
-	var edge = resolver.preview(_item(30, 10), 10, "EDGE_REINFORCEMENT", "", context)
-	assert_true(bool(edge.get("allowed", false)))
-	assert_eq(edge.get("context_relation", ""), "NOT_DIRECTLY_RELEVANT")
-
-	var weight_up = resolver.preview(_item(30, 10), 10, "WEIGHTING", "", context)
-	assert_true(bool(weight_up.get("allowed", false)))
-	assert_eq(weight_up.get("context_relation", ""), "TRADE_OFF")
-
-	var art = resolver.preview(_item(30, 10), 10, "ARTISTIC_FINISH", "salamander_core", context)
-	assert_true(bool(art.get("allowed", false)))
-	assert_eq(art.get("context_relation", ""), "NOT_DIRECTLY_RELEVANT")
-	assert_eq(int(art.get("customer_bonus_from_catalyst_selection_pp", -1)), 0)
-	assert_false(bool(art.get("customer_bonus_granted_by_catalyst_selection", true)))
+	assert_eq(light.get("tag_id", ""), "TAG_EMBER_LIGHT")
+	assert_eq(light.get("effect_axis", ""), "WEIGHT_POINT")
+	assert_eq(int(light.get("effect_delta", 0)), -3)
+	assert_eq(int(light.get("before_value", -1)), 45)
+	assert_eq(int(light.get("after_value", -1)), 42)
+	assert_eq(item.weight_point, before_weight, "precision preview must not mutate item weight")
+	assert_false(light.has("customer_bonus_from_catalyst_selection_pp"))
+	assert_false(light.has("context_relation"))
 
 
-func test_precision_preview_respects_milestone_and_destroyed_item_eligibility() -> void:
+func test_precision_selection_respects_exact_entry_and_destroyed_item_eligibility() -> void:
 	var resolver = load(PRECISION_RESOLVER_PATH).new()
-	assert_true(resolver.has_method("preview"), "precision resolver must expose preview")
-	if not resolver.has_method("preview"):
+	assert_true(resolver.has_method("selection_preview"), "Decision37 precision resolver must expose selection preview")
+	if not resolver.has_method("selection_preview"):
 		return
-	var context = _context()
 	var item = _item(30, 9)
-	var not_reached = resolver.preview(item, 10, "EDGE_REINFORCEMENT", "", context)
-	assert_false(bool(not_reached.get("allowed", true)))
-	assert_eq(not_reached.get("reason", ""), "MILESTONE_NOT_REACHED")
-
+	var selection := {"lineage_id": "ANVIL_LINEAGE", "method_id": "EDGE_REINFORCEMENT"}
+	var valid = resolver.selection_preview(item, 10, selection)
+	assert_true(bool(valid.get("allowed", false)))
 	item.enhancement_level = 10
-	item.highest_checkpoint = 10
-	item.used_precision_milestones.clear()
-	item.used_precision_milestones.append(10)
-	var used = resolver.preview(item, 10, "EDGE_REINFORCEMENT", "", context)
-	assert_false(bool(used.get("allowed", true)))
-	assert_eq(used.get("reason", ""), "PRECISION_MILESTONE_ALREADY_USED")
-
-	item.used_precision_milestones.clear()
+	var later = resolver.selection_preview(item, 11, selection)
+	assert_false(bool(later.get("allowed", true)))
+	assert_eq(later.get("reason", ""), "INVALID_PRECISION_ENTRY")
+	item.enhancement_level = 9
 	item.current_durability = 0
 	item.physical_state = "DESTROYED"
-	var destroyed = resolver.preview(item, 10, "EDGE_REINFORCEMENT", "", context)
+	var destroyed = resolver.selection_preview(item, 10, selection)
 	assert_false(bool(destroyed.get("allowed", true)))
 	assert_eq(destroyed.get("reason", ""), "ITEM_DESTROYED")

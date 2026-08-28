@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "1c1e8860533227a44f3c46c21ef8ead0f1cf902f",
+  "decision_ids": [
+    "BS-ENHANCE-20260829-37",
+    "BS-OPS-20260828-36"
+  ],
+  "approved_paths": [
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd",
+    "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
+    "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "USER_APPROVED_GITHUB_ISSUE_326_AND_PR_328_APPROVED_PROTECTED_CHANGE_LABEL",
+  "approval_time": "2026-08-29T02:10:00+09:00",
+  "scope_summary": "Exact GitHub Issue #326 only: Decision37 +9→+10 catalyst-lineage and precision-method Tag selection, atomic success/hold boundary, V3-origin no-cost placeholder backfill, and native Korean Workshop presentation. No Scene, Resource, project setting, asset, economy, customer lifecycle, grade/event affix, player title, fourth affix, or new persisted schema field is approved. This one-shot manifest must be retired in a separate post-merge closure PR."
+}
