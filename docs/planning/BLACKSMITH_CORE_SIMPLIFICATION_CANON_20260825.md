@@ -1,6 +1,6 @@
 # [현재 정본] Blacksmith Core Simplification Canon · 2026-08-25
 
-- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04 / BS-ENHANCE-20260828-34`
+- Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04 / BS-ENHANCE-20260828-34 / BS-ENHANCE-20260829-37`
 - Status: `USER_APPROVED / CURRENT_CANON_MVP_IMPLEMENTATION_AUTHORIZED`
 - Work Mode: `IMPLEMENTATION_AND_REVIEW`
 - Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
@@ -11,9 +11,10 @@
 
 This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 enhancement-failure damage probability, Decision29 repair/scar model, Decision31 repair-economy sensitivity overlay, Decision30 customer/world-event damage policy, Chronicle inclusion, Art03 direction and Art04 actual-game image consumer gate.
 
-For the `+10` keyword recipient, machine owner, player-title exclusion, and
-unapproved-content boundary, `BS-ENHANCE-20260828-34` is the field owner and
-overrides this integrated canon if any wording conflicts.
+For the `+10` keyword recipient, machine owner, and player-title exclusion,
+`BS-ENHANCE-20260828-34` is the field owner. For the first tag content table
+and empty-selection flow, `BS-ENHANCE-20260829-37` is the field owner. Either
+Decision overrides this integrated canon if any wording conflicts.
 
 Decision-specific machine owners:
 
@@ -45,7 +46,10 @@ TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_AND_PRECISION_METHOD_GOVERN_TAG_IDENTI
 PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_DURABILITY_AND_TAG_RESOLUTION_CONTEXT
 PRECISION_METHOD_TAG_ROLE = TAG_IDENTITY_RESOLUTION
 PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
-EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION
+EMPTY_CATALYST_LINEAGE_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL
+NO_DEFAULT_LINEAGE = TRUE
+PRECISION_SELECTION_PERSISTENCE = ATTEMPT_LOCAL_ONLY
+TAG_CATALOG_OWNER = BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json
 PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
 NO_FOURTH_AFFIX_SLOT
 ```
@@ -58,9 +62,13 @@ NO_FOURTH_AFFIX_SLOT
 태그 키워드의 후보 가족과 정체성은 `CATALYST_AFFIX`의 촉매 계보와
 정밀강화 방식의 조합으로 결정한다. 방식은 무기 능력치·내구도와 태그 해석
 문맥에만 영향을 주며, 등급·사건 키워드의 생성·선택·변경·대체 권한이 없다.
-빈 촉매 계보의 `+10` 동작은 아직 승인되지 않았으므로, 태그 content row와
-함께 별도 선택/기본값 규칙이 정해지기 전에는 태그 write 또는 표시를 구현하지
-않는다.
+첫 태그 표는 불씨/모루 계보와 날 세우기/경량 담금의 2×2 composite Tag다.
+`+9 → +10` 시도 전에 두 입력을 명시적으로 골라야 하며, 빈 계보/방식은
+비용·재료·확률 굴림 전에 차단된다. 기본 계보·무작위 태그·새 저장 field는
+없다. 선택은 실패와 함께 사라지고, 성공한 하나의 composite Tag만 기존
+`CATALYST_AFFIX`에 기록된다. 방식은 첫 표에서 `RAW_ROLE_STAT +3` 또는
+`WEIGHT_POINT -3`만 바꾸며, 내구도 변화는 0이다. 이는 Decision29/31의
+닫힌 내구도·수리 규칙을 변경하지 않는다.
 
 +20/+30/+40/+50 do not reopen Precision. Durability modifiers never change the +1 level delta or +10 keyword cardinality.
 
@@ -442,7 +450,7 @@ changes outside the approved task, and unapproved system expansion remain blocke
 
 ```text
 CURRENT_2026-08-28_PHASE = IMPLEMENTATION_AND_REVIEW
-CURRENT_ACCEPTED_FRONTIER = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_CONTRACT_REPAIR
+CURRENT_ACCEPTED_FRONTIER = PHASE_2_PRECISION_TAG_CATALOG_TDD_IMPLEMENTATION
 CURRENT_PRODUCT_MUTATION = AUTHORIZED_WITHIN_CURRENT_CANON_MVP
 PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
 ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY
@@ -472,7 +480,8 @@ RUNTIME_IMPLEMENTATION_OF_NEW_CORE = HISTORICAL_MVP_IMPLEMENTED / GODOT_GUT_VERI
 RUNTIME_IMPLEMENTATION_SCOPE = ITEM_V3 + SAVE_V3_MIGRATION + ENHANCEMENT_FAILURE + REPAIR_ECONOMY
 RUNTIME_UI_INTEGRATION = WORKSHOP_DURABILITY_REPAIR_BINDING_IMPLEMENTED / ITEM_SOURCE_CALLER_PENDING
 CUSTOMER_WORLD_EVENT_RUNTIME = NOT_RUN
-HUMAN_PLAYTEST = NOT_RUN
+HUMAN_PLAYTEST_EVIDENCE = NOT_RUN
+HUMAN_PLAYTEST = DEFERRED_BY_USER / NOT_RUN
 ANDROID_ACCESSIBILITY = NOT_RUN
 NOTION_CLIENT_GEOMETRY = NOT_APPLICABLE / HISTORICAL_SURFACE_RETIRED_BY_BS-OPS-20260828-35
 ```

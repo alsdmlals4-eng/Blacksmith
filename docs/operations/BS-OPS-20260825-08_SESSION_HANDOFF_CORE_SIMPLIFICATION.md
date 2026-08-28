@@ -39,18 +39,18 @@ not applicable because the surface is retired.
 - Decision ID: `BS-OPS-20260825-08`
 - Date: `2026-08-25 KST`, current update `2026-08-27 KST`
 - Status: `CURRENT_SESSION_HANDOFF / IMPLEMENTATION_AND_REVIEW`
-- Current accepted frontier: `CURRENT_ACCEPTED_FRONTIER = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_CONTRACT_REPAIR`
+- Current accepted frontier: `CURRENT_ACCEPTED_FRONTIER = PHASE_2_PRECISION_TAG_CATALOG_TDD_IMPLEMENTATION`
 - Current core hierarchy: `CURRENT_CORE_HIERARCHY = ENHANCEMENT_PRIMARY / CUSTOMER_ITEM_LIFECYCLE_DIFFERENTIATOR`
 - Current slice thesis: `REPEATED_ENHANCEMENT_PLAY_BEFORE_SAME_UID_LIFECYCLE_RESULT`; session target is `6_TO_8_MINUTES / PLAYTEST_HYPOTHESIS`. The exact unified package owner is `docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md`; it is active for current-canon MVP implementation and review only.
 - Current approved Slice: `CURRENT_PHASE_1_SLICE = B_ENHANCEMENT_FIRST_SAME_UID_LIFECYCLE`; `PHASE_1_ENHANCEMENT_WINDOW = +0_TO_+10 + +11_TO_+15` before one same-UID customer actual-use result; `PHASE_1_TARGET_SESSION_DURATION = 6_TO_8_MINUTES`; `PHASE_1_RESULT_TIMING = HANDOFF_TO_WORKSHOP_RETURN_BEAT_TO_RESULT`; `CRAFT_FEEDBACK_MILESTONES = EVERY_5_LEVELS / +10_SOLE_PRECISION`. The return beat is non-economic and creates no wait timer, customer-management system, or second-item task. The contract locks a temporary 30-unit starting reinforcement reserve so the approved path can reach `+11..+15`; its economy remains non-final.
 - Historical checkpoints: `PR #207 = MERGED_TO_MAIN / 5c29af1...`; `PR #208 = MERGED / R5_4_ROUTER`; `PR #209 = MERGED / BS-DAMAGE-20260826-28`; `PR #210 = MERGED / BS-REPAIR-20260826-29`; `PR #211 = MERGED / BS-DAMAGE-20260826-30 + BS-ART-20260826-04`
-- `CURRENT_RUNTIME_FOLLOWUP = PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE / ACTIVE_WITHIN_CURRENT_CANON`
+- `CURRENT_RUNTIME_FOLLOWUP = PHASE_2_PRECISION_TAG_CATALOG_TDD_IMPLEMENTATION / ACTIVE_WITHIN_CURRENT_CANON`
 - `GPT_WORK_PRIMARY_EXECUTION_SURFACE = GPT_WORK`
 - `GPT_WORK_MEMORY_MODE = DEFAULT_MEMORY`
 - `IMAGE_GOAL_QUEUE = READY_FOR_GPT_WORK`
 - Pre-existing protected PR: `#196 / OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`
 - Product implementation: `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / IMPLEMENTATION_AND_REVIEW_ALLOWED_WITHIN_APPROVED_SCOPE`
-- `BS-ENHANCE-20260828-34 / WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD / +10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD / ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY / ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX / PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10`
+- `BS-ENHANCE-20260828-34 + BS-ENHANCE-20260829-37 / WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD / +10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD / ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY / ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX / PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10`
 
 ```text
 TAG_KEYWORD_SOURCE = CATALYST_LINEAGE_AND_PRECISION_METHOD
@@ -58,7 +58,11 @@ TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_AND_PRECISION_METHOD_GOVERN_TAG_IDENTI
 PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_DURABILITY_AND_TAG_RESOLUTION_CONTEXT
 PRECISION_METHOD_TAG_ROLE = TAG_IDENTITY_RESOLUTION
 PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
-EMPTY_CATALYST_LINEAGE_BEHAVIOR = UNDECIDED / BLOCKS_TAG_WRITE_IMPLEMENTATION
+EMPTY_CATALYST_LINEAGE_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL
+NO_DEFAULT_LINEAGE = TRUE
+PRECISION_SELECTION_PERSISTENCE = ATTEMPT_LOCAL_ONLY
+TAG_CATALOG_OWNER = BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json
+HUMAN_PLAYTEST = DEFERRED_BY_USER / NOT_RUN
 ```
 
 ## 0. Runtime MVP checkpoint · 2026-08-26
@@ -236,7 +240,7 @@ Current approved Decisions:
 | Decision | Current meaning |
 | --- | --- |
 | `BS-ENHANCE-20260825-25` | Every enhancement success is exactly `+1`; only `+9 -> +10` is Precision; successful +10 creates one weapon-owned **tag keyword** via existing `CATALYST_AFFIX`. |
-| `BS-ENHANCE-20260828-34` | Weapon keywords are exactly Grade / Tag / Event: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`. The +10 tag keyword belongs to the weapon, not the player, and its identity is governed by catalyst lineage plus Precision method. Precision method affects weapon stats/durability and tag-resolution context only; it cannot affect Grade or Event keywords. A player title exists only as later content and is not granted by +10. Empty-lineage behavior remains unapproved, so tag writing/presentation remains out of scope. |
+| `BS-ENHANCE-20260828-34 + BS-ENHANCE-20260829-37` | Weapon keywords are exactly Grade / Tag / Event: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`. The +10 tag keyword belongs to the weapon, not the player, and its identity is governed by catalyst lineage plus Precision method. The first 2×2 content table is 불씨/모루 계보 × 날 세우기/경량 담금. Empty lineage/method blocks before cost or roll; success writes one composite Tag, and no new stored field is allowed. A player title exists only as later content and is not granted by +10. |
 | `BS-DAMAGE-20260825-26` | Historical structural simplification. Its no-numeric-authority and one-state-per-event fields are partially superseded by Decision29; its customer/world damage hook is refined by Decision30. |
 | `BS-DAMAGE-20260826-28` | Target-level base conditional damage-event chance after enhancement failure: `+11 5% / +30 6% / +60 7% / +90 8% / +100 10%`, exact piecewise-linear between anchors. |
 | `BS-REPAIR-20260826-29` | Visible `CURRENT/MAX/BASE_MAX` is sole durability authority. Current damage and permanent scar collapse into one effective durability state; low effective durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement remains allowed with penalties. |
