@@ -34,6 +34,12 @@ def read(path: Path, failures: list[str]) -> str:
         return ""
 
 
+def normalized_lf_sha256(path: Path) -> str:
+    """Windows CRLF checkout만 정규화한 UTF-8 Markdown 수령증 해시를 계산한다."""
+    payload = path.read_bytes().replace(b"\r\n", b"\n")
+    return hashlib.sha256(payload).hexdigest()
+
+
 def main() -> int:
     failures: list[str] = []
     human_gdd = read(HUMAN_GDD, failures)
@@ -105,10 +111,12 @@ def main() -> int:
     else:
         try:
             receipt = json.loads(PDF_RECEIPT.read_text(encoding="utf-8"))
-            expected_gdd_hash = hashlib.sha256(HUMAN_GDD.read_bytes()).hexdigest()
+            expected_gdd_hash = normalized_lf_sha256(HUMAN_GDD)
             expected_pdf_hash = hashlib.sha256(PDF.read_bytes()).hexdigest()
             if receipt.get("source_markdown", {}).get("sha256") != expected_gdd_hash:
                 failures.append("PDF receipt source Markdown SHA-256 does not match the human-facing GDD")
+            if receipt.get("source_markdown", {}).get("hash_basis") != "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION":
+                failures.append("PDF receipt source Markdown hash basis must be portable CRLF-to-LF normalization")
             if receipt.get("artifact", {}).get("sha256") != expected_pdf_hash:
                 failures.append("PDF receipt artifact SHA-256 does not match the PDF")
             reader = PdfReader(str(PDF))
