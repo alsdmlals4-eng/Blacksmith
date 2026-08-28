@@ -26,7 +26,14 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("LEGACY_COMPATIBILITY_ROUTER", agents)
         self.assertIn("BS-OPS-20260825-08", handoff)
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", handoff)
-        self.assertIn("CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826", handoff)
+        self.assertIn(
+            "HISTORICAL_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / NEW_MUTATION_BLOCKED_UNTIL_PHASE_1_AND_2_APPROVAL",
+            handoff,
+        )
+        self.assertIn(
+            "BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md",
+            handoff,
+        )
         self.assertIn("CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286", handoff)
         self.assertIn(
             "CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN", handoff
