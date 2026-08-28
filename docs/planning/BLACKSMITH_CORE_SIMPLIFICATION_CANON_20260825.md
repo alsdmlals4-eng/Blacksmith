@@ -35,6 +35,23 @@ NO_FOURTH_AFFIX_SLOT
 
 +20/+30/+40/+50 do not reopen Precision. Durability modifiers never change the +1 level delta or +10 keyword cardinality.
 
+### 2.1 Craft-feedback milestones · user-approved 2026-08-28
+
+```text
+CRAFT_FEEDBACK_MILESTONES = EVERY_5_LEVELS
++5 = CRAFT_FEEDBACK_MILESTONE_ONLY
++10 = CRAFT_FEEDBACK_MILESTONE_PLUS_SOLE_PRECISION_ENHANCEMENT
+NO_ADDITIONAL_PRECISION_AT_OTHER_5_LEVEL_MILESTONES = TRUE
+NO_NEW_AFFIX_OR_PROBABILITY_OR_RESOURCE_RULE_AT_CRAFT_MILESTONE = TRUE
+```
+
+Every five levels may create a stronger crafted-item feedback beat: a clear
+visual, audio, or presentation rise subject to a future approved consumer and
+implementation plan. These are experience and presentation milestones only.
+They do not add a success rule, a new Precision Enhancement, an additional
+affix, a material slot, a probability change, or an economy rule. `+9 -> +10`
+remains the one and only Precision Enhancement and keyword boundary.
+
 ## 3. Current durability authority · `BS-REPAIR-20260826-29`
 
 Decision29 partially supersedes Decision26's no-numeric-authority/state-step fields. Numeric durability is now **visible and sole mechanical authority**.
