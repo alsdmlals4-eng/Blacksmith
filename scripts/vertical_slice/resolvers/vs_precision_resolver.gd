@@ -27,8 +27,6 @@ func selection_preview(item, target_level: int, selection: Dictionary) -> Dictio
 		return _blocked("PRECISION_TAG_CATALOG_INVALID")
 	if not PRECISION_TARGETS.has(target_level) or int(item.enhancement_level) != target_level - 1:
 		return _blocked("INVALID_PRECISION_ENTRY")
-	if item.precision_milestone_is_resolved(target_level):
-		return _blocked("PRECISION_MILESTONE_ALREADY_RESOLVED")
 	if item.has_initial_tag_backfill_pending():
 		return _blocked("PRECISION_INITIAL_TAG_BACKFILL_PENDING")
 	if item.has_unreadable_catalyst_affix():
@@ -38,6 +36,8 @@ func selection_preview(item, target_level: int, selection: Dictionary) -> Dictio
 		return _blocked("INVALID_CATALYST_TAG_STATE")
 	if not _milestone_state_is_valid(item, entries):
 		return _blocked("INVALID_PRECISION_MILESTONE_STATE")
+	if item.precision_milestone_is_resolved(target_level):
+		return _blocked("PRECISION_MILESTONE_ALREADY_RESOLVED")
 	return _selection_preview_from_action(item, target_level, selection, entries, catalog_data)
 
 
@@ -60,7 +60,7 @@ func backfill_initial_tag(item, selection: Dictionary) -> Dictionary:
 		return _not_applied("PRECISION_INITIAL_TAG_BACKFILL_NOT_PENDING")
 	if item.has_unreadable_catalyst_affix() or not item.catalyst_tag_entries().is_empty():
 		return _not_applied("INVALID_CATALYST_TAG_STATE")
-	if not _milestone_state_is_valid(item, []):
+	if not _pending_backfill_milestone_state_is_valid(item):
 		return _not_applied("INVALID_PRECISION_MILESTONE_STATE")
 	if int(item.enhancement_level) < 10:
 		return _not_applied("PLACEHOLDER_LEVEL_INELIGIBLE")
@@ -251,13 +251,34 @@ func _entries_are_valid(entries: Array, catalog_data: Dictionary) -> bool:
 func _milestone_state_is_valid(item, entries: Array) -> bool:
 	var seen: Dictionary = {}
 	for milestone in item.used_precision_milestones:
-		if not PRECISION_TARGETS.has(milestone) or seen.has(milestone):
+		if not PRECISION_TARGETS.has(milestone) or milestone > int(item.enhancement_level) or seen.has(milestone):
 			return false
 		seen[milestone] = true
+	var action_count := 0
+	var milestone_owners: Dictionary = {}
 	for entry in entries:
-		if not seen.has(int(entry["created_milestone"])) or not seen.has(int(entry["last_advanced_milestone"])):
+		var stage := int(entry["stage"])
+		var created := int(entry["created_milestone"])
+		var last_advanced := int(entry["last_advanced_milestone"])
+		if not seen.has(created) or not seen.has(last_advanced) or created > last_advanced:
 			return false
-	return true
+		if (stage == 1 and created != last_advanced) or (stage > 1 and created == last_advanced):
+			return false
+		if milestone_owners.has(created):
+			return false
+		milestone_owners[created] = true
+		if last_advanced != created:
+			if milestone_owners.has(last_advanced):
+				return false
+			milestone_owners[last_advanced] = true
+		action_count += stage
+	return action_count == item.used_precision_milestones.size()
+
+
+func _pending_backfill_milestone_state_is_valid(item) -> bool:
+	if item.used_precision_milestones.is_empty():
+		return true
+	return item.used_precision_milestones.size() == 1 and item.used_precision_milestones[0] == 10 and int(item.enhancement_level) >= 10
 
 
 func _tag_is_compatible_with_entries(tag: Dictionary, entries: Array, catalog_data: Dictionary) -> bool:
@@ -304,21 +325,24 @@ func _catalog_is_valid(catalog_data: Dictionary) -> bool:
 		lineage_ids[str(lineage["id"])] = true
 	var method_ids: Dictionary = {}
 	for method in methods:
-		if not method is Dictionary or str(method.get("id", "")).is_empty() or method_ids.has(str(method.get("id", ""))):
+		if not method is Dictionary or str(method.get("id", "")).is_empty() or str(method.get("display_name_ko", "")).is_empty() or method_ids.has(str(method.get("id", ""))):
 			return false
 		var effect: Variant = method.get("effect", {})
 		if not effect is Dictionary or not ["RAW_ROLE_STAT", "WEIGHT_POINT"].has(str(effect.get("axis", ""))) or int(effect.get("delta", 0)) == 0 or int(effect.get("durability_delta", -1)) != 0:
 			return false
 		method_ids[str(method["id"])] = true
 	var tag_ids: Dictionary = {}
+	var tag_coordinates: Dictionary = {}
 	for tag in tags:
 		if not tag is Dictionary:
 			return false
 		var tag_id := str(tag.get("id", ""))
 		var compatible: Variant = tag.get("compatible_tag_ids", [])
-		if tag_id.is_empty() or tag_ids.has(tag_id) or str(tag.get("machine_owner", "")) != CATALYST_OWNER or not lineage_ids.has(str(tag.get("lineage_id", ""))) or not method_ids.has(str(tag.get("method_id", ""))) or not compatible is Array or compatible.size() != 3:
+		var coordinate := "%s|%s" % [str(tag.get("lineage_id", "")), str(tag.get("method_id", ""))]
+		if tag_id.is_empty() or str(tag.get("display_name_ko", "")).is_empty() or tag_ids.has(tag_id) or tag_coordinates.has(coordinate) or str(tag.get("machine_owner", "")) != CATALYST_OWNER or not lineage_ids.has(str(tag.get("lineage_id", ""))) or not method_ids.has(str(tag.get("method_id", ""))) or not compatible is Array or compatible.size() != 3:
 			return false
 		tag_ids[tag_id] = true
+		tag_coordinates[coordinate] = true
 	for tag in tags:
 		var ids: Array = tag["compatible_tag_ids"]
 		if ids.has(str(tag["id"])):

@@ -6,6 +6,13 @@ const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const TARGETS := [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
 
+class MalformedCatalogResolver extends PrecisionResolverScript:
+	var catalog_override: Dictionary = {}
+
+	func _load_catalog() -> Dictionary:
+		return catalog_override.duplicate(true)
+
+
 func _item(level: int = 9, weight: int = 12):
 	var item = ItemScript.new()
 	item.uid = "BSI-0102030405060708090a0b0c0d0e0f10"
@@ -168,6 +175,89 @@ func test_malformed_tag_history_or_duplicate_resolved_milestone_fails_closed_wit
 	assert_false(bool(orphaned.get("applied", true)))
 	assert_eq(orphaned.get("reason", ""), "INVALID_PRECISION_MILESTONE_STATE")
 	assert_eq(item.to_dict(), orphaned_snapshot)
+
+
+func test_impossible_normal_history_is_blocked_and_immutable() -> void:
+	var resolver = PrecisionResolverScript.new()
+	var cases: Array = []
+
+	var no_entries: VSItem = _item(19)
+	no_entries.used_precision_milestones.append(10)
+	cases.append(no_entries)
+
+	var stage_four_one_action: VSItem = _item(19)
+	_seed(stage_four_one_action, "TAG_EMBER_EDGE", 4)
+	cases.append(stage_four_one_action)
+
+	var reverse_history: VSItem = _item(19)
+	_seed(reverse_history, "TAG_EMBER_EDGE", 2, [10, 20])
+	reverse_history.catalyst_affix["tag_entries"][0]["created_milestone"] = 20
+	reverse_history.catalyst_affix["tag_entries"][0]["last_advanced_milestone"] = 10
+	cases.append(reverse_history)
+
+	var future_action: VSItem = _item(19)
+	future_action.catalyst_affix["tag_entries"] = [{
+		"tag_id": "TAG_EMBER_EDGE", "stage": 1, "created_milestone": 30, "last_advanced_milestone": 30,
+	}]
+	future_action.used_precision_milestones.append(30)
+	cases.append(future_action)
+
+	var shared_seed_action: VSItem = _item(19)
+	shared_seed_action.catalyst_affix["tag_entries"] = [
+		{"tag_id": "TAG_EMBER_EDGE", "stage": 1, "created_milestone": 10, "last_advanced_milestone": 10},
+		{"tag_id": "TAG_EMBER_LIGHT", "stage": 1, "created_milestone": 10, "last_advanced_milestone": 10},
+	]
+	shared_seed_action.used_precision_milestones.append_array([10, 20])
+	cases.append(shared_seed_action)
+
+	for item in cases:
+		var snapshot: Dictionary = item.to_dict()
+		var preview: Dictionary = resolver.selection_preview(item, 20, _upgrade())
+		assert_false(bool(preview.get("allowed", true)))
+		assert_eq(preview.get("reason", ""), "INVALID_PRECISION_MILESTONE_STATE")
+		var applied: Dictionary = resolver.apply_selection_success(item, 20, _upgrade())
+		assert_false(bool(applied.get("applied", true)))
+		assert_eq(applied.get("reason", ""), "INVALID_PRECISION_MILESTONE_STATE")
+		assert_eq(item.to_dict(), snapshot)
+
+
+func test_malformed_catalog_display_or_duplicate_coordinates_blocks_before_display_resolution() -> void:
+	var baseline := PrecisionResolverScript.new().catalog()
+	for malformed_catalog in [
+		_catalog_without_method_display(baseline),
+		_catalog_without_tag_display(baseline),
+		_catalog_with_duplicate_tag_coordinate(baseline),
+	]:
+		var resolver := MalformedCatalogResolver.new()
+		resolver.catalog_override = malformed_catalog
+		var item = _item(9)
+		var snapshot: Dictionary = item.to_dict()
+		var preview: Dictionary = resolver.selection_preview(item, 10, _add())
+		assert_false(bool(preview.get("allowed", true)))
+		assert_eq(preview.get("reason", ""), "PRECISION_TAG_CATALOG_INVALID")
+		var applied: Dictionary = resolver.apply_selection_success(item, 10, _add())
+		assert_false(bool(applied.get("applied", true)))
+		assert_eq(applied.get("reason", ""), "PRECISION_TAG_CATALOG_INVALID")
+		assert_eq(item.to_dict(), snapshot)
+
+
+func _catalog_without_method_display(catalog_data: Dictionary) -> Dictionary:
+	var malformed := catalog_data.duplicate(true)
+	malformed["methods"][0].erase("display_name_ko")
+	return malformed
+
+
+func _catalog_without_tag_display(catalog_data: Dictionary) -> Dictionary:
+	var malformed := catalog_data.duplicate(true)
+	malformed["tags"][0]["display_name_ko"] = ""
+	return malformed
+
+
+func _catalog_with_duplicate_tag_coordinate(catalog_data: Dictionary) -> Dictionary:
+	var malformed := catalog_data.duplicate(true)
+	malformed["tags"][1]["lineage_id"] = malformed["tags"][0]["lineage_id"]
+	malformed["tags"][1]["method_id"] = malformed["tags"][0]["method_id"]
+	return malformed
 
 
 func test_pending_initial_backfill_is_no_cost_seed_transition_without_effect_reapplication() -> void:
