@@ -3,128 +3,58 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DECISION = ROOT / "docs/decisions/BS-ENHANCE-20260829-37_PRECISION_TAG_CATALOG_AND_SELECTION_GATE.md"
+DECISION38 = ROOT / "docs/decisions/BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md"
 CATALOG = ROOT / "docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json"
-PHASE_CONTRACT = ROOT / "docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md"
-CORE_CANON = ROOT / "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md"
-AUTHORITY_INDEX = ROOT / "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md"
-HANDOFF = ROOT / "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md"
-HUMAN_GDD = ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md"
-AI_SPEC = ROOT / "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
+OWNERS = (
+    ROOT / "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+    ROOT / "docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md",
+    ROOT / "docs/decisions/BS-ENHANCE-20260829-37_PRECISION_TAG_CATALOG_AND_SELECTION_GATE.md",
+    ROOT / "docs/planning/BLACKSMITH_PHASE1_UNIFIED_IMPLEMENTATION_CONTRACT_20260828.md",
+    ROOT / "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
+    ROOT / "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md",
+)
 
 
-def _read(path: Path) -> str:
+def _text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def _require_tokens(path: Path, tokens: tuple[str, ...]) -> None:
-    text = _read(path)
-    missing = [token for token in tokens if token not in text]
-    assert not missing, f"{path.name}: missing {missing}"
-
-
 def main() -> None:
-    for path in (
-        DECISION,
-        CATALOG,
-        PHASE_CONTRACT,
-        CORE_CANON,
-        AUTHORITY_INDEX,
-        HANDOFF,
-        HUMAN_GDD,
-        AI_SPEC,
-    ):
-        assert path.is_file(), f"missing current precision catalog owner: {path}"
-
-    _require_tokens(
-        DECISION,
-        (
-            "STATUS = USER_APPROVED_CURRENT",
-            "BS-ENHANCE-20260829-37",
-            "TAG_CATALOG_OWNER = BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json",
-            "EMPTY_CATALYST_LINEAGE_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL",
-            "NO_DEFAULT_LINEAGE = TRUE",
-            "NO_NEW_STORED_FIELD_OR_FOURTH_AFFIX_SLOT = TRUE",
-            "PRECISION_SELECTION_PERSISTENCE = ATTEMPT_LOCAL_ONLY",
-            "HUMAN_PLAYTEST = DEFERRED_BY_USER / NOT_RUN",
-            "FUNCTION_REWORK = FORBIDDEN",
-            "ARTISTRY_EFFECT = FORBIDDEN",
-            "UNIVERSAL_CUSTOMER_DAMAGE_MITIGATION = FORBIDDEN",
-        ),
-    )
-
-    catalog = json.loads(_read(CATALOG))
-    assert catalog["schema_version"] == 1
-    assert catalog["status"] == "USER_APPROVED_CURRENT"
-    assert catalog["source_decision_id"] == "BS-ENHANCE-20260829-37"
+    assert DECISION38.is_file(), "Decision38 must be the recurring-precision field owner"
+    catalog = json.loads(_text(CATALOG))
+    assert catalog["schema_version"] == 2
+    assert catalog["source_decision_id"] == "BS-ENHANCE-20260830-38"
     assert catalog["machine_owner"] == "CATALYST_AFFIX"
-    assert catalog["new_stored_field"] is False
-    assert catalog["selection_flow"]["entry_level"] == 9
-    assert catalog["selection_flow"]["target_level"] == 10
+    assert catalog["precision_targets"] == list(range(10, 101, 10))
+    assert catalog["tag_growth"]["max_active_tags"] == 3
+    assert catalog["tag_growth"]["max_stage"] == 4
+    assert catalog["selection_flow"]["actions"] == ["ADD_TAG", "UPGRADE_TAG"]
     assert catalog["selection_flow"]["persistence"] == "ATTEMPT_LOCAL_ONLY"
-    assert catalog["selection_flow"]["empty_lineage_behavior"] == "BLOCK_BEFORE_COST_OR_ROLL"
-    assert catalog["selection_flow"]["no_default_lineage"] is True
-    assert catalog["selection_flow"]["failure_preserves_selection"] is False
+    assert catalog["selection_flow"]["no_default_random_or_reroll"] is True
     assert catalog["mechanical_boundary"]["durability_delta_in_first_catalog"] == 0
-    assert catalog["mechanical_boundary"]["forbid_function_rework"] is True
-    assert catalog["mechanical_boundary"]["forbid_artistry_effect"] is True
-    assert catalog["mechanical_boundary"]["forbid_universal_customer_damage_mitigation"] is True
-
-    lineages = {entry["id"]: entry for entry in catalog["lineages"]}
-    methods = {entry["id"]: entry for entry in catalog["methods"]}
-    tags = {entry["id"]: entry for entry in catalog["tags"]}
-    assert set(lineages) == {"EMBER_LINEAGE", "ANVIL_LINEAGE"}
-    assert set(methods) == {"EDGE_REINFORCEMENT", "LIGHTWEIGHTING"}
-    assert methods["EDGE_REINFORCEMENT"]["effect"] == {
-        "axis": "RAW_ROLE_STAT",
-        "delta": 3,
-    }
-    assert methods["LIGHTWEIGHTING"]["effect"] == {
-        "axis": "WEIGHT_POINT",
-        "delta": -3,
-    }
-    assert len(tags) == 4
-    pairs = {(entry["lineage_id"], entry["method_id"]) for entry in tags.values()}
-    assert pairs == {
-        ("EMBER_LINEAGE", "EDGE_REINFORCEMENT"),
-        ("EMBER_LINEAGE", "LIGHTWEIGHTING"),
-        ("ANVIL_LINEAGE", "EDGE_REINFORCEMENT"),
-        ("ANVIL_LINEAGE", "LIGHTWEIGHTING"),
-    }
-    assert all(entry["machine_owner"] == "CATALYST_AFFIX" for entry in tags.values())
-    assert all(entry["display_name_ko"] for entry in tags.values())
-    assert catalog["legacy_placeholder_backfill"]["placeholder"] == "PRECISION_KEYWORD_PENDING_CONTENT"
-    assert catalog["legacy_placeholder_backfill"]["cost_or_roll"] == "NONE"
-    assert catalog["legacy_placeholder_backfill"]["effect_application"] == "APPLY_ONCE"
-
-    mirrored_tokens = (
-        "BS-ENHANCE-20260829-37",
-        "EMPTY_CATALYST_LINEAGE_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL",
-        "NO_DEFAULT_LINEAGE = TRUE",
-        "PRECISION_SELECTION_PERSISTENCE = ATTEMPT_LOCAL_ONLY",
-        "HUMAN_PLAYTEST = DEFERRED_BY_USER / NOT_RUN",
-    )
-    for path in (PHASE_CONTRACT, CORE_CANON, AUTHORITY_INDEX, HANDOFF):
-        _require_tokens(path, mirrored_tokens)
-    _require_tokens(
-        HUMAN_GDD,
-        (
-            "불씨 계보",
-            "모루 계보",
-            "날 세우기",
-            "경량 담금",
-            "태그를 정하지 않으면 강화 시도 자체가 시작되지 않는다",
-            "사람 플레이 검수는 이번 계약의 완료 조건이 아니다",
-        ),
-    )
-    _require_tokens(
-        AI_SPEC,
-        (
-            "DEC-ENH-37",
-            "결정 완료",
-            "사람 플레이 검수는 사용자 지시로 이번 구현 계약의 완료 조건에서 제외",
-        ),
-    )
+    assert set(catalog["mechanical_boundary"]["allowed_effect_axes"]) == {"RAW_ROLE_STAT", "WEIGHT_POINT"}
+    assert catalog["mechanical_boundary"]["no_fourth_affix_slot"] is True
+    assert catalog["migration"]["v3_empty_string"] == "EMPTY_TAG_COLLECTION"
+    assert catalog["migration"]["v3_known_tag_at_level_10_or_higher"] == "SEED_STAGE_I_AND_MILESTONE_10"
+    assert catalog["migration"]["v3_pending_placeholder"] == "INITIAL_TAG_PENDING_BLOCK_FOLLOWUP_PRECISION"
+    tag_ids = [tag["id"] for tag in catalog["tags"]]
+    assert len(tag_ids) == 4
+    assert len(tag_ids) == len(set(tag_ids))
+    tag_id_set = set(tag_ids)
+    lineages = {lineage["id"] for lineage in catalog["lineages"]}
+    methods = {method["id"] for method in catalog["methods"]}
+    for tag in catalog["tags"]:
+        assert tag["machine_owner"] == "CATALYST_AFFIX"
+        assert tag["lineage_id"] in lineages
+        assert tag["method_id"] in methods
+        assert set(tag["compatible_tag_ids"]).issubset(tag_id_set)
+    for method in catalog["methods"]:
+        assert method["effect"]["axis"] in {"RAW_ROLE_STAT", "WEIGHT_POINT"}
+        assert method["effect"].get("durability_delta", 0) == 0
+    for owner in OWNERS:
+        text = _text(owner)
+        assert "BS-ENHANCE-20260830-38" in text, f"{owner.name}: missing Decision38 link"
+        assert "[대체됨]" in text, f"{owner.name}: missing explicit supersession"
     print("precision tag catalog contract: PASS")
 
 

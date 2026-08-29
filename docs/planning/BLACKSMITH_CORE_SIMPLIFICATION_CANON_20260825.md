@@ -426,6 +426,10 @@ Current consumer locators such as Main Menu, Enhancement, Precision +10, Durabil
 
 ## 11. Supersession boundary
 
+### Decision38 recurring Precision amendment · 2026-08-30
+
+`BS-ENHANCE-20260830-38` is the current field owner for recurring Precision cadence, tag collection stages/cap, migration, and effect timing. [대체됨] `+10` only / exactly one Tag / no-new-stored-field language above is historical for those fields. `PRECISION_TARGETS=[10,20,30,40,50,60,70,80,90,100]`; one `CATALYST_AFFIX` owns at most three Tags at I~IV. Decision28/29/30 remain unchanged. No default/random/reroll, inventory, or fourth affix slot is permitted.
+
 - Decision26 no-numeric-authority and one-state-per-event fields: `PARTIALLY_SUPERSEDED_BY_BS-REPAIR-20260826-29`.
 - Decision26 customer/world-event hook is refined by `BS-DAMAGE-20260826-30` for eligibility/profile/probability composition.
 - Historical 0~100 CURRENT/MAX scale, old MAX bands/success/effect penalties: historical only.

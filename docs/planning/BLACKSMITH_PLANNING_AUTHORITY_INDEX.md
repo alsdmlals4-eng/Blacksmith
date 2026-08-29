@@ -1,5 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
+- current amendment: `BS-ENHANCE-20260830-38` is the exclusive owner for recurring Precision targets, up-to-three I~IV tags in `CATALYST_AFFIX`, migration disposition, and effect timing. [대체됨] Decision34/37 cadence/cardinality claims remain historical evidence only.
+
 - 상태: `CURRENT_AUTHORITY_INDEX / CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
 - current decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04 / BS-ENHANCE-20260828-34 / BS-ENHANCE-20260829-37 / BS-OPS-20260828-35 / BS-OPS-20260828-36`
 - current owner: `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
