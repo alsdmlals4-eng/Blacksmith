@@ -2,6 +2,7 @@ class_name VSEnhancementActionService
 extends RefCounted
 
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
+const LedgerEntryScript = preload("res://scripts/vertical_slice/domain/vs_ledger_entry.gd")
 const SaveEnvelopeScript = preload("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
 const EnhancementResolverScript = preload(
 	"res://scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd"
@@ -13,6 +14,8 @@ const DestroyedHistoryRecordScript = preload(
 	"res://scripts/vertical_slice/domain/vs_destroyed_history_record.gd"
 )
 const REINFORCEMENT_MATERIAL_ID := "common_reinforcement_material"
+const PRECISION_TAG_GROWTH_EVENT_TYPE := "PRECISION_TAG_GROWTH"
+const PRECISION_TAG_GROWTH_DECISION_ID := "BS-ENHANCE-20260830-38"
 
 
 func resolve_and_save_with_rolls(
@@ -112,6 +115,9 @@ func resolve_with_rolls(
 	if str(result.get("outcome", "")) == "BLOCKED":
 		result["destroyed_history_archived"] = false
 		return result
+	if str(result.get("outcome", "")) == "SUCCESS" and result.has("precision_action"):
+		if _append_precision_tag_growth_ledger(staged_item, result, game_day) != OK:
+			return _blocked("PRECISION_TAG_GROWTH_LEDGER_FAILED")
 
 	var staged_record = null
 	if str(staged_item.physical_state) == "DESTROYED":
@@ -146,7 +152,9 @@ func _commit_enhancement_state(item, staged_item) -> void:
 	item.repair_job_available = bool(staged_item.repair_job_available)
 	item.max_enhancement_reached = bool(staged_item.max_enhancement_reached)
 	item.physical_state = str(staged_item.physical_state)
-	item.catalyst_affix = str(staged_item.catalyst_affix)
+	item.catalyst_affix = staged_item.catalyst_affix.duplicate(true)
+	item.used_precision_milestones = staged_item.used_precision_milestones.duplicate()
+	item.ledger = staged_item.ledger.duplicate(true)
 	item.raw_role_stat = int(staged_item.raw_role_stat)
 	item.weight_point = int(staged_item.weight_point)
 
@@ -156,16 +164,20 @@ func backfill_precision_tag_and_save(envelope, item_uid: String, precision_selec
 		return _blocked("INVALID_SAVE_SERVICE")
 	if envelope == null or not envelope.has_method("to_dict") or not envelope.has_method("get_item"):
 		return _blocked("INVALID_SAVE_ENVELOPE")
-	var source_eligible: bool = envelope.has_method("is_legacy_v3_precision_backfill_eligible") and envelope.is_legacy_v3_precision_backfill_eligible(item_uid)
+	var source_item = envelope.get_item(item_uid)
+	if source_item == null:
+		return _blocked("ITEM_NOT_FOUND")
+	if source_item.has_unreadable_catalyst_affix():
+		return _blocked("CATALYST_AFFIX_UNKNOWN_FAIL_CLOSED")
+	if not source_item.has_initial_tag_backfill_pending():
+		return _blocked("PRECISION_INITIAL_TAG_BACKFILL_NOT_PENDING")
 	var candidate = SaveEnvelopeScript.from_dict(envelope.to_dict())
 	if candidate == null or not candidate.validation_errors.is_empty():
 		return _blocked("INVALID_SAVE_ENVELOPE")
 	var staged_item = candidate.get_item(item_uid)
 	if staged_item == null:
 		return _blocked("ITEM_NOT_FOUND")
-	if str(staged_item.catalyst_affix) == "PRECISION_KEYWORD_PENDING_CONTENT" and not source_eligible:
-		return _blocked("PRECISION_PLACEHOLDER_SOURCE_INELIGIBLE")
-	var backfill := PrecisionResolverScript.new().backfill_placeholder(staged_item, precision_selection, source_eligible)
+	var backfill := PrecisionResolverScript.new().backfill_initial_tag(staged_item, precision_selection)
 	if not bool(backfill.get("applied", false)):
 		return _blocked(str(backfill.get("reason", "INVALID_PRECISION_BACKFILL")))
 	var save_error: Error = save_service.save_envelope(candidate)
@@ -176,11 +188,45 @@ func backfill_precision_tag_and_save(envelope, item_uid: String, precision_selec
 		"reason": "",
 		"gold_cost": 0,
 		"reinforcement_units": 0,
+		"precision_action": str(backfill.get("action", "")),
 		"precision_tag_id": str(backfill.get("tag_id", "")),
+		"precision_stage_before": int(backfill.get("stage_before", 0)),
+		"precision_stage_after": int(backfill.get("stage_after", 0)),
 		"precision_effect_axis": str(backfill.get("effect_axis", "")),
 		"precision_effect_delta": int(backfill.get("effect_delta", 0)),
 		"envelope": candidate,
 	}
+
+
+func _append_precision_tag_growth_ledger(item, result: Dictionary, game_day: int) -> Error:
+	var target_level := int(result.get("target_level", 0))
+	var tag_id := str(result.get("precision_tag_id", ""))
+	var action := str(result.get("precision_action", ""))
+	if target_level <= 0 or tag_id.is_empty() or action.is_empty():
+		return ERR_INVALID_DATA
+	var stage_before := int(result.get("precision_stage_before", 0))
+	var stage_after := int(result.get("precision_stage_after", 0))
+	var effect_axis := str(result.get("precision_effect_axis", ""))
+	var effect_delta := int(result.get("precision_effect_delta", 0))
+	var entry = LedgerEntryScript.create(
+		item.ledger.size() + 1,
+		"precision-tag-growth:%s:%d" % [str(item.uid), target_level],
+		PRECISION_TAG_GROWTH_EVENT_TYPE,
+		PRECISION_TAG_GROWTH_DECISION_ID,
+		"%s:%d" % [tag_id, stage_before],
+		"%s:%d" % [tag_id, stage_after],
+		game_day,
+		{
+			"target_level": target_level,
+			"action": action,
+			"tag_id": tag_id,
+			"stage_before": stage_before,
+			"stage_after": stage_after,
+			"effect_axis": effect_axis,
+			"effect_delta": effect_delta,
+		}
+	)
+	return item.append_ledger_entry(entry.to_dict())
 
 
 func _destruction_cause_for_result(outcome: String) -> String:

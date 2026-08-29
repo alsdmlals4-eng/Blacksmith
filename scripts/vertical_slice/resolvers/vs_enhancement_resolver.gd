@@ -61,7 +61,7 @@ func preview(item, target_level: int, precision_selection: Dictionary = {}) -> D
 	var band := band_for_target(target_level)
 	if band == "INVALID": return {"allowed": false, "reason": "INVALID_TARGET_LEVEL"}
 	var precision_tag_preview := {}
-	if target_level == 10:
+	if PrecisionResolverScript.PRECISION_TARGETS.has(target_level):
 		precision_tag_preview = PrecisionResolverScript.new().selection_preview(item, target_level, precision_selection)
 		if not bool(precision_tag_preview.get("allowed", false)):
 			return {"allowed": false, "reason": str(precision_tag_preview.get("reason", "INVALID_PRECISION_SELECTION"))}
@@ -83,12 +83,20 @@ func resolve_with_rolls(item, target_level: int, rolls: Dictionary, precision_se
 	if not bool(attempt.get("allowed", false)): return {"outcome": "BLOCKED", "reason": str(attempt.get("reason", "INVALID_ATTEMPT"))}
 	if bool(attempt["guaranteed"]) or float(rolls.get("success_roll_percent", 0.0)) < float(attempt["final_success_percent"]):
 		var precision_result := {}
-		if target_level == 10:
-			precision_result = PrecisionResolverScript.new().apply_selection_success(item, precision_selection)
+		if PrecisionResolverScript.PRECISION_TARGETS.has(target_level):
+			precision_result = PrecisionResolverScript.new().apply_selection_success(item, target_level, precision_selection)
 			if not bool(precision_result.get("applied", false)):
 				return {"outcome": "BLOCKED", "reason": str(precision_result.get("reason", "INVALID_PRECISION_SELECTION"))}
 		_apply_success(item, target_level)
-		return {"outcome": "SUCCESS", "target_level": target_level, "band": str(attempt["band"]), "precision_tag_id": str(precision_result.get("tag_id", "")), "precision_effect_axis": str(precision_result.get("effect_axis", "")), "precision_effect_delta": int(precision_result.get("effect_delta", 0))}
+		var success := {"outcome": "SUCCESS", "target_level": target_level, "band": str(attempt["band"])}
+		if not precision_result.is_empty():
+			success["precision_action"] = str(precision_result.get("action", ""))
+			success["precision_tag_id"] = str(precision_result.get("tag_id", ""))
+			success["precision_stage_before"] = int(precision_result.get("stage_before", 0))
+			success["precision_stage_after"] = int(precision_result.get("stage_after", 0))
+			success["precision_effect_axis"] = str(precision_result.get("effect_axis", ""))
+			success["precision_effect_delta"] = int(precision_result.get("effect_delta", 0))
+		return success
 	var recovery_key := str(target_level)
 	item.enhancement_recovery_by_target[recovery_key] = int(item.enhancement_recovery_by_target.get(recovery_key, 0)) + 1
 	if target_level > 10 and float(rolls.get("damage_roll_percent", 100.0)) < float(attempt["final_damage_percent"]):

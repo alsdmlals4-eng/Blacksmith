@@ -15,21 +15,24 @@ func _item(level: int = 0) -> VSItem:
 func test_success_updates_one_level_checkpoint_and_clears_only_target_recovery() -> void:
 	var resolver = ResolverScript.new()
 	var item = _item(9)
+	item.weight_point = 3
 	item.enhancement_recovery_by_target = {"10": 2, "11": 1}
-	var result = resolver.resolve_with_rolls(item, 10, {"success_roll_percent": 0.0}, _precision_selection())
+	var result = resolver.resolve_with_rolls(item, 10, {"success_roll_percent": 0.0}, _precision_add_anvil_light())
 	assert_eq(result["outcome"], "SUCCESS")
 	assert_eq(item.enhancement_level, 10)
 	assert_eq(item.highest_checkpoint, 10)
 	assert_false(item.enhancement_recovery_by_target.has("10"))
 	assert_eq(item.enhancement_recovery_by_target.get("11"), 1)
-	assert_eq(item.catalyst_affix, "TAG_ANVIL_LIGHT")
+	assert_eq(item.catalyst_tag_entries()[0]["tag_id"], "TAG_ANVIL_LIGHT")
+	assert_eq(item.catalyst_tag_entries()[0]["stage"], 1)
+	assert_eq(item.used_precision_milestones, [10])
 	assert_eq(item.weight_point, 0)
 
 
 func test_level_100_success_sets_terminal_lifecycle_fact() -> void:
 	var resolver = ResolverScript.new()
 	var item = _item(99)
-	var result = resolver.resolve_with_rolls(item, 100, {"success_roll_percent": 0.0})
+	var result = resolver.resolve_with_rolls(item, 100, {"success_roll_percent": 0.0}, _precision_add_anvil_edge())
 	assert_eq(result["outcome"], "SUCCESS")
 	assert_eq(item.enhancement_level, 100)
 	assert_true(item.max_enhancement_reached)
@@ -79,5 +82,9 @@ func test_zero_current_from_damage_marks_physical_destroyed_without_max_scar() -
 	assert_eq(item.physical_state, "DESTROYED")
 
 
-func _precision_selection() -> Dictionary:
-	return {"lineage_id": "ANVIL_LINEAGE", "method_id": "LIGHTWEIGHTING"}
+func _precision_add_anvil_light() -> Dictionary:
+	return {"action": "ADD_TAG", "lineage_id": "ANVIL_LINEAGE", "method_id": "LIGHTWEIGHTING"}
+
+
+func _precision_add_anvil_edge() -> Dictionary:
+	return {"action": "ADD_TAG", "lineage_id": "ANVIL_LINEAGE", "method_id": "EDGE_REINFORCEMENT"}
