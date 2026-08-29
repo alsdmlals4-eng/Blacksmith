@@ -142,6 +142,7 @@ static func from_dict(value: Dictionary) -> VSItem:
 	var raw_catalyst_affix: Variant = value.get("catalyst_affix", "")
 	if source_schema_version >= SCHEMA_VERSION:
 		if raw_catalyst_affix is Dictionary:
+			_validate_raw_catalyst_scalars(raw_catalyst_affix, item.validation_errors)
 			item.catalyst_affix = _normalize_catalyst_affix(raw_catalyst_affix)
 		else:
 			item.validation_errors.append("INVALID_FIELD_TYPE:catalyst_affix")
@@ -368,9 +369,15 @@ func _migrate_schema_v2_durability() -> void:
 
 static func _normalize_catalyst_affix(value: Dictionary) -> Dictionary:
 	var normalized := empty_catalyst_affix()
-	normalized["schema_version"] = int(value.get("schema_version", 0))
-	normalized["initial_tag_backfill_pending"] = bool(value.get("initial_tag_backfill_pending", false))
-	normalized["unreadable_legacy_affix"] = str(value.get("unreadable_legacy_affix", ""))
+	var raw_schema_version: Variant = value.get("schema_version", 0)
+	if _is_valid_catalyst_schema_version(raw_schema_version):
+		normalized["schema_version"] = int(raw_schema_version)
+	var raw_initial_pending: Variant = value.get("initial_tag_backfill_pending", false)
+	if raw_initial_pending is bool:
+		normalized["initial_tag_backfill_pending"] = raw_initial_pending
+	var raw_unreadable_affix: Variant = value.get("unreadable_legacy_affix", "")
+	if raw_unreadable_affix is String:
+		normalized["unreadable_legacy_affix"] = raw_unreadable_affix
 	var raw_entries: Variant = value.get("tag_entries", [])
 	if raw_entries is Array:
 		var entries: Array = []
@@ -388,6 +395,26 @@ static func _normalize_catalyst_affix(value: Dictionary) -> Dictionary:
 	else:
 		normalized["tag_entries"] = raw_entries
 	return normalized
+
+
+static func _validate_raw_catalyst_scalars(value: Dictionary, errors: Array[String]) -> void:
+	var required_scalars := {
+		"schema_version": TYPE_INT,
+		"initial_tag_backfill_pending": TYPE_BOOL,
+		"unreadable_legacy_affix": TYPE_STRING,
+	}
+	for field_name in required_scalars:
+		if not value.has(field_name):
+			errors.append("MISSING_CATALYST_FIELD:%s" % field_name)
+			continue
+		if field_name == "schema_version" and _is_valid_catalyst_schema_version(value[field_name]):
+			continue
+		if typeof(value[field_name]) != required_scalars[field_name]:
+			errors.append("INVALID_FIELD_TYPE:catalyst_affix.%s" % field_name)
+
+
+static func _is_valid_catalyst_schema_version(value: Variant) -> bool:
+	return value is int or (value is float and value == floor(value))
 
 
 static func _unreadable_catalyst_affix(source_value: String) -> Dictionary:

@@ -205,3 +205,29 @@ func test_v4_invalid_tag_collection_is_rejected_without_becoming_empty() -> void
 	assert_true(restored.validation_errors.has("DUPLICATE_CATALYST_TAG:TAG_EMBER_EDGE"))
 	assert_true(restored.validation_errors.has("CATALYST_LAST_ADVANCE_NOT_USED:TAG_EMBER_EDGE:20"))
 	assert_eq(restored.catalyst_tag_entries().size(), 2, "invalid collection must remain inspectable")
+
+
+func test_v4_catalyst_scalar_type_and_presence_corruption_fails_closed() -> void:
+	var cases := [
+		{"field": "schema_version", "value": "1"},
+		{"field": "initial_tag_backfill_pending", "value": "not-a-bool"},
+		{"field": "unreadable_legacy_affix", "value": []},
+	]
+	for case_value in cases:
+		var value: Dictionary = _make_item().to_dict()
+		var catalyst: Dictionary = value["catalyst_affix"].duplicate(true)
+		catalyst[case_value["field"]] = case_value["value"]
+		value["catalyst_affix"] = catalyst
+		var restored = ItemScript.from_dict(value)
+		assert_true(
+			restored.validation_errors.has("INVALID_FIELD_TYPE:catalyst_affix.%s" % case_value["field"]),
+			"corrupt %s must not normalize into a playable record" % case_value["field"]
+		)
+		assert_false(restored.validation_errors.is_empty())
+
+	var missing_value: Dictionary = _make_item().to_dict()
+	var missing_catalyst: Dictionary = missing_value["catalyst_affix"].duplicate(true)
+	missing_catalyst.erase("schema_version")
+	missing_value["catalyst_affix"] = missing_catalyst
+	var missing_restored = ItemScript.from_dict(missing_value)
+	assert_true(missing_restored.validation_errors.has("MISSING_CATALYST_FIELD:schema_version"))
