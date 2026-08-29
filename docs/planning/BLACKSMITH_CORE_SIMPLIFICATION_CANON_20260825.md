@@ -11,10 +11,12 @@
 
 This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 enhancement-failure damage probability, Decision29 repair/scar model, Decision31 repair-economy sensitivity overlay, Decision30 customer/world-event damage policy, Chronicle inclusion, Art03 direction and Art04 actual-game image consumer gate.
 
-For the `+10` keyword recipient, machine owner, and player-title exclusion,
-`BS-ENHANCE-20260828-34` is the field owner. For the first tag content table
-and empty-selection flow, `BS-ENHANCE-20260829-37` is the field owner. Either
-Decision overrides this integrated canon if any wording conflicts.
+`BS-ENHANCE-20260830-38` exclusively owns recurring Precision cadence, tag
+cardinality/stage, V3→V4 migration, growth timing, catalog, and selection
+semantics. Decision34 retains only non-conflicting weapon recipient, machine
+owner, and player-title exclusion evidence; Decision37 retains only the first
+2×2 content and empty pre-roll gate evidence. [대체됨] Neither older Decision
+overrides Decision38 on its owned fields.
 
 Decision-specific machine owners:
 
@@ -435,7 +437,8 @@ Current consumer locators such as Main Menu, Enhancement, Precision +10, Durabil
 - Historical 0~100 CURRENT/MAX scale, old MAX bands/success/effect penalties: historical only.
 - Old repair formulas and `MAX +15 / cap60` overhaul: historical/superseded; not fallback.
 - Old DAMAGE/CRITICAL family ratios: historical; not Decision28/29 authority.
-- Old multi-precision cadence: partially superseded; +10-only current.
+- [대체됨] Old multi-precision cadence and its former single-`+10` wording are historical;
+  `BS-ENHANCE-20260830-38` owns the current ten-target recurring cadence.
 - Historical Precision-method `FUNCTION_REWORK`, artistry, and environmental-function
   output lanes: superseded for current method effects. The current method scope is
   weapon stats and durability only.

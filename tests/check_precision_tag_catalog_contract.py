@@ -37,24 +37,49 @@ def main() -> None:
     assert catalog["migration"]["v3_empty_string"] == "EMPTY_TAG_COLLECTION"
     assert catalog["migration"]["v3_known_tag_at_level_10_or_higher"] == "SEED_STAGE_I_AND_MILESTONE_10"
     assert catalog["migration"]["v3_pending_placeholder"] == "INITIAL_TAG_PENDING_BLOCK_FOLLOWUP_PRECISION"
+    assert catalog["migration"]["v3_unknown_nonempty_string"] == "FAIL_CLOSED_UNREADABLE_CATALYST_STATE"
     tag_ids = [tag["id"] for tag in catalog["tags"]]
     assert len(tag_ids) == 4
     assert len(tag_ids) == len(set(tag_ids))
     tag_id_set = set(tag_ids)
     lineages = {lineage["id"] for lineage in catalog["lineages"]}
     methods = {method["id"] for method in catalog["methods"]}
+    assert tag_id_set == {"TAG_EMBER_EDGE", "TAG_EMBER_LIGHT", "TAG_ANVIL_EDGE", "TAG_ANVIL_LIGHT"}
+    assert {(tag["id"], tag["lineage_id"], tag["method_id"]) for tag in catalog["tags"]} == {
+        ("TAG_EMBER_EDGE", "EMBER_LINEAGE", "EDGE_REINFORCEMENT"),
+        ("TAG_EMBER_LIGHT", "EMBER_LINEAGE", "LIGHTWEIGHTING"),
+        ("TAG_ANVIL_EDGE", "ANVIL_LINEAGE", "EDGE_REINFORCEMENT"),
+        ("TAG_ANVIL_LIGHT", "ANVIL_LINEAGE", "LIGHTWEIGHTING"),
+    }
+    expected_effects = {
+        "EDGE_REINFORCEMENT": {"axis": "RAW_ROLE_STAT", "delta": 3, "durability_delta": 0},
+        "LIGHTWEIGHTING": {"axis": "WEIGHT_POINT", "delta": -3, "durability_delta": 0},
+    }
     for tag in catalog["tags"]:
         assert tag["machine_owner"] == "CATALYST_AFFIX"
         assert tag["lineage_id"] in lineages
         assert tag["method_id"] in methods
-        assert set(tag["compatible_tag_ids"]).issubset(tag_id_set)
+        compatible = tag["compatible_tag_ids"]
+        assert len(compatible) == len(set(compatible))
+        assert tag["id"] not in compatible
+        assert set(compatible) == tag_id_set - {tag["id"]}
+        for other_id in compatible:
+            other = next(candidate for candidate in catalog["tags"] if candidate["id"] == other_id)
+            assert tag["id"] in other["compatible_tag_ids"]
     for method in catalog["methods"]:
-        assert method["effect"]["axis"] in {"RAW_ROLE_STAT", "WEIGHT_POINT"}
-        assert method["effect"].get("durability_delta", 0) == 0
+        assert method["effect"] == expected_effects[method["id"]]
     for owner in OWNERS:
         text = _text(owner)
         assert "BS-ENHANCE-20260830-38" in text, f"{owner.name}: missing Decision38 link"
         assert "[대체됨]" in text, f"{owner.name}: missing explicit supersession"
+    authority = _text(OWNERS[4])
+    phase_contract = _text(OWNERS[3])
+    core_canon = _text(OWNERS[0])
+    assert "RECURRING_PRECISION_DECISION = BS-ENHANCE-20260830-38" in phase_contract
+    assert "Decision34/37 = RESIDUAL_NON_CONFLICTING_HISTORICAL_EVIDENCE" in authority
+    assert "+10-only current" not in authority
+    assert "+10-only current" not in core_canon
+    assert "+10-only current" not in phase_contract
     print("precision tag catalog contract: PASS")
 
 

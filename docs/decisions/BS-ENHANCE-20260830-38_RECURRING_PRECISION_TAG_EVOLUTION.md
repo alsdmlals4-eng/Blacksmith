@@ -27,7 +27,7 @@ Decision28의 exact failure-damage curve, Decision29의 CURRENT/MAX/BASE_MAX dur
 
 ## 효과와 migration
 
-현재 첫 catalog는 `EDGE_REINFORCEMENT=RAW_ROLE_STAT +3`, `LIGHTWEIGHTING=WEIGHT_POINT -3 (floor 0)`, `DURABILITY_DELTA=0`만 허용한다. stage는 선택한 method의 적용 횟수이며 효과를 재계산하거나 배가하지 않는다.
+현재 첫 catalog는 `EDGE_REINFORCEMENT=RAW_ROLE_STAT +3`, `LIGHTWEIGHTING=WEIGHT_POINT -3 (floor 0)`, `DURABILITY_DELTA=0`만 허용한다. stage는 선택한 `tag_id`의 속성이며, 그 tag의 method effect가 해당 stage 상승 때 한 번 적용된 횟수를 읽기 좋게 나타낸다. 효과를 재계산하거나 배가하지 않는다.
 
 | V3 입력 | V4 결과 |
 | --- | --- |
@@ -38,6 +38,6 @@ Decision28의 exact failure-damage curve, Decision29의 CURRENT/MAX/BASE_MAX dur
 
 ## 조사·적대 검토·증거 ceiling
 
-`ADOPT`: 지속 제작 상태를 명시적으로 보여 주는 제작 게임의 누적 선택. `ADAPT`: Android two-step large native control. `REJECT`: forging-potential 자원, random affix reroll, 10회 무한 누적. 적대 검토는 fourth affix, 확률/내구도/repair 변경, default selection, duplicate effect, V3 double-apply를 차단한다.
+`ADOPT`: [Last Epoch 공식 Forging Potential](https://support.lastepoch.com/hc/en-us/articles/46361900702363-What-is-Forging-Potential)의 명시적 제작 상태 표현을, 별도 Forging Potential 자원 없이 tag stage/다음 target 표시에만 적용한다. `REJECT`: [Last Epoch 공식 Runes and Glyphs](https://support.lastepoch.com/hc/en-us/articles/46361877750043-Runes-and-Glyphs)의 무작위 affix 변경/reroll 성격은 채택하지 않는다. `ADAPT`: [Android 공식 natural input guidance](https://developer.android.com/games/develop/multiplatform/enable-natural-input-on-all-form-factors)의 입력 적합성 원칙을 two-step, 큰 native control에만 적용한다. 이 출처의 수치·균형 값은 import하지 않는다. `REJECT`: forging-potential 자원과 10회 무한 누적. 적대 검토는 fourth affix, 확률/내구도/repair 변경, default selection, duplicate effect, V3 double-apply를 차단한다.
 
 자동 계약은 catalog/owner 정합성 증거일 뿐 Godot runtime, Android, accessibility, performance, simulation, human playtest는 `NOT_RUN`이다.
