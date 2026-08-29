@@ -1,7 +1,7 @@
 class_name VSItem
 extends RefCounted
 
-const SCHEMA_VERSION := 3
+const SCHEMA_VERSION := 4
 const BASE_MAX_DURABILITY := 5
 const LedgerEntryScript = preload("res://scripts/vertical_slice/domain/vs_ledger_entry.gd")
 const REQUIRED_FIELDS := [
@@ -47,7 +47,15 @@ const PRIMARY_MATERIAL_IDS := ["iron", "silver", "meteor_iron"]
 const LEGACY_DAMAGE_STATES := ["INTACT", "DAMAGED", "BROKEN", "RESTORED"]
 const PHYSICAL_STATES := ["ACTIVE", "DESTROYED"]
 const CHECKPOINT_FLOORS := [0, 10, 30, 60, 90]
-const PRECISION_MILESTONES := [10]
+const PRECISION_MILESTONES := [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+const CATALYST_SCHEMA_VERSION := 1
+const CATALYST_TAG_IDS := [
+	"TAG_EMBER_EDGE",
+	"TAG_EMBER_LIGHT",
+	"TAG_ANVIL_EDGE",
+	"TAG_ANVIL_LIGHT",
+]
+const PRECISION_PLACEHOLDER_AFFIX := "PRECISION_KEYWORD_PENDING_CONTENT"
 
 var schema_version: int = SCHEMA_VERSION
 var uid: String = ""
@@ -62,7 +70,7 @@ var weight_point: int = 0
 var function_capacity: int = 0
 var functions: Array[String] = []
 var grade_affix: String = ""
-var catalyst_affix: String = ""
+var catalyst_affix: Dictionary = empty_catalyst_affix()
 var chronicle_affix: String = ""
 var enhancement_level: int = 0
 var enhancement_failure_streak: int = 0
@@ -103,7 +111,6 @@ static func from_dict(value: Dictionary) -> VSItem:
 	item.weight_point = int(value.get("weight_point", -1))
 	item.function_capacity = int(value.get("function_capacity", -1))
 	item.grade_affix = str(value.get("grade_affix", ""))
-	item.catalyst_affix = str(value.get("catalyst_affix", ""))
 	item.chronicle_affix = str(value.get("chronicle_affix", ""))
 	item.enhancement_level = int(value.get("enhancement_level", -1))
 	item.enhancement_failure_streak = int(value.get("enhancement_failure_streak", -1))
@@ -132,6 +139,18 @@ static func from_dict(value: Dictionary) -> VSItem:
 	else:
 		item.validation_errors.append("INVALID_FIELD_TYPE:used_precision_milestones")
 
+	var raw_catalyst_affix: Variant = value.get("catalyst_affix", "")
+	if source_schema_version >= SCHEMA_VERSION:
+		if raw_catalyst_affix is Dictionary:
+			item.catalyst_affix = _normalize_catalyst_affix(raw_catalyst_affix)
+		else:
+			item.validation_errors.append("INVALID_FIELD_TYPE:catalyst_affix")
+			item.catalyst_affix = _unreadable_catalyst_affix(str(raw_catalyst_affix))
+	elif source_schema_version == 3 or source_schema_version == 2:
+		item.catalyst_affix = _migrate_legacy_catalyst_affix(raw_catalyst_affix, item)
+	else:
+		item.catalyst_affix = _unreadable_catalyst_affix(str(raw_catalyst_affix))
+
 	var raw_recovery: Variant = value.get("enhancement_recovery_by_target", {})
 	if raw_recovery is Dictionary:
 		item.enhancement_recovery_by_target = raw_recovery.duplicate(true)
@@ -157,7 +176,7 @@ static func from_dict(value: Dictionary) -> VSItem:
 
 	if source_schema_version == 2:
 		item._migrate_schema_v2_durability()
-	elif source_schema_version != SCHEMA_VERSION:
+	elif source_schema_version != 3 and source_schema_version != SCHEMA_VERSION:
 		item.validation_errors.append("UNSUPPORTED_ITEM_SCHEMA:%d" % source_schema_version)
 	item._validate_values()
 	return item
@@ -178,7 +197,7 @@ func to_dict() -> Dictionary:
 		"function_capacity": function_capacity,
 		"functions": functions.duplicate(),
 		"grade_affix": grade_affix,
-		"catalyst_affix": catalyst_affix,
+		"catalyst_affix": catalyst_affix.duplicate(true),
 		"chronicle_affix": chronicle_affix,
 		"enhancement_level": enhancement_level,
 		"enhancement_failure_streak": enhancement_failure_streak,
@@ -211,6 +230,37 @@ func append_ledger_entry(entry_value: Dictionary) -> Error:
 	return OK
 
 
+static func empty_catalyst_affix() -> Dictionary:
+	return {
+		"schema_version": CATALYST_SCHEMA_VERSION,
+		"tag_entries": [],
+		"initial_tag_backfill_pending": false,
+		"unreadable_legacy_affix": "",
+	}
+
+
+func catalyst_tag_entries() -> Array[Dictionary]:
+	var entries: Array[Dictionary] = []
+	var raw_entries: Variant = catalyst_affix.get("tag_entries", [])
+	if raw_entries is Array:
+		for raw_entry in raw_entries:
+			if raw_entry is Dictionary:
+				entries.append(raw_entry.duplicate(true))
+	return entries
+
+
+func has_initial_tag_backfill_pending() -> bool:
+	return bool(catalyst_affix.get("initial_tag_backfill_pending", false))
+
+
+func has_unreadable_catalyst_affix() -> bool:
+	return not str(catalyst_affix.get("unreadable_legacy_affix", "")).is_empty()
+
+
+func precision_milestone_is_resolved(target_level: int) -> bool:
+	return used_precision_milestones.has(target_level)
+
+
 func _validate_values() -> void:
 	var uid_regex := RegEx.new()
 	uid_regex.compile("^BSI-[0-9a-f]{32}$")
@@ -241,6 +291,7 @@ func _validate_values() -> void:
 	for milestone in used_precision_milestones:
 		if not PRECISION_MILESTONES.has(milestone):
 			validation_errors.append("INVALID_PRECISION_MILESTONE:%d" % milestone)
+	_validate_catalyst_affix()
 	if not LEGACY_DAMAGE_STATES.has(damage_state):
 		validation_errors.append("INVALID_DAMAGE_STATE:%s" % damage_state)
 	if not CHECKPOINT_FLOORS.has(highest_checkpoint):
@@ -312,4 +363,97 @@ func _migrate_schema_v2_durability() -> void:
 			1,
 			max_durability
 		)
-	repair_job_available = false
+		repair_job_available = false
+
+
+static func _normalize_catalyst_affix(value: Dictionary) -> Dictionary:
+	var normalized := empty_catalyst_affix()
+	normalized["schema_version"] = int(value.get("schema_version", 0))
+	normalized["initial_tag_backfill_pending"] = bool(value.get("initial_tag_backfill_pending", false))
+	normalized["unreadable_legacy_affix"] = str(value.get("unreadable_legacy_affix", ""))
+	var raw_entries: Variant = value.get("tag_entries", [])
+	if raw_entries is Array:
+		var entries: Array = []
+		for raw_entry in raw_entries:
+			if raw_entry is Dictionary:
+				entries.append({
+					"tag_id": str(raw_entry.get("tag_id", "")),
+					"stage": int(raw_entry.get("stage", -1)),
+					"created_milestone": int(raw_entry.get("created_milestone", -1)),
+					"last_advanced_milestone": int(raw_entry.get("last_advanced_milestone", -1)),
+				})
+			else:
+				entries.append(raw_entry)
+		normalized["tag_entries"] = entries
+	else:
+		normalized["tag_entries"] = raw_entries
+	return normalized
+
+
+static func _unreadable_catalyst_affix(source_value: String) -> Dictionary:
+	var unreadable := empty_catalyst_affix()
+	unreadable["unreadable_legacy_affix"] = source_value
+	return unreadable
+
+
+static func _migrate_legacy_catalyst_affix(raw_value: Variant, item: VSItem) -> Dictionary:
+	var legacy_affix := str(raw_value)
+	if legacy_affix.is_empty():
+		return empty_catalyst_affix()
+	if legacy_affix == PRECISION_PLACEHOLDER_AFFIX:
+		var pending := empty_catalyst_affix()
+		pending["initial_tag_backfill_pending"] = true
+		return pending
+	if CATALYST_TAG_IDS.has(legacy_affix) and item.enhancement_level >= 10:
+		if not item.used_precision_milestones.has(10):
+			item.used_precision_milestones.append(10)
+		var migrated := empty_catalyst_affix()
+		migrated["tag_entries"] = [{
+			"tag_id": legacy_affix,
+			"stage": 1,
+			"created_milestone": 10,
+			"last_advanced_milestone": 10,
+		}]
+		return migrated
+	return _unreadable_catalyst_affix(legacy_affix)
+
+
+func _validate_catalyst_affix() -> void:
+	if int(catalyst_affix.get("schema_version", 0)) != CATALYST_SCHEMA_VERSION:
+		validation_errors.append("INVALID_CATALYST_SCHEMA_VERSION")
+	var raw_entries: Variant = catalyst_affix.get("tag_entries", null)
+	if not raw_entries is Array:
+		validation_errors.append("INVALID_FIELD_TYPE:catalyst_affix.tag_entries")
+		return
+	if raw_entries.size() > 3:
+		validation_errors.append("TOO_MANY_CATALYST_TAGS")
+	var seen_tag_ids: Dictionary = {}
+	for raw_entry in raw_entries:
+		if not raw_entry is Dictionary:
+			validation_errors.append("INVALID_CATALYST_TAG_ENTRY_TYPE")
+			continue
+		var tag_id := str(raw_entry.get("tag_id", ""))
+		var stage := int(raw_entry.get("stage", -1))
+		var created_milestone := int(raw_entry.get("created_milestone", -1))
+		var last_advanced_milestone := int(raw_entry.get("last_advanced_milestone", -1))
+		if not CATALYST_TAG_IDS.has(tag_id):
+			validation_errors.append("INVALID_CATALYST_TAG_ID:%s" % tag_id)
+		if seen_tag_ids.has(tag_id):
+			validation_errors.append("DUPLICATE_CATALYST_TAG:%s" % tag_id)
+		seen_tag_ids[tag_id] = true
+		if stage < 1 or stage > 4:
+			validation_errors.append("INVALID_CATALYST_TAG_STAGE:%s:%d" % [tag_id, stage])
+		if not PRECISION_MILESTONES.has(created_milestone):
+			validation_errors.append("INVALID_CATALYST_CREATED_MILESTONE:%s:%d" % [tag_id, created_milestone])
+		if not PRECISION_MILESTONES.has(last_advanced_milestone):
+			validation_errors.append("INVALID_CATALYST_LAST_ADVANCE_MILESTONE:%s:%d" % [tag_id, last_advanced_milestone])
+		if not used_precision_milestones.has(created_milestone):
+			validation_errors.append("CATALYST_CREATED_NOT_USED:%s:%d" % [tag_id, created_milestone])
+		if not used_precision_milestones.has(last_advanced_milestone):
+			validation_errors.append("CATALYST_LAST_ADVANCE_NOT_USED:%s:%d" % [tag_id, last_advanced_milestone])
+		if last_advanced_milestone < created_milestone:
+			validation_errors.append("CATALYST_ADVANCE_BEFORE_CREATION:%s" % tag_id)
+	if has_initial_tag_backfill_pending() and not raw_entries.is_empty():
+		validation_errors.append("PENDING_CATALYST_HAS_TAG_ENTRIES")
+	if has_unreadable_catalyst_affix() and not raw_entries.is_empty():
+		validation_errors.append("UNREADABLE_CATALYST_HAS_TAG_ENTRIES")

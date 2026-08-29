@@ -64,6 +64,7 @@ func test_v3_save_migrates_in_memory_to_v4_with_temp_starter_resources_without_v
 	assert_eq(restored.schema_version, 4)
 	assert_eq(restored.preset_version, "VS-2026.08.27-D")
 	assert_eq(restored.workshop_resources.get("gold", -1), 20000)
+	assert_false(restored.has_method("is_legacy_v3_precision_backfill_eligible"))
 
 
 func test_v4_save_without_workshop_resources_fails_closed() -> void:

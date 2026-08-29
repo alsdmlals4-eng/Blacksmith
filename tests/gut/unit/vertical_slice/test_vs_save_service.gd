@@ -31,7 +31,17 @@ func _make_item():
 	item.function_capacity = 1
 	item.functions.assign(["ELEMENTAL_WARD_FIRE"])
 	item.grade_affix = "LEGENDARY_EDGE"
-	item.catalyst_affix = "EMBER_TOUCHED"
+	item.catalyst_affix = {
+		"schema_version": 1,
+		"tag_entries": [{
+			"tag_id": "TAG_EMBER_EDGE",
+			"stage": 1,
+			"created_milestone": 10,
+			"last_advanced_milestone": 10,
+		}],
+		"initial_tag_backfill_pending": false,
+		"unreadable_legacy_affix": "",
+	}
 	item.chronicle_affix = "ARENA_TESTED"
 	item.enhancement_level = 10
 	item.enhancement_failure_streak = 0
@@ -206,6 +216,32 @@ func test_missing_save_reports_validation_error() -> void:
 	var service = SaveServiceScript.new(TEST_SAVE_PATH)
 	var restored = service.load_envelope()
 	assert_true(restored.validation_errors.has("SAVE_NOT_FOUND"), "missing save must report SAVE_NOT_FOUND")
+
+
+func test_v3_migration_is_idempotent_across_deserialize_save_deserialize() -> void:
+	var service = SaveServiceScript.new(TEST_SAVE_PATH)
+	var legacy: Dictionary = _make_envelope().to_dict()
+	legacy["schema_version"] = 3
+	legacy["preset_version"] = "VS-2026.08.26-C"
+	legacy["items_by_uid"][ITEM_UID]["schema_version"] = 3
+	legacy["items_by_uid"][ITEM_UID]["catalyst_affix"] = "TAG_EMBER_EDGE"
+	legacy["items_by_uid"][ITEM_UID]["used_precision_milestones"] = []
+	var first = SaveEnvelopeScript.from_dict(legacy)
+	assert_true(first.validation_errors.is_empty(), str(first.validation_errors))
+	var first_item = first.get_item(ITEM_UID)
+	assert_eq(first_item.catalyst_tag_entries()[0]["stage"], 1)
+	assert_eq(first_item.used_precision_milestones, [10])
+	assert_eq(first_item.raw_role_stat, 20)
+	assert_eq(first_item.ledger.size(), 0)
+	assert_eq(service.save_envelope(first), OK)
+	var second = service.load_envelope()
+	assert_true(second.validation_errors.is_empty(), str(second.validation_errors))
+	var second_item = second.get_item(ITEM_UID)
+	assert_eq(second_item.catalyst_tag_entries(), first_item.catalyst_tag_entries())
+	assert_eq(second_item.used_precision_milestones, [10])
+	assert_eq(second_item.raw_role_stat, 20)
+	assert_eq(second_item.ledger.size(), 0)
+	assert_false(second_item.has_initial_tag_backfill_pending())
 
 
 func _cleanup() -> void:
