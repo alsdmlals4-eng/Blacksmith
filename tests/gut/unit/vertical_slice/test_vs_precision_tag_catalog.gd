@@ -177,6 +177,57 @@ func test_malformed_tag_history_or_duplicate_resolved_milestone_fails_closed_wit
 	assert_eq(item.to_dict(), orphaned_snapshot)
 
 
+func test_stage_three_history_without_a_complete_milestone_assignment_is_blocked_and_immutable() -> void:
+	var resolver = PrecisionResolverScript.new()
+	var item = _item(39)
+	item.catalyst_affix["tag_entries"] = [{
+		"tag_id": "TAG_EMBER_EDGE",
+		"stage": 3,
+		"created_milestone": 10,
+		"last_advanced_milestone": 20,
+	}]
+	item.used_precision_milestones.append_array([10, 20, 30])
+	var snapshot: Dictionary = item.to_dict()
+
+	var preview: Dictionary = resolver.selection_preview(item, 40, _add("ANVIL_LINEAGE", "LIGHTWEIGHTING"))
+	assert_false(bool(preview.get("allowed", true)))
+	assert_eq(preview.get("reason", ""), "INVALID_PRECISION_MILESTONE_STATE")
+	var applied: Dictionary = resolver.apply_selection_success(item, 40, _add("ANVIL_LINEAGE", "LIGHTWEIGHTING"))
+	assert_false(bool(applied.get("applied", true)))
+	assert_eq(applied.get("reason", ""), "INVALID_PRECISION_MILESTONE_STATE")
+	assert_eq(item.to_dict(), snapshot)
+
+
+func test_stage_three_history_with_a_complete_internal_milestone_assignment_is_allowed() -> void:
+	var resolver = PrecisionResolverScript.new()
+	var item = _item(39)
+	item.catalyst_affix["tag_entries"] = [{
+		"tag_id": "TAG_EMBER_EDGE",
+		"stage": 3,
+		"created_milestone": 10,
+		"last_advanced_milestone": 30,
+	}]
+	item.used_precision_milestones.append_array([10, 20, 30])
+
+	var preview: Dictionary = resolver.selection_preview(item, 40, _add("ANVIL_LINEAGE", "LIGHTWEIGHTING"))
+	assert_true(bool(preview.get("allowed", false)))
+	assert_eq(preview.get("reason", ""), "OK")
+
+
+func test_multiple_stage_three_entries_find_a_unique_complete_assignment() -> void:
+	var resolver = PrecisionResolverScript.new()
+	var item = _item(69)
+	item.catalyst_affix["tag_entries"] = [
+		{"tag_id": "TAG_EMBER_EDGE", "stage": 3, "created_milestone": 10, "last_advanced_milestone": 60},
+		{"tag_id": "TAG_ANVIL_EDGE", "stage": 3, "created_milestone": 20, "last_advanced_milestone": 40},
+	]
+	item.used_precision_milestones.append_array([10, 20, 30, 40, 50, 60])
+
+	var preview: Dictionary = resolver.selection_preview(item, 70, _upgrade("TAG_EMBER_EDGE"))
+	assert_true(bool(preview.get("allowed", false)))
+	assert_eq(preview.get("reason", ""), "OK")
+
+
 func test_impossible_normal_history_is_blocked_and_immutable() -> void:
 	var resolver = PrecisionResolverScript.new()
 	var cases: Array = []

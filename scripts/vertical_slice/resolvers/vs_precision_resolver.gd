@@ -249,30 +249,74 @@ func _entries_are_valid(entries: Array, catalog_data: Dictionary) -> bool:
 
 
 func _milestone_state_is_valid(item, entries: Array) -> bool:
-	var seen: Dictionary = {}
-	for milestone in item.used_precision_milestones:
-		if not PRECISION_TARGETS.has(milestone) or milestone > int(item.enhancement_level) or seen.has(milestone):
+	var used_milestones: Array = []
+	var used_lookup: Dictionary = {}
+	for raw_milestone in item.used_precision_milestones:
+		if typeof(raw_milestone) != TYPE_INT:
 			return false
-		seen[milestone] = true
-	var action_count := 0
-	var milestone_owners: Dictionary = {}
+		var milestone: int = raw_milestone
+		if not PRECISION_TARGETS.has(milestone) or milestone > int(item.enhancement_level) or used_lookup.has(milestone):
+			return false
+		used_lookup[milestone] = true
+		used_milestones.append(milestone)
+	var expected_action_count := 0
+	var assigned_milestones: Dictionary = {}
+	var internal_action_counts: Array = []
 	for entry in entries:
 		var stage := int(entry["stage"])
 		var created := int(entry["created_milestone"])
 		var last_advanced := int(entry["last_advanced_milestone"])
-		if not seen.has(created) or not seen.has(last_advanced) or created > last_advanced:
+		if not used_lookup.has(created) or not used_lookup.has(last_advanced) or created > last_advanced:
 			return false
 		if (stage == 1 and created != last_advanced) or (stage > 1 and created == last_advanced):
 			return false
-		if milestone_owners.has(created):
+		if assigned_milestones.has(created):
 			return false
-		milestone_owners[created] = true
+		assigned_milestones[created] = true
 		if last_advanced != created:
-			if milestone_owners.has(last_advanced):
+			if assigned_milestones.has(last_advanced):
 				return false
-			milestone_owners[last_advanced] = true
-		action_count += stage
-	return action_count == item.used_precision_milestones.size()
+			assigned_milestones[last_advanced] = true
+		expected_action_count += stage
+		internal_action_counts.append(maxi(0, stage - 2))
+	if expected_action_count != used_milestones.size():
+		return false
+	return _can_assign_all_internal_actions(used_milestones, entries, internal_action_counts, 0, assigned_milestones)
+
+
+# Persisted entries retain only their first and latest action. Reconstruct a legal
+# history by assigning each stage III/IV entry its required distinct inner actions.
+func _can_assign_all_internal_actions(used_milestones: Array, entries: Array, internal_action_counts: Array, entry_index: int, assigned_milestones: Dictionary) -> bool:
+	if entry_index >= entries.size():
+		return assigned_milestones.size() == used_milestones.size()
+	var required_internal_actions := int(internal_action_counts[entry_index])
+	if required_internal_actions == 0:
+		return _can_assign_all_internal_actions(used_milestones, entries, internal_action_counts, entry_index + 1, assigned_milestones)
+	var entry: Dictionary = entries[entry_index]
+	var created := int(entry["created_milestone"])
+	var last_advanced := int(entry["last_advanced_milestone"])
+	var candidates: Array = []
+	for milestone in used_milestones:
+		if milestone > created and milestone < last_advanced and not assigned_milestones.has(milestone):
+			candidates.append(milestone)
+	candidates.sort()
+	return _assign_entry_internal_actions(candidates, 0, required_internal_actions, used_milestones, entries, internal_action_counts, entry_index, assigned_milestones)
+
+
+func _assign_entry_internal_actions(candidates: Array, candidate_index: int, remaining_actions: int, used_milestones: Array, entries: Array, internal_action_counts: Array, entry_index: int, assigned_milestones: Dictionary) -> bool:
+	if remaining_actions == 0:
+		return _can_assign_all_internal_actions(used_milestones, entries, internal_action_counts, entry_index + 1, assigned_milestones)
+	if candidates.size() - candidate_index < remaining_actions:
+		return false
+	for index in range(candidate_index, candidates.size()):
+		var milestone := int(candidates[index])
+		if assigned_milestones.has(milestone):
+			continue
+		assigned_milestones[milestone] = true
+		if _assign_entry_internal_actions(candidates, index + 1, remaining_actions - 1, used_milestones, entries, internal_action_counts, entry_index, assigned_milestones):
+			return true
+		assigned_milestones.erase(milestone)
+	return false
 
 
 func _pending_backfill_milestone_state_is_valid(item) -> bool:
