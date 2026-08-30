@@ -91,7 +91,7 @@ def main() -> None:
     coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
     delivery = coverage["candidate_visual_delivery"]
     assert delivery["requirements_owner"] == "docs/planning/BLACKSMITH_RECURRING_PRECISION_VISUAL_REQUIREMENTS_20260830.json"
-    assert delivery["status"] == "TWO_USER_APPROVED_RUNTIME_ASSETS_PLUS_NATIVE_PRECISION_UX"
+    assert delivery["status"] == "TWO_USER_APPROVED_SCENE_ILLUSTRATIONS_FIVE_USER_LOCKED_EQUIPMENT_IDENTITIES_PLUS_NATIVE_PRECISION_UX"
     assert delivery["runtime_promotion"] == "IMPLEMENTED_MACHINE_VERIFIED"
     assert delivery["flow_map"] == "TEXT_NATIVE_MERMAID_AND_TABLE_ONLY"
     recurring = next(entry for entry in coverage["screen_inventory"] if entry["screen_id"] == "RECURRING_PRECISION_TAG_CHOICE")

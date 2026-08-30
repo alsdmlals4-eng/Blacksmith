@@ -4,13 +4,13 @@
   "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
   "source_markdown": {
     "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
-    "sha256": "0c311abbe0faf53912808e4a047bbedbd70bf3af5bba1100d74d55fe2aac9187",
+    "sha256": "001376ad6d6584197d1e6c4633d2831e6fdce8755591487fbe7611458feee674",
     "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
   },
   "artifact": {
     "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
-    "sha256": "cb42647a3194b282ca0f43cd5fa9f8d31081831590bc1a03386b6e0c5f5c3064",
-    "page_count": 7,
+    "sha256": "4fb143d276689eaf31e9c800c272f0535f1312d6dd5ff2c5101f004038d45325",
+    "page_count": 8,
     "pdf_title": "Blacksmith 사람용 게임 기획서",
     "pdf_subject": "Human-facing Korean GDD",
     "target_format": "A4"
@@ -22,14 +22,19 @@
     "invariant": true,
     "images": [
       "assets/ui/workshop/main_menu_dawn_background_v1.png",
-      "assets/ui/workshop/customer_result_return_illustration_v1.png"
+      "assets/ui/workshop/customer_result_return_illustration_v1.png",
+      "assets/ui/equipment/iron_sword_card_v1.png",
+      "assets/ui/equipment/iron_shield_card_v1.png",
+      "assets/ui/equipment/iron_bow_card_v1.png",
+      "assets/ui/equipment/iron_armor_card_v1.png",
+      "assets/ui/equipment/iron_helmet_card_v1.png"
     ]
   },
   "deterministic_publish_proof": {
     "invariant": true,
     "identical_sha256_runs": [
-      "cb42647a3194b282ca0f43cd5fa9f8d31081831590bc1a03386b6e0c5f5c3064",
-      "cb42647a3194b282ca0f43cd5fa9f8d31081831590bc1a03386b6e0c5f5c3064"
+      "4fb143d276689eaf31e9c800c272f0535f1312d6dd5ff2c5101f004038d45325",
+      "4fb143d276689eaf31e9c800c272f0535f1312d6dd5ff2c5101f004038d45325"
     ],
     "run_count": 2,
     "basis": "two consecutive invariant ReportLab publishes with unchanged source"
@@ -43,7 +48,8 @@
       4,
       5,
       6,
-      7
+      7,
+      8
     ],
     "inspection": "ALL_PAGES_RENDERED_AND_REVIEWED_BEFORE_RECEIPT_FINALIZATION",
     "result": "KOREAN_TEXT_TABLES_FLOW_AND_SCENE_CONTEXT_INSPECTED"

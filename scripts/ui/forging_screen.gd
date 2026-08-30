@@ -135,10 +135,12 @@ func _build_interface() -> void:
 		var equipment_id := str(equipment.get("equipment_id", ""))
 		var choice := Button.new()
 		choice.name = "EquipmentChoice_%s" % equipment_id
-		choice.custom_minimum_size = Vector2(0, 72)
+		choice.custom_minimum_size = Vector2(0, 128)
 		choice.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		choice.alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		choice.add_theme_font_size_override("font_size", 18)
 		choice.pressed.connect(_on_equipment_choice_pressed.bind(equipment_id))
+		_add_equipment_choice_illustration(choice, equipment)
 		equipment_grid.add_child(choice)
 
 	var work_panel := _panel(PANEL)
@@ -297,6 +299,20 @@ func _refresh_equipment_controls() -> void:
 		choice.disabled = not enabled
 		var marker := "선택됨" if equipment_id == _selected_equipment_id else "선택"
 		choice.text = "%s\n%s" % [str(equipment.get("display_name_ko", "")), marker]
+
+
+func _add_equipment_choice_illustration(choice: Button, equipment: Dictionary) -> void:
+	var image_path := str(equipment.get("image_path", ""))
+	var illustration := TextureRect.new()
+	illustration.name = "EquipmentIdentityIllustration"
+	illustration.position = Vector2(12, 16)
+	illustration.size = Vector2(96, 96)
+	illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	if not image_path.is_empty() and ResourceLoader.exists(image_path):
+		illustration.texture = ResourceLoader.load(image_path) as Texture2D
+	choice.add_child(illustration)
 
 
 func _load_session_config() -> Dictionary:

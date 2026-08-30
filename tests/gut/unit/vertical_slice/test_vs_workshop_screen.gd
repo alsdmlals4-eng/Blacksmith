@@ -7,6 +7,7 @@ const ItemScript := preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
 const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
 const EnhancementActionServiceScript := preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
+const EquipmentCatalogScript := preload("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
 const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 const WorkpieceDurabilityStateAtlasTexture := preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
@@ -173,6 +174,27 @@ func test_workshop_title_uses_the_selected_equipment_catalog_identity() -> void:
 	add_child_autofree(screen)
 	screen.configure_context(selected_item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
 	assert_eq(screen.get_node("WorkshopLayout/WorkshopTitle").text, "첫 작품 · 철투구")
+
+
+func test_workshop_binds_the_selected_equipment_identity_separately_from_the_durability_state_hero() -> void:
+	for entry in EquipmentCatalogScript.all():
+		var selected_item = _item(5, 5)
+		selected_item.equipment_group = str(entry.get("equipment_group", ""))
+		selected_item.role_profile = str(entry.get("role_profile", ""))
+		var screen = SCREEN_SCENE.instantiate()
+		add_child_autofree(screen)
+		screen.configure_context(selected_item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
+		var identity_hero := screen.get_node_or_null("WorkshopLayout/EquipmentIdentityHero") as TextureRect
+		assert_not_null(identity_hero, str(entry.get("equipment_id", "")))
+		if identity_hero == null:
+			continue
+		var image_path := str(entry.get("image_path", ""))
+		assert_true(ResourceLoader.exists(image_path), image_path)
+		assert_not_null(identity_hero.texture, str(entry.get("equipment_id", "")))
+		assert_eq(identity_hero.texture.resource_path, image_path, str(entry.get("equipment_id", "")))
+		assert_eq(identity_hero.mouse_filter, Control.MOUSE_FILTER_IGNORE, str(entry.get("equipment_id", "")))
+		assert_eq(identity_hero.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, str(entry.get("equipment_id", "")))
+		assert_ne(identity_hero, screen.get_node_or_null("WorkshopLayout/WorkpieceDurabilityHero"), "identity and durability visuals must remain distinct")
 
 
 func test_workshop_uses_a_readability_veil_over_the_illustrated_background() -> void:

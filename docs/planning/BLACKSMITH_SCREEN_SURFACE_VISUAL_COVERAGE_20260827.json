@@ -23,16 +23,23 @@
   "runtime_visual_validation": "NOT_RUN",
   "candidate_visual_delivery": {
     "requirements_owner": "docs/planning/BLACKSMITH_RECURRING_PRECISION_VISUAL_REQUIREMENTS_20260830.json",
-    "status": "TWO_USER_APPROVED_RUNTIME_ASSETS_PLUS_NATIVE_PRECISION_UX",
+    "status": "TWO_USER_APPROVED_SCENE_ILLUSTRATIONS_FIVE_USER_LOCKED_EQUIPMENT_IDENTITIES_PLUS_NATIVE_PRECISION_UX",
     "runtime_promotion": "IMPLEMENTED_MACHINE_VERIFIED",
-    "candidate_ids": ["VIS-REC-20260830-01", "VIS-REC-20260830-03"],
+    "candidate_ids": ["VIS-REC-20260830-01", "VIS-REC-20260830-03", "VIS-EQUIP-20260830-01", "VIS-EQUIP-20260830-02", "VIS-EQUIP-20260830-03", "VIS-EQUIP-20260830-04", "VIS-EQUIP-20260830-05"],
     "flow_map": "TEXT_NATIVE_MERMAID_AND_TABLE_ONLY"
+  },
+  "equipment_identity_runtime_delivery": {
+    "status": "IMPLEMENTED_MACHINE_VERIFIED",
+    "primary_use": "The same selected object is visible in the first-forge choice and at the Workshop without replacing native touch controls or the separate durability-state atlas.",
+    "consumers": ["FIRST_FORGE_EQUIPMENT_CHOICE", "WORKSHOP_EQUIPMENT_IDENTITY_HERO"],
+    "asset_ids": ["ASSET-EQUIPMENT-IRON-SWORD-CARD-V1", "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1", "ASSET-EQUIPMENT-IRON-BOW-CARD-V1", "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1", "ASSET-EQUIPMENT-IRON-HELMET-CARD-V1"],
+    "runtime_visual_validation": "GODOT_CLIENT_ANDROID_ACCESSIBILITY_HUMAN_REVIEW_NOT_RUN"
   },
   "delivery_tracks": [
     {
       "track_id": "RUNTIME_GAME_ASSETS",
       "purpose": "Actual Godot screens, objects, states, and visual variants used by the player",
-      "included_assets": ["ASSET-WORKSHOP-BACKGROUND-V2", "ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1", "ASSET-FIRST-FORGE-BACKGROUND-V1"],
+      "included_assets": ["ASSET-WORKSHOP-BACKGROUND-V2", "ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1", "ASSET-FIRST-FORGE-BACKGROUND-V1", "ASSET-EQUIPMENT-IRON-SWORD-CARD-V1", "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1", "ASSET-EQUIPMENT-IRON-BOW-CARD-V1", "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1", "ASSET-EQUIPMENT-IRON-HELMET-CARD-V1"],
       "status": "PROJECT_ASSET_APPROVED_RUNTIME_CLIENT_VISUAL_VALIDATION_PENDING",
       "substitution_rule": "MUST_HAVE_AN_ACTUAL_RUNTIME_CONSUMER"
     },

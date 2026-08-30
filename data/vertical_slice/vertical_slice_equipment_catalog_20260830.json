@@ -3,7 +3,7 @@
   "status": "CURRENT_USER_APPROVED_FIVE_EQUIPMENT_MVP",
   "source_decision_id": "BS-EQUIPMENT-20260830-39",
   "art_direction": "ILLUSTRATED_WORKSHOP_BOOK",
-  "runtime_image_promotion": "WAITING_FOR_POST_GENERATION_USER_LOCK",
+  "runtime_image_promotion": "IMPLEMENTED_MACHINE_VERIFIED",
   "equipment": [
     {
       "equipment_id": "iron_sword",
