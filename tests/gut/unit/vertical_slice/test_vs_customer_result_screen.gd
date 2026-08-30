@@ -73,6 +73,38 @@ func test_persisted_actual_use_damage_is_presented_without_recalculation() -> vo
 	assert_eq(screen.get_node("ResultLayout/RepairActionHint").text, "작업대에서 수리하기")
 
 
+func test_customer_result_exposes_exactly_one_native_next_action_for_damage_or_intact_chronicle() -> void:
+	var screen = _new_screen()
+	assert_not_null(screen)
+	if screen == null:
+		return
+	add_child_autofree(screen)
+	assert_true(screen.has_signal("repair_requested"), "a damaged actual-use result must expose the existing repair owner as a real action")
+	assert_true(screen.has_signal("chronicle_requested"), "an intact actual-use result must expose the same UID's saved chronicle facts")
+	assert_eq(screen.configure_resolved_result(_resolved_result()).get("status", ""), "APPLIED")
+	var repair_button := screen.get_node_or_null("ResultLayout/RepairActionButton") as Button
+	var chronicle_button := screen.get_node_or_null("ResultLayout/ChronicleActionButton") as Button
+	assert_not_null(repair_button)
+	assert_not_null(chronicle_button)
+	if repair_button == null or chronicle_button == null:
+		return
+	assert_true(repair_button.visible)
+	assert_false(repair_button.disabled)
+	assert_false(chronicle_button.visible)
+	assert_gte(repair_button.custom_minimum_size.y, 48.0)
+
+	var intact_result := _resolved_result()
+	intact_result["primary_next_action"] = "RETURN_TO_WORKSHOP"
+	intact_result["durability_consequence"]["damage_applied"] = false
+	intact_result["durability_consequence"]["after_current_durability"] = 5
+	intact_result["durability_consequence"]["repair_job_available"] = false
+	assert_eq(screen.configure_resolved_result(intact_result).get("status", ""), "APPLIED")
+	assert_false(repair_button.visible)
+	assert_true(chronicle_button.visible)
+	assert_false(chronicle_button.disabled)
+	assert_gte(chronicle_button.custom_minimum_size.y, 48.0)
+
+
 func test_customer_result_uses_the_approved_illustration_and_veil_only_after_a_valid_saved_result() -> void:
 	assert_true(ResourceLoader.exists(APPROVED_RESULT_ILLUSTRATION_PATH), "approved customer-result illustration must be tracked before the saved fact can reveal it")
 	if not ResourceLoader.exists(APPROVED_RESULT_ILLUSTRATION_PATH):

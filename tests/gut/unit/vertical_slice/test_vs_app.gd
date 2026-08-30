@@ -229,3 +229,217 @@ func test_customer_actual_use_save_failure_preserves_state_and_does_not_present_
 	assert_eq(source_item.current_durability, 5)
 	assert_true(envelope.active_run["resolved_events"].is_empty())
 	assert_false(app.get_node("ScreenHost/CustomerResultScreen").visible)
+
+
+func test_phase1_handoff_routes_one_active_level_ten_item_through_one_return_beat_before_actual_use() -> void:
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	var birth: Dictionary = ItemBirthServiceScript.new().commit_first_forge(envelope, {
+		"weapon_id": "iron_sword",
+		"base_attack": 20,
+		"crafting_grade": "CRAFT_NORMAL",
+		"artistry": 0,
+	})
+	assert_eq(birth.get("status", ""), "APPLIED")
+	var source_item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	source_item.enhancement_level = 10
+	source_item.highest_checkpoint = 10
+	var save_service := FakeSaveService.new()
+	var app = APP_SCENE.instantiate()
+	add_child_autofree(app)
+	assert_true(app.configure_campaign(envelope, ResourcesScript.new(), null, null, save_service))
+
+	assert_true(app.has_method("begin_phase1_customer_handoff"), "Phase-1 needs an explicit +10 handoff entry")
+	assert_true(app.has_method("complete_phase1_return_beat"), "Phase-1 needs exactly one non-economic return beat")
+	assert_true(app.has_method("resolve_phase1_customer_actual_use_with_roll"), "Phase-1 needs one Nadia actual-use result after return")
+	if not app.has_method("begin_phase1_customer_handoff") or not app.has_method("complete_phase1_return_beat") or not app.has_method("resolve_phase1_customer_actual_use_with_roll"):
+		return
+
+	var handoff_button := app.get_node_or_null("ScreenHost/WorkshopScreen/WorkshopLayout/HandoffButton") as Button
+	assert_not_null(handoff_button, "the handoff flow must be reachable from the visible workshop")
+	if handoff_button == null:
+		return
+	assert_true(handoff_button.visible)
+	handoff_button.emit_signal("pressed")
+	assert_eq(app.current_state, "CUSTOMER")
+	var handoff_screen = app.get_node_or_null("ScreenHost/CustomerHandoffScreen")
+	assert_not_null(handoff_screen, "handoff must have a real player-facing screen")
+	if handoff_screen == null:
+		return
+	assert_eq(str(handoff_screen.view_state().get("phase", "")), "HANDOFF")
+	assert_eq(str(handoff_screen.view_state().get("item_uid", "")), str(source_item.uid))
+	assert_true(str(handoff_screen.view_state().get("message", "")).contains("손상"), "handoff must state that handoff itself does not damage the item")
+	assert_eq(str(app.call("complete_phase1_return_beat")), app.OK_TRANSITION)
+	assert_eq(app.current_state, "RETURN")
+	assert_eq(str(handoff_screen.view_state().get("phase", "")), "RETURN")
+	assert_false(str(handoff_screen.view_state().get("message", "")).contains("대기"), "return beat must not introduce a wait timer")
+
+	assert_eq(str(app.call("resolve_phase1_customer_actual_use_with_roll", 99.0)), app.OK_TRANSITION)
+	assert_eq(app.current_state, "RESULT")
+	assert_true(save_service.saved_envelope != null)
+	assert_eq(save_service.saved_envelope.active_run["resolved_events"].size(), 1)
+	var persisted_event: Dictionary = save_service.saved_envelope.active_run["resolved_events"].values()[0]
+	assert_eq(persisted_event.get("customer_id", ""), "NADIA_VENN")
+	assert_eq(persisted_event.get("item_refs", [])[0].get("uid", ""), str(source_item.uid))
+	assert_true(bool(persisted_event.get("durability_consequence", {}).get("actual_item_use", false)))
+	assert_false(bool(persisted_event.get("durability_consequence", {}).get("damage_applied", true)), "a real high roll must not script damage for the demonstration")
+	var chronicle_action := app.get_node_or_null("ScreenHost/CustomerResultScreen/ResultLayout/ChronicleActionButton") as Button
+	assert_not_null(chronicle_action, "an intact actual-use result must offer its same-UID chronicle")
+	if chronicle_action == null:
+		return
+	assert_true(chronicle_action.visible)
+	chronicle_action.emit_signal("pressed")
+	assert_eq(app.current_state, "ITEM_DETAIL")
+	var chronicle_screen = app.get_node_or_null("ScreenHost/ItemChronicleScreen")
+	assert_not_null(chronicle_screen)
+	if chronicle_screen == null:
+		return
+	assert_true(chronicle_screen.visible)
+	assert_eq(chronicle_screen.view_state().get("entries", []).filter(func(entry): return str(entry.get("kind", "")) == "ACTUAL_USE").size(), 1)
+	(chronicle_screen.get_node("ChronicleMargin/ChronicleLayout/WorkshopReturnButton") as Button).emit_signal("pressed")
+	assert_eq(app.current_state, "WORKSHOP")
+	assert_eq(str(app.call("resolve_phase1_customer_actual_use_with_roll", 0.0)), app.INVALID_TRANSITION, "a committed return cannot make a second actual-use roll")
+	assert_eq(save_service.saved_envelope.active_run["resolved_events"].size(), 1)
+	var reloaded_app = APP_SCENE.instantiate()
+	add_child_autofree(reloaded_app)
+	assert_true(reloaded_app.configure_campaign(save_service.saved_envelope, ResourcesScript.new(), null, null, FakeSaveService.new()))
+	var reloaded_handoff_button := reloaded_app.get_node_or_null("ScreenHost/WorkshopScreen/WorkshopLayout/HandoffButton") as Button
+	assert_not_null(reloaded_handoff_button)
+	if reloaded_handoff_button != null:
+		assert_false(reloaded_handoff_button.visible, "a saved result must not reopen a fresh handoff after reload")
+	assert_eq(reloaded_app.begin_phase1_customer_handoff(), "EVENT_ALREADY_RESOLVED")
+
+
+func test_phase1_handoff_blocks_before_level_ten_and_for_destroyed_or_already_resolved_item() -> void:
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	var birth: Dictionary = ItemBirthServiceScript.new().commit_first_forge(envelope, {
+		"weapon_id": "iron_sword",
+		"base_attack": 20,
+		"crafting_grade": "CRAFT_NORMAL",
+		"artistry": 0,
+	})
+	assert_eq(birth.get("status", ""), "APPLIED")
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	var app = APP_SCENE.instantiate()
+	add_child_autofree(app)
+	assert_true(app.configure_campaign(envelope, ResourcesScript.new(), null, null, FakeSaveService.new()))
+	assert_true(app.has_method("begin_phase1_customer_handoff"), "Phase-1 needs a fail-closed handoff entry")
+	if not app.has_method("begin_phase1_customer_handoff"):
+		return
+
+	assert_eq(str(app.call("begin_phase1_customer_handoff")), "HANDOFF_REQUIRES_LEVEL_10")
+	assert_eq(app.current_state, "WORKSHOP")
+	item.enhancement_level = 10
+	item.highest_checkpoint = 10
+	item.current_durability = 0
+	item.physical_state = "DESTROYED"
+	assert_eq(str(app.call("begin_phase1_customer_handoff")), "ITEM_DESTROYED")
+	assert_eq(app.current_state, "WORKSHOP")
+
+
+func test_phase1_handoff_damage_result_routes_to_the_existing_workshop_repair_control() -> void:
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	var birth: Dictionary = ItemBirthServiceScript.new().commit_first_forge(envelope, {
+		"weapon_id": "iron_sword",
+		"base_attack": 20,
+		"crafting_grade": "CRAFT_NORMAL",
+		"artistry": 0,
+	})
+	assert_eq(birth.get("status", ""), "APPLIED")
+	var source_item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	source_item.enhancement_level = 10
+	source_item.highest_checkpoint = 10
+	var app = APP_SCENE.instantiate()
+	add_child_autofree(app)
+	assert_true(app.configure_campaign(envelope, ResourcesScript.new(), null, null, FakeSaveService.new()))
+	assert_eq(app.begin_phase1_customer_handoff(), app.OK_TRANSITION)
+	assert_eq(app.complete_phase1_return_beat(), app.OK_TRANSITION)
+	assert_eq(app.resolve_phase1_customer_actual_use_with_roll(0.0), app.OK_TRANSITION)
+	var repair_action := app.get_node_or_null("ScreenHost/CustomerResultScreen/ResultLayout/RepairActionButton") as Button
+	assert_not_null(repair_action, "actual damage must offer an actionable repair route")
+	if repair_action == null:
+		return
+	assert_true(repair_action.visible)
+	repair_action.emit_signal("pressed")
+	assert_eq(app.current_state, "REPAIR")
+	assert_false(app.get_node("ScreenHost/CustomerResultScreen").visible)
+	assert_true(app.get_node("ScreenHost/WorkshopScreen").visible)
+	assert_false((app.get_node("ScreenHost/WorkshopScreen/WorkshopLayout/RepairButton") as Button).disabled)
+
+
+func test_phase1_handoff_save_failure_preserves_the_return_beat_without_a_result_or_reroll_record() -> void:
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	var birth: Dictionary = ItemBirthServiceScript.new().commit_first_forge(envelope, {
+		"weapon_id": "iron_sword",
+		"base_attack": 20,
+		"crafting_grade": "CRAFT_NORMAL",
+		"artistry": 0,
+	})
+	assert_eq(birth.get("status", ""), "APPLIED")
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	item.enhancement_level = 10
+	item.highest_checkpoint = 10
+	var save_service := FakeSaveService.new()
+	save_service.next_save_error = ERR_CANT_CREATE
+	var app = APP_SCENE.instantiate()
+	add_child_autofree(app)
+	assert_true(app.configure_campaign(envelope, ResourcesScript.new(), null, null, save_service))
+	assert_eq(app.begin_phase1_customer_handoff(), app.OK_TRANSITION)
+	assert_eq(app.complete_phase1_return_beat(), app.OK_TRANSITION)
+	assert_eq(app.resolve_phase1_customer_actual_use_with_roll(0.0), "SAVE_FAILED:%d" % ERR_CANT_CREATE)
+	assert_eq(app.current_state, "RETURN")
+	assert_true(envelope.active_run["resolved_events"].is_empty())
+	assert_true(save_service.saved_envelope == null)
+	assert_eq(str(app.get_node("ScreenHost/CustomerHandoffScreen").view_state().get("phase", "")), "RETURN")
+
+
+func test_workshop_chronicle_action_displays_the_same_uid_saved_result_and_returns_to_workshop() -> void:
+	var envelope = RunInitializerScript.new().create_candidate_envelope()
+	var birth: Dictionary = ItemBirthServiceScript.new().commit_first_forge(envelope, {
+		"weapon_id": "iron_sword",
+		"base_attack": 20,
+		"crafting_grade": "CRAFT_NORMAL",
+		"artistry": 0,
+	})
+	assert_eq(birth.get("status", ""), "APPLIED")
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	envelope.active_run["resolved_events"] = {
+		"phase1-nadia-actual-use-%s" % str(item.uid): {
+			"event_id": "phase1-nadia-actual-use-%s" % str(item.uid),
+			"content_id": "ADVENTURER_01",
+			"customer_id": "NADIA_VENN",
+			"item_refs": [{"role": "PRIMARY_ITEM", "uid": str(item.uid)}],
+			"durability_consequence": {
+				"actual_item_use": true,
+				"damage_applied": false,
+				"before_current_durability": 5,
+				"after_current_durability": 5,
+				"before_max_durability": 5,
+				"after_max_durability": 5,
+				"repair_job_available": false,
+			},
+		},
+	}
+	var app = APP_SCENE.instantiate()
+	add_child_autofree(app)
+	assert_true(app.configure_campaign(envelope, ResourcesScript.new(), null, null, FakeSaveService.new()))
+	var chronicle_button := app.get_node_or_null("ScreenHost/WorkshopScreen/WorkshopLayout/ChronicleButton") as Button
+	assert_not_null(chronicle_button)
+	if chronicle_button == null:
+		return
+	chronicle_button.emit_signal("pressed")
+	assert_eq(app.current_state, "ITEM_DETAIL")
+	var chronicle_screen = app.get_node_or_null("ScreenHost/ItemChronicleScreen")
+	assert_not_null(chronicle_screen)
+	if chronicle_screen == null:
+		return
+	assert_true(chronicle_screen.visible)
+	assert_eq(str(chronicle_screen.view_state().get("item_uid", "")), str(item.uid))
+	assert_eq(chronicle_screen.view_state().get("entries", []).filter(func(entry): return str(entry.get("kind", "")) == "ACTUAL_USE").size(), 1)
+	var return_button := chronicle_screen.get_node_or_null("ChronicleMargin/ChronicleLayout/WorkshopReturnButton") as Button
+	assert_not_null(return_button)
+	if return_button == null:
+		return
+	return_button.emit_signal("pressed")
+	assert_eq(app.current_state, "WORKSHOP")
+	assert_false(chronicle_screen.visible)
+	assert_true(app.get_node("ScreenHost/WorkshopScreen").visible)

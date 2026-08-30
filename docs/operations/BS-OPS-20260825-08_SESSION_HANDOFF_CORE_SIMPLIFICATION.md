@@ -127,6 +127,36 @@ only after save succeeds. The event scheduler and player-facing customer entry r
 record. Android, accessibility, visual client inspection, performance, and human play remain
 `NOT_RUN`.
 
+### Phase-1 same-UID player-flow candidate · 2026-08-30
+
+```text
+IMPLEMENTATION_STATUS = WORKTREE_CANDIDATE_IMPLEMENTED_AND_MACHINE_VERIFIED / NOT_MERGED
+IMPLEMENTATION_BRANCH = codex/phase1-customer-handoff-20260830
+SCOPE = +10_OR_HIGHER_ACTIVE_ITEM_HANDOFF / ONE_NON_ECONOMIC_RETURN_BEAT / NADIA_VENN_MEDIUM_ACTUAL_USE / CONDITIONAL_REPAIR_OR_CHRONICLE
+HANDOFF_DAMAGE = NEVER
+ACTUAL_USE_RESULT = SAVE_FIRST_ONCE_PER_UID / NO_REROLL_AFTER_RELOAD
+STARTING_REINFORCEMENT_FIXTURE = 30 / TEMP_TEST_BUDGET
+CHRONICLE_SURFACE = EXISTING_BIRTH_AND_PRECISION_LEDGER_PLUS_SAVED_ACTUAL_USE_FACTS / NO_NEW_STORED_FIELD
+GUT_FULL_SUITE = PASS / 233_TESTS / 1683_ASSERTIONS / 0_FAILURES / 0_ERRORS / 0_SKIPPED
+GODOT_VISUAL_RUNTIME = NOT_RUN
+HUMAN_PLAYTEST = NOT_RUN
+ANDROID_DEVICE = NOT_RUN
+ACCESSIBILITY = NOT_RUN
+PERFORMANCE = NOT_RUN
+KNOWN_NON_BLOCKING_MACHINE_WARNINGS = EXISTING_INVALID_SCRIPT_UID_REFERENCES_IN_VERTICAL_SLICE_APP_AND_MAIN_MENU / EXISTING_GUT_ORPHAN_REPORTS
+```
+
+The candidate adds a native Workshop handoff action only for the active,
+non-destroyed `+10+` item. It shows a one-press return beat without a timer,
+then saves Nadia Venn's authored `MEDIUM` actual-use event before presenting
+the result. A damaged return opens only the existing repair action; an intact
+return opens the read-only Item Chronicle. The Chronicle derives its entries
+from the existing birth/Precision ledger and saved actual-use result for the
+same UID, so it neither creates a customer scheduler nor extends the save
+schema. These are worktree implementation and automated-test facts, not a
+merged-main, visual-client, human-play, Android, accessibility, performance,
+or release approval.
+
 ## 1. GPT Work transfer · 2026-08-26
 
 User directive: future Blacksmith work moves from the current chat to **ChatGPT Work**. This changes the working surface, not project authority.

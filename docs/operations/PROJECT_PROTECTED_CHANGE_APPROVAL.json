@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "0122f0011b80ad55e04a57a14bccb89eb11bebc2",
+  "decision_ids": [
+    "BS-OPS-20260825-08",
+    "BS-ENHANCE-20260829-37",
+    "BS-OPS-20260828-36"
+  ],
+  "approved_paths": [
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd.uid",
+    "scripts/vertical_slice/ui/vs_app.gd",
+    "scripts/vertical_slice/ui/vs_customer_handoff_screen.gd",
+    "scripts/vertical_slice/ui/vs_customer_handoff_screen.gd.uid",
+    "scripts/vertical_slice/ui/vs_customer_result_screen.gd",
+    "scripts/vertical_slice/ui/vs_customer_result_screen.gd.uid",
+    "scripts/vertical_slice/ui/vs_item_chronicle_screen.gd",
+    "scripts/vertical_slice/ui/vs_item_chronicle_screen.gd.uid",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "USER_APPROVED_CURRENT_CANON_MVP_IMPLEMENTATION_AND_GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE",
+  "approval_time": "2026-08-30T17:30:00+09:00",
+  "scope_summary": "Exact approved Phase-1 same-UID handoff only: level-10 Nadia handoff, one non-economic return beat, one save-first actual-use result, conditional existing repair, and read-only item chronicle. No scene serialization, product settings, new art, new economy, timer, customer list, second item, or new product scope."
+}

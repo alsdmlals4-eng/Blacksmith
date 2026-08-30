@@ -364,7 +364,7 @@ func test_known_resolved_v4_backfill_fails_closed_before_save() -> void:
 func test_saved_enhancement_success_commits_result_and_resource_cost_together() -> void:
 	var envelope = _valid_envelope_with_item()
 	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 30})
 	var save_service := FakeSaveService.new()
 	var result = load(SERVICE_PATH).new().resolve_and_save_with_rolls(
 		envelope,
@@ -384,7 +384,7 @@ func test_saved_enhancement_success_commits_result_and_resource_cost_together() 
 	assert_eq(resources.gold, 20000 - int(result["gold_cost"]))
 	assert_eq(
 		resources.get_material_count("common_reinforcement_material"),
-		10 - int(result["reinforcement_units"])
+		30 - int(result["reinforcement_units"])
 	)
 	assert_eq(save_service.saved_envelope.resource_snapshot(), resources.snapshot())
 
@@ -392,7 +392,7 @@ func test_saved_enhancement_success_commits_result_and_resource_cost_together() 
 func test_saved_enhancement_save_failure_keeps_item_and_resources_unchanged() -> void:
 	var envelope = _valid_envelope_with_item()
 	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 30})
 	var before_resources = resources.snapshot()
 	var save_service := FakeSaveService.new()
 	save_service.save_error = ERR_CANT_CREATE
