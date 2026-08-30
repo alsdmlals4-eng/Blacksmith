@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "CURRENT_SCREEN_SURFACE_AND_VISUAL_COVERAGE_EVIDENCE_RECORD",
-  "date": "2026-08-27 KST",
+  "date": "2026-08-30 KST",
   "issue": "#291",
   "delivery_issue": "#293",
   "scope": "CURRENT_VERTICAL_SLICE_AND_DECLARED_CURRENT_SCREEN_FAMILIES",
@@ -21,6 +21,13 @@
   "image_generation": "USER_APPROVED_RUNTIME_ASSET_EXECUTED_20260828",
   "no_automatic_generation_from_gaps": true,
   "runtime_visual_validation": "NOT_RUN",
+  "candidate_visual_delivery": {
+    "requirements_owner": "docs/planning/BLACKSMITH_RECURRING_PRECISION_VISUAL_REQUIREMENTS_20260830.json",
+    "status": "THREE_GENERATED_CANDIDATES_AWAITING_USER_LOCK",
+    "runtime_promotion": "BLOCKED_PENDING_USER_LOCK",
+    "candidate_ids": ["VIS-REC-20260830-01", "VIS-REC-20260830-02", "VIS-REC-20260830-03"],
+    "flow_map": "TEXT_NATIVE_MERMAID_AND_TABLE_ONLY"
+  },
   "delivery_tracks": [
     {
       "track_id": "RUNTIME_GAME_ASSETS",
@@ -166,24 +173,24 @@
       "blockers": "No settings interaction contract or implementation scope is approved; no image is required."
     },
     {
-      "screen_id": "PRECISION_PLUS_9_TO_10",
+      "screen_id": "RECURRING_PRECISION_TAG_CHOICE",
       "screen_family": "SPECIAL_ENHANCEMENT",
-      "screen_name": "+9→+10 정밀 강화",
-      "project_stage": "DECLARED_CURRENT_CANON_NOT_IMPLEMENTED_AS_SEPARATE_SURFACE",
+      "screen_name": "반복 정밀 강화 태그 선택",
+      "project_stage": "CURRENT_VERTICAL_SLICE_DYNAMIC_WORKSHOP_STATE",
       "priority": "P1",
-      "flow_entry": "Enhancement target +10",
+      "flow_entry": "Enhancement target 10,20,...,100",
       "flow_exit": "Workshop or customer context",
-      "player_goal": "유일한 정밀 강화와 keyword 결과를 판독한다",
-      "player_question": "이 촉매와 작품 정체성을 선택할까",
-      "consumer_kind": "PLANNED_GAME_SURFACE",
-      "consumer_surface": "No separate current scene/node",
-      "screen_design_reference": "Decision25 precision boundary; historical Visual GDD is stale cadence reference only",
-      "runtime_consumer": "No exact consumer slot",
-      "existing_evidence": "Current canon and VSWorkshopScreen ordinary enhancement controls",
-      "coverage_status": "DEFERRED_BY_DECISION",
+      "player_goal": "정밀 성공 시 태그를 추가하거나 강화해 같은 작품의 정체성을 성장시킨다",
+      "player_question": "이번 ten-level 정밀 강화에서 새 태그를 더할까, 기존 태그를 성장시킬까",
+      "consumer_kind": "GAME_RUNTIME_DYNAMIC_STATE",
+      "consumer_surface": "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#recurring_precision_state",
+      "screen_design_reference": "BS-ENHANCE-20260830-38; native action controls and view state",
+      "runtime_consumer": "VSWorkshopScreen dynamically creates native recurring Precision controls; candidate background VIS-REC-20260830-02 has no binding until user lock",
+      "existing_evidence": "Decision38/catalog schema 2, VSPrecisionResolver, VSWorkshopScreen focused GUT, and consumer-first visual requirement record",
+      "coverage_status": "NATIVE_STATE_IMPLEMENTED_CANDIDATE_ART_PENDING_USER_LOCK",
       "notion_destination": null,
-      "repository_destination": "docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json",
-      "blockers": "Exact scene, component states, and consumer metadata are absent; candidate assets must not be generated."
+      "repository_destination": "docs/planning/BLACKSMITH_RECURRING_PRECISION_VISUAL_REQUIREMENTS_20260830.json",
+      "blockers": "Generated candidate is not a project asset or runtime art until user lock; client rendering, Android readability, accessibility, and human visual review remain NOT_RUN."
     },
     {
       "screen_id": "ITEM_CHRONICLE",

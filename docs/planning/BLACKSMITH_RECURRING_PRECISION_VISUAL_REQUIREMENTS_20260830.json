@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "status": "CURRENT_CONSUMER_FIRST_VISUAL_REQUIREMENTS",
+  "date": "2026-08-30 KST",
+  "source_decision_ids": [
+    "BS-ART-20260825-03",
+    "BS-ART-20260826-04",
+    "BS-OPS-20260828-35",
+    "BS-ENHANCE-20260830-38"
+  ],
+  "art_direction": "ILLUSTRATED_WORKSHOP_BOOK",
+  "user_scope": "Three portrait candidate illustrations for Main Menu, recurring Precision Workshop state, and Customer World Result; editable flow map only.",
+  "post_generation_user_lock": "REQUIRED_FOR_FINAL_DIRECTION_OR_RUNTIME_PROMOTION",
+  "flow_map": {
+    "format": "TEXT_NATIVE_MERMAID_AND_TABLE",
+    "raster_generation": "PROHIBITED"
+  },
+  "visual_requirements": [
+    {
+      "consumer_id": "VIS-REC-20260830-01",
+      "consumer_surface": "MAIN_MENU",
+      "runtime_asset_role": "SCREEN_BACKGROUND",
+      "primary_use": "A calm workshop threshold makes the player's first choice—start or continue a craft—feel like entering a living place, while native controls keep the action readable.",
+      "implementation_owner_or_path": "res://scenes/vertical_slice/main_menu.tscn#MenuIllustratedBackground",
+      "post_lock_implementation_owner": "res://scripts/vertical_slice/ui/vs_main_menu.gd#MainMenuBackgroundTexture",
+      "target_aspect_resolution": "9:16 / 941x1672 PNG",
+      "state_family_requirement": "One normal state; native menu text/buttons and readability veil remain outside the image.",
+      "fallback_if_unconsumed": "KEEP_ASSET-WORKSHOP-BACKGROUND-V2 / DEFER",
+      "candidate_status": "GENERATED_CANDIDATE",
+      "runtime_promotion_status": "BLOCKED_PENDING_USER_LOCK",
+      "generated_ui_screenshot": false,
+      "candidate_receipt": {
+        "generated_on": "2026-08-30 KST",
+        "source": "OpenAI ImageGen",
+        "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-f75b0694-a40b-46b3-b064-b6dd2416f697.png",
+        "sha256": "ba855667dc53604c48e062051cec45184b78003cd9d96e3a9054906bcc0fa58f",
+        "pixel_dimensions": "941x1672",
+        "repository_asset_path": null,
+        "review_status": "AWAITING_USER_LOCK"
+      },
+      "composition_constraints": [
+        "No UI, text, logo, watermark, character portrait, or gameplay statistics inside the raster.",
+        "Preserve a quiet upper and central field for native Korean menu controls.",
+        "The art is a background illustration, not a fake completed screen."
+      ]
+    },
+    {
+      "consumer_id": "VIS-REC-20260830-02",
+      "consumer_surface": "WORKSHOP_RECURRING_PRECISION",
+      "runtime_asset_role": "STATE_BACKGROUND_ILLUSTRATION",
+      "primary_use": "At every ten-level Precision choice, a focused bench, anvil, tag blanks, and restrained lineage motifs make tag growth feel materially distinct without replacing the odds, cost, or native selection controls.",
+      "implementation_owner_or_path": "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#recurring_precision_state",
+      "post_lock_implementation_owner": "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#PrecisionIllustratedBackground",
+      "target_aspect_resolution": "9:16 / 941x1672 PNG",
+      "state_family_requirement": "One neutral precision-selection state; success/hold/damage remain native dynamic UI and are not baked into the artwork.",
+      "fallback_if_unconsumed": "KEEP_ASSET-WORKSHOP-BACKGROUND-V2 / DEFER",
+      "candidate_status": "GENERATED_CANDIDATE",
+      "runtime_promotion_status": "BLOCKED_PENDING_USER_LOCK",
+      "generated_ui_screenshot": false,
+      "candidate_receipt": {
+        "generated_on": "2026-08-30 KST",
+        "source": "OpenAI ImageGen",
+        "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-11d214fe-cfd0-47a7-8512-7ac50c9ae212.png",
+        "sha256": "45679f660ad9fc24796e0080aded8474be6b0c462ae7bb2d58a91b6c0530ef32",
+        "pixel_dimensions": "941x1672",
+        "repository_asset_path": null,
+        "review_status": "AWAITING_USER_LOCK"
+      },
+      "composition_constraints": [
+        "No UI, text, numerals, logos, watermarks, or button-like boxes inside the raster.",
+        "Leave the central selection column and lower decision area legible for native Godot controls.",
+        "Depict neither a guaranteed success nor forced damage; the image must stay neutral to the actual roll."
+      ]
+    },
+    {
+      "consumer_id": "VIS-REC-20260830-03",
+      "consumer_surface": "CUSTOMER_WORLD_RESULT",
+      "runtime_asset_role": "EVENT_ILLUSTRATION",
+      "primary_use": "A returned workpiece and trace of its journey let the player read customer actual-use consequence as part of the same item story, while native result text distinguishes mission outcome from any conditional damage.",
+      "implementation_owner_or_path": "res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn",
+      "post_lock_implementation_owner": "res://scripts/vertical_slice/ui/vs_customer_result_screen.gd#CustomerResultEventIllustration",
+      "target_aspect_resolution": "9:16 / 941x1672 PNG",
+      "state_family_requirement": "One neutral return/result state; no-damage and damage copy, values, repair eligibility, and next action stay native UI.",
+      "fallback_if_unconsumed": "KEEP_NATIVE_COLORRECT_LABEL_COMPOSITION / DEFER",
+      "candidate_status": "GENERATED_CANDIDATE",
+      "runtime_promotion_status": "BLOCKED_PENDING_USER_LOCK",
+      "generated_ui_screenshot": false,
+      "candidate_receipt": {
+        "generated_on": "2026-08-30 KST",
+        "source": "OpenAI ImageGen",
+        "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-5d292b47-dc40-4d98-89d2-124b0cad19eb.png",
+        "sha256": "716ce4dd4c6c4bdf48255c4b10aef906573d1113b331d20304e4f75f6e74eca1",
+        "pixel_dimensions": "941x1672",
+        "repository_asset_path": null,
+        "review_status": "AWAITING_USER_LOCK"
+      },
+      "composition_constraints": [
+        "No UI, text, numerical durability display, logo, watermark, customer portrait, combat scene, or forced damage depiction inside the raster.",
+        "Keep an uncluttered center/lower area for native causal result and next-action controls.",
+        "Show an actual-use return trace without implying that handoff itself caused damage."
+      ]
+    }
+  ]
+}
