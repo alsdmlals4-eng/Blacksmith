@@ -4,12 +4,12 @@
   "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
   "source_markdown": {
     "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
-    "sha256": "76e44bf7ca1aeca5acbddb2fa176985f1f46f5520bdeb8572f4465e9d8b40e48",
+    "sha256": "dacdf84ede368b7a037b176651e176cb0ed21a77c7e7f5a317ce5591196a2a0a",
     "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
   },
   "artifact": {
     "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
-    "sha256": "603c846b1696b1c0f5df38a962bc57d11f45b3f58a54b3a32745fcd400f47bad",
+    "sha256": "175ebe98db3ebbd3eaf9ea92d3c5ac96eed292fbee0edb4b48c1de981c0adbcf",
     "page_count": 7,
     "pdf_title": "Blacksmith 사람용 게임 기획서",
     "pdf_subject": "Human-facing Korean GDD",
@@ -19,11 +19,21 @@
     "publisher": "tools/publish_human_facing_gdd_pdf.py",
     "engine": "ReportLab",
     "font": "C:/Windows/Fonts/malgun.ttf",
+    "invariant": true,
     "images": [
       "assets/ui/workshop/main_menu_dawn_background_v1.png",
       "assets/ui/workshop/precision_tag_workshop_background_v1.png",
       "assets/ui/workshop/customer_result_return_illustration_v1.png"
     ]
+  },
+  "deterministic_publish_proof": {
+    "invariant": true,
+    "identical_sha256_runs": [
+      "175ebe98db3ebbd3eaf9ea92d3c5ac96eed292fbee0edb4b48c1de981c0adbcf",
+      "175ebe98db3ebbd3eaf9ea92d3c5ac96eed292fbee0edb4b48c1de981c0adbcf"
+    ],
+    "run_count": 2,
+    "basis": "two consecutive invariant ReportLab publishes with unchanged source"
   },
   "render_validation": {
     "required_tool": "Poppler pdftoppm",

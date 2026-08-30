@@ -71,9 +71,9 @@
 
 | Conflict ID | Competing claims | Actual implementation reality | Current disposition |
 |---|---|---|---|
-| DEC-DRIFT-01 | Historical multiple precision milestones and catalyst evolution vs current `+9→+10 only`. | Old data and legacy code contain older milestone vocabulary. | `SUPERSEDED`: current canon allows exactly one Precision Enhancement at `+9→+10`. |
+| DEC-DRIFT-01 | Historical single `+9→+10` Precision vs current recurring ten-gate Precision. | Old data and legacy code contain older milestone vocabulary. | `SUPERSEDED`: Decision38 owns targets `+10` through `+100` at every ten-level boundary. |
 | DEC-DRIFT-02 | Historical CURRENT/MAX bands and overhaul formulas vs Decision29 `CURRENT/MAX/BASE_MAX`. | V2 field names may resemble current ones but do not establish semantic compliance. | `SUPERSEDED`: visible numeric authority and derived effective state are Decision29 only. |
-| DEC-DRIFT-03 | Catalyst-only Tag identity vs latest direct user rule. | Current placeholder write and legacy method list do not implement the approved 2×2 flow. | `CONFIRMED`: Tag identity resolves from catalyst lineage plus selected Precision method; Decision37 owns content and empty-selection handling. |
+| DEC-DRIFT-03 | Catalyst-only Tag identity vs latest direct user rule. | Current placeholder write and legacy method list do not implement the approved recurring flow. | `CONFIRMED`: Decision38 owns recurring add/upgrade cadence; the first 2×2 content and empty-selection behavior remain catalog inputs. |
 | DEC-DRIFT-04 | Historical visual-GDD image production and pre-generation approval vs current consumer gate. | Three approved runtime asset families are dynamically bound; client visual review is not run. | `CONFIRMED`: no document gap creates an image. Once complete consumer metadata exists, generation is pre-authorized; final direction/runtime promotion still needs post-generation user lock. |
 | DEC-DRIFT-05 | PR #196 proposed precision visitor context vs main. | Draft adds only a test file and has one failed authority check. | `OPEN_DRAFT_READ_ONLY`; do not merge, cite, or treat as implementation. |
 
@@ -104,15 +104,15 @@
 
 | Decision ID | Confirmed rule | State |
 |---|---|---|
-| DEC-ENH-25 | Ordinary enhancement success is always `+1`; only `+9→+10` is Precision Enhancement. | `CONFIRMED` |
+| DEC-ENH-25 | Ordinary enhancement success is always `+1`; its single-Precision field is `SUPERSEDED` by Decision38. | `CONFIRMED / PARTIALLY_SUPERSEDED` |
 | DEC-DMG-28 | Target `+11/+30/+60/+90/+100` conditional-on-failure damage anchors are `5/6/7/8/10%`; exact piecewise-linear interpolation. | `CONFIRMED / TEST_BUDGET` |
 | DEC-REP-29 | `CURRENT/MAX/BASE_MAX` is the only visible durability authority; state is derived from the worse ratio. | `CONFIRMED / TEST_BUDGET` |
 | DEC-REP-31 | One repair job after actual damage; current initial curve is a sensitivity-tested budget, not final economy. | `CONFIRMED / NOT_FINAL_BALANCE` |
 | DEC-DMG-30 | Handoff itself causes no damage; actual use is required; one roll per event per UID; world event never directly damages MAX. | `CONFIRMED` |
 | DEC-ENH-32 | A failed enhancement resolves to exactly `FAILED_HOLD` or `FAILED_DAMAGE`; no downgrade or separate critical. | `CONFIRMED` |
 | DEC-CHR-27 | Only meaningful item events enter player Chronicle, never routine dated attempts. | `CONFIRMED` |
-| DEC-ENH-34 | Weapon keywords are Grade / Tag / Event. `+10` success creates exactly one weapon-owned Tag in `CATALYST_AFFIX`; its identity is catalyst lineage plus selected Precision method. | `CONFIRMED` |
-| DEC-ENH-37 | **결정 완료:** +9에서 불씨/모루 계보와 날 세우기/경량 담금을 명시 선택한다. 빈 선택은 비용·굴림 전에 막히고, 성공 시 2×2 표의 Tag 하나만 기존 `CATALYST_AFFIX`에 기록한다. | `CONFIRMED / NOT_IMPLEMENTED` |
+| DEC-ENH-34 | Weapon keywords are Grade / Tag / Event. Its single `+10` Tag cardinality is `SUPERSEDED`; Decision38 retains the existing `CATALYST_AFFIX` owner for up to three staged Tags. | `CONFIRMED / PARTIALLY_SUPERSEDED` |
+| DEC-ENH-37 | The first 2×2 lineage/method content and empty-selection gate remain historical input. Its target-10-only and single-string fields are `SUPERSEDED` by Decision38 schema 2/V4. | `CONFIRMED / PARTIALLY_SUPERSEDED` |
 | DEC-ART-03/04 | Illustrated Workshop Book direction; generated imagery needs actual runtime consumer and is not automatically a final asset. | `CONFIRMED` |
 
 ## 04. DESIGN PILLARS
@@ -181,17 +181,17 @@ META: build a portfolio of remembered UIDs → unlock later title/content only t
 | Implementation locators | `scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd`, `scripts/vertical_slice/services/vs_enhancement_action_service.gd`, `scripts/vertical_slice/ui/vs_workshop_screen.gd`. Existing paths are implementation reality, not parity certification. |
 | Acceptance | Same supplied deterministic rolls always resolve to one legal result; `+10` or lower cannot damage; `+11`+ never produces downgrade/critical; save is atomic. |
 
-### SYS-PRE-002 - +9→+10 Precision and Tag resolution
+### SYS-PRE-002 - Recurring Precision and Tag growth
 
-**Player contract.** At the only precision boundary, the player chooses a method in a disclosed catalyst lineage context. Success gives one weapon-owned Tag that names a meaningful identity of that weapon; the method also affects only the weapon's stats, durability, and Tag-resolution context. It does not create player keywords, titles, Grade, Event, or a fourth slot.
+**Player contract.** At every ten-level Precision boundary from `+9→+10` through `+99→+100`, the player makes an attempt-local choice. The first gate permits `ADD_TAG`; later gates permit a compatible add below cap or `UPGRADE_TAG` for a stage I–III Tag. Each success gives exactly one weapon-owned growth action; it does not create player keywords, titles, Grade, Event, or a fourth slot.
 
 | Field / rule | Contract |
 |---|---|
-| Trigger | Only a successful `+9→+10` enhancement. |
-| Storage | Exactly one `CATALYST_AFFIX` / Tag on that weapon UID. |
-| Resolution | `tag_id = resolve(catalyst_lineage, precision_method)`; the stored outcome is a single Tag, even if its player-facing copy expresses both inputs. |
+| Trigger | `target_level` is one of `10,20,30,40,50,60,70,80,90,100`; entry is target minus one. |
+| Storage | Existing `CATALYST_AFFIX` owns a V4 versioned collection of at most three unique staged Tag entries. |
+| Resolution | First gate is `ADD_TAG` only; later gates use `ADD_TAG` or `UPGRADE_TAG`. A success advances exactly one selected Tag action. |
 | Isolation | `GRADE_AFFIX` and `CHRONICLE_AFFIX` cannot be written, changed, or selected by the method. |
-| Approved catalog | 불씨/모루 계보 × 날 세우기/경량 담금의 2×2 Tag 표. 선택은 `+9→+10` 시도 local 입력이며, 빈 입력은 비용·굴림 전에 차단한다. |
+| Approved catalog | 불씨/모루 계보 × 날 세우기/경량 담금의 2×2 Tag 표. 선택은 every-Precision attempt-local input이며, 첫 gate의 빈 입력과 duplicate/cap/mastered choices are blocked before cost or roll. |
 | Unresolved | 실제 UI/저장 write 구현, Godot runtime/Android/사람 사용성 증거. |
 | Prohibited | Placeholder Tag, invented keyword, player title, event keyword, universal damage protection, fourth affix slot. |
 | Required future tests | One valid combination returns one known Tag; invalid / absent lineage follows an explicitly approved policy; failure creates no Tag; Grade/Event remain byte-for-byte unchanged. |
@@ -233,7 +233,7 @@ These values are `TEMP_TEST_BUDGET`, not release balance. A hard guarantee remai
 
 An item UID is born once and retains birth facts, enhancement, meaningful change ledger, ownership/handoff, actual-use results, repair/scar, destruction reason, and predecessor relation. A destroyed physical item cannot be revived, but its history persists. A successor is a new UID and inherits no power or chronicle data.
 
-`DAT-SAVE-001` uses V3 save and item schemas in `data/vertical_slice/vertical_slice_preset.json`: deterministic birth/run seeds, append-only contiguous ledger, resolved events, temp-flush-rename backup, V2 migration on read, V1 fail-closed.
+`DAT-SAVE-001` uses the current V4 item schema in `data/vertical_slice/vertical_slice_preset.json`: deterministic birth/run seeds, append-only contiguous ledger, resolved events, temp-flush-rename backup, V3-to-V4 migration on read, and V1 fail-closed. Known legacy Tag effects do not apply twice; pending legacy placeholders remain gated; unknown values fail closed.
 
 ### SYS-CUS-006 - Customer/world actual-use result
 
@@ -247,7 +247,7 @@ Chronicle is a player-facing explanation layer for creation, Tag/keyword, actual
 
 ### SYS-ECO-008 and SYS-FDB-009
 
-Economy supports enhancement choices, not passive grind. Existing attempt cost and reinforcement supply are `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`; legacy expected-cost tables require recalculation after current damage/repair play evidence. Every 5 levels must provide a craft-rise feedback beat; `+5` is feedback only, while `+10` remains the sole precision event. Required production proof is a representative animation/VFX/SFX and readability test, currently `NOT_RUN`.
+Economy supports enhancement choices, not passive grind. Existing attempt cost and reinforcement supply are `USER_APPROVED_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`; legacy expected-cost tables require recalculation after current damage/repair play evidence. Every 5 levels must provide a craft-rise feedback beat; `+5` is feedback only, while every ten-level target from `+10` through `+100` is a Precision event. Required production proof is a representative animation/VFX/SFX and readability test, currently `NOT_RUN`.
 
 ## 09. CONTENT REGISTRY
 
@@ -414,14 +414,14 @@ FAILED_DAMAGE → derived durability state → optional one repair job
 
 ```text
 ELIGIBLE_AT_PLUS9 → READ_LINEAGE_AND_METHOD → PREVIEW → CONFIRM
-→ SUCCESS_AT_PLUS10: one Tag resolve/write | failure: no Tag
+→ success at each eligible Precision target: exactly one selected add or upgrade | failure: no Tag growth
 ```
 
 The precision state machine and first 2×2 catalog are `DOCUMENTED / CONFIRMED` at rule level but `NOT_IMPLEMENTED` at UI/data-content level.
 
 ## 20. SAVE/LOAD CONTRACT
 
-Save/load must preserve UID, birth facts, level, exact durability fields, meaningful ledger, resolved events, repair-job state, ownership and content-result references. Load must not reroll a resolved attempt, repair quality, scar, or world event. V2 save migration is allowed on read and writes V3 on next save; V1 fails closed. `DAT-PREC-001` must use no new stored field: only a successful composite Tag is stored in `CATALYST_AFFIX`; the historical V3 placeholder receives one no-cost/no-roll backfill. Never infer or synthesize a Tag from legacy method history.
+Save/load must preserve UID, birth facts, level, exact durability fields, meaningful ledger, resolved events, repair-job state, ownership and content-result references. Load must not reroll a resolved attempt, repair quality, scar, or world event. The active item schema is V4 and migrates V3 catalyst values into the existing `CATALYST_AFFIX` versioned collection; V1 fails closed. A known legacy Tag becomes one seed entry without reapplying its old effect, a pending legacy placeholder remains gated for its defined no-cost correction, and an unknown value remains unreadable and fail closed. Never infer or synthesize a Tag from legacy method history.
 
 ## 21. IMPLEMENTATION TRACEABILITY
 
@@ -449,7 +449,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 ### Required manual test scenarios
 
 1. New Game → First Forge → Workshop runs without losing the selected UID.
-2. At `+9`, the player can read what lineage and method mean before confirmation; at success exactly one valid Tag is written; at failure none is written.
+2. At `+9`, then again at every later Precision boundary, the player can read the legal add/upgrade choice before confirmation; at success exactly one valid Tag action is written; at failure none is written.
 3. At `+11`, preview communicates success, hold, and damage outcome in mutually exclusive terms; player can stop without penalty.
 4. Verify `5/5/5`, `4/4/5`, `2/2/5`, `1/1/5` presentation and actual modifiers.
 5. Actual customer use only, not handoff, can produce one damage event; result has the same UID, 2-4 reasons, and one next action.
@@ -463,9 +463,9 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | Hypothesis | Risk | Evidence required |
 |---|---|---|
 | Fun | Does `+11` make stopping feel like agency, not avoidance? | 5+ human think-aloud tests, choice distribution and reasons. |
-| Identity | Does one +10 Tag make the work memorable without turning it into a generic loot system? | Comprehension test and Tag recall after result return. |
+| Identity | Does a visible three-tag, I–IV growth board make the work memorable without turning it into a generic loot system? | Comprehension test and Tag recall after result return. |
 | Production | Can customer return content be produced with 2-4 causal reasons and one next action without bespoke system drift? | Nadia slice plus two content rows using the same template. |
-| Technical | Can V3 save preserve results and repair idempotently across restart? | Automated and Godot runtime save/load evidence. |
+| Technical | Can V4 save preserve migrated Tags, results, and repair idempotently across restart? | Automated and Godot runtime save/load evidence. |
 | Visual | Can native UI remain legible over approved workshop art at actual portrait gameplay size? | Client capture plus Android/accessibility/human visual QA. |
 
 ## 24. RISKS AND BLOCKERS

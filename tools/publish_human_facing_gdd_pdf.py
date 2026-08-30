@@ -13,6 +13,7 @@ from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
+from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Image, KeepTogether, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
@@ -35,6 +36,13 @@ def normalized_sha256(path: Path) -> str:
 
 def xml(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def inline(text: str) -> str:
+    """Escape source text first, then render only bold and code delimiters as safe typography."""
+    escaped = xml(text)
+    escaped = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", escaped)
+    return re.sub(r"`([^`]+)`", r'<font color="#725A45">\1</font>', escaped)
 
 
 def footer(canvas, doc) -> None:
@@ -84,7 +92,7 @@ def story(markdown: str):
             rows = parse_table(chunk)
             if rows:
                 count = len(rows[0]); width = (A4[0] - 36 * mm) / count
-                data = [[Paragraph(xml(cell), body) for cell in row] for row in rows]
+                data = [[Paragraph(inline(cell), body) for cell in row] for row in rows]
                 table = Table(data, colWidths=[width] * count, repeatRows=1, hAlign="LEFT")
                 table.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E8D9C7")), ("GRID", (0, 0), (-1, -1), 0.35, colors.HexColor("#B89E83")), ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 4), ("RIGHTPADDING", (0, 0), (-1, -1), 4), ("TOPPADDING", (0, 0), (-1, -1), 4), ("BOTTOMPADDING", (0, 0), (-1, -1), 4)]))
                 out.extend([table, Spacer(1, 3 * mm)])
@@ -100,8 +108,8 @@ def story(markdown: str):
             if block and not is_mermaid: out.append(Paragraph("<br/>".join(xml(x) for x in block), flow))
             continue
         if line.startswith("- "):
-            out.append(Paragraph("• " + xml(line[2:]), bullet)); i += 1; continue
-        out.append(Paragraph(xml(line), body)); i += 1
+            out.append(Paragraph("• " + inline(line[2:]), bullet)); i += 1; continue
+        out.append(Paragraph(inline(line), body)); i += 1
     out.append(Spacer(1, 5 * mm))
     out.append(Paragraph("승인된 런타임 소비처 삽화", h1))
     for name, asset in ASSETS:
@@ -110,20 +118,34 @@ def story(markdown: str):
     return out
 
 
+def build_pdf() -> str:
+    """Build once with invariant ReportLab metadata and return the exact artifact SHA-256."""
+    def invariant_canvas(*args, **kwargs):
+        kwargs["invariant"] = 1
+        return canvas.Canvas(*args, **kwargs)
+
+    doc = SimpleDocTemplate(str(OUTPUT), pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=18 * mm, bottomMargin=18 * mm, title="Blacksmith 사람용 게임 기획서", author="Blacksmith Project", subject="Human-facing Korean GDD", creator="Blacksmith deterministic ReportLab publisher")
+    doc.build(story(SOURCE.read_text(encoding="utf-8")), onFirstPage=footer, onLaterPages=footer, canvasmaker=invariant_canvas)
+    return hashlib.sha256(OUTPUT.read_bytes()).hexdigest()
+
+
 def main() -> None:
     if not FONT.exists():
         raise FileNotFoundError(FONT)
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    doc = SimpleDocTemplate(str(OUTPUT), pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=18 * mm, bottomMargin=18 * mm, title="Blacksmith 사람용 게임 기획서", author="Blacksmith Project", subject="Human-facing Korean GDD", creator="Blacksmith deterministic ReportLab publisher")
-    doc.build(story(SOURCE.read_text(encoding="utf-8")), onFirstPage=footer, onLaterPages=footer)
+    first_sha256 = build_pdf()
+    second_sha256 = build_pdf()
+    if first_sha256 != second_sha256:
+        raise RuntimeError("invariant publisher produced different PDF bytes")
     reader = PdfReader(str(OUTPUT))
     receipt = {
         "schema_version": 2,
         "receipt_id": "BS-GDD-20260830-RECURRING-PRECISION-HUMAN-PDF",
         "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
         "source_markdown": {"path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md", "sha256": normalized_sha256(SOURCE), "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"},
-        "artifact": {"path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf", "sha256": hashlib.sha256(OUTPUT.read_bytes()).hexdigest(), "page_count": len(reader.pages), "pdf_title": reader.metadata.title, "pdf_subject": reader.metadata.subject, "target_format": "A4"},
-        "publish_recipe": {"publisher": "tools/publish_human_facing_gdd_pdf.py", "engine": "ReportLab", "font": "C:/Windows/Fonts/malgun.ttf", "images": [str(path.relative_to(ROOT)).replace("\\", "/") for _, path in ASSETS]},
+        "artifact": {"path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf", "sha256": second_sha256, "page_count": len(reader.pages), "pdf_title": reader.metadata.title, "pdf_subject": reader.metadata.subject, "target_format": "A4"},
+        "publish_recipe": {"publisher": "tools/publish_human_facing_gdd_pdf.py", "engine": "ReportLab", "font": "C:/Windows/Fonts/malgun.ttf", "invariant": True, "images": [str(path.relative_to(ROOT)).replace("\\", "/") for _, path in ASSETS]},
+        "deterministic_publish_proof": {"invariant": True, "identical_sha256_runs": [first_sha256, second_sha256], "run_count": 2, "basis": "two consecutive invariant ReportLab publishes with unchanged source"},
         "render_validation": {"required_tool": "Poppler pdftoppm", "rendered_pages": list(range(1, len(reader.pages) + 1)), "inspection": "ALL_PAGES_RENDERED_AND_REVIEWED_BEFORE_RECEIPT_FINALIZATION", "result": "KOREAN_TEXT_TABLES_FLOW_AND_SCENE_CONTEXT_INSPECTED"},
         "provenance": {"document_role": "human-facing project GDD PDF", "runtime_asset": False, "human_usability_or_player_experience_evidence": False},
     }

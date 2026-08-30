@@ -133,6 +133,17 @@ def main() -> int:
     ):
         require(ai_spec, token, failures, "AI production spec")
 
+    for forbidden in (
+        "Exactly one `CATALYST_AFFIX` / Tag",
+        "Only a successful `+9→+10` enhancement.",
+        "V3 save and item schemas",
+        "writes V3 on next save",
+        "must use no new stored field",
+        "SUCCESS_AT_PLUS10: one Tag resolve/write",
+    ):
+        if forbidden in ai_spec:
+            failures.append(f"AI production spec contains unqualified superseded recurring-Precision claim: {forbidden}")
+
     if not PDF.exists() or PDF.stat().st_size < 10_000:
         failures.append("human-facing Korean GDD PDF is missing or implausibly small")
     if not PDF_RECEIPT.exists():
@@ -167,6 +178,20 @@ def main() -> int:
                 "현재 증거 한계",
             ):
                 require(pdf_text, token, failures, "human-facing PDF")
+            for forbidden in ("**", "`", "SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://"):
+                if forbidden in pdf_text:
+                    failures.append(f"human-facing PDF contains Markdown or implementation token: {forbidden}")
+            for forbidden in ("SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://"):
+                if forbidden in human_gdd:
+                    failures.append(f"human-facing GDD contains implementation token: {forbidden}")
+            proof = receipt.get("deterministic_publish_proof", {})
+            if proof.get("invariant") is not True:
+                failures.append("PDF receipt does not declare invariant deterministic publishing")
+            hashes = proof.get("identical_sha256_runs")
+            if not isinstance(hashes, list) or len(hashes) != 2 or len(set(hashes)) != 1:
+                failures.append("PDF receipt does not record two identical publish hashes")
+            elif hashes[0] != expected_pdf_hash:
+                failures.append("PDF receipt deterministic publish hash does not match artifact")
             if len(reader.pages) < 7:
                 failures.append("PDF has fewer than the inspected 7 human-facing GDD pages")
         except Exception as exc:  # noqa: BLE001 - report contract evidence, not a traceback.
