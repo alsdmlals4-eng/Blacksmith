@@ -21,9 +21,20 @@ func _item():
 	item.function_capacity = 1
 	item.functions.assign(["ELEMENTAL_WARD_FIRE"])
 	item.grade_affix = "LEGENDARY_EDGE"
-	item.catalyst_affix = "EMBER_TOUCHED"
+	item.catalyst_affix = {
+		"schema_version": 1,
+		"tag_entries": [{
+			"tag_id": "TAG_EMBER_EDGE",
+			"stage": 1,
+			"created_milestone": 10,
+			"last_advanced_milestone": 10,
+		}],
+		"initial_tag_backfill_pending": false,
+		"unreadable_legacy_affix": "",
+	}
 	item.chronicle_affix = "ARENA_TESTED"
 	item.enhancement_level = 10
+	item.used_precision_milestones.assign([10])
 	item.highest_checkpoint = 10
 	item.owner_id = "NADIA_VENN"
 	return item
