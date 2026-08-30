@@ -27,6 +27,7 @@ var _precision_selection_data: Dictionary = {}
 func _ready() -> void:
 	_ensure_illustrated_background()
 	_ensure_workpiece_durability_hero()
+	_ensure_equipment_identity_hero()
 	_ensure_enhancement_controls()
 	var repair_button := get_node_or_null("WorkshopLayout/RepairButton") as Button
 	if repair_button != null and not repair_button.pressed.is_connected(_on_repair_pressed):
@@ -274,6 +275,7 @@ func _on_precision_backfill_pressed() -> void:
 
 func _refresh_controls() -> void:
 	_ensure_workpiece_durability_hero()
+	_ensure_equipment_identity_hero()
 	_ensure_enhancement_controls()
 	_connect_precision_controls()
 	var state := view_state()
@@ -858,6 +860,30 @@ func _ensure_workpiece_durability_hero() -> void:
 	hero.visible = true
 	hero.texture = _workpiece_texture_for_durability_state(state)
 	hero.tooltip_text = "작품 상태: %s" % _player_facing_durability_state(state)
+
+
+func _ensure_equipment_identity_hero() -> void:
+	var layout := get_node_or_null("WorkshopLayout") as VBoxContainer
+	if layout == null:
+		return
+	var hero := layout.get_node_or_null("EquipmentIdentityHero") as TextureRect
+	if hero == null:
+		hero = TextureRect.new()
+		hero.name = "EquipmentIdentityHero"
+		hero.custom_minimum_size = Vector2(0, 156)
+		hero.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		hero.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		hero.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		layout.add_child(hero)
+		layout.move_child(hero, min(1, layout.get_child_count() - 1))
+	if _item == null:
+		hero.visible = false
+		return
+	var equipment: Dictionary = EquipmentCatalogScript.by_item(_item)
+	var image_path := str(equipment.get("image_path", ""))
+	hero.texture = ResourceLoader.load(image_path) as Texture2D if not image_path.is_empty() and ResourceLoader.exists(image_path) else null
+	hero.visible = hero.texture != null
+	hero.tooltip_text = "현재 작품: %s" % str(equipment.get("display_name_ko", "미확인 작품"))
 
 
 func _workpiece_texture_for_durability_state(state: String) -> AtlasTexture:

@@ -241,9 +241,14 @@ def main() -> int:
             expected_images = [
                 "assets/ui/workshop/main_menu_dawn_background_v1.png",
                 "assets/ui/workshop/customer_result_return_illustration_v1.png",
+                "assets/ui/equipment/iron_sword_card_v1.png",
+                "assets/ui/equipment/iron_shield_card_v1.png",
+                "assets/ui/equipment/iron_bow_card_v1.png",
+                "assets/ui/equipment/iron_armor_card_v1.png",
+                "assets/ui/equipment/iron_helmet_card_v1.png",
             ]
             if receipt.get("publish_recipe", {}).get("images") != expected_images:
-                failures.append("PDF receipt must contain only the two approved current runtime illustrations")
+                failures.append("PDF receipt must contain the two scene and five equipment runtime illustrations")
             if reader.metadata.title != "Blacksmith 사람용 게임 기획서":
                 failures.append("PDF title does not identify the Blacksmith human-facing GDD")
             if reader.metadata.subject != "Human-facing Korean GDD":
@@ -257,6 +262,12 @@ def main() -> int:
                 "태그 강화",
                 "씨앗 / 성장 / 진화 / 완성",
                 "최대 세 개",
+                "다섯 장비 정체성 삽화",
+                "철검",
+                "철방패",
+                "철활",
+                "철갑옷",
+                "철투구",
                 "현재 증거 한계",
             ):
                 require(pdf_text, token, failures, "human-facing PDF")
@@ -274,8 +285,8 @@ def main() -> int:
                 failures.append("PDF receipt does not record two identical publish hashes")
             elif hashes[0] != expected_pdf_hash:
                 failures.append("PDF receipt deterministic publish hash does not match artifact")
-            if len(reader.pages) != 7:
-                failures.append("PDF must retain the reviewed seven-page human-facing GDD layout")
+            if len(reader.pages) != 8:
+                failures.append("PDF must retain the reviewed eight-page human-facing GDD layout including five equipment identities")
             for page_number, page in enumerate(reader.pages, start=1):
                 page_text = page.extract_text() or ""
                 if f"{page_number} / {len(reader.pages)}" not in page_text:

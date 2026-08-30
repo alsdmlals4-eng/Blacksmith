@@ -23,9 +23,16 @@ SOURCE = ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md"
 OUTPUT = ROOT / "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf"
 RECEIPT = ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828_PDF_RECEIPT.json"
 FONT = Path(r"C:\Windows\Fonts\malgun.ttf")
-ASSETS = [
+SCENE_ASSETS = [
     ("메인 메뉴", ROOT / "assets/ui/workshop/main_menu_dawn_background_v1.png"),
     ("고객 결과", ROOT / "assets/ui/workshop/customer_result_return_illustration_v1.png"),
+]
+EQUIPMENT_ASSETS = [
+    ("철검", ROOT / "assets/ui/equipment/iron_sword_card_v1.png"),
+    ("철방패", ROOT / "assets/ui/equipment/iron_shield_card_v1.png"),
+    ("철활", ROOT / "assets/ui/equipment/iron_bow_card_v1.png"),
+    ("철갑옷", ROOT / "assets/ui/equipment/iron_armor_card_v1.png"),
+    ("철투구", ROOT / "assets/ui/equipment/iron_helmet_card_v1.png"),
 ]
 FOOTER_RESERVE = 20 * mm
 
@@ -133,10 +140,29 @@ def story(markdown: str):
             out.append(Paragraph("• " + inline(line[2:]), bullet)); i += 1; continue
         out.append(Paragraph(inline(line), body)); i += 1
     out.append(Spacer(1, 5 * mm))
-    out.append(Paragraph("승인된 런타임 소비처 삽화", h1))
-    for name, asset in ASSETS:
+    first_scene_asset = True
+    for name, asset in SCENE_ASSETS:
         if asset.exists():
-            out.append(KeepTogether([Paragraph(xml(name), h2), Image(str(asset), width=68 * mm, height=120.8 * mm), Paragraph("이 삽화는 런타임 스크린샷이 아니다. 실제 클라이언트·Android·접근성·사람 시각 검수는 아직 실행하지 않음 상태다.", caption), Spacer(1, 4 * mm)]))
+            scene_flowables = [Paragraph(xml(name), h2), Image(str(asset), width=68 * mm, height=120.8 * mm), Paragraph("이 삽화는 런타임 스크린샷이 아니다. 실제 클라이언트·Android·접근성·사람 시각 검수는 아직 실행하지 않음 상태다.", caption), Spacer(1, 4 * mm)]
+            if first_scene_asset:
+                scene_flowables.insert(0, Paragraph("승인된 런타임 소비처 삽화", h1))
+            first_scene_asset = False
+            out.append(KeepTogether(scene_flowables))
+    equipment_cells = []
+    for name, asset in EQUIPMENT_ASSETS:
+        if asset.exists():
+            equipment_cells.append([
+                Image(str(asset), width=56 * mm, height=56 * mm),
+                Paragraph(xml(name), caption),
+            ])
+    if equipment_cells:
+        out.append(Paragraph("첫 제작과 작업대에서 쓰는 다섯 장비 정체성 삽화", h1))
+        rows = [equipment_cells[index:index + 2] for index in range(0, len(equipment_cells), 2)]
+        if len(rows[-1]) == 1:
+            rows[-1].append(Spacer(1, 1))
+        table = Table(rows, colWidths=[(A4[0] - 36 * mm) / 2] * 2, hAlign="LEFT")
+        table.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("ALIGN", (0, 0), (-1, -1), "CENTER"), ("TOPPADDING", (0, 0), (-1, -1), 3), ("BOTTOMPADDING", (0, 0), (-1, -1), 5)]))
+        out.extend([table, Paragraph("장비 그림은 선택 버튼과 내구도 상태 그림을 대체하지 않는다. 실제 클라이언트·Android·접근성·사람 시각 검수는 아직 실행하지 않음 상태다.", caption), Spacer(1, 4 * mm)])
     return out
 
 
@@ -162,7 +188,7 @@ def main() -> None:
         "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
         "source_markdown": {"path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md", "sha256": normalized_sha256(SOURCE), "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"},
         "artifact": {"path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf", "sha256": second_sha256, "page_count": len(reader.pages), "pdf_title": reader.metadata.title, "pdf_subject": reader.metadata.subject, "target_format": "A4"},
-        "publish_recipe": {"publisher": "tools/publish_human_facing_gdd_pdf.py", "engine": "ReportLab", "font": "C:/Windows/Fonts/malgun.ttf", "invariant": True, "images": [str(path.relative_to(ROOT)).replace("\\", "/") for _, path in ASSETS]},
+        "publish_recipe": {"publisher": "tools/publish_human_facing_gdd_pdf.py", "engine": "ReportLab", "font": "C:/Windows/Fonts/malgun.ttf", "invariant": True, "images": [str(path.relative_to(ROOT)).replace("\\", "/") for _, path in [*SCENE_ASSETS, *EQUIPMENT_ASSETS]]},
         "deterministic_publish_proof": {"invariant": True, "identical_sha256_runs": [first_sha256, second_sha256], "run_count": 2, "basis": "two consecutive invariant ReportLab publishes with unchanged source"},
         "render_validation": {"required_tool": "Poppler pdftoppm", "rendered_pages": list(range(1, len(reader.pages) + 1)), "inspection": "ALL_PAGES_RENDERED_AND_REVIEWED_BEFORE_RECEIPT_FINALIZATION", "result": "KOREAN_TEXT_TABLES_FLOW_AND_SCENE_CONTEXT_INSPECTED"},
         "provenance": {"document_role": "human-facing project GDD PDF", "runtime_asset": False, "human_usability_or_player_experience_evidence": False},

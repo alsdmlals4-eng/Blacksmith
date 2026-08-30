@@ -31,11 +31,17 @@
       "actual_consumers": ["FIRST_FORGE_EQUIPMENT_CHOICE", "WORKSHOP_EQUIPMENT_IDENTITY_HERO"],
       "primary_use": "Let the player distinguish the first iron sword before forging and recognize the same selected workpiece at the Workshop.",
       "implementation_owner_or_path": ["res://scripts/ui/forging_screen.gd#EquipmentChoice_iron_sword", "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#EquipmentIdentityHero"],
-      "target_aspect_resolution": "1:1 / 1024x1024 PNG",
+      "target_aspect_resolution": "1:1 / 1254x1254 PNG",
+      "accepted_source_dimensions": "1254x1254",
+      "runtime_import_policy": {
+        "max_dimension_px": 512,
+        "compression": "LOSSLESS_2D_NO_MIPMAPS",
+        "source_provenance_bytes_preserved": true
+      },
       "state_family_requirement": "One neutral pristine-object identity state; damage and enhancement state remain separate native or durability-atlas presentation.",
       "fallback_if_unconsumed": "KEEP_NATIVE_LABEL_CARD_AND_DEFER_ASSET",
-      "candidate_status": "GENERATED_CANDIDATE",
-      "runtime_promotion_status": "NOT_PROMOTED_WAITING_FOR_USER_LOCK",
+      "candidate_status": "USER_APPROVED",
+      "runtime_promotion_status": "IMPLEMENTED_MACHINE_VERIFIED",
       "generated_ui_screenshot": false,
       "candidate_receipt": {
         "generated_on": "2026-08-30 KST",
@@ -43,7 +49,7 @@
         "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-72a4b3fc-66a8-4518-8d8e-b2374d84ad79.png",
         "sha256": "bbed060e8ac115d51a0ee83bbe285127d292f3cbd4d2b633ef4df2f4258db5cc",
         "pixel_dimensions": "1254x1254",
-        "review_status": "GENERATED_CANDIDATE_PENDING_USER_LOCK"
+        "review_status": "USER_LOCKED_FOR_RUNTIME_PROMOTION"
       },
       "brief_focus": "A forged iron longsword resting diagonally on a worn oak workbench, restrained forge glow, paper-and-ink illustrated workshop-book material study."
     },
@@ -55,11 +61,17 @@
       "actual_consumers": ["FIRST_FORGE_EQUIPMENT_CHOICE", "WORKSHOP_EQUIPMENT_IDENTITY_HERO"],
       "primary_use": "Let the player distinguish the first iron shield before forging and recognize the same selected workpiece at the Workshop.",
       "implementation_owner_or_path": ["res://scripts/ui/forging_screen.gd#EquipmentChoice_iron_shield", "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#EquipmentIdentityHero"],
-      "target_aspect_resolution": "1:1 / 1024x1024 PNG",
+      "target_aspect_resolution": "1:1 / 1254x1254 PNG",
+      "accepted_source_dimensions": "1254x1254",
+      "runtime_import_policy": {
+        "max_dimension_px": 512,
+        "compression": "LOSSLESS_2D_NO_MIPMAPS",
+        "source_provenance_bytes_preserved": true
+      },
       "state_family_requirement": "One neutral pristine-object identity state; damage and enhancement state remain separate native or durability-atlas presentation.",
       "fallback_if_unconsumed": "KEEP_NATIVE_LABEL_CARD_AND_DEFER_ASSET",
-      "candidate_status": "GENERATED_CANDIDATE",
-      "runtime_promotion_status": "NOT_PROMOTED_WAITING_FOR_USER_LOCK",
+      "candidate_status": "USER_APPROVED",
+      "runtime_promotion_status": "IMPLEMENTED_MACHINE_VERIFIED",
       "generated_ui_screenshot": false,
       "candidate_receipt": {
         "generated_on": "2026-08-30 KST",
@@ -67,7 +79,7 @@
         "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-a1d4109b-8e64-4f5d-9923-f05fd2616184.png",
         "sha256": "f3c02be3a6a9d375ffb816a4101a124bf7bb86aa97951cb0c0f9c6c98094de0c",
         "pixel_dimensions": "1254x1254",
-        "review_status": "GENERATED_CANDIDATE_PENDING_USER_LOCK"
+        "review_status": "USER_LOCKED_FOR_RUNTIME_PROMOTION"
       },
       "brief_focus": "A compact iron-rimmed round shield with a dark wood core resting against a bench, restrained forge glow, paper-and-ink illustrated workshop-book material study."
     },
@@ -79,11 +91,17 @@
       "actual_consumers": ["FIRST_FORGE_EQUIPMENT_CHOICE", "WORKSHOP_EQUIPMENT_IDENTITY_HERO"],
       "primary_use": "Let the player distinguish the first iron bow before forging and recognize the same selected workpiece at the Workshop.",
       "implementation_owner_or_path": ["res://scripts/ui/forging_screen.gd#EquipmentChoice_iron_bow", "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#EquipmentIdentityHero"],
-      "target_aspect_resolution": "1:1 / 1024x1024 PNG",
+      "target_aspect_resolution": "1:1 / 1254x1254 PNG",
+      "accepted_source_dimensions": "1254x1254",
+      "runtime_import_policy": {
+        "max_dimension_px": 512,
+        "compression": "LOSSLESS_2D_NO_MIPMAPS",
+        "source_provenance_bytes_preserved": true
+      },
       "state_family_requirement": "One neutral pristine-object identity state; damage and enhancement state remain separate native or durability-atlas presentation.",
       "fallback_if_unconsumed": "KEEP_NATIVE_LABEL_CARD_AND_DEFER_ASSET",
-      "candidate_status": "GENERATED_CANDIDATE",
-      "runtime_promotion_status": "NOT_PROMOTED_WAITING_FOR_USER_LOCK",
+      "candidate_status": "USER_APPROVED",
+      "runtime_promotion_status": "IMPLEMENTED_MACHINE_VERIFIED",
       "generated_ui_screenshot": false,
       "candidate_receipt": {
         "generated_on": "2026-08-30 KST",
@@ -91,7 +109,7 @@
         "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-cc722101-3a80-4161-85d0-e9ffe06d2d55.png",
         "sha256": "3f7c013553ed71d8821eb83c90f7bcabd90f72b1849701e0fd340e08e8d75f1f",
         "pixel_dimensions": "1254x1254",
-        "review_status": "GENERATED_CANDIDATE_PENDING_USER_LOCK"
+        "review_status": "USER_LOCKED_FOR_RUNTIME_PROMOTION"
       },
       "brief_focus": "A slim recurved wood-and-iron bow with a simple taut bowstring placed on a workbench, restrained forge glow, paper-and-ink illustrated workshop-book material study."
     },
@@ -103,11 +121,17 @@
       "actual_consumers": ["FIRST_FORGE_EQUIPMENT_CHOICE", "WORKSHOP_EQUIPMENT_IDENTITY_HERO"],
       "primary_use": "Let the player distinguish the first iron armor before forging and recognize the same selected workpiece at the Workshop.",
       "implementation_owner_or_path": ["res://scripts/ui/forging_screen.gd#EquipmentChoice_iron_armor", "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#EquipmentIdentityHero"],
-      "target_aspect_resolution": "1:1 / 1024x1024 PNG",
+      "target_aspect_resolution": "1:1 / 1254x1254 PNG",
+      "accepted_source_dimensions": "1254x1254",
+      "runtime_import_policy": {
+        "max_dimension_px": 512,
+        "compression": "LOSSLESS_2D_NO_MIPMAPS",
+        "source_provenance_bytes_preserved": true
+      },
       "state_family_requirement": "One neutral pristine-object identity state; damage and enhancement state remain separate native or durability-atlas presentation.",
       "fallback_if_unconsumed": "KEEP_NATIVE_LABEL_CARD_AND_DEFER_ASSET",
-      "candidate_status": "GENERATED_CANDIDATE",
-      "runtime_promotion_status": "NOT_PROMOTED_WAITING_FOR_USER_LOCK",
+      "candidate_status": "USER_APPROVED",
+      "runtime_promotion_status": "IMPLEMENTED_MACHINE_VERIFIED",
       "generated_ui_screenshot": false,
       "candidate_receipt": {
         "generated_on": "2026-08-30 KST",
@@ -115,7 +139,7 @@
         "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-69b840a8-8322-448e-a9e1-59cfd7a33690.png",
         "sha256": "d4c0b9db933c9fe351575cf793412e22ead9b234590cb8ab60d3a82fcb554cc2",
         "pixel_dimensions": "1254x1254",
-        "review_status": "GENERATED_CANDIDATE_PENDING_USER_LOCK"
+        "review_status": "USER_LOCKED_FOR_RUNTIME_PROMOTION"
       },
       "brief_focus": "A practical iron breastplate with leather straps hanging from a wooden stand, restrained forge glow, paper-and-ink illustrated workshop-book material study."
     },
@@ -127,11 +151,17 @@
       "actual_consumers": ["FIRST_FORGE_EQUIPMENT_CHOICE", "WORKSHOP_EQUIPMENT_IDENTITY_HERO"],
       "primary_use": "Let the player distinguish the first iron helmet before forging and recognize the same selected workpiece at the Workshop.",
       "implementation_owner_or_path": ["res://scripts/ui/forging_screen.gd#EquipmentChoice_iron_helmet", "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#EquipmentIdentityHero"],
-      "target_aspect_resolution": "1:1 / 1024x1024 PNG",
+      "target_aspect_resolution": "1:1 / 1254x1254 PNG",
+      "accepted_source_dimensions": "1254x1254",
+      "runtime_import_policy": {
+        "max_dimension_px": 512,
+        "compression": "LOSSLESS_2D_NO_MIPMAPS",
+        "source_provenance_bytes_preserved": true
+      },
       "state_family_requirement": "One neutral pristine-object identity state; damage and enhancement state remain separate native or durability-atlas presentation.",
       "fallback_if_unconsumed": "KEEP_NATIVE_LABEL_CARD_AND_DEFER_ASSET",
-      "candidate_status": "GENERATED_CANDIDATE",
-      "runtime_promotion_status": "NOT_PROMOTED_WAITING_FOR_USER_LOCK",
+      "candidate_status": "USER_APPROVED",
+      "runtime_promotion_status": "IMPLEMENTED_MACHINE_VERIFIED",
       "generated_ui_screenshot": false,
       "candidate_receipt": {
         "generated_on": "2026-08-30 KST",
@@ -139,7 +169,7 @@
         "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-3787a8d1-64c6-430b-8686-5a9ad3bc89ae.png",
         "sha256": "90cebb815fdc77b0076b7bab1eca00e1f7be791378d45dd2880f8b8ebe610cfb",
         "pixel_dimensions": "1254x1254",
-        "review_status": "GENERATED_CANDIDATE_PENDING_USER_LOCK"
+        "review_status": "USER_LOCKED_FOR_RUNTIME_PROMOTION"
       },
       "brief_focus": "A sturdy iron sallet-style helmet with a simple leather liner on a folded shop cloth, restrained forge glow, paper-and-ink illustrated workshop-book material study."
     }

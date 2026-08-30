@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "464a9be4fe5fbd9aa5bc3692d73999d49fa86f71",
+  "decision_ids": [
+    "BS-ART-20260825-03",
+    "BS-ART-20260826-04",
+    "BS-ENHANCE-20260829-37",
+    "BS-ENHANCE-20260830-38",
+    "BS-EQUIPMENT-20260830-39"
+  ],
+  "approved_paths": [
+    "assets/ASSET_MANIFEST.json",
+    "assets/ui/equipment/iron_sword_card_v1.png",
+    "assets/ui/equipment/iron_sword_card_v1.png.import",
+    "assets/ui/equipment/iron_shield_card_v1.png",
+    "assets/ui/equipment/iron_shield_card_v1.png.import",
+    "assets/ui/equipment/iron_bow_card_v1.png",
+    "assets/ui/equipment/iron_bow_card_v1.png.import",
+    "assets/ui/equipment/iron_armor_card_v1.png",
+    "assets/ui/equipment/iron_armor_card_v1.png.import",
+    "assets/ui/equipment/iron_helmet_card_v1.png",
+    "assets/ui/equipment/iron_helmet_card_v1.png.import",
+    "assets/ui/workshop/main_menu_dawn_background_v1.png.import",
+    "assets/ui/workshop/customer_result_return_illustration_v1.png.import",
+    "data/vertical_slice/vertical_slice_equipment_catalog_20260830.json",
+    "scripts/ui/forging_screen.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "USER_REQUEST_AND_GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE",
+  "approval_time": "2026-08-30T16:10:31+09:00",
+  "scope_summary": "Exact user-locked five equipment identity image promotion and missing PNG import remap recovery only. First-forge and Workshop identity slots only; no new equipment types, defensive tags, tag or economy curve, Scene or Resource or project settings, combat, inventory, release, or Android claim."
+}
