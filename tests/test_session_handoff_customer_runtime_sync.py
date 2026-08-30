@@ -24,7 +24,11 @@ class CustomerRuntimeHandoffSyncContractTest(unittest.TestCase):
         self.assertIn(
             "CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286", handoff
         )
-        self.assertIn("CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN", handoff)
+        self.assertIn("CUSTOMER_WORLD_EVENT_SCHEDULER = NOT_RUN", handoff)
+        self.assertIn(
+            "PHASE1_PLAYER_HANDOFF_ENTRY = IMPLEMENTED_PR334 / SAVE_FIRST_ONCE_PER_UID",
+            handoff,
+        )
         self.assertIn("same stored fact", handoff)
 
     def test_handoff_records_the_retired_approval_and_current_baseline(self):
@@ -36,6 +40,18 @@ class CustomerRuntimeHandoffSyncContractTest(unittest.TestCase):
         )
         self.assertIn(
             "PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR294", handoff
+        )
+
+    def test_handoff_records_the_merged_phase1_player_flow_not_a_worktree_candidate(self):
+        handoff = HANDOFF_PATH.read_text(encoding="utf-8")
+
+        self.assertIn(
+            "IMPLEMENTATION_STATUS = MERGED_MAIN_MACHINE_VERIFIED / PR334 / a2489bf039c2080c7851959cc6582ab6a56645fc",
+            handoff,
+        )
+        self.assertIn(
+            "PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR335 / 4e9bbf7a4ac47cbbdf45b22e07322ae4d927e7cc",
+            handoff,
         )
 
 
