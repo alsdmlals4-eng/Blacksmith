@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "ab7ca9ba1bf6599bb96a16eb44688475a64a25bf",
+  "decision_ids": [
+    "BS-ENHANCE-20260830-38",
+    "BS-EQUIPMENT-20260830-39",
+    "BS-OPS-20260828-35",
+    "BS-OPS-20260828-36"
+  ],
+  "approved_paths": [
+    "assets/ASSET_MANIFEST.json",
+    "assets/ui/workshop/customer_result_return_illustration_v1.png",
+    "assets/ui/workshop/main_menu_dawn_background_v1.png",
+    "data/vertical_slice/vertical_slice_equipment_catalog_20260830.json",
+    "data/vertical_slice/vertical_slice_preset.json",
+    "data/vertical_slice/vertical_slice_schema.json",
+    "scripts/forging/canonical_first_item_input_adapter.gd",
+    "scripts/forging/forging_session.gd",
+    "scripts/ui/forging_screen.gd",
+    "scripts/vertical_slice/domain/vs_equipment_catalog.gd",
+    "scripts/vertical_slice/domain/vs_equipment_catalog.gd.uid",
+    "scripts/vertical_slice/domain/vs_item.gd",
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd",
+    "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
+    "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
+    "scripts/vertical_slice/services/vs_item_birth_service.gd",
+    "scripts/vertical_slice/ui/vs_customer_result_screen.gd",
+    "scripts/vertical_slice/ui/vs_main_menu.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "USER_APPROVED_2026-08-30_RECURRING_PRECISION_AND_FIVE_EQUIPMENT_IMPLEMENTATION_WITH_APPROVED_PROTECTED_CHANGE_LABEL",
+  "approval_time": "2026-08-30T15:40:55+09:00",
+  "scope_summary": "Exact PR #330 change set only: recurring Precision Tag evolution, first-forge five-equipment selection, the user-approved pre-lock visual requirements and retired precision-only raster binding, current project identity migration, and their tests. No Scene, Resource, project setting, addon, economy curve, customer scheduler, player title, fourth affix, or unrelated product path is approved. This one-shot manifest is retired in a separate post-merge closure PR."
+}

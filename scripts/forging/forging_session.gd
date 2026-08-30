@@ -39,6 +39,7 @@ const DEFAULT_CONFIG := {
 	"quality_perfect_attack_multiplier": 1.10,
 	"quality_perfect_value_multiplier": 1.12,
 }
+const EquipmentCatalogScript = preload("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
 
 var config: Dictionary = {}
 var state: int = State.FORGING
@@ -231,6 +232,11 @@ func _complete(
 	value_multiplier: float
 ) -> void:
 	state = State.COMPLETE
+	var equipment_id := str(config.get("equipment_id", "iron_sword"))
+	var equipment: Dictionary = EquipmentCatalogScript.by_id(equipment_id)
+	if equipment.is_empty():
+		equipment = EquipmentCatalogScript.by_id("iron_sword")
+		equipment_id = "iron_sword"
 	var raw_base_attack := maxi(int(config.get("weapon_base_attack", 20)), 1)
 	var required_activations := maxi(int(config.get("fever_result_required_activations", 1)), 1)
 	var fever_bonus_applied := fever_activation_count >= required_activations
@@ -240,8 +246,10 @@ func _complete(
 	var crafting_value_multiplier := maxf(value_multiplier + fever_value_multiplier - 1.0, 0.01)
 	var applied_base_attack := maxi(int(round(float(raw_base_attack) * crafting_attack_multiplier)), 1)
 	result = {
-		"weapon_id": "iron_sword",
-		"weapon_name": "철검",
+		"equipment_id": equipment_id,
+		"equipment_name": str(equipment.get("display_name_ko", "철검")),
+		"equipment_group": str(equipment.get("equipment_group", "SWORD")),
+		"role_profile": str(equipment.get("role_profile", "PHYSICAL_WEAPON_ATTACK")),
 		"raw_base_attack": raw_base_attack,
 		"base_attack": applied_base_attack,
 		"quality_id": quality_id,

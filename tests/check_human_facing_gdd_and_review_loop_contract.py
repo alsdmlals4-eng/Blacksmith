@@ -18,6 +18,7 @@ REVIEW_LOOP = ROOT / "docs/decisions/BS-OPS-20260828-36_EVIDENCE_RESEARCH_AND_AD
 AGENTS = ROOT / "AGENTS.md"
 PDF = ROOT / "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf"
 PDF_RECEIPT = ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828_PDF_RECEIPT.json"
+PUBLISHER = ROOT / "tools/publish_human_facing_gdd_pdf.py"
 ARCHIVE_GDIGNORE = ROOT / "docs/migration/historical_notion_gdd/.gdignore"
 
 
@@ -44,6 +45,7 @@ def main() -> int:
     failures: list[str] = []
     human_gdd = read(HUMAN_GDD, failures)
     ai_spec = read(AI_SPEC, failures)
+    publisher = read(PUBLISHER, failures)
     routing = read(ROUTING, failures)
     review_loop = read(REVIEW_LOOP, failures)
     agents = read(AGENTS, failures)
@@ -60,8 +62,18 @@ def main() -> int:
         "사람용 본문 = 플레이 경험의 이해와 의사결정",
         "개발 참고 = 구현·데이터·테스트 추적",
         "현재 증거 한계",
-        "NOT_RUN",
+        "아직 실행하지 않음",
+        "정밀 강화",
         "+9 → +10",
+        "+19 → +20",
+        "+99 → +100",
+        "태그 추가",
+        "태그 강화",
+        "최대 세 개",
+        "씨앗 / 성장 / 진화 / 완성",
+        "정상 강화에서는 태그를 고르지 않는다",
+        "성공 한 번에는 태그 행동도 정확히 하나",
+        "비용과 굴림 전에 막힌다",
         "태그 키워드",
         "촉매 계보",
         "정밀강화 방식",
@@ -78,7 +90,6 @@ def main() -> int:
         "태그를 정하지 않으면 강화 시도 자체가 시작되지 않는다",
         "사람 플레이 검수는 이번 계약의 완료 조건이 아니다",
         "손상이 발생했을 때",
-        "내부 임시 값",
         "5강 단위",
         "REJECT",
         "차별점",
@@ -115,8 +126,99 @@ def main() -> int:
     for token in (
         "기술·정본 추적용",
         "BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
+        "BS-ENHANCE-20260830-38",
+        "schema 2",
+        "V4",
+        "ADD_TAG",
+        "UPGRADE_TAG",
     ):
         require(ai_spec, token, failures, "AI production spec")
+
+    for forbidden in (
+        "Exactly one `CATALYST_AFFIX` / Tag",
+        "Only a successful `+9→+10` enhancement.",
+        "V3 save and item schemas",
+        "writes V3 on next save",
+        "must use no new stored field",
+        "SUCCESS_AT_PLUS10: one Tag resolve/write",
+    ):
+        if forbidden in ai_spec:
+            failures.append(f"AI production spec contains unqualified superseded recurring-Precision claim: {forbidden}")
+    for forbidden in (
+        "and precision-tag Decision37 /",
+        "| DAT-SAVE-001 | `VSSaveEnvelope` | V3;",
+        "| EVT-SAVE-001 | service → save service | candidate V3 envelope |",
+        "Decision37's TDD",
+        "Decision37's current JSON/contract owner",
+    ):
+        if forbidden in ai_spec:
+            failures.append(f"AI production spec retains unqualified Decision37/V3 trace: {forbidden}")
+    for line_number, line in enumerate(ai_spec.splitlines(), start=1):
+        if "Decision37" in line and not all(
+            qualification in line
+            for qualification in (
+                "historical/superseded",
+                "first 2×2",
+                "Decision38/schema2/V4",
+                "active recurring owner",
+            )
+        ):
+            failures.append(
+                "AI production spec Decision37 entry must locally identify only the "
+                f"historical first-2×2 catalog and the active recurring owner (line {line_number})"
+            )
+        if line.startswith("| SRC-CAN-08A |") or line.startswith("| DEC-PREC-35/36 |"):
+            if not all(
+                qualification in line
+                for qualification in (
+                    "historical/superseded",
+                    "first 2×2",
+                    "Decision38/schema2/V4",
+                    "active recurring owner",
+                )
+            ):
+                failures.append(
+                    "AI production spec historical precision source entry must locally identify the "
+                    f"Decision38/schema2/V4 active recurring owner (line {line_number})"
+                )
+    for entry_name, line_prefix in (
+        ("canonical current owners", "| Canonical current owners |"),
+        ("work-stage current owners", "| 1. Intent and canon |"),
+        ("Decision37 confirmed-decision row", "| DEC-ENH-37 |"),
+        ("Decision37 traceability row", "| One +10 Tag reflects player choice |"),
+        ("Decision37 change-log row", "| 2026-08-29 | Adds `BS-ENHANCE-20260829-37`"),
+    ):
+        matching_line = next((line for line in ai_spec.splitlines() if line.startswith(line_prefix)), "")
+        if not matching_line:
+            failures.append(f"AI production spec is missing {entry_name} entry")
+            continue
+        if not all(
+            qualification in matching_line
+            for qualification in (
+                "historical/superseded",
+                "first 2×2",
+                "Decision38/schema2/V4",
+                "active recurring owner",
+            )
+        ):
+            failures.append(
+                f"AI production spec {entry_name} entry must locally separate Decision37 "
+                "from the Decision38/schema2/V4 active recurring owner"
+            )
+    for forbidden in (
+        "Decisions 28-32, 34 and 37 JSON/decision owners",
+        "Current owner files and Decisions 25-37.",
+    ):
+        if forbidden in ai_spec:
+            failures.append(f"AI production spec retains unqualified legacy precision owner range: {forbidden}")
+    for token in (
+        "BS-ENHANCE-20260830-38",
+        "V4 versioned collection of at most three",
+        "First gate is `ADD_TAG` only; later gates use `ADD_TAG` or `UPGRADE_TAG`",
+    ):
+        require(ai_spec, token, failures, "AI production spec recurring current trace")
+    for token in ("class NumberedCanvas", "FOOTER_RESERVE", "_draw_final_footer", "canvasmaker=NumberedCanvas"):
+        require(publisher, token, failures, "PDF publisher footer contract")
 
     if not PDF.exists() or PDF.stat().st_size < 10_000:
         failures.append("human-facing Korean GDD PDF is missing or implausibly small")
@@ -136,14 +238,56 @@ def main() -> int:
             reader = PdfReader(str(PDF))
             if receipt.get("artifact", {}).get("page_count") != len(reader.pages):
                 failures.append("PDF receipt page count does not match the readable PDF")
+            expected_images = [
+                "assets/ui/workshop/main_menu_dawn_background_v1.png",
+                "assets/ui/workshop/customer_result_return_illustration_v1.png",
+            ]
+            if receipt.get("publish_recipe", {}).get("images") != expected_images:
+                failures.append("PDF receipt must contain only the two approved current runtime illustrations")
+            if reader.metadata.title != "Blacksmith 사람용 게임 기획서":
+                failures.append("PDF title does not identify the Blacksmith human-facing GDD")
             if reader.metadata.subject != "Human-facing Korean GDD":
                 failures.append("PDF subject does not identify the human-facing Korean GDD")
-            if len(reader.pages) < 9:
-                failures.append("PDF has fewer than the inspected 9 human-facing GDD pages")
+            pdf_text = "\n".join(page.extract_text() or "" for page in reader.pages)
+            for token in (
+                "정밀 강화",
+                "+9 → +10",
+                "+19 → +20",
+                "태그 추가",
+                "태그 강화",
+                "씨앗 / 성장 / 진화 / 완성",
+                "최대 세 개",
+                "현재 증거 한계",
+            ):
+                require(pdf_text, token, failures, "human-facing PDF")
+            for forbidden in ("**", "`", "SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://", "NOT_RUN", "CURRENT_HUMAN_FACING_GDD", "KOREAN_PRIMARY"):
+                if forbidden in pdf_text:
+                    failures.append(f"human-facing PDF contains Markdown or implementation token: {forbidden}")
+            for forbidden in ("SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://", "NOT_RUN", "CURRENT_HUMAN_FACING_GDD", "KOREAN_PRIMARY"):
+                if forbidden in human_gdd:
+                    failures.append(f"human-facing GDD contains implementation token: {forbidden}")
+            proof = receipt.get("deterministic_publish_proof", {})
+            if proof.get("invariant") is not True:
+                failures.append("PDF receipt does not declare invariant deterministic publishing")
+            hashes = proof.get("identical_sha256_runs")
+            if not isinstance(hashes, list) or len(hashes) != 2 or len(set(hashes)) != 1:
+                failures.append("PDF receipt does not record two identical publish hashes")
+            elif hashes[0] != expected_pdf_hash:
+                failures.append("PDF receipt deterministic publish hash does not match artifact")
+            if len(reader.pages) != 7:
+                failures.append("PDF must retain the reviewed seven-page human-facing GDD layout")
+            for page_number, page in enumerate(reader.pages, start=1):
+                page_text = page.extract_text() or ""
+                if f"{page_number} / {len(reader.pages)}" not in page_text:
+                    failures.append(f"PDF footer is missing exact page counter on page {page_number}")
+                if "2026-08-30" not in page_text:
+                    failures.append(f"PDF footer is missing fixed date on page {page_number}")
         except Exception as exc:  # noqa: BLE001 - report contract evidence, not a traceback.
             failures.append(f"cannot validate human-facing PDF provenance: {exc}")
     if not ARCHIVE_GDIGNORE.exists():
         failures.append("historical Notion visual archive must be Godot-ignored")
+    if not PUBLISHER.exists():
+        failures.append("deterministic human-facing PDF publisher is missing")
 
     if failures:
         print("Human-facing GDD and review-loop contract FAILED")

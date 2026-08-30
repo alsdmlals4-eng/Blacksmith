@@ -214,6 +214,81 @@ status: RELEASE_DRAFT_NOT_PLATFORM_READY
 notes: Square source master only. It requires current platform specs, safe-zone export, rights review, and final review before external use.
 ```
 
+## Current asset record · ASSET-MAIN-MENU-DAWN-BACKGROUND-V1
+
+```yaml
+asset_id: ASSET-MAIN-MENU-DAWN-BACKGROUND-V1
+category: OTHER
+name: Main menu dawn background v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/workshop/main_menu_dawn_background_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original brief, user selection, consumer mapping, and dynamic runtime binding
+reference_sources: Current Blacksmith art direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, logos, watermarks, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-MAIN-MENU-DAWN-BACKGROUND-V1
+proof_hash: 5870f6958135516b9d5f42f81e0d11e0724a5cbf27af9e3382f1de155a7f713a
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-30 approval; MenuIllustratedBackground dynamic binding is machine-verified. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
+```
+
+## Historical retired asset record · ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
+
+```yaml
+asset_id: ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
+category: OTHER
+name: Precision tag workshop background v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: RETIRED_20260830 / former assets/ui/workshop/precision_tag_workshop_background_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original brief, user selection, exact-target-only dynamic binding, and native-control preservation
+reference_sources: Current Blacksmith art direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#retired_asset_records/ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
+proof_hash: 45679f660ad9fc24796e0080aded8474be6b0c462ae7bb2d58a91b6c0530ef32
+status: SUPERSEDED
+notes: User 2026-08-30 direction explicitly removes the dedicated Precision Workshop raster. Binding and repository file were retired; native tag-selection UX is the replacement consumer. This historical record does not approve a runtime asset. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
+```
+
+## Current asset record · ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1
+
+```yaml
+asset_id: ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1
+category: OTHER
+name: Customer result return illustration v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/workshop/customer_result_return_illustration_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original brief, user selection, valid-saved-result-only dynamic binding, and native factual text preservation
+reference_sources: Current Blacksmith art direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerical durability display, logos, watermarks, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1
+proof_hash: 716ce4dd4c6c4bdf48255c4b10aef906573d1113b331d20304e4f75f6e74eca1
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-30 approval; valid-result illustration plus readability veil is machine-verified. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
+```
+
 ## Reference-to-original
 
 ```yaml

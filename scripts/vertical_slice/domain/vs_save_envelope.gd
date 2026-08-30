@@ -9,7 +9,6 @@ const LEGACY_V2_SCHEMA_VERSION := 2
 const LEGACY_V2_PRESET_VERSION := "VS-2026.08.24-B"
 const LEGACY_PRE_RELEASE_SCHEMA_VERSION := 1
 const LEGACY_PRE_RELEASE_PRESET_VERSION := "VS-2026.08.06-A"
-const PRECISION_PLACEHOLDER_AFFIX := "PRECISION_KEYWORD_PENDING_CONTENT"
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const ContentResultRecordScript = preload(
 	"res://scripts/vertical_slice/domain/vs_content_result_record.gd"
@@ -65,7 +64,6 @@ var destroyed_history_by_uid: Dictionary = {}
 var global_ledger_sequence: int = 0
 var validation_errors: Array[String] = []
 var recovered_from_backup: bool = false
-var legacy_v3_precision_backfill_uids: Dictionary = {}
 
 
 static func from_dict(value: Dictionary) -> VSSaveEnvelope:
@@ -160,12 +158,6 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 	):
 		envelope.schema_version = SCHEMA_VERSION
 		envelope.preset_version = PRESET_VERSION
-	if source_schema_version == LEGACY_V3_SCHEMA_VERSION and str(value.get("preset_version", "")) == LEGACY_V3_PRESET_VERSION:
-		for item_uid in envelope.items_by_uid:
-			var item = envelope.items_by_uid[item_uid]
-			if int(item.enhancement_level) >= 10 and str(item.catalyst_affix) == PRECISION_PLACEHOLDER_AFFIX:
-				envelope.legacy_v3_precision_backfill_uids[str(item_uid)] = true
-
 	envelope._validate_values()
 	return envelope
 
@@ -279,10 +271,6 @@ func add_item(item) -> Error:
 
 func get_item(item_uid: String):
 	return items_by_uid.get(item_uid)
-
-
-func is_legacy_v3_precision_backfill_eligible(item_uid: String) -> bool:
-	return bool(legacy_v3_precision_backfill_uids.get(item_uid, false))
 
 
 func resource_snapshot() -> Dictionary:

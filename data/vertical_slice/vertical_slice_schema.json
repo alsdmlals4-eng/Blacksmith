@@ -58,10 +58,18 @@
       "meteor_iron"
     ],
     "equipment_groups": [
-      "SWORD"
+      "SWORD",
+      "SHIELD",
+      "BOW",
+      "ARMOR",
+      "HELMET"
     ],
     "role_profiles": [
-      "PHYSICAL_WEAPON_ATTACK"
+      "PHYSICAL_WEAPON_ATTACK",
+      "PHYSICAL_WEAPON_GUARD",
+      "PHYSICAL_WEAPON_RANGED",
+      "ARMOR_BODY_DEFENSE",
+      "ARMOR_HEAD_DEFENSE"
     ],
     "enhancement_range": [
       0,

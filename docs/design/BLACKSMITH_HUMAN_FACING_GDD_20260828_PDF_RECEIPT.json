@@ -1,24 +1,52 @@
 {
-  "schema_version": 1,
-  "receipt_id": "BS-GDD-20260828-HUMAN-PDF-01",
+  "schema_version": 2,
+  "receipt_id": "BS-GDD-20260830-RECURRING-PRECISION-HUMAN-PDF",
   "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
-  "generated_at": "2026-08-29 KST",
   "source_markdown": {
     "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
-    "sha256": "bb5b3fa357e6d53cfb10662d4decd163fdfdbc28eee86b0cc04b8f35bf980ae4",
+    "sha256": "0c311abbe0faf53912808e4a047bbedbd70bf3af5bba1100d74d55fe2aac9187",
     "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
   },
   "artifact": {
     "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
-    "sha256": "2142b864d6cb0c293809a8b00e3b78e000c7c5a48760d6e6c2ad7c110cc07c9d",
-    "page_count": 13,
+    "sha256": "cb42647a3194b282ca0f43cd5fa9f8d31081831590bc1a03386b6e0c5f5c3064",
+    "page_count": 7,
+    "pdf_title": "Blacksmith 사람용 게임 기획서",
     "pdf_subject": "Human-facing Korean GDD",
     "target_format": "A4"
   },
+  "publish_recipe": {
+    "publisher": "tools/publish_human_facing_gdd_pdf.py",
+    "engine": "ReportLab",
+    "font": "C:/Windows/Fonts/malgun.ttf",
+    "invariant": true,
+    "images": [
+      "assets/ui/workshop/main_menu_dawn_background_v1.png",
+      "assets/ui/workshop/customer_result_return_illustration_v1.png"
+    ]
+  },
+  "deterministic_publish_proof": {
+    "invariant": true,
+    "identical_sha256_runs": [
+      "cb42647a3194b282ca0f43cd5fa9f8d31081831590bc1a03386b6e0c5f5c3064",
+      "cb42647a3194b282ca0f43cd5fa9f8d31081831590bc1a03386b6e0c5f5c3064"
+    ],
+    "run_count": 2,
+    "basis": "two consecutive invariant ReportLab publishes with unchanged source"
+  },
   "render_validation": {
-    "tool": "pypdf + Poppler pdftoppm",
-    "inspected_pages": [1, 2, 5, 6, 7, 10, 12, 13],
-    "result": "KOREAN_TEXT_AND_TABLE_LAYOUT_READABLE"
+    "required_tool": "Poppler pdftoppm",
+    "rendered_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "inspection": "ALL_PAGES_RENDERED_AND_REVIEWED_BEFORE_RECEIPT_FINALIZATION",
+    "result": "KOREAN_TEXT_TABLES_FLOW_AND_SCENE_CONTEXT_INSPECTED"
   },
   "provenance": {
     "document_role": "human-facing project GDD PDF",

@@ -2,7 +2,7 @@ extends "res://addons/gut/test.gd"
 
 const MAIN_MENU_PATH := "res://scripts/vertical_slice/ui/vs_main_menu.gd"
 const MAIN_MENU_SCENE := preload("res://scenes/vertical_slice/main_menu.tscn")
-const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
+const APPROVED_MAIN_MENU_BACKGROUND_PATH := "res://assets/ui/workshop/main_menu_dawn_background_v1.png"
 
 
 class FakeEnvelope:
@@ -60,16 +60,27 @@ func test_main_menu_surface_exists() -> void:
 	assert_true(ResourceLoader.exists(MAIN_MENU_PATH), "Task 2 MainMenu logic must exist at the approved script path")
 
 
-func test_main_menu_uses_the_illustrated_workshop_background_and_korean_touch_actions() -> void:
+func test_main_menu_binds_the_approved_dawn_background_without_serializing_it_into_the_scene() -> void:
+	assert_true(ResourceLoader.exists(APPROVED_MAIN_MENU_BACKGROUND_PATH), "approved main-menu illustration must be tracked before it can replace the runtime binding")
+	if not ResourceLoader.exists(APPROVED_MAIN_MENU_BACKGROUND_PATH):
+		return
 	var menu = MAIN_MENU_SCENE.instantiate()
 	add_child_autofree(menu)
 	var background := menu.get_node_or_null("MenuIllustratedBackground") as TextureRect
-	assert_not_null(background, "main menu must consume the runtime-bound illustrated workshop background")
+	assert_not_null(background, "main menu must retain its existing dynamic illustration slot")
 	if background == null:
 		return
-	assert_eq(background.texture, WorkshopBackgroundTexture)
+	assert_eq(background.texture.resource_path, APPROVED_MAIN_MENU_BACKGROUND_PATH)
 	assert_eq(background.mouse_filter, Control.MOUSE_FILTER_IGNORE)
 	assert_eq(background.z_index, -1)
+	assert_eq(background.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
+	assert_eq(background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
+	assert_false(MAIN_MENU_SCENE.instantiate().get_node("MenuIllustratedBackground").texture.resource_path == APPROVED_MAIN_MENU_BACKGROUND_PATH, "the old serialized scene texture remains an unpromoted fallback")
+
+
+func test_main_menu_keeps_native_korean_touch_actions_over_the_approved_background() -> void:
+	var menu = MAIN_MENU_SCENE.instantiate()
+	add_child_autofree(menu)
 	assert_eq(menu.get_node("MenuLayout/MenuTitleLabel").text, "대장간")
 	assert_eq(menu.get_node("MenuLayout/ContinueButton").text, "이어하기")
 	assert_eq(menu.get_node("MenuLayout/NewGameButton").text, "새 대장간 시작")
