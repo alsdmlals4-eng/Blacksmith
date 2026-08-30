@@ -107,7 +107,8 @@ CUSTOMER_WORLD_EVENT_RESOLUTION = IMPLEMENTED_PR268
 CUSTOMER_WORLD_RESULT_FACT_PERSISTENCE = IMPLEMENTED_PR272
 CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278
 CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286
-CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN
+PHASE1_PLAYER_HANDOFF_ENTRY = IMPLEMENTED_PR334 / SAVE_FIRST_ONCE_PER_UID
+CUSTOMER_WORLD_EVENT_SCHEDULER = NOT_RUN
 HUMAN_PLAYTEST = NOT_RUN
 OPERATING_CONTRACT_BASELINE = 004e519a8891e3ef897cb32f67c58082a9d6a696
 PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR294
@@ -127,11 +128,11 @@ only after save succeeds. The event scheduler and player-facing customer entry r
 record. Android, accessibility, visual client inspection, performance, and human play remain
 `NOT_RUN`.
 
-### Phase-1 same-UID player-flow candidate · 2026-08-30
+### Phase-1 same-UID player-flow delivery · 2026-08-30
 
 ```text
-IMPLEMENTATION_STATUS = WORKTREE_CANDIDATE_IMPLEMENTED_AND_MACHINE_VERIFIED / NOT_MERGED
-IMPLEMENTATION_BRANCH = codex/phase1-customer-handoff-20260830
+IMPLEMENTATION_STATUS = MERGED_MAIN_MACHINE_VERIFIED / PR334 / a2489bf039c2080c7851959cc6582ab6a56645fc
+PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR335 / 4e9bbf7a4ac47cbbdf45b22e07322ae4d927e7cc
 SCOPE = +10_OR_HIGHER_ACTIVE_ITEM_HANDOFF / ONE_NON_ECONOMIC_RETURN_BEAT / NADIA_VENN_MEDIUM_ACTUAL_USE / CONDITIONAL_REPAIR_OR_CHRONICLE
 HANDOFF_DAMAGE = NEVER
 ACTUAL_USE_RESULT = SAVE_FIRST_ONCE_PER_UID / NO_REROLL_AFTER_RELOAD
@@ -146,16 +147,16 @@ PERFORMANCE = NOT_RUN
 KNOWN_NON_BLOCKING_MACHINE_WARNINGS = EXISTING_INVALID_SCRIPT_UID_REFERENCES_IN_VERTICAL_SLICE_APP_AND_MAIN_MENU / EXISTING_GUT_ORPHAN_REPORTS
 ```
 
-The candidate adds a native Workshop handoff action only for the active,
+The merged delivery adds a native Workshop handoff action only for the active,
 non-destroyed `+10+` item. It shows a one-press return beat without a timer,
 then saves Nadia Venn's authored `MEDIUM` actual-use event before presenting
 the result. A damaged return opens only the existing repair action; an intact
 return opens the read-only Item Chronicle. The Chronicle derives its entries
 from the existing birth/Precision ledger and saved actual-use result for the
 same UID, so it neither creates a customer scheduler nor extends the save
-schema. These are worktree implementation and automated-test facts, not a
-merged-main, visual-client, human-play, Android, accessibility, performance,
-or release approval.
+schema. These are merged-main implementation and automated-test facts; they
+are not visual-client, human-play, Android, accessibility, performance, or
+release approval.
 
 ## 1. GPT Work transfer · 2026-08-26
 
@@ -459,16 +460,17 @@ Decision29 does not revive old durability values. Decision30 owns current custom
 
 The current V3 vertical slice now implements the approved item durability, save migration,
 enhancement-failure, repair-economy, customer actual-use resolver, persisted result fact,
-and read-only result surface. A customer-flow caller now resolves and saves a cloned envelope
-before presenting the same stored UID result; the scheduler and player-facing customer entry
-are not implemented. V2 runtime/data outside the migrated slice remains
+and read-only result surface. PR #334 adds the bounded Phase-1 player handoff at `+10+`,
+one return beat, and the same save-first stored-UID result. The broader customer/world-event
+scheduler remains unimplemented. V2 runtime/data outside the migrated slice remains
 historical runtime evidence and must not override current canon.
 
 ```text
 NEW_CORE_RUNTIME = PARTIALLY_IMPLEMENTED / PR224_THROUGH_PR286
 CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278 / STORED_FACT_READ_ONLY
 CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286 / SAVE_FIRST_CLONED_ENVELOPE
-CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN
+PHASE1_PLAYER_HANDOFF_ENTRY = IMPLEMENTED_PR334 / SAVE_FIRST_ONCE_PER_UID
+CUSTOMER_WORLD_EVENT_SCHEDULER = NOT_RUN
 OLD_V2_RUNTIME = HISTORICAL_RUNTIME_TRUTH_OUTSIDE_V3_MIGRATED_SLICE
 ```
 
@@ -535,7 +537,8 @@ UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP
 NEW_CORE_RUNTIME = PARTIALLY_IMPLEMENTED / PR224_THROUGH_PR286
 CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278 / STORED_FACT_READ_ONLY
 CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286 / SAVE_FIRST_CLONED_ENVELOPE
-CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN
+PHASE1_PLAYER_HANDOFF_ENTRY = IMPLEMENTED_PR334 / SAVE_FIRST_ONCE_PER_UID
+CUSTOMER_WORLD_EVENT_SCHEDULER = NOT_RUN
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_DEVICE = NOT_RUN
 ACCESSIBILITY = NOT_RUN
