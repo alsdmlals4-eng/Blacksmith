@@ -40,6 +40,7 @@ REQUIRED_OWNER = [
     "BS-ART-20260826-04",
     "BS-ENHANCE-20260828-34",
     "BS-ENHANCE-20260829-37",
+    "BS-ENHANCE-20260830-38",
     "SUCCESS_LEVEL_DELTA = +1",
     "+9 -> +10 = PRECISION_ENHANCEMENT",
     "ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY",
@@ -152,8 +153,10 @@ def main() -> None:
     assert "BS-ENHANCE-20260828-34" in authority_text
     assert "ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY" in authority_text
     assert "PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10" in authority_text
-    assert "KEYWORD_OWNERSHIP_FIELD_OWNER = BS-ENHANCE-20260828-34" in authority_text
-    assert "Decision34 overrides the Core Canon for keyword-ownership fields" in authority_text
+    assert "RECURRING_PRECISION_FIELD_OWNER = BS-ENHANCE-20260830-38" in authority_text
+    assert "Decision34/37 = RESIDUAL_NON_CONFLICTING_HISTORICAL_EVIDENCE" in authority_text
+    assert "KEYWORD_OWNERSHIP_FIELD_OWNER = BS-ENHANCE-20260828-34" not in authority_text
+    assert "Decision34 overrides the Core Canon for keyword-ownership fields" not in authority_text
     assert "BS-REPAIR-20260826-31" in authority_text
     assert "REPAIR_ECONOMY = USER_APPROVED_TEST_CONTRACT / B65_DEFAULT_PLAYTEST_REQUIRED" in authority_text
     assert "DAMAGE_CURVE_NUMBERS = USER_APPROVED / BS-DAMAGE-20260826-28" in authority_text
