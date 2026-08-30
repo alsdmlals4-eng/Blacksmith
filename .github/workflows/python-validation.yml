@@ -128,7 +128,7 @@ jobs:
           python -m pytest tests/test_godot_ai_314_current_alignment.py -q
           python -m pytest tests/test_user_approved_editor_plugin_runtime_contract.py -q
           python -m unittest tests/test_gut_formal_adoption_contract.py -v
-          python -m unittest tests.test_pr334_postmerge_approval_retirement -v
+          python -m unittest tests.test_pr338_postmerge_approval_retirement -v
           python -m pytest tests/test_hera_vendor_reconciliation_contract.py -q
           python -m pytest tests/test_hera_postmerge_closure_contract.py -q
           python -m unittest tests.test_vertical_slice_new_campaign_initializer_authority -v
