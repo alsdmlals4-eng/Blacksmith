@@ -582,6 +582,7 @@ func test_precision_art_closes_after_actual_failed_damage_and_keeps_the_workshop
 	screen.set_precision_selection({"action": "UPGRADE_TAG", "tag_id": "TAG_EMBER_EDGE"})
 	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 99.0, "damage_roll_percent": 0.0})
 	assert_eq(result.get("outcome", ""), "FAILED_DAMAGE", "the exact saved failure result must exercise the post-result visual boundary")
+	assert_not_null(save_service.saved_envelope, "FAILED_DAMAGE must be persisted before it closes the Precision illustration")
 	assert_false(art.visible, "saved FAILED_DAMAGE must close the Precision illustration")
 	assert_true(fallback.visible, "the ordinary Workshop illustration remains the fallback behind native result controls")
 
@@ -600,6 +601,7 @@ func test_precision_art_reopens_only_after_a_saved_result_then_explicit_fresh_co
 	screen.set_precision_selection({"action": "ADD_TAG", "lineage_id": "EMBER_LINEAGE", "method_id": "EDGE_REINFORCEMENT"})
 	var resolved: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0})
 	assert_eq(resolved.get("outcome", ""), "SUCCESS")
+	assert_not_null(first_save.saved_envelope, "the successful +9→+10 result must be persisted before a new context can re-open the illustration")
 	assert_false(art.visible, "the same screen must close art after the saved result before a later context is opened")
 	var reopened_envelope = _precision_envelope(19, [{
 		"tag_id": "TAG_EMBER_EDGE",
