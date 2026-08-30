@@ -232,7 +232,7 @@ func _on_precision_lineage_selected(_index: int) -> void:
 		_precision_selection_data = {
 			"action": "ADD_TAG",
 			"lineage_id": _selected_precision_option("WorkshopLayout/PrecisionLineageOption"),
-			"method_id": "",
+			"method_id": str(_precision_selection_data.get("method_id", "")),
 		}
 	_refresh_controls()
 
@@ -241,7 +241,7 @@ func _on_precision_method_selected(_index: int) -> void:
 	if _precision_action == "ADD_TAG":
 		_precision_selection_data = {
 			"action": "ADD_TAG",
-			"lineage_id": "",
+			"lineage_id": str(_precision_selection_data.get("lineage_id", "")),
 			"method_id": _selected_precision_option("WorkshopLayout/PrecisionMethodOption"),
 		}
 	_refresh_controls()

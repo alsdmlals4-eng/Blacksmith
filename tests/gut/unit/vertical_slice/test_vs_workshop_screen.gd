@@ -79,6 +79,13 @@ func _precision_envelope(level: int = 9, tag_entries: Array = [], used_milestone
 	return envelope
 
 
+func _option_index_for_metadata(option: OptionButton, value: String) -> int:
+	for index in range(option.item_count):
+		if str(option.get_item_metadata(index)) == value:
+			return index
+	return -1
+
+
 func test_screen_exposes_current_durability_and_repair_quote() -> void:
 	assert_true(ResourceLoader.exists(SCREEN_PATH), "Workshop screen controller must exist")
 	if not ResourceLoader.exists(SCREEN_PATH):
@@ -316,6 +323,66 @@ func test_precision_plus_9_requires_add_action_before_a_valid_dictionary_selecti
 	assert_eq(selected.get("precision_action", ""), "ADD_TAG")
 	assert_true(str(selected.get("precision_preview_summary", "")).contains("불씨의 예리함"))
 	assert_false((screen.get_node("WorkshopLayout/EnhancementButton") as Button).disabled)
+
+
+func test_precision_add_option_signals_preserve_both_ids_in_either_selection_order() -> void:
+	var lineage_then_method_envelope = _precision_envelope()
+	var lineage_then_method_screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(lineage_then_method_screen)
+	lineage_then_method_screen.configure_context(lineage_then_method_envelope.get_item(str(lineage_then_method_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), lineage_then_method_envelope)
+	var lineage_option := lineage_then_method_screen.get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var method_option := lineage_then_method_screen.get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	assert_not_null(lineage_option)
+	assert_not_null(method_option)
+	if lineage_option == null or method_option == null:
+		return
+	lineage_then_method_screen._on_precision_add_pressed()
+	var ember_lineage_index := _option_index_for_metadata(lineage_option, "EMBER_LINEAGE")
+	assert_gte(ember_lineage_index, 1)
+	if ember_lineage_index < 1:
+		return
+	lineage_option.select(ember_lineage_index)
+	lineage_option.item_selected.emit(ember_lineage_index)
+	var edge_method_index := _option_index_for_metadata(method_option, "EDGE_REINFORCEMENT")
+	assert_gte(edge_method_index, 1)
+	if edge_method_index < 1:
+		return
+	method_option.select(edge_method_index)
+	method_option.item_selected.emit(edge_method_index)
+	var lineage_then_method_state: Dictionary = lineage_then_method_screen.view_state()
+	assert_eq(lineage_then_method_state.get("precision_action", ""), "ADD_TAG")
+	assert_eq(lineage_then_method_screen._precision_selection_data.get("lineage_id", ""), "EMBER_LINEAGE")
+	assert_eq(lineage_then_method_screen._precision_selection_data.get("method_id", ""), "EDGE_REINFORCEMENT")
+	assert_true(bool(lineage_then_method_state.get("enhancement_allowed", false)))
+
+	var method_then_lineage_envelope = _precision_envelope()
+	var method_then_lineage_screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(method_then_lineage_screen)
+	method_then_lineage_screen.configure_context(method_then_lineage_envelope.get_item(str(method_then_lineage_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), method_then_lineage_envelope)
+	var reverse_lineage_option := method_then_lineage_screen.get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var reverse_method_option := method_then_lineage_screen.get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	assert_not_null(reverse_lineage_option)
+	assert_not_null(reverse_method_option)
+	if reverse_lineage_option == null or reverse_method_option == null:
+		return
+	method_then_lineage_screen._on_precision_add_pressed()
+	var reverse_edge_method_index := _option_index_for_metadata(reverse_method_option, "EDGE_REINFORCEMENT")
+	assert_gte(reverse_edge_method_index, 1)
+	if reverse_edge_method_index < 1:
+		return
+	reverse_method_option.select(reverse_edge_method_index)
+	reverse_method_option.item_selected.emit(reverse_edge_method_index)
+	var reverse_ember_lineage_index := _option_index_for_metadata(reverse_lineage_option, "EMBER_LINEAGE")
+	assert_gte(reverse_ember_lineage_index, 1)
+	if reverse_ember_lineage_index < 1:
+		return
+	reverse_lineage_option.select(reverse_ember_lineage_index)
+	reverse_lineage_option.item_selected.emit(reverse_ember_lineage_index)
+	var method_then_lineage_state: Dictionary = method_then_lineage_screen.view_state()
+	assert_eq(method_then_lineage_state.get("precision_action", ""), "ADD_TAG")
+	assert_eq(method_then_lineage_screen._precision_selection_data.get("lineage_id", ""), "EMBER_LINEAGE")
+	assert_eq(method_then_lineage_screen._precision_selection_data.get("method_id", ""), "EDGE_REINFORCEMENT")
+	assert_true(bool(method_then_lineage_state.get("enhancement_allowed", false)))
 
 
 func test_precision_plus_19_exposes_both_actions_and_allows_tag_upgrade_selection() -> void:
