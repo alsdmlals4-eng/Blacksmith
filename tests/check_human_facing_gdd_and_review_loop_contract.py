@@ -153,6 +153,34 @@ def main() -> int:
     ):
         if forbidden in ai_spec:
             failures.append(f"AI production spec retains unqualified Decision37/V3 trace: {forbidden}")
+    for line_number, line in enumerate(ai_spec.splitlines(), start=1):
+        if "Decision37" in line and not all(
+            qualification in line
+            for qualification in (
+                "historical/superseded",
+                "first 2×2",
+                "Decision38/schema2/V4",
+                "active recurring owner",
+            )
+        ):
+            failures.append(
+                "AI production spec Decision37 entry must locally identify only the "
+                f"historical first-2×2 catalog and the active recurring owner (line {line_number})"
+            )
+        if line.startswith("| SRC-CAN-08A |") or line.startswith("| DEC-PREC-35/36 |"):
+            if not all(
+                qualification in line
+                for qualification in (
+                    "historical/superseded",
+                    "first 2×2",
+                    "Decision38/schema2/V4",
+                    "active recurring owner",
+                )
+            ):
+                failures.append(
+                    "AI production spec historical precision source entry must locally identify the "
+                    f"Decision38/schema2/V4 active recurring owner (line {line_number})"
+                )
     for token in (
         "BS-ENHANCE-20260830-38",
         "V4 versioned collection of at most three",
@@ -196,10 +224,10 @@ def main() -> int:
                 "현재 증거 한계",
             ):
                 require(pdf_text, token, failures, "human-facing PDF")
-            for forbidden in ("**", "`", "SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://", "NOT_RUN"):
+            for forbidden in ("**", "`", "SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://", "NOT_RUN", "CURRENT_HUMAN_FACING_GDD", "KOREAN_PRIMARY"):
                 if forbidden in pdf_text:
                     failures.append(f"human-facing PDF contains Markdown or implementation token: {forbidden}")
-            for forbidden in ("SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://", "NOT_RUN"):
+            for forbidden in ("SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://", "NOT_RUN", "CURRENT_HUMAN_FACING_GDD", "KOREAN_PRIMARY"):
                 if forbidden in human_gdd:
                     failures.append(f"human-facing GDD contains implementation token: {forbidden}")
             proof = receipt.get("deterministic_publish_proof", {})

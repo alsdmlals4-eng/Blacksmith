@@ -4,7 +4,7 @@
 
 > **Document role:** machine-searchable current-canon planning and implementation contract. It is not a replacement for executable code, JSON owners, tests, or runtime evidence.
 >
-> **Source snapshot:** historical `main` / `2ba2496f0b8e259c446ae8ed1f09533012c3f303` plus current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36`. Decision37 is historical first-catalog evidence only; `BS-ENHANCE-20260830-38 / schema 2 / V4` is the active recurring-Precision trace.
+> **Source snapshot:** historical `main` / `2ba2496f0b8e259c446ae8ed1f09533012c3f303` plus current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36`. Decision37 is historical/superseded first 2×2 catalog content only; Decision38/schema2/V4 is the active recurring owner.
 > **Generated scope:** this is a technical-trace companion to the human-facing GDD and `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; it does not own the human reading experience. Notion is retired from future project work; no new raster, runtime asset, Scene, data, or GDScript change belongs to this document batch.
 
 > **2026-08-30 recurring Precision trace:** `BS-ENHANCE-20260830-38` is the current owner for all ten Precision targets, `ADD_TAG` / `UPGRADE_TAG`, a maximum of three tags, and I–IV growth. The catalog is schema 2. Item V4 migrates the former single catalyst value to a versioned tag collection while preserving the existing `CATALYST_AFFIX` owner. Exact runtime consumers are Main Menu, recurring Precision Workshop, and Customer World Result; their three approved illustrations are locked, registered, and implemented with machine verification. This is not client, Android, accessibility, human visual, performance, or release verification: each remains `NOT_RUN`.
@@ -51,7 +51,7 @@
 | SRC-CAN-06 | `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json` | Decision31 test-only repair-cost curve. |
 | SRC-CAN-07 | `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json` | Decision30 actual-use event eligibility and damage composition. |
 | SRC-CAN-08 | `docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md` | Grade / Tag / Event taxonomy and `+9→+10` keyword ownership. |
-| SRC-CAN-08A | `docs/decisions/BS-ENHANCE-20260829-37_PRECISION_TAG_CATALOG_AND_SELECTION_GATE.md` and `docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json` | First 2×2 Tag content, explicit choice flow, empty-selection block, and placeholder backfill contract. |
+| SRC-CAN-08A | `docs/decisions/BS-ENHANCE-20260829-37_PRECISION_TAG_CATALOG_AND_SELECTION_GATE.md` and `docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json` | Decision37 historical/superseded first 2×2 Tag catalog content only; Decision38/schema2/V4 active recurring owner. Retains explicit choice flow, empty-selection block, and placeholder backfill provenance. |
 | SRC-CAN-09 | `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json` and `assets/ASSET_MANIFEST.json` | Visual consumer, asset provenance, and validation state. |
 | SRC-CAN-10 | `docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md` | GitHub-only current-canon routing and post-generation visual lock policy. |
 | SRC-CAN-11 | `docs/decisions/BS-OPS-20260828-36_EVIDENCE_RESEARCH_AND_ADVERSARIAL_REVIEW_LOOP.md` | Fresh-read, current research, adversarial review, feasibility, and evidence-ceiling procedure. |
@@ -472,7 +472,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 
 | Risk ID | Risk | Class | Disposition / next validation |
 |---|---|---|---|
-| RSK-001 | Historical placeholder write and legacy method list can diverge from the approved recurring Tag catalog. | Product/technical | `IMPROVE`: Decision37 is retained only for first 2×2 catalog evidence; apply Decision38 schema2/V4 TDD, block invalid selection, and migrate placeholder safely once. |
+| RSK-001 | Historical placeholder write and legacy method list can diverge from the approved recurring Tag catalog. | Product/technical | `IMPROVE`: Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner. Apply its TDD, block invalid selection, and migrate placeholder safely once. |
 | RSK-002 | V2 runtime may drift from current durability/failure/precision canon despite similar field names. | Technical/canon | `TEST`: contract-to-code audit at exact head before implementation. |
 | RSK-003 | Customer life becomes a feature list rather than returned consequence. | Fun/content | `TEST`: playtest causal recall and next-action comprehension. |
 | RSK-004 | Repair economy is accepted test budget, not player-validated price. | Economy | `TEST_IN_PLAY`: sensitivity then human play. |
@@ -485,14 +485,14 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 
 | Decision | Why needed | Minimum options / recommended boundary |
 |---|---|---|
-| DEC-PREC-35/36 | **결정 완료** by `BS-ENHANCE-20260829-37`. | 2×2 composite Tag, explicit no-default selection, block before cost/roll, no fourth slot. |
+| DEC-PREC-35/36 | historical/superseded Decision37 first 2×2 catalog content only; Decision38/schema2/V4 active recurring owner. | Retained provenance: explicit no-default selection and block before cost/roll. Current recurring rule: first gate adds only, later gates add or upgrade, with at most three tags. |
 | DEC-UI-37 | UI-PREC-001 entry/exit and required preview copy. | Keep screen as a short choice/confirm/result surface within Workshop flow; implementation contract now supplies required information. |
 | DEC-UX-38 | Define Chronicle screen entry and readable event grouping. | Meaningful event timeline only; no routine attempt spam. |
 | DEC-PLAY-39 | 사람 플레이 검수는 사용자 지시로 이번 구현 계약의 완료 조건에서 제외. | 실제 수행 전 `NOT_RUN`; 나중에 제품 재미 검증을 재개할 때만 protocol을 결정한다. |
 
 ## 26. IMPLEMENTATION QUEUE
 
-1. Implement `DAT-PREC-001` and resolver/write isolation from Decision38 schema2/V4 current catalog owner; retain Decision37 only as historical first 2×2 evidence; run GUT/Python and exact placeholder-backfill checks.
+1. Implement `DAT-PREC-001` and resolver/write isolation from Decision38/schema2/V4 active recurring owner; Decision37 is historical/superseded first 2×2 catalog evidence only; run GUT/Python and exact placeholder-backfill checks.
 2. Implement UI-PREC-001 inside the current Workshop flow; use native `Control` UI and add no precision raster.
 4. Audit V2 enhancement/durability/repair paths against Decisions28/29/31/32; correct only approved drift.
 5. Deliver Nadia actual-use result to runtime with same-UID and causal reason validation; then author two reusable content rows.
