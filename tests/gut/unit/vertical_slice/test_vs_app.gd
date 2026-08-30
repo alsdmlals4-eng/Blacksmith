@@ -102,11 +102,11 @@ func test_app_binds_workshop_context_and_refreshes_after_damage() -> void:
 	add_child_autofree(app)
 	app.configure_workshop_context(item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
 	var screen = app.get_node("ScreenHost/WorkshopScreen")
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "3 / 5 / 5")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/DurabilityValueLabel").text, "3 / 5 / 5")
 	item.apply_damage_event()
 	app.refresh_workshop_after_enhancement()
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "2 / 5 / 5")
-	assert_false(screen.get_node("WorkshopLayout/RepairButton").disabled)
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/DurabilityValueLabel").text, "2 / 5 / 5")
+	assert_false(screen.get_node("WorkshopScroll/WorkshopLayout/RepairButton").disabled)
 
 
 func test_campaign_configuration_binds_the_persisted_selected_item_to_workshop() -> void:
@@ -123,8 +123,8 @@ func test_campaign_configuration_binds_the_persisted_selected_item_to_workshop()
 
 	assert_true(app.configure_campaign(envelope, ResourcesScript.new()))
 	var screen = app.get_node("ScreenHost/WorkshopScreen")
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "5 / 5 / 5")
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityStateLabel").text, "상태: 정상")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/DurabilityValueLabel").text, "5 / 5 / 5")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/DurabilityStateLabel").text, "상태: 정상")
 
 
 func test_applied_first_forge_completion_rebinds_the_workshop_item() -> void:
@@ -143,7 +143,7 @@ func test_applied_first_forge_completion_rebinds_the_workshop_item() -> void:
 		return
 	assert_true(app.apply_first_forge_completion({"status": "APPLIED", "envelope": envelope}, ResourcesScript.new()))
 	var screen = app.get_node("ScreenHost/WorkshopScreen")
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "5 / 5 / 5")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/DurabilityValueLabel").text, "5 / 5 / 5")
 
 
 func test_campaign_adopts_the_saved_envelope_after_a_workshop_enhancement() -> void:
@@ -254,7 +254,7 @@ func test_phase1_handoff_routes_one_active_level_ten_item_through_one_return_bea
 	if not app.has_method("begin_phase1_customer_handoff") or not app.has_method("complete_phase1_return_beat") or not app.has_method("resolve_phase1_customer_actual_use_with_roll"):
 		return
 
-	var handoff_button := app.get_node_or_null("ScreenHost/WorkshopScreen/WorkshopLayout/HandoffButton") as Button
+	var handoff_button := app.get_node_or_null("ScreenHost/WorkshopScreen/WorkshopScroll/WorkshopLayout/HandoffButton") as Button
 	assert_not_null(handoff_button, "the handoff flow must be reachable from the visible workshop")
 	if handoff_button == null:
 		return
@@ -302,7 +302,7 @@ func test_phase1_handoff_routes_one_active_level_ten_item_through_one_return_bea
 	var reloaded_app = APP_SCENE.instantiate()
 	add_child_autofree(reloaded_app)
 	assert_true(reloaded_app.configure_campaign(save_service.saved_envelope, ResourcesScript.new(), null, null, FakeSaveService.new()))
-	var reloaded_handoff_button := reloaded_app.get_node_or_null("ScreenHost/WorkshopScreen/WorkshopLayout/HandoffButton") as Button
+	var reloaded_handoff_button := reloaded_app.get_node_or_null("ScreenHost/WorkshopScreen/WorkshopScroll/WorkshopLayout/HandoffButton") as Button
 	assert_not_null(reloaded_handoff_button)
 	if reloaded_handoff_button != null:
 		assert_false(reloaded_handoff_button.visible, "a saved result must not reopen a fresh handoff after reload")
@@ -363,7 +363,7 @@ func test_phase1_handoff_damage_result_routes_to_the_existing_workshop_repair_co
 	assert_eq(app.current_state, "REPAIR")
 	assert_false(app.get_node("ScreenHost/CustomerResultScreen").visible)
 	assert_true(app.get_node("ScreenHost/WorkshopScreen").visible)
-	assert_false((app.get_node("ScreenHost/WorkshopScreen/WorkshopLayout/RepairButton") as Button).disabled)
+	assert_false((app.get_node("ScreenHost/WorkshopScreen/WorkshopScroll/WorkshopLayout/RepairButton") as Button).disabled)
 
 
 func test_phase1_handoff_save_failure_preserves_the_return_beat_without_a_result_or_reroll_record() -> void:
@@ -422,7 +422,7 @@ func test_workshop_chronicle_action_displays_the_same_uid_saved_result_and_retur
 	var app = APP_SCENE.instantiate()
 	add_child_autofree(app)
 	assert_true(app.configure_campaign(envelope, ResourcesScript.new(), null, null, FakeSaveService.new()))
-	var chronicle_button := app.get_node_or_null("ScreenHost/WorkshopScreen/WorkshopLayout/ChronicleButton") as Button
+	var chronicle_button := app.get_node_or_null("ScreenHost/WorkshopScreen/WorkshopScroll/WorkshopLayout/ChronicleButton") as Button
 	assert_not_null(chronicle_button)
 	if chronicle_button == null:
 		return

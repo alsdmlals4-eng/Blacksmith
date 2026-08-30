@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "a2489bf039c2080c7851959cc6582ab6a56645fc",
+  "decision_ids": [
+    "BS-ENHANCE-20260830-38",
+    "BS-ART-20260826-04",
+    "BS-OPS-20260828-35",
+    "BS-OPS-20260828-36"
+  ],
+  "approved_paths": [
+    "assets/ASSET_MANIFEST.json",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "USER_APPROVED_2026-08-30_DIRECT_GODOT_IMPLEMENTATION_OF_CURRENT_RECURRING_PRECISION_TAG_WORKSHOP_FLOW_WITH_APPROVED_PROTECTED_CHANGE_LABEL",
+  "approval_time": "2026-08-30T18:29:22+09:00",
+  "scope_summary": "Exact current-canon workshop usability repair only: display the actual upcoming precision target while action selection is intentionally blocked, make the existing portrait Workshop vertical-scrollable with focus-following navigation and safe margins, and reconcile the existing durability visual consumer path. No game rule, economy, save schema, Scene or project setting, image binary, customer scheduler, equipment catalog, player title, fourth affix, new product scope, or unrelated protected path is approved. This one-shot manifest must be retired in a separate post-merge closure PR."
+}

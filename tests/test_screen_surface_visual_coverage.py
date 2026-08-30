@@ -38,7 +38,7 @@ class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
                 "ENHANCEMENT_IN_WORKSHOP",
                 "CUSTOMER_WORLD_RESULT",
                 "SETTINGS_OVERLAY",
-                "PRECISION_PLUS_9_TO_10",
+                "RECURRING_PRECISION_TAG_CHOICE",
                 "ITEM_CHRONICLE",
             },
         )
@@ -69,13 +69,22 @@ class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
             if row["coverage_status"] == "NOT_APPLICABLE":
                 self.assertTrue(row["blockers"])
 
-        self.assertEqual(rows["MAIN_MENU"]["coverage_status"], "COVERED_PROJECT_ASSET_APPROVED")
+        self.assertEqual(
+            rows["MAIN_MENU"]["coverage_status"],
+            "COVERED_APPROVED_RUNTIME_ASSET_MACHINE_VERIFIED",
+        )
         self.assertEqual(rows["FIRST_FORGE"]["coverage_status"], "COVERED_PROJECT_ASSET_APPROVED")
         self.assertEqual(rows["WORKSHOP"]["coverage_status"], "COVERED_PROJECT_ASSET_APPROVED")
         self.assertEqual(rows["ENHANCEMENT_IN_WORKSHOP"]["coverage_status"], "COVERED_EXISTING")
-        self.assertEqual(rows["CUSTOMER_WORLD_RESULT"]["coverage_status"], "COVERED_EXISTING")
+        self.assertEqual(
+            rows["CUSTOMER_WORLD_RESULT"]["coverage_status"],
+            "COVERED_APPROVED_RUNTIME_ASSET_MACHINE_VERIFIED",
+        )
         self.assertEqual(rows["SETTINGS_OVERLAY"]["coverage_status"], "GAP_NONBLOCKING")
-        self.assertEqual(rows["PRECISION_PLUS_9_TO_10"]["coverage_status"], "DEFERRED_BY_DECISION")
+        self.assertEqual(
+            rows["RECURRING_PRECISION_TAG_CHOICE"]["coverage_status"],
+            "COVERED_NATIVE_UI_ONLY_MACHINE_VERIFIED",
+        )
         self.assertEqual(rows["ITEM_CHRONICLE"]["coverage_status"], "DEFERRED_BY_DECISION")
 
     def test_user_approved_runtime_raster_has_a_durable_provenance_record(self) -> None:
@@ -161,7 +170,7 @@ class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
         record = records["ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1"]
         requirements = {row["requirement_id"]: row for row in manifest["visual_requirements"]}
         requirement = requirements[record["requirement_id"]]
-        self.assertEqual(record["runtime_slot"], ["WorkshopLayout/WorkpieceDurabilityHero"])
+        self.assertEqual(record["runtime_slot"], ["WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero"])
         self.assertEqual(requirement["consumer_id"], "WORKSHOP")
         self.assertEqual(requirement["runtime_asset_role"], "WorkpieceDurabilityHero TextureRect AtlasTexture")
 

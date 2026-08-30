@@ -27,29 +27,73 @@ var _precision_selection_data: Dictionary = {}
 
 
 func _ready() -> void:
+	_ensure_scrollable_layout()
 	_ensure_illustrated_background()
 	_ensure_workpiece_durability_hero()
 	_ensure_equipment_identity_hero()
 	_ensure_enhancement_controls()
-	var repair_button := get_node_or_null("WorkshopLayout/RepairButton") as Button
+	var repair_button := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairButton") as Button
 	if repair_button != null and not repair_button.pressed.is_connected(_on_repair_pressed):
 		repair_button.pressed.connect(_on_repair_pressed)
-	var enhancement_button := get_node_or_null("WorkshopLayout/EnhancementButton") as Button
+	var enhancement_button := get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementButton") as Button
 	if enhancement_button != null and not enhancement_button.pressed.is_connected(_on_enhancement_pressed):
 		enhancement_button.pressed.connect(_on_enhancement_pressed)
 	_connect_handoff_control()
 	_connect_chronicle_control()
-	var lineage_option := get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var lineage_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
 	if lineage_option != null and not lineage_option.item_selected.is_connected(_on_precision_lineage_selected):
 		lineage_option.item_selected.connect(_on_precision_lineage_selected)
-	var method_option := get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var method_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	if method_option != null and not method_option.item_selected.is_connected(_on_precision_method_selected):
 		method_option.item_selected.connect(_on_precision_method_selected)
-	var backfill_button := get_node_or_null("WorkshopLayout/PrecisionBackfillButton") as Button
+	var backfill_button := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionBackfillButton") as Button
 	if backfill_button != null and not backfill_button.pressed.is_connected(_on_precision_backfill_pressed):
 		backfill_button.pressed.connect(_on_precision_backfill_pressed)
 	_connect_precision_controls()
 	_refresh_controls()
+
+
+func _ensure_scrollable_layout() -> void:
+	var layout := get_node_or_null("WorkshopLayout") as VBoxContainer
+	if layout == null:
+		return
+	var scroll := get_node_or_null("WorkshopScroll") as ScrollContainer
+	if scroll == null:
+		scroll = ScrollContainer.new()
+		scroll.name = "WorkshopScroll"
+		scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		scroll.offset_left = 32.0
+		scroll.offset_top = 24.0
+		scroll.offset_right = -32.0
+		scroll.offset_bottom = -24.0
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+		scroll.follow_focus = true
+		scroll.scroll_deadzone = 12
+		scroll.scroll_vertical_custom_step = 64.0
+		scroll.scroll_hint_mode = ScrollContainer.SCROLL_HINT_MODE_ALL
+		add_child(scroll)
+		move_child(scroll, layout.get_index())
+	if layout.get_parent() != scroll:
+		layout.reparent(scroll)
+		layout.set_anchors_preset(Control.PRESET_TOP_WIDE)
+		layout.offset_left = 32.0
+		layout.offset_top = 48.0
+		layout.offset_right = -32.0
+		layout.offset_bottom = 0.0
+		layout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		layout.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	_ensure_scroll_bottom_padding(layout)
+
+
+func _ensure_scroll_bottom_padding(layout: VBoxContainer) -> void:
+	if layout.has_node("ScrollBottomPadding"):
+		return
+	var padding := Control.new()
+	padding.name = "ScrollBottomPadding"
+	padding.custom_minimum_size = Vector2(0, 48)
+	padding.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layout.add_child(padding)
 
 
 func configure_context(item, resources, maintenance_service = null, enhancement_action_service = null, save_service = null, campaign_envelope = null) -> void:
@@ -117,7 +161,7 @@ func view_state() -> Dictionary:
 		"repair_job_summary": "수리하면 다음 실제 손상 전까지 다시 수리할 수 없습니다" if repair_allowed and bool(quote.get("repair_job_consumed_on_start", false)) else "",
 		"enhancement_allowed": bool(enhancement.get("allowed", false)) and _has_enhancement_context(),
 		"enhancement_reason": str(enhancement.get("reason", "")),
-		"enhancement_target_level": int(enhancement.get("target_level", 0)),
+		"enhancement_target_level": int(enhancement.get("target_level", int(_item.enhancement_level) + 1)),
 		"enhancement_cost_summary": "비용: %d Gold · 보강재 %d개" % [int(enhancement.get("gold_cost", 0)), int(enhancement.get("reinforcement_units", 0))],
 		"enhancement_outcomes_summary": _enhancement_outcomes_summary(enhancement),
 		"precision_visible": not precision_mode.is_empty(),
@@ -216,22 +260,22 @@ func refresh_after_enhancement() -> void:
 func set_precision_selection(selection: Dictionary) -> void:
 	_precision_selection_data = selection
 	_precision_action = str(selection.get("action", ""))
-	_select_precision_option("WorkshopLayout/PrecisionLineageOption", str(selection.get("lineage_id", "")))
-	_select_precision_option("WorkshopLayout/PrecisionMethodOption", str(selection.get("method_id", "")))
-	_select_precision_option("WorkshopLayout/PrecisionTagOption", str(selection.get("tag_id", "")))
+	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionLineageOption", str(selection.get("lineage_id", "")))
+	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionMethodOption", str(selection.get("method_id", "")))
+	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionTagOption", str(selection.get("tag_id", "")))
 	_refresh_controls()
 
 
 func _on_repair_pressed() -> void:
 	var result := request_repair()
-	var message := get_node_or_null("WorkshopLayout/RepairMessageLabel") as Label
+	var message := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairMessageLabel") as Label
 	if message != null:
 		message.text = "수리 완료" if str(result.get("status", "")) == "APPLIED" else "수리 불가: %s" % str(result.get("reason", "UNKNOWN"))
 
 
 func _on_enhancement_pressed() -> void:
 	var result := request_enhancement()
-	var message := get_node_or_null("WorkshopLayout/EnhancementMessageLabel") as Label
+	var message := get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementMessageLabel") as Label
 	if message != null:
 		message.text = "강화 결과: %s" % str(result.get("outcome", "BLOCKED"))
 
@@ -240,7 +284,7 @@ func _on_precision_lineage_selected(_index: int) -> void:
 	if _precision_action == "ADD_TAG":
 		_precision_selection_data = {
 			"action": "ADD_TAG",
-			"lineage_id": _selected_precision_option("WorkshopLayout/PrecisionLineageOption"),
+			"lineage_id": _selected_precision_option("WorkshopScroll/WorkshopLayout/PrecisionLineageOption"),
 			"method_id": str(_precision_selection_data.get("method_id", "")),
 		}
 	_refresh_controls()
@@ -251,7 +295,7 @@ func _on_precision_method_selected(_index: int) -> void:
 		_precision_selection_data = {
 			"action": "ADD_TAG",
 			"lineage_id": str(_precision_selection_data.get("lineage_id", "")),
-			"method_id": _selected_precision_option("WorkshopLayout/PrecisionMethodOption"),
+			"method_id": _selected_precision_option("WorkshopScroll/WorkshopLayout/PrecisionMethodOption"),
 		}
 	_refresh_controls()
 
@@ -260,7 +304,7 @@ func _on_precision_tag_selected(_index: int) -> void:
 	if _precision_action == "UPGRADE_TAG":
 		_precision_selection_data = {
 			"action": "UPGRADE_TAG",
-			"tag_id": _selected_precision_option("WorkshopLayout/PrecisionTagOption"),
+			"tag_id": _selected_precision_option("WorkshopScroll/WorkshopLayout/PrecisionTagOption"),
 		}
 	_refresh_controls()
 
@@ -279,7 +323,7 @@ func _on_precision_upgrade_pressed() -> void:
 
 func _on_precision_backfill_pressed() -> void:
 	var result := request_precision_backfill()
-	var message := get_node_or_null("WorkshopLayout/EnhancementMessageLabel") as Label
+	var message := get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementMessageLabel") as Label
 	if message != null:
 		message.text = "정밀 태그 정정 완료" if str(result.get("outcome", "")) == "APPLIED" else "정밀 태그 정정 불가"
 
@@ -292,35 +336,35 @@ func _refresh_controls() -> void:
 	_connect_handoff_control()
 	_connect_chronicle_control()
 	var state := view_state()
-	var title := get_node_or_null("WorkshopLayout/WorkshopTitle") as Label
+	var title := get_node_or_null("WorkshopScroll/WorkshopLayout/WorkshopTitle") as Label
 	if title != null and _item != null:
 		var equipment: Dictionary = EquipmentCatalogScript.by_item(_item)
 		title.text = "첫 작품 · %s" % str(equipment.get("display_name_ko", "미확인 작품"))
-	var durability := get_node_or_null("WorkshopLayout/DurabilityValueLabel") as Label
-	var condition := get_node_or_null("WorkshopLayout/DurabilityStateLabel") as Label
-	var quote := get_node_or_null("WorkshopLayout/RepairQuoteLabel") as Label
-	var quality := get_node_or_null("WorkshopLayout/RepairQualityLabel") as Label
-	var scar := get_node_or_null("WorkshopLayout/RepairScarLabel") as Label
-	var job := get_node_or_null("WorkshopLayout/RepairJobLabel") as Label
-	var repair_button := get_node_or_null("WorkshopLayout/RepairButton") as Button
-	var enhancement_quote := get_node_or_null("WorkshopLayout/EnhancementQuoteLabel") as Label
-	var enhancement_outcomes := get_node_or_null("WorkshopLayout/EnhancementOutcomesLabel") as Label
-	var enhancement_button := get_node_or_null("WorkshopLayout/EnhancementButton") as Button
-	var handoff_button := get_node_or_null("WorkshopLayout/HandoffButton") as Button
-	var chronicle_button := get_node_or_null("WorkshopLayout/ChronicleButton") as Button
-	var precision_title := get_node_or_null("WorkshopLayout/PrecisionTitleLabel") as Label
-	var precision_actions_label := get_node_or_null("WorkshopLayout/PrecisionActionLabel") as Label
-	var precision_add_button := get_node_or_null("WorkshopLayout/PrecisionActionAddButton") as Button
-	var precision_upgrade_button := get_node_or_null("WorkshopLayout/PrecisionActionUpgradeButton") as Button
-	var precision_tag_label := get_node_or_null("WorkshopLayout/PrecisionTagLabel") as Label
-	var precision_tag_option := get_node_or_null("WorkshopLayout/PrecisionTagOption") as OptionButton
-	var precision_lineage_label := get_node_or_null("WorkshopLayout/PrecisionLineageLabel") as Label
-	var precision_lineage_option := get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
-	var precision_method_label := get_node_or_null("WorkshopLayout/PrecisionMethodLabel") as Label
-	var precision_method_option := get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
-	var precision_tag_entries := get_node_or_null("WorkshopLayout/PrecisionTagEntriesLabel") as Label
-	var precision_preview := get_node_or_null("WorkshopLayout/PrecisionPreviewLabel") as Label
-	var precision_backfill_button := get_node_or_null("WorkshopLayout/PrecisionBackfillButton") as Button
+	var durability := get_node_or_null("WorkshopScroll/WorkshopLayout/DurabilityValueLabel") as Label
+	var condition := get_node_or_null("WorkshopScroll/WorkshopLayout/DurabilityStateLabel") as Label
+	var quote := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairQuoteLabel") as Label
+	var quality := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairQualityLabel") as Label
+	var scar := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairScarLabel") as Label
+	var job := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairJobLabel") as Label
+	var repair_button := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairButton") as Button
+	var enhancement_quote := get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementQuoteLabel") as Label
+	var enhancement_outcomes := get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementOutcomesLabel") as Label
+	var enhancement_button := get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementButton") as Button
+	var handoff_button := get_node_or_null("WorkshopScroll/WorkshopLayout/HandoffButton") as Button
+	var chronicle_button := get_node_or_null("WorkshopScroll/WorkshopLayout/ChronicleButton") as Button
+	var precision_title := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionTitleLabel") as Label
+	var precision_actions_label := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionLabel") as Label
+	var precision_add_button := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button
+	var precision_upgrade_button := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
+	var precision_tag_label := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionTagLabel") as Label
+	var precision_tag_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionTagOption") as OptionButton
+	var precision_lineage_label := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageLabel") as Label
+	var precision_lineage_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var precision_method_label := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodLabel") as Label
+	var precision_method_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var precision_tag_entries := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionTagEntriesLabel") as Label
+	var precision_preview := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionPreviewLabel") as Label
+	var precision_backfill_button := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionBackfillButton") as Button
 	if durability != null:
 		durability.text = str(state["durability_text"])
 	if condition != null:
@@ -560,9 +604,9 @@ func _stage_roman(stage: int) -> String:
 func _clear_precision_selection() -> void:
 	_precision_action = ""
 	_precision_selection_data = {}
-	var tag_option := get_node_or_null("WorkshopLayout/PrecisionTagOption") as OptionButton
-	var lineage_option := get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
-	var method_option := get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var tag_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionTagOption") as OptionButton
+	var lineage_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var method_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	if tag_option != null:
 		tag_option.select(0)
 	if lineage_option != null:
@@ -698,31 +742,31 @@ func _player_facing_enhancement_reason(reason: String) -> String:
 
 
 func _connect_precision_controls() -> void:
-	var add_button := get_node_or_null("WorkshopLayout/PrecisionActionAddButton") as Button
+	var add_button := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button
 	if add_button != null and not add_button.pressed.is_connected(_on_precision_add_pressed):
 		add_button.pressed.connect(_on_precision_add_pressed)
-	var upgrade_button := get_node_or_null("WorkshopLayout/PrecisionActionUpgradeButton") as Button
+	var upgrade_button := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
 	if upgrade_button != null and not upgrade_button.pressed.is_connected(_on_precision_upgrade_pressed):
 		upgrade_button.pressed.connect(_on_precision_upgrade_pressed)
-	var tag_option := get_node_or_null("WorkshopLayout/PrecisionTagOption") as OptionButton
+	var tag_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionTagOption") as OptionButton
 	if tag_option != null and not tag_option.item_selected.is_connected(_on_precision_tag_selected):
 		tag_option.item_selected.connect(_on_precision_tag_selected)
-	var lineage_option := get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var lineage_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
 	if lineage_option != null and not lineage_option.item_selected.is_connected(_on_precision_lineage_selected):
 		lineage_option.item_selected.connect(_on_precision_lineage_selected)
-	var method_option := get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var method_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	if method_option != null and not method_option.item_selected.is_connected(_on_precision_method_selected):
 		method_option.item_selected.connect(_on_precision_method_selected)
 
 
 func _connect_handoff_control() -> void:
-	var handoff_button := get_node_or_null("WorkshopLayout/HandoffButton") as Button
+	var handoff_button := get_node_or_null("WorkshopScroll/WorkshopLayout/HandoffButton") as Button
 	if handoff_button != null and not handoff_button.pressed.is_connected(_on_handoff_pressed):
 		handoff_button.pressed.connect(_on_handoff_pressed)
 
 
 func _connect_chronicle_control() -> void:
-	var chronicle_button := get_node_or_null("WorkshopLayout/ChronicleButton") as Button
+	var chronicle_button := get_node_or_null("WorkshopScroll/WorkshopLayout/ChronicleButton") as Button
 	if chronicle_button != null and not chronicle_button.pressed.is_connected(_on_chronicle_pressed):
 		chronicle_button.pressed.connect(_on_chronicle_pressed)
 
@@ -738,7 +782,7 @@ func _on_chronicle_pressed() -> void:
 
 
 func _ensure_enhancement_controls() -> void:
-	var layout := get_node_or_null("WorkshopLayout") as VBoxContainer
+	var layout := get_node_or_null("WorkshopScroll/WorkshopLayout") as VBoxContainer
 	if layout == null:
 		return
 	if layout.has_node("EnhancementButton"):
@@ -877,9 +921,9 @@ func _ensure_chronicle_button(layout: VBoxContainer) -> void:
 
 
 func _populate_precision_options() -> void:
-	var tag_option := get_node_or_null("WorkshopLayout/PrecisionTagOption") as OptionButton
-	var lineage_option := get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
-	var method_option := get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var tag_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionTagOption") as OptionButton
+	var lineage_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var method_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	if tag_option == null or lineage_option == null or method_option == null:
 		return
 	tag_option.clear()
@@ -913,9 +957,9 @@ func _populate_precision_options() -> void:
 		elif action == "UPGRADE_TAG":
 			tag_option.add_item(str(candidate.get("tag_display_name_ko", "")))
 			tag_option.set_item_metadata(tag_option.item_count - 1, str(candidate.get("tag_id", "")))
-	_select_precision_option("WorkshopLayout/PrecisionTagOption", str(_precision_selection_data.get("tag_id", "")))
-	_select_precision_option("WorkshopLayout/PrecisionLineageOption", str(_precision_selection_data.get("lineage_id", "")))
-	_select_precision_option("WorkshopLayout/PrecisionMethodOption", str(_precision_selection_data.get("method_id", "")))
+	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionTagOption", str(_precision_selection_data.get("tag_id", "")))
+	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionLineageOption", str(_precision_selection_data.get("lineage_id", "")))
+	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionMethodOption", str(_precision_selection_data.get("method_id", "")))
 
 
 func _ensure_illustrated_background() -> void:
@@ -937,7 +981,7 @@ func _ensure_illustrated_background() -> void:
 
 
 func _ensure_workpiece_durability_hero() -> void:
-	var layout := get_node_or_null("WorkshopLayout") as VBoxContainer
+	var layout := get_node_or_null("WorkshopScroll/WorkshopLayout") as VBoxContainer
 	if layout == null:
 		return
 	var hero := layout.get_node_or_null("WorkpieceDurabilityHero") as TextureRect
@@ -960,7 +1004,7 @@ func _ensure_workpiece_durability_hero() -> void:
 
 
 func _ensure_equipment_identity_hero() -> void:
-	var layout := get_node_or_null("WorkshopLayout") as VBoxContainer
+	var layout := get_node_or_null("WorkshopScroll/WorkshopLayout") as VBoxContainer
 	if layout == null:
 		return
 	var hero := layout.get_node_or_null("EquipmentIdentityHero") as TextureRect

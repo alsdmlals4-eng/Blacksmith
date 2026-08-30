@@ -88,7 +88,7 @@ creation_route: AI_GENERATED
 creation_date: 2026-08-28 KST
 source_location: Built-in image generation artifact exec-b6622a40-8552-4cf3-86c3-355898d3540a; corrected opaque-background revision of the original state atlas
 asset_path: assets/ui/workshop/workpiece_durability_state_atlas_v1.png
-actual_consumer: VSWorkshopScreen / WorkshopLayout/WorkpieceDurabilityHero
+actual_consumer: VSWorkshopScreen / WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero
 consumer_surface: res://scenes/vertical_slice/screens/vs_workshop_screen.tscn
 commercial_use: UNKNOWN
 distribution_in_game_build: UNKNOWN
