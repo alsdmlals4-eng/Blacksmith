@@ -299,7 +299,7 @@ Each additional content row must specify: customer goal and visible constraint; 
 | AST ID | Asset | Actual consumer | Status and boundary |
 |---|---|---|---|
 | AST-WKS-001 | `ASSET-WORKSHOP-BACKGROUND-V2` | `VSWorkshopScreen`; `VSMainMenu` dynamic override | `PROJECT_ASSET_APPROVED`, static/dynamic binding recorded; Godot client/Android/accessibility/human visual validation `NOT_RUN`; release rights pending. |
-| AST-DUR-002 | `ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1` | `WorkshopLayout/WorkpieceDurabilityHero` | Four state cells; native numeric authority remains primary; dynamic binding recorded, visual validation `NOT_RUN`. |
+| AST-DUR-002 | `ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1` | `WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero` | Four state cells; native numeric authority remains primary; dynamic binding recorded, visual validation `NOT_RUN`. |
 | AST-FORGE-003 | `ASSET-FIRST-FORGE-BACKGROUND-V1` | `ForgingScreen / FirstForgeIllustratedBackground` | Project-approved runtime family; readability veil; client visual validation `NOT_RUN`. |
 | AST-REF-004 | `ASSET-ILLUSTRATED-WORKSHOP-BOOK-REFERENCE-V1` | None by design | Approved production reference, never a runtime/marketing substitute. |
 | AST-MKT-005 | Key art / app icon masters | None by design | Release drafts, not platform-ready; rights/terms/safe-zone work required. |

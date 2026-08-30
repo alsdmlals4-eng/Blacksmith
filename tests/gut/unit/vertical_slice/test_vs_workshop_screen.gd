@@ -114,7 +114,7 @@ func test_workshop_exposes_one_native_handoff_action_only_for_an_eligible_level_
 
 	assert_true(screen.has_signal("handoff_requested"), "the app needs a native player-action signal instead of a hidden router entry")
 	assert_true(bool(screen.view_state().get("handoff_allowed", false)))
-	var handoff_button := screen.get_node_or_null("WorkshopLayout/HandoffButton") as Button
+	var handoff_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/HandoffButton") as Button
 	assert_not_null(handoff_button)
 	if handoff_button == null:
 		return
@@ -123,7 +123,7 @@ func test_workshop_exposes_one_native_handoff_action_only_for_an_eligible_level_
 	assert_gte(handoff_button.custom_minimum_size.y, 48.0)
 	assert_true(handoff_button.text.contains("인계"))
 	assert_true(screen.has_signal("chronicle_requested"), "the same UID needs a visible route to its existing chronicle facts")
-	var chronicle_button := screen.get_node_or_null("WorkshopLayout/ChronicleButton") as Button
+	var chronicle_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/ChronicleButton") as Button
 	assert_not_null(chronicle_button)
 	if chronicle_button != null:
 		assert_true(chronicle_button.visible)
@@ -165,11 +165,44 @@ func test_workshop_keeps_precision_as_native_controls_without_a_dedicated_illust
 	add_child_autofree(screen)
 	screen.configure_context(envelope.get_item(str(envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
 	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
-	var add_button := screen.get_node_or_null("WorkshopLayout/PrecisionActionAddButton") as Button
+	var add_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button
 	assert_not_null(add_button)
 	if add_button != null:
 		assert_true(add_button.visible)
 		assert_gte(add_button.custom_minimum_size.y, 48.0)
+
+
+func test_precision_gate_keeps_the_actual_next_target_visible_before_a_tag_action_is_selected() -> void:
+	var envelope = _precision_envelope(9)
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(envelope.get_item(str(envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
+
+	var state: Dictionary = screen.view_state()
+	assert_false(bool(state.get("enhancement_allowed", true)))
+	assert_eq(state.get("enhancement_target_level", 0), 10, "the blocked precision resolver must not erase the player-facing +10 target")
+	var quote := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementQuoteLabel") as Label
+	assert_not_null(quote)
+	if quote != null:
+		assert_true(quote.text.contains("+10"), "the visible enhancement quote must keep the actual next target while tag action selection is pending")
+
+
+func test_workshop_places_tall_precision_content_inside_a_vertical_scroll_container() -> void:
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+
+	var scroll := screen.get_node_or_null("WorkshopScroll") as ScrollContainer
+	assert_not_null(scroll, "the portrait workshop must scroll instead of centering overflowing content off-screen")
+	if scroll == null:
+		return
+	assert_eq(scroll.horizontal_scroll_mode, ScrollContainer.SCROLL_MODE_DISABLED)
+	assert_eq(scroll.vertical_scroll_mode, ScrollContainer.SCROLL_MODE_AUTO)
+	assert_true(scroll.follow_focus)
+	assert_eq(scroll.offset_left, 32.0, "the workshop copy needs the approved portrait side breathing room")
+	assert_eq(scroll.offset_top, 24.0, "the title must not touch the portrait viewport edge")
+	assert_eq(scroll.offset_right, -32.0)
+	assert_eq(scroll.offset_bottom, -24.0)
+	assert_not_null(scroll.get_node_or_null("WorkshopLayout") as VBoxContainer)
 
 
 func test_workshop_displays_the_matching_workpiece_image_for_each_durability_state() -> void:
@@ -177,7 +210,7 @@ func test_workshop_displays_the_matching_workpiece_image_for_each_durability_sta
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	screen.configure_context(item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
-	var hero := screen.get_node_or_null("WorkshopLayout/WorkpieceDurabilityHero") as TextureRect
+	var hero := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero") as TextureRect
 	assert_not_null(hero)
 	if hero == null:
 		return
@@ -202,10 +235,10 @@ func test_workshop_displays_the_matching_workpiece_image_for_each_durability_sta
 func test_workshop_scene_keeps_the_first_item_hierarchy_and_large_repair_action() -> void:
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
-	assert_eq(screen.get_node("WorkshopLayout/WorkshopTitle").text, "첫 작품 · 철검")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/WorkshopTitle").text, "첫 작품 · 철검")
 	assert_false(screen.get_node("WorkshopBackground").visible)
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityTitleLabel").text, "작품 상태")
-	assert_gte(screen.get_node("WorkshopLayout/RepairButton").custom_minimum_size.y, 64.0)
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/DurabilityTitleLabel").text, "작품 상태")
+	assert_gte(screen.get_node("WorkshopScroll/WorkshopLayout/RepairButton").custom_minimum_size.y, 64.0)
 
 
 func test_workshop_title_uses_the_selected_equipment_catalog_identity() -> void:
@@ -215,7 +248,7 @@ func test_workshop_title_uses_the_selected_equipment_catalog_identity() -> void:
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	screen.configure_context(selected_item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
-	assert_eq(screen.get_node("WorkshopLayout/WorkshopTitle").text, "첫 작품 · 철투구")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/WorkshopTitle").text, "첫 작품 · 철투구")
 
 
 func test_workshop_binds_the_selected_equipment_identity_separately_from_the_durability_state_hero() -> void:
@@ -226,7 +259,7 @@ func test_workshop_binds_the_selected_equipment_identity_separately_from_the_dur
 		var screen = SCREEN_SCENE.instantiate()
 		add_child_autofree(screen)
 		screen.configure_context(selected_item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
-		var identity_hero := screen.get_node_or_null("WorkshopLayout/EquipmentIdentityHero") as TextureRect
+		var identity_hero := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/EquipmentIdentityHero") as TextureRect
 		assert_not_null(identity_hero, str(entry.get("equipment_id", "")))
 		if identity_hero == null:
 			continue
@@ -238,7 +271,7 @@ func test_workshop_binds_the_selected_equipment_identity_separately_from_the_dur
 		assert_eq(identity_hero.texture.get_height(), 512, str(entry.get("equipment_id", "")))
 		assert_eq(identity_hero.mouse_filter, Control.MOUSE_FILTER_IGNORE, str(entry.get("equipment_id", "")))
 		assert_eq(identity_hero.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, str(entry.get("equipment_id", "")))
-		assert_ne(identity_hero, screen.get_node_or_null("WorkshopLayout/WorkpieceDurabilityHero"), "identity and durability visuals must remain distinct")
+		assert_ne(identity_hero, screen.get_node_or_null("WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero"), "identity and durability visuals must remain distinct")
 
 
 func test_workshop_uses_a_readability_veil_over_the_illustrated_background() -> void:
@@ -259,8 +292,8 @@ func test_workshop_localizes_durability_state_and_repair_block_reason() -> void:
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	screen.configure_context(item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityStateLabel").text, "상태: 정상")
-	assert_eq(screen.get_node("WorkshopLayout/RepairQuoteLabel").text, "수리 불가: 실제 손상 후 수리 가능")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/DurabilityStateLabel").text, "상태: 정상")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/RepairQuoteLabel").text, "수리 불가: 실제 손상 후 수리 가능")
 
 
 func test_screen_repair_refreshes_the_bound_item_and_disables_repeat_repair() -> void:
@@ -291,11 +324,11 @@ func test_screen_refreshes_visible_durability_after_an_enhancement_damage_event(
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	screen.configure_context(item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "3 / 5 / 5")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/DurabilityValueLabel").text, "3 / 5 / 5")
 	item.apply_damage_event()
 	screen.refresh_after_enhancement()
-	assert_eq(screen.get_node("WorkshopLayout/DurabilityValueLabel").text, "2 / 5 / 5")
-	assert_true(screen.get_node("WorkshopLayout/RepairButton").disabled == false)
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/DurabilityValueLabel").text, "2 / 5 / 5")
+	assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/RepairButton").disabled == false)
 
 
 func test_repair_button_uses_randomized_maintenance_path_not_test_rolls() -> void:
@@ -307,7 +340,7 @@ func test_repair_button_uses_randomized_maintenance_path_not_test_rolls() -> voi
 	screen._on_repair_pressed()
 	assert_eq(tracking_service.random_repair_calls, 1)
 	assert_eq(tracking_service.deterministic_repair_calls, 0)
-	assert_eq(screen.get_node("WorkshopLayout/RepairMessageLabel").text, "수리 불가: TRACKED_RANDOM_REPAIR")
+	assert_eq(screen.get_node("WorkshopScroll/WorkshopLayout/RepairMessageLabel").text, "수리 불가: TRACKED_RANDOM_REPAIR")
 
 
 func test_workshop_displays_next_enhancement_outcomes_and_commits_saved_attempt() -> void:
@@ -330,8 +363,8 @@ func test_workshop_displays_next_enhancement_outcomes_and_commits_saved_attempt(
 	assert_eq(state.get("enhancement_target_level", -1), 12)
 	assert_true(str(state.get("enhancement_outcomes_summary", "")).contains("성공"))
 	assert_true(str(state.get("enhancement_cost_summary", "")).contains("Gold"))
-	assert_true(screen.has_node("WorkshopLayout/EnhancementButton"))
-	assert_gte(screen.get_node("WorkshopLayout/EnhancementButton").custom_minimum_size.y, 64.0)
+	assert_true(screen.has_node("WorkshopScroll/WorkshopLayout/EnhancementButton"))
+	assert_gte(screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton").custom_minimum_size.y, 64.0)
 	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0})
 	assert_eq(result.get("outcome", ""), "SUCCESS")
 	assert_not_null(save_service.saved_envelope)
@@ -350,10 +383,10 @@ func test_precision_plus_9_requires_add_action_before_a_valid_dictionary_selecti
 	assert_eq(initial.get("precision_mode", ""), "ATTEMPT")
 	assert_eq(initial.get("precision_action", ""), "")
 	assert_false(bool(initial.get("enhancement_allowed", true)))
-	var add_button := screen.get_node_or_null("WorkshopLayout/PrecisionActionAddButton") as Button
-	var upgrade_button := screen.get_node_or_null("WorkshopLayout/PrecisionActionUpgradeButton") as Button
-	var lineage := screen.get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
-	var method := screen.get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var add_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button
+	var upgrade_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
+	var lineage := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var method := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	assert_not_null(add_button)
 	assert_not_null(upgrade_button)
 	assert_not_null(lineage)
@@ -377,7 +410,7 @@ func test_precision_plus_9_requires_add_action_before_a_valid_dictionary_selecti
 	assert_true(bool(selected.get("enhancement_allowed", false)))
 	assert_eq(selected.get("precision_action", ""), "ADD_TAG")
 	assert_true(str(selected.get("precision_preview_summary", "")).contains("불씨의 예리함"))
-	assert_false((screen.get_node("WorkshopLayout/EnhancementButton") as Button).disabled)
+	assert_false((screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton") as Button).disabled)
 
 
 func test_precision_add_option_signals_preserve_both_ids_in_either_selection_order() -> void:
@@ -385,8 +418,8 @@ func test_precision_add_option_signals_preserve_both_ids_in_either_selection_ord
 	var lineage_then_method_screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(lineage_then_method_screen)
 	lineage_then_method_screen.configure_context(lineage_then_method_envelope.get_item(str(lineage_then_method_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), lineage_then_method_envelope)
-	var lineage_option := lineage_then_method_screen.get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
-	var method_option := lineage_then_method_screen.get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var lineage_option := lineage_then_method_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var method_option := lineage_then_method_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	assert_not_null(lineage_option)
 	assert_not_null(method_option)
 	if lineage_option == null or method_option == null:
@@ -414,8 +447,8 @@ func test_precision_add_option_signals_preserve_both_ids_in_either_selection_ord
 	var method_then_lineage_screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(method_then_lineage_screen)
 	method_then_lineage_screen.configure_context(method_then_lineage_envelope.get_item(str(method_then_lineage_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), method_then_lineage_envelope)
-	var reverse_lineage_option := method_then_lineage_screen.get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
-	var reverse_method_option := method_then_lineage_screen.get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var reverse_lineage_option := method_then_lineage_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var reverse_method_option := method_then_lineage_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	assert_not_null(reverse_lineage_option)
 	assert_not_null(reverse_method_option)
 	if reverse_lineage_option == null or reverse_method_option == null:
@@ -453,9 +486,9 @@ func test_precision_plus_19_exposes_both_actions_and_allows_tag_upgrade_selectio
 	screen.configure_context(item, ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
 	var initial: Dictionary = screen.view_state()
 	assert_eq(initial.get("precision_target", ""), "+19 → +20")
-	var add_button := screen.get_node_or_null("WorkshopLayout/PrecisionActionAddButton") as Button
-	var upgrade_button := screen.get_node_or_null("WorkshopLayout/PrecisionActionUpgradeButton") as Button
-	var tag_option := screen.get_node_or_null("WorkshopLayout/PrecisionTagOption") as OptionButton
+	var add_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button
+	var upgrade_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
+	var tag_option := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionTagOption") as OptionButton
 	assert_not_null(add_button)
 	assert_not_null(upgrade_button)
 	assert_not_null(tag_option)
@@ -484,8 +517,8 @@ func test_precision_add_sources_keep_only_resolver_valid_pairs_and_localize_reje
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	screen.configure_context(envelope.get_item(str(envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
-	var lineage_option := screen.get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
-	var method_option := screen.get_node_or_null("WorkshopLayout/PrecisionMethodOption") as OptionButton
+	var lineage_option := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
+	var method_option := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	assert_not_null(lineage_option)
 	assert_not_null(method_option)
 	if lineage_option == null or method_option == null:
@@ -519,7 +552,7 @@ func test_precision_candidate_filters_enforce_tag_cap_stage_cap_and_zero_weight_
 	var capped_screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(capped_screen)
 	capped_screen.configure_context(capped_envelope.get_item(str(capped_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), capped_envelope)
-	var capped_add := capped_screen.get_node_or_null("WorkshopLayout/PrecisionActionAddButton") as Button
+	var capped_add := capped_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button
 	assert_not_null(capped_add)
 	if capped_add == null:
 		return
@@ -534,7 +567,7 @@ func test_precision_candidate_filters_enforce_tag_cap_stage_cap_and_zero_weight_
 	var mastered_screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(mastered_screen)
 	mastered_screen.configure_context(mastered_envelope.get_item(str(mastered_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), mastered_envelope)
-	var mastered_upgrade := mastered_screen.get_node_or_null("WorkshopLayout/PrecisionActionUpgradeButton") as Button
+	var mastered_upgrade := mastered_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
 	assert_not_null(mastered_upgrade)
 	if mastered_upgrade != null:
 		assert_false(mastered_upgrade.visible)
@@ -568,7 +601,7 @@ func test_precision_controls_are_hidden_for_ordinary_targets_and_actionable_node
 	assert_eq(ordinary_state.get("precision_target", ""), "")
 	assert_false(bool(ordinary_state.get("precision_visible", true)))
 	for node_name in ["PrecisionActionAddButton", "PrecisionActionUpgradeButton", "PrecisionTagOption", "PrecisionLineageOption", "PrecisionMethodOption", "PrecisionPreviewLabel", "PrecisionBackfillButton"]:
-		var control := ordinary_screen.get_node_or_null("WorkshopLayout/%s" % node_name) as Control
+		var control := ordinary_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/%s" % node_name) as Control
 		assert_not_null(control)
 		if control != null:
 			assert_false(control.visible)
@@ -578,7 +611,7 @@ func test_precision_controls_are_hidden_for_ordinary_targets_and_actionable_node
 	add_child_autofree(precision_screen)
 	precision_screen.configure_context(precision_envelope.get_item(str(precision_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), precision_envelope)
 	for node_name in ["PrecisionActionAddButton", "PrecisionActionUpgradeButton", "PrecisionTagOption", "PrecisionLineageOption", "PrecisionMethodOption", "PrecisionBackfillButton"]:
-		var control := precision_screen.get_node_or_null("WorkshopLayout/%s" % node_name) as Control
+		var control := precision_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/%s" % node_name) as Control
 		assert_not_null(control)
 		if control != null:
 			assert_gte(control.custom_minimum_size.y, 48.0)
@@ -596,7 +629,7 @@ func test_saved_precision_hold_clears_attempt_selection_without_adopting_a_stage
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	screen.configure_context(item, ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), save_service, envelope)
-	var upgrade_button := screen.get_node_or_null("WorkshopLayout/PrecisionActionUpgradeButton") as Button
+	var upgrade_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
 	assert_not_null(upgrade_button)
 	if upgrade_button == null:
 		return
@@ -621,7 +654,7 @@ func test_saved_precision_success_rebinds_tag_collection_and_save_failure_retain
 	var success_screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(success_screen)
 	success_screen.configure_context(success_item, ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), success_save, success_envelope)
-	var success_upgrade := success_screen.get_node_or_null("WorkshopLayout/PrecisionActionUpgradeButton") as Button
+	var success_upgrade := success_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
 	assert_not_null(success_upgrade)
 	if success_upgrade == null:
 		return
@@ -660,8 +693,8 @@ func test_pending_backfill_is_distinct_zero_cost_add_path_without_placeholder_te
 	assert_eq(initial.get("precision_mode", ""), "BACKFILL")
 	assert_eq(initial.get("precision_target", ""), "+9 → +10")
 	assert_false(bool(initial.get("enhancement_allowed", true)))
-	var backfill_button := screen.get_node_or_null("WorkshopLayout/PrecisionBackfillButton") as Button
-	var add_button := screen.get_node_or_null("WorkshopLayout/PrecisionActionAddButton") as Button
+	var backfill_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionBackfillButton") as Button
+	var add_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button
 	assert_not_null(backfill_button)
 	assert_not_null(add_button)
 	if backfill_button == null or add_button == null:
@@ -680,7 +713,7 @@ func test_pending_backfill_is_distinct_zero_cost_add_path_without_placeholder_te
 	assert_eq(result.get("gold_cost", -1), 0)
 	assert_eq(result.get("reinforcement_units", -1), 0)
 	assert_eq(save_service.saved_envelope.get_item(item.uid).catalyst_tag_entries()[0].get("tag_id", ""), "TAG_ANVIL_LIGHT")
-	assert_false(str(screen.get_node("WorkshopLayout/PrecisionPreviewLabel").text).contains("PRECISION_KEYWORD_PENDING_CONTENT"))
+	assert_false(str(screen.get_node("WorkshopScroll/WorkshopLayout/PrecisionPreviewLabel").text).contains("PRECISION_KEYWORD_PENDING_CONTENT"))
 
 
 func test_precision_failed_damage_keeps_the_workshop_fallback_without_a_dedicated_art_layer() -> void:
@@ -714,7 +747,7 @@ func test_fresh_precision_context_exposes_native_selection_without_a_dedicated_a
 	var first_save := FakeSaveService.new()
 	screen.configure_context(first_envelope.get_item(str(first_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), first_save, first_envelope)
 	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
-	assert_true((screen.get_node("WorkshopLayout/PrecisionActionAddButton") as Button).visible, "new +9→+10 context exposes native tag selection")
+	assert_true((screen.get_node("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button).visible, "new +9→+10 context exposes native tag selection")
 	screen.set_precision_selection({"action": "ADD_TAG", "lineage_id": "EMBER_LINEAGE", "method_id": "EDGE_REINFORCEMENT"})
 	var resolved: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0})
 	assert_eq(resolved.get("outcome", ""), "SUCCESS")
@@ -728,4 +761,4 @@ func test_fresh_precision_context_exposes_native_selection_without_a_dedicated_a
 	}], [10])
 	screen.configure_context(reopened_envelope.get_item(str(reopened_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), reopened_envelope)
 	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
-	assert_true((screen.get_node("WorkshopLayout/PrecisionActionUpgradeButton") as Button).visible, "a fresh +19→+20 context exposes native tag-upgrade selection")
+	assert_true((screen.get_node("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button).visible, "a fresh +19→+20 context exposes native tag-upgrade selection")

@@ -363,11 +363,6 @@
       "design_reference_mode": "GODOT_UI_TEXT_ONLY"
     },
     {
-      "screen_id": "PRECISION_PLUS_9_TO_10",
-      "needed_decision": "Define exact scene, entry, exit, component states, and accessibility cues",
-      "design_reference_mode": "STRUCTURED_FLOW_AND_GODOT_UI_FIRST"
-    },
-    {
       "screen_id": "ITEM_CHRONICLE",
       "needed_decision": "Define item-detail entry and meaningful-event presentation before visual requirements",
       "design_reference_mode": "STRUCTURED_FLOW_AND_GODOT_UI_FIRST"

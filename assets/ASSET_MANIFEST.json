@@ -162,7 +162,7 @@
       "project_relative_source_path": "assets/ui/workshop/workpiece_durability_state_atlas_v1.png",
       "tracked_asset_path": "assets/ui/workshop/workpiece_durability_state_atlas_v1.png",
       "actual_consumer": ["WORKSHOP"],
-      "runtime_slot": ["WorkshopLayout/WorkpieceDurabilityHero"],
+      "runtime_slot": ["WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero"],
       "provenance_and_rights": "AI_GENERATED_BY_BUILT_IN_IMAGE_TOOL; USER_APPROVED_RUNTIME_IMAGE_FAMILY_20260828; RELEASE_RIGHTS_REVIEW_PENDING",
       "approval_reference": "User: 리스트를 예시로 줄게 제작되있는지 확인하고 없으면 전부 제작해.",
       "generation_artifact": "exec-b6622a40-8552-4cf3-86c3-355898d3540a",
