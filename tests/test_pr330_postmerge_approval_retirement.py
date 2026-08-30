@@ -8,14 +8,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE_ROOT = Path(r"C:\Users\user\Documents\GitHub\Base")
-VALIDATOR = BASE_ROOT / "tools" / "check_approved_project_operating_contract.py"
-APPROVAL = "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-PR330_BASE = "ab7ca9ba1bf6599bb96a16eb44688475a64a25bf"
+VALIDATOR = BASE_ROOT / "tools" / "check_project_operating_contract.py"
+APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
+PR330_MERGE = "464a9be4fe5fbd9aa5bc3692d73999d49fa86f71"
 
 
-class PR330ProtectedChangeApprovalTests(unittest.TestCase):
-    def test_pr330_exact_approved_protected_contract_is_current(self) -> None:
-        """Fails if the approved PR #330 path list or its base commit drifts."""
+class PR330PostmergeApprovalRetirementTests(unittest.TestCase):
+    def test_postmerge_standard_contract_uses_the_pr330_merge_baseline(self) -> None:
+        """Fails if the one-shot approval survives its merged protected change."""
+        self.assertFalse(APPROVAL.exists())
         result = subprocess.run(
             [
                 sys.executable,
@@ -25,11 +26,7 @@ class PR330ProtectedChangeApprovalTests(unittest.TestCase):
                 "--base-repository",
                 str(BASE_ROOT),
                 "--protected-base",
-                PR330_BASE,
-                "--approval",
-                APPROVAL,
-                "--external-approval",
-                "true",
+                PR330_MERGE,
                 "--check",
             ],
             cwd=ROOT,
