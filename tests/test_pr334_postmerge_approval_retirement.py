@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-PR332_MERGE = "0122f0011b80ad55e04a57a14bccb89eb11bebc2"
+PR334_MERGE = "a2489bf039c2080c7851959cc6582ab6a56645fc"
 CANONICAL_ADAPTER = ROOT / "skills" / "PROJECT_BASE_ADAPTER.json"
 COMPATIBILITY_VIEWS = (
     (ROOT / "skills" / "BASE_V9_ADAPTER.json", "canonical_source_sha256"),
@@ -30,22 +30,11 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
     return value
 
 
-class PR332PostmergeApprovalRetirementTests(unittest.TestCase):
-    def test_postmerge_contract_adopts_pr332_and_rejects_an_unbound_replacement_approval(self) -> None:
-        """PR #332's spent manifest is absent on main; a later PR must bind a new one exactly."""
+class PR334PostmergeApprovalRetirementTests(unittest.TestCase):
+    def test_postmerge_contract_retires_phase1_approval_and_adopts_pr334(self) -> None:
+        self.assertFalse(APPROVAL.exists())
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
-        self.assertEqual(PR332_MERGE, adapter["protected_baseline"]["commit"])
-        if not APPROVAL.exists():
-            return
-        approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
-        self.assertEqual(approval.get("schema_version"), 1)
-        self.assertEqual(approval.get("artifact_role"), "PROJECT_PROTECTED_CHANGE_APPROVAL")
-        self.assertEqual(approval.get("status"), "APPROVED")
-        self.assertEqual(approval.get("protected_base_commit"), PR332_MERGE)
-        self.assertTrue(approval.get("approved_paths"))
-        approval_source = str(approval.get("approval_source", ""))
-        self.assertIn("USER_APPROVED_", approval_source)
-        self.assertIn("GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE", approval_source)
+        self.assertEqual(PR334_MERGE, adapter["protected_baseline"]["commit"])
 
     def test_generated_compatibility_views_track_the_rebased_canonical_adapter(self) -> None:
         canonical_sha = raw_sha256(CANONICAL_ADAPTER)
