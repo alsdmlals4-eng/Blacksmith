@@ -79,6 +79,9 @@ class FiveEquipmentVisualRequirementsContractTest(unittest.TestCase):
             import_text = image_path.with_name(image_path.name + ".import").read_text(encoding="utf-8")
             self.assertIn(f'source_file="{catalog_entry["image_path"]}"', import_text)
             self.assertIn(f"process/size_limit={RUNTIME_IMPORT_MAX_DIMENSION}", import_text)
+            self.assertIn('"vram_texture": false', import_text)
+            self.assertIn("compress/mode=0", import_text)
+            self.assertIn("mipmaps/generate=false", import_text)
             asset = manifest_by_id[catalog_entry["image_asset_id"]]
             self.assertEqual(asset["status"], "IMPLEMENTED_MACHINE_VERIFIED")
             self.assertEqual(asset["sha256"].lower(), actual_sha256)
