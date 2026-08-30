@@ -31,7 +31,7 @@
 | Current visual direction | `ILLUSTRATED_WORKSHOP_BOOK / USER_APPROVED_DIRECTION`; warm hand-drawn workshop book, paper/leather/iron/wood material language, readable modern controls. |
 | Current project routing | `GITHUB_REPOSITORY_ONLY_CURRENT_CANON`; the repository is both the human-facing GDD and operational source. Notion is historical-only and receives no future read/write. |
 | Image execution timing | Consumer metadata first, then `USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT`; only final visual lock or runtime promotion asks the user. |
-| Canonical current owners | `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`; Decisions 28-32, 34 and 37 JSON/decision owners listed below. |
+| Canonical current owners | `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`; Decisions 28-32 and 34 JSON/decision owners. Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner. |
 | Open PR boundary | PR [#196](https://github.com/alsdmlals4-eng/Blacksmith/pull/196) is `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`; it is not merged truth. |
 | Evidence ceiling | Automated contracts and selected GUT/CI evidence exist. Godot client rendering, Android, accessibility, performance, Human usability, player experience, and release readiness remain `NOT_RUN`. |
 
@@ -83,7 +83,7 @@
 
 | Work stage | State | Evidence / boundary |
 |---|---|---|
-| 1. Intent and canon | `CONFIRMED` | Current owner files and Decisions 25-37. |
+| 1. Intent and canon | `CONFIRMED` | Current owner files and Decisions 25-34; Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner. |
 | 2. System contract | `CONFIRMED` | Enhancement, durability, repair, event, keyword boundaries, first Tag matrix, and empty-selection policy are current. |
 | 3. Representative slice plan | `CONFIRMED` | Slice B: individual `+0→+10`, optional `+11→+15` risk, handoff, brief return beat, same-UID actual-use result. |
 | 4. Machine implementation | `PARTIAL / IMPLEMENTATION_DRIFT_RISK` | Vertical-slice classes, scenes, save envelope, GUT contracts and assets exist; exact current-canon parity is not asserted. |
@@ -112,7 +112,7 @@
 | DEC-ENH-32 | A failed enhancement resolves to exactly `FAILED_HOLD` or `FAILED_DAMAGE`; no downgrade or separate critical. | `CONFIRMED` |
 | DEC-CHR-27 | Only meaningful item events enter player Chronicle, never routine dated attempts. | `CONFIRMED` |
 | DEC-ENH-34 | Weapon keywords are Grade / Tag / Event. Its single `+10` Tag cardinality is `SUPERSEDED`; Decision38 retains the existing `CATALYST_AFFIX` owner for up to three staged Tags. | `CONFIRMED / PARTIALLY_SUPERSEDED` |
-| DEC-ENH-37 | The first 2×2 lineage/method content and empty-selection gate remain historical input. Its target-10-only and single-string fields are `SUPERSEDED` by Decision38 schema 2/V4. | `CONFIRMED / PARTIALLY_SUPERSEDED` |
+| DEC-ENH-37 | Decision37 historical/superseded first 2×2 lineage/method content and empty-selection evidence only; its target-10-only and single-string fields are superseded. Decision38/schema2/V4 active recurring owner. | `CONFIRMED / PARTIALLY_SUPERSEDED` |
 | DEC-ART-03/04 | Illustrated Workshop Book direction; generated imagery needs actual runtime consumer and is not automatically a final asset. | `CONFIRMED` |
 
 ## 04. DESIGN PILLARS
@@ -431,7 +431,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | Understand damage/repair | SYS-DUR-003, SYS-REP-004 | UI-WORK-001, AST-DUR-002 | `VSItem`, `VSRepairResolver`, workshop screen, durability/repair GUT suites | `IMPLEMENTED / UX_NOT_RUN` |
 | First work enters core loop | UX-ONB-001 | UI-MAIN-001, UI-FORGE-001, AST-FORGE-003 | `VSMainMenu`, `VSFirstForgeCompletionService`, first-forge tests | `IMPLEMENTED / UX_NOT_RUN` |
 | Same UID returns from the world | SYS-CUS-006, CNT-ADVENTURER-01 | UI-RESULT-001 | content result JSON, event resolver/action service, result-screen tests | `PARTIAL` |
-| One +10 Tag reflects player choice | SYS-PRE-002 | UI-PREC-001, AST-PREC-006 | Decisions34/37, JSON catalog, and unified contract | `CONFIRMED / NOT_IMPLEMENTED` |
+| One +10 Tag reflects player choice | SYS-PRE-002 | UI-PREC-001, AST-PREC-006 | Decision34 plus Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner and unified contract | `CONFIRMED / NOT_IMPLEMENTED` |
 | Player reads meaningful history | SYS-CHR-007 | UI-CHR-001, AST-CHR-007 | Decision27 and ledger concepts | `CONFIRMED / NOT_IMPLEMENTED` |
 
 ## 22. TEST AND QA CONTRACT
@@ -508,7 +508,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | 2026-08-28 | Records approved runtime asset families and their evidence ceiling. | No new image generation or Notion output. |
 | 2026-08-28 | Adds `BS-OPS-20260828-35`: GitHub-only current canon and user-preauthorized candidate generation after consumer requirements. | Historical Notion records remain non-current; post-generation lock remains required for final direction/runtime promotion. |
 | 2026-08-28 | Completes the one-time Notion-to-GitHub migration receipt and preserves eight historical Visual GDD binaries with exact hashes. | No future Notion read/write; archived boards are non-runtime and cannot override current canon. |
-| 2026-08-29 | Adds `BS-ENHANCE-20260829-37`: first 2×2 Precision Tag catalog, explicit empty-selection block, no-new-field rule, and placeholder backfill contract. | Documentation/data contract only; no Godot code/data/Scene change yet. |
+| 2026-08-29 | Adds `BS-ENHANCE-20260829-37`: historical/superseded first 2×2 Precision Tag catalog and empty-selection evidence only. | Decision38/schema2/V4 active recurring owner; the former no-new-field/placeholder contract is retained as historical provenance, with no Godot code/data/Scene change in this row. |
 
 ## Appendix A. Benchmark disposition
 

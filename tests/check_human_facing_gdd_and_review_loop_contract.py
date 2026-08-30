@@ -181,6 +181,36 @@ def main() -> int:
                     "AI production spec historical precision source entry must locally identify the "
                     f"Decision38/schema2/V4 active recurring owner (line {line_number})"
                 )
+    for entry_name, line_prefix in (
+        ("canonical current owners", "| Canonical current owners |"),
+        ("work-stage current owners", "| 1. Intent and canon |"),
+        ("Decision37 confirmed-decision row", "| DEC-ENH-37 |"),
+        ("Decision37 traceability row", "| One +10 Tag reflects player choice |"),
+        ("Decision37 change-log row", "| 2026-08-29 | Adds `BS-ENHANCE-20260829-37`"),
+    ):
+        matching_line = next((line for line in ai_spec.splitlines() if line.startswith(line_prefix)), "")
+        if not matching_line:
+            failures.append(f"AI production spec is missing {entry_name} entry")
+            continue
+        if not all(
+            qualification in matching_line
+            for qualification in (
+                "historical/superseded",
+                "first 2×2",
+                "Decision38/schema2/V4",
+                "active recurring owner",
+            )
+        ):
+            failures.append(
+                f"AI production spec {entry_name} entry must locally separate Decision37 "
+                "from the Decision38/schema2/V4 active recurring owner"
+            )
+    for forbidden in (
+        "Decisions 28-32, 34 and 37 JSON/decision owners",
+        "Current owner files and Decisions 25-37.",
+    ):
+        if forbidden in ai_spec:
+            failures.append(f"AI production spec retains unqualified legacy precision owner range: {forbidden}")
     for token in (
         "BS-ENHANCE-20260830-38",
         "V4 versioned collection of at most three",
