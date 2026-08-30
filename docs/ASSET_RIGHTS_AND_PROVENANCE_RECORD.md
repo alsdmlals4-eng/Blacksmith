@@ -266,7 +266,7 @@ notes: User 2026-08-30 direction explicitly removes the dedicated Precision Work
 
 ## Current asset record · Five equipment identity illustrations v1
 
-These five objects share one approved production brief and the same two runtime consumers, but retain individual file and hash identities in the asset manifest. They are identity illustrations only: names, role values, Precision eligibility, costs, probabilities, durability, controls, and outcomes remain native Godot UI.
+These five objects share one approved production brief and the same two runtime consumers, but retain individual file and hash identities in the asset manifest. The locked 1254×1254 PNG source bytes remain provenance-hashed; the runtime import applies a 512px lossless 2D/no-mipmap ceiling for the 96px first-forge card and the 156px Workshop hero. They are identity illustrations only: names, role values, Precision eligibility, costs, probabilities, durability, controls, and outcomes remain native Godot UI. Android memory and visual-quality observation remain `NOT_RUN`.
 
 ```yaml
 asset_id: ASSET-EQUIPMENT-IRON-SWORD-CARD-V1

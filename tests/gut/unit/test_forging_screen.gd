@@ -58,5 +58,7 @@ func test_first_forge_binds_each_equipment_identity_illustration_without_replaci
 		assert_true(ResourceLoader.exists(image_path), image_path)
 		assert_not_null(illustration.texture, equipment_id)
 		assert_eq(illustration.texture.resource_path, image_path, equipment_id)
+		assert_eq(illustration.texture.get_width(), 512, equipment_id)
+		assert_eq(illustration.texture.get_height(), 512, equipment_id)
 		assert_eq(illustration.mouse_filter, Control.MOUSE_FILTER_IGNORE, equipment_id)
 		assert_gte(choice.custom_minimum_size.y, 48.0, equipment_id)

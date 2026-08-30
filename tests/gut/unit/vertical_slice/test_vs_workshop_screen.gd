@@ -192,6 +192,8 @@ func test_workshop_binds_the_selected_equipment_identity_separately_from_the_dur
 		assert_true(ResourceLoader.exists(image_path), image_path)
 		assert_not_null(identity_hero.texture, str(entry.get("equipment_id", "")))
 		assert_eq(identity_hero.texture.resource_path, image_path, str(entry.get("equipment_id", "")))
+		assert_eq(identity_hero.texture.get_width(), 512, str(entry.get("equipment_id", "")))
+		assert_eq(identity_hero.texture.get_height(), 512, str(entry.get("equipment_id", "")))
 		assert_eq(identity_hero.mouse_filter, Control.MOUSE_FILTER_IGNORE, str(entry.get("equipment_id", "")))
 		assert_eq(identity_hero.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, str(entry.get("equipment_id", "")))
 		assert_ne(identity_hero, screen.get_node_or_null("WorkshopLayout/WorkpieceDurabilityHero"), "identity and durability visuals must remain distinct")
