@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 import unittest
@@ -10,13 +11,15 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE_ROOT = Path(r"C:\Users\user\Documents\GitHub\Base")
 VALIDATOR = BASE_ROOT / "tools" / "check_project_operating_contract.py"
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-PR330_MERGE = "464a9be4fe5fbd9aa5bc3692d73999d49fa86f71"
+PR332_MERGE = "0122f0011b80ad55e04a57a14bccb89eb11bebc2"
 
 
-class PR330PostmergeApprovalRetirementTests(unittest.TestCase):
-    def test_postmerge_standard_contract_uses_the_pr330_merge_baseline(self) -> None:
-        """Fails if the one-shot approval survives its merged protected change."""
+class PR332PostmergeApprovalRetirementTests(unittest.TestCase):
+    def test_postmerge_standard_contract_retires_the_one_shot_approval_and_adopts_pr332(self) -> None:
+        """Fails if the one-shot protected approval survives its merged change."""
         self.assertFalse(APPROVAL.exists())
+        adapter = json.loads((ROOT / "skills" / "PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
+        self.assertEqual(PR332_MERGE, adapter["protected_baseline"]["commit"])
         result = subprocess.run(
             [
                 sys.executable,
@@ -26,7 +29,7 @@ class PR330PostmergeApprovalRetirementTests(unittest.TestCase):
                 "--base-repository",
                 str(BASE_ROOT),
                 "--protected-base",
-                PR330_MERGE,
+                PR332_MERGE,
                 "--check",
             ],
             cwd=ROOT,
