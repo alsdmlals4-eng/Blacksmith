@@ -559,3 +559,53 @@ func test_pending_backfill_is_distinct_zero_cost_add_path_without_placeholder_te
 	assert_eq(result.get("reinforcement_units", -1), 0)
 	assert_eq(save_service.saved_envelope.get_item(item.uid).catalyst_tag_entries()[0].get("tag_id", ""), "TAG_ANVIL_LIGHT")
 	assert_false(str(screen.get_node("WorkshopLayout/PrecisionPreviewLabel").text).contains("PRECISION_KEYWORD_PENDING_CONTENT"))
+
+
+func test_precision_art_closes_after_actual_failed_damage_and_keeps_the_workshop_fallback() -> void:
+	var envelope = _precision_envelope(19, [{
+		"tag_id": "TAG_EMBER_EDGE",
+		"stage": 1,
+		"created_milestone": 10,
+		"last_advanced_milestone": 10,
+	}], [10])
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	var save_service := FakeSaveService.new()
+	screen.configure_context(envelope.get_item(str(envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), save_service, envelope)
+	var art := screen.get_node_or_null("PrecisionIllustratedBackground") as TextureRect
+	var fallback := screen.get_node_or_null("WorkshopIllustratedBackground") as TextureRect
+	assert_not_null(art)
+	assert_not_null(fallback)
+	if art == null or fallback == null:
+		return
+	assert_true(art.visible)
+	screen.set_precision_selection({"action": "UPGRADE_TAG", "tag_id": "TAG_EMBER_EDGE"})
+	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 99.0, "damage_roll_percent": 0.0})
+	assert_eq(result.get("outcome", ""), "FAILED_DAMAGE", "the exact saved failure result must exercise the post-result visual boundary")
+	assert_false(art.visible, "saved FAILED_DAMAGE must close the Precision illustration")
+	assert_true(fallback.visible, "the ordinary Workshop illustration remains the fallback behind native result controls")
+
+
+func test_precision_art_reopens_only_after_a_saved_result_then_explicit_fresh_context_open() -> void:
+	var first_envelope = _precision_envelope(9)
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	var first_save := FakeSaveService.new()
+	screen.configure_context(first_envelope.get_item(str(first_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), first_save, first_envelope)
+	var art := screen.get_node_or_null("PrecisionIllustratedBackground") as TextureRect
+	assert_not_null(art)
+	if art == null:
+		return
+	assert_true(art.visible, "new +9→+10 context opens the neutral Precision illustration")
+	screen.set_precision_selection({"action": "ADD_TAG", "lineage_id": "EMBER_LINEAGE", "method_id": "EDGE_REINFORCEMENT"})
+	var resolved: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0})
+	assert_eq(resolved.get("outcome", ""), "SUCCESS")
+	assert_false(art.visible, "the same screen must close art after the saved result before a later context is opened")
+	var reopened_envelope = _precision_envelope(19, [{
+		"tag_id": "TAG_EMBER_EDGE",
+		"stage": 1,
+		"created_milestone": 10,
+		"last_advanced_milestone": 10,
+	}], [10])
+	screen.configure_context(reopened_envelope.get_item(str(reopened_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), reopened_envelope)
+	assert_true(art.visible, "explicitly opening a fresh +19→+20 Precision ATTEMPT may re-open the illustration")
