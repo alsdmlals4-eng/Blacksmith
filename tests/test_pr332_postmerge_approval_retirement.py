@@ -31,11 +31,21 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
 
 
 class PR332PostmergeApprovalRetirementTests(unittest.TestCase):
-    def test_postmerge_contract_retires_the_one_shot_approval_and_adopts_pr332(self) -> None:
-        """Fails if the spent protected approval survives its merged change."""
-        self.assertFalse(APPROVAL.exists())
+    def test_postmerge_contract_adopts_pr332_and_rejects_an_unbound_replacement_approval(self) -> None:
+        """PR #332's spent manifest is absent on main; a later PR must bind a new one exactly."""
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
         self.assertEqual(PR332_MERGE, adapter["protected_baseline"]["commit"])
+        if not APPROVAL.exists():
+            return
+        approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
+        self.assertEqual(approval.get("schema_version"), 1)
+        self.assertEqual(approval.get("artifact_role"), "PROJECT_PROTECTED_CHANGE_APPROVAL")
+        self.assertEqual(approval.get("status"), "APPROVED")
+        self.assertEqual(approval.get("protected_base_commit"), PR332_MERGE)
+        self.assertTrue(approval.get("approved_paths"))
+        approval_source = str(approval.get("approval_source", ""))
+        self.assertIn("USER_APPROVED_", approval_source)
+        self.assertIn("GITHUB_PR_LABEL_APPROVED_PROTECTED_CHANGE", approval_source)
 
     def test_generated_compatibility_views_track_the_rebased_canonical_adapter(self) -> None:
         canonical_sha = raw_sha256(CANONICAL_ADAPTER)
