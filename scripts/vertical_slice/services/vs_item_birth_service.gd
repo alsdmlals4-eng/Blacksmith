@@ -40,7 +40,7 @@ func commit_first_forge(envelope, forging_result: Dictionary) -> Dictionary:
 	item.function_capacity = 0
 	item.functions.clear()
 	item.grade_affix = ""
-	item.catalyst_affix = ""
+	item.catalyst_affix = ItemScript.empty_catalyst_affix()
 	item.chronicle_affix = ""
 	item.owner_id = "PLAYER"
 	var birth_entry = LedgerEntryScript.create(
