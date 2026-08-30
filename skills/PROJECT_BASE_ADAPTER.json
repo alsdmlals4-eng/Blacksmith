@@ -57,6 +57,7 @@
     "engine": "Godot 4.7",
     "pc_status": "FUTURE_PLATFORM_CONSIDERATION",
     "primary_platform": "ANDROID_PORTRAIT_MOBILE",
+    "project_id": "blacksmith",
     "repository": "alsdmlals4-eng/Blacksmith",
     "root": "."
   },
@@ -132,7 +133,7 @@
       }
     ]
   },
-  "schema_version": 1,
+  "schema_version": 2,
   "shared_overrides": {
     "auditing-and-refining-ui-art": {
       "base_main_commit": "0fd95f4513343e77fd664af2763a01b02f52545b",
