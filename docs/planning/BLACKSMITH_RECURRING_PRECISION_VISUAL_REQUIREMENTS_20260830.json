@@ -32,12 +32,20 @@
       "candidate_receipt": {
         "generated_on": "2026-08-30 KST",
         "source": "OpenAI ImageGen",
-        "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-f75b0694-a40b-46b3-b064-b6dd2416f697.png",
-        "sha256": "ba855667dc53604c48e062051cec45184b78003cd9d96e3a9054906bcc0fa58f",
+        "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-8b1352d9-7e0f-4765-b39a-45f41c76e232.png",
+        "sha256": "5870f6958135516b9d5f42f81e0d11e0724a5cbf27af9e3382f1de155a7f713a",
         "pixel_dimensions": "941x1672",
         "repository_asset_path": null,
         "review_status": "AWAITING_USER_LOCK"
       },
+      "rejected_candidate_receipts": [
+        {
+          "source": "OpenAI ImageGen",
+          "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-f75b0694-a40b-46b3-b064-b6dd2416f697.png",
+          "sha256": "ba855667dc53604c48e062051cec45184b78003cd9d96e3a9054906bcc0fa58f",
+          "reason": "TEXT_LIKE_HANGING_TAG_MARK"
+        }
+      ],
       "composition_constraints": [
         "No UI, text, logo, watermark, character portrait, or gameplay statistics inside the raster.",
         "Preserve a quiet upper and central field for native Korean menu controls.",
@@ -93,6 +101,14 @@
         "pixel_dimensions": "941x1672",
         "repository_asset_path": null,
         "review_status": "AWAITING_USER_LOCK"
+      },
+      "post_lock_readability_contract": {
+        "required": true,
+        "native_layer_id": "CustomerResultReadabilityVeil",
+        "candidate_background_layer": "BEHIND_NATIVE_RESULT_CONTROLS",
+        "implementation_owner_or_path": "res://scripts/vertical_slice/ui/vs_customer_result_screen.gd#CustomerResultEventIllustrationAndReadabilityVeil",
+        "fallback_before_verified_binding": "KEEP_EXISTING_RESULTBACKGROUND_AND_NATIVE_LABEL_COMPOSITION",
+        "promotion_gate": "GUT_LAYER_ORDER_AND_GODOT_ANDROID_READABILITY_REVIEW"
       },
       "composition_constraints": [
         "No UI, text, numerical durability display, logo, watermark, customer portrait, combat scene, or forced damage depiction inside the raster.",

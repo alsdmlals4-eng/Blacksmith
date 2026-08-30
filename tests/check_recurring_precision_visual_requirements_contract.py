@@ -58,6 +58,22 @@ def main() -> None:
         assert entry["candidate_status"] in {"BRIEF_READY", "GENERATED_CANDIDATE", "REVIEWED"}
         assert entry["runtime_promotion_status"] == "BLOCKED_PENDING_USER_LOCK"
         assert entry["generated_ui_screenshot"] is False
+        receipt = entry["candidate_receipt"]
+        assert receipt["source"] == "OpenAI ImageGen"
+        assert receipt["pixel_dimensions"] == "941x1672"
+        assert receipt["repository_asset_path"] is None
+        assert receipt["review_status"] == "AWAITING_USER_LOCK"
+
+    main_menu = requirements["VIS-REC-20260830-01"]
+    assert main_menu["rejected_candidate_receipts"][0]["reason"] == "TEXT_LIKE_HANGING_TAG_MARK"
+    assert main_menu["candidate_receipt"]["sha256"] == "5870f6958135516b9d5f42f81e0d11e0724a5cbf27af9e3382f1de155a7f713a"
+
+    customer_result = requirements["VIS-REC-20260830-03"]
+    readability = customer_result["post_lock_readability_contract"]
+    assert readability["required"] is True
+    assert readability["native_layer_id"] == "CustomerResultReadabilityVeil"
+    assert readability["candidate_background_layer"] == "BEHIND_NATIVE_RESULT_CONTROLS"
+    assert readability["promotion_gate"] == "GUT_LAYER_ORDER_AND_GODOT_ANDROID_READABILITY_REVIEW"
 
     coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
     delivery = coverage["candidate_visual_delivery"]
