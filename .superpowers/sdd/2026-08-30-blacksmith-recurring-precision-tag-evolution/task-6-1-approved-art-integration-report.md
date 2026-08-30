@@ -6,3 +6,5 @@
 - Verification: `python tests/check_recurring_precision_visual_requirements_contract.py` PASS; JSON parse PASS; Godot 4.7.1 headless editor smoke exit 0; `git diff --check` clean. Focused GUT `test_vs_main_menu.gd`, `test_vs_workshop_screen.gd`, and `test_vs_customer_result_screen.gd`: INCONCLUSIVE (0 reported tests/assertions; no GUT summary).
 - Runtime evidence: no Godot client, Android, accessibility, performance, or human review observed. Release remains `RELEASE_BLOCKED_UNVERIFIED`.
 - Generated import/sidecar cleanup remains required before integration: Godot generated tracked `.import` drift plus new PNG `.import` and `.uid` sidecars; none are intended task files.
+
+- P1 follow-up: review found a post-outcome Precision re-exposure and invalid-result visual preservation. The focused GUT runner remains INCONCLUSIVE (no totals emitted); updated tests now require post-success/post-hold hiding and invalid-result fallback. Static headless parse and Python contract remain the available machine evidence.

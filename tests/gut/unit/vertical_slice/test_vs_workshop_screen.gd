@@ -136,6 +136,11 @@ func test_workshop_shows_the_approved_precision_illustration_only_for_an_active_
 	assert_eq(precision_background.z_index, -1)
 	assert_eq(precision_background.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
 	assert_eq(precision_background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
+	var precision_twenty_envelope = _precision_envelope(19, [{"tag_id": "TAG_EMBER_EDGE", "stage": 1, "created_milestone": 10, "last_advanced_milestone": 10}], [10])
+	var precision_twenty = SCREEN_SCENE.instantiate()
+	add_child_autofree(precision_twenty)
+	precision_twenty.configure_context(precision_twenty_envelope.get_item(str(precision_twenty_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), precision_twenty_envelope)
+	assert_true((precision_twenty.get_node("PrecisionIllustratedBackground") as TextureRect).visible, "each newly opened exact recurring target, including +19→+20, may show the neutral selection illustration")
 
 
 func test_workshop_displays_the_matching_workpiece_image_for_each_durability_state() -> void:
@@ -476,6 +481,7 @@ func test_saved_precision_hold_clears_attempt_selection_without_adopting_a_stage
 	screen.set_precision_selection({"action": "UPGRADE_TAG", "tag_id": "TAG_EMBER_EDGE"})
 	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 99.0, "damage_roll_percent": 99.0})
 	assert_eq(result.get("outcome", ""), "FAILED_HOLD")
+	assert_false((screen.get_node("PrecisionIllustratedBackground") as TextureRect).visible, "saved hold result must not re-open the Precision illustration")
 	assert_eq(save_service.saved_envelope.get_item(item.uid).catalyst_tag_entries()[0].get("stage", 0), 1)
 	assert_eq(screen.view_state().get("precision_action", ""), "")
 	assert_eq(screen.view_state().get("precision_tag_entries", [])[0].get("stage_roman", ""), "I")
@@ -499,6 +505,7 @@ func test_saved_precision_success_rebinds_tag_collection_and_save_failure_retain
 		return
 	success_screen.set_precision_selection({"action": "UPGRADE_TAG", "tag_id": "TAG_EMBER_EDGE"})
 	assert_eq(success_screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0}).get("outcome", ""), "SUCCESS")
+	assert_false((success_screen.get_node("PrecisionIllustratedBackground") as TextureRect).visible, "saved success result must hide the Precision illustration")
 	assert_eq(success_screen.view_state().get("precision_tag_entries", [])[0].get("stage_roman", ""), "II")
 	assert_eq(success_save.saved_envelope.get_item(success_item.uid).catalyst_tag_entries()[0].get("stage", 0), 2)
 

@@ -22,6 +22,7 @@ var _save_service = null
 var _campaign_envelope = null
 var _precision_action := ""
 var _precision_selection_data: Dictionary = {}
+var _precision_illustration_open := false
 
 
 func _ready() -> void:
@@ -54,6 +55,7 @@ func configure_context(item, resources, maintenance_service = null, enhancement_
 	_enhancement_action_service = enhancement_action_service if enhancement_action_service != null else EnhancementActionServiceScript.new()
 	_save_service = save_service
 	_campaign_envelope = campaign_envelope
+	_precision_illustration_open = _precision_mode() == "ATTEMPT"
 	_refresh_controls()
 
 
@@ -164,6 +166,7 @@ func request_enhancement_with_rolls(rolls: Dictionary) -> Dictionary:
 		_campaign_envelope = result.get("envelope", null)
 		_item = _campaign_envelope.get_item(item_uid) if _campaign_envelope != null else null
 		_clear_precision_selection()
+		_precision_illustration_open = false
 		enhancement_saved.emit(_campaign_envelope, result)
 	_refresh_controls()
 	return result
@@ -277,7 +280,7 @@ func _refresh_controls() -> void:
 	_ensure_enhancement_controls()
 	_connect_precision_controls()
 	var state := view_state()
-	_ensure_precision_illustrated_background(bool(state.get("precision_visible", false)) and str(state.get("precision_mode", "")) == "ATTEMPT")
+	_ensure_precision_illustrated_background(_precision_illustration_open and bool(state.get("precision_visible", false)) and str(state.get("precision_mode", "")) == "ATTEMPT")
 	var durability := get_node_or_null("WorkshopLayout/DurabilityValueLabel") as Label
 	var condition := get_node_or_null("WorkshopLayout/DurabilityStateLabel") as Label
 	var quote := get_node_or_null("WorkshopLayout/RepairQuoteLabel") as Label

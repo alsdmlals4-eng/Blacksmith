@@ -109,7 +109,9 @@ func test_customer_result_uses_the_approved_illustration_and_veil_only_after_a_v
 	var invalid := _resolved_result()
 	invalid["durability_consequence"].erase("after_current_durability")
 	assert_eq(screen.configure_resolved_result(invalid).get("status", ""), "BLOCKED")
-	assert_true(illustration.visible, "invalid input must preserve the last valid visible fact and its associated visual state")
+	assert_false(illustration.visible, "invalid input must retain factual text but restore the opaque visual fallback")
+	assert_false(veil.visible)
+	assert_true(fallback.visible)
 
 
 func test_invalid_result_fails_closed_and_preserves_the_last_visible_fact() -> void:

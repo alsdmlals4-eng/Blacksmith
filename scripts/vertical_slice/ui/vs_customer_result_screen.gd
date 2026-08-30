@@ -19,6 +19,7 @@ var _view_state := {
 func configure_resolved_result(result: Dictionary) -> Dictionary:
 	var parsed := _parse_result(result)
 	if parsed.is_empty():
+		_set_result_illustration_visible(false)
 		return {"status": "BLOCKED", "reason": "INVALID_DURABILITY_CONSEQUENCE"}
 	_view_state = parsed
 	_set_result_illustration_visible(true)
