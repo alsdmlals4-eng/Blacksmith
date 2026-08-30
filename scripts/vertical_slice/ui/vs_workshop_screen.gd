@@ -9,6 +9,7 @@ const EnhancementActionServiceScript = preload("res://scripts/vertical_slice/ser
 const PrecisionResolverScript = preload("res://scripts/vertical_slice/resolvers/vs_precision_resolver.gd")
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const WorkshopBackgroundTexture = preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
+const PrecisionBackgroundTexture = preload("res://assets/ui/workshop/precision_tag_workshop_background_v1.png")
 const WorkpieceDurabilityStateAtlasTexture = preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
 signal enhancement_saved(envelope, result: Dictionary)
@@ -276,6 +277,7 @@ func _refresh_controls() -> void:
 	_ensure_enhancement_controls()
 	_connect_precision_controls()
 	var state := view_state()
+	_ensure_precision_illustrated_background(bool(state.get("precision_visible", false)) and str(state.get("precision_mode", "")) == "ATTEMPT")
 	var durability := get_node_or_null("WorkshopLayout/DurabilityValueLabel") as Label
 	var condition := get_node_or_null("WorkshopLayout/DurabilityStateLabel") as Label
 	var quote := get_node_or_null("WorkshopLayout/RepairQuoteLabel") as Label
@@ -817,6 +819,22 @@ func _ensure_illustrated_background() -> void:
 		add_child(background)
 		move_child(background, 0)
 	background.texture = WorkshopBackgroundTexture
+
+
+func _ensure_precision_illustrated_background(visible: bool) -> void:
+	var background := get_node_or_null("PrecisionIllustratedBackground") as TextureRect
+	if background == null:
+		background = TextureRect.new()
+		background.name = "PrecisionIllustratedBackground"
+		background.z_index = -1
+		background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		add_child(background)
+		move_child(background, 1)
+	background.texture = PrecisionBackgroundTexture
+	background.visible = visible
 
 
 func _ensure_workpiece_durability_hero() -> void:

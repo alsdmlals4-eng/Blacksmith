@@ -7,7 +7,7 @@ const FirstForgeCompletionServiceScript = preload("res://scripts/vertical_slice/
 const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resources.gd")
 const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
 const AppScene = preload("res://scenes/vertical_slice/vertical_slice_app.tscn")
-const MainMenuBackgroundTexture = preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
+const MainMenuBackgroundTexture = preload("res://assets/ui/workshop/main_menu_dawn_background_v1.png")
 
 const STATUS_UNCHECKED := "UNCHECKED"
 const STATUS_PRIMARY_OK := "PRIMARY_OK"

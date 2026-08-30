@@ -26,8 +26,9 @@
       "target_aspect_resolution": "9:16 / 941x1672 PNG",
       "state_family_requirement": "One normal state; native menu text/buttons and readability veil remain outside the image.",
       "fallback_if_unconsumed": "KEEP_ASSET-WORKSHOP-BACKGROUND-V2 / DEFER",
-      "candidate_status": "GENERATED_CANDIDATE",
-      "runtime_promotion_status": "BLOCKED_PENDING_USER_LOCK",
+      "candidate_status": "USER_APPROVED",
+      "canon_registration_status": "CANON_REGISTERED",
+      "runtime_promotion_status": "IMPLEMENTED_MACHINE_VERIFIED",
       "generated_ui_screenshot": false,
       "candidate_receipt": {
         "generated_on": "2026-08-30 KST",
@@ -35,8 +36,8 @@
         "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-8b1352d9-7e0f-4765-b39a-45f41c76e232.png",
         "sha256": "5870f6958135516b9d5f42f81e0d11e0724a5cbf27af9e3382f1de155a7f713a",
         "pixel_dimensions": "941x1672",
-        "repository_asset_path": null,
-        "review_status": "AWAITING_USER_LOCK"
+        "repository_asset_path": "assets/ui/workshop/main_menu_dawn_background_v1.png",
+        "review_status": "USER_APPROVED"
       },
       "rejected_candidate_receipts": [
         {
@@ -62,8 +63,9 @@
       "target_aspect_resolution": "9:16 / 941x1672 PNG",
       "state_family_requirement": "One neutral precision-selection state; success/hold/damage remain native dynamic UI and are not baked into the artwork.",
       "fallback_if_unconsumed": "KEEP_ASSET-WORKSHOP-BACKGROUND-V2 / DEFER",
-      "candidate_status": "GENERATED_CANDIDATE",
-      "runtime_promotion_status": "BLOCKED_PENDING_USER_LOCK",
+      "candidate_status": "USER_APPROVED",
+      "canon_registration_status": "CANON_REGISTERED",
+      "runtime_promotion_status": "IMPLEMENTED_MACHINE_VERIFIED",
       "generated_ui_screenshot": false,
       "candidate_receipt": {
         "generated_on": "2026-08-30 KST",
@@ -71,8 +73,8 @@
         "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-11d214fe-cfd0-47a7-8512-7ac50c9ae212.png",
         "sha256": "45679f660ad9fc24796e0080aded8474be6b0c462ae7bb2d58a91b6c0530ef32",
         "pixel_dimensions": "941x1672",
-        "repository_asset_path": null,
-        "review_status": "AWAITING_USER_LOCK"
+        "repository_asset_path": "assets/ui/workshop/precision_tag_workshop_background_v1.png",
+        "review_status": "USER_APPROVED"
       },
       "composition_constraints": [
         "No UI, text, numerals, logos, watermarks, or button-like boxes inside the raster.",
@@ -90,8 +92,9 @@
       "target_aspect_resolution": "9:16 / 941x1672 PNG",
       "state_family_requirement": "One neutral return/result state; no-damage and damage copy, values, repair eligibility, and next action stay native UI.",
       "fallback_if_unconsumed": "KEEP_NATIVE_COLORRECT_LABEL_COMPOSITION / DEFER",
-      "candidate_status": "GENERATED_CANDIDATE",
-      "runtime_promotion_status": "BLOCKED_PENDING_USER_LOCK",
+      "candidate_status": "USER_APPROVED",
+      "canon_registration_status": "CANON_REGISTERED",
+      "runtime_promotion_status": "IMPLEMENTED_MACHINE_VERIFIED",
       "generated_ui_screenshot": false,
       "candidate_receipt": {
         "generated_on": "2026-08-30 KST",
@@ -99,8 +102,8 @@
         "local_candidate_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-5d292b47-dc40-4d98-89d2-124b0cad19eb.png",
         "sha256": "716ce4dd4c6c4bdf48255c4b10aef906573d1113b331d20304e4f75f6e74eca1",
         "pixel_dimensions": "941x1672",
-        "repository_asset_path": null,
-        "review_status": "AWAITING_USER_LOCK"
+        "repository_asset_path": "assets/ui/workshop/customer_result_return_illustration_v1.png",
+        "review_status": "USER_APPROVED"
       },
       "post_lock_readability_contract": {
         "required": true,

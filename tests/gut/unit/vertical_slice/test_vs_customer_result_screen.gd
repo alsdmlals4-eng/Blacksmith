@@ -8,6 +8,7 @@ const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_
 
 const EVENT_ID := "nadia-actual-use-001"
 const ITEM_UID := "BSI-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+const APPROVED_RESULT_ILLUSTRATION_PATH := "res://assets/ui/workshop/customer_result_return_illustration_v1.png"
 
 
 func _resolved_result() -> Dictionary:
@@ -70,6 +71,45 @@ func test_persisted_actual_use_damage_is_presented_without_recalculation() -> vo
 	assert_eq(screen.get_node("ResultLayout/CurrentDurabilityLabel").text, "내구도: 5 → 4")
 	assert_eq(screen.get_node("ResultLayout/NextActionLabel").text, "다음 행동: 수리하기")
 	assert_eq(screen.get_node("ResultLayout/RepairActionHint").text, "작업대에서 수리하기")
+
+
+func test_customer_result_uses_the_approved_illustration_and_veil_only_after_a_valid_saved_result() -> void:
+	assert_true(ResourceLoader.exists(APPROVED_RESULT_ILLUSTRATION_PATH), "approved customer-result illustration must be tracked before the saved fact can reveal it")
+	if not ResourceLoader.exists(APPROVED_RESULT_ILLUSTRATION_PATH):
+		return
+	var screen = _new_screen()
+	assert_not_null(screen)
+	if screen == null:
+		return
+	add_child_autofree(screen)
+	var illustration := screen.get_node_or_null("CustomerResultEventIllustration") as TextureRect
+	var veil := screen.get_node_or_null("CustomerResultReadabilityVeil") as ColorRect
+	var fallback := screen.get_node_or_null("ResultBackground") as ColorRect
+	assert_not_null(illustration, "dynamic event illustration layer must exist without a serialized scene node")
+	assert_not_null(veil, "dynamic readability veil must stay between illustration and native result controls")
+	assert_not_null(fallback)
+	if illustration == null or veil == null or fallback == null:
+		return
+	assert_false(illustration.visible, "no saved result must preserve the opaque fallback")
+	assert_false(veil.visible)
+	assert_true(fallback.visible)
+	assert_eq(screen.configure_resolved_result(_resolved_result()).get("status", ""), "APPLIED")
+	assert_true(illustration.visible)
+	assert_true(veil.visible)
+	assert_false(fallback.visible)
+	assert_eq(illustration.texture.resource_path, APPROVED_RESULT_ILLUSTRATION_PATH)
+	assert_eq(illustration.mouse_filter, Control.MOUSE_FILTER_IGNORE)
+	assert_eq(illustration.z_index, -1)
+	assert_eq(illustration.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
+	assert_eq(illustration.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
+	assert_eq(veil.mouse_filter, Control.MOUSE_FILTER_IGNORE)
+	assert_eq(veil.z_index, -1)
+	assert_gt(veil.color.a, 0.0)
+	assert_gt(screen.get_node("ResultLayout").get_index(), veil.get_index(), "native factual controls must remain above the visual-only veil")
+	var invalid := _resolved_result()
+	invalid["durability_consequence"].erase("after_current_durability")
+	assert_eq(screen.configure_resolved_result(invalid).get("status", ""), "BLOCKED")
+	assert_true(illustration.visible, "invalid input must preserve the last valid visible fact and its associated visual state")
 
 
 func test_invalid_result_fails_closed_and_preserves_the_last_visible_fact() -> void:

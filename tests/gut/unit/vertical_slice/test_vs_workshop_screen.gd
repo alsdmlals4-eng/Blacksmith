@@ -9,6 +9,7 @@ const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_
 const EnhancementActionServiceScript := preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 const WorkpieceDurabilityStateAtlasTexture := preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
+const APPROVED_PRECISION_BACKGROUND_PATH := "res://assets/ui/workshop/precision_tag_workshop_background_v1.png"
 
 
 class TrackingMaintenanceService extends RefCounted:
@@ -107,6 +108,34 @@ func test_workshop_uses_the_illustrated_background_as_a_noninteractive_runtime_l
 	assert_eq(background.z_index, -1)
 	assert_eq(background.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
 	assert_eq(background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
+
+
+func test_workshop_shows_the_approved_precision_illustration_only_for_an_active_precision_target() -> void:
+	assert_true(ResourceLoader.exists(APPROVED_PRECISION_BACKGROUND_PATH), "approved Precision illustration must be tracked before the recurring state can consume it")
+	if not ResourceLoader.exists(APPROVED_PRECISION_BACKGROUND_PATH):
+		return
+	var ordinary = SCREEN_SCENE.instantiate()
+	add_child_autofree(ordinary)
+	ordinary.configure_context(_item(), ResourcesScript.new(100, {"common_reinforcement_material": 1}))
+	var ordinary_precision := ordinary.get_node_or_null("PrecisionIllustratedBackground") as TextureRect
+	assert_not_null(ordinary_precision, "dynamic Precision illustration layer must exist without a serialized scene node")
+	if ordinary_precision == null:
+		return
+	assert_false(ordinary_precision.visible, "ordinary workshop state must retain its existing fallback background")
+	var precision_envelope = _precision_envelope(9)
+	var precision = SCREEN_SCENE.instantiate()
+	add_child_autofree(precision)
+	precision.configure_context(precision_envelope.get_item(str(precision_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), precision_envelope)
+	var precision_background := precision.get_node_or_null("PrecisionIllustratedBackground") as TextureRect
+	assert_not_null(precision_background)
+	if precision_background == null:
+		return
+	assert_true(precision_background.visible, "an exact recurring Precision target must expose the approved neutral selection illustration")
+	assert_eq(precision_background.texture.resource_path, APPROVED_PRECISION_BACKGROUND_PATH)
+	assert_eq(precision_background.mouse_filter, Control.MOUSE_FILTER_IGNORE)
+	assert_eq(precision_background.z_index, -1)
+	assert_eq(precision_background.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
+	assert_eq(precision_background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
 
 
 func test_workshop_displays_the_matching_workpiece_image_for_each_durability_state() -> void:
