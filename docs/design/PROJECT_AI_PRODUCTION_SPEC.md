@@ -4,7 +4,7 @@
 
 > **Document role:** machine-searchable current-canon planning and implementation contract. It is not a replacement for executable code, JSON owners, tests, or runtime evidence.
 >
-> **Source snapshot:** `main` / `2ba2496f0b8e259c446ae8ed1f09533012c3f303` plus current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36` and precision-tag Decision37 / 2026-08-29 KST.
+> **Source snapshot:** historical `main` / `2ba2496f0b8e259c446ae8ed1f09533012c3f303` plus current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36`. Decision37 is historical first-catalog evidence only; `BS-ENHANCE-20260830-38 / schema 2 / V4` is the active recurring-Precision trace.
 > **Generated scope:** this is a technical-trace companion to the human-facing GDD and `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; it does not own the human reading experience. Notion is retired from future project work; no new raster, runtime asset, Scene, data, or GDScript change belongs to this document batch.
 
 > **2026-08-30 recurring Precision trace:** `BS-ENHANCE-20260830-38` is the current owner for all ten Precision targets, `ADD_TAG` / `UPGRADE_TAG`, a maximum of three tags, and I–IV growth. The catalog is schema 2. Item V4 migrates the former single catalyst value to a versioned tag collection while preserving the existing `CATALYST_AFFIX` owner. Exact runtime consumers are Main Menu, recurring Precision Workshop, and Customer World Result; their three approved illustrations are locked, registered, and implemented with machine verification. This is not client, Android, accessibility, human visual, performance, or release verification: each remains `NOT_RUN`.
@@ -351,7 +351,7 @@ Existing architecture is a reusable implementation baseline, not permission to i
 | DAT ID | Owner / essential fields | Current contract |
 |---|---|---|
 | DAT-ITEM-001 | `VSItem` | UID, level, birth facts, `CURRENT/MAX/BASE_MAX`, lifecycle state, no invented Tag matrix. |
-| DAT-SAVE-001 | `VSSaveEnvelope` | V3; deterministic seeds, resolved events, append-only ledger, backup recovery; V2 migrate on read, V1 fail closed. |
+| DAT-SAVE-001 | `VSSaveEnvelope` | Current V4 item collection; deterministic seeds, resolved events, append-only ledger, backup recovery; V3 migrate on read, V1 fail closed. |
 | DAT-RESULT-001 | `CONTENT_RESULT_V1` | event ID, source decision, content/customer, day, item refs, result axes, 2-4 causal reasons, one next action; score/total/reward probability prohibited. |
 | DAT-PREC-001 | Future current Tag resolution | `catalyst_lineage_id`, `precision_method_id`, `tag_id`; exact enum content and empty-lineage behavior `USER_DECISION_REQUIRED`. |
 | DAT-DUR-001 | Decision29 model | immutable `BASE_MAX`; legal `CURRENT/MAX` ranges; derived effective state is never separately persisted as hidden authority. |
@@ -389,7 +389,7 @@ Existing architecture is a reusable implementation baseline, not permission to i
 | EVT-ENH-002 | resolver → UI/save | one of `SUCCESS`, `FAILED_HOLD`, `FAILED_DAMAGE` | Exactly one result and no downgrade/critical. |
 | EVT-REP-001 | UI → maintenance/repair resolver | UID, resources, quality/scar rolls | Job consumed exactly once at start. |
 | EVT-USE-001 | customer result flow → actual-use resolver | event ID, UID, actual-use profile, damage roll | Purchase/handoff alone rejected; UID result only once. |
-| EVT-SAVE-001 | service → save service | candidate V3 envelope | Temp-flush-rename/backup; resolved results do not reroll. |
+| EVT-SAVE-001 | service → save service | candidate envelope containing V4 item collection | Temp-flush-rename/backup; resolved results do not reroll. |
 | EVT-UI-001 | app → hosted screens | state transition | One active surface; return preserves selected UID context. |
 
 ## 19. STATE MACHINES
@@ -472,7 +472,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 
 | Risk ID | Risk | Class | Disposition / next validation |
 |---|---|---|---|
-| RSK-001 | Current placeholder write and legacy method list can diverge from the approved 2×2 Tag catalog. | Product/technical | `IMPROVE`: replace only through Decision37's TDD, block empty selection, and backfill placeholder once. |
+| RSK-001 | Historical placeholder write and legacy method list can diverge from the approved recurring Tag catalog. | Product/technical | `IMPROVE`: Decision37 is retained only for first 2×2 catalog evidence; apply Decision38 schema2/V4 TDD, block invalid selection, and migrate placeholder safely once. |
 | RSK-002 | V2 runtime may drift from current durability/failure/precision canon despite similar field names. | Technical/canon | `TEST`: contract-to-code audit at exact head before implementation. |
 | RSK-003 | Customer life becomes a feature list rather than returned consequence. | Fun/content | `TEST`: playtest causal recall and next-action comprehension. |
 | RSK-004 | Repair economy is accepted test budget, not player-validated price. | Economy | `TEST_IN_PLAY`: sensitivity then human play. |
@@ -492,7 +492,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 
 ## 26. IMPLEMENTATION QUEUE
 
-1. Implement `DAT-PREC-001` and resolver/write isolation from Decision37's current JSON/contract owner; run GUT/Python and exact placeholder-backfill checks.
+1. Implement `DAT-PREC-001` and resolver/write isolation from Decision38 schema2/V4 current catalog owner; retain Decision37 only as historical first 2×2 evidence; run GUT/Python and exact placeholder-backfill checks.
 2. Implement UI-PREC-001 inside the current Workshop flow; use native `Control` UI and add no precision raster.
 4. Audit V2 enhancement/durability/repair paths against Decisions28/29/31/32; correct only approved drift.
 5. Deliver Nadia actual-use result to runtime with same-UID and causal reason validation; then author two reusable content rows.

@@ -45,6 +45,7 @@ def main() -> int:
     failures: list[str] = []
     human_gdd = read(HUMAN_GDD, failures)
     ai_spec = read(AI_SPEC, failures)
+    publisher = read(PUBLISHER, failures)
     routing = read(ROUTING, failures)
     review_loop = read(REVIEW_LOOP, failures)
     agents = read(AGENTS, failures)
@@ -61,7 +62,7 @@ def main() -> int:
         "사람용 본문 = 플레이 경험의 이해와 의사결정",
         "개발 참고 = 구현·데이터·테스트 추적",
         "현재 증거 한계",
-        "NOT_RUN",
+        "아직 실행하지 않음",
         "정밀 강화",
         "+9 → +10",
         "+19 → +20",
@@ -143,6 +144,23 @@ def main() -> int:
     ):
         if forbidden in ai_spec:
             failures.append(f"AI production spec contains unqualified superseded recurring-Precision claim: {forbidden}")
+    for forbidden in (
+        "and precision-tag Decision37 /",
+        "| DAT-SAVE-001 | `VSSaveEnvelope` | V3;",
+        "| EVT-SAVE-001 | service → save service | candidate V3 envelope |",
+        "Decision37's TDD",
+        "Decision37's current JSON/contract owner",
+    ):
+        if forbidden in ai_spec:
+            failures.append(f"AI production spec retains unqualified Decision37/V3 trace: {forbidden}")
+    for token in (
+        "BS-ENHANCE-20260830-38",
+        "V4 versioned collection of at most three",
+        "First gate is `ADD_TAG` only; later gates use `ADD_TAG` or `UPGRADE_TAG`",
+    ):
+        require(ai_spec, token, failures, "AI production spec recurring current trace")
+    for token in ("class NumberedCanvas", "FOOTER_RESERVE", "_draw_final_footer", "canvasmaker=NumberedCanvas"):
+        require(publisher, token, failures, "PDF publisher footer contract")
 
     if not PDF.exists() or PDF.stat().st_size < 10_000:
         failures.append("human-facing Korean GDD PDF is missing or implausibly small")
@@ -178,10 +196,10 @@ def main() -> int:
                 "현재 증거 한계",
             ):
                 require(pdf_text, token, failures, "human-facing PDF")
-            for forbidden in ("**", "`", "SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://"):
+            for forbidden in ("**", "`", "SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://", "NOT_RUN"):
                 if forbidden in pdf_text:
                     failures.append(f"human-facing PDF contains Markdown or implementation token: {forbidden}")
-            for forbidden in ("SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://"):
+            for forbidden in ("SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "CATALYST_AFFIX", "ADD_TAG", "UPGRADE_TAG", "res://", "NOT_RUN"):
                 if forbidden in human_gdd:
                     failures.append(f"human-facing GDD contains implementation token: {forbidden}")
             proof = receipt.get("deterministic_publish_proof", {})
@@ -192,8 +210,14 @@ def main() -> int:
                 failures.append("PDF receipt does not record two identical publish hashes")
             elif hashes[0] != expected_pdf_hash:
                 failures.append("PDF receipt deterministic publish hash does not match artifact")
-            if len(reader.pages) < 7:
-                failures.append("PDF has fewer than the inspected 7 human-facing GDD pages")
+            if len(reader.pages) != 7:
+                failures.append("PDF must retain the reviewed seven-page human-facing GDD layout")
+            for page_number, page in enumerate(reader.pages, start=1):
+                page_text = page.extract_text() or ""
+                if f"{page_number} / {len(reader.pages)}" not in page_text:
+                    failures.append(f"PDF footer is missing exact page counter on page {page_number}")
+                if "2026-08-30" not in page_text:
+                    failures.append(f"PDF footer is missing fixed date on page {page_number}")
         except Exception as exc:  # noqa: BLE001 - report contract evidence, not a traceback.
             failures.append(f"cannot validate human-facing PDF provenance: {exc}")
     if not ARCHIVE_GDIGNORE.exists():

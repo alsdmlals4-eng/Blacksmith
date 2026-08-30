@@ -28,6 +28,7 @@ ASSETS = [
     ("정밀 강화 공방", ROOT / "assets/ui/workshop/precision_tag_workshop_background_v1.png"),
     ("고객 결과", ROOT / "assets/ui/workshop/customer_result_return_illustration_v1.png"),
 ]
+FOOTER_RESERVE = 20 * mm
 
 
 def normalized_sha256(path: Path) -> str:
@@ -45,13 +46,35 @@ def inline(text: str) -> str:
     return re.sub(r"`([^`]+)`", r'<font color="#725A45">\1</font>', escaped)
 
 
-def footer(canvas, doc) -> None:
-    canvas.saveState()
-    canvas.setFont("Malgun", 8)
-    canvas.setFillColor(colors.HexColor("#725A45"))
-    canvas.drawString(18 * mm, 12 * mm, "Blacksmith · 사람용 게임 기획서")
-    canvas.drawRightString(A4[0] - 18 * mm, 12 * mm, f"{doc.page} / 2026-08-30")
-    canvas.restoreState()
+class NumberedCanvas(canvas.Canvas):
+    """Draw page counters after all flowables, so body/table/image content cannot cover them."""
+
+    def __init__(self, *args, **kwargs):
+        kwargs["invariant"] = 1
+        super().__init__(*args, **kwargs)
+        self._saved_page_states = []
+
+    def showPage(self):  # noqa: N802 - ReportLab canvas API.
+        self._saved_page_states.append(dict(self.__dict__))
+        self._startPage()
+
+    def _draw_final_footer(self, page_number: int, page_count: int) -> None:
+        self.saveState()
+        self.setFillColor(colors.white)
+        self.rect(14 * mm, 7 * mm, A4[0] - 28 * mm, 11 * mm, fill=1, stroke=0)
+        self.setFont("Malgun", 8)
+        self.setFillColor(colors.HexColor("#725A45"))
+        self.drawString(18 * mm, 11 * mm, "Blacksmith · 사람용 게임 기획서")
+        self.drawRightString(A4[0] - 18 * mm, 11 * mm, f"{page_number} / {page_count} · 2026-08-30")
+        self.restoreState()
+
+    def save(self):
+        page_count = len(self._saved_page_states)
+        for page_number, state in enumerate(self._saved_page_states, start=1):
+            self.__dict__.update(state)
+            self._draw_final_footer(page_number, page_count)
+            canvas.Canvas.showPage(self)
+        canvas.Canvas.save(self)
 
 
 def parse_table(lines: list[str]) -> list[list[str]]:
@@ -114,18 +137,14 @@ def story(markdown: str):
     out.append(Paragraph("승인된 런타임 소비처 삽화", h1))
     for name, asset in ASSETS:
         if asset.exists():
-            out.append(KeepTogether([Paragraph(xml(name), h2), Image(str(asset), width=68 * mm, height=120.8 * mm), Paragraph("이 삽화는 런타임 스크린샷이 아니다. 실제 클라이언트·Android·접근성·사람 시각 검수는 NOT_RUN.", caption), Spacer(1, 4 * mm)]))
+            out.append(KeepTogether([Paragraph(xml(name), h2), Image(str(asset), width=68 * mm, height=120.8 * mm), Paragraph("이 삽화는 런타임 스크린샷이 아니다. 실제 클라이언트·Android·접근성·사람 시각 검수는 아직 실행하지 않음 상태다.", caption), Spacer(1, 4 * mm)]))
     return out
 
 
 def build_pdf() -> str:
     """Build once with invariant ReportLab metadata and return the exact artifact SHA-256."""
-    def invariant_canvas(*args, **kwargs):
-        kwargs["invariant"] = 1
-        return canvas.Canvas(*args, **kwargs)
-
-    doc = SimpleDocTemplate(str(OUTPUT), pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=18 * mm, bottomMargin=18 * mm, title="Blacksmith 사람용 게임 기획서", author="Blacksmith Project", subject="Human-facing Korean GDD", creator="Blacksmith deterministic ReportLab publisher")
-    doc.build(story(SOURCE.read_text(encoding="utf-8")), onFirstPage=footer, onLaterPages=footer, canvasmaker=invariant_canvas)
+    doc = SimpleDocTemplate(str(OUTPUT), pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=18 * mm, bottomMargin=FOOTER_RESERVE, title="Blacksmith 사람용 게임 기획서", author="Blacksmith Project", subject="Human-facing Korean GDD", creator="Blacksmith deterministic ReportLab publisher")
+    doc.build(story(SOURCE.read_text(encoding="utf-8")), canvasmaker=NumberedCanvas)
     return hashlib.sha256(OUTPUT.read_bytes()).hexdigest()
 
 
