@@ -7,6 +7,19 @@
 > **Source snapshot:** `main` / `2ba2496f0b8e259c446ae8ed1f09533012c3f303` plus current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36` and precision-tag Decision37 / 2026-08-29 KST.
 > **Generated scope:** this is a technical-trace companion to the human-facing GDD and `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; it does not own the human reading experience. Notion is retired from future project work; no new raster, runtime asset, Scene, data, or GDScript change belongs to this document batch.
 
+> **2026-08-30 recurring Precision trace:** `BS-ENHANCE-20260830-38` is the current owner for all ten Precision targets, `ADD_TAG` / `UPGRADE_TAG`, a maximum of three tags, and I–IV growth. The catalog is schema 2. Item V4 migrates the former single catalyst value to a versioned tag collection while preserving the existing `CATALYST_AFFIX` owner. Exact runtime consumers are Main Menu, recurring Precision Workshop, and Customer World Result; their three approved illustrations are locked, registered, and implemented with machine verification. This is not client, Android, accessibility, human visual, performance, or release verification: each remains `NOT_RUN`.
+
+## 00A. RECURRING PRECISION IMPLEMENTATION TRACE
+
+| Technical concern | Current source / evidence boundary |
+|---|---|
+| Rule owner | `BS-ENHANCE-20260830-38`; targets 10 through 100 at ten-level intervals. |
+| Catalog | `BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json`, schema 2; `ADD_TAG` / `UPGRADE_TAG`, cap 3, stage 1–4. |
+| Persistence | V4 item migration stores the versioned tag collection in `CATALYST_AFFIX`; old known values migrate without reapplying their effect, pending values remain gated, unknown values fail closed. |
+| Runtime consumers | Main Menu background, Precision Workshop state illustration, Customer World Result illustration; exact bindings and asset hashes are registered in the repository visual requirements and asset records. |
+| Machine evidence | Current catalog, V4 migration, resolver/action, UI binding, visual-requirement contract, and focused GUT checks are repository machine evidence at the recurring-Precision delivery head. The GUT runner summary is intentionally not repeated here because the known overall runner conclusion is INCONCLUSIVE. |
+| Ceiling | Godot client observation, Android device, accessibility, performance, human play, human visual review, release and external rights completion are `NOT_RUN`. |
+
 ## 00. CANON SNAPSHOT
 
 | Field | Current value |
