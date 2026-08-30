@@ -30,11 +30,12 @@ func test_new_save_envelope_uses_explicit_v4_schema_preset_and_temp_starter_reso
 	assert_eq(envelope.schema_version, 4)
 	assert_eq(envelope.preset_version, "VS-2026.08.27-D")
 	assert_eq(envelope.workshop_resources.get("gold", -1), 20000)
+	assert_eq((envelope.workshop_resources.get("material_stock", {}) as Dictionary).get("common_reinforcement_material", -1), 30)
 	assert_eq(
 		(envelope.workshop_resources.get("material_stock", {}) as Dictionary).get(
 			"common_reinforcement_material", -1
 		),
-		10
+		30
 	)
 
 
@@ -53,6 +54,7 @@ func test_v2_save_migrates_in_memory_to_v4_with_temp_starter_resources_without_v
 	assert_eq(restored.schema_version, 4)
 	assert_eq(restored.preset_version, "VS-2026.08.27-D")
 	assert_eq(restored.workshop_resources.get("gold", -1), 20000)
+	assert_eq((restored.workshop_resources.get("material_stock", {}) as Dictionary).get("common_reinforcement_material", -1), 30)
 
 
 func test_v3_save_migrates_in_memory_to_v4_with_temp_starter_resources_without_validation_error() -> void:
@@ -64,6 +66,7 @@ func test_v3_save_migrates_in_memory_to_v4_with_temp_starter_resources_without_v
 	assert_eq(restored.schema_version, 4)
 	assert_eq(restored.preset_version, "VS-2026.08.27-D")
 	assert_eq(restored.workshop_resources.get("gold", -1), 20000)
+	assert_eq((restored.workshop_resources.get("material_stock", {}) as Dictionary).get("common_reinforcement_material", -1), 30)
 	assert_false(restored.has_method("is_legacy_v3_precision_backfill_eligible"))
 
 

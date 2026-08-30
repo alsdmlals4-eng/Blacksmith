@@ -13,6 +13,8 @@ const WorkshopBackgroundTexture = preload("res://assets/ui/workshop/workshop_enh
 const WorkpieceDurabilityStateAtlasTexture = preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
 signal enhancement_saved(envelope, result: Dictionary)
+signal handoff_requested
+signal chronicle_requested
 
 var _item = null
 var _resources = null
@@ -35,6 +37,8 @@ func _ready() -> void:
 	var enhancement_button := get_node_or_null("WorkshopLayout/EnhancementButton") as Button
 	if enhancement_button != null and not enhancement_button.pressed.is_connected(_on_enhancement_pressed):
 		enhancement_button.pressed.connect(_on_enhancement_pressed)
+	_connect_handoff_control()
+	_connect_chronicle_control()
 	var lineage_option := get_node_or_null("WorkshopLayout/PrecisionLineageOption") as OptionButton
 	if lineage_option != null and not lineage_option.item_selected.is_connected(_on_precision_lineage_selected):
 		lineage_option.item_selected.connect(_on_precision_lineage_selected)
@@ -78,6 +82,9 @@ func view_state() -> Dictionary:
 			"precision_candidates": [],
 			"precision_preview_summary": "",
 			"enhancement_allowed": false,
+			"handoff_allowed": false,
+			"handoff_reason": "MISSING_ITEM",
+			"chronicle_allowed": false,
 		}
 	var quote: Dictionary = RepairResolverScript.new().quote(_item)
 	var precision_mode := _precision_mode()
@@ -96,6 +103,7 @@ func view_state() -> Dictionary:
 	var candidates := _precision_candidates_for_action(_precision_action, precision_mode)
 	var add_available := not _precision_candidates_for_action("ADD_TAG", precision_mode).is_empty()
 	var upgrade_available := precision_mode == "ATTEMPT" and precision_target > 10 and not _precision_candidates_for_action("UPGRADE_TAG", precision_mode).is_empty()
+	var handoff_allowed := _phase1_handoff_allowed()
 	return {
 		"has_item": true,
 		"durability_text": "%d / %d / %d" % [int(_item.current_durability), int(_item.max_durability), int(_item.base_max_durability)],
@@ -123,6 +131,9 @@ func view_state() -> Dictionary:
 		"precision_tag_id": str(precision_preview.get("tag_id", "")),
 		"precision_preview_summary": _precision_preview_summary(precision_preview, precision_mode),
 		"precision_backfill_allowed": precision_mode == "BACKFILL" and bool(precision_preview.get("allowed", false)) and _has_enhancement_context(),
+		"handoff_allowed": handoff_allowed,
+		"handoff_reason": _phase1_handoff_reason(),
+		"chronicle_allowed": _item != null and _campaign_envelope != null,
 	}
 
 
@@ -278,6 +289,8 @@ func _refresh_controls() -> void:
 	_ensure_equipment_identity_hero()
 	_ensure_enhancement_controls()
 	_connect_precision_controls()
+	_connect_handoff_control()
+	_connect_chronicle_control()
 	var state := view_state()
 	var title := get_node_or_null("WorkshopLayout/WorkshopTitle") as Label
 	if title != null and _item != null:
@@ -293,6 +306,8 @@ func _refresh_controls() -> void:
 	var enhancement_quote := get_node_or_null("WorkshopLayout/EnhancementQuoteLabel") as Label
 	var enhancement_outcomes := get_node_or_null("WorkshopLayout/EnhancementOutcomesLabel") as Label
 	var enhancement_button := get_node_or_null("WorkshopLayout/EnhancementButton") as Button
+	var handoff_button := get_node_or_null("WorkshopLayout/HandoffButton") as Button
+	var chronicle_button := get_node_or_null("WorkshopLayout/ChronicleButton") as Button
 	var precision_title := get_node_or_null("WorkshopLayout/PrecisionTitleLabel") as Label
 	var precision_actions_label := get_node_or_null("WorkshopLayout/PrecisionActionLabel") as Label
 	var precision_add_button := get_node_or_null("WorkshopLayout/PrecisionActionAddButton") as Button
@@ -326,6 +341,12 @@ func _refresh_controls() -> void:
 		enhancement_outcomes.text = str(state.get("enhancement_outcomes_summary", ""))
 	if enhancement_button != null:
 		enhancement_button.disabled = not bool(state.get("enhancement_allowed", false))
+	if handoff_button != null:
+		handoff_button.visible = bool(state.get("handoff_allowed", false))
+		handoff_button.disabled = not bool(state.get("handoff_allowed", false))
+	if chronicle_button != null:
+		chronicle_button.visible = bool(state.get("chronicle_allowed", false))
+		chronicle_button.disabled = not bool(state.get("chronicle_allowed", false))
 	var precision_visible := bool(state.get("precision_visible", false))
 	var action := str(state.get("precision_action", ""))
 	var add_selected := action == "ADD_TAG"
@@ -375,6 +396,28 @@ func _refresh_controls() -> void:
 
 func _has_enhancement_context() -> bool:
 	return _item != null and _resources != null and _campaign_envelope != null and _save_service != null and _enhancement_action_service != null
+
+
+func _phase1_handoff_allowed() -> bool:
+	return _phase1_handoff_reason().is_empty()
+
+
+func _phase1_handoff_reason() -> String:
+	if _item == null:
+		return "MISSING_ITEM"
+	if int(_item.enhancement_level) < 10:
+		return "HANDOFF_REQUIRES_LEVEL_10"
+	if int(_item.current_durability) <= 0 or str(_item.physical_state) == "DESTROYED":
+		return "ITEM_DESTROYED"
+	if _campaign_envelope == null or not _campaign_envelope.active_run is Dictionary:
+		return "MISSING_CAMPAIGN_CONTEXT"
+	var item_uid := str(_item.uid)
+	if item_uid.is_empty() or str(_campaign_envelope.active_run.get("selected_item_uid", "")) != item_uid:
+		return "ITEM_NOT_ACTIVE"
+	var resolved_events: Variant = _campaign_envelope.active_run.get("resolved_events", {})
+	if resolved_events is Dictionary and resolved_events.has("phase1-nadia-actual-use-%s" % item_uid):
+		return "EVENT_ALREADY_RESOLVED"
+	return ""
 
 
 func _precision_mode() -> String:
@@ -672,11 +715,35 @@ func _connect_precision_controls() -> void:
 		method_option.item_selected.connect(_on_precision_method_selected)
 
 
+func _connect_handoff_control() -> void:
+	var handoff_button := get_node_or_null("WorkshopLayout/HandoffButton") as Button
+	if handoff_button != null and not handoff_button.pressed.is_connected(_on_handoff_pressed):
+		handoff_button.pressed.connect(_on_handoff_pressed)
+
+
+func _connect_chronicle_control() -> void:
+	var chronicle_button := get_node_or_null("WorkshopLayout/ChronicleButton") as Button
+	if chronicle_button != null and not chronicle_button.pressed.is_connected(_on_chronicle_pressed):
+		chronicle_button.pressed.connect(_on_chronicle_pressed)
+
+
+func _on_handoff_pressed() -> void:
+	if _phase1_handoff_allowed():
+		handoff_requested.emit()
+
+
+func _on_chronicle_pressed() -> void:
+	if _item != null and _campaign_envelope != null:
+		chronicle_requested.emit()
+
+
 func _ensure_enhancement_controls() -> void:
 	var layout := get_node_or_null("WorkshopLayout") as VBoxContainer
 	if layout == null:
 		return
 	if layout.has_node("EnhancementButton"):
+		_ensure_handoff_button(layout)
+		_ensure_chronicle_button(layout)
 		_populate_precision_options()
 		return
 	var nodes: Array[Control] = []
@@ -776,7 +843,37 @@ func _ensure_enhancement_controls() -> void:
 		layout.add_child(node)
 		layout.move_child(node, repair_index)
 		repair_index += 1
+	_ensure_handoff_button(layout)
+	_ensure_chronicle_button(layout)
 	_populate_precision_options()
+
+
+func _ensure_handoff_button(layout: VBoxContainer) -> void:
+	if layout.has_node("HandoffButton"):
+		return
+	var handoff_button := Button.new()
+	handoff_button.name = "HandoffButton"
+	handoff_button.text = "나디아에게 인계 · 인계 손상 없음"
+	handoff_button.custom_minimum_size = Vector2(0, 48)
+	handoff_button.add_theme_font_size_override("font_size", 18)
+	var repair_button := layout.get_node_or_null("RepairButton") as Control
+	layout.add_child(handoff_button)
+	if repair_button != null:
+		layout.move_child(handoff_button, repair_button.get_index())
+
+
+func _ensure_chronicle_button(layout: VBoxContainer) -> void:
+	if layout.has_node("ChronicleButton"):
+		return
+	var chronicle_button := Button.new()
+	chronicle_button.name = "ChronicleButton"
+	chronicle_button.text = "작품 연대 보기"
+	chronicle_button.custom_minimum_size = Vector2(0, 48)
+	chronicle_button.add_theme_font_size_override("font_size", 18)
+	var repair_button := layout.get_node_or_null("RepairButton") as Control
+	layout.add_child(chronicle_button)
+	if repair_button != null:
+		layout.move_child(chronicle_button, repair_button.get_index())
 
 
 func _populate_precision_options() -> void:

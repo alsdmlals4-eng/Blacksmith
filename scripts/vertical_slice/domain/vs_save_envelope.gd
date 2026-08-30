@@ -217,7 +217,7 @@ static func starter_workshop_resources() -> Dictionary:
 	return {
 		"gold": 20000,
 		"material_stock": {
-			"common_reinforcement_material": 10,
+			"common_reinforcement_material": 30,
 		},
 	}
 
