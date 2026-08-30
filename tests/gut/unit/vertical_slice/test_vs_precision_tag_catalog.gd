@@ -68,6 +68,21 @@ func test_first_target_only_allows_add_tag() -> void:
 	assert_true(bool(resolver.selection_preview(_item(9), 10, _add()).get("allowed", false)))
 
 
+func test_armor_precision_target_blocks_before_roll_or_tag_mutation() -> void:
+	var resolver = PrecisionResolverScript.new()
+	var armor = _item(9)
+	armor.equipment_group = "ARMOR"
+	armor.role_profile = "ARMOR_BODY_DEFENSE"
+	var before := armor.to_dict()
+	var preview: Dictionary = resolver.selection_preview(armor, 10, _add())
+	assert_false(bool(preview.get("allowed", true)))
+	assert_eq(preview.get("reason", ""), "PRECISION_TAG_WEAPON_ONLY")
+	var result: Dictionary = resolver.apply_selection_success(armor, 10, _add())
+	assert_false(bool(result.get("applied", true)))
+	assert_eq(result.get("reason", ""), "PRECISION_TAG_WEAPON_ONLY")
+	assert_eq(armor.to_dict(), before)
+
+
 func test_later_target_adds_below_cap_and_rejects_duplicate_or_full_collection() -> void:
 	var resolver = PrecisionResolverScript.new()
 	var item = _item(19)

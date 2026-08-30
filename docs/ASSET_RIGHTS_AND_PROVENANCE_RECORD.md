@@ -239,7 +239,7 @@ status: RELEASE_BLOCKED_UNVERIFIED
 notes: User 2026-08-30 approval; MenuIllustratedBackground dynamic binding is machine-verified. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
 ```
 
-## Current asset record · ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
+## Historical retired asset record · ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
 
 ```yaml
 asset_id: ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
@@ -248,7 +248,7 @@ name: Precision tag workshop background v1
 project: BLACKSMITH
 creation_route: AI_GENERATED
 creator_or_vendor: OpenAI ImageGen
-source_url_or_path: assets/ui/workshop/precision_tag_workshop_background_v1.png
+source_url_or_path: RETIRED_20260830 / former assets/ui/workshop/precision_tag_workshop_background_v1.png
 acquired_or_created_at: 2026-08-30 KST
 commercial_use: UNKNOWN
 distribution_in_game_build: UNKNOWN
@@ -258,10 +258,10 @@ ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
 ai_human_contribution_and_postprocessing: Original brief, user selection, exact-target-only dynamic binding, and native-control preservation
 reference_sources: Current Blacksmith art direction only; no third-party image input
 forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, or UI screenshot
-final_asset_record: assets/ASSET_MANIFEST.json#ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
+final_asset_record: assets/ASSET_MANIFEST.json#retired_asset_records/ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
 proof_hash: 45679f660ad9fc24796e0080aded8474be6b0c462ae7bb2d58a91b6c0530ef32
-status: RELEASE_BLOCKED_UNVERIFIED
-notes: User 2026-08-30 approval; exact Precision ATTEMPT dynamic binding is machine-verified. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
+status: SUPERSEDED
+notes: User 2026-08-30 direction explicitly removes the dedicated Precision Workshop raster. Binding and repository file were retired; native tag-selection UX is the replacement consumer. This historical record does not approve a runtime asset. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
 ```
 
 ## Current asset record · ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1

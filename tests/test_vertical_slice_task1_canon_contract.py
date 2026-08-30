@@ -142,7 +142,10 @@ class VerticalSliceTask1CanonContractTests(unittest.TestCase):
         self.assertEqual(preset["authority"], "CURRENT_CANON_RUNTIME_MVP_20260826")
         self.assertFalse(preset["is_final_balance"])
         self.assertEqual(preset["human_playtest"], "NOT_RUN")
-        self.assertEqual(preset["representative_scope"]["equipment_groups"], ["SWORD"])
+        self.assertEqual(
+            preset["representative_scope"]["equipment_groups"],
+            ["SWORD", "SHIELD", "BOW", "ARMOR", "HELMET"],
+        )
         self.assertEqual(preset["representative_scope"]["starter_primary_material_id"], "iron")
         self.assertEqual(preset["representative_scope"]["maximum_enhancement_level"], 100)
         self.assertEqual(preset["representative_scope"]["precision_milestones"], [10])

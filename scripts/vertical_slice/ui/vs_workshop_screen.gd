@@ -8,8 +8,8 @@ const EnhancementResolverScript = preload("res://scripts/vertical_slice/resolver
 const EnhancementActionServiceScript = preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const PrecisionResolverScript = preload("res://scripts/vertical_slice/resolvers/vs_precision_resolver.gd")
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
+const EquipmentCatalogScript = preload("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
 const WorkshopBackgroundTexture = preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
-const PrecisionBackgroundTexture = preload("res://assets/ui/workshop/precision_tag_workshop_background_v1.png")
 const WorkpieceDurabilityStateAtlasTexture = preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
 signal enhancement_saved(envelope, result: Dictionary)
@@ -22,7 +22,6 @@ var _save_service = null
 var _campaign_envelope = null
 var _precision_action := ""
 var _precision_selection_data: Dictionary = {}
-var _precision_illustration_open := false
 
 
 func _ready() -> void:
@@ -55,7 +54,6 @@ func configure_context(item, resources, maintenance_service = null, enhancement_
 	_enhancement_action_service = enhancement_action_service if enhancement_action_service != null else EnhancementActionServiceScript.new()
 	_save_service = save_service
 	_campaign_envelope = campaign_envelope
-	_precision_illustration_open = _precision_mode() == "ATTEMPT"
 	_refresh_controls()
 
 
@@ -166,7 +164,6 @@ func request_enhancement_with_rolls(rolls: Dictionary) -> Dictionary:
 		_campaign_envelope = result.get("envelope", null)
 		_item = _campaign_envelope.get_item(item_uid) if _campaign_envelope != null else null
 		_clear_precision_selection()
-		_precision_illustration_open = false
 		enhancement_saved.emit(_campaign_envelope, result)
 	_refresh_controls()
 	return result
@@ -280,7 +277,10 @@ func _refresh_controls() -> void:
 	_ensure_enhancement_controls()
 	_connect_precision_controls()
 	var state := view_state()
-	_ensure_precision_illustrated_background(_precision_illustration_open and bool(state.get("precision_visible", false)) and str(state.get("precision_mode", "")) == "ATTEMPT")
+	var title := get_node_or_null("WorkshopLayout/WorkshopTitle") as Label
+	if title != null and _item != null:
+		var equipment: Dictionary = EquipmentCatalogScript.by_item(_item)
+		title.text = "첫 작품 · %s" % str(equipment.get("display_name_ko", "미확인 작품"))
 	var durability := get_node_or_null("WorkshopLayout/DurabilityValueLabel") as Label
 	var condition := get_node_or_null("WorkshopLayout/DurabilityStateLabel") as Label
 	var quote := get_node_or_null("WorkshopLayout/RepairQuoteLabel") as Label
@@ -337,10 +337,19 @@ func _refresh_controls() -> void:
 	for control in [precision_tag_label, precision_tag_option]:
 		if control != null:
 			control.visible = precision_visible and upgrade_selected
+	var precision_mode := str(state.get("precision_mode", ""))
 	if precision_title != null:
-		precision_title.text = "정밀 강화 · %s" % str(state.get("precision_target", "")) if str(state.get("precision_mode", "")) == "ATTEMPT" else "정밀 태그 정정 · %s" % str(state.get("precision_target", ""))
+		if precision_mode == "ATTEMPT":
+			precision_title.text = "정밀 강화 · %s" % str(state.get("precision_target", ""))
+		elif precision_mode == "BACKFILL":
+			precision_title.text = "정밀 태그 정정 · %s" % str(state.get("precision_target", ""))
+		else:
+			precision_title.text = "정밀 강화 · %s" % str(state.get("precision_target", ""))
 	if precision_actions_label != null:
-		precision_actions_label.text = "행동을 먼저 고르세요" if action.is_empty() else "선택한 행동: %s" % ("태그 추가" if add_selected else "태그 강화")
+		if precision_mode == "WEAPON_ONLY":
+			precision_actions_label.text = "정밀 태그는 검·방패·활에만 적용됩니다"
+		else:
+			precision_actions_label.text = "행동을 먼저 고르세요" if action.is_empty() else "선택한 행동: %s" % ("태그 추가" if add_selected else "태그 강화")
 	if precision_add_button != null:
 		precision_add_button.visible = precision_visible and bool(state.get("precision_add_available", false))
 		precision_add_button.disabled = not bool(state.get("precision_add_available", false))
@@ -370,9 +379,9 @@ func _precision_mode() -> String:
 	if _item == null:
 		return ""
 	if _item.has_initial_tag_backfill_pending():
-		return "BACKFILL"
+		return "BACKFILL" if EquipmentCatalogScript.is_precision_tag_eligible(_item) else "WEAPON_ONLY"
 	if PrecisionResolverScript.PRECISION_TARGETS.has(int(_item.enhancement_level) + 1):
-		return "ATTEMPT"
+		return "ATTEMPT" if EquipmentCatalogScript.is_precision_tag_eligible(_item) else "WEAPON_ONLY"
 	return ""
 
 
@@ -392,6 +401,8 @@ func _precision_target_text(target_level: int) -> String:
 
 
 func _precision_preview(precision_mode: String) -> Dictionary:
+	if precision_mode == "WEAPON_ONLY":
+		return {"allowed": false, "reason": "PRECISION_TAG_WEAPON_ONLY"}
 	if precision_mode.is_empty() or _precision_action.is_empty():
 		return {"allowed": false, "reason": "PRECISION_ACTION_REQUIRED"}
 	if precision_mode == "BACKFILL":
@@ -617,6 +628,8 @@ func _player_facing_enhancement_reason(reason: String) -> String:
 			return "선택한 정밀 조합을 확인하세요"
 		"PRECISION_EFFECT_UNAVAILABLE":
 			return "현재 작품에는 이 효과를 적용할 수 없습니다"
+		"PRECISION_TAG_WEAPON_ONLY":
+			return "정밀 태그는 검·방패·활에만 적용됩니다"
 		"PRECISION_TAG_CAP_REACHED":
 			return "활성 태그는 세 개까지입니다"
 		"PRECISION_TAG_MASTERED":
@@ -822,22 +835,6 @@ func _ensure_illustrated_background() -> void:
 		add_child(background)
 		move_child(background, 0)
 	background.texture = WorkshopBackgroundTexture
-
-
-func _ensure_precision_illustrated_background(visible: bool) -> void:
-	var background := get_node_or_null("PrecisionIllustratedBackground") as TextureRect
-	if background == null:
-		background = TextureRect.new()
-		background.name = "PrecisionIllustratedBackground"
-		background.z_index = -1
-		background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		add_child(background)
-		move_child(background, 1)
-	background.texture = PrecisionBackgroundTexture
-	background.visible = visible
 
 
 func _ensure_workpiece_durability_hero() -> void:

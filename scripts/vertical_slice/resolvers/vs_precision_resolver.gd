@@ -3,6 +3,7 @@ class_name VSPrecisionResolver
 extends RefCounted
 
 const CATALOG_PATH := "res://docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json"
+const EquipmentCatalogScript = preload("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
 const CATALYST_OWNER := "CATALYST_AFFIX"
 const PRECISION_TARGETS := [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 const MAX_ACTIVE_TAGS := 3
@@ -20,6 +21,8 @@ func selection_preview(item, target_level: int, selection: Dictionary) -> Dictio
 		return _blocked("MISSING_ITEM")
 	if str(item.physical_state) == "DESTROYED":
 		return _blocked("ITEM_DESTROYED")
+	if not EquipmentCatalogScript.is_precision_tag_eligible(item):
+		return _blocked("PRECISION_TAG_WEAPON_ONLY")
 	var catalog_data := _load_catalog()
 	if catalog_data.is_empty():
 		return _blocked("PRECISION_TAG_CATALOG_UNAVAILABLE")
@@ -56,6 +59,8 @@ func apply_selection_success(item, target_level: int, selection: Dictionary) -> 
 func backfill_initial_tag(item, selection: Dictionary) -> Dictionary:
 	if item == null:
 		return _not_applied("MISSING_ITEM")
+	if not EquipmentCatalogScript.is_precision_tag_eligible(item):
+		return _not_applied("PRECISION_TAG_WEAPON_ONLY")
 	if not item.has_initial_tag_backfill_pending():
 		return _not_applied("PRECISION_INITIAL_TAG_BACKFILL_NOT_PENDING")
 	if item.has_unreadable_catalyst_affix() or not item.catalyst_tag_entries().is_empty():

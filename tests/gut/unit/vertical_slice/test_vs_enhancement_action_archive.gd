@@ -165,6 +165,32 @@ func test_level_nineteen_missing_precision_selection_blocks_before_cost_material
 	assert_eq(item.used_precision_milestones, [10])
 
 
+func test_armor_precision_blocks_before_cost_material_roll_or_save() -> void:
+	var envelope = _valid_envelope_with_item()
+	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
+	item.enhancement_level = 9
+	item.highest_checkpoint = 0
+	item.current_durability = 5
+	item.max_durability = 5
+	item.equipment_group = "ARMOR"
+	item.role_profile = "ARMOR_BODY_DEFENSE"
+	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	envelope.workshop_resources = resources.snapshot()
+	var before_resources = resources.snapshot()
+	var before_item = item.to_dict()
+	var save_service := FakeSaveService.new()
+	var result = load(SERVICE_PATH).new().resolve_and_save_with_rolls(
+		envelope, item.uid, 10,
+		{"success_roll_percent": 0.0, "damage_roll_percent": 0.0}, 3,
+		resources, save_service, _precision_add_ember()
+	)
+	assert_eq(result.get("outcome", ""), "BLOCKED")
+	assert_eq(result.get("reason", ""), "PRECISION_TAG_WEAPON_ONLY")
+	assert_eq(resources.snapshot(), before_resources)
+	assert_eq(save_service.save_calls, 0)
+	assert_eq(item.to_dict(), before_item)
+
+
 func test_plus_twenty_hold_and_damage_charge_normally_without_tag_growth() -> void:
 	var held_envelope = _valid_envelope_with_item()
 	var held_item := _seeded_ember_item_at_nineteen(held_envelope)

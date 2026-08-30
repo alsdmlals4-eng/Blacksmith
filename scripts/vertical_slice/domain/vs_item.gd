@@ -4,6 +4,7 @@ extends RefCounted
 const SCHEMA_VERSION := 4
 const BASE_MAX_DURABILITY := 5
 const LedgerEntryScript = preload("res://scripts/vertical_slice/domain/vs_ledger_entry.gd")
+const EquipmentCatalogScript = preload("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
 const REQUIRED_FIELDS := [
 	"schema_version",
 	"uid",
@@ -271,9 +272,9 @@ func _validate_values() -> void:
 		validation_errors.append("INVALID_BIRTH_RNG_SEED")
 	if not PRIMARY_MATERIAL_IDS.has(primary_material_id):
 		validation_errors.append("INVALID_PRIMARY_MATERIAL:%s" % primary_material_id)
-	if equipment_group != "SWORD":
+	if not EquipmentCatalogScript.has_equipment_group(equipment_group):
 		validation_errors.append("INVALID_EQUIPMENT_GROUP:%s" % equipment_group)
-	if role_profile != "PHYSICAL_WEAPON_ATTACK":
+	elif not EquipmentCatalogScript.is_valid_identity(equipment_group, role_profile):
 		validation_errors.append("INVALID_ROLE_PROFILE:%s" % role_profile)
 	if not CRAFTING_GRADES.has(crafting_grade):
 		validation_errors.append("INVALID_CRAFTING_GRADE:%s" % crafting_grade)

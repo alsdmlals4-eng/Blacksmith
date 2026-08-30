@@ -25,7 +25,6 @@ RECEIPT = ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828_PDF_RECEIPT.j
 FONT = Path(r"C:\Windows\Fonts\malgun.ttf")
 ASSETS = [
     ("메인 메뉴", ROOT / "assets/ui/workshop/main_menu_dawn_background_v1.png"),
-    ("정밀 강화 공방", ROOT / "assets/ui/workshop/precision_tag_workshop_background_v1.png"),
     ("고객 결과", ROOT / "assets/ui/workshop/customer_result_return_illustration_v1.png"),
 ]
 FOOTER_RESERVE = 20 * mm

@@ -3,6 +3,7 @@ extends Control
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
 const PrecisionGaugeScript = preload("res://scripts/ui/precision_gauge.gd")
 const FirstForgeBackgroundTexture = preload("res://assets/ui/workshop/first_forge_background_v1.png")
+const EquipmentCatalogScript = preload("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
 
 const PANEL := Color("#252932")
 const PANEL_ALT := Color("#303641")
@@ -29,6 +30,10 @@ var result_quality_label: Label
 var result_stats_label: Label
 var helper_label: Label
 var last_state: int = -1
+var equipment_title_label: Label
+var equipment_type_label: Label
+var equipment_choice_grid: GridContainer
+var _selected_equipment_id := "iron_sword"
 
 
 func _ready() -> void:
@@ -89,9 +94,9 @@ func _build_interface() -> void:
 	header.add_theme_constant_override("separation", 12)
 	layout.add_child(header)
 
-	var title_label := _label("대장간 · 첫 철검", 30, TEXT)
-	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	header.add_child(title_label)
+	equipment_title_label = _label("", 30, TEXT)
+	equipment_title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	header.add_child(equipment_title_label)
 
 	state_label = _label("제작 중", 18, GOLD)
 	state_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -105,9 +110,36 @@ func _build_interface() -> void:
 	var material_name := _label("주재료  철", 21, TEXT)
 	material_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	material_row.add_child(material_name)
-	var weapon_type := _label("무기  검", 21, TEXT)
-	weapon_type.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	material_row.add_child(weapon_type)
+	equipment_type_label = _label("", 21, TEXT)
+	equipment_type_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	material_row.add_child(equipment_type_label)
+
+	var equipment_panel := _panel(PANEL_ALT)
+	equipment_panel.name = "EquipmentChoicePanel"
+	layout.add_child(equipment_panel)
+	var equipment_box := VBoxContainer.new()
+	equipment_box.add_theme_constant_override("separation", 8)
+	equipment_panel.add_child(equipment_box)
+	equipment_box.add_child(_label("첫 작품 선택", 22, GOLD))
+	var equipment_hint := _label("장비를 고른 뒤 제작을 시작하세요. 제작이 시작되면 선택은 잠깁니다.", 16, MUTED)
+	equipment_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	equipment_box.add_child(equipment_hint)
+	var equipment_grid := GridContainer.new()
+	equipment_grid.name = "EquipmentChoiceGrid"
+	equipment_grid.columns = 2
+	equipment_grid.add_theme_constant_override("h_separation", 10)
+	equipment_grid.add_theme_constant_override("v_separation", 10)
+	equipment_box.add_child(equipment_grid)
+	equipment_choice_grid = equipment_grid
+	for equipment in EquipmentCatalogScript.all():
+		var equipment_id := str(equipment.get("equipment_id", ""))
+		var choice := Button.new()
+		choice.name = "EquipmentChoice_%s" % equipment_id
+		choice.custom_minimum_size = Vector2(0, 72)
+		choice.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		choice.add_theme_font_size_override("font_size", 18)
+		choice.pressed.connect(_on_equipment_choice_pressed.bind(equipment_id))
+		equipment_grid.add_child(choice)
 
 	var work_panel := _panel(PANEL)
 	layout.add_child(work_panel)
@@ -211,16 +243,60 @@ func _build_interface() -> void:
 	helper_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	helper_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	layout.add_child(helper_label)
+	_refresh_equipment_controls()
 
 
 func _start_new_session() -> void:
 	var config := _load_session_config()
+	config["equipment_id"] = _selected_equipment_id
 	session = ForgingSessionScript.new(config)
 	session.precision_enabled = precision_toggle.button_pressed if precision_toggle != null else true
 	session.fever_started.connect(_on_fever_started)
 	session.fever_ended.connect(_on_fever_ended)
 	last_state = -1
 	_refresh(session.snapshot())
+
+
+func selected_equipment_id() -> String:
+	return _selected_equipment_id
+
+
+func select_equipment(equipment_id: String) -> bool:
+	if not _equipment_choice_is_open():
+		return false
+	if EquipmentCatalogScript.by_id(equipment_id).is_empty():
+		return false
+	_selected_equipment_id = equipment_id
+	_refresh_equipment_controls()
+	return true
+
+
+func _on_equipment_choice_pressed(equipment_id: String) -> void:
+	select_equipment(equipment_id)
+
+
+func _equipment_choice_is_open() -> bool:
+	return session == null or (session.state == ForgingSessionScript.State.FORGING and is_zero_approx(session.progress))
+
+
+func _refresh_equipment_controls() -> void:
+	var selected: Dictionary = EquipmentCatalogScript.by_id(_selected_equipment_id)
+	if selected.is_empty():
+		selected = EquipmentCatalogScript.by_id("iron_sword")
+		_selected_equipment_id = "iron_sword"
+	if equipment_title_label != null:
+		equipment_title_label.text = "대장간 · 첫 %s" % str(selected.get("display_name_ko", "철검"))
+	if equipment_type_label != null:
+		equipment_type_label.text = "장비  %s" % str(selected.get("display_name_ko", "철검"))
+	var enabled := _equipment_choice_is_open()
+	for equipment in EquipmentCatalogScript.all():
+		var equipment_id := str(equipment.get("equipment_id", ""))
+		var choice := equipment_choice_grid.get_node_or_null("EquipmentChoice_%s" % equipment_id) as Button if equipment_choice_grid != null else null
+		if choice == null:
+			continue
+		choice.disabled = not enabled
+		var marker := "선택됨" if equipment_id == _selected_equipment_id else "선택"
+		choice.text = "%s\n%s" % [str(equipment.get("display_name_ko", "")), marker]
 
 
 func _load_session_config() -> Dictionary:
@@ -243,6 +319,7 @@ func _on_hammer_pressed() -> void:
 	tween.tween_property(hammer_button, "scale", Vector2(0.97, 0.97), 0.04)
 	tween.tween_property(hammer_button, "scale", Vector2.ONE, 0.07)
 	_refresh(session.snapshot())
+	_refresh_equipment_controls()
 
 
 func _on_precision_toggled(enabled: bool) -> void:
@@ -270,6 +347,7 @@ func _refresh(snapshot: Dictionary) -> void:
 	progress_value_label.text = "%d%%" % int(round(float(snapshot["progress_ratio"]) * 100.0))
 	fever_bar.value = float(snapshot["fever_ratio"]) * 100.0
 	precision_gauge.set_pointer(float(snapshot["precision_position"]))
+	_refresh_equipment_controls()
 
 	if bool(snapshot["fever_active"]):
 		fever_label.text = "피버 %.1f초 · ×%.1f" % [float(snapshot["fever_time_left"]), float(snapshot["work_multiplier"])]

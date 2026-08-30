@@ -5,6 +5,7 @@ extends RefCounted
 const ItemScript = preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const LedgerEntryScript = preload("res://scripts/vertical_slice/domain/vs_ledger_entry.gd")
 const UidServiceScript = preload("res://scripts/vertical_slice/services/vs_uid_service.gd")
+const EquipmentCatalogScript = preload("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
 
 const SOURCE_CANON_ID := "BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825"
 
@@ -22,6 +23,7 @@ func commit_first_forge(envelope, forging_result: Dictionary) -> Dictionary:
 		return _blocked("FIRST_ITEM_ALREADY_CREATED")
 	if not _is_valid_forging_result(forging_result):
 		return _blocked("INVALID_FORGE_RESULT")
+	var equipment: Dictionary = _equipment_from_forging_result(forging_result)
 
 	var item_uid := str(_uid_service.create_uid(envelope.items_by_uid))
 	if item_uid.is_empty():
@@ -30,13 +32,13 @@ func commit_first_forge(envelope, forging_result: Dictionary) -> Dictionary:
 	var item = ItemScript.new()
 	item.uid = item_uid
 	item.birth_rng_seed = _create_birth_rng_seed()
-	item.primary_material_id = "iron"
-	item.equipment_group = "SWORD"
-	item.role_profile = "PHYSICAL_WEAPON_ATTACK"
+	item.primary_material_id = str(equipment.get("primary_material_id", ""))
+	item.equipment_group = str(equipment.get("equipment_group", ""))
+	item.role_profile = str(equipment.get("role_profile", ""))
 	item.crafting_grade = str(forging_result.get("crafting_grade", ""))
 	item.artistry = int(forging_result.get("artistry", -1))
 	item.raw_role_stat = int(forging_result.get("base_attack", 0))
-	item.weight_point = 15
+	item.weight_point = int(equipment.get("weight_point", 0))
 	item.function_capacity = 0
 	item.functions.clear()
 	item.grade_affix = ""
@@ -52,7 +54,7 @@ func commit_first_forge(envelope, forging_result: Dictionary) -> Dictionary:
 		"BORN:%s" % item_uid,
 		int(envelope.active_run.get("current_day", 1)),
 		{
-			"weapon_id": str(forging_result.get("weapon_id", "")),
+			"equipment_id": str(equipment.get("equipment_id", "")),
 			"crafting_grade": item.crafting_grade,
 			"tap_count": int(forging_result.get("tap_count", 0)),
 			"fever_activation_count": int(forging_result.get("fever_activation_count", 0)),
@@ -72,11 +74,16 @@ func commit_first_forge(envelope, forging_result: Dictionary) -> Dictionary:
 
 
 func _is_valid_forging_result(forging_result: Dictionary) -> bool:
-	if str(forging_result.get("weapon_id", "")) != "iron_sword":
+	if _equipment_from_forging_result(forging_result).is_empty():
 		return false
 	if not ItemScript.CRAFTING_GRADES.has(str(forging_result.get("crafting_grade", ""))):
 		return false
 	return int(forging_result.get("base_attack", 0)) > 0 and int(forging_result.get("artistry", -1)) >= 0
+
+
+func _equipment_from_forging_result(forging_result: Dictionary) -> Dictionary:
+	var equipment_id := str(forging_result.get("equipment_id", forging_result.get("weapon_id", "")))
+	return EquipmentCatalogScript.by_id(equipment_id)
 
 
 func _create_birth_rng_seed() -> int:

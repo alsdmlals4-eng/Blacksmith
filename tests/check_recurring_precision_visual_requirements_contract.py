@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Protect the consumer-first art requirements for recurring Precision delivery."""
+"""Protect consumer-first art and native-only recurring Precision UX."""
 
 from __future__ import annotations
 
@@ -21,13 +21,6 @@ EXPECTED = {
         "target_aspect_resolution": "9:16 / 941x1672 PNG",
         "fallback_if_unconsumed": "KEEP_ASSET-WORKSHOP-BACKGROUND-V2 / DEFER",
     },
-    "VIS-REC-20260830-02": {
-        "consumer_surface": "WORKSHOP_RECURRING_PRECISION",
-        "runtime_asset_role": "STATE_BACKGROUND_ILLUSTRATION",
-        "implementation_owner_or_path": "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#recurring_precision_state",
-        "target_aspect_resolution": "9:16 / 941x1672 PNG",
-        "fallback_if_unconsumed": "KEEP_ASSET-WORKSHOP-BACKGROUND-V2 / DEFER",
-    },
     "VIS-REC-20260830-03": {
         "consumer_surface": "CUSTOMER_WORLD_RESULT",
         "runtime_asset_role": "EVENT_ILLUSTRATION",
@@ -39,7 +32,6 @@ EXPECTED = {
 
 APPROVED_ASSETS = {
     "VIS-REC-20260830-01": ("ASSET-MAIN-MENU-DAWN-BACKGROUND-V1", "assets/ui/workshop/main_menu_dawn_background_v1.png", "5870f6958135516b9d5f42f81e0d11e0724a5cbf27af9e3382f1de155a7f713a", "MenuIllustratedBackground"),
-    "VIS-REC-20260830-02": ("ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1", "assets/ui/workshop/precision_tag_workshop_background_v1.png", "45679f660ad9fc24796e0080aded8474be6b0c462ae7bb2d58a91b6c0530ef32", "PrecisionIllustratedBackground"),
     "VIS-REC-20260830-03": ("ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1", "assets/ui/workshop/customer_result_return_illustration_v1.png", "716ce4dd4c6c4bdf48255c4b10aef906573d1113b331d20304e4f75f6e74eca1", "CustomerResultEventIllustration"),
 }
 
@@ -57,6 +49,15 @@ def main() -> None:
 
     requirements = {entry["consumer_id"]: entry for entry in payload["visual_requirements"]}
     assert set(requirements) == set(EXPECTED)
+    retired = payload["retired_requirements"]
+    assert len(retired) == 1
+    precision_retirement = retired[0]
+    assert precision_retirement["consumer_id"] == "VIS-REC-20260830-02"
+    assert precision_retirement["asset_id"] == "ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1"
+    assert precision_retirement["retirement_status"] == "RETIRED_BY_USER_DIRECTION"
+    assert precision_retirement["replacement_consumer"] == "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#native_precision_controls"
+    retired_binary = ROOT / precision_retirement["former_repository_asset_path"]
+    assert not retired_binary.exists(), "retired Precision raster must not remain in the repository"
     for consumer_id, expected in EXPECTED.items():
         entry = requirements[consumer_id]
         for key, value in expected.items():
@@ -90,12 +91,12 @@ def main() -> None:
     coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
     delivery = coverage["candidate_visual_delivery"]
     assert delivery["requirements_owner"] == "docs/planning/BLACKSMITH_RECURRING_PRECISION_VISUAL_REQUIREMENTS_20260830.json"
-    assert delivery["status"] == "THREE_USER_APPROVED_RUNTIME_ASSETS_CANON_REGISTERED"
+    assert delivery["status"] == "TWO_USER_APPROVED_RUNTIME_ASSETS_PLUS_NATIVE_PRECISION_UX"
     assert delivery["runtime_promotion"] == "IMPLEMENTED_MACHINE_VERIFIED"
     assert delivery["flow_map"] == "TEXT_NATIVE_MERMAID_AND_TABLE_ONLY"
     recurring = next(entry for entry in coverage["screen_inventory"] if entry["screen_id"] == "RECURRING_PRECISION_TAG_CHOICE")
-    assert recurring["coverage_status"] == "COVERED_APPROVED_RUNTIME_ASSET_MACHINE_VERIFIED"
-    assert recurring["consumer_surface"] == EXPECTED["VIS-REC-20260830-02"]["implementation_owner_or_path"]
+    assert recurring["coverage_status"] == "COVERED_NATIVE_UI_ONLY_MACHINE_VERIFIED"
+    assert recurring["consumer_surface"] == "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#native_precision_controls"
 
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     records = {entry["asset_id"]: entry for entry in manifest["asset_records"]}
@@ -106,6 +107,7 @@ def main() -> None:
         assert record["sha256"].lower() == expected_hash
         assert runtime_slot in record["runtime_slot"]
         assert record["approval_reference"] == "User 2026-08-30: 승인"
+    assert "ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1" not in records
 
     print("recurring precision visual requirements contract: PASS")
 

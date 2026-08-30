@@ -9,7 +9,6 @@ const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_
 const EnhancementActionServiceScript := preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 const WorkpieceDurabilityStateAtlasTexture := preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
-const APPROVED_PRECISION_BACKGROUND_PATH := "res://assets/ui/workshop/precision_tag_workshop_background_v1.png"
 
 
 class TrackingMaintenanceService extends RefCounted:
@@ -117,37 +116,17 @@ func test_workshop_uses_the_illustrated_background_as_a_noninteractive_runtime_l
 	assert_eq(background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
 
 
-func test_workshop_shows_the_approved_precision_illustration_only_for_an_active_precision_target() -> void:
-	assert_true(ResourceLoader.exists(APPROVED_PRECISION_BACKGROUND_PATH), "approved Precision illustration must be tracked before the recurring state can consume it")
-	if not ResourceLoader.exists(APPROVED_PRECISION_BACKGROUND_PATH):
-		return
-	var ordinary = SCREEN_SCENE.instantiate()
-	add_child_autofree(ordinary)
-	ordinary.configure_context(_item(), ResourcesScript.new(100, {"common_reinforcement_material": 1}))
-	var ordinary_precision := ordinary.get_node_or_null("PrecisionIllustratedBackground") as TextureRect
-	assert_not_null(ordinary_precision, "dynamic Precision illustration layer must exist without a serialized scene node")
-	if ordinary_precision == null:
-		return
-	assert_false(ordinary_precision.visible, "ordinary workshop state must retain its existing fallback background")
-	var precision_envelope = _precision_envelope(9)
-	var precision = SCREEN_SCENE.instantiate()
-	add_child_autofree(precision)
-	precision.configure_context(precision_envelope.get_item(str(precision_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), precision_envelope)
-	var precision_background := precision.get_node_or_null("PrecisionIllustratedBackground") as TextureRect
-	assert_not_null(precision_background)
-	if precision_background == null:
-		return
-	assert_true(precision_background.visible, "an exact recurring Precision target must expose the approved neutral selection illustration")
-	assert_eq(precision_background.texture.resource_path, APPROVED_PRECISION_BACKGROUND_PATH)
-	assert_eq(precision_background.mouse_filter, Control.MOUSE_FILTER_IGNORE)
-	assert_eq(precision_background.z_index, -1)
-	assert_eq(precision_background.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
-	assert_eq(precision_background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
-	var precision_twenty_envelope = _precision_envelope(19, [{"tag_id": "TAG_EMBER_EDGE", "stage": 1, "created_milestone": 10, "last_advanced_milestone": 10}], [10])
-	var precision_twenty = SCREEN_SCENE.instantiate()
-	add_child_autofree(precision_twenty)
-	precision_twenty.configure_context(precision_twenty_envelope.get_item(str(precision_twenty_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), precision_twenty_envelope)
-	assert_true((precision_twenty.get_node("PrecisionIllustratedBackground") as TextureRect).visible, "each newly opened exact recurring target, including +19→+20, may show the neutral selection illustration")
+func test_workshop_keeps_precision_as_native_controls_without_a_dedicated_illustrated_background() -> void:
+	var envelope = _precision_envelope(9)
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(envelope.get_item(str(envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
+	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
+	var add_button := screen.get_node_or_null("WorkshopLayout/PrecisionActionAddButton") as Button
+	assert_not_null(add_button)
+	if add_button != null:
+		assert_true(add_button.visible)
+		assert_gte(add_button.custom_minimum_size.y, 48.0)
 
 
 func test_workshop_displays_the_matching_workpiece_image_for_each_durability_state() -> void:
@@ -184,6 +163,16 @@ func test_workshop_scene_keeps_the_first_item_hierarchy_and_large_repair_action(
 	assert_false(screen.get_node("WorkshopBackground").visible)
 	assert_eq(screen.get_node("WorkshopLayout/DurabilityTitleLabel").text, "작품 상태")
 	assert_gte(screen.get_node("WorkshopLayout/RepairButton").custom_minimum_size.y, 64.0)
+
+
+func test_workshop_title_uses_the_selected_equipment_catalog_identity() -> void:
+	var selected_item = _item(5, 5)
+	selected_item.equipment_group = "HELMET"
+	selected_item.role_profile = "ARMOR_HEAD_DEFENSE"
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(selected_item, ResourcesScript.new(100, {"common_reinforcement_material": 1}))
+	assert_eq(screen.get_node("WorkshopLayout/WorkshopTitle").text, "첫 작품 · 철투구")
 
 
 func test_workshop_uses_a_readability_veil_over_the_illustrated_background() -> void:
@@ -548,7 +537,7 @@ func test_saved_precision_hold_clears_attempt_selection_without_adopting_a_stage
 	screen.set_precision_selection({"action": "UPGRADE_TAG", "tag_id": "TAG_EMBER_EDGE"})
 	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 99.0, "damage_roll_percent": 99.0})
 	assert_eq(result.get("outcome", ""), "FAILED_HOLD")
-	assert_false((screen.get_node("PrecisionIllustratedBackground") as TextureRect).visible, "saved hold result must not re-open the Precision illustration")
+	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"), "native Precision UI must not create a dedicated illustration after a saved hold")
 	assert_eq(save_service.saved_envelope.get_item(item.uid).catalyst_tag_entries()[0].get("stage", 0), 1)
 	assert_eq(screen.view_state().get("precision_action", ""), "")
 	assert_eq(screen.view_state().get("precision_tag_entries", [])[0].get("stage_roman", ""), "I")
@@ -572,7 +561,7 @@ func test_saved_precision_success_rebinds_tag_collection_and_save_failure_retain
 		return
 	success_screen.set_precision_selection({"action": "UPGRADE_TAG", "tag_id": "TAG_EMBER_EDGE"})
 	assert_eq(success_screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0}).get("outcome", ""), "SUCCESS")
-	assert_false((success_screen.get_node("PrecisionIllustratedBackground") as TextureRect).visible, "saved success result must hide the Precision illustration")
+	assert_null(success_screen.get_node_or_null("PrecisionIllustratedBackground"), "native Precision UI must not create a dedicated illustration after a saved success")
 	assert_eq(success_screen.view_state().get("precision_tag_entries", [])[0].get("stage_roman", ""), "II")
 	assert_eq(success_save.saved_envelope.get_item(success_item.uid).catalyst_tag_entries()[0].get("stage", 0), 2)
 
@@ -628,7 +617,7 @@ func test_pending_backfill_is_distinct_zero_cost_add_path_without_placeholder_te
 	assert_false(str(screen.get_node("WorkshopLayout/PrecisionPreviewLabel").text).contains("PRECISION_KEYWORD_PENDING_CONTENT"))
 
 
-func test_precision_art_closes_after_actual_failed_damage_and_keeps_the_workshop_fallback() -> void:
+func test_precision_failed_damage_keeps_the_workshop_fallback_without_a_dedicated_art_layer() -> void:
 	var envelope = _precision_envelope(19, [{
 		"tag_id": "TAG_EMBER_EDGE",
 		"stage": 1,
@@ -639,37 +628,32 @@ func test_precision_art_closes_after_actual_failed_damage_and_keeps_the_workshop
 	add_child_autofree(screen)
 	var save_service := FakeSaveService.new()
 	screen.configure_context(envelope.get_item(str(envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), save_service, envelope)
-	var art := screen.get_node_or_null("PrecisionIllustratedBackground") as TextureRect
 	var fallback := screen.get_node_or_null("WorkshopIllustratedBackground") as TextureRect
-	assert_not_null(art)
 	assert_not_null(fallback)
-	if art == null or fallback == null:
+	if fallback == null:
 		return
-	assert_true(art.visible)
+	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
 	screen.set_precision_selection({"action": "UPGRADE_TAG", "tag_id": "TAG_EMBER_EDGE"})
 	var result: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 99.0, "damage_roll_percent": 0.0})
 	assert_eq(result.get("outcome", ""), "FAILED_DAMAGE", "the exact saved failure result must exercise the post-result visual boundary")
-	assert_not_null(save_service.saved_envelope, "FAILED_DAMAGE must be persisted before it closes the Precision illustration")
-	assert_false(art.visible, "saved FAILED_DAMAGE must close the Precision illustration")
+	assert_not_null(save_service.saved_envelope, "FAILED_DAMAGE must be persisted while native Precision controls remain factual")
+	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
 	assert_true(fallback.visible, "the ordinary Workshop illustration remains the fallback behind native result controls")
 
 
-func test_precision_art_reopens_only_after_a_saved_result_then_explicit_fresh_context_open() -> void:
+func test_fresh_precision_context_exposes_native_selection_without_a_dedicated_art_layer() -> void:
 	var first_envelope = _precision_envelope(9)
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	var first_save := FakeSaveService.new()
 	screen.configure_context(first_envelope.get_item(str(first_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), first_save, first_envelope)
-	var art := screen.get_node_or_null("PrecisionIllustratedBackground") as TextureRect
-	assert_not_null(art)
-	if art == null:
-		return
-	assert_true(art.visible, "new +9→+10 context opens the neutral Precision illustration")
+	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
+	assert_true((screen.get_node("WorkshopLayout/PrecisionActionAddButton") as Button).visible, "new +9→+10 context exposes native tag selection")
 	screen.set_precision_selection({"action": "ADD_TAG", "lineage_id": "EMBER_LINEAGE", "method_id": "EDGE_REINFORCEMENT"})
 	var resolved: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0})
 	assert_eq(resolved.get("outcome", ""), "SUCCESS")
-	assert_not_null(first_save.saved_envelope, "the successful +9→+10 result must be persisted before a new context can re-open the illustration")
-	assert_false(art.visible, "the same screen must close art after the saved result before a later context is opened")
+	assert_not_null(first_save.saved_envelope, "the successful +9→+10 result must be persisted before a later context is opened")
+	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
 	var reopened_envelope = _precision_envelope(19, [{
 		"tag_id": "TAG_EMBER_EDGE",
 		"stage": 1,
@@ -677,4 +661,5 @@ func test_precision_art_reopens_only_after_a_saved_result_then_explicit_fresh_co
 		"last_advanced_milestone": 10,
 	}], [10])
 	screen.configure_context(reopened_envelope.get_item(str(reopened_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 10}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), reopened_envelope)
-	assert_true(art.visible, "explicitly opening a fresh +19→+20 Precision ATTEMPT may re-open the illustration")
+	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
+	assert_true((screen.get_node("WorkshopLayout/PrecisionActionUpgradeButton") as Button).visible, "a fresh +19→+20 context exposes native tag-upgrade selection")

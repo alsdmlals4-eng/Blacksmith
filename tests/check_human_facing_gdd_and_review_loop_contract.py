@@ -238,6 +238,12 @@ def main() -> int:
             reader = PdfReader(str(PDF))
             if receipt.get("artifact", {}).get("page_count") != len(reader.pages):
                 failures.append("PDF receipt page count does not match the readable PDF")
+            expected_images = [
+                "assets/ui/workshop/main_menu_dawn_background_v1.png",
+                "assets/ui/workshop/customer_result_return_illustration_v1.png",
+            ]
+            if receipt.get("publish_recipe", {}).get("images") != expected_images:
+                failures.append("PDF receipt must contain only the two approved current runtime illustrations")
             if reader.metadata.title != "Blacksmith 사람용 게임 기획서":
                 failures.append("PDF title does not identify the Blacksmith human-facing GDD")
             if reader.metadata.subject != "Human-facing Korean GDD":
