@@ -25,6 +25,9 @@ SOURCE = ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md"
 OUTPUT = ROOT / "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf"
 RECEIPT = ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828_PDF_RECEIPT.json"
 FONT = Path(r"C:\Windows\Fonts\malgun.ttf")
+PRODUCT_TITLE_KO = "모루의 서약"
+PRODUCT_TITLE_LATIN = "ANVIL OATH"
+PRODUCT_DOCUMENT_TITLE = f"{PRODUCT_TITLE_KO} · 사람용 게임 기획서"
 SCENE_ASSETS = [
     ("메인 메뉴", ROOT / "assets/ui/workshop/main_menu_dawn_background_v1.png"),
     ("고객 결과", ROOT / "assets/ui/workshop/customer_result_return_illustration_v1.png"),
@@ -90,7 +93,7 @@ class NumberedCanvas(canvas.Canvas):
         self.rect(14 * mm, 7 * mm, A4[0] - 28 * mm, 11 * mm, fill=1, stroke=0)
         self.setFont("Malgun", 8)
         self.setFillColor(colors.HexColor("#725A45"))
-        self.drawString(18 * mm, 11 * mm, "Blacksmith · 사람용 게임 기획서")
+        self.drawString(18 * mm, 11 * mm, PRODUCT_DOCUMENT_TITLE)
         self.drawRightString(A4[0] - 18 * mm, 11 * mm, f"{page_number} / {page_count} · 2026-08-31")
         self.restoreState()
 
@@ -188,7 +191,7 @@ def story(markdown: str):
 
 def build_pdf() -> str:
     """Build once with invariant ReportLab metadata and return the exact artifact SHA-256."""
-    doc = SimpleDocTemplate(str(OUTPUT), pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=18 * mm, bottomMargin=FOOTER_RESERVE, title="Blacksmith 사람용 게임 기획서", author="Blacksmith Project", subject="Human-facing Korean GDD", creator="Blacksmith deterministic ReportLab publisher")
+    doc = SimpleDocTemplate(str(OUTPUT), pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=18 * mm, bottomMargin=FOOTER_RESERVE, title=PRODUCT_DOCUMENT_TITLE, author="Blacksmith Project", subject="Human-facing Korean GDD", creator="Blacksmith deterministic ReportLab publisher")
     doc.build(story(SOURCE.read_text(encoding="utf-8")), canvasmaker=NumberedCanvas)
     return hashlib.sha256(OUTPUT.read_bytes()).hexdigest()
 
@@ -208,6 +211,7 @@ def main() -> None:
         "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
         "source_markdown": {"path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md", "sha256": normalized_sha256(SOURCE), "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"},
         "artifact": {"path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf", "sha256": second_sha256, "page_count": len(reader.pages), "pdf_title": reader.metadata.title, "pdf_subject": reader.metadata.subject, "target_format": "A4"},
+        "product_identity": {"decision_id": "BS-IDENTITY-20260831-39", "korean_title": PRODUCT_TITLE_KO, "latin_lockup": PRODUCT_TITLE_LATIN, "legal_clearance": "NOT_RUN"},
         "publish_recipe": {"publisher": "tools/publish_human_facing_gdd_pdf.py", "engine": "ReportLab", "font": "C:/Windows/Fonts/malgun.ttf", "invariant": True, "images": [str(path.relative_to(ROOT)).replace("\\", "/") for _, path in [*SCENE_ASSETS, *EQUIPMENT_ASSETS]]},
         "deterministic_publish_proof": {"invariant": True, "identical_sha256_runs": [first_sha256, second_sha256], "run_count": 2, "basis": "two consecutive invariant ReportLab publishes with unchanged source"},
         "render_validation": {"required_tool": "Poppler pdftoppm", "rendered_pages": list(range(1, len(reader.pages) + 1)), "inspection": "ALL_PAGES_RENDERED_AND_REVIEWED_BEFORE_RECEIPT_FINALIZATION", "result": "KOREAN_TEXT_TABLES_FLOW_AND_SCENE_CONTEXT_INSPECTED"},
