@@ -3,7 +3,7 @@
 - 상태: `USER_APPROVED_CURRENT`
 - 사용자 확정: `2026-08-31 KST`
 - 현재 제품명: Korean primary `모루의 서약` / Latin title lockup `ANVIL OATH`
-- 적용 상태: `SPECIFIED / IMPLEMENTATION_PENDING`
+- 적용 상태: `IMPLEMENTED / MACHINE_VERIFIED / LIMITED_RUNTIME_VERIFIED`
 - 법률·상표 상태: `NOT_RUN / NO_CLEARANCE_CLAIM`
 
 ## 결정과 역할
@@ -19,6 +19,9 @@ PRODUCT_TITLE_LATIN = ANVIL OATH
 PRODUCT_TITLE_DISPLAY_ORDER = KOREAN_PRIMARY_WITH_LATIN_LOCKUP
 CURRENT_TITLE_STATUS = USER_APPROVED_CURRENT
 PUBLIC_BRAND_LEGAL_CLEARANCE = NOT_RUN
+TITLE_TEXT_RUNTIME_STATUS = IMPLEMENTED_MACHINE_AND_RUNTIME_VERIFIED
+LOGO_CANDIDATE_STATUS = GENERATED_CANDIDATE_PENDING_USER_LOCK
+CANDIDATE_RUNTIME_PROMOTION = BLOCKED_PENDING_USER_LOCK
 ```
 
 `대장간`은 장소·직업·행동을 뜻하는 일반 게임 언어로 남는다. 따라서
@@ -90,11 +93,11 @@ implementation_owner_or_path = scenes/vertical_slice/main_menu.tscn:MenuTitleLab
 target_aspect_resolution = LANDSCAPE_TRANSPARENT_1600x640
 state_family_requirement = DEFAULT_ONLY
 fallback_if_unconsumed = DO_NOT_PROMOTE_OR_SHIP
-generation_status = BRIEF_READY
+generation_status = GENERATED_CANDIDATE
 final_direction_lock = REQUIRED_AFTER_CANDIDATE_REVIEW
 ```
 
-후보는 아래 세 방향만 만든다. 사용자가 하나를 잠그기 전에는 현재의 텍스트
+아래 세 방향 후보를 생성했다. 사용자가 하나를 잠그기 전에는 현재의 텍스트
 `MenuTitleLabel`이 유일한 runtime 표기다.
 
 | 후보 | 방향 | 유지할 것 | 금지할 것 |
@@ -122,10 +125,10 @@ ANDROID_ACCESSIBILITY_HUMAN_PLAY = NOT_RUN_UNLESS_OBSERVED
 | 층위 | 상태 | 증거 |
 | --- | --- | --- |
 | 제목 방향 | `USER_APPROVED` | 2026-08-31 사용자 확정 |
-| 정본 적용 | `SPECIFIED` | 이 Decision |
-| 메뉴 구현 | `PENDING` | RED/GREEN 계약 및 scene 변경 전 |
-| 로고 후보 | `BRIEF_READY` | 위 Visual Requirement |
+| 정본 적용 | `SPECIFIED / MACHINE_VERIFIED` | 제목 계약, GDD/PDF readback |
+| 메뉴 구현 | `IMPLEMENTED / MACHINE_VERIFIED` | 실제 Godot Editor + HiGodot로 `MenuTitleLabel` 저장 |
+| 메뉴 런타임 | `LIMITED_RUNTIME_VERIFIED` | 720×1280 실행에서 제목·기존 한국어 행동·동적 배경 slot 확인; 사람 UX는 별도 |
+| 로고 후보 | `GENERATED_CANDIDATE` | `AO-LOGO-01`/`02`/`03` 생성 완료, 저장소·runtime 미승격 |
 | 로고 최종 방향 | `PENDING_USER_LOCK` | 후보 생성·검토 뒤에만 가능 |
-| 런타임/Android/접근성/사람 UX | `NOT_RUN` | 실제 관찰 전에는 PASS 불가 |
+| Android/접근성/사람 UX | `NOT_RUN` | 실제 기기·사람 관찰 전에는 PASS 불가 |
 | 법률·상표·출시 | `NOT_RUN` | 별도 정식 검토 필요 |
-

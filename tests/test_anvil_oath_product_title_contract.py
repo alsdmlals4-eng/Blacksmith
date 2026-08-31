@@ -28,6 +28,9 @@ class AnvilOathProductTitleContractTests(unittest.TestCase):
 
         self.assertIn("PRODUCT_TITLE_KO = 모루의 서약", decision_text)
         self.assertIn("PRODUCT_TITLE_LATIN = ANVIL OATH", decision_text)
+        self.assertIn("TITLE_TEXT_RUNTIME_STATUS = IMPLEMENTED_MACHINE_AND_RUNTIME_VERIFIED", decision_text)
+        self.assertIn("LOGO_CANDIDATE_STATUS = GENERATED_CANDIDATE_PENDING_USER_LOCK", decision_text)
+        self.assertIn("CANDIDATE_RUNTIME_PROMOTION = BLOCKED_PENDING_USER_LOCK", decision_text)
         self.assertIn('text = "모루의 서약"', scene_text)
         self.assertIn('text = "새 대장간 시작"', scene_text)
         self.assertTrue(human_gdd.startswith("# 모루의 서약 — 사람용 게임 기획서"))
