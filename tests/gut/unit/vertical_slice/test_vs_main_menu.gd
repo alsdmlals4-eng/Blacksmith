@@ -81,7 +81,7 @@ func test_main_menu_binds_the_approved_dawn_background_without_serializing_it_in
 func test_main_menu_keeps_native_korean_touch_actions_over_the_approved_background() -> void:
 	var menu = MAIN_MENU_SCENE.instantiate()
 	add_child_autofree(menu)
-	assert_eq(menu.get_node("MenuLayout/MenuTitleLabel").text, "대장간")
+	assert_eq(menu.get_node("MenuLayout/MenuTitleLabel").text, "모루의 서약")
 	assert_eq(menu.get_node("MenuLayout/ContinueButton").text, "이어하기")
 	assert_eq(menu.get_node("MenuLayout/NewGameButton").text, "새 대장간 시작")
 	assert_eq(menu.get_node("MenuLayout/SettingsButton").text, "설정")

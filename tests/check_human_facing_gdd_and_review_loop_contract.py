@@ -12,6 +12,7 @@ from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
 HUMAN_GDD = ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md"
+TITLE_DECISION = ROOT / "docs/decisions/BS-IDENTITY-20260831-39_ANVIL_OATH_PRODUCT_TITLE.md"
 AI_SPEC = ROOT / "docs/design/PROJECT_AI_PRODUCTION_SPEC.md"
 ROUTING = ROOT / "docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md"
 REVIEW_LOOP = ROOT / "docs/decisions/BS-OPS-20260828-36_EVIDENCE_RESEARCH_AND_ADVERSARIAL_REVIEW_LOOP.md"
@@ -44,6 +45,7 @@ def normalized_lf_sha256(path: Path) -> str:
 def main() -> int:
     failures: list[str] = []
     human_gdd = read(HUMAN_GDD, failures)
+    title_decision = read(TITLE_DECISION, failures)
     ai_spec = read(AI_SPEC, failures)
     publisher = read(PUBLISHER, failures)
     routing = read(ROUTING, failures)
@@ -51,6 +53,8 @@ def main() -> int:
     agents = read(AGENTS, failures)
 
     for token in (
+        "# 모루의 서약 — 사람용 게임 기획서",
+        "모루의 서약 / ANVIL OATH",
         "사람용 게임 기획서",
         "한눈에 보는 게임",
         "장르",
@@ -102,6 +106,14 @@ def main() -> int:
         "all ten Precision gates",
     ):
         require(human_gdd, token, failures, "human-facing GDD")
+
+    for token in (
+        "PRODUCT_TITLE_KO = 모루의 서약",
+        "PRODUCT_TITLE_LATIN = ANVIL OATH",
+        "KEEP_GENERIC_WORKSHOP_COPY = TRUE",
+        "PUBLIC_BRAND_LEGAL_CLEARANCE = NOT_RUN",
+    ):
+        require(title_decision, token, failures, "Anvil Oath title decision")
 
     for token in (
         "HUMAN_FACING_GDD = docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
@@ -263,15 +275,26 @@ def main() -> int:
             ]
             if receipt.get("publish_recipe", {}).get("images") != expected_images:
                 failures.append("PDF receipt must contain the two scene and five equipment runtime illustrations")
-            if reader.metadata.title != "Blacksmith 사람용 게임 기획서":
-                failures.append("PDF title does not identify the Blacksmith human-facing GDD")
+            if reader.metadata.title != "모루의 서약 · 사람용 게임 기획서":
+                failures.append("PDF title does not identify the Anvil Oath human-facing GDD")
             if reader.metadata.subject != "Human-facing Korean GDD":
                 failures.append("PDF subject does not identify the human-facing Korean GDD")
+            product_identity = receipt.get("product_identity", {})
+            if product_identity.get("decision_id") != "BS-IDENTITY-20260831-39":
+                failures.append("PDF receipt product identity must cite the Anvil Oath decision")
+            if product_identity.get("korean_title") != "모루의 서약":
+                failures.append("PDF receipt Korean product title must be 모루의 서약")
+            if product_identity.get("latin_lockup") != "ANVIL OATH":
+                failures.append("PDF receipt Latin title lockup must be ANVIL OATH")
+            if product_identity.get("legal_clearance") != "NOT_RUN":
+                failures.append("PDF receipt must preserve unverified legal-clearance state")
             if len(reader.pages) < 9:
                 failures.append("PDF has fewer than the inspected 9 human-facing GDD pages")
             pdf_text = "\n".join(page.extract_text() or "" for page in reader.pages)
             normalized_pdf_text = " ".join(pdf_text.split())
             for token in (
+                "모루의 서약",
+                "ANVIL OATH",
                 "열 번의 정밀 강화",
                 "+99 → +100",
                 "태그 추가 또는 태그 강화",
