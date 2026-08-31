@@ -1,8 +1,8 @@
 # Blacksmith 사람용 게임 기획서
 
-- 문서 상태: `CURRENT_HUMAN_FACING_GDD / KOREAN_PRIMARY / 2026-08-29 KST`
-- 문서 기준일: 2026-08-30 KST
-- 기준 커밋: `main / ab7ca9ba1bf6599bb96a16eb44688475a64a25bf` (PR #328 구현 및 PR #329 closure readback 뒤)
+- 문서 상태: `CURRENT_HUMAN_FACING_GDD / KOREAN_PRIMARY / 2026-08-31 KST`
+- 문서 기준일: 2026-08-31 KST
+- 기준 커밋: `main / 5744865a1b9805c89da230aea0b067f382def85c` (반복 정밀강화·다섯 장비 이미지 구현 뒤, 이번 파생 GDD 정합성 복구 전)
 - 독자: 프로젝트 오너, 기획·아트·UI·사운드 협업자, 플레이테스터; 공방의 한 판이 어떤 선택과 결과를 만드는지 알고 싶은 플레이어와 협업자.
 - 읽는 경계: `사람용 본문 = 플레이 경험의 이해와 의사결정`, `개발 참고 = 구현·데이터·테스트 추적`. 이 문서는 내부 구현 이름이나 검사 절차를 사람용 본문에서 직접 설명하지 않는다.
 
@@ -180,6 +180,7 @@ flowchart TD
 - 수리 경제 테스트 예산: `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`
 - 고객 실제 사용·세계 사건: `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
 - 이미지 실제 consumer gate: `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
+- 반복 정밀강화·태그 성장: `docs/decisions/BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md`
 
 ### 현재 구현과의 정직한 연결
 
@@ -189,11 +190,11 @@ flowchart TD
 - 고객 실제 사용: `scripts/vertical_slice/resolvers/vs_customer_world_event_resolver.gd`, `scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd`
 - 검증: `tests/check_*contract.py`, `tests/gut/unit/vertical_slice/**`
 
-PR #328은 Decision37의 불씨/모루×날 세우기/경량 담금 표를 vertical-slice에 구현했다. Workshop은 두 선택·결과 태그·방식 수치 변화를 네이티브 한국어 Control로 제시하고, 빈/잘못된 선택을 비용·재료·굴림 전에 차단한다. 성공 시 기존 `CATALYST_AFFIX`에 단일 태그와 방식 효과를 한 번만 쓰며, hold는 아무 것도 쓰지 않는다. `PRECISION_KEYWORD_PENDING_CONTENT`는 플레이어 표기가 아닌 V3 이관 origin에 한정된 1회 무상·무굴림 정정 대상이다. PR #328 exact-head의 Godot 4.7.1 headless GUT은 29 scripts / 180 tests / 1033 assertions를 통과했고 editor headless load는 exit 0이었다. 실제 client 화면·Android·사람 플레이를 검증한 결과는 아니다. 이 GDD는 그 차이를 숨기지 않는다.
+PR #328은 현재 대체된 Decision37의 첫 2×2 선택을 vertical-slice에 구현한 역사 증거다. 현재 field owner인 `BS-ENHANCE-20260830-38`은 이를 무기 3종의 **all ten Precision gates**로 확장한다. 기존 `CATALYST_AFFIX` 안의 **V4 versioned Tag collection**은 최대 세 태그와 I~IV 성장을 보존하며, 첫 관문은 추가만, 그 뒤 관문은 추가 또는 강화만 허용한다. Workshop은 선택·미리보기·결과를 네이티브 한국어 Control로 제시하고, 빈/잘못된 선택을 비용·재료·굴림 전에 차단한다. 성공 시 한 번의 `+1`과 태그 행동 하나만 남고, hold·damage·blocked는 태그를 바꾸지 않는다. `PRECISION_KEYWORD_PENDING_CONTENT`는 플레이어 표기가 아닌 V3 이관 origin에 한정된 1회 무상·무굴림 정정 대상이다. PR #328 exact-head의 Godot 4.7.1 headless GUT은 29 scripts / 180 tests / 1033 assertions를 통과한 역사 자동 증거이며, 현재 recurring slice의 실제 client 화면·Android·사람 플레이를 검증한 결과는 아니다. 이 GDD는 그 차이를 숨기지 않는다.
 
 ### 후속 순서
 
-1. PR #328 정밀 태그 선택의 live Workshop 경로를 Godot 클라이언트에서 확인하고, +9 선택·성공/hold·정정 상태가 자동 계약과 일치하는지 검수한다.
+1. 반복 정밀 태그의 live Workshop 경로를 Godot 클라이언트에서 확인하고, `+9→+10`부터 `+99→+100`까지의 선택·성공/hold·정정 상태가 자동 계약과 일치하는지 검수한다.
 2. 실제 consumer를 가진 +5 단위 피드백·고객 결과 화면의 구현을 같은 current-canon 범위에서 검수하되, 새 제품 범위는 Issue/Goal 선택 없이 열지 않는다.
 3. Godot 클라이언트와 Android 세로형에서 정보 위계·터치·글자 크기를 확인한다.
 4. 사람 플레이테스트는 사용자 지시로 이번 계약의 완료 조건에서 제외한다. 실제 수행 전까지 `NOT_RUN`이며, 나중에 강화가 충분히 즐겁고 고객 생애가 그 재미를 강화하는지 검증할 때만 다시 연다.

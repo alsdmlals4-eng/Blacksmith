@@ -1,16 +1,17 @@
 {
-  "schema_version": 1,
-  "receipt_id": "BS-GDD-20260829-HUMAN-PDF-02",
+  "schema_version": 2,
+  "receipt_id": "BS-GDD-20260830-RECURRING-PRECISION-HUMAN-PDF",
   "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
   "source_markdown": {
     "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
-    "sha256": "7006d4d442cc507600457262ce1644af0b1e7b0136a720de4910023b0a770e3e",
+    "sha256": "6b34697177d36f44ab4cfbe0e858702e5280371f969f989913491f9924b2ed58",
     "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
   },
   "artifact": {
     "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
-    "sha256": "3b322b3368be8c6bb5f8bded9d3cffeff61c0fe4c00b181a1c8e4f7fe99f1b1a",
-    "page_count": 11,
+    "sha256": "73ba2070b5ab738932dbf29abdb0052fbac836c8e2d53882fed1edd9f2b43aea",
+    "page_count": 9,
+    "pdf_title": "Blacksmith 사람용 게임 기획서",
     "pdf_subject": "Human-facing Korean GDD",
     "target_format": "A4"
   },
@@ -32,16 +33,27 @@
   "deterministic_publish_proof": {
     "invariant": true,
     "identical_sha256_runs": [
-      "4fb143d276689eaf31e9c800c272f0535f1312d6dd5ff2c5101f004038d45325",
-      "4fb143d276689eaf31e9c800c272f0535f1312d6dd5ff2c5101f004038d45325"
+      "73ba2070b5ab738932dbf29abdb0052fbac836c8e2d53882fed1edd9f2b43aea",
+      "73ba2070b5ab738932dbf29abdb0052fbac836c8e2d53882fed1edd9f2b43aea"
     ],
     "run_count": 2,
     "basis": "two consecutive invariant ReportLab publishes with unchanged source"
   },
   "render_validation": {
-    "tool": "pypdf + Poppler pdftoppm",
-    "inspected_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    "result": "KOREAN_TEXT_AND_TABLE_LAYOUT_READABLE"
+    "required_tool": "Poppler pdftoppm",
+    "rendered_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "inspection": "ALL_PAGES_RENDERED_AND_REVIEWED_BEFORE_RECEIPT_FINALIZATION",
+    "result": "KOREAN_TEXT_TABLES_FLOW_AND_SCENE_CONTEXT_INSPECTED"
   },
   "provenance": {
     "document_role": "human-facing project GDD PDF",

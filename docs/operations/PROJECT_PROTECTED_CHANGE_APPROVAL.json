@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "b7ce7ee09f177ff49ce282c02d829154ab648b73",
+  "decision_ids": [
+    "BS-ENHANCE-20260829-37",
+    "BS-OPS-20260828-36"
+  ],
+  "approved_paths": [
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "USER_APPROVED_GITHUB_ISSUE_341_AND_PR_340_APPROVED_PROTECTED_CHANGE_LABEL",
+  "approval_time": "2026-08-31T20:06:28+09:00",
+  "scope_summary": "Exact GitHub Issue #341 and PR #340 only: Android portrait Workshop mobile readability and touch-target sizing, including dynamically created precision Tag controls in the existing UI script. No player-save schema or migration, economy/probability rule, Scene, Resource, project setting, runtime image promotion, new persisted field, or additional protected path is approved. This one-shot manifest must be retired in a post-merge baseline closure."
+}
