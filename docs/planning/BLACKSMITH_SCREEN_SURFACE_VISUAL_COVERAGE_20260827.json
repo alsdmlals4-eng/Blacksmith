@@ -23,9 +23,9 @@
   "runtime_visual_validation": "NOT_RUN",
   "candidate_visual_delivery": {
     "requirements_owner": "docs/planning/BLACKSMITH_RECURRING_PRECISION_VISUAL_REQUIREMENTS_20260830.json",
-    "status": "TWO_USER_APPROVED_SCENE_ILLUSTRATIONS_FIVE_USER_LOCKED_EQUIPMENT_IDENTITIES_PLUS_NATIVE_PRECISION_UX",
+    "status": "TWO_USER_APPROVED_SCENE_ILLUSTRATIONS_FIVE_USER_LOCKED_EQUIPMENT_IDENTITIES_ONE_USER_LOCKED_MAIN_MENU_LOGO_PLUS_NATIVE_PRECISION_UX",
     "runtime_promotion": "IMPLEMENTED_MACHINE_VERIFIED",
-    "candidate_ids": ["VIS-REC-20260830-01", "VIS-REC-20260830-03", "VIS-EQUIP-20260830-01", "VIS-EQUIP-20260830-02", "VIS-EQUIP-20260830-03", "VIS-EQUIP-20260830-04", "VIS-EQUIP-20260830-05"],
+    "candidate_ids": ["VIS-REC-20260830-01", "VIS-REC-20260830-03", "VIS-EQUIP-20260830-01", "VIS-EQUIP-20260830-02", "VIS-EQUIP-20260830-03", "VIS-EQUIP-20260830-04", "VIS-EQUIP-20260830-05", "BS-IDENTITY-20260831-39/MAIN_MENU_PRODUCT_TITLE_LOCKUP/AO-LOGO-02"],
     "flow_map": "TEXT_NATIVE_MERMAID_AND_TABLE_ONLY"
   },
   "equipment_identity_runtime_delivery": {
@@ -35,11 +35,18 @@
     "asset_ids": ["ASSET-EQUIPMENT-IRON-SWORD-CARD-V1", "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1", "ASSET-EQUIPMENT-IRON-BOW-CARD-V1", "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1", "ASSET-EQUIPMENT-IRON-HELMET-CARD-V1"],
     "runtime_visual_validation": "GODOT_CLIENT_ANDROID_ACCESSIBILITY_HUMAN_REVIEW_NOT_RUN"
   },
+  "title_logo_runtime_delivery": {
+    "status": "IMPLEMENTED_MACHINE_VERIFIED",
+    "primary_use": "The user-locked AO-LOGO-02 title mark is shown above main-menu actions without replacing the localizable Korean text fallback or native touch controls.",
+    "consumer": "MAIN_MENU_PRODUCT_TITLE_LOCKUP",
+    "asset_id": "ASSET-ANVIL-OATH-LOGO-AO02-V1",
+    "runtime_visual_validation": "HERA_EXACT_WORKTREE_720x1280_UI_TREE_RENDERED_SCREENSHOT_AND_ERROR_LOG_VERIFIED_20260831; ANDROID_ACCESSIBILITY_HUMAN_REVIEW_NOT_RUN"
+  },
   "delivery_tracks": [
     {
       "track_id": "RUNTIME_GAME_ASSETS",
       "purpose": "Actual Godot screens, objects, states, and visual variants used by the player",
-      "included_assets": ["ASSET-WORKSHOP-BACKGROUND-V2", "ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1", "ASSET-FIRST-FORGE-BACKGROUND-V1", "ASSET-EQUIPMENT-IRON-SWORD-CARD-V1", "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1", "ASSET-EQUIPMENT-IRON-BOW-CARD-V1", "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1", "ASSET-EQUIPMENT-IRON-HELMET-CARD-V1"],
+      "included_assets": ["ASSET-WORKSHOP-BACKGROUND-V2", "ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1", "ASSET-FIRST-FORGE-BACKGROUND-V1", "ASSET-ANVIL-OATH-LOGO-AO02-V1", "ASSET-EQUIPMENT-IRON-SWORD-CARD-V1", "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1", "ASSET-EQUIPMENT-IRON-BOW-CARD-V1", "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1", "ASSET-EQUIPMENT-IRON-HELMET-CARD-V1"],
       "status": "PROJECT_ASSET_APPROVED_RUNTIME_CLIENT_VISUAL_VALIDATION_PENDING",
       "substitution_rule": "MUST_HAVE_AN_ACTUAL_RUNTIME_CONSUMER"
     },
@@ -72,12 +79,12 @@
       "consumer_kind": "GAME_RUNTIME",
       "consumer_surface": "res://scenes/vertical_slice/main_menu.tscn",
       "screen_design_reference": "Godot Control/VBox layout; historical Visual GDD is layout-only reference",
-      "runtime_consumer": "VSMainMenu dynamically binds ASSET-MAIN-MENU-DAWN-BACKGROUND-V1 to MenuIllustratedBackground at ready; serialized v1 remains an unpromoted fallback",
-      "existing_evidence": "VSMainMenu dynamic binding plus focused GUT and visual contract",
+      "runtime_consumer": "VSMainMenu dynamically binds ASSET-MAIN-MENU-DAWN-BACKGROUND-V1 to MenuIllustratedBackground and user-locked ASSET-ANVIL-OATH-LOGO-AO02-V1 to MenuLayout/MenuTitleLogo at ready; localized MenuTitleLabel remains the no-texture fallback",
+      "existing_evidence": "VSMainMenu dynamic background and title-logo bindings plus focused GUT and visual contract",
       "coverage_status": "COVERED_APPROVED_RUNTIME_ASSET_MACHINE_VERIFIED",
       "notion_destination": null,
       "repository_destination": "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
-      "blockers": "Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN."
+      "blockers": "Android readability, accessibility, and human visual review remain NOT_RUN."
     },
     {
       "screen_id": "FIRST_FORGE",

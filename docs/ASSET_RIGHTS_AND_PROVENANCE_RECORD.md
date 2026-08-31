@@ -239,6 +239,31 @@ status: RELEASE_BLOCKED_UNVERIFIED
 notes: User 2026-08-30 approval; MenuIllustratedBackground dynamic binding is machine-verified. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
 ```
 
+## Current asset record · ASSET-ANVIL-OATH-LOGO-AO02-V1
+
+```yaml
+asset_id: ASSET-ANVIL-OATH-LOGO-AO02-V1
+category: OTHER
+name: Anvil Oath user-locked title logo AO-LOGO-02 v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: Built-in image generation artifact exec-3013989b-f674-44ff-b1d5-6208082fe579
+acquired_or_created_at: 2026-08-31 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original brief, visual candidate review, user selection of AO-LOGO-02, source-hash verification, consumer mapping, and dynamic runtime binding
+reference_sources: Current Blacksmith Illustrated Workshop Book art direction and user-provided logo layout-density reference only
+forbidden_expression: copied third-party logo, exact reference lettering or ornament arrangement, identifiable third-party visual identity, watermark, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-ANVIL-OATH-LOGO-AO02-V1
+proof_hash: 320BE3FC5530392E313E20B0A34375971A7A600754BF259B18DB2DA084E1F475
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-31 locked AO-LOGO-02 for the real main-menu title. MenuTitleLogo dynamic binding and the retained MenuTitleLabel text fallback require automated and runtime validation; Godot client, Android, accessibility, human review, trademark clearance, and release remain NOT_RUN or blocked.
+```
+
 ## Historical retired asset record · ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
 
 ```yaml

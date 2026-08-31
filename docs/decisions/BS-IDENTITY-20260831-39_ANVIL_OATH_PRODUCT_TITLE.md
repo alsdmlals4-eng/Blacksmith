@@ -20,10 +20,17 @@ PRODUCT_TITLE_DISPLAY_ORDER = KOREAN_PRIMARY_WITH_LATIN_LOCKUP
 CURRENT_TITLE_STATUS = USER_APPROVED_CURRENT
 PUBLIC_BRAND_LEGAL_CLEARANCE = NOT_RUN
 TITLE_TEXT_RUNTIME_STATUS = IMPLEMENTED_MACHINE_AND_RUNTIME_VERIFIED
-LOGO_CANDIDATE_STATUS = GENERATED_CANDIDATE_PENDING_USER_LOCK
-CANDIDATE_RUNTIME_PROMOTION = BLOCKED_PENDING_USER_LOCK
+LOGO_CANDIDATE_STATUS = USER_LOCKED_AO_LOGO_02
+CANDIDATE_RUNTIME_PROMOTION = IMPLEMENTED_MACHINE_VERIFIED
+LOGO_RUNTIME_ASSET = assets/ui/identity/anvil_oath_logo_ao02_v1.png
+LOGO_RUNTIME_SLOT = MenuLayout/MenuTitleLogo
+LOGO_SOURCE_SHA256 = 320BE3FC5530392E313E20B0A34375971A7A600754BF259B18DB2DA084E1F475
+LOGO_SOURCE_DIMENSIONS = LANDSCAPE_TRANSPARENT_1672x941
+LOGO_TEXT_FALLBACK = MenuTitleLabel_VISIBLE_ONLY_WHEN_LOGO_TEXTURE_IS_UNAVAILABLE
+LOGO_RUNTIME_VISUAL_STATUS = LIMITED_RUNTIME_VERIFIED
+LOGO_RUNTIME_VISUAL_EVIDENCE = HERA_EXACT_WORKTREE_720x1280_UI_TREE_SCREENSHOT_AND_ERROR_LOG_20260831
 POSTMERGE_MAIN_SHA = 76b82967aacbef85484f9b0206d8194e09a9c9e3
-PROTECTED_APPROVAL_STATUS = RETIRED_ON_POSTMERGE_BASELINE_CLOSURE
+PROTECTED_APPROVAL_STATUS = ACTIVE_ONE_SHOT_AO_LOGO_02_PROMOTION_PENDING_POSTMERGE_BASELINE_CLOSURE
 POSTMERGE_MAINTENANCE_RESEARCH = BENCHMARK_NOT_APPLICABLE_METADATA_ONLY
 ```
 
@@ -72,6 +79,39 @@ PR에만 유효했던 `PROJECT_PROTECTED_CHANGE_APPROVAL.json`을 폐기한다. 
 시장·기술 선택이 없는 사후 운영 메타데이터 작업이므로 외부 벤치마크는
 `BENCHMARK_NOT_APPLICABLE_METADATA_ONLY`다.
 
+## AO-LOGO-02 정식 승격
+
+사용자는 2026-08-31 KST에 `AO-LOGO-02`를 실제 제품 로고로 확정했다. 이 승격은
+사용자가 고른 후보 하나를 메인 메뉴의 **실제** 소비처에 연결하는 범위로 한정한다.
+원본은 투명 PNG `1672×941`이며, 이전 `1600×640` 목표 비율과 다르므로 정본은
+추정값을 유지하지 않고 실제 검증된 원본 규격을 기록한다. 런타임은
+`VSMainMenu._ensure_product_logo()`가 `MenuLayout/MenuTitleLogo`를 만들어 비율을
+보존해 표시한다. 이미 로컬화된 `MenuTitleLabel`은 로고 텍스처를 읽을 수 없을 때만
+보이는 대체 표기로 남는다.
+
+```text
+SELECTED_LOGO_CANDIDATE = AO-LOGO-02
+UNSELECTED_LOGO_CANDIDATES = [AO-LOGO-01, AO-LOGO-03]
+ACTUAL_GAME_CONSUMER = MAIN_MENU_PRODUCT_TITLE_LOCKUP
+RUNTIME_IMPLEMENTATION = DYNAMIC_TEXTURE_RECT_WITHOUT_TSCN_SERIALIZATION_MUTATION
+TEXT_FALLBACK_POLICY = RETAIN_AND_SHOW_ONLY_IF_LOGO_TEXTURE_UNAVAILABLE
+LEGAL_TRADEMARK_RELEASE_STATUS = NOT_RUN_NO_CLEARANCE_CLAIM
+```
+
+### 기존 해결책 우선 판정
+
+| 항목 | 확인 결과 | 판정 |
+| --- | --- | --- |
+| 현재 UI 소비 경로 | `VSMainMenu`은 이미 `MenuIllustratedBackground`를 동적으로 바인딩하며, `MenuLayout`은 세로 `VBoxContainer`다. | `REUSE` |
+| 엔진 기능 | [Godot 4.7 TextureRect](https://docs.godotengine.org/en/4.7/classes/class_texturerect.html)는 비율 보존·중앙 정렬 표시를 제공하고, [VBoxContainer](https://docs.godotengine.org/en/4.7/classes/class_vboxcontainer.html)는 자식의 최소 크기를 세로로 배치한다. | `REUSE` |
+| 새 addon·플러그인 | 로고 한 장의 런타임 소비에 필요한 기능이 이미 있으므로 새 dependency·계정·비용·권한은 없다. | `REJECT_INSTALLATION` |
+
+따라서 `TextureRect.EXPAND_IGNORE_SIZE`와 고정 180px 최소 높이,
+`STRETCH_KEEP_ASPECT_CENTERED`를 사용했다. `VBoxContainer`의 실험적 자동 비율
+최소 크기 모드는 피했다. 반대 측 검토에서 후보 원본의 `1672×941` 비율이 초기
+`1600×640` 목표와 다름을 발견했고, 목표 값을 억지로 맞추지 않고 실제 원본 규격과
+720×1280 runtime 관찰을 정본에 남겼다.
+
 ## 적용 경계
 
 ### 이번 제품명 통합에 포함
@@ -83,7 +123,8 @@ PR에만 유효했던 `PROJECT_PROTECTED_CHANGE_APPROVAL.json`을 폐기한다. 
 3. 제품명 표기 계약을 자동 검사한다. 검사는 제품 제목과 일반 장소·행동 문구를
    구분해야 하며, 저장 키·resource path·script class·기존 데이터 식별자를
    변경해서는 안 된다.
-4. 메인 메뉴용 로고 후보를 만들기 위한 Visual Requirement를 등록한다.
+4. 사용자 잠금 뒤 `AO-LOGO-02`를 메인 메뉴의 `MenuTitleLogo` 소비처에 등록하고,
+   로고 텍스처를 불러올 수 없을 때의 현지화 텍스트 대체 표기를 유지한다.
 
 ### 이번 범위에서 제외
 
@@ -99,18 +140,18 @@ PR에만 유효했던 `PROJECT_PROTECTED_CHANGE_APPROVAL.json`을 폐기한다. 
 ```text
 consumer_id = MAIN_MENU_PRODUCT_TITLE_LOCKUP
 consumer_surface = MAIN_MENU
-runtime_asset_role = FUTURE_TITLE_LOGO_LOCKUP
+runtime_asset_role = MenuTitleLogo TextureRect
 primary_use = MAIN_MENU_PRODUCT_IDENTITY
-implementation_owner_or_path = scenes/vertical_slice/main_menu.tscn:MenuTitleLabel
-target_aspect_resolution = LANDSCAPE_TRANSPARENT_1600x640
+implementation_owner_or_path = scripts/vertical_slice/ui/vs_main_menu.gd:_ensure_product_logo
+target_aspect_resolution = USER_LOCKED_SOURCE_LANDSCAPE_TRANSPARENT_1672x941
 state_family_requirement = DEFAULT_ONLY
-fallback_if_unconsumed = DO_NOT_PROMOTE_OR_SHIP
-generation_status = GENERATED_CANDIDATE
-final_direction_lock = REQUIRED_AFTER_CANDIDATE_REVIEW
+fallback_if_unconsumed = RETAIN_LOCALIZED_MENUTITLELABEL_TEXT_FALLBACK
+generation_status = USER_LOCKED_AO_LOGO_02
+final_direction_lock = USER_CONFIRMED_2026-08-31_KST
 ```
 
-아래 세 방향 후보를 생성했다. 사용자가 하나를 잠그기 전에는 현재의 텍스트
-`MenuTitleLabel`이 유일한 runtime 표기다.
+아래 세 방향 후보 중 `AO-LOGO-02`만 사용자 잠금으로 정식 승격 대상이 됐다.
+`AO-LOGO-01`과 `AO-LOGO-03`은 정본·runtime으로 승격하지 않은 후보로 남는다.
 
 | 후보 | 방향 | 유지할 것 | 금지할 것 |
 | --- | --- | --- | --- |
@@ -140,7 +181,7 @@ ANDROID_ACCESSIBILITY_HUMAN_PLAY = NOT_RUN_UNLESS_OBSERVED
 | 정본 적용 | `SPECIFIED / MACHINE_VERIFIED` | 제목 계약, GDD/PDF readback |
 | 메뉴 구현 | `IMPLEMENTED / MACHINE_VERIFIED` | 실제 Godot Editor + HiGodot로 `MenuTitleLabel` 저장 |
 | 메뉴 런타임 | `LIMITED_RUNTIME_VERIFIED` | 720×1280 실행에서 제목·기존 한국어 행동·동적 배경 slot 확인; 사람 UX는 별도 |
-| 로고 후보 | `GENERATED_CANDIDATE` | `AO-LOGO-01`/`02`/`03` 생성 완료, 저장소·runtime 미승격 |
-| 로고 최종 방향 | `PENDING_USER_LOCK` | 후보 생성·검토 뒤에만 가능 |
+| 로고 후보 | `AO-LOGO-01`/`03`만 `GENERATED_CANDIDATE` | 미선택 후보는 저장소·runtime 미승격 |
+| 로고 최종 방향 | `USER_APPROVED / CANON_REGISTERED / IMPLEMENTED_MACHINE_VERIFIED / LIMITED_RUNTIME_VERIFIED` | 사용자 2026-08-31 `AO-LOGO-02` 확정, SHA·권리 기록·메뉴 동적 소비처·자동 계약, exact worktree 720×1280 UI tree·rendered screenshot·error log 관찰 |
 | Android/접근성/사람 UX | `NOT_RUN` | 실제 기기·사람 관찰 전에는 PASS 불가 |
 | 법률·상표·출시 | `NOT_RUN` | 별도 정식 검토 필요 |

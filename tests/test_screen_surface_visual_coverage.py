@@ -120,6 +120,21 @@ class ScreenSurfaceVisualCoverageTests(unittest.TestCase):
         self.assertIn("BS-VIS-AUDIT-20260827-02", p0_findings)
         self.assertIn("legacy", p0_findings["BS-VIS-AUDIT-20260827-02"]["disposition"].lower())
 
+    def test_title_logo_runtime_observation_does_not_promote_unobserved_equipment_visuals(self) -> None:
+        """Only the exact main-menu logo observation may advance beyond the machine evidence ceiling."""
+        model = json.loads(MODEL.read_text(encoding="utf-8"))
+        title_logo = model["title_logo_runtime_delivery"]
+        equipment = model["equipment_identity_runtime_delivery"]
+
+        self.assertEqual(
+            title_logo["runtime_visual_validation"],
+            "HERA_EXACT_WORKTREE_720x1280_UI_TREE_RENDERED_SCREENSHOT_AND_ERROR_LOG_VERIFIED_20260831; ANDROID_ACCESSIBILITY_HUMAN_REVIEW_NOT_RUN",
+        )
+        self.assertEqual(
+            equipment["runtime_visual_validation"],
+            "GODOT_CLIENT_ANDROID_ACCESSIBILITY_HUMAN_REVIEW_NOT_RUN",
+        )
+
     def test_runtime_asset_manifest_matches_the_promoted_background_bytes(self) -> None:
         self.assertTrue(ASSET_MANIFEST.is_file(), ASSET_MANIFEST)
         self.assertTrue(RUNTIME_BACKGROUND.is_file(), RUNTIME_BACKGROUND)
