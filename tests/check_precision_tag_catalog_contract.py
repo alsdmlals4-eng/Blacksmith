@@ -23,6 +23,9 @@ def _text(path: Path) -> str:
 def main() -> None:
     assert DECISION38.is_file(), "Decision38 must retain the recurring-precision field record"
     assert DECISION40.is_file(), "Decision40 must own consumable precision catalyst fields"
+    decision40_text = _text(DECISION40)
+    assert "POSTMERGE_MAIN_SHA = 5560d8f0bdde9d900acc2bbbaf403ef3bdbc1b58" in decision40_text
+    assert "PROTECTED_APPROVAL_STATUS = RETIRED_ON_POSTMERGE_BASELINE_CLOSURE" in decision40_text
     catalog = json.loads(_text(CATALOG))
     assert catalog["schema_version"] == 3
     assert catalog["source_decision_id"] == "BS-ENHANCE-20260901-40"

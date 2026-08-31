@@ -8,17 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-CURRENT_PRODUCT_MERGE = "16e33b87b5c4880207466443b03beb3705ab8c57"
+CURRENT_PRODUCT_MERGE = "5560d8f0bdde9d900acc2bbbaf403ef3bdbc1b58"
 CANONICAL_ADAPTER = ROOT / "skills" / "PROJECT_BASE_ADAPTER.json"
-CURRENT_PRECISION_DECISION = "BS-ENHANCE-20260901-40"
-CURRENT_PRECISION_APPROVED_PATHS = [
-    "scripts/vertical_slice/domain/vs_save_envelope.gd",
-    "scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd",
-    "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
-    "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
-    "scripts/vertical_slice/services/vs_save_service.gd",
-    "scripts/vertical_slice/ui/vs_workshop_screen.gd",
-]
 COMPATIBILITY_VIEWS = (
     (ROOT / "skills" / "BASE_V9_ADAPTER.json", "canonical_source_sha256"),
     (ROOT / "skills" / "PROJECT_BASE_SKILL_ADAPTER.json", "canonical_source_sha256"),
@@ -40,16 +31,11 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
 
 
 class ProductApprovalPostmergeClosureTests(unittest.TestCase):
-    def test_postmerge_contract_retires_the_ao_logo_approval_and_records_only_current_precision_scope(self) -> None:
+    def test_postmerge_contract_retires_the_precision_catalyst_one_shot_approval(self) -> None:
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
         self.assertEqual(CURRENT_PRODUCT_MERGE, adapter["protected_baseline"]["commit"])
-        self.assertTrue(APPROVAL.is_file())
-        approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
-        self.assertNotIn("BS-IDENTITY-20260831-39", approval["decision_ids"])
-        self.assertIn(CURRENT_PRECISION_DECISION, approval["decision_ids"])
-        self.assertEqual(CURRENT_PRODUCT_MERGE, approval["protected_base_commit"])
-        self.assertEqual(CURRENT_PRECISION_APPROVED_PATHS, approval["approved_paths"])
+        self.assertFalse(APPROVAL.exists())
 
     def test_generated_compatibility_views_track_the_rebased_canonical_adapter(self) -> None:
         canonical_sha = raw_sha256(CANONICAL_ADAPTER)

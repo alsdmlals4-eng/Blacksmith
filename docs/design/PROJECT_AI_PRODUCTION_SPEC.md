@@ -9,6 +9,8 @@
 
 > **2026-09-01 consumable recurring Precision trace:** `BS-ENHANCE-20260830-38` owns all ten Precision targets, `ADD_TAG` / `UPGRADE_TAG`, a maximum of three tags, and I–IV growth. `BS-ENHANCE-20260901-40` owns catalog schema 3, the two consumable catalysts, and V5 resource migration. Item V4 retains the versioned Tag collection in `CATALYST_AFFIX`; V4→V5 grants the temporary starter resource bundle, and each saved normal Precision attempt atomically consumes one derived catalyst. Exact runtime consumers are Main Menu, recurring Precision Workshop, and Customer World Result; their three approved illustrations are locked, registered, and implemented with machine verification. This is not client, Android, accessibility, human visual, performance, or release verification: each remains `NOT_RUN`.
 
+> **2026-09-01 runtime-evidence correction · `LIMITED_RUNTIME_UI_OBSERVED`:** PR #349 merged at `5560d8f0bdde9d900acc2bbbaf403ef3bdbc1b58`. Before merge, the exact worktree's real Godot client displayed both catalysts, stock and one-unit cost previews, selected result Tags, and the enabled attempt action at `+9→+10`. No persistent action was submitted, so live success/hold/damage charging remains automated-test evidence only; Android, accessibility, performance, human review, human play, release, and rights completion remain `NOT_RUN`.
+
 ## 00A. RECURRING PRECISION IMPLEMENTATION TRACE
 
 | Technical concern | Current source / evidence boundary |
