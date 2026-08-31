@@ -3,6 +3,7 @@ extends "res://addons/gut/test.gd"
 const MAIN_MENU_PATH := "res://scripts/vertical_slice/ui/vs_main_menu.gd"
 const MAIN_MENU_SCENE := preload("res://scenes/vertical_slice/main_menu.tscn")
 const APPROVED_MAIN_MENU_BACKGROUND_PATH := "res://assets/ui/workshop/main_menu_dawn_background_v1.png"
+const APPROVED_MAIN_MENU_LOGO_PATH := "res://assets/ui/identity/anvil_oath_logo_ao02_v1.png"
 
 
 class FakeEnvelope:
@@ -76,6 +77,26 @@ func test_main_menu_binds_the_approved_dawn_background_without_serializing_it_in
 	assert_eq(background.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
 	assert_eq(background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
 	assert_false(MAIN_MENU_SCENE.instantiate().get_node("MenuIllustratedBackground").texture.resource_path == APPROVED_MAIN_MENU_BACKGROUND_PATH, "the old serialized scene texture remains an unpromoted fallback")
+
+
+func test_main_menu_binds_the_user_locked_ao_logo_before_its_text_fallback() -> void:
+	assert_true(ResourceLoader.exists(APPROVED_MAIN_MENU_LOGO_PATH), "the user-locked AO-LOGO-02 must be tracked before runtime binding")
+	if not ResourceLoader.exists(APPROVED_MAIN_MENU_LOGO_PATH):
+		return
+	var menu = MAIN_MENU_SCENE.instantiate()
+	add_child_autofree(menu)
+	var logo := menu.get_node_or_null("MenuLayout/MenuTitleLogo") as TextureRect
+	var text_fallback := menu.get_node_or_null("MenuLayout/MenuTitleLabel") as Label
+	assert_not_null(logo, "main menu must expose a concrete logo node above its text fallback")
+	assert_not_null(text_fallback, "main menu must retain the localizable text fallback")
+	if logo == null or text_fallback == null:
+		return
+	assert_eq(logo.texture.resource_path, APPROVED_MAIN_MENU_LOGO_PATH)
+	assert_eq(logo.mouse_filter, Control.MOUSE_FILTER_IGNORE)
+	assert_eq(logo.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
+	assert_eq(logo.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
+	assert_lt(logo.get_index(), text_fallback.get_index())
+	assert_false(text_fallback.visible, "the text fallback must not duplicate the selected logo while the texture is available")
 
 
 func test_main_menu_keeps_native_korean_touch_actions_over_the_approved_background() -> void:

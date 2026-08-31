@@ -8,6 +8,8 @@ const WorkshopResourcesScript = preload("res://scripts/economy/workshop_resource
 const ForgingScreenScript = preload("res://scripts/ui/forging_screen.gd")
 const AppScene = preload("res://scenes/vertical_slice/vertical_slice_app.tscn")
 const MainMenuBackgroundTexture = preload("res://assets/ui/workshop/main_menu_dawn_background_v1.png")
+const ProductLogoAssetPath := "res://assets/ui/identity/anvil_oath_logo_ao02_v1.png"
+const ProductLogoMinimumHeight := 180.0
 
 const STATUS_UNCHECKED := "UNCHECKED"
 const STATUS_PRIMARY_OK := "PRIMARY_OK"
@@ -31,6 +33,7 @@ var _active_app = null
 func _ready() -> void:
 	_ensure_flow_services()
 	_ensure_illustrated_background()
+	_ensure_product_logo()
 	_connect_menu_actions()
 	refresh_save_state()
 	_refresh_menu_controls()
@@ -270,3 +273,30 @@ func _ensure_illustrated_background() -> void:
 	if background == null:
 		return
 	background.texture = MainMenuBackgroundTexture
+
+
+func _ensure_product_logo() -> void:
+	var menu_layout := get_node_or_null("MenuLayout") as VBoxContainer
+	var text_fallback := get_node_or_null("MenuLayout/MenuTitleLabel") as Label
+	if menu_layout == null or text_fallback == null:
+		return
+
+	var product_logo_texture := load(ProductLogoAssetPath) as Texture2D
+	if product_logo_texture == null:
+		text_fallback.visible = true
+		return
+
+	var logo := menu_layout.get_node_or_null("MenuTitleLogo") as TextureRect
+	if logo == null:
+		logo = TextureRect.new()
+		logo.name = "MenuTitleLogo"
+		logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		logo.custom_minimum_size = Vector2(0.0, ProductLogoMinimumHeight)
+		logo.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		menu_layout.add_child(logo)
+		menu_layout.move_child(logo, text_fallback.get_index())
+
+	logo.texture = product_logo_texture
+	text_fallback.visible = false

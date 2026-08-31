@@ -55,6 +55,19 @@
       "approval_state": "USER_APPROVED"
     },
     {
+      "requirement_id": "BS-IDENTITY-20260831-39/MAIN_MENU_PRODUCT_TITLE_LOCKUP/AO-LOGO-02",
+      "consumer_id": "MAIN_MENU_PRODUCT_TITLE_LOCKUP",
+      "consumer_surface": "res://scenes/vertical_slice/main_menu.tscn#MenuLayout",
+      "runtime_asset_role": "MenuTitleLogo TextureRect",
+      "primary_use": "Display the user-locked 모루의 서약 / ANVIL OATH title mark above the native main-menu actions.",
+      "implementation_owner_or_path": "res://scripts/vertical_slice/ui/vs_main_menu.gd:_ensure_product_logo",
+      "target_aspect_resolution": "USER_LOCKED_SOURCE_LANDSCAPE_TRANSPARENT_1672x941; RUNTIME_MINIMUM_HEIGHT_180",
+      "state_family_requirement": "DEFAULT_ONLY",
+      "fallback_if_unconsumed": "RETAIN_LOCALIZED_MENUTITLELABEL_TEXT_FALLBACK",
+      "approval_reference": "User 2026-08-31: 2번째 이미지를 로고로 쓰자",
+      "approval_state": "USER_LOCKED_AO_LOGO_02_RUNTIME_PROMOTION_20260831"
+    },
+    {
       "requirement_id": "VIS-REC-20260830-03",
       "consumer_id": "CUSTOMER_WORLD_RESULT",
       "consumer_surface": "res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn",
@@ -203,6 +216,22 @@
       "approval_reference": "User 2026-08-30: 승인",
       "generation_artifact": "exec-8b1352d9-7e0f-4765-b39a-45f41c76e232",
       "runtime_evidence": "DYNAMIC_BINDING_GUT_AND_CONTRACT_VERIFIED; GODOT_CLIENT_ANDROID_ACCESSIBILITY_HUMAN_REVIEW_NOT_RUN"
+    },
+    {
+      "asset_id": "ASSET-ANVIL-OATH-LOGO-AO02-V1",
+      "requirement_id": "BS-IDENTITY-20260831-39/MAIN_MENU_PRODUCT_TITLE_LOCKUP/AO-LOGO-02",
+      "status": "IMPLEMENTED_MACHINE_VERIFIED",
+      "sha256": "320BE3FC5530392E313E20B0A34375971A7A600754BF259B18DB2DA084E1F475",
+      "dimensions": "1672x941",
+      "format": "PNG",
+      "project_relative_source_path": "assets/ui/identity/anvil_oath_logo_ao02_v1.png",
+      "tracked_asset_path": "assets/ui/identity/anvil_oath_logo_ao02_v1.png",
+      "actual_consumer": ["MAIN_MENU"],
+      "runtime_slot": ["MenuLayout/MenuTitleLogo"],
+      "provenance_and_rights": "AI_GENERATED_BY_OPENAI_IMAGEGEN; USER_LOCKED_AO_LOGO_02_20260831; RELEASE_RIGHTS_REVIEW_PENDING",
+      "approval_reference": "User 2026-08-31: 2번째 이미지를 로고로 쓰자",
+      "generation_artifact": "exec-3013989b-f674-44ff-b1d5-6208082fe579",
+      "runtime_evidence": "DYNAMIC_MENU_LOGO_GUT_AND_TITLE_CONTRACT_VERIFIED; HERA_EXACT_WORKTREE_720x1280_UI_TREE_RENDERED_SCREENSHOT_AND_ERROR_LOG_VERIFIED_20260831; ANDROID_ACCESSIBILITY_HUMAN_REVIEW_NOT_RUN"
     },
     {
       "asset_id": "ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1",
