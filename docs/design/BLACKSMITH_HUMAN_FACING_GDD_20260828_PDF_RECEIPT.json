@@ -4,16 +4,22 @@
   "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
   "source_markdown": {
     "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
-    "sha256": "6b34697177d36f44ab4cfbe0e858702e5280371f969f989913491f9924b2ed58",
+    "sha256": "619f7ed032b4aa75ac5d91964e6b5dcbfd37438b69e668a1ff68083924b0de64",
     "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
   },
   "artifact": {
     "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
-    "sha256": "193c9d0c79b557ca3098e146bf16a9bf6c8913b1ce66effd1562a6e8579d316f",
+    "sha256": "abb66a5587a0b5c8468e475526765897724dbae8b6855439b3d53dc4aaed8d17",
     "page_count": 9,
-    "pdf_title": "Blacksmith 사람용 게임 기획서",
+    "pdf_title": "모루의 서약 · 사람용 게임 기획서",
     "pdf_subject": "Human-facing Korean GDD",
     "target_format": "A4"
+  },
+  "product_identity": {
+    "decision_id": "BS-IDENTITY-20260831-39",
+    "korean_title": "모루의 서약",
+    "latin_lockup": "ANVIL OATH",
+    "legal_clearance": "NOT_RUN"
   },
   "publish_recipe": {
     "publisher": "tools/publish_human_facing_gdd_pdf.py",
@@ -33,8 +39,8 @@
   "deterministic_publish_proof": {
     "invariant": true,
     "identical_sha256_runs": [
-      "193c9d0c79b557ca3098e146bf16a9bf6c8913b1ce66effd1562a6e8579d316f",
-      "193c9d0c79b557ca3098e146bf16a9bf6c8913b1ce66effd1562a6e8579d316f"
+      "abb66a5587a0b5c8468e475526765897724dbae8b6855439b3d53dc4aaed8d17",
+      "abb66a5587a0b5c8468e475526765897724dbae8b6855439b3d53dc4aaed8d17"
     ],
     "run_count": 2,
     "basis": "two consecutive invariant ReportLab publishes with unchanged source"
