@@ -30,11 +30,11 @@ SCENE_ASSETS = [
     ("고객 결과", ROOT / "assets/ui/workshop/customer_result_return_illustration_v1.png"),
 ]
 EQUIPMENT_ASSETS = [
-    ("철검", ROOT / "assets/ui/equipment/iron_sword_card_v1.png"),
-    ("철방패", ROOT / "assets/ui/equipment/iron_shield_card_v1.png"),
-    ("철활", ROOT / "assets/ui/equipment/iron_bow_card_v1.png"),
-    ("철갑옷", ROOT / "assets/ui/equipment/iron_armor_card_v1.png"),
-    ("철투구", ROOT / "assets/ui/equipment/iron_helmet_card_v1.png"),
+    ("철검", ROOT / "assets/ui/equipment/iron_sword_card_v2.png"),
+    ("철방패", ROOT / "assets/ui/equipment/iron_shield_card_v2.png"),
+    ("철활", ROOT / "assets/ui/equipment/iron_bow_card_v2.png"),
+    ("철갑옷", ROOT / "assets/ui/equipment/iron_armor_card_v2.png"),
+    ("철투구", ROOT / "assets/ui/equipment/iron_helmet_card_v2.png"),
 ]
 FOOTER_RESERVE = 20 * mm
 SCENE_DERIVATIVE_MAX_PIXELS = (640, 1140)
@@ -60,7 +60,9 @@ def inline(text: str) -> str:
 def pdf_derivative_image(asset: Path, *, width: float, height: float, max_pixels: tuple[int, int]) -> Image:
     """Embed a display-sized JPEG derivative without changing the runtime PNG source asset."""
     with PILImage.open(asset) as source:
-        derivative = source.convert("RGB")
+        rgba_source = source.convert("RGBA")
+        derivative = PILImage.new("RGB", rgba_source.size, "white")
+        derivative.paste(rgba_source, mask=rgba_source.getchannel("A"))
         derivative.thumbnail(max_pixels, PILImage.Resampling.LANCZOS)
         buffer = BytesIO()
         derivative.save(buffer, format="JPEG", quality=PDF_DERIVATIVE_JPEG_QUALITY, optimize=True, progressive=False)

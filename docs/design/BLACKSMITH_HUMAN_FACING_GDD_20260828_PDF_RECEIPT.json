@@ -9,7 +9,7 @@
   },
   "artifact": {
     "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
-    "sha256": "73ba2070b5ab738932dbf29abdb0052fbac836c8e2d53882fed1edd9f2b43aea",
+    "sha256": "193c9d0c79b557ca3098e146bf16a9bf6c8913b1ce66effd1562a6e8579d316f",
     "page_count": 9,
     "pdf_title": "Blacksmith 사람용 게임 기획서",
     "pdf_subject": "Human-facing Korean GDD",
@@ -23,18 +23,18 @@
     "images": [
       "assets/ui/workshop/main_menu_dawn_background_v1.png",
       "assets/ui/workshop/customer_result_return_illustration_v1.png",
-      "assets/ui/equipment/iron_sword_card_v1.png",
-      "assets/ui/equipment/iron_shield_card_v1.png",
-      "assets/ui/equipment/iron_bow_card_v1.png",
-      "assets/ui/equipment/iron_armor_card_v1.png",
-      "assets/ui/equipment/iron_helmet_card_v1.png"
+      "assets/ui/equipment/iron_sword_card_v2.png",
+      "assets/ui/equipment/iron_shield_card_v2.png",
+      "assets/ui/equipment/iron_bow_card_v2.png",
+      "assets/ui/equipment/iron_armor_card_v2.png",
+      "assets/ui/equipment/iron_helmet_card_v2.png"
     ]
   },
   "deterministic_publish_proof": {
     "invariant": true,
     "identical_sha256_runs": [
-      "73ba2070b5ab738932dbf29abdb0052fbac836c8e2d53882fed1edd9f2b43aea",
-      "73ba2070b5ab738932dbf29abdb0052fbac836c8e2d53882fed1edd9f2b43aea"
+      "193c9d0c79b557ca3098e146bf16a9bf6c8913b1ce66effd1562a6e8579d316f",
+      "193c9d0c79b557ca3098e146bf16a9bf6c8913b1ce66effd1562a6e8579d316f"
     ],
     "run_count": 2,
     "basis": "two consecutive invariant ReportLab publishes with unchanged source"

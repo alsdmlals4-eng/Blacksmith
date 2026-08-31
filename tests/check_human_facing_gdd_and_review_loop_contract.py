@@ -255,11 +255,11 @@ def main() -> int:
             expected_images = [
                 "assets/ui/workshop/main_menu_dawn_background_v1.png",
                 "assets/ui/workshop/customer_result_return_illustration_v1.png",
-                "assets/ui/equipment/iron_sword_card_v1.png",
-                "assets/ui/equipment/iron_shield_card_v1.png",
-                "assets/ui/equipment/iron_bow_card_v1.png",
-                "assets/ui/equipment/iron_armor_card_v1.png",
-                "assets/ui/equipment/iron_helmet_card_v1.png",
+                "assets/ui/equipment/iron_sword_card_v2.png",
+                "assets/ui/equipment/iron_shield_card_v2.png",
+                "assets/ui/equipment/iron_bow_card_v2.png",
+                "assets/ui/equipment/iron_armor_card_v2.png",
+                "assets/ui/equipment/iron_helmet_card_v2.png",
             ]
             if receipt.get("publish_recipe", {}).get("images") != expected_images:
                 failures.append("PDF receipt must contain the two scene and five equipment runtime illustrations")
