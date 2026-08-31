@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-EQUIPMENT_V2_PRODUCT_MERGE = "65b8cb4b2e1081ce2aa3ce02644b048ee4a805f5"
+CURRENT_PRODUCT_MERGE = "76b82967aacbef85484f9b0206d8194e09a9c9e3"
 CANONICAL_ADAPTER = ROOT / "skills" / "PROJECT_BASE_ADAPTER.json"
 COMPATIBILITY_VIEWS = (
     (ROOT / "skills" / "BASE_V9_ADAPTER.json", "canonical_source_sha256"),
@@ -30,17 +30,12 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
     return value
 
 
-class EquipmentV2PostmergeApprovalRetirementTests(unittest.TestCase):
-    def test_postmerge_contract_retires_v2_one_shot_approval_and_adopts_product_merge(self) -> None:
+class ProductApprovalPostmergeClosureTests(unittest.TestCase):
+    def test_postmerge_contract_retires_one_shot_approval_and_adopts_current_product_merge(self) -> None:
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
-        self.assertEqual(EQUIPMENT_V2_PRODUCT_MERGE, adapter["protected_baseline"]["commit"])
-        if not APPROVAL.exists():
-            return
-
-        active_approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
-        self.assertNotIn("BS-ENHANCE-20260830-38", active_approval["decision_ids"])
-        self.assertNotIn("BS-EQUIPMENT-20260830-39", active_approval["decision_ids"])
+        self.assertEqual(CURRENT_PRODUCT_MERGE, adapter["protected_baseline"]["commit"])
+        self.assertFalse(APPROVAL.exists())
 
     def test_generated_compatibility_views_track_the_rebased_canonical_adapter(self) -> None:
         canonical_sha = raw_sha256(CANONICAL_ADAPTER)

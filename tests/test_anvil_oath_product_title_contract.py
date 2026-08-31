@@ -31,6 +31,8 @@ class AnvilOathProductTitleContractTests(unittest.TestCase):
         self.assertIn("TITLE_TEXT_RUNTIME_STATUS = IMPLEMENTED_MACHINE_AND_RUNTIME_VERIFIED", decision_text)
         self.assertIn("LOGO_CANDIDATE_STATUS = GENERATED_CANDIDATE_PENDING_USER_LOCK", decision_text)
         self.assertIn("CANDIDATE_RUNTIME_PROMOTION = BLOCKED_PENDING_USER_LOCK", decision_text)
+        self.assertIn("POSTMERGE_MAIN_SHA = 76b82967aacbef85484f9b0206d8194e09a9c9e3", decision_text)
+        self.assertIn("PROTECTED_APPROVAL_STATUS = RETIRED_ON_POSTMERGE_BASELINE_CLOSURE", decision_text)
         self.assertIn('text = "모루의 서약"', scene_text)
         self.assertIn('text = "새 대장간 시작"', scene_text)
         self.assertTrue(human_gdd.startswith("# 모루의 서약 — 사람용 게임 기획서"))
