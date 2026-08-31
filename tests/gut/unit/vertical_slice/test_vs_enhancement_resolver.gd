@@ -173,7 +173,7 @@ func test_plus_twenty_hold_and_damage_never_mutate_tag_growth() -> void:
 
 
 func _precision_add_ember() -> Dictionary:
-	return {"action": "ADD_TAG", "lineage_id": "EMBER_LINEAGE", "method_id": "EDGE_REINFORCEMENT"}
+	return {"action": "ADD_TAG", "catalyst_id": "HEART_OF_FLAME", "method_id": "EDGE_REINFORCEMENT"}
 
 
 func _precision_upgrade_ember() -> Dictionary:

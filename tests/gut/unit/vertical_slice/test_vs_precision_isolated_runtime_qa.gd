@@ -71,7 +71,12 @@ func test_plus_9_to_plus_10_runtime_fixture_persists_only_under_gut() -> void:
 
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
-	var resources := ResourcesScript.new(20000, {"common_reinforcement_material": 30})
+	var resources := ResourcesScript.new(20000, {
+		"common_reinforcement_material": 30,
+		"heart_of_flame": 64,
+		"earth_crystal": 64,
+	})
+	envelope.workshop_resources = resources.snapshot()
 	screen.configure_context(
 		envelope.get_item(str(envelope.active_run["selected_item_uid"])),
 		resources,
@@ -96,10 +101,11 @@ func test_plus_9_to_plus_10_runtime_fixture_persists_only_under_gut() -> void:
 	screen._on_precision_add_pressed()
 	screen.set_precision_selection({
 		"action": "ADD_TAG",
-		"lineage_id": "EMBER_LINEAGE",
+		"catalyst_id": "HEART_OF_FLAME",
 		"method_id": "EDGE_REINFORCEMENT",
 	})
 	assert_false(enhancement_button.disabled, "a valid first Tag selection unlocks the current +10 attempt")
+	assert_true((screen.get_node("WorkshopScroll/WorkshopLayout/PrecisionPreviewLabel") as Label).text.contains("불의 심장 1개 소모"))
 	var result: Dictionary = screen.request_enhancement_with_rolls({
 		"success_roll_percent": 0.0,
 		"damage_roll_percent": 99.0,
@@ -113,6 +119,7 @@ func test_plus_9_to_plus_10_runtime_fixture_persists_only_under_gut() -> void:
 	if saved_item == null:
 		return
 	assert_eq(saved_item.enhancement_level, 10)
+	assert_eq(reloaded.resource_snapshot()["material_stock"]["heart_of_flame"], 63)
 	assert_eq(saved_item.used_precision_milestones, [10])
 	var tag_entries: Array = saved_item.catalyst_affix.get("tag_entries", [])
 	assert_eq(tag_entries.size(), 1)

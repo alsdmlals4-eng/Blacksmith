@@ -94,7 +94,7 @@ class NumberedCanvas(canvas.Canvas):
         self.setFont("Malgun", 8)
         self.setFillColor(colors.HexColor("#725A45"))
         self.drawString(18 * mm, 11 * mm, PRODUCT_DOCUMENT_TITLE)
-        self.drawRightString(A4[0] - 18 * mm, 11 * mm, f"{page_number} / {page_count} · 2026-08-31")
+        self.drawRightString(A4[0] - 18 * mm, 11 * mm, f"{page_number} / {page_count} · 2026-09-01")
         self.restoreState()
 
     def save(self):

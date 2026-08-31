@@ -83,8 +83,8 @@ func test_zero_current_from_damage_marks_physical_destroyed_without_max_scar() -
 
 
 func _precision_add_anvil_light() -> Dictionary:
-	return {"action": "ADD_TAG", "lineage_id": "ANVIL_LINEAGE", "method_id": "LIGHTWEIGHTING"}
+	return {"action": "ADD_TAG", "catalyst_id": "EARTH_CRYSTAL", "method_id": "LIGHTWEIGHTING"}
 
 
 func _precision_add_anvil_edge() -> Dictionary:
-	return {"action": "ADD_TAG", "lineage_id": "ANVIL_LINEAGE", "method_id": "EDGE_REINFORCEMENT"}
+	return {"action": "ADD_TAG", "catalyst_id": "EARTH_CRYSTAL", "method_id": "EDGE_REINFORCEMENT"}

@@ -4,12 +4,12 @@
   "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
   "source_markdown": {
     "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
-    "sha256": "619f7ed032b4aa75ac5d91964e6b5dcbfd37438b69e668a1ff68083924b0de64",
+    "sha256": "7cd27b2c6349067f6838003a921330c48922fead1b0d791e664c06f179a91409",
     "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
   },
   "artifact": {
     "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
-    "sha256": "abb66a5587a0b5c8468e475526765897724dbae8b6855439b3d53dc4aaed8d17",
+    "sha256": "919e236197a338f7361b1d99d2a87eff9720d22a2e1322d57f650b90ae982f57",
     "page_count": 9,
     "pdf_title": "모루의 서약 · 사람용 게임 기획서",
     "pdf_subject": "Human-facing Korean GDD",
@@ -39,8 +39,8 @@
   "deterministic_publish_proof": {
     "invariant": true,
     "identical_sha256_runs": [
-      "abb66a5587a0b5c8468e475526765897724dbae8b6855439b3d53dc4aaed8d17",
-      "abb66a5587a0b5c8468e475526765897724dbae8b6855439b3d53dc4aaed8d17"
+      "919e236197a338f7361b1d99d2a87eff9720d22a2e1322d57f650b90ae982f57",
+      "919e236197a338f7361b1d99d2a87eff9720d22a2e1322d57f650b90ae982f57"
     ],
     "run_count": 2,
     "basis": "two consecutive invariant ReportLab publishes with unchanged source"

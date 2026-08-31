@@ -90,9 +90,9 @@ func _ready() -> void:
 		enhancement_button.pressed.connect(_on_enhancement_pressed)
 	_connect_handoff_control()
 	_connect_chronicle_control()
-	var lineage_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
-	if lineage_option != null and not lineage_option.item_selected.is_connected(_on_precision_lineage_selected):
-		lineage_option.item_selected.connect(_on_precision_lineage_selected)
+	var catalyst_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
+	if catalyst_option != null and not catalyst_option.item_selected.is_connected(_on_precision_catalyst_selected):
+		catalyst_option.item_selected.connect(_on_precision_catalyst_selected)
 	var method_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	if method_option != null and not method_option.item_selected.is_connected(_on_precision_method_selected):
 		method_option.item_selected.connect(_on_precision_method_selected)
@@ -212,10 +212,15 @@ func view_state() -> Dictionary:
 		int(_item.enhancement_level) + 1,
 		_precision_selection_data
 	)
+	var precision_catalyst_reason := _precision_catalyst_resource_reason(enhancement)
+	var enhancement_allowed := bool(enhancement.get("allowed", false)) and precision_catalyst_reason.is_empty() and _has_enhancement_context()
+	var enhancement_reason := precision_catalyst_reason if not precision_catalyst_reason.is_empty() else str(enhancement.get("reason", ""))
 	var precision_preview := _precision_preview(precision_mode)
 	if precision_mode == "BACKFILL":
 		enhancement["allowed"] = false
 		enhancement["reason"] = "PRECISION_PLACEHOLDER_REQUIRES_BACKFILL"
+		enhancement_allowed = false
+		enhancement_reason = "PRECISION_PLACEHOLDER_REQUIRES_BACKFILL"
 	var recovery: Dictionary = quote.get("quality_recovery_percent", {})
 	var repair_allowed := bool(quote.get("allowed", false))
 	var candidates := _precision_candidates_for_action(_precision_action, precision_mode)
@@ -233,8 +238,8 @@ func view_state() -> Dictionary:
 		"repair_quality_summary": "예상 회복: 최상 %d%% / 표준 %d%% / 미흡 %d%%" % [int(recovery.get("EXCELLENT", 0)), int(recovery.get("STANDARD", 0)), int(recovery.get("POOR", 0))] if repair_allowed else "",
 		"repair_scar_summary": "MAX 흉터 가능성: %d%%" % int(quote.get("max_scar_chance_percent", 0)) if repair_allowed else "",
 		"repair_job_summary": "수리하면 다음 실제 손상 전까지 다시 수리할 수 없습니다" if repair_allowed and bool(quote.get("repair_job_consumed_on_start", false)) else "",
-		"enhancement_allowed": bool(enhancement.get("allowed", false)) and _has_enhancement_context(),
-		"enhancement_reason": str(enhancement.get("reason", "")),
+		"enhancement_allowed": enhancement_allowed,
+		"enhancement_reason": enhancement_reason,
 		"enhancement_target_level": int(enhancement.get("target_level", int(_item.enhancement_level) + 1)),
 		"enhancement_cost_summary": "비용: %d Gold · 보강재 %d개" % [int(enhancement.get("gold_cost", 0)), int(enhancement.get("reinforcement_units", 0))],
 		"enhancement_outcomes_summary": _enhancement_outcomes_summary(enhancement),
@@ -248,6 +253,7 @@ func view_state() -> Dictionary:
 		"precision_upgrade_available": upgrade_available,
 		"precision_tag_id": str(precision_preview.get("tag_id", "")),
 		"precision_preview_summary": _precision_preview_summary(precision_preview, precision_mode),
+		"precision_catalyst_stock_summary": _precision_catalyst_stock_summary(),
 		"precision_backfill_allowed": precision_mode == "BACKFILL" and bool(precision_preview.get("allowed", false)) and _has_enhancement_context(),
 		"handoff_allowed": handoff_allowed,
 		"handoff_reason": _phase1_handoff_reason(),
@@ -334,7 +340,7 @@ func refresh_after_enhancement() -> void:
 func set_precision_selection(selection: Dictionary) -> void:
 	_precision_selection_data = selection
 	_precision_action = str(selection.get("action", ""))
-	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionLineageOption", str(selection.get("lineage_id", "")))
+	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionLineageOption", str(selection.get("catalyst_id", "")))
 	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionMethodOption", str(selection.get("method_id", "")))
 	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionTagOption", str(selection.get("tag_id", "")))
 	_refresh_controls()
@@ -354,11 +360,11 @@ func _on_enhancement_pressed() -> void:
 		message.text = "강화 결과: %s" % str(result.get("outcome", "BLOCKED"))
 
 
-func _on_precision_lineage_selected(_index: int) -> void:
+func _on_precision_catalyst_selected(_index: int) -> void:
 	if _precision_action == "ADD_TAG":
 		_precision_selection_data = {
 			"action": "ADD_TAG",
-			"lineage_id": _selected_precision_option("WorkshopScroll/WorkshopLayout/PrecisionLineageOption"),
+			"catalyst_id": _selected_precision_option("WorkshopScroll/WorkshopLayout/PrecisionLineageOption"),
 			"method_id": str(_precision_selection_data.get("method_id", "")),
 		}
 	_refresh_controls()
@@ -368,7 +374,7 @@ func _on_precision_method_selected(_index: int) -> void:
 	if _precision_action == "ADD_TAG":
 		_precision_selection_data = {
 			"action": "ADD_TAG",
-			"lineage_id": str(_precision_selection_data.get("lineage_id", "")),
+			"catalyst_id": str(_precision_selection_data.get("catalyst_id", "")),
 			"method_id": _selected_precision_option("WorkshopScroll/WorkshopLayout/PrecisionMethodOption"),
 		}
 	_refresh_controls()
@@ -490,7 +496,8 @@ func _refresh_controls() -> void:
 		if precision_mode == "WEAPON_ONLY":
 			precision_actions_label.text = "정밀 태그는 검·방패·활에만 적용됩니다"
 		else:
-			precision_actions_label.text = "행동을 먼저 고르세요" if action.is_empty() else "선택한 행동: %s" % ("태그 추가" if add_selected else "태그 강화")
+			var action_summary := "행동을 먼저 고르세요" if action.is_empty() else "선택한 행동: %s" % ("태그 추가" if add_selected else "태그 강화")
+			precision_actions_label.text = "%s · 촉매 보유: %s" % [action_summary, str(state.get("precision_catalyst_stock_summary", "확인 필요"))]
 	if precision_add_button != null:
 		precision_add_button.visible = precision_visible and bool(state.get("precision_add_available", false))
 		precision_add_button.disabled = not bool(state.get("precision_add_available", false))
@@ -588,15 +595,15 @@ func _precision_candidates_for_action(action: String, precision_mode: String) ->
 		return candidates
 	var catalog: Dictionary = PrecisionResolverScript.new().catalog()
 	if action == "ADD_TAG":
-		for lineage in catalog.get("lineages", []):
-			if not lineage is Dictionary:
+		for catalyst in catalog.get("catalysts", []):
+			if not catalyst is Dictionary:
 				continue
 			for method in catalog.get("methods", []):
 				if not method is Dictionary:
 					continue
 				var selection := {
 					"action": "ADD_TAG",
-					"lineage_id": str(lineage.get("id", "")),
+					"catalyst_id": str(catalyst.get("id", "")),
 					"method_id": str(method.get("id", "")),
 				}
 				var preview := _precision_preview_for_selection(precision_mode, selection)
@@ -631,7 +638,7 @@ func _player_facing_precision_candidates(candidates: Array, precision_mode: Stri
 			continue
 		player_facing.append({
 			"tag_display_name_ko": str(candidate.get("tag_display_name_ko", "")),
-			"lineage_display_name_ko": str(candidate.get("lineage_display_name_ko", "")),
+			"precision_catalyst_display_name_ko": str(candidate.get("precision_catalyst_display_name_ko", "")),
 			"method_display_name_ko": str(candidate.get("method_display_name_ko", "")),
 			"stage_before_roman": _stage_roman(int(candidate.get("stage_before", 0))),
 			"stage_after_roman": _stage_roman(int(candidate.get("stage_after", 0))),
@@ -650,13 +657,13 @@ func _player_facing_precision_tag_entries(target_level: int, precision_mode: Str
 		var tag: Dictionary = _catalog_entry_by_id(catalog.get("tags", []), tag_id)
 		if tag.is_empty():
 			continue
-		var lineage: Dictionary = _catalog_entry_by_id(catalog.get("lineages", []), str(tag.get("lineage_id", "")))
+		var catalyst: Dictionary = _catalog_entry_by_id(catalog.get("catalysts", []), str(tag.get("catalyst_id", "")))
 		var next_preview: Dictionary = {}
 		if precision_mode == "ATTEMPT" and target_level > 10:
 			next_preview = _precision_preview_for_selection(precision_mode, {"action": "UPGRADE_TAG", "tag_id": tag_id})
 		player_facing.append({
 			"tag_display_name_ko": str(tag.get("display_name_ko", "")),
-			"lineage_display_name_ko": str(lineage.get("display_name_ko", "")),
+			"precision_catalyst_display_name_ko": str(catalyst.get("display_name_ko", "")),
 			"stage_roman": _stage_roman(int(entry.get("stage", 0))),
 			"next_effect_preview": _precision_preview_summary(next_preview, precision_mode) if bool(next_preview.get("allowed", false)) else "다음 단계 강화 불가",
 		})
@@ -752,7 +759,8 @@ func _precision_preview_summary(preview: Dictionary, mode: String) -> String:
 	if not bool(preview.get("allowed", false)):
 		return _player_facing_enhancement_reason(str(preview.get("reason", "")))
 	var axis_label := "역할 능력치" if str(preview.get("effect_axis", "")) == "RAW_ROLE_STAT" else "무게"
-	return "결과 태그: %s · 단계 %s → %s · %s %d → %d · 내구도 변화 없음" % [
+	return "촉매: %s\n결과 태그: %s · 단계 %s → %s · %s %d → %d · 내구도 변화 없음" % [
+		_precision_catalyst_consumption_summary(preview),
 		str(preview.get("tag_display_name_ko", "")),
 		_stage_roman(int(preview.get("stage_before", 0))),
 		_stage_roman(int(preview.get("stage_after", 0))),
@@ -760,6 +768,51 @@ func _precision_preview_summary(preview: Dictionary, mode: String) -> String:
 		int(preview.get("before_value", 0)),
 		int(preview.get("after_value", 0)),
 	]
+
+
+func _precision_catalyst_consumption_summary(preview: Dictionary) -> String:
+	var display_name := str(preview.get("precision_catalyst_display_name_ko", ""))
+	var stock_key := str(preview.get("precision_catalyst_stock_key", ""))
+	var units := int(preview.get("precision_catalyst_units", 0))
+	if display_name.is_empty() or stock_key.is_empty() or units <= 0:
+		return "정보 확인 필요"
+	var owned := _precision_catalyst_owned_units(stock_key)
+	return "%s %d개 소모 · 보유 %d개" % [display_name, units, owned]
+
+
+func _precision_catalyst_stock_summary() -> String:
+	var catalog: Dictionary = PrecisionResolverScript.new().catalog()
+	var labels: PackedStringArray = []
+	for catalyst in catalog.get("catalysts", []):
+		if not catalyst is Dictionary:
+			continue
+		var display_name := str(catalyst.get("display_name_ko", ""))
+		var stock_key := str(catalyst.get("material_stock_key", ""))
+		if display_name.is_empty() or stock_key.is_empty():
+			continue
+		labels.append("%s %d개" % [display_name, _precision_catalyst_owned_units(stock_key)])
+	return " · ".join(labels) if not labels.is_empty() else "확인 필요"
+
+
+func _precision_catalyst_owned_units(stock_key: String) -> int:
+	if _resources == null or not _resources.has_method("get_material_count"):
+		return 0
+	return int(_resources.get_material_count(stock_key))
+
+
+func _precision_catalyst_resource_reason(enhancement: Dictionary) -> String:
+	var catalyst_id := str(enhancement.get("precision_catalyst_id", ""))
+	if catalyst_id.is_empty():
+		return ""
+	var stock_key := str(enhancement.get("precision_catalyst_stock_key", ""))
+	var units := int(enhancement.get("precision_catalyst_units", 0))
+	if stock_key.is_empty() or units != 1:
+		return "INVALID_PRECISION_CATALYST_COST"
+	if _resources == null or not _resources.has_method("get_material_count"):
+		return "MISSING_PRECISION_CATALYST_RESOURCE_CONTEXT"
+	if _precision_catalyst_owned_units(stock_key) < units:
+		return "INSUFFICIENT_PRECISION_CATALYST"
+	return ""
 
 
 func _precision_tag_entries_summary(entries: Array) -> String:
@@ -770,7 +823,7 @@ func _precision_tag_entries_summary(entries: Array) -> String:
 		if entry is Dictionary:
 			lines.append("%s · %s · %s · %s" % [
 				str(entry.get("tag_display_name_ko", "")),
-				str(entry.get("lineage_display_name_ko", "")),
+				str(entry.get("precision_catalyst_display_name_ko", "")),
 				str(entry.get("stage_roman", "")),
 				str(entry.get("next_effect_preview", "")),
 			])
@@ -781,8 +834,12 @@ func _player_facing_enhancement_reason(reason: String) -> String:
 	match reason:
 		"PRECISION_ACTION_REQUIRED", "INVALID_PRECISION_ACTION":
 			return "태그 행동을 먼저 고르세요"
-		"MISSING_CATALYST_LINEAGE":
-			return "촉매 계보를 고르세요"
+		"MISSING_PRECISION_CATALYST":
+			return "정밀 촉매를 고르세요"
+		"INSUFFICIENT_PRECISION_CATALYST":
+			return "필요한 정밀 촉매가 부족합니다"
+		"INVALID_PRECISION_CATALYST_COST", "MISSING_PRECISION_CATALYST_RESOURCE_CONTEXT":
+			return "정밀 촉매 정보를 확인할 수 없습니다"
 		"MISSING_PRECISION_METHOD":
 			return "정밀 강화 방식을 고르세요"
 		"MISSING_PRECISION_TAG":
@@ -826,8 +883,8 @@ func _connect_precision_controls() -> void:
 	if tag_option != null and not tag_option.item_selected.is_connected(_on_precision_tag_selected):
 		tag_option.item_selected.connect(_on_precision_tag_selected)
 	var lineage_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
-	if lineage_option != null and not lineage_option.item_selected.is_connected(_on_precision_lineage_selected):
-		lineage_option.item_selected.connect(_on_precision_lineage_selected)
+	if lineage_option != null and not lineage_option.item_selected.is_connected(_on_precision_catalyst_selected):
+		lineage_option.item_selected.connect(_on_precision_catalyst_selected)
 	var method_option := get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	if method_option != null and not method_option.item_selected.is_connected(_on_precision_method_selected):
 		method_option.item_selected.connect(_on_precision_method_selected)
@@ -912,7 +969,7 @@ func _ensure_enhancement_controls() -> void:
 	nodes.append(precision_tag_option)
 	var precision_lineage_label := Label.new()
 	precision_lineage_label.name = "PrecisionLineageLabel"
-	precision_lineage_label.text = "촉매 계보"
+	precision_lineage_label.text = "정밀 촉매"
 	precision_lineage_label.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_lineage_label)
 	var precision_lineage_option := OptionButton.new()
@@ -1004,27 +1061,29 @@ func _populate_precision_options() -> void:
 	tag_option.add_item("강화할 태그를 고르세요")
 	tag_option.set_item_metadata(0, "")
 	lineage_option.clear()
-	lineage_option.add_item("촉매 계보를 고르세요")
+	lineage_option.add_item("정밀 촉매를 고르세요")
 	lineage_option.set_item_metadata(0, "")
 	method_option.clear()
 	method_option.add_item("정밀 강화 방식을 고르세요")
 	method_option.set_item_metadata(0, "")
-	var selected_lineage := str(_precision_selection_data.get("lineage_id", ""))
+	var selected_catalyst := str(_precision_selection_data.get("catalyst_id", ""))
 	var selected_method := str(_precision_selection_data.get("method_id", ""))
-	var seen_lineages: Dictionary = {}
+	var seen_catalysts: Dictionary = {}
 	var seen_methods: Dictionary = {}
 	for candidate in _precision_candidates_for_action(_precision_action, _precision_mode()):
 		if not candidate is Dictionary:
 			continue
 		var action := str(candidate.get("action", ""))
 		if action == "ADD_TAG":
-			var lineage_id := str(candidate.get("lineage_id", ""))
+			var catalyst_id := str(candidate.get("precision_catalyst_id", ""))
 			var method_id := str(candidate.get("method_id", ""))
-			if (selected_method.is_empty() or method_id == selected_method) and not seen_lineages.has(lineage_id):
-				seen_lineages[lineage_id] = true
-				lineage_option.add_item(str(candidate.get("lineage_display_name_ko", "")))
-				lineage_option.set_item_metadata(lineage_option.item_count - 1, lineage_id)
-			if (selected_lineage.is_empty() or lineage_id == selected_lineage) and not seen_methods.has(method_id):
+			if (selected_method.is_empty() or method_id == selected_method) and not seen_catalysts.has(catalyst_id):
+				seen_catalysts[catalyst_id] = true
+				var catalyst_name := str(candidate.get("precision_catalyst_display_name_ko", ""))
+				var catalyst_stock_key := str(candidate.get("precision_catalyst_stock_key", ""))
+				lineage_option.add_item("%s · 보유 %d개" % [catalyst_name, _precision_catalyst_owned_units(catalyst_stock_key)])
+				lineage_option.set_item_metadata(lineage_option.item_count - 1, catalyst_id)
+			if (selected_catalyst.is_empty() or catalyst_id == selected_catalyst) and not seen_methods.has(method_id):
 				seen_methods[method_id] = true
 				method_option.add_item(str(candidate.get("method_display_name_ko", "")))
 				method_option.set_item_metadata(method_option.item_count - 1, method_id)
@@ -1032,7 +1091,7 @@ func _populate_precision_options() -> void:
 			tag_option.add_item(str(candidate.get("tag_display_name_ko", "")))
 			tag_option.set_item_metadata(tag_option.item_count - 1, str(candidate.get("tag_id", "")))
 	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionTagOption", str(_precision_selection_data.get("tag_id", "")))
-	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionLineageOption", str(_precision_selection_data.get("lineage_id", "")))
+	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionLineageOption", str(_precision_selection_data.get("catalyst_id", "")))
 	_select_precision_option("WorkshopScroll/WorkshopLayout/PrecisionMethodOption", str(_precision_selection_data.get("method_id", "")))
 
 

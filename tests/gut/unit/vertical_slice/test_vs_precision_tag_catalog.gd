@@ -23,8 +23,8 @@ func _item(level: int = 9, weight: int = 12):
 	return item
 
 
-func _add(lineage_id: String = "EMBER_LINEAGE", method_id: String = "EDGE_REINFORCEMENT") -> Dictionary:
-	return {"action": "ADD_TAG", "lineage_id": lineage_id, "method_id": method_id}
+func _add(catalyst_id: String = "HEART_OF_FLAME", method_id: String = "EDGE_REINFORCEMENT") -> Dictionary:
+	return {"action": "ADD_TAG", "catalyst_id": catalyst_id, "method_id": method_id}
 
 
 func _upgrade(tag_id: String = "TAG_EMBER_EDGE") -> Dictionary:
@@ -51,6 +51,10 @@ func test_every_catalog_target_requires_exact_entry_and_an_action_dictionary() -
 		assert_true(bool(preview.get("allowed", false)), "target %d must accept ADD_TAG at exact entry" % target)
 		assert_eq(preview.get("action", ""), "ADD_TAG")
 		assert_eq(int(preview.get("target_level", -1)), target)
+		assert_eq(preview.get("precision_catalyst_id", ""), "HEART_OF_FLAME")
+		assert_eq(preview.get("precision_catalyst_stock_key", ""), "heart_of_flame")
+		assert_eq(preview.get("precision_catalyst_display_name_ko", ""), "불의 심장")
+		assert_eq(int(preview.get("precision_catalyst_units", -1)), 1)
 		assert_eq(item.catalyst_affix, ItemScript.empty_catalyst_affix(), "preview must not mutate catalog state")
 		assert_eq(item.used_precision_milestones, [], "preview must not resolve milestones")
 
@@ -87,7 +91,7 @@ func test_later_target_adds_below_cap_and_rejects_duplicate_or_full_collection()
 	var resolver = PrecisionResolverScript.new()
 	var item = _item(19)
 	_seed(item, "TAG_EMBER_EDGE")
-	assert_true(bool(resolver.selection_preview(item, 20, _add("ANVIL_LINEAGE", "LIGHTWEIGHTING")).get("allowed", false)))
+	assert_true(bool(resolver.selection_preview(item, 20, _add("EARTH_CRYSTAL", "LIGHTWEIGHTING")).get("allowed", false)))
 
 	var duplicate: Dictionary = resolver.selection_preview(item, 20, _add())
 	assert_false(bool(duplicate.get("allowed", true)))
@@ -101,7 +105,7 @@ func test_later_target_adds_below_cap_and_rejects_duplicate_or_full_collection()
 	item.used_precision_milestones.clear()
 	item.used_precision_milestones.append_array([10, 20, 30])
 	item.enhancement_level = 39
-	var full: Dictionary = resolver.selection_preview(item, 40, _add("ANVIL_LINEAGE", "LIGHTWEIGHTING"))
+	var full: Dictionary = resolver.selection_preview(item, 40, _add("EARTH_CRYSTAL", "LIGHTWEIGHTING"))
 	assert_false(bool(full.get("allowed", true)))
 	assert_eq(full.get("reason", ""), "PRECISION_TAG_CAP_REACHED")
 
@@ -140,7 +144,7 @@ func test_upgrade_advances_from_stage_one_to_four_then_blocks_mastered_tag() -> 
 
 func test_lightweighting_blocks_when_effect_would_have_zero_weight() -> void:
 	var resolver = PrecisionResolverScript.new()
-	var blocked: Dictionary = resolver.selection_preview(_item(9, 0), 10, _add("EMBER_LINEAGE", "LIGHTWEIGHTING"))
+	var blocked: Dictionary = resolver.selection_preview(_item(9, 0), 10, _add("HEART_OF_FLAME", "LIGHTWEIGHTING"))
 	assert_false(bool(blocked.get("allowed", true)))
 	assert_eq(blocked.get("reason", ""), "PRECISION_EFFECT_UNAVAILABLE")
 
@@ -204,10 +208,10 @@ func test_stage_three_history_without_a_complete_milestone_assignment_is_blocked
 	item.used_precision_milestones.append_array([10, 20, 30])
 	var snapshot: Dictionary = item.to_dict()
 
-	var preview: Dictionary = resolver.selection_preview(item, 40, _add("ANVIL_LINEAGE", "LIGHTWEIGHTING"))
+	var preview: Dictionary = resolver.selection_preview(item, 40, _add("EARTH_CRYSTAL", "LIGHTWEIGHTING"))
 	assert_false(bool(preview.get("allowed", true)))
 	assert_eq(preview.get("reason", ""), "INVALID_PRECISION_MILESTONE_STATE")
-	var applied: Dictionary = resolver.apply_selection_success(item, 40, _add("ANVIL_LINEAGE", "LIGHTWEIGHTING"))
+	var applied: Dictionary = resolver.apply_selection_success(item, 40, _add("EARTH_CRYSTAL", "LIGHTWEIGHTING"))
 	assert_false(bool(applied.get("applied", true)))
 	assert_eq(applied.get("reason", ""), "INVALID_PRECISION_MILESTONE_STATE")
 	assert_eq(item.to_dict(), snapshot)
@@ -224,7 +228,7 @@ func test_stage_three_history_with_a_complete_internal_milestone_assignment_is_a
 	}]
 	item.used_precision_milestones.append_array([10, 20, 30])
 
-	var preview: Dictionary = resolver.selection_preview(item, 40, _add("ANVIL_LINEAGE", "LIGHTWEIGHTING"))
+	var preview: Dictionary = resolver.selection_preview(item, 40, _add("EARTH_CRYSTAL", "LIGHTWEIGHTING"))
 	assert_true(bool(preview.get("allowed", false)))
 	assert_eq(preview.get("reason", ""), "OK")
 
@@ -321,7 +325,7 @@ func _catalog_without_tag_display(catalog_data: Dictionary) -> Dictionary:
 
 func _catalog_with_duplicate_tag_coordinate(catalog_data: Dictionary) -> Dictionary:
 	var malformed := catalog_data.duplicate(true)
-	malformed["tags"][1]["lineage_id"] = malformed["tags"][0]["lineage_id"]
+	malformed["tags"][1]["catalyst_id"] = malformed["tags"][0]["catalyst_id"]
 	malformed["tags"][1]["method_id"] = malformed["tags"][0]["method_id"]
 	return malformed
 
@@ -331,7 +335,7 @@ func test_pending_initial_backfill_is_no_cost_seed_transition_without_effect_rea
 	var item = _item(10)
 	item.catalyst_affix["initial_tag_backfill_pending"] = true
 	var raw_before: int = item.raw_role_stat
-	var result: Dictionary = resolver.backfill_initial_tag(item, _add("ANVIL_LINEAGE", "EDGE_REINFORCEMENT"))
+	var result: Dictionary = resolver.backfill_initial_tag(item, _add("EARTH_CRYSTAL", "EDGE_REINFORCEMENT"))
 	assert_true(bool(result.get("applied", false)))
 	assert_eq(result.get("cost_or_roll", ""), "NONE")
 	assert_eq(item.raw_role_stat, raw_before, "migration must not reapply an already-owned effect")
@@ -341,5 +345,5 @@ func test_pending_initial_backfill_is_no_cost_seed_transition_without_effect_rea
 	}])
 	assert_false(bool(item.catalyst_affix["initial_tag_backfill_pending"]))
 	var snapshot: Dictionary = item.to_dict()
-	assert_false(bool(resolver.backfill_initial_tag(item, _add("ANVIL_LINEAGE", "EDGE_REINFORCEMENT")).get("applied", true)))
+	assert_false(bool(resolver.backfill_initial_tag(item, _add("EARTH_CRYSTAL", "EDGE_REINFORCEMENT")).get("applied", true)))
 	assert_eq(item.to_dict(), snapshot)

@@ -15,7 +15,7 @@ const DestroyedHistoryRecordScript = preload(
 )
 const REINFORCEMENT_MATERIAL_ID := "common_reinforcement_material"
 const PRECISION_TAG_GROWTH_EVENT_TYPE := "PRECISION_TAG_GROWTH"
-const PRECISION_TAG_GROWTH_DECISION_ID := "BS-ENHANCE-20260830-38"
+const PRECISION_TAG_GROWTH_DECISION_ID := "BS-ENHANCE-20260901-40"
 
 
 func resolve_and_save_with_rolls(
@@ -47,6 +47,14 @@ func resolve_and_save_with_rolls(
 		return _blocked("INSUFFICIENT_GOLD")
 	if int(resources.get_material_count(REINFORCEMENT_MATERIAL_ID)) < reinforcement_units:
 		return _blocked("INSUFFICIENT_REINFORCEMENT")
+	var precision_catalyst_id := str(preview.get("precision_catalyst_id", ""))
+	var precision_catalyst_stock_key := str(preview.get("precision_catalyst_stock_key", ""))
+	var precision_catalyst_units := int(preview.get("precision_catalyst_units", 0))
+	if not precision_catalyst_id.is_empty():
+		if precision_catalyst_stock_key.is_empty() or precision_catalyst_units != 1:
+			return _blocked("INVALID_PRECISION_CATALYST_COST")
+		if int(resources.get_material_count(precision_catalyst_stock_key)) < precision_catalyst_units:
+			return _blocked("INSUFFICIENT_PRECISION_CATALYST")
 
 	var candidate = SaveEnvelopeScript.from_dict(envelope.to_dict())
 	if candidate == null or not candidate.validation_errors.is_empty():
@@ -57,6 +65,10 @@ func resolve_and_save_with_rolls(
 	staged_stock[REINFORCEMENT_MATERIAL_ID] = (
 		int(staged_stock.get(REINFORCEMENT_MATERIAL_ID, 0)) - reinforcement_units
 	)
+	if precision_catalyst_units > 0:
+		staged_stock[precision_catalyst_stock_key] = (
+			int(staged_stock.get(precision_catalyst_stock_key, 0)) - precision_catalyst_units
+		)
 	staged_resources["material_stock"] = staged_stock
 	candidate.workshop_resources = staged_resources
 
@@ -72,6 +84,10 @@ func resolve_and_save_with_rolls(
 	resources.changed.emit(resources.snapshot())
 	result["gold_cost"] = gold_cost
 	result["reinforcement_units"] = reinforcement_units
+	result["precision_catalyst_id"] = precision_catalyst_id
+	result["precision_catalyst_stock_key"] = precision_catalyst_stock_key
+	result["precision_catalyst_display_name_ko"] = str(preview.get("precision_catalyst_display_name_ko", ""))
+	result["precision_catalyst_units"] = precision_catalyst_units
 	result["envelope"] = candidate
 	return result
 
@@ -194,6 +210,10 @@ func backfill_precision_tag_and_save(envelope, item_uid: String, precision_selec
 		"precision_stage_after": int(backfill.get("stage_after", 0)),
 		"precision_effect_axis": str(backfill.get("effect_axis", "")),
 		"precision_effect_delta": int(backfill.get("effect_delta", 0)),
+		"precision_catalyst_id": str(backfill.get("precision_catalyst_id", "")),
+		"precision_catalyst_stock_key": str(backfill.get("precision_catalyst_stock_key", "")),
+		"precision_catalyst_display_name_ko": str(backfill.get("precision_catalyst_display_name_ko", "")),
+		"precision_catalyst_units": 0,
 		"envelope": candidate,
 	}
 
