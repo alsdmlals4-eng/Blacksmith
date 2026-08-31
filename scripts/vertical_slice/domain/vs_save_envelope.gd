@@ -1,8 +1,10 @@
 class_name VSSaveEnvelope
 extends RefCounted
 
-const SCHEMA_VERSION := 4
-const PRESET_VERSION := "VS-2026.08.27-D"
+const SCHEMA_VERSION := 5
+const PRESET_VERSION := "VS-2026.09.01-E"
+const LEGACY_V4_SCHEMA_VERSION := 4
+const LEGACY_V4_PRESET_VERSION := "VS-2026.08.27-D"
 const LEGACY_V3_SCHEMA_VERSION := 3
 const LEGACY_V3_PRESET_VERSION := "VS-2026.08.26-C"
 const LEGACY_V2_SCHEMA_VERSION := 2
@@ -70,7 +72,7 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 	var envelope := VSSaveEnvelope.new()
 	var source_schema_version := int(value.get("schema_version", 0))
 	for field_name in REQUIRED_FIELDS:
-		if field_name == "workshop_resources" and source_schema_version < SCHEMA_VERSION:
+		if field_name == "workshop_resources" and source_schema_version < LEGACY_V4_SCHEMA_VERSION:
 			continue
 		if not value.has(field_name):
 			envelope.validation_errors.append("MISSING_REQUIRED_FIELD:%s" % field_name)
@@ -104,7 +106,7 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 	else:
 		envelope.validation_errors.append("INVALID_FIELD_TYPE:schedule_state")
 
-	if source_schema_version >= SCHEMA_VERSION:
+	if source_schema_version >= LEGACY_V4_SCHEMA_VERSION:
 		var raw_workshop_resources: Variant = value.get("workshop_resources", {})
 		if raw_workshop_resources is Dictionary:
 			envelope.workshop_resources = _normalize_workshop_resources(raw_workshop_resources)
@@ -112,6 +114,12 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 			envelope.validation_errors.append("INVALID_FIELD_TYPE:workshop_resources")
 	else:
 		envelope.workshop_resources = starter_workshop_resources()
+
+	if (
+		source_schema_version == LEGACY_V4_SCHEMA_VERSION
+		and envelope.preset_version == LEGACY_V4_PRESET_VERSION
+	):
+		_migrate_v4_precision_catalyst_stock(envelope)
 
 	var raw_destroyed_history: Variant = value.get("destroyed_history_by_uid", {})
 	if raw_destroyed_history is Dictionary:
@@ -150,6 +158,9 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 		envelope.validation_errors.append("INVALID_FIELD_TYPE:items_by_uid")
 
 	if (
+		envelope.schema_version == LEGACY_V4_SCHEMA_VERSION
+		and envelope.preset_version == LEGACY_V4_PRESET_VERSION
+	) or (
 		envelope.schema_version == LEGACY_V2_SCHEMA_VERSION
 		and envelope.preset_version == LEGACY_V2_PRESET_VERSION
 	) or (
@@ -218,8 +229,25 @@ static func starter_workshop_resources() -> Dictionary:
 		"gold": 20000,
 		"material_stock": {
 			"common_reinforcement_material": 30,
+			"heart_of_flame": 64,
+			"earth_crystal": 64,
 		},
 	}
+
+
+static func _migrate_v4_precision_catalyst_stock(envelope: VSSaveEnvelope) -> void:
+	var material_stock: Variant = envelope.workshop_resources.get("material_stock", null)
+	if not material_stock is Dictionary:
+		return
+	var stock: Dictionary = material_stock
+	var has_heart: bool = stock.has("heart_of_flame")
+	var has_earth: bool = stock.has("earth_crystal")
+	if not has_heart and not has_earth:
+		stock["heart_of_flame"] = 64
+		stock["earth_crystal"] = 64
+		return
+	if not has_heart or not has_earth:
+		envelope.validation_errors.append("V4_PARTIAL_PRECISION_CATALYST_STOCK")
 
 
 static func _normalize_workshop_resources(value: Dictionary) -> Dictionary:
@@ -332,3 +360,7 @@ func _validate_values() -> void:
 			validation_errors.append("INVALID_WORKSHOP_RESOURCE_ID")
 		if not quantity is int or int(quantity) < 0:
 			validation_errors.append("INVALID_WORKSHOP_RESOURCE_QUANTITY:%s" % material_id)
+	if schema_version == SCHEMA_VERSION:
+		for catalyst_stock_key in ["heart_of_flame", "earth_crystal"]:
+			if not material_stock.has(catalyst_stock_key):
+				validation_errors.append("MISSING_PRECISION_CATALYST_RESOURCE:%s" % catalyst_stock_key)

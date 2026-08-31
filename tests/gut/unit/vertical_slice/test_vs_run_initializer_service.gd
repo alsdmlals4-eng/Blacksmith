@@ -30,8 +30,8 @@ func test_initializer_creates_valid_empty_campaign_envelope() -> void:
 	if envelope == null:
 		return
 	assert_true(envelope.validation_errors.is_empty(), "new campaign envelope must validate before persistence")
-	assert_eq(envelope.schema_version, 4, "current implementation must use V4 save schema")
-	assert_eq(envelope.preset_version, "VS-2026.08.27-D", "current implementation must use V4 preset")
+	assert_eq(envelope.schema_version, 5, "current implementation must use V5 save schema")
+	assert_eq(envelope.preset_version, "VS-2026.09.01-E", "current implementation must use V5 preset")
 	assert_eq(envelope.workshop_resources.get("gold", -1), 20000, "new campaign starts with mutable TEMP_TEST_BUDGET gold")
 	assert_eq(
 		(envelope.workshop_resources.get("material_stock", {}) as Dictionary).get(
@@ -40,6 +40,8 @@ func test_initializer_creates_valid_empty_campaign_envelope() -> void:
 		30,
 		"new campaign starts with mutable TEMP_TEST_BUDGET reinforcement material"
 	)
+	assert_eq((envelope.workshop_resources.get("material_stock", {}) as Dictionary).get("heart_of_flame", -1), 64)
+	assert_eq((envelope.workshop_resources.get("material_stock", {}) as Dictionary).get("earth_crystal", -1), 64)
 	assert_eq(int(envelope.active_run.get("current_day", 0)), 1, "new campaign starts on day 1")
 	assert_eq(envelope.active_run.get("resolved_events", {}), {}, "initializer must not resolve gameplay events")
 	assert_true(envelope.items_by_uid.is_empty(), "initializer must not create an item")
