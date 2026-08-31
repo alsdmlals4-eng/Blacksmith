@@ -76,7 +76,7 @@
   Run:
 
   ```powershell
-  python -m unittest tests.test_anvil_oath_product_title_contract -v
+  C:\\Users\\user\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe -m unittest tests.test_anvil_oath_product_title_contract -v
   ```
 
   Expected result: FAIL because the real scene title, GDD heading, PDF metadata, and receipt still use the prior title state. A missing-file or import error is not an acceptable RED result.
@@ -197,7 +197,7 @@
 - [ ] **Step 4: Run the new title contract and existing GDD contract to observe GREEN.**
 
   ```powershell
-  python -m unittest tests.test_anvil_oath_product_title_contract -v
+  C:\\Users\\user\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe -m unittest tests.test_anvil_oath_product_title_contract -v
   C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe tests\check_human_facing_gdd_and_review_loop_contract.py
   ```
 
@@ -287,4 +287,3 @@
   ```
 
   Expected result: `0 0`. Remove only disposable render/temporary directories after confirming their absolute paths; preserve the user-reviewable generated logo candidates until the user decides their disposition.
-
