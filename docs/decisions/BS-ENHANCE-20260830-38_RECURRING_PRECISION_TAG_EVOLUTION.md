@@ -1,8 +1,10 @@
 # BS-ENHANCE-20260830-38 · 반복 정밀강화 태그 진화
 
-- 상태: `USER_APPROVED_CURRENT`
+- 상태: `USER_APPROVED_CURRENT / CATALYST_RESOURCE_FIELDS_PARTIALLY_SUPERSEDED_BY_BS-ENHANCE-20260901-40`
 - 현재 field owner: 정밀 cadence, 태그 collection cardinality/stage, V3→V4 migration disposition, tag-growth effect timing.
-- 기계 catalog: `docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json` schema 2.
+- 기계 catalog: `docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json` schema 3.
+
+> [부분 대체됨] `lineage_id` 입력·`lineages` catalog·무재고/무소모 금지는 `BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md`가 소유한다. 이 Decision은 ten-target cadence, tag collection cardinality/stage, V3→V4 item migration disposition, growth effect timing을 계속 소유한다.
 
 ## 대체와 보존
 

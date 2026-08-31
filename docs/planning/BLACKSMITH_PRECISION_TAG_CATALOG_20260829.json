@@ -1,8 +1,8 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "catalog_id": "BLACKSMITH_PRECISION_TAG_CATALOG_20260829",
   "status": "USER_APPROVED_CURRENT",
-  "source_decision_id": "BS-ENHANCE-20260830-38",
+  "source_decision_id": "BS-ENHANCE-20260901-40",
   "machine_owner": "CATALYST_AFFIX",
   "precision_targets": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
   "tag_growth": { "max_active_tags": 3, "max_stage": 4 },
@@ -10,7 +10,7 @@
     "actions": ["ADD_TAG", "UPGRADE_TAG"],
     "persistence": "ATTEMPT_LOCAL_ONLY",
     "no_default_random_or_reroll": true,
-    "empty_lineage_behavior": "BLOCK_BEFORE_COST_OR_ROLL"
+    "empty_catalyst_behavior": "BLOCK_BEFORE_COST_OR_ROLL"
   },
   "mechanical_boundary": {
     "durability_delta_in_first_catalog": 0,
@@ -27,18 +27,18 @@
     "v3_pending_placeholder": "INITIAL_TAG_PENDING_BLOCK_FOLLOWUP_PRECISION",
     "v3_unknown_nonempty_string": "FAIL_CLOSED_UNREADABLE_CATALYST_STATE"
   },
-  "lineages": [
-    { "id": "EMBER_LINEAGE", "display_name_ko": "불씨 계보" },
-    { "id": "ANVIL_LINEAGE", "display_name_ko": "모루 계보" }
+  "catalysts": [
+    { "id": "HEART_OF_FLAME", "material_stock_key": "heart_of_flame", "display_name_ko": "불의 심장", "units_per_precision_attempt": 1 },
+    { "id": "EARTH_CRYSTAL", "material_stock_key": "earth_crystal", "display_name_ko": "대지의 결정", "units_per_precision_attempt": 1 }
   ],
   "methods": [
     { "id": "EDGE_REINFORCEMENT", "display_name_ko": "날 세우기", "effect": { "axis": "RAW_ROLE_STAT", "delta": 3, "durability_delta": 0 } },
     { "id": "LIGHTWEIGHTING", "display_name_ko": "경량 담금", "effect": { "axis": "WEIGHT_POINT", "delta": -3, "durability_delta": 0 } }
   ],
   "tags": [
-    { "id": "TAG_EMBER_EDGE", "display_name_ko": "불씨의 예리함", "lineage_id": "EMBER_LINEAGE", "method_id": "EDGE_REINFORCEMENT", "machine_owner": "CATALYST_AFFIX", "compatible_tag_ids": ["TAG_EMBER_LIGHT", "TAG_ANVIL_EDGE", "TAG_ANVIL_LIGHT"] },
-    { "id": "TAG_EMBER_LIGHT", "display_name_ko": "불씨의 가벼움", "lineage_id": "EMBER_LINEAGE", "method_id": "LIGHTWEIGHTING", "machine_owner": "CATALYST_AFFIX", "compatible_tag_ids": ["TAG_EMBER_EDGE", "TAG_ANVIL_EDGE", "TAG_ANVIL_LIGHT"] },
-    { "id": "TAG_ANVIL_EDGE", "display_name_ko": "모루의 예리함", "lineage_id": "ANVIL_LINEAGE", "method_id": "EDGE_REINFORCEMENT", "machine_owner": "CATALYST_AFFIX", "compatible_tag_ids": ["TAG_EMBER_EDGE", "TAG_EMBER_LIGHT", "TAG_ANVIL_LIGHT"] },
-    { "id": "TAG_ANVIL_LIGHT", "display_name_ko": "모루의 가벼움", "lineage_id": "ANVIL_LINEAGE", "method_id": "LIGHTWEIGHTING", "machine_owner": "CATALYST_AFFIX", "compatible_tag_ids": ["TAG_EMBER_EDGE", "TAG_EMBER_LIGHT", "TAG_ANVIL_EDGE"] }
+    { "id": "TAG_EMBER_EDGE", "display_name_ko": "불의 심장 · 예리함", "catalyst_id": "HEART_OF_FLAME", "method_id": "EDGE_REINFORCEMENT", "machine_owner": "CATALYST_AFFIX", "compatible_tag_ids": ["TAG_EMBER_LIGHT", "TAG_ANVIL_EDGE", "TAG_ANVIL_LIGHT"] },
+    { "id": "TAG_EMBER_LIGHT", "display_name_ko": "불의 심장 · 경량", "catalyst_id": "HEART_OF_FLAME", "method_id": "LIGHTWEIGHTING", "machine_owner": "CATALYST_AFFIX", "compatible_tag_ids": ["TAG_EMBER_EDGE", "TAG_ANVIL_EDGE", "TAG_ANVIL_LIGHT"] },
+    { "id": "TAG_ANVIL_EDGE", "display_name_ko": "대지의 결정 · 예리함", "catalyst_id": "EARTH_CRYSTAL", "method_id": "EDGE_REINFORCEMENT", "machine_owner": "CATALYST_AFFIX", "compatible_tag_ids": ["TAG_EMBER_EDGE", "TAG_EMBER_LIGHT", "TAG_ANVIL_LIGHT"] },
+    { "id": "TAG_ANVIL_LIGHT", "display_name_ko": "대지의 결정 · 경량", "catalyst_id": "EARTH_CRYSTAL", "method_id": "LIGHTWEIGHTING", "machine_owner": "CATALYST_AFFIX", "compatible_tag_ids": ["TAG_EMBER_EDGE", "TAG_EMBER_LIGHT", "TAG_ANVIL_EDGE"] }
   ]
 }

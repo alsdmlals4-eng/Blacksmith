@@ -1,4 +1,4 @@
-# Decision38 catalog adapter. This is the sole normal-success mutation boundary for Catalyst Tags.
+# Decision40 catalog adapter. This is the sole normal-success mutation boundary for Catalyst Tags.
 class_name VSPrecisionResolver
 extends RefCounted
 
@@ -10,6 +10,7 @@ const MAX_ACTIVE_TAGS := 3
 const MAX_TAG_STAGE := 4
 const ACTION_ADD := "ADD_TAG"
 const ACTION_UPGRADE := "UPGRADE_TAG"
+const PRECISION_CATALYST_DECISION_ID := "BS-ENHANCE-20260901-40"
 
 
 func catalog() -> Dictionary:
@@ -107,21 +108,21 @@ func _selection_preview_from_action(item, target_level: int, selection: Dictiona
 
 
 func _resolve_add(selection: Dictionary, entries: Array, catalog_data: Dictionary) -> Dictionary:
-	if not _has_exact_keys(selection, ["action", "lineage_id", "method_id"]) or str(selection.get("action", "")) != ACTION_ADD:
+	if not _has_exact_keys(selection, ["action", "catalyst_id", "method_id"]) or str(selection.get("action", "")) != ACTION_ADD:
 		return _blocked("INVALID_PRECISION_ACTION")
 	if entries.size() >= MAX_ACTIVE_TAGS:
 		return _blocked("PRECISION_TAG_CAP_REACHED")
-	var lineage_id := str(selection["lineage_id"])
+	var catalyst_id := str(selection["catalyst_id"])
 	var method_id := str(selection["method_id"])
-	if lineage_id.is_empty():
-		return _blocked("MISSING_CATALYST_LINEAGE")
+	if catalyst_id.is_empty():
+		return _blocked("MISSING_PRECISION_CATALYST")
 	if method_id.is_empty():
 		return _blocked("MISSING_PRECISION_METHOD")
-	var lineage := _entry_by_id(catalog_data["lineages"], lineage_id)
+	var catalyst := _entry_by_id(catalog_data["catalysts"], catalyst_id)
 	var method := _entry_by_id(catalog_data["methods"], method_id)
-	if lineage.is_empty() or method.is_empty():
+	if catalyst.is_empty() or method.is_empty():
 		return _blocked("INVALID_PRECISION_TAG_COMBINATION")
-	var tag := _tag_by_pair(catalog_data["tags"], lineage_id, method_id)
+	var tag := _tag_by_pair(catalog_data["tags"], catalyst_id, method_id)
 	if tag.is_empty():
 		return _blocked("INVALID_PRECISION_TAG_COMBINATION")
 	var tag_id := str(tag["id"])
@@ -130,7 +131,7 @@ func _resolve_add(selection: Dictionary, entries: Array, catalog_data: Dictionar
 			return _blocked("DUPLICATE_PRECISION_TAG")
 	if not _tag_is_compatible_with_entries(tag, entries, catalog_data):
 		return _blocked("INCOMPATIBLE_PRECISION_TAG")
-	return _resolved(tag, lineage, method, ACTION_ADD)
+	return _resolved(tag, catalyst, method, ACTION_ADD)
 
 
 func _resolve_upgrade(selection: Dictionary, entries: Array, catalog_data: Dictionary) -> Dictionary:
@@ -148,17 +149,17 @@ func _resolve_upgrade(selection: Dictionary, entries: Array, catalog_data: Dicti
 	var tag := _entry_by_id(catalog_data["tags"], tag_id)
 	if tag.is_empty():
 		return _blocked("INVALID_CATALYST_TAG_STATE")
-	var lineage := _entry_by_id(catalog_data["lineages"], str(tag["lineage_id"]))
+	var catalyst := _entry_by_id(catalog_data["catalysts"], str(tag["catalyst_id"]))
 	var method := _entry_by_id(catalog_data["methods"], str(tag["method_id"]))
-	if lineage.is_empty() or method.is_empty():
+	if catalyst.is_empty() or method.is_empty():
 		return _blocked("PRECISION_TAG_CATALOG_INVALID")
-	var resolved := _resolved(tag, lineage, method, ACTION_UPGRADE)
+	var resolved := _resolved(tag, catalyst, method, ACTION_UPGRADE)
 	resolved["stage_before"] = stage
 	resolved["stage_after"] = stage + 1
 	return resolved
 
 
-func _resolved(tag: Dictionary, lineage: Dictionary, method: Dictionary, action: String) -> Dictionary:
+func _resolved(tag: Dictionary, catalyst: Dictionary, method: Dictionary, action: String) -> Dictionary:
 	var effect: Dictionary = method["effect"]
 	return {
 		"allowed": true,
@@ -166,8 +167,10 @@ func _resolved(tag: Dictionary, lineage: Dictionary, method: Dictionary, action:
 		"action": action,
 		"tag_id": str(tag["id"]),
 		"tag_display_name_ko": str(tag["display_name_ko"]),
-		"lineage_id": str(lineage["id"]),
-		"lineage_display_name_ko": str(lineage["display_name_ko"]),
+		"precision_catalyst_id": str(catalyst["id"]),
+		"precision_catalyst_stock_key": str(catalyst["material_stock_key"]),
+		"precision_catalyst_display_name_ko": str(catalyst["display_name_ko"]),
+		"precision_catalyst_units": int(catalyst["units_per_precision_attempt"]),
 		"method_id": str(method["id"]),
 		"method_display_name_ko": str(method["display_name_ko"]),
 		"effect_axis": str(effect["axis"]),
@@ -349,9 +352,9 @@ func _load_catalog() -> Dictionary:
 
 
 func _catalog_is_valid(catalog_data: Dictionary) -> bool:
-	if int(catalog_data.get("schema_version", 0)) != 2 or str(catalog_data.get("machine_owner", "")) != CATALYST_OWNER:
+	if int(catalog_data.get("schema_version", 0)) != 3 or str(catalog_data.get("machine_owner", "")) != CATALYST_OWNER:
 		return false
-	if str(catalog_data.get("source_decision_id", "")) != "BS-ENHANCE-20260830-38" or not _matches_precision_targets(catalog_data.get("precision_targets", [])):
+	if str(catalog_data.get("source_decision_id", "")) != PRECISION_CATALYST_DECISION_ID or not _matches_precision_targets(catalog_data.get("precision_targets", [])):
 		return false
 	var growth: Variant = catalog_data.get("tag_growth", {})
 	var boundary: Variant = catalog_data.get("mechanical_boundary", {})
@@ -360,18 +363,24 @@ func _catalog_is_valid(catalog_data: Dictionary) -> bool:
 		return false
 	if int(growth.get("max_active_tags", 0)) != MAX_ACTIVE_TAGS or int(growth.get("max_stage", 0)) != MAX_TAG_STAGE:
 		return false
-	if int(boundary.get("durability_delta_in_first_catalog", -1)) != 0 or flow.get("actions", []) != [ACTION_ADD, ACTION_UPGRADE]:
+	if int(boundary.get("durability_delta_in_first_catalog", -1)) != 0 or flow.get("actions", []) != [ACTION_ADD, ACTION_UPGRADE] or str(flow.get("empty_catalyst_behavior", "")) != "BLOCK_BEFORE_COST_OR_ROLL":
 		return false
-	var lineages: Variant = catalog_data.get("lineages", [])
+	var catalysts: Variant = catalog_data.get("catalysts", [])
 	var methods: Variant = catalog_data.get("methods", [])
 	var tags: Variant = catalog_data.get("tags", [])
-	if not lineages is Array or not methods is Array or not tags is Array or lineages.size() != 2 or methods.size() != 2 or tags.size() != 4:
+	if not catalysts is Array or not methods is Array or not tags is Array or catalysts.size() != 2 or methods.size() != 2 or tags.size() != 4:
 		return false
-	var lineage_ids: Dictionary = {}
-	for lineage in lineages:
-		if not lineage is Dictionary or str(lineage.get("id", "")).is_empty() or str(lineage.get("display_name_ko", "")).is_empty() or lineage_ids.has(str(lineage.get("id", ""))):
+	var catalyst_ids: Dictionary = {}
+	var catalyst_stock_keys: Dictionary = {}
+	for catalyst in catalysts:
+		if not catalyst is Dictionary:
 			return false
-		lineage_ids[str(lineage["id"])] = true
+		var catalyst_id := str(catalyst.get("id", ""))
+		var stock_key := str(catalyst.get("material_stock_key", ""))
+		if catalyst_id.is_empty() or stock_key.is_empty() or str(catalyst.get("display_name_ko", "")).is_empty() or int(catalyst.get("units_per_precision_attempt", 0)) != 1 or catalyst_ids.has(catalyst_id) or catalyst_stock_keys.has(stock_key):
+			return false
+		catalyst_ids[catalyst_id] = true
+		catalyst_stock_keys[stock_key] = true
 	var method_ids: Dictionary = {}
 	for method in methods:
 		if not method is Dictionary or str(method.get("id", "")).is_empty() or str(method.get("display_name_ko", "")).is_empty() or method_ids.has(str(method.get("id", ""))):
@@ -387,8 +396,8 @@ func _catalog_is_valid(catalog_data: Dictionary) -> bool:
 			return false
 		var tag_id := str(tag.get("id", ""))
 		var compatible: Variant = tag.get("compatible_tag_ids", [])
-		var coordinate := "%s|%s" % [str(tag.get("lineage_id", "")), str(tag.get("method_id", ""))]
-		if tag_id.is_empty() or str(tag.get("display_name_ko", "")).is_empty() or tag_ids.has(tag_id) or tag_coordinates.has(coordinate) or str(tag.get("machine_owner", "")) != CATALYST_OWNER or not lineage_ids.has(str(tag.get("lineage_id", ""))) or not method_ids.has(str(tag.get("method_id", ""))) or not compatible is Array or compatible.size() != 3:
+		var coordinate := "%s|%s" % [str(tag.get("catalyst_id", "")), str(tag.get("method_id", ""))]
+		if tag_id.is_empty() or str(tag.get("display_name_ko", "")).is_empty() or tag_ids.has(tag_id) or tag_coordinates.has(coordinate) or str(tag.get("machine_owner", "")) != CATALYST_OWNER or not catalyst_ids.has(str(tag.get("catalyst_id", ""))) or not method_ids.has(str(tag.get("method_id", ""))) or not compatible is Array or compatible.size() != 3:
 			return false
 		tag_ids[tag_id] = true
 		tag_coordinates[coordinate] = true
@@ -435,9 +444,9 @@ func _entry_by_tag_id(entries: Array, tag_id: String) -> Dictionary:
 	return {}
 
 
-func _tag_by_pair(tags: Array, lineage_id: String, method_id: String) -> Dictionary:
+func _tag_by_pair(tags: Array, catalyst_id: String, method_id: String) -> Dictionary:
 	for tag in tags:
-		if tag is Dictionary and str(tag.get("lineage_id", "")) == lineage_id and str(tag.get("method_id", "")) == method_id:
+		if tag is Dictionary and str(tag.get("catalyst_id", "")) == catalyst_id and str(tag.get("method_id", "")) == method_id:
 			return tag
 	return {}
 

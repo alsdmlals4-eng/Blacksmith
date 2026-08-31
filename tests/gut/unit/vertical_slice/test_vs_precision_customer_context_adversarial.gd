@@ -47,7 +47,7 @@ func test_invalid_external_context_fails_closed_in_customer_resolver_without_aff
 	assert_false(evaluation.has("final_primary_estimate"))
 	var precision = PrecisionResolverScript.new().selection_preview(_item(9), 10, {
 		"action": "ADD_TAG",
-		"lineage_id": "EMBER_LINEAGE",
+		"catalyst_id": "HEART_OF_FLAME",
 		"method_id": "EDGE_REINFORCEMENT",
 	})
 	assert_true(bool(precision.get("allowed", false)))
@@ -64,14 +64,14 @@ func test_primary_estimate_respects_five_and_ninety_five_percent_clamps() -> voi
 func test_precision_unknown_inputs_fail_closed() -> void:
 	var resolver = PrecisionResolverScript.new()
 	var wrong_entry = resolver.selection_preview(_item(10), 11, {
-		"lineage_id": "EMBER_LINEAGE",
+		"catalyst_id": "HEART_OF_FLAME",
 		"method_id": "EDGE_REINFORCEMENT",
 	})
 	assert_false(bool(wrong_entry.get("allowed", true)))
 	assert_eq(wrong_entry.get("reason", ""), "INVALID_PRECISION_ENTRY")
 	var bad_method = resolver.selection_preview(_item(9), 10, {
 		"action": "ADD_TAG",
-		"lineage_id": "EMBER_LINEAGE",
+		"catalyst_id": "HEART_OF_FLAME",
 		"method_id": "UNKNOWN_METHOD",
 	})
 	assert_false(bool(bad_method.get("allowed", true)))

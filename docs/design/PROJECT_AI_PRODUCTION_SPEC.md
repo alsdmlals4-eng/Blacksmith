@@ -4,18 +4,18 @@
 
 > **Document role:** machine-searchable current-canon planning and implementation contract. It is not a replacement for executable code, JSON owners, tests, or runtime evidence.
 >
-> **Source snapshot:** `main` / `5744865a1b9805c89da230aea0b067f382def85c` before this derived-GDD reconciliation. Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner, with current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36`.
+> **Source snapshot:** `main` / `5744865a1b9805c89da230aea0b067f382def85c` before this derived-GDD reconciliation. Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners, with current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36`.
 > **Generated scope:** this is a technical-trace companion to the human-facing GDD and `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; it does not own the human reading experience. Notion is retired from future project work; no new raster, runtime asset, Scene, data, or GDScript change belongs to this document batch.
 
-> **2026-08-30 recurring Precision trace:** `BS-ENHANCE-20260830-38` is the current owner for all ten Precision targets, `ADD_TAG` / `UPGRADE_TAG`, a maximum of three tags, and I–IV growth. The catalog is schema 2. Item V4 migrates the former single catalyst value to a versioned tag collection while preserving the existing `CATALYST_AFFIX` owner. Exact runtime consumers are Main Menu, recurring Precision Workshop, and Customer World Result; their three approved illustrations are locked, registered, and implemented with machine verification. This is not client, Android, accessibility, human visual, performance, or release verification: each remains `NOT_RUN`.
+> **2026-09-01 consumable recurring Precision trace:** `BS-ENHANCE-20260830-38` owns all ten Precision targets, `ADD_TAG` / `UPGRADE_TAG`, a maximum of three tags, and I–IV growth. `BS-ENHANCE-20260901-40` owns catalog schema 3, the two consumable catalysts, and V5 resource migration. Item V4 retains the versioned Tag collection in `CATALYST_AFFIX`; V4→V5 grants the temporary starter resource bundle, and each saved normal Precision attempt atomically consumes one derived catalyst. Exact runtime consumers are Main Menu, recurring Precision Workshop, and Customer World Result; their three approved illustrations are locked, registered, and implemented with machine verification. This is not client, Android, accessibility, human visual, performance, or release verification: each remains `NOT_RUN`.
 
 ## 00A. RECURRING PRECISION IMPLEMENTATION TRACE
 
 | Technical concern | Current source / evidence boundary |
 |---|---|
-| Rule owner | `BS-ENHANCE-20260830-38`; targets 10 through 100 at ten-level intervals. |
-| Catalog | `BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json`, schema 2; `ADD_TAG` / `UPGRADE_TAG`, cap 3, stage 1–4. |
-| Persistence | V4 item migration stores the versioned tag collection in `CATALYST_AFFIX`; old known values migrate without reapplying their effect, pending values remain gated, unknown values fail closed. |
+| Rule owner | `BS-ENHANCE-20260830-38` + `BS-ENHANCE-20260901-40`; targets 10 through 100 at ten-level intervals. |
+| Catalog | `BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json`, schema 3; `ADD_TAG` / `UPGRADE_TAG`, cap 3, stage 1–4, `불의 심장` / `대지의 결정` one-unit charge. |
+| Persistence | V4 item migration stores the versioned tag collection in `CATALYST_AFFIX`; V5 resource migration adds the two temporary starter catalyst stocks. Old known values migrate without reapplying their effect, pending values remain gated, unknown values fail closed. |
 | Runtime consumers | Main Menu background, Precision Workshop state illustration, Customer World Result illustration; exact bindings and asset hashes are registered in the repository visual requirements and asset records. |
 | Machine evidence | Current catalog, V4 migration, resolver/action, UI binding, visual-requirement contract, and focused GUT checks are repository machine evidence at the recurring-Precision delivery head. The GUT runner summary is intentionally not repeated here because the known overall runner conclusion is INCONCLUSIVE. |
 | Ceiling | Godot client observation, Android device, accessibility, performance, human play, human visual review, release and external rights completion are `NOT_RUN`. |
@@ -31,7 +31,7 @@
 | Current visual direction | `ILLUSTRATED_WORKSHOP_BOOK / USER_APPROVED_DIRECTION`; warm hand-drawn workshop book, paper/leather/iron/wood material language, readable modern controls. |
 | Current project routing | `GITHUB_REPOSITORY_ONLY_CURRENT_CANON`; the repository is both the human-facing GDD and operational source. Notion is historical-only and receives no future read/write. |
 | Image execution timing | Consumer metadata first, then `USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT`; only final visual lock or runtime promotion asks the user. |
-| Canonical current owners | `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`; Decisions 28-32 and 34 JSON/decision owners. Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner. |
+| Canonical current owners | `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`; Decisions 28-32 and 34 JSON/decision owners. Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners. |
 | Open PR boundary | PR [#196](https://github.com/alsdmlals4-eng/Blacksmith/pull/196) is `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`; it is not merged truth. |
 | Evidence ceiling | Automated contracts and selected GUT/CI evidence exist. Godot client rendering, Android, accessibility, performance, Human usability, player experience, and release readiness remain `NOT_RUN`. |
 
@@ -51,7 +51,7 @@
 | SRC-CAN-06 | `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json` | Decision31 test-only repair-cost curve. |
 | SRC-CAN-07 | `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json` | Decision30 actual-use event eligibility and damage composition. |
 | SRC-CAN-08 | `docs/decisions/BS-ENHANCE-20260828-34_WEAPON_KEYWORD_OWNERSHIP.md` | Grade / Tag / Event taxonomy and `+9→+10` keyword ownership. |
-| SRC-CAN-08A | `docs/decisions/BS-ENHANCE-20260829-37_PRECISION_TAG_CATALOG_AND_SELECTION_GATE.md` and `docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json` | Decision37 historical/superseded first 2×2 Tag catalog content only; Decision38/schema2/V4 active recurring owner. Retains explicit choice flow, empty-selection block, and placeholder backfill provenance. |
+| SRC-CAN-08A | `docs/decisions/BS-ENHANCE-20260829-37_PRECISION_TAG_CATALOG_AND_SELECTION_GATE.md` and `docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json` | Decision37 historical/superseded first 2×2 Tag catalog content only; Decision38/40 are the catalog V3/V5 active current owners. Retains explicit choice flow, empty-selection block, and placeholder backfill provenance. |
 | SRC-CAN-09 | `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json` and `assets/ASSET_MANIFEST.json` | Visual consumer, asset provenance, and validation state. |
 | SRC-CAN-10 | `docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md` | GitHub-only current-canon routing and post-generation visual lock policy. |
 | SRC-CAN-11 | `docs/decisions/BS-OPS-20260828-36_EVIDENCE_RESEARCH_AND_ADVERSARIAL_REVIEW_LOOP.md` | Fresh-read, current research, adversarial review, feasibility, and evidence-ceiling procedure. |
@@ -83,10 +83,10 @@
 
 | Work stage | State | Evidence / boundary |
 |---|---|---|
-| 1. Intent and canon | `CONFIRMED` | Current owner files and Decisions 25-34; Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner. |
+| 1. Intent and canon | `CONFIRMED` | Current owner files and Decisions 25-34; Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners. |
 | 2. System contract | `CONFIRMED` | Enhancement, durability, repair, event, keyword boundaries, first Tag matrix, and empty-selection policy are current. |
 | 3. Representative slice plan | `CONFIRMED` | Slice B: individual `+0→+10`, optional `+11→+15` risk, handoff, brief return beat, same-UID actual-use result. |
-| 4. Machine implementation | `PARTIAL / PRECISION_IMPLEMENTED` | Vertical-slice classes, scenes, V4 save envelope, GUT contracts and assets exist. Decision37 is historical/superseded first 2×2 implementation evidence only; Decision38/schema2/V4 active recurring owner governs all ten precision targets. Whole-slice runtime/UX parity is still not asserted. |
+| 4. Machine implementation | `PARTIAL / PRECISION_IMPLEMENTED` | Vertical-slice classes, scenes, V5 save envelope, GUT contracts and assets exist. Decision37 is historical/superseded first 2×2 implementation evidence only; Decision38/40 are the catalog V3/V5 active current owners for all ten precision targets and consumable charge. Whole-slice runtime/UX parity is still not asserted. |
 | 5. Player and production proof | `NOT_RUN` | No Godot client, Android, accessibility, performance, or human/player test evidence. |
 
 ### Actual playable-surface inventory
@@ -112,7 +112,7 @@
 | DEC-ENH-32 | A failed enhancement resolves to exactly `FAILED_HOLD` or `FAILED_DAMAGE`; no downgrade or separate critical. | `CONFIRMED` |
 | DEC-CHR-27 | Only meaningful item events enter player Chronicle, never routine dated attempts. | `CONFIRMED` |
 | DEC-ENH-34 | Weapon keywords are Grade / Tag / Event. `+10` success creates exactly one weapon-owned Tag in `CATALYST_AFFIX`; its identity is catalyst lineage plus selected Precision method. | `CONFIRMED` |
-| DEC-ENH-37 | **역사 첫 표 증거:** Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner retains its explicit choice and empty-selection boundary while replacing target-10-only storage and cadence. PR #328 remains initial selection/write/UI evidence, not the current recurring field owner. | `HISTORICAL_IMPLEMENTATION_EVIDENCE` |
+| DEC-ENH-37 | **역사 첫 표 증거:** Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners that retain its explicit choice and empty-selection boundary while replacing target-10-only storage, cadence, and no-inventory input. PR #328 remains initial selection/write/UI evidence, not the current recurring field owner. | `HISTORICAL_IMPLEMENTATION_EVIDENCE` |
 | DEC-ART-03/04 | Illustrated Workshop Book direction; generated imagery needs actual runtime consumer and is not automatically a final asset. | `CONFIRMED` |
 
 ## 04. DESIGN PILLARS
@@ -154,7 +154,7 @@ META: build a portfolio of remembered UIDs → unlock later title/content only t
 | System ID | Name | Current owner | Status |
 |---|---|---|---|
 | SYS-ENH-001 | Ordinary enhancement and STOP/PUSH | Core simplification canon | `CONFIRMED`; V2 implementation `PARTIAL` |
-| SYS-PRE-002 | Recurring Precision and weapon Tag | Decision34 ownership; Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner | `IMPLEMENTED / AUTOMATED_TEST_PASS` for resolver/save/UI contracts; client/Android/human evidence `NOT_RUN` |
+| SYS-PRE-002 | Recurring Precision and weapon Tag | Decision34 ownership; Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners | `IMPLEMENTED / AUTOMATED_TEST_PASS` for resolver/save/UI contracts; client/Android/human evidence `NOT_RUN` |
 | SYS-DUR-003 | Durability and damage | Decision28/29 | `CONFIRMED / TEST_BUDGET`; V2 parity `NOT_CONFIRMED` |
 | SYS-REP-004 | Repair and structural scar | Decision29/31 | `CONFIRMED / NOT_FINAL_BALANCE`; V2 parity `NOT_CONFIRMED` |
 | SYS-LIF-005 | UID, ownership, destruction, archive | Core canon / save contract | `CONFIRMED`; V2 implementation `PARTIAL` |
@@ -188,11 +188,11 @@ META: build a portfolio of remembered UIDs → unlock later title/content only t
 | Field / rule | Contract |
 |---|---|
 | Trigger | `target_level` is one of `10,20,30,40,50,60,70,80,90,100`; entry is target minus one. |
-| Storage | Existing `CATALYST_AFFIX` owns a V4 versioned collection of at most three unique staged Tag entries. |
+| Storage | Existing `CATALYST_AFFIX` owns a V4 versioned collection of at most three unique staged Tag entries; V5 resource migration separately owns `heart_of_flame` / `earth_crystal` stock. |
 | Resolution | First gate is `ADD_TAG` only; later gates use `ADD_TAG` or `UPGRADE_TAG`. A success advances exactly one selected Tag action. |
 | Isolation | `GRADE_AFFIX` and `CHRONICLE_AFFIX` cannot be written, changed, or selected by the method. |
-| Approved catalog | 불씨/모루 계보 × 날 세우기/경량 담금의 2×2 Tag 표. 선택은 `+9→+10` 시도 local 입력이며, 빈 입력은 비용·굴림 전에 차단한다. |
-| Implemented boundary | `VSPrecisionResolver`, enhancement action service, V4 migration, and Workshop Control path validate recurring add/upgrade actions before cost/roll. Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner governs the current behavior. PR #328 GUT evidence remains historical initial-slice evidence. |
+| Approved catalog | `불의 심장` / `대지의 결정` × 날 세우기/경량 담금의 2×2 Tag 표. ADD selection is attempt-local catalyst+method input, UPGRADE derives its catalyst from the stored Tag, and missing stock blocks before cost/roll. |
+| Implemented boundary | `VSPrecisionResolver`, enhancement action service, V4 Tag migration, V5 resource migration, and Workshop Control path validate recurring add/upgrade actions before cost/roll. Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners. PR #328 GUT evidence remains historical initial-slice evidence. |
 | Unresolved | Godot client rendering, Android, accessibility and 사람 사용성 evidence. |
 | Prohibited | Placeholder Tag, invented keyword, player title, event keyword, universal damage protection, fourth affix slot. |
 | Required future tests | One valid combination returns one known Tag; invalid / absent lineage follows an explicitly approved policy; failure creates no Tag; Grade/Event remain byte-for-byte unchanged. |
@@ -352,9 +352,9 @@ Existing architecture is a reusable implementation baseline, not permission to i
 | DAT ID | Owner / essential fields | Current contract |
 |---|---|---|
 | DAT-ITEM-001 | `VSItem` | UID, level, birth facts, `CURRENT/MAX/BASE_MAX`, lifecycle state, no invented Tag matrix. |
-| DAT-SAVE-001 | `VSSaveEnvelope` | Current V4 item collection; deterministic seeds, resolved events, append-only ledger, backup recovery; V3 migrate on read, V1 fail closed. |
+| DAT-SAVE-001 | `VSSaveEnvelope` | Current V4 item collection plus V5 resource migration; deterministic seeds, resolved events, append-only ledger, backup recovery; V3/V4 migrate on read, V1 fail closed. |
 | DAT-RESULT-001 | `CONTENT_RESULT_V1` | event ID, source decision, content/customer, day, item refs, result axes, 2-4 causal reasons, one next action; score/total/reward probability prohibited. |
-| DAT-PREC-001 | Current Tag resolution | Attempt-local input resolves to the V4 versioned `CATALYST_AFFIX` collection: the first gate adds, later gates add or upgrade, with at most three staged tags. Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner preserves the selection and empty-input boundary. |
+| DAT-PREC-001 | Current Tag resolution | Attempt-local input resolves to the V4 versioned `CATALYST_AFFIX` collection: the first gate adds, later gates add or upgrade, with at most three staged tags. `BS-ENHANCE-20260901-40` separately owns V5 resource migration and one-unit catalyst charging. Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners and preserve the selection, empty-input, and stock boundary. |
 | DAT-DUR-001 | Decision29 model | immutable `BASE_MAX`; legal `CURRENT/MAX` ranges; derived effective state is never separately persisted as hidden authority. |
 | DAT-EVENT-001 | Decision30 event packet | actual-use flag, item UID, profile/cause, resolved-once identifier; direct/max-damage constraints. |
 
@@ -418,7 +418,7 @@ ELIGIBLE_AT_PLUS9 → READ_LINEAGE_AND_METHOD → PREVIEW → CONFIRM
 → success at each eligible Precision target: exactly one selected add or upgrade | failure: no Tag growth
 ```
 
-The recurring Precision state machine is `IMPLEMENTED / AUTOMATED_TEST_PASS` for repository contracts; PR #328 remains historical first-2×2 implementation evidence. Decision38/schema2/V4 governs the current ten-gate add-or-upgrade behavior. Godot client rendering, Android, accessibility, performance and 사람 사용성 are not implied and remain `NOT_RUN`.
+The recurring Precision state machine is `IMPLEMENTED / AUTOMATED_TEST_PASS` for repository contracts; PR #328 remains historical first-2×2 implementation evidence. Decision38/40 are the catalog V3/V5 active current owners of the ten-gate add-or-upgrade behavior and atomic consumable charge. Godot client rendering, Android, accessibility, performance and 사람 사용성 are not implied and remain `NOT_RUN`.
 
 ## 20. SAVE/LOAD CONTRACT
 
@@ -432,7 +432,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | Understand damage/repair | SYS-DUR-003, SYS-REP-004 | UI-WORK-001, AST-DUR-002 | `VSItem`, `VSRepairResolver`, workshop screen, durability/repair GUT suites | `IMPLEMENTED / UX_NOT_RUN` |
 | First work enters core loop | UX-ONB-001 | UI-MAIN-001, UI-FORGE-001, AST-FORGE-003 | `VSMainMenu`, `VSFirstForgeCompletionService`, first-forge tests | `IMPLEMENTED / UX_NOT_RUN` |
 | Same UID returns from the world | SYS-CUS-006, CNT-ADVENTURER-01 | UI-RESULT-001 | content result JSON, event resolver/action service, result-screen tests | `PARTIAL` |
-| Precision Tag action reflects player choice | SYS-PRE-002 | UI-PREC-001, AST-PREC-006 | Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner, JSON catalog, V4 migration, `VSPrecisionResolver`, enhancement action service, and Workshop controls | `IMPLEMENTED / AUTOMATED_TEST_PASS / UX_NOT_RUN` |
+| Precision Tag action reflects player choice | SYS-PRE-002 | UI-PREC-001, AST-PREC-006 | Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners, JSON catalog, V4 Tag migration, V5 resource migration, `VSPrecisionResolver`, enhancement action service, and Workshop controls | `IMPLEMENTED / AUTOMATED_TEST_PASS / UX_NOT_RUN` |
 | Player reads meaningful history | SYS-CHR-007 | UI-CHR-001, AST-CHR-007 | Decision27 and ledger concepts | `CONFIRMED / NOT_IMPLEMENTED` |
 
 ## 22. TEST AND QA CONTRACT
@@ -473,7 +473,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 
 | Risk ID | Risk | Class | Disposition / next validation |
 |---|---|---|---|
-| RSK-001 | Historical placeholder write and legacy method list can diverge from the approved recurring Tag catalog. | Product/technical | `IMPROVE`: Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner. Apply Decision38 contract checks, block invalid selection, and migrate placeholder safely once. |
+| RSK-001 | Historical placeholder write and legacy method list can diverge from the approved recurring Tag catalog. | Product/technical | `IMPROVE`: Decision37 is historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners. Apply Decision38/40 contract checks, block invalid selection or stock, and migrate placeholder safely once. |
 | RSK-002 | V2 runtime may drift from current durability/failure/precision canon despite similar field names. | Technical/canon | `TEST`: contract-to-code audit at exact head before implementation. |
 | RSK-003 | Customer life becomes a feature list rather than returned consequence. | Fun/content | `TEST`: playtest causal recall and next-action comprehension. |
 | RSK-004 | Repair economy is accepted test budget, not player-validated price. | Economy | `TEST_IN_PLAY`: sensitivity then human play. |
@@ -486,7 +486,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 
 | Decision | Why needed | Minimum options / recommended boundary |
 |---|---|---|
-| DEC-PREC-35/36 | historical/superseded Decision37 first 2×2 catalog content only; Decision38/schema2/V4 active recurring owner. | Retained provenance: explicit no-default selection and block before cost/roll. Current recurring rule: first gate adds only, later gates add or upgrade, with at most three tags. |
+| DEC-PREC-35/36 | historical/superseded Decision37 first 2×2 catalog content only; Decision38/40 are the catalog V3/V5 active current owners. | Retained provenance: explicit no-default selection and block before cost/roll. Current recurring rule: first gate adds only, later gates add or upgrade, with at most three tags and one real catalyst charge. |
 | DEC-UI-37 | UI-PREC-001 entry/exit and required preview copy. | Keep screen as a short choice/confirm/result surface within Workshop flow; implementation contract now supplies required information. |
 | DEC-UX-38 | Define Chronicle screen entry and readable event grouping. | Meaningful event timeline only; no routine attempt spam. |
 | DEC-PLAY-39 | 사람 플레이 검수는 사용자 지시로 이번 구현 계약의 완료 조건에서 제외. | 실제 수행 전 `NOT_RUN`; 나중에 제품 재미 검증을 재개할 때만 protocol을 결정한다. |
@@ -509,9 +509,10 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | 2026-08-28 | Records approved runtime asset families and their evidence ceiling. | No new image generation or Notion output. |
 | 2026-08-28 | Adds `BS-OPS-20260828-35`: GitHub-only current canon and user-preauthorized candidate generation after consumer requirements. | Historical Notion records remain non-current; post-generation lock remains required for final direction/runtime promotion. |
 | 2026-08-28 | Completes the one-time Notion-to-GitHub migration receipt and preserves eight historical Visual GDD binaries with exact hashes. | No future Notion read/write; archived boards are non-runtime and cannot override current canon. |
-| 2026-08-29 | Adds `BS-ENHANCE-20260829-37`: Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/schema2/V4 active recurring owner later retains the selection gate while replacing the target-10-only cadence and storage. | Historical documentation/data contract evidence. |
+| 2026-08-29 | Adds `BS-ENHANCE-20260829-37`: Decision37 historical/superseded first 2×2 catalog evidence only; Decision38/40 are the catalog V3/V5 active current owners that retain the selection gate while replacing the target-10-only cadence, input, and resource behavior. | Historical documentation/data contract evidence. |
 | 2026-08-29 | PR #328 implements the former fixed 2×2 Precision Tag catalog in the existing Workshop flow. | Historical initial-slice automated evidence: 29 GUT scripts, 180 tests, 1033 assertions; client/Android/accessibility/performance/human evidence remains `NOT_RUN`. |
 | 2026-08-30 | Adds `BS-ENHANCE-20260830-38`: recurring targets 10 through 100, V4 collection migration, ADD_TAG/UPGRADE_TAG, cap three, I–IV growth. | Current recurring owner; repository contracts are implemented, while client/device/human evidence remains `NOT_RUN`. |
+| 2026-09-01 | Adds `BS-ENHANCE-20260901-40`: catalog schema 3, 불의 심장/대지의 결정, V5 resource migration, and atomic one-unit charge for saved normal Precision attempts. | Current catalyst-resource owner; client/device/human evidence remains `NOT_RUN` until runtime inspection. |
 
 ## Appendix A. Benchmark disposition
 

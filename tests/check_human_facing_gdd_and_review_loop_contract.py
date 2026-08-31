@@ -79,16 +79,16 @@ def main() -> int:
         "성공 한 번에는 태그 행동도 정확히 하나",
         "비용과 굴림 전에 막힌다",
         "태그 키워드",
-        "촉매 계보",
+        "정밀 촉매",
         "정밀강화 방식",
         "강화 → 태그 → 생애",
         "태그 시스템: 무기에 남는 완성 경로의 정체성",
-        "촉매 계보 → 정밀강화 방식 → 태그 키워드",
+        "정밀 촉매 → 정밀강화 방식 → 태그 키워드",
         "생애 주기: 고객의 실제 사용으로 닫히는 흐름",
         "고객 이벤트: 결과의 원인을 보여 주는 규칙",
         "인계 → 실제 사용 → 사건 결과 → 다음 판단",
-        "불씨 계보",
-        "모루 계보",
+        "불의 심장",
+        "대지의 결정",
         "날 세우기",
         "경량 담금",
         "태그를 정하지 않으면 강화 시도 자체가 시작되지 않는다",
@@ -102,7 +102,8 @@ def main() -> int:
         "+99 → +100",
         "태그 추가 또는 태그 강화",
         "BS-ENHANCE-20260830-38",
-        "V4 versioned Tag collection",
+        "BS-ENHANCE-20260901-40",
+        "V5 resource migration",
         "all ten Precision gates",
     ):
         require(human_gdd, token, failures, "human-facing GDD")
@@ -177,8 +178,9 @@ def main() -> int:
             for qualification in (
                 "historical/superseded",
                 "first 2×2",
-                "Decision38/schema2/V4",
-                "active recurring owner",
+                "Decision38/40",
+                "catalog V3/V5",
+                "active current owners",
             )
         ):
             failures.append(
@@ -191,8 +193,9 @@ def main() -> int:
                 for qualification in (
                     "historical/superseded",
                     "first 2×2",
-                    "Decision38/schema2/V4",
-                    "active recurring owner",
+                    "Decision38/40",
+                    "catalog V3/V5",
+                    "active current owners",
                 )
             ):
                 failures.append(
@@ -215,13 +218,14 @@ def main() -> int:
             for qualification in (
                 "historical/superseded",
                 "first 2×2",
-                "Decision38/schema2/V4",
-                "active recurring owner",
+                "Decision38/40",
+                "catalog V3/V5",
+                "active current owners",
             )
         ):
             failures.append(
                 f"AI production spec {entry_name} entry must locally separate Decision37 "
-                "from the Decision38/schema2/V4 active recurring owner"
+                "from the Decision38/40 catalog V3/V5 active current owners"
             )
     for forbidden in (
         "Decisions 28-32, 34 and 37 JSON/decision owners",
@@ -231,7 +235,8 @@ def main() -> int:
             failures.append(f"AI production spec retains unqualified legacy precision owner range: {forbidden}")
     for token in (
         "BS-ENHANCE-20260830-38",
-        "V4 versioned collection of at most three",
+        "V5 resource migration",
+        "BS-ENHANCE-20260901-40",
         "First gate is `ADD_TAG` only; later gates use `ADD_TAG` or `UPGRADE_TAG`",
     ):
         require(ai_spec, token, failures, "AI production spec recurring current trace")
@@ -261,7 +266,7 @@ def main() -> int:
             if receipt.get("artifact", {}).get("page_count") != len(reader.pages):
                 failures.append("PDF receipt page count does not match the readable PDF")
             for page_number, page in enumerate(reader.pages, start=1):
-                expected_footer = f"{page_number} / {len(reader.pages)} · 2026-08-31"
+                expected_footer = f"{page_number} / {len(reader.pages)} · 2026-09-01"
                 if expected_footer not in (page.extract_text() or ""):
                     failures.append(f"human-facing GDD PDF page {page_number} footer must show the current document date")
             expected_images = [
@@ -299,7 +304,8 @@ def main() -> int:
                 "+99 → +100",
                 "태그 추가 또는 태그 강화",
                 "BS-ENHANCE-20260830-38",
-                "V4 versioned Tag collection",
+                "BS-ENHANCE-20260901-40",
+                "V5 resource migration",
                 "all ten Precision gates",
             ):
                 require(normalized_pdf_text, " ".join(token.split()), failures, "human-facing GDD PDF")

@@ -70,6 +70,14 @@ func _seeded_ember_item_at_nineteen(envelope) -> VSItem:
 	return item
 
 
+func _resources(gold: int = 20000, common_materials: int = 10, heart_of_flame: int = 10, earth_crystal: int = 10):
+	return WorkshopResourcesScript.new(gold, {
+		"common_reinforcement_material": common_materials,
+		"heart_of_flame": heart_of_flame,
+		"earth_crystal": earth_crystal,
+	})
+
+
 func test_action_service_surface_exists() -> void:
 	assert_true(ResourceLoader.exists(SERVICE_PATH), "enhancement action service must own destruction archive coupling")
 
@@ -137,13 +145,13 @@ func test_direct_precision_success_commits_the_catalyst_collection() -> void:
 	assert_eq(result.get("precision_action", ""), "ADD_TAG")
 	assert_eq(result.get("precision_tag_id", ""), "TAG_EMBER_EDGE")
 	assert_eq(item.ledger.size(), 1)
-	assert_eq(item.ledger[0]["source_decision_id"], "BS-ENHANCE-20260830-38")
+	assert_eq(item.ledger[0]["source_decision_id"], "BS-ENHANCE-20260901-40")
 
 
 func test_level_nineteen_missing_precision_selection_blocks_before_cost_material_roll_or_save() -> void:
 	var envelope = _valid_envelope_with_item()
 	var item := _seeded_ember_item_at_nineteen(envelope)
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var resources = _resources()
 	envelope.workshop_resources = resources.snapshot()
 	var before_resources = resources.snapshot()
 	var save_service := FakeSaveService.new()
@@ -174,7 +182,7 @@ func test_armor_precision_blocks_before_cost_material_roll_or_save() -> void:
 	item.max_durability = 5
 	item.equipment_group = "ARMOR"
 	item.role_profile = "ARMOR_BODY_DEFENSE"
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var resources = _resources()
 	envelope.workshop_resources = resources.snapshot()
 	var before_resources = resources.snapshot()
 	var before_item = item.to_dict()
@@ -191,10 +199,59 @@ func test_armor_precision_blocks_before_cost_material_roll_or_save() -> void:
 	assert_eq(item.to_dict(), before_item)
 
 
+func test_precision_attempt_without_required_catalyst_blocks_before_cost_roll_or_save() -> void:
+	var envelope = _valid_envelope_with_item()
+	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
+	item.enhancement_level = 9
+	item.highest_checkpoint = 0
+	item.current_durability = 5
+	item.max_durability = 5
+	var resources = _resources(20000, 10, 0, 1)
+	envelope.workshop_resources = resources.snapshot()
+	var before_resources = resources.snapshot()
+	var before_item = item.to_dict()
+	var save_service := FakeSaveService.new()
+	var result = load(SERVICE_PATH).new().resolve_and_save_with_rolls(
+		envelope, item.uid, 10,
+		{"success_roll_percent": 0.0, "damage_roll_percent": 0.0}, 3,
+		resources, save_service, _precision_add_ember()
+	)
+	assert_eq(result.get("outcome", ""), "BLOCKED")
+	assert_eq(result.get("reason", ""), "INSUFFICIENT_PRECISION_CATALYST")
+	assert_eq(resources.snapshot(), before_resources)
+	assert_eq(save_service.save_calls, 0)
+	assert_eq(item.to_dict(), before_item)
+
+
+func test_precision_save_failure_restores_staged_catalyst_resource() -> void:
+	var envelope = _valid_envelope_with_item()
+	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
+	item.enhancement_level = 9
+	item.highest_checkpoint = 0
+	item.current_durability = 5
+	item.max_durability = 5
+	var resources = _resources(20000, 10, 1, 10)
+	envelope.workshop_resources = resources.snapshot()
+	var before_resources = resources.snapshot()
+	var before_item = item.to_dict()
+	var save_service := FakeSaveService.new()
+	save_service.save_error = ERR_CANT_CREATE
+	var result = load(SERVICE_PATH).new().resolve_and_save_with_rolls(
+		envelope, item.uid, 10,
+		{"success_roll_percent": 0.0, "damage_roll_percent": 99.0}, 3,
+		resources, save_service, _precision_add_ember()
+	)
+	assert_eq(result.get("outcome", ""), "BLOCKED")
+	assert_eq(result.get("reason", ""), "SAVE_FAILED:%d" % ERR_CANT_CREATE)
+	assert_eq(resources.snapshot(), before_resources)
+	assert_eq(item.to_dict(), before_item)
+	assert_eq(save_service.save_calls, 1)
+
+
 func test_plus_twenty_hold_and_damage_charge_normally_without_tag_growth() -> void:
 	var held_envelope = _valid_envelope_with_item()
 	var held_item := _seeded_ember_item_at_nineteen(held_envelope)
-	var held_resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var held_resources = _resources()
 	held_envelope.workshop_resources = held_resources.snapshot()
 	var held_before_resources := held_resources.snapshot()
 	var held_save := FakeSaveService.new()
@@ -206,6 +263,7 @@ func test_plus_twenty_hold_and_damage_charge_normally_without_tag_growth() -> vo
 	assert_eq(held.get("outcome", ""), "FAILED_HOLD")
 	assert_eq(held_save.save_calls, 1)
 	assert_lt(held_resources.gold, int(held_before_resources["gold"]))
+	assert_eq(held_resources.get_material_count("heart_of_flame"), 9)
 	var held_saved = held_save.saved_envelope.get_item(held_item.uid)
 	assert_eq(held_saved.catalyst_tag_entries()[0]["stage"], 1)
 	assert_eq(held_saved.used_precision_milestones, [10])
@@ -213,7 +271,7 @@ func test_plus_twenty_hold_and_damage_charge_normally_without_tag_growth() -> vo
 
 	var damaged_envelope = _valid_envelope_with_item()
 	var damaged_item := _seeded_ember_item_at_nineteen(damaged_envelope)
-	var damaged_resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var damaged_resources = _resources()
 	damaged_envelope.workshop_resources = damaged_resources.snapshot()
 	var damaged_save := FakeSaveService.new()
 	var damaged = load(SERVICE_PATH).new().resolve_and_save_with_rolls(
@@ -223,6 +281,7 @@ func test_plus_twenty_hold_and_damage_charge_normally_without_tag_growth() -> vo
 	)
 	assert_eq(damaged.get("outcome", ""), "FAILED_DAMAGE")
 	assert_eq(damaged_save.save_calls, 1)
+	assert_eq(damaged_resources.get_material_count("heart_of_flame"), 9)
 	var damaged_saved = damaged_save.saved_envelope.get_item(damaged_item.uid)
 	assert_eq(damaged_saved.catalyst_tag_entries()[0]["stage"], 1)
 	assert_eq(damaged_saved.used_precision_milestones, [10])
@@ -232,7 +291,7 @@ func test_plus_twenty_hold_and_damage_charge_normally_without_tag_growth() -> vo
 func test_plus_twenty_upgrade_saves_one_deep_copied_growth_and_ledger_entry() -> void:
 	var envelope = _valid_envelope_with_item()
 	var item := _seeded_ember_item_at_nineteen(envelope)
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var resources = _resources()
 	envelope.workshop_resources = resources.snapshot()
 	var save_service := FakeSaveService.new()
 	var result = load(SERVICE_PATH).new().resolve_and_save_with_rolls(
@@ -255,7 +314,7 @@ func test_plus_twenty_upgrade_saves_one_deep_copied_growth_and_ledger_entry() ->
 	assert_eq(saved_item.ledger.size(), 1)
 	var entry: Dictionary = saved_item.ledger[0]
 	assert_eq(entry["event_type"], "PRECISION_TAG_GROWTH")
-	assert_eq(entry["source_decision_id"], "BS-ENHANCE-20260830-38")
+	assert_eq(entry["source_decision_id"], "BS-ENHANCE-20260901-40")
 	assert_eq(entry["payload"], {
 		"target_level": 20,
 		"action": "UPGRADE_TAG",
@@ -282,7 +341,7 @@ func test_plus_twenty_add_saves_one_tag_growth_and_method_effect() -> void:
 	var envelope = _valid_envelope_with_item()
 	var item := _seeded_ember_item_at_nineteen(envelope)
 	item.weight_point = 6
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var resources = _resources()
 	envelope.workshop_resources = resources.snapshot()
 	var save_service := FakeSaveService.new()
 	var result = load(SERVICE_PATH).new().resolve_and_save_with_rolls(
@@ -306,7 +365,7 @@ func test_plus_twenty_add_saves_one_tag_growth_and_method_effect() -> void:
 func test_placeholder_backfill_is_zero_cost_one_time_and_saved_atomically() -> void:
 	var envelope = _legacy_v3_envelope_with_affix("PRECISION_KEYWORD_PENDING_CONTENT")
 	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 10})
+	var resources = _resources()
 	envelope.workshop_resources = resources.snapshot()
 	var before_resources = resources.snapshot()
 	var save_service := FakeSaveService.new()
@@ -364,7 +423,8 @@ func test_known_resolved_v4_backfill_fails_closed_before_save() -> void:
 func test_saved_enhancement_success_commits_result_and_resource_cost_together() -> void:
 	var envelope = _valid_envelope_with_item()
 	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 30})
+	var resources = _resources(20000, 30)
+	envelope.workshop_resources = resources.snapshot()
 	var save_service := FakeSaveService.new()
 	var result = load(SERVICE_PATH).new().resolve_and_save_with_rolls(
 		envelope,
@@ -392,7 +452,8 @@ func test_saved_enhancement_success_commits_result_and_resource_cost_together() 
 func test_saved_enhancement_save_failure_keeps_item_and_resources_unchanged() -> void:
 	var envelope = _valid_envelope_with_item()
 	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 30})
+	var resources = _resources(20000, 30)
+	envelope.workshop_resources = resources.snapshot()
 	var before_resources = resources.snapshot()
 	var save_service := FakeSaveService.new()
 	save_service.save_error = ERR_CANT_CREATE
@@ -414,7 +475,7 @@ func test_saved_enhancement_save_failure_keeps_item_and_resources_unchanged() ->
 func test_saved_enhancement_rejects_insufficient_material_without_saving() -> void:
 	var envelope = _valid_envelope_with_item()
 	var item = envelope.get_item("BSI-aabbccddeeff00112233445566778899")
-	var resources = WorkshopResourcesScript.new(20000, {"common_reinforcement_material": 0})
+	var resources = _resources(20000, 0)
 	envelope.workshop_resources = resources.snapshot()
 	var save_service := FakeSaveService.new()
 	var result = load(SERVICE_PATH).new().resolve_and_save_with_rolls(
@@ -433,11 +494,11 @@ func test_saved_enhancement_rejects_insufficient_material_without_saving() -> vo
 
 
 func _precision_add_ember() -> Dictionary:
-	return {"action": "ADD_TAG", "lineage_id": "EMBER_LINEAGE", "method_id": "EDGE_REINFORCEMENT"}
+	return {"action": "ADD_TAG", "catalyst_id": "HEART_OF_FLAME", "method_id": "EDGE_REINFORCEMENT"}
 
 
 func _precision_add_anvil_light() -> Dictionary:
-	return {"action": "ADD_TAG", "lineage_id": "ANVIL_LINEAGE", "method_id": "LIGHTWEIGHTING"}
+	return {"action": "ADD_TAG", "catalyst_id": "EARTH_CRYSTAL", "method_id": "LIGHTWEIGHTING"}
 
 
 func _precision_upgrade_ember() -> Dictionary:

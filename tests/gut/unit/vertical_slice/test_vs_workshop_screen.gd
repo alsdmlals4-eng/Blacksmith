@@ -79,6 +79,14 @@ func _precision_envelope(level: int = 9, tag_entries: Array = [], used_milestone
 	return envelope
 
 
+func _resources(gold: int = 20000, common_materials: int = 30, heart_of_flame: int = 64, earth_crystal: int = 64):
+	return ResourcesScript.new(gold, {
+		"common_reinforcement_material": common_materials,
+		"heart_of_flame": heart_of_flame,
+		"earth_crystal": earth_crystal,
+	})
+
+
 func _option_index_for_metadata(option: OptionButton, value: String) -> int:
 	for index in range(option.item_count):
 		if str(option.get_item_metadata(index)) == value:
@@ -110,7 +118,7 @@ func test_workshop_exposes_one_native_handoff_action_only_for_an_eligible_level_
 	item.highest_checkpoint = 10
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
-	screen.configure_context(item, ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
+	screen.configure_context(item, _resources(), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
 
 	assert_true(screen.has_signal("handoff_requested"), "the app needs a native player-action signal instead of a hidden router entry")
 	assert_true(bool(screen.view_state().get("handoff_allowed", false)))
@@ -203,6 +211,23 @@ func test_workshop_places_tall_precision_content_inside_a_vertical_scroll_contai
 	assert_eq(scroll.offset_right, -32.0)
 	assert_eq(scroll.offset_bottom, -24.0)
 	assert_not_null(scroll.get_node_or_null("WorkshopLayout") as VBoxContainer)
+
+
+func test_workshop_wraps_portrait_copy_before_it_can_force_horizontal_clipping() -> void:
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	for node_path in [
+		"WorkshopScroll/WorkshopLayout/EnhancementQuoteLabel",
+		"WorkshopScroll/WorkshopLayout/EnhancementOutcomesLabel",
+		"WorkshopScroll/WorkshopLayout/PrecisionActionLabel",
+		"WorkshopScroll/WorkshopLayout/PrecisionPreviewLabel",
+	]:
+		var label := screen.get_node_or_null(node_path) as Label
+		assert_not_null(label, node_path)
+		if label == null:
+			continue
+		assert_eq(label.autowrap_mode, TextServer.AUTOWRAP_WORD_SMART, "%s must wrap within the portrait workshop width" % node_path)
+		assert_eq(label.size_flags_horizontal, Control.SIZE_EXPAND_FILL, "%s must fill the available portrait width instead of growing beyond it" % node_path)
 
 
 func test_workshop_displays_the_matching_workpiece_image_for_each_durability_state() -> void:
@@ -346,7 +371,8 @@ func test_repair_button_uses_randomized_maintenance_path_not_test_rolls() -> voi
 func test_workshop_displays_next_enhancement_outcomes_and_commits_saved_attempt() -> void:
 	var envelope = _enhancement_envelope()
 	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
-	var resources = ResourcesScript.new(20000, {"common_reinforcement_material": 30})
+	var resources = _resources()
+	envelope.workshop_resources = resources.snapshot()
 	var save_service := FakeSaveService.new()
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
@@ -377,7 +403,7 @@ func test_precision_plus_9_requires_add_action_before_a_valid_dictionary_selecti
 	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
-	screen.configure_context(item, ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
+	screen.configure_context(item, _resources(), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
 	var initial: Dictionary = screen.view_state()
 	assert_eq(initial.get("precision_target", ""), "+9 → +10")
 	assert_eq(initial.get("precision_mode", ""), "ATTEMPT")
@@ -403,21 +429,43 @@ func test_precision_plus_9_requires_add_action_before_a_valid_dictionary_selecti
 	assert_true(method.visible)
 	screen.set_precision_selection({
 		"action": "ADD_TAG",
-		"lineage_id": "EMBER_LINEAGE",
+		"catalyst_id": "HEART_OF_FLAME",
 		"method_id": "EDGE_REINFORCEMENT",
 	})
 	var selected: Dictionary = screen.view_state()
 	assert_true(bool(selected.get("enhancement_allowed", false)))
 	assert_eq(selected.get("precision_action", ""), "ADD_TAG")
-	assert_true(str(selected.get("precision_preview_summary", "")).contains("불씨의 예리함"))
+	assert_true(str(selected.get("precision_preview_summary", "")).contains("불의 심장 · 예리함"))
+	assert_true(str(selected.get("precision_preview_summary", "")).contains("불의 심장 1개 소모"))
+	assert_true(str(selected.get("precision_catalyst_stock_summary", "")).contains("불의 심장 64개"))
 	assert_false((screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton") as Button).disabled)
+
+
+func test_precision_shortage_is_explained_before_the_attempt_button_can_run() -> void:
+	var envelope = _precision_envelope()
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	var resources = _resources(20000, 30, 0, 64)
+	envelope.workshop_resources = resources.snapshot()
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(item, resources, null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
+	screen.set_precision_selection({
+		"action": "ADD_TAG",
+		"catalyst_id": "HEART_OF_FLAME",
+		"method_id": "EDGE_REINFORCEMENT",
+	})
+	var state: Dictionary = screen.view_state()
+	assert_false(bool(state.get("enhancement_allowed", true)))
+	assert_eq(str(state.get("enhancement_reason", "")), "INSUFFICIENT_PRECISION_CATALYST")
+	assert_true(str(state.get("precision_preview_summary", "")).contains("보유 0개"))
+	assert_true((screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton") as Button).disabled)
 
 
 func test_precision_add_option_signals_preserve_both_ids_in_either_selection_order() -> void:
 	var lineage_then_method_envelope = _precision_envelope()
 	var lineage_then_method_screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(lineage_then_method_screen)
-	lineage_then_method_screen.configure_context(lineage_then_method_envelope.get_item(str(lineage_then_method_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), lineage_then_method_envelope)
+	lineage_then_method_screen.configure_context(lineage_then_method_envelope.get_item(str(lineage_then_method_envelope.active_run["selected_item_uid"])), _resources(), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), lineage_then_method_envelope)
 	var lineage_option := lineage_then_method_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
 	var method_option := lineage_then_method_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	assert_not_null(lineage_option)
@@ -425,7 +473,7 @@ func test_precision_add_option_signals_preserve_both_ids_in_either_selection_ord
 	if lineage_option == null or method_option == null:
 		return
 	lineage_then_method_screen._on_precision_add_pressed()
-	var ember_lineage_index := _option_index_for_metadata(lineage_option, "EMBER_LINEAGE")
+	var ember_lineage_index := _option_index_for_metadata(lineage_option, "HEART_OF_FLAME")
 	assert_gte(ember_lineage_index, 1)
 	if ember_lineage_index < 1:
 		return
@@ -439,14 +487,14 @@ func test_precision_add_option_signals_preserve_both_ids_in_either_selection_ord
 	method_option.item_selected.emit(edge_method_index)
 	var lineage_then_method_state: Dictionary = lineage_then_method_screen.view_state()
 	assert_eq(lineage_then_method_state.get("precision_action", ""), "ADD_TAG")
-	assert_eq(lineage_then_method_screen._precision_selection_data.get("lineage_id", ""), "EMBER_LINEAGE")
+	assert_eq(lineage_then_method_screen._precision_selection_data.get("catalyst_id", ""), "HEART_OF_FLAME")
 	assert_eq(lineage_then_method_screen._precision_selection_data.get("method_id", ""), "EDGE_REINFORCEMENT")
 	assert_true(bool(lineage_then_method_state.get("enhancement_allowed", false)))
 
 	var method_then_lineage_envelope = _precision_envelope()
 	var method_then_lineage_screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(method_then_lineage_screen)
-	method_then_lineage_screen.configure_context(method_then_lineage_envelope.get_item(str(method_then_lineage_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), method_then_lineage_envelope)
+	method_then_lineage_screen.configure_context(method_then_lineage_envelope.get_item(str(method_then_lineage_envelope.active_run["selected_item_uid"])), _resources(), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), method_then_lineage_envelope)
 	var reverse_lineage_option := method_then_lineage_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionLineageOption") as OptionButton
 	var reverse_method_option := method_then_lineage_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionMethodOption") as OptionButton
 	assert_not_null(reverse_lineage_option)
@@ -460,7 +508,7 @@ func test_precision_add_option_signals_preserve_both_ids_in_either_selection_ord
 		return
 	reverse_method_option.select(reverse_edge_method_index)
 	reverse_method_option.item_selected.emit(reverse_edge_method_index)
-	var reverse_ember_lineage_index := _option_index_for_metadata(reverse_lineage_option, "EMBER_LINEAGE")
+	var reverse_ember_lineage_index := _option_index_for_metadata(reverse_lineage_option, "HEART_OF_FLAME")
 	assert_gte(reverse_ember_lineage_index, 1)
 	if reverse_ember_lineage_index < 1:
 		return
@@ -468,7 +516,7 @@ func test_precision_add_option_signals_preserve_both_ids_in_either_selection_ord
 	reverse_lineage_option.item_selected.emit(reverse_ember_lineage_index)
 	var method_then_lineage_state: Dictionary = method_then_lineage_screen.view_state()
 	assert_eq(method_then_lineage_state.get("precision_action", ""), "ADD_TAG")
-	assert_eq(method_then_lineage_screen._precision_selection_data.get("lineage_id", ""), "EMBER_LINEAGE")
+	assert_eq(method_then_lineage_screen._precision_selection_data.get("catalyst_id", ""), "HEART_OF_FLAME")
 	assert_eq(method_then_lineage_screen._precision_selection_data.get("method_id", ""), "EDGE_REINFORCEMENT")
 	assert_true(bool(method_then_lineage_state.get("enhancement_allowed", false)))
 
@@ -483,7 +531,7 @@ func test_precision_plus_19_exposes_both_actions_and_allows_tag_upgrade_selectio
 	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
-	screen.configure_context(item, ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
+	screen.configure_context(item, _resources(), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
 	var initial: Dictionary = screen.view_state()
 	assert_eq(initial.get("precision_target", ""), "+19 → +20")
 	var add_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button
@@ -525,15 +573,15 @@ func test_precision_add_sources_keep_only_resolver_valid_pairs_and_localize_reje
 		return
 	screen._on_precision_add_pressed()
 	for index in range(lineage_option.item_count):
-		if str(lineage_option.get_item_metadata(index)) == "EMBER_LINEAGE":
+		if str(lineage_option.get_item_metadata(index)) == "HEART_OF_FLAME":
 			lineage_option.select(index)
-			screen._on_precision_lineage_selected(index)
+			screen._on_precision_catalyst_selected(index)
 			break
 	assert_eq(method_option.item_count, 2)
 	assert_eq(method_option.get_item_text(1), "경량 담금")
 	screen.set_precision_selection({
 		"action": "ADD_TAG",
-		"lineage_id": "EMBER_LINEAGE",
+		"catalyst_id": "HEART_OF_FLAME",
 		"method_id": "EDGE_REINFORCEMENT",
 	})
 	var invalid_state: Dictionary = screen.view_state()
@@ -583,7 +631,7 @@ func test_precision_candidate_filters_enforce_tag_cap_stage_cap_and_zero_weight_
 	zero_weight_screen.configure_context(zero_weight_envelope.get_item(str(zero_weight_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), FakeSaveService.new(), zero_weight_envelope)
 	zero_weight_screen.set_precision_selection({
 		"action": "ADD_TAG",
-		"lineage_id": "ANVIL_LINEAGE",
+		"catalyst_id": "EARTH_CRYSTAL",
 		"method_id": "LIGHTWEIGHTING",
 	})
 	var zero_weight_state: Dictionary = zero_weight_screen.view_state()
@@ -628,7 +676,9 @@ func test_saved_precision_hold_clears_attempt_selection_without_adopting_a_stage
 	var save_service := FakeSaveService.new()
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
-	screen.configure_context(item, ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), save_service, envelope)
+	var resources = _resources()
+	envelope.workshop_resources = resources.snapshot()
+	screen.configure_context(item, resources, null, EnhancementActionServiceScript.new(), save_service, envelope)
 	var upgrade_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
 	assert_not_null(upgrade_button)
 	if upgrade_button == null:
@@ -653,7 +703,9 @@ func test_saved_precision_success_rebinds_tag_collection_and_save_failure_retain
 	var success_save := FakeSaveService.new()
 	var success_screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(success_screen)
-	success_screen.configure_context(success_item, ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), success_save, success_envelope)
+	var success_resources = _resources()
+	success_envelope.workshop_resources = success_resources.snapshot()
+	success_screen.configure_context(success_item, success_resources, null, EnhancementActionServiceScript.new(), success_save, success_envelope)
 	var success_upgrade := success_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
 	assert_not_null(success_upgrade)
 	if success_upgrade == null:
@@ -674,7 +726,9 @@ func test_saved_precision_success_rebinds_tag_collection_and_save_failure_retain
 	failed_save.next_save_error = ERR_CANT_CREATE
 	var failed_screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(failed_screen)
-	failed_screen.configure_context(failed_envelope.get_item(str(failed_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), failed_save, failed_envelope)
+	var failed_resources = _resources()
+	failed_envelope.workshop_resources = failed_resources.snapshot()
+	failed_screen.configure_context(failed_envelope.get_item(str(failed_envelope.active_run["selected_item_uid"])), failed_resources, null, EnhancementActionServiceScript.new(), failed_save, failed_envelope)
 	failed_screen.set_precision_selection({"action": "UPGRADE_TAG", "tag_id": "TAG_EMBER_EDGE"})
 	var failed_result: Dictionary = failed_screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0})
 	assert_eq(failed_result.get("reason", ""), "SAVE_FAILED:%d" % ERR_CANT_CREATE)
@@ -704,7 +758,7 @@ func test_pending_backfill_is_distinct_zero_cost_add_path_without_placeholder_te
 	screen._on_precision_add_pressed()
 	screen.set_precision_selection({
 		"action": "ADD_TAG",
-		"lineage_id": "ANVIL_LINEAGE",
+		"catalyst_id": "EARTH_CRYSTAL",
 		"method_id": "LIGHTWEIGHTING",
 	})
 	assert_false(backfill_button.disabled)
@@ -726,7 +780,9 @@ func test_precision_failed_damage_keeps_the_workshop_fallback_without_a_dedicate
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	var save_service := FakeSaveService.new()
-	screen.configure_context(envelope.get_item(str(envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), save_service, envelope)
+	var resources = _resources()
+	envelope.workshop_resources = resources.snapshot()
+	screen.configure_context(envelope.get_item(str(envelope.active_run["selected_item_uid"])), resources, null, EnhancementActionServiceScript.new(), save_service, envelope)
 	var fallback := screen.get_node_or_null("WorkshopIllustratedBackground") as TextureRect
 	assert_not_null(fallback)
 	if fallback == null:
@@ -745,10 +801,12 @@ func test_fresh_precision_context_exposes_native_selection_without_a_dedicated_a
 	var screen = SCREEN_SCENE.instantiate()
 	add_child_autofree(screen)
 	var first_save := FakeSaveService.new()
-	screen.configure_context(first_envelope.get_item(str(first_envelope.active_run["selected_item_uid"])), ResourcesScript.new(20000, {"common_reinforcement_material": 30}), null, EnhancementActionServiceScript.new(), first_save, first_envelope)
+	var first_resources = _resources()
+	first_envelope.workshop_resources = first_resources.snapshot()
+	screen.configure_context(first_envelope.get_item(str(first_envelope.active_run["selected_item_uid"])), first_resources, null, EnhancementActionServiceScript.new(), first_save, first_envelope)
 	assert_null(screen.get_node_or_null("PrecisionIllustratedBackground"))
 	assert_true((screen.get_node("WorkshopScroll/WorkshopLayout/PrecisionActionAddButton") as Button).visible, "new +9→+10 context exposes native tag selection")
-	screen.set_precision_selection({"action": "ADD_TAG", "lineage_id": "EMBER_LINEAGE", "method_id": "EDGE_REINFORCEMENT"})
+	screen.set_precision_selection({"action": "ADD_TAG", "catalyst_id": "HEART_OF_FLAME", "method_id": "EDGE_REINFORCEMENT"})
 	var resolved: Dictionary = screen.request_enhancement_with_rolls({"success_roll_percent": 0.0, "damage_roll_percent": 99.0})
 	assert_eq(resolved.get("outcome", ""), "SUCCESS")
 	assert_not_null(first_save.saved_envelope, "the successful +9→+10 result must be persisted before a later context is opened")

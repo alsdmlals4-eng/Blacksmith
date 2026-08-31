@@ -1,6 +1,6 @@
 # Blacksmith Session Handoff · Core Simplification
 
-> Current amendment · 2026-08-30: `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` replaces [대체됨] +10-only/single-Tag precision claims. Catalog schema 2 declares ten targets (10..100), max three CATALYST_AFFIX tags, I~IV, attempt-local ADD_TAG/UPGRADE_TAG selection, and V3→V4 dispositions. This is canon/catalog evidence only; V4 runtime, Android, accessibility, performance, and human play are NOT_RUN.
+> Current amendment · 2026-09-01: `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` replaces [대체됨] +10-only/single-Tag precision claims, while `BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md` owns consumable catalyst fields. Catalog schema 3 declares ten targets (10..100), max three CATALYST_AFFIX tags, I~IV, attempt-local ADD_TAG/UPGRADE_TAG selection, **불의 심장 / 대지의 결정** one-unit consumption, and V4→V5 resource migration. This is canon/catalog evidence only; runtime, Android, accessibility, performance, and human play are NOT_RUN.
 
 > **Current override · 2026-08-29 KST.** This section supersedes any
 > contradictory planning-blocked wording below. The user-declared authority is
@@ -55,13 +55,14 @@ not applicable because the surface is retired.
 - `BS-ENHANCE-20260828-34 + BS-ENHANCE-20260829-37 / WEAPON_KEYWORD_TAXONOMY = GRADE_KEYWORD / TAG_KEYWORD / EVENT_KEYWORD / +10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD / ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY / ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX / PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10`
 
 ```text
-TAG_KEYWORD_SOURCE = CATALYST_LINEAGE_AND_PRECISION_METHOD
-TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_AND_PRECISION_METHOD_GOVERN_TAG_IDENTITY
+TAG_KEYWORD_SOURCE = CONSUMABLE_PRECISION_CATALYST_AND_PRECISION_METHOD
+TAG_KEYWORD_RESOLUTION = CATALYST_AND_PRECISION_METHOD_GOVERN_TAG_IDENTITY
 PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_DURABILITY_AND_TAG_RESOLUTION_CONTEXT
 PRECISION_METHOD_TAG_ROLE = TAG_IDENTITY_RESOLUTION
 PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
-EMPTY_CATALYST_LINEAGE_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL
-NO_DEFAULT_LINEAGE = TRUE
+EMPTY_PRECISION_CATALYST_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL
+NO_DEFAULT_PRECISION_CATALYST = TRUE
+PRECISION_CATALYST_CONSUMPTION = ONE_UNIT_ON_NORMAL_RESOLVED_ATTEMPT
 PRECISION_SELECTION_PERSISTENCE = ATTEMPT_LOCAL_ONLY
 TAG_CATALOG_OWNER = BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json
 HUMAN_PLAYTEST = DEFERRED_BY_USER / NOT_RUN
@@ -296,7 +297,8 @@ Current approved Decisions:
 | Decision | Current meaning |
 | --- | --- |
 | `BS-ENHANCE-20260825-25` | Every enhancement success is exactly `+1`; only `+9 -> +10` is Precision; successful +10 creates one weapon-owned **tag keyword** via existing `CATALYST_AFFIX`. |
-| `BS-ENHANCE-20260828-34 + BS-ENHANCE-20260829-37` | Weapon keywords are exactly Grade / Tag / Event: `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`. The +10 tag keyword belongs to the weapon, not the player, and its identity is governed by catalyst lineage plus Precision method. The first 2×2 content table is 불씨/모루 계보 × 날 세우기/경량 담금. Empty lineage/method blocks before cost or roll; success writes one composite Tag, and no new stored field is allowed. A player title exists only as later content and is not granted by +10. |
+| `BS-ENHANCE-20260828-34 + BS-ENHANCE-20260829-37` | Historical residual evidence only: weapon keywords remain Grade / Tag / Event and a Tag belongs to the weapon, not the player. Decision37's former 불씨/모루 lineage input and no-inventory rule are [부분 대체됨] by Decision40. |
+| `BS-ENHANCE-20260830-38 + BS-ENHANCE-20260901-40` | Recurring Precision keeps the ten gates, up to three I~IV weapon Tags, and method effects. `불의 심장` / `대지의 결정` are real one-unit consumables: ADD selects catalyst+method; UPGRADE derives the catalyst from its Tag; each saved SUCCESS/HOLD/DAMAGE attempt consumes one; missing stock blocks before cost, roll, or save; V4→V5 receives the temporary starter bundle. |
 | `BS-DAMAGE-20260825-26` | Historical structural simplification. Its no-numeric-authority and one-state-per-event fields are partially superseded by Decision29; its customer/world damage hook is refined by Decision30. |
 | `BS-DAMAGE-20260826-28` | Target-level base conditional damage-event chance after enhancement failure: `+11 5% / +30 6% / +60 7% / +90 8% / +100 10%`, exact piecewise-linear between anchors. |
 | `BS-REPAIR-20260826-29` | Visible `CURRENT/MAX/BASE_MAX` is sole durability authority. Current damage and permanent scar collapse into one effective durability state; low effective durability penalizes further enhancement; repair quality and probabilistic MAX -1 scar use temporary test budgets. MAJOR enhancement remains allowed with penalties. |

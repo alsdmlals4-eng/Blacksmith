@@ -197,7 +197,7 @@ func test_precision_selection_is_customer_context_independent_and_has_no_custome
 	var before_weight: int = int(item.weight_point)
 	var light = resolver.selection_preview(item, 10, {
 		"action": "ADD_TAG",
-		"lineage_id": "EMBER_LINEAGE",
+		"catalyst_id": "HEART_OF_FLAME",
 		"method_id": "LIGHTWEIGHTING",
 	})
 	assert_true(bool(light.get("allowed", false)))
@@ -217,7 +217,7 @@ func test_precision_selection_respects_exact_entry_and_destroyed_item_eligibilit
 	if not resolver.has_method("selection_preview"):
 		return
 	var item = _item(30, 9)
-	var selection := {"action": "ADD_TAG", "lineage_id": "ANVIL_LINEAGE", "method_id": "EDGE_REINFORCEMENT"}
+	var selection := {"action": "ADD_TAG", "catalyst_id": "EARTH_CRYSTAL", "method_id": "EDGE_REINFORCEMENT"}
 	var valid = resolver.selection_preview(item, 10, selection)
 	assert_true(bool(valid.get("allowed", false)))
 	item.enhancement_level = 10

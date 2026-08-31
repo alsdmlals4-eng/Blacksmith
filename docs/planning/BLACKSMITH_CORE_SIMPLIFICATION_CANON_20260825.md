@@ -12,8 +12,9 @@
 This document owns the integrated current meaning for enhancement cadence, precision keyword, visible durability, derived damage state, Decision28 enhancement-failure damage probability, Decision29 repair/scar model, Decision31 repair-economy sensitivity overlay, Decision30 customer/world-event damage policy, Chronicle inclusion, Art03 direction and Art04 actual-game image consumer gate.
 
 `BS-ENHANCE-20260830-38` exclusively owns recurring Precision cadence, tag
-cardinality/stage, V3→V4 migration, growth timing, catalog, and selection
-semantics. Decision34 retains only non-conflicting weapon recipient, machine
+cardinality/stage, V3→V4 migration, and growth timing. `BS-ENHANCE-20260901-40`
+owns the consumable catalyst input, catalog V3, V4→V5 resource migration, and
+atomic consumption semantics. Decision34 retains only non-conflicting weapon recipient, machine
 owner, and player-title exclusion evidence; Decision37 retains only the first
 2×2 content and empty pre-roll gate evidence. [대체됨] Neither older Decision
 overrides Decision38 on its owned fields.
@@ -43,13 +44,15 @@ GRADE_KEYWORD_MACHINE_OWNER = GRADE_AFFIX
 TAG_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
 EVENT_KEYWORD_MACHINE_OWNER = CHRONICLE_AFFIX
 +10_PRECISION_OUTPUT_KEYWORD = TAG_KEYWORD
-TAG_KEYWORD_SOURCE = CATALYST_LINEAGE_AND_PRECISION_METHOD
-TAG_KEYWORD_RESOLUTION = CATALYST_LINEAGE_AND_PRECISION_METHOD_GOVERN_TAG_IDENTITY
+TAG_KEYWORD_SOURCE = CONSUMABLE_PRECISION_CATALYST_AND_PRECISION_METHOD
+TAG_KEYWORD_RESOLUTION = CATALYST_AND_PRECISION_METHOD_GOVERN_TAG_IDENTITY
 PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_DURABILITY_AND_TAG_RESOLUTION_CONTEXT
 PRECISION_METHOD_TAG_ROLE = TAG_IDENTITY_RESOLUTION
 PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
-EMPTY_CATALYST_LINEAGE_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL
-NO_DEFAULT_LINEAGE = TRUE
+PRECISION_CATALYST_RESOURCE_OWNER = BS-ENHANCE-20260901-40
+MISSING_PRECISION_CATALYST_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL
+NO_DEFAULT_PRECISION_CATALYST = TRUE
+PRECISION_CATALYST_CONSUMPTION = ONE_UNIT_ON_NORMAL_RESOLVED_ATTEMPT
 PRECISION_SELECTION_PERSISTENCE = ATTEMPT_LOCAL_ONLY
 TAG_CATALOG_OWNER = BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json
 PLAYER_TITLE_REWARD = FUTURE_CONTENT_NOT_GRANTED_BY_+10
@@ -61,12 +64,12 @@ NO_FOURTH_AFFIX_SLOT
 각각 소유한다. 세 표현은 새 슬롯이 아니라 기존 세 field의 player-facing
 분류이며, 사건 발생·handoff·표시만으로 사건 키워드를 자동 부여하지 않는다.
 
-태그 키워드의 후보 가족과 정체성은 `CATALYST_AFFIX`의 촉매 계보와
-정밀강화 방식의 조합으로 결정한다. 방식은 무기 능력치·내구도와 태그 해석
+태그 키워드의 후보 가족과 정체성은 `CATALYST_AFFIX`에 기록될 태그와 실제
+소모형 정밀 촉매·정밀강화 방식의 조합으로 결정한다. 방식은 무기 능력치·내구도와 태그 해석
 문맥에만 영향을 주며, 등급·사건 키워드의 생성·선택·변경·대체 권한이 없다.
-첫 태그 표는 불씨/모루 계보와 날 세우기/경량 담금의 2×2 composite Tag다.
-`+9 → +10` 시도 전에 두 입력을 명시적으로 골라야 하며, 빈 계보/방식은
-비용·재료·확률 굴림 전에 차단된다. 기본 계보·무작위 태그·새 저장 field는
+첫 태그 표는 **불의 심장/대지의 결정**과 날 세우기/경량 담금의 2×2 composite Tag다.
+`+9 → +10` 시도 전에 촉매와 방식을 명시적으로 골라야 하며, 빈 촉매/방식 또는
+촉매 재고 부족은 비용·재료·확률 굴림 전에 차단된다. 기본 촉매·무작위 태그·새 affix field는
 없다. 선택은 실패와 함께 사라지고, 성공한 하나의 composite Tag만 기존
 `CATALYST_AFFIX`에 기록된다. 방식은 첫 표에서 `RAW_ROLE_STAT +3` 또는
 `WEIGHT_POINT -3`만 바꾸며, 내구도 변화는 0이다. 이는 Decision29/31의
@@ -430,7 +433,7 @@ Current consumer locators such as Main Menu, Enhancement, Precision +10, Durabil
 
 ### Decision38 recurring Precision amendment · 2026-08-30
 
-`BS-ENHANCE-20260830-38` is the current field owner for recurring Precision cadence, tag collection stages/cap, migration, and effect timing. [대체됨] `+10` only / exactly one Tag / no-new-stored-field language above is historical for those fields. `PRECISION_TARGETS=[10,20,30,40,50,60,70,80,90,100]`; one `CATALYST_AFFIX` owns at most three Tags at I~IV. Decision28/29/30 remain unchanged. No default/random/reroll, inventory, or fourth affix slot is permitted.
+`BS-ENHANCE-20260830-38` is the current field owner for recurring Precision cadence, tag collection stages/cap, migration, and effect timing. `BS-ENHANCE-20260901-40` is the current field owner for the consumable catalyst input, V3 catalog, V5 resource migration, and atomic one-unit charge. [대체됨] `+10` only / exactly one Tag / no-new-stored-field language above is historical for those fields. `PRECISION_TARGETS=[10,20,30,40,50,60,70,80,90,100]`; one `CATALYST_AFFIX` owns at most three Tags at I~IV. Decision28/29/30 remain unchanged. No default/random/reroll, separate inventory screen, or fourth affix slot is permitted.
 
 - Decision26 no-numeric-authority and one-state-per-event fields: `PARTIALLY_SUPERSEDED_BY_BS-REPAIR-20260826-29`.
 - Decision26 customer/world-event hook is refined by `BS-DAMAGE-20260826-30` for eligibility/profile/probability composition.

@@ -2,7 +2,8 @@ class_name VSSaveService
 extends RefCounted
 
 const SaveEnvelopeScript = preload("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
-const DEFAULT_SAVE_PATH := "user://blacksmith_vertical_slice_v4.json"
+const DEFAULT_SAVE_PATH := "user://blacksmith_vertical_slice_v5.json"
+const LEGACY_V4_SAVE_PATH := "user://blacksmith_vertical_slice_v4.json"
 const LEGACY_V3_SAVE_PATH := "user://blacksmith_vertical_slice_v3.json"
 const LEGACY_V2_SAVE_PATH := "user://blacksmith_vertical_slice_v2.json"
 const LEGACY_V1_SAVE_PATH := "user://blacksmith_vertical_slice_v1.json"
@@ -10,6 +11,7 @@ const LEGACY_V1_SAVE_PATH := "user://blacksmith_vertical_slice_v1.json"
 var save_path: String = DEFAULT_SAVE_PATH
 var temp_path: String = DEFAULT_SAVE_PATH + ".tmp"
 var backup_path: String = DEFAULT_SAVE_PATH + ".bak"
+var legacy_v4_path: String = LEGACY_V4_SAVE_PATH
 var legacy_v3_path: String = LEGACY_V3_SAVE_PATH
 var legacy_v2_path: String = LEGACY_V2_SAVE_PATH
 var legacy_v1_path: String = LEGACY_V1_SAVE_PATH
@@ -22,9 +24,11 @@ func _init(custom_save_path: String = DEFAULT_SAVE_PATH, custom_legacy_v2_path: 
 	if not custom_legacy_v2_path.is_empty():
 		legacy_v2_path = custom_legacy_v2_path
 	elif custom_save_path == DEFAULT_SAVE_PATH:
+		legacy_v4_path = LEGACY_V4_SAVE_PATH
 		legacy_v3_path = LEGACY_V3_SAVE_PATH
 		legacy_v2_path = LEGACY_V2_SAVE_PATH
 	else:
+		legacy_v4_path = ""
 		legacy_v3_path = ""
 		legacy_v2_path = ""
 		legacy_v1_path = ""
@@ -133,6 +137,8 @@ func load_envelope():
 		not FileAccess.file_exists(save_path)
 		and not FileAccess.file_exists(backup_path)
 	)
+	if current_files_missing and not legacy_v4_path.is_empty() and FileAccess.file_exists(legacy_v4_path):
+		return _load_path(legacy_v4_path)
 	if current_files_missing and not legacy_v3_path.is_empty() and FileAccess.file_exists(legacy_v3_path):
 		return _load_path(legacy_v3_path)
 	if current_files_missing and not legacy_v2_path.is_empty() and FileAccess.file_exists(legacy_v2_path):
