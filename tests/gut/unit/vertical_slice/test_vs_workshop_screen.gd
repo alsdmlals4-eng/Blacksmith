@@ -213,6 +213,23 @@ func test_workshop_places_tall_precision_content_inside_a_vertical_scroll_contai
 	assert_not_null(scroll.get_node_or_null("WorkshopLayout") as VBoxContainer)
 
 
+func test_workshop_wraps_portrait_copy_before_it_can_force_horizontal_clipping() -> void:
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	for node_path in [
+		"WorkshopScroll/WorkshopLayout/EnhancementQuoteLabel",
+		"WorkshopScroll/WorkshopLayout/EnhancementOutcomesLabel",
+		"WorkshopScroll/WorkshopLayout/PrecisionActionLabel",
+		"WorkshopScroll/WorkshopLayout/PrecisionPreviewLabel",
+	]:
+		var label := screen.get_node_or_null(node_path) as Label
+		assert_not_null(label, node_path)
+		if label == null:
+			continue
+		assert_eq(label.autowrap_mode, TextServer.AUTOWRAP_WORD_SMART, "%s must wrap within the portrait workshop width" % node_path)
+		assert_eq(label.size_flags_horizontal, Control.SIZE_EXPAND_FILL, "%s must fill the available portrait width instead of growing beyond it" % node_path)
+
+
 func test_workshop_displays_the_matching_workpiece_image_for_each_durability_state() -> void:
 	var item = _item(5, 5)
 	var screen = SCREEN_SCENE.instantiate()

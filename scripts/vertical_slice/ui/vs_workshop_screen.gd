@@ -154,6 +154,19 @@ func _apply_mobile_readability_tokens() -> void:
 	_apply_font_size_to_controls(MOBILE_PRIMARY_ACTION_CONTROL_PATHS, MOBILE_SECTION_FONT_SIZE)
 	_apply_minimum_height_to_controls(MOBILE_ACTION_CONTROL_PATHS, MOBILE_TOUCH_TARGET_HEIGHT)
 	_apply_minimum_height_to_controls(MOBILE_PRIMARY_ACTION_CONTROL_PATHS, MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT)
+	_apply_portrait_text_wrapping()
+
+
+func _apply_portrait_text_wrapping() -> void:
+	var layout := get_node_or_null("WorkshopScroll/WorkshopLayout") as VBoxContainer
+	if layout == null:
+		return
+	for child in layout.get_children():
+		var label := child as Label
+		if label == null:
+			continue
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 
 func _apply_font_size_to_controls(paths: Array, font_size: int) -> void:

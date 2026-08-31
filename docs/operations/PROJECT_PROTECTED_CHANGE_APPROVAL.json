@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "16e33b87b5c4880207466443b03beb3705ab8c57",
+  "decision_ids": [
+    "BS-ENHANCE-20260901-40",
+    "BS-ENHANCE-20260830-38",
+    "BS-OPS-20260828-36"
+  ],
+  "approved_paths": [
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd",
+    "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
+    "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
+    "scripts/vertical_slice/services/vs_save_service.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "USER_APPROVED_2026-09-01_CURRENT_THREAD: user confirmed the consumable-catalyst direction, approved the recommended implementation, and explicitly authorized continuation.",
+  "approval_time": "2026-09-01T09:00:00+09:00",
+  "scope_summary": "Exact Decision40 consumable-precision-catalyst slice only: V5 save migration for the two approved catalyst stocks, catalyst-aware precision resolution, atomic one-unit consumption with save rollback, and native portrait Workshop catalyst copy/readability. The approved paths are the complete detected protected diff against the adapter baseline. No Scene or project setting serialization, asset promotion, general inventory or supply loop, rarity/economy rebalance, probability/durability/repair change, fourth affix, or unrelated protected path is approved. This one-shot approval must be retired in a separate post-merge baseline closure."
+}
