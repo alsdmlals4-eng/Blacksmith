@@ -1,6 +1,6 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
-- current amendment: `BS-ENHANCE-20260830-38` is the exclusive owner for recurring Precision targets, up-to-three I~IV tags in `CATALYST_AFFIX`, migration disposition, and effect timing. [대체됨] Decision34/37 cadence/cardinality claims remain historical evidence only.
+- current amendment: `BS-ENHANCE-20260830-38` is the exclusive owner for recurring Precision targets, up-to-three I~IV tags in `CATALYST_AFFIX`, item migration disposition, and effect timing. `BS-ENHANCE-20260901-40` owns the consumable catalyst input, catalog V3, resource migration, and atomic charge. [대체됨] Decision34/37 cadence/cardinality claims remain historical evidence only.
 
 - 상태: `CURRENT_AUTHORITY_INDEX / CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`
 - current decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04 / BS-ENHANCE-20260828-34 / BS-ENHANCE-20260829-37 / BS-OPS-20260828-35 / BS-OPS-20260828-36`
@@ -10,13 +10,13 @@
 - Current Phase: `PHASE_2_UNIFIED_ENHANCEMENT_FIRST_SLICE_IMPLEMENTATION_AND_REVIEW`
 - Current accepted frontier: `ISSUE_326_PRECISION_TAG_CATALOG_MERGED_MAIN_7d12070f37b664cd07fd0e369ea0e0974e41b0eb`
 - Runtime evidence documents implementation facts but does not authorize new scope beyond the approved current-canon MVP.
-- `RECURRING_PRECISION_FIELD_OWNER = BS-ENHANCE-20260830-38`; it exclusively owns cadence, cardinality/stage, V3→V4 migration, tag-growth timing, catalog, and selection semantics. `Decision34/37 = RESIDUAL_NON_CONFLICTING_HISTORICAL_EVIDENCE`: Decision34 retains weapon recipient/three-affix taxonomy/player-title exclusion; Decision37 retains the approved first 2×2 content and empty pre-roll gate evidence. They do not override Decision38.
+- `RECURRING_PRECISION_FIELD_OWNER = BS-ENHANCE-20260830-38`; it exclusively owns cadence, cardinality/stage, V3→V4 item migration, and tag-growth timing. `PRECISION_CATALYST_RESOURCE_FIELD_OWNER = BS-ENHANCE-20260901-40`; it owns consumable input, catalog V3, V4→V5 resource migration, and atomic charge. `Decision34/37 = RESIDUAL_NON_CONFLICTING_HISTORICAL_EVIDENCE`: Decision34 retains weapon recipient/three-affix taxonomy/player-title exclusion; Decision37 retains the approved first 2×2 content and empty pre-roll gate evidence. They do not override Decision38/40.
 
 ## 1. 충돌 시 우선순위
 
 1. 사용자의 최신 지시와 승인.
 2. `AGENTS.md`.
-3. `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` — exclusive recurring Precision field owner: cadence, tag cardinality/stage, V3→V4 migration, growth effect timing, catalog, and selection semantics.
+3. `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` — exclusive recurring Precision field owner: cadence, tag cardinality/stage, V3→V4 item migration, and growth effect timing; `BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md` — consumable input, catalog V3, V4→V5 resource migration, and atomic charge.
 4. `BS-ENHANCE-20260828-34` / `BS-ENHANCE-20260829-37` — [대체됨] only residual non-conflicting historical evidence: respectively recipient/taxonomy/title exclusion and initial 2×2/empty pre-roll gate. They do not own target-10-only or single-string current behavior.
 5. `BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md` — integrated meaning outside Decision38-owned recurring Precision fields / Art03~04.
 5. `BS-DAMAGE-20260826-30_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY.md` + `BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json` — customer/world event damage owner.

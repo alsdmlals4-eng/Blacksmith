@@ -1,6 +1,6 @@
 # BS-ENHANCE-20260828-34 · +10 무기 키워드 귀속
 
-> [대체됨] Recurring Precision cadence, collection cardinality/stage, migration, and tag-growth timing are now owned exclusively by `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md`. This Decision retains only weapon recipient, three-affix taxonomy, and player-title exclusion evidence; it is not a competing current Tag cadence owner.
+> [대체됨] Recurring Precision cadence, collection cardinality/stage, migration, and tag-growth timing are now owned exclusively by `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md`. [부분 대체됨] Consumable catalyst input/inventory/atomic charge is owned by `BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md`. This Decision retains only weapon recipient, three-affix taxonomy, and player-title exclusion evidence; it is not a competing current Tag cadence owner.
 
 ```text
 STATUS = USER_APPROVED_CURRENT

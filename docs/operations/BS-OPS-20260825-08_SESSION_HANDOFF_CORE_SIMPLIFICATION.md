@@ -1,6 +1,6 @@
 # Blacksmith Session Handoff · Core Simplification
 
-> Current amendment · 2026-08-30: `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` replaces [대체됨] +10-only/single-Tag precision claims. Catalog schema 2 declares ten targets (10..100), max three CATALYST_AFFIX tags, I~IV, attempt-local ADD_TAG/UPGRADE_TAG selection, and V3→V4 dispositions. This is canon/catalog evidence only; V4 runtime, Android, accessibility, performance, and human play are NOT_RUN.
+> Current amendment · 2026-09-01: `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` replaces [대체됨] +10-only/single-Tag precision claims, while `BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md` owns consumable catalyst fields. Catalog schema 3 declares ten targets (10..100), max three CATALYST_AFFIX tags, I~IV, attempt-local ADD_TAG/UPGRADE_TAG selection, **불의 심장 / 대지의 결정** one-unit consumption, and V4→V5 resource migration. This is canon/catalog evidence only; runtime, Android, accessibility, performance, and human play are NOT_RUN.
 
 > **Current override · 2026-08-29 KST.** This section supersedes any
 > contradictory planning-blocked wording below. The user-declared authority is

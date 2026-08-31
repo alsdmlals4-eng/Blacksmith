@@ -1,6 +1,6 @@
 # BS-ENHANCE-20260829-37 · 정밀강화 태그 표와 선택 Gate
 
-> [대체됨] Target-10-only, one resolved string Tag, and no-new-stored-field claims are replaced by `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md`. Decision37 retains historical evidence for the first 2×2 불씨/모루 × 날 세우기/경량 담금 catalog and the empty-selection pre-roll gate only.
+> [대체됨] Target-10-only, one resolved string Tag, and no-new-stored-field claims are replaced by `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md`. [부분 대체됨] The historical lineage input/no-inventory claim is owned by `BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md`. Decision37 retains historical evidence for the first 2×2 content and the empty-selection pre-roll gate only.
 
 ```text
 STATUS = USER_APPROVED_CURRENT

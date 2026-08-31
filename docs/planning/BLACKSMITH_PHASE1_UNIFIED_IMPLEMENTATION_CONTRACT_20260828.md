@@ -1,6 +1,6 @@
 # Blacksmith Phase 1 Unified Implementation Contract · 2026-08-28
 
-> Current amendment: `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` owns recurring precision data and V3→V4 migration. [대체됨] `+10` sole-precision and single-Tag wording is historical outside the Phase-1 representative +0~+15 play boundary. Runtime support must cover targets 10~100 without changing Decision28/29/30.
+> Current amendment: `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` owns recurring precision data and V3→V4 item migration; `BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md` owns the V3 catalyst catalog and V4→V5 consumable-resource migration. [대체됨] `+10` sole-precision and single-Tag wording is historical outside the Phase-1 representative +0~+15 play boundary. Runtime support must cover targets 10~100 without changing Decision28/29/30.
 
 > This is the single implementation contract produced by the current Phase 1
 > planning pass. The user has since opened current-canon MVP implementation;
@@ -14,6 +14,7 @@ PHASE_2_ENTRY = SATISFIED_BY_CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_202608
 WEAPON_KEYWORD_OWNERSHIP_DECISION = BS-ENHANCE-20260828-34
 WEAPON_KEYWORD_CONTENT_AND_SELECTION_DECISION = BS-ENHANCE-20260829-37
 RECURRING_PRECISION_DECISION = BS-ENHANCE-20260830-38
+PRECISION_CATALYST_RESOURCE_DECISION = BS-ENHANCE-20260901-40
 DECISION34_37_SCOPE = RESIDUAL_NON_CONFLICTING_HISTORICAL_EVIDENCE_ONLY
 WEAPON_KEYWORD_IMPLEMENTATION_ISSUE = #326
 ```
