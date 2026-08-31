@@ -1,13 +1,15 @@
 [gd_scene format=3 uid="uid://jlrgxk38qmw8"]
 
-[ext_resource type="Script" uid="uid://bb2d7lk6pguuc" path="res://scripts/vertical_slice/ui/vs_main_menu.gd" id="1_p6ka2"]
-[ext_resource type="Texture2D" path="res://assets/ui/workshop/workshop_enhancement_background_v1.png" id="2_menu_background"]
+[ext_resource type="Script" uid="uid://dxs2qt3hvg46d" path="res://scripts/vertical_slice/ui/vs_main_menu.gd" id="1_p6ka2"]
+[ext_resource type="Texture2D" uid="uid://d1n40nwiu1rbr" path="res://assets/ui/workshop/workshop_enhancement_background_v1.png" id="2_menu_background"]
 
 [node name="MainMenu" type="Control" unique_id=390408461]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_p6ka2")
 
 [node name="MenuIllustratedBackground" type="TextureRect" parent="." unique_id=770632141]
@@ -44,7 +46,7 @@ theme_override_colors/font_color = Color(0.24, 0.14, 0.07, 1)
 theme_override_colors/font_outline_color = Color(0.98, 0.88, 0.63, 1)
 theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 52
-text = "대장간"
+text = "모루의 서약"
 horizontal_alignment = 1
 
 [node name="MenuSubtitleLabel" type="Label" parent="MenuLayout" unique_id=682455314]
@@ -81,7 +83,7 @@ text = "새 대장간 시작"
 [node name="SettingsButton" type="Button" parent="MenuLayout" unique_id=659197335]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.31, 0.19, 0.10, 1)
+theme_override_colors/font_color = Color(0.31, 0.19, 0.1, 1)
 theme_override_font_sizes/font_size = 20
 text = "설정"
 
