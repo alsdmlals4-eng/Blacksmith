@@ -9,6 +9,8 @@ import struct
 import unittest
 from pathlib import Path
 
+from PIL import Image
+
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIREMENTS = ROOT / "docs/planning/BLACKSMITH_FIVE_EQUIPMENT_VISUAL_REQUIREMENTS_20260830.json"
@@ -17,6 +19,14 @@ ASSET_MANIFEST = ROOT / "assets/ASSET_MANIFEST.json"
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 SOURCE_DIMENSIONS = "1254x1254"
 RUNTIME_IMPORT_MAX_DIMENSION = 512
+ACTIVE_EQUIPMENT_ART_VERSION = "V2"
+EXPECTED_IMAGE_FILENAMES = {
+    "iron_sword": "iron_sword_card_v2.png",
+    "iron_shield": "iron_shield_card_v2.png",
+    "iron_bow": "iron_bow_card_v2.png",
+    "iron_armor": "iron_armor_card_v2.png",
+    "iron_helmet": "iron_helmet_card_v2.png",
+}
 
 
 def png_dimensions(path: Path) -> tuple[int, int]:
@@ -24,6 +34,13 @@ def png_dimensions(path: Path) -> tuple[int, int]:
     if not payload.startswith(PNG_SIGNATURE) or payload[12:16] != b"IHDR":
         raise AssertionError(f"not a PNG with an IHDR header: {path}")
     return struct.unpack(">II", payload[16:24])
+
+
+def png_color_type(path: Path) -> int:
+    payload = path.read_bytes()
+    if not payload.startswith(PNG_SIGNATURE) or payload[12:16] != b"IHDR":
+        raise AssertionError(f"not a PNG with an IHDR header: {path}")
+    return payload[25]
 
 
 class FiveEquipmentVisualRequirementsContractTest(unittest.TestCase):
@@ -34,6 +51,7 @@ class FiveEquipmentVisualRequirementsContractTest(unittest.TestCase):
         manifest_by_id = {asset["asset_id"]: asset for asset in manifest["asset_records"]}
         self.assertEqual(payload["art_direction"], "ILLUSTRATED_WORKSHOP_BOOK")
         self.assertEqual(payload["post_generation_user_lock"], "REQUIRED_FOR_RUNTIME_PROMOTION")
+        self.assertEqual(payload.get("active_equipment_art_version"), ACTIVE_EQUIPMENT_ART_VERSION)
         self.assertEqual(catalog["runtime_image_promotion"], "IMPLEMENTED_MACHINE_VERIFIED")
         entries = payload["visual_requirements"]
         self.assertEqual(
@@ -50,6 +68,8 @@ class FiveEquipmentVisualRequirementsContractTest(unittest.TestCase):
         for entry in entries:
             self.assertEqual(entry["candidate_status"], "USER_APPROVED")
             self.assertEqual(entry["runtime_promotion_status"], "IMPLEMENTED_MACHINE_VERIFIED")
+            self.assertEqual(entry.get("active_art_version"), ACTIVE_EQUIPMENT_ART_VERSION)
+            self.assertTrue(entry.get("transparent_background_required", False))
             self.assertEqual(entry["target_aspect_resolution"], f"1:1 / {SOURCE_DIMENSIONS} PNG")
             self.assertEqual(entry["accepted_source_dimensions"], SOURCE_DIMENSIONS)
             self.assertEqual(
@@ -71,9 +91,17 @@ class FiveEquipmentVisualRequirementsContractTest(unittest.TestCase):
             self.assertTrue(receipt["local_candidate_path"].endswith(".png"))
             self.assertEqual(len(receipt["sha256"]), 64)
             catalog_entry = catalog_by_id[entry["equipment_id"]]
+            expected_filename = EXPECTED_IMAGE_FILENAMES[entry["equipment_id"]]
+            self.assertEqual(catalog_entry["image_asset_id"], f"ASSET-EQUIPMENT-{entry['equipment_id'].upper().replace('_', '-')}-CARD-V2")
+            self.assertEqual(catalog_entry["image_path"], f"res://assets/ui/equipment/{expected_filename}")
             image_path = ROOT / catalog_entry["image_path"].replace("res://", "")
             self.assertTrue(image_path.is_file())
             self.assertEqual(png_dimensions(image_path), (1254, 1254))
+            self.assertEqual(png_color_type(image_path), 6, "V2 equipment art must retain an RGBA PNG alpha channel")
+            with Image.open(image_path) as source:
+                self.assertEqual(source.mode, "RGBA")
+                self.assertEqual(source.getpixel((0, 0))[3], 0, "V2 equipment art must have a transparent outer background")
+                self.assertGreater(source.getchannel("A").getextrema()[1], 0, "equipment art cannot be fully transparent")
             actual_sha256 = hashlib.sha256(image_path.read_bytes()).hexdigest()
             self.assertEqual(actual_sha256, receipt["sha256"])
             import_text = image_path.with_name(image_path.name + ".import").read_text(encoding="utf-8")
@@ -88,6 +116,9 @@ class FiveEquipmentVisualRequirementsContractTest(unittest.TestCase):
             self.assertEqual(asset["dimensions"], SOURCE_DIMENSIONS)
             self.assertEqual(asset["tracked_asset_path"], catalog_entry["image_path"].replace("res://", ""))
             self.assertEqual(asset["actual_consumer"], entry["actual_consumers"])
+
+        legacy_v1_assets = sorted((ROOT / "assets/ui/equipment").glob("*_card_v1.png"))
+        self.assertEqual(legacy_v1_assets, [], "V1 equipment images must be removed only after every consumer uses V2")
 
 
 if __name__ == "__main__":

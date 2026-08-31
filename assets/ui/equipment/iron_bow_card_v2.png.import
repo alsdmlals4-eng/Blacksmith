@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bq5f7rp0oi82u"
-path="res://.godot/imported/iron_bow_card_v1.png-4178368e6d7f614232e97f8ef459bf29.ctex"
+uid="uid://cl4872ay0rb0g"
+path="res://.godot/imported/iron_bow_card_v2.png-f64ff9028813d05e7c37c4136c8923cd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/equipment/iron_bow_card_v1.png"
-dest_files=["res://.godot/imported/iron_bow_card_v1.png-4178368e6d7f614232e97f8ef459bf29.ctex"]
+source_file="res://assets/ui/equipment/iron_bow_card_v2.png"
+dest_files=["res://.godot/imported/iron_bow_card_v2.png-f64ff9028813d05e7c37c4136c8923cd.ctex"]
 
 [params]
 

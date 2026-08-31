@@ -264,9 +264,9 @@ status: SUPERSEDED
 notes: User 2026-08-30 direction explicitly removes the dedicated Precision Workshop raster. Binding and repository file were retired; native tag-selection UX is the replacement consumer. This historical record does not approve a runtime asset. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
 ```
 
-## Current asset record · Five equipment identity illustrations v1
+## Historical retired asset record · Five equipment identity illustrations v1
 
-These five objects share one approved production brief and the same two runtime consumers, but retain individual file and hash identities in the asset manifest. The locked 1254×1254 PNG source bytes remain provenance-hashed; the runtime import applies a 512px lossless 2D/no-mipmap ceiling for the 96px first-forge card and the 156px Workshop hero. They are identity illustrations only: names, role values, Precision eligibility, costs, probabilities, durability, controls, and outcomes remain native Godot UI. Android memory and visual-quality observation remain `NOT_RUN`.
+These five original objects were removed from the active runtime after the 2026-08-31 user-locked transparent-background V2 replacement. Their original hashes and file paths remain below as retirement provenance; Git history remains the rollback reference. They never owned names, role values, Precision eligibility, costs, probabilities, durability, controls, or outcomes.
 
 ```yaml
 asset_id: ASSET-EQUIPMENT-IRON-SWORD-CARD-V1
@@ -275,7 +275,7 @@ name: Iron sword identity illustration v1
 project: BLACKSMITH
 creation_route: AI_GENERATED
 creator_or_vendor: OpenAI ImageGen
-source_url_or_path: assets/ui/equipment/iron_sword_card_v1.png
+source_url_or_path: RETIRED_20260831 / former assets/ui/equipment/iron_sword_card_v1.png
 acquired_or_created_at: 2026-08-30 KST
 commercial_use: UNKNOWN
 distribution_in_game_build: UNKNOWN
@@ -285,10 +285,10 @@ ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
 ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
 reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
 forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
-final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-SWORD-CARD-V1
+final_asset_record: assets/ASSET_MANIFEST.json#retired_asset_records/ASSET-EQUIPMENT-IRON-SWORD-CARD-V1
 proof_hash: bbed060e8ac115d51a0ee83bbe285127d292f3cbd4d2b633ef4df2f4258db5cc
-status: RELEASE_BLOCKED_UNVERIFIED
-notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+status: SUPERSEDED
+notes: Retired after all active consumers moved to the user-locked V2 transparent-background image. This historical record does not approve a runtime asset.
 ```
 
 ```yaml
@@ -298,7 +298,7 @@ name: Iron shield identity illustration v1
 project: BLACKSMITH
 creation_route: AI_GENERATED
 creator_or_vendor: OpenAI ImageGen
-source_url_or_path: assets/ui/equipment/iron_shield_card_v1.png
+source_url_or_path: RETIRED_20260831 / former assets/ui/equipment/iron_shield_card_v1.png
 acquired_or_created_at: 2026-08-30 KST
 commercial_use: UNKNOWN
 distribution_in_game_build: UNKNOWN
@@ -308,10 +308,10 @@ ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
 ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
 reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
 forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
-final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1
+final_asset_record: assets/ASSET_MANIFEST.json#retired_asset_records/ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1
 proof_hash: f3c02be3a6a9d375ffb816a4101a124bf7bb86aa97951cb0c0f9c6c98094de0c
-status: RELEASE_BLOCKED_UNVERIFIED
-notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+status: SUPERSEDED
+notes: Retired after all active consumers moved to the user-locked V2 transparent-background image. This historical record does not approve a runtime asset.
 ```
 
 ```yaml
@@ -321,7 +321,7 @@ name: Iron bow identity illustration v1
 project: BLACKSMITH
 creation_route: AI_GENERATED
 creator_or_vendor: OpenAI ImageGen
-source_url_or_path: assets/ui/equipment/iron_bow_card_v1.png
+source_url_or_path: RETIRED_20260831 / former assets/ui/equipment/iron_bow_card_v1.png
 acquired_or_created_at: 2026-08-30 KST
 commercial_use: UNKNOWN
 distribution_in_game_build: UNKNOWN
@@ -331,10 +331,10 @@ ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
 ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
 reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
 forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
-final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-BOW-CARD-V1
+final_asset_record: assets/ASSET_MANIFEST.json#retired_asset_records/ASSET-EQUIPMENT-IRON-BOW-CARD-V1
 proof_hash: 3f7c013553ed71d8821eb83c90f7bcabd90f72b1849701e0fd340e08e8d75f1f
-status: RELEASE_BLOCKED_UNVERIFIED
-notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+status: SUPERSEDED
+notes: Retired after all active consumers moved to the user-locked V2 transparent-background image. This historical record does not approve a runtime asset.
 ```
 
 ```yaml
@@ -344,7 +344,7 @@ name: Iron armor identity illustration v1
 project: BLACKSMITH
 creation_route: AI_GENERATED
 creator_or_vendor: OpenAI ImageGen
-source_url_or_path: assets/ui/equipment/iron_armor_card_v1.png
+source_url_or_path: RETIRED_20260831 / former assets/ui/equipment/iron_armor_card_v1.png
 acquired_or_created_at: 2026-08-30 KST
 commercial_use: UNKNOWN
 distribution_in_game_build: UNKNOWN
@@ -354,10 +354,10 @@ ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
 ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
 reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
 forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
-final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1
+final_asset_record: assets/ASSET_MANIFEST.json#retired_asset_records/ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1
 proof_hash: d4c0b9db933c9fe351575cf793412e22ead9b234590cb8ab60d3a82fcb554cc2
-status: RELEASE_BLOCKED_UNVERIFIED
-notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+status: SUPERSEDED
+notes: Retired after all active consumers moved to the user-locked V2 transparent-background image. This historical record does not approve a runtime asset.
 ```
 
 ```yaml
@@ -367,7 +367,7 @@ name: Iron helmet identity illustration v1
 project: BLACKSMITH
 creation_route: AI_GENERATED
 creator_or_vendor: OpenAI ImageGen
-source_url_or_path: assets/ui/equipment/iron_helmet_card_v1.png
+source_url_or_path: RETIRED_20260831 / former assets/ui/equipment/iron_helmet_card_v1.png
 acquired_or_created_at: 2026-08-30 KST
 commercial_use: UNKNOWN
 distribution_in_game_build: UNKNOWN
@@ -377,10 +377,129 @@ ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
 ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
 reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
 forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
-final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-HELMET-CARD-V1
+final_asset_record: assets/ASSET_MANIFEST.json#retired_asset_records/ASSET-EQUIPMENT-IRON-HELMET-CARD-V1
 proof_hash: 90cebb815fdc77b0076b7bab1eca00e1f7be791378d45dd2880f8b8ebe610cfb
+status: SUPERSEDED
+notes: Retired after all active consumers moved to the user-locked V2 transparent-background image. This historical record does not approve a runtime asset.
+```
+
+## Current asset record · Five equipment identity illustrations v2
+
+The five V2 identity illustrations are the 2026-08-31 user-locked replacements for the retired V1 workshop-background cards. Each 1254×1254 RGBA PNG has an empty transparent outer background and is rendered into the existing 96px first-forge card and 156px Workshop hero by lossless 512px/no-mipmap import. They are neutral base identities: grade does not select a different raster; enhancement finish and recurring Precision-tag presentation remain native derived UI. Android memory, client visual review, accessibility, human play, and release-rights review remain `NOT_RUN` or blocked.
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-SWORD-CARD-V2
+category: OTHER
+name: Iron sword transparent identity illustration v2
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_sword_card_v2.png
+acquired_or_created_at: 2026-08-31 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Transparent-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, enhancement marks, or tag marks
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-SWORD-CARD-V2
+proof_hash: dcdd43c59ac40599c7e1deb67422a70b50900b124a9ba7bb3dbb72a9f69f9860
 status: RELEASE_BLOCKED_UNVERIFIED
-notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+notes: User 2026-08-31 runtime-promotion lock. Source-alpha, catalog binding, and GUT/contract verification are required; Godot client, Android, accessibility, human review, and release rights remain unverified.
+```
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-SHIELD-CARD-V2
+category: OTHER
+name: Iron shield transparent identity illustration v2
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_shield_card_v2.png
+acquired_or_created_at: 2026-08-31 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Transparent-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, enhancement marks, or tag marks
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-SHIELD-CARD-V2
+proof_hash: 040c955625ed291230c28a66dd04a295e5e6953dd9786a45ce4df38f56ec2721
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-31 runtime-promotion lock. Source-alpha, catalog binding, and GUT/contract verification are required; Godot client, Android, accessibility, human review, and release rights remain unverified.
+```
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-BOW-CARD-V2
+category: OTHER
+name: Iron bow transparent identity illustration v2
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_bow_card_v2.png
+acquired_or_created_at: 2026-08-31 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Transparent-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, enhancement marks, or tag marks
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-BOW-CARD-V2
+proof_hash: db4e1c104b2327dd459aa7d511e49b3f4636d6a50598eb17d9ccc241ca939b38
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-31 runtime-promotion lock. Source-alpha, catalog binding, and GUT/contract verification are required; Godot client, Android, accessibility, human review, and release rights remain unverified.
+```
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-ARMOR-CARD-V2
+category: OTHER
+name: Iron armor transparent identity illustration v2
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_armor_card_v2.png
+acquired_or_created_at: 2026-08-31 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Transparent-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, enhancement marks, or tag marks
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-ARMOR-CARD-V2
+proof_hash: 1f6b907b0237cae480ad86daa8538265f0d790b1d567814086fdf3bf85bf5ec7
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-31 runtime-promotion lock. Source-alpha, catalog binding, and GUT/contract verification are required; Godot client, Android, accessibility, human review, and release rights remain unverified.
+```
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-HELMET-CARD-V2
+category: OTHER
+name: Iron helmet transparent identity illustration v2
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_helmet_card_v2.png
+acquired_or_created_at: 2026-08-31 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Transparent-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, enhancement marks, or tag marks
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-HELMET-CARD-V2
+proof_hash: cefa849d4f705f3cda681967f4f7e67d34469a4136b3dfd01d212f1ee01c42df
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-31 runtime-promotion lock. Source-alpha, catalog binding, and GUT/contract verification are required; Godot client, Android, accessibility, human review, and release rights remain unverified.
 ```
 
 ## Current asset record · ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1

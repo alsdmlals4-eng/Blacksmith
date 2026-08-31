@@ -14,8 +14,8 @@
       "primary_material_id": "iron",
       "weight_point": 15,
       "precision_tag_eligible": true,
-      "image_asset_id": "ASSET-EQUIPMENT-IRON-SWORD-CARD-V1",
-      "image_path": "res://assets/ui/equipment/iron_sword_card_v1.png"
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-SWORD-CARD-V2",
+      "image_path": "res://assets/ui/equipment/iron_sword_card_v2.png"
     },
     {
       "equipment_id": "iron_shield",
@@ -26,8 +26,8 @@
       "primary_material_id": "iron",
       "weight_point": 15,
       "precision_tag_eligible": true,
-      "image_asset_id": "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1",
-      "image_path": "res://assets/ui/equipment/iron_shield_card_v1.png"
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V2",
+      "image_path": "res://assets/ui/equipment/iron_shield_card_v2.png"
     },
     {
       "equipment_id": "iron_bow",
@@ -38,8 +38,8 @@
       "primary_material_id": "iron",
       "weight_point": 15,
       "precision_tag_eligible": true,
-      "image_asset_id": "ASSET-EQUIPMENT-IRON-BOW-CARD-V1",
-      "image_path": "res://assets/ui/equipment/iron_bow_card_v1.png"
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-BOW-CARD-V2",
+      "image_path": "res://assets/ui/equipment/iron_bow_card_v2.png"
     },
     {
       "equipment_id": "iron_armor",
@@ -50,8 +50,8 @@
       "primary_material_id": "iron",
       "weight_point": 15,
       "precision_tag_eligible": false,
-      "image_asset_id": "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1",
-      "image_path": "res://assets/ui/equipment/iron_armor_card_v1.png"
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V2",
+      "image_path": "res://assets/ui/equipment/iron_armor_card_v2.png"
     },
     {
       "equipment_id": "iron_helmet",
@@ -62,8 +62,8 @@
       "primary_material_id": "iron",
       "weight_point": 15,
       "precision_tag_eligible": false,
-      "image_asset_id": "ASSET-EQUIPMENT-IRON-HELMET-CARD-V1",
-      "image_path": "res://assets/ui/equipment/iron_helmet_card_v1.png"
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-HELMET-CARD-V2",
+      "image_path": "res://assets/ui/equipment/iron_helmet_card_v2.png"
     }
   ]
 }

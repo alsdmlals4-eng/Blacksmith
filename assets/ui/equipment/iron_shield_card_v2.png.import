@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr0qu856rr3ju"
-path="res://.godot/imported/iron_sword_card_v1.png-3873b5714d0aeacf750fffa4cf8dbe8e.ctex"
+uid="uid://cba7u2icvbcyy"
+path="res://.godot/imported/iron_shield_card_v2.png-896fcca89badb622c328a44bbc75b771.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/equipment/iron_sword_card_v1.png"
-dest_files=["res://.godot/imported/iron_sword_card_v1.png-3873b5714d0aeacf750fffa4cf8dbe8e.ctex"]
+source_file="res://assets/ui/equipment/iron_shield_card_v2.png"
+dest_files=["res://.godot/imported/iron_shield_card_v2.png-896fcca89badb622c328a44bbc75b771.ctex"]
 
 [params]
 

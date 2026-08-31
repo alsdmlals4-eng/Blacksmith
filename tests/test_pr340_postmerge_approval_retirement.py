@@ -32,9 +32,21 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
 
 class PR340PostmergeApprovalRetirementTests(unittest.TestCase):
     def test_postmerge_contract_retires_pr340_approval_and_adopts_pr340(self) -> None:
-        self.assertFalse(APPROVAL.exists())
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
         self.assertEqual(PR340_MERGE, adapter["protected_baseline"]["commit"])
+
+        # PR340's approval artifact was retired.  A later, independently
+        # approved protected-path delivery may legitimately create a new
+        # one-shot manifest, so this regression must not prohibit that gate.
+        if not APPROVAL.exists():
+            return
+
+        approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
+        self.assertEqual("PROJECT_PROTECTED_CHANGE_APPROVAL", approval["artifact_role"])
+        self.assertEqual("APPROVED", approval["status"])
+        self.assertEqual(adapter["protected_baseline"]["commit"], approval["protected_base_commit"])
+        self.assertNotIn(PR340_MERGE, approval["decision_ids"])
+        self.assertNotIn("PR #340", approval["approval_source"])
 
     def test_generated_compatibility_views_track_the_rebased_canonical_adapter(self) -> None:
         canonical_sha = raw_sha256(CANONICAL_ADAPTER)
