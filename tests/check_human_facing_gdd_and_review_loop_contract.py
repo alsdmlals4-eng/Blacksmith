@@ -94,9 +94,12 @@ def main() -> int:
         "REJECT",
         "차별점",
         "남은 불확실성",
-        "PR #328",
-        "180 tests / 1033 assertions",
-        "정밀 태그 선택은 현재 vertical-slice Workshop에 구현됐다",
+        "열 번의 정밀 강화",
+        "+99 → +100",
+        "태그 추가 또는 태그 강화",
+        "BS-ENHANCE-20260830-38",
+        "V4 versioned Tag collection",
+        "all ten Precision gates",
     ):
         require(human_gdd, token, failures, "human-facing GDD")
 
@@ -188,7 +191,7 @@ def main() -> int:
         ("canonical current owners", "| Canonical current owners |"),
         ("work-stage current owners", "| 1. Intent and canon |"),
         ("Decision37 confirmed-decision row", "| DEC-ENH-37 |"),
-        ("Decision37 traceability row", "| One +10 Tag reflects player choice |"),
+        ("recurring Precision Tag traceability row", "| Precision Tag action reflects player choice |"),
         ("Decision37 change-log row", "| 2026-08-29 | Adds `BS-ENHANCE-20260829-37`"),
     ):
         matching_line = next((line for line in ai_spec.splitlines() if line.startswith(line_prefix)), "")
@@ -225,11 +228,15 @@ def main() -> int:
 
     if not PDF.exists() or PDF.stat().st_size < 10_000:
         failures.append("human-facing Korean GDD PDF is missing or implausibly small")
+    elif PDF.stat().st_size > 5 * 1024 * 1024:
+        failures.append("human-facing Korean GDD PDF exceeds the 5 MiB derivative-size budget")
     if not PDF_RECEIPT.exists():
         failures.append("human-facing PDF provenance receipt is missing")
     else:
         try:
             receipt = json.loads(PDF_RECEIPT.read_text(encoding="utf-8"))
+            if receipt.get("schema_version") != 2:
+                failures.append("PDF receipt must use the current deterministic publisher schema version 2")
             expected_gdd_hash = normalized_lf_sha256(HUMAN_GDD)
             expected_pdf_hash = hashlib.sha256(PDF.read_bytes()).hexdigest()
             if receipt.get("source_markdown", {}).get("sha256") != expected_gdd_hash:
@@ -241,6 +248,10 @@ def main() -> int:
             reader = PdfReader(str(PDF))
             if receipt.get("artifact", {}).get("page_count") != len(reader.pages):
                 failures.append("PDF receipt page count does not match the readable PDF")
+            for page_number, page in enumerate(reader.pages, start=1):
+                expected_footer = f"{page_number} / {len(reader.pages)} · 2026-08-31"
+                if expected_footer not in (page.extract_text() or ""):
+                    failures.append(f"human-facing GDD PDF page {page_number} footer must show the current document date")
             expected_images = [
                 "assets/ui/workshop/main_menu_dawn_background_v1.png",
                 "assets/ui/workshop/customer_result_return_illustration_v1.png",
@@ -259,12 +270,16 @@ def main() -> int:
             if len(reader.pages) < 9:
                 failures.append("PDF has fewer than the inspected 9 human-facing GDD pages")
             pdf_text = "\n".join(page.extract_text() or "" for page in reader.pages)
+            normalized_pdf_text = " ".join(pdf_text.split())
             for token in (
-                "PR #328",
-                "180 tests / 1033 assertions",
-                "정밀 태그 선택은 현재 vertical-slice Workshop에 구현됐다",
+                "열 번의 정밀 강화",
+                "+99 → +100",
+                "태그 추가 또는 태그 강화",
+                "BS-ENHANCE-20260830-38",
+                "V4 versioned Tag collection",
+                "all ten Precision gates",
             ):
-                require(pdf_text, token, failures, "human-facing GDD PDF")
+                require(normalized_pdf_text, " ".join(token.split()), failures, "human-facing GDD PDF")
         except Exception as exc:  # noqa: BLE001 - report contract evidence, not a traceback.
             failures.append(f"cannot validate human-facing PDF provenance: {exc}")
     if not ARCHIVE_GDIGNORE.exists():

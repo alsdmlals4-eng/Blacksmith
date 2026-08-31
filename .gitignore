@@ -33,3 +33,6 @@ Thumbs.db
 
 # Local asset vault
 .asset-vault/
+
+# Ephemeral generated inspection and rebuild derivatives
+tmp/

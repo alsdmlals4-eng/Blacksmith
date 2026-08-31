@@ -5,8 +5,10 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from io import BytesIO
 from pathlib import Path
 
+from PIL import Image as PILImage
 from pypdf import PdfReader
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
@@ -35,6 +37,9 @@ EQUIPMENT_ASSETS = [
     ("철투구", ROOT / "assets/ui/equipment/iron_helmet_card_v1.png"),
 ]
 FOOTER_RESERVE = 20 * mm
+SCENE_DERIVATIVE_MAX_PIXELS = (640, 1140)
+EQUIPMENT_DERIVATIVE_MAX_PIXELS = (480, 480)
+PDF_DERIVATIVE_JPEG_QUALITY = 86
 
 
 def normalized_sha256(path: Path) -> str:
@@ -50,6 +55,19 @@ def inline(text: str) -> str:
     escaped = xml(text)
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", escaped)
     return re.sub(r"`([^`]+)`", r'<font color="#725A45">\1</font>', escaped)
+
+
+def pdf_derivative_image(asset: Path, *, width: float, height: float, max_pixels: tuple[int, int]) -> Image:
+    """Embed a display-sized JPEG derivative without changing the runtime PNG source asset."""
+    with PILImage.open(asset) as source:
+        derivative = source.convert("RGB")
+        derivative.thumbnail(max_pixels, PILImage.Resampling.LANCZOS)
+        buffer = BytesIO()
+        derivative.save(buffer, format="JPEG", quality=PDF_DERIVATIVE_JPEG_QUALITY, optimize=True, progressive=False)
+    buffer.seek(0)
+    flowable = Image(buffer, width=width, height=height)
+    flowable._blacksmith_derivative_buffer = buffer
+    return flowable
 
 
 class NumberedCanvas(canvas.Canvas):
@@ -71,7 +89,7 @@ class NumberedCanvas(canvas.Canvas):
         self.setFont("Malgun", 8)
         self.setFillColor(colors.HexColor("#725A45"))
         self.drawString(18 * mm, 11 * mm, "Blacksmith · 사람용 게임 기획서")
-        self.drawRightString(A4[0] - 18 * mm, 11 * mm, f"{page_number} / {page_count} · 2026-08-30")
+        self.drawRightString(A4[0] - 18 * mm, 11 * mm, f"{page_number} / {page_count} · 2026-08-31")
         self.restoreState()
 
     def save(self):
@@ -143,7 +161,7 @@ def story(markdown: str):
     first_scene_asset = True
     for name, asset in SCENE_ASSETS:
         if asset.exists():
-            scene_flowables = [Paragraph(xml(name), h2), Image(str(asset), width=68 * mm, height=120.8 * mm), Paragraph("이 삽화는 런타임 스크린샷이 아니다. 실제 클라이언트·Android·접근성·사람 시각 검수는 아직 실행하지 않음 상태다.", caption), Spacer(1, 4 * mm)]
+            scene_flowables = [Paragraph(xml(name), h2), pdf_derivative_image(asset, width=68 * mm, height=120.8 * mm, max_pixels=SCENE_DERIVATIVE_MAX_PIXELS), Paragraph("이 삽화는 런타임 스크린샷이 아니다. 실제 클라이언트·Android·접근성·사람 시각 검수는 아직 실행하지 않음 상태다.", caption), Spacer(1, 4 * mm)]
             if first_scene_asset:
                 scene_flowables.insert(0, Paragraph("승인된 런타임 소비처 삽화", h1))
             first_scene_asset = False
@@ -152,7 +170,7 @@ def story(markdown: str):
     for name, asset in EQUIPMENT_ASSETS:
         if asset.exists():
             equipment_cells.append([
-                Image(str(asset), width=56 * mm, height=56 * mm),
+                pdf_derivative_image(asset, width=56 * mm, height=56 * mm, max_pixels=EQUIPMENT_DERIVATIVE_MAX_PIXELS),
                 Paragraph(xml(name), caption),
             ])
     if equipment_cells:
