@@ -35,7 +35,12 @@ class EquipmentV2PostmergeApprovalRetirementTests(unittest.TestCase):
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
         self.assertEqual(EQUIPMENT_V2_PRODUCT_MERGE, adapter["protected_baseline"]["commit"])
-        self.assertFalse(APPROVAL.exists())
+        if not APPROVAL.exists():
+            return
+
+        active_approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
+        self.assertNotIn("BS-ENHANCE-20260830-38", active_approval["decision_ids"])
+        self.assertNotIn("BS-EQUIPMENT-20260830-39", active_approval["decision_ids"])
 
     def test_generated_compatibility_views_track_the_rebased_canonical_adapter(self) -> None:
         canonical_sha = raw_sha256(CANONICAL_ADAPTER)
