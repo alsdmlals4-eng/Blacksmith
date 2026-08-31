@@ -4,7 +4,7 @@
 
 > **Document role:** machine-searchable current-canon planning and implementation contract. It is not a replacement for executable code, JSON owners, tests, or runtime evidence.
 >
-> **Source snapshot:** `main` / `2ba2496f0b8e259c446ae8ed1f09533012c3f303` plus current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36` and precision-tag Decision37 / 2026-08-29 KST.
+> **Source snapshot:** `main` / `ab7ca9ba1bf6599bb96a16eb44688475a64a25bf` after PR #328 implementation and PR #329 closure, plus current user routing/review overrides `BS-OPS-20260828-35 / BS-OPS-20260828-36` and precision-tag Decision37 / 2026-08-29 KST.
 > **Generated scope:** this is a technical-trace companion to the human-facing GDD and `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; it does not own the human reading experience. Notion is retired from future project work; no new raster, runtime asset, Scene, data, or GDScript change belongs to this document batch.
 
 ## 00. CANON SNAPSHOT
@@ -73,7 +73,7 @@
 | 1. Intent and canon | `CONFIRMED` | Current owner files and Decisions 25-37. |
 | 2. System contract | `CONFIRMED` | Enhancement, durability, repair, event, keyword boundaries, first Tag matrix, and empty-selection policy are current. |
 | 3. Representative slice plan | `CONFIRMED` | Slice B: individual `+0→+10`, optional `+11→+15` risk, handoff, brief return beat, same-UID actual-use result. |
-| 4. Machine implementation | `PARTIAL / IMPLEMENTATION_DRIFT_RISK` | Vertical-slice classes, scenes, save envelope, GUT contracts and assets exist; exact current-canon parity is not asserted. |
+| 4. Machine implementation | `PARTIAL / PRECISION_IMPLEMENTED` | Vertical-slice classes, scenes, save envelope, GUT contracts and assets exist. PR #328 implements the approved Decision37 +9→+10 selection/write/UI path; whole-slice runtime/UX parity is still not asserted. |
 | 5. Player and production proof | `NOT_RUN` | No Godot client, Android, accessibility, performance, or human/player test evidence. |
 
 ### Actual playable-surface inventory
@@ -84,7 +84,7 @@
 | UI-FORGE-001 | First Forge | `scripts/ui/forging_screen.gd` and first-forge flow | `IMPLEMENTED` historical/V2 surface; current flow parity requires review. |
 | UI-WORK-001 | Workshop | `res://scenes/vertical_slice/screens/vs_workshop_screen.tscn`, `VSWorkshopScreen` | `IMPLEMENTED` for numeric durability/repair surface; current canon parity not claimed. |
 | UI-RESULT-001 | Customer Result | `res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn`, `VSCustomerResultScreen` | `IMPLEMENTED` presentation surface; current event/content contract parity requires review. |
-| UI-PREC-001 | +9→+10 Precision | Only locator / future consumer queue | `NOT_IMPLEMENTED` as an approved current screen. |
+| UI-PREC-001 | +9→+10 Precision | `VSWorkshopScreen` native Korean lineage/method selection, preview, confirm and placeholder-backfill controls | `IMPLEMENTED / AUTOMATED_TEST_PASS`; Godot client/Android/UX evidence remains `NOT_RUN`. |
 | UI-CHR-001 | Item Chronicle | Only locator / future consumer queue | `NOT_IMPLEMENTED`. |
 
 ## 03. CONFIRMED DECISIONS
@@ -99,7 +99,7 @@
 | DEC-ENH-32 | A failed enhancement resolves to exactly `FAILED_HOLD` or `FAILED_DAMAGE`; no downgrade or separate critical. | `CONFIRMED` |
 | DEC-CHR-27 | Only meaningful item events enter player Chronicle, never routine dated attempts. | `CONFIRMED` |
 | DEC-ENH-34 | Weapon keywords are Grade / Tag / Event. `+10` success creates exactly one weapon-owned Tag in `CATALYST_AFFIX`; its identity is catalyst lineage plus selected Precision method. | `CONFIRMED` |
-| DEC-ENH-37 | **결정 완료:** +9에서 불씨/모루 계보와 날 세우기/경량 담금을 명시 선택한다. 빈 선택은 비용·굴림 전에 막히고, 성공 시 2×2 표의 Tag 하나만 기존 `CATALYST_AFFIX`에 기록한다. | `CONFIRMED / NOT_IMPLEMENTED` |
+| DEC-ENH-37 | **결정 완료:** +9에서 불씨/모루 계보와 날 세우기/경량 담금을 명시 선택한다. 빈 선택은 비용·굴림 전에 막히고, 성공 시 2×2 표의 Tag 하나만 기존 `CATALYST_AFFIX`에 기록한다. PR #328은 이 선택·단일 write·hold 무기록·V3 placeholder 1회 정정을 구현했다. | `IMPLEMENTED / AUTOMATED_TEST_PASS` |
 | DEC-ART-03/04 | Illustrated Workshop Book direction; generated imagery needs actual runtime consumer and is not automatically a final asset. | `CONFIRMED` |
 
 ## 04. DESIGN PILLARS
@@ -123,7 +123,7 @@ The target first memory is not “I clicked a forge many times.” It is “I ch
 | UX ID | Time | Player learns | Evidence state |
 |---|---:|---|---|
 | UX-ONB-001 | First 5 min | Make a first work and see ordinary `+1` feedback; `+1/+2` learn and `+3~+9` build. | `DOCUMENTED`; pacing `UX_VERIFIED: NOT_RUN`. |
-| UX-ONB-002 | First 15 min | `+9→+10` is special: choose 불씨/모루 and 날 세우기/경량 담금, then the successful work gains one Tag before `+11` previews first damage-eligible risk. | `CONFIRMED`; precision screen/data content `NOT_IMPLEMENTED`. |
+| UX-ONB-002 | First 15 min | `+9→+10` is special: choose 불씨/모루 and 날 세우기/경량 담금, then the successful work gains one Tag before `+11` previews first damage-eligible risk. | `IMPLEMENTED / AUTOMATED_TEST_PASS` in PR #328; client comprehension and pacing `NOT_RUN`. |
 | UX-ONB-003 | First 30 min | Handoff produces a non-economic return beat and an actual same-UID result, causing the next repair/enhancement/new-work choice. | `DOCUMENTED / PARTIAL`; runtime/UX proof `NOT_RUN`. |
 
 ## 06. CORE / SESSION / META LOOP
@@ -141,7 +141,7 @@ META: build a portfolio of remembered UIDs → unlock later title/content only t
 | System ID | Name | Current owner | Status |
 |---|---|---|---|
 | SYS-ENH-001 | Ordinary enhancement and STOP/PUSH | Core simplification canon | `CONFIRMED`; V2 implementation `PARTIAL` |
-| SYS-PRE-002 | +9→+10 Precision and weapon Tag | Decision34 / unified contract | `CONFIRMED`; Tag content/write/UI `NOT_IMPLEMENTED` |
+| SYS-PRE-002 | +9→+10 Precision and weapon Tag | Decision34/37 / unified contract | `IMPLEMENTED / AUTOMATED_TEST_PASS` in PR #328; client/Android/human evidence `NOT_RUN` |
 | SYS-DUR-003 | Durability and damage | Decision28/29 | `CONFIRMED / TEST_BUDGET`; V2 parity `NOT_CONFIRMED` |
 | SYS-REP-004 | Repair and structural scar | Decision29/31 | `CONFIRMED / NOT_FINAL_BALANCE`; V2 parity `NOT_CONFIRMED` |
 | SYS-LIF-005 | UID, ownership, destruction, archive | Core canon / save contract | `CONFIRMED`; V2 implementation `PARTIAL` |
@@ -179,7 +179,8 @@ META: build a portfolio of remembered UIDs → unlock later title/content only t
 | Resolution | `tag_id = resolve(catalyst_lineage, precision_method)`; the stored outcome is a single Tag, even if its player-facing copy expresses both inputs. |
 | Isolation | `GRADE_AFFIX` and `CHRONICLE_AFFIX` cannot be written, changed, or selected by the method. |
 | Approved catalog | 불씨/모루 계보 × 날 세우기/경량 담금의 2×2 Tag 표. 선택은 `+9→+10` 시도 local 입력이며, 빈 입력은 비용·굴림 전에 차단한다. |
-| Unresolved | 실제 UI/저장 write 구현, Godot runtime/Android/사람 사용성 증거. |
+| Implemented boundary | `VSPrecisionResolver`, enhancement action service, V3 placeholder backfill and Workshop Control path validate the fixed 2×2 catalog before cost/roll. PR #328 GUT evidence: 29 scripts / 180 tests / 1033 assertions. |
+| Unresolved | Godot client rendering, Android, accessibility and 사람 사용성 evidence. |
 | Prohibited | Placeholder Tag, invented keyword, player title, event keyword, universal damage protection, fourth affix slot. |
 | Required future tests | One valid combination returns one known Tag; invalid / absent lineage follows an explicitly approved policy; failure creates no Tag; Grade/Event remain byte-for-byte unchanged. |
 
@@ -275,7 +276,7 @@ Each additional content row must specify: customer goal and visible constraint; 
 | UI-MAIN-001 | Start/continue without misrepresenting save state. | New Game, Continue, Settings stub; visible save status. | `IMPLEMENTED / UX_NOT_RUN` |
 | UI-FORGE-001 | Establish first work and ordinary forge feedback. | Touch forge; clear progress/result. | `PARTIAL IMPLEMENTATION` |
 | UI-WORK-001 | Compare exact durability and repair availability before action. | Enhancement / repair actions; disabled/error states communicate why. | `IMPLEMENTED / CURRENT_PARITY_NOT_CONFIRMED` |
-| UI-PREC-001 | Make the lineage + method choice and one resulting Tag intelligible. | Explicit lineage/method selection, preview, confirm/cancel; success/failure result. | `NOT_IMPLEMENTED` |
+| UI-PREC-001 | Make the lineage + method choice and one resulting Tag intelligible. | Workshop 안의 선택·미리보기·확인 흐름; empty/invalid input blocks before cost/roll, success/hold/backfill result copy remains native Korean. | `IMPLEMENTED / AUTOMATED_TEST_PASS`; client/Android/UX `NOT_RUN`. |
 | UI-RESULT-001 | Explain returned customer outcome and next action. | Continue/back action; 2-4 reasons, damage state, next action. | `IMPLEMENTED / UX_NOT_RUN` |
 | UI-CHR-001 | Browse only meaningful UID events. | Open detail, filter/read, close. | `NOT_IMPLEMENTED` |
 
@@ -340,7 +341,7 @@ Existing architecture is a reusable implementation baseline, not permission to i
 | DAT-ITEM-001 | `VSItem` | UID, level, birth facts, `CURRENT/MAX/BASE_MAX`, lifecycle state, no invented Tag matrix. |
 | DAT-SAVE-001 | `VSSaveEnvelope` | V3; deterministic seeds, resolved events, append-only ledger, backup recovery; V2 migrate on read, V1 fail closed. |
 | DAT-RESULT-001 | `CONTENT_RESULT_V1` | event ID, source decision, content/customer, day, item refs, result axes, 2-4 causal reasons, one next action; score/total/reward probability prohibited. |
-| DAT-PREC-001 | Future current Tag resolution | `catalyst_lineage_id`, `precision_method_id`, `tag_id`; exact enum content and empty-lineage behavior `USER_DECISION_REQUIRED`. |
+| DAT-PREC-001 | Current Tag resolution | Attempt-local lineage/method input resolves to one stored `CATALYST_AFFIX` tag. Decision37's fixed enums and empty-lineage block are implemented without a new stored field. |
 | DAT-DUR-001 | Decision29 model | immutable `BASE_MAX`; legal `CURRENT/MAX` ranges; derived effective state is never separately persisted as hidden authority. |
 | DAT-EVENT-001 | Decision30 event packet | actual-use flag, item UID, profile/cause, resolved-once identifier; direct/max-damage constraints. |
 
@@ -352,7 +353,7 @@ Existing architecture is a reusable implementation baseline, not permission to i
 | SCN-APP-002 | `res://scenes/vertical_slice/vertical_slice_app.tscn` | Hosts workshop/result screens | `IMPLEMENTED` |
 | SCN-WORK-003 | `res://scenes/vertical_slice/screens/vs_workshop_screen.tscn` | Item state → enhancement/repair/result | `IMPLEMENTED / CURRENT_PARITY_REVIEW_REQUIRED` |
 | SCN-RESULT-004 | `res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn` | Resolved result → next action | `IMPLEMENTED / UX_NOT_RUN` |
-| SCN-PREC-005 | Not yet approved | +9→+10 entry → outcome | `NOT_IMPLEMENTED` |
+| SCN-PREC-005 | Workshop-owned flow (`VSWorkshopScreen`) | +9→+10 explicit selection → preview → confirm → success/hold/backfill outcome | `IMPLEMENTED`; separate Scene is intentionally out of scope. |
 | SCN-CHR-006 | Not yet approved | UID detail → meaningful history | `NOT_IMPLEMENTED` |
 
 ## 17. SCRIPT RESPONSIBILITY MAP
@@ -397,14 +398,14 @@ PREVIEW → CONFIRM → RESOLVE → SUCCESS(+1) | FAILED_HOLD | FAILED_DAMAGE
 FAILED_DAMAGE → derived durability state → optional one repair job
 ```
 
-### Precision state (future)
+### Precision state
 
 ```text
 ELIGIBLE_AT_PLUS9 → READ_LINEAGE_AND_METHOD → PREVIEW → CONFIRM
 → SUCCESS_AT_PLUS10: one Tag resolve/write | failure: no Tag
 ```
 
-The precision state machine and first 2×2 catalog are `DOCUMENTED / CONFIRMED` at rule level but `NOT_IMPLEMENTED` at UI/data-content level.
+The precision state machine and first 2×2 catalog are `IMPLEMENTED / AUTOMATED_TEST_PASS` in PR #328. Godot client rendering, Android, accessibility, performance and 사람 사용성 are not implied and remain `NOT_RUN`.
 
 ## 20. SAVE/LOAD CONTRACT
 
@@ -418,7 +419,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | Understand damage/repair | SYS-DUR-003, SYS-REP-004 | UI-WORK-001, AST-DUR-002 | `VSItem`, `VSRepairResolver`, workshop screen, durability/repair GUT suites | `IMPLEMENTED / UX_NOT_RUN` |
 | First work enters core loop | UX-ONB-001 | UI-MAIN-001, UI-FORGE-001, AST-FORGE-003 | `VSMainMenu`, `VSFirstForgeCompletionService`, first-forge tests | `IMPLEMENTED / UX_NOT_RUN` |
 | Same UID returns from the world | SYS-CUS-006, CNT-ADVENTURER-01 | UI-RESULT-001 | content result JSON, event resolver/action service, result-screen tests | `PARTIAL` |
-| One +10 Tag reflects player choice | SYS-PRE-002 | UI-PREC-001, AST-PREC-006 | Decisions34/37, JSON catalog, and unified contract | `CONFIRMED / NOT_IMPLEMENTED` |
+| One +10 Tag reflects player choice | SYS-PRE-002 | UI-PREC-001, AST-PREC-006 | Decisions34/37, JSON catalog, `VSPrecisionResolver`, enhancement action service, Workshop controls, and PR #328 GUT evidence | `IMPLEMENTED / AUTOMATED_TEST_PASS / UX_NOT_RUN` |
 | Player reads meaningful history | SYS-CHR-007 | UI-CHR-001, AST-CHR-007 | Decision27 and ledger concepts | `CONFIRMED / NOT_IMPLEMENTED` |
 
 ## 22. TEST AND QA CONTRACT
@@ -428,7 +429,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | QA-CAN-001 | Python current-authority and core-simplification contracts | `AUTOMATED_TEST_PASS` in the snapshot’s recent document PR checks. |
 | QA-VS-002 | GUT vertical slice domain/resolver/screen suites | Existing test files are present; exact full local rerun is required for any code change. |
 | QA-SAVE-003 | Save migration, same UID, deterministic resolved events, backup recovery | Contract documented in preset; test evidence must be cited per exact run. |
-| QA-PREC-004 | New Tag combination matrix, failure/no-write, Grade/Event isolation, empty-lineage policy | `CONTRACT_READY / RUNTIME_NOT_IMPLEMENTED`. |
+| QA-PREC-004 | New Tag combination matrix, failure/no-write, Grade/Event isolation, empty-lineage policy | `AUTOMATED_TEST_PASS`: PR #328 reports GUT 29 scripts / 180 tests / 1033 assertions and headless editor load exit 0; live client and device proof `NOT_RUN`. |
 | QA-UX-005 | Five-minute comprehension, +10 identity recognition, +11 STOP/PUSH understanding, returned-result causality | `NOT_RUN`. |
 | QA-AND-006 | Android portrait safe area, 48dp targets, contrast/large text, rotation, device load | `NOT_RUN`. |
 | QA-REL-007 | Rights/terms, AAB/signing, content rating and Google Play evidence | `NOT_RUN / RELEASE_BLOCKED_UNVERIFIED`. |
@@ -479,12 +480,12 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 
 ## 26. IMPLEMENTATION QUEUE
 
-1. Implement `DAT-PREC-001` and resolver/write isolation from Decision37's current JSON/contract owner; run GUT/Python and exact placeholder-backfill checks.
-2. Implement UI-PREC-001 inside the current Workshop flow; use native `Control` UI and add no precision raster.
-4. Audit V2 enhancement/durability/repair paths against Decisions28/29/31/32; correct only approved drift.
-5. Deliver Nadia actual-use result to runtime with same-UID and causal reason validation; then author two reusable content rows.
-6. 사람 플레이 검수는 사용자 지시로 이번 구현 계약의 완료 조건에서 제외한다. Android/UI visual QA는 실행할 때만 evidence를 추가한다.
-7. Complete release rights/platform profile, AAB signing/export and store-quality gates last.
+1. Preserve and regression-check the implemented `DAT-PREC-001`/Workshop path from PR #328; no separate precision Scene or raster is authorized.
+2. Select the next approved current-canon Issue before opening a new product mutation; #317 remains the integration tracker and does not automatically open its historical blockers.
+3. Audit V2 enhancement/durability/repair paths against Decisions28/29/31/32; correct only approved drift.
+4. Deliver Nadia actual-use result to runtime with same-UID and causal reason validation; then author two reusable content rows.
+5. 사람 플레이 검수는 사용자 지시로 이번 구현 계약의 완료 조건에서 제외한다. Android/UI visual QA는 실행할 때만 evidence를 추가한다.
+6. Complete release rights/platform profile, AAB signing/export and store-quality gates last.
 
 ## 27. CHANGE LOG
 
@@ -496,6 +497,7 @@ Save/load must preserve UID, birth facts, level, exact durability fields, meanin
 | 2026-08-28 | Adds `BS-OPS-20260828-35`: GitHub-only current canon and user-preauthorized candidate generation after consumer requirements. | Historical Notion records remain non-current; post-generation lock remains required for final direction/runtime promotion. |
 | 2026-08-28 | Completes the one-time Notion-to-GitHub migration receipt and preserves eight historical Visual GDD binaries with exact hashes. | No future Notion read/write; archived boards are non-runtime and cannot override current canon. |
 | 2026-08-29 | Adds `BS-ENHANCE-20260829-37`: first 2×2 Precision Tag catalog, explicit empty-selection block, no-new-field rule, and placeholder backfill contract. | Documentation/data contract only; no Godot code/data/Scene change yet. |
+| 2026-08-29 | PR #328 implements the approved fixed 2×2 Precision Tag catalog in the existing Workshop flow. | `IMPLEMENTED / AUTOMATED_TEST_PASS`: 29 GUT scripts, 180 tests, 1033 assertions; client/Android/accessibility/performance/human evidence remains `NOT_RUN`. |
 
 ## Appendix A. Benchmark disposition
 

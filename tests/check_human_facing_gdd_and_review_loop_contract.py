@@ -83,6 +83,9 @@ def main() -> int:
         "REJECT",
         "차별점",
         "남은 불확실성",
+        "PR #328",
+        "180 tests / 1033 assertions",
+        "정밀 태그 선택은 현재 vertical-slice Workshop에 구현됐다",
     ):
         require(human_gdd, token, failures, "human-facing GDD")
 
@@ -115,6 +118,11 @@ def main() -> int:
     for token in (
         "기술·정본 추적용",
         "BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
+        "PR #328",
+        "DEC-ENH-37",
+        "UI-PREC-001",
+        "Workshop 안의 선택·미리보기·확인 흐름",
+        "IMPLEMENTED / AUTOMATED_TEST_PASS",
     ):
         require(ai_spec, token, failures, "AI production spec")
 
@@ -140,6 +148,13 @@ def main() -> int:
                 failures.append("PDF subject does not identify the human-facing Korean GDD")
             if len(reader.pages) < 9:
                 failures.append("PDF has fewer than the inspected 9 human-facing GDD pages")
+            pdf_text = "\n".join(page.extract_text() or "" for page in reader.pages)
+            for token in (
+                "PR #328",
+                "180 tests / 1033 assertions",
+                "정밀 태그 선택은 현재 vertical-slice Workshop에 구현됐다",
+            ):
+                require(pdf_text, token, failures, "human-facing GDD PDF")
         except Exception as exc:  # noqa: BLE001 - report contract evidence, not a traceback.
             failures.append(f"cannot validate human-facing PDF provenance: {exc}")
     if not ARCHIVE_GDIGNORE.exists():

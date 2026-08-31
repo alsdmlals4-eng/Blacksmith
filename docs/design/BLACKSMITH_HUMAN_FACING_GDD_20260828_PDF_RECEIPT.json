@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "receipt_id": "BS-GDD-20260828-HUMAN-PDF-01",
+  "receipt_id": "BS-GDD-20260829-HUMAN-PDF-02",
   "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
   "generated_at": "2026-08-29 KST",
   "source_markdown": {
     "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
-    "sha256": "bb5b3fa357e6d53cfb10662d4decd163fdfdbc28eee86b0cc04b8f35bf980ae4",
+    "sha256": "7006d4d442cc507600457262ce1644af0b1e7b0136a720de4910023b0a770e3e",
     "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
   },
   "artifact": {
     "path": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
-    "sha256": "2142b864d6cb0c293809a8b00e3b78e000c7c5a48760d6e6c2ad7c110cc07c9d",
-    "page_count": 13,
+    "sha256": "3b322b3368be8c6bb5f8bded9d3cffeff61c0fe4c00b181a1c8e4f7fe99f1b1a",
+    "page_count": 11,
     "pdf_subject": "Human-facing Korean GDD",
     "target_format": "A4"
   },
   "render_validation": {
     "tool": "pypdf + Poppler pdftoppm",
-    "inspected_pages": [1, 2, 5, 6, 7, 10, 12, 13],
+    "inspected_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
     "result": "KOREAN_TEXT_AND_TABLE_LAYOUT_READABLE"
   },
   "provenance": {

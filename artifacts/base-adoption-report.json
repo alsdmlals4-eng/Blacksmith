@@ -1,20 +1,27 @@
 {
   "status": "PASS",
   "base": {
-    "active_skill_count": 25,
+    "active_skill_count": 30,
     "mapped_capability_count": 25,
-    "head": "41a20584dd2ee51d917e5c9d7cab6838e1ceba7e"
+    "head": "43b3ffb2c5b026e3d4a38dab2338585894d36f61"
   },
   "project": {
     "project_skill_count": 3,
     "required_entrypoint_count": 8,
-    "active_document_count": 31,
-    "local_reference_count": 135,
-    "head": "f2056e2cac69a0b9f2e408abc61afce41b01c498"
+    "active_document_count": 33,
+    "local_reference_count": 161,
+    "head": "ab7ca9ba1bf6599bb96a16eb44688475a64a25bf"
   },
   "finding_counts": {
     "errors": 0,
-    "warnings": 0
+    "warnings": 1
   },
-  "findings": []
+  "findings": [
+    {
+      "severity": "WARNING",
+      "code": "BASE_HEAD_DIFFERS_FROM_PROFILE",
+      "message": "profile=41a20584dd2ee51d917e5c9d7cab6838e1ceba7e actual=43b3ffb2c5b026e3d4a38dab2338585894d36f61",
+      "path": null
+    }
+  ]
 }

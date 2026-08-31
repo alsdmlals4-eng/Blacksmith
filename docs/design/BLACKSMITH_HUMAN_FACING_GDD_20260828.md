@@ -1,7 +1,7 @@
 # Blacksmith 사람용 게임 기획서
 
 - 문서 상태: `CURRENT_HUMAN_FACING_GDD / KOREAN_PRIMARY / 2026-08-29 KST`
-- 기준 커밋: `main / 2ba2496f0b8e259c446ae8ed1f09533012c3f303`
+- 기준 커밋: `main / ab7ca9ba1bf6599bb96a16eb44688475a64a25bf` (PR #328 구현 및 PR #329 closure readback 뒤)
 - 독자: 프로젝트 오너, 기획·아트·UI·사운드 협업자, 플레이테스터. 코드를 읽지 않아도 게임의 약속과 판단을 이해할 수 있게 쓴 문서다.
 - 정본 경계: 이 문서는 사람에게 의미를 설명한다. 수치·필드·확률의 기계 정본은 연결된 Decision/JSON이 소유하며, 실제 구현 여부는 Scene·GDScript·테스트·실행 증거로만 판정한다.
 
@@ -254,8 +254,8 @@
 | 항목 | 상태 | 지금 말할 수 있는 것 |
 |---|---|---|
 | 기획 규칙 | `CONFIRMED` | current Canon과 Decision 28~37이 강화 우선, 내구도, 수리, 실제 사용, 첫 태그 표의 경계를 소유한다. |
-| 구현 경로 | `PARTIAL` | `scenes/vertical_slice`, `scripts/vertical_slice`, `data/vertical_slice`, GUT/Python 계약이 존재한다. 실제 2×2 태그 쓰기/UI와 전체 UX는 아직 증명하지 않는다. |
-| 자동 계약·단위 검증 | `PARTIAL` | 2026-08-28 current checkout에서 이 문서 계약과 관련 current Python 계약이 통과했고, Godot 4.7.1 headless GUT은 167 tests / 0 failures / 0 errors였다. 전체 화면 UX·기기 적합성을 자동으로 보장하지는 않는다. |
+| 구현 경로 | `PARTIAL / PRECISION_IMPLEMENTED` | `scenes/vertical_slice`, `scripts/vertical_slice`, `data/vertical_slice`, GUT/Python 계약이 존재한다. 정밀 태그 선택은 현재 vertical-slice Workshop에 구현됐다. PR #328은 +9→+10의 2×2 선택, 성공 시 단일 Tag/방식 효과, 실패·빈 선택의 무기록, placeholder 1회 정정을 구현했다. 전체 Slice의 live UX는 별도 증거가 필요하다. |
+| 자동 계약·단위 검증 | `AUTOMATED_TEST_PASS` | PR #328 exact-head에서 Godot 4.7.1 headless GUT은 29 scripts / 180 tests / 1033 assertions를 통과했고 관련 Python/authority 계약과 headless editor load(exit 0)를 통과했다. 이는 전체 화면 UX·기기 적합성의 증거가 아니다. |
 | Godot 클라이언트 렌더 | `NOT_RUN` | 실제 화면, 입력, 장면 전환을 아직 이번 문서 작업에서 실행 관찰하지 않았다. |
 | Android 기기·접근성·성능 | `NOT_RUN` | 출시·기기·폰트·터치·메모리 기준을 통과했다고 말할 수 없다. |
 | Human usability / Player Experience | `DEFERRED_BY_USER / NOT_RUN` | 6~8분 Slice가 정말 강화의 즐거움과 생애의 애착을 전달하는지 아직 사람에게 확인하지 않았다. 사람 플레이 검수는 이번 계약의 완료 조건이 아니다. |
@@ -266,7 +266,7 @@
 | 구분 | 근거 | 플레이어 영향 | 다음 검증 |
 |---|---|---|---|
 | 보호할 강점 | +1 단위 강화, +10 정밀강화, +11 STOP OR PUSH, 같은 UID의 실제 사용·연대기는 current Canon에 명시됨 | 강화의 손맛과 작품 애착이 연결된다 | 첫 세션에서 플레이어가 두 축을 모두 말로 설명할 수 있는지 관찰 |
-| 개선할 약점 | 현재 구현은 정밀강화 content가 `PENDING_CONTENT` 상태이고, 새 2×2 태그 표/UI와 방식 수치 반영은 아직 없다 | +10의 보상이 약속한 이름과 수치로 보이지 않을 위험 | Decision37 표를 vertical-slice resolver/UI에 TDD로 구현 |
+| 개선할 약점 | 정밀강화의 2×2 태그 선택과 방식 수치 반영은 구현됐지만, 실제 손가락 조작에서 선택·미리보기·결과가 한 번에 읽히는지는 아직 증명되지 않았다 | +10의 보상이 구현됐어도 모바일 정보 위계가 흐리면 정체성 선택이 단순 폼처럼 느껴질 위험 | Godot 클라이언트와 Android 세로형에서 선택 전·결과 후 가독성을 관찰 |
 | 시험할 기회 | 5강 단위 제작 상승감은 사용자 승인, 단 새 규칙은 금지 | 반복 강화가 단조롭지 않고 성장이 느껴질 수 있다 | 실제 화면 크기에서 +5/+10/+15의 차이를 짧은 플레이테스트로 확인 |
 | 완화할 위협 | 고객 생애가 강화보다 길거나 복잡해지면 핵심 질문을 가린다 | 강화 메인이 경영·대화 체크리스트로 희석된다 | Slice B에서 강화 판단 시간과 생애 결과 시간이 균형을 이루는지 측정 |
 
@@ -313,17 +313,17 @@
 ### 현재 구현과의 정직한 연결
 
 - 화면: `scenes/vertical_slice/vertical_slice_app.tscn`, `scenes/vertical_slice/screens/vs_workshop_screen.tscn`, `scenes/vertical_slice/screens/vs_customer_result_screen.tscn`
-- 강화/정밀강화: `scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd`, `scripts/vertical_slice/resolvers/vs_precision_resolver.gd`
+- 강화/정밀강화: `scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd`, `scripts/vertical_slice/resolvers/vs_precision_resolver.gd`, `scripts/vertical_slice/services/vs_enhancement_action_service.gd`, `scripts/vertical_slice/ui/vs_workshop_screen.gd`
 - 내구도/수리: `scripts/vertical_slice/domain/vs_item.gd`, `scripts/vertical_slice/resolvers/vs_repair_resolver.gd`
 - 고객 실제 사용: `scripts/vertical_slice/resolvers/vs_customer_world_event_resolver.gd`, `scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd`
 - 검증: `tests/check_*contract.py`, `tests/gut/unit/vertical_slice/**`
 
-현재 resolver에는 +10 성공 시 `PRECISION_KEYWORD_PENDING_CONTENT`라는 임시 구현 흔적이 있다. 이는 “+10에 무기 태그가 필요하다”는 방향의 부분 증거일 뿐, Decision37의 불씨/모루×날 세우기/경량 담금 실제 태그 콘텐츠가 구현되었다는 증거가 아니다. 2026-08-28에는 Godot 4.7.1 headless GUT 167 tests가 0 failures / 0 errors로 끝났지만, 실제 client 화면·Android·사람 플레이를 검증한 결과는 아니다. 이 GDD는 그 차이를 숨기지 않는다.
+PR #328은 Decision37의 불씨/모루×날 세우기/경량 담금 표를 vertical-slice에 구현했다. Workshop은 두 선택·결과 태그·방식 수치 변화를 네이티브 한국어 Control로 제시하고, 빈/잘못된 선택을 비용·재료·굴림 전에 차단한다. 성공 시 기존 `CATALYST_AFFIX`에 단일 태그와 방식 효과를 한 번만 쓰며, hold는 아무 것도 쓰지 않는다. `PRECISION_KEYWORD_PENDING_CONTENT`는 플레이어 표기가 아닌 V3 이관 origin에 한정된 1회 무상·무굴림 정정 대상이다. PR #328 exact-head의 Godot 4.7.1 headless GUT은 29 scripts / 180 tests / 1033 assertions를 통과했고 editor headless load는 exit 0이었다. 실제 client 화면·Android·사람 플레이를 검증한 결과는 아니다. 이 GDD는 그 차이를 숨기지 않는다.
 
 ### 후속 순서
 
-1. Decision37의 2×2 태그 표와 빈 선택 차단을 vertical-slice TDD 계약으로 구현한다.
-2. 실제 consumer를 가진 +5 단위 피드백·+10 정밀강화·고객 결과 화면의 구현을 같은 current-canon 범위로 검수한다.
+1. PR #328 정밀 태그 선택의 live Workshop 경로를 Godot 클라이언트에서 확인하고, +9 선택·성공/hold·정정 상태가 자동 계약과 일치하는지 검수한다.
+2. 실제 consumer를 가진 +5 단위 피드백·고객 결과 화면의 구현을 같은 current-canon 범위에서 검수하되, 새 제품 범위는 Issue/Goal 선택 없이 열지 않는다.
 3. Godot 클라이언트와 Android 세로형에서 정보 위계·터치·글자 크기를 확인한다.
 4. 사람 플레이테스트는 사용자 지시로 이번 계약의 완료 조건에서 제외한다. 실제 수행 전까지 `NOT_RUN`이며, 나중에 강화가 충분히 즐겁고 고객 생애가 그 재미를 강화하는지 검증할 때만 다시 연다.
 
