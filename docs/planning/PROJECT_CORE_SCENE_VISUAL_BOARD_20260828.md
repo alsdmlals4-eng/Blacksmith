@@ -1,4 +1,4 @@
-# PROJECT_CORE_SCENE_VISUAL_BOARD · Enhancement-first Slice B · 2026-08-28
+# PROJECT_CORE_SCENE_VISUAL_BOARD · Enhancement-first Slice B · current supplement 2026-08-30
 
 ## 1. Artifact identity
 
@@ -8,7 +8,9 @@ PURPOSE = AI_UNDERSTANDING_CHECK + USER_FLOW_REVIEW + VISUAL_DIRECTION_CONFIRMAT
 RUNTIME_ASSET_STATUS = NOT_A_RUNTIME_ASSET
 GODOT_SCENE_STATUS = NOT_A_GODOT_SCENE
 HUMAN_USABILITY_STATUS = NOT_RUN
-NEW_GENERATED_RASTER = NONE
+CURRENT_VISUAL_REQUIREMENTS = docs/planning/BLACKSMITH_RECURRING_PRECISION_VISUAL_REQUIREMENTS_20260830.json
+GENERATED_CANDIDATES = MAIN_MENU + WORKSHOP_RECURRING_PRECISION + CUSTOMER_WORLD_RESULT
+RUNTIME_PROMOTION = BLOCKED_PENDING_USER_LOCK
 TARGET_PLAYER_TIME = 6_TO_8_MINUTES / PHASE_1_HYPOTHESIS
 ```
 
@@ -23,29 +25,33 @@ not a timer, a speedrun target, or a reason to batch/skip approved individual
 enhancement feedback.
 
 ```text
-FIVE_LEVEL_CRAFT_RHYTHM = +5_VISUAL_RISE / +10_PRECISION_RISE
+FIVE_LEVEL_CRAFT_RHYTHM = EVERY_5_LEVEL_PRESENTATION_RISE / EVERY_10_LEVEL_PRECISION_TAG_GROWTH
 ```
 
 The five-level rhythm marks cumulative crafting satisfaction without inventing
-new systems. `+5` is a presentation-only rise; `+10` combines that rise with
-the existing sole Precision Enhancement. Later five-level milestones must not
-reopen Precision or create extra affixes.
+new systems. `+5` is a presentation-only rise; `+10`, `+20`, through `+100`
+combine that rise with Precision Tag growth. The intervening five-level rises
+must not reopen Precision or create extra affixes.
 
 ## 2. Slice B at a glance
 
 ```mermaid
 flowchart TD
     A[01 Main Menu\nCommit to one workpiece] --> B[02 First Forge\nCreate one UID]
-    B --> C[03 Enhancement Main\n+0 to +9 individual +1 feedback]
-    C --> D[04 Precision and Risk Run\n+9 to +10 keyword; +11 to +15 STOP or PUSH]
-    D -->|Handoff| H[Return Beat\nOne brief non-economic workshop moment]
+    B --> C[03 Enhancement Main\nordinary +1 feedback]
+    C --> D[04 Recurring Precision Tag Choice\n+9→+10 through +99→+100]
+    D -->|SUCCESS +1 / HOLD / DAMAGE| C
+    C -->|Stop or handoff| H[Return Beat\nOne brief non-economic workshop moment]
     H --> E[05 Customer World Result\nOne same-UID actual-use result]
-    D -->|Actual enhancement damage| F[06 Repair and Chronicle\nOne eligible repair decision]
+    C -->|Actual enhancement damage and eligible job| F[06 Repair and Chronicle\nOne eligible repair decision]
     E --> F
     F --> C
 ```
 
-`+11` through `+15` are available decision beats, not a forced outcome.
+Every target remains a voluntary decision beat, not a forced outcome. At target
+`10` the player adds the first Tag; at later ten-level targets the player adds
+one Tag or advances one active Tag. There are at most three active Tags and all
+successes remain exactly `+1`.
 Customer actual use and damage remain independent axes. A demonstration must
 not script damage simply to make the repair panel appear.
 
@@ -64,7 +70,7 @@ or a new economy action.
 
 | Field | Contract |
 |---|---|
-| Actual consumer | `res://scenes/vertical_slice/main_menu.tscn`; dynamic background source binding in `vs_main_menu.gd`. |
+| Actual consumer | `res://scenes/vertical_slice/main_menu.tscn#MenuIllustratedBackground`; `VIS-REC-20260830-01` is generated candidate only, with runtime binding blocked pending user lock. |
 | Player goal / action | Begin a first item journey; choose to enter First Forge. |
 | Meaningful choice | None yet; this is commitment and expectation-setting, not a fake early game decision. |
 | Required information | One workpiece can gain a history through enhancement, use, damage, and repair. |
@@ -91,32 +97,32 @@ or a new economy action.
 | Field | Contract |
 |---|---|
 | Actual consumer | `res://scenes/vertical_slice/screens/vs_workshop_screen.tscn`; existing workshop background and durability-atlas bindings. |
-| Player goal / action | Enjoy individual ordinary enhancement feedback from `+0` through `+9`; reach the Precision threshold. |
+| Player goal / action | Enjoy individual ordinary enhancement feedback between ten-level Precision thresholds; reach the next voluntary Precision choice. |
 | Meaningful choice | Continue a satisfying growth rhythm or preserve resources/stop. This is lower tension than the later risk run and must not falsely imply damage eligibility before `+11`. |
 | Required information | Same item UID, current target, resource/cost state where implemented, visible `CURRENT / MAX / BASE_MAX`, and legible normal enhancement outcome. |
-| Feedback / emotion | Crisp +1 confirmation, workpiece progression, a stronger craft-rise at +5, then growing anticipation for the distinct +10 Precision moment. |
-| Next | Precision and Risk Run at `+9 -> +10`. |
+| Feedback / emotion | Crisp +1 confirmation, workpiece progression, a stronger craft-rise at each +5, then anticipation for the next ten-level Tag choice. |
+| Next | Recurring Precision Tag Choice at `target - 1 -> target`, for target `10..100` in steps of 10. |
 | Current canon evidence | Every ordinary success is exactly `+1`; enhancement damage is zero through target `+10`. |
 | Undecided | Final attempt timing, resource pacing, audio/VFX, target-resolution UI composition. |
 
-### PANEL_04 = PRECISION_AND_RISK_RUN
+### PANEL_04 = RECURRING_PRECISION_TAG_CHOICE
 
 | Field | Contract |
 |---|---|
-| Actual consumer | Planned state within Workshop; no new image or separate visual asset is authorized by this board. |
-| Player goal / action | Convert `+9 -> +10` into exactly one keyword, then make several voluntary STOP/PUSH judgments over targets `+11` to `+15`. |
-| Meaningful choice | Secure the +10 state, or expose the same UID to further success, `FAILED_HOLD`, or conditional `FAILED_DAMAGE`. Player may stop after every target. |
-| Required information | Exact success / hold / damage final-outcome probabilities; target level; one keyword at +10; visible durability state; repair consequence only when actually eligible. |
-| Feedback / emotion | +10 is both a five-level craft rise and the sole memorable Precision milestone; later targets create readable, self-authored tension rather than opaque punishment. |
+| Actual consumer | Dynamic recurring state inside `res://scripts/vertical_slice/ui/vs_workshop_screen.gd`; `VIS-REC-20260830-02` is generated candidate only and has no runtime binding until user lock. |
+| Player goal / action | At each `target - 1 -> target` where target is `10,20,...,100`, choose exactly one action: first `+10` adds a Tag; later targets add a Tag or advance an active Tag. |
+| Meaningful choice | Preserve the current item or make a disclosed choice before the attempt. On success the same UID gains exactly `+1` and exactly the chosen Tag growth; `FAILED_HOLD` or conditional `FAILED_DAMAGE` changes no Tag growth. |
+| Required information | Exact success / hold / damage final-outcome probabilities; target level; active Tags and stages I–IV; candidate effect preview; visible durability state; repair consequence only when actually eligible. |
+| Feedback / emotion | Every ten levels is a material authorship beat: a new Tag or a more mature existing Tag, without a fourth affix or player title. |
 | Next | Handoff → one brief Workshop Return Beat → Customer World Result, or conditional Repair and Chronicle after actual damage. |
-| Current canon evidence | Precision occurs once at +9→+10; no fourth affix; failure is exclusively HOLD or DAMAGE; Decision28/29 own risk. |
+| Current canon evidence | Decision38 owns targets `10..100`, max three active Tags, stages I–IV, and success-only action-local growth. Three-affix taxonomy remains; failure is exclusively HOLD or DAMAGE; Decision28/29 own risk. |
 | Undecided | Final probability copy, animation and audio language, costs, exact one-hand UI arrangement. |
 
 ### PANEL_05 = CUSTOMER_WORLD_RESULT
 
 | Field | Contract |
 |---|---|
-| Actual consumer | `res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn` and stored-result service evidence. The approved return beat and player-facing scheduler/entry remain `NOT_RUN`. |
+| Actual consumer | `res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn` and stored-result service evidence; `VIS-REC-20260830-03` is generated candidate only and has no runtime binding until user lock. The approved return beat and player-facing scheduler/entry remain `NOT_RUN`. |
 | Player goal / action | See how the previously enhanced same UID performed in actual use; relate result to the item’s history. |
 | Meaningful choice | The meaningful choice happened during enhancement and handoff. This panel explains consequence; it must not add a new unapproved customer-management system. |
 | Required information | Customer/event cause, same UID, mission outcome and damage as separate axes, `CURRENT/MAX` before/after when damage occurred, repair-job availability. |
@@ -144,7 +150,7 @@ or a new economy action.
 |---|---|---|
 | Workpiece identity | Central, large, ink-contoured steel silhouette; condition variation must remain readable without color alone. | Atlas source and byte binding exist; client render `NOT_RUN`. |
 | Enhancement information | Parchment-like light decision field over restrained workshop material; numeric odds outrank ornament. | Direction locked; exact UI layout `NOT_RUN`. |
-| Customer consequence | Same visual grammar with a bounded customer/event accent; item UID remains the visual anchor. | No approved customer visual asset or runtime composition. |
+| Customer consequence | Same visual grammar with a bounded customer/event accent; item UID remains the visual anchor. | Generated candidate exists; project asset approval, runtime binding and client composition remain `NOT_RUN` / blocked pending user lock. |
 | Repair / Chronicle | Structural scar is a material/state difference, not an extra decorative penalty meter. | Current numeric rule approved; presentation `NOT_RUN`. |
 
 ## 5. Consistency and adversarial check
@@ -155,7 +161,7 @@ or a new economy action.
 | Player Promise chain is complete | PARTIAL — planned flow is complete; customer player entry and human evidence are `NOT_RUN`. |
 | Support systems do not replace core | PASS — lifecycle explains enhancement consequence; repair is conditional. |
 | New system or button invented by the board | PASS — all unconfirmed fields are explicitly marked undecided. |
-| Visual comparison mistaken for runtime assets | PASS — no generated comparison or raster board exists. |
+| Visual comparison mistaken for runtime assets | PASS — the board is text-native; its three generated illustrations are separately recorded candidates, not fake screens or runtime assets. |
 | Camera / density comparison fair | PASS — every planned panel uses the same portrait, workpiece-first, high-legibility grammar. |
 | Damage forced to prove the repair screen | PASS — `DO_NOT_FAKE_DAMAGE_FOR_DEMONSTRATION = TRUE`. |
 | Direction drift or cross-project contamination | PASS by document audit; actual runtime composition remains `NOT_RUN`. |
@@ -165,6 +171,6 @@ or a new economy action.
 ## 6. Required next validation
 
 1. Decide final session timing and resource pacing without changing the +1 or risk authorities.
-2. Phase-2 review: test the board against portrait target composition and existing source assets; do not generate new imagery unless a specific runtime consumer passes the separate gate.
-3. Phase-3/4 only after approval: implement the player-facing customer entry and the chosen screen states.
+2. Review the three 9:16 consumer-first candidates against the actual native Control overlays; choose which, if any, to lock for runtime promotion.
+3. Only after user lock: bind the selected raster to its named consumer, run client/Android readability checks, and retain the current fallback if the binding fails.
 4. Phase-5: observe whether a player enjoys the enhancement run before they can explain why the same UID’s later result matters.

@@ -57,13 +57,14 @@
     "engine": "Godot 4.7",
     "pc_status": "FUTURE_PLATFORM_CONSIDERATION",
     "primary_platform": "ANDROID_PORTRAIT_MOBILE",
+    "project_id": "blacksmith",
     "repository": "alsdmlals4-eng/Blacksmith",
     "root": "."
   },
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "7d12070f37b664cd07fd0e369ea0e0974e41b0eb",
+    "commit": "b7ce7ee09f177ff49ce282c02d829154ab648b73",
     "policy_sha256": "1c36c4180b85d6bd97f4e7cdba908cc73298f529d368aa07e0dffde6e1e8ec52",
     "policy_source_path": "skills/PROJECT_BASE_ADAPTER.json",
     "policy_source_type": "CANONICAL_ADAPTER_SOURCE",
@@ -132,7 +133,7 @@
       }
     ]
   },
-  "schema_version": 1,
+  "schema_version": 2,
   "shared_overrides": {
     "auditing-and-refining-ui-art": {
       "base_main_commit": "0fd95f4513343e77fd664af2763a01b02f52545b",

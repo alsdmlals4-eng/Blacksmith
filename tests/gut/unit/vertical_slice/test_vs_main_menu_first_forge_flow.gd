@@ -50,7 +50,7 @@ func test_first_forge_screen_completion_opens_workshop_with_saved_selected_item(
 	assert_eq(menu._resources.gold, 20000, "first forge must restore saved TEMP_TEST_BUDGET gold")
 	assert_eq(
 		menu._resources.get_material_count("common_reinforcement_material"),
-		10,
+		30,
 		"first forge must restore saved TEMP_TEST_BUDGET reinforcement material"
 	)
 	await get_tree().process_frame

@@ -36,8 +36,10 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         )
         self.assertIn("CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286", handoff)
         self.assertIn(
-            "CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN", handoff
+            "PHASE1_PLAYER_HANDOFF_ENTRY = IMPLEMENTED_PR334 / SAVE_FIRST_ONCE_PER_UID",
+            handoff,
         )
+        self.assertIn("CUSTOMER_WORLD_EVENT_SCHEDULER = NOT_RUN", handoff)
 
         self.assertIn("CURRENT_PRIORITY_OVERLAY", overlay)
         self.assertIn("BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION", overlay)

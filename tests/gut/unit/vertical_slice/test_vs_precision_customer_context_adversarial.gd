@@ -46,6 +46,7 @@ func test_invalid_external_context_fails_closed_in_customer_resolver_without_aff
 	assert_eq(evaluation.get("reason", ""), "INVALID_CONTEXT")
 	assert_false(evaluation.has("final_primary_estimate"))
 	var precision = PrecisionResolverScript.new().selection_preview(_item(9), 10, {
+		"action": "ADD_TAG",
 		"lineage_id": "EMBER_LINEAGE",
 		"method_id": "EDGE_REINFORCEMENT",
 	})
@@ -69,6 +70,7 @@ func test_precision_unknown_inputs_fail_closed() -> void:
 	assert_false(bool(wrong_entry.get("allowed", true)))
 	assert_eq(wrong_entry.get("reason", ""), "INVALID_PRECISION_ENTRY")
 	var bad_method = resolver.selection_preview(_item(9), 10, {
+		"action": "ADD_TAG",
 		"lineage_id": "EMBER_LINEAGE",
 		"method_id": "UNKNOWN_METHOD",
 	})

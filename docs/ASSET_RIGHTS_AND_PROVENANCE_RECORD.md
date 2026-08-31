@@ -88,7 +88,7 @@ creation_route: AI_GENERATED
 creation_date: 2026-08-28 KST
 source_location: Built-in image generation artifact exec-b6622a40-8552-4cf3-86c3-355898d3540a; corrected opaque-background revision of the original state atlas
 asset_path: assets/ui/workshop/workpiece_durability_state_atlas_v1.png
-actual_consumer: VSWorkshopScreen / WorkshopLayout/WorkpieceDurabilityHero
+actual_consumer: VSWorkshopScreen / WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero
 consumer_surface: res://scenes/vertical_slice/screens/vs_workshop_screen.tscn
 commercial_use: UNKNOWN
 distribution_in_game_build: UNKNOWN
@@ -212,6 +212,200 @@ reference_similarity_status: NOT_APPLICABLE
 proof_hash: A014266240C5D1CF79646F7570056200E1C713B986C39E2C0D9917C66FABC1B0
 status: RELEASE_DRAFT_NOT_PLATFORM_READY
 notes: Square source master only. It requires current platform specs, safe-zone export, rights review, and final review before external use.
+```
+
+## Current asset record · ASSET-MAIN-MENU-DAWN-BACKGROUND-V1
+
+```yaml
+asset_id: ASSET-MAIN-MENU-DAWN-BACKGROUND-V1
+category: OTHER
+name: Main menu dawn background v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/workshop/main_menu_dawn_background_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original brief, user selection, consumer mapping, and dynamic runtime binding
+reference_sources: Current Blacksmith art direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, logos, watermarks, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-MAIN-MENU-DAWN-BACKGROUND-V1
+proof_hash: 5870f6958135516b9d5f42f81e0d11e0724a5cbf27af9e3382f1de155a7f713a
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-30 approval; MenuIllustratedBackground dynamic binding is machine-verified. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
+```
+
+## Historical retired asset record · ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
+
+```yaml
+asset_id: ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
+category: OTHER
+name: Precision tag workshop background v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: RETIRED_20260830 / former assets/ui/workshop/precision_tag_workshop_background_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original brief, user selection, exact-target-only dynamic binding, and native-control preservation
+reference_sources: Current Blacksmith art direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#retired_asset_records/ASSET-PRECISION-TAG-WORKSHOP-BACKGROUND-V1
+proof_hash: 45679f660ad9fc24796e0080aded8474be6b0c462ae7bb2d58a91b6c0530ef32
+status: SUPERSEDED
+notes: User 2026-08-30 direction explicitly removes the dedicated Precision Workshop raster. Binding and repository file were retired; native tag-selection UX is the replacement consumer. This historical record does not approve a runtime asset. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
+```
+
+## Current asset record · Five equipment identity illustrations v1
+
+These five objects share one approved production brief and the same two runtime consumers, but retain individual file and hash identities in the asset manifest. The locked 1254×1254 PNG source bytes remain provenance-hashed; the runtime import applies a 512px lossless 2D/no-mipmap ceiling for the 96px first-forge card and the 156px Workshop hero. They are identity illustrations only: names, role values, Precision eligibility, costs, probabilities, durability, controls, and outcomes remain native Godot UI. Android memory and visual-quality observation remain `NOT_RUN`.
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-SWORD-CARD-V1
+category: OTHER
+name: Iron sword identity illustration v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_sword_card_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-SWORD-CARD-V1
+proof_hash: bbed060e8ac115d51a0ee83bbe285127d292f3cbd4d2b633ef4df2f4258db5cc
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+```
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1
+category: OTHER
+name: Iron shield identity illustration v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_shield_card_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1
+proof_hash: f3c02be3a6a9d375ffb816a4101a124bf7bb86aa97951cb0c0f9c6c98094de0c
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+```
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-BOW-CARD-V1
+category: OTHER
+name: Iron bow identity illustration v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_bow_card_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-BOW-CARD-V1
+proof_hash: 3f7c013553ed71d8821eb83c90f7bcabd90f72b1849701e0fd340e08e8d75f1f
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+```
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1
+category: OTHER
+name: Iron armor identity illustration v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_armor_card_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1
+proof_hash: d4c0b9db933c9fe351575cf793412e22ead9b234590cb8ab60d3a82fcb554cc2
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+```
+
+```yaml
+asset_id: ASSET-EQUIPMENT-IRON-HELMET-CARD-V1
+category: OTHER
+name: Iron helmet identity illustration v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/equipment/iron_helmet_card_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original isolated-object brief, user lock, exact consumer mapping, and noninteractive dynamic binding
+reference_sources: Current Blacksmith ILLUSTRATED_WORKSHOP_BOOK direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerals, logos, watermarks, UI screenshot, or combat outcome
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-EQUIPMENT-IRON-HELMET-CARD-V1
+proof_hash: 90cebb815fdc77b0076b7bab1eca00e1f7be791378d45dd2880f8b8ebe610cfb
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-30 runtime-promotion lock. First-forge choice and Workshop identity binding are machine-verified; Godot client, Android, accessibility, human visual review, and release rights remain NOT_RUN or blocked.
+```
+
+## Current asset record · ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1
+
+```yaml
+asset_id: ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1
+category: OTHER
+name: Customer result return illustration v1
+project: BLACKSMITH
+creation_route: AI_GENERATED
+creator_or_vendor: OpenAI ImageGen
+source_url_or_path: assets/ui/workshop/customer_result_return_illustration_v1.png
+acquired_or_created_at: 2026-08-30 KST
+commercial_use: UNKNOWN
+distribution_in_game_build: UNKNOWN
+raw_source_redistribution: UNKNOWN
+modification: UNKNOWN
+ai_output_terms: RELEASE_BLOCKED_UNVERIFIED_PENDING_CURRENT_TERMS_REVIEW
+ai_human_contribution_and_postprocessing: Original brief, user selection, valid-saved-result-only dynamic binding, and native factual text preservation
+reference_sources: Current Blacksmith art direction only; no third-party image input
+forbidden_expression: copied game imagery, identifiable third-party visual identity, text, numerical durability display, logos, watermarks, or UI screenshot
+final_asset_record: assets/ASSET_MANIFEST.json#ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1
+proof_hash: 716ce4dd4c6c4bdf48255c4b10aef906573d1113b331d20304e4f75f6e74eca1
+status: RELEASE_BLOCKED_UNVERIFIED
+notes: User 2026-08-30 approval; valid-result illustration plus readability veil is machine-verified. Godot client, Android, accessibility, human review, and release remain NOT_RUN or blocked.
 ```
 
 ## Reference-to-original

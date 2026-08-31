@@ -1,5 +1,7 @@
 # Blacksmith Session Handoff · Core Simplification
 
+> Current amendment · 2026-08-30: `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` replaces [대체됨] +10-only/single-Tag precision claims. Catalog schema 2 declares ten targets (10..100), max three CATALYST_AFFIX tags, I~IV, attempt-local ADD_TAG/UPGRADE_TAG selection, and V3→V4 dispositions. This is canon/catalog evidence only; V4 runtime, Android, accessibility, performance, and human play are NOT_RUN.
+
 > **Current override · 2026-08-29 KST.** This section supersedes any
 > contradictory planning-blocked wording below. The user-declared authority is
 > `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`;
@@ -105,7 +107,8 @@ CUSTOMER_WORLD_EVENT_RESOLUTION = IMPLEMENTED_PR268
 CUSTOMER_WORLD_RESULT_FACT_PERSISTENCE = IMPLEMENTED_PR272
 CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278
 CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286
-CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN
+PHASE1_PLAYER_HANDOFF_ENTRY = IMPLEMENTED_PR334 / SAVE_FIRST_ONCE_PER_UID
+CUSTOMER_WORLD_EVENT_SCHEDULER = NOT_RUN
 HUMAN_PLAYTEST = NOT_RUN
 OPERATING_CONTRACT_BASELINE = 004e519a8891e3ef897cb32f67c58082a9d6a696
 PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR294
@@ -124,6 +127,36 @@ only after save succeeds. The event scheduler and player-facing customer entry r
 `PR #288` advances only the protected operating baseline and retires the one-shot approval
 record. Android, accessibility, visual client inspection, performance, and human play remain
 `NOT_RUN`.
+
+### Phase-1 same-UID player-flow delivery · 2026-08-30
+
+```text
+IMPLEMENTATION_STATUS = MERGED_MAIN_MACHINE_VERIFIED / PR334 / a2489bf039c2080c7851959cc6582ab6a56645fc
+PROTECTED_CHANGE_APPROVAL = CONSUMED_AND_RETIRED_BY_PR335 / 4e9bbf7a4ac47cbbdf45b22e07322ae4d927e7cc
+SCOPE = +10_OR_HIGHER_ACTIVE_ITEM_HANDOFF / ONE_NON_ECONOMIC_RETURN_BEAT / NADIA_VENN_MEDIUM_ACTUAL_USE / CONDITIONAL_REPAIR_OR_CHRONICLE
+HANDOFF_DAMAGE = NEVER
+ACTUAL_USE_RESULT = SAVE_FIRST_ONCE_PER_UID / NO_REROLL_AFTER_RELOAD
+STARTING_REINFORCEMENT_FIXTURE = 30 / TEMP_TEST_BUDGET
+CHRONICLE_SURFACE = EXISTING_BIRTH_AND_PRECISION_LEDGER_PLUS_SAVED_ACTUAL_USE_FACTS / NO_NEW_STORED_FIELD
+GUT_FULL_SUITE = PASS / 233_TESTS / 1683_ASSERTIONS / 0_FAILURES / 0_ERRORS / 0_SKIPPED
+GODOT_VISUAL_RUNTIME = NOT_RUN
+HUMAN_PLAYTEST = NOT_RUN
+ANDROID_DEVICE = NOT_RUN
+ACCESSIBILITY = NOT_RUN
+PERFORMANCE = NOT_RUN
+KNOWN_NON_BLOCKING_MACHINE_WARNINGS = EXISTING_INVALID_SCRIPT_UID_REFERENCES_IN_VERTICAL_SLICE_APP_AND_MAIN_MENU / EXISTING_GUT_ORPHAN_REPORTS
+```
+
+The merged delivery adds a native Workshop handoff action only for the active,
+non-destroyed `+10+` item. It shows a one-press return beat without a timer,
+then saves Nadia Venn's authored `MEDIUM` actual-use event before presenting
+the result. A damaged return opens only the existing repair action; an intact
+return opens the read-only Item Chronicle. The Chronicle derives its entries
+from the existing birth/Precision ledger and saved actual-use result for the
+same UID, so it neither creates a customer scheduler nor extends the save
+schema. These are merged-main implementation and automated-test facts; they
+are not visual-client, human-play, Android, accessibility, performance, or
+release approval.
 
 ## 1. GPT Work transfer · 2026-08-26
 
@@ -427,16 +460,17 @@ Decision29 does not revive old durability values. Decision30 owns current custom
 
 The current V3 vertical slice now implements the approved item durability, save migration,
 enhancement-failure, repair-economy, customer actual-use resolver, persisted result fact,
-and read-only result surface. A customer-flow caller now resolves and saves a cloned envelope
-before presenting the same stored UID result; the scheduler and player-facing customer entry
-are not implemented. V2 runtime/data outside the migrated slice remains
+and read-only result surface. PR #334 adds the bounded Phase-1 player handoff at `+10+`,
+one return beat, and the same save-first stored-UID result. The broader customer/world-event
+scheduler remains unimplemented. V2 runtime/data outside the migrated slice remains
 historical runtime evidence and must not override current canon.
 
 ```text
 NEW_CORE_RUNTIME = PARTIALLY_IMPLEMENTED / PR224_THROUGH_PR286
 CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278 / STORED_FACT_READ_ONLY
 CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286 / SAVE_FIRST_CLONED_ENVELOPE
-CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN
+PHASE1_PLAYER_HANDOFF_ENTRY = IMPLEMENTED_PR334 / SAVE_FIRST_ONCE_PER_UID
+CUSTOMER_WORLD_EVENT_SCHEDULER = NOT_RUN
 OLD_V2_RUNTIME = HISTORICAL_RUNTIME_TRUTH_OUTSIDE_V3_MIGRATED_SLICE
 ```
 
@@ -503,7 +537,8 @@ UI_DAMAGE_PERCENT_ROUNDING = USER_APPROVED_FINAL_OUTCOME_ONE_DECIMAL_HALF_UP
 NEW_CORE_RUNTIME = PARTIALLY_IMPLEMENTED / PR224_THROUGH_PR286
 CUSTOMER_WORLD_RESULT_SURFACE = IMPLEMENTED_PR278 / STORED_FACT_READ_ONLY
 CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286 / SAVE_FIRST_CLONED_ENVELOPE
-CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN
+PHASE1_PLAYER_HANDOFF_ENTRY = IMPLEMENTED_PR334 / SAVE_FIRST_ONCE_PER_UID
+CUSTOMER_WORLD_EVENT_SCHEDULER = NOT_RUN
 HUMAN_PLAYTEST = NOT_RUN
 ANDROID_DEVICE = NOT_RUN
 ACCESSIBILITY = NOT_RUN

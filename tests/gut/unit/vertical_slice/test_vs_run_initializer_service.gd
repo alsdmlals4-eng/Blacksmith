@@ -37,7 +37,7 @@ func test_initializer_creates_valid_empty_campaign_envelope() -> void:
 		(envelope.workshop_resources.get("material_stock", {}) as Dictionary).get(
 			"common_reinforcement_material", -1
 		),
-		10,
+		30,
 		"new campaign starts with mutable TEMP_TEST_BUDGET reinforcement material"
 	)
 	assert_eq(int(envelope.active_run.get("current_day", 0)), 1, "new campaign starts on day 1")

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "CURRENT_SCREEN_SURFACE_AND_VISUAL_COVERAGE_EVIDENCE_RECORD",
-  "date": "2026-08-27 KST",
+  "date": "2026-08-30 KST",
   "issue": "#291",
   "delivery_issue": "#293",
   "scope": "CURRENT_VERTICAL_SLICE_AND_DECLARED_CURRENT_SCREEN_FAMILIES",
@@ -21,11 +21,25 @@
   "image_generation": "USER_APPROVED_RUNTIME_ASSET_EXECUTED_20260828",
   "no_automatic_generation_from_gaps": true,
   "runtime_visual_validation": "NOT_RUN",
+  "candidate_visual_delivery": {
+    "requirements_owner": "docs/planning/BLACKSMITH_RECURRING_PRECISION_VISUAL_REQUIREMENTS_20260830.json",
+    "status": "TWO_USER_APPROVED_SCENE_ILLUSTRATIONS_FIVE_USER_LOCKED_EQUIPMENT_IDENTITIES_PLUS_NATIVE_PRECISION_UX",
+    "runtime_promotion": "IMPLEMENTED_MACHINE_VERIFIED",
+    "candidate_ids": ["VIS-REC-20260830-01", "VIS-REC-20260830-03", "VIS-EQUIP-20260830-01", "VIS-EQUIP-20260830-02", "VIS-EQUIP-20260830-03", "VIS-EQUIP-20260830-04", "VIS-EQUIP-20260830-05"],
+    "flow_map": "TEXT_NATIVE_MERMAID_AND_TABLE_ONLY"
+  },
+  "equipment_identity_runtime_delivery": {
+    "status": "IMPLEMENTED_MACHINE_VERIFIED",
+    "primary_use": "The same selected object is visible in the first-forge choice and at the Workshop without replacing native touch controls or the separate durability-state atlas.",
+    "consumers": ["FIRST_FORGE_EQUIPMENT_CHOICE", "WORKSHOP_EQUIPMENT_IDENTITY_HERO"],
+    "asset_ids": ["ASSET-EQUIPMENT-IRON-SWORD-CARD-V1", "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1", "ASSET-EQUIPMENT-IRON-BOW-CARD-V1", "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1", "ASSET-EQUIPMENT-IRON-HELMET-CARD-V1"],
+    "runtime_visual_validation": "GODOT_CLIENT_ANDROID_ACCESSIBILITY_HUMAN_REVIEW_NOT_RUN"
+  },
   "delivery_tracks": [
     {
       "track_id": "RUNTIME_GAME_ASSETS",
       "purpose": "Actual Godot screens, objects, states, and visual variants used by the player",
-      "included_assets": ["ASSET-WORKSHOP-BACKGROUND-V2", "ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1", "ASSET-FIRST-FORGE-BACKGROUND-V1"],
+      "included_assets": ["ASSET-WORKSHOP-BACKGROUND-V2", "ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1", "ASSET-FIRST-FORGE-BACKGROUND-V1", "ASSET-EQUIPMENT-IRON-SWORD-CARD-V1", "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1", "ASSET-EQUIPMENT-IRON-BOW-CARD-V1", "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1", "ASSET-EQUIPMENT-IRON-HELMET-CARD-V1"],
       "status": "PROJECT_ASSET_APPROVED_RUNTIME_CLIENT_VISUAL_VALIDATION_PENDING",
       "substitution_rule": "MUST_HAVE_AN_ACTUAL_RUNTIME_CONSUMER"
     },
@@ -58,9 +72,9 @@
       "consumer_kind": "GAME_RUNTIME",
       "consumer_surface": "res://scenes/vertical_slice/main_menu.tscn",
       "screen_design_reference": "Godot Control/VBox layout; historical Visual GDD is layout-only reference",
-      "runtime_consumer": "VSMainMenu dynamically replaces MenuIllustratedBackground with ASSET-WORKSHOP-BACKGROUND-V2 at ready; the serialized v1 path is retained only as an unpromoted scene fallback",
-      "existing_evidence": "VSMainMenu v2 preload/ready override + GUT test_vs_main_menu; v1 remains unverified legacy fallback evidence",
-      "coverage_status": "COVERED_PROJECT_ASSET_APPROVED",
+      "runtime_consumer": "VSMainMenu dynamically binds ASSET-MAIN-MENU-DAWN-BACKGROUND-V1 to MenuIllustratedBackground at ready; serialized v1 remains an unpromoted fallback",
+      "existing_evidence": "VSMainMenu dynamic binding plus focused GUT and visual contract",
+      "coverage_status": "COVERED_APPROVED_RUNTIME_ASSET_MACHINE_VERIFIED",
       "notion_destination": null,
       "repository_destination": "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
       "blockers": "Godot client render, Android readability, accessibility, and human visual review remain NOT_RUN."
@@ -138,9 +152,9 @@
       "consumer_kind": "GAME_RUNTIME",
       "consumer_surface": "res://scenes/vertical_slice/screens/vs_customer_result_screen.tscn",
       "screen_design_reference": "Decision30 actual-use consequence and read-only result contract",
-      "runtime_consumer": "Godot ColorRect/Label controls only; no raster asset slot identified",
-      "existing_evidence": "VSCustomerResultScreen parsing contract and PR #278/#286 flow evidence",
-      "coverage_status": "COVERED_EXISTING",
+      "runtime_consumer": "VSCustomerResultScreen dynamically uses ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1 and CustomerResultReadabilityVeil only after a valid saved result; ResultBackground remains the opaque fallback",
+      "existing_evidence": "VSCustomerResultScreen factual parsing, dynamic layer contract, focused GUT, and visual contract",
+      "coverage_status": "COVERED_APPROVED_RUNTIME_ASSET_MACHINE_VERIFIED",
       "notion_destination": null,
       "repository_destination": "scenes/vertical_slice/screens/vs_customer_result_screen.tscn",
       "blockers": "Customer event scheduler/player entry and runtime visual inspection are NOT_RUN."
@@ -166,24 +180,24 @@
       "blockers": "No settings interaction contract or implementation scope is approved; no image is required."
     },
     {
-      "screen_id": "PRECISION_PLUS_9_TO_10",
+      "screen_id": "RECURRING_PRECISION_TAG_CHOICE",
       "screen_family": "SPECIAL_ENHANCEMENT",
-      "screen_name": "+9→+10 정밀 강화",
-      "project_stage": "DECLARED_CURRENT_CANON_NOT_IMPLEMENTED_AS_SEPARATE_SURFACE",
+      "screen_name": "반복 정밀 강화 태그 선택",
+      "project_stage": "CURRENT_VERTICAL_SLICE_DYNAMIC_WORKSHOP_STATE",
       "priority": "P1",
-      "flow_entry": "Enhancement target +10",
+      "flow_entry": "Enhancement target 10,20,...,100",
       "flow_exit": "Workshop or customer context",
-      "player_goal": "유일한 정밀 강화와 keyword 결과를 판독한다",
-      "player_question": "이 촉매와 작품 정체성을 선택할까",
-      "consumer_kind": "PLANNED_GAME_SURFACE",
-      "consumer_surface": "No separate current scene/node",
-      "screen_design_reference": "Decision25 precision boundary; historical Visual GDD is stale cadence reference only",
-      "runtime_consumer": "No exact consumer slot",
-      "existing_evidence": "Current canon and VSWorkshopScreen ordinary enhancement controls",
-      "coverage_status": "DEFERRED_BY_DECISION",
+      "player_goal": "정밀 성공 시 태그를 추가하거나 강화해 같은 작품의 정체성을 성장시킨다",
+      "player_question": "이번 ten-level 정밀 강화에서 새 태그를 더할까, 기존 태그를 성장시킬까",
+      "consumer_kind": "GAME_RUNTIME_DYNAMIC_STATE",
+      "consumer_surface": "res://scripts/vertical_slice/ui/vs_workshop_screen.gd#native_precision_controls",
+      "screen_design_reference": "BS-ENHANCE-20260830-38; native action controls and view state",
+      "runtime_consumer": "VSWorkshopScreen keeps native tag-selection, odds, cost, and result controls authoritative at recurring Precision targets; no dedicated Precision raster is consumed.",
+      "existing_evidence": "Decision38/catalog schema 2, VSPrecisionResolver, native-control focused GUT, retired raster record, and consumer-first visual requirement record",
+      "coverage_status": "COVERED_NATIVE_UI_ONLY_MACHINE_VERIFIED",
       "notion_destination": null,
-      "repository_destination": "docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json",
-      "blockers": "Exact scene, component states, and consumer metadata are absent; candidate assets must not be generated."
+      "repository_destination": "docs/planning/BLACKSMITH_RECURRING_PRECISION_VISUAL_REQUIREMENTS_20260830.json",
+      "blockers": "No dedicated raster is required by user direction. Client rendering, Android readability, accessibility, and human visual review of native controls remain NOT_RUN."
     },
     {
       "screen_id": "ITEM_CHRONICLE",
@@ -270,6 +284,38 @@
       "fallback_if_unconsumed": "KEEP_EXISTING_GODOT_CONTROL_SURFACE_WITHOUT_PROMOTING_THE_RASTER",
       "rights_and_provenance": "PROJECT_RECORD_PRESENT_RELEASE_RIGHTS_REVIEW_PENDING",
       "validation": "Dynamic background binding and readability veil verified; Godot client render, Android readability, accessibility, and human review NOT_RUN"
+    },
+    {
+      "asset_id": "ASSET-MAIN-MENU-DAWN-BACKGROUND-V1",
+      "production_mode": "AI_GENERATED_PROJECT_RASTER",
+      "asset_lifecycle_state": "IMPLEMENTED_MACHINE_VERIFIED",
+      "approval_state": "USER_APPROVED_20260830",
+      "runtime_consumption": "VSMainMenu dynamic MenuIllustratedBackground binding",
+      "repository_path": "assets/ui/workshop/main_menu_dawn_background_v1.png",
+      "sha256": "5870f6958135516b9d5f42f81e0d11e0724a5cbf27af9e3382f1de155a7f713a",
+      "dimensions": "941x1672",
+      "consumer_ids": ["MAIN_MENU"],
+      "primary_use": "Portrait background behind native Korean menu controls",
+      "state_family_requirement": "STATIC_BACKGROUND_ONLY",
+      "fallback_if_unconsumed": "RETAIN_SERIALIZED_V1_SCENE_TEXTURE",
+      "rights_and_provenance": "PROJECT_RECORD_PRESENT_RELEASE_RIGHTS_REVIEW_PENDING",
+      "validation": "Focused GUT and hash/contract verified; Godot client, Android, accessibility, and human review NOT_RUN"
+    },
+    {
+      "asset_id": "ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1",
+      "production_mode": "AI_GENERATED_PROJECT_RASTER",
+      "asset_lifecycle_state": "IMPLEMENTED_MACHINE_VERIFIED",
+      "approval_state": "USER_APPROVED_20260830",
+      "runtime_consumption": "VSCustomerResultScreen valid-saved-result dynamic illustration and veil",
+      "repository_path": "assets/ui/workshop/customer_result_return_illustration_v1.png",
+      "sha256": "716ce4dd4c6c4bdf48255c4b10aef906573d1113b331d20304e4f75f6e74eca1",
+      "dimensions": "941x1672",
+      "consumer_ids": ["CUSTOMER_WORLD_RESULT"],
+      "primary_use": "Actual-use return illustration behind native factual result text",
+      "state_family_requirement": "VALID_SAVED_RESULT_ONLY",
+      "fallback_if_unconsumed": "KEEP_RESULTBACKGROUND_OPAQUE_FALLBACK",
+      "rights_and_provenance": "PROJECT_RECORD_PRESENT_RELEASE_RIGHTS_REVIEW_PENDING",
+      "validation": "Focused GUT and hash/contract verified; Godot client, Android, accessibility, and human review NOT_RUN"
     }
   ],
   "runtime_asset_family_queue": [
@@ -315,11 +361,6 @@
       "screen_id": "SETTINGS_OVERLAY",
       "needed_decision": "Approve or remove the stub before any UI polish",
       "design_reference_mode": "GODOT_UI_TEXT_ONLY"
-    },
-    {
-      "screen_id": "PRECISION_PLUS_9_TO_10",
-      "needed_decision": "Define exact scene, entry, exit, component states, and accessibility cues",
-      "design_reference_mode": "STRUCTURED_FLOW_AND_GODOT_UI_FIRST"
     },
     {
       "screen_id": "ITEM_CHRONICLE",

@@ -18,7 +18,7 @@ func _item() -> VSItem:
 
 func test_current_item_serializes_five_slot_durability_and_repair_job() -> void:
 	var serialized: Dictionary = _item().to_dict()
-	assert_eq(serialized["schema_version"], 3)
+	assert_eq(serialized["schema_version"], 4)
 	assert_eq(serialized["base_max_durability"], 5)
 	assert_eq(serialized["current_durability"], 5)
 	assert_eq(serialized["max_durability"], 5)
@@ -34,19 +34,19 @@ func test_v2_item_migrates_to_current_five_slot_authority() -> void:
 	legacy["max_durability"] = 100
 	var restored = ItemScript.from_dict(legacy)
 	assert_true(restored.validation_errors.is_empty())
-	assert_eq(restored.schema_version, 3)
+	assert_eq(restored.schema_version, 4)
 	assert_eq(restored.base_max_durability, 5)
 	assert_eq(restored.current_durability, 4)
 	assert_eq(restored.max_durability, 5)
 	assert_false(restored.repair_job_available)
 
 
-func test_only_plus_10_is_a_valid_precision_milestone() -> void:
+func test_current_precision_targets_are_valid_milestones() -> void:
 	var item = _item()
-	item.used_precision_milestones.assign([10])
+	item.used_precision_milestones.assign([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
 	assert_true(ItemScript.from_dict(item.to_dict()).validation_errors.is_empty())
-	item.used_precision_milestones.assign([20])
-	assert_true(ItemScript.from_dict(item.to_dict()).validation_errors.has("INVALID_PRECISION_MILESTONE:20"))
+	item.used_precision_milestones.assign([15])
+	assert_true(ItemScript.from_dict(item.to_dict()).validation_errors.has("INVALID_PRECISION_MILESTONE:15"))
 
 
 func test_current_and_max_invariants_remain_fail_closed() -> void:

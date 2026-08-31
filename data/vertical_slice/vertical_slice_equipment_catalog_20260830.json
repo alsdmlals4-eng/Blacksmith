@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "status": "CURRENT_USER_APPROVED_FIVE_EQUIPMENT_MVP",
+  "source_decision_id": "BS-EQUIPMENT-20260830-39",
+  "art_direction": "ILLUSTRATED_WORKSHOP_BOOK",
+  "runtime_image_promotion": "IMPLEMENTED_MACHINE_VERIFIED",
+  "equipment": [
+    {
+      "equipment_id": "iron_sword",
+      "display_name_ko": "철검",
+      "equipment_group": "SWORD",
+      "role_profile": "PHYSICAL_WEAPON_ATTACK",
+      "role_stat_label_ko": "공격 역할 수치",
+      "primary_material_id": "iron",
+      "weight_point": 15,
+      "precision_tag_eligible": true,
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-SWORD-CARD-V1",
+      "image_path": "res://assets/ui/equipment/iron_sword_card_v1.png"
+    },
+    {
+      "equipment_id": "iron_shield",
+      "display_name_ko": "철방패",
+      "equipment_group": "SHIELD",
+      "role_profile": "PHYSICAL_WEAPON_GUARD",
+      "role_stat_label_ko": "방어 역할 수치",
+      "primary_material_id": "iron",
+      "weight_point": 15,
+      "precision_tag_eligible": true,
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V1",
+      "image_path": "res://assets/ui/equipment/iron_shield_card_v1.png"
+    },
+    {
+      "equipment_id": "iron_bow",
+      "display_name_ko": "철활",
+      "equipment_group": "BOW",
+      "role_profile": "PHYSICAL_WEAPON_RANGED",
+      "role_stat_label_ko": "원거리 역할 수치",
+      "primary_material_id": "iron",
+      "weight_point": 15,
+      "precision_tag_eligible": true,
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-BOW-CARD-V1",
+      "image_path": "res://assets/ui/equipment/iron_bow_card_v1.png"
+    },
+    {
+      "equipment_id": "iron_armor",
+      "display_name_ko": "철갑옷",
+      "equipment_group": "ARMOR",
+      "role_profile": "ARMOR_BODY_DEFENSE",
+      "role_stat_label_ko": "방어 역할 수치",
+      "primary_material_id": "iron",
+      "weight_point": 15,
+      "precision_tag_eligible": false,
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V1",
+      "image_path": "res://assets/ui/equipment/iron_armor_card_v1.png"
+    },
+    {
+      "equipment_id": "iron_helmet",
+      "display_name_ko": "철투구",
+      "equipment_group": "HELMET",
+      "role_profile": "ARMOR_HEAD_DEFENSE",
+      "role_stat_label_ko": "방어 역할 수치",
+      "primary_material_id": "iron",
+      "weight_point": 15,
+      "precision_tag_eligible": false,
+      "image_asset_id": "ASSET-EQUIPMENT-IRON-HELMET-CARD-V1",
+      "image_path": "res://assets/ui/equipment/iron_helmet_card_v1.png"
+    }
+  ]
+}

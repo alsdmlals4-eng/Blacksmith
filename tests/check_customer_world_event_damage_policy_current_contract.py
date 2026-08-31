@@ -92,7 +92,8 @@ def main() -> None:
 
     handoff_text = HANDOFF.read_text(encoding="utf-8")
     assert "CUSTOMER_WORLD_RESULT_FLOW_CALLER = IMPLEMENTED_PR286" in handoff_text
-    assert "CUSTOMER_WORLD_EVENT_SCHEDULER_AND_PLAYER_ENTRY = NOT_RUN" in handoff_text
+    assert "PHASE1_PLAYER_HANDOFF_ENTRY = IMPLEMENTED_PR334 / SAVE_FIRST_ONCE_PER_UID" in handoff_text
+    assert "CUSTOMER_WORLD_EVENT_SCHEDULER = NOT_RUN" in handoff_text
 
     print("customer world event damage policy current contract: PASS")
 

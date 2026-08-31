@@ -1,5 +1,7 @@
 # Blacksmith Phase 1 Unified Implementation Contract · 2026-08-28
 
+> Current amendment: `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` owns recurring precision data and V3→V4 migration. [대체됨] `+10` sole-precision and single-Tag wording is historical outside the Phase-1 representative +0~+15 play boundary. Runtime support must cover targets 10~100 without changing Decision28/29/30.
+
 > This is the single implementation contract produced by the current Phase 1
 > planning pass. The user has since opened current-canon MVP implementation;
 > the contract remains the scope and verification boundary for that work.
@@ -11,6 +13,8 @@ CURRENT_ACCEPTED_FRONTIER = ISSUE_326_PRECISION_TAG_CATALOG_MERGED_MAIN_7d12070f
 PHASE_2_ENTRY = SATISFIED_BY_CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826
 WEAPON_KEYWORD_OWNERSHIP_DECISION = BS-ENHANCE-20260828-34
 WEAPON_KEYWORD_CONTENT_AND_SELECTION_DECISION = BS-ENHANCE-20260829-37
+RECURRING_PRECISION_DECISION = BS-ENHANCE-20260830-38
+DECISION34_37_SCOPE = RESIDUAL_NON_CONFLICTING_HISTORICAL_EVIDENCE_ONLY
 WEAPON_KEYWORD_IMPLEMENTATION_ISSUE = #326
 ```
 
@@ -306,13 +310,14 @@ HUMAN_PLAYTEST = DEFERRED_BY_USER / NOT_RUN
 
 1. A success at `+5` emits only a presentation milestone; it cannot affect
    odds, costs, inventory, affixes, or the stored item schema.
-2. At `+9 -> +10`, missing lineage/method blocks before cost/roll; each valid
-   2×2 pair resolves to exactly one catalog Tag. Success writes the one Tag and
+2. [대체됨] Historical Decision37 contract: at `+9 -> +10`, missing lineage/method blocks before cost/roll; each valid
+   2×2 pair resolves to exactly one catalog Tag. The current recurring contract is Decision38.
+   Historical success writes the one Tag and
    one method delta exactly once; hold writes neither; target `<=+10` cannot
    damage. `PRECISION_KEYWORD_PENDING_CONTENT` is never player-facing and may
    only be backfilled once without a new roll/cost. Its `CATALYST_AFFIX`
    ownership boundary remains weapon-only; Grade/Event remain byte-for-byte
-   unchanged; `+20` and later never request Precision or add an affix.
+   unchanged; [대체됨] `+20` and later never request Precision or add an affix.
 3. The Slice cannot reach `+11..+15` only to be blocked by the old ten-unit
    material fixture under its success-path test.
 4. Handoff is permitted for an active same UID at `+10+`, has no damage roll,

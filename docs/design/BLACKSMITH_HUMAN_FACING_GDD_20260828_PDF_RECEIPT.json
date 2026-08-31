@@ -2,7 +2,6 @@
   "schema_version": 1,
   "receipt_id": "BS-GDD-20260829-HUMAN-PDF-02",
   "status": "RENDERED_AND_VISUALLY_INSPECTED / NOT_PRODUCT_RUNTIME_EVIDENCE",
-  "generated_at": "2026-08-29 KST",
   "source_markdown": {
     "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
     "sha256": "7006d4d442cc507600457262ce1644af0b1e7b0136a720de4910023b0a770e3e",
@@ -14,6 +13,30 @@
     "page_count": 11,
     "pdf_subject": "Human-facing Korean GDD",
     "target_format": "A4"
+  },
+  "publish_recipe": {
+    "publisher": "tools/publish_human_facing_gdd_pdf.py",
+    "engine": "ReportLab",
+    "font": "C:/Windows/Fonts/malgun.ttf",
+    "invariant": true,
+    "images": [
+      "assets/ui/workshop/main_menu_dawn_background_v1.png",
+      "assets/ui/workshop/customer_result_return_illustration_v1.png",
+      "assets/ui/equipment/iron_sword_card_v1.png",
+      "assets/ui/equipment/iron_shield_card_v1.png",
+      "assets/ui/equipment/iron_bow_card_v1.png",
+      "assets/ui/equipment/iron_armor_card_v1.png",
+      "assets/ui/equipment/iron_helmet_card_v1.png"
+    ]
+  },
+  "deterministic_publish_proof": {
+    "invariant": true,
+    "identical_sha256_runs": [
+      "4fb143d276689eaf31e9c800c272f0535f1312d6dd5ff2c5101f004038d45325",
+      "4fb143d276689eaf31e9c800c272f0535f1312d6dd5ff2c5101f004038d45325"
+    ],
+    "run_count": 2,
+    "basis": "two consecutive invariant ReportLab publishes with unchanged source"
   },
   "render_validation": {
     "tool": "pypdf + Poppler pdftoppm",

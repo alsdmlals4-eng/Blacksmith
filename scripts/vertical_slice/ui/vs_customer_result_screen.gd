@@ -2,6 +2,11 @@
 class_name VSCustomerResultScreen
 extends Control
 
+const CustomerResultIllustrationTexture = preload("res://assets/ui/workshop/customer_result_return_illustration_v1.png")
+
+signal repair_requested
+signal chronicle_requested
+
 var _view_state := {
 	"event_id": "",
 	"item_uid": "",
@@ -17,8 +22,10 @@ var _view_state := {
 func configure_resolved_result(result: Dictionary) -> Dictionary:
 	var parsed := _parse_result(result)
 	if parsed.is_empty():
+		_set_result_illustration_visible(false)
 		return {"status": "BLOCKED", "reason": "INVALID_DURABILITY_CONSEQUENCE"}
 	_view_state = parsed
+	_set_result_illustration_visible(true)
 	_refresh_controls()
 	return {"status": "APPLIED"}
 
@@ -87,12 +94,101 @@ func _has_valid_consequence(consequence: Dictionary) -> bool:
 
 
 func _refresh_controls() -> void:
+	_ensure_result_actions()
 	_set_label("ResultLayout/SummaryLabel", str(_view_state["summary_text"]))
 	_set_label("ResultLayout/DamageLabel", str(_view_state["damage_text"]))
 	_set_label("ResultLayout/CurrentDurabilityLabel", str(_view_state["current_durability_text"]))
 	_set_label("ResultLayout/MaxDurabilityLabel", str(_view_state["max_durability_text"]))
 	_set_label("ResultLayout/NextActionLabel", str(_view_state["next_action_text"]))
 	_set_label("ResultLayout/RepairActionHint", "작업대에서 수리하기" if bool(_view_state["repair_available"]) else "")
+	var repair_button := get_node_or_null("ResultLayout/RepairActionButton") as Button
+	var chronicle_button := get_node_or_null("ResultLayout/ChronicleActionButton") as Button
+	if repair_button != null:
+		repair_button.visible = bool(_view_state["repair_available"])
+		repair_button.disabled = not bool(_view_state["repair_available"])
+	if chronicle_button != null:
+		chronicle_button.visible = not bool(_view_state["repair_available"])
+		chronicle_button.disabled = bool(_view_state["repair_available"])
+
+
+func _ready() -> void:
+	_ensure_result_illustration()
+	_ensure_result_actions()
+	_set_result_illustration_visible(false)
+
+
+func _ensure_result_illustration() -> void:
+	var illustration := get_node_or_null("CustomerResultEventIllustration") as TextureRect
+	if illustration == null:
+		illustration = TextureRect.new()
+		illustration.name = "CustomerResultEventIllustration"
+		illustration.z_index = -1
+		illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		illustration.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		add_child(illustration)
+		move_child(illustration, 0)
+	illustration.texture = CustomerResultIllustrationTexture
+	var veil := get_node_or_null("CustomerResultReadabilityVeil") as ColorRect
+	if veil == null:
+		veil = ColorRect.new()
+		veil.name = "CustomerResultReadabilityVeil"
+		veil.z_index = -1
+		veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		veil.color = Color(0.08, 0.05, 0.03, 0.62)
+		veil.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		add_child(veil)
+		move_child(veil, 1)
+
+
+func _set_result_illustration_visible(visible: bool) -> void:
+	_ensure_result_illustration()
+	var illustration := get_node_or_null("CustomerResultEventIllustration") as TextureRect
+	var veil := get_node_or_null("CustomerResultReadabilityVeil") as ColorRect
+	var fallback := get_node_or_null("ResultBackground") as ColorRect
+	if illustration != null:
+		illustration.visible = visible
+	if veil != null:
+		veil.visible = visible
+	if fallback != null:
+		fallback.visible = not visible
+
+
+func _ensure_result_actions() -> void:
+	var layout := get_node_or_null("ResultLayout") as VBoxContainer
+	if layout == null:
+		return
+	var repair_button := layout.get_node_or_null("RepairActionButton") as Button
+	if repair_button == null:
+		repair_button = Button.new()
+		repair_button.name = "RepairActionButton"
+		repair_button.text = "작업대에서 수리하기"
+		repair_button.custom_minimum_size = Vector2(0, 48)
+		repair_button.add_theme_font_size_override("font_size", 20)
+		layout.add_child(repair_button)
+	if not repair_button.pressed.is_connected(_on_repair_action_pressed):
+		repair_button.pressed.connect(_on_repair_action_pressed)
+	var chronicle_button := layout.get_node_or_null("ChronicleActionButton") as Button
+	if chronicle_button == null:
+		chronicle_button = Button.new()
+		chronicle_button.name = "ChronicleActionButton"
+		chronicle_button.text = "작품 연대 보기"
+		chronicle_button.custom_minimum_size = Vector2(0, 48)
+		chronicle_button.add_theme_font_size_override("font_size", 20)
+		layout.add_child(chronicle_button)
+	if not chronicle_button.pressed.is_connected(_on_chronicle_action_pressed):
+		chronicle_button.pressed.connect(_on_chronicle_action_pressed)
+
+
+func _on_repair_action_pressed() -> void:
+	if bool(_view_state.get("repair_available", false)):
+		repair_requested.emit()
+
+
+func _on_chronicle_action_pressed() -> void:
+	if not bool(_view_state.get("repair_available", false)):
+		chronicle_requested.emit()
 
 
 func _set_label(path: String, value: String) -> void:
