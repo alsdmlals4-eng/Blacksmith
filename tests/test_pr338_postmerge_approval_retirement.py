@@ -9,6 +9,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 PR338_MERGE = "b7ce7ee09f177ff49ce282c02d829154ab648b73"
+PR338_APPROVAL_SOURCE = (
+    "USER_APPROVED_2026-08-30_DIRECT_GODOT_IMPLEMENTATION_OF_CURRENT_"
+    "RECURRING_PRECISION_TAG_WORKSHOP_FLOW_WITH_APPROVED_PROTECTED_CHANGE_LABEL"
+)
 CANONICAL_ADAPTER = ROOT / "skills" / "PROJECT_BASE_ADAPTER.json"
 COMPATIBILITY_VIEWS = (
     (ROOT / "skills" / "BASE_V9_ADAPTER.json", "canonical_source_sha256"),
@@ -32,7 +36,9 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
 
 class PR338PostmergeApprovalRetirementTests(unittest.TestCase):
     def test_postmerge_contract_retires_pr338_approval_and_adopts_pr338(self) -> None:
-        self.assertFalse(APPROVAL.exists())
+        if APPROVAL.exists():
+            current_approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
+            self.assertNotEqual(PR338_APPROVAL_SOURCE, current_approval["approval_source"])
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
         self.assertEqual(PR338_MERGE, adapter["protected_baseline"]["commit"])
 
