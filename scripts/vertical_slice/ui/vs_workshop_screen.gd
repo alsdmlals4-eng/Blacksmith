@@ -12,6 +12,55 @@ const EquipmentCatalogScript = preload("res://scripts/vertical_slice/domain/vs_e
 const WorkshopBackgroundTexture = preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 const WorkpieceDurabilityStateAtlasTexture = preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
+# The project previews a 720px canvas in a 360px mobile window. These source
+# values retain a 14px body and 48px minimum touch target in that preview.
+const MOBILE_BODY_FONT_SIZE := 28
+const MOBILE_SECTION_FONT_SIZE := 35
+const MOBILE_TITLE_FONT_SIZE := 44
+const MOBILE_TOUCH_TARGET_HEIGHT := 96
+const MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT := 112
+
+const MOBILE_TITLE_CONTROL_PATHS := PackedStringArray([
+	"WorkshopScroll/WorkshopLayout/WorkshopTitle",
+	"WorkshopScroll/WorkshopLayout/DurabilityValueLabel",
+])
+const MOBILE_SECTION_CONTROL_PATHS := PackedStringArray([
+	"WorkshopScroll/WorkshopLayout/DurabilityTitleLabel",
+	"WorkshopScroll/WorkshopLayout/EnhancementTitleLabel",
+	"WorkshopScroll/WorkshopLayout/PrecisionTitleLabel",
+])
+const MOBILE_BODY_CONTROL_PATHS := PackedStringArray([
+	"WorkshopScroll/WorkshopLayout/DurabilityStateLabel",
+	"WorkshopScroll/WorkshopLayout/RepairQuoteLabel",
+	"WorkshopScroll/WorkshopLayout/RepairQualityLabel",
+	"WorkshopScroll/WorkshopLayout/RepairScarLabel",
+	"WorkshopScroll/WorkshopLayout/RepairJobLabel",
+	"WorkshopScroll/WorkshopLayout/EnhancementQuoteLabel",
+	"WorkshopScroll/WorkshopLayout/EnhancementOutcomesLabel",
+	"WorkshopScroll/WorkshopLayout/PrecisionActionLabel",
+	"WorkshopScroll/WorkshopLayout/PrecisionTagLabel",
+	"WorkshopScroll/WorkshopLayout/PrecisionLineageLabel",
+	"WorkshopScroll/WorkshopLayout/PrecisionMethodLabel",
+	"WorkshopScroll/WorkshopLayout/PrecisionTagEntriesLabel",
+	"WorkshopScroll/WorkshopLayout/PrecisionPreviewLabel",
+	"WorkshopScroll/WorkshopLayout/EnhancementMessageLabel",
+	"WorkshopScroll/WorkshopLayout/RepairMessageLabel",
+])
+const MOBILE_ACTION_CONTROL_PATHS := PackedStringArray([
+	"WorkshopScroll/WorkshopLayout/RepairButton",
+	"WorkshopScroll/WorkshopLayout/PrecisionActionAddButton",
+	"WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton",
+	"WorkshopScroll/WorkshopLayout/PrecisionTagOption",
+	"WorkshopScroll/WorkshopLayout/PrecisionLineageOption",
+	"WorkshopScroll/WorkshopLayout/PrecisionMethodOption",
+	"WorkshopScroll/WorkshopLayout/PrecisionBackfillButton",
+	"WorkshopScroll/WorkshopLayout/HandoffButton",
+	"WorkshopScroll/WorkshopLayout/ChronicleButton",
+])
+const MOBILE_PRIMARY_ACTION_CONTROL_PATHS := PackedStringArray([
+	"WorkshopScroll/WorkshopLayout/EnhancementButton",
+])
+
 signal enhancement_saved(envelope, result: Dictionary)
 signal handoff_requested
 signal chronicle_requested
@@ -32,6 +81,7 @@ func _ready() -> void:
 	_ensure_workpiece_durability_hero()
 	_ensure_equipment_identity_hero()
 	_ensure_enhancement_controls()
+	_apply_mobile_readability_tokens()
 	var repair_button := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairButton") as Button
 	if repair_button != null and not repair_button.pressed.is_connected(_on_repair_pressed):
 		repair_button.pressed.connect(_on_repair_pressed)
@@ -91,9 +141,33 @@ func _ensure_scroll_bottom_padding(layout: VBoxContainer) -> void:
 		return
 	var padding := Control.new()
 	padding.name = "ScrollBottomPadding"
-	padding.custom_minimum_size = Vector2(0, 48)
+	padding.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
 	padding.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layout.add_child(padding)
+
+
+func _apply_mobile_readability_tokens() -> void:
+	_apply_font_size_to_controls(MOBILE_TITLE_CONTROL_PATHS, MOBILE_TITLE_FONT_SIZE)
+	_apply_font_size_to_controls(MOBILE_SECTION_CONTROL_PATHS, MOBILE_SECTION_FONT_SIZE)
+	_apply_font_size_to_controls(MOBILE_BODY_CONTROL_PATHS, MOBILE_BODY_FONT_SIZE)
+	_apply_font_size_to_controls(MOBILE_ACTION_CONTROL_PATHS, MOBILE_BODY_FONT_SIZE)
+	_apply_font_size_to_controls(MOBILE_PRIMARY_ACTION_CONTROL_PATHS, MOBILE_SECTION_FONT_SIZE)
+	_apply_minimum_height_to_controls(MOBILE_ACTION_CONTROL_PATHS, MOBILE_TOUCH_TARGET_HEIGHT)
+	_apply_minimum_height_to_controls(MOBILE_PRIMARY_ACTION_CONTROL_PATHS, MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT)
+
+
+func _apply_font_size_to_controls(paths: PackedStringArray, font_size: int) -> void:
+	for path in paths:
+		var control := get_node_or_null(path) as Control
+		if control != null:
+			control.add_theme_font_size_override("font_size", font_size)
+
+
+func _apply_minimum_height_to_controls(paths: PackedStringArray, minimum_height: float) -> void:
+	for path in paths:
+		var control := get_node_or_null(path) as Control
+		if control != null:
+			control.custom_minimum_size = Vector2(0, minimum_height)
 
 
 func configure_context(item, resources, maintenance_service = null, enhancement_action_service = null, save_service = null, campaign_envelope = null) -> void:
@@ -794,93 +868,93 @@ func _ensure_enhancement_controls() -> void:
 	var title := Label.new()
 	title.name = "EnhancementTitleLabel"
 	title.text = "다음 강화"
-	title.add_theme_font_size_override("font_size", 20)
+	title.add_theme_font_size_override("font_size", MOBILE_SECTION_FONT_SIZE)
 	nodes.append(title)
 	var quote := Label.new()
 	quote.name = "EnhancementQuoteLabel"
-	quote.add_theme_font_size_override("font_size", 18)
+	quote.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(quote)
 	var outcomes := Label.new()
 	outcomes.name = "EnhancementOutcomesLabel"
 	outcomes.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	outcomes.add_theme_font_size_override("font_size", 17)
+	outcomes.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(outcomes)
 	var precision_title := Label.new()
 	precision_title.name = "PrecisionTitleLabel"
 	precision_title.text = "정밀 강화"
-	precision_title.add_theme_font_size_override("font_size", 20)
+	precision_title.add_theme_font_size_override("font_size", MOBILE_SECTION_FONT_SIZE)
 	nodes.append(precision_title)
 	var precision_actions_label := Label.new()
 	precision_actions_label.name = "PrecisionActionLabel"
-	precision_actions_label.add_theme_font_size_override("font_size", 18)
+	precision_actions_label.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_actions_label)
 	var precision_add_button := Button.new()
 	precision_add_button.name = "PrecisionActionAddButton"
 	precision_add_button.text = "태그 추가"
-	precision_add_button.custom_minimum_size = Vector2(0, 48)
-	precision_add_button.add_theme_font_size_override("font_size", 18)
+	precision_add_button.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
+	precision_add_button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_add_button)
 	var precision_upgrade_button := Button.new()
 	precision_upgrade_button.name = "PrecisionActionUpgradeButton"
 	precision_upgrade_button.text = "태그 강화"
-	precision_upgrade_button.custom_minimum_size = Vector2(0, 48)
-	precision_upgrade_button.add_theme_font_size_override("font_size", 18)
+	precision_upgrade_button.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
+	precision_upgrade_button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_upgrade_button)
 	var precision_tag_label := Label.new()
 	precision_tag_label.name = "PrecisionTagLabel"
 	precision_tag_label.text = "강화할 태그"
-	precision_tag_label.add_theme_font_size_override("font_size", 18)
+	precision_tag_label.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_tag_label)
 	var precision_tag_option := OptionButton.new()
 	precision_tag_option.name = "PrecisionTagOption"
-	precision_tag_option.custom_minimum_size = Vector2(0, 48)
-	precision_tag_option.add_theme_font_size_override("font_size", 18)
+	precision_tag_option.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
+	precision_tag_option.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_tag_option)
 	var precision_lineage_label := Label.new()
 	precision_lineage_label.name = "PrecisionLineageLabel"
 	precision_lineage_label.text = "촉매 계보"
-	precision_lineage_label.add_theme_font_size_override("font_size", 18)
+	precision_lineage_label.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_lineage_label)
 	var precision_lineage_option := OptionButton.new()
 	precision_lineage_option.name = "PrecisionLineageOption"
-	precision_lineage_option.custom_minimum_size = Vector2(0, 48)
-	precision_lineage_option.add_theme_font_size_override("font_size", 18)
+	precision_lineage_option.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
+	precision_lineage_option.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_lineage_option)
 	var precision_method_label := Label.new()
 	precision_method_label.name = "PrecisionMethodLabel"
 	precision_method_label.text = "정밀 강화 방식"
-	precision_method_label.add_theme_font_size_override("font_size", 18)
+	precision_method_label.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_method_label)
 	var precision_method_option := OptionButton.new()
 	precision_method_option.name = "PrecisionMethodOption"
-	precision_method_option.custom_minimum_size = Vector2(0, 48)
-	precision_method_option.add_theme_font_size_override("font_size", 18)
+	precision_method_option.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
+	precision_method_option.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_method_option)
 	var precision_tag_entries := Label.new()
 	precision_tag_entries.name = "PrecisionTagEntriesLabel"
 	precision_tag_entries.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	precision_tag_entries.add_theme_font_size_override("font_size", 17)
+	precision_tag_entries.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_tag_entries)
 	var precision_preview := Label.new()
 	precision_preview.name = "PrecisionPreviewLabel"
 	precision_preview.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	precision_preview.add_theme_font_size_override("font_size", 17)
+	precision_preview.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_preview)
 	var precision_backfill_button := Button.new()
 	precision_backfill_button.name = "PrecisionBackfillButton"
 	precision_backfill_button.text = "정밀 태그 정정 적용 · 비용 없음"
-	precision_backfill_button.custom_minimum_size = Vector2(0, 48)
-	precision_backfill_button.add_theme_font_size_override("font_size", 18)
+	precision_backfill_button.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
+	precision_backfill_button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(precision_backfill_button)
 	var button := Button.new()
 	button.name = "EnhancementButton"
 	button.text = "강화 시도"
-	button.custom_minimum_size = Vector2(0, 64)
-	button.add_theme_font_size_override("font_size", 22)
+	button.custom_minimum_size = Vector2(0, MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT)
+	button.add_theme_font_size_override("font_size", MOBILE_SECTION_FONT_SIZE)
 	nodes.append(button)
 	var message := Label.new()
 	message.name = "EnhancementMessageLabel"
-	message.add_theme_font_size_override("font_size", 18)
+	message.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	nodes.append(message)
 	var repair_index := layout.get_node("RepairButton").get_index()
 	for node in nodes:
@@ -898,8 +972,8 @@ func _ensure_handoff_button(layout: VBoxContainer) -> void:
 	var handoff_button := Button.new()
 	handoff_button.name = "HandoffButton"
 	handoff_button.text = "나디아에게 인계 · 인계 손상 없음"
-	handoff_button.custom_minimum_size = Vector2(0, 48)
-	handoff_button.add_theme_font_size_override("font_size", 18)
+	handoff_button.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
+	handoff_button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	var repair_button := layout.get_node_or_null("RepairButton") as Control
 	layout.add_child(handoff_button)
 	if repair_button != null:
@@ -912,8 +986,8 @@ func _ensure_chronicle_button(layout: VBoxContainer) -> void:
 	var chronicle_button := Button.new()
 	chronicle_button.name = "ChronicleButton"
 	chronicle_button.text = "작품 연대 보기"
-	chronicle_button.custom_minimum_size = Vector2(0, 48)
-	chronicle_button.add_theme_font_size_override("font_size", 18)
+	chronicle_button.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
+	chronicle_button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
 	var repair_button := layout.get_node_or_null("RepairButton") as Control
 	layout.add_child(chronicle_button)
 	if repair_button != null:
