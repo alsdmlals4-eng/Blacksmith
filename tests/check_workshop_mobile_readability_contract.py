@@ -53,9 +53,9 @@ def main() -> None:
     }
     for control_name in required_controls:
         assert control_name in workshop_text, f"mobile touch target missing: {control_name}"
-    assert "const MOBILE_ACTION_CONTROL_PATHS := PackedStringArray" in workshop_text
+    assert "const MOBILE_ACTION_CONTROL_PATHS := [" in workshop_text
     assert "EnhancementButton" in workshop_text
-    assert "const MOBILE_PRIMARY_ACTION_CONTROL_PATHS := PackedStringArray" in workshop_text
+    assert "const MOBILE_PRIMARY_ACTION_CONTROL_PATHS := [" in workshop_text
 
     print("workshop mobile readability contract: PASS")
 

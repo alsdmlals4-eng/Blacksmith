@@ -20,16 +20,16 @@ const MOBILE_TITLE_FONT_SIZE := 44
 const MOBILE_TOUCH_TARGET_HEIGHT := 96
 const MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT := 112
 
-const MOBILE_TITLE_CONTROL_PATHS := PackedStringArray([
+const MOBILE_TITLE_CONTROL_PATHS := [
 	"WorkshopScroll/WorkshopLayout/WorkshopTitle",
 	"WorkshopScroll/WorkshopLayout/DurabilityValueLabel",
-])
-const MOBILE_SECTION_CONTROL_PATHS := PackedStringArray([
+]
+const MOBILE_SECTION_CONTROL_PATHS := [
 	"WorkshopScroll/WorkshopLayout/DurabilityTitleLabel",
 	"WorkshopScroll/WorkshopLayout/EnhancementTitleLabel",
 	"WorkshopScroll/WorkshopLayout/PrecisionTitleLabel",
-])
-const MOBILE_BODY_CONTROL_PATHS := PackedStringArray([
+]
+const MOBILE_BODY_CONTROL_PATHS := [
 	"WorkshopScroll/WorkshopLayout/DurabilityStateLabel",
 	"WorkshopScroll/WorkshopLayout/RepairQuoteLabel",
 	"WorkshopScroll/WorkshopLayout/RepairQualityLabel",
@@ -45,8 +45,8 @@ const MOBILE_BODY_CONTROL_PATHS := PackedStringArray([
 	"WorkshopScroll/WorkshopLayout/PrecisionPreviewLabel",
 	"WorkshopScroll/WorkshopLayout/EnhancementMessageLabel",
 	"WorkshopScroll/WorkshopLayout/RepairMessageLabel",
-])
-const MOBILE_ACTION_CONTROL_PATHS := PackedStringArray([
+]
+const MOBILE_ACTION_CONTROL_PATHS := [
 	"WorkshopScroll/WorkshopLayout/RepairButton",
 	"WorkshopScroll/WorkshopLayout/PrecisionActionAddButton",
 	"WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton",
@@ -56,10 +56,10 @@ const MOBILE_ACTION_CONTROL_PATHS := PackedStringArray([
 	"WorkshopScroll/WorkshopLayout/PrecisionBackfillButton",
 	"WorkshopScroll/WorkshopLayout/HandoffButton",
 	"WorkshopScroll/WorkshopLayout/ChronicleButton",
-])
-const MOBILE_PRIMARY_ACTION_CONTROL_PATHS := PackedStringArray([
+]
+const MOBILE_PRIMARY_ACTION_CONTROL_PATHS := [
 	"WorkshopScroll/WorkshopLayout/EnhancementButton",
-])
+]
 
 signal enhancement_saved(envelope, result: Dictionary)
 signal handoff_requested
@@ -156,14 +156,14 @@ func _apply_mobile_readability_tokens() -> void:
 	_apply_minimum_height_to_controls(MOBILE_PRIMARY_ACTION_CONTROL_PATHS, MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT)
 
 
-func _apply_font_size_to_controls(paths: PackedStringArray, font_size: int) -> void:
+func _apply_font_size_to_controls(paths: Array, font_size: int) -> void:
 	for path in paths:
 		var control := get_node_or_null(path) as Control
 		if control != null:
 			control.add_theme_font_size_override("font_size", font_size)
 
 
-func _apply_minimum_height_to_controls(paths: PackedStringArray, minimum_height: float) -> void:
+func _apply_minimum_height_to_controls(paths: Array, minimum_height: float) -> void:
 	for path in paths:
 		var control := get_node_or_null(path) as Control
 		if control != null:
