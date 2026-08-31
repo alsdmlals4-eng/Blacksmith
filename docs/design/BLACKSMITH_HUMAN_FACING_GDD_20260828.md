@@ -194,6 +194,8 @@ flowchart TD
 
 PR #328은 현재 대체된 Decision37의 첫 2×2 선택을 vertical-slice에 구현한 역사 증거다. 현재 field owner인 `BS-ENHANCE-20260830-38`은 이를 무기 3종의 **all ten Precision gates**로 확장하고, `BS-ENHANCE-20260901-40`은 두 실제 촉매·catalog V3·V5 자원 이관·원자적 1개 차감을 맡는다. 기존 `CATALYST_AFFIX` 안의 versioned Tag collection은 최대 세 태그와 I~IV 성장을 보존하며, 첫 관문은 추가만, 그 뒤 관문은 추가 또는 강화만 허용한다. Workshop은 선택·촉매 보유량·1개 소모·미리보기·결과를 네이티브 한국어 Control로 제시하고, 빈/잘못된 선택과 촉매 부족을 비용·재료·굴림 전에 차단한다. 저장 성공한 hold·damage도 촉매 1개를 소비하지만 태그는 바꾸지 않는다. `PRECISION_KEYWORD_PENDING_CONTENT`는 플레이어 표기가 아닌 V3 이관 origin에 한정된 1회 무상·무촉매·무굴림 정정 대상이다. PR #328 exact-head의 Godot 4.7.1 headless GUT은 역사 자동 증거이며, 현재 소비형 recurring slice의 실제 client 화면·Android·사람 플레이를 검증한 결과는 아니다. 이 GDD는 그 차이를 숨기지 않는다.
 
+**현재 런타임 정정 · `LIMITED_RUNTIME_UI_OBSERVED`:** PR #349의 정확한 pre-merge worktree에서 실제 Godot 화면을 열어 `+9→+10`의 두 촉매 선택, 각각의 보유량, `대지의 결정/불의 심장 1개 소모` 미리보기, 활성화된 시도 버튼을 관찰했다. 사용자 저장을 보존하려 결제 버튼을 누르지는 않았으므로, 성공·hold·damage의 영속 차감은 GUT 계약 증거이고 사람 플레이·Android·접근성·성능은 여전히 `NOT_RUN`이다.
+
 ### 후속 순서
 
 1. 반복 정밀 태그의 live Workshop 경로를 Godot 클라이언트에서 확인하고, `+9→+10`부터 `+99→+100`까지의 선택·성공/hold·정정 상태가 자동 계약과 일치하는지 검수한다.

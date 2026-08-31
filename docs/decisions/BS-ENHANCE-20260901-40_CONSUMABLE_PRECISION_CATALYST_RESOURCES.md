@@ -6,6 +6,12 @@
 STATUS = USER_APPROVED_CURRENT
 DECISION_DATE = 2026-09-01
 FIELD_OWNER = CONSUMABLE_PRECISION_CATALYST_RESOURCES
+IMPLEMENTATION_STATUS = MERGED_MAIN_PR349
+POSTMERGE_MAIN_SHA = 5560d8f0bdde9d900acc2bbbaf403ef3bdbc1b58
+PROTECTED_APPROVAL_STATUS = RETIRED_ON_POSTMERGE_BASELINE_CLOSURE
+MACHINE_VERIFICATION = PYTHON_333_GUT_243_1813_AND_GITHUB_PR349_CURRENT_HEAD_PASS
+RUNTIME_UI_STATUS = LIMITED_RUNTIME_UI_OBSERVED
+RUNTIME_UI_EVIDENCE = HERA_EXACT_WORKTREE_720x1280_PRECISION_CATALYST_SELECTION_20260901
 FIELD_PRECEDENCE = PARTIALLY_SUPERSEDES_BS-ENHANCE-20260830-38_FOR_CATALYST_INPUT_INVENTORY_CONSUMPTION_AND_RESOURCE_MIGRATION
 CATALOG_OWNER = docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json / SCHEMA_V3
 ITEM_KEYWORD_MACHINE_OWNER = CATALYST_AFFIX
@@ -71,4 +77,4 @@ STARTER_ALLOCATION = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
 
 ## 6. 완료 증거 경계
 
-기계 정본/catalog contract, save migration GUT, resolver/action-service GUT, Workshop GUT, exact-head runtime screenshot은 서로 다른 증거다. Android, accessibility, performance, human playtest, release 및 실제 재획득 경제는 이 결정만으로 PASS가 되지 않으며 실행 전까지 `NOT_RUN`이다.
+기계 정본/catalog contract, save migration GUT, resolver/action-service GUT, Workshop GUT, exact-head runtime screenshot은 서로 다른 증거다. 실제 Godot 런타임에서는 `+9→+10` 촉매 선택과 불의 심장/대지의 결정의 보유량·1개 소모 미리보기를 관찰했지만, 사용자의 저장을 바꾸지 않기 위해 실제 결제 버튼은 누르지 않았다. 따라서 런타임 UI 증거는 `LIMITED_RUNTIME_UI_OBSERVED`이며 성공/hold/damage의 영속 결제는 자동 계약으로만 검증됐다. Android, accessibility, performance, human playtest, release 및 실제 재획득 경제는 이 결정만으로 PASS가 되지 않으며 실행 전까지 `NOT_RUN`이다.

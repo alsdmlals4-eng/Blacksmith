@@ -105,6 +105,7 @@ def main() -> int:
         "BS-ENHANCE-20260901-40",
         "V5 resource migration",
         "all ten Precision gates",
+        "LIMITED_RUNTIME_UI_OBSERVED",
     ):
         require(human_gdd, token, failures, "human-facing GDD")
 
