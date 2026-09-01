@@ -116,11 +116,11 @@ Rollback is a normal revert of the associated documentation-and-test PR. No dele
 
 `PM_EXECUTION_GATE_REQUIRED` · `PM_CHECKLIST_VISIBLE_AT_START_TRANSITION_CLOSEOUT`
 
-Approval: 2026-09-02 user request, tracked in Blacksmith Issue #197 and Base Issue #825. Scope is work tracking and verification infrastructure, not game scope or a new persistent agent. The existing release lock above is unchanged.
+Approval: 2026-09-02 user request, tracked in Blacksmith Issue #358 and Base Issue #825. Scope is work tracking and verification infrastructure, not game scope or a new persistent agent. The existing release lock above is unchanged.
 
 **Candidate boundary:** Base PR #826 is the dependency. The selected tooling candidate is `f27fe4b993e8ffc24db235cda05d0782f6a1308c`; it is not a completed Base main release. This Blacksmith integration remains a draft until Base's required checks, independent review, correction and normal merge succeed. Before Blacksmith merge, replace the candidate pin in `tools/check_pm_work_receipt.py` and the workflow with the verified merged Base revision and rerun project tests. No production adoption is claimed by this draft.
 
-The real work receipt is `docs/operations/receipts/2026-09-02-pm-execution-gate.json`, a source-bound snapshot of this PM integration, not the whole game's backlog. Its state is initially 1/4 complete. Existing Issue #197 tracks subsequent transitions; reconcile the repository snapshot at each new material work session instead of treating its old source SHA as current.
+The real work receipt is `docs/operations/receipts/2026-09-02-pm-execution-gate.json`, a source-bound snapshot of this PM integration, not the whole game's backlog. Its state is initially 1/4 complete. Existing Issue #358 tracks subsequent transitions; reconcile the repository snapshot at each new material work session instead of treating its old source SHA as current.
 
 Use `tools/check_pm_work_receipt.py` with a separate exact Base PM checkout. It verifies the selected commit and tracked executable bytes before calling the shared validator. It does not copy the shared implementation, update the game's adapter, mutate receipts or launch services.
 
