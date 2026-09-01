@@ -7,10 +7,14 @@ on:
       - 'docs/BASE_RULES_VERSION.md'
       - 'docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md'
       - 'docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json'
+      - 'docs/operations/receipts/2026-09-02-pm-execution-gate.json'
       - 'docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md'
       - 'docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md'
       - 'skills/PROJECT_BASE_ADAPTER.json'
       - 'tests/check_base_current_adaptation_work_contract.py'
+      - 'tools/check_pm_work_receipt.py'
+      - 'tests/test_pm_execution_gate.py'
+      - 'tests/test_pm_real_base_integration.py'
       - '.github/workflows/validate-current-base-adaptation-work-contract.yml'
   workflow_dispatch:
 
@@ -33,6 +37,14 @@ jobs:
           path: .base-current
           fetch-depth: 1
 
+      - name: Check out candidate Base PM validator
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: alsdmlals4-eng/Base
+          ref: f27fe4b993e8ffc24db235cda05d0782f6a1308c
+          path: .base-pm-source
+          fetch-depth: 1
+
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -42,3 +54,11 @@ jobs:
         env:
           BLACKSMITH_BASE_ROOT: ${{ github.workspace }}/.base-current
         run: python tests/check_base_current_adaptation_work_contract.py
+
+      - name: Test PM wrapper boundaries
+        run: python -m unittest discover -s tests -p 'test_pm_execution_gate.py' -v
+
+      - name: Test actual Base PM integration
+        env:
+          BS_BASE_PM_ROOT: ${{ github.workspace }}/.base-pm-source
+        run: python -m unittest discover -s tests -p 'test_pm_real_base_integration.py' -v
