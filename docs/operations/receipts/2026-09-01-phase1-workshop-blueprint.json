@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "receipt_id": "BLACKSMITH_PHASE1_WORKSHOP_BLUEPRINT_20260901",
+  "status": "MACHINE_VERIFIED_LOCAL_USER_SPEC_REVIEW_PENDING",
+  "work_level": "L2",
+  "source_head": "48db1c977260bbbb5540d9bd00f102f8064fde3a",
+  "scope": "Current-canon Phase 1 mobile workshop information architecture only; no gameplay rule, protected product path, external system, or runtime asset promotion.",
+  "authority_boundary": {
+    "current_product_owners_retained": [
+      "BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+      "BS-ENHANCE-20260830-38",
+      "BS-ENHANCE-20260901-40",
+      "BS-DAMAGE-20260826-28",
+      "BS-REPAIR-20260826-29",
+      "BS-REPAIR-20260826-31",
+      "BS-DAMAGE-20260826-30",
+      "BS-ART-20260825-03",
+      "BS-ART-20260826-04"
+    ],
+    "no_canon_owner_replacement": true,
+    "notion_or_google_sheet_changed": false,
+    "open_pr_196_taken_over": false
+  },
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "research_date_kst": "2026-09-01",
+    "entries": [
+      {
+        "source": "Blacksmith Master official Steam page",
+        "url": "https://store.steampowered.com/app/2292800/Blacksmith_Master/",
+        "disposition": "REJECT",
+        "applied_rule": "Do not turn the single-workpiece Phase 1 slice into workforce, mining, logistics, and shop-management scope."
+      },
+      {
+        "source": "Anvil Saga official Steam page",
+        "url": "https://store.steampowered.com/app/1587540/Anvil_Saga/",
+        "disposition": "ADAPT",
+        "applied_rule": "Use customer/world context only as a same-UID handoff and result return, without a faction-management loop."
+      },
+      {
+        "source": "Forge Ahead App Store page",
+        "url": "https://apps.apple.com/us/app/forge-ahead-be-a-blacksmith/id1485491919",
+        "disposition": "ADOPT",
+        "applied_rule": "Place immediate result feedback beside the single primary mobile action; reject idle/tap-revenue behavior."
+      },
+      {
+        "source": "Blacksmith of the Sand Kingdom official site",
+        "url": "https://www.kemco.jp/game/sandkingdom/en/index.html",
+        "disposition": "ADAPT",
+        "applied_rule": "Keep crafted equipment meaningful through actual use and result, without adopting party-RPG exploration."
+      },
+      {
+        "source": "While the Iron's Hot official page",
+        "url": "https://www.humblegames.com/games/whiletheironshot/",
+        "disposition": "ADAPT",
+        "applied_rule": "Let a workpiece's use have a readable world consequence, but do not add an exploration or puzzle loop."
+      },
+      {
+        "source": "Godot official UI containers documentation",
+        "url": "https://docs.godotengine.org/en/stable/tutorials/ui/gui_containers.html",
+        "disposition": "ADOPT",
+        "applied_rule": "Use MarginContainer, ScrollContainer, and VBoxContainer for portrait responsive layout ownership."
+      },
+      {
+        "source": "Godot official Theme class reference",
+        "url": "https://docs.godotengine.org/en/stable/classes/class_theme.html",
+        "disposition": "ADOPT",
+        "applied_rule": "Centralize repeated Control states in Theme roles rather than scatter visual overrides."
+      }
+    ]
+  },
+  "asset_disposition": {
+    "reuse": [
+      "anvil_oath_logo_ao02_v1.png",
+      "main_menu_dawn_background_v1.png",
+      "workshop_enhancement_background_v2.png",
+      "five transparent V2 equipment illustrations",
+      "workpiece_durability_state_atlas_v1.png when actual damage is present",
+      "customer_result_return_illustration_v1.png"
+    ],
+    "new_raster_asset_created": false,
+    "precision_workshop_background": "RETIRED_DO_NOT_RECREATE",
+    "catalyst_icon": "DEFERRED_TEXT_FIRST_DECISION40_BOUNDARY",
+    "generated_ui_screenshot_as_product_asset": false
+  },
+  "change_boundary": {
+    "protected_product_paths_changed": false,
+    "new_raster_asset_created": false,
+    "base_repository_changed": false,
+    "generated_adapter_changed": false
+  },
+  "rollback": "Revert the blueprint-and-contract-test commit. No historical document, runtime scene, image, catalog, save, or Base adoption lock is removed or changed.",
+  "evidence_ceiling": {
+    "repository_blueprint_contract": "MACHINE_VERIFIED_LOCAL",
+    "godot_runtime": "NOT_RUN",
+    "android_device": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human_player_experience": "NOT_RUN",
+    "release": "NOT_RUN"
+  },
+  "base_promotion_candidates": [],
+  "project_only_lessons": [
+    "A text-native blueprint may clarify an approved mobile flow without manufacturing a non-consumed visual asset.",
+    "A user request to make needed UI images does not undo an active no-raster boundary unless the exact consumer and visual decision are amended."
+  ]
+}
