@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "5560d8f0bdde9d900acc2bbbaf403ef3bdbc1b58",
+  "decision_ids": [
+    "BS-OPS-20260825-08",
+    "BS-OPS-20260828-36",
+    "BS-ART-20260826-04"
+  ],
+  "approved_paths": [
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "User-approved current-canon Workshop wireframe implementation in the active task conversation; repository external-label gate remains independently required.",
+  "approval_time": "2026-09-01T12:00:00+09:00",
+  "scope_summary": "Phase 1 Workshop only: derive read-only player-facing hierarchy summaries, create native parchment-compatible cards, compact the player-facing UID, and suppress only duplicate non-interactive enhancement labels while preserving direct action controls, game rules, save behavior, scenes, assets, and addons."
+}

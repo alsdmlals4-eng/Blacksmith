@@ -17,7 +17,7 @@
 - Use only native Godot Controls and StyleBoxFlat. Do not add assets, addons, a new inventory, a new background, SVG, or a generated screenshot.
 - The precision area remains native UX only. It uses 불의 심장 and 대지의 결정 as consumable resources, never a lineage choice.
 - Use the existing five transparent V2 equipment images, workshop background, durability atlas only when actual damage is present, and customer-result illustration at their existing consumers.
-- Godot runtime, Android device, accessibility, performance, human player experience, and release remain NOT_RUN until separately observed.
+- Godot runtime is observed only through the isolated Windows capture recorded in the Phase 1 receipt. Android device, accessibility, performance, human player experience, and release remain NOT_RUN until separately observed.
 
 ---
 
@@ -34,13 +34,13 @@
 - Consumes: VSWorkshopScreen.view_state(), VSItem.uid, existing equipment catalog display name, existing precision/repair/handoff fields.
 - Produces: view-state strings workpiece_summary, decision_summary, precision_summary, and destination_summary. These strings do not mutate a resolver, item, resources, save envelope, or campaign envelope.
 
-- [ ] **Step 1: Write the failing GUT tests**
+- [x] **Step 1: Write the failing GUT tests**
 
   Add tests that configure a real VSWorkshopScreen with the existing item/resource fixture and require the following fields:
 
   ~~~gdscript
   var state := screen.view_state()
-  assert_true(str(state["workpiece_summary"]).contains(str(item.uid)))
+  assert_true(str(state["workpiece_summary"]).contains("UID"))
   assert_true(str(state["decision_summary"]).contains("+%d" % int(item.enhancement_level + 1)))
   assert_true(str(state["destination_summary"]).contains("인계"))
 
@@ -50,7 +50,7 @@
   assert_true(str(screen.view_state()["precision_summary"]).contains("불의 심장"))
   ~~~
 
-- [ ] **Step 2: Run the focused test to verify RED**
+- [x] **Step 2: Run the focused test to verify RED**
 
   Run:
 
@@ -60,7 +60,7 @@
 
   Expected: failure because the four summary keys do not exist yet.
 
-- [ ] **Step 3: Write the minimal summary implementation**
+- [x] **Step 3: Write the minimal summary implementation**
 
   In VSWorkshopScreen.view_state(), derive:
 
@@ -71,7 +71,7 @@
 
   Use small private formatter functions named _workpiece_summary, _decision_summary, _precision_summary, and _destination_summary. They only receive already-produced state values or existing item metadata; they do not call action services.
 
-- [ ] **Step 4: Run focused verification**
+- [x] **Step 4: Run focused verification**
 
   Re-run the focused GUT file and:
 
@@ -81,7 +81,7 @@
 
   Expected: both pass; normal enhancement shows no precision summary, while +9 → +10 uses actual catalyst names.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
   ~~~powershell
   git add scripts/vertical_slice/ui/vs_workshop_screen.gd tests/gut/unit/vertical_slice/test_vs_workshop_screen.gd
@@ -101,7 +101,7 @@
 - Consumes: the four Task 1 summaries and the direct WorkshopLayout children that already own actions.
 - Produces: four sibling PanelContainer cards named WireframeWorkpieceCard, WireframeDecisionCard, WireframePrecisionCard, and WireframeDestinationCard. Existing buttons and OptionButtons remain direct WorkshopLayout children at their current paths.
 
-- [ ] **Step 1: Write the failing GUT tests**
+- [x] **Step 1: Write the failing GUT tests**
 
   Require all four cards after a configured screen is ready:
 
@@ -119,7 +119,7 @@
 
   Then set the real fixture item to level 9 and assert WireframePrecisionCard becomes visible and includes the target and required catalyst text.
 
-- [ ] **Step 2: Run the focused test to verify RED**
+- [x] **Step 2: Run the focused test to verify RED**
 
   Run the same focused GUT command. Expected: failure because the four PanelContainer cards do not exist.
 
@@ -134,9 +134,9 @@
   3. WireframePrecisionCard immediately before PrecisionTitleLabel.
   4. WireframeDestinationCard immediately before HandoffButton.
 
-  Add _refresh_wireframe_cards(state) after the existing control refresh. It sets each body Label from Task 1 summaries, hides WireframePrecisionCard when precision_visible is false, and never hides, reparents, disables, or rewires an existing direct action control.
+  Add _refresh_wireframe_cards(state) after the existing control refresh. It sets each body Label from Task 1 summaries, hides WireframePrecisionCard when precision_visible is false, may suppress only redundant non-interactive labels, and never hides, reparents, disables, or rewires an existing direct action control.
 
-- [ ] **Step 4: Run focused verification**
+- [x] **Step 4: Run focused verification**
 
   Re-run:
 
@@ -147,7 +147,7 @@
 
   Expected: cards exist, precision card changes only at a true 10-unit target, existing touch targets and direct NodePaths remain intact.
 
-- [ ] **Step 5: Refactor and commit**
+- [x] **Step 5: Refactor and commit**
 
   Use a single helper for card creation and a single helper for body-label lookup. Do not duplicate StyleBoxFlat configuration. Re-run the focused GUT test after the cleanup, then:
 
@@ -169,24 +169,30 @@
 - Consumes: Task 1 and Task 2 exact-head code and test results.
 - Produces: a receipt with separate machine/runtime/device/human ceilings and, if the exact Blacksmith runtime is successfully observed, a provenance-linked portrait capture.
 
-- [ ] **Step 1: Full machine verification**
+- [x] **Step 1: Full machine verification**
 
   Run the focused GUT suite, full GUT unit/integration suites, Python discovery, current worktree operating-contract validator, Godot headless editor import, and whitespace audit.
 
   ~~~powershell
   & 'C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -m unittest discover -s tests -p 'test_*.py'
-  & 'C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' 'C:\Users\user\Documents\GitHub\Base\tools\check_project_operating_contract.py' --project-root . --base-repository 'C:\Users\user\Documents\GitHub\Base' --check
+  & 'C:\Users\user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' 'C:\Users\user\Documents\GitHub\Base\tools\check_approved_project_operating_contract.py' --project-root . --base-repository 'C:\Users\user\Documents\GitHub\Base' --protected-base 5560d8f0bdde9d900acc2bbbaf403ef3bdbc1b58 --approval docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json --external-approval true --check
   godot --headless --editor --path . --quit
   git diff --check origin/main...HEAD
   ~~~
 
-- [ ] **Step 2: Runtime capture**
+  Completed locally: Phase 1 receipt contract PASS; Python discovery 333/333;
+  GUT 245/245 and JUnit failures/errors/skips 0; headless editor import exited
+  successfully. The generic validator correctly reports the one protected script
+  path; the approved validator passes only when its external-label input is
+  present. The real PR label remains a remote independent gate, not a local PASS.
 
-  Use the project-authoritative Godot live-editor path only after verifying the opened process has the Blacksmith project path. Observe a normal Workshop and +9 → +10 precision state. Capture the actual window only if both the process and current scene are Blacksmith. Do not touch another project’s editor or call an image-generation candidate a runtime capture.
+- [x] **Step 2: Runtime capture**
+
+  Use the project-authoritative Godot live-editor path only after verifying the opened process has the Blacksmith project path. Observe a normal Workshop and +9 → +10 precision state. Capture the actual window only if both the process and current scene are Blacksmith. Do not touch another project’s editor or call an image-generation candidate a runtime capture. Completed with an isolated profile and two local evidence captures; diagnostics were clean. This is runtime evidence, not Android or human-UX acceptance.
 
 - [ ] **Step 3: Receipt and remote readback**
 
-  Add the exact commit SHA, changed files, verification commands/results, capture provenance when present, and every unrun ceiling to the existing Phase 1 blueprint receipt. Push the existing PR #352 branch, re-read its headRefOid and CI at that exact SHA, and only mark the PR ready after machine verification plus a successful runtime observation or an explicit evidence-limited delivery decision.
+  Add the exact commit SHA, changed files, verification commands/results, capture provenance when present, and every unrun ceiling to the existing Phase 1 blueprint receipt. Push the existing PR #352 branch, re-read its headRefOid and CI at that exact SHA, and only mark the PR ready after machine verification plus a successful runtime observation or an explicit evidence-limited delivery decision. The protected-path manifest is prepared; remote CI additionally requires an independently applied `approved-protected-change` PR label and remains pending until that metadata exists.
 
 ## Plan self-review
 

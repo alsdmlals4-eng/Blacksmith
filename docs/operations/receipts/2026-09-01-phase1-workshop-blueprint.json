@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "receipt_id": "BLACKSMITH_PHASE1_WORKSHOP_BLUEPRINT_20260901",
-  "status": "MACHINE_VERIFIED_LOCAL_USER_SPEC_REVIEW_PENDING",
+  "status": "MACHINE_AND_RUNTIME_VERIFIED_LOCAL",
   "work_level": "L2",
   "source_head": "48db1c977260bbbb5540d9bd00f102f8064fde3a",
-  "scope": "Current-canon Phase 1 mobile workshop information architecture only; no gameplay rule, protected product path, external system, or runtime asset promotion.",
+  "scope": "Current-canon Phase 1 mobile workshop information architecture only; no gameplay rule, external system, or runtime asset promotion. The current-canon Workshop script receives read-only summaries and native cards only.",
   "authority_boundary": {
     "current_product_owners_retained": [
       "BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
@@ -84,15 +84,77 @@
     "generated_ui_screenshot_as_product_asset": false
   },
   "change_boundary": {
-    "protected_product_paths_changed": false,
+    "protected_product_paths_changed": true,
+    "changed_product_paths": [
+      "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+    ],
     "new_raster_asset_created": false,
     "base_repository_changed": false,
     "generated_adapter_changed": false
   },
-  "rollback": "Revert the blueprint-and-contract-test commit. No historical document, runtime scene, image, catalog, save, or Base adoption lock is removed or changed.",
+  "implementation_provenance": {
+    "implementation_head_before_receipt": "05d68e1d37a146ea1ef762cae7adbabbedc9fcf6",
+    "implementation_commit": "fix: tighten workshop wireframe readability",
+    "runtime_consumer": "res://scenes/vertical_slice/screens/vs_workshop_screen.tscn via scripts/vertical_slice/ui/vs_workshop_screen.gd",
+    "changed_source_files": [
+      "scripts/vertical_slice/ui/vs_workshop_screen.gd",
+      "tests/gut/unit/vertical_slice/test_vs_workshop_screen.gd"
+    ]
+  },
+  "runtime_capture": {
+    "status": "RUNTIME_VERIFIED_ISOLATED_WINDOWS_CAPTURE",
+    "capture_filename": "phase1-workshop-wireframe-decision-final.png",
+    "capture_sha256": "A848B2C9A190348EB1E3F37FEB3A6A2B1553F6A7CE93007C25FAF8644D20F764",
+    "capture_storage": "local runtime evidence only; not a product asset or repository-tracked raster",
+    "runtime_scene": "res://scenes/vertical_slice/main_menu.tscn",
+    "runtime_surface": "isolated first-forge save → Blacksmith Workshop current-item state",
+    "editor_project_path": "C:/Users/user/Documents/GitHub/Ninza/Blacksmith-worktrees/codex-phase1-blueprint-20260901/",
+    "test_profile": "isolated APPDATA and LOCALAPPDATA under artifacts/runtime/isolated-profile; no user save was read or written",
+    "observation": {
+      "workpiece_card_visible": true,
+      "decision_card_visible": true,
+      "destination_card_visible": true,
+      "existing_enhancement_button_visible": true,
+      "precision_runtime_observed": true,
+      "image_analysis_low_detail": false,
+      "image_analysis_possible_clipping": false,
+      "runtime_diagnostics_clean": true
+    }
+  },
+  "precision_capture": {
+    "status": "RUNTIME_VERIFIED_ISOLATED_WINDOWS_CAPTURE",
+    "capture_filename": "phase1-workshop-wireframe-precision-final.png",
+    "capture_sha256": "3102B355CAA52231F05CE129AB4182F7EEE0ACCE93FAF9EEF0F16A3E138223B3",
+    "capture_storage": "local runtime evidence only; not a product asset or repository-tracked raster",
+    "runtime_scene": "res://scenes/vertical_slice/main_menu.tscn",
+    "runtime_surface": "isolated first-forge save → nine ordinary successes → +9 to +10 precision entry",
+    "source_level": 9,
+    "target_level": 10,
+    "observed_catalysts": [
+      "불의 심장",
+      "대지의 결정"
+    ],
+    "observation": {
+      "precision_card_visible": true,
+      "precision_target_visible": true,
+      "tag_action_required_before_attempt": true,
+      "tag_add_action_visible": true,
+      "ordinary_enhancement_button_disabled_until_tag_action": true,
+      "image_analysis_low_detail": false,
+      "image_analysis_possible_clipping": false,
+      "runtime_diagnostics_clean": true
+    }
+  },
+  "protected_change_gate": {
+    "approval_manifest": "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json",
+    "manifest_schema_and_exact_path_mapping": "MACHINE_VERIFIED_WITH_SIMULATED_EXTERNAL_LABEL",
+    "external_github_label": "PENDING_APPROVED_PROTECTED_CHANGE",
+    "why_pending": "The local manifest records the user's in-scope authorization, but the Base validator independently requires the PR's approved-protected-change label. No agent self-applies that external approval metadata."
+  },
+  "rollback": "Revert the native-card implementation and this receipt update. No historical document, runtime scene, image catalog, user save, or Base adoption lock is removed or changed.",
   "evidence_ceiling": {
     "repository_blueprint_contract": "MACHINE_VERIFIED_LOCAL",
-    "godot_runtime": "NOT_RUN",
+    "godot_runtime": "RUNTIME_VERIFIED_ISOLATED_WINDOWS_CAPTURE",
     "android_device": "NOT_RUN",
     "accessibility": "NOT_RUN",
     "performance": "NOT_RUN",
@@ -102,6 +164,7 @@
   "base_promotion_candidates": [],
   "project_only_lessons": [
     "A text-native blueprint may clarify an approved mobile flow without manufacturing a non-consumed visual asset.",
-    "A user request to make needed UI images does not undo an active no-raster boundary unless the exact consumer and visual decision are amended."
+    "A user request to make needed UI images does not undo an active no-raster boundary unless the exact consumer and visual decision are amended.",
+    "A runtime capture can expose mobile hierarchy failures that control-tree and unit checks cannot: use compact player-facing UID text and avoid duplicating a card summary in adjacent non-interactive labels."
   ]
 }

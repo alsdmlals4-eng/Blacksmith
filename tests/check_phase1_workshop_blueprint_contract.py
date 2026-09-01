@@ -45,11 +45,25 @@ def main() -> None:
     )
     payload = json.loads(RECEIPT.read_text(encoding="utf-8"))
     assert payload["receipt_id"] == "BLACKSMITH_PHASE1_WORKSHOP_BLUEPRINT_20260901"
-    assert payload["status"] == "MACHINE_VERIFIED_LOCAL_USER_SPEC_REVIEW_PENDING"
-    assert payload["change_boundary"]["protected_product_paths_changed"] is False
+    assert payload["status"] == "MACHINE_AND_RUNTIME_VERIFIED_LOCAL"
+    assert payload["change_boundary"]["protected_product_paths_changed"] is True
+    assert payload["change_boundary"]["changed_product_paths"] == [
+        "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+    ]
     assert payload["change_boundary"]["new_raster_asset_created"] is False
-    assert payload["evidence_ceiling"]["godot_runtime"] == "NOT_RUN"
+    assert payload["evidence_ceiling"]["godot_runtime"] == "RUNTIME_VERIFIED_ISOLATED_WINDOWS_CAPTURE"
     assert payload["evidence_ceiling"]["human_player_experience"] == "NOT_RUN"
+    runtime_capture = payload["runtime_capture"]
+    assert runtime_capture["status"] == "RUNTIME_VERIFIED_ISOLATED_WINDOWS_CAPTURE"
+    assert runtime_capture["capture_filename"] == "phase1-workshop-wireframe-decision-final.png"
+    assert runtime_capture["capture_sha256"] == "A848B2C9A190348EB1E3F37FEB3A6A2B1553F6A7CE93007C25FAF8644D20F764"
+    precision_capture = payload["precision_capture"]
+    assert precision_capture["status"] == "RUNTIME_VERIFIED_ISOLATED_WINDOWS_CAPTURE"
+    assert precision_capture["capture_filename"] == "phase1-workshop-wireframe-precision-final.png"
+    assert precision_capture["capture_sha256"] == "3102B355CAA52231F05CE129AB4182F7EEE0ACCE93FAF9EEF0F16A3E138223B3"
+    assert precision_capture["target_level"] == 10
+    assert precision_capture["source_level"] == 9
+    assert precision_capture["observed_catalysts"] == ["불의 심장", "대지의 결정"]
     print("phase1 workshop blueprint contract: PASS")
 
 
