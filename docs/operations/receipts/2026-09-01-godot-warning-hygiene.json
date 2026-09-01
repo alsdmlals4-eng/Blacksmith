@@ -5,6 +5,15 @@
   "work_level": "L1",
   "source_head": "ef33a9974597e99a4fe609bda5a642d5b2030372",
   "scope": "Current-canon correction of one persisted Script UID mismatch and seven reproduced GDScript warning sources. No gameplay rule, save schema, art direction, runtime asset, or platform-surface expansion.",
+  "image_execution_policy": {
+    "authorization": "USER_PREAUTHORIZED_FOR_REAL_RUNTIME_CONSUMERS",
+    "separate_pre_generation_approval_required": false,
+    "actual_game_consumer_required": true,
+    "visual_requirement_before_generation_required": true,
+    "provenance_and_catalog_required": true,
+    "post_generation_direction_or_runtime_promotion": "CURRENT_CANON_GATE_REMAINS_SEPARATE_UNLESS_USER_EXPLICITLY_LOCKS_THE_RESULT",
+    "application_note": "The user authorized making images judged necessary without a separate production approval. This warning-hygiene correction has no runtime image-consumer gap, so no raster asset is created merely to exercise the authorization."
+  },
   "benchmark_preflight_receipt": {
     "state": "PASS",
     "research_date_kst": "2026-09-01",

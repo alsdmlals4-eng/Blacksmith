@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 APP_SCENE = ROOT / "scenes" / "vertical_slice" / "vertical_slice_app.tscn"
 APP_SCRIPT_UID = ROOT / "scripts" / "vertical_slice" / "ui" / "vs_app.gd.uid"
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
+RECEIPT = ROOT / "docs" / "operations" / "receipts" / "2026-09-01-godot-warning-hygiene.json"
 PROTECTED_BASELINE = "48c73c37f5d8b7f3a436a51aeb96d78febd0fe02"
 APPROVED_PATHS = (
     "scenes/vertical_slice/vertical_slice_app.tscn",
@@ -57,6 +58,17 @@ def _script_uid_from_scene(scene_path: Path, script_path: str) -> str:
 
 
 class GodotWarningHygieneTests(unittest.TestCase):
+    def test_receipt_records_user_preapproved_consumer_bound_image_execution(self) -> None:
+        receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
+
+        self.assertEqual(
+            "USER_PREAUTHORIZED_FOR_REAL_RUNTIME_CONSUMERS",
+            receipt["image_execution_policy"]["authorization"],
+        )
+        self.assertTrue(receipt["image_execution_policy"]["separate_pre_generation_approval_required"] is False)
+        self.assertTrue(receipt["image_execution_policy"]["actual_game_consumer_required"])
+        self.assertTrue(receipt["image_execution_policy"]["provenance_and_catalog_required"])
+
     def test_one_shot_protected_change_approval_covers_exact_warning_hygiene_paths(self) -> None:
         approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
 
