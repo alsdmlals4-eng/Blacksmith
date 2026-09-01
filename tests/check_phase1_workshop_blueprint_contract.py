@@ -64,6 +64,16 @@ def main() -> None:
     assert precision_capture["target_level"] == 10
     assert precision_capture["source_level"] == 9
     assert precision_capture["observed_catalysts"] == ["불의 심장", "대지의 결정"]
+    protected_gate = payload["protected_change_gate"]
+    assert (
+        protected_gate["external_github_label"]
+        == "USER_DELEGATED_APPROVED_PROTECTED_CHANGE_APPLIED"
+    )
+    merged_pr = protected_gate["merged_pr"]
+    assert merged_pr["number"] == 352
+    assert merged_pr["merge_commit"] == "48c73c37f5d8b7f3a436a51aeb96d78febd0fe02"
+    assert merged_pr["head_commit"] == "c258c198a7f7008fbe9ed15090b39c815688aa65"
+    assert merged_pr["required_checks"] == "ALL_GREEN_EXACT_HEAD"
     print("phase1 workshop blueprint contract: PASS")
 
 
