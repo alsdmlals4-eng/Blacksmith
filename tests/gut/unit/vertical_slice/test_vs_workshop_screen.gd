@@ -412,7 +412,10 @@ func test_workshop_exposes_read_only_phase1_wireframe_summaries() -> void:
 	assert_true(normal_state.has("decision_summary"))
 	assert_true(normal_state.has("precision_summary"))
 	assert_true(normal_state.has("destination_summary"))
-	assert_true(str(normal_state.get("workpiece_summary", "")).contains(str(item.uid)))
+	var full_uid := str(item.uid)
+	var compact_uid := "%s…%s" % [full_uid.left(12), full_uid.right(4)]
+	assert_true(str(normal_state.get("workpiece_summary", "")).contains(compact_uid))
+	assert_false(str(normal_state.get("workpiece_summary", "")).contains(full_uid))
 	assert_true(str(normal_state.get("decision_summary", "")).contains("+%d" % int(item.enhancement_level + 1)))
 	assert_true(str(normal_state.get("destination_summary", "")).contains("인계"))
 	assert_eq(str(normal_state.get("precision_summary", "")), "")
@@ -447,6 +450,18 @@ func test_workshop_builds_native_phase1_wireframe_cards_without_reparenting_acti
 	assert_not_null(decision_card)
 	assert_not_null(precision_card)
 	assert_not_null(destination_card)
+	var enhancement_title := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementTitleLabel") as Label
+	var enhancement_quote := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementQuoteLabel") as Label
+	var enhancement_outcomes := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementOutcomesLabel") as Label
+	assert_not_null(enhancement_title)
+	assert_not_null(enhancement_quote)
+	assert_not_null(enhancement_outcomes)
+	if enhancement_title != null:
+		assert_false(enhancement_title.visible)
+	if enhancement_quote != null:
+		assert_false(enhancement_quote.visible)
+	if enhancement_outcomes != null:
+		assert_false(enhancement_outcomes.visible)
 	if precision_card != null:
 		assert_false(precision_card.visible)
 	assert_true((screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton") as Button).is_visible_in_tree())

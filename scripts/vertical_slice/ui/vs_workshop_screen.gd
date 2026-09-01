@@ -292,11 +292,17 @@ func _workpiece_summary(equipment: Dictionary, state: Dictionary) -> String:
 	var tag_summary := _precision_tag_entries_summary(state.get("precision_tag_entries", []))
 	return "%s · UID %s\n강화 +%d\n%s\n상태: %s" % [
 		equipment_name,
-		uid,
+		_compact_workpiece_uid(uid),
 		int(_item.enhancement_level) if _item != null else 0,
 		tag_summary,
 		_player_facing_durability_state(str(state.get("durability_state", "UNAVAILABLE"))),
 	]
+
+
+func _compact_workpiece_uid(uid: String) -> String:
+	if uid.length() <= 16:
+		return uid
+	return "%s…%s" % [uid.left(12), uid.right(4)]
 
 
 func _decision_summary(state: Dictionary) -> String:
@@ -1152,10 +1158,19 @@ func _wireframe_card_style() -> StyleBoxFlat:
 
 
 func _refresh_wireframe_cards(state: Dictionary) -> void:
-	_set_wireframe_card_state("WireframeWorkpieceCard", str(state.get("workpiece_summary", "")), bool(state.get("has_item", false)))
-	_set_wireframe_card_state("WireframeDecisionCard", str(state.get("decision_summary", "")), bool(state.get("has_item", false)))
+	var has_item := bool(state.get("has_item", false))
+	_set_wireframe_card_state("WireframeWorkpieceCard", str(state.get("workpiece_summary", "")), has_item)
+	_set_wireframe_card_state("WireframeDecisionCard", str(state.get("decision_summary", "")), has_item)
 	_set_wireframe_card_state("WireframePrecisionCard", str(state.get("precision_summary", "")), bool(state.get("precision_visible", false)))
-	_set_wireframe_card_state("WireframeDestinationCard", str(state.get("destination_summary", "")), bool(state.get("has_item", false)))
+	_set_wireframe_card_state("WireframeDestinationCard", str(state.get("destination_summary", "")), has_item)
+	_set_decision_detail_labels_visible(not has_item)
+
+
+func _set_decision_detail_labels_visible(is_visible: bool) -> void:
+	for node_name in ["EnhancementTitleLabel", "EnhancementQuoteLabel", "EnhancementOutcomesLabel"]:
+		var label := get_node_or_null("WorkshopScroll/WorkshopLayout/%s" % node_name) as Label
+		if label != null:
+			label.visible = is_visible
 
 
 func _set_wireframe_card_state(card_name: String, body_text: String, card_visible: bool) -> void:
