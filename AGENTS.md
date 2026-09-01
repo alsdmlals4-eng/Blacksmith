@@ -8,24 +8,25 @@ Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-202
 
 1. 사용자의 최신 지시와 승인
 2. `AGENTS.md`
-3. `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md` — fresh-read cold-start locator
-4. `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
-5. `docs/decisions/BS-DAMAGE-20260826-30_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY.md` + `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
-6. `docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
-7. `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`
-8. `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — Decision28 exact curve + Decision32 failure-resolution/display owner
-9. `docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md` + `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
-10. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
-11. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
-12. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 최신 override와 충돌하는 상단 역사 snapshot은 current authority가 아님
-13. 2026-08-20/24 분야별 Canon·current registry — Decisions25~32/Art03~04와 같은 필드가 충돌하면 역사·부분대체 evidence
-14. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 implementation drift가 최신 승인 기획을 덮어쓰지 않음
-15. `GITHUB_HUMAN_FACING_GDD_OWNER`: `docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md` + `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; `PROJECT_AI_PRODUCTION_SPEC.md`는 기술·정본 추적용이며 repository Visual/Flow·비교표·에셋/Reference와 연결한다.
-16. `docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md` + `docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json` — one-time Notion structure/work-product migration and non-runtime historical visual archive; current owner가 아님
-17. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
-18. R2/R3 Game Bible·과거 PoC·구형 data/runtime
-19. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
-20. 외부 벤치마크·과거 대화·AI 추론
+3. `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md` — current Base observation, project-adapted work-mode, L1+ receipt, legacy hygiene, and validation routing; Base current `main`은 reference이며 `skills/PROJECT_BASE_ADAPTER.json`의 adopted release lock을 자동 교체하지 않음
+4. `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md` — fresh-read cold-start locator
+5. `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
+6. `docs/decisions/BS-DAMAGE-20260826-30_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY.md` + `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
+7. `docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
+8. `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`
+9. `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — Decision28 exact curve + Decision32 failure-resolution/display owner
+10. `docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md` + `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
+11. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
+12. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
+13. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 최신 override와 충돌하는 상단 역사 snapshot은 current authority가 아님
+14. 2026-08-20/24 분야별 Canon·current registry — Decisions25~32/Art03~04와 같은 필드가 충돌하면 역사·부분대체 evidence
+15. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 implementation drift가 최신 승인 기획을 덮어쓰지 않음
+16. `GITHUB_HUMAN_FACING_GDD_OWNER`: `docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md` + `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; `PROJECT_AI_PRODUCTION_SPEC.md`는 기술·정본 추적용이며 repository Visual/Flow·비교표·에셋/Reference와 연결한다.
+17. `docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md` + `docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json` — one-time Notion structure/work-product migration and non-runtime historical visual archive; current owner가 아님
+18. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
+19. R2/R3 Game Bible·과거 PoC·구형 data/runtime
+20. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
+21. 외부 벤치마크·과거 대화·AI 추론
 
 현재 workspace routing (Decision `BS-OPS-20260828-35`):
 
