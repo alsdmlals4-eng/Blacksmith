@@ -8,8 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-CURRENT_PRODUCT_MERGE = "48c73c37f5d8b7f3a436a51aeb96d78febd0fe02"
-PHASE1_WIREFRAME_PROTECTED_BASE = "5560d8f0bdde9d900acc2bbbaf403ef3bdbc1b58"
+CURRENT_PRODUCT_MERGE = "1686f8f164cba2abf0678d7b768f00699a3414dd"
 CANONICAL_ADAPTER = ROOT / "skills" / "PROJECT_BASE_ADAPTER.json"
 COMPATIBILITY_VIEWS = (
     (ROOT / "skills" / "BASE_V9_ADAPTER.json", "canonical_source_sha256"),
@@ -32,17 +31,11 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
 
 
 class ProductApprovalPostmergeClosureTests(unittest.TestCase):
-    def test_postmerge_contract_retires_the_phase1_wireframe_one_shot_approval(self) -> None:
+    def test_postmerge_contract_retires_the_consumed_warning_hygiene_approval(self) -> None:
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
         self.assertEqual(CURRENT_PRODUCT_MERGE, adapter["protected_baseline"]["commit"])
-        if not APPROVAL.exists():
-            return
-
-        active_approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
-        self.assertEqual("PROJECT_PROTECTED_CHANGE_APPROVAL", active_approval["artifact_role"])
-        self.assertEqual("APPROVED", active_approval["status"])
-        self.assertNotEqual(PHASE1_WIREFRAME_PROTECTED_BASE, active_approval["protected_base_commit"])
+        self.assertFalse(APPROVAL.exists())
 
     def test_generated_compatibility_views_track_the_rebased_canonical_adapter(self) -> None:
         canonical_sha = raw_sha256(CANONICAL_ADAPTER)

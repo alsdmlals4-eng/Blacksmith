@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "receipt_id": "BLACKSMITH_GODOT_WARNING_HYGIENE_20260901",
-  "status": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
+  "status": "MACHINE_VERIFIED_REMOTE_MERGED_MAIN_POSTMERGE_CLOSURE",
   "work_level": "L1",
   "source_head": "ef33a9974597e99a4fe609bda5a642d5b2030372",
   "scope": "Current-canon correction of one persisted Script UID mismatch and seven reproduced GDScript warning sources. No gameplay rule, save schema, art direction, runtime asset, or platform-surface expansion.",
@@ -13,6 +13,15 @@
     "provenance_and_catalog_required": true,
     "post_generation_direction_or_runtime_promotion": "CURRENT_CANON_GATE_REMAINS_SEPARATE_UNLESS_USER_EXPLICITLY_LOCKS_THE_RESULT",
     "application_note": "The user authorized making images judged necessary without a separate production approval. This warning-hygiene correction has no runtime image-consumer gap, so no raster asset is created merely to exercise the authorization."
+  },
+  "remote_delivery": {
+    "pull_request": 354,
+    "source_head": "83238c0f516c99c5d21c9a8011764804704c3658",
+    "merge_commit": "1686f8f164cba2abf0678d7b768f00699a3414dd",
+    "checks": "ALL_GREEN_EXACT_HEAD",
+    "main_readback": "PASS",
+    "one_shot_approval_status": "RETIRED",
+    "adapter_baseline_advanced_to": "1686f8f164cba2abf0678d7b768f00699a3414dd"
   },
   "benchmark_preflight_receipt": {
     "state": "PASS",
