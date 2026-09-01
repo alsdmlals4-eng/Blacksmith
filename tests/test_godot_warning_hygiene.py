@@ -11,15 +11,8 @@ APP_SCENE = ROOT / "scenes" / "vertical_slice" / "vertical_slice_app.tscn"
 APP_SCRIPT_UID = ROOT / "scripts" / "vertical_slice" / "ui" / "vs_app.gd.uid"
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 RECEIPT = ROOT / "docs" / "operations" / "receipts" / "2026-09-01-godot-warning-hygiene.json"
-PROTECTED_BASELINE = "48c73c37f5d8b7f3a436a51aeb96d78febd0fe02"
-APPROVED_PATHS = (
-    "scenes/vertical_slice/vertical_slice_app.tscn",
-    "scripts/vertical_slice/resolvers/vs_repair_resolver.gd",
-    "scripts/vertical_slice/ui/vs_app.gd",
-    "scripts/vertical_slice/ui/vs_customer_result_screen.gd",
-    "scripts/vertical_slice/ui/vs_main_menu.gd",
-    "scripts/vertical_slice/ui/vs_workshop_screen.gd",
-)
+WARNING_HYGIENE_SOURCE_HEAD = "83238c0f516c99c5d21c9a8011764804704c3658"
+WARNING_HYGIENE_MERGE_COMMIT = "1686f8f164cba2abf0678d7b768f00699a3414dd"
 
 WARNING_SOURCE_FRAGMENTS: dict[Path, tuple[str, ...]] = {
     ROOT / "scripts" / "vertical_slice" / "ui" / "vs_customer_result_screen.gd": (
@@ -69,13 +62,14 @@ class GodotWarningHygieneTests(unittest.TestCase):
         self.assertTrue(receipt["image_execution_policy"]["actual_game_consumer_required"])
         self.assertTrue(receipt["image_execution_policy"]["provenance_and_catalog_required"])
 
-    def test_one_shot_protected_change_approval_covers_exact_warning_hygiene_paths(self) -> None:
-        approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
+    def test_warning_hygiene_remote_delivery_is_recorded_and_one_shot_approval_is_retired(self) -> None:
+        receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
 
-        self.assertEqual("PROJECT_PROTECTED_CHANGE_APPROVAL", approval["artifact_role"])
-        self.assertEqual("APPROVED", approval["status"])
-        self.assertEqual(PROTECTED_BASELINE, approval["protected_base_commit"])
-        self.assertEqual(list(APPROVED_PATHS), approval["approved_paths"])
+        self.assertEqual(WARNING_HYGIENE_SOURCE_HEAD, receipt["remote_delivery"]["source_head"])
+        self.assertEqual(WARNING_HYGIENE_MERGE_COMMIT, receipt["remote_delivery"]["merge_commit"])
+        self.assertEqual("ALL_GREEN_EXACT_HEAD", receipt["remote_delivery"]["checks"])
+        self.assertEqual("RETIRED", receipt["remote_delivery"]["one_shot_approval_status"])
+        self.assertFalse(APPROVAL.exists())
 
     def test_vertical_slice_app_script_uid_matches_the_script_sidecar(self) -> None:
         self.assertEqual(
