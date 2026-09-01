@@ -1,0 +1,77 @@
+{
+  "work_level": "L1",
+  "receipt_scope": "Blacksmith PM execution-gate integration only; not the whole game backlog",
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [{
+      "source_and_evidence": "Base PR #826 f27fe4b993e8ffc24db235cda05d0782f6a1308c; Blacksmith main 511e6047607f2f9bb63e75fa9df019665b922e24 and current adaptation owner",
+      "observed_pattern": "Current project entry checks a historical benchmark/hygiene receipt but no PM tasks or progress.",
+      "project_fit_and_difference": "Reuse the Base validator through a separately pinned read-only wrapper; preserve the game release lock and existing historical validation.",
+      "disposition": "ADAPT"
+    }]
+  },
+  "context_configuration_hygiene": {
+    "scope": "Blacksmith PM starter, operational receipt, tests and existing contract workflow",
+    "inventory": [{
+      "path": "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
+      "classification": "ACTIVE_OWNER",
+      "owner_or_provenance": "Blacksmith AGENTS bootstrap at 511e6047607f2f9bb63e75fa9df019665b922e24",
+      "references_and_consumers": "Project startup and tests/check_base_current_adaptation_work_contract.py"
+    }, {
+      "path": "docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json",
+      "classification": "COMPATIBILITY",
+      "owner_or_provenance": "Previous bounded Base adoption receipt",
+      "references_and_consumers": "Historical validation preserved; not an authorization for the current PM work"
+    }]
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "https://github.com/alsdmlals4-eng/Blacksmith/issues/197",
+    "source_main_sha": "511e6047607f2f9bb63e75fa9df019665b922e24",
+    "work_item_refs": ["BS-PM-01", "BS-PM-02", "BS-PM-03", "BS-PM-04"],
+    "active_work_item_ref": "BS-PM-02",
+    "next_action": "Finish the approved PM integration and reconcile the Base candidate before activation or merge.",
+    "work_items": [
+      {
+        "work_item_id": "BS-PM-01", "title": "현재 작업 진입과 기존 잠금 확인", "status": "DONE",
+        "canon_owner": "AGENTS.md",
+        "actual_consumers": ["docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md"],
+        "depends_on": [], "acceptance_criteria": ["AC-01"], "required_evidence": ["E0_CONTRACT"],
+        "checklist": [{"id": "AC-01", "text": "AGENTS, current owner, existing workflow, release lock and protected PR were fresh-read.", "status": "PASS", "evidence": ["https://github.com/alsdmlals4-eng/Blacksmith/issues/197", "Blacksmith source 511e6047607f2f9bb63e75fa9df019665b922e24"]}],
+        "verification": [{"level": "E0_CONTRACT", "status": "PASS", "evidence": ["Issue #197 approval, protected paths and exact source inventory"]}],
+        "verified_head_sha": "511e6047607f2f9bb63e75fa9df019665b922e24",
+        "repository_readback": "PASS", "readback_evidence": ["AGENTS → current adaptation owner → existing workflow at exact source"],
+        "rollback": "Read-only audit; no product or adopted release change to revert.",
+        "must_fix_remaining": 0, "blocked_unverified_remaining": 0, "user_decision_required_remaining": 0,
+        "next_action": "Historical completed audit; implementation is BS-PM-02."
+      },
+      {
+        "work_item_id": "BS-PM-02", "title": "PM 검사기·실제 시작 경로 연결", "status": "IN_PROGRESS",
+        "canon_owner": "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
+        "actual_consumers": ["tools/check_pm_work_receipt.py", ".github/workflows/validate-current-base-adaptation-work-contract.yml"],
+        "depends_on": ["BS-PM-01"], "acceptance_criteria": ["AC-02"], "required_evidence": ["E2_TEST"],
+        "checklist": [{"id": "AC-02", "text": "Pinned wrapper, real Base integration tests and startup readback succeed without touching the game release lock.", "status": "IN_PROGRESS"}],
+        "verification": [{"level": "E2_TEST", "status": "NOT_RUN", "evidence": []}],
+        "next_action": "Run candidate integration CI; require a merged and reviewed Base tooling revision before production adoption."
+      },
+      {
+        "work_item_id": "BS-PM-03", "title": "독립 검토·회귀 교정", "status": "BACKLOG",
+        "canon_owner": "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
+        "actual_consumers": ["Current-task PR review and required checks"],
+        "depends_on": ["BS-PM-02"], "acceptance_criteria": ["AC-03"], "required_evidence": ["E2_TEST"],
+        "checklist": [{"id": "AC-03", "text": "Exact-head independent review, valid finding correction and required CI pass.", "status": "NOT_RUN"}],
+        "verification": [{"level": "E2_TEST", "status": "NOT_RUN", "evidence": []}],
+        "next_action": "Review the completed integration, not the old candidate."
+      },
+      {
+        "work_item_id": "BS-PM-04", "title": "정상 병합·병합 후 정본 확인", "status": "BACKLOG",
+        "canon_owner": "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
+        "actual_consumers": ["Project main and the existing Goal issue"],
+        "depends_on": ["BS-PM-03"], "acceptance_criteria": ["AC-04"], "required_evidence": ["E0_CONTRACT"],
+        "checklist": [{"id": "AC-04", "text": "Normal protected squash merge and exact-main source, receipt, tests and remaining-work readback.", "status": "NOT_RUN"}],
+        "verification": [{"level": "E0_CONTRACT", "status": "NOT_RUN", "evidence": []}],
+        "next_action": "Merge only after current-task gates, then record actual readback; do not pre-count completion."
+      }
+    ],
+    "progress_summary": {"completed_items": 1, "applicable_items": 4, "display": "1 / 4"}
+  }
+}
