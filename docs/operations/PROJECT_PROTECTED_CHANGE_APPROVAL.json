@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "48c73c37f5d8b7f3a436a51aeb96d78febd0fe02",
+  "decision_ids": [
+    "BS-OPS-20260825-08",
+    "BS-OPS-20260828-36"
+  ],
+  "approved_paths": [
+    "scenes/vertical_slice/vertical_slice_app.tscn",
+    "scripts/vertical_slice/resolvers/vs_repair_resolver.gd",
+    "scripts/vertical_slice/ui/vs_app.gd",
+    "scripts/vertical_slice/ui/vs_customer_result_screen.gd",
+    "scripts/vertical_slice/ui/vs_main_menu.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+  ],
+  "approval_source": "USER_EXPLICIT_DIRECT_PROGRESS_20260901_AND_RECOMMENDED_GODOT_WARNING_HYGIENE_SCOPE",
+  "approval_time": "2026-09-01T23:36:18+09:00",
+  "scope_summary": "Exact persisted Script UID repair and existing GDScript warning-source hygiene only. No new product scope, gameplay rule, save schema, UI-flow change, image generation, asset promotion, addon, project setting, Base adoption, PR #196 action, or release claim. This approval is one-shot and must be retired after exact-head CI, merge readback, and protected-baseline advancement."
+}

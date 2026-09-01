@@ -142,17 +142,17 @@ func _ensure_result_illustration() -> void:
 		move_child(veil, 1)
 
 
-func _set_result_illustration_visible(visible: bool) -> void:
+func _set_result_illustration_visible(should_show: bool) -> void:
 	_ensure_result_illustration()
 	var illustration := get_node_or_null("CustomerResultEventIllustration") as TextureRect
 	var veil := get_node_or_null("CustomerResultReadabilityVeil") as ColorRect
 	var fallback := get_node_or_null("ResultBackground") as ColorRect
 	if illustration != null:
-		illustration.visible = visible
+		illustration.visible = should_show
 	if veil != null:
-		veil.visible = visible
+		veil.visible = should_show
 	if fallback != null:
-		fallback.visible = not visible
+		fallback.visible = not should_show
 
 
 func _ensure_result_actions() -> void:

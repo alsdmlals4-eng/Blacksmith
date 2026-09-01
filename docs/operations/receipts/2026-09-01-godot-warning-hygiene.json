@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "receipt_id": "BLACKSMITH_GODOT_WARNING_HYGIENE_20260901",
+  "status": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
+  "work_level": "L1",
+  "source_head": "ef33a9974597e99a4fe609bda5a642d5b2030372",
+  "scope": "Current-canon correction of one persisted Script UID mismatch and seven reproduced GDScript warning sources. No gameplay rule, save schema, art direction, runtime asset, or platform-surface expansion.",
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "research_date_kst": "2026-09-01",
+    "entries": [
+      {
+        "source": "Godot official GDScript warning system documentation",
+        "url": "https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/warning_system.html",
+        "disposition": "ADOPT",
+        "applied_rule": "Correct concrete warning causes at their source instead of globally suppressing warnings or escalating them to errors before the existing sources are clean."
+      },
+      {
+        "source": "Godot official ResourceUID class reference",
+        "url": "https://docs.godotengine.org/en/stable/classes/class_resourceuid.html",
+        "disposition": "ADOPT",
+        "applied_rule": "Rebind the app-root script through the Godot editor so the scene serializes the existing script sidecar UID and no longer falls back to its text path."
+      },
+      {
+        "source": "Blacksmith Godot 4.7.1 CI and GUT workflow",
+        "url": ".github/workflows/godot-validation.yml and .github/workflows/gut-validation.yml",
+        "disposition": "ADAPT",
+        "applied_rule": "Use the repository's pinned Godot 4.7.1 and read-only GUT command shape, but keep this correction's temporary artifacts isolated and untracked."
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "UID and warning-source correction only; unrelated worktrees, current assets, release records, and PR #196 remain untouched.",
+    "inventory": [
+      {
+        "path": "AGENTS.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current authority, protected product-path policy, GUT/HiGodot rules, and image-consumer gate.",
+        "references_and_consumers": "All Blacksmith work sessions and repository route checks."
+      },
+      {
+        "path": "docs/testing/HIGODOT_GUT_AUTHORITY_POLICY.json",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current serialized-scene and GUT authority boundary.",
+        "references_and_consumers": "Task2 scene-authoring and GUT non-mutation contracts."
+      },
+      {
+        "path": "scenes/vertical_slice/vertical_slice_app.tscn",
+        "classification": "ACTIVE_RUNTIME_CONSUMER",
+        "owner_or_provenance": "Current app-shell scene, repaired through the Godot editor only.",
+        "references_and_consumers": "Vertical-slice app router, UI scene composition, GUT, and Godot import."
+      },
+      {
+        "path": "scripts/vertical_slice/ui/vs_app.gd.uid",
+        "classification": "ACTIVE_RUNTIME_METADATA",
+        "owner_or_provenance": "Current editor-generated Script UID sidecar.",
+        "references_and_consumers": "App-shell Script ExtResource serialization."
+      },
+      {
+        "path": "assets/ui/",
+        "classification": "ACTIVE_ASSET_LIBRARY",
+        "owner_or_provenance": "Existing approved/runtime-consumed Illustrated Workshop Book assets.",
+        "references_and_consumers": "Main Menu, Workshop, first forge, and customer-result surfaces; not modified because this correction has no image consumer gap."
+      },
+      {
+        "path": "PR #196",
+        "classification": "OPEN_DRAFT_READ_ONLY",
+        "owner_or_provenance": "Pre-existing protected draft.",
+        "references_and_consumers": "GitHub open-PR boundary; not changed or adopted."
+      }
+    ],
+    "deletion_proposed": false,
+    "removal_policy": "No source, asset, worktree, user save, or historical record is deleted by this corrective change. Task-only temporary artifacts are removed only after remote merge readback."
+  },
+  "root_cause": {
+    "invalid_uid": {
+      "scene": "scenes/vertical_slice/vertical_slice_app.tscn",
+      "script_path": "res://scripts/vertical_slice/ui/vs_app.gd",
+      "stale_scene_uid": "uid://b327lccqh1dps",
+      "current_sidecar_uid": "uid://bo1yb0vtangvj",
+      "history_evidence": "The scene was introduced at commit 8afb9a439df46eec3568a75d7f2536b89e1edaba with the stale UID; the distinct .uid sidecar was introduced at commit eb5a43d3293290372a0ca2fe6ec107feef4cc6e5, without a later scene resave.",
+      "correction": "Opened the exact audit worktree in the Godot editor, reattached the same script to /BlacksmithApp, and saved the scene."
+    },
+    "source_warnings": {
+      "category": "CanvasItem/RefCounted/Node member shadowing plus implicit integer division",
+      "correction": "Renamed only local parameters or locals and made atlas-halving float-then-truncate explicit; behavior is preserved by existing GUT coverage."
+    },
+    "process_exit_reports": {
+      "status": "SEPARATE_UNRESOLVED_FOLLOWUP",
+      "finding": "Full GUT still reports 12 orphans and renderer/text/ObjectDB/resource process-exit allocations after 245 passing tests.",
+      "disposition": "Do not conflate with the repaired compiler/load warnings. Requires a dedicated lifecycle root-cause test before any source or tool configuration change."
+    }
+  },
+  "change_boundary": {
+    "protected_product_paths_changed": true,
+    "changed_product_paths": [
+      "scenes/vertical_slice/vertical_slice_app.tscn",
+      "scripts/vertical_slice/resolvers/vs_repair_resolver.gd",
+      "scripts/vertical_slice/ui/vs_app.gd",
+      "scripts/vertical_slice/ui/vs_customer_result_screen.gd",
+      "scripts/vertical_slice/ui/vs_main_menu.gd",
+      "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+    ],
+    "scene_authoring": "Godot editor / Godot AI session codex-godot-warning-audit-20260901@b53e only; no text serialization edit.",
+    "new_raster_asset_created": false,
+    "base_repository_changed": false,
+    "generated_adapter_changed": false,
+    "notion_or_google_sheet_changed": false,
+    "open_pr_196_taken_over": false
+  },
+  "verification": {
+    "godot_version": "4.7.1.stable.official.a13da4feb",
+    "focused_red": "tests.test_godot_warning_hygiene failed with the stale UID and nine warning-source fragments before the correction.",
+    "focused_green": "tests.test_godot_warning_hygiene passed after the correction.",
+    "godot_editor_import": "exit 0; no invalid UID, text-path fallback, Script Error, Parse Error, or Compile Error match.",
+    "vertical_slice_gut": "238 passing tests; zero repaired-source warning matches; existing 12 orphan aggregate remains separate.",
+    "full_gut": "245 passing tests / 1840 assertions; zero repaired-source warning matches; 12 orphan aggregate and process-exit allocation reports remain unresolved."
+  },
+  "rollback": "Revert this maintenance PR. The prior scene UID and warning-source syntax return through Git history; no asset, save, user data, Base pin, or external setting is deleted.",
+  "evidence_ceiling": {
+    "source_and_scene_contract": "MACHINE_VERIFIED_LOCAL",
+    "godot_headless_import": "MACHINE_VERIFIED_LOCAL",
+    "gut_behavior": "MACHINE_VERIFIED_LOCAL",
+    "visual_runtime": "NOT_RUN",
+    "android_device": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human_player_experience": "NOT_RUN",
+    "release": "NOT_RUN"
+  },
+  "base_promotion_candidates": [],
+  "project_only_lessons": [
+    "A Script UID sidecar added after a scene reference needs an editor-authored rebind and scene save; loader text-path fallback is evidence of drift, not a repair.",
+    "Passing GUT behavior tests and process-exit orphan/RID reports are separate facts; repairs must not claim either one resolves the other.",
+    "Automatic image authorization applies when a real consumer gap exists; it does not justify creating a raster asset for source-warning maintenance."
+  ]
+}

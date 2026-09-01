@@ -19,11 +19,11 @@ func quote(item) -> Dictionary:
 	var material := str(item.primary_material_id)
 	if not R_BAND[band].has(material): return _blocked("UNSUPPORTED_PRIMARY_MATERIAL")
 	var missing := int(item.max_durability) - int(item.current_durability)
-	var reference := int(R_BAND[band][material])
+	var r_band_reference := int(R_BAND[band][material])
 	var burden := SETUP_FRACTION + VARIABLE_FRACTION * (float(missing) / float(item.base_max_durability))
-	var gold_cost := int(ceil(float(reference) * burden))
+	var gold_cost := int(ceil(float(r_band_reference) * burden))
 	var applicable_scar_chance := _scar_chance(item) if int(item.max_durability) - 1 > int(item.current_durability) else 0.0
-	return {"allowed": true, "reason": "", "base_max": int(item.base_max_durability), "missing_current": missing, "r_band": reference, "r_band_key": band, "gold_cost": gold_cost, "reinforcement_units": REINFORCEMENT_UNITS, "result_current": int(item.max_durability), "result_max": int(item.max_durability), "quality_recovery_percent": {"EXCELLENT": 100, "STANDARD": 75, "POOR": 50}, "max_scar_chance_percent": applicable_scar_chance, "repair_job_consumed_on_start": true}
+	return {"allowed": true, "reason": "", "base_max": int(item.base_max_durability), "missing_current": missing, "r_band": r_band_reference, "r_band_key": band, "gold_cost": gold_cost, "reinforcement_units": REINFORCEMENT_UNITS, "result_current": int(item.max_durability), "result_max": int(item.max_durability), "quality_recovery_percent": {"EXCELLENT": 100, "STANDARD": 75, "POOR": 50}, "max_scar_chance_percent": applicable_scar_chance, "repair_job_consumed_on_start": true}
 
 
 func apply_with_rolls(item, available_gold: int, available_reinforcement: int, rolls: Dictionary) -> Dictionary:

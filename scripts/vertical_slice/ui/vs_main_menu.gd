@@ -250,13 +250,13 @@ func _show_menu_message(message: String) -> void:
 	_refresh_menu_controls()
 
 
-func _set_menu_visible(visible: bool) -> void:
+func _set_menu_visible(should_show_menu: bool) -> void:
 	var layout := get_node_or_null("MenuLayout")
 	if layout != null:
-		layout.visible = visible
+		layout.visible = should_show_menu
 	var settings_overlay := get_node_or_null("SettingsOverlay")
 	if settings_overlay != null:
-		settings_overlay.visible = visible and settings_open
+		settings_overlay.visible = should_show_menu and settings_open
 
 
 func _refresh_menu_controls() -> void:

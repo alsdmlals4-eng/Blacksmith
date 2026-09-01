@@ -469,16 +469,16 @@ func _on_return_beat_continued() -> void:
 	resolve_phase1_customer_actual_use()
 
 
-func _set_phase1_handoff_visibility(is_visible: bool) -> void:
+func _set_phase1_handoff_visibility(should_show_handoff: bool) -> void:
 	var workshop_screen := get_node_or_null("ScreenHost/WorkshopScreen")
 	var result_screen := get_node_or_null("ScreenHost/CustomerResultScreen")
 	var handoff_screen: Control = _ensure_customer_handoff_screen()
 	if workshop_screen != null:
-		workshop_screen.visible = not is_visible
+		workshop_screen.visible = not should_show_handoff
 	if result_screen != null:
 		result_screen.visible = false
 	if handoff_screen != null:
-		handoff_screen.visible = is_visible
+		handoff_screen.visible = should_show_handoff
 
 
 func can_transition(previous_state: String, next_state: String) -> bool:
