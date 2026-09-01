@@ -93,9 +93,9 @@ func test_later_target_adds_below_cap_and_rejects_duplicate_or_full_collection()
 	_seed(item, "TAG_EMBER_EDGE")
 	assert_true(bool(resolver.selection_preview(item, 20, _add("EARTH_CRYSTAL", "LIGHTWEIGHTING")).get("allowed", false)))
 
-	var duplicate: Dictionary = resolver.selection_preview(item, 20, _add())
-	assert_false(bool(duplicate.get("allowed", true)))
-	assert_eq(duplicate.get("reason", ""), "DUPLICATE_PRECISION_TAG")
+	var duplicate_result: Dictionary = resolver.selection_preview(item, 20, _add())
+	assert_false(bool(duplicate_result.get("allowed", true)))
+	assert_eq(duplicate_result.get("reason", ""), "DUPLICATE_PRECISION_TAG")
 
 	item.catalyst_affix["tag_entries"] = [
 		{"tag_id": "TAG_EMBER_EDGE", "stage": 1, "created_milestone": 10, "last_advanced_milestone": 10},
@@ -181,9 +181,9 @@ func test_malformed_tag_history_or_duplicate_resolved_milestone_fails_closed_wit
 	_seed(item, "TAG_EMBER_EDGE")
 	item.used_precision_milestones.append(10)
 	var duplicate_snapshot: Dictionary = item.to_dict()
-	var duplicate: Dictionary = resolver.apply_selection_success(item, 20, _upgrade())
-	assert_false(bool(duplicate.get("applied", true)))
-	assert_eq(duplicate.get("reason", ""), "INVALID_PRECISION_MILESTONE_STATE")
+	var duplicate_result: Dictionary = resolver.apply_selection_success(item, 20, _upgrade())
+	assert_false(bool(duplicate_result.get("applied", true)))
+	assert_eq(duplicate_result.get("reason", ""), "INVALID_PRECISION_MILESTONE_STATE")
 	assert_eq(item.to_dict(), duplicate_snapshot)
 
 	item.used_precision_milestones.clear()

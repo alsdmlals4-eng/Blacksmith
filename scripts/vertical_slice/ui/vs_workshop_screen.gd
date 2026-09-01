@@ -1166,11 +1166,11 @@ func _refresh_wireframe_cards(state: Dictionary) -> void:
 	_set_decision_detail_labels_visible(not has_item)
 
 
-func _set_decision_detail_labels_visible(is_visible: bool) -> void:
+func _set_decision_detail_labels_visible(should_show: bool) -> void:
 	for node_name in ["EnhancementTitleLabel", "EnhancementQuoteLabel", "EnhancementOutcomesLabel"]:
 		var label := get_node_or_null("WorkshopScroll/WorkshopLayout/%s" % node_name) as Label
 		if label != null:
-			label.visible = is_visible
+			label.visible = should_show
 
 
 func _set_wireframe_card_state(card_name: String, body_text: String, card_visible: bool) -> void:
@@ -1321,8 +1321,8 @@ func _ensure_equipment_identity_hero() -> void:
 
 
 func _workpiece_texture_for_durability_state(state: String) -> AtlasTexture:
-	var cell_width := int(WorkpieceDurabilityStateAtlasTexture.get_width() / 2)
-	var cell_height := int(WorkpieceDurabilityStateAtlasTexture.get_height() / 2)
+	var cell_width := int(float(WorkpieceDurabilityStateAtlasTexture.get_width()) / 2.0)
+	var cell_height := int(float(WorkpieceDurabilityStateAtlasTexture.get_height()) / 2.0)
 	var origin := Vector2.ZERO
 	match state:
 		"MINOR":
