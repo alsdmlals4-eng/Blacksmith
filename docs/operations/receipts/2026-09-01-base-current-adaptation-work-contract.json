@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "receipt_id": "BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901",
+  "status": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
+  "work_level": "L3",
+  "project_head_fresh_read": "91bd0f3bcca081df8634cf074caa41039fdbe2a1",
+  "base_current_main_observed": "19355b7ef065a21d0f2b685c7d9be64a4a3970f8",
+  "base_current_observation_status": "REFERENCE_FOR_PROJECT_ADAPTATION_ONLY",
+  "base_adopted_release": {
+    "version": "9.4.4",
+    "release_commit": "210ec78292fa12ed7563ba743b322dd36103ae4a",
+    "owner": "skills/PROJECT_BASE_ADAPTER.json",
+    "automatic_update": false
+  },
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "source_and_evidence": "Base main 19355b7ef065a21d0f2b685c7d9be64a4a3970f8: AGENTS.md, START_HERE.md, DESKTOP_GPT_REPOSITORY_FIRST_WORKSPACE_POLICY.md, OPERATING_MODEL.md, and WORK_MODE_AND_SKILL_ROUTING.md were fresh-read on 2026-09-01 KST.",
+        "observed_pattern": "Base separates repository primary canon, exact source identity, work modes, evidence ceilings, protected integration, and durable receipts from product-specific meaning.",
+        "project_fit_and_difference": "Blacksmith adopts the operational separation but keeps its verified v9.4.4 adapter lock, existing current product owners, GitHub-only decision, GUT/HiGodot authority, and protected product paths.",
+        "disposition": "ADAPT"
+      },
+      {
+        "source_and_evidence": "Blacksmith main 91bd0f3bcca081df8634cf074caa41039fdbe2a1: AGENTS.md, BS-OPS-20260825-08 handoff, Planning Authority Index, Decision35, Decision36, adapter, and existing validators were fresh-read; current authority, archive governance, and project operating-contract checks passed.",
+        "observed_pattern": "The project already has current GitHub-only owners and generated release-route validation, while older hub and adoption files remain consumer-backed compatibility material.",
+        "project_fit_and_difference": "Create one project-owned current adaptation contract and classify compatibility material instead of copying Base, overwriting generated adapter files, or deleting consumer-backed history.",
+        "disposition": "ADOPT"
+      },
+      {
+        "source_and_evidence": "GitHub Docs: protected branches and repository rulesets documentation fresh-read on 2026-09-01 KST; https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches and https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets.",
+        "observed_pattern": "Repository policy can require pull requests, review, status checks, and restricted branch operations before protected-branch changes are accepted.",
+        "project_fit_and_difference": "Keep Blacksmith branch -> validation -> PR -> exact-head CI -> merge -> remote readback workflow, without changing a GitHub rule, role, permission, or bypass list.",
+        "disposition": "ADOPT"
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "Current Base adaptation work-contract entrypoint, receipt, and consumer classification only; no product implementation or legacy deletion.",
+    "inventory": [
+      {
+        "path": "AGENTS.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current project authority and protected-path contract.",
+        "references_and_consumers": "All project work sessions; tests/check_current_authority_entrypoint_contract.py."
+      },
+      {
+        "path": "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current cold-start locator and accepted-frontier handoff.",
+        "references_and_consumers": "AGENTS.md and multiple current runtime/contract checks."
+      },
+      {
+        "path": "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current product field-owner index.",
+        "references_and_consumers": "AGENTS.md and current product-contract checks."
+      },
+      {
+        "path": "skills/PROJECT_BASE_ADAPTER.json",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Generated Blacksmith adopted Base v9.4.4 lock and route adapter.",
+        "references_and_consumers": "Base project operating-contract validator and Base-v9.4.4 adoption tests."
+      },
+      {
+        "path": "[기획서]/00_프로젝트_허브/WORK_MODE_AND_SKILL_ROUTING.md",
+        "classification": "COMPATIBILITY",
+        "owner_or_provenance": "Historical project-hub routing surface with pre-GitHub-only vocabulary.",
+        "references_and_consumers": "docs/BASE_ADOPTION_PROFILE.json mapping and historical project-hub references."
+      },
+      {
+        "path": "docs/BASE_ADOPTION_PROFILE.json",
+        "classification": "COMPATIBILITY",
+        "owner_or_provenance": "Historical Base-adoption mapping retained for audit and archive governance.",
+        "references_and_consumers": "tools/audit_project_operating_system.py and tools/check_archive_governance.py."
+      },
+      {
+        "path": "docs/BASE_RULES_VERSION.md",
+        "classification": "COMPATIBILITY",
+        "owner_or_provenance": "Historical Base v9.4.0 adoption evidence.",
+        "references_and_consumers": "Human reference only; current adopted-lock questions resolve through the generated adapter and this contract."
+      },
+      {
+        "path": "docs/planning/BLACKSMITH_LEGACY_DOCUMENT_STATUS_REGISTRY_2026.json",
+        "classification": "ARCHIVE",
+        "owner_or_provenance": "Historical document-status registry.",
+        "references_and_consumers": "Operating-system audit and historical supersession lookup."
+      }
+    ],
+    "deletion_proposed": false,
+    "removal_policy": "No classification in this receipt authorizes deletion; references, consumers, recoverability, and readback must be proven before a separate deletion proposal."
+  },
+  "change_boundary": {
+    "protected_product_paths_changed": false,
+    "base_repository_changed": false,
+    "generated_adapter_changed": false,
+    "notion_or_google_sheet_changed": false,
+    "open_pr_196_taken_over": false
+  },
+  "rollback": "Revert the documentation-and-test-only PR; do not delete historical material or alter Base adoption pin.",
+  "evidence_ceiling": {
+    "repository_contract": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
+    "godot_runtime": "NOT_RUN",
+    "android_device": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human_player_experience": "NOT_RUN",
+    "release": "NOT_RUN"
+  },
+  "base_promotion_candidates": [],
+  "project_only_lessons": [
+    "A newer Base main is reusable reference evidence, not automatic project-release adoption.",
+    "Consumer-backed compatibility documents must be classified before changing or deleting them."
+  ]
+}

@@ -1,0 +1,44 @@
+name: Validate Current Base Adaptation Work Contract
+
+on:
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - 'docs/BASE_RULES_VERSION.md'
+      - 'docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md'
+      - 'docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json'
+      - 'docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md'
+      - 'docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md'
+      - 'skills/PROJECT_BASE_ADAPTER.json'
+      - 'tests/check_base_current_adaptation_work_contract.py'
+      - '.github/workflows/validate-current-base-adaptation-work-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out Blacksmith PR head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Check out observed Base receipt validator
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: alsdmlals4-eng/Base
+          ref: 19355b7ef065a21d0f2b685c7d9be64a4a3970f8
+          path: .base-current
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Validate current Base adaptation contract and receipt
+        env:
+          BLACKSMITH_BASE_ROOT: ${{ github.workspace }}/.base-current
+        run: python tests/check_base_current_adaptation_work_contract.py

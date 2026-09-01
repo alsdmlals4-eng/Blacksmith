@@ -1,5 +1,7 @@
 # Base 적용 기준
 
+> **Historical adoption evidence / compatibility surface.** This file records the earlier Base `v9.4.0` adoption snapshot below; it is not Blacksmith's current adopted-release owner. Current Base adaptation and project work routing are owned by `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`. The verified current adopted release remains `v9.4.4 / 210ec78292fa12ed7563ba743b322dd36103ae4a` in `skills/PROJECT_BASE_ADAPTER.json`; a newer Base `main` observation does not update that lock automatically.
+
 ```yaml
 base: alsdmlals4-eng/Base
 base_version: 9.4.0
