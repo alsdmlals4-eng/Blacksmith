@@ -93,10 +93,11 @@ Decision `BS-OPS-20260828-35` continues to own GitHub-only canon and image execu
 
 ## 7. Validation and evidence ceiling
 
-Run the following for a contract change before PR creation:
+The 2026-09-01 receipt is historical benchmark/hygiene evidence. Recheck it with the historical Base source `19355b7ef065a21d0f2b685c7d9be64a4a3970f8` used by the existing workflow, not whichever Base happens to be in a local folder. That history check does not authorize a new task. The current PM gate is defined in section 9.
+
+Run project contract checks before PR creation:
 
 ```powershell
-& $python C:\Users\user\Documents\GitHub\Base\tools\validate_work_contract_receipt.py --receipt docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json
 & $python tests/check_base_current_adaptation_work_contract.py
 & $python tests/check_current_authority_entrypoint_contract.py
 & $python tools/check_archive_governance.py
@@ -110,3 +111,33 @@ Then review the exact branch diff, verify no protected product path changed, and
 This document supersedes only conflicting **operational-routing** claims in compatibility material that imply an older Base release is the current lock, that `BUILD` is an undifferentiated mode, or that Notion/Google Sheet requires future sync. It does not alter historical content, game rules, current product owners, or generated adapter data.
 
 Rollback is a normal revert of the associated documentation-and-test PR. No deletion, migration, Base mutation, protected-path edit, direct-main push, force-push, ruleset bypass, or external permission change is authorized by this contract.
+
+## 9. PM execution-gate integration
+
+`PM_EXECUTION_GATE_REQUIRED` · `PM_CHECKLIST_VISIBLE_AT_START_TRANSITION_CLOSEOUT`
+
+Approval: 2026-09-02 user request, tracked in Blacksmith Issue #197 and Base Issue #825. Scope is work tracking and verification infrastructure, not game scope or a new persistent agent. The existing release lock above is unchanged.
+
+**Candidate boundary:** Base PR #826 is the dependency. The selected tooling candidate is `f27fe4b993e8ffc24db235cda05d0782f6a1308c`; it is not a completed Base main release. This Blacksmith integration remains a draft until Base's required checks, independent review, correction and normal merge succeed. Before Blacksmith merge, replace the candidate pin in `tools/check_pm_work_receipt.py` and the workflow with the verified merged Base revision and rerun project tests. No production adoption is claimed by this draft.
+
+The real work receipt is `docs/operations/receipts/2026-09-02-pm-execution-gate.json`, a source-bound snapshot of this PM integration, not the whole game's backlog. Its state is initially 1/4 complete. Existing Issue #197 tracks subsequent transitions; reconcile the repository snapshot at each new material work session instead of treating its old source SHA as current.
+
+Use `tools/check_pm_work_receipt.py` with a separate exact Base PM checkout. It verifies the selected commit and tracked executable bytes before calling the shared validator. It does not copy the shared implementation, update the game's adapter, mutate receipts or launch services.
+
+```text
+project AGENTS → this owner → actual approved Goal and source fresh-read
+→ reconcile required work in the same current receipt and existing Issue
+→ choose one ready task and set active_work_item_ref before execution
+→ python tools/check_pm_work_receipt.py --base-root <exact-Base-PM-checkout> --receipt <current-repository-receipt.json> --expected-source-sha <independently-fresh-read-project-source-sha> --phase start
+→ show the actual checklist, completed/required count, active work, blockers and next action
+→ execute only the approved task and collect actual evidence
+→ update the same receipt/Issue and choose the next approved task
+→ same command with --phase resume before that task
+→ --phase closeout only after all required work, merge and readback are actually complete
+```
+
+Missing PM items, wrong source/tooling, unverified completion, failed dependencies and nonzero checks do not authorize execution. A valid blocked card can be displayed without changing nonzero failure to PASS. Checkpoint commits, test PASS, runtime PASS, visual inspection, user approval and merge are separate states. A normal closeout stops at the approved scope; it must not invent a new goal.
+
+The existing workflow preserves its historical checks and separately runs wrapper unit tests and real Base integration tests. Fixed historical test source SHA is a fixture assertion, not future current-project freshness. Missing real Base checkout is an error, not a skipped test. Integration success alone cannot close the Base dependency or approve this project PR.
+
+Rollback: normally revert only this PM integration after preserving its Issue/receipt history. Product paths, existing PR #196, adopted Base release and generated adapter/snapshot remain untouched.
