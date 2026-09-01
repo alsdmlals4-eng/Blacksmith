@@ -25,7 +25,7 @@
     }]
   },
   "project_work_kanban": {
-    "goal_or_slice_issue_ref": "https://github.com/alsdmlals4-eng/Blacksmith/issues/197",
+    "goal_or_slice_issue_ref": "https://github.com/alsdmlals4-eng/Blacksmith/issues/358",
     "source_main_sha": "511e6047607f2f9bb63e75fa9df019665b922e24",
     "work_item_refs": ["BS-PM-01", "BS-PM-02", "BS-PM-03", "BS-PM-04"],
     "active_work_item_ref": "BS-PM-02",
@@ -36,8 +36,8 @@
         "canon_owner": "AGENTS.md",
         "actual_consumers": ["docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md"],
         "depends_on": [], "acceptance_criteria": ["AC-01"], "required_evidence": ["E0_CONTRACT"],
-        "checklist": [{"id": "AC-01", "text": "AGENTS, current owner, existing workflow, release lock and protected PR were fresh-read.", "status": "PASS", "evidence": ["https://github.com/alsdmlals4-eng/Blacksmith/issues/197", "Blacksmith source 511e6047607f2f9bb63e75fa9df019665b922e24"]}],
-        "verification": [{"level": "E0_CONTRACT", "status": "PASS", "evidence": ["Issue #197 approval, protected paths and exact source inventory"]}],
+        "checklist": [{"id": "AC-01", "text": "AGENTS, current owner, existing workflow, release lock and protected PR were fresh-read.", "status": "PASS", "evidence": ["https://github.com/alsdmlals4-eng/Blacksmith/issues/358", "Blacksmith source 511e6047607f2f9bb63e75fa9df019665b922e24"]}],
+        "verification": [{"level": "E0_CONTRACT", "status": "PASS", "evidence": ["Issue #358 approval, protected paths and exact source inventory"]}],
         "verified_head_sha": "511e6047607f2f9bb63e75fa9df019665b922e24",
         "repository_readback": "PASS", "readback_evidence": ["AGENTS → current adaptation owner → existing workflow at exact source"],
         "rollback": "Read-only audit; no product or adopted release change to revert.",
