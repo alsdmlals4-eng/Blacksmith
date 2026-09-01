@@ -17,6 +17,7 @@ const WorkpieceDurabilityStateAtlasTexture = preload("res://assets/ui/workshop/w
 const MOBILE_BODY_FONT_SIZE := 28
 const MOBILE_SECTION_FONT_SIZE := 35
 const MOBILE_TITLE_FONT_SIZE := 44
+const WIREFRAME_CARD_TITLE_FONT_SIZE := 30
 const MOBILE_TOUCH_TARGET_HEIGHT := 96
 const MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT := 112
 
@@ -81,6 +82,7 @@ func _ready() -> void:
 	_ensure_workpiece_durability_hero()
 	_ensure_equipment_identity_hero()
 	_ensure_enhancement_controls()
+	_ensure_wireframe_cards()
 	_apply_mobile_readability_tokens()
 	var repair_button := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairButton") as Button
 	if repair_button != null and not repair_button.pressed.is_connected(_on_repair_pressed):
@@ -483,6 +485,7 @@ func _refresh_controls() -> void:
 	_ensure_workpiece_durability_hero()
 	_ensure_equipment_identity_hero()
 	_ensure_enhancement_controls()
+	_ensure_wireframe_cards()
 	_connect_precision_controls()
 	_connect_handoff_control()
 	_connect_chronicle_control()
@@ -588,6 +591,7 @@ func _refresh_controls() -> void:
 	if precision_backfill_button != null:
 		precision_backfill_button.visible = str(state.get("precision_mode", "")) == "BACKFILL"
 		precision_backfill_button.disabled = not bool(state.get("precision_backfill_allowed", false))
+	_refresh_wireframe_cards(state)
 
 
 func _has_enhancement_context() -> bool:
@@ -1092,6 +1096,76 @@ func _ensure_enhancement_controls() -> void:
 	_ensure_handoff_button(layout)
 	_ensure_chronicle_button(layout)
 	_populate_precision_options()
+
+
+func _ensure_wireframe_cards() -> void:
+	var layout := get_node_or_null("WorkshopScroll/WorkshopLayout") as VBoxContainer
+	if layout == null:
+		return
+	_ensure_wireframe_card(layout, "WireframeWorkpieceCard", "현재 작품", "EquipmentIdentityHero", false)
+	_ensure_wireframe_card(layout, "WireframeDecisionCard", "지금의 판단", "EnhancementTitleLabel", true)
+	_ensure_wireframe_card(layout, "WireframePrecisionCard", "정밀강화", "PrecisionTitleLabel", true)
+	_ensure_wireframe_card(layout, "WireframeDestinationCard", "다음 목적지", "HandoffButton", true)
+
+
+func _ensure_wireframe_card(layout: VBoxContainer, card_name: String, title_text: String, anchor_name: String, insert_before_anchor: bool) -> void:
+	if layout.has_node(card_name):
+		return
+	var card := PanelContainer.new()
+	card.name = card_name
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.add_theme_stylebox_override("panel", _wireframe_card_style())
+	var content := VBoxContainer.new()
+	content.name = "CardContent"
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 8)
+	card.add_child(content)
+	var title := Label.new()
+	title.name = "CardTitle"
+	title.text = title_text
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	title.add_theme_font_size_override("font_size", WIREFRAME_CARD_TITLE_FONT_SIZE)
+	title.add_theme_color_override("font_color", Color("643d24"))
+	content.add_child(title)
+	var body := Label.new()
+	body.name = "CardBody"
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	body.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+	body.add_theme_color_override("font_color", Color("2d211a"))
+	content.add_child(body)
+	layout.add_child(card)
+	var anchor := layout.get_node_or_null(anchor_name) as Control
+	if anchor != null:
+		var target_index := anchor.get_index() if insert_before_anchor else anchor.get_index() + 1
+		layout.move_child(card, target_index)
+
+
+func _wireframe_card_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("f4e2bed9")
+	style.border_color = Color("704a2f")
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(16)
+	style.set_content_margin_all(18.0)
+	return style
+
+
+func _refresh_wireframe_cards(state: Dictionary) -> void:
+	_set_wireframe_card_state("WireframeWorkpieceCard", str(state.get("workpiece_summary", "")), bool(state.get("has_item", false)))
+	_set_wireframe_card_state("WireframeDecisionCard", str(state.get("decision_summary", "")), bool(state.get("has_item", false)))
+	_set_wireframe_card_state("WireframePrecisionCard", str(state.get("precision_summary", "")), bool(state.get("precision_visible", false)))
+	_set_wireframe_card_state("WireframeDestinationCard", str(state.get("destination_summary", "")), bool(state.get("has_item", false)))
+
+
+func _set_wireframe_card_state(card_name: String, body_text: String, card_visible: bool) -> void:
+	var card := get_node_or_null("WorkshopScroll/WorkshopLayout/%s" % card_name) as PanelContainer
+	if card == null:
+		return
+	card.visible = card_visible
+	var body := card.get_node_or_null("CardContent/CardBody") as Label
+	if body != null:
+		body.text = body_text
 
 
 func _ensure_handoff_button(layout: VBoxContainer) -> void:

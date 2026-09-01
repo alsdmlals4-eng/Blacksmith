@@ -459,7 +459,7 @@ func test_workshop_builds_native_phase1_wireframe_cards_without_reparenting_acti
 	add_child_autofree(precision_screen)
 	precision_screen.configure_context(precision_item, precision_resources, null, EnhancementActionServiceScript.new(), FakeSaveService.new(), precision_envelope)
 
-	var precision_body := precision_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/WireframePrecisionCard/CardBody") as Label
+	var precision_body := precision_screen.get_node_or_null("WorkshopScroll/WorkshopLayout/WireframePrecisionCard/CardContent/CardBody") as Label
 	assert_not_null(precision_body)
 	if precision_body != null:
 		assert_true(precision_body.visible)
