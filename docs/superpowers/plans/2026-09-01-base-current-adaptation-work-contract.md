@@ -206,7 +206,7 @@ git status --short
 
 Expected: only contract, receipt, current-owner documentation, plan/spec, and test paths; no protected product path.
 
-- [ ] **Step 4: Commit, push, and create the documentation-only PR**
+- [x] **Step 4: Commit, push, and create the documentation-only PR**
 
 ```powershell
 git add AGENTS.md docs tests
