@@ -17,6 +17,7 @@ const WorkpieceDurabilityStateAtlasTexture = preload("res://assets/ui/workshop/w
 const MOBILE_BODY_FONT_SIZE := 28
 const MOBILE_SECTION_FONT_SIZE := 35
 const MOBILE_TITLE_FONT_SIZE := 44
+const WIREFRAME_CARD_TITLE_FONT_SIZE := 30
 const MOBILE_TOUCH_TARGET_HEIGHT := 96
 const MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT := 112
 
@@ -81,6 +82,7 @@ func _ready() -> void:
 	_ensure_workpiece_durability_hero()
 	_ensure_equipment_identity_hero()
 	_ensure_enhancement_controls()
+	_ensure_wireframe_cards()
 	_apply_mobile_readability_tokens()
 	var repair_button := get_node_or_null("WorkshopScroll/WorkshopLayout/RepairButton") as Button
 	if repair_button != null and not repair_button.pressed.is_connected(_on_repair_pressed):
@@ -216,6 +218,10 @@ func view_state() -> Dictionary:
 			"handoff_allowed": false,
 			"handoff_reason": "MISSING_ITEM",
 			"chronicle_allowed": false,
+			"workpiece_summary": "작품 선택 필요",
+			"decision_summary": "강화할 작품을 선택하세요",
+			"precision_summary": "",
+			"destination_summary": "작품을 선택하면 수리·인계·연대기를 확인할 수 있습니다",
 		}
 	var quote: Dictionary = RepairResolverScript.new().quote(_item)
 	var precision_mode := _precision_mode()
@@ -240,7 +246,7 @@ func view_state() -> Dictionary:
 	var add_available := not _precision_candidates_for_action("ADD_TAG", precision_mode).is_empty()
 	var upgrade_available := precision_mode == "ATTEMPT" and precision_target > 10 and not _precision_candidates_for_action("UPGRADE_TAG", precision_mode).is_empty()
 	var handoff_allowed := _phase1_handoff_allowed()
-	return {
+	var state := {
 		"has_item": true,
 		"durability_text": "%d / %d / %d" % [int(_item.current_durability), int(_item.max_durability), int(_item.base_max_durability)],
 		"durability_state": str(_item.effective_durability_state()),
@@ -272,6 +278,66 @@ func view_state() -> Dictionary:
 		"handoff_reason": _phase1_handoff_reason(),
 		"chronicle_allowed": _item != null and _campaign_envelope != null,
 	}
+	var equipment: Dictionary = EquipmentCatalogScript.by_item(_item)
+	state["workpiece_summary"] = _workpiece_summary(equipment, state)
+	state["decision_summary"] = _decision_summary(state)
+	state["precision_summary"] = _precision_summary(state)
+	state["destination_summary"] = _destination_summary(state)
+	return state
+
+
+func _workpiece_summary(equipment: Dictionary, state: Dictionary) -> String:
+	var equipment_name := str(equipment.get("display_name_ko", "미확인 작품"))
+	var uid := str(_item.uid) if _item != null else ""
+	var tag_summary := _precision_tag_entries_summary(state.get("precision_tag_entries", []))
+	return "%s · UID %s\n강화 +%d\n%s\n상태: %s" % [
+		equipment_name,
+		_compact_workpiece_uid(uid),
+		int(_item.enhancement_level) if _item != null else 0,
+		tag_summary,
+		_player_facing_durability_state(str(state.get("durability_state", "UNAVAILABLE"))),
+	]
+
+
+func _compact_workpiece_uid(uid: String) -> String:
+	if uid.length() <= 16:
+		return uid
+	return "%s…%s" % [uid.left(12), uid.right(4)]
+
+
+func _decision_summary(state: Dictionary) -> String:
+	var target_level := int(state.get("enhancement_target_level", 0))
+	var decision_lines: PackedStringArray = [
+		"다음 판단: +%d" % target_level,
+		str(state.get("enhancement_cost_summary", "")),
+		str(state.get("enhancement_outcomes_summary", "")),
+	]
+	if not bool(state.get("enhancement_allowed", false)):
+		decision_lines.append("막힌 이유: %s" % _player_facing_enhancement_reason(str(state.get("enhancement_reason", ""))))
+	return "\n".join(decision_lines)
+
+
+func _precision_summary(state: Dictionary) -> String:
+	if not bool(state.get("precision_visible", false)):
+		return ""
+	var target_text := str(state.get("precision_target", ""))
+	var target_parts := target_text.split("→")
+	var target_label := str(target_parts[target_parts.size() - 1]).strip_edges() if not target_parts.is_empty() else target_text
+	var action := str(state.get("precision_action", ""))
+	var action_text := "태그 행동을 고르세요" if action.is_empty() else "선택한 행동: %s" % ("태그 추가" if action == "ADD_TAG" else "태그 강화")
+	return "정밀강화 %s\n%s\n촉매 보유: %s\n%s" % [
+		target_label,
+		action_text,
+		str(state.get("precision_catalyst_stock_summary", "확인 필요")),
+		str(state.get("precision_preview_summary", "")),
+	]
+
+
+func _destination_summary(state: Dictionary) -> String:
+	var repair_text := "수리 가능" if bool(state.get("repair_allowed", false)) else "수리: %s" % _player_facing_repair_reason(str(state.get("repair_reason", "")))
+	var handoff_text := "인계 가능" if bool(state.get("handoff_allowed", false)) else "인계: %s" % _phase1_handoff_reason()
+	var chronicle_text := "연대기 보기 가능" if bool(state.get("chronicle_allowed", false)) else "연대기: 캠페인 정보 필요"
+	return "%s\n%s\n%s" % [repair_text, handoff_text, chronicle_text]
 
 
 func request_repair_with_rolls(rolls: Dictionary) -> Dictionary:
@@ -425,6 +491,7 @@ func _refresh_controls() -> void:
 	_ensure_workpiece_durability_hero()
 	_ensure_equipment_identity_hero()
 	_ensure_enhancement_controls()
+	_ensure_wireframe_cards()
 	_connect_precision_controls()
 	_connect_handoff_control()
 	_connect_chronicle_control()
@@ -530,6 +597,7 @@ func _refresh_controls() -> void:
 	if precision_backfill_button != null:
 		precision_backfill_button.visible = str(state.get("precision_mode", "")) == "BACKFILL"
 		precision_backfill_button.disabled = not bool(state.get("precision_backfill_allowed", false))
+	_refresh_wireframe_cards(state)
 
 
 func _has_enhancement_context() -> bool:
@@ -1034,6 +1102,85 @@ func _ensure_enhancement_controls() -> void:
 	_ensure_handoff_button(layout)
 	_ensure_chronicle_button(layout)
 	_populate_precision_options()
+
+
+func _ensure_wireframe_cards() -> void:
+	var layout := get_node_or_null("WorkshopScroll/WorkshopLayout") as VBoxContainer
+	if layout == null:
+		return
+	_ensure_wireframe_card(layout, "WireframeWorkpieceCard", "현재 작품", "EquipmentIdentityHero", false)
+	_ensure_wireframe_card(layout, "WireframeDecisionCard", "지금의 판단", "EnhancementTitleLabel", true)
+	_ensure_wireframe_card(layout, "WireframePrecisionCard", "정밀강화", "PrecisionTitleLabel", true)
+	_ensure_wireframe_card(layout, "WireframeDestinationCard", "다음 목적지", "HandoffButton", true)
+
+
+func _ensure_wireframe_card(layout: VBoxContainer, card_name: String, title_text: String, anchor_name: String, insert_before_anchor: bool) -> void:
+	if layout.has_node(card_name):
+		return
+	var card := PanelContainer.new()
+	card.name = card_name
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.add_theme_stylebox_override("panel", _wireframe_card_style())
+	var content := VBoxContainer.new()
+	content.name = "CardContent"
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 8)
+	card.add_child(content)
+	var title := Label.new()
+	title.name = "CardTitle"
+	title.text = title_text
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	title.add_theme_font_size_override("font_size", WIREFRAME_CARD_TITLE_FONT_SIZE)
+	title.add_theme_color_override("font_color", Color("643d24"))
+	content.add_child(title)
+	var body := Label.new()
+	body.name = "CardBody"
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	body.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+	body.add_theme_color_override("font_color", Color("2d211a"))
+	content.add_child(body)
+	layout.add_child(card)
+	var anchor := layout.get_node_or_null(anchor_name) as Control
+	if anchor != null:
+		var target_index := anchor.get_index() if insert_before_anchor else anchor.get_index() + 1
+		layout.move_child(card, target_index)
+
+
+func _wireframe_card_style() -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color("f4e2bed9")
+	style.border_color = Color("704a2f")
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(16)
+	style.set_content_margin_all(18.0)
+	return style
+
+
+func _refresh_wireframe_cards(state: Dictionary) -> void:
+	var has_item := bool(state.get("has_item", false))
+	_set_wireframe_card_state("WireframeWorkpieceCard", str(state.get("workpiece_summary", "")), has_item)
+	_set_wireframe_card_state("WireframeDecisionCard", str(state.get("decision_summary", "")), has_item)
+	_set_wireframe_card_state("WireframePrecisionCard", str(state.get("precision_summary", "")), bool(state.get("precision_visible", false)))
+	_set_wireframe_card_state("WireframeDestinationCard", str(state.get("destination_summary", "")), has_item)
+	_set_decision_detail_labels_visible(not has_item)
+
+
+func _set_decision_detail_labels_visible(is_visible: bool) -> void:
+	for node_name in ["EnhancementTitleLabel", "EnhancementQuoteLabel", "EnhancementOutcomesLabel"]:
+		var label := get_node_or_null("WorkshopScroll/WorkshopLayout/%s" % node_name) as Label
+		if label != null:
+			label.visible = is_visible
+
+
+func _set_wireframe_card_state(card_name: String, body_text: String, card_visible: bool) -> void:
+	var card := get_node_or_null("WorkshopScroll/WorkshopLayout/%s" % card_name) as PanelContainer
+	if card == null:
+		return
+	card.visible = card_visible
+	var body := card.get_node_or_null("CardContent/CardBody") as Label
+	if body != null:
+		body.text = body_text
 
 
 func _ensure_handoff_button(layout: VBoxContainer) -> void:
