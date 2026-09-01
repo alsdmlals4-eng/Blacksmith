@@ -398,6 +398,38 @@ func test_workshop_displays_next_enhancement_outcomes_and_commits_saved_attempt(
 	assert_eq(resources.snapshot(), save_service.saved_envelope.resource_snapshot())
 
 
+func test_workshop_exposes_read_only_phase1_wireframe_summaries() -> void:
+	var envelope = _enhancement_envelope()
+	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
+	var resources = _resources()
+	envelope.workshop_resources = resources.snapshot()
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	screen.configure_context(item, resources, null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
+
+	var normal_state: Dictionary = screen.view_state()
+	assert_true(normal_state.has("workpiece_summary"))
+	assert_true(normal_state.has("decision_summary"))
+	assert_true(normal_state.has("precision_summary"))
+	assert_true(normal_state.has("destination_summary"))
+	assert_true(str(normal_state.get("workpiece_summary", "")).contains(str(item.uid)))
+	assert_true(str(normal_state.get("decision_summary", "")).contains("+%d" % int(item.enhancement_level + 1)))
+	assert_true(str(normal_state.get("destination_summary", "")).contains("인계"))
+	assert_eq(str(normal_state.get("precision_summary", "")), "")
+
+	var precision_envelope = _precision_envelope(9)
+	var precision_item = precision_envelope.get_item(str(precision_envelope.active_run["selected_item_uid"]))
+	var precision_resources = _resources()
+	precision_envelope.workshop_resources = precision_resources.snapshot()
+	var precision_screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(precision_screen)
+	precision_screen.configure_context(precision_item, precision_resources, null, EnhancementActionServiceScript.new(), FakeSaveService.new(), precision_envelope)
+
+	var precision_state: Dictionary = precision_screen.view_state()
+	assert_true(str(precision_state.get("precision_summary", "")).contains("정밀강화 +10"))
+	assert_true(str(precision_state.get("precision_summary", "")).contains("불의 심장"))
+
+
 func test_precision_plus_9_requires_add_action_before_a_valid_dictionary_selection() -> void:
 	var envelope = _precision_envelope()
 	var item = envelope.get_item(str(envelope.active_run["selected_item_uid"]))
