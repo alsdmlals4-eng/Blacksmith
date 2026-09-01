@@ -26,7 +26,22 @@ SOURCES = (
     ROOT / "docs/superpowers/specs/2026-09-01-phase1-workshop-blueprint-design.md",
     ROOT / "docs/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828.md",
     ROOT / "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md",
+    ROOT / "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
     ROOT / "docs/operations/receipts/2026-09-01-phase1-workshop-blueprint.json",
+)
+PAGE_COUNT = 11
+PAGE_SECTIONS = (
+    "읽기 안내",
+    "전체 흐름",
+    "공방 공통 셸",
+    "정본·상태 경계",
+    "검토 경계",
+    "일반 강화",
+    "최초 +10",
+    "+20 이후",
+    "손상·수리",
+    "고객 실제 사용·연대기",
+    "검증과 증거 한계",
 )
 
 PARCHMENT = colors.HexColor("#F7F0E5")
@@ -176,7 +191,7 @@ def header(pdf: canvas.Canvas, page: int, section: str) -> None:
     pdf.setFont("BlueprintMalgun", 7.4)
     pdf.setFillColor(MUTED)
     pdf.drawString(14 * mm, 9 * mm, "정본 대체 금지 · 실제 게임 화면 또는 런타임 에셋이 아님")
-    pdf.drawRightString(page_width - 14 * mm, 9 * mm, f"{page} / 5 · 2026-09-02")
+    pdf.drawRightString(page_width - 14 * mm, 9 * mm, f"{page} / {PAGE_COUNT} · 2026-09-02")
 
 
 def card(
@@ -399,7 +414,7 @@ def page_five(pdf: canvas.Canvas) -> None:
     y = draw_wrapped(pdf, "PDF 파일 자체의 구조와 글자·페이지 레이아웃은 기계적으로 검증한다. 게임의 Android 가독성, 접근성, 플레이 재미는 이 PDF만으로 통과가 아니다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=9.2, leading=14, color=MUTED)
     y -= 6 * mm
     x = 18 * mm
-    y = status_row(pdf, x, y, "PDF 계약", "5쪽 A4, 제목·정본 비대체 표기·핵심 텍스트·영수증 SHA-256을 검사한다.", fill=PALE_GREEN)
+    y = status_row(pdf, x, y, "PDF 계약", f"{PAGE_COUNT}쪽 A4, 제목·정본 비대체 표기·핵심 텍스트·영수증 SHA-256을 검사한다.", fill=PALE_GREEN)
     y = status_row(pdf, x, y, "PDF 렌더", "모든 페이지를 PNG로 렌더해 글자 잘림·겹침·여백을 시각 점검한다.", fill=PALE_GREEN)
     y = status_row(pdf, x, y, "기존 Phase 1", "원래 블루프린트 계약과 시각 보드 계약은 별도의 기계 검증 상태를 유지한다.", fill=PALE_BLUE)
     y = status_row(pdf, x, y, "Godot·Android", "NOT RUN - 이 문서는 게임 런타임, 기기 안전 여백, 터치, 성능을 검증하지 않는다.", fill=PALE_GOLD)
@@ -410,6 +425,164 @@ def page_five(pdf: canvas.Canvas) -> None:
     draw_wrapped(pdf, "확인할 항목: (1) 공방 화면의 읽기 순서, (2) 정밀강화가 +10 단위 태그 행동으로 보이는지, (3) 불의 심장·대지의 결정이 계보가 아닌 소모 자원으로 이해되는지, (4) 같은 UID의 결과 귀환 흐름이 자연스러운지.", 23 * mm, y - 27 * mm, page_width - 46 * mm, size=8.1, leading=11.2, color=INK)
 
 
+def compact_card(
+    pdf: canvas.Canvas,
+    x: float,
+    top: float,
+    width: float,
+    height: float,
+    kicker: str,
+    title_text: str,
+    body: str,
+    *,
+    fill: colors.Color = PAPER,
+) -> None:
+    """A denser explanatory card for the detailed implementation pages."""
+    panel(pdf, x, top, width, height, fill=fill)
+    label(pdf, kicker, x + 4 * mm, top - 5.5 * mm)
+    title_bottom = heading(pdf, title_text, x + 4 * mm, top - 10.5 * mm, size=10.0)
+    draw_wrapped(pdf, body, x + 4 * mm, title_bottom - 1 * mm, width - 8 * mm, size=7.75, leading=10.9, color=MUTED)
+
+
+def page_six(pdf: canvas.Canvas) -> None:
+    page_width, page_height = A4
+    header(pdf, 6, "일반 강화")
+    y = heading(pdf, "일반 강화와 +5 제작 리듬", 18 * mm, page_height - 27 * mm, size=18)
+    y = draw_wrapped(pdf, "일반 강화는 매번 현재 레벨 + 1을 목표로 삼는다. 화면은 확률을 새로 만들지 않고 resolver가 준 다음 시도의 비용·결과를 순서대로 읽게 한다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=9.2, leading=14, color=MUTED)
+    column_width = (page_width - 42 * mm) / 2
+    left = 18 * mm
+    right = left + column_width + 6 * mm
+    top = y - 6 * mm
+    compact_card(pdf, left, top, column_width, 48 * mm, "READ ORDER 01", "같은 UID 작품을 먼저 고정", "장비 그림, 작품명, 현재 +레벨, 활성 태그, CURRENT / MAX / BASE_MAX를 항상 상단에 둔다. 등급이 바뀌어도 같은 장비 종류의 외형은 유지하고, 강화 단계와 태그는 배지·텍스트·테두리 상태로 읽는다.", fill=PALE_GOLD)
+    compact_card(pdf, right, top, column_width, 48 * mm, "READ ORDER 02", "다음 target과 실제 비용", "일반 target은 Gold·보강재를, +10 단위 정밀 target은 선택한 촉매까지 비용 상단에 표시한다. 현재 +19의 다음 target은 +20이므로 정밀 패널로 이어진다. 이 화면은 수식·경제 수치를 재계산하지 않고 resolver의 현재 결과를 표시하는 consumer다.", fill=PALE_BLUE)
+    top -= 54 * mm
+    compact_card(pdf, left, top, column_width, 58 * mm, "RESULT MAP", "성공과 두 종류의 실패", "일반 성공은 항상 SUCCESS_LEVEL_DELTA = +1이다. 실패는 FAILED_HOLD 또는 FAILED_DAMAGE 하나로만 해결된다. 단계 하락, 별도의 CRITICAL, 강제 파괴 연출은 만들지 않는다. 손상 가능성은 target 10 이하에서 0이며, 11 이상에서만 조건부로 열릴 수 있다.", fill=PAPER)
+    compact_card(pdf, right, top, column_width, 58 * mm, "STOP OR PUSH", "한 번의 주 CTA, 두 개의 합법적 선택", "CTA는 ‘강화 시도’ 하나만 둔다. 플레이어는 지금의 작품을 보존하기 위해 돌아가거나, 표시된 성공·유지·손상 최종 시도 확률을 보고 시도한다. 일반 강화 로그를 연대기로 자동 기록하지 않아, 핵심 판단의 밀도를 흐리지 않는다.", fill=PALE_COPPER)
+    top -= 64 * mm
+    compact_card(pdf, left, top, column_width, 47 * mm, "+5 PRESENTATION", "+5 제작 리듬은 별도 시스템이 아니다", "+5는 ‘지금까지의 성취’를 잠깐 강조하는 presentation beat다. +5에서 새 정밀 규칙, 새 태그, 새 촉매 소비, 새 실패 규칙을 열지 않는다. 실제 정밀강화는 +10 단위가 유일한 cadence다.", fill=PALE_GREEN)
+    compact_card(pdf, right, top, column_width, 47 * mm, "BLOCKED STATES", "보유량 부족은 굴림 전에 차단", "재료가 부족하거나 아이템 상태가 유효하지 않다면 비용 소비와 확률 굴림 전에 버튼을 비활성화하고 이유·필요 수량·되돌아갈 선택을 표시한다. 실패 메시지로 부족을 숨기거나 반쯤 소비하는 경로는 없다.", fill=PALE_GOLD)
+    top -= 53 * mm
+    panel(pdf, 18 * mm, top, page_width - 36 * mm, 31 * mm, fill=PALE_COPPER)
+    label(pdf, "WORKSHOP RETURN", 23 * mm, top - 6 * mm)
+    draw_wrapped(pdf, "해결 뒤에는 같은 공방으로 돌아온다. SUCCESS는 갱신된 +레벨과 태그 상태를, FAILED_HOLD는 보존된 작품을, 손상 실패는 갱신된 내구도와 조건부 수리 job을 보인다. 이 귀환이 ‘다음 행동’을 재설명하지 않고 곧바로 읽히게 한다.", 23 * mm, top - 12 * mm, page_width - 46 * mm, size=8.15, leading=11.4, color=INK)
+
+
+def page_seven(pdf: canvas.Canvas) -> None:
+    page_width, page_height = A4
+    header(pdf, 7, "최초 +10")
+    y = heading(pdf, "정밀강화: 최초 +10은 태그 추가만", 18 * mm, page_height - 27 * mm, size=18)
+    y = draw_wrapped(pdf, "+9 → +10은 반복되는 정밀 단위의 첫 관문이지만, 첫 관문에서는 기존 태그를 강화할 수 없다. 무기 타입만 태그 패널을 열며, 선택이 없으면 비용·굴림 이전에 멈춘다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=9.2, leading=14, color=MUTED)
+    left = 18 * mm
+    full_width = page_width - 36 * mm
+    top = y - 6 * mm
+    compact_card(pdf, left, top, full_width, 37 * mm, "ENTRY GATE", "누가 최초 +10 태그 선택을 보는가", "검·방패·활만 정밀 태그 UI의 recipient다. 갑옷·투구는 같은 강화 흐름을 사용하되 weapon item keyword를 받지 않는다. 첫 +10에서 선택 가능한 action은 [태그 추가] 하나다. [태그 강화]는 기존 태그가 있어도 이 최초 관문에서는 숨긴다.", fill=PALE_GOLD)
+    top -= 43 * mm
+    column_width = (page_width - 42 * mm) / 2
+    right = left + column_width + 6 * mm
+    compact_card(pdf, left, top, column_width, 63 * mm, "STEP 01", "태그와 방식의 의미를 먼저 읽는다", "태그 추가는 두 방법을 text-native 카드로 제시한다. 날 세우기와 경량 담금은 선택 결과를 미리 설명하며, 각각 불의 심장 또는 대지의 결정이라는 촉매 비용을 보인다. 촉매는 계보·진영·영구 클래스가 아니라 한 번의 시도에 소모되는 자원이다.", fill=PALE_COPPER)
+    compact_card(pdf, right, top, column_width, 63 * mm, "STEP 02", "2×2 선택은 무작위가 아니다", "선택 표: 불의 심장 × 날 세우기, 불의 심장 × 경량 담금, 대지의 결정 × 날 세우기, 대지의 결정 × 경량 담금. 선택 카드는 예상 태그 효과, Gold·보강재·촉매 1개, 보유량을 함께 보인다. default 촉매·random 태그·reroll은 없다.", fill=PALE_BLUE)
+    top -= 69 * mm
+    compact_card(pdf, left, top, column_width, 58 * mm, "PRECHECK", "사전 조건 차단은 친절한 실패가 아니다", "태그 행동을 선택하지 않았거나 요구 Gold·보강재·촉매가 부족하면 [정밀강화 시도]를 누를 수 없다. 패널은 ‘선택 필요’ 또는 ‘불의 심장 1개 부족’처럼 부족 이유를 명시한다. 이 상태에서는 비용도, 로그도, 확률 판정도 발생하지 않는다.", fill=PALE_GREEN)
+    compact_card(pdf, right, top, column_width, 58 * mm, "ATOMIC RESOLUTION", "선택한 비용과 결과는 한 단위", "유효한 선택과 보유량이 확인된 뒤에만 필요한 자원을 한 번에 소비하고 시도를 해결한다. 성공은 +10과 선택 태그 I을 함께 반영한다. 실패는 FAILED_HOLD 또는 FAILED_DAMAGE로 끝나며, 누적 단계 하락이나 별도 네 번째 affix 슬롯은 없다.", fill=PAPER)
+    top -= 64 * mm
+    panel(pdf, 18 * mm, top, full_width, 36 * mm, fill=PALE_GOLD)
+    label(pdf, "RESULT RETURN", 23 * mm, top - 6 * mm)
+    draw_wrapped(pdf, "성공·실패 모두 공방의 같은 UID 카드로 귀환한다. 성공 카드에는 ‘+10 / 태그 I / 소비된 촉매’를, 유지 실패에는 ‘작품 보존’을, 손상 실패에는 ‘현재 내구도 변화 / 수리 job 가능 여부’를 명시한다. 고객 인계는 이 정밀 결과의 다음 목적지이지 손상을 꾸미는 연출이 아니다.", 23 * mm, top - 12 * mm, full_width - 10 * mm, size=8.15, leading=11.4, color=INK)
+
+
+def page_eight(pdf: canvas.Canvas) -> None:
+    page_width, page_height = A4
+    header(pdf, 8, "+20 이후")
+    y = heading(pdf, "정밀강화: +20 이후는 추가 또는 강화", 18 * mm, page_height - 27 * mm, size=18)
+    y = draw_wrapped(pdf, "+20, +30 … +100은 같은 cadence를 반복한다. 이때 화면의 목적은 ‘어떤 태그를 얼마나 키울지’를 명확하게 고르게 하는 것이며, 촉매를 새로운 계보 선택처럼 분리하지 않는 것이다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=9.2, leading=14, color=MUTED)
+    left = 18 * mm
+    full_width = page_width - 36 * mm
+    top = y - 6 * mm
+    compact_card(pdf, left, top, full_width, 38 * mm, "ACTION DECISION", "+20 이후의 두 행동", "활성 태그가 3개 미만이면 [태그 추가]를 선택할 수 있다. 활성 태그가 하나 이상이면 [태그 강화]를 선택할 수 있다. 화면은 action을 먼저 고르게 하고, 그 뒤에 선택 가능한 태그·예상 단계·필요 촉매를 보여 준다. 아무 행동도 선택하지 않으면 정밀 시도는 차단된다.", fill=PALE_GOLD)
+    top -= 44 * mm
+    column_width = (page_width - 42 * mm) / 2
+    right = left + column_width + 6 * mm
+    compact_card(pdf, left, top, column_width, 68 * mm, "ADD PATH", "태그 추가: 빈 슬롯을 작품의 성격으로", "태그 추가는 아직 비어 있는 태그 슬롯을 한 개만 채운다. 추가 직전 카드에는 현재 태그 수 0~2 / 최대 3, 선택 결과, 촉매 종류·보유량, 시도 후 예상 표기를 같이 둔다. 세 번째 태그가 이미 있다면 추가 action은 설명 가능한 비활성 상태가 된다.", fill=PALE_COPPER)
+    compact_card(pdf, right, top, column_width, 68 * mm, "UPGRADE PATH", "태그 강화: 기존 태그 하나만 성장", "태그 강화는 활성 태그 중 하나를 명시적으로 고른다. resolver가 선택 태그에 대응하는 필요 촉매를 자동 결정해 표시한다. 성공하면 고른 태그만 I → II → III → IV로 한 단계 성장하며, 다른 태그·기존 강화 레벨·태그 총수는 줄지 않는다.", fill=PALE_BLUE)
+    top -= 74 * mm
+    compact_card(pdf, left, top, column_width, 53 * mm, "CARD CONTENT", "작은 카드가 반드시 담을 것", "태그 이름·현재 단계, 예상 다음 단계, 선택 action, 소비 Gold·보강재·촉매, 보유량, 성공·유지·손상 결과를 한 카드 안에서 이어서 읽게 한다. 촉매의 현재 보유량은 선택을 바꾸는 자원 정보이지 장비의 영구 속성이 아니다.", fill=PAPER)
+    compact_card(pdf, right, top, column_width, 53 * mm, "HARD BOUNDARY", "금지되는 지름길", "무작위로 태그를 주지 않는다. 없는 촉매를 자동 대체하지 않는다. 선택을 초기화하는 reroll을 만들지 않는다. 네 번째 affix 슬롯을 만들지 않는다. 같은 태그를 한 시도에 두 단계 강화하지 않는다. 이 경계는 결과의 예측 가능성을 지킨다.", fill=PALE_GREEN)
+    top -= 59 * mm
+    panel(pdf, 18 * mm, top, full_width, 39 * mm, fill=PALE_COPPER)
+    label(pdf, "RECURRING CADENCE", 23 * mm, top - 6 * mm)
+    draw_wrapped(pdf, "정밀 target은 [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]이다. +10 단위가 아닌 일반 목표에서는 이 패널을 띄우지 않는다. +5는 연출 전용이다. 따라서 플레이어는 ‘매 10단위에 한 번, 태그의 방향 또는 깊이를 고른다’는 규칙을 반복해서 학습한다.", 23 * mm, top - 12 * mm, full_width - 10 * mm, size=8.15, leading=11.4, color=INK)
+
+
+def page_nine(pdf: canvas.Canvas) -> None:
+    page_width, page_height = A4
+    header(pdf, 9, "손상·수리")
+    y = heading(pdf, "손상·내구도·수리 판단은 숫자 하나의 축", 18 * mm, page_height - 27 * mm, size=18)
+    y = draw_wrapped(pdf, "내구도 화면은 CURRENT / MAX / BASE_MAX를 유일한 gameplay authority로 읽는다. Current 손상과 Max 흉터를 별도 패널티로 중첩하지 않고, 더 나쁜 비율 하나가 player-facing effective state를 정한다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=9.2, leading=14, color=MUTED)
+    left = 18 * mm
+    full_width = page_width - 36 * mm
+    top = y - 6 * mm
+    compact_card(pdf, left, top, full_width, 42 * mm, "VISIBLE AUTHORITY", "CURRENT / MAX / BASE_MAX와 상태 예시", "5 / 5 / 5 = 정상, 4 / 5 / 5 = 경미, 2 / 5 / 5 = 심각, 4 / 4 / 5 = 경미, 2 / 2 / 5 = 심각, 0 / 5 / 5 = 파괴다. CURRENT는 현재 회복 가능한 양, MAX는 구조 흉터 이후의 상한, BASE_MAX는 출생 상한이다.", fill=PALE_GOLD)
+    top -= 48 * mm
+    column_width = (page_width - 42 * mm) / 2
+    right = left + column_width + 6 * mm
+    compact_card(pdf, left, top, column_width, 61 * mm, "DAMAGE DISPLAY", "손상 확률은 실패에 조건부", "target 10 이하의 강화 손상은 0이다. target 11 이상에서 base damage curve와 effective state multiplier를 결합한다. 화면은 정확한 내부 계산을 바꾸지 않고 ‘성공 / FAILED_HOLD /\nFAILED_DAMAGE’의 최종 시도 확률을 소수 첫째 자리로 표시한다.", fill=PALE_BLUE)
+    compact_card(pdf, right, top, column_width, 61 * mm, "FAILURE RESOLUTION", "한 번의 실패는 한 결과", "성공이 아니면 FAILED_HOLD 또는\nFAILED_DAMAGE 중 하나다. FAILED_HOLD는 레벨과 내구도를 보존한다. FAILED_DAMAGE는 실제 CURRENT를 낮추고, 조건이 맞으면 수리 job을 연다. 단계 하락, 추가 critical 판정, 한 이벤트에 두 번 손상시키기는 금지한다.", fill=PALE_COPPER)
+    top -= 67 * mm
+    compact_card(pdf, left, top, column_width, 52 * mm, "REPAIR ELIGIBILITY", "수리 job은 실제 손상 뒤에만", "수리는 0 < CURRENT < MAX 이고 repair job이 있을 때만 시작할 수 있다. 수리 시작 시 job은 소비된다. 파괴된 작품의 수리, 이미 CURRENT = MAX인 작품의 수리, MAX 내구도의 완전 복원은 이 Phase 1 범위에 없다.", fill=PALE_GREEN)
+    compact_card(pdf, right, top, column_width, 52 * mm, "TEMP TEST BUDGET", "수리 품질과 MAX 흉터는 확정 경제가 아니다", "Excellent 20% / Standard 60% / Poor 20%와 구간별 MAX -1 scar 확률은 테스트 예산이다. 화면은 quality 결과와 post-scar MAX를 보이게 준비하되, 이 숫자를 최종 밸런스나 출시 약속으로 표시하지 않는다.", fill=PAPER)
+    top -= 58 * mm
+    panel(pdf, 18 * mm, top, full_width, 36 * mm, fill=PALE_COPPER)
+    label(pdf, "DECISION AFTER DAMAGE", 23 * mm, top - 6 * mm)
+    draw_wrapped(pdf, "심각 상태에서도 강화는 가능하지만 success -7pp, 새 효과 ×0.75, damage risk ×1.75라는 임시 테스트 modifier를 동반한다. 플레이어에게는 ‘지금 수리할지 / 손상된 작품으로 한 번 더 밀지’라는 선택만 남기고, 손상 경고가 강화 화면의 주제를 빼앗지 않도록 보조 정보로 배치한다.", 23 * mm, top - 12 * mm, full_width - 10 * mm, size=8.15, leading=11.4, color=INK)
+
+
+def page_ten(pdf: canvas.Canvas) -> None:
+    page_width, page_height = A4
+    header(pdf, 10, "고객 실제 사용·연대기")
+    y = heading(pdf, "고객 실제 사용의 귀환과 작품 연대기", 18 * mm, page_height - 27 * mm, size=18)
+    y = draw_wrapped(pdf, "공방 밖으로 나간 장비는 같은 UID로 돌아온다. 고객에게 건네는 행위와 실제 사용 결과를 분리해, ‘손상을 위한 연출’이 아니라 작품의 다음 목적을 보여 준다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=9.2, leading=14, color=MUTED)
+    left = 18 * mm
+    full_width = page_width - 36 * mm
+    top = y - 6 * mm
+    compact_card(pdf, left, top, full_width, 39 * mm, "CAUSALITY", "인계 자체는 손상을 만들지 않는다", "고객 인계 또는 구매만으로는 손상 이벤트가 발생하지 않는다. 실제 장비 사용이 있어야 하며, UID 당 이벤트 한 번에 최대 한 번만 손상 판정을 한다. 임무 결과와 장비 손상은 독립 축이다. 세계·고객 이벤트가 MAX를 직접 낮추지 않는다.", fill=PALE_GOLD)
+    top -= 45 * mm
+    column_width = (page_width - 42 * mm) / 2
+    right = left + column_width + 6 * mm
+    compact_card(pdf, left, top, column_width, 63 * mm, "HANDOFF CARD", "보내기 전: 목적과 작품을 함께 읽기", "공방의 인계 CTA는 현재 작품, 장비 종류, 강화·태그, 내구도, 고객이 실제로 사용할 맥락을 확인한다. 고객 관리형 반복 흐름을 추가하지 않는다. 이 단계에서 ‘인계가 손상시키지 않음’을 짧게 명시해 잘못된 공포를 만들지 않는다.", fill=PALE_BLUE)
+    compact_card(pdf, right, top, column_width, 63 * mm, "RESULT RETURN", "돌아온 뒤: 두 결과 축을 나란히", "고객 실제 사용 후 결과 카드는 임무·세계 결과와 장비 상태를 분리해 보인다. 손상이 없으면 작품의 내구도를 보존한다. 손상이 있었다면 CURRENT 변화와 수리 job 가능 여부를 정확히 보인다. 결과 그림이 없더라도 text-native 결과 패널은 동작해야 한다.", fill=PALE_COPPER)
+    top -= 69 * mm
+    compact_card(pdf, left, top, column_width, 53 * mm, "CHRONICLE IN", "연대기에 남길 의미 사건", "제작, 태그 획득 또는 성장, 실제 손상, MAX 흉터 수리, 고객 인계, 세계 결과, 파괴는 작품 연대기의 후보다. 각 기록은 UID와 사건 종류·짧은 결과를 연결한다. 플레이어가 ‘이 장비가 왜 지금 이런 상태인지’를 거꾸로 읽을 수 있어야 한다.", fill=PALE_GREEN)
+    compact_card(pdf, right, top, column_width, 53 * mm, "CHRONICLE OUT", "남기지 않을 반복", "일반 강화 성공·유지 실패를 매번 연대기에 적지 않는다. 반복 강화 기록은 player chronicle이 아니다. 고객 결과가 아직 없는데 미래 사건을 미리 쓰지 않는다. 설명을 위해 가짜 손상·가짜 고객 결과·가짜 스크린샷을 제품 asset처럼 쓰지 않는다.", fill=PAPER)
+    top -= 59 * mm
+    panel(pdf, 18 * mm, top, full_width, 36 * mm, fill=PALE_COPPER)
+    label(pdf, "RETURN DESTINATION", 23 * mm, top - 6 * mm)
+    draw_wrapped(pdf, "결과를 읽은 뒤에는 같은 공방으로 돌아가며, 조건부 수리와 다음 강화·다음 인계 중 가능한 행동만 제시한다. 이 재진입은 새 인벤토리나 새 고객 관리 화면을 요구하지 않는다. ‘한 작품이 공방–세계–연대기 사이에서 지속된다’는 약속을 작은 화면 수로 완성한다.", 23 * mm, top - 12 * mm, full_width - 10 * mm, size=8.15, leading=11.4, color=INK)
+
+
+def page_eleven(pdf: canvas.Canvas) -> None:
+    page_width, page_height = A4
+    header(pdf, 11, "구현 인계·검증과 증거 한계")
+    y = heading(pdf, "구현 인계와 검증과 증거 한계", 18 * mm, page_height - 27 * mm, size=18)
+    y = draw_wrapped(pdf, "이 상세 PDF는 변경해야 할 화면의 순서와 owner 연결을 보이게 하지만, Markdown·JSON·코드·테스트 정본을 대체하지 않는다. 아래 연결은 Phase 1 구현 시작 전의 검토용 인계 지도다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=9.2, leading=14, color=MUTED)
+    left = 18 * mm
+    full_width = page_width - 36 * mm
+    top = y - 6 * mm
+    compact_card(pdf, left, top, full_width, 43 * mm, "구현 소유 경로", "UI는 표시하고 resolver·저장은 정본 규칙을 소유", "세로 공방 shell은 MarginContainer → ScrollContainer → VBoxContainer다. 정밀 패널은 scripts/vertical_slice/ui/\nvs_workshop_screen.gd, 재료·차단 CTA는 resolver, 수리와 내구도는 resolver·저장 owner, 고객 결과·연대기는 read-only consumer가 맡는다.\nContainer는 child 위치를 소유하므로 수동 배치로 교체하지 않는다.", fill=PALE_GOLD)
+    top -= 49 * mm
+    column_width = (page_width - 42 * mm) / 2
+    right = left + column_width + 6 * mm
+    compact_card(pdf, left, top, column_width, 64 * mm, "ASSET REUSE", "새 이미지 없이도 화면은 비지 않는다", "메뉴·첫 제작에서는 기존 승인 투명 장비 5종(검·방패·활·갑옷·투구), 승인 로고, 공방 배경·내구도 atlas·고객 결과 illustration을 각 실제 consumer에서 재사용한다. 장비 등급별 새 외형, 정밀 전용 공방 배경, 촉매 전용 raster, 가짜 제품 스크린샷은 만들지 않는다.", fill=PALE_GREEN)
+    compact_card(pdf, right, top, column_width, 64 * mm, "IMPLEMENTATION UNITS", "작게 나누어 실제 화면으로 검증", "1) portrait shell, 2) same-UID item card, 3) normal enhancement, 4) precision add/upgrade precheck·atomic resolution, 5) damage/repair return, 6) customer result/chronicle readback 순서다. 각각은 RED 계약 테스트 → 최소 GREEN → refactor → exact-head 검증으로 연결한다.", fill=PALE_BLUE)
+    top -= 70 * mm
+    compact_card(pdf, left, top, column_width, 55 * mm, "WHAT THIS PDF PROVES", "문서 산출물의 기계·시각 검증", "PDF는 11쪽 A4, 핵심 텍스트, metadata, SHA-256 영수증, 입력 문서 해시, benchmark preflight와 hygiene record를 기계 검사한다. 모든 쪽은 PNG 렌더 후 글자 잘림·겹침·여백을 agent가 검토한다. 이 검증은 문서 레이아웃의 evidence ceiling을 넘지 않는다.", fill=PAPER)
+    compact_card(pdf, right, top, column_width, 55 * mm, "NOT RUN", "런타임·기기·사람 판단은 별도 gate", "Godot runtime, Android safe area·touch, 접근성, 성능, 실제 플레이 재미, 사용자 UX 수용, 출시 승인은 이 문서만으로 PASS가 아니다. 이전 runtime capture는 역사 evidence이며, 이번 PDF 개정이 새 runtime proof나 자산 승격을 만들지 않는다.", fill=PALE_COPPER)
+    top -= 61 * mm
+    panel(pdf, 18 * mm, top, full_width, 37 * mm, fill=PALE_GOLD)
+    label(pdf, "NEXT HUMAN CHECKPOINT", 23 * mm, top - 6 * mm)
+    heading(pdf, "사용자 블루프린트 검토 대기", 23 * mm, top - 14 * mm, size=11.6)
+    draw_wrapped(pdf, "확인 질문: 일반 강화의 읽기 순서가 명확한가? 최초 +10과 +20 이후의 행동 차이가 분명한가? 불의 심장·대지의 결정이 소모 자원으로 보이는가? 손상·수리·고객 실제 사용·연대기가 같은 UID로 자연스럽게 이어지는가? 이 네 가지는 실제 Godot 화면에서 최종 UX 검토가 필요하다.", 23 * mm, top - 22 * mm, full_width - 10 * mm, size=8.0, leading=11.2, color=INK)
+
+
 def draw_pdf() -> str:
     register_fonts()
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
@@ -418,7 +591,19 @@ def draw_pdf() -> str:
     pdf.setAuthor("Blacksmith Project")
     pdf.setSubject("Derived non-canonical Blueprint Viewer")
     pdf.setCreator("Blacksmith deterministic ReportLab publisher")
-    for page in (page_one, page_two, page_three, page_four, page_five):
+    for page in (
+        page_one,
+        page_two,
+        page_three,
+        page_four,
+        page_five,
+        page_six,
+        page_seven,
+        page_eight,
+        page_nine,
+        page_ten,
+        page_eleven,
+    ):
         page(pdf)
         pdf.showPage()
     pdf.save()
@@ -465,6 +650,44 @@ def write_receipt(*, render_status: str, rendered_pages: list[int], visual_revie
             "rendered_pages": rendered_pages,
             "visual_review": visual_review,
         },
+        "benchmark_preflight_receipt": {
+            "date": "2026-09-02",
+            "scope": "DETAIL_PDF_REVIEW_ONLY / NO_NEW_PRODUCT_RULE_OR_ASSET",
+            "inputs": [
+                {
+                    "source": "Godot official GUI containers documentation",
+                    "type": "PRIMARY_TECHNICAL_SOURCE",
+                    "disposition": "ADOPT",
+                    "finding": "Nested Container layouts and a ScrollContainer with one child support the existing portrait workshop shell.",
+                },
+                {
+                    "source": "2026-09-01 Phase 1 benchmark receipt",
+                    "type": "PROJECT_RESEARCH_RECEIPT",
+                    "disposition": "ADAPT",
+                    "finding": "Illustrated workshop-book hierarchy, immediate feedback, and real-use purpose inform the viewer without importing foreign economy values.",
+                },
+                {
+                    "source": "Existing explanatory raster patterns",
+                    "type": "PROJECT_ART_DIRECTION_GATE",
+                    "disposition": "REJECT",
+                    "finding": "No new explanatory raster or fake product screenshot is generated because this derived PDF has no runtime image consumer.",
+                },
+            ],
+        },
+        "context_configuration_hygiene": {
+            "scope_class": "NONCODING_BUILD",
+            "modified_paths": [
+                "tools/publish_phase1_workshop_blueprint_pdf.py",
+                "tests/check_phase1_workshop_blueprint_pdf_contract.py",
+                "tests/test_phase1_workshop_blueprint_pdf_publisher.py",
+                "exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf",
+                "docs/operations/receipts/2026-09-02-phase1-workshop-blueprint-pdf.json",
+            ],
+            "protected_product_paths_modified": False,
+            "new_runtime_asset": False,
+            "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-detail-render (cleaned after review)",
+            "unused_temporary_files_retained": False,
+        },
         "evidence_ceiling": {
             "pdf_structure_and_text": "MACHINE_VERIFIED_AFTER_CONTRACT_RUN",
             "pdf_visual_layout": "AGENT_VISUAL_REVIEW_AFTER_RENDER" if rendered_pages else "NOT_RUN",
@@ -485,8 +708,8 @@ def build() -> None:
     if first_sha != second_sha:
         raise RuntimeError("invariant PDF generation produced different bytes")
     reader = PdfReader(str(OUTPUT))
-    if len(reader.pages) != 5:
-        raise RuntimeError(f"expected five pages, found {len(reader.pages)}")
+    if len(reader.pages) != PAGE_COUNT:
+        raise RuntimeError(f"expected {PAGE_COUNT} pages, found {len(reader.pages)}")
     if reader.metadata.title != TITLE:
         raise RuntimeError("PDF metadata title mismatch")
     write_receipt(
@@ -501,12 +724,12 @@ def finalize_render_review() -> None:
     if not OUTPUT.exists():
         raise FileNotFoundError(OUTPUT)
     reader = PdfReader(str(OUTPUT))
-    if len(reader.pages) != 5:
-        raise RuntimeError(f"expected five pages, found {len(reader.pages)}")
+    if len(reader.pages) != PAGE_COUNT:
+        raise RuntimeError(f"expected {PAGE_COUNT} pages, found {len(reader.pages)}")
     write_receipt(
         render_status="RENDERED_AND_AGENT_VISUAL_LAYOUT_REVIEWED",
         rendered_pages=list(range(1, len(reader.pages) + 1)),
-        visual_review="ALL_FIVE_PAGES_RENDERED_AND_VISUALLY_REVIEWED_FOR_CLIPPING_OVERLAP_AND_LEGIBILITY",
+        visual_review="ALL_ELEVEN_PAGES_RENDERED_AND_VISUALLY_REVIEWED_FOR_CLIPPING_OVERLAP_AND_LEGIBILITY",
     )
     print(f"recorded render review for {OUTPUT.relative_to(ROOT)}")
 

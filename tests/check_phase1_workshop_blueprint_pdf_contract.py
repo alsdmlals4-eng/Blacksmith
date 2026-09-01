@@ -18,6 +18,7 @@ EXPECTED_SOURCES = {
     "docs/superpowers/specs/2026-09-01-phase1-workshop-blueprint-design.md",
     "docs/planning/PROJECT_CORE_SCENE_VISUAL_BOARD_20260828.md",
     "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md",
+    "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
     "docs/operations/receipts/2026-09-01-phase1-workshop-blueprint.json",
 }
 REQUIRED_TEXT = (
@@ -29,6 +30,20 @@ REQUIRED_TEXT = (
     "불의 심장",
     "대지의 결정",
     "STOP OR PUSH",
+    "+5 제작 리듬",
+    "최초 +10",
+    "+20 이후",
+    "태그 추가",
+    "태그 강화",
+    "사전 조건 차단",
+    "FAILED_HOLD",
+    "FAILED_DAMAGE",
+    "CURRENT / MAX / BASE_MAX",
+    "수리 job",
+    "고객 실제 사용",
+    "작품 연대기",
+    "구현 소유 경로",
+    "검증과 증거 한계",
     "사용자 블루프린트 검토 대기",
 )
 
@@ -47,13 +62,15 @@ def main() -> None:
         failures.append(f"missing PDF receipt: {RECEIPT.relative_to(ROOT)}")
     if PDF.exists():
         reader = PdfReader(str(PDF))
-        if len(reader.pages) != 5:
-            failures.append(f"expected five A4 pages, found {len(reader.pages)}")
+        if len(reader.pages) != 11:
+            failures.append(f"expected eleven A4 pages, found {len(reader.pages)}")
         if reader.metadata.title != "모루의 서약 · Phase 1 워크숍 블루프린트":
             failures.append(f"unexpected PDF title: {reader.metadata.title!r}")
         if reader.metadata.subject != "Derived non-canonical Blueprint Viewer":
             failures.append(f"unexpected PDF subject: {reader.metadata.subject!r}")
         extracted = "\n".join(page.extract_text() or "" for page in reader.pages)
+        if len(extracted) < 10000:
+            failures.append(f"detailed PDF text is too short: {len(extracted)} characters")
         for token in REQUIRED_TEXT:
             if token not in extracted:
                 failures.append(f"PDF text missing required token: {token}")
@@ -65,15 +82,19 @@ def main() -> None:
             failures.append("receipt artifact path does not match the generated PDF")
         if receipt.get("artifact", {}).get("sha256") != sha256(PDF):
             failures.append("receipt artifact SHA-256 does not match the generated PDF")
-        if receipt.get("artifact", {}).get("page_count") != 5:
-            failures.append("receipt must report exactly five PDF pages")
+        if receipt.get("artifact", {}).get("page_count") != 11:
+            failures.append("receipt must report exactly eleven PDF pages")
         if receipt.get("user_review_status") != "USER_BLUEPRINT_REVIEW_PENDING":
             failures.append("receipt must retain the pending user blueprint review boundary")
         if receipt.get("runtime_asset") is not False:
             failures.append("derived PDF must not be represented as a runtime asset")
         source_paths = {entry.get("path") for entry in receipt.get("source_documents", [])}
         if source_paths != EXPECTED_SOURCES:
-            failures.append("receipt source set must exactly identify the four current blueprint owners")
+            failures.append("receipt source set must exactly identify the five current blueprint owners")
+        if not receipt.get("benchmark_preflight_receipt"):
+            failures.append("receipt must retain a non-empty benchmark preflight receipt")
+        if not receipt.get("context_configuration_hygiene"):
+            failures.append("receipt must retain non-empty context/configuration hygiene evidence")
     if failures:
         print("phase1 workshop blueprint PDF contract: FAIL", file=sys.stderr)
         for failure in failures:

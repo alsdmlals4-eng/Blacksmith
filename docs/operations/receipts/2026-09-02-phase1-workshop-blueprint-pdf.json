@@ -7,8 +7,8 @@
   "runtime_asset": false,
   "artifact": {
     "path": "exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf",
-    "sha256": "bdce671cce05d7645f9963a1fefb585a7e6043059f2c5996b1a91f805599252e",
-    "page_count": 5,
+    "sha256": "6c3dd1bdad30691476e552ed157bf4807be09be78089c88af2913c4828eaaafe",
+    "page_count": 11,
     "pdf_title": "모루의 서약 · Phase 1 워크숍 블루프린트",
     "pdf_subject": "Derived non-canonical Blueprint Viewer",
     "target_format": "A4"
@@ -27,6 +27,11 @@
     {
       "path": "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md",
       "sha256": "a088b6995569b6a9b14c2da0463aed10a0d19eec59941f87dc01486228eab8e3",
+      "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+      "sha256": "c6f545f8880f2080948ebf78d73793a301981fbc672bf04d0e868b7c3f60dd50",
       "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
     },
     {
@@ -54,9 +59,53 @@
       2,
       3,
       4,
-      5
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
     ],
-    "visual_review": "ALL_FIVE_PAGES_RENDERED_AND_VISUALLY_REVIEWED_FOR_CLIPPING_OVERLAP_AND_LEGIBILITY"
+    "visual_review": "ALL_ELEVEN_PAGES_RENDERED_AND_VISUALLY_REVIEWED_FOR_CLIPPING_OVERLAP_AND_LEGIBILITY"
+  },
+  "benchmark_preflight_receipt": {
+    "date": "2026-09-02",
+    "scope": "DETAIL_PDF_REVIEW_ONLY / NO_NEW_PRODUCT_RULE_OR_ASSET",
+    "inputs": [
+      {
+        "source": "Godot official GUI containers documentation",
+        "type": "PRIMARY_TECHNICAL_SOURCE",
+        "disposition": "ADOPT",
+        "finding": "Nested Container layouts and a ScrollContainer with one child support the existing portrait workshop shell."
+      },
+      {
+        "source": "2026-09-01 Phase 1 benchmark receipt",
+        "type": "PROJECT_RESEARCH_RECEIPT",
+        "disposition": "ADAPT",
+        "finding": "Illustrated workshop-book hierarchy, immediate feedback, and real-use purpose inform the viewer without importing foreign economy values."
+      },
+      {
+        "source": "Existing explanatory raster patterns",
+        "type": "PROJECT_ART_DIRECTION_GATE",
+        "disposition": "REJECT",
+        "finding": "No new explanatory raster or fake product screenshot is generated because this derived PDF has no runtime image consumer."
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope_class": "NONCODING_BUILD",
+    "modified_paths": [
+      "tools/publish_phase1_workshop_blueprint_pdf.py",
+      "tests/check_phase1_workshop_blueprint_pdf_contract.py",
+      "tests/test_phase1_workshop_blueprint_pdf_publisher.py",
+      "exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf",
+      "docs/operations/receipts/2026-09-02-phase1-workshop-blueprint-pdf.json"
+    ],
+    "protected_product_paths_modified": false,
+    "new_runtime_asset": false,
+    "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-detail-render (cleaned after review)",
+    "unused_temporary_files_retained": false
   },
   "evidence_ceiling": {
     "pdf_structure_and_text": "MACHINE_VERIFIED_AFTER_CONTRACT_RUN",
