@@ -12,6 +12,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('pm_gate', ROOT / 'tools/check_pm_work_receipt.py')
 GATE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(GATE)
+INTEGRATION_SPEC = importlib.util.spec_from_file_location(
+    'pm_real_base_integration',
+    ROOT / 'tests/test_pm_real_base_integration.py',
+)
+INTEGRATION = importlib.util.module_from_spec(INTEGRATION_SPEC)
+INTEGRATION_SPEC.loader.exec_module(INTEGRATION)
 MERGED_BASE_PM = '96bee2700c8931b9262ad5a24a0664a400858f20'
 RETIRED_CANDIDATE = 'ff1dedc5dd1a5c770ea0f1f12efa7928484841c2'
 
@@ -78,6 +84,86 @@ class PMExecutionGateTests(unittest.TestCase):
         ):
             with self.subTest(integration_token=token):
                 self.assertIn(token, integration)
+
+    def test_receipt_only_proof_rejects_mode_only_extra_change(self):
+        project_base = Path(self.tmp.name) / 'project-base'
+        project_base.mkdir()
+        for relative in INTEGRATION.REQUIRED_MERGED_PM_PATHS:
+            path = project_base / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            if relative == INTEGRATION.RECEIPT_RELATIVE:
+                path.write_text(
+                    json.dumps({
+                        'project_work_kanban': {
+                            'progress_summary': {'display': '3 / 4'},
+                            'work_items': [
+                                {'work_item_id': 'BS-PM-04', 'status': 'VERIFY_REVIEW'}
+                            ],
+                        }
+                    }),
+                    encoding='utf-8',
+                )
+            elif relative == 'tools/check_pm_work_receipt.py':
+                path.write_text(
+                    f'{GATE.PM_TOOLING_COMMIT}\nGIT_NO_REPLACE_OBJECTS\n',
+                    encoding='utf-8',
+                )
+            else:
+                path.write_text('fixture\n', encoding='utf-8')
+        extra = project_base / 'scripts/tool.sh'
+        extra.parent.mkdir(parents=True, exist_ok=True)
+        extra.write_text('#!/bin/sh\nexit 0\n', encoding='utf-8')
+        extra.chmod(0o644)
+        for args in (
+            ['init', '-q'],
+            ['config', 'user.email', 'fixture@example.invalid'],
+            ['config', 'user.name', 'fixture'],
+            ['add', '.'],
+            ['commit', '-qm', 'base'],
+        ):
+            subprocess.run(['git', '-C', str(project_base), *args], check=True, capture_output=True)
+        source_sha = subprocess.check_output(
+            ['git', '-C', str(project_base), 'rev-parse', 'HEAD'],
+            text=True,
+        ).strip()
+
+        subject = Path(self.tmp.name) / 'subject'
+        subprocess.run(
+            ['git', 'clone', '-q', str(project_base), str(subject)],
+            check=True,
+            capture_output=True,
+        )
+        subprocess.run(['git', '-C', str(subject), 'config', 'user.email', 'fixture@example.invalid'], check=True)
+        subprocess.run(['git', '-C', str(subject), 'config', 'user.name', 'fixture'], check=True)
+        subject_receipt = subject / INTEGRATION.RECEIPT_RELATIVE
+        receipt_value = json.loads(subject_receipt.read_text(encoding='utf-8'))
+        receipt_value['receipt_tail'] = True
+        subject_receipt.write_text(json.dumps(receipt_value), encoding='utf-8')
+        (subject / 'scripts/tool.sh').chmod(0o755)
+        subprocess.run(
+            ['git', '-C', str(subject), 'add', INTEGRATION.RECEIPT_RELATIVE],
+            check=True,
+        )
+        subprocess.run(
+            ['git', '-C', str(subject), 'add', '--chmod=+x', 'scripts/tool.sh'],
+            check=True,
+        )
+        subprocess.run(
+            ['git', '-C', str(subject), 'commit', '-qm', 'receipt plus hidden mode change'],
+            check=True,
+        )
+        subject_sha = subprocess.check_output(
+            ['git', '-C', str(subject), 'rev-parse', 'HEAD'],
+            text=True,
+        ).strip()
+
+        errors = INTEGRATION.verify_receipt_only_closure(
+            subject,
+            project_base,
+            source_sha,
+            subject_sha,
+        )
+        self.assertIn('scripts/tool.sh', '; '.join(errors))
 
     def test_wrong_checkout_is_rejected(self):
         self.assertTrue(GATE.check_tooling(self.base, '0' * 40))
