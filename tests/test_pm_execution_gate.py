@@ -41,7 +41,7 @@ class PMExecutionGateTests(unittest.TestCase):
             with self.subTest(surface=name):
                 self.assertIn(MERGED_BASE_PM, value)
                 self.assertNotIn(RETIRED_CANDIDATE, value)
-        self.assertIn('ref: ${{ github.event.pull_request.head.sha }}', workflow)
+        self.assertIn('ref: ${{ github.event.pull_request.head.sha || inputs.expected_subject_head_sha }}', workflow)
         self.assertIn('python -m pip install -r base-pm/.github/validation-requirements.txt', workflow)
 
     def test_workflow_covers_every_checker_input_and_trusted_revision_env(self):
