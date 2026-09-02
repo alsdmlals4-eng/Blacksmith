@@ -48,12 +48,12 @@
     "goal_or_slice_issue_ref": "Blacksmith#358",
     "source_main_sha": "296ad86c2315357998ed86c594b8b006a1bde420",
     "work_item_refs": ["BS-PM-01", "BS-PM-02", "BS-PM-03", "BS-PM-04"],
-    "active_work_item_ref": "BS-PM-02",
-    "next_action": "Run the wrapper and actual-Base integration tests against merged Base PM tooling 96bee2700c8931b9262ad5a24a0664a400858f20, then move BS-PM-03 to VERIFY_REVIEW only when that exact project HEAD is green.",
+    "active_work_item_ref": "BS-PM-04",
+    "next_action": "Review the exact receipt-tail HEAD, confirm every required workflow and independent review, then normally squash-merge Blacksmith PR #359 and perform merged-main readback before final closeout.",
     "progress_summary": {
-      "completed_items": 1,
+      "completed_items": 3,
       "applicable_items": 4,
-      "display": "1 / 4"
+      "display": "3 / 4"
     },
     "work_items": [
       {
@@ -65,9 +65,22 @@
         "depends_on": [],
         "acceptance_criteria": ["BS-AC-01"],
         "required_evidence": ["E1_STATIC"],
-        "checklist": [{"id": "BS-AC-01", "text": "Current authority, adopted release, active starter and protected scope are read before PM wiring.", "status": "PASS", "evidence": ["Blacksmith main 296ad86c and AGENTS/current operational owner readback"]}],
-        "verification": [{"level": "E1_STATIC", "status": "PASS", "evidence": ["Repository authority/source and non-overlapping latest-main changes re-read before branch reconciliation"]}],
-        "next_action": "Preserve this completed authority audit while later closeout revalidates all required work at one verified subject HEAD.",
+        "checklist": [
+          {
+            "id": "BS-AC-01",
+            "text": "Current authority, adopted release, active starter and protected scope are read before PM wiring.",
+            "status": "PASS",
+            "evidence": ["Blacksmith main 296ad86c and AGENTS/current operational owner readback"]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E1_STATIC",
+            "status": "PASS",
+            "evidence": ["Repository authority/source and non-overlapping latest-main changes re-read before branch reconciliation"]
+          }
+        ],
+        "next_action": "Preserve this completed authority audit while final closeout revalidates all required work at the merged subject HEAD.",
         "verified_head_sha": "296ad86c2315357998ed86c594b8b006a1bde420",
         "repository_readback": "PASS",
         "readback_evidence": ["AGENTS and current operational owner fetched from exact main revision 296ad86c"],
@@ -79,41 +92,103 @@
       {
         "work_item_id": "BS-PM-02",
         "title": "Wire exact merged Base PM tooling through a thin project-owned entrypoint",
-        "status": "IN_PROGRESS",
+        "status": "DONE",
         "canon_owner": "tools/check_pm_work_receipt.py",
         "actual_consumers": ["project operator", "validate-current-base-adaptation-work-contract workflow"],
         "depends_on": ["BS-PM-01"],
         "acceptance_criteria": ["BS-AC-02"],
         "required_evidence": ["E2_TEST"],
-        "checklist": [{"id": "BS-AC-02", "text": "Wrapper validates merged Base commit 96bee2700c8931b9262ad5a24a0664a400858f20 and tracked executable bytes and forwards phase, fresh source SHA, closeout verified HEAD and Markdown rendering without mutating project state.", "status": "IN_PROGRESS", "evidence": ["RED workflow 33578055517 at project HEAD 1db25961350e81804f46fcc021765b88f5c1b192 failed the new merged-provenance test before wrapper and workflow repinning."]}],
-        "verification": [{"level": "E2_TEST", "status": "NOT_RUN", "evidence": []}],
-        "next_action": "Read exact-head workflow results for wrapper and real merged-Base integration, then correct any failure before promotion."
+        "checklist": [
+          {
+            "id": "BS-AC-02",
+            "text": "Wrapper validates merged Base commit 96bee2700c8931b9262ad5a24a0664a400858f20 and tracked executable bytes and forwards phase, fresh source SHA, closeout verified HEAD and Markdown rendering without mutating project state.",
+            "status": "PASS",
+            "evidence": [
+              "RED workflow 33578055517 at project HEAD 1db25961350e81804f46fcc021765b88f5c1b192 failed the merged-provenance test before repinning.",
+              "GREEN workflow 33578265462 at project HEAD 0c32aea396b64b685baab0fcddc46e9a3e0e52e1 passed wrapper boundaries and real merged-Base integration."
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": ["Validate Current Base Adaptation Work Contract run 33578265462 succeeded at exact project HEAD 0c32aea396b64b685baab0fcddc46e9a3e0e52e1"]
+          }
+        ],
+        "next_action": "Preserve the merged Base tooling pin and its exact-byte checks through review, merge and final readback.",
+        "verified_head_sha": "0c32aea396b64b685baab0fcddc46e9a3e0e52e1",
+        "repository_readback": "PASS",
+        "readback_evidence": ["Wrapper and workflow at 0c32aea both select Base PM tooling 96bee270; adopted project Base release remains v9.4.4 / 210ec782."],
+        "rollback": "Normally revert the Blacksmith PM integration squash commit; do not modify the adopted Base release or product paths.",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0
       },
       {
         "work_item_id": "BS-PM-03",
         "title": "Validate evidence-backed completion and visible bounded handoff",
-        "status": "BACKLOG",
+        "status": "DONE",
         "canon_owner": "tests/test_pm_execution_gate.py and tests/test_pm_real_base_integration.py",
         "actual_consumers": ["project CI", "ChatGPT Work closeout review"],
         "depends_on": ["BS-PM-02"],
         "acceptance_criteria": ["BS-AC-03"],
         "required_evidence": ["E2_TEST"],
-        "checklist": [{"id": "BS-AC-03", "text": "Missing PM, stale source/head, incomplete or falsely DONE work fail; active and postmerge-complete repository receipts select the correct phase and expose the full checklist.", "status": "NOT_RUN", "evidence": []}],
-        "verification": [{"level": "E2_TEST", "status": "NOT_RUN", "evidence": []}],
-        "next_action": "After BS-PM-02 is DONE, select this item as VERIFY_REVIEW and run exact-head project CI plus independent review."
+        "checklist": [
+          {
+            "id": "BS-AC-03",
+            "text": "Missing PM, stale source/head, incomplete or falsely DONE work fail; active and postmerge-complete repository receipts select the correct phase and expose the full checklist.",
+            "status": "PASS",
+            "evidence": [
+              "Merged-Base wrapper and real integration suite passed in run 33578265462.",
+              "All six Blacksmith workflow groups passed at exact project HEAD 0c32aea396b64b685baab0fcddc46e9a3e0e52e1, including PR validation run 33578265871."
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": ["Exact-head runs 33578265345, 33578265785, 33578265431, 33578265386, 33578265462 and 33578265871 all concluded success"]
+          }
+        ],
+        "next_action": "Keep this verified candidate evidence immutable; receipt-only status changes require their own exact-head regression and review.",
+        "verified_head_sha": "0c32aea396b64b685baab0fcddc46e9a3e0e52e1",
+        "repository_readback": "PASS",
+        "readback_evidence": ["PR #359 changed-file set remains six operational files and excludes product, asset, save, generated-adapter and adopted-release paths."],
+        "rollback": "Discard or revert only the PM operational integration; no product-state migration is required.",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0
       },
       {
         "work_item_id": "BS-PM-04",
         "title": "Normally merge the project integration and read back merged main",
-        "status": "BACKLOG",
+        "status": "VERIFY_REVIEW",
         "canon_owner": "Blacksmith pull request #359 and Issue #358",
         "actual_consumers": ["Blacksmith main", "future project work sessions"],
         "depends_on": ["BS-PM-03"],
         "acceptance_criteria": ["BS-AC-04"],
         "required_evidence": ["E1_STATIC"],
-        "checklist": [{"id": "BS-AC-04", "text": "Base PR #826 is merged at 96bee2700c8931b9262ad5a24a0664a400858f20, the project PM tooling pin uses that merged SHA, #359 is normally merged and main owner/tooling/receipt/protected paths are read back.", "status": "NOT_RUN", "evidence": ["Base PR #826 merged-main readback completed before this project repin."]}],
-        "verification": [{"level": "E1_STATIC", "status": "NOT_RUN", "evidence": []}],
-        "next_action": "Remain pending until BS-PM-03 passes; after #359 merge, close this item through a receipt-only follow-up reviewed against the merged subject HEAD."
+        "checklist": [
+          {
+            "id": "BS-AC-04",
+            "text": "Base PR #826 is merged at 96bee2700c8931b9262ad5a24a0664a400858f20, the project PM tooling pin uses that merged SHA, #359 is normally merged and main owner/tooling/receipt/protected paths are read back.",
+            "status": "IN_PROGRESS",
+            "evidence": [
+              "Base PR #826 merged-main readback completed.",
+              "Blacksmith implementation candidate workflows passed at 0c32aea; final receipt-tail exact-head review and project merge remain."
+            ]
+          }
+        ],
+        "verification": [
+          {
+            "level": "E1_STATIC",
+            "status": "NOT_RUN",
+            "evidence": []
+          }
+        ],
+        "next_action": "Run exact-head workflow and independent review for this 3/4 receipt tail, normally squash-merge PR #359, then record merged-main readback in a bounded receipt-only closure PR."
       }
     ]
   }
