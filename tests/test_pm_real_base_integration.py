@@ -16,8 +16,6 @@ SPEC = importlib.util.spec_from_file_location('pm_gate', ROOT / 'tools/check_pm_
 GATE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(GATE)
 RECEIPT = ROOT / 'docs/operations/receipts/2026-09-02-pm-execution-gate.json'
-# Fixed current integration baseline; callers must still fresh-read before real execution.
-SOURCE = '296ad86c2315357998ed86c594b8b006a1bde420'
 
 
 class PMRealBaseIntegrationTests(unittest.TestCase):
@@ -31,8 +29,10 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         if errors:
             raise RuntimeError('; '.join(errors))
         cls.receipt = json.loads(RECEIPT.read_text(encoding='utf-8'))
+        cls.source = cls.receipt['project_work_kanban']['source_main_sha']
 
-    def invoke(self, value, phase='start', source=SOURCE, expected_head=None):
+    def invoke(self, value, phase='start', source=None, expected_head=None):
+        selected_source = self.source if source is None else source
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / 'receipt.json'
             path.write_text(json.dumps(value, ensure_ascii=True), encoding='utf-8')
@@ -46,7 +46,7 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
                 '--phase',
                 phase,
                 '--expected-source-sha',
-                source,
+                selected_source,
             ]
             if expected_head is not None:
                 argv.extend(['--expected-head-sha', expected_head])
@@ -65,7 +65,7 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
             for verification in item['verification']:
                 verification['status'] = 'PASS'
                 verification['evidence'] = ['synthetic integration fixture evidence']
-            item['verified_head_sha'] = SOURCE
+            item['verified_head_sha'] = self.source
             item['repository_readback'] = 'PASS'
             item['readback_evidence'] = ['synthetic exact-head readback fixture']
             item['rollback'] = 'Synthetic test fixture only; discard the temporary file.'
@@ -79,11 +79,20 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         }
         return value
 
-    def test_real_project_receipt_is_rendered(self):
-        result = self.invoke(self.receipt)
+    def test_repository_receipt_matches_its_declared_phase(self):
+        board = self.receipt['project_work_kanban']
+        complete = all(item['status'] == 'DONE' for item in board['work_items'])
+        if complete:
+            result = self.invoke(self.receipt, phase='closeout', expected_head=self.source)
+            expected = [f"{len(board['work_items'])} / {len(board['work_items'])}", 'STOP_APPROVED_SCOPE_COMPLETE']
+        else:
+            active = board['active_work_item_ref']
+            active_item = next(item for item in board['work_items'] if item['work_item_id'] == active)
+            result = self.invoke(self.receipt)
+            expected = [board['progress_summary']['display'], active, active_item['status'], 'ACTIVE']
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-        for expected in ('1 / 4', 'BS-PM-02', 'IN_PROGRESS'):
-            self.assertIn(expected, result.stdout)
+        for text in expected:
+            self.assertIn(text, result.stdout)
 
     def test_missing_pm_is_rejected_by_actual_base(self):
         value = copy.deepcopy(self.receipt); value.pop('project_work_kanban')
@@ -102,20 +111,27 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         self.assertIn('fresh-read 40-character verified subject HEAD', result.stdout)
 
     def test_unfinished_project_is_not_complete(self):
-        result = self.invoke(self.receipt, phase='closeout', expected_head=SOURCE)
+        value = copy.deepcopy(self.receipt)
+        board = value['project_work_kanban']
+        board['active_work_item_ref'] = board['work_items'][0]['work_item_id']
+        board['next_action'] = 'Continue the approved integration fixture'
+        board['work_items'][0]['status'] = 'IN_PROGRESS'
+        result = self.invoke(value, phase='closeout', expected_head=self.source)
         self.assertNotEqual(0, result.returncode)
         self.assertIn('closeout', result.stdout)
 
     def test_mislabeled_done_does_not_pass(self):
         value = copy.deepcopy(self.receipt)
-        value['project_work_kanban']['work_items'][1]['status'] = 'DONE'
-        result = self.invoke(value, phase='closeout', expected_head=SOURCE)
+        item = value['project_work_kanban']['work_items'][1]
+        item['status'] = 'DONE'
+        item.pop('verified_head_sha', None)
+        result = self.invoke(value, phase='closeout', expected_head=self.source)
         self.assertNotEqual(0, result.returncode)
         self.assertIn('DONE', result.stdout)
 
     def test_complete_copy_passes_only_for_matching_trusted_head(self):
         value = self.complete_copy()
-        passed = self.invoke(value, phase='closeout', expected_head=SOURCE)
+        passed = self.invoke(value, phase='closeout', expected_head=self.source)
         self.assertEqual(0, passed.returncode, passed.stdout + passed.stderr)
         self.assertIn('4 / 4', passed.stdout)
 
