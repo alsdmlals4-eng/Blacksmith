@@ -5,10 +5,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from functools import lru_cache
 from pathlib import Path
 
+from PIL import Image
 from pypdf import PdfReader
 from reportlab.lib import colors
+from reportlab.lib.utils import ImageReader
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
@@ -28,6 +31,8 @@ SOURCES = (
     ROOT / "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md",
     ROOT / "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
     ROOT / "docs/operations/receipts/2026-09-01-phase1-workshop-blueprint.json",
+    ROOT / "assets/ASSET_MANIFEST.json",
+    ROOT / "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
 )
 PAGE_COUNT = 11
 PAGE_SECTIONS = (
@@ -43,6 +48,73 @@ PAGE_SECTIONS = (
     "고객 실제 사용·연대기",
     "검증과 증거 한계",
 )
+RUNTIME_ASSET_REFERENCE_PAGES = (1, 3, 9, 10, 11)
+RUNTIME_ASSET_REFERENCES = (
+    {
+        "asset_id": "ASSET-ANVIL-OATH-LOGO-AO02-V1",
+        "path": "assets/ui/identity/anvil_oath_logo_ao02_v1.png",
+        "pdf_reference_max_pixels": 768,
+        "actual_consumer": "MAIN_MENU / MenuLayout/MenuTitleLogo",
+        "runtime_asset_role": "Localized title-logo TextureRect with native-label fallback",
+    },
+    {
+        "asset_id": "ASSET-WORKSHOP-BACKGROUND-V2",
+        "path": "assets/ui/workshop/workshop_enhancement_background_v2.png",
+        "pdf_reference_max_pixels": 768,
+        "actual_consumer": "WORKSHOP / WorkshopIllustratedBackground",
+        "runtime_asset_role": "Portrait illustrated workshop backdrop behind native controls",
+    },
+    {
+        "asset_id": "ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1",
+        "path": "assets/ui/workshop/workpiece_durability_state_atlas_v1.png",
+        "pdf_reference_max_pixels": 512,
+        "actual_consumer": "WORKSHOP / WorkpieceDurabilityHero",
+        "runtime_asset_role": "Derived durability-state atlas; native CURRENT/MAX/BASE_MAX remains authoritative",
+    },
+    {
+        "asset_id": "ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1",
+        "path": "assets/ui/workshop/customer_result_return_illustration_v1.png",
+        "pdf_reference_max_pixels": 256,
+        "actual_consumer": "CUSTOMER_WORLD_RESULT / CustomerResultEventIllustration",
+        "runtime_asset_role": "Valid-saved-result illustration behind native factual result text",
+    },
+    {
+        "asset_id": "ASSET-EQUIPMENT-IRON-SWORD-CARD-V2",
+        "path": "assets/ui/equipment/iron_sword_card_v2.png",
+        "pdf_reference_max_pixels": 256,
+        "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+        "runtime_asset_role": "Transparent equipment identity illustration",
+    },
+    {
+        "asset_id": "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V2",
+        "path": "assets/ui/equipment/iron_shield_card_v2.png",
+        "pdf_reference_max_pixels": 256,
+        "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+        "runtime_asset_role": "Transparent equipment identity illustration",
+    },
+    {
+        "asset_id": "ASSET-EQUIPMENT-IRON-BOW-CARD-V2",
+        "path": "assets/ui/equipment/iron_bow_card_v2.png",
+        "pdf_reference_max_pixels": 256,
+        "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+        "runtime_asset_role": "Transparent equipment identity illustration",
+    },
+    {
+        "asset_id": "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V2",
+        "path": "assets/ui/equipment/iron_armor_card_v2.png",
+        "pdf_reference_max_pixels": 256,
+        "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+        "runtime_asset_role": "Transparent equipment identity illustration",
+    },
+    {
+        "asset_id": "ASSET-EQUIPMENT-IRON-HELMET-CARD-V2",
+        "path": "assets/ui/equipment/iron_helmet_card_v2.png",
+        "pdf_reference_max_pixels": 256,
+        "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+        "runtime_asset_role": "Transparent equipment identity illustration",
+    },
+)
+ASSET_REFERENCE_BY_ID = {reference["asset_id"]: reference for reference in RUNTIME_ASSET_REFERENCES}
 
 PARCHMENT = colors.HexColor("#F7F0E5")
 PAPER = colors.HexColor("#FFFDF8")
@@ -74,6 +146,25 @@ def sha256(path: Path) -> str:
 
 def normalized_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
+def runtime_asset_path(asset_id: str) -> Path:
+    """Resolve only a declared existing runtime asset reference."""
+    return ROOT / ASSET_REFERENCE_BY_ID[asset_id]["path"]
+
+
+@lru_cache(maxsize=None)
+def runtime_asset_image_reader(asset_id: str) -> ImageReader:
+    """Create an in-memory PDF derivative without mutating the source PNG."""
+    reference = ASSET_REFERENCE_BY_ID[asset_id]
+    asset_path = runtime_asset_path(asset_id)
+    if not asset_path.is_file():
+        raise FileNotFoundError(asset_path)
+    with Image.open(asset_path) as source_image:
+        pdf_image = source_image.convert("RGBA")
+    max_pixels = reference["pdf_reference_max_pixels"]
+    pdf_image.thumbnail((max_pixels, max_pixels), Image.Resampling.LANCZOS)
+    return ImageReader(pdf_image)
 
 
 def layout_bounds() -> dict[str, float]:
@@ -141,11 +232,16 @@ def panel(
     fill: colors.Color = PAPER,
     stroke: colors.Color = LINE,
     radius: float = 3 * mm,
+    alpha: float = 1.0,
 ) -> None:
+    pdf.saveState()
+    pdf.setFillAlpha(alpha)
+    pdf.setStrokeAlpha(alpha)
     pdf.setFillColor(fill)
     pdf.setStrokeColor(stroke)
     pdf.setLineWidth(0.7)
     pdf.roundRect(x, top - height, width, height, radius, fill=1, stroke=1)
+    pdf.restoreState()
 
 
 def label(pdf: canvas.Canvas, text: str, x: float, top: float, *, color: colors.Color = COPPER) -> None:
@@ -173,6 +269,27 @@ def arrow(pdf: canvas.Canvas, x1: float, y1: float, x2: float, y2: float, *, col
     head = 3.2 * mm
     pdf.line(x2, y2, x2 - head * cos(direction - angle), y2 - head * sin(direction - angle))
     pdf.line(x2, y2, x2 - head * cos(direction + angle), y2 - head * sin(direction + angle))
+
+
+def runtime_asset_thumbnail(
+    pdf: canvas.Canvas,
+    asset_id: str,
+    x: float,
+    y: float,
+    width: float,
+    height: float,
+) -> None:
+    """Place a source PNG as a reference, never as a new product asset."""
+    pdf.drawImage(
+        runtime_asset_image_reader(asset_id),
+        x,
+        y,
+        width,
+        height,
+        preserveAspectRatio=True,
+        anchor="c",
+        mask="auto",
+    )
 
 
 def header(pdf: canvas.Canvas, page: int, section: str) -> None:
@@ -220,12 +337,22 @@ def page_one(pdf: canvas.Canvas) -> None:
     y -= 12 * mm
     y = heading(pdf, "모루의 서약", 18 * mm, y, size=27)
     y = heading(pdf, "Phase 1 워크숍 블루프린트", 18 * mm, y - 2 * mm, size=18)
+    logo_x = 109 * mm
+    label(pdf, "IMPLEMENTED TITLE ASSET · MAIN MENU", logo_x, page_height - 28 * mm)
+    runtime_asset_thumbnail(
+        pdf,
+        "ASSET-ANVIL-OATH-LOGO-AO02-V1",
+        logo_x,
+        page_height - 72 * mm,
+        80 * mm,
+        39 * mm,
+    )
     y = draw_wrapped(
         pdf,
         "한 작품의 강화 판단이 고객의 실제 사용 결과와 연대기로 이어지는 세로형 공방 흐름을 읽기 위한 파생 PDF입니다.",
         18 * mm,
         y - 5 * mm,
-        page_width - 36 * mm,
+        80 * mm,
         size=10,
         leading=16,
         color=MUTED,
@@ -321,28 +448,45 @@ def page_three(pdf: canvas.Canvas) -> None:
     phone_width = 102 * mm
     phone_height = PAGE_THREE_PHONE_HEIGHT_MM * mm
     panel(pdf, phone_x, phone_top, phone_width, phone_height, fill=colors.white, stroke=INK, radius=7 * mm)
+    runtime_asset_thumbnail(
+        pdf,
+        "ASSET-WORKSHOP-BACKGROUND-V2",
+        phone_x + 4 * mm,
+        phone_top - phone_height + 4 * mm,
+        phone_width - 8 * mm,
+        phone_height - 12 * mm,
+    )
     pdf.setFillColor(INK)
     pdf.roundRect(phone_x + 42 * mm, phone_top - 5 * mm, 18 * mm, 2 * mm, 1 * mm, fill=1, stroke=0)
     screen_x = phone_x + 7 * mm
     screen_width = phone_width - 14 * mm
-    panel(pdf, screen_x, phone_top - 10 * mm, screen_width, 21 * mm, fill=PALE_GOLD)
+    panel(pdf, screen_x, phone_top - 10 * mm, screen_width, 21 * mm, fill=PALE_GOLD, alpha=0.93)
     label(pdf, "WORKSHOP", screen_x + 4 * mm, phone_top - 16 * mm)
     pdf.setFont("BlueprintMalgunBold", 11)
     pdf.setFillColor(INK)
     pdf.drawString(screen_x + 4 * mm, phone_top - 22 * mm, "모루의 서약 · 공방")
-    panel(pdf, screen_x, phone_top - 36 * mm, screen_width, 43 * mm, fill=PARCHMENT)
+    panel(pdf, screen_x, phone_top - 36 * mm, screen_width, 43 * mm, fill=PARCHMENT, alpha=0.93)
     label(pdf, "현재 작품 · SAME UID", screen_x + 4 * mm, phone_top - 42 * mm)
+    label(pdf, "ASSET REF · IRON SWORD V2", screen_x + 57 * mm, phone_top - 42 * mm, color=MUTED)
     pdf.setFont("BlueprintMalgunBold", 12.5)
     pdf.setFillColor(INK)
     pdf.drawString(screen_x + 4 * mm, phone_top - 50 * mm, "철검 · +19 · 예리함 II")
-    draw_wrapped(pdf, "현재 4 / 최대 5 / 출생 5\n상태: 경미 손상", screen_x + 4 * mm, phone_top - 59 * mm, screen_width - 8 * mm, size=8.4, leading=12, color=MUTED)
-    panel(pdf, screen_x, phone_top - 85 * mm, screen_width, 51 * mm, fill=PALE_COPPER)
+    draw_wrapped(pdf, "현재 4 / 최대 5 / 출생 5\n상태: 경미 손상", screen_x + 4 * mm, phone_top - 59 * mm, screen_width - 35 * mm, size=8.4, leading=12, color=MUTED)
+    runtime_asset_thumbnail(
+        pdf,
+        "ASSET-EQUIPMENT-IRON-SWORD-CARD-V2",
+        screen_x + 57 * mm,
+        phone_top - 77 * mm,
+        24 * mm,
+        29 * mm,
+    )
+    panel(pdf, screen_x, phone_top - 85 * mm, screen_width, 51 * mm, fill=PALE_COPPER, alpha=0.93)
     label(pdf, "NEXT DECISION", screen_x + 4 * mm, phone_top - 91 * mm)
     pdf.setFont("BlueprintMalgunBold", 12)
     pdf.setFillColor(INK)
     pdf.drawString(screen_x + 4 * mm, phone_top - 99 * mm, "정밀강화 +20")
     draw_wrapped(pdf, "태그 행동: [태그 추가] [태그 강화]\n성공 · 실패 유지 · 조건부 손상\n성공 시: 레벨 +1과 선택한 태그 성장", screen_x + 4 * mm, phone_top - 109 * mm, screen_width - 8 * mm, size=8.2, leading=11.7, color=INK)
-    panel(pdf, screen_x, phone_top - 142 * mm, screen_width, 37 * mm, fill=PALE_BLUE)
+    panel(pdf, screen_x, phone_top - 142 * mm, screen_width, 37 * mm, fill=PALE_BLUE, alpha=0.93)
     label(pdf, "정밀 촉매 = 실제 소모 자원", screen_x + 4 * mm, phone_top - 148 * mm)
     draw_wrapped(pdf, "불의 심장 · 보유 63\n대지의 결정 · 보유 64\n계보 선택이 아님 · 필요 촉매 ×1을 원자적으로 소비", screen_x + 4 * mm, phone_top - 156 * mm, screen_width - 8 * mm, size=8.1, leading=10.8, color=INK)
     panel(pdf, screen_x, phone_top - 184 * mm, screen_width, 15 * mm, fill=COPPER, stroke=COPPER)
@@ -521,8 +665,20 @@ def page_nine(pdf: canvas.Canvas) -> None:
     left = 18 * mm
     full_width = page_width - 36 * mm
     top = y - 6 * mm
-    compact_card(pdf, left, top, full_width, 42 * mm, "VISIBLE AUTHORITY", "CURRENT / MAX / BASE_MAX와 상태 예시", "5 / 5 / 5 = 정상, 4 / 5 / 5 = 경미, 2 / 5 / 5 = 심각, 4 / 4 / 5 = 경미, 2 / 2 / 5 = 심각, 0 / 5 / 5 = 파괴다. CURRENT는 현재 회복 가능한 양, MAX는 구조 흉터 이후의 상한, BASE_MAX는 출생 상한이다.", fill=PALE_GOLD)
-    top -= 48 * mm
+    panel(pdf, left, top, full_width, 53 * mm, fill=PALE_GOLD)
+    label(pdf, "VISIBLE AUTHORITY · RUNTIME ASSET REFERENCE", left + 4 * mm, top - 5.5 * mm)
+    title_bottom = heading(pdf, "CURRENT / MAX / BASE_MAX와 상태 예시", left + 4 * mm, top - 10.5 * mm, size=10.0)
+    draw_wrapped(pdf, "5 / 5 / 5 = 정상, 4 / 5 / 5 = 경미, 2 / 5 / 5 = 심각, 4 / 4 / 5 = 경미, 2 / 2 / 5 = 심각, 0 / 5 / 5 = 파괴다. CURRENT는 현재 회복 가능한 양, MAX는 구조 흉터 이후의 상한, BASE_MAX는 출생 상한이다.", left + 4 * mm, title_bottom - 1 * mm, 102 * mm, size=7.75, leading=10.9, color=MUTED)
+    runtime_asset_thumbnail(
+        pdf,
+        "ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1",
+        left + full_width - 58 * mm,
+        top - 48 * mm,
+        52 * mm,
+        42 * mm,
+    )
+    label(pdf, "ATLAS · NATIVE NUMBERS REMAIN AUTHORITY", left + full_width - 62 * mm, top - 51 * mm, color=MUTED)
+    top -= 59 * mm
     column_width = (page_width - 42 * mm) / 2
     right = left + column_width + 6 * mm
     compact_card(pdf, left, top, column_width, 61 * mm, "DAMAGE DISPLAY", "손상 확률은 실패에 조건부", "target 10 이하의 강화 손상은 0이다. target 11 이상에서 base damage curve와 effective state multiplier를 결합한다. 화면은 정확한 내부 계산을 바꾸지 않고 ‘성공 / FAILED_HOLD /\nFAILED_DAMAGE’의 최종 시도 확률을 소수 첫째 자리로 표시한다.", fill=PALE_BLUE)
@@ -549,7 +705,18 @@ def page_ten(pdf: canvas.Canvas) -> None:
     column_width = (page_width - 42 * mm) / 2
     right = left + column_width + 6 * mm
     compact_card(pdf, left, top, column_width, 63 * mm, "HANDOFF CARD", "보내기 전: 목적과 작품을 함께 읽기", "공방의 인계 CTA는 현재 작품, 장비 종류, 강화·태그, 내구도, 고객이 실제로 사용할 맥락을 확인한다. 고객 관리형 반복 흐름을 추가하지 않는다. 이 단계에서 ‘인계가 손상시키지 않음’을 짧게 명시해 잘못된 공포를 만들지 않는다.", fill=PALE_BLUE)
-    compact_card(pdf, right, top, column_width, 63 * mm, "RESULT RETURN", "돌아온 뒤: 두 결과 축을 나란히", "고객 실제 사용 후 결과 카드는 임무·세계 결과와 장비 상태를 분리해 보인다. 손상이 없으면 작품의 내구도를 보존한다. 손상이 있었다면 CURRENT 변화와 수리 job 가능 여부를 정확히 보인다. 결과 그림이 없더라도 text-native 결과 패널은 동작해야 한다.", fill=PALE_COPPER)
+    panel(pdf, right, top, column_width, 63 * mm, fill=PALE_COPPER)
+    label(pdf, "RESULT RETURN · RUNTIME ASSET REFERENCE", right + 4 * mm, top - 5.5 * mm)
+    runtime_asset_thumbnail(
+        pdf,
+        "ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1",
+        right + 4 * mm,
+        top - 58 * mm,
+        27 * mm,
+        47 * mm,
+    )
+    title_bottom = heading(pdf, "돌아온 뒤: 두 결과 축", right + 35 * mm, top - 12 * mm, size=8.8)
+    draw_wrapped(pdf, "고객 실제 사용 후 결과 카드는 임무·세계 결과와 장비 상태를 분리해 보인다. 손상이 없으면 작품의 내구도를 보존한다. 손상이 있었다면 CURRENT 변화와 수리 job 가능 여부를 정확히 보인다. 그림이 없더라도 text-native 결과 패널은 동작해야 한다.", right + 35 * mm, title_bottom - 1 * mm, column_width - 39 * mm, size=6.9, leading=9.5, color=MUTED)
     top -= 69 * mm
     compact_card(pdf, left, top, column_width, 53 * mm, "CHRONICLE IN", "연대기에 남길 의미 사건", "제작, 태그 획득 또는 성장, 실제 손상, MAX 흉터 수리, 고객 인계, 세계 결과, 파괴는 작품 연대기의 후보다. 각 기록은 UID와 사건 종류·짧은 결과를 연결한다. 플레이어가 ‘이 장비가 왜 지금 이런 상태인지’를 거꾸로 읽을 수 있어야 한다.", fill=PALE_GREEN)
     compact_card(pdf, right, top, column_width, 53 * mm, "CHRONICLE OUT", "남기지 않을 반복", "일반 강화 성공·유지 실패를 매번 연대기에 적지 않는다. 반복 강화 기록은 player chronicle이 아니다. 고객 결과가 아직 없는데 미래 사건을 미리 쓰지 않는다. 설명을 위해 가짜 손상·가짜 고객 결과·가짜 스크린샷을 제품 asset처럼 쓰지 않는다.", fill=PAPER)
@@ -571,7 +738,26 @@ def page_eleven(pdf: canvas.Canvas) -> None:
     top -= 49 * mm
     column_width = (page_width - 42 * mm) / 2
     right = left + column_width + 6 * mm
-    compact_card(pdf, left, top, column_width, 64 * mm, "ASSET REUSE", "새 이미지 없이도 화면은 비지 않는다", "메뉴·첫 제작에서는 기존 승인 투명 장비 5종(검·방패·활·갑옷·투구), 승인 로고, 공방 배경·내구도 atlas·고객 결과 illustration을 각 실제 consumer에서 재사용한다. 장비 등급별 새 외형, 정밀 전용 공방 배경, 촉매 전용 raster, 가짜 제품 스크린샷은 만들지 않는다.", fill=PALE_GREEN)
+    panel(pdf, left, top, column_width, 64 * mm, fill=PALE_GREEN)
+    label(pdf, "ASSET REUSE · RUNTIME ASSET REFERENCES", left + 4 * mm, top - 5.5 * mm)
+    body_top = heading(pdf, "새 이미지 없이도 화면은 비지 않는다", left + 4 * mm, top - 10.5 * mm, size=10.0)
+    draw_wrapped(pdf, "메뉴·첫 제작·공방에는 기존 승인 로고, 공방 배경·내구도 atlas·고객 결과 illustration, 투명 장비 5종을 실제 consumer에서만 재사용한다. 장비 등급별 새 외형, 정밀 전용 공방 배경, 촉매 전용 raster, 가짜 제품 스크린샷은 만들지 않는다.", left + 4 * mm, body_top - 1 * mm, column_width - 8 * mm, size=7.25, leading=9.9, color=MUTED)
+    equipment_ids = (
+        "ASSET-EQUIPMENT-IRON-SWORD-CARD-V2",
+        "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V2",
+        "ASSET-EQUIPMENT-IRON-BOW-CARD-V2",
+        "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V2",
+        "ASSET-EQUIPMENT-IRON-HELMET-CARD-V2",
+    )
+    for index, equipment_id in enumerate(equipment_ids):
+        runtime_asset_thumbnail(
+            pdf,
+            equipment_id,
+            left + (4 + index * 15.3) * mm,
+            top - 61 * mm,
+            13.4 * mm,
+            17 * mm,
+        )
     compact_card(pdf, right, top, column_width, 64 * mm, "IMPLEMENTATION UNITS", "작게 나누어 실제 화면으로 검증", "1) portrait shell, 2) same-UID item card, 3) normal enhancement, 4) precision add/upgrade precheck·atomic resolution, 5) damage/repair return, 6) customer result/chronicle readback 순서다. 각각은 RED 계약 테스트 → 최소 GREEN → refactor → exact-head 검증으로 연결한다.", fill=PALE_BLUE)
     top -= 70 * mm
     compact_card(pdf, left, top, column_width, 55 * mm, "WHAT THIS PDF PROVES", "문서 산출물의 기계·시각 검증", "PDF는 11쪽 A4, 핵심 텍스트, metadata, SHA-256 영수증, 입력 문서 해시, benchmark preflight와 hygiene record를 기계 검사한다. 모든 쪽은 PNG 렌더 후 글자 잘림·겹침·여백을 agent가 검토한다. 이 검증은 문서 레이아웃의 evidence ceiling을 넘지 않는다.", fill=PAPER)
@@ -620,6 +806,14 @@ def write_receipt(*, render_status: str, rendered_pages: list[int], visual_revie
         }
         for source in SOURCES
     ]
+    runtime_asset_references = [
+        {
+            **reference,
+            "sha256": sha256(ROOT / reference["path"]),
+            "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED",
+        }
+        for reference in RUNTIME_ASSET_REFERENCES
+    ]
     receipt = {
         "schema_version": 1,
         "receipt_id": "BLACKSMITH_PHASE1_WORKSHOP_BLUEPRINT_PDF_20260902",
@@ -636,12 +830,15 @@ def write_receipt(*, render_status: str, rendered_pages: list[int], visual_revie
             "target_format": "A4",
         },
         "source_documents": source_documents,
+        "runtime_asset_references": runtime_asset_references,
         "publisher": {
             "path": "tools/publish_phase1_workshop_blueprint_pdf.py",
             "engine": "ReportLab",
             "fonts": ["C:/Windows/Fonts/malgun.ttf", "C:/Windows/Fonts/malgunbd.ttf"],
             "invariant_pdf": True,
-            "contains_generated_raster_asset": False,
+            "contains_new_generated_raster_asset": False,
+            "embeds_existing_runtime_asset_references": True,
+            "embedded_runtime_asset_reference_count": len(runtime_asset_references),
             "contains_product_runtime_screenshot": False,
         },
         "render_validation": {
@@ -652,25 +849,25 @@ def write_receipt(*, render_status: str, rendered_pages: list[int], visual_revie
         },
         "benchmark_preflight_receipt": {
             "date": "2026-09-02",
-            "scope": "DETAIL_PDF_REVIEW_ONLY / NO_NEW_PRODUCT_RULE_OR_ASSET",
+            "scope": "DETAIL_PDF_VISUAL_REFERENCE_REUSE / NO_NEW_PRODUCT_RULE_OR_ASSET",
             "inputs": [
                 {
-                    "source": "Godot official GUI containers documentation",
+                    "source": "Godot 4.7 TextureRect official documentation",
                     "type": "PRIMARY_TECHNICAL_SOURCE",
                     "disposition": "ADOPT",
-                    "finding": "Nested Container layouts and a ScrollContainer with one child support the existing portrait workshop shell.",
+                    "finding": "Keep-aspect centered texture placement preserves transparent equipment identity and portrait-background reference proportions.",
                 },
                 {
-                    "source": "2026-09-01 Phase 1 benchmark receipt",
-                    "type": "PROJECT_RESEARCH_RECEIPT",
+                    "source": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
+                    "type": "PROJECT_HUMAN_GDD_REFERENCE",
                     "disposition": "ADAPT",
-                    "finding": "Illustrated workshop-book hierarchy, immediate feedback, and real-use purpose inform the viewer without importing foreign economy values.",
+                    "finding": "Retain its visual-anchor pattern by placing actual-consumer assets next to the current detailed flow, not by importing superseded rule text.",
                 },
                 {
-                    "source": "Existing explanatory raster patterns",
-                    "type": "PROJECT_ART_DIRECTION_GATE",
+                    "source": "Potion Craft official site and Blacksmith of the Sand Kingdom official site",
+                    "type": "ADJACENT_GAME_FIRST_PARTY_REFERENCE",
                     "disposition": "REJECT",
-                    "finding": "No new explanatory raster or fake product screenshot is generated because this derived PDF has no runtime image consumer.",
+                    "finding": "Do not copy foreign art, economy, composition, or screenshots. Keep workshop art subordinate to player-readable native information.",
                 },
             ],
         },
@@ -685,7 +882,7 @@ def write_receipt(*, render_status: str, rendered_pages: list[int], visual_revie
             ],
             "protected_product_paths_modified": False,
             "new_runtime_asset": False,
-            "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-detail-render (cleaned after review)",
+            "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-asset-references-render (cleaned after review)",
             "unused_temporary_files_retained": False,
         },
         "evidence_ceiling": {

@@ -1,0 +1,108 @@
+name: Repair economy RM-TOOL-003 integration
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/repair-economy-rm-tool-003.yml"
+      - "tools/export_repair_economy_rm_tool_003.py"
+      - "tools/run_repair_economy_sensitivity.py"
+      - "tests/test_repair_economy_rm_tool_003_integration.py"
+      - "docs/RM_TOOL_003_INTEROP_PILOT_20260822.md"
+      - "docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json"
+      - "docs/planning/BLACKSMITH_REPAIR_ECONOMY_SENSITIVITY_INPUT_20260826.json"
+      - "docs/analysis/balance/BLACKSMITH_REPAIR_ECONOMY_RM_TOOL_003_INTEGRATION_20260902.md"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: exact Base analyzer integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Blacksmith exact source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: project
+          fetch-depth: 1
+          persist-credentials: false
+          show-progress: false
+
+      - name: Checkout exact observed Base analyzer
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: alsdmlals4-eng/Base
+          ref: aaa94caf5772c262f023dd9e80fd4b8bbffd85db
+          path: base
+          persist-credentials: false
+          show-progress: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+
+      - name: Verify exact Base source and analyzer blob
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C base rev-parse HEAD)" = "aaa94caf5772c262f023dd9e80fd4b8bbffd85db"
+          python - <<'PY'
+          from hashlib import sha1
+          from pathlib import Path
+          path = Path("base/tools/reuse_modules/balance_scenario_batch_simulator.py")
+          payload = path.read_bytes()
+          actual = sha1(f"blob {len(payload)}\0".encode("ascii") + payload).hexdigest()
+          expected = "a99ae419fd755b6e19f3dee232dd3a11cd74d4ae"
+          if actual != expected:
+              raise SystemExit(f"Base analyzer blob mismatch: {actual} != {expected}")
+          print(f"Base analyzer identity: {actual}")
+          PY
+
+      - name: Run focused project and exact-Base behavior tests
+        working-directory: project
+        env:
+          BASE_RM_TOOL_003_PATH: ../base/tools/reuse_modules/balance_scenario_batch_simulator.py
+        run: python -m unittest tests.test_repair_economy_rm_tool_003_integration -v
+
+      - name: Run the actual project to Base analysis path
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/rm-tool-003
+          project_sha="$(git -C project rev-parse HEAD)"
+          python project/tools/export_repair_economy_rm_tool_003.py \
+            --project-root project \
+            --source-commit "$project_sha" \
+            --output artifacts/rm-tool-003/manifest.json
+          python base/tools/reuse_modules/balance_scenario_batch_simulator.py \
+            artifacts/rm-tool-003/manifest.json \
+            > artifacts/rm-tool-003/report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path("artifacts/rm-tool-003/manifest.json").read_text(encoding="utf-8"))
+          report = json.loads(Path("artifacts/rm-tool-003/report.json").read_text(encoding="utf-8"))
+          if len(manifest["runs"]) != 15:
+              raise SystemExit("expected 15 project-owned run records")
+          sweep = report["parameter_sweeps"][0]
+          series = [(point["parameter_value"], point["metric_value"]) for point in sweep["series"]]
+          if series != [(0.5, 25.0), (0.65, 31.0), (0.8, 37.0)]:
+              raise SystemExit(f"unexpected sweep series: {series}")
+          if sweep["threshold_crossing_count"] != 1:
+              raise SystemExit("expected one observed baseline-median crossing")
+          if report["adapter_evidence"]["claim_ceiling"] != "MATHEMATICAL_MODEL_ONLY_RUNTIME_EQUIVALENCE_NOT_VERIFIED":
+              raise SystemExit("adapter evidence ceiling was promoted unexpectedly")
+          context = manifest["integration_context"]
+          if context["seed_semantics"] != "DETERMINISTIC_PROJECT_CASE_PAIRING_ID_NOT_RNG_SAMPLE":
+              raise SystemExit("case-pairing ID was presented as an RNG sample")
+          if context["base_update_policy"] != "MANUAL_REVALIDATION_REQUIRED_BEFORE_PIN_CHANGE":
+              raise SystemExit("exact Base pin update policy is missing")
+          print(json.dumps({"series": series, "crossings": sweep["threshold_crossings"], "seed_semantics": context["seed_semantics"], "claim_ceiling": report["adapter_evidence"]["claim_ceiling"]}, indent=2))
+          PY
