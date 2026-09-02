@@ -166,7 +166,10 @@ class PMExecutionGateTests(unittest.TestCase):
             source_sha,
             subject_sha,
         )
-        self.assertIn('reviewed integration artifact identity', '; '.join(errors))
+        self.assertIn(
+            INTEGRATION.REVIEWED_INTEGRATION_MANIFEST_RELATIVE,
+            '; '.join(errors),
+        )
 
     def test_receipt_only_proof_rejects_mode_only_extra_change(self):
         project_base = Path(self.tmp.name) / 'project-base-mode'
