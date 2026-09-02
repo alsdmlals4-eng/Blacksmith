@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "manifest_role": "reviewed-pm-integration-artifact-identities",
-  "artifact_set_commit": "bcddead3e2774568665ed4c3a6105655e0a05b40",
+  "artifact_set_commit": "d3c9bdcb911c0b4dbe4551816c64664e3ec60e8f",
   "scope": "Six functional Blacksmith PM integration artifacts whose exact Git tree identities must exist in the merged PR #359 base before a later receipt-only 4/4 closeout may bind to that base.",
   "artifacts": {
     ".github/workflows/validate-current-base-adaptation-work-contract.yml": {
@@ -22,7 +22,7 @@
     "tests/test_pm_execution_gate.py": {
       "mode": "100644",
       "object_type": "blob",
-      "object_id": "df8ef5d1eaec94b45a630ae9e6d20613c350f072"
+      "object_id": "9e5e155564362bc840545aa480bdc164e6b1a041"
     },
     "tests/test_pm_real_base_integration.py": {
       "mode": "100644",
