@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('pm_gate', ROOT / 'tools/check_pm_work_receipt.py')
 GATE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(GATE)
+MERGED_BASE_PM = '96bee2700c8931b9262ad5a24a0664a400858f20'
+RETIRED_CANDIDATE = 'ff1dedc5dd1a5c770ea0f1f12efa7928484841c2'
 
 
 class PMExecutionGateTests(unittest.TestCase):
@@ -27,6 +29,17 @@ class PMExecutionGateTests(unittest.TestCase):
         for args in (["init", "-q"], ["config", "user.email", "fixture@example.invalid"], ["config", "user.name", "fixture"], ["add", "tools"], ["commit", "-qm", "fixture"]):
             subprocess.run(['git', '-C', str(self.base), *args], check=True, capture_output=True)
         self.sha = subprocess.check_output(['git', '-C', str(self.base), 'rev-parse', 'HEAD'], text=True).strip()
+
+    def test_operational_surfaces_pin_merged_base_pm_tooling(self):
+        self.assertEqual(MERGED_BASE_PM, GATE.PM_TOOLING_COMMIT)
+        workflow = (ROOT / '.github/workflows/validate-current-base-adaptation-work-contract.yml').read_text(encoding='utf-8')
+        receipt = (ROOT / 'docs/operations/receipts/2026-09-02-pm-execution-gate.json').read_text(encoding='utf-8')
+        owner = (ROOT / 'docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md').read_text(encoding='utf-8')
+        pm_section = owner.split('## 9. PM execution-gate integration', 1)[1]
+        for name, value in (('workflow', workflow), ('receipt', receipt), ('owner PM section', pm_section)):
+            with self.subTest(surface=name):
+                self.assertIn(MERGED_BASE_PM, value)
+                self.assertNotIn(RETIRED_CANDIDATE, value)
 
     def test_wrong_checkout_is_rejected(self):
         self.assertTrue(GATE.check_tooling(self.base, '0' * 40))
