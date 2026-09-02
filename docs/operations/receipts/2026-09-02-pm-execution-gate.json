@@ -5,9 +5,9 @@
     "state": "PASS",
     "entries": [
       {
-        "source_and_evidence": "Base PR #826 exact candidate ff1dedc5dd1a5c770ea0f1f12efa7928484841c2: executable PM receipt validator, work-item template, active consumer coverage, exact-head CI run 33574380793 and resolved prior review findings.",
+        "source_and_evidence": "Base PR #826 merged to main as 96bee2700c8931b9262ad5a24a0664a400858f20 after exact-head ci-gate success, independent whole-diff review completion, unresolved thread count zero, squash-only protected merge and merged-main readback.",
         "observed_pattern": "A repository-owned required-work list is rendered at start/resume/closeout; source freshness comes from the caller and closeout evidence is bound to a separately fresh-read verified subject HEAD.",
-        "project_fit_and_difference": "ADAPT through a thin Blacksmith wrapper pinned to exact Base executable bytes. Keep the adopted game Base release unchanged and use the PM pin only for this operational integration.",
+        "project_fit_and_difference": "ADAPT through a thin Blacksmith wrapper pinned to exact merged Base executable bytes. Keep the adopted game Base release unchanged and use this PM tooling pin only for the operational integration.",
         "disposition": "ADAPT"
       },
       {
@@ -49,7 +49,7 @@
     "source_main_sha": "296ad86c2315357998ed86c594b8b006a1bde420",
     "work_item_refs": ["BS-PM-01", "BS-PM-02", "BS-PM-03", "BS-PM-04"],
     "active_work_item_ref": "BS-PM-02",
-    "next_action": "Run the wrapper and actual-Base integration tests against Base candidate ff1dedc, then move BS-PM-03 to VERIFY_REVIEW only when that exact project HEAD is green.",
+    "next_action": "Run the wrapper and actual-Base integration tests against merged Base PM tooling 96bee2700c8931b9262ad5a24a0664a400858f20, then move BS-PM-03 to VERIFY_REVIEW only when that exact project HEAD is green.",
     "progress_summary": {
       "completed_items": 1,
       "applicable_items": 4,
@@ -78,16 +78,16 @@
       },
       {
         "work_item_id": "BS-PM-02",
-        "title": "Wire exact Base PM tooling through a thin project-owned entrypoint",
+        "title": "Wire exact merged Base PM tooling through a thin project-owned entrypoint",
         "status": "IN_PROGRESS",
         "canon_owner": "tools/check_pm_work_receipt.py",
         "actual_consumers": ["project operator", "validate-current-base-adaptation-work-contract workflow"],
         "depends_on": ["BS-PM-01"],
         "acceptance_criteria": ["BS-AC-02"],
         "required_evidence": ["E2_TEST"],
-        "checklist": [{"id": "BS-AC-02", "text": "Wrapper validates exact Base commit and bytes and forwards phase, fresh source SHA, closeout verified HEAD and Markdown rendering without mutating project state.", "status": "IN_PROGRESS", "evidence": ["RED run 33575591073 proved the new trusted-head tests fail against the previous wrapper; corrective implementation committed afterward."]}],
+        "checklist": [{"id": "BS-AC-02", "text": "Wrapper validates merged Base commit 96bee2700c8931b9262ad5a24a0664a400858f20 and tracked executable bytes and forwards phase, fresh source SHA, closeout verified HEAD and Markdown rendering without mutating project state.", "status": "IN_PROGRESS", "evidence": ["RED workflow 33578055517 at project HEAD 1db25961350e81804f46fcc021765b88f5c1b192 failed the new merged-provenance test before wrapper and workflow repinning."]}],
         "verification": [{"level": "E2_TEST", "status": "NOT_RUN", "evidence": []}],
-        "next_action": "Read exact-head workflow results for wrapper and real Base integration, then correct any failure before promotion."
+        "next_action": "Read exact-head workflow results for wrapper and real merged-Base integration, then correct any failure before promotion."
       },
       {
         "work_item_id": "BS-PM-03",
@@ -98,7 +98,7 @@
         "depends_on": ["BS-PM-02"],
         "acceptance_criteria": ["BS-AC-03"],
         "required_evidence": ["E2_TEST"],
-        "checklist": [{"id": "BS-AC-03", "text": "Missing PM, stale source/head, incomplete or falsely DONE work fail; a complete same-head copy passes and exposes the full checklist.", "status": "NOT_RUN", "evidence": []}],
+        "checklist": [{"id": "BS-AC-03", "text": "Missing PM, stale source/head, incomplete or falsely DONE work fail; active and postmerge-complete repository receipts select the correct phase and expose the full checklist.", "status": "NOT_RUN", "evidence": []}],
         "verification": [{"level": "E2_TEST", "status": "NOT_RUN", "evidence": []}],
         "next_action": "After BS-PM-02 is DONE, select this item as VERIFY_REVIEW and run exact-head project CI plus independent review."
       },
@@ -111,9 +111,9 @@
         "depends_on": ["BS-PM-03"],
         "acceptance_criteria": ["BS-AC-04"],
         "required_evidence": ["E1_STATIC"],
-        "checklist": [{"id": "BS-AC-04", "text": "Base dependency is merged, project pin uses that merged SHA, #359 is normally merged and main owner/tooling/receipt/protected paths are read back.", "status": "NOT_RUN", "evidence": []}],
+        "checklist": [{"id": "BS-AC-04", "text": "Base PR #826 is merged at 96bee2700c8931b9262ad5a24a0664a400858f20, the project PM tooling pin uses that merged SHA, #359 is normally merged and main owner/tooling/receipt/protected paths are read back.", "status": "NOT_RUN", "evidence": ["Base PR #826 merged-main readback completed before this project repin."]}],
         "verification": [{"level": "E1_STATIC", "status": "NOT_RUN", "evidence": []}],
-        "next_action": "Remain blocked until Base #826 merges and BS-PM-03 passes; after #359 merge, close this item through a receipt-only follow-up reviewed against the merged subject HEAD."
+        "next_action": "Remain pending until BS-PM-03 passes; after #359 merge, close this item through a receipt-only follow-up reviewed against the merged subject HEAD."
       }
     ]
   }
