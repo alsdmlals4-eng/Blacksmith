@@ -226,6 +226,29 @@ class PMExecutionGateTests(unittest.TestCase):
         subprocess.run(['git', '-C', str(self.base), 'rm', '--cached', '-q', 'tools/project_work_tracking.py'], check=True)
         self.assertTrue(GATE.check_tooling(self.base, self.sha))
 
+    def test_staged_index_blob_or_mode_drift_is_rejected(self):
+        helper = self.base / 'tools/helper.py'
+        original = helper.read_bytes()
+        alternate = subprocess.run(
+            ['git', '-C', str(self.base), 'hash-object', '-w', '--stdin'],
+            input='# staged alternate blob\n',
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout.strip()
+        subprocess.run(
+            [
+                'git', '-C', str(self.base), 'update-index', '--cacheinfo',
+                '100755', alternate, 'tools/helper.py',
+            ],
+            check=True,
+            capture_output=True,
+        )
+        self.assertEqual(original, helper.read_bytes())
+        errors = GATE.check_tooling(self.base, self.sha)
+        self.assertTrue(errors)
+        self.assertIn('index', '; '.join(errors).casefold())
+
     def test_git_replace_cannot_substitute_the_selected_commit(self):
         original = self.sha
         (self.base / 'tools/validate_work_contract_receipt.py').write_text('raise RuntimeError("replacement executed")\n')
