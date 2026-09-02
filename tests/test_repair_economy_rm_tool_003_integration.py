@@ -98,7 +98,10 @@ class RepairEconomyRmTool003IntegrationTests(unittest.TestCase):
         self.assertEqual("BS-REPAIR-20260826-31", manifest["integration_context"]["decision_id"])
         self.assertEqual(EXPECTED_BASE_COMMIT, manifest["integration_context"]["base_source_commit"])
         self.assertEqual(EXPECTED_BASE_ANALYZER_BLOB, manifest["integration_context"]["base_analyzer_blob_sha"])
-        self.assertEqual("TEMP_TEST_BUDGET_NOT_FINAL_PRODUCT_BALANCE", manifest["integration_context"]["numeric_status"])
+        self.assertEqual(
+            "TEMPORARY_TEST_BUDGET_NOT_FINAL_PRODUCT_BALANCE",
+            manifest["integration_context"]["numeric_status"],
+        )
 
     def test_all_coefficient_variants_use_the_same_stable_event_sample(self) -> None:
         manifest = self.build_manifest()
