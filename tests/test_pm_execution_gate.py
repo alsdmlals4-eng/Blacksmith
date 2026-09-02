@@ -43,6 +43,10 @@ class PMExecutionGateTests(unittest.TestCase):
                 self.assertNotIn(RETIRED_CANDIDATE, value)
         self.assertIn('ref: ${{ github.event.pull_request.head.sha || inputs.expected_subject_head_sha }}', workflow)
         self.assertIn('python -m pip install -r base-pm/.github/validation-requirements.txt', workflow)
+        self.assertIn('runs-on: ubuntu-24.04', workflow)
+        self.assertIn('timeout-minutes: 5', workflow)
+        self.assertIn('workflow supplies independently fresh-read source and subject revisions', pm_section)
+        self.assertNotIn('derives its source baseline', pm_section)
 
     def test_workflow_covers_every_checker_input_and_trusted_revision_env(self):
         workflow = (ROOT / '.github/workflows/validate-current-base-adaptation-work-contract.yml').read_text(encoding='utf-8')
