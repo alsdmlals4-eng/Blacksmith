@@ -37,6 +37,76 @@ class PMExecutionGateTests(unittest.TestCase):
             subprocess.run(['git', '-C', str(self.base), *args], check=True, capture_output=True)
         self.sha = subprocess.check_output(['git', '-C', str(self.base), 'rev-parse', 'HEAD'], text=True).strip()
 
+    def _write_placeholder_pm_base(self, root: Path) -> str:
+        root.mkdir()
+        for relative in INTEGRATION.REQUIRED_MERGED_PM_PATHS:
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            if relative == INTEGRATION.RECEIPT_RELATIVE:
+                path.write_text(
+                    json.dumps({
+                        'project_work_kanban': {
+                            'progress_summary': {'display': '3 / 4'},
+                            'work_items': [
+                                {'work_item_id': 'BS-PM-04', 'status': 'VERIFY_REVIEW'}
+                            ],
+                        }
+                    }),
+                    encoding='utf-8',
+                )
+            elif relative == 'tools/check_pm_work_receipt.py':
+                path.write_text(
+                    f'{GATE.PM_TOOLING_COMMIT}\nGIT_NO_REPLACE_OBJECTS\n',
+                    encoding='utf-8',
+                )
+            else:
+                path.write_text('fixture\n', encoding='utf-8')
+        for args in (
+            ['init', '-q'],
+            ['config', 'user.email', 'fixture@example.invalid'],
+            ['config', 'user.name', 'fixture'],
+            ['add', '.'],
+            ['commit', '-qm', 'base'],
+        ):
+            subprocess.run(['git', '-C', str(root), *args], check=True, capture_output=True)
+        return subprocess.check_output(
+            ['git', '-C', str(root), 'rev-parse', 'HEAD'],
+            text=True,
+        ).strip()
+
+    def _clone_receipt_subject(self, project_base: Path, *, mode_change: bool = False) -> tuple[Path, str]:
+        subject = Path(self.tmp.name) / ('subject-mode' if mode_change else 'subject-placeholders')
+        subprocess.run(
+            ['git', 'clone', '-q', str(project_base), str(subject)],
+            check=True,
+            capture_output=True,
+        )
+        subprocess.run(['git', '-C', str(subject), 'config', 'user.email', 'fixture@example.invalid'], check=True)
+        subprocess.run(['git', '-C', str(subject), 'config', 'user.name', 'fixture'], check=True)
+        subject_receipt = subject / INTEGRATION.RECEIPT_RELATIVE
+        receipt_value = json.loads(subject_receipt.read_text(encoding='utf-8'))
+        receipt_value['receipt_tail'] = True
+        subject_receipt.write_text(json.dumps(receipt_value), encoding='utf-8')
+        subprocess.run(
+            ['git', '-C', str(subject), 'add', INTEGRATION.RECEIPT_RELATIVE],
+            check=True,
+        )
+        if mode_change:
+            (subject / 'scripts/tool.sh').chmod(0o755)
+            subprocess.run(
+                ['git', '-C', str(subject), 'add', '--chmod=+x', 'scripts/tool.sh'],
+                check=True,
+            )
+        subprocess.run(
+            ['git', '-C', str(subject), 'commit', '-qm', 'receipt tail fixture'],
+            check=True,
+        )
+        subject_sha = subprocess.check_output(
+            ['git', '-C', str(subject), 'rev-parse', 'HEAD'],
+            text=True,
+        ).strip()
+        return subject, subject_sha
+
     def test_operational_surfaces_pin_merged_base_pm_tooling(self):
         self.assertEqual(MERGED_BASE_PM, GATE.PM_TOOLING_COMMIT)
         workflow = (ROOT / '.github/workflows/validate-current-base-adaptation-work-contract.yml').read_text(encoding='utf-8')
@@ -79,84 +149,39 @@ class PMExecutionGateTests(unittest.TestCase):
                 self.assertIn(token, workflow)
         for token in (
             'RECEIPT_ONLY_CLOSURE_CHANGED_PATHS',
+            'REVIEWED_INTEGRATION_MANIFEST_RELATIVE',
             'def verify_receipt_only_closure(',
             'BS_PM_PROJECT_BASE_ROOT',
         ):
             with self.subTest(integration_token=token):
                 self.assertIn(token, integration)
 
+    def test_receipt_only_proof_rejects_unreviewed_placeholder_artifacts(self):
+        project_base = Path(self.tmp.name) / 'project-base-placeholders'
+        source_sha = self._write_placeholder_pm_base(project_base)
+        subject, subject_sha = self._clone_receipt_subject(project_base)
+        errors = INTEGRATION.verify_receipt_only_closure(
+            subject,
+            project_base,
+            source_sha,
+            subject_sha,
+        )
+        self.assertIn('reviewed integration artifact identity', '; '.join(errors))
+
     def test_receipt_only_proof_rejects_mode_only_extra_change(self):
-        project_base = Path(self.tmp.name) / 'project-base'
-        project_base.mkdir()
-        for relative in INTEGRATION.REQUIRED_MERGED_PM_PATHS:
-            path = project_base / relative
-            path.parent.mkdir(parents=True, exist_ok=True)
-            if relative == INTEGRATION.RECEIPT_RELATIVE:
-                path.write_text(
-                    json.dumps({
-                        'project_work_kanban': {
-                            'progress_summary': {'display': '3 / 4'},
-                            'work_items': [
-                                {'work_item_id': 'BS-PM-04', 'status': 'VERIFY_REVIEW'}
-                            ],
-                        }
-                    }),
-                    encoding='utf-8',
-                )
-            elif relative == 'tools/check_pm_work_receipt.py':
-                path.write_text(
-                    f'{GATE.PM_TOOLING_COMMIT}\nGIT_NO_REPLACE_OBJECTS\n',
-                    encoding='utf-8',
-                )
-            else:
-                path.write_text('fixture\n', encoding='utf-8')
+        project_base = Path(self.tmp.name) / 'project-base-mode'
+        source_sha = self._write_placeholder_pm_base(project_base)
         extra = project_base / 'scripts/tool.sh'
         extra.parent.mkdir(parents=True, exist_ok=True)
         extra.write_text('#!/bin/sh\nexit 0\n', encoding='utf-8')
         extra.chmod(0o644)
-        for args in (
-            ['init', '-q'],
-            ['config', 'user.email', 'fixture@example.invalid'],
-            ['config', 'user.name', 'fixture'],
-            ['add', '.'],
-            ['commit', '-qm', 'base'],
-        ):
-            subprocess.run(['git', '-C', str(project_base), *args], check=True, capture_output=True)
+        subprocess.run(['git', '-C', str(project_base), 'add', 'scripts/tool.sh'], check=True)
+        subprocess.run(['git', '-C', str(project_base), 'commit', '-qm', 'add mode fixture'], check=True)
         source_sha = subprocess.check_output(
             ['git', '-C', str(project_base), 'rev-parse', 'HEAD'],
             text=True,
         ).strip()
-
-        subject = Path(self.tmp.name) / 'subject'
-        subprocess.run(
-            ['git', 'clone', '-q', str(project_base), str(subject)],
-            check=True,
-            capture_output=True,
-        )
-        subprocess.run(['git', '-C', str(subject), 'config', 'user.email', 'fixture@example.invalid'], check=True)
-        subprocess.run(['git', '-C', str(subject), 'config', 'user.name', 'fixture'], check=True)
-        subject_receipt = subject / INTEGRATION.RECEIPT_RELATIVE
-        receipt_value = json.loads(subject_receipt.read_text(encoding='utf-8'))
-        receipt_value['receipt_tail'] = True
-        subject_receipt.write_text(json.dumps(receipt_value), encoding='utf-8')
-        (subject / 'scripts/tool.sh').chmod(0o755)
-        subprocess.run(
-            ['git', '-C', str(subject), 'add', INTEGRATION.RECEIPT_RELATIVE],
-            check=True,
-        )
-        subprocess.run(
-            ['git', '-C', str(subject), 'add', '--chmod=+x', 'scripts/tool.sh'],
-            check=True,
-        )
-        subprocess.run(
-            ['git', '-C', str(subject), 'commit', '-qm', 'receipt plus hidden mode change'],
-            check=True,
-        )
-        subject_sha = subprocess.check_output(
-            ['git', '-C', str(subject), 'rev-parse', 'HEAD'],
-            text=True,
-        ).strip()
-
+        subject, subject_sha = self._clone_receipt_subject(project_base, mode_change=True)
         errors = INTEGRATION.verify_receipt_only_closure(
             subject,
             project_base,
