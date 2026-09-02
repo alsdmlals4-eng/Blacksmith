@@ -23,6 +23,7 @@ jobs:
       - name: Check out Blacksmith PR head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           path: project
           fetch-depth: 1
           persist-credentials: false
@@ -47,6 +48,8 @@ jobs:
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.12"
+      - name: Install merged Base PM validator dependencies
+        run: python -m pip install -r base-pm/.github/validation-requirements.txt
       - name: Validate current Base adaptation contract and receipt
         working-directory: project
         env:
