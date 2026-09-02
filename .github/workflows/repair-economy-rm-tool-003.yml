@@ -30,7 +30,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           path: project
-          fetch-depth: 0
+          fetch-depth: 1
+          persist-credentials: false
           show-progress: false
 
       - name: Checkout exact observed Base analyzer
@@ -98,5 +99,10 @@ jobs:
               raise SystemExit("expected one observed baseline-median crossing")
           if report["adapter_evidence"]["claim_ceiling"] != "MATHEMATICAL_MODEL_ONLY_RUNTIME_EQUIVALENCE_NOT_VERIFIED":
               raise SystemExit("adapter evidence ceiling was promoted unexpectedly")
-          print(json.dumps({"series": series, "crossings": sweep["threshold_crossings"], "claim_ceiling": report["adapter_evidence"]["claim_ceiling"]}, indent=2))
+          context = manifest["integration_context"]
+          if context["seed_semantics"] != "DETERMINISTIC_PROJECT_CASE_PAIRING_ID_NOT_RNG_SAMPLE":
+              raise SystemExit("case-pairing ID was presented as an RNG sample")
+          if context["base_update_policy"] != "MANUAL_REVALIDATION_REQUIRED_BEFORE_PIN_CHANGE":
+              raise SystemExit("exact Base pin update policy is missing")
+          print(json.dumps({"series": series, "crossings": sweep["threshold_crossings"], "seed_semantics": context["seed_semantics"], "claim_ceiling": report["adapter_evidence"]["claim_ceiling"]}, indent=2))
           PY
