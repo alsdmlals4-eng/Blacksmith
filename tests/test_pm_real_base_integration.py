@@ -56,11 +56,12 @@ def _exact_repository_head(root: Path, expected_sha: str, label: str) -> list[st
     return errors
 
 
-def _tree_blobs(root: Path) -> tuple[dict[str, str], list[str]]:
+def _tree_entries(root: Path) -> tuple[dict[str, tuple[str, str, str]], list[str]]:
+    """Return exact mode, object type and object ID for every path at HEAD."""
     listed = _git(root, 'ls-tree', '-r', '-z', '--full-tree', 'HEAD')
     if listed.returncode:
         return {}, ['repository tree cannot be read']
-    entries: dict[str, str] = {}
+    entries: dict[str, tuple[str, str, str]] = {}
     try:
         for record in listed.stdout.split(b'\0'):
             if not record:
@@ -69,7 +70,11 @@ def _tree_blobs(root: Path) -> tuple[dict[str, str], list[str]]:
             parts = metadata.split()
             if len(parts) != 3:
                 return {}, ['repository tree entry is malformed']
-            entries[raw_path.decode('utf-8')] = parts[2].decode('ascii')
+            path = raw_path.decode('utf-8')
+            mode = parts[0].decode('ascii')
+            object_type = parts[1].decode('ascii')
+            object_id = parts[2].decode('ascii')
+            entries[path] = (mode, object_type, object_id)
     except (UnicodeDecodeError, ValueError):
         return {}, ['repository tree contains an undecodable entry']
     return entries, []
@@ -90,8 +95,8 @@ def verify_receipt_only_closure(
     if errors:
         return errors
 
-    subject_tree, subject_errors = _tree_blobs(project_root)
-    base_tree, base_errors = _tree_blobs(project_base_root)
+    subject_tree, subject_errors = _tree_entries(project_root)
+    base_tree, base_errors = _tree_entries(project_base_root)
     errors.extend(subject_errors)
     errors.extend(base_errors)
     if errors:
@@ -112,6 +117,16 @@ def verify_receipt_only_closure(
     if missing:
         errors.append(f'project base does not contain the merged PM integration: {missing}')
     else:
+        non_regular = sorted(
+            path
+            for path in REQUIRED_MERGED_PM_PATHS
+            if base_tree[path][0] != '100644' or base_tree[path][1] != 'blob'
+        )
+        if non_regular:
+            errors.append(
+                'project base PM integration paths must be regular non-executable blobs: '
+                f'{non_regular}'
+            )
         try:
             base_receipt = json.loads((project_base_root / RECEIPT_RELATIVE).read_text(encoding='utf-8'))
             base_board = base_receipt['project_work_kanban']
