@@ -7,6 +7,7 @@ No receipts, project files, services or repository settings are mutated here.
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -19,12 +20,15 @@ SHA = re.compile(r'[0-9a-f]{40}\Z')
 
 
 def _git(base: Path, *args: str, text: bool = False) -> subprocess.CompletedProcess:
+    environment = os.environ.copy()
+    environment['GIT_NO_REPLACE_OBJECTS'] = '1'
     return subprocess.run(
         ['git', '-C', str(base), *args],
         text=text,
         capture_output=True,
         check=False,
         timeout=30,
+        env=environment,
     )
 
 
