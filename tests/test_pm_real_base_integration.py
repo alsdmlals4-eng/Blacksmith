@@ -18,6 +18,9 @@ GATE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(GATE)
 RECEIPT_RELATIVE = 'docs/operations/receipts/2026-09-02-pm-execution-gate.json'
 RECEIPT = ROOT / RECEIPT_RELATIVE
+REVIEWED_INTEGRATION_MANIFEST_RELATIVE = (
+    'docs/operations/receipts/2026-09-02-pm-reviewed-integration-manifest.json'
+)
 SHA = re.compile(r'[0-9a-f]{40}\Z')
 RECEIPT_ONLY_CLOSURE_CHANGED_PATHS = frozenset({RECEIPT_RELATIVE})
 REQUIRED_MERGED_PM_PATHS = frozenset({
@@ -80,13 +83,71 @@ def _tree_entries(root: Path) -> tuple[dict[str, tuple[str, str, str]], list[str
     return entries, []
 
 
+def _reviewed_artifact_identity_errors(
+    project_base_root: Path,
+    base_tree: dict[str, tuple[str, str, str]],
+) -> list[str]:
+    """Compare all six functional artifacts with the separately reviewed manifest."""
+    prefix = 'reviewed integration artifact identity'
+    manifest_entry = base_tree.get(REVIEWED_INTEGRATION_MANIFEST_RELATIVE)
+    if manifest_entry is None:
+        return [f'{prefix} manifest is missing']
+    if manifest_entry[0] != '100644' or manifest_entry[1] != 'blob':
+        return [f'{prefix} manifest must be a regular non-executable blob']
+    try:
+        manifest = json.loads(
+            (project_base_root / REVIEWED_INTEGRATION_MANIFEST_RELATIVE).read_text(
+                encoding='utf-8'
+            )
+        )
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return [f'{prefix} manifest cannot be read']
+    if not isinstance(manifest, dict):
+        return [f'{prefix} manifest must be an object']
+    if manifest.get('schema_version') != 1:
+        return [f'{prefix} manifest schema_version must be 1']
+    if manifest.get('manifest_role') != 'reviewed-pm-integration-artifact-identities':
+        return [f'{prefix} manifest_role is invalid']
+    artifact_set_commit = manifest.get('artifact_set_commit')
+    if not isinstance(artifact_set_commit, str) or SHA.fullmatch(artifact_set_commit) is None:
+        return [f'{prefix} manifest requires an exact artifact_set_commit']
+    artifacts = manifest.get('artifacts')
+    if not isinstance(artifacts, dict) or set(artifacts) != REQUIRED_MERGED_PM_PATHS:
+        return [f'{prefix} manifest must cover the exact six functional paths']
+
+    errors: list[str] = []
+    for path in sorted(REQUIRED_MERGED_PM_PATHS):
+        record = artifacts.get(path)
+        if not isinstance(record, dict):
+            errors.append(f'{prefix} record is missing for {path}')
+            continue
+        mode = record.get('mode')
+        object_type = record.get('object_type')
+        object_id = record.get('object_id')
+        if (
+            not isinstance(mode, str)
+            or not isinstance(object_type, str)
+            or not isinstance(object_id, str)
+            or SHA.fullmatch(object_id) is None
+        ):
+            errors.append(f'{prefix} record is malformed for {path}')
+            continue
+        expected = (mode, object_type, object_id)
+        actual = base_tree.get(path)
+        if actual != expected:
+            errors.append(
+                f'{prefix} mismatch for {path}: expected {expected}, observed {actual}'
+            )
+    return errors
+
+
 def verify_receipt_only_closure(
     project_root: Path,
     project_base_root: Path,
     source_sha: str,
     subject_sha: str,
 ) -> list[str]:
-    """Prove that a complete receipt is only metadata over the merged PM base."""
+    """Prove that a complete receipt is only metadata over the reviewed merged base."""
     errors: list[str] = []
     if SHA.fullmatch(source_sha) is None or SHA.fullmatch(subject_sha) is None:
         return ['receipt-only closure requires exact source and subject SHAs']
@@ -113,13 +174,14 @@ def verify_receipt_only_closure(
             f'{sorted(RECEIPT_ONLY_CLOSURE_CHANGED_PATHS)}; observed {sorted(changed_paths)}'
         )
 
-    missing = sorted(REQUIRED_MERGED_PM_PATHS - set(base_tree))
+    required_paths = REQUIRED_MERGED_PM_PATHS | {REVIEWED_INTEGRATION_MANIFEST_RELATIVE}
+    missing = sorted(required_paths - set(base_tree))
     if missing:
         errors.append(f'project base does not contain the merged PM integration: {missing}')
     else:
         non_regular = sorted(
             path
-            for path in REQUIRED_MERGED_PM_PATHS
+            for path in required_paths
             if base_tree[path][0] != '100644' or base_tree[path][1] != 'blob'
         )
         if non_regular:
@@ -127,6 +189,7 @@ def verify_receipt_only_closure(
                 'project base PM integration paths must be regular non-executable blobs: '
                 f'{non_regular}'
             )
+        errors.extend(_reviewed_artifact_identity_errors(project_base_root, base_tree))
         try:
             base_receipt = json.loads((project_base_root / RECEIPT_RELATIVE).read_text(encoding='utf-8'))
             base_board = base_receipt['project_work_kanban']
@@ -233,7 +296,7 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
     def test_repository_receipt_matches_its_declared_phase(self):
         board = self.receipt['project_work_kanban']
         if self.receipt_complete:
-            # Base-bound closeout is allowed only after the exact-tree proof in setUpClass.
+            # Base-bound closeout is allowed only after exact-tree and reviewed-manifest proof.
             result = self.invoke(self.receipt, phase='closeout', expected_head=self.source)
             expected = [f"{len(board['work_items'])} / {len(board['work_items'])}", 'STOP_APPROVED_SCOPE_COMPLETE']
         else:
