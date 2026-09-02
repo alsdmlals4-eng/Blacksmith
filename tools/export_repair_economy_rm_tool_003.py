@@ -26,6 +26,9 @@ from typing import Any
 DECISION_ID = "BS-REPAIR-20260826-31"
 BASE_SOURCE_COMMIT = "aaa94caf5772c262f023dd9e80fd4b8bbffd85db"
 BASE_ANALYZER_BLOB_SHA = "a99ae419fd755b6e19f3dee232dd3a11cd74d4ae"
+BASE_DEPENDENCY_ROLE = "READ_ONLY_EXACT_ANALYZER_NOT_PROJECT_BASE_RELEASE_ADOPTION"
+BASE_UPDATE_POLICY = "MANUAL_REVALIDATION_REQUIRED_BEFORE_PIN_CHANGE"
+SEED_SEMANTICS = "DETERMINISTIC_PROJECT_CASE_PAIRING_ID_NOT_RNG_SAMPLE"
 CANON_RELATIVE_PATH = Path("docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json")
 INPUT_RELATIVE_PATH = Path("docs/planning/BLACKSMITH_REPAIR_ECONOMY_SENSITIVITY_INPUT_20260826.json")
 RUNNER_RELATIVE_PATH = Path("tools/run_repair_economy_sensitivity.py")
@@ -259,6 +262,9 @@ def build_manifest(
             "model_artifact_role": result.get("artifact_role"),
             "base_source_commit": BASE_SOURCE_COMMIT,
             "base_analyzer_blob_sha": BASE_ANALYZER_BLOB_SHA,
+            "base_dependency_role": BASE_DEPENDENCY_ROLE,
+            "base_update_policy": BASE_UPDATE_POLICY,
+            "seed_semantics": SEED_SEMANTICS,
             "project_rule_owner": RUNNER_RELATIVE_PATH.as_posix(),
             "projection_owner": "tools/export_repair_economy_rm_tool_003.py",
             "baseline_median_target_role": "CURRENT_BASELINE_MEDIAN_SMOKE_ONLY_NOT_DESIGN_TARGET",
@@ -280,7 +286,7 @@ def build_manifest(
                 "locked_parameters": [
                     f"setup_coefficient={setup_coefficient}",
                     f"r_band_normalized={r_band}",
-                    "same_deterministic_event_sequence",
+                    "same_deterministic_project_case_set",
                     "same_quality_scar_stream",
                     f"material_id={material.get('id')}",
                     f"material_quantity={material.get('quantity')}",
