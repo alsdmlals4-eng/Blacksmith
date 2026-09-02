@@ -28,21 +28,27 @@ def _git(base: Path, *args: str, text: bool = False) -> subprocess.CompletedProc
     )
 
 
+def _decode_nul_paths(payload: bytes, *, subject: str) -> tuple[list[str], str | None]:
+    try:
+        return [raw.decode('utf-8') for raw in payload.split(b'\0') if raw], None
+    except UnicodeDecodeError:
+        return [], f'{subject} contains a non-UTF-8 path'
+
+
 def _tracked_tool_paths(base: Path, expected_commit: str) -> tuple[list[str], str | None]:
     listed = _git(base, 'ls-tree', '-r', '--name-only', '-z', expected_commit, '--', 'tools')
     if listed.returncode:
         return [], 'Base PM tools tree cannot be read from the selected commit'
-    try:
-        paths = [raw.decode('utf-8') for raw in listed.stdout.split(b'\0') if raw]
-    except UnicodeDecodeError:
-        return [], 'Base PM tools tree contains a non-UTF-8 path'
+    paths, error = _decode_nul_paths(listed.stdout, subject='Base PM tools tree')
+    if error:
+        return [], error
     if not paths:
         return [], 'Base PM selected commit has no tools tree'
     return paths, None
 
 
 def check_tooling(base: Path, expected_commit: str = PM_TOOLING_COMMIT) -> list[str]:
-    """Read-only exact-byte check of the selected source and its importable tools tree."""
+    """Read-only exact-byte check of commit tree, index and importable worktree."""
     if not base.is_dir() or base.is_symlink():
         return ['Base PM checkout is missing or a symlink']
     try:
@@ -59,6 +65,15 @@ def check_tooling(base: Path, expected_commit: str = PM_TOOLING_COMMIT) -> list[
         tracked = set(tracked_paths)
         if any(path not in tracked for path in REQUIRED_TOOLS):
             return ['Base PM selected commit does not track every required executable file']
+
+        indexed_result = _git(base, 'ls-files', '-z', '--', 'tools')
+        if indexed_result.returncode:
+            return ['Base PM current tools index cannot be read']
+        indexed_paths, index_error = _decode_nul_paths(indexed_result.stdout, subject='Base PM current tools index')
+        if index_error:
+            return [index_error]
+        if set(indexed_paths) != tracked:
+            return ['Base PM current tools index differs from the selected commit tree']
 
         # Verify every tracked tools file directly. Git index flags such as assume-unchanged
         # must not hide byte drift, including LF/CRLF conversion in executable sources.
