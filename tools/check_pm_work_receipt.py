@@ -12,7 +12,7 @@ import re
 import subprocess
 import sys
 
-PM_TOOLING_COMMIT = 'ff1dedc5dd1a5c770ea0f1f12efa7928484841c2'
+PM_TOOLING_COMMIT = '96bee2700c8931b9262ad5a24a0664a400858f20'
 REQUIRED_TOOLS = ('tools/validate_work_contract_receipt.py', 'tools/project_work_tracking.py')
 SHA = re.compile(r'[0-9a-f]{40}\Z')
 
