@@ -20,6 +20,19 @@ EXPECTED_SOURCES = {
     "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md",
     "docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
     "docs/operations/receipts/2026-09-01-phase1-workshop-blueprint.json",
+    "assets/ASSET_MANIFEST.json",
+    "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
+}
+EXPECTED_RUNTIME_ASSET_PATHS = {
+    "assets/ui/identity/anvil_oath_logo_ao02_v1.png",
+    "assets/ui/workshop/workshop_enhancement_background_v2.png",
+    "assets/ui/workshop/workpiece_durability_state_atlas_v1.png",
+    "assets/ui/workshop/customer_result_return_illustration_v1.png",
+    "assets/ui/equipment/iron_sword_card_v2.png",
+    "assets/ui/equipment/iron_shield_card_v2.png",
+    "assets/ui/equipment/iron_bow_card_v2.png",
+    "assets/ui/equipment/iron_armor_card_v2.png",
+    "assets/ui/equipment/iron_helmet_card_v2.png",
 }
 REQUIRED_TEXT = (
     "모루의 서약",
@@ -88,9 +101,21 @@ def main() -> None:
             failures.append("receipt must retain the pending user blueprint review boundary")
         if receipt.get("runtime_asset") is not False:
             failures.append("derived PDF must not be represented as a runtime asset")
+        publisher = receipt.get("publisher", {})
+        if publisher.get("contains_new_generated_raster_asset") is not False:
+            failures.append("PDF must not represent existing asset reuse as new image generation")
+        if publisher.get("embeds_existing_runtime_asset_references") is not True:
+            failures.append("PDF must declare its existing runtime asset references")
+        if publisher.get("contains_product_runtime_screenshot") is not False:
+            failures.append("PDF must not contain a product runtime screenshot")
         source_paths = {entry.get("path") for entry in receipt.get("source_documents", [])}
         if source_paths != EXPECTED_SOURCES:
-            failures.append("receipt source set must exactly identify the five current blueprint owners")
+            failures.append("receipt source set must exactly identify blueprint and runtime asset owners")
+        asset_paths = {entry.get("path") for entry in receipt.get("runtime_asset_references", [])}
+        if asset_paths != EXPECTED_RUNTIME_ASSET_PATHS:
+            failures.append("receipt runtime asset set must exactly identify the approved reference family")
+        if any(not entry.get("sha256") or not entry.get("actual_consumer") for entry in receipt.get("runtime_asset_references", [])):
+            failures.append("every runtime asset reference must retain a hash and actual consumer")
         if not receipt.get("benchmark_preflight_receipt"):
             failures.append("receipt must retain a non-empty benchmark preflight receipt")
         if not receipt.get("context_configuration_hygiene"):

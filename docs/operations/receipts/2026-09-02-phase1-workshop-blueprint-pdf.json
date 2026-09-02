@@ -7,7 +7,7 @@
   "runtime_asset": false,
   "artifact": {
     "path": "exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf",
-    "sha256": "6c3dd1bdad30691476e552ed157bf4807be09be78089c88af2913c4828eaaafe",
+    "sha256": "2f169dcdf53dfa5a5b9ae1d03ef8ad0479cc1e7f25aa33c2934683d6e5b5f529",
     "page_count": 11,
     "pdf_title": "모루의 서약 · Phase 1 워크숍 블루프린트",
     "pdf_subject": "Derived non-canonical Blueprint Viewer",
@@ -38,6 +38,99 @@
       "path": "docs/operations/receipts/2026-09-01-phase1-workshop-blueprint.json",
       "sha256": "ac8df531ff0707be54e54ce112f7d648dd97d6d1f1433ac5e3ac9ce262c4d695",
       "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
+    },
+    {
+      "path": "assets/ASSET_MANIFEST.json",
+      "sha256": "6ccdfb4eb77ee564feb9d9cb946263bce643c6623039d3b582d786e30b337368",
+      "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
+    },
+    {
+      "path": "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
+      "sha256": "0b6eb12dfd1a675ab13190d111c6a0871b6daee25eed79c4adaff01cf261835f",
+      "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
+    }
+  ],
+  "runtime_asset_references": [
+    {
+      "asset_id": "ASSET-ANVIL-OATH-LOGO-AO02-V1",
+      "path": "assets/ui/identity/anvil_oath_logo_ao02_v1.png",
+      "pdf_reference_max_pixels": 768,
+      "actual_consumer": "MAIN_MENU / MenuLayout/MenuTitleLogo",
+      "runtime_asset_role": "Localized title-logo TextureRect with native-label fallback",
+      "sha256": "320be3fc5530392e313e20b0a34375971a7a600754bf259b18db2da084e1f475",
+      "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED"
+    },
+    {
+      "asset_id": "ASSET-WORKSHOP-BACKGROUND-V2",
+      "path": "assets/ui/workshop/workshop_enhancement_background_v2.png",
+      "pdf_reference_max_pixels": 768,
+      "actual_consumer": "WORKSHOP / WorkshopIllustratedBackground",
+      "runtime_asset_role": "Portrait illustrated workshop backdrop behind native controls",
+      "sha256": "a3d305d28aef0aaba374c7b435dc8ed0ea6f23f16a26bfa992d87682025382b5",
+      "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED"
+    },
+    {
+      "asset_id": "ASSET-WORKPIECE-DURABILITY-STATE-ATLAS-V1",
+      "path": "assets/ui/workshop/workpiece_durability_state_atlas_v1.png",
+      "pdf_reference_max_pixels": 512,
+      "actual_consumer": "WORKSHOP / WorkpieceDurabilityHero",
+      "runtime_asset_role": "Derived durability-state atlas; native CURRENT/MAX/BASE_MAX remains authoritative",
+      "sha256": "fa296911d634bf80f78daf41a564a067be3990c4fab4988cfb8a5792573258fa",
+      "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED"
+    },
+    {
+      "asset_id": "ASSET-CUSTOMER-RESULT-RETURN-ILLUSTRATION-V1",
+      "path": "assets/ui/workshop/customer_result_return_illustration_v1.png",
+      "pdf_reference_max_pixels": 256,
+      "actual_consumer": "CUSTOMER_WORLD_RESULT / CustomerResultEventIllustration",
+      "runtime_asset_role": "Valid-saved-result illustration behind native factual result text",
+      "sha256": "716ce4dd4c6c4bdf48255c4b10aef906573d1113b331d20304e4f75f6e74eca1",
+      "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED"
+    },
+    {
+      "asset_id": "ASSET-EQUIPMENT-IRON-SWORD-CARD-V2",
+      "path": "assets/ui/equipment/iron_sword_card_v2.png",
+      "pdf_reference_max_pixels": 256,
+      "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+      "runtime_asset_role": "Transparent equipment identity illustration",
+      "sha256": "dcdd43c59ac40599c7e1deb67422a70b50900b124a9ba7bb3dbb72a9f69f9860",
+      "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED"
+    },
+    {
+      "asset_id": "ASSET-EQUIPMENT-IRON-SHIELD-CARD-V2",
+      "path": "assets/ui/equipment/iron_shield_card_v2.png",
+      "pdf_reference_max_pixels": 256,
+      "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+      "runtime_asset_role": "Transparent equipment identity illustration",
+      "sha256": "040c955625ed291230c28a66dd04a295e5e6953dd9786a45ce4df38f56ec2721",
+      "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED"
+    },
+    {
+      "asset_id": "ASSET-EQUIPMENT-IRON-BOW-CARD-V2",
+      "path": "assets/ui/equipment/iron_bow_card_v2.png",
+      "pdf_reference_max_pixels": 256,
+      "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+      "runtime_asset_role": "Transparent equipment identity illustration",
+      "sha256": "db4e1c104b2327dd459aa7d511e49b3f4636d6a50598eb17d9ccc241ca939b38",
+      "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED"
+    },
+    {
+      "asset_id": "ASSET-EQUIPMENT-IRON-ARMOR-CARD-V2",
+      "path": "assets/ui/equipment/iron_armor_card_v2.png",
+      "pdf_reference_max_pixels": 256,
+      "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+      "runtime_asset_role": "Transparent equipment identity illustration",
+      "sha256": "1f6b907b0237cae480ad86daa8538265f0d790b1d567814086fdf3bf85bf5ec7",
+      "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED"
+    },
+    {
+      "asset_id": "ASSET-EQUIPMENT-IRON-HELMET-CARD-V2",
+      "path": "assets/ui/equipment/iron_helmet_card_v2.png",
+      "pdf_reference_max_pixels": 256,
+      "actual_consumer": "FIRST_FORGE_AND_WORKSHOP / EquipmentIdentityHero",
+      "runtime_asset_role": "Transparent equipment identity illustration",
+      "sha256": "cefa849d4f705f3cda681967f4f7e67d34469a4136b3dfd01d212f1ee01c42df",
+      "reuse_scope": "DERIVED_PDF_REFERENCE_ONLY / EXISTING_RUNTIME_ASSET_UNCHANGED"
     }
   ],
   "publisher": {
@@ -48,7 +141,9 @@
       "C:/Windows/Fonts/malgunbd.ttf"
     ],
     "invariant_pdf": true,
-    "contains_generated_raster_asset": false,
+    "contains_new_generated_raster_asset": false,
+    "embeds_existing_runtime_asset_references": true,
+    "embedded_runtime_asset_reference_count": 9,
     "contains_product_runtime_screenshot": false
   },
   "render_validation": {
@@ -71,25 +166,25 @@
   },
   "benchmark_preflight_receipt": {
     "date": "2026-09-02",
-    "scope": "DETAIL_PDF_REVIEW_ONLY / NO_NEW_PRODUCT_RULE_OR_ASSET",
+    "scope": "DETAIL_PDF_VISUAL_REFERENCE_REUSE / NO_NEW_PRODUCT_RULE_OR_ASSET",
     "inputs": [
       {
-        "source": "Godot official GUI containers documentation",
+        "source": "Godot 4.7 TextureRect official documentation",
         "type": "PRIMARY_TECHNICAL_SOURCE",
         "disposition": "ADOPT",
-        "finding": "Nested Container layouts and a ScrollContainer with one child support the existing portrait workshop shell."
+        "finding": "Keep-aspect centered texture placement preserves transparent equipment identity and portrait-background reference proportions."
       },
       {
-        "source": "2026-09-01 Phase 1 benchmark receipt",
-        "type": "PROJECT_RESEARCH_RECEIPT",
+        "source": "exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf",
+        "type": "PROJECT_HUMAN_GDD_REFERENCE",
         "disposition": "ADAPT",
-        "finding": "Illustrated workshop-book hierarchy, immediate feedback, and real-use purpose inform the viewer without importing foreign economy values."
+        "finding": "Retain its visual-anchor pattern by placing actual-consumer assets next to the current detailed flow, not by importing superseded rule text."
       },
       {
-        "source": "Existing explanatory raster patterns",
-        "type": "PROJECT_ART_DIRECTION_GATE",
+        "source": "Potion Craft official site and Blacksmith of the Sand Kingdom official site",
+        "type": "ADJACENT_GAME_FIRST_PARTY_REFERENCE",
         "disposition": "REJECT",
-        "finding": "No new explanatory raster or fake product screenshot is generated because this derived PDF has no runtime image consumer."
+        "finding": "Do not copy foreign art, economy, composition, or screenshots. Keep workshop art subordinate to player-readable native information."
       }
     ]
   },
@@ -104,7 +199,7 @@
     ],
     "protected_product_paths_modified": false,
     "new_runtime_asset": false,
-    "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-detail-render (cleaned after review)",
+    "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-asset-references-render (cleaned after review)",
     "unused_temporary_files_retained": false
   },
   "evidence_ceiling": {
