@@ -13,6 +13,8 @@
 
 This integration does not change Decision31, the repair formula, the five sensitivity events, the current baseline coefficient, game data, GDScript, Scene, Resource, asset, adopted Base release lock, or final product balance. The project remains the only repair-rule owner. Base receives project-generated neutral run records and performs generic analysis only.
 
+The exact Base checkout is a read-only analysis dependency, not a silent project Base-release adoption. Its commit/blob pin changes only through an explicit compatibility review and repeat execution of this integration contract.
+
 ## 2. Before → after
 
 ### Before
@@ -29,7 +31,7 @@ However, the optional project-to-Base record route was not implemented. The Base
 
 ### After
 
-The new adapter calls the current Decision31 sensitivity model and projects its rows into the RM-TOOL-003 manifest without reproducing the repair rules. A dedicated workflow checks out the exact observed Base commit, verifies the analyzer blob, executes the project adapter, executes the Base CLI, and rejects any unexpected sample, result, or evidence promotion.
+The new adapter calls the current Decision31 sensitivity model and projects its rows into the RM-TOOL-003 manifest without reproducing the repair rules. A dedicated workflow checks out the exact observed Base commit with read-only credentials, verifies the analyzer blob, executes the project adapter, executes the Base CLI, and rejects any unexpected sample, result, or evidence promotion.
 
 ```text
 Decision31 canon + existing five-event input
@@ -43,9 +45,11 @@ Decision31 canon + existing five-event input
 
 The current input has five named events and three loss coefficients: `0.50`, `0.65`, and `0.80`. The adapter emits `5 × 3 = 15` runs.
 
-Each event receives a stable seed derived from `BS-REPAIR-20260826-31 + event_id`. Therefore:
+Each event receives a stable integer pairing key derived from `BS-REPAIR-20260826-31 + event_id`. The Base manifest field is named `seed`, but in this deterministic model it means **`DETERMINISTIC_PROJECT_CASE_PAIRING_ID_NOT_RNG_SAMPLE`**. It is not evidence that a random simulation occurred or that five events are a statistically representative player population.
 
-- the same event has the same seed in every coefficient variant;
+Therefore:
+
+- the same event has the same pairing key in every coefficient variant;
 - all three variants use the same five-event sample;
 - reordering the input array does not change event identity;
 - missing or duplicate event/coefficient rows fail closed.
@@ -59,9 +63,9 @@ Each run exposes only reusable analysis fields:
 - `post_scar_max`
 - `material_use`
 - `scar_skip_flag`
-- project case ID, stable seed, choice tag, and failure tags
+- project case ID, deterministic pairing key, choice tag, and failure tags
 
-The adapter also preserves source commit, canonical/input payload hashes, Decision ID, project rule owner, Base source identity, and evidence ceiling.
+The adapter also preserves source commit, canonical/input payload hashes, Decision ID, project rule owner, Base source identity, dependency role, pin update policy, and evidence ceiling.
 
 ## 4. Actual analysis result
 
@@ -84,8 +88,10 @@ This target is **not** a design target, desired player price, recommended optimu
 Blacksmith now has one reproducible path that converts current project-owned repair-economy model output into a Base-owned neutral analysis report. The route validates:
 
 - exact project Decision and temporary-budget status;
-- exact Base source and analyzer blob;
-- same full seed sample and same metric seed sample across variants;
+- exact read-only Base source and analyzer blob;
+- explicit manual revalidation before a Base pin change;
+- deterministic case-pairing semantics rather than an RNG claim;
+- same full seed/pairing sample and same metric sample across variants;
 - stable identity under input reordering;
 - expected 15-run shape and seven metrics;
 - observed medians and crossing behavior;
@@ -96,6 +102,8 @@ Blacksmith now has one reproducible path that converts current project-owned rep
 This removes the previous manual gap between a project-specific model and the shared analyzer. Future planning comparisons using this current owner can reuse the same adapter contract instead of copying the repair formula into another script or manually reshaping rows.
 
 It also makes sample drift visible. If one coefficient silently loses an event or one metric, the current Base analyzer rejects the sweep rather than calculating a misleading threshold from different samples.
+
+The exact dependency pin prevents a future Base analyzer change from silently altering Blacksmith evidence. Updating that pin is a deliberate integration change with fresh tests, not an automatic Base migration.
 
 ### Player-value boundary
 
@@ -127,6 +135,8 @@ Verified:
 
 Not verified:
 
+- `RANDOM_OR_MONTE_CARLO_SAMPLE`
+- `STATISTICAL_PLAYER_POPULATION_REPRESENTATIVENESS`
 - `GODOT_RUNTIME_EQUIVALENCE`
 - `REPAIR_UI_RUNTIME`
 - `FINAL_PRODUCT_BALANCE`
