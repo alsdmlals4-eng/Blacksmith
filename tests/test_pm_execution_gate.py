@@ -55,6 +55,36 @@ class PMExecutionGateTests(unittest.TestCase):
         result = subprocess.run(GATE.command(self.base, receipt, 'resume', 'a' * 40), text=True, capture_output=True, check=True)
         self.assertEqual(['--receipt', str(receipt), '--phase', 'resume', '--expected-source-sha', 'a' * 40, '--render-markdown'], json.loads(result.stdout))
 
+    def test_closeout_forwards_independently_supplied_trusted_head(self):
+        receipt = Path(self.tmp.name) / 'receipt.json'; receipt.write_text('{}')
+        result = subprocess.run(
+            GATE.command(self.base, receipt, 'closeout', 'a' * 40, 'b' * 40),
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        self.assertEqual(
+            [
+                '--receipt', str(receipt), '--phase', 'closeout',
+                '--expected-source-sha', 'a' * 40,
+                '--expected-head-sha', 'b' * 40,
+                '--render-markdown',
+            ],
+            json.loads(result.stdout),
+        )
+
+    def test_closeout_requires_exact_trusted_head_before_execution(self):
+        for head in (None, 'main', 'A' * 40):
+            with self.subTest(head=head):
+                with self.assertRaises(ValueError):
+                    GATE.command(self.base, Path('r.json'), 'closeout', 'a' * 40, head)
+
+    def test_non_closeout_rejects_misleading_head_argument(self):
+        for phase in ('start', 'resume'):
+            with self.subTest(phase=phase):
+                with self.assertRaises(ValueError):
+                    GATE.command(self.base, Path('r.json'), phase, 'a' * 40, 'b' * 40)
+
     def test_invalid_phase_and_source_are_rejected_before_execution(self):
         for phase, source in [('new-goal', 'a' * 40), ('start', 'main'), ('start', None)]:
             with self.subTest(phase=phase, source=source):
