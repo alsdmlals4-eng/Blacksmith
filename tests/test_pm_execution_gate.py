@@ -50,6 +50,7 @@ class PMExecutionGateTests(unittest.TestCase):
 
     def test_workflow_covers_every_checker_input_and_trusted_revision_env(self):
         workflow = (ROOT / '.github/workflows/validate-current-base-adaptation-work-contract.yml').read_text(encoding='utf-8')
+        integration = (ROOT / 'tests/test_pm_real_base_integration.py').read_text(encoding='utf-8')
         for path in (
             'AGENTS.md',
             'docs/BASE_RULES_VERSION.md',
@@ -62,11 +63,21 @@ class PMExecutionGateTests(unittest.TestCase):
         for token in (
             'expected_source_sha:',
             'expected_subject_head_sha:',
+            'ref: ${{ github.event.pull_request.base.sha || inputs.expected_source_sha }}',
+            'path: project-base',
             'BS_PM_EXPECTED_SOURCE_SHA: ${{ github.event.pull_request.base.sha || inputs.expected_source_sha }}',
             'BS_PM_EXPECTED_SUBJECT_HEAD_SHA: ${{ github.event.pull_request.head.sha || inputs.expected_subject_head_sha }}',
+            'BS_PM_PROJECT_BASE_ROOT: ../project-base',
         ):
             with self.subTest(token=token):
                 self.assertIn(token, workflow)
+        for token in (
+            'RECEIPT_ONLY_CLOSURE_CHANGED_PATHS',
+            'def verify_receipt_only_closure(',
+            'BS_PM_PROJECT_BASE_ROOT',
+        ):
+            with self.subTest(integration_token=token):
+                self.assertIn(token, integration)
 
     def test_wrong_checkout_is_rejected(self):
         self.assertTrue(GATE.check_tooling(self.base, '0' * 40))
