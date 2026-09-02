@@ -7,6 +7,7 @@ on:
       - "tools/export_repair_economy_rm_tool_003.py"
       - "tools/run_repair_economy_sensitivity.py"
       - "tests/test_repair_economy_rm_tool_003_integration.py"
+      - "docs/RM_TOOL_003_INTEROP_PILOT_20260822.md"
       - "docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json"
       - "docs/planning/BLACKSMITH_REPAIR_ECONOMY_SENSITIVITY_INPUT_20260826.json"
       - "docs/analysis/balance/BLACKSMITH_REPAIR_ECONOMY_RM_TOOL_003_INTEGRATION_20260902.md"
