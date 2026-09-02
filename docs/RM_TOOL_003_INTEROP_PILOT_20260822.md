@@ -1,5 +1,15 @@
 # RM-TOOL-003 Interoperability Pilot — 2026-08-22
 
+## 2026-09-02 follow-up
+
+This document remains the historical **enhancement-simulator** interoperability review. Its `NEW_TRIAL_EXPORT_NOT_IMPLEMENTED` ceiling still applies to `tools/simulate_enhancement_balance.py`; that historical simulator has not been promoted into the current repair/durability authority.
+
+A separate current consumer now exists for Decision31 repair-economy planning:
+
+`docs/analysis/balance/BLACKSMITH_REPAIR_ECONOMY_RM_TOOL_003_INTEGRATION_20260902.md`
+
+That path uses `tools/run_repair_economy_sensitivity.py` as the project rule owner and a thin neutral adapter before the exact Base analyzer. Do not read this older Pilot's unimplemented enhancement sidecar as evidence that every Blacksmith RM-TOOL-003 consumer remains unimplemented, and do not read the newer repair integration as implementation of the historical enhancement sidecar.
+
 ## 목적과 경계
 
 이 문서는 Blacksmith가 이미 보유한 프로젝트 전용 강화 시뮬레이터를 Base `RM-TOOL-003 BALANCE_SCENARIO_BATCH_SIMULATOR`의 **공통 후처리 계약**과 대조한 read-only interoperability evidence다.
