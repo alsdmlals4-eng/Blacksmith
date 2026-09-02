@@ -16,17 +16,132 @@ ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location('pm_gate', ROOT / 'tools/check_pm_work_receipt.py')
 GATE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(GATE)
-RECEIPT = ROOT / 'docs/operations/receipts/2026-09-02-pm-execution-gate.json'
+RECEIPT_RELATIVE = 'docs/operations/receipts/2026-09-02-pm-execution-gate.json'
+RECEIPT = ROOT / RECEIPT_RELATIVE
 SHA = re.compile(r'[0-9a-f]{40}\Z')
+RECEIPT_ONLY_CLOSURE_CHANGED_PATHS = frozenset({RECEIPT_RELATIVE})
+REQUIRED_MERGED_PM_PATHS = frozenset({
+    '.github/workflows/validate-current-base-adaptation-work-contract.yml',
+    'docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md',
+    RECEIPT_RELATIVE,
+    'tests/test_pm_execution_gate.py',
+    'tests/test_pm_real_base_integration.py',
+    'tools/check_pm_work_receipt.py',
+})
+
+
+def _git(root: Path, *args: str, text: bool = False) -> subprocess.CompletedProcess:
+    environment = os.environ.copy()
+    environment['GIT_NO_REPLACE_OBJECTS'] = '1'
+    return subprocess.run(
+        ['git', '-C', str(root), *args],
+        text=text,
+        capture_output=True,
+        check=False,
+        timeout=30,
+        env=environment,
+    )
+
+
+def _exact_repository_head(root: Path, expected_sha: str, label: str) -> list[str]:
+    if not root.is_dir() or root.is_symlink():
+        return [f'{label} checkout is missing or a symlink']
+    top = _git(root, 'rev-parse', '--show-toplevel', text=True)
+    head = _git(root, 'rev-parse', 'HEAD', text=True)
+    errors: list[str] = []
+    if top.returncode or Path(top.stdout.strip()).resolve() != root.resolve():
+        errors.append(f'{label} path is not its repository root')
+    if head.returncode or head.stdout.strip() != expected_sha:
+        errors.append(f'{label} HEAD does not match its independently supplied SHA')
+    return errors
+
+
+def _tree_blobs(root: Path) -> tuple[dict[str, str], list[str]]:
+    listed = _git(root, 'ls-tree', '-r', '-z', '--full-tree', 'HEAD')
+    if listed.returncode:
+        return {}, ['repository tree cannot be read']
+    entries: dict[str, str] = {}
+    try:
+        for record in listed.stdout.split(b'\0'):
+            if not record:
+                continue
+            metadata, raw_path = record.split(b'\t', 1)
+            parts = metadata.split()
+            if len(parts) != 3:
+                return {}, ['repository tree entry is malformed']
+            entries[raw_path.decode('utf-8')] = parts[2].decode('ascii')
+    except (UnicodeDecodeError, ValueError):
+        return {}, ['repository tree contains an undecodable entry']
+    return entries, []
+
+
+def verify_receipt_only_closure(
+    project_root: Path,
+    project_base_root: Path,
+    source_sha: str,
+    subject_sha: str,
+) -> list[str]:
+    """Prove that a complete receipt is only metadata over the merged PM base."""
+    errors: list[str] = []
+    if SHA.fullmatch(source_sha) is None or SHA.fullmatch(subject_sha) is None:
+        return ['receipt-only closure requires exact source and subject SHAs']
+    errors.extend(_exact_repository_head(project_root, subject_sha, 'project subject'))
+    errors.extend(_exact_repository_head(project_base_root, source_sha, 'project base'))
+    if errors:
+        return errors
+
+    subject_tree, subject_errors = _tree_blobs(project_root)
+    base_tree, base_errors = _tree_blobs(project_base_root)
+    errors.extend(subject_errors)
+    errors.extend(base_errors)
+    if errors:
+        return errors
+
+    changed_paths = {
+        path
+        for path in set(subject_tree) | set(base_tree)
+        if subject_tree.get(path) != base_tree.get(path)
+    }
+    if changed_paths != RECEIPT_ONLY_CLOSURE_CHANGED_PATHS:
+        errors.append(
+            'receipt-only closure changed paths must be exactly '
+            f'{sorted(RECEIPT_ONLY_CLOSURE_CHANGED_PATHS)}; observed {sorted(changed_paths)}'
+        )
+
+    missing = sorted(REQUIRED_MERGED_PM_PATHS - set(base_tree))
+    if missing:
+        errors.append(f'project base does not contain the merged PM integration: {missing}')
+    else:
+        try:
+            base_receipt = json.loads((project_base_root / RECEIPT_RELATIVE).read_text(encoding='utf-8'))
+            base_board = base_receipt['project_work_kanban']
+            base_item = next(
+                item for item in base_board['work_items']
+                if item['work_item_id'] == 'BS-PM-04'
+            )
+            if base_board.get('progress_summary', {}).get('display') != '3 / 4':
+                errors.append('project base must preserve the reviewed 3 / 4 premerge receipt')
+            if base_item.get('status') != 'VERIFY_REVIEW':
+                errors.append('project base must keep BS-PM-04 in VERIFY_REVIEW before closure')
+            wrapper = (project_base_root / 'tools/check_pm_work_receipt.py').read_text(encoding='utf-8')
+            if GATE.PM_TOOLING_COMMIT not in wrapper or 'GIT_NO_REPLACE_OBJECTS' not in wrapper:
+                errors.append('project base PM wrapper does not contain the reviewed merged-tooling boundary')
+        except (OSError, UnicodeError, json.JSONDecodeError, KeyError, StopIteration, TypeError):
+            errors.append('project base PM integration evidence cannot be read')
+    return errors
 
 
 class PMRealBaseIntegrationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         configured = os.environ.get('BS_BASE_PM_ROOT')
+        project_base = os.environ.get('BS_PM_PROJECT_BASE_ROOT')
         if not configured:
             raise RuntimeError('BS_BASE_PM_ROOT must name the exact selected Base checkout')
+        if not project_base:
+            raise RuntimeError('BS_PM_PROJECT_BASE_ROOT must name the independently checked-out project base')
         cls.base = Path(configured)
+        cls.project_base = Path(project_base)
         errors = GATE.check_tooling(cls.base)
         if errors:
             raise RuntimeError('; '.join(errors))
@@ -39,6 +154,18 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         ):
             if not isinstance(value, str) or SHA.fullmatch(value) is None:
                 raise RuntimeError(f'{name} must be an independently supplied exact 40-character SHA')
+        cls.receipt_complete = all(
+            item.get('status') == 'DONE'
+            for item in cls.receipt['project_work_kanban']['work_items']
+        )
+        cls.closure_errors = verify_receipt_only_closure(
+            ROOT,
+            cls.project_base,
+            cls.source,
+            cls.subject,
+        )
+        if cls.receipt_complete and cls.closure_errors:
+            raise RuntimeError('; '.join(cls.closure_errors))
 
     def invoke(self, value, phase='start', source=None, expected_head=None):
         selected_source = self.source if source is None else source
@@ -90,9 +217,8 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
 
     def test_repository_receipt_matches_its_declared_phase(self):
         board = self.receipt['project_work_kanban']
-        complete = all(item['status'] == 'DONE' for item in board['work_items'])
-        if complete:
-            # A receipt-only postmerge closure verifies the merged-main PR base, not its metadata tail.
+        if self.receipt_complete:
+            # Base-bound closeout is allowed only after the exact-tree proof in setUpClass.
             result = self.invoke(self.receipt, phase='closeout', expected_head=self.source)
             expected = [f"{len(board['work_items'])} / {len(board['work_items'])}", 'STOP_APPROVED_SCOPE_COMPLETE']
         else:
@@ -103,6 +229,13 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
         for text in expected:
             self.assertIn(text, result.stdout)
+
+    def test_base_bound_closeout_requires_mechanically_proven_receipt_only_diff(self):
+        if self.receipt_complete:
+            self.assertEqual([], self.closure_errors)
+        else:
+            self.assertTrue(self.closure_errors)
+            self.assertIn('receipt-only closure changed paths', '; '.join(self.closure_errors))
 
     def test_receipt_cannot_select_its_own_trusted_source(self):
         value = copy.deepcopy(self.receipt)
