@@ -32,27 +32,80 @@ def _git(base: Path, *args: str, text: bool = False) -> subprocess.CompletedProc
     )
 
 
-def _decode_nul_paths(payload: bytes, *, subject: str) -> tuple[list[str], str | None]:
+def _decode_path(raw_path: bytes, *, subject: str) -> tuple[str | None, str | None]:
     try:
-        return [raw.decode('utf-8') for raw in payload.split(b'\0') if raw], None
+        return raw_path.decode('utf-8'), None
     except UnicodeDecodeError:
-        return [], f'{subject} contains a non-UTF-8 path'
+        return None, f'{subject} contains a non-UTF-8 path'
 
 
-def _tracked_tool_paths(base: Path, expected_commit: str) -> tuple[list[str], str | None]:
-    listed = _git(base, 'ls-tree', '-r', '--name-only', '-z', expected_commit, '--', 'tools')
+def _tracked_tool_entries(
+    base: Path,
+    expected_commit: str,
+) -> tuple[dict[str, tuple[str, str]], str | None]:
+    """Return path -> (mode, object ID) from the pinned commit tree."""
+    listed = _git(base, 'ls-tree', '-r', '-z', expected_commit, '--', 'tools')
     if listed.returncode:
-        return [], 'Base PM tools tree cannot be read from the selected commit'
-    paths, error = _decode_nul_paths(listed.stdout, subject='Base PM tools tree')
-    if error:
-        return [], error
-    if not paths:
-        return [], 'Base PM selected commit has no tools tree'
-    return paths, None
+        return {}, 'Base PM tools tree cannot be read from the selected commit'
+    entries: dict[str, tuple[str, str]] = {}
+    for record in listed.stdout.split(b'\0'):
+        if not record:
+            continue
+        try:
+            metadata, raw_path = record.split(b'\t', 1)
+            mode_raw, type_raw, object_raw = metadata.split()
+            mode = mode_raw.decode('ascii')
+            object_type = type_raw.decode('ascii')
+            object_id = object_raw.decode('ascii')
+        except (ValueError, UnicodeDecodeError):
+            return {}, 'Base PM tools tree contains a malformed entry'
+        path, error = _decode_path(raw_path, subject='Base PM tools tree')
+        if error:
+            return {}, error
+        if object_type != 'blob' or SHA.fullmatch(object_id) is None:
+            return {}, f'Base PM tools tree contains a non-blob or invalid object: {path}'
+        if path in entries:
+            return {}, f'Base PM tools tree contains a duplicate path: {path}'
+        entries[path] = (mode, object_id)
+    if not entries:
+        return {}, 'Base PM selected commit has no tools tree'
+    return entries, None
+
+
+def _indexed_tool_entries(
+    base: Path,
+) -> tuple[dict[str, tuple[str, str]], str | None]:
+    """Return exact stage-0 path -> (mode, object ID) from the current index."""
+    listed = _git(base, 'ls-files', '--stage', '-z', '--', 'tools')
+    if listed.returncode:
+        return {}, 'Base PM current tools index cannot be read'
+    entries: dict[str, tuple[str, str]] = {}
+    for record in listed.stdout.split(b'\0'):
+        if not record:
+            continue
+        try:
+            metadata, raw_path = record.split(b'\t', 1)
+            mode_raw, object_raw, stage_raw = metadata.split()
+            mode = mode_raw.decode('ascii')
+            object_id = object_raw.decode('ascii')
+            stage = stage_raw.decode('ascii')
+        except (ValueError, UnicodeDecodeError):
+            return {}, 'Base PM current tools index contains a malformed entry'
+        path, error = _decode_path(raw_path, subject='Base PM current tools index')
+        if error:
+            return {}, error
+        if stage != '0':
+            return {}, f'Base PM current tools index contains an unmerged stage for {path}'
+        if SHA.fullmatch(object_id) is None:
+            return {}, f'Base PM current tools index contains an invalid object for {path}'
+        if path in entries:
+            return {}, f'Base PM current tools index contains a duplicate path: {path}'
+        entries[path] = (mode, object_id)
+    return entries, None
 
 
 def check_tooling(base: Path, expected_commit: str = PM_TOOLING_COMMIT) -> list[str]:
-    """Read-only exact-byte check of commit tree, index and importable worktree."""
+    """Read-only exact check of commit tree, stage-0 index and importable worktree."""
     if not base.is_dir() or base.is_symlink():
         return ['Base PM checkout is missing or a symlink']
     try:
@@ -63,29 +116,28 @@ def check_tooling(base: Path, expected_commit: str = PM_TOOLING_COMMIT) -> list[
         if head.returncode or head.stdout.strip() != expected_commit:
             return ['Base PM checkout does not match the selected operational tooling commit']
 
-        tracked_paths, path_error = _tracked_tool_paths(base, expected_commit)
-        if path_error:
-            return [path_error]
-        tracked = set(tracked_paths)
-        if any(path not in tracked for path in REQUIRED_TOOLS):
+        tracked_entries, tree_error = _tracked_tool_entries(base, expected_commit)
+        if tree_error:
+            return [tree_error]
+        if any(path not in tracked_entries for path in REQUIRED_TOOLS):
             return ['Base PM selected commit does not track every required executable file']
 
-        indexed_result = _git(base, 'ls-files', '-z', '--', 'tools')
-        if indexed_result.returncode:
-            return ['Base PM current tools index cannot be read']
-        indexed_paths, index_error = _decode_nul_paths(indexed_result.stdout, subject='Base PM current tools index')
+        indexed_entries, index_error = _indexed_tool_entries(base)
         if index_error:
             return [index_error]
-        if set(indexed_paths) != tracked:
-            return ['Base PM current tools index differs from the selected commit tree']
+        if indexed_entries != tracked_entries:
+            return [
+                'Base PM current tools index mode/object/path entries differ from '
+                'the selected commit tree'
+            ]
 
         # Verify every tracked tools file directly. Git index flags such as assume-unchanged
         # must not hide byte drift, including LF/CRLF conversion in executable sources.
-        for relative in tracked_paths:
+        for relative, (_, object_id) in tracked_entries.items():
             actual_path = base / relative
             if not actual_path.is_file() or actual_path.is_symlink():
                 return [f'Base PM tracked tools path is missing or a symlink: {relative}']
-            source = _git(base, 'show', f'{expected_commit}:{relative}')
+            source = _git(base, 'cat-file', 'blob', object_id)
             if source.returncode or actual_path.read_bytes() != source.stdout:
                 return [f'Base PM tools bytes differ from the selected commit: {relative}']
 
@@ -99,7 +151,7 @@ def check_tooling(base: Path, expected_commit: str = PM_TOOLING_COMMIT) -> list[
             if not candidate.is_file():
                 continue
             relative = candidate.relative_to(base).as_posix()
-            if relative not in tracked and candidate.suffix.casefold() in IMPORTABLE_SUFFIXES:
+            if relative not in tracked_entries and candidate.suffix.casefold() in IMPORTABLE_SUFFIXES:
                 return [f'Base PM tools tree contains an untracked importable file: {relative}']
     except (OSError, subprocess.TimeoutExpired, ValueError) as exc:
         return [f'Base PM identity check unavailable: {type(exc).__name__}']
