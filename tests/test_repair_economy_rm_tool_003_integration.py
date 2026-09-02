@@ -81,6 +81,7 @@ class RepairEconomyRmTool003IntegrationTests(unittest.TestCase):
 
     def test_manifest_preserves_current_owner_and_claim_ceiling(self) -> None:
         manifest = self.build_manifest()
+        context = manifest["integration_context"]
 
         self.assertEqual("BLACKSMITH", manifest["project_id"])
         self.assertEqual("loss_b_0p65", manifest["baseline_variant"])
@@ -95,12 +96,24 @@ class RepairEconomyRmTool003IntegrationTests(unittest.TestCase):
             ],
             manifest["evidence_ceiling"],
         )
-        self.assertEqual("BS-REPAIR-20260826-31", manifest["integration_context"]["decision_id"])
-        self.assertEqual(EXPECTED_BASE_COMMIT, manifest["integration_context"]["base_source_commit"])
-        self.assertEqual(EXPECTED_BASE_ANALYZER_BLOB, manifest["integration_context"]["base_analyzer_blob_sha"])
+        self.assertEqual("BS-REPAIR-20260826-31", context["decision_id"])
+        self.assertEqual(EXPECTED_BASE_COMMIT, context["base_source_commit"])
+        self.assertEqual(EXPECTED_BASE_ANALYZER_BLOB, context["base_analyzer_blob_sha"])
+        self.assertEqual(
+            "READ_ONLY_EXACT_ANALYZER_NOT_PROJECT_BASE_RELEASE_ADOPTION",
+            context["base_dependency_role"],
+        )
+        self.assertEqual(
+            "MANUAL_REVALIDATION_REQUIRED_BEFORE_PIN_CHANGE",
+            context["base_update_policy"],
+        )
+        self.assertEqual(
+            "DETERMINISTIC_PROJECT_CASE_PAIRING_ID_NOT_RNG_SAMPLE",
+            context["seed_semantics"],
+        )
         self.assertEqual(
             "TEMPORARY_TEST_BUDGET_NOT_FINAL_PRODUCT_BALANCE",
-            manifest["integration_context"]["numeric_status"],
+            context["numeric_status"],
         )
 
     def test_all_coefficient_variants_use_the_same_stable_event_sample(self) -> None:
@@ -169,6 +182,7 @@ class RepairEconomyRmTool003IntegrationTests(unittest.TestCase):
             [(0.5, 25.0), (0.65, 31.0), (0.8, 37.0)],
             [(point["parameter_value"], point["metric_value"]) for point in sweep["series"]],
         )
+        self.assertIn("same_deterministic_project_case_set", sweep["locked_parameters"])
         self.assertEqual(1, sweep["threshold_crossing_count"])
         crossing = sweep["threshold_crossings"][0]
         self.assertEqual("EXACT_OBSERVED_POINT", crossing["kind"])
