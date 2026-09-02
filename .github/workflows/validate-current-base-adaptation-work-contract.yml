@@ -11,6 +11,7 @@ on:
       - "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md"
       - "docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json"
       - "docs/operations/receipts/2026-09-02-pm-execution-gate.json"
+      - "docs/operations/receipts/2026-09-02-pm-reviewed-integration-manifest.json"
       - "tools/check_pm_work_receipt.py"
       - "tests/test_pm_execution_gate.py"
       - "tests/test_pm_real_base_integration.py"
