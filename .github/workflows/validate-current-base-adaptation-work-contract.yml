@@ -3,6 +3,11 @@ name: Validate Current Base Adaptation Work Contract
 on:
   pull_request:
     paths:
+      - "AGENTS.md"
+      - "docs/BASE_RULES_VERSION.md"
+      - "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md"
+      - "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md"
+      - "skills/PROJECT_BASE_ADAPTER.json"
       - "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md"
       - "docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json"
       - "docs/operations/receipts/2026-09-02-pm-execution-gate.json"
@@ -12,6 +17,15 @@ on:
       - "tests/check_base_current_adaptation_work_contract.py"
       - ".github/workflows/validate-current-base-adaptation-work-contract.yml"
   workflow_dispatch:
+    inputs:
+      expected_source_sha:
+        description: "Independently fresh-read Blacksmith source/main SHA"
+        required: true
+        type: string
+      expected_subject_head_sha:
+        description: "Independently fresh-read Blacksmith verification subject HEAD"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -23,7 +37,7 @@ jobs:
       - name: Check out Blacksmith PR head
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha || inputs.expected_subject_head_sha }}
           path: project
           fetch-depth: 1
           persist-credentials: false
@@ -62,4 +76,6 @@ jobs:
         working-directory: project
         env:
           BS_BASE_PM_ROOT: ../base-pm
+          BS_PM_EXPECTED_SOURCE_SHA: ${{ github.event.pull_request.base.sha || inputs.expected_source_sha }}
+          BS_PM_EXPECTED_SUBJECT_HEAD_SHA: ${{ github.event.pull_request.head.sha || inputs.expected_subject_head_sha }}
         run: python -m unittest tests.test_pm_real_base_integration -v
