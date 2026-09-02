@@ -23,9 +23,10 @@ class PMExecutionGateTests(unittest.TestCase):
         self.base = Path(self.tmp.name) / 'base'
         self.base.mkdir()
         (self.base / 'tools').mkdir()
-        # Synthetic provider tests forwarding only, not Base validation correctness.
+        # Synthetic provider tests forwarding and checkout integrity, not Base validation correctness.
         (self.base / 'tools/project_work_tracking.py').write_text('# fixture\n')
         (self.base / 'tools/validate_work_contract_receipt.py').write_text('import json,sys\nprint(json.dumps(sys.argv[1:]))\n')
+        (self.base / 'tools/helper.py').write_text('# tracked sibling\n')
         for args in (["init", "-q"], ["config", "user.email", "fixture@example.invalid"], ["config", "user.name", "fixture"], ["add", "tools"], ["commit", "-qm", "fixture"]):
             subprocess.run(['git', '-C', str(self.base), *args], check=True, capture_output=True)
         self.sha = subprocess.check_output(['git', '-C', str(self.base), 'rev-parse', 'HEAD'], text=True).strip()
@@ -40,6 +41,8 @@ class PMExecutionGateTests(unittest.TestCase):
             with self.subTest(surface=name):
                 self.assertIn(MERGED_BASE_PM, value)
                 self.assertNotIn(RETIRED_CANDIDATE, value)
+        self.assertIn('ref: ${{ github.event.pull_request.head.sha }}', workflow)
+        self.assertIn('python -m pip install -r base-pm/.github/validation-requirements.txt', workflow)
 
     def test_wrong_checkout_is_rejected(self):
         self.assertTrue(GATE.check_tooling(self.base, '0' * 40))
@@ -54,6 +57,20 @@ class PMExecutionGateTests(unittest.TestCase):
     def test_assume_unchanged_does_not_hide_modified_tool_bytes(self):
         subprocess.run(['git', '-C', str(self.base), 'update-index', '--assume-unchanged', 'tools/project_work_tracking.py'], check=True)
         (self.base / 'tools/project_work_tracking.py').write_text('# hidden tamper\n')
+        self.assertTrue(GATE.check_tooling(self.base, self.sha))
+
+    def test_crlf_conversion_is_rejected_as_executable_byte_drift(self):
+        path = self.base / 'tools/project_work_tracking.py'
+        subprocess.run(['git', '-C', str(self.base), 'update-index', '--assume-unchanged', 'tools/project_work_tracking.py'], check=True)
+        path.write_bytes(path.read_bytes().replace(b'\n', b'\r\n'))
+        self.assertTrue(GATE.check_tooling(self.base, self.sha))
+
+    def test_untracked_import_shadow_in_tools_is_rejected(self):
+        (self.base / 'tools/json.py').write_text('raise RuntimeError("shadowed")\n')
+        self.assertTrue(GATE.check_tooling(self.base, self.sha))
+
+    def test_modified_tracked_sibling_in_tools_is_rejected(self):
+        (self.base / 'tools/helper.py').write_text('# modified sibling\n')
         self.assertTrue(GATE.check_tooling(self.base, self.sha))
 
     def test_untracked_replacement_is_rejected(self):
