@@ -1,4 +1,4 @@
-"""Real Base integration; missing external checkout is an error, never a skip."""
+"""Real Base integration; missing external checkout or trusted revisions is an error."""
 from __future__ import annotations
 
 import copy
@@ -6,6 +6,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -16,6 +17,7 @@ SPEC = importlib.util.spec_from_file_location('pm_gate', ROOT / 'tools/check_pm_
 GATE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(GATE)
 RECEIPT = ROOT / 'docs/operations/receipts/2026-09-02-pm-execution-gate.json'
+SHA = re.compile(r'[0-9a-f]{40}\Z')
 
 
 class PMRealBaseIntegrationTests(unittest.TestCase):
@@ -29,7 +31,14 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         if errors:
             raise RuntimeError('; '.join(errors))
         cls.receipt = json.loads(RECEIPT.read_text(encoding='utf-8'))
-        cls.source = cls.receipt['project_work_kanban']['source_main_sha']
+        cls.source = os.environ.get('BS_PM_EXPECTED_SOURCE_SHA')
+        cls.subject = os.environ.get('BS_PM_EXPECTED_SUBJECT_HEAD_SHA')
+        for name, value in (
+            ('BS_PM_EXPECTED_SOURCE_SHA', cls.source),
+            ('BS_PM_EXPECTED_SUBJECT_HEAD_SHA', cls.subject),
+        ):
+            if not isinstance(value, str) or SHA.fullmatch(value) is None:
+                raise RuntimeError(f'{name} must be an independently supplied exact 40-character SHA')
 
     def invoke(self, value, phase='start', source=None, expected_head=None):
         selected_source = self.source if source is None else source
@@ -65,7 +74,7 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
             for verification in item['verification']:
                 verification['status'] = 'PASS'
                 verification['evidence'] = ['synthetic integration fixture evidence']
-            item['verified_head_sha'] = self.source
+            item['verified_head_sha'] = self.subject
             item['repository_readback'] = 'PASS'
             item['readback_evidence'] = ['synthetic exact-head readback fixture']
             item['rollback'] = 'Synthetic test fixture only; discard the temporary file.'
@@ -83,6 +92,7 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         board = self.receipt['project_work_kanban']
         complete = all(item['status'] == 'DONE' for item in board['work_items'])
         if complete:
+            # A receipt-only postmerge closure verifies the merged-main PR base, not its metadata tail.
             result = self.invoke(self.receipt, phase='closeout', expected_head=self.source)
             expected = [f"{len(board['work_items'])} / {len(board['work_items'])}", 'STOP_APPROVED_SCOPE_COMPLETE']
         else:
@@ -94,6 +104,14 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         for text in expected:
             self.assertIn(text, result.stdout)
 
+    def test_receipt_cannot_select_its_own_trusted_source(self):
+        value = copy.deepcopy(self.receipt)
+        replacement = 'f' * 40 if self.source != 'f' * 40 else 'e' * 40
+        value['project_work_kanban']['source_main_sha'] = replacement
+        result = self.invoke(value)
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn('source_main_sha', result.stdout)
+
     def test_missing_pm_is_rejected_by_actual_base(self):
         value = copy.deepcopy(self.receipt); value.pop('project_work_kanban')
         result = self.invoke(value)
@@ -101,7 +119,8 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         self.assertIn('project_work_kanban', result.stdout)
 
     def test_wrong_trusted_source_is_rejected(self):
-        result = self.invoke(self.receipt, source='a' * 40)
+        wrong = 'a' * 40 if self.source != 'a' * 40 else 'b' * 40
+        result = self.invoke(self.receipt, source=wrong)
         self.assertNotEqual(0, result.returncode)
         self.assertIn('source_main_sha', result.stdout)
 
@@ -116,7 +135,7 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         board['active_work_item_ref'] = board['work_items'][0]['work_item_id']
         board['next_action'] = 'Continue the approved integration fixture'
         board['work_items'][0]['status'] = 'IN_PROGRESS'
-        result = self.invoke(value, phase='closeout', expected_head=self.source)
+        result = self.invoke(value, phase='closeout', expected_head=self.subject)
         self.assertNotEqual(0, result.returncode)
         self.assertIn('closeout', result.stdout)
 
@@ -125,17 +144,18 @@ class PMRealBaseIntegrationTests(unittest.TestCase):
         item = value['project_work_kanban']['work_items'][1]
         item['status'] = 'DONE'
         item.pop('verified_head_sha', None)
-        result = self.invoke(value, phase='closeout', expected_head=self.source)
+        result = self.invoke(value, phase='closeout', expected_head=self.subject)
         self.assertNotEqual(0, result.returncode)
         self.assertIn('DONE', result.stdout)
 
     def test_complete_copy_passes_only_for_matching_trusted_head(self):
         value = self.complete_copy()
-        passed = self.invoke(value, phase='closeout', expected_head=self.source)
+        passed = self.invoke(value, phase='closeout', expected_head=self.subject)
         self.assertEqual(0, passed.returncode, passed.stdout + passed.stderr)
         self.assertIn('4 / 4', passed.stdout)
 
-        stale = self.invoke(value, phase='closeout', expected_head='b' * 40)
+        stale_head = 'b' * 40 if self.subject != 'b' * 40 else 'c' * 40
+        stale = self.invoke(value, phase='closeout', expected_head=stale_head)
         self.assertNotEqual(0, stale.returncode)
         self.assertIn('verified_head_sha', stale.stdout)
         self.assertNotIn('## PM 작업 체크리스트 — 4 / 4', stale.stdout)
