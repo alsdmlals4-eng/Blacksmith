@@ -50,7 +50,7 @@ jobs:
       - name: Validate current Base adaptation contract and receipt
         working-directory: project
         env:
-          BS_BASE_WORK_CONTRACT_ROOT: ../base-observed
+          BLACKSMITH_BASE_ROOT: ../base-observed
         run: python tests/check_base_current_adaptation_work_contract.py
       - name: Test PM wrapper boundaries
         working-directory: project
