@@ -3,19 +3,14 @@ name: Validate Current Base Adaptation Work Contract
 on:
   pull_request:
     paths:
-      - 'AGENTS.md'
-      - 'docs/BASE_RULES_VERSION.md'
-      - 'docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md'
-      - 'docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json'
-      - 'docs/operations/receipts/2026-09-02-pm-execution-gate.json'
-      - 'docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md'
-      - 'docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md'
-      - 'skills/PROJECT_BASE_ADAPTER.json'
-      - 'tests/check_base_current_adaptation_work_contract.py'
-      - 'tools/check_pm_work_receipt.py'
-      - 'tests/test_pm_execution_gate.py'
-      - 'tests/test_pm_real_base_integration.py'
-      - '.github/workflows/validate-current-base-adaptation-work-contract.yml'
+      - "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md"
+      - "docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json"
+      - "docs/operations/receipts/2026-09-02-pm-execution-gate.json"
+      - "tools/check_pm_work_receipt.py"
+      - "tests/test_pm_execution_gate.py"
+      - "tests/test_pm_real_base_integration.py"
+      - "tests/check_base_current_adaptation_work_contract.py"
+      - ".github/workflows/validate-current-base-adaptation-work-contract.yml"
   workflow_dispatch:
 
 permissions:
@@ -23,42 +18,45 @@ permissions:
 
 jobs:
   validate:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    runs-on: ubuntu-latest
     steps:
       - name: Check out Blacksmith PR head
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: project
+          fetch-depth: 1
+          persist-credentials: false
+          show-progress: false
       - name: Check out observed Base receipt validator
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: alsdmlals4-eng/Base
           ref: 19355b7ef065a21d0f2b685c7d9be64a4a3970f8
-          path: .base-current
-          fetch-depth: 1
-
+          path: base-observed
+          persist-credentials: false
+          show-progress: false
       - name: Check out candidate Base PM validator
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: alsdmlals4-eng/Base
-          ref: f27fe4b993e8ffc24db235cda05d0782f6a1308c
-          path: .base-pm-source
-          fetch-depth: 1
-
+          ref: ff1dedc5dd1a5c770ea0f1f12efa7928484841c2
+          path: base-pm
+          persist-credentials: false
+          show-progress: false
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
-          python-version: '3.12'
-
+          python-version: "3.12"
       - name: Validate current Base adaptation contract and receipt
+        working-directory: project
         env:
-          BLACKSMITH_BASE_ROOT: ${{ github.workspace }}/.base-current
+          BS_BASE_WORK_CONTRACT_ROOT: ../base-observed
         run: python tests/check_base_current_adaptation_work_contract.py
-
       - name: Test PM wrapper boundaries
-        run: python -m unittest discover -s tests -p 'test_pm_execution_gate.py' -v
-
+        working-directory: project
+        run: python -m unittest tests.test_pm_execution_gate -v
       - name: Test actual Base PM integration
+        working-directory: project
         env:
-          BS_BASE_PM_ROOT: ${{ github.workspace }}/.base-pm-source
-        run: python -m unittest discover -s tests -p 'test_pm_real_base_integration.py' -v
+          BS_BASE_PM_ROOT: ../base-pm
+        run: python -m unittest tests.test_pm_real_base_integration -v
