@@ -12,7 +12,7 @@ import re
 import subprocess
 import sys
 
-PM_TOOLING_COMMIT = 'f27fe4b993e8ffc24db235cda05d0782f6a1308c'
+PM_TOOLING_COMMIT = 'ff1dedc5dd1a5c770ea0f1f12efa7928484841c2'
 REQUIRED_TOOLS = ('tools/validate_work_contract_receipt.py', 'tools/project_work_tracking.py')
 SHA = re.compile(r'[0-9a-f]{40}\Z')
 
@@ -48,13 +48,35 @@ def check_tooling(base: Path, expected_commit: str = PM_TOOLING_COMMIT) -> list[
     return []
 
 
-def command(base: Path, receipt: Path, phase: str, source_sha: str) -> list[str]:
+def command(
+    base: Path,
+    receipt: Path,
+    phase: str,
+    source_sha: str,
+    expected_head_sha: str | None = None,
+) -> list[str]:
     if phase not in ('start', 'resume', 'closeout'):
         raise ValueError('phase must be start, resume or closeout')
     if not isinstance(source_sha, str) or SHA.fullmatch(source_sha) is None:
         raise ValueError('expected source must be a fresh-read 40-character project SHA')
-    return [sys.executable, str(base / REQUIRED_TOOLS[0]), '--receipt', str(receipt),
-            '--phase', phase, '--expected-source-sha', source_sha, '--render-markdown']
+    argv = [
+        sys.executable,
+        str(base / REQUIRED_TOOLS[0]),
+        '--receipt',
+        str(receipt),
+        '--phase',
+        phase,
+        '--expected-source-sha',
+        source_sha,
+    ]
+    if phase == 'closeout':
+        if not isinstance(expected_head_sha, str) or SHA.fullmatch(expected_head_sha) is None:
+            raise ValueError('closeout requires a fresh-read 40-character verified subject HEAD')
+        argv.extend(['--expected-head-sha', expected_head_sha])
+    elif expected_head_sha is not None:
+        raise ValueError('expected head is accepted only for closeout')
+    argv.append('--render-markdown')
+    return argv
 
 
 def main() -> int:
@@ -62,6 +84,7 @@ def main() -> int:
     parser.add_argument('--base-root', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
     parser.add_argument('--expected-source-sha', required=True)
+    parser.add_argument('--expected-head-sha')
     parser.add_argument('--phase', choices=('start', 'resume', 'closeout'), default='start')
     args = parser.parse_args()
     errors = check_tooling(args.base_root)
@@ -71,8 +94,14 @@ def main() -> int:
             print(f'- {error}')
         return 1
     try:
-        return subprocess.run(command(args.base_root, args.receipt, args.phase, args.expected_source_sha),
-                              check=False, timeout=120).returncode
+        argv = command(
+            args.base_root,
+            args.receipt,
+            args.phase,
+            args.expected_source_sha,
+            args.expected_head_sha,
+        )
+        return subprocess.run(argv, check=False, timeout=120).returncode
     except (OSError, ValueError, subprocess.TimeoutExpired) as exc:
         print(f'BLACKSMITH PM: BLOCKED_UNVERIFIED — {exc}')
         return 2
