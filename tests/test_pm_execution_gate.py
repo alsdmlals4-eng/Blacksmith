@@ -44,6 +44,26 @@ class PMExecutionGateTests(unittest.TestCase):
         self.assertIn('ref: ${{ github.event.pull_request.head.sha }}', workflow)
         self.assertIn('python -m pip install -r base-pm/.github/validation-requirements.txt', workflow)
 
+    def test_workflow_covers_every_checker_input_and_trusted_revision_env(self):
+        workflow = (ROOT / '.github/workflows/validate-current-base-adaptation-work-contract.yml').read_text(encoding='utf-8')
+        for path in (
+            'AGENTS.md',
+            'docs/BASE_RULES_VERSION.md',
+            'docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md',
+            'docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md',
+            'skills/PROJECT_BASE_ADAPTER.json',
+        ):
+            with self.subTest(path=path):
+                self.assertIn(f'- "{path}"', workflow)
+        for token in (
+            'expected_source_sha:',
+            'expected_subject_head_sha:',
+            'BS_PM_EXPECTED_SOURCE_SHA: ${{ github.event.pull_request.base.sha || inputs.expected_source_sha }}',
+            'BS_PM_EXPECTED_SUBJECT_HEAD_SHA: ${{ github.event.pull_request.head.sha || inputs.expected_subject_head_sha }}',
+        ):
+            with self.subTest(token=token):
+                self.assertIn(token, workflow)
+
     def test_wrong_checkout_is_rejected(self):
         self.assertTrue(GATE.check_tooling(self.base, '0' * 40))
 
@@ -76,6 +96,18 @@ class PMExecutionGateTests(unittest.TestCase):
     def test_untracked_replacement_is_rejected(self):
         subprocess.run(['git', '-C', str(self.base), 'rm', '--cached', '-q', 'tools/project_work_tracking.py'], check=True)
         self.assertTrue(GATE.check_tooling(self.base, self.sha))
+
+    def test_git_replace_cannot_substitute_the_selected_commit(self):
+        original = self.sha
+        (self.base / 'tools/validate_work_contract_receipt.py').write_text('raise RuntimeError("replacement executed")\n')
+        subprocess.run(['git', '-C', str(self.base), 'add', 'tools'], check=True)
+        subprocess.run(['git', '-C', str(self.base), 'commit', '-qm', 'replacement'], check=True)
+        replacement = subprocess.check_output(['git', '-C', str(self.base), 'rev-parse', 'HEAD'], text=True).strip()
+        subprocess.run(['git', '-C', str(self.base), 'replace', original, replacement], check=True)
+        subprocess.run(['git', '-C', str(self.base), 'reset', '--hard', original], check=True, capture_output=True)
+        self.assertEqual(original, subprocess.check_output(['git', '-C', str(self.base), 'rev-parse', 'HEAD'], text=True).strip())
+        self.assertIn('replacement executed', (self.base / 'tools/validate_work_contract_receipt.py').read_text())
+        self.assertTrue(GATE.check_tooling(self.base, original))
 
     def test_nested_path_is_not_repository_root(self):
         self.assertTrue(GATE.check_tooling(self.base / 'tools', self.sha))
