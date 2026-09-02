@@ -14,35 +14,74 @@ import sys
 
 PM_TOOLING_COMMIT = '96bee2700c8931b9262ad5a24a0664a400858f20'
 REQUIRED_TOOLS = ('tools/validate_work_contract_receipt.py', 'tools/project_work_tracking.py')
+IMPORTABLE_SUFFIXES = frozenset({'.py', '.pyc', '.pyo', '.pyd', '.so'})
 SHA = re.compile(r'[0-9a-f]{40}\Z')
 
 
+def _git(base: Path, *args: str, text: bool = False) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        ['git', '-C', str(base), *args],
+        text=text,
+        capture_output=True,
+        check=False,
+        timeout=30,
+    )
+
+
+def _tracked_tool_paths(base: Path, expected_commit: str) -> tuple[list[str], str | None]:
+    listed = _git(base, 'ls-tree', '-r', '--name-only', '-z', expected_commit, '--', 'tools')
+    if listed.returncode:
+        return [], 'Base PM tools tree cannot be read from the selected commit'
+    try:
+        paths = [raw.decode('utf-8') for raw in listed.stdout.split(b'\0') if raw]
+    except UnicodeDecodeError:
+        return [], 'Base PM tools tree contains a non-UTF-8 path'
+    if not paths:
+        return [], 'Base PM selected commit has no tools tree'
+    return paths, None
+
+
 def check_tooling(base: Path, expected_commit: str = PM_TOOLING_COMMIT) -> list[str]:
-    """Read-only check of exact source and executable file cleanliness."""
+    """Read-only exact-byte check of the selected source and its importable tools tree."""
     if not base.is_dir() or base.is_symlink():
         return ['Base PM checkout is missing or a symlink']
-    if any(not (base / path).is_file() or (base / path).is_symlink() for path in REQUIRED_TOOLS):
-        return ['Base PM executable files are missing or symlinks']
     try:
-        def git(*args: str) -> subprocess.CompletedProcess[str]:
-            return subprocess.run(['git', '-C', str(base), *args], text=True,
-                                  capture_output=True, check=False, timeout=15)
-        top = git('rev-parse', '--show-toplevel')
-        head = git('rev-parse', 'HEAD')
+        top = _git(base, 'rev-parse', '--show-toplevel', text=True)
+        head = _git(base, 'rev-parse', 'HEAD', text=True)
         if top.returncode or Path(top.stdout.strip()).resolve() != base.resolve():
             return ['Base PM path is not the repository root']
         if head.returncode or head.stdout.strip() != expected_commit:
             return ['Base PM checkout does not match the selected operational tooling commit']
-        tracked = git('ls-files', '--error-unmatch', '--', *REQUIRED_TOOLS)
-        clean = git('diff', '--quiet', 'HEAD', '--', *REQUIRED_TOOLS)
-        if tracked.returncode or clean.returncode:
-            return ['Base PM executable files differ from the exact tracked commit']
-        # Index flags may hide edits from git diff; compare actual executable bytes.
-        for path in REQUIRED_TOOLS:
-            source = subprocess.run(['git', '-C', str(base), 'show', f'{expected_commit}:{path}'], capture_output=True, check=False, timeout=15)
-            actual = (base / path).read_bytes().replace(b'\r\n', b'\n')
-            if source.returncode or actual != source.stdout.replace(b'\r\n', b'\n'):
-                return ['Base PM executable bytes differ from the selected commit']
+
+        tracked_paths, path_error = _tracked_tool_paths(base, expected_commit)
+        if path_error:
+            return [path_error]
+        tracked = set(tracked_paths)
+        if any(path not in tracked for path in REQUIRED_TOOLS):
+            return ['Base PM selected commit does not track every required executable file']
+
+        # Verify every tracked tools file directly. Git index flags such as assume-unchanged
+        # must not hide byte drift, including LF/CRLF conversion in executable sources.
+        for relative in tracked_paths:
+            actual_path = base / relative
+            if not actual_path.is_file() or actual_path.is_symlink():
+                return [f'Base PM tracked tools path is missing or a symlink: {relative}']
+            source = _git(base, 'show', f'{expected_commit}:{relative}')
+            if source.returncode or actual_path.read_bytes() != source.stdout:
+                return [f'Base PM tools bytes differ from the selected commit: {relative}']
+
+        # A sibling module can shadow stdlib or provider imports because the verified
+        # entrypoint runs from this directory. Reject untracked importable artifacts,
+        # including ignored bytecode, before starting Python.
+        tools_root = base / 'tools'
+        for candidate in tools_root.rglob('*'):
+            if candidate.is_symlink():
+                return [f'Base PM tools tree contains a symlink: {candidate.relative_to(base).as_posix()}']
+            if not candidate.is_file():
+                continue
+            relative = candidate.relative_to(base).as_posix()
+            if relative not in tracked and candidate.suffix.casefold() in IMPORTABLE_SUFFIXES:
+                return [f'Base PM tools tree contains an untracked importable file: {relative}']
     except (OSError, subprocess.TimeoutExpired, ValueError) as exc:
         return [f'Base PM identity check unavailable: {type(exc).__name__}']
     return []
@@ -61,6 +100,9 @@ def command(
         raise ValueError('expected source must be a fresh-read 40-character project SHA')
     argv = [
         sys.executable,
+        '-E',
+        '-s',
+        '-B',
         str(base / REQUIRED_TOOLS[0]),
         '--receipt',
         str(receipt),
