@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "manifest_role": "reviewed-pm-integration-artifact-identities",
+  "artifact_set_commit": "bcddead3e2774568665ed4c3a6105655e0a05b40",
+  "scope": "Six functional Blacksmith PM integration artifacts whose exact Git tree identities must exist in the merged PR #359 base before a later receipt-only 4/4 closeout may bind to that base.",
+  "artifacts": {
+    ".github/workflows/validate-current-base-adaptation-work-contract.yml": {
+      "mode": "100644",
+      "object_type": "blob",
+      "object_id": "43abe8b8618ee3fdd76906a8eea2c63f7dd3279f"
+    },
+    "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md": {
+      "mode": "100644",
+      "object_type": "blob",
+      "object_id": "2e23613f658659a6ff8d28207bd5838f5ec49248"
+    },
+    "docs/operations/receipts/2026-09-02-pm-execution-gate.json": {
+      "mode": "100644",
+      "object_type": "blob",
+      "object_id": "8bcf37be081a3efcb8a1e43f0cd080a753267b9a"
+    },
+    "tests/test_pm_execution_gate.py": {
+      "mode": "100644",
+      "object_type": "blob",
+      "object_id": "df8ef5d1eaec94b45a630ae9e6d20613c350f072"
+    },
+    "tests/test_pm_real_base_integration.py": {
+      "mode": "100644",
+      "object_type": "blob",
+      "object_id": "6332033074ebc4848eae97be0e8f01d4dc527665"
+    },
+    "tools/check_pm_work_receipt.py": {
+      "mode": "100644",
+      "object_type": "blob",
+      "object_id": "8705a4dc9a0e8284eb9849b3d8455bcb3c5e5c69"
+    }
+  },
+  "review_rule": "The manifest is not self-hashing. It becomes trusted only after this PR's final exact-head CI, independent review, thread-zero readback, protected squash merge and merged-main readback. A closure PR may change only the PM execution receipt; changing this manifest or any pinned artifact invalidates base-bound closeout."
+}
