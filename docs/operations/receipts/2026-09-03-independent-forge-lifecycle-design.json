@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "receipt_id": "BLACKSMITH_INDEPENDENT_FORGE_LIFECYCLE_DESIGN_20260903",
-  "status": "SPEC_WRITTEN_PENDING_USER_REVIEW",
+  "status": "USER_APPROVED_IMPLEMENTATION_IN_PROGRESS",
   "work_level": "L1",
   "scope": "Current-canon implementation-gap design only: reconcile the existing first-forge, same-UID handoff, actual-use result, repair, and chronicle surfaces without importing foreign product expression or mutating product paths.",
   "authority_boundary": {
@@ -92,28 +92,29 @@
   "project_work_kanban": {
     "goal_or_slice_issue_ref": "BLACKSMITH-INDEPENDENT-FORGE-LIFECYCLE-DESIGN-20260903",
     "source_main_sha": "296ad86c2315357998ed86c594b8b006a1bde420",
-    "next_action": "USER_REVIEW_REQUIRED_BEFORE_IMPLEMENTATION_PLAN",
+    "next_action": "EXECUTE_APPROVED_INDEPENDENT_FORGE_LIFECYCLE_PLAN",
     "work_item_refs": [
-      "BS-IFL-DESIGN-01"
+      "BS-IFL-DESIGN-01",
+      "BS-IFL-IMPLEMENT-02"
     ],
-    "active_work_item_ref": "BS-IFL-DESIGN-01",
+    "active_work_item_ref": "BS-IFL-IMPLEMENT-02",
     "progress_summary": {
-      "completed_items": 0,
-      "applicable_items": 1,
-      "display": "0 / 1"
+      "completed_items": 1,
+      "applicable_items": 2,
+      "display": "1 / 2"
     },
     "work_items": [
       {
         "work_item_id": "BS-IFL-DESIGN-01",
         "title": "Independent forge lifecycle design review",
-        "status": "VERIFY_REVIEW",
+        "status": "DONE",
         "canon_owner": "Current Blacksmith core canon, Decisions 28-31/37-40, and actual vertical-slice runtime boundaries",
         "actual_consumers": [
           "User review of docs/superpowers/specs/2026-09-03-independent-forge-lifecycle-design.md",
           "Future TDD implementation plan only after user review"
         ],
         "depends_on": [],
-        "next_action": "Review the A/B/C implementation boundary and then create the implementation plan; do not mutate product paths before that review.",
+        "next_action": "Design review completed; execute the user-approved implementation plan in the existing isolated worktree.",
         "checklist": [
           {
             "id": "fresh-current-read",
@@ -135,9 +136,11 @@
           },
           {
             "id": "user-design-review",
-            "status": "USER_DECISION_REQUIRED",
-            "text": "The architectural design must be reviewed before an implementation plan is authored.",
-            "evidence": []
+            "status": "PASS",
+            "text": "The user approved continuing through implementation after reviewing the A/B/C boundary.",
+            "evidence": [
+              "Current user instruction: 진행해 멈추지말고 구현작업까지 전부 계속"
+            ]
           }
         ],
         "acceptance_criteria": [
@@ -173,7 +176,94 @@
         ],
         "must_fix_remaining": 0,
         "blocked_unverified_remaining": 0,
-        "user_decision_required_remaining": 1
+        "user_decision_required_remaining": 0,
+        "verified_head_sha": "06c9653b2b68e8002ced306c58d22125f06f7858",
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "Draft PR #366 exact head 06c9653b2b68e8002ced306c58d22125f06f7858",
+          "Applicable CI checks succeeded at the recorded design head"
+        ],
+        "rollback": "Revert the two design-record commits; no product path, asset, save, or Base adoption state is removed."
+      },
+      {
+        "work_item_id": "BS-IFL-IMPLEMENT-02",
+        "title": "Independent forge lifecycle implementation and delivery",
+        "status": "IN_PROGRESS",
+        "canon_owner": "Current Blacksmith core canon, Decisions 28-31/37-40, and actual vertical-slice runtime boundaries",
+        "actual_consumers": [
+          "scripts/ui/forging_screen.gd first-forge result surface",
+          "scripts/vertical_slice/ui/vs_app.gd customer handoff/result/chronicle flow",
+          "Current five-equipment vertical-slice player flow"
+        ],
+        "depends_on": [
+          "BS-IFL-DESIGN-01"
+        ],
+        "next_action": "Execute Tasks 1 through 4 in docs/superpowers/plans/2026-09-03-independent-forge-lifecycle.md with TDD and exact-head delivery.",
+        "checklist": [
+          {
+            "id": "implementation-plan",
+            "status": "PASS",
+            "text": "A TDD implementation plan defines the explicit first-forge, profile-report, chronicle, verification, and delivery tasks.",
+            "evidence": [
+              "docs/superpowers/plans/2026-09-03-independent-forge-lifecycle.md"
+            ]
+          },
+          {
+            "id": "focused-tdd",
+            "status": "IN_PROGRESS",
+            "text": "Focused GUT tests must fail before every associated production behavior is added.",
+            "evidence": []
+          },
+          {
+            "id": "exact-head-delivery",
+            "status": "NOT_RUN",
+            "text": "Push, CI, protected merge, and main readback are pending the implementation head.",
+            "evidence": []
+          }
+        ],
+        "acceptance_criteria": [
+          "implementation-plan",
+          "focused-tdd",
+          "exact-head-delivery"
+        ],
+        "verification": [
+          {
+            "level": "E0_CONTRACT",
+            "status": "PASS",
+            "evidence": [
+              "Approved design receipt and execution plan"
+            ]
+          },
+          {
+            "level": "E1_STATIC",
+            "status": "NOT_RUN",
+            "evidence": []
+          },
+          {
+            "level": "E2_TEST",
+            "status": "NOT_RUN",
+            "evidence": []
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "NOT_RUN",
+            "evidence": []
+          },
+          {
+            "level": "E5_PLAY",
+            "status": "NOT_RUN",
+            "evidence": []
+          }
+        ],
+        "required_evidence": [
+          "E0_CONTRACT",
+          "E1_STATIC",
+          "E2_TEST",
+          "E3_RUNTIME"
+        ],
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0
       }
     ]
   },
