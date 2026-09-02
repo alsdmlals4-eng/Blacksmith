@@ -93,10 +93,11 @@ Decision `BS-OPS-20260828-35` continues to own GitHub-only canon and image execu
 
 ## 7. Validation and evidence ceiling
 
-Run the following for a contract change before PR creation:
+The 2026-09-01 receipt is historical benchmark/hygiene evidence. Recheck it with the historical Base source `19355b7ef065a21d0f2b685c7d9be64a4a3970f8` used by the existing workflow, not whichever Base happens to be in a local folder. That history check does not authorize a new task. The current PM gate is defined in section 9.
+
+Run project contract checks before PR creation:
 
 ```powershell
-& $python C:\Users\user\Documents\GitHub\Base\tools\validate_work_contract_receipt.py --receipt docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json
 & $python tests/check_base_current_adaptation_work_contract.py
 & $python tests/check_current_authority_entrypoint_contract.py
 & $python tools/check_archive_governance.py
@@ -110,3 +111,36 @@ Then review the exact branch diff, verify no protected product path changed, and
 This document supersedes only conflicting **operational-routing** claims in compatibility material that imply an older Base release is the current lock, that `BUILD` is an undifferentiated mode, or that Notion/Google Sheet requires future sync. It does not alter historical content, game rules, current product owners, or generated adapter data.
 
 Rollback is a normal revert of the associated documentation-and-test PR. No deletion, migration, Base mutation, protected-path edit, direct-main push, force-push, ruleset bypass, or external permission change is authorized by this contract.
+
+## 9. PM execution-gate integration
+
+`PM_EXECUTION_GATE_REQUIRED` · `PM_CHECKLIST_VISIBLE_AT_START_TRANSITION_CLOSEOUT` · `TRUSTED_CLOSEOUT_HEAD_REQUIRED`
+
+Approval: 2026-09-02 user request, tracked in Blacksmith Issue #358 and Base Issue #825. Scope is work tracking and verification infrastructure, not game scope or a new persistent agent. The existing release lock above is unchanged.
+
+**Merged tooling boundary:** Base PR #826 was normally squash-merged to Base `main` as `96bee2700c8931b9262ad5a24a0664a400858f20` after exact-head required checks, independent review completion, unresolved thread count zero and postmerge readback. Blacksmith selects that immutable merged revision only for this PM execution wrapper. It does not change `BLACKSMITH_ADOPTED_BASE_RELEASE`, the generated adapter/snapshot, gameplay, assets, save data, permissions or release state.
+
+The real work receipt is `docs/operations/receipts/2026-09-02-pm-execution-gate.json`, a source-bound snapshot of this PM integration, not the whole game's backlog. Its project baseline is `296ad86c2315357998ed86c594b8b006a1bde420`. The current premerge projection is **3/4**: authority audit, merged-Base wrapper wiring and evidence-backed handoff validation are DONE from exact tested project HEAD `0c32aea396b64b685baab0fcddc46e9a3e0e52e1`; `BS-PM-04` remains `VERIFY_REVIEW` until exact receipt-tail checks, independent review, protected merge and merged-main readback. Existing Issue #358 tracks transitions; reconcile the repository snapshot at each material work session instead of treating an old source SHA as current.
+
+Use `tools/check_pm_work_receipt.py` with a separate checkout at exact merged Base revision `96bee2700c8931b9262ad5a24a0664a400858f20`. It verifies the selected commit and tracked executable bytes before calling the shared validator. It does not copy the shared implementation, update the game's adapter, mutate receipts or launch services.
+
+```text
+project AGENTS → this owner → actual approved Goal and source fresh-read
+→ reconcile required work in the same current receipt and existing Issue
+→ choose one ready task and set active_work_item_ref before execution
+→ python tools/check_pm_work_receipt.py --base-root <exact-Base-PM-checkout> --receipt <current-repository-receipt.json> --expected-source-sha <independently-fresh-read-project-source-sha> --phase start
+→ show the actual checklist, completed/required count, active work, blockers and next action
+→ execute only the approved task and collect actual evidence
+→ update the same receipt/Issue and choose the next approved task
+→ same command with --phase resume before that task
+→ revalidate every required DONE item against one independently fresh-read verified subject HEAD
+→ python tools/check_pm_work_receipt.py --base-root <exact-Base-PM-checkout> --receipt <current-repository-receipt.json> --expected-source-sha <independently-fresh-read-project-source-sha> --expected-head-sha <independently-fresh-read-verified-subject-head-sha> --phase closeout
+```
+
+Missing PM items, wrong source/tooling, a missing or mismatched closeout HEAD, unverified completion, failed dependencies and nonzero checks do not authorize execution. A valid blocked card can be displayed without changing nonzero failure to PASS. Checkpoint commits, test PASS, runtime PASS, visual inspection, user approval and merge are separate states. A normal closeout stops at the approved scope; it must not invent a new goal.
+
+`BS-PM-04` deliberately keeps merge and merged-main readback in the denominator. Therefore PR #359 may reach a verified pre-merge candidate but cannot falsely close the whole Goal before its own merge. After #359 normally merges and the merged subject HEAD is read back, create only a receipt/status metadata follow-up from that main revision, rebind every required DONE item to that one subject HEAD, pass closeout with the separately supplied expected HEAD, and run final exact-head CI/review before merging the receipt-only closure. Product/owner/consumer behavior changes in that follow-up invalidate the receipt-only exception and require a new subject-head review.
+
+The existing workflow preserves its historical `19355b7ef065a21d0f2b685c7d9be64a4a3970f8` receipt check and separately checks out exact merged Base PM tooling `96bee2700c8931b9262ad5a24a0664a400858f20` for wrapper and real integration tests. The workflow supplies independently fresh-read source and subject revisions to the integration test; the test derives only its active-versus-closeout phase from the repository-owned receipt, so the later bounded receipt-only closeout does not require changing product or test semantics. Missing real Base checkout is an error, not a skipped test. Integration success alone cannot approve this project PR or substitute for exact-head review and protected merge.
+
+Rollback: normally revert only this PM integration after preserving its Issue/receipt history. Product paths, existing PR #196, adopted Base release and generated adapter/snapshot remain untouched.
