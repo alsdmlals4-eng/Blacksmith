@@ -13,6 +13,7 @@ APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.jso
 RECEIPT = ROOT / "docs" / "operations" / "receipts" / "2026-09-01-godot-warning-hygiene.json"
 WARNING_HYGIENE_SOURCE_HEAD = "83238c0f516c99c5d21c9a8011764804704c3658"
 WARNING_HYGIENE_MERGE_COMMIT = "1686f8f164cba2abf0678d7b768f00699a3414dd"
+WARNING_HYGIENE_PROTECTED_BASE = "48c73c37f5d8b7f3a436a51aeb96d78febd0fe02"
 
 WARNING_SOURCE_FRAGMENTS: dict[Path, tuple[str, ...]] = {
     ROOT / "scripts" / "vertical_slice" / "ui" / "vs_customer_result_screen.gd": (
@@ -69,7 +70,9 @@ class GodotWarningHygieneTests(unittest.TestCase):
         self.assertEqual(WARNING_HYGIENE_MERGE_COMMIT, receipt["remote_delivery"]["merge_commit"])
         self.assertEqual("ALL_GREEN_EXACT_HEAD", receipt["remote_delivery"]["checks"])
         self.assertEqual("RETIRED", receipt["remote_delivery"]["one_shot_approval_status"])
-        self.assertFalse(APPROVAL.exists())
+        if APPROVAL.exists():
+            approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
+            self.assertNotEqual(WARNING_HYGIENE_PROTECTED_BASE, approval["protected_base_commit"])
 
     def test_vertical_slice_app_script_uid_matches_the_script_sidecar(self) -> None:
         self.assertEqual(

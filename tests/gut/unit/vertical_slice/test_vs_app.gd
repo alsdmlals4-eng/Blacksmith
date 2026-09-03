@@ -267,6 +267,7 @@ func test_phase1_handoff_routes_one_active_level_ten_item_through_one_return_bea
 		return
 	assert_eq(str(handoff_screen.view_state().get("phase", "")), "HANDOFF")
 	assert_eq(str(handoff_screen.view_state().get("item_uid", "")), str(source_item.uid))
+	assert_eq(str(handoff_screen.view_state().get("customer_header", "")), "[정예] 「유적의 길잡이」 나디아 벤")
 	assert_true(str(handoff_screen.view_state().get("message", "")).contains("손상"), "handoff must state that handoff itself does not damage the item")
 	assert_eq(str(app.call("complete_phase1_return_beat")), app.OK_TRANSITION)
 	assert_eq(app.current_state, "RETURN")
@@ -282,6 +283,7 @@ func test_phase1_handoff_routes_one_active_level_ten_item_through_one_return_bea
 	assert_eq(persisted_event.get("item_refs", [])[0].get("uid", ""), str(source_item.uid))
 	assert_true(bool(persisted_event.get("durability_consequence", {}).get("actual_item_use", false)))
 	assert_false(bool(persisted_event.get("durability_consequence", {}).get("damage_applied", true)), "a real high roll must not script damage for the demonstration")
+	assert_eq(str(app.get_node("ScreenHost/CustomerResultScreen").view_state().get("summary_text", "")), "나디아 벤의 실제 사용 결과입니다.")
 	var chronicle_action := app.get_node_or_null("ScreenHost/CustomerResultScreen/ResultLayout/ChronicleActionButton") as Button
 	assert_not_null(chronicle_action, "an intact actual-use result must offer its same-UID chronicle")
 	if chronicle_action == null:

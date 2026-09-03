@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "receipt_id": "BLACKSMITH_INDEPENDENT_FORGE_LIFECYCLE_DESIGN_20260903",
+  "status": "VERIFY_REVIEW",
+  "work_level": "L1",
+  "scope": "Current-canon implementation: reconcile the existing first-forge, same-UID handoff, actual-use result, repair, and chronicle surfaces without importing foreign product expression, changing the save schema, or expanding product scope.",
+  "authority_boundary": {
+    "current_product_owners_retained": [
+      "BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+      "BS-ENHANCE-20260830-38",
+      "BS-ENHANCE-20260901-40",
+      "BS-DAMAGE-20260826-28",
+      "BS-REPAIR-20260826-29",
+      "BS-REPAIR-20260826-31",
+      "BS-DAMAGE-20260826-30",
+      "BS-ART-20260825-03",
+      "BS-ART-20260826-04"
+    ],
+    "no_canon_owner_replacement": true,
+    "protected_product_paths_changed": true,
+    "notion_or_google_sheet_changed": false,
+    "open_pr_196_taken_over": false,
+    "open_pr_359_taken_over": false
+  },
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "source_and_evidence": "User-supplied Google Play listing for com.patrick.legendsmith; public description and screenshot flow were reviewed on 2026-09-03 KST.",
+        "observed_pattern": "A short direct-forging action is followed by a workpiece leaving a forge context, receiving a use outcome, and returning to a record surface.",
+        "project_fit_and_difference": "ADAPT only the high-level clarity of craft-to-use-to-return. Do not reuse title, characters, world, assets, text, UI composition, ranking, advertising, or economy.",
+        "disposition": "ADAPT"
+      },
+      {
+        "source_and_evidence": "Anvil Saga official Steam product page, reviewed 2026-09-03 KST.",
+        "observed_pattern": "The product couples blacksmith orders to workers, facilities, factions, relationships, and a broad shop-management economy.",
+        "project_fit_and_difference": "REJECT this expansion. Blacksmith keeps one current workpiece UID and factual actual-use return, without workers, factions, facilities, logistics, or a customer-management loop.",
+        "disposition": "REJECT"
+      },
+      {
+        "source_and_evidence": "Godot official Using Containers documentation, reviewed 2026-09-03 KST.",
+        "observed_pattern": "Container-derived nodes own child Control sizing and placement; nested containers support responsive layouts.",
+        "project_fit_and_difference": "ADOPT the implementation constraint: preserve established Container ownership and direct action NodePaths when clarifying handoff/report UI.",
+        "disposition": "ADOPT"
+      },
+      {
+        "source_and_evidence": "Godot official Theme class documentation, reviewed 2026-09-03 KST.",
+        "observed_pattern": "Theme resources provide shared styling for a Control branch or project instead of scattering repeated local overrides.",
+        "project_fit_and_difference": "ADOPT only after a current Theme/local-override comparison; no new Theme resource or visual asset is implied by this design candidate.",
+        "disposition": "ADOPT"
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "IMPLEMENTATION / script-only current-canon reconciliation with one-shot protected-path approval",
+    "inventory": [
+      {
+        "path": "docs/superpowers/specs/2026-09-03-independent-forge-lifecycle-design.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Implementation provenance created from the 296ad86c current-main fresh read and retained after user-approved execution.",
+        "references_and_consumers": "Human implementation/review provenance; it has no runtime consumer."
+      },
+      {
+        "path": "scripts/ui/forging_screen.gd",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Existing Godot first-forge runtime presenter.",
+        "references_and_consumers": "Current first-forge selection and tap/fever/precision interaction; now retains the completed result until one explicit Workshop confirmation."
+      },
+      {
+        "path": "scripts/vertical_slice/ui/vs_app.gd",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Existing vertical-slice state transition presenter.",
+        "references_and_consumers": "Current workshop, handoff, actual-use result, repair, and chronicle transitions; now injects only the existing current customer display profile."
+      },
+      {
+        "path": "docs/superpowers/specs/2026-09-01-phase1-workshop-blueprint-design.md",
+        "classification": "ARCHIVE",
+        "owner_or_provenance": "Merged Phase 1 blueprint design evidence.",
+        "references_and_consumers": "Historical implementation provenance for the current workshop wireframe; preserved and not overwritten."
+      }
+    ]
+  },
+  "asset_disposition": {
+    "existing_assets_reused_by_future_candidate": [
+      "five transparent V2 equipment illustrations at existing first-forge/workshop consumers",
+      "existing illustrated workshop backgrounds and customer-result illustration at their current consumers"
+    ],
+    "new_raster_asset_created": false,
+    "foreign_asset_or_screenshot_reused": false,
+    "new_visual_requirement_created": false
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "BLACKSMITH-INDEPENDENT-FORGE-LIFECYCLE-DESIGN-20260903",
+    "source_main_sha": "296ad86c2315357998ed86c594b8b006a1bde420",
+    "next_action": "RUN_EXACT_HEAD_VALIDATION_AND_PROTECTED_GITHUB_DELIVERY",
+    "work_item_refs": [
+      "BS-IFL-DESIGN-01",
+      "BS-IFL-IMPLEMENT-02"
+    ],
+    "active_work_item_ref": "BS-IFL-IMPLEMENT-02",
+    "progress_summary": {
+      "completed_items": 1,
+      "applicable_items": 2,
+      "display": "1 / 2"
+    },
+    "work_items": [
+      {
+        "work_item_id": "BS-IFL-DESIGN-01",
+        "title": "Independent forge lifecycle design review",
+        "status": "DONE",
+        "canon_owner": "Current Blacksmith core canon, Decisions 28-31/37-40, and actual vertical-slice runtime boundaries",
+        "actual_consumers": [
+          "User review of docs/superpowers/specs/2026-09-03-independent-forge-lifecycle-design.md",
+          "Future TDD implementation plan only after user review"
+        ],
+        "depends_on": [],
+        "next_action": "Design review completed; execute the user-approved implementation plan in the existing isolated worktree.",
+        "checklist": [
+          {
+            "id": "fresh-current-read",
+            "status": "PASS",
+            "text": "The design baseline is the exact current main commit and retains current product owners.",
+            "evidence": [
+              "296ad86c2315357998ed86c594b8b006a1bde420",
+              "AGENTS.md and current Base adaptation contract read"
+            ]
+          },
+          {
+            "id": "benchmark-boundary",
+            "status": "PASS",
+            "text": "The design records adopt/adapt/reject decisions and an explicit no-copy boundary.",
+            "evidence": [
+              "benchmark_preflight_receipt entries",
+              "independent-forge-lifecycle design sections 2 and 4"
+            ]
+          },
+          {
+            "id": "user-design-review",
+            "status": "PASS",
+            "text": "The user approved continuing through implementation after reviewing the A/B/C boundary.",
+            "evidence": [
+              "Current user instruction: 진행해 멈추지말고 구현작업까지 전부 계속"
+            ]
+          }
+        ],
+        "acceptance_criteria": [
+          "fresh-current-read",
+          "benchmark-boundary"
+        ],
+        "verification": [
+          {
+            "level": "E0_CONTRACT",
+            "status": "PASS",
+            "evidence": [
+              "Base validate_work_contract_receipt.py start-phase validation"
+            ]
+          },
+          {
+            "level": "E1_STATIC",
+            "status": "NOT_RUN",
+            "evidence": []
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "NOT_RUN",
+            "evidence": []
+          },
+          {
+            "level": "E5_PLAY",
+            "status": "NOT_RUN",
+            "evidence": []
+          }
+        ],
+        "required_evidence": [
+          "E0_CONTRACT"
+        ],
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "verified_head_sha": "06c9653b2b68e8002ced306c58d22125f06f7858",
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "Draft PR #366 exact head 06c9653b2b68e8002ced306c58d22125f06f7858",
+          "Applicable CI checks succeeded at the recorded design head"
+        ],
+        "rollback": "Revert the two design-record commits; no product path, asset, save, or Base adoption state is removed."
+      },
+      {
+        "work_item_id": "BS-IFL-IMPLEMENT-02",
+        "title": "Independent forge lifecycle implementation and delivery",
+        "status": "VERIFY_REVIEW",
+        "canon_owner": "Current Blacksmith core canon, Decisions 28-31/37-40, and actual vertical-slice runtime boundaries",
+        "actual_consumers": [
+          "scripts/ui/forging_screen.gd first-forge result surface",
+          "scripts/vertical_slice/ui/vs_app.gd customer handoff/result/chronicle flow",
+          "Current five-equipment vertical-slice player flow"
+        ],
+        "depends_on": [
+          "BS-IFL-DESIGN-01"
+        ],
+        "next_action": "Run final exact-head validation, push PR #366, obtain exact-head CI and protected merge, then perform main readback and separate one-shot-manifest retirement closure.",
+        "checklist": [
+          {
+            "id": "implementation-plan",
+            "status": "PASS",
+            "text": "A TDD implementation plan defines the explicit first-forge, profile-report, chronicle, verification, and delivery tasks.",
+            "evidence": [
+              "docs/superpowers/plans/2026-09-03-independent-forge-lifecycle.md"
+            ]
+          },
+          {
+            "id": "focused-tdd",
+            "status": "PASS",
+            "text": "The new first-forge, customer-profile, result, and chronicle contracts were observed RED before their minimal production behavior and GREEN after it.",
+            "evidence": [
+              "RED: 245 / 252 GUT tests passing with seven intended missing-behavior assertions",
+              "GREEN preliminary full suite: 252 / 252 GUT tests passing, 1880 assertions",
+              "Final exact-head rerun remains required before delivery"
+            ]
+          },
+          {
+            "id": "exact-head-delivery",
+            "status": "NOT_RUN",
+            "text": "Push, CI, protected merge, and main readback are pending the implementation head.",
+            "evidence": []
+          }
+        ],
+        "acceptance_criteria": [
+          "implementation-plan",
+          "focused-tdd",
+          "exact-head-delivery"
+        ],
+        "verification": [
+          {
+            "level": "E0_CONTRACT",
+            "status": "PASS",
+            "evidence": [
+              "Approved design receipt and execution plan"
+            ]
+          },
+          {
+            "level": "E1_STATIC",
+            "status": "PASS",
+            "evidence": [
+              "Current authority entrypoint contract passed.",
+              "Exact approved project operating contract passed against protected baseline 1686f8f164cba2abf0678d7b768f00699a3414dd.",
+              "Godot 4.7.1 headless editor load and git diff --check passed."
+            ]
+          },
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "Python discovery: 349 tests passed, 2 skipped.",
+              "Full GUT: 252 / 252 tests passed, 1882 assertions, process exit 0.",
+              "GUT retained existing orphan/resource cleanup messages at exit; they are not asserted as zero-warning hygiene."
+            ]
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "PASS",
+            "evidence": [
+              "Isolated Blacksmith worktree runtime: first-forge result remained until explicit confirmation, then the same UID entered Workshop.",
+              "Isolated runtime actual UI: +9 to +10 tag-add selected 불의 심장 and 날 세우기, consumed one catalyst, showed +10, and exposed the profile-labelled Nadia handoff.",
+              "Isolated runtime actual UI: handoff, actual-use result, and chronicle showed [정예] 「유적의 길잡이」 나디아 벤 and factual same-UID events; runtime diagnostics had 0 errors and 0 warnings."
+            ]
+          },
+          {
+            "level": "E5_PLAY",
+            "status": "NOT_RUN",
+            "evidence": []
+          }
+        ],
+        "required_evidence": [
+          "E0_CONTRACT",
+          "E1_STATIC",
+          "E2_TEST",
+          "E3_RUNTIME"
+        ],
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0
+      }
+    ]
+  },
+  "evidence_ceiling": {
+    "design_source_and_contract": "MACHINE_VERIFIED_START_PHASE",
+    "implementation": "IMPLEMENTED_LOCAL_MACHINE_RUNTIME_VERIFIED_PENDING_GITHUB_DELIVERY",
+    "godot_runtime": "RUNTIME_VERIFIED_IN_ISOLATED_WORKTREE",
+    "android_device": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human_player_experience": "NOT_RUN",
+    "release": "NOT_RUN"
+  },
+  "base_promotion_candidates": [],
+  "project_only_lessons": [
+    "A highly similar public loop can validate a player comprehension problem without authorizing reuse of its product expression.",
+    "Existing first-forge and same-UID return code should be reconciled before proposing a new minigame, customer roster, or new save schema.",
+    "A canonical but currently unreachable grade must be treated as a balance/meaning decision, not silently enabled through UI work."
+  ]
+}

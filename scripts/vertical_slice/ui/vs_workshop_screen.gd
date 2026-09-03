@@ -72,6 +72,7 @@ var _maintenance_service = null
 var _enhancement_action_service = null
 var _save_service = null
 var _campaign_envelope = null
+var _customer_handoff_label := "고객에게 인계 · 인계 손상 없음"
 var _precision_action := ""
 var _precision_selection_data: Dictionary = {}
 
@@ -185,14 +186,21 @@ func _apply_minimum_height_to_controls(paths: Array, minimum_height: float) -> v
 			control.custom_minimum_size = Vector2(0, minimum_height)
 
 
-func configure_context(item, resources, maintenance_service = null, enhancement_action_service = null, save_service = null, campaign_envelope = null) -> void:
+func configure_context(item, resources, maintenance_service = null, enhancement_action_service = null, save_service = null, campaign_envelope = null, customer_profile = null) -> void:
 	_item = item
 	_resources = resources
 	_maintenance_service = maintenance_service if maintenance_service != null else MaintenanceServiceScript.new()
 	_enhancement_action_service = enhancement_action_service if enhancement_action_service != null else EnhancementActionServiceScript.new()
 	_save_service = save_service
 	_campaign_envelope = campaign_envelope
+	_customer_handoff_label = _customer_handoff_button_label(customer_profile)
 	_refresh_controls()
+
+
+func _customer_handoff_button_label(customer_profile) -> String:
+	if customer_profile is VSCustomerProfile and customer_profile.validation_errors.is_empty() and not customer_profile.name.is_empty():
+		return "%s에게 인계 · 인계 손상 없음" % customer_profile.name
+	return "고객에게 인계 · 인계 손상 없음"
 
 
 func view_state() -> Dictionary:
@@ -1184,17 +1192,17 @@ func _set_wireframe_card_state(card_name: String, body_text: String, card_visibl
 
 
 func _ensure_handoff_button(layout: VBoxContainer) -> void:
-	if layout.has_node("HandoffButton"):
-		return
-	var handoff_button := Button.new()
-	handoff_button.name = "HandoffButton"
-	handoff_button.text = "나디아에게 인계 · 인계 손상 없음"
-	handoff_button.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
-	handoff_button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
-	var repair_button := layout.get_node_or_null("RepairButton") as Control
-	layout.add_child(handoff_button)
-	if repair_button != null:
-		layout.move_child(handoff_button, repair_button.get_index())
+	var handoff_button := layout.get_node_or_null("HandoffButton") as Button
+	if handoff_button == null:
+		handoff_button = Button.new()
+		handoff_button.name = "HandoffButton"
+		handoff_button.custom_minimum_size = Vector2(0, MOBILE_TOUCH_TARGET_HEIGHT)
+		handoff_button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+		var repair_button := layout.get_node_or_null("RepairButton") as Control
+		layout.add_child(handoff_button)
+		if repair_button != null:
+			layout.move_child(handoff_button, repair_button.get_index())
+	handoff_button.text = _customer_handoff_label
 
 
 func _ensure_chronicle_button(layout: VBoxContainer) -> void:

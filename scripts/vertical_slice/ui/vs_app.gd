@@ -14,7 +14,11 @@ const ItemChronicleScreenScript = preload("res://scripts/vertical_slice/ui/vs_it
 const CustomerActualUseActionServiceScript = preload(
 	"res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd"
 )
+const CustomerProfileRepositoryScript = preload(
+	"res://scripts/vertical_slice/services/vs_customer_profile_repository.gd"
+)
 const PHASE1_HANDOFF_MINIMUM_LEVEL := 10
+const PHASE1_CUSTOMER_ID := "NADIA_VENN"
 const PHASE1_NADIA_EVENT_PREFIX := "phase1-nadia-actual-use-"
 
 const DECLARED_TRANSITIONS := {
@@ -101,7 +105,16 @@ func configure_workshop_context(item, resources, maintenance_service = null, enh
 	var workshop_screen := get_node_or_null("ScreenHost/WorkshopScreen")
 	if workshop_screen == null or not workshop_screen.has_method("configure_context"):
 		return false
-	workshop_screen.call("configure_context", item, resources, maintenance_service, enhancement_action_service, save_service, campaign_envelope)
+	workshop_screen.call(
+		"configure_context",
+		item,
+		resources,
+		maintenance_service,
+		enhancement_action_service,
+		save_service,
+		campaign_envelope,
+		_customer_profile_or_null(PHASE1_CUSTOMER_ID)
+	)
 	if workshop_screen.has_signal("enhancement_saved") and not workshop_screen.enhancement_saved.is_connected(_on_workshop_enhancement_saved):
 		workshop_screen.enhancement_saved.connect(_on_workshop_enhancement_saved)
 	_connect_workshop_handoff()
@@ -202,7 +215,11 @@ func present_resolved_customer_result(event_id: String) -> String:
 	var result_screen := get_node_or_null("ScreenHost/CustomerResultScreen")
 	if not result is Dictionary or result_screen == null or not result_screen.has_method("configure_resolved_result"):
 		return INVALID_PAYLOAD
-	var configured: Dictionary = result_screen.call("configure_resolved_result", result)
+	var configured: Dictionary = result_screen.call(
+		"configure_resolved_result",
+		result,
+		_customer_profile_or_null(str(result.get("customer_id", "")))
+	)
 	if str(configured.get("status", "")) != "APPLIED":
 		return INVALID_PAYLOAD
 	var view_state: Dictionary = result_screen.call("view_state")
@@ -262,7 +279,10 @@ func begin_phase1_customer_handoff() -> String:
 	var handoff_screen: Control = _ensure_customer_handoff_screen()
 	if handoff_screen == null:
 		return INVALID_PAYLOAD
-	var configured: Dictionary = handoff_screen.call("configure_handoff", item_uid, int(handoff_item.enhancement_level))
+	var customer_profile = _customer_profile_or_null(PHASE1_CUSTOMER_ID)
+	if customer_profile == null:
+		return INVALID_PAYLOAD
+	var configured: Dictionary = handoff_screen.call("configure_handoff", item_uid, int(handoff_item.enhancement_level), customer_profile)
 	if str(configured.get("status", "")) != "APPLIED":
 		return INVALID_PAYLOAD
 	var transition := transition_to("CUSTOMER", {"item_uid": item_uid})
@@ -279,7 +299,10 @@ func complete_phase1_return_beat() -> String:
 	var handoff_screen: Control = _ensure_customer_handoff_screen()
 	if handoff_screen == null:
 		return INVALID_PAYLOAD
-	var configured: Dictionary = handoff_screen.call("configure_return_beat", _phase1_handoff_item_uid)
+	var customer_profile = _customer_profile_or_null(PHASE1_CUSTOMER_ID)
+	if customer_profile == null:
+		return INVALID_PAYLOAD
+	var configured: Dictionary = handoff_screen.call("configure_return_beat", _phase1_handoff_item_uid, customer_profile)
 	if str(configured.get("status", "")) != "APPLIED":
 		return INVALID_PAYLOAD
 	var transition := transition_to("RETURN", {"item_uid": _phase1_handoff_item_uid})
@@ -295,7 +318,7 @@ func resolve_phase1_customer_actual_use_with_roll(damage_roll_percent: float) ->
 	var item_uid := _phase1_handoff_item_uid
 	if _has_phase1_resolved_event(item_uid):
 		return "EVENT_ALREADY_RESOLVED"
-	return resolve_customer_actual_use_with_roll_from_return(_phase1_nadia_actual_use_event(item_uid), damage_roll_percent)
+	return resolve_customer_actual_use_with_roll_from_return(_phase1_customer_actual_use_event(item_uid), damage_roll_percent)
 
 
 func resolve_phase1_customer_actual_use() -> String:
@@ -337,6 +360,13 @@ func _phase1_handoff_item():
 	return _campaign_envelope.get_item(item_uid)
 
 
+func _customer_profile_or_null(customer_id: String):
+	if customer_id.is_empty():
+		return null
+	var loaded: Dictionary = CustomerProfileRepositoryScript.new().load_profile(customer_id)
+	return loaded.get("profile", null) if str(loaded.get("status", "")) == "APPLIED" else null
+
+
 func _has_phase1_resolved_event(item_uid: String) -> bool:
 	if _campaign_envelope == null or not _campaign_envelope.active_run is Dictionary:
 		return false
@@ -348,15 +378,18 @@ func _phase1_event_id(item_uid: String) -> String:
 	return "%s%s" % [PHASE1_NADIA_EVENT_PREFIX, item_uid]
 
 
-func _phase1_nadia_actual_use_event(item_uid: String) -> Dictionary:
+func _phase1_customer_actual_use_event(item_uid: String) -> Dictionary:
+	var customer_profile = _customer_profile_or_null(PHASE1_CUSTOMER_ID)
+	if customer_profile == null:
+		return {}
 	return {
 		"content_result": {
 			"schema_version": 1,
 			"record_type": "CONTENT_RESULT_V1",
 			"event_id": _phase1_event_id(item_uid),
 			"source_decision_id": "BS-CONTENT-20260811-01",
-			"content_id": "ADVENTURER_01",
-			"customer_id": "NADIA_VENN",
+			"content_id": customer_profile.content_id,
+			"customer_id": customer_profile.customer_id,
 			"occurred_at_game_day": int(_campaign_envelope.active_run.get("current_day", 1)),
 			"item_refs": [{"role": "PRIMARY_ITEM", "uid": item_uid}],
 			"result_axes": {
@@ -411,7 +444,12 @@ func _show_item_chronicle(item_uid: String) -> String:
 	var chronicle_screen: Control = _ensure_item_chronicle_screen()
 	if chronicle_screen == null:
 		return INVALID_PAYLOAD
-	var configured: Dictionary = chronicle_screen.call("configure_item", item, raw_events)
+	var configured: Dictionary = chronicle_screen.call(
+		"configure_item",
+		item,
+		raw_events,
+		_customer_profile_or_null(PHASE1_CUSTOMER_ID)
+	)
 	if str(configured.get("status", "")) != "APPLIED":
 		return INVALID_PAYLOAD
 	var workshop_screen := get_node_or_null("ScreenHost/WorkshopScreen")

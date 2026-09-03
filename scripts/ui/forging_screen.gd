@@ -1,5 +1,7 @@
 extends Control
 
+signal forge_result_confirmed(result: Dictionary)
+
 const ForgingSessionScript = preload("res://scripts/forging/forging_session.gd")
 const PrecisionGaugeScript = preload("res://scripts/ui/precision_gauge.gd")
 const FirstForgeBackgroundTexture = preload("res://assets/ui/workshop/first_forge_background_v1.png")
@@ -28,12 +30,15 @@ var result_panel: PanelContainer
 var result_name_label: Label
 var result_quality_label: Label
 var result_stats_label: Label
+var result_commit_button: Button
 var helper_label: Label
 var last_state: int = -1
 var equipment_title_label: Label
 var equipment_type_label: Label
 var equipment_choice_grid: GridContainer
 var _selected_equipment_id := "iron_sword"
+var _completed_result: Dictionary = {}
+var _result_confirmation_emitted := false
 
 
 func _ready() -> void:
@@ -232,14 +237,15 @@ func _build_interface() -> void:
 	result_stats_label = _label("", 17, MUTED)
 	result_stats_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	result_box.add_child(result_stats_label)
-	var restart_button := Button.new()
-	restart_button.text = "다시 제작"
-	restart_button.custom_minimum_size = Vector2(0.0, 82.0)
-	restart_button.add_theme_font_size_override("font_size", 24)
-	restart_button.add_theme_color_override("font_color", TEXT)
-	restart_button.add_theme_stylebox_override("normal", _button_style(Color("#3d7045"), GREEN, 18))
-	restart_button.pressed.connect(_start_new_session)
-	result_box.add_child(restart_button)
+	result_commit_button = Button.new()
+	result_commit_button.name = "ForgeResultCommitButton"
+	result_commit_button.text = "작품을 공방에 올리기"
+	result_commit_button.custom_minimum_size = Vector2(0.0, 82.0)
+	result_commit_button.add_theme_font_size_override("font_size", 24)
+	result_commit_button.add_theme_color_override("font_color", TEXT)
+	result_commit_button.add_theme_stylebox_override("normal", _button_style(Color("#3d7045"), GREEN, 18))
+	result_commit_button.pressed.connect(_on_result_commit_pressed)
+	result_box.add_child(result_commit_button)
 
 	helper_label = _label("터치하지 않아도 천천히 진행됩니다. 빠르게 두드리면 피버가 발동합니다.", 16, MUTED)
 	helper_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -255,8 +261,23 @@ func _start_new_session() -> void:
 	session.precision_enabled = precision_toggle.button_pressed if precision_toggle != null else true
 	session.fever_started.connect(_on_fever_started)
 	session.fever_ended.connect(_on_fever_ended)
+	session.completed.connect(_on_session_completed)
+	_completed_result.clear()
+	_result_confirmation_emitted = false
 	last_state = -1
 	_refresh(session.snapshot())
+
+
+func _on_session_completed(result: Dictionary) -> void:
+	_completed_result = result.duplicate(true)
+	_refresh(session.snapshot())
+
+
+func _on_result_commit_pressed() -> void:
+	if _result_confirmation_emitted or _completed_result.is_empty():
+		return
+	_result_confirmation_emitted = true
+	forge_result_confirmed.emit(_completed_result.duplicate(true))
 
 
 func selected_equipment_id() -> String:

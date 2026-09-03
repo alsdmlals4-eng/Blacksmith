@@ -230,8 +230,8 @@ func _on_continue_pressed() -> void:
 func _on_forge_screen_ready(forge_screen) -> void:
 	if forge_screen != _active_forge or forge_screen.session == null:
 		return
-	if not forge_screen.session.completed.is_connected(apply_completed_first_forge_result):
-		forge_screen.session.completed.connect(apply_completed_first_forge_result)
+	if not forge_screen.forge_result_confirmed.is_connected(apply_completed_first_forge_result):
+		forge_screen.forge_result_confirmed.connect(apply_completed_first_forge_result)
 
 
 func _clear_active_surface() -> void:

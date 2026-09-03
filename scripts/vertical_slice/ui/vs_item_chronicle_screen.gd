@@ -16,7 +16,7 @@ func _ready() -> void:
 	_refresh_controls()
 
 
-func configure_item(item, resolved_events: Dictionary) -> Dictionary:
+func configure_item(item, resolved_events: Dictionary, customer_profile = null) -> Dictionary:
 	if item == null or str(item.uid).is_empty() or not resolved_events is Dictionary:
 		return {"status": "BLOCKED", "reason": "INVALID_CHRONICLE_CONTEXT"}
 	_view_state = {
@@ -27,7 +27,7 @@ func configure_item(item, resolved_events: Dictionary) -> Dictionary:
 			int(item.max_durability),
 			int(item.base_max_durability),
 		],
-		"entries": _entries_from_existing_facts(item, resolved_events),
+		"entries": _entries_from_existing_facts(item, resolved_events, customer_profile),
 	}
 	_ensure_controls()
 	_refresh_controls()
@@ -38,7 +38,7 @@ func view_state() -> Dictionary:
 	return _view_state.duplicate(true)
 
 
-func _entries_from_existing_facts(item, resolved_events: Dictionary) -> Array:
+func _entries_from_existing_facts(item, resolved_events: Dictionary, customer_profile) -> Array:
 	var entries: Array = []
 	var ledger: Variant = item.ledger
 	if ledger is Array:
@@ -66,16 +66,17 @@ func _entries_from_existing_facts(item, resolved_events: Dictionary) -> Array:
 			continue
 		var result: Dictionary = raw_result
 		var consequence: Dictionary = result.get("durability_consequence", {})
-		entries.append({"kind": "HANDOFF", "text": "나디아 벤에게 작품 인계"})
+		var customer_name := _customer_name_for_result(result, customer_profile)
+		entries.append({"kind": "HANDOFF", "text": "%s에게 작품 인계" % customer_name})
 		entries.append({
 			"kind": "ACTUAL_USE",
-			"text": "나디아 벤 실제 사용 결과 · %s" % ("손상 발생" if bool(consequence.get("damage_applied", false)) else "손상 없음"),
+			"text": "%s 실제 사용 결과 · %s" % [customer_name, "손상 발생" if bool(consequence.get("damage_applied", false)) else "손상 없음"],
 		})
 	return entries
 
 
 func _is_matching_actual_use_result(raw_result, item_uid: String) -> bool:
-	if not raw_result is Dictionary or str(raw_result.get("customer_id", "")) != "NADIA_VENN":
+	if not raw_result is Dictionary or str(raw_result.get("customer_id", "")).is_empty():
 		return false
 	var consequence: Variant = raw_result.get("durability_consequence", {})
 	if not consequence is Dictionary or not bool(consequence.get("actual_item_use", false)):
@@ -87,6 +88,13 @@ func _is_matching_actual_use_result(raw_result, item_uid: String) -> bool:
 		if reference is Dictionary and str(reference.get("role", "")) == "PRIMARY_ITEM" and str(reference.get("uid", "")) == item_uid:
 			return true
 	return false
+
+
+func _customer_name_for_result(result: Dictionary, customer_profile) -> String:
+	if customer_profile is VSCustomerProfile and customer_profile.validation_errors.is_empty():
+		if customer_profile.customer_id == str(result.get("customer_id", "")) and not customer_profile.name.is_empty():
+			return customer_profile.name
+	return "고객"
 
 
 func _crafting_grade_text(grade: String) -> String:

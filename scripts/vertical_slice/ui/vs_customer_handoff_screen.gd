@@ -7,6 +7,8 @@ signal return_beat_continued
 var _view_state: Dictionary = {
 	"phase": "",
 	"item_uid": "",
+	"customer_header": "",
+	"customer_context": "",
 	"message": "",
 	"action_label": "",
 }
@@ -17,13 +19,18 @@ func _ready() -> void:
 	_refresh_controls()
 
 
-func configure_handoff(item_uid: String, enhancement_level: int) -> Dictionary:
+func configure_handoff(item_uid: String, enhancement_level: int, customer_profile) -> Dictionary:
 	if item_uid.is_empty() or enhancement_level < 10:
 		return {"status": "BLOCKED", "reason": "INVALID_HANDOFF_CONTEXT"}
+	var customer_view := _customer_view(customer_profile)
+	if customer_view.is_empty():
+		return {"status": "BLOCKED", "reason": "INVALID_CUSTOMER_PROFILE"}
 	_view_state = {
 		"phase": "HANDOFF",
 		"item_uid": item_uid,
-		"message": "나디아 벤에게 작품을 인계합니다. 인계 자체로는 손상이 발생하지 않습니다.",
+		"customer_header": customer_view["header"],
+		"customer_context": customer_view["context"],
+		"message": "%s에게 작품을 인계합니다. 인계 자체로는 손상이 발생하지 않습니다." % customer_view["name"],
 		"action_label": "인계하고 작업대로 돌아가기",
 	}
 	_ensure_controls()
@@ -31,13 +38,18 @@ func configure_handoff(item_uid: String, enhancement_level: int) -> Dictionary:
 	return {"status": "APPLIED"}
 
 
-func configure_return_beat(item_uid: String) -> Dictionary:
+func configure_return_beat(item_uid: String, customer_profile) -> Dictionary:
 	if item_uid.is_empty():
 		return {"status": "BLOCKED", "reason": "MISSING_ITEM_UID"}
+	var customer_view := _customer_view(customer_profile)
+	if customer_view.is_empty():
+		return {"status": "BLOCKED", "reason": "INVALID_CUSTOMER_PROFILE"}
 	_view_state = {
 		"phase": "RETURN",
 		"item_uid": item_uid,
-		"message": "작품이 작업대를 떠났습니다. 나디아의 실제 사용 결과를 확인합니다.",
+		"customer_header": customer_view["header"],
+		"customer_context": customer_view["context"],
+		"message": "작품이 작업대를 떠났습니다. %s의 실제 사용 결과를 확인합니다." % customer_view["name"],
 		"action_label": "실제 사용 결과 확인",
 	}
 	_ensure_controls()
@@ -47,6 +59,18 @@ func configure_return_beat(item_uid: String) -> Dictionary:
 
 func view_state() -> Dictionary:
 	return _view_state.duplicate(true)
+
+
+func _customer_view(customer_profile) -> Dictionary:
+	if not customer_profile is VSCustomerProfile or not customer_profile.validation_errors.is_empty():
+		return {}
+	if customer_profile.customer_id.is_empty() or customer_profile.name.is_empty():
+		return {}
+	return {
+		"name": customer_profile.name,
+		"header": customer_profile.player_header_ko(),
+		"context": "%s · %s" % [customer_profile.role, customer_profile.work_request_summary_ko()],
+	}
 
 
 func _ensure_controls() -> void:
@@ -80,6 +104,8 @@ func _ensure_controls() -> void:
 
 	_ensure_label(layout, "TitleLabel", 32, Color(0.94, 0.84, 0.66, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
 	_ensure_label(layout, "UidLabel", 18, Color(0.82, 0.72, 0.55, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
+	_ensure_label(layout, "CustomerHeaderLabel", 24, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
+	_ensure_label(layout, "CustomerContextLabel", 18, Color(0.82, 0.72, 0.55, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
 	_ensure_label(layout, "MessageLabel", 22, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
 	var action := layout.get_node_or_null("ActionButton") as Button
 	if action == null:
@@ -108,6 +134,8 @@ func _ensure_label(layout: VBoxContainer, node_name: String, font_size: int, fon
 func _refresh_controls() -> void:
 	_set_label("HandoffMargin/HandoffLayout/TitleLabel", "작품 인계" if str(_view_state.get("phase", "")) == "HANDOFF" else "작업대 귀환")
 	_set_label("HandoffMargin/HandoffLayout/UidLabel", "작품 UID: %s" % str(_view_state.get("item_uid", "")))
+	_set_label("HandoffMargin/HandoffLayout/CustomerHeaderLabel", str(_view_state.get("customer_header", "")))
+	_set_label("HandoffMargin/HandoffLayout/CustomerContextLabel", str(_view_state.get("customer_context", "")))
 	_set_label("HandoffMargin/HandoffLayout/MessageLabel", str(_view_state.get("message", "")))
 	var action := get_node_or_null("HandoffMargin/HandoffLayout/ActionButton") as Button
 	if action != null:
