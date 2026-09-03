@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "receipt_id": "BLACKSMITH_RECURRING_PRECISION_RUNTIME_QA_20260903",
-  "status": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
+  "status": "GITHUB_DELIVERED_MAIN_READBACK_PASS",
   "work_level": "L1",
   "scope": "Current-canon recurring Precision Enhancement QA and canonical-validator correction: prove the existing +19 to +20 tag-upgrade UI uses one consumable catalyst atomically and persists the resulting envelope, while refreshing the Base-current observation without changing gameplay, save schema, visual assets, generated adapters, or product scope.",
   "authority_boundary": {
@@ -27,6 +27,14 @@
     "release_commit": "210ec78292fa12ed7563ba743b322dd36103ae4a",
     "owner": "skills/PROJECT_BASE_ADAPTER.json",
     "automatic_update": false
+  },
+  "remote_delivery": {
+    "pull_request": 368,
+    "source_head": "20da512f883494010155f94f30cce76fba307e61",
+    "merge_commit": "1de75729b0457b0463228bd53a6bb6f5c23a9a26",
+    "checks": "ALL_REQUIRED_CHECKS_PASS_EXACT_SOURCE_HEAD",
+    "main_readback": "PASS",
+    "remote_source_branch_deleted": true
   },
   "benchmark_preflight_receipt": {
     "state": "PASS",
@@ -121,21 +129,21 @@
   "project_work_kanban": {
     "goal_or_slice_issue_ref": "BLACKSMITH-RECURRING-PRECISION-RUNTIME-QA-20260903",
     "source_main_sha": "181d40422c0b8cacd4bfa15e73f88032af0f4846",
-    "next_action": "Submit the exact locally verified bounded correction through the protected PR route, then read back the remote branch head and required CI.",
+    "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
     "work_item_refs": [
       "BS-RPQA-01"
     ],
-    "active_work_item_ref": "BS-RPQA-01",
+    "active_work_item_ref": null,
     "progress_summary": {
-      "completed_items": 0,
+      "completed_items": 1,
       "applicable_items": 1,
-      "display": "0 / 1"
+      "display": "1 / 1"
     },
     "work_items": [
       {
         "work_item_id": "BS-RPQA-01",
         "title": "Recurring Precision +19 to +20 isolated UI persistence QA and contract refresh",
-        "status": "VERIFY_REVIEW",
+        "status": "DONE",
         "canon_owner": "Current Blacksmith core canon, Decisions 38 and 40, current Base adaptation contract, and existing vertical-slice consumers.",
         "actual_consumers": [
           "VSWorkshopScreen precision selection and preview",
@@ -144,7 +152,7 @@
           "Current Python implementation and visual-requirement contracts"
         ],
         "depends_on": [],
-        "next_action": "Create the protected PR from the exact locally verified branch, verify its remote head and required CI, and retain the evidence ceiling until a later delivery readback.",
+        "next_action": "The bounded current-canon QA and contract-correction scope is merged and read back on main; stop without inferring a new product task.",
         "checklist": [
           {
             "id": "fresh-current-authority",
@@ -185,13 +193,26 @@
               "Current authority, archive governance, Base receipt/adaptation, and project operating-contract checks passed",
               "Godot 4.7.1 headless editor exited 0; pre-existing importer/exit diagnostics are retained outside a zero-warning claim"
             ]
+          },
+          {
+            "id": "exact-remote-delivery-readback",
+            "status": "PASS",
+            "text": "The protected PR used the exact validated source head, all required CI checks completed successfully, the merge completed normally, origin/main read back the recorded merge commit, and the temporary remote source branch was removed.",
+            "evidence": [
+              "PR #368 source head 20da512f883494010155f94f30cce76fba307e61",
+              "PR #368 merge commit 1de75729b0457b0463228bd53a6bb6f5c23a9a26",
+              "origin/main readback 1de75729b0457b0463228bd53a6bb6f5c23a9a26",
+              "GitHub PR #368 checks: all required checks SUCCESS; document-validator job SKIPPED by scope classification",
+              "origin/codex/recurring-precision-runtime-20260903 absent after merge"
+            ]
           }
         ],
         "acceptance_criteria": [
           "fresh-current-authority",
           "prework-research-boundary",
           "red-contract-observed",
-          "exact-local-validation"
+          "exact-local-validation",
+          "exact-remote-delivery-readback"
         ],
         "verification": [
           {
@@ -233,13 +254,24 @@
           "E0_CONTRACT",
           "E1_STATIC",
           "E2_TEST"
-        ]
+        ],
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "verified_head_sha": "1de75729b0457b0463228bd53a6bb6f5c23a9a26",
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "PR #368 merged after all required checks passed on source head 20da512f883494010155f94f30cce76fba307e61",
+          "origin/main resolved to merge commit 1de75729b0457b0463228bd53a6bb6f5c23a9a26 after fetch",
+          "The remote source branch was deleted by the normal merged-PR cleanup route"
+        ],
+        "rollback": "Use a normal reviewed revert of PR #368 if the test or contract correction must be undone; do not change Base adoption, product behavior, saved data, or assets."
       }
     ]
   },
   "evidence_ceiling": {
-    "current_contract_and_static_checks": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
-    "focused_gut_regression": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
+    "current_contract_and_static_checks": "MACHINE_VERIFIED_AND_GITHUB_DELIVERED",
+    "focused_gut_regression": "MACHINE_VERIFIED_AND_GITHUB_DELIVERED",
     "godot_runtime": "NOT_RUN_FOR_THIS_CORRECTION",
     "android_device": "NOT_RUN",
     "accessibility": "NOT_RUN",
