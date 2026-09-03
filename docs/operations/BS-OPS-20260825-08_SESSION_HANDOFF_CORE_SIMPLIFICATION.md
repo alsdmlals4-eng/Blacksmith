@@ -1,6 +1,6 @@
 # Blacksmith Session Handoff · Core Simplification
 
-> Current operational adaptation · 2026-09-01: `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md` is the current owner for Base-current observation, project-adapted work modes, L1+ work receipts, legacy/context hygiene, and validation/PR readback routing. Base `main@19355b7ef065a21d0f2b685c7d9be64a4a3970f8` is a fresh-read reference only; Blacksmith's adopted Base release remains adapter-owned `v9.4.4 / 210ec78292fa12ed7563ba743b322dd36103ae4a` with no automatic pin change. The owner separates `PLAN`, `NONCODING_BUILD`, `GODOT_PRODUCT_BUILD`, and `REVIEW` without changing current product scope, GitHub-only canon, PR #196 protection, or Human/Android/accessibility/performance evidence ceilings.
+> Current operational adaptation · 2026-09-03: `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md` is the current owner for Base-current observation, project-adapted work modes, L1+ work receipts, legacy/context hygiene, and validation/PR readback routing. Base `main@850204b3e5de81a4045111b4a050c46c5a292b59` is a fresh-read reference only; Blacksmith's adopted Base release remains adapter-owned `v9.4.4 / 210ec78292fa12ed7563ba743b322dd36103ae4a` with no automatic pin change. The owner separates `PLAN`, `NONCODING_BUILD`, `GODOT_PRODUCT_BUILD`, and `REVIEW` without changing current product scope, GitHub-only canon, PR #196 protection, or Human/Android/accessibility/performance evidence ceilings.
 
 > Current amendment · 2026-09-01: PR #349 merged as `5560d8f0bdde9d900acc2bbbaf403ef3bdbc1b58`. `BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md` replaces [대체됨] +10-only/single-Tag precision claims, while `BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md` owns consumable catalyst fields. Catalog schema 3 declares ten targets (10..100), max three CATALYST_AFFIX tags, I~IV, attempt-local ADD_TAG/UPGRADE_TAG selection, **불의 심장 / 대지의 결정** one-unit consumption, and V4→V5 resource migration. Actual HERA observation verified the portrait `+9→+10` catalyst-selection/readiness UI only (`LIMITED_RUNTIME_UI_OBSERVED`); Android, accessibility, performance, human play, release, and a persisted live attempt remain `NOT_RUN`.
 
@@ -62,7 +62,7 @@ TAG_KEYWORD_RESOLUTION = CATALYST_AND_PRECISION_METHOD_GOVERN_TAG_IDENTITY
 PRECISION_METHOD_EFFECT_SCOPE = WEAPON_STATS_DURABILITY_AND_TAG_RESOLUTION_CONTEXT
 PRECISION_METHOD_TAG_ROLE = TAG_IDENTITY_RESOLUTION
 PRECISION_METHOD_CANNOT_AFFECT_GRADE_OR_EVENT_KEYWORD = TRUE
-EMPTY_PRECISION_CATALYST_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL
+MISSING_PRECISION_CATALYST_BEHAVIOR = BLOCK_BEFORE_COST_OR_ROLL
 NO_DEFAULT_PRECISION_CATALYST = TRUE
 PRECISION_CATALYST_CONSUMPTION = ONE_UNIT_ON_NORMAL_RESOLVED_ATTEMPT
 PRECISION_SELECTION_PERSISTENCE = ATTEMPT_LOCAL_ONLY

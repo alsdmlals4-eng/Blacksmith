@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md"
 RECEIPT = (
     ROOT
-    / "docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json"
+    / "docs/operations/receipts/2026-09-03-recurring-precision-runtime-qa.json"
 )
 ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
 AGENTS = ROOT / "AGENTS.md"
@@ -24,7 +24,8 @@ BASE_RULES = ROOT / "docs/BASE_RULES_VERSION.md"
 WORKFLOW = ROOT / ".github/workflows/validate-current-base-adaptation-work-contract.yml"
 EXPECTED_RELEASE = "9.4.4"
 EXPECTED_RELEASE_COMMIT = "210ec78292fa12ed7563ba743b322dd36103ae4a"
-EXPECTED_BASE_CURRENT = "19355b7ef065a21d0f2b685c7d9be64a4a3970f8"
+EXPECTED_BASE_CURRENT = "850204b3e5de81a4045111b4a050c46c5a292b59"
+EXPECTED_SOURCE_MAIN = "181d40422c0b8cacd4bfa15e73f88032af0f4846"
 REQUIRED_MODES = ("PLAN", "NONCODING_BUILD", "GODOT_PRODUCT_BUILD", "REVIEW")
 
 
@@ -68,12 +69,14 @@ def main() -> int:
             failures.append(f"current Base adaptation contract missing boundary: {token}")
 
     receipt = json.loads(RECEIPT.read_text(encoding="utf-8"))
-    if receipt.get("work_level") != "L3":
-        failures.append("current Base adaptation receipt must be L3")
+    if receipt.get("work_level") != "L1":
+        failures.append("current Base adaptation receipt must be L1")
     if receipt.get("base_current_main_observed") != EXPECTED_BASE_CURRENT:
         failures.append("receipt must retain the exact Base current observation")
     if receipt.get("base_adopted_release", {}).get("version") != EXPECTED_RELEASE:
         failures.append("receipt must retain the adopted Base v9.4.4 release")
+    if receipt.get("project_work_kanban", {}).get("source_main_sha") != EXPECTED_SOURCE_MAIN:
+        failures.append("receipt must retain the trusted fresh-read source main SHA")
 
     workflow = WORKFLOW.read_text(encoding="utf-8")
     for token in (
@@ -96,7 +99,16 @@ def main() -> int:
         failures.append(f"Base receipt validator unavailable: {validator}")
     else:
         completed = subprocess.run(
-            [sys.executable, str(validator), "--receipt", str(RECEIPT)],
+            [
+                sys.executable,
+                str(validator),
+                "--receipt",
+                str(RECEIPT),
+                "--phase",
+                "resume",
+                "--expected-source-sha",
+                EXPECTED_SOURCE_MAIN,
+            ],
             text=True,
             capture_output=True,
             check=False,
