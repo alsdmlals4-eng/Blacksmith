@@ -16,6 +16,9 @@ const PUBLIC_STANDING_LABELS_KO := {
 	"RENOWNED": "명망",
 	"LEGENDARY": "전설",
 }
+const CONTENT_GOAL_LABELS_KO := {
+	"SURVIVAL_AND_RECOVERY": "생환과 회수를 위한 탐사",
+}
 const REQUIRED_FIELDS := [
 	"schema_version",
 	"customer_id",
@@ -84,6 +87,10 @@ func player_header_ko() -> String:
 	if public_epithet.is_empty():
 		return "%s %s" % [prefix, name]
 	return "%s 「%s」 %s" % [prefix, public_epithet, name]
+
+
+func work_request_summary_ko() -> String:
+	return str(CONTENT_GOAL_LABELS_KO.get(content_goal, "기록된 의뢰"))
 
 
 func _validate_values() -> void:

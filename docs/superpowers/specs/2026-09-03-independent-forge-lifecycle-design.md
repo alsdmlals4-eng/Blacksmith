@@ -1,13 +1,13 @@
 # 모루의 서약 — 독립 제작·의뢰·귀환 생애주기 설계
 
 ```
-STATUS = SPECIFICATION_CANDIDATE / USER_REVIEW_REQUIRED_BEFORE_IMPLEMENTATION_PLAN
+STATUS = IMPLEMENTED_PENDING_EXACT_HEAD_DELIVERY
 DESIGN_DATE = 2026-09-03
-ARTIFACT_CLASS = CURRENT_CANON_IMPLEMENTATION_RECONCILIATION_CANDIDATE / NON_RUNTIME
+ARTIFACT_CLASS = CURRENT_CANON_IMPLEMENTATION_PROVENANCE / NON_RUNTIME
 BASELINE_COMMIT = 296ad86c2315357998ed86c594b8b006a1bde420
 PRODUCT_SCOPE = CURRENT_CANON_MVP_IMPLEMENTATION_GAP_REVIEW
 NO_FOREIGN_ASSET_CODE_TEXT_OR_SCREEN_COMPOSITION_REUSE = TRUE
-NO_NEW_PRODUCT_PATH_MUTATION_IN_THIS_SPEC = TRUE
+IMPLEMENTED_PRODUCT_PATH_MUTATIONS = SCRIPTS_ONLY / EXACT_PATHS_IN_PROTECTED_APPROVAL_MANIFEST
 NO_NEW_RASTER_OR_THIRD_PARTY_ASSET = TRUE
 ```
 
@@ -136,9 +136,9 @@ flowchart TD
 
 ## 6. 구현 묶음과 소유 경계
 
-이 문서는 구현 계획이 아니다. 사용자 검토 뒤 별도 implementation plan으로 아래
-순서만 세분화한다. 모든 변경은 기존 scene/service/resolver의 소유 경계를 넘지
-않아야 한다.
+이 문서는 현재 구현의 범위·의도·소유 경계를 기록한 설계 provenance다. 세분화한
+실행 순서는 `docs/superpowers/plans/2026-09-03-independent-forge-lifecycle.md`에
+기록하며, 모든 변경은 기존 scene/service/resolver의 소유 경계를 넘지 않아야 한다.
 
 ### 묶음 A — 첫 작품에서 공방으로의 귀결 명확화
 
@@ -198,7 +198,7 @@ flowchart TD
 
 ## 8. TDD·검증·증거 한계
 
-사용자가 이 설계를 검토·확정한 뒤 구현 plan은 각 묶음마다 다음의 순서를 따른다.
+사용자 승인 뒤 실제 구현은 각 묶음마다 다음의 순서를 따랐다.
 
 1. **RED:** customer profile이 없는 경우 안전하게 blocker/fallback을 보여 주고,
    같은 item UID·기존 result facts·chronicle whitelist를 요구하는 실패 테스트를
@@ -218,9 +218,9 @@ flowchart TD
 ```text
 fresh_current_repository_read = CONFIRMED_AT_296ad86c
 benchmark_official_listing_review = CONFIRMED
-implementation = NOT_STARTED_BY_THIS_SPEC
-machine_verification_of_new_change = NOT_RUN
-godot_runtime_of_new_change = NOT_RUN
+implementation = IMPLEMENTED_PENDING_EXACT_HEAD_MACHINE_DELIVERY
+machine_verification_of_new_change = PENDING_FINAL_EXACT_HEAD_RUN
+godot_runtime_of_new_change = VERIFIED_IN_ISOLATED_BLACKSMITH_WORKTREE_RUNTIME
 android_device = NOT_RUN
 accessibility = NOT_RUN
 human_player_experience = NOT_RUN
@@ -230,9 +230,6 @@ release_rights_compliance = NOT_RUN
 ## 9. 사용자 검토 요청
 
 이 설계는 외부 게임의 장점을 **짧은 제작 감각 → 한 작품의 사용 맥락 → 사실 기반
-귀환 → 의미 사건 연대**로만 흡수한다. 사용자 검토 후에는 `writing-plans` 단계에서
-묶음 A/B/C를 현행 코드에 맞는 작은 TDD 작업으로 나누고, 새 제품 의미가 필요한
-항목은 계속 별도 Decision으로 남긴다.
-
-검토의 핵심은 하나다: 이 독립 방향으로 **기존 첫 제작을 보강하고, 현재 나디아
-의뢰/귀환/연대를 data-first로 정리하는 A/B/C 묶음**을 진행할지 확인하는 것이다.
+귀환 → 의미 사건 연대**로만 흡수했다. A/B/C 구현은 저장·resolver·경제·외부 자산을
+추가하지 않고 완료했으며, 새 제품 의미가 필요한 항목은 계속 별도 Decision으로
+남긴다. 정확 헤드 기계 검증과 GitHub 보호 병합은 별도 delivery 단계로 남아 있다.

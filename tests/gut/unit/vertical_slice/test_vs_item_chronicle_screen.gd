@@ -3,6 +3,8 @@ extends "res://addons/gut/test.gd"
 const SCREEN_PATH := "res://scripts/vertical_slice/ui/vs_item_chronicle_screen.gd"
 const ItemBirthServiceScript := preload("res://scripts/vertical_slice/services/vs_item_birth_service.gd")
 const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
+const CustomerProfileScript := preload("res://scripts/vertical_slice/domain/vs_customer_profile.gd")
+const NADIA_DATA_PATH := "res://data/vertical_slice/customers/nadia_venn.json"
 
 
 func _item():
@@ -43,6 +45,14 @@ func _entry_by_kind(entries: Array, kind: String) -> Dictionary:
 	return {}
 
 
+func _nadia_profile():
+	var file := FileAccess.open(NADIA_DATA_PATH, FileAccess.READ)
+	if file == null:
+		return null
+	var raw: Variant = JSON.parse_string(file.get_as_text())
+	return CustomerProfileScript.from_dict(raw) if raw is Dictionary else null
+
+
 func test_item_chronicle_reads_existing_birth_and_saved_actual_use_facts_without_new_storage() -> void:
 	assert_true(ResourceLoader.exists(SCREEN_PATH), "the approved Item Chronicle candidate needs a player-facing implementation")
 	if not ResourceLoader.exists(SCREEN_PATH):
@@ -54,7 +64,11 @@ func test_item_chronicle_reads_existing_birth_and_saved_actual_use_facts_without
 	var screen = load(SCREEN_PATH).new()
 	add_child_autofree(screen)
 	var saved_events := {"nadia": _nadia_actual_use_result(str(item.uid))}
-	assert_eq(screen.configure_item(item, saved_events).get("status", ""), "APPLIED")
+	var profile = _nadia_profile()
+	assert_not_null(profile)
+	if profile == null:
+		return
+	assert_eq(screen.configure_item(item, saved_events, profile).get("status", ""), "APPLIED")
 	var state: Dictionary = screen.view_state()
 	assert_eq(state.get("item_uid", ""), str(item.uid))
 	assert_false(_entry_by_kind(state.get("entries", []), "BIRTH").is_empty())
@@ -69,3 +83,19 @@ func test_item_chronicle_reads_existing_birth_and_saved_actual_use_facts_without
 		assert_true(return_button.visible)
 		assert_false(return_button.disabled)
 		assert_gte(return_button.custom_minimum_size.y, 48.0)
+
+
+func test_chronicle_keeps_a_matching_actual_use_fact_when_the_customer_has_no_loaded_profile() -> void:
+	var item = _item()
+	assert_not_null(item)
+	if item == null:
+		return
+	var screen = load(SCREEN_PATH).new()
+	add_child_autofree(screen)
+	var unknown_customer_result := _nadia_actual_use_result(str(item.uid))
+	unknown_customer_result["customer_id"] = "UNREGISTERED_CUSTOMER"
+	assert_eq(screen.configure_item(item, {"unknown": unknown_customer_result}).get("status", ""), "APPLIED")
+	var handoff_entry := _entry_by_kind(screen.view_state().get("entries", []), "HANDOFF")
+	var actual_use_entry := _entry_by_kind(screen.view_state().get("entries", []), "ACTUAL_USE")
+	assert_true(str(handoff_entry.get("text", "")).contains("고객"))
+	assert_true(str(actual_use_entry.get("text", "")).contains("고객 실제 사용 결과"))

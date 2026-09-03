@@ -37,7 +37,7 @@
 - Produces: `ForgingScreen.forge_result_confirmed(result: Dictionary)`, emitted at most once after the player presses `ForgeResultCommitButton`.
 - Preserves: `VSMainMenu.apply_completed_first_forge_result(completed_forge_result: Dictionary)` as the only persistence boundary.
 
-- [ ] **Step 1: Write the failing first-forge confirmation test**
+- [x] **Step 1: Write the failing first-forge confirmation test**
 
   Extend `test_vs_main_menu_first_forge_flow.gd` with a test that opens the real first-forge screen, completes a deliberately one-tap session, and asserts that the screen remains mounted and the Workshop is absent before confirmation.
 
@@ -60,7 +60,7 @@
       assert_true(menu.has_active_workshop())
   ```
 
-- [ ] **Step 2: Run the focused test and observe RED**
+- [x] **Step 2: Run the focused test and observe RED**
 
   Run:
 
@@ -70,7 +70,7 @@
 
   Expected: the assertion that the first-forge screen remains mounted fails because the current menu subscribes directly to `ForgingSession.completed` and removes the screen immediately.
 
-- [ ] **Step 3: Implement the smallest two-stage first-forge presenter**
+- [x] **Step 3: Implement the smallest two-stage first-forge presenter**
 
   In `scripts/ui/forging_screen.gd`:
 
@@ -95,11 +95,11 @@
 
   In `scripts/vertical_slice/ui/vs_main_menu.gd`, replace the direct `session.completed.connect(apply_completed_first_forge_result)` subscription with `forge_result_confirmed.connect(apply_completed_first_forge_result)`. Do not change `apply_completed_first_forge_result` or its save behavior.
 
-- [ ] **Step 4: Run focused GUT GREEN and refactor signal guards**
+- [x] **Step 4: Run focused GUT GREEN and refactor signal guards**
 
   Re-run the Task 1 GUT command. Confirm that exactly one button press enters the Workshop and a second press cannot create another item.
 
-- [ ] **Step 5: Commit Task 1**
+- [x] **Step 5: Commit Task 1**
 
   ```powershell
   git add scripts/ui/forging_screen.gd scripts/vertical_slice/ui/vs_main_menu.gd tests/gut/unit/vertical_slice/test_vs_main_menu_first_forge_flow.gd
@@ -128,7 +128,7 @@
 - `VSCustomerResultScreen.configure_resolved_result(result, customer_profile = null)` accepts an optional display profile and never mutates `result`.
 - `VSApp` is the only caller that loads the Phase 1 Nadia profile and injects it into the three presenters.
 
-- [ ] **Step 1: Write failing repository, handoff, result, and app tests**
+- [x] **Step 1: Write failing repository, handoff, result, and app tests**
 
   Add repository tests that assert Nadia is loaded from the existing JSON with the current name, role, header, and `생환과 회수를 위한 탐사`, while an unregistered ID returns `UNKNOWN_CUSTOMER_ID`.
 
@@ -143,7 +143,7 @@
 
   In `test_vs_customer_result_screen.gd`, pass the real profile to `_resolved_result()` presentation and require the displayed summary to contain `나디아 벤의 실제 사용 작업 보고`. Add an invalid-profile case that is blocked without replacing the last visible stored fact. In `test_vs_app.gd`, begin the real +10 handoff and require the active handoff state to expose the same profile-derived header.
 
-- [ ] **Step 2: Run the focused files and observe RED**
+- [x] **Step 2: Run the focused files and observe RED**
 
   Run:
 
@@ -155,7 +155,7 @@
 
   Expected: missing repository/screen parameters and hard-coded text fail before implementation.
 
-- [ ] **Step 3: Implement the data-first profile boundary**
+- [x] **Step 3: Implement the data-first profile boundary**
 
   Create `VSCustomerProfileRepository` with a fixed current map:
 
@@ -171,11 +171,11 @@
 
   In `VSApp`, preload the repository and add a private `_phase1_customer_profile()` helper that loads only `NADIA_VENN`. Pass that profile to handoff, return, and saved-result configuration. Preserve the existing `PHASE1_NADIA_EVENT_PREFIX`, event payload, resolver, result transition, and save candidate boundaries.
 
-- [ ] **Step 4: Run all Task 2 focused tests and refactor repeated profile formatting**
+- [x] **Step 4: Run all Task 2 focused tests and refactor repeated profile formatting**
 
   Re-run every command from Step 2 and the focused `test_vs_app.gd` command. Keep shared display formatting on `VSCustomerProfile`; do not duplicate Korean goal mappings across presenters.
 
-- [ ] **Step 5: Commit Task 2**
+- [x] **Step 5: Commit Task 2**
 
   ```powershell
   git add scripts/vertical_slice/services/vs_customer_profile_repository.gd scripts/vertical_slice/domain/vs_customer_profile.gd scripts/vertical_slice/ui/vs_customer_handoff_screen.gd scripts/vertical_slice/ui/vs_customer_result_screen.gd scripts/vertical_slice/ui/vs_app.gd tests/gut/unit/vertical_slice/test_vs_customer_profile_repository.gd tests/gut/unit/vertical_slice/test_vs_customer_handoff_screen.gd tests/gut/unit/vertical_slice/test_vs_customer_result_screen.gd tests/gut/unit/vertical_slice/test_vs_app.gd
@@ -197,13 +197,13 @@
 - The chronicle includes an actual-use result when the stored event has one matching `PRIMARY_ITEM` UID and `actual_item_use = true`, regardless of a hard-coded customer ID.
 - A matching injected profile provides the customer name. A missing/mismatched profile uses the neutral label `고객`; it never invents or stores an identity.
 
-- [ ] **Step 1: Write failing chronicle tests**
+- [x] **Step 1: Write failing chronicle tests**
 
   Extend `test_vs_item_chronicle_screen.gd` to pass the real Nadia profile and require `나디아 벤에게 작품 인계` and `나디아 벤 실제 사용 결과` for the saved current event. Add a second saved actual-use event with another syntactically valid customer ID and assert that it is visible as `고객에게 작품 인계`, rather than being silently dropped because it is not Nadia.
 
   Add an app-flow assertion after a normal Phase 1 return that the visible chronicle receives the real Nadia profile and still does not create any new ledger or resolved-event entry.
 
-- [ ] **Step 2: Run the focused chronicle test and observe RED**
+- [x] **Step 2: Run the focused chronicle test and observe RED**
 
   Run:
 
@@ -213,17 +213,17 @@
 
   Expected: the neutral actual-use event is omitted because `_is_matching_actual_use_result` currently requires `customer_id == "NADIA_VENN"`.
 
-- [ ] **Step 3: Implement the smallest factual chronicle change**
+- [x] **Step 3: Implement the smallest factual chronicle change**
 
   Remove only the Nadia-ID condition from `_is_matching_actual_use_result`. Thread the optional profile through `configure_item` and `_entries_from_existing_facts`. Use `profile.name` only when `profile.customer_id` equals the saved result `customer_id`; otherwise use `고객`. Keep the existing birth and precision-tag rendering, current damage wording, item UID matching, and no-new-storage rule.
 
   In `VSApp._show_item_chronicle`, obtain the current Phase 1 profile through the existing private helper and pass it as the third argument. Do not create profile persistence or load unknown customer data.
 
-- [ ] **Step 4: Run focused GREEN and regression tests**
+- [x] **Step 4: Run focused GREEN and regression tests**
 
   Re-run the Task 3 GUT command, then run `test_vs_app.gd`, `test_vs_customer_result_screen.gd`, and `test_vs_customer_handoff_screen.gd`. Confirm the same result remains a read-only source and the neutral fallback has no new saved fact.
 
-- [ ] **Step 5: Commit Task 3**
+- [x] **Step 5: Commit Task 3**
 
   ```powershell
   git add scripts/vertical_slice/ui/vs_item_chronicle_screen.gd scripts/vertical_slice/ui/vs_app.gd tests/gut/unit/vertical_slice/test_vs_item_chronicle_screen.gd tests/gut/unit/vertical_slice/test_vs_app.gd
@@ -243,7 +243,7 @@
 - Consumes: exact branch head, focused GUT results, Python contracts, Godot headless import, and an isolated actual Blacksmith runtime observation.
 - Produces: a receipt that separates machine/runtime proof from Android, accessibility, performance, human-player, rights, and release evidence.
 
-- [ ] **Step 1: Run full machine verification**
+- [x] **Step 1: Run full machine verification**
 
   Run the focused GUT files, all GUT unit/integration tests, Python discovery, the current authority contract, current Base operating contract, Godot headless import, and exact diff audit.
 
@@ -256,11 +256,11 @@
   git diff --check origin/main...HEAD
   ```
 
-- [ ] **Step 2: Capture the actual isolated runtime**
+- [x] **Step 2: Capture the actual isolated runtime**
 
   Use the project-authoritative Godot live-editor path only after verifying the process has this Blacksmith worktree project path. Observe: completed first-forge result before confirmation, Workshop after confirmation, +10 handoff with the profile header, actual-use report, and item chronicle. Preserve user saves by using the established isolated profile approach. Capture only actual game frames; do not generate or commit a fake screenshot.
 
-- [ ] **Step 3: Update the receipt and plan checkboxes**
+- [x] **Step 3: Update the receipt and plan checkboxes**
 
   Record exact commit SHA, changed files, test commands/results, capture provenance, no-new-asset result, no-new-schema result, PR head, and all unrun ceilings. Mark only observed machine/runtime facts as PASS. Do not call Android, accessibility, performance, human-player, rights, or release PASS.
 
@@ -274,3 +274,22 @@
 - **No unapproved expansion:** new quality rewards, top-grade unlocks, multi-customer management, combat, schedules, rewards, ranks, ads, gacha, images, assets, and save-schema changes are all excluded explicitly.
 - **Interface consistency:** `ForgingScreen` emits a confirmation while `VSMainMenu` remains the sole first-item persistence owner; the profile repository loads only the one existing JSON profile; presenters receive display data and do not own resolver facts.
 - **Placeholder scan:** no task contains a deferred implementation instruction or undefined interface; all code behavior, test intention, commands, and completion boundaries are concrete.
+
+## Execution evidence before GitHub delivery
+
+- **TDD:** the first-forge retention, current-profile display, factual chronicle
+  fallback, and repeated-confirmation contracts were written and observed RED
+  before their production behavior, then passed after the minimal GREEN changes.
+- **Machine:** Python `unittest` discovery passed `349` tests with `2` existing
+  skips. Full GUT passed `252 / 252` tests and `1,882` assertions. The current
+  authority contract, exact approved protected-change contract, receipt resume
+  validation, `git diff --check`, and Godot 4.7.1 headless editor load passed.
+- **Runtime:** an isolated local Blacksmith profile completed first forge → explicit
+  Workshop confirmation → `+9 → +10` tag add with `불의 심장` → existing Nadia
+  handoff → actual-use report → same-UID chronicle. Runtime diagnostics were
+  `0` errors and `0` warnings. Captures are local review evidence only and are
+  not product assets or repository files.
+- **Ceiling:** GUT reported existing orphan/resource cleanup messages at process
+  exit, so this record does not claim zero-exit-warning hygiene. Android,
+  accessibility, performance, human-player experience, rights, and release
+  validation remain `NOT_RUN`.

@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 CURRENT_PRODUCT_MERGE = "1686f8f164cba2abf0678d7b768f00699a3414dd"
+RETIRED_WARNING_HYGIENE_PROTECTED_BASE = "48c73c37f5d8b7f3a436a51aeb96d78febd0fe02"
 CANONICAL_ADAPTER = ROOT / "skills" / "PROJECT_BASE_ADAPTER.json"
 COMPATIBILITY_VIEWS = (
     (ROOT / "skills" / "BASE_V9_ADAPTER.json", "canonical_source_sha256"),
@@ -35,7 +36,12 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
         self.assertEqual(CURRENT_PRODUCT_MERGE, adapter["protected_baseline"]["commit"])
-        self.assertFalse(APPROVAL.exists())
+        if APPROVAL.exists():
+            # The 2026-09-01 warning-hygiene one-shot approval was consumed at
+            # 1686f8f. A later, independently approved protected change may use
+            # the same one-shot path, but it must not reuse that older baseline.
+            approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
+            self.assertNotEqual(RETIRED_WARNING_HYGIENE_PROTECTED_BASE, approval["protected_base_commit"])
 
     def test_generated_compatibility_views_track_the_rebased_canonical_adapter(self) -> None:
         canonical_sha = raw_sha256(CANONICAL_ADAPTER)

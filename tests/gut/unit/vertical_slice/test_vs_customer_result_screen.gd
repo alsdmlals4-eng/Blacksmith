@@ -5,10 +5,12 @@ const SCREEN_SCENE_PATH := "res://scenes/vertical_slice/screens/vs_customer_resu
 const APP_SCENE := preload("res://scenes/vertical_slice/vertical_slice_app.tscn")
 const ResourcesScript := preload("res://scripts/economy/workshop_resources.gd")
 const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
+const CustomerProfileScript := preload("res://scripts/vertical_slice/domain/vs_customer_profile.gd")
 
 const EVENT_ID := "nadia-actual-use-001"
 const ITEM_UID := "BSI-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 const APPROVED_RESULT_ILLUSTRATION_PATH := "res://assets/ui/workshop/customer_result_return_illustration_v1.png"
+const NADIA_DATA_PATH := "res://data/vertical_slice/customers/nadia_venn.json"
 
 
 func _resolved_result() -> Dictionary:
@@ -42,6 +44,14 @@ func _new_screen():
 	return scene.instantiate() if scene != null else null
 
 
+func _nadia_profile():
+	var file := FileAccess.open(NADIA_DATA_PATH, FileAccess.READ)
+	if file == null:
+		return null
+	var raw: Variant = JSON.parse_string(file.get_as_text())
+	return CustomerProfileScript.from_dict(raw) if raw is Dictionary else null
+
+
 func test_customer_result_surface_exists_as_a_vertical_scene() -> void:
 	assert_true(ResourceLoader.exists(SCREEN_PATH), "customer result controller must exist")
 	assert_true(ResourceLoader.exists(SCREEN_SCENE_PATH), "customer result must have a concrete vertical screen")
@@ -61,6 +71,8 @@ func test_persisted_actual_use_damage_is_presented_without_recalculation() -> vo
 	assert_eq(screen.view_state(), {
 		"event_id": EVENT_ID,
 		"item_uid": ITEM_UID,
+		"customer_header": "고객",
+		"customer_context": "기록된 실제 사용",
 		"summary_text": "고객의 실제 사용 결과입니다.",
 		"damage_text": "실제 사용 중 손상이 발생했습니다.",
 		"current_durability_text": "내구도: 5 → 4",
@@ -71,6 +83,25 @@ func test_persisted_actual_use_damage_is_presented_without_recalculation() -> vo
 	assert_eq(screen.get_node("ResultLayout/CurrentDurabilityLabel").text, "내구도: 5 → 4")
 	assert_eq(screen.get_node("ResultLayout/NextActionLabel").text, "다음 행동: 수리하기")
 	assert_eq(screen.get_node("ResultLayout/RepairActionHint").text, "작업대에서 수리하기")
+
+
+func test_result_uses_a_matching_registered_customer_profile_without_mutating_the_saved_fact() -> void:
+	var screen = _new_screen()
+	assert_not_null(screen)
+	if screen == null:
+		return
+	add_child_autofree(screen)
+	var profile = _nadia_profile()
+	assert_not_null(profile)
+	if profile == null:
+		return
+	var stored_result := _resolved_result()
+	var stored_before := stored_result.duplicate(true)
+	assert_eq(screen.configure_resolved_result(stored_result, profile).get("status", ""), "APPLIED")
+	assert_eq(stored_result, stored_before)
+	assert_eq(screen.view_state().get("customer_header", ""), "[정예] 「유적의 길잡이」 나디아 벤")
+	assert_eq(screen.view_state().get("customer_context", ""), "유적 탐사대장 · 생환과 회수를 위한 탐사")
+	assert_eq(screen.view_state().get("summary_text", ""), "나디아 벤의 실제 사용 결과입니다.")
 
 
 func test_customer_result_exposes_exactly_one_native_next_action_for_damage_or_intact_chronicle() -> void:
