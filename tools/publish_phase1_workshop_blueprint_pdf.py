@@ -33,8 +33,12 @@ SOURCES = (
     ROOT / "docs/operations/receipts/2026-09-01-phase1-workshop-blueprint.json",
     ROOT / "assets/ASSET_MANIFEST.json",
     ROOT / "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
+    ROOT / "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
+    ROOT / "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md",
+    ROOT / "docs/decisions/BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md",
+    ROOT / "docs/decisions/BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md",
 )
-PAGE_COUNT = 11
+PAGE_COUNT = 14
 PAGE_SECTIONS = (
     "읽기 안내",
     "전체 흐름",
@@ -47,6 +51,9 @@ PAGE_SECTIONS = (
     "손상·수리",
     "고객 실제 사용·연대기",
     "검증과 증거 한계",
+    "통합 실행 체크리스트",
+    "목표별 점검",
+    "대표 케이스 점검",
 )
 RUNTIME_ASSET_REFERENCE_PAGES = (1, 3, 9, 10, 11)
 RUNTIME_ASSET_REFERENCES = (
@@ -308,7 +315,7 @@ def header(pdf: canvas.Canvas, page: int, section: str) -> None:
     pdf.setFont("BlueprintMalgun", 7.4)
     pdf.setFillColor(MUTED)
     pdf.drawString(14 * mm, 9 * mm, "정본 대체 금지 · 실제 게임 화면 또는 런타임 에셋이 아님")
-    pdf.drawRightString(page_width - 14 * mm, 9 * mm, f"{page} / {PAGE_COUNT} · 2026-09-02")
+    pdf.drawRightString(page_width - 14 * mm, 9 * mm, f"{page} / {PAGE_COUNT} · 2026-09-03")
 
 
 def card(
@@ -760,13 +767,143 @@ def page_eleven(pdf: canvas.Canvas) -> None:
         )
     compact_card(pdf, right, top, column_width, 64 * mm, "IMPLEMENTATION UNITS", "작게 나누어 실제 화면으로 검증", "1) portrait shell, 2) same-UID item card, 3) normal enhancement, 4) precision add/upgrade precheck·atomic resolution, 5) damage/repair return, 6) customer result/chronicle readback 순서다. 각각은 RED 계약 테스트 → 최소 GREEN → refactor → exact-head 검증으로 연결한다.", fill=PALE_BLUE)
     top -= 70 * mm
-    compact_card(pdf, left, top, column_width, 55 * mm, "WHAT THIS PDF PROVES", "문서 산출물의 기계·시각 검증", "PDF는 11쪽 A4, 핵심 텍스트, metadata, SHA-256 영수증, 입력 문서 해시, benchmark preflight와 hygiene record를 기계 검사한다. 모든 쪽은 PNG 렌더 후 글자 잘림·겹침·여백을 agent가 검토한다. 이 검증은 문서 레이아웃의 evidence ceiling을 넘지 않는다.", fill=PAPER)
+    compact_card(pdf, left, top, column_width, 55 * mm, "WHAT THIS PDF PROVES", "문서 산출물의 기계·시각 검증", f"PDF는 {PAGE_COUNT}쪽 A4, 핵심 텍스트, metadata, SHA-256 영수증, 입력 문서 해시, benchmark preflight와 hygiene record를 기계 검사한다. 모든 쪽은 PNG 렌더 후 글자 잘림·겹침·여백을 agent가 검토한다. 이 검증은 문서 레이아웃의 evidence ceiling을 넘지 않는다.", fill=PAPER)
     compact_card(pdf, right, top, column_width, 55 * mm, "NOT RUN", "런타임·기기·사람 판단은 별도 gate", "Godot runtime, Android safe area·touch, 접근성, 성능, 실제 플레이 재미, 사용자 UX 수용, 출시 승인은 이 문서만으로 PASS가 아니다. 이전 runtime capture는 역사 evidence이며, 이번 PDF 개정이 새 runtime proof나 자산 승격을 만들지 않는다.", fill=PALE_COPPER)
     top -= 61 * mm
     panel(pdf, 18 * mm, top, full_width, 37 * mm, fill=PALE_GOLD)
     label(pdf, "NEXT HUMAN CHECKPOINT", 23 * mm, top - 6 * mm)
     heading(pdf, "사용자 블루프린트 검토 대기", 23 * mm, top - 14 * mm, size=11.6)
     draw_wrapped(pdf, "확인 질문: 일반 강화의 읽기 순서가 명확한가? 최초 +10과 +20 이후의 행동 차이가 분명한가? 불의 심장·대지의 결정이 소모 자원으로 보이는가? 손상·수리·고객 실제 사용·연대기가 같은 UID로 자연스럽게 이어지는가? 이 네 가지는 실제 Godot 화면에서 최종 UX 검토가 필요하다.", 23 * mm, top - 22 * mm, full_width - 10 * mm, size=8.0, leading=11.2, color=INK)
+
+
+def checklist_badge(
+    pdf: canvas.Canvas,
+    text: str,
+    x: float,
+    top: float,
+    *,
+    fill: colors.Color,
+) -> float:
+    """Draw a text-labelled checklist status; color is never the sole signal."""
+    pdf.setFont("BlueprintMalgunBold", 6.7)
+    width = max(25 * mm, pdfmetrics.stringWidth(text, "BlueprintMalgunBold", 6.7) + 8 * mm)
+    panel(pdf, x, top, width, 7.5 * mm, fill=fill, stroke=LINE, radius=1.5 * mm)
+    pdf.setFillColor(INK)
+    pdf.drawCentredString(x + width / 2, top - 5.1 * mm, text)
+    return width
+
+
+def checklist_row(
+    pdf: canvas.Canvas,
+    x: float,
+    top: float,
+    number: str,
+    title_text: str,
+    status: str,
+    detail: str,
+    *,
+    fill: colors.Color,
+    height_mm: float = 22.0,
+) -> float:
+    """Render one readable PM checklist row without relying on a raster mockup."""
+    width = A4[0] - 36 * mm
+    height = height_mm * mm
+    panel(pdf, x, top, width, height, fill=fill, radius=2 * mm)
+    checkbox_x = x + 5 * mm
+    checkbox_y = top - 10.5 * mm
+    pdf.setStrokeColor(COPPER)
+    pdf.setLineWidth(1.0)
+    pdf.rect(checkbox_x, checkbox_y, 4.3 * mm, 4.3 * mm, fill=0, stroke=1)
+    pdf.setFont("BlueprintMalgunBold", 6.7)
+    pdf.setFillColor(COPPER)
+    pdf.drawCentredString(checkbox_x + 2.15 * mm, checkbox_y + 1.15 * mm, number)
+    title_x = x + 12 * mm
+    label(pdf, title_text, title_x, top - 6 * mm)
+    badge_width = checklist_badge(pdf, status, title_x, top - 10 * mm, fill=PALE_GOLD)
+    draw_wrapped(
+        pdf,
+        detail,
+        title_x + badge_width + 3 * mm,
+        top - 12.2 * mm,
+        width - (title_x - x) - badge_width - 9 * mm,
+        size=7.45,
+        leading=9.9,
+        color=MUTED,
+    )
+    return top - height - 4 * mm
+
+
+def page_twelve(pdf: canvas.Canvas) -> None:
+    page_width, page_height = A4
+    header(pdf, 12, "통합 실행 체크리스트")
+    y = heading(pdf, "통합 실행 체크리스트", 18 * mm, page_height - 27 * mm, size=18)
+    y = draw_wrapped(pdf, "블루프린트를 읽는 동안 목표·시스템·대표 케이스의 현재 증거를 같은 형식으로 확인한다. 이 페이지는 새 PM 도구나 제품 기능이 아니라, 이미 있는 정본과 검증 상태를 빠르게 읽는 보기다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=9.1, leading=13.6, color=MUTED)
+    top = y - 6 * mm
+    panel(pdf, 18 * mm, top, page_width - 36 * mm, 20 * mm, fill=PALE_COPPER)
+    label(pdf, "DELIVERY BOUNDARY", 23 * mm, top - 6 * mm)
+    heading(pdf, "PDF 내부 전용", 23 * mm, top - 13 * mm, size=10.8)
+    draw_wrapped(pdf, "별도 HTML 대시보드를 만들지 않는다. 체크리스트는 이 Blueprint Viewer의 12~14쪽에만 통합하며, 제품 정본·게임 런타임·사용자 승인 상태를 대신하지 않는다.", 75 * mm, top - 7 * mm, page_width - 98 * mm, size=7.65, leading=10.5, color=INK)
+    top -= 27 * mm
+    card_width = (page_width - 42 * mm) / 2
+    right = 18 * mm + card_width + 6 * mm
+    compact_card(pdf, 18 * mm, top, card_width, 26 * mm, "STATUS 01", "정본 확정", "사용자 승인된 현재 규칙과 owner가 있다. 구현이나 사람 경험의 PASS를 뜻하지 않는다.", fill=PALE_GOLD)
+    compact_card(pdf, right, top, card_width, 26 * mm, "STATUS 02", "구현·기계 검증", "코드·데이터·자동 계약의 현재 근거가 있다. 실제 사람이 잘 읽는지는 별도다.", fill=PALE_GREEN)
+    top -= 32 * mm
+    compact_card(pdf, 18 * mm, top, card_width, 26 * mm, "STATUS 03", "제한 런타임 UI 관찰", "+9→+10 촉매 선택·보유량·시도 준비만 실제 Godot 화면에서 관찰했다. 결제·저장은 누르지 않았다.", fill=PALE_BLUE)
+    compact_card(pdf, right, top, card_width, 26 * mm, "STATUS 04", "NOT RUN", "Android, 접근성, 성능, 전체 플레이, 사람 UX 수용, 출시 판단은 아직 실행하지 않음이다.", fill=PALE_COPPER)
+    top -= 38 * mm
+    column_width = (page_width - 42 * mm) / 3
+    flow_cards = (
+        ("01 · GOAL", "목표를 확인", "STOP OR PUSH와 같은 UID 작품 생애가 현재 제품 약속인지 먼저 본다.", PALE_GOLD),
+        ("02 · SYSTEM", "시스템을 확인", "강화·태그·촉매·손상·수리·고객 귀환의 owner와 검증 상태를 나눠 본다.", PALE_BLUE),
+        ("03 · CASE", "케이스를 확인", "막힘·성공·유지·손상·귀환을 한 행씩 살피고 미실행 gate를 남긴다.", PALE_GREEN),
+    )
+    for index, (kicker, title_text, body, fill) in enumerate(flow_cards):
+        x = 18 * mm + index * column_width
+        compact_card(pdf, x, top, column_width - 6 * mm, 47 * mm, kicker, title_text, body, fill=fill)
+        if index < len(flow_cards) - 1:
+            arrow(pdf, x + column_width - 7 * mm, top - 23.5 * mm, x + column_width + 1 * mm, top - 23.5 * mm)
+    top -= 54 * mm
+    panel(pdf, 18 * mm, top, page_width - 36 * mm, 35 * mm, fill=PAPER)
+    label(pdf, "HOW TO READ", 23 * mm, top - 6 * mm)
+    draw_wrapped(pdf, "체크된 사각형은 ‘자동 계약 또는 current-canon 구현 근거가 존재함’을 뜻한다. 런타임·Android·사람 플레이 칸은 의도적으로 비워 둔다. 색은 찾기 속도를 돕지만, 모든 상태는 텍스트로도 반복한다.", 23 * mm, top - 13 * mm, page_width - 46 * mm, size=8.2, leading=11.4, color=INK)
+
+
+def page_thirteen(pdf: canvas.Canvas) -> None:
+    page_width, page_height = A4
+    header(pdf, 13, "목표별 점검")
+    y = heading(pdf, "목표별 점검", 18 * mm, page_height - 27 * mm, size=18)
+    y = draw_wrapped(pdf, "아래 상태는 2026-09-03의 current main과 현재 사람용 GDD·Phase 1 계약·Decision38/40·세션 handoff를 함께 읽어 만든 파생 보기다. 새 의미를 만들지 않고, 구현 근거와 남은 검토를 분리한다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=8.9, leading=13.2, color=MUTED)
+    top = y - 6 * mm
+    label(pdf, "GOAL CHECKLIST", 18 * mm, top)
+    top -= 5 * mm
+    top = checklist_row(pdf, 18 * mm, top, "1", "강화의 긴장감", "CANON + MACHINE", "다음 +1의 성공·유지·손상 가능성을 읽고 STOP 또는 PUSH를 고른다. 일반 성공 +1과 exclusive failure 결과는 정본·자동 계약 근거가 있다. 사람의 재미 판정은 NOT RUN.", fill=PALE_GOLD)
+    top = checklist_row(pdf, 18 * mm, top, "2", "태그가 남는 정밀 단위", "CANON + MACHINE", "+9→+10부터 +99→+100까지 매 10단위에 태그 추가 또는 강화 하나를 고른다. 촉매 1개 소비와 V5 저장 원자성은 기계 검증, live 결제는 NOT RUN.", fill=PALE_GREEN)
+    top = checklist_row(pdf, 18 * mm, top, "3", "같은 UID 작품 생애", "CANON + MACHINE", "제작·강화·손상·수리·인계·실제 사용·연대기가 한 작품으로 이어진다. 인계 자체는 손상이 아니며, 전체 사람이 플레이하는 흐름은 NOT RUN.", fill=PALE_BLUE)
+    top -= 1 * mm
+    label(pdf, "시스템별 점검", 18 * mm, top)
+    top -= 5 * mm
+    top = checklist_row(pdf, 18 * mm, top, "A", "일반 강화와 +5 제작 리듬", "MACHINE", "현재 target과 결과를 분리해 표시하고, +5는 presentation-only다. +5가 촉매·태그·새 실패 규칙을 열지 않는 계약을 유지한다.", fill=PAPER, height_mm=19.0)
+    top = checklist_row(pdf, 18 * mm, top, "B", "정밀 태그·소모형 촉매", "LIMITED UI", "불의 심장·대지의 결정은 실제 자원이며 1개씩 소비한다. +9→+10의 선택·보유량·활성 CTA는 관찰, 시도 결과의 live 영속은 NOT RUN.", fill=PALE_COPPER, height_mm=19.0)
+    top = checklist_row(pdf, 18 * mm, top, "C", "손상·수리", "MACHINE", "CURRENT / MAX / BASE_MAX가 유일한 visible authority다. 실제 손상 뒤 한 수리 job만 열며, Android과 사람의 이해도는 NOT RUN.", fill=PALE_GREEN, height_mm=19.0)
+    top = checklist_row(pdf, 18 * mm, top, "D", "고객 실제 사용·연대기", "MACHINE", "인계와 실제 사용 결과를 분리하고 의미 사건만 연대기에 남긴다. 전체 귀환 흐름은 실제 화면·사람 검수 전이다.", fill=PALE_BLUE, height_mm=19.0)
+
+
+def page_fourteen(pdf: canvas.Canvas) -> None:
+    page_width, page_height = A4
+    header(pdf, 14, "대표 케이스 점검")
+    y = heading(pdf, "대표 케이스 점검", 18 * mm, page_height - 27 * mm, size=18)
+    y = draw_wrapped(pdf, "한 행은 ‘조건 → 기대 행동 → 근거 → 남은 인간 검토’를 묶는다. MACHINE은 자동 계약 근거이고, LIMITED UI는 실제 Godot 화면을 일부 관찰한 경우만 표기한다.", 18 * mm, y - 2 * mm, page_width - 36 * mm, size=9.0, leading=13.5, color=MUTED)
+    top = y - 6 * mm
+    top = checklist_row(pdf, 18 * mm, top, "01", "일반 +1과 +5", "MACHINE", "+0~+9 일반 시도는 정확히 +1만 성공하고, +5는 presentation-only다. 정밀 태그·촉매가 누출되지 않는다. 실제 인간 판독성은 NOT RUN.", fill=PALE_GOLD)
+    top = checklist_row(pdf, 18 * mm, top, "02", "+9→+10 사전 조건", "LIMITED UI", "선택 누락·촉매 부족·무효 조합은 비용·보강재·굴림 전에 막힌다. 실제 화면에서 촉매 선택과 CTA 준비만 관찰했으며 결제·저장은 NOT RUN.", fill=PALE_COPPER)
+    top = checklist_row(pdf, 18 * mm, top, "03", "+9→+10 정상 해소", "MACHINE", "유효한 시도는 골드·보강재·필요 촉매 1개를 같은 save 후보에 반영한다. 성공은 태그 I 하나, hold/damage는 태그 변화 없음. live 결과는 NOT RUN.", fill=PALE_GREEN)
+    top = checklist_row(pdf, 18 * mm, top, "04", "+19→+20 이후", "MACHINE", "태그가 세 개 미만이면 추가, I~III이면 강화가 가능하다. 중복 태그·IV 태그·네 번째 affix·재굴림은 시도 전에 막힌다. 실제 화면·사람 검토는 NOT RUN.", fill=PALE_BLUE)
+    top = checklist_row(pdf, 18 * mm, top, "05", "+11 실패·손상·수리", "MACHINE", "손상은 실패 뒤에만 조건부이며 한 결과는 FAILED_HOLD 또는 FAILED_DAMAGE 하나다. 실제 CURRENT 손상일 때만 수리 job을 열고, live UX는 NOT RUN.", fill=PAPER)
+    top = checklist_row(pdf, 18 * mm, top, "06", "인계 → 실제 사용 → 연대기", "MACHINE", "인계는 손상을 만들지 않는다. 실제 사용 결과와 장비 손상은 별도 축이며, 의미 사건만 기록한다. 전체 흐름의 runtime·human 검수는 NOT RUN.", fill=PALE_COPPER)
+    panel(pdf, 18 * mm, top, page_width - 36 * mm, 31 * mm, fill=PALE_GOLD)
+    label(pdf, "NEXT REVIEW", 23 * mm, top - 6 * mm)
+    draw_wrapped(pdf, "다음 실제 화면 검토는 페이지 3의 공방 읽기 순서, 페이지 7·8의 촉매/태그 행동, 페이지 9·10의 손상·귀환을 순서대로 확인한다. 이 체크리스트는 별도 HTML을 만들지 않으며, 빈 NOT RUN을 완료로 바꾸지 않는다.", 23 * mm, top - 12 * mm, page_width - 46 * mm, size=8.0, leading=11.0, color=INK)
 
 
 def draw_pdf() -> str:
@@ -789,6 +926,9 @@ def draw_pdf() -> str:
         page_nine,
         page_ten,
         page_eleven,
+        page_twelve,
+        page_thirteen,
+        page_fourteen,
     ):
         page(pdf)
         pdf.showPage()
@@ -841,6 +981,18 @@ def write_receipt(*, render_status: str, rendered_pages: list[int], visual_revie
             "embedded_runtime_asset_reference_count": len(runtime_asset_references),
             "contains_product_runtime_screenshot": False,
         },
+        "integrated_checklist": {
+            "delivery_surface": "BLUEPRINT_PDF_ONLY",
+            "standalone_html_created": False,
+            "sections": ["goal", "system", "case"],
+            "status_terms": [
+                "CANON + MACHINE",
+                "LIMITED UI",
+                "NOT RUN",
+            ],
+            "as_of": "2026-09-03 / main ee60c74df2b3a9aef8544c5bc349a71339065249",
+            "scope": "DERIVED_STATUS_VIEW / NO_NEW_PRODUCT_RULE_OR_RUNTIME_CLAIM",
+        },
         "render_validation": {
             "required_tool": "pdftoppm",
             "status": render_status,
@@ -848,8 +1000,8 @@ def write_receipt(*, render_status: str, rendered_pages: list[int], visual_revie
             "visual_review": visual_review,
         },
         "benchmark_preflight_receipt": {
-            "date": "2026-09-02",
-            "scope": "DETAIL_PDF_VISUAL_REFERENCE_REUSE / NO_NEW_PRODUCT_RULE_OR_ASSET",
+            "date": "2026-09-03",
+            "scope": "INTEGRATED_BLUEPRINT_CHECKLIST / NO_STANDALONE_HTML_OR_NEW_PRODUCT_RULE_OR_ASSET",
             "inputs": [
                 {
                     "source": "Godot 4.7 TextureRect official documentation",
@@ -864,10 +1016,16 @@ def write_receipt(*, render_status: str, rendered_pages: list[int], visual_revie
                     "finding": "Retain its visual-anchor pattern by placing actual-consumer assets next to the current detailed flow, not by importing superseded rule text.",
                 },
                 {
-                    "source": "Potion Craft official site and Blacksmith of the Sand Kingdom official site",
-                    "type": "ADJACENT_GAME_FIRST_PARTY_REFERENCE",
-                    "disposition": "REJECT",
-                    "finding": "Do not copy foreign art, economy, composition, or screenshots. Keep workshop art subordinate to player-readable native information.",
+                    "source": "W3C WAI Headings and Tables tutorials",
+                    "type": "PRIMARY_DOCUMENT_STRUCTURE_SOURCE",
+                    "disposition": "ADAPT",
+                    "finding": "Use short section labels and text-described status rows so the PM summary has a clear hierarchy and does not rely on color alone. This guidance changes no game rule or runtime accessibility claim.",
+                },
+                {
+                    "source": "Reference-only user-supplied PM screenshot",
+                    "type": "USER_REFERENCE_LAYOUT_DENSITY",
+                    "disposition": "ADAPT",
+                    "finding": "Retain at-a-glance goal, system, and case grouping while preserving the approved illustrated-workshop-book PDF direction rather than copying the dark dashboard surface.",
                 },
             ],
         },
@@ -882,8 +1040,8 @@ def write_receipt(*, render_status: str, rendered_pages: list[int], visual_revie
             ],
             "protected_product_paths_modified": False,
             "new_runtime_asset": False,
-            "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-asset-references-render (cleaned after review)",
-            "unused_temporary_files_retained": False,
+            "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-checklists-render (task-created; cleanup pending host deletion policy)",
+            "unused_temporary_files_retained": True,
         },
         "evidence_ceiling": {
             "pdf_structure_and_text": "MACHINE_VERIFIED_AFTER_CONTRACT_RUN",
@@ -926,7 +1084,7 @@ def finalize_render_review() -> None:
     write_receipt(
         render_status="RENDERED_AND_AGENT_VISUAL_LAYOUT_REVIEWED",
         rendered_pages=list(range(1, len(reader.pages) + 1)),
-        visual_review="ALL_ELEVEN_PAGES_RENDERED_AND_VISUALLY_REVIEWED_FOR_CLIPPING_OVERLAP_AND_LEGIBILITY",
+        visual_review=f"ALL_{PAGE_COUNT}_PAGES_RENDERED_AND_VISUALLY_REVIEWED_FOR_CLIPPING_OVERLAP_AND_LEGIBILITY",
     )
     print(f"recorded render review for {OUTPUT.relative_to(ROOT)}")
 

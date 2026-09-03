@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "receipt_id": "BLACKSMITH_PHASE1_BLUEPRINT_CHECKLIST_PDF_20260903",
+  "status": "LOCAL_PDF_CHECKLIST_VERIFIED_PENDING_GITHUB_DELIVERY",
+  "work_level": "L1",
+  "scope": "Add a visual goal/system/case checklist inside the existing derived Phase 1 Workshop Blueprint PDF. The scope explicitly excludes a standalone HTML checklist, product-path changes, new product meaning, new raster assets, and changes to existing draft PRs.",
+  "authority_boundary": {
+    "current_product_owners_retained": [
+      "BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+      "BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
+      "BS-ENHANCE-20260830-38",
+      "BS-ENHANCE-20260901-40",
+      "BS-ART-20260825-03",
+      "BS-ART-20260826-04"
+    ],
+    "no_canon_owner_replacement": true,
+    "blueprint_is_derived_noncanonical_review_output": true,
+    "standalone_html_created": false,
+    "protected_product_paths_changed": false,
+    "new_raster_asset_created": false,
+    "notion_or_google_sheet_changed": false,
+    "open_pr_196_taken_over": false,
+    "open_pr_359_taken_over": false
+  },
+  "base_current_main_observed": "850204b3e5de81a4045111b4a050c46c5a292b59",
+  "base_current_observation_status": "REFERENCE_FOR_PROJECT_ADAPTATION_ONLY_NO_AUTOMATIC_PIN_UPDATE",
+  "base_adopted_release": {
+    "version": "9.4.4",
+    "release_commit": "210ec78292fa12ed7563ba743b322dd36103ae4a",
+    "owner": "skills/PROJECT_BASE_ADAPTER.json",
+    "automatic_update": false
+  },
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "source_and_evidence": "W3C WAI Headings tutorial and Tables tutorial, reviewed 2026-09-03 KST: structured headings and explicit text labels make a compact status view easier to scan without relying solely on visual styling.",
+        "observed_pattern": "A status-heavy review surface remains legible when grouped by a short hierarchy and when each state is written as text instead of conveyed only by color or icon.",
+        "project_fit_and_difference": "ADAPT this document-review pattern to the derived Blueprint PDF only: goal, system, and representative-case sections use written status labels. This is not an accessibility certification or a replacement for runtime UI verification.",
+        "disposition": "ADAPT"
+      },
+      {
+        "source_and_evidence": "Blacksmith current main ee60c74df2b3a9aef8544c5bc349a71339065249, Phase 1 Blueprint publisher/contract, current human-facing GDD, session handoff, and Decisions 38/40, reviewed 2026-09-03 KST.",
+        "observed_pattern": "The repository already owns a PDF Blueprint Viewer, its deterministic publisher, an artifact receipt, and factual current-canon status; the user requested that visual PM information live in this existing Blueprint rather than a separate HTML surface.",
+        "project_fit_and_difference": "ADOPT the existing PDF delivery and verification route, while ADAPT the user-requested goal/system/case checklist as a derived review layer. No gameplay rule, value, asset, or runtime surface is changed.",
+        "disposition": "ADOPT"
+      },
+      {
+        "source_and_evidence": "User-supplied 2026-09-03 checklist screenshot and pasted reference text, treated as reference-only layout-density evidence under AGENTS.md.",
+        "observed_pattern": "The reference presents a prominent title, short status summary, staged flow, and a dense but scannable checklist/table hierarchy.",
+        "project_fit_and_difference": "ADAPT only the information-density principle. Retain Blacksmith's approved Illustrated Workshop Book direction, repository facts, Korean terminology, and PDF-only delivery; do not reuse foreign names, layout pixels, assets, or product meaning.",
+        "disposition": "ADAPT"
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "NONCODING_BUILD / derived Blueprint PDF and its deterministic publisher, tests, artifact receipt, and task receipt in an isolated Blacksmith worktree.",
+    "inventory": [
+      {
+        "path": "AGENTS.md; docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md; docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current authority, adopted-Base boundary, and cold-start routing.",
+        "references_and_consumers": "All current Blacksmith work, operating-contract validation, and this receipt's source-main boundary."
+      },
+      {
+        "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md; docs/decisions/BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md; docs/decisions/BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current people-facing product, recurring tag, and consumable-catalyst owners.",
+        "references_and_consumers": "Factual status phrases in the Blueprint checklist; these documents remain the canonical owners and are not replaced by the PDF."
+      },
+      {
+        "path": "tools/publish_phase1_workshop_blueprint_pdf.py; tests/test_phase1_workshop_blueprint_pdf_publisher.py; tests/check_phase1_workshop_blueprint_pdf_contract.py",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Existing deterministic Blueprint publisher and its focused machine contracts.",
+        "references_and_consumers": "Publish, source-hash, extract, and verify exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf plus its artifact receipt."
+      },
+      {
+        "path": "exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf; docs/operations/receipts/2026-09-02-phase1-workshop-blueprint-pdf.json",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Derived human-review PDF and its artifact-specific provenance receipt.",
+        "references_and_consumers": "User PDF review, PDF contract extraction, source hash verification, and visual render inspection; the artifact receipt is retained rather than repurposed as the L1 work receipt."
+      },
+      {
+        "path": "PR #196 and PR #359",
+        "classification": "COMPATIBILITY",
+        "owner_or_provenance": "Existing protected draft PRs discovered during fresh-read overlap review.",
+        "references_and_consumers": "Read-only scope boundary; no branch, file, review state, or merge action is taken over."
+      },
+      {
+        "path": "tmp/pdfs/phase1-workshop-blueprint-checklists-render; tmp/pdfs/phase1-workshop-blueprint-checklists-final-render; tmp/pdfs/phase1-workshop-blueprint-checklists-final-pass",
+        "classification": "OBSOLETE_CANDIDATE",
+        "owner_or_provenance": "Task-created PDF render inspection directories in the isolated worktree.",
+        "references_and_consumers": "Final inspection completed; these exact temporary render directories have no repository or product consumer. Cleanup was attempted after explicit path verification, but the current host deletion policy denied recursive removal; they remain pending permitted cleanup."
+      }
+    ],
+    "deletion_proposed": false,
+    "removal_policy": "Only verified task-created, ignored PDF-render directories under the exact isolated worktree tmp/pdfs path may be removed after inspection when the host permits it. No tracked asset, historical document, user worktree, open PR, or pre-existing HTML/dashboard is deleted."
+  },
+  "asset_disposition": {
+    "new_raster_asset_created": false,
+    "new_visual_requirement_created": false,
+    "foreign_asset_or_screenshot_reused": false,
+    "reason": "The screenshot is layout-density reference only. The checklist is text-native inside an existing derived PDF and reuses no foreign raster or product asset."
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "BLACKSMITH-PHASE1-BLUEPRINT-CHECKLIST-PDF-20260903",
+    "source_main_sha": "ee60c74df2b3a9aef8544c5bc349a71339065249",
+    "next_action": "Run exact-head local validation, create a protected GitHub PR, and record normal merge/readback before declaring delivery complete.",
+    "work_item_refs": [
+      "BS-BLUEPRINT-CHECKLIST-01"
+    ],
+    "active_work_item_ref": "BS-BLUEPRINT-CHECKLIST-01",
+    "progress_summary": {
+      "completed_items": 0,
+      "applicable_items": 1,
+      "display": "0 / 1"
+    },
+    "work_items": [
+      {
+        "work_item_id": "BS-BLUEPRINT-CHECKLIST-01",
+        "title": "PDF-internal Phase 1 Blueprint goal, system, and representative-case checklist",
+        "status": "IN_PROGRESS",
+        "canon_owner": "Current Blacksmith human-facing GDD, core canon, Decisions 38/40, and the existing Phase 1 Blueprint publisher/contract.",
+        "actual_consumers": [
+          "exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf human review",
+          "tools/publish_phase1_workshop_blueprint_pdf.py deterministic derived artifact route",
+          "tests/check_phase1_workshop_blueprint_pdf_contract.py factual delivery contract"
+        ],
+        "depends_on": [],
+        "next_action": "Finish exact-head validation and protected GitHub delivery without creating a standalone HTML checklist or changing product paths.",
+        "checklist": [
+          {
+            "id": "fresh-current-authority",
+            "status": "PASS",
+            "text": "Current project authority, current main, active decisions, source consumers, adopted Base lock, Base-current reference, and protected draft PR boundaries were fresh-read before the derived PDF change.",
+            "evidence": [
+              "source main ee60c74df2b3a9aef8544c5bc349a71339065249",
+              "Base current main 850204b3e5de81a4045111b4a050c46c5a292b59",
+              "AGENTS.md, Base adaptation contract, handoff, current GDD, Decisions 38/40, publisher/tests, and PR #196/#359"
+            ]
+          },
+          {
+            "id": "pdf-only-boundary",
+            "status": "PASS",
+            "text": "The user-selected delivery boundary is an integrated Blueprint PDF checklist; no separate HTML output, new image, product data, script, scene, or runtime behavior is introduced.",
+            "evidence": [
+              "artifact receipt integrated_checklist.delivery_surface = BLUEPRINT_PDF_ONLY",
+              "artifact receipt integrated_checklist.standalone_html_created = false",
+              "changed-path audit excludes data/, scripts/, scenes/, assets/, addons/, and project.godot"
+            ]
+          },
+          {
+            "id": "focused-red-green",
+            "status": "PASS",
+            "text": "The focused PDF tests and PDF contract were first observed RED against the old 11-page artifact, then GREEN after the minimal publisher, receipt, and test changes regenerated the 14-page artifact.",
+            "evidence": [
+              "RED: expected 14 pages and checklist receipt fields were absent from the 11-page baseline",
+              "GREEN: focused publisher tests pass and the regenerated artifact contract passes"
+            ]
+          },
+          {
+            "id": "final-delivery-readback",
+            "status": "NOT_RUN",
+            "text": "Exact-head GitHub CI, protected merge, origin/main readback, and final temporary-worktree cleanup remain to be recorded before the work item becomes DONE.",
+            "evidence": []
+          }
+        ],
+        "acceptance_criteria": [
+          "fresh-current-authority",
+          "pdf-only-boundary",
+          "focused-red-green",
+          "final-delivery-readback"
+        ],
+        "verification": [
+          {
+            "level": "E0_CONTRACT",
+            "status": "PASS",
+            "evidence": [
+              "Focused publisher contract and artifact receipt contract pass after deterministic regeneration"
+            ]
+          },
+          {
+            "level": "E1_STATIC",
+            "status": "PASS",
+            "evidence": [
+              "Current authority, human-facing GDD/review-loop, archive-governance, and project/Base operating-contract checks pass locally"
+            ]
+          },
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "Focused Python publisher tests pass after the intended RED observation"
+            ]
+          },
+          {
+            "level": "E4_VISUAL",
+            "status": "PASS",
+            "evidence": [
+              "All 14 final PDF pages rendered to PNG for local inspection; the final checklist pages were checked for clipping, overlap, and legibility"
+            ]
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "NOT_RUN",
+            "evidence": []
+          },
+          {
+            "level": "E5_PLAY",
+            "status": "NOT_RUN",
+            "evidence": []
+          }
+        ],
+        "required_evidence": [
+          "E0_CONTRACT",
+          "E1_STATIC",
+          "E2_TEST",
+          "E4_VISUAL"
+        ],
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "NOT_RUN",
+        "readback_evidence": [],
+        "rollback": "Use a normal reviewed revert of the delivery commit if the derived checklist must be withdrawn; do not delete or reinterpret canonical product owners, original assets, or existing unrelated HTML/dashboard files."
+      }
+    ]
+  },
+  "evidence_ceiling": {
+    "pdf_structure_and_source_hash": "MACHINE_VERIFIED_LOCAL",
+    "pdf_visual_layout": "LOCAL_RENDER_REVIEWED",
+    "github_exact_head_and_main_readback": "NOT_RUN",
+    "godot_runtime": "NOT_RUN",
+    "android_device": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human_player_experience": "NOT_RUN",
+    "release": "NOT_RUN"
+  },
+  "base_promotion_candidates": [],
+  "project_only_lessons": [
+    "A visual checklist request can remain one derived Blueprint PDF concern when its statuses have canonical sources, an artifact receipt, and a machine-verifiable publisher; a second HTML dashboard is not required.",
+    "An artifact-specific PDF provenance receipt and an L1 work-contract receipt should remain distinct so neither falsely becomes the owner of the other's operational facts."
+  ]
+}

@@ -22,6 +22,10 @@ EXPECTED_SOURCES = {
     "docs/operations/receipts/2026-09-01-phase1-workshop-blueprint.json",
     "assets/ASSET_MANIFEST.json",
     "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
+    "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
+    "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md",
+    "docs/decisions/BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md",
+    "docs/decisions/BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md",
 }
 EXPECTED_RUNTIME_ASSET_PATHS = {
     "assets/ui/identity/anvil_oath_logo_ao02_v1.png",
@@ -58,6 +62,11 @@ REQUIRED_TEXT = (
     "구현 소유 경로",
     "검증과 증거 한계",
     "사용자 블루프린트 검토 대기",
+    "통합 실행 체크리스트",
+    "목표별 점검",
+    "시스템별 점검",
+    "대표 케이스 점검",
+    "PDF 내부 전용",
 )
 
 
@@ -75,8 +84,8 @@ def main() -> None:
         failures.append(f"missing PDF receipt: {RECEIPT.relative_to(ROOT)}")
     if PDF.exists():
         reader = PdfReader(str(PDF))
-        if len(reader.pages) != 11:
-            failures.append(f"expected eleven A4 pages, found {len(reader.pages)}")
+        if len(reader.pages) != 14:
+            failures.append(f"expected fourteen A4 pages, found {len(reader.pages)}")
         if reader.metadata.title != "모루의 서약 · Phase 1 워크숍 블루프린트":
             failures.append(f"unexpected PDF title: {reader.metadata.title!r}")
         if reader.metadata.subject != "Derived non-canonical Blueprint Viewer":
@@ -95,8 +104,8 @@ def main() -> None:
             failures.append("receipt artifact path does not match the generated PDF")
         if receipt.get("artifact", {}).get("sha256") != sha256(PDF):
             failures.append("receipt artifact SHA-256 does not match the generated PDF")
-        if receipt.get("artifact", {}).get("page_count") != 11:
-            failures.append("receipt must report exactly eleven PDF pages")
+        if receipt.get("artifact", {}).get("page_count") != 14:
+            failures.append("receipt must report exactly fourteen PDF pages")
         if receipt.get("user_review_status") != "USER_BLUEPRINT_REVIEW_PENDING":
             failures.append("receipt must retain the pending user blueprint review boundary")
         if receipt.get("runtime_asset") is not False:
@@ -120,6 +129,13 @@ def main() -> None:
             failures.append("receipt must retain a non-empty benchmark preflight receipt")
         if not receipt.get("context_configuration_hygiene"):
             failures.append("receipt must retain non-empty context/configuration hygiene evidence")
+        checklist = receipt.get("integrated_checklist", {})
+        if checklist.get("delivery_surface") != "BLUEPRINT_PDF_ONLY":
+            failures.append("checklist must stay inside the Blueprint PDF delivery surface")
+        if checklist.get("standalone_html_created") is not False:
+            failures.append("checklist receipt must prove no standalone HTML delivery was created")
+        if checklist.get("sections") != ["goal", "system", "case"]:
+            failures.append("checklist receipt must retain goal, system, and case sections")
     if failures:
         print("phase1 workshop blueprint PDF contract: FAIL", file=sys.stderr)
         for failure in failures:

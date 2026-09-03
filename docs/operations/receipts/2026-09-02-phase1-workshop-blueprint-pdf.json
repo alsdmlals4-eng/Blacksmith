@@ -7,8 +7,8 @@
   "runtime_asset": false,
   "artifact": {
     "path": "exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf",
-    "sha256": "2f169dcdf53dfa5a5b9ae1d03ef8ad0479cc1e7f25aa33c2934683d6e5b5f529",
-    "page_count": 11,
+    "sha256": "c4d31c2032404f45d5f267d7679c90d2004c16ec3e3a8aa542da6ae04e1753b0",
+    "page_count": 14,
     "pdf_title": "모루의 서약 · Phase 1 워크숍 블루프린트",
     "pdf_subject": "Derived non-canonical Blueprint Viewer",
     "target_format": "A4"
@@ -47,6 +47,26 @@
     {
       "path": "docs/planning/BLACKSMITH_SCREEN_SURFACE_VISUAL_COVERAGE_20260827.json",
       "sha256": "0b6eb12dfd1a675ab13190d111c6a0871b6daee25eed79c4adaff01cf261835f",
+      "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
+    },
+    {
+      "path": "docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md",
+      "sha256": "4c76064e8a82395ea371f5eb2c74479877ac212b3607d38d592bfe8c0df9bd57",
+      "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
+    },
+    {
+      "path": "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md",
+      "sha256": "2f2115c09e59e4ded36acfed6a1586c8c1f2ffd1cc3b19c0beeeec4666aba05f",
+      "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
+    },
+    {
+      "path": "docs/decisions/BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md",
+      "sha256": "38dbc96cd875d59726f5426874033f4c538abf534f27561d5ec3df366c6f7ff0",
+      "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
+    },
+    {
+      "path": "docs/decisions/BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md",
+      "sha256": "66f0256626326a74173276f61b8c3a5c860bd40d1aba54bb55147fda312826e5",
       "hash_basis": "UTF-8_BYTES_WITH_CRLF_TO_LF_NORMALIZATION"
     }
   ],
@@ -146,6 +166,22 @@
     "embedded_runtime_asset_reference_count": 9,
     "contains_product_runtime_screenshot": false
   },
+  "integrated_checklist": {
+    "delivery_surface": "BLUEPRINT_PDF_ONLY",
+    "standalone_html_created": false,
+    "sections": [
+      "goal",
+      "system",
+      "case"
+    ],
+    "status_terms": [
+      "CANON + MACHINE",
+      "LIMITED UI",
+      "NOT RUN"
+    ],
+    "as_of": "2026-09-03 / main ee60c74df2b3a9aef8544c5bc349a71339065249",
+    "scope": "DERIVED_STATUS_VIEW / NO_NEW_PRODUCT_RULE_OR_RUNTIME_CLAIM"
+  },
   "render_validation": {
     "required_tool": "pdftoppm",
     "status": "RENDERED_AND_AGENT_VISUAL_LAYOUT_REVIEWED",
@@ -160,13 +196,16 @@
       8,
       9,
       10,
-      11
+      11,
+      12,
+      13,
+      14
     ],
-    "visual_review": "ALL_ELEVEN_PAGES_RENDERED_AND_VISUALLY_REVIEWED_FOR_CLIPPING_OVERLAP_AND_LEGIBILITY"
+    "visual_review": "ALL_14_PAGES_RENDERED_AND_VISUALLY_REVIEWED_FOR_CLIPPING_OVERLAP_AND_LEGIBILITY"
   },
   "benchmark_preflight_receipt": {
-    "date": "2026-09-02",
-    "scope": "DETAIL_PDF_VISUAL_REFERENCE_REUSE / NO_NEW_PRODUCT_RULE_OR_ASSET",
+    "date": "2026-09-03",
+    "scope": "INTEGRATED_BLUEPRINT_CHECKLIST / NO_STANDALONE_HTML_OR_NEW_PRODUCT_RULE_OR_ASSET",
     "inputs": [
       {
         "source": "Godot 4.7 TextureRect official documentation",
@@ -181,10 +220,16 @@
         "finding": "Retain its visual-anchor pattern by placing actual-consumer assets next to the current detailed flow, not by importing superseded rule text."
       },
       {
-        "source": "Potion Craft official site and Blacksmith of the Sand Kingdom official site",
-        "type": "ADJACENT_GAME_FIRST_PARTY_REFERENCE",
-        "disposition": "REJECT",
-        "finding": "Do not copy foreign art, economy, composition, or screenshots. Keep workshop art subordinate to player-readable native information."
+        "source": "W3C WAI Headings and Tables tutorials",
+        "type": "PRIMARY_DOCUMENT_STRUCTURE_SOURCE",
+        "disposition": "ADAPT",
+        "finding": "Use short section labels and text-described status rows so the PM summary has a clear hierarchy and does not rely on color alone. This guidance changes no game rule or runtime accessibility claim."
+      },
+      {
+        "source": "Reference-only user-supplied PM screenshot",
+        "type": "USER_REFERENCE_LAYOUT_DENSITY",
+        "disposition": "ADAPT",
+        "finding": "Retain at-a-glance goal, system, and case grouping while preserving the approved illustrated-workshop-book PDF direction rather than copying the dark dashboard surface."
       }
     ]
   },
@@ -199,8 +244,8 @@
     ],
     "protected_product_paths_modified": false,
     "new_runtime_asset": false,
-    "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-asset-references-render (cleaned after review)",
-    "unused_temporary_files_retained": false
+    "temporary_render_directory": "tmp/pdfs/phase1-workshop-blueprint-checklists-render (task-created; cleanup pending host deletion policy)",
+    "unused_temporary_files_retained": true
   },
   "evidence_ceiling": {
     "pdf_structure_and_text": "MACHINE_VERIFIED_AFTER_CONTRACT_RUN",

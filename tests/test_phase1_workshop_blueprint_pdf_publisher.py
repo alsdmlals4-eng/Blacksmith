@@ -44,7 +44,7 @@ class Phase1WorkshopBlueprintPublisherTest(unittest.TestCase):
         self.assertEqual((432, 768), image_reader.getSize())
         self.assertEqual(source_sha_before, publisher.sha256(source_path))
 
-    def test_draw_pdf_emits_eleven_pages_without_node_argument_errors(self) -> None:
+    def test_draw_pdf_emits_fourteen_pages_with_integrated_checklist_sections(self) -> None:
         original_output = publisher.OUTPUT
         try:
             with tempfile.TemporaryDirectory() as temporary_directory:
@@ -52,7 +52,13 @@ class Phase1WorkshopBlueprintPublisherTest(unittest.TestCase):
                 publisher.draw_pdf()
                 self.assertTrue(publisher.OUTPUT.exists())
                 reader = PdfReader(str(publisher.OUTPUT))
-                self.assertEqual(11, len(reader.pages))
+                self.assertEqual(14, len(reader.pages))
+                extracted = "\n".join(page.extract_text() or "" for page in reader.pages)
+                self.assertIn("통합 실행 체크리스트", extracted)
+                self.assertIn("목표별 점검", extracted)
+                self.assertIn("시스템별 점검", extracted)
+                self.assertIn("대표 케이스 점검", extracted)
+                self.assertIn("PDF 내부 전용", extracted)
                 image_pages = {
                     page_number
                     for page_number, page in enumerate(reader.pages, start=1)
@@ -75,11 +81,14 @@ class Phase1WorkshopBlueprintPublisherTest(unittest.TestCase):
         self.assertGreaterEqual(bounds["flow_node_body_left_mm"], 14.0)
 
     def test_detailed_page_plan_keeps_each_core_decision_visible(self) -> None:
-        self.assertEqual(11, publisher.PAGE_COUNT)
-        self.assertEqual(11, len(publisher.PAGE_SECTIONS))
+        self.assertEqual(14, publisher.PAGE_COUNT)
+        self.assertEqual(14, len(publisher.PAGE_SECTIONS))
         self.assertIn("최초 +10", publisher.PAGE_SECTIONS)
         self.assertIn("+20 이후", publisher.PAGE_SECTIONS)
         self.assertIn("검증과 증거 한계", publisher.PAGE_SECTIONS)
+        self.assertIn("통합 실행 체크리스트", publisher.PAGE_SECTIONS)
+        self.assertIn("목표별 점검", publisher.PAGE_SECTIONS)
+        self.assertIn("대표 케이스 점검", publisher.PAGE_SECTIONS)
 
 
 if __name__ == "__main__":
