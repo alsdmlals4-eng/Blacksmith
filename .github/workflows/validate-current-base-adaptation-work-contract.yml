@@ -6,7 +6,7 @@ on:
       - 'AGENTS.md'
       - 'docs/BASE_RULES_VERSION.md'
       - 'docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md'
-      - 'docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json'
+      - 'docs/operations/receipts/2026-09-03-recurring-precision-runtime-qa.json'
       - 'docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md'
       - 'docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md'
       - 'skills/PROJECT_BASE_ADAPTER.json'
@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           repository: alsdmlals4-eng/Base
-          ref: 19355b7ef065a21d0f2b685c7d9be64a4a3970f8
+          ref: 850204b3e5de81a4045111b4a050c46c5a292b59
           path: .base-current
           fetch-depth: 1
 

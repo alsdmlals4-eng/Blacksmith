@@ -37,7 +37,7 @@ func _remove_fixture_files() -> void:
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 
 
-func _precision_envelope() -> VSSaveEnvelope:
+func _precision_envelope(level: int = 9, tag_entries: Array = [], used_milestones: Array = []) -> VSSaveEnvelope:
 	var envelope: VSSaveEnvelope = RunInitializerScript.new().create_candidate_envelope()
 	var item := ItemScript.new()
 	item.uid = "BSI-99999999999999999999999999999999"
@@ -47,12 +47,15 @@ func _precision_envelope() -> VSSaveEnvelope:
 	item.role_profile = "PHYSICAL_WEAPON_ATTACK"
 	item.raw_role_stat = 12
 	item.weight_point = 2
-	item.enhancement_level = 9
-	item.highest_checkpoint = 0
+	item.enhancement_level = level
+	item.highest_checkpoint = 90 if level >= 90 else 60 if level >= 60 else 30 if level >= 30 else 10 if level >= 10 else 0
 	item.base_max_durability = 5
 	item.max_durability = 5
 	item.current_durability = 5
 	item.repair_job_available = false
+	item.catalyst_affix["tag_entries"] = tag_entries.duplicate(true)
+	for milestone in used_milestones:
+		item.used_precision_milestones.append(int(milestone))
 	envelope.items_by_uid[item.uid] = item
 	envelope.active_run["selected_item_uid"] = item.uid
 	return SaveEnvelopeScript.from_dict(envelope.to_dict())
@@ -126,3 +129,86 @@ func test_plus_9_to_plus_10_runtime_fixture_persists_only_under_gut() -> void:
 	if not tag_entries.is_empty():
 		assert_eq(str(tag_entries[0].get("tag_id", "")), "TAG_EMBER_EDGE")
 		assert_eq(int(tag_entries[0].get("stage", 0)), 1)
+
+
+func test_plus_19_to_plus_20_runtime_fixture_persists_tag_upgrade_and_derived_catalyst_charge_only_under_gut() -> void:
+	var save_service := SaveServiceScript.new(FIXTURE_SAVE_PATH)
+
+	var envelope := _precision_envelope(19, [{
+		"tag_id": "TAG_ANVIL_EDGE",
+		"stage": 1,
+		"created_milestone": 10,
+		"last_advanced_milestone": 10,
+	}], [10])
+	assert_true(envelope.validation_errors.is_empty(), str(envelope.validation_errors))
+	if not envelope.validation_errors.is_empty():
+		return
+	assert_eq(save_service.save_envelope(envelope), OK)
+
+	var screen = SCREEN_SCENE.instantiate()
+	add_child_autofree(screen)
+	var resources := ResourcesScript.new(20000, {
+		"common_reinforcement_material": 30,
+		"heart_of_flame": 64,
+		"earth_crystal": 64,
+	})
+	envelope.workshop_resources = resources.snapshot()
+	screen.configure_context(
+		envelope.get_item(str(envelope.active_run["selected_item_uid"])),
+		resources,
+		null,
+		EnhancementActionServiceScript.new(),
+		save_service,
+		envelope
+	)
+
+	var upgrade_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionActionUpgradeButton") as Button
+	var tag_option := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/PrecisionTagOption") as OptionButton
+	var enhancement_button := screen.get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementButton") as Button
+	assert_not_null(upgrade_button)
+	assert_not_null(tag_option)
+	assert_not_null(enhancement_button)
+	if upgrade_button == null or tag_option == null or enhancement_button == null:
+		return
+	assert_true(upgrade_button.visible)
+	assert_false(upgrade_button.disabled)
+	assert_true(enhancement_button.disabled)
+
+	upgrade_button.pressed.emit()
+	var anvil_tag_index := -1
+	for index in range(tag_option.item_count):
+		if str(tag_option.get_item_metadata(index)) == "TAG_ANVIL_EDGE":
+			anvil_tag_index = index
+			break
+	assert_gte(anvil_tag_index, 0, "the visible +20 upgrade picker must include the stored tag")
+	if anvil_tag_index < 0:
+		return
+	tag_option.select(anvil_tag_index)
+	tag_option.item_selected.emit(anvil_tag_index)
+	assert_false(enhancement_button.disabled, "a visible tag-upgrade selection unlocks the current +20 attempt")
+	var preview := screen.get_node("WorkshopScroll/WorkshopLayout/PrecisionPreviewLabel") as Label
+	assert_true(preview.text.contains("대지의 결정 1개 소모"))
+	assert_true(preview.text.contains("단계 I → II"))
+
+	var result: Dictionary = screen.request_enhancement_with_rolls({
+		"success_roll_percent": 0.0,
+		"damage_roll_percent": 99.0,
+	})
+	assert_eq(result.get("outcome", ""), "SUCCESS")
+	assert_eq(result.get("precision_action", ""), "UPGRADE_TAG")
+	assert_eq(result.get("precision_catalyst_id", ""), "EARTH_CRYSTAL")
+
+	var reloaded = save_service.load_envelope()
+	assert_true(reloaded.validation_errors.is_empty())
+	var saved_item = reloaded.get_item("BSI-99999999999999999999999999999999")
+	assert_not_null(saved_item)
+	if saved_item == null:
+		return
+	assert_eq(saved_item.enhancement_level, 20)
+	assert_eq(reloaded.resource_snapshot()["material_stock"]["earth_crystal"], 63)
+	assert_eq(saved_item.used_precision_milestones, [10, 20])
+	var saved_tag_entries: Array = saved_item.catalyst_affix.get("tag_entries", [])
+	assert_eq(saved_tag_entries.size(), 1)
+	if not saved_tag_entries.is_empty():
+		assert_eq(str(saved_tag_entries[0].get("tag_id", "")), "TAG_ANVIL_EDGE")
+		assert_eq(int(saved_tag_entries[0].get("stage", 0)), 2)

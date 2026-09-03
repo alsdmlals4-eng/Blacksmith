@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "receipt_id": "BLACKSMITH_RECURRING_PRECISION_RUNTIME_QA_20260903",
+  "status": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
+  "work_level": "L1",
+  "scope": "Current-canon recurring Precision Enhancement QA and canonical-validator correction: prove the existing +19 to +20 tag-upgrade UI uses one consumable catalyst atomically and persists the resulting envelope, while refreshing the Base-current observation without changing gameplay, save schema, visual assets, generated adapters, or product scope.",
+  "authority_boundary": {
+    "current_product_owners_retained": [
+      "BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md",
+      "BS-ENHANCE-20260830-38",
+      "BS-ENHANCE-20260901-40",
+      "BS-ART-20260825-03",
+      "BS-ART-20260826-04"
+    ],
+    "no_canon_owner_replacement": true,
+    "protected_product_paths_changed": false,
+    "base_repository_changed": false,
+    "generated_adapter_changed": false,
+    "notion_or_google_sheet_changed": false,
+    "open_pr_196_taken_over": false,
+    "open_pr_359_taken_over": false
+  },
+  "base_current_main_observed": "850204b3e5de81a4045111b4a050c46c5a292b59",
+  "base_current_observation_status": "REFERENCE_FOR_PROJECT_ADAPTATION_ONLY_NO_AUTOMATIC_PIN_UPDATE",
+  "base_adopted_release": {
+    "version": "9.4.4",
+    "release_commit": "210ec78292fa12ed7563ba743b322dd36103ae4a",
+    "owner": "skills/PROJECT_BASE_ADAPTER.json",
+    "automatic_update": false
+  },
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "source_and_evidence": "Godot official filesystem documentation, reviewed 2026-09-03 KST: user:// is a writable per-user data path suitable for application data and test fixtures.",
+        "observed_pattern": "A test can isolate persisted state from a player's real save by using a disposable path under user:// and removing that fixture before and after the test.",
+        "project_fit_and_difference": "ADOPT the isolation pattern only in the GUT QA fixture. The runtime save service and its product save schema are retained unchanged.",
+        "disposition": "ADOPT"
+      },
+      {
+        "source_and_evidence": "GUT official GitHub repository, reviewed 2026-09-03 KST: GUT 9.x supports Godot 4.x and is the project-selected GDScript test authority.",
+        "observed_pattern": "A focused test may instantiate existing Control and service consumers, trigger their signals, and assert the persisted result without introducing a second UI harness.",
+        "project_fit_and_difference": "ADOPT the existing GUT route and native Control consumers. Do not add a test framework, editor plugin change, or alternate UI system.",
+        "disposition": "ADOPT"
+      },
+      {
+        "source_and_evidence": "Blacksmith current main 181d40422c0b8cacd4bfa15e73f88032af0f4846 and current consumers VSWorkshopScreen, VSEnhancementActionService, VSSaveService, Decisions 38 and 40, reviewed 2026-09-03 KST.",
+        "observed_pattern": "The product already provides tag-upgrade selection, one-unit catalyst reservation/consumption, and persisted recurring-milestone envelopes; the missing evidence was an isolated +19 to +20 UI-to-save regression path and current static wording.",
+        "project_fit_and_difference": "ADAPT by characterizing the existing player-facing consumer path. Do not import another game's expression, rebalance catalysts, add tags, alter save fields, or generate new imagery.",
+        "disposition": "ADAPT"
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "REVIEW plus test-only current-canon QA and operational-contract correction in an isolated Blacksmith worktree.",
+    "inventory": [
+      {
+        "path": "AGENTS.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current project authority, current-canon boundary, and protected-path contract.",
+        "references_and_consumers": "All project work and the current-authority entrypoint contract."
+      },
+      {
+        "path": "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current project-owned Base observation and operating-mode contract.",
+        "references_and_consumers": "AGENTS.md, session handoff, current Base adaptation checker, and validation workflow."
+      },
+      {
+        "path": "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current cold-start locator and accepted-frontier handoff.",
+        "references_and_consumers": "AGENTS.md and current session routing."
+      },
+      {
+        "path": "docs/decisions/BS-ENHANCE-20260830-38_RECURRING_PRECISION_TAG_EVOLUTION.md and docs/decisions/BS-ENHANCE-20260901-40_CONSUMABLE_PRECISION_CATALYST_RESOURCES.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Current recurring Precision Enhancement cadence and consumable-catalyst field owners.",
+        "references_and_consumers": "Core canon, catalog data, static contracts, vertical-slice UI, action service, save service, and GUT QA."
+      },
+      {
+        "path": "scripts/vertical_slice/ui/vs_workshop_screen.gd; scripts/vertical_slice/services/vs_enhancement_action_service.gd; scripts/vertical_slice/services/vs_save_service.gd",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Existing runtime consumers of recurring precision selection, resolution, and persistence.",
+        "references_and_consumers": "The player workshop surface and the new test-only isolated persisted-envelope regression path; no production source modification is made in this work."
+      },
+      {
+        "path": "tests/gut/unit/vertical_slice/test_vs_precision_isolated_runtime_qa.gd; tests/check_phase1_unified_implementation_contract.py; tests/check_recurring_precision_visual_requirements_contract.py",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "GUT test authority and current static implementation/visual-consumer contracts.",
+        "references_and_consumers": "Focused regression proof and CI-visible canonical wording checks."
+      },
+      {
+        "path": "skills/PROJECT_BASE_ADAPTER.json and skills/PROJECT_SKILL_SNAPSHOT.json",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Generated adopted Base v9.4.4 lock and route snapshot.",
+        "references_and_consumers": "Base project operating-contract validator; read-only in this task."
+      },
+      {
+        "path": "PR #196 and PR #359",
+        "classification": "COMPATIBILITY",
+        "owner_or_provenance": "Existing open draft work that current project authority protects from takeover.",
+        "references_and_consumers": "Fresh-read overlap boundary only; neither branch, files, nor merge state is changed."
+      },
+      {
+        "path": "Task-created Godot import cache and two generated GDScript .uid files in this isolated worktree",
+        "classification": "OBSOLETE_CANDIDATE",
+        "owner_or_provenance": "Created by the one-time headless import needed to populate GUT's local class cache in the fresh worktree.",
+        "references_and_consumers": "No product, test, or repository consumer; exact paths and tracked state are checked before recoverable cleanup."
+      }
+    ],
+    "deletion_proposed": false,
+    "removal_policy": "Only task-created ignored cache or verified task-created untracked files may be cleaned in this isolated worktree. No tracked project asset, historical document, user worktree, or open PR is deleted."
+  },
+  "asset_disposition": {
+    "new_raster_asset_created": false,
+    "new_visual_requirement_created": false,
+    "foreign_asset_or_screenshot_reused": false,
+    "reason": "The existing native precision UX has a verified runtime consumer and the approved visual catalog already covers its image responsibilities; this QA scope has no unmet consumer-bound image requirement."
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "BLACKSMITH-RECURRING-PRECISION-RUNTIME-QA-20260903",
+    "source_main_sha": "181d40422c0b8cacd4bfa15e73f88032af0f4846",
+    "next_action": "Submit the exact locally verified bounded correction through the protected PR route, then read back the remote branch head and required CI.",
+    "work_item_refs": [
+      "BS-RPQA-01"
+    ],
+    "active_work_item_ref": "BS-RPQA-01",
+    "progress_summary": {
+      "completed_items": 0,
+      "applicable_items": 1,
+      "display": "0 / 1"
+    },
+    "work_items": [
+      {
+        "work_item_id": "BS-RPQA-01",
+        "title": "Recurring Precision +19 to +20 isolated UI persistence QA and contract refresh",
+        "status": "VERIFY_REVIEW",
+        "canon_owner": "Current Blacksmith core canon, Decisions 38 and 40, current Base adaptation contract, and existing vertical-slice consumers.",
+        "actual_consumers": [
+          "VSWorkshopScreen precision selection and preview",
+          "VSEnhancementActionService atomic catalyst resolution",
+          "VSSaveService persisted equipment envelope",
+          "Current Python implementation and visual-requirement contracts"
+        ],
+        "depends_on": [],
+        "next_action": "Create the protected PR from the exact locally verified branch, verify its remote head and required CI, and retain the evidence ceiling until a later delivery readback.",
+        "checklist": [
+          {
+            "id": "fresh-current-authority",
+            "status": "PASS",
+            "text": "The current project authority, current main, active product owners, actual consumers, Base current reference, adapter lock, and protected open-PR boundaries were fresh-read.",
+            "evidence": [
+              "source main 181d40422c0b8cacd4bfa15e73f88032af0f4846",
+              "Base current main 850204b3e5de81a4045111b4a050c46c5a292b59",
+              "AGENTS.md, adaptation contract, handoff, Decisions 38/40, consumers, and PR #196/#359 fresh read"
+            ]
+          },
+          {
+            "id": "prework-research-boundary",
+            "status": "PASS",
+            "text": "Official Godot and GUT sources plus the current project consumers establish a reusable isolated QA route without changing gameplay or visual direction.",
+            "evidence": [
+              "benchmark_preflight_receipt entries",
+              "No consumer-bound image gap or new product-scope request was found"
+            ]
+          },
+          {
+            "id": "red-contract-observed",
+            "status": "PASS",
+            "text": "The source baseline exposed stale pre-Decision-40 static expectations, an omitted locked-logo visual status, and a Base-receipt schema rejection before the corrective changes.",
+            "evidence": [
+              "Source-main check_phase1_unified_implementation_contract.py failed on obsolete catalyst-lineage terms",
+              "Source-main check_recurring_precision_visual_requirements_contract.py failed on omitted approved main-menu logo state",
+              "Source-main validate_work_contract_receipt.py rejected the 2026-09-01 L3 receipt for a missing trusted source and project_work_kanban"
+            ]
+          },
+          {
+            "id": "exact-local-validation",
+            "status": "PASS",
+            "text": "The exact branch passed current authority, archive governance, Base/project operating contracts, the refreshed receipt, Python, and full GUT validation after the corrective edits.",
+            "evidence": [
+              "Python: 474 passed, 2 skipped",
+              "GUT: 253 passed tests, 1909 assertions, exit 0",
+              "Current authority, archive governance, Base receipt/adaptation, and project operating-contract checks passed",
+              "Godot 4.7.1 headless editor exited 0; pre-existing importer/exit diagnostics are retained outside a zero-warning claim"
+            ]
+          }
+        ],
+        "acceptance_criteria": [
+          "fresh-current-authority",
+          "prework-research-boundary",
+          "red-contract-observed",
+          "exact-local-validation"
+        ],
+        "verification": [
+          {
+            "level": "E0_CONTRACT",
+            "status": "PASS",
+            "evidence": [
+              "Base validate_work_contract_receipt.py resume-phase validation of this receipt at source main 181d40422c0b8cacd4bfa15e73f88032af0f4846"
+            ]
+          },
+          {
+            "level": "E1_STATIC",
+            "status": "PASS",
+            "evidence": [
+              "Focused current implementation contract and visual-requirement contract checks passed after their minimal corrective edits",
+              "Project operating-contract check passed against Base current reference"
+            ]
+          },
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "Full GUT: 253 passed tests, 1909 assertions, process exit 0",
+              "Python: 474 passed, 2 skipped",
+              "GUT reports 12 existing orphan diagnostics and Godot reports existing renderer/ObjectDB cleanup diagnostics at exit; neither is recorded as zero-warning proof"
+            ]
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "NOT_RUN",
+            "evidence": []
+          },
+          {
+            "level": "E5_PLAY",
+            "status": "NOT_RUN",
+            "evidence": []
+          }
+        ],
+        "required_evidence": [
+          "E0_CONTRACT",
+          "E1_STATIC",
+          "E2_TEST"
+        ]
+      }
+    ]
+  },
+  "evidence_ceiling": {
+    "current_contract_and_static_checks": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
+    "focused_gut_regression": "MACHINE_VERIFIED_LOCAL_PR_PENDING",
+    "godot_runtime": "NOT_RUN_FOR_THIS_CORRECTION",
+    "android_device": "NOT_RUN",
+    "accessibility": "NOT_RUN",
+    "performance": "NOT_RUN",
+    "human_player_experience": "NOT_RUN",
+    "release": "NOT_RUN"
+  },
+  "base_promotion_candidates": [],
+  "project_only_lessons": [
+    "A recurring Precision regression must assert the real workshop signal, atomic action service, and reloaded isolated save envelope instead of only the resolver result.",
+    "A clean Godot worktree may need a local import to populate GUT's class cache; classify generated cache and untracked UID artifacts before removing only verified task-created paths.",
+    "Base-current observation drift is a project operational-record correction, not permission to replace an adopted adapter lock."
+  ]
+}

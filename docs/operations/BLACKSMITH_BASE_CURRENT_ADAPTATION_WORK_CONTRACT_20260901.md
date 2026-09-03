@@ -7,8 +7,8 @@
 ## 1. Base observation and adopted lock
 
 ```text
-BASE_CURRENT_MAIN_OBSERVED_AT = 2026-09-01 KST
-BASE_CURRENT_MAIN_OBSERVED = 19355b7ef065a21d0f2b685c7d9be64a4a3970f8
+BASE_CURRENT_MAIN_OBSERVED_AT = 2026-09-03 KST
+BASE_CURRENT_MAIN_OBSERVED = 850204b3e5de81a4045111b4a050c46c5a292b59
 BASE_CURRENT_OBSERVATION_STATUS = REFERENCE_FOR_PROJECT_ADAPTATION_ONLY
 
 BLACKSMITH_ADOPTED_BASE_RELEASE = v9.4.4
@@ -96,7 +96,7 @@ Decision `BS-OPS-20260828-35` continues to own GitHub-only canon and image execu
 Run the following for a contract change before PR creation:
 
 ```powershell
-& $python C:\Users\user\Documents\GitHub\Base\tools\validate_work_contract_receipt.py --receipt docs/operations/receipts/2026-09-01-base-current-adaptation-work-contract.json
+& $python C:\Users\user\Documents\GitHub\Base\tools\validate_work_contract_receipt.py --receipt docs/operations/receipts/2026-09-03-recurring-precision-runtime-qa.json --phase resume --expected-source-sha 181d40422c0b8cacd4bfa15e73f88032af0f4846
 & $python tests/check_base_current_adaptation_work_contract.py
 & $python tests/check_current_authority_entrypoint_contract.py
 & $python tools/check_archive_governance.py
