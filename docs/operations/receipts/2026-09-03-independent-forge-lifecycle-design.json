@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "receipt_id": "BLACKSMITH_INDEPENDENT_FORGE_LIFECYCLE_DESIGN_20260903",
-  "status": "VERIFY_REVIEW",
+  "status": "DONE",
   "work_level": "L1",
   "scope": "Current-canon implementation: reconcile the existing first-forge, same-UID handoff, actual-use result, repair, and chronicle surfaces without importing foreign product expression, changing the save schema, or expanding product scope.",
   "authority_boundary": {
@@ -21,6 +21,15 @@
     "notion_or_google_sheet_changed": false,
     "open_pr_196_taken_over": false,
     "open_pr_359_taken_over": false
+  },
+  "remote_delivery": {
+    "pull_request": 366,
+    "source_head": "1713b64d22e0f830b6e980aa451df73158fcb2e4",
+    "merge_commit": "c31e550fc8d5b27d4377aeb542fde3cbfe228c06",
+    "checks": "ALL_GREEN_EXACT_HEAD",
+    "main_readback": "PASS",
+    "one_shot_approval_status": "RETIRED",
+    "adapter_baseline_advanced_to": "c31e550fc8d5b27d4377aeb542fde3cbfe228c06"
   },
   "benchmark_preflight_receipt": {
     "state": "PASS",
@@ -61,6 +70,12 @@
         "references_and_consumers": "Human implementation/review provenance; it has no runtime consumer."
       },
       {
+        "path": "docs/superpowers/plans/2026-09-03-independent-forge-lifecycle-postmerge-closure.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Post-merge operational closure plan created after PR #366 GitHub merge readback.",
+        "references_and_consumers": "Closure review and delivery provenance; it has no runtime consumer."
+      },
+      {
         "path": "scripts/ui/forging_screen.gd",
         "classification": "ACTIVE_OWNER",
         "owner_or_provenance": "Existing Godot first-forge runtime presenter.",
@@ -92,16 +107,16 @@
   "project_work_kanban": {
     "goal_or_slice_issue_ref": "BLACKSMITH-INDEPENDENT-FORGE-LIFECYCLE-DESIGN-20260903",
     "source_main_sha": "296ad86c2315357998ed86c594b8b006a1bde420",
-    "next_action": "RUN_EXACT_HEAD_VALIDATION_AND_PROTECTED_GITHUB_DELIVERY",
+    "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
     "work_item_refs": [
       "BS-IFL-DESIGN-01",
       "BS-IFL-IMPLEMENT-02"
     ],
-    "active_work_item_ref": "BS-IFL-IMPLEMENT-02",
+    "active_work_item_ref": null,
     "progress_summary": {
-      "completed_items": 1,
+      "completed_items": 2,
       "applicable_items": 2,
-      "display": "1 / 2"
+      "display": "2 / 2"
     },
     "work_items": [
       {
@@ -177,18 +192,18 @@
         "must_fix_remaining": 0,
         "blocked_unverified_remaining": 0,
         "user_decision_required_remaining": 0,
-        "verified_head_sha": "06c9653b2b68e8002ced306c58d22125f06f7858",
+        "verified_head_sha": "1713b64d22e0f830b6e980aa451df73158fcb2e4",
         "repository_readback": "PASS",
         "readback_evidence": [
-          "Draft PR #366 exact head 06c9653b2b68e8002ced306c58d22125f06f7858",
-          "Applicable CI checks succeeded at the recorded design head"
+          "Design-only draft head 06c9653b2b68e8002ced306c58d22125f06f7858 was retained in the final implementation branch",
+          "PR #366 exact CI head 1713b64d22e0f830b6e980aa451df73158fcb2e4 verified the final branch including the retained design record"
         ],
         "rollback": "Revert the two design-record commits; no product path, asset, save, or Base adoption state is removed."
       },
       {
         "work_item_id": "BS-IFL-IMPLEMENT-02",
         "title": "Independent forge lifecycle implementation and delivery",
-        "status": "VERIFY_REVIEW",
+        "status": "DONE",
         "canon_owner": "Current Blacksmith core canon, Decisions 28-31/37-40, and actual vertical-slice runtime boundaries",
         "actual_consumers": [
           "scripts/ui/forging_screen.gd first-forge result surface",
@@ -198,7 +213,7 @@
         "depends_on": [
           "BS-IFL-DESIGN-01"
         ],
-        "next_action": "Run final exact-head validation, push PR #366, obtain exact-head CI and protected merge, then perform main readback and separate one-shot-manifest retirement closure.",
+        "next_action": "Delivery is complete; retain the exact product merge record while the separate operational closure preserves its approval retirement.",
         "checklist": [
           {
             "id": "implementation-plan",
@@ -214,15 +229,19 @@
             "text": "The new first-forge, customer-profile, result, and chronicle contracts were observed RED before their minimal production behavior and GREEN after it.",
             "evidence": [
               "RED: 245 / 252 GUT tests passing with seven intended missing-behavior assertions",
-              "GREEN preliminary full suite: 252 / 252 GUT tests passing, 1880 assertions",
-              "Final exact-head rerun remains required before delivery"
+              "Final local suite: 252 / 252 GUT tests passing, 1882 assertions",
+              "Exact GitHub CI head 1713b64d22e0f830b6e980aa451df73158fcb2e4 passed before protected merge"
             ]
           },
           {
             "id": "exact-head-delivery",
-            "status": "NOT_RUN",
-            "text": "Push, CI, protected merge, and main readback are pending the implementation head.",
-            "evidence": []
+            "status": "PASS",
+            "text": "The exact implementation head passed GitHub CI and merged through the protected GitHub path; origin/main readback matched the recorded merge commit.",
+            "evidence": [
+              "PR #366 exact CI head 1713b64d22e0f830b6e980aa451df73158fcb2e4",
+              "GitHub merge c31e550fc8d5b27d4377aeb542fde3cbfe228c06",
+              "origin/main readback c31e550fc8d5b27d4377aeb542fde3cbfe228c06"
+            ]
           }
         ],
         "acceptance_criteria": [
@@ -279,13 +298,20 @@
         ],
         "must_fix_remaining": 0,
         "blocked_unverified_remaining": 0,
-        "user_decision_required_remaining": 0
+        "user_decision_required_remaining": 0,
+        "verified_head_sha": "1713b64d22e0f830b6e980aa451df73158fcb2e4",
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "PR #366 state MERGED with merge commit c31e550fc8d5b27d4377aeb542fde3cbfe228c06",
+          "origin/main resolved to c31e550fc8d5b27d4377aeb542fde3cbfe228c06 after fetch"
+        ],
+        "rollback": "Revert the #366 product merge through a normal reviewed follow-up if product behavior must be undone; the closure separately removes only its consumed approval and advances the protection baseline."
       }
     ]
   },
   "evidence_ceiling": {
     "design_source_and_contract": "MACHINE_VERIFIED_START_PHASE",
-    "implementation": "IMPLEMENTED_LOCAL_MACHINE_RUNTIME_VERIFIED_PENDING_GITHUB_DELIVERY",
+    "implementation": "IMPLEMENTED_MACHINE_RUNTIME_AND_GITHUB_DELIVERED",
     "godot_runtime": "RUNTIME_VERIFIED_IN_ISOLATED_WORKTREE",
     "android_device": "NOT_RUN",
     "accessibility": "NOT_RUN",

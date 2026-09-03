@@ -264,9 +264,9 @@
 
   Record exact commit SHA, changed files, test commands/results, capture provenance, no-new-asset result, no-new-schema result, PR head, and all unrun ceilings. Mark only observed machine/runtime facts as PASS. Do not call Android, accessibility, performance, human-player, rights, or release PASS.
 
-- [ ] **Step 4: Push, exact-head CI readback, and merge**
+- [x] **Step 4: Push, exact-head CI readback, and merge**
 
-  Push the current PR #366 branch. Update its title/body from design review to implementation delivery, re-read `headRefOid`, and wait for CI on that exact head. When all required checks are green, mark the PR ready, merge through GitHub protection, fast-forward local `main`, and verify local/remote `main` point at the exact merge result. Do not force push, bypass rulesets, or alter unrelated PRs.
+  PR #366 exact CI head `1713b64d22e0f830b6e980aa451df73158fcb2e4` passed all applicable GitHub checks, then merged through the normal squash path as `c31e550fc8d5b27d4377aeb542fde3cbfe228c06`. `origin/main` readback matched that merge. The empty CI-trigger commit changed no product file and existed only because the approval label was attached after the first `pull_request` event; the succeeding synchronized event evaluated the current label. A separate post-merge closure retires the one-shot manifest and advances the adapter baseline.
 
 ## Plan self-review
 

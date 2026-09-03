@@ -8,9 +8,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 APPROVAL = ROOT / "docs" / "operations" / "PROJECT_PROTECTED_CHANGE_APPROVAL.json"
-CURRENT_PRODUCT_MERGE = "1686f8f164cba2abf0678d7b768f00699a3414dd"
-RETIRED_WARNING_HYGIENE_PROTECTED_BASE = "48c73c37f5d8b7f3a436a51aeb96d78febd0fe02"
+CURRENT_PRODUCT_MERGE = "c31e550fc8d5b27d4377aeb542fde3cbfe228c06"
 CANONICAL_ADAPTER = ROOT / "skills" / "PROJECT_BASE_ADAPTER.json"
+INDEPENDENT_LOOP_RECEIPT = ROOT / "docs" / "operations" / "receipts" / "2026-09-03-independent-forge-lifecycle-design.json"
 COMPATIBILITY_VIEWS = (
     (ROOT / "skills" / "BASE_V9_ADAPTER.json", "canonical_source_sha256"),
     (ROOT / "skills" / "PROJECT_BASE_SKILL_ADAPTER.json", "canonical_source_sha256"),
@@ -32,16 +32,23 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
 
 
 class ProductApprovalPostmergeClosureTests(unittest.TestCase):
-    def test_postmerge_contract_retires_the_consumed_warning_hygiene_approval(self) -> None:
+    def test_postmerge_contract_retires_the_consumed_protected_change_approval(self) -> None:
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
         self.assertEqual(CURRENT_PRODUCT_MERGE, adapter["protected_baseline"]["commit"])
-        if APPROVAL.exists():
-            # The 2026-09-01 warning-hygiene one-shot approval was consumed at
-            # 1686f8f. A later, independently approved protected change may use
-            # the same one-shot path, but it must not reuse that older baseline.
-            approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
-            self.assertNotEqual(RETIRED_WARNING_HYGIENE_PROTECTED_BASE, approval["protected_base_commit"])
+        self.assertFalse(APPROVAL.exists())
+
+    def test_independent_loop_receipt_records_merged_delivery_and_retirement(self) -> None:
+        receipt = json.loads(INDEPENDENT_LOOP_RECEIPT.read_text(encoding="utf-8"))
+        delivery = receipt["remote_delivery"]
+
+        self.assertEqual(366, delivery["pull_request"])
+        self.assertEqual("1713b64d22e0f830b6e980aa451df73158fcb2e4", delivery["source_head"])
+        self.assertEqual(CURRENT_PRODUCT_MERGE, delivery["merge_commit"])
+        self.assertEqual("ALL_GREEN_EXACT_HEAD", delivery["checks"])
+        self.assertEqual("PASS", delivery["main_readback"])
+        self.assertEqual("RETIRED", delivery["one_shot_approval_status"])
+        self.assertEqual(CURRENT_PRODUCT_MERGE, delivery["adapter_baseline_advanced_to"])
 
     def test_generated_compatibility_views_track_the_rebased_canonical_adapter(self) -> None:
         canonical_sha = raw_sha256(CANONICAL_ADAPTER)
