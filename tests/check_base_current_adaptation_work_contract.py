@@ -26,6 +26,7 @@ EXPECTED_RELEASE = "9.4.4"
 EXPECTED_RELEASE_COMMIT = "210ec78292fa12ed7563ba743b322dd36103ae4a"
 EXPECTED_BASE_CURRENT = "850204b3e5de81a4045111b4a050c46c5a292b59"
 EXPECTED_SOURCE_MAIN = "181d40422c0b8cacd4bfa15e73f88032af0f4846"
+EXPECTED_VERIFIED_HEAD = "1de75729b0457b0463228bd53a6bb6f5c23a9a26"
 REQUIRED_MODES = ("PLAN", "NONCODING_BUILD", "GODOT_PRODUCT_BUILD", "REVIEW")
 
 
@@ -77,6 +78,9 @@ def main() -> int:
         failures.append("receipt must retain the adopted Base v9.4.4 release")
     if receipt.get("project_work_kanban", {}).get("source_main_sha") != EXPECTED_SOURCE_MAIN:
         failures.append("receipt must retain the trusted fresh-read source main SHA")
+    work_item = receipt.get("project_work_kanban", {}).get("work_items", [{}])[0]
+    if work_item.get("verified_head_sha") != EXPECTED_VERIFIED_HEAD:
+        failures.append("receipt must retain the verified merged main SHA")
 
     workflow = WORKFLOW.read_text(encoding="utf-8")
     for token in (
@@ -105,9 +109,11 @@ def main() -> int:
                 "--receipt",
                 str(RECEIPT),
                 "--phase",
-                "resume",
+                "closeout",
                 "--expected-source-sha",
                 EXPECTED_SOURCE_MAIN,
+                "--expected-head-sha",
+                EXPECTED_VERIFIED_HEAD,
             ],
             text=True,
             capture_output=True,

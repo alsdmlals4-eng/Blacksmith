@@ -96,7 +96,7 @@ Decision `BS-OPS-20260828-35` continues to own GitHub-only canon and image execu
 Run the following for a contract change before PR creation:
 
 ```powershell
-& $python C:\Users\user\Documents\GitHub\Base\tools\validate_work_contract_receipt.py --receipt docs/operations/receipts/2026-09-03-recurring-precision-runtime-qa.json --phase resume --expected-source-sha 181d40422c0b8cacd4bfa15e73f88032af0f4846
+& $python C:\Users\user\Documents\GitHub\Base\tools\validate_work_contract_receipt.py --receipt docs/operations/receipts/2026-09-03-recurring-precision-runtime-qa.json --phase closeout --expected-source-sha 181d40422c0b8cacd4bfa15e73f88032af0f4846 --expected-head-sha 1de75729b0457b0463228bd53a6bb6f5c23a9a26
 & $python tests/check_base_current_adaptation_work_contract.py
 & $python tests/check_current_authority_entrypoint_contract.py
 & $python tools/check_archive_governance.py
