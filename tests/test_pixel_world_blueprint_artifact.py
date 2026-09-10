@@ -33,6 +33,11 @@ class PixelBlueprintArtifact(unittest.TestCase):
         record = json.loads((folder / 'record.json').read_text(encoding='utf-8'))
         self.assertEqual(record['user_approval'], 'PENDING')
         self.assertEqual(record['runtime_status'], 'NOT_RUN')
+        sheet = json.loads((folder / 'actor-sheet.json').read_text(encoding='utf-8'))
+        atlas = folder / sheet['meta']['image']
+        self.assertTrue(atlas.is_file(), 'Atlas JSON references a missing PNG')
+        self.assertEqual(list(struct.unpack('>II', atlas.read_bytes()[16:24])),
+                         [sheet['meta']['size']['w'], sheet['meta']['size']['h']])
         for item in record['files']:
             content = (folder / item['name']).read_bytes()
             if item.get('hash_basis') == 'UTF8_CRLF_TO_LF':

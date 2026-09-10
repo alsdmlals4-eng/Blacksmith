@@ -17,6 +17,6 @@
     {"name":"actor-64-preview.png","dimensions":[512,520],"sha256":"01409ac223708dd01af2723614ad65baafcea6cba86117df1edbd65f3e5ee31e"},
     {"name":"actor-128-preview.png","dimensions":[512,520],"sha256":"65182edcb9787ed866f3a088a11958b2608f55a3af291416a0e9e77d43c53203"},
     {"name":"actor-64.aseprite","sha256":"73bf74f277989e1aff765c377fff72d1a315a06af201fa1ea725453dab6d85a1"},
-    {"name":"actor-sheet.json","hash_basis":"UTF8_CRLF_TO_LF","sha256":"7294ac1252c13b4557d22d85ba9aea603c845bf737d61670b6b70519ff77662b"}
+    {"name":"actor-sheet.json","hash_basis":"UTF8_CRLF_TO_LF","sha256":"a8f1492a05eda1c558eb67f80bc67cbb27d1748fd95f24500f8254bc280dc2e0","adaptation":"meta.image points to byte-identical actor-64.png instead of retaining duplicate actor-sheet.png"}
   ]
 }
