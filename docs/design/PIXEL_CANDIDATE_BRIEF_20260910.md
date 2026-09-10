@@ -39,3 +39,18 @@ Adversarial pre-check: large pseudo-pixels may fail native grid; transparent req
 Service: built-in image_gen; exact model version not exposed. Input image rights: no reference files submitted. Candidate rights/release clearance UNKNOWN / RELEASE_BLOCKED_UNVERIFIED; no commercial-release assertion. User approval and runtime NOT_RUN.
 
 CI recovery: previous PR failed because adding a latest-direction note changed the historical human GDD source hash without regenerating its bound PDF. Remove only that new note and keep latest routing in AGENTS/authority index/Active Context. Preserve historical PDF and source receipt; do not update a receipt hash to pretend an unrebuilt PDF contains changed source.
+
+## Refinement attempt readback · 2026-09-10
+
+Continued the user-approved sword-identity/side-view refinement. Submitted only this project's original duelist and sword candidates to the image model. Two edits produced a closer bronze guard and fuller but both returned RGB1254×1254 with a baked checkerboard, not transparency. The second edit explicitly requested removal of that checkerboard and failed the same requirement. Neither output is a replacement candidate, native pixel sprite, animation frame or runtime asset.
+
+| Attempt | SHA-256 of generated PNG | Observed disposition |
+|---|---|---|
+| exec-d6320d28-6b99-466c-bb9a-e2e77740dff7.png | 3d3823bf47e23e4652f3179226307a199f8708859e78d0e6b5e72f6400401a67 | REJECTED_OPAQUE_CHECKERBOARD; sword alignment improved but side-view/grid still unresolved |
+| exec-c39502a9-8782-446a-ba54-0935c5f5e8f8.png | 2a3b0d17ad6a803ac6d89c054bf1f824e6256feed52944d9682bef652c864581 | REJECTED_OPAQUE_CHECKERBOARD; alpha correction retry failed |
+
+Generated originals remain in the host generation directory, not duplicated into Git or the candidate catalog. Existing three candidates and the10-page PDF remain unchanged. The rejected previews must not be interpreted as new blueprint content or in-game captures. Verification used Pillow read-only inspection of mode/dimensions plus raw SHA-256 and visual review. No image was programmatically drawn or edited.
+
+Technical research: official Aseprite CLI and Sprite Size documentation (https://www.aseprite.org/docs/cli/ ; https://www.aseprite.org/docs/sprite-size/) describe resizing, but current restricted native MCP exposes no downscale, palette conversion or background-removal operation. Its scale1–8 limit and prohibition on arbitrary CLI/Lua remain in force. ADOPT bounded candidate import/inspection/export; DEFER resizing until a reviewed restricted operation is authorized; REJECT unrestricted CLI as a workaround. Resizing alone cannot repair a baked checkerboard or prove readable pixel clusters.
+
+Next safe decision: approve a narrowly restricted candidate-only resizing/alpha-inspection tool extension, preserving path/size/link/no-overwrite boundaries, before native-grid production. It must not include arbitrary Lua, general shell, automatic background removal or canonical asset writes. Actual artistic background correction remains an image-model task; if repeated generation cannot provide alpha, request a genuinely transparent source rather than silently color-keying character pixels. Motion generation stays pending a technically usable identity anchor. No paid tools or configuration changes were made.

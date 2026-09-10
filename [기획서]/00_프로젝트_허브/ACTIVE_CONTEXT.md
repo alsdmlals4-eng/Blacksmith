@@ -1,5 +1,7 @@
 # [현재 정본] Active Context
 
+> 2026-09-10 후보 보완 결과: 결투자·검 일치화를 위한 신규 두 결과는 실제 알파가 없는 RGB 바둑판 배경으로 거부했다. 기존 3개 후보와10쪽 PDF는 그대로이며 신규 동작·runtime 적용은 하지 않았다. 실패 증거와 제한된 Aseprite 기능 보완 판단은 `docs/design/PIXEL_CANDIDATE_BRIEF_20260910.md`의 refinement readback을 따른다.
+
 > 2026-09-10 최신 변경 라우터: `docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md`의 픽셀 재기획·접이식 세계창 설계와 제작 체크리스트를 먼저 읽는다. 과거 손그림 방향은 신규 아트에서 대체되며 기존 이미지는 참고자료다. 상세 화면·자산·runtime 검증은 별도 상태로 유지한다. 이 아래 역사 상태로 최신 사용자 승인을 덮어쓰지 않는다.
 
 <!-- BS-REPAIR-20260826-31_CURRENT_PATCH -->

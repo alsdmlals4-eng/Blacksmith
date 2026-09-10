@@ -41,7 +41,7 @@
   "project_work_kanban": {
     "goal_or_slice_issue_ref":"BS-REPLAN-20260910-41",
     "source_main_sha":"ff1c935d9ada60607bace782f1f21f1adac59ba9",
-    "next_action":"Review candidate identity, refine native pixel grid and align held equipment before connected action production. Preserve runtime promotion gate.",
+    "next_action":"Two refinement images rejected: RGB baked checkerboard. Preserve existing candidates/PDF. Resolve reviewed restricted candidate-only resize capability and genuine alpha before connected motion; no unrestricted CLI workaround.",
     "work_item_refs":["BS-PIXEL-WORLD-DESIGN"],
     "active_work_item_ref":"BS-PIXEL-WORLD-DESIGN",
     "progress_summary":{"completed_items":0,"applicable_items":1,"display":"0 / 1"},
