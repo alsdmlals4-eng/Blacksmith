@@ -2,7 +2,14 @@
   "schema_version": 1,
   "receipt_id": "BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910",
   "work_level": "L1",
-  "status": "DESIGN_PDF_RENDER_REVIEWED_PENDING_DELIVERY",
+  "status": "DESIGN_PDF_RENDER_REVIEWED_DRAFT_PR_OPEN",
+  "remote_delivery": {
+    "pull_request": "https://github.com/alsdmlals4-eng/Blacksmith/pull/371",
+    "reviewed_product_head": "18afd02766bdaf39fbd74e508c1f4ed2a4c882c7",
+    "branch_readback": "MATCHED_LOCAL_HEAD",
+    "main": "UNCHANGED_NOT_MERGED",
+    "ci": "PENDING_AT_READBACK"
+  },
   "scope": "Pixel replan and optional world-window design supplement. No product mutation, asset promotion, save migration or unrelated PR takeover.",
   "artifact": {
     "path": "exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf",
@@ -10,7 +17,7 @@
     "page_count": 7,
     "source": "docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md",
     "source_sha256": "ffb1903b89ab7ee8352e038361c5251b0fa9a87ef9538c3a66391ecf5cc41f59",
-    "hash_basis": "FILE_BYTES",
+    "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
     "visual_review": "All 7 Poppler-rendered pages inspected: no clipping or overlap observed. Design diagrams, not runtime screenshots.",
     "human_review": "NOT_RUN"
   },
