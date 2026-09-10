@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "receipt_id": "BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910",
+  "work_level": "L1",
+  "status": "DESIGN_PDF_RENDER_REVIEWED_PENDING_DELIVERY",
+  "scope": "Pixel replan and optional world-window design supplement. No product mutation, asset promotion, save migration or unrelated PR takeover.",
+  "artifact": {
+    "path": "exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf",
+    "sha256": "b6206013c0342cef4d5124d99ff46253a1bf47a6efa75c552d3477991f09032a",
+    "page_count": 7,
+    "source": "docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md",
+    "source_sha256": "ffb1903b89ab7ee8352e038361c5251b0fa9a87ef9538c3a66391ecf5cc41f59",
+    "hash_basis": "FILE_BYTES",
+    "visual_review": "All 7 Poppler-rendered pages inspected: no clipping or overlap observed. Design diagrams, not runtime screenshots.",
+    "human_review": "NOT_RUN"
+  },
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [{
+      "source_and_evidence": "2026-09-10 official Weapon Shop Fantasy, Gladiator Guild Manager, Anvil Saga store pages; Godot Viewports and Aseprite Animation docs. URLs and individual dispositions in blueprint section 9.",
+      "observed_pattern": "Craft-to-adventure consequences, equipped-actor arena observation, and separate rendering/animation responsibilities.",
+      "project_fit_and_difference": "Read-only UID-linked optional observation. No copied assets, staff economy or invented combat numbers. Desk research only, not hands-on research.",
+      "disposition": "ADAPT"
+    }]
+  },
+  "context_configuration_hygiene": {
+    "scope": "PLAN and NONCODING_BUILD; adopted Base v9.4.4 retained; no deletions",
+    "inventory": [
+      {"path":"docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md","classification":"ACTIVE_OWNER","owner_or_provenance":"Latest user pixel direction and optional split world-window request","references_and_consumers":"Current authority routers and derived PDF reader"},
+      {"path":"exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf","classification":"ARCHIVE","owner_or_provenance":"Earlier detailed blueprint","references_and_consumers":"Preserved historical reader reference; not overwritten"},
+      {"path":"skills/PROJECT_BASE_ADAPTER.json","classification":"ACTIVE_OWNER","owner_or_provenance":"Project adopted Base release lock","references_and_consumers":"Operating validator; no automatic latest-main substitution"}
+    ]
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref":"BS-REPLAN-20260910-41",
+    "source_main_sha":"ff1c935d9ada60607bace782f1f21f1adac59ba9",
+    "next_action":"Deliver reviewable design branch; then prepare consumer-specific pixel candidates and motion contract.",
+    "work_item_refs":["BS-PIXEL-WORLD-DESIGN"],
+    "active_work_item_ref":"BS-PIXEL-WORLD-DESIGN",
+    "progress_summary":{"completed_items":0,"applicable_items":1,"display":"0 / 1"},
+    "work_items":[{
+      "work_item_id":"BS-PIXEL-WORLD-DESIGN",
+      "title":"Pixel world-window blueprint design",
+      "status":"IN_PROGRESS",
+      "canon_owner":"docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md",
+      "actual_consumers":["exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf"],
+      "depends_on":[],
+      "next_action":"Remote branch and PR readback; detailed product work remains pending.",
+      "checklist":[
+        {"id":"design","status":"PASS","text":"Research, two layout diagrams, three event scopes, save boundary and checklist prepared.","evidence":["7-page derived PDF; all pages visually reviewed"]},
+        {"id":"delivery","status":"NOT_RUN","text":"Protected remote delivery and review","evidence":[]}
+      ],
+      "acceptance_criteria":["design","delivery"],
+      "required_evidence":["E1_STATIC","E4_VISUAL"],
+      "verification":[
+        {"level":"E1_STATIC","status":"PASS","evidence":["current authority and Base adaptation checks"]},
+        {"level":"E4_VISUAL","status":"PASS","evidence":["All seven PDF renders inspected; document-only evidence"]},
+        {"level":"E3_RUNTIME","status":"NOT_RUN","evidence":[]},
+        {"level":"E5_PLAY","status":"NOT_RUN","evidence":[]}
+      ]
+    }]
+  }
+}

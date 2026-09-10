@@ -1,5 +1,7 @@
 # [현재 정본] Active Context
 
+> 2026-09-10 최신 변경 라우터: `docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md`의 픽셀 재기획·접이식 세계창 설계와 제작 체크리스트를 먼저 읽는다. 과거 손그림 방향은 신규 아트에서 대체되며 기존 이미지는 참고자료다. 상세 화면·자산·runtime 검증은 별도 상태로 유지한다. 이 아래 역사 상태로 최신 사용자 승인을 덮어쓰지 않는다.
+
 <!-- BS-REPAIR-20260826-31_CURRENT_PATCH -->
 > **CURRENT PATCH / 2026-08-26 / Decision31**
 >

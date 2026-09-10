@@ -1,5 +1,7 @@
 # 모루의 서약 — 사람용 게임 기획서
 
+> 최신 변경 보충편(2026-09-10): `docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md` → `exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf`. 전체 픽셀 방향, 접이식 세계창의 집중/분할 와이어프레임, 3종 사건, SWOT와 제작 체크리스트를 함께 읽는다. 기존 상세 PDF는 보존하며 신규 픽셀 그림·인게임 구현 완료를 뜻하지 않는다.
+
 - 문서 상태: `CURRENT_HUMAN_FACING_GDD / KOREAN_PRIMARY / 2026-09-01 KST`
 - 제품명: `모루의 서약 / ANVIL OATH`
 - 문서 기준일: 2026-09-01 KST
