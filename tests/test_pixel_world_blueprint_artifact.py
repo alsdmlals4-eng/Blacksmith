@@ -8,6 +8,27 @@ from pypdf import PdfReader
 ROOT = Path(__file__).resolve().parents[1]
 
 class PixelBlueprintArtifact(unittest.TestCase):
+    def test_fun_review_and_tag_tradeoffs(self):
+        source = (ROOT / 'docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md').read_text(encoding='utf-8')
+        for marker in ['20. 재미', '21. 대표 모험', '22. 태그 조합', '23. 독창성',
+                       'NO_ADAPTIVE_COUNTER_PICK', 'DESK_RESEARCH_NOT_PLAYTEST']:
+            self.assertIn(marker, source, marker)
+        # Exhaustive abstract section17 model; no engine/economy prediction.
+        import itertools
+        builds = [s for s in itertools.product(range(5), repeat=4)
+                  if sum(s) == 10 and sum(v > 0 for v in s) <= 3]
+        scores = [(3*a+c, 3*b+d, a+3*c, b+3*d) for a,b,c,d in builds]
+        self.assertEqual(len(builds), 24)
+        self.assertTrue(all(sum(v) == 40 for v in scores))
+        self.assertFalse(any(all(x >= y for x,y in zip(a,b)) and a != b
+                             for a in scores for b in scores))
+        self.assertEqual(max(min(s) for s in scores), 4)
+        self.assertEqual(max(max(s) for s in scores), 16)
+        self.assertEqual(max(7*s[0]+sum(s[1:]) for s in scores), 136)
+        reader = PdfReader(ROOT / 'exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf')
+        text = '\n'.join(page.extract_text() for page in reader.pages)
+        self.assertIn('23. 독창성', text)
+
     def test_planning_first_rules_and_growth_capacity(self):
         source = (ROOT / 'docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md').read_text(encoding='utf-8')
         for marker in ['16. 상세 규칙', '17. 촉매', '18. 사건', '19. 이행',

@@ -5,25 +5,30 @@
   "status": "DESIGN_PDF_RENDER_REVIEWED_DRAFT_PR_OPEN",
   "remote_delivery": {
     "pull_request": "https://github.com/alsdmlals4-eng/Blacksmith/pull/371",
-    "reviewed_product_head": "18afd02766bdaf39fbd74e508c1f4ed2a4c882c7",
-    "branch_readback": "MATCHED_LOCAL_HEAD",
+    "reviewed_product_head": "a187e9043c0b2fdff157f4ccd6654c404075b97f",
+    "branch_readback": "PREVIOUS_CHECKPOINT_ONLY_CURRENT_HEAD_RECORDED_IN_PR_COMMENT",
     "main": "UNCHANGED_NOT_MERGED",
-    "ci": "PENDING_AT_READBACK"
+    "ci": "PREVIOUS_CHECKPOINT_15_SUCCESS_1_SKIPPED_CURRENT_HEAD_REQUIRES_READBACK"
   },
-  "scope": "Pixel replan and planning-first detailed rules, user-delegated research/recommendations in blueprint16-19. Image production paused; prior candidates preserved. No product mutation, asset promotion, save migration or unrelated PR takeover.",
+  "scope": "Planning-first detailed rules plus fun/originality review in blueprint16-23. Four adventure variants and exhaustive24build comparison; not runtime or economic simulation. Image production paused; no product mutation, asset promotion, save migration or unrelated PR takeover.",
   "artifact": {
     "path": "exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf",
-    "sha256": "ac3c09a352ab9c0564959b1bdc9cfb22dd02a7f2d47f15b734cff0a4dd5a2105",
-    "page_count": 17,
+    "sha256": "1a6640a5c23274e5074b0d1e9722b4f03ab4160a74fc082d23dcd7f4dd920038",
+    "page_count": 21,
     "source": "docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md",
-    "source_sha256": "7904b899134162cd9dc8cf6f6066253c8454eaf6dd414189d8965bd8a34413c0",
+    "source_sha256": "bd09269fa06f81b6835e414dd90207c8a15a9e7179f9a723b7be4910a88035d4",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "Prior13pages text verified unchanged against pre-edit HEAD PDF. New pages14-17 rendered at1000px and inspected: tables/text fit, no clipping. Planning only; no new artwork or runtime screenshots.",
+    "visual_review": "Prior17pages text preserved against pre-edit HEAD. New pages18-21 rendered at1100px and inspected; page19 labels shortened and rerendered. Tables and text fit. No new artwork or runtime screenshots.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {
     "state": "PASS",
     "entries": [{
+      "source_and_evidence":"Official Into the Breach, Wildermyth, Battle Brothers and Matthias Worch meaningful-choice lecture introduction; URLs/dispositions in blueprint23. Live desktop research, not full lecture viewing or hands-on play.",
+      "observed_pattern":"Advance information, equipment fit, consequences and persistent identity.",
+      "project_fit_and_difference":"Customer requirements before commitment, UID chronicle and optional observation; no copied tactics, permadeath or relation simulation.",
+      "disposition":"ADAPT"
+    },{
       "source_and_evidence": "2026-09-10 official Weapon Shop Fantasy, Gladiator Guild Manager, Anvil Saga store pages; Godot Viewports and Aseprite Animation docs. URLs and individual dispositions in blueprint section 9.",
       "observed_pattern": "Craft-to-adventure consequences, equipped-actor arena observation, and separate rendering/animation responsibilities.",
       "project_fit_and_difference": "Read-only UID-linked optional observation. No copied assets, staff economy or invented combat numbers. Desk research only, not hands-on research.",
@@ -41,7 +46,7 @@
   "project_work_kanban": {
     "goal_or_slice_issue_ref":"BS-REPLAN-20260910-41",
     "source_main_sha":"ff1c935d9ada60607bace782f1f21f1adac59ba9",
-    "next_action":"Planning first: validate recommended five-equipment/catalyst/tag/event contracts and legacy-save isolation. Image production paused. Rule-space check is not Godot execution or final balance approval.",
+    "next_action":"Planning first: early-growth/resource/cap analysis and exact event/save contracts. Sections20-23 contain fun/choice review and24build calculation; image production paused. No runtime, final balance or human approval claim.",
     "work_item_refs":["BS-PIXEL-WORLD-DESIGN"],
     "active_work_item_ref":"BS-PIXEL-WORLD-DESIGN",
     "progress_summary":{"completed_items":0,"applicable_items":1,"display":"0 / 1"},

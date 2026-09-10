@@ -1,5 +1,7 @@
 # Blacksmith Session Handoff · Core Simplification
 
+> Current continuation: blueprint20-23 adds fun/choice feedback, four AQ adventure variants, exhaustive24final tag-build comparison, primary-source originality review and human-test criteria. Uniform mean support10 for all24builds is not proof of fun; no strictly dominating pair in the abstract model. Image production and product changes remain paused. Next: early-growth/resource/cap analysis and exact event/save contracts; historical POC balance scope is not the numeric owner.
+
 > Latest planning-first direction: user delegated research-backed detailed rules; image production is PAUSED. Blueprint sections16-19 own the recommended five-equipment, burst/sustained catalyst and OUTPUT/HANDLING tag specification. Values are test defaults, not balance approval. Legacy catalog V3, runtime and saves remain unchanged. The old two-lightweight-tag model has only9effectful growth actions for a10milestone path; new abstract3slot/IV model is checked separately from Godot. Next: rule/consumer validation and save-boundary tests before images or product changes.
 
 > 2026-09-10 approved continuation: opt-in candidate resize/alpha inspection implemented locally and30tests passed; default sessions stay unchanged. New stylish actor has actual alpha; blueprint sections13-15 compare source/64/128px. Native-grid cleanup, side-view alignment, final style approval and motion/runtime remain pending. The earlier tool-approval blocker below is superseded; see candidate brief/record for exact evidence.
