@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "user_instruction": "2026-09-11 implementation-ready planning and actual-consumer images; final approval pending",
+  "brief": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
+  "assets": [
+    {
+      "id": "BS-BP11-ITEMS",
+      "path": "docs/design/candidates/blueprint-20260911/items.png",
+      "sha256": "b258e76d8797386d805a3e91c080e9f4ed668b3ff00d0b3dbcb79f1a18078b4f",
+      "width": 384,
+      "height": 384,
+      "alpha_zero": 84154,
+      "alpha_opaque": 56,
+      "alpha_partial": 63246,
+      "consumer": "Inventory/Enhancement/Customer item icon regions",
+      "status": "REVIEWED_CANDIDATE_NOT_ASSET_READY",
+      "source_filename": "exec-7bb45ee6-0ee1-4856-acd6-c243e9fcf5a5.png",
+      "generator": "image_gen; exact model not exposed",
+      "runtime_promoted": false,
+      "user_approved": false,
+      "processing": "Restricted Aseprite MCP nearest resize 1254 to 384; copy_sprite to items.aseprite; export roundtrip verified separately",
+      "regions": [
+        {
+          "id": "iron_sword",
+          "rect": [
+            0,
+            0,
+            128,
+            128
+          ]
+        },
+        {
+          "id": "iron_shield",
+          "rect": [
+            128,
+            0,
+            128,
+            128
+          ]
+        },
+        {
+          "id": "iron_bow",
+          "rect": [
+            256,
+            0,
+            128,
+            128
+          ]
+        },
+        {
+          "id": "iron_armor",
+          "rect": [
+            0,
+            128,
+            128,
+            128
+          ]
+        },
+        {
+          "id": "iron_helmet",
+          "rect": [
+            128,
+            128,
+            128,
+            128
+          ]
+        },
+        {
+          "id": "fire_heart",
+          "rect": [
+            256,
+            128,
+            128,
+            128
+          ]
+        },
+        {
+          "id": "earth_crystal",
+          "rect": [
+            0,
+            256,
+            128,
+            128
+          ]
+        },
+        {
+          "id": "iron_ingot",
+          "rect": [
+            128,
+            256,
+            128,
+            128
+          ]
+        },
+        {
+          "id": "reinforcement",
+          "rect": [
+            256,
+            256,
+            128,
+            128
+          ]
+        }
+      ],
+      "qa_remaining": [
+        "partial alpha interior review",
+        "64px readability",
+        "tag/damage overlays",
+        "engine import"
+      ]
+    },
+    {
+      "id": "BS-BP11-FORGE",
+      "path": "docs/design/candidates/blueprint-20260911/forge.png",
+      "sha256": "0c31dfe264aacd6baa1590c5ef24bad94ac9c4c6e286f826015151679c65963c",
+      "width": 1536,
+      "height": 1024,
+      "alpha_zero": 0,
+      "alpha_opaque": 1572864,
+      "alpha_partial": 0,
+      "consumer": "Workshop background layer",
+      "status": "REVIEWED_CANDIDATE_NOT_ASSET_READY",
+      "source_filename": "exec-f47698fc-52be-48e2-9de2-6e698fb7606d.png",
+      "generator": "image_gen; exact model not exposed",
+      "runtime_promoted": false,
+      "user_approved": false,
+      "qa_remaining": [
+        "base pixel-grid normalization",
+        "representative actor composition",
+        "small-screen contrast",
+        "engine import"
+      ]
+    },
+    {
+      "id": "BS-BP11-ADVENTURE",
+      "path": "docs/design/candidates/blueprint-20260911/adventure.png",
+      "sha256": "6f6521703c5363878dffb397c1628c787fde626fb03a910265c5b410dcb6d5e8",
+      "width": 1536,
+      "height": 1024,
+      "alpha_zero": 0,
+      "alpha_opaque": 1572864,
+      "alpha_partial": 0,
+      "consumer": "WorldWindow adventure background",
+      "status": "REVIEWED_CANDIDATE_NOT_ASSET_READY",
+      "source_filename": "exec-e7228800-abd5-4e35-8936-7f4acd270ee9.png",
+      "generator": "image_gen; exact model not exposed",
+      "runtime_promoted": false,
+      "user_approved": false,
+      "qa_remaining": [
+        "base pixel-grid normalization",
+        "representative actor composition",
+        "small-screen contrast",
+        "engine import"
+      ]
+    },
+    {
+      "id": "BS-BP11-DUEL",
+      "path": "docs/design/candidates/blueprint-20260911/duel.png",
+      "sha256": "9502c8aa5ea8b380fffbace4996272eec6a429f49fe2fcad0d9bad12666f5f87",
+      "width": 1536,
+      "height": 1024,
+      "alpha_zero": 0,
+      "alpha_opaque": 1572864,
+      "alpha_partial": 0,
+      "consumer": "WorldWindow duel background",
+      "status": "REVIEWED_CANDIDATE_NOT_ASSET_READY",
+      "source_filename": "exec-b78a643c-d53b-42d3-990d-83d7f4b81dd4.png",
+      "generator": "image_gen; exact model not exposed",
+      "runtime_promoted": false,
+      "user_approved": false,
+      "qa_remaining": [
+        "base pixel-grid normalization",
+        "representative actor composition",
+        "small-screen contrast",
+        "engine import"
+      ]
+    },
+    {
+      "id": "BS-BP11-ARMY",
+      "path": "docs/design/candidates/blueprint-20260911/army.png",
+      "sha256": "3a318b352bd2aa377f0101ed5bafc0f599a4ac85e056b6942e295bd9b0b44e8f",
+      "width": 1536,
+      "height": 1024,
+      "alpha_zero": 0,
+      "alpha_opaque": 1572864,
+      "alpha_partial": 0,
+      "consumer": "WorldWindow army background",
+      "status": "REVIEWED_CANDIDATE_NOT_ASSET_READY",
+      "source_filename": "exec-9b1e7f8b-1b0c-4d81-ab37-cd8bc00b42ac.png",
+      "generator": "image_gen; exact model not exposed",
+      "runtime_promoted": false,
+      "user_approved": false,
+      "qa_remaining": [
+        "base pixel-grid normalization",
+        "representative actor composition",
+        "small-screen contrast",
+        "engine import"
+      ]
+    },
+    {
+      "id": "BS-BP11-SMITH",
+      "path": "docs/design/candidates/blueprint-20260911/smith.png",
+      "sha256": "9082d9974480299c7cb2bf86b1dde1c902f9baf1c8f9e820fa126d72febeb63a",
+      "width": 1774,
+      "height": 887,
+      "alpha_zero": 1027105,
+      "alpha_opaque": 1686,
+      "alpha_partial": 544747,
+      "consumer": "Workshop smith action layer",
+      "status": "REVIEWED_CANDIDATE_NOT_ASSET_READY",
+      "source_filename": "exec-4c2543cd-4d13-4474-849d-a1f67c055d4e.png",
+      "generator": "image_gen; exact model not exposed",
+      "runtime_promoted": false,
+      "user_approved": false,
+      "qa_remaining": [
+        "equal cell boundaries",
+        "foot and grip alignment",
+        "all required states",
+        "true alpha/background",
+        "motion continuity",
+        "engine import"
+      ]
+    },
+    {
+      "id": "BS-BP11-ACTOR",
+      "path": "docs/design/candidates/blueprint-20260911/actor.png",
+      "sha256": "e8983b0b5e986d58b8378cac5dba14d9aa76857c0604db487be7d976d1285d7b",
+      "width": 1774,
+      "height": 887,
+      "alpha_zero": 0,
+      "alpha_opaque": 1573538,
+      "alpha_partial": 0,
+      "consumer": "WorldWindow actor animation layer",
+      "status": "REJECTED_RUNTIME_INPUT_BAKED_CHECKERBOARD",
+      "source_filename": "exec-86db1055-ec37-4146-9659-63dda4cd15b5.png",
+      "generator": "image_gen; exact model not exposed",
+      "runtime_promoted": false,
+      "user_approved": false,
+      "qa_remaining": [
+        "equal cell boundaries",
+        "foot and grip alignment",
+        "all required states",
+        "true alpha/background",
+        "motion continuity",
+        "engine import"
+      ],
+      "primary_use_disposition": "Failed planned game-surface candidate; retained in review only to explain blocking defect, not an explanatory commissioned asset",
+      "failed_correction": {
+        "source_filename": "exec-6ae584ec-ea59-4013-bd3f-84e34aad94cd.png",
+        "sha256": "1a25aad11450435fd77570071d2a732923f0d99fc528425e23a87b03a2e6d4b9",
+        "mode": "RGB",
+        "alpha_zero": 0,
+        "result": "REJECTED; no background removal achieved; not copied into repository"
+      }
+    }
+  ],
+  "evidence_ceiling": "No runtime, Android, human, rights or release PASS"
+}

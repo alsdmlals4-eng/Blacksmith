@@ -10,20 +10,25 @@
     "main": "UNCHANGED_NOT_MERGED",
     "ci": "PREVIOUS_CHECKPOINT_15_SUCCESS_1_SKIPPED_CURRENT_HEAD_REQUIRES_READBACK"
   },
-  "scope": "Planning-first detailed rules plus fun/originality review in blueprint16-23. Four adventure variants and exhaustive24build comparison; not runtime or economic simulation. Image production paused; no product mutation, asset promotion, save migration or unrelated PR takeover.",
+  "scope": "2026-09-11 user-authorized integrated human blueprint preparation and actual-consumer candidate images.41sections/pages, detailed SWOT strategies, atlas, rules, data, trial economy, events, save contracts. Final user review pending. No product mutation, asset promotion, save migration or unrelated PR takeover.",
   "artifact": {
-    "path": "exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf",
-    "sha256": "1a6640a5c23274e5074b0d1e9722b4f03ab4160a74fc082d23dcd7f4dd920038",
-    "page_count": 21,
-    "source": "docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md",
-    "source_sha256": "bd09269fa06f81b6835e414dd90207c8a15a9e7179f9a723b7be4910a88035d4",
+    "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
+    "sha256": "b69f1b622a52ded16ead4b960141d15aa5e123eed2f0b26ef268478b18a6c88d",
+    "page_count": 41,
+    "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
+    "source_sha256": "a528e41b80f1a6ee54c4fdf33f928d7482565db24f1c2e6aa66490bdfc811521",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "Prior17pages text preserved against pre-edit HEAD. New pages18-21 rendered at1100px and inspected; page19 labels shortened and rerendered. Tables and text fit. No new artwork or runtime screenshots.",
+    "visual_review": "All41pages rendered at85dpi and individually inspected after table header contrast correction. One section per page, no observed text/table clipping. Seven candidate families embedded, world actor explicitly rejected as runtime input because RGB checkerboard persisted after correction. Original21-page PDF unchanged. No runtime screenshots.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {
     "state": "PASS",
     "entries": [{
+      "source_and_evidence":"2026-09-11 official Weapon Shop Fantasy, Anvil Saga, Gladiator Guild Manager, Into the Breach, Wildermyth, Battle Brothers, Aseprite sprite-sheet and Godot resolution docs, Android accessibility. Integrated blueprint8/38 link sources.",
+      "observed_pattern":"Craft-to-use consequences, advance information, persistent identity; pixel export and distinct touch targets.",
+      "project_fit_and_difference":"Optional saved-result viewer rather than new battle simulation. Conditional damage probability must not be displayed as final-attempt damage. Actual image generation alpha failure rejected, not hidden.",
+      "disposition":"ADAPT"
+    },{
       "source_and_evidence":"Official Into the Breach, Wildermyth, Battle Brothers and Matthias Worch meaningful-choice lecture introduction; URLs/dispositions in blueprint23. Live desktop research, not full lecture viewing or hands-on play.",
       "observed_pattern":"Advance information, equipment fit, consequences and persistent identity.",
       "project_fit_and_difference":"Customer requirements before commitment, UID chronicle and optional observation; no copied tactics, permadeath or relation simulation.",
@@ -38,7 +43,8 @@
   "context_configuration_hygiene": {
     "scope": "PLAN and NONCODING_BUILD; adopted Base v9.4.4 retained; no deletions",
     "inventory": [
-      {"path":"docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md","classification":"ACTIVE_OWNER","owner_or_provenance":"Latest user pixel direction and optional split world-window request","references_and_consumers":"Current authority routers and derived PDF reader"},
+      {"path":"docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md","classification":"ACTIVE_OWNER","owner_or_provenance":"Latest user integrated detailed human blueprint request","references_and_consumers":"Current authority routers and41-page derived PDF reader"},
+      {"path":"docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md","classification":"ARCHIVE","owner_or_provenance":"Previous pixel planning checkpoint","references_and_consumers":"Preserved21-page PDF and historical contract tests; not overwritten"},
       {"path":"exports/blacksmith_PHASE1_WORKSHOP_BLUEPRINT_20260902.pdf","classification":"ARCHIVE","owner_or_provenance":"Earlier detailed blueprint","references_and_consumers":"Preserved historical reader reference; not overwritten"},
       {"path":"skills/PROJECT_BASE_ADAPTER.json","classification":"ACTIVE_OWNER","owner_or_provenance":"Project adopted Base release lock","references_and_consumers":"Operating validator; no automatic latest-main substitution"}
     ]
@@ -46,7 +52,7 @@
   "project_work_kanban": {
     "goal_or_slice_issue_ref":"BS-REPLAN-20260910-41",
     "source_main_sha":"ff1c935d9ada60607bace782f1f21f1adac59ba9",
-    "next_action":"Planning first: early-growth/resource/cap analysis and exact event/save contracts. Sections20-23 contain fun/choice review and24build calculation; image production paused. No runtime, final balance or human approval claim.",
+    "next_action":"Final reader review of integrated41-page draft; remaining production preparation: transparent world actor, motion alignment, equipment attachments and state overlays. Trial values are specified, product economy still unverified. No product start before final approval.",
     "work_item_refs":["BS-PIXEL-WORLD-DESIGN"],
     "active_work_item_ref":"BS-PIXEL-WORLD-DESIGN",
     "progress_summary":{"completed_items":0,"applicable_items":1,"display":"0 / 1"},
@@ -54,19 +60,19 @@
       "work_item_id":"BS-PIXEL-WORLD-DESIGN",
       "title":"Pixel world-window blueprint design",
       "status":"IN_PROGRESS",
-      "canon_owner":"docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md",
-      "actual_consumers":["exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf"],
+      "canon_owner":"docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
+      "actual_consumers":["exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf"],
       "depends_on":[],
       "next_action":"Remote branch and PR readback; detailed product work remains pending.",
       "checklist":[
-        {"id":"design","status":"PASS","text":"Research, layout diagrams, event scopes, save boundary and checklist prepared; first candidates plus stylish actor and scale comparison.","evidence":["13-page derived PDF; unchanged original10pages and appended3-page review","tests.test_pixel_world_blueprint_artifact: missing refined provenance RED then3tests GREEN","Aseprite local30tests and real opt-in stdio resize/alpha calls; no animation claim"]},
+        {"id":"design","status":"PASS","text":"Integrated review document produced, not all-state asset readiness or final planning approval.","evidence":["41-page derived PDF and complete page render review","test_integrated_human_blueprint: missing source/manifest RED, stale38-vs41-page RED,4tests GREEN; previous pixel5tests GREEN","Restricted Aseprite384px atlas native file and decoded RGBA export roundtrip match; actor correction RGB failure recorded"]},
         {"id":"delivery","status":"NOT_RUN","text":"Protected remote delivery and review","evidence":[]}
       ],
       "acceptance_criteria":["design","delivery"],
       "required_evidence":["E1_STATIC","E4_VISUAL"],
       "verification":[
         {"level":"E1_STATIC","status":"PASS","evidence":["current authority and Base adaptation checks"]},
-        {"level":"E4_VISUAL","status":"PASS","evidence":["Original10-page review retained; appended3pages inspected after update. Document-only evidence; candidate needs grid/alpha/identity refinement."]},
+        {"level":"E4_VISUAL","status":"PASS","evidence":["41-page PDF render inspected; candidate assets not all ASSET_READY. Document-only, no runtime or final style approval."]},
         {"level":"E3_RUNTIME","status":"NOT_RUN","evidence":[]},
         {"level":"E5_PLAY","status":"NOT_RUN","evidence":[]}
       ]
