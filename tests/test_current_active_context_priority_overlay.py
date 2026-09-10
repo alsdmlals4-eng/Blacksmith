@@ -83,8 +83,16 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
         agents = AGENTS.read_text(encoding="utf-8")
 
-        self.assertIn("CURRENT_PRIORITY_OVERLAY", active[:2500])
-        self.assertIn("BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION", active[:2500])
+        # Current amendments may precede this historical section. Check its
+        # explicit boundaries instead of imposing a document-prefix budget.
+        start = "<!-- BS_CURRENT_PRIORITY_OVERLAY_20260820 -->"
+        end = "<!-- BS_OPS_20260811_03_PHASE_C_ENTRY_HISTORICAL -->"
+        self.assertEqual(active.count(start), 1)
+        self.assertEqual(active.count(end), 1)
+        self.assertLess(active.index(start), active.index(end))
+        historical_overlay = active.split(start, 1)[1].split(end, 1)[0]
+        self.assertIn("CURRENT_PRIORITY_OVERLAY", historical_overlay)
+        self.assertIn("BLOCKED_UNTIL_NEW_PLANNING_COMPLETE_DECLARATION", historical_overlay)
         self.assertIn("BS-OPS-20260811-03", active)
         self.assertIn("HISTORICAL", active)
         self.assertIn(
