@@ -1,5 +1,7 @@
 # [현재 정본] Active Context
 
+> 최신 그림체 선택 대기: 청년 대장장이3안·모닥1안은 `docs/design/candidates/young-smith-spirit-20260911/record.json`의 비교 후보다. 배경/픽셀 정리·모션·최종 승인 전이며 기존 게임과41쪽 PDF는 유지한다.
+
 > CURRENT_PRIORITY_OVERLAY: 최신 사용자 요청과 아래 통합 검토본이 현재 작업 경계를 소유한다. 기존 확정 규칙의 provenance와 부분 대체 비교는 `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`를 함께 읽는다. 이 역사 원장이 최신 픽셀 재기획·최종 승인 대기를 덮어쓰지는 않는다.
 
 > 2026-09-11 최신: `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md` + `exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf`가 통합 사람용 검토본이다. 타 프로젝트92쪽 예시는 구조만 참고했다. 최신 사용자는 실제 게임용 이미지 제작을 다시 허용했으므로 아래 이미지 보류 문구는 역사 상태다. SWOT 대응·아틀라스·규칙·데이터·저장·초반 시험 숫자·구현 체크를 통합했다. 최종 기획 승인은 대기하며 게임/기존 세이브는 변경하지 않는다. 후보7가족은 완성 자산 전체가 아니며 모션 셀·장착·각인/손상과 engine/device/human 검수가 남는다. PR371 Draft 유지, 타PR359/196 읽기전용, Base 채택v9.4.4 유지.
