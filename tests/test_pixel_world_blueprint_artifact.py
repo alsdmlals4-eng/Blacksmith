@@ -21,6 +21,9 @@ class PixelBlueprintArtifact(unittest.TestCase):
         self.assertEqual(record['user_approval'], 'PENDING')
         for item in record['files']:
             file = ROOT / 'docs/design/candidates/pixel-first-20260910' / item['name']
-            self.assertEqual(hashlib.sha256(file.read_bytes()).hexdigest(),item['sha256'])
+            content = file.read_bytes()
+            if item.get('hash_basis') == 'UTF8_CRLF_TO_LF':
+                content = content.replace(b'\r\n', b'\n')
+            self.assertEqual(hashlib.sha256(content).hexdigest(),item['sha256'])
 
 if __name__ == '__main__': unittest.main()

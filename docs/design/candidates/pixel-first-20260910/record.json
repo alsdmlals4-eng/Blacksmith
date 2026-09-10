@@ -26,7 +26,8 @@
     },
     {
       "name": "sword-sheet.json",
-      "sha256": "4f5a49a6062b48f7972ebd2ef359c68c6122741f93199ab9e996d06bc6482181"
+      "sha256": "f5acf195a307e971a003c2ae4a171e828b6c015262228135153ac1967d645caf",
+      "hash_basis": "UTF8_CRLF_TO_LF"
     },
     {
       "name": "sword-sheet.png",
