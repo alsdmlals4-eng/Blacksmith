@@ -26,4 +26,19 @@ class PixelBlueprintArtifact(unittest.TestCase):
                 content = content.replace(b'\r\n', b'\n')
             self.assertEqual(hashlib.sha256(content).hexdigest(),item['sha256'])
 
+    def test_refined_candidate_files_and_png_dimensions(self):
+        import struct
+        folder = ROOT / 'docs/design/candidates/pixel-stylish-20260910'
+        self.assertTrue((folder / 'record.json').is_file(), 'Refined candidate provenance missing')
+        record = json.loads((folder / 'record.json').read_text(encoding='utf-8'))
+        self.assertEqual(record['user_approval'], 'PENDING')
+        self.assertEqual(record['runtime_status'], 'NOT_RUN')
+        for item in record['files']:
+            content = (folder / item['name']).read_bytes()
+            if item.get('hash_basis') == 'UTF8_CRLF_TO_LF':
+                content = content.replace(b'\r\n', b'\n')
+            self.assertEqual(hashlib.sha256(content).hexdigest(), item['sha256'])
+            if 'dimensions' in item:
+                self.assertEqual(list(struct.unpack('>II', content[16:24])), item['dimensions'])
+
 if __name__ == '__main__': unittest.main()

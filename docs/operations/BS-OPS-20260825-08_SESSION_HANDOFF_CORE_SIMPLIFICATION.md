@@ -1,5 +1,7 @@
 # Blacksmith Session Handoff · Core Simplification
 
+> 2026-09-10 approved continuation: opt-in candidate resize/alpha inspection implemented locally and30tests passed; default sessions stay unchanged. New stylish actor has actual alpha; blueprint sections13-15 compare source/64/128px. Native-grid cleanup, side-view alignment, final style approval and motion/runtime remain pending. The earlier tool-approval blocker below is superseded; see candidate brief/record for exact evidence.
+
 > 2026-09-10 refinement follow-up: two actor/sword edits failed actual transparency (RGB baked checkerboard) and were rejected; no replacement images or motion were promoted. See the existing candidate brief's refinement readback for hashes and restricted-tool limits. The first three candidates and10-page PDF are unchanged. Native-grid production awaits a reviewed candidate-only tool capability decision; do not bypass restricted MCP with arbitrary CLI/Lua.
 
 > 2026-09-10 resume: `docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md` is the current pixel-replan/world-window design owner. First forge/sword/duelist candidates and review are in sections10-12; `docs/design/PIXEL_CANDIDATE_BRIEF_20260910.md` and its candidate record own generation/export evidence. Aseprite native single-frame RGBA roundtrip passed; native pixel-grid/alpha-edge refinement, equipment identity alignment, connected motion, save migration and runtime remain pending. No old assets or saves deleted, no product paths changed. Base lock remains v9.4.4.

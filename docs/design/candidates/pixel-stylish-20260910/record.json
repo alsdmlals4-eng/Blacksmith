@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "project": "BLACKSMITH",
+  "requirement_id": "PX-DUEL-ACTOR-01",
+  "requirement_owner": "docs/design/PIXEL_CANDIDATE_BRIEF_20260910.md",
+  "status": "GENERATED_CANDIDATE_REVISION_REQUIRED_FOR_RUNTIME",
+  "user_approval": "PENDING",
+  "runtime_status": "NOT_RUN",
+  "generation": {"service": "built-in image_gen", "model": "NOT_EXPOSED", "date": "2026-09-10", "input_images": []},
+  "tool_evidence": {"local_commit": "b128a92", "tests_passed": 30, "transport": "restricted MCP stdio opt-in", "default_tool_count": 10, "opt_in_tool_count": 12, "desktop_new_tool_discovery": "NOT_RUN", "animation_frames": 1, "animation_status": "NOT_PRODUCED", "source_alpha_counts": {"transparent": 1209354, "partial": 362413, "opaque": 605}},
+  "review": "Style/material/proportions improved. True alpha present, but partial-alpha and colored edge artifacts remain.64px loses facial/material distinction;128px comparison is not approved resolution change. Three-quarter camera persists. Native pixel cleanup and user style approval required.",
+  "rights": "RELEASE_BLOCKED_UNVERIFIED",
+  "files": [
+    {"name":"actor-source.png","dimensions":[1242,1266],"sha256":"2d621683902046e0a7e43b4406417f0501112a25305d4b6357cc15c244ef4217"},
+    {"name":"actor-64.png","dimensions":[64,65],"sha256":"d7e1645ec70e6ebb278294585663459753645a218856c795cc6ec37fe0498f25"},
+    {"name":"actor-128.png","dimensions":[128,130],"sha256":"229f69e8424b142e91f91a841c105d073dc081d520dc5f0c878df67bd6e7b722"},
+    {"name":"actor-64-preview.png","dimensions":[512,520],"sha256":"01409ac223708dd01af2723614ad65baafcea6cba86117df1edbd65f3e5ee31e"},
+    {"name":"actor-128-preview.png","dimensions":[512,520],"sha256":"65182edcb9787ed866f3a088a11958b2608f55a3af291416a0e9e77d43c53203"},
+    {"name":"actor-64.aseprite","sha256":"73bf74f277989e1aff765c377fff72d1a315a06af201fa1ea725453dab6d85a1"},
+    {"name":"actor-sheet.json","hash_basis":"UTF8_CRLF_TO_LF","sha256":"7294ac1252c13b4557d22d85ba9aea603c845bf737d61670b6b70519ff77662b"}
+  ]
+}
