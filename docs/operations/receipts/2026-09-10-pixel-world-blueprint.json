@@ -10,15 +10,15 @@
     "main": "UNCHANGED_NOT_MERGED",
     "ci": "PENDING_AT_READBACK"
   },
-  "scope": "Pixel replan, optional world-window design supplement and user-approved first forge/sword/duelist candidates. No product mutation, asset promotion, save migration or unrelated PR takeover.",
+  "scope": "Pixel replan and planning-first detailed rules, user-delegated research/recommendations in blueprint16-19. Image production paused; prior candidates preserved. No product mutation, asset promotion, save migration or unrelated PR takeover.",
   "artifact": {
     "path": "exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf",
-    "sha256": "139d941ed35f0e9030399c7cbb229387b425cf7dac3e7bb740016f3cf96b833d",
-    "page_count": 13,
+    "sha256": "ac3c09a352ab9c0564959b1bdc9cfb22dd02a7f2d47f15b734cff0a4dd5a2105",
+    "page_count": 17,
     "source": "docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md",
-    "source_sha256": "43bb0d06a0d1962c99a413377af8364a2e8a5ae67e61a11568115335922cf189",
+    "source_sha256": "7904b899134162cd9dc8cf6f6066253c8454eaf6dd414189d8965bd8a34413c0",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "Prior10 pages retain text/content; appended pages11-13 rendered and inspected. Last-page bottom density reduced and final page13 rechecked. Candidate/scale-review images, not runtime screenshots.",
+    "visual_review": "Prior13pages text verified unchanged against pre-edit HEAD PDF. New pages14-17 rendered at1000px and inspected: tables/text fit, no clipping. Planning only; no new artwork or runtime screenshots.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {
@@ -41,7 +41,7 @@
   "project_work_kanban": {
     "goal_or_slice_issue_ref":"BS-REPLAN-20260910-41",
     "source_main_sha":"ff1c935d9ada60607bace782f1f21f1adac59ba9",
-    "next_action":"Approved opt-in resize/alpha extension verified with30tests; stylish candidate has genuine alpha and64/128 comparisons. Await final style choice; native cluster/edge cleanup, side-view and motion remain pending.",
+    "next_action":"Planning first: validate recommended five-equipment/catalyst/tag/event contracts and legacy-save isolation. Image production paused. Rule-space check is not Godot execution or final balance approval.",
     "work_item_refs":["BS-PIXEL-WORLD-DESIGN"],
     "active_work_item_ref":"BS-PIXEL-WORLD-DESIGN",
     "progress_summary":{"completed_items":0,"applicable_items":1,"display":"0 / 1"},

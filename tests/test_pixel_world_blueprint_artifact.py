@@ -8,6 +8,20 @@ from pypdf import PdfReader
 ROOT = Path(__file__).resolve().parents[1]
 
 class PixelBlueprintArtifact(unittest.TestCase):
+    def test_planning_first_rules_and_growth_capacity(self):
+        source = (ROOT / 'docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md').read_text(encoding='utf-8')
+        for marker in ['16. 상세 규칙', '17. 촉매', '18. 사건', '19. 이행',
+                       'IMAGE_PRODUCTION_PAUSED', 'RECOMMENDED_TEST_VALUES', 'LEGACY_V3_UNCHANGED']:
+            self.assertIn(marker, source)
+        # Abstract proposed slot/stage model, not a Godot/runtime test.
+        import itertools
+        for stages in itertools.product(range(5), repeat=4):
+            if sum(v > 0 for v in stages) > 3 or sum(stages) >= 10:
+                continue
+            can_add = sum(v > 0 for v in stages) < 3 and 0 in stages
+            can_upgrade = any(0 < v < 4 for v in stages)
+            self.assertTrue(can_add or can_upgrade, stages)
+
     def test_candidate_appendix_present(self):
         reader = PdfReader(ROOT / 'exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf')
         text = '\n'.join(page.extract_text() for page in reader.pages)

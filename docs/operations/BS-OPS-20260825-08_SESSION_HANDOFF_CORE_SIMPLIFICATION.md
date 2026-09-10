@@ -1,5 +1,7 @@
 # Blacksmith Session Handoff · Core Simplification
 
+> Latest planning-first direction: user delegated research-backed detailed rules; image production is PAUSED. Blueprint sections16-19 own the recommended five-equipment, burst/sustained catalyst and OUTPUT/HANDLING tag specification. Values are test defaults, not balance approval. Legacy catalog V3, runtime and saves remain unchanged. The old two-lightweight-tag model has only9effectful growth actions for a10milestone path; new abstract3slot/IV model is checked separately from Godot. Next: rule/consumer validation and save-boundary tests before images or product changes.
+
 > 2026-09-10 approved continuation: opt-in candidate resize/alpha inspection implemented locally and30tests passed; default sessions stay unchanged. New stylish actor has actual alpha; blueprint sections13-15 compare source/64/128px. Native-grid cleanup, side-view alignment, final style approval and motion/runtime remain pending. The earlier tool-approval blocker below is superseded; see candidate brief/record for exact evidence.
 
 > 2026-09-10 refinement follow-up: two actor/sword edits failed actual transparency (RGB baked checkerboard) and were rejected; no replacement images or motion were promoted. See the existing candidate brief's refinement readback for hashes and restricted-tool limits. The first three candidates and10-page PDF are unchanged. Native-grid production awaits a reviewed candidate-only tool capability decision; do not bypass restricted MCP with arbitrary CLI/Lua.
