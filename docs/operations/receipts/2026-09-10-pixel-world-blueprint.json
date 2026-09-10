@@ -10,15 +10,15 @@
     "main": "UNCHANGED_NOT_MERGED",
     "ci": "PENDING_AT_READBACK"
   },
-  "scope": "Pixel replan and optional world-window design supplement. No product mutation, asset promotion, save migration or unrelated PR takeover.",
+  "scope": "Pixel replan, optional world-window design supplement and user-approved first forge/sword/duelist candidates. No product mutation, asset promotion, save migration or unrelated PR takeover.",
   "artifact": {
     "path": "exports/blacksmith_PIXEL_WORLD_BLUEPRINT_20260910.pdf",
-    "sha256": "b6206013c0342cef4d5124d99ff46253a1bf47a6efa75c552d3477991f09032a",
-    "page_count": 7,
+    "sha256": "e5c4753f0113a4ade73135bab735c6d64d492969bcf2ed05928357ba017f8aab",
+    "page_count": 10,
     "source": "docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md",
-    "source_sha256": "ffb1903b89ab7ee8352e038361c5251b0fa9a87ef9538c3a66391ecf5cc41f59",
+    "source_sha256": "35f3631e6b613e2508c94181a0a45015dcc99cd86218744ef9bf8dc06d7e940f",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "All 7 Poppler-rendered pages inspected: no clipping or overlap observed. Design diagrams, not runtime screenshots.",
+    "visual_review": "All 10 Poppler-rendered pages inspected: no clipping or overlap observed. Candidate art and design diagrams, not runtime screenshots.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {
@@ -41,7 +41,7 @@
   "project_work_kanban": {
     "goal_or_slice_issue_ref":"BS-REPLAN-20260910-41",
     "source_main_sha":"ff1c935d9ada60607bace782f1f21f1adac59ba9",
-    "next_action":"Deliver reviewable design branch; then prepare consumer-specific pixel candidates and motion contract.",
+    "next_action":"Review candidate identity, refine native pixel grid and align held equipment before connected action production. Preserve runtime promotion gate.",
     "work_item_refs":["BS-PIXEL-WORLD-DESIGN"],
     "active_work_item_ref":"BS-PIXEL-WORLD-DESIGN",
     "progress_summary":{"completed_items":0,"applicable_items":1,"display":"0 / 1"},
@@ -54,14 +54,14 @@
       "depends_on":[],
       "next_action":"Remote branch and PR readback; detailed product work remains pending.",
       "checklist":[
-        {"id":"design","status":"PASS","text":"Research, two layout diagrams, three event scopes, save boundary and checklist prepared.","evidence":["7-page derived PDF; all pages visually reviewed"]},
+        {"id":"design","status":"PASS","text":"Research, layout diagrams, event scopes, save boundary and checklist prepared; three candidate images added.","evidence":["10-page derived PDF; all pages visually reviewed","tests.test_pixel_world_blueprint_artifact: intended missing appendix/record RED then two tests GREEN","Native Aseprite sword one-frame RGBA preserving export; no animation claim"]},
         {"id":"delivery","status":"NOT_RUN","text":"Protected remote delivery and review","evidence":[]}
       ],
       "acceptance_criteria":["design","delivery"],
       "required_evidence":["E1_STATIC","E4_VISUAL"],
       "verification":[
         {"level":"E1_STATIC","status":"PASS","evidence":["current authority and Base adaptation checks"]},
-        {"level":"E4_VISUAL","status":"PASS","evidence":["All seven PDF renders inspected; document-only evidence"]},
+        {"level":"E4_VISUAL","status":"PASS","evidence":["All ten PDF renders inspected; document-only evidence. Candidate artwork needs pixel-grid and identity refinement."]},
         {"level":"E3_RUNTIME","status":"NOT_RUN","evidence":[]},
         {"level":"E5_PLAY","status":"NOT_RUN","evidence":[]}
       ]

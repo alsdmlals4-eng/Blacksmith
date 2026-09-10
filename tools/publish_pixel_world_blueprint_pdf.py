@@ -2,7 +2,7 @@
 from pathlib import Path
 import re
 from html import escape
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle, Flowable
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle, Flowable, Image
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
@@ -57,6 +57,17 @@ def build():
         if line == '---': story.append(PageBreak())
         elif line.startswith('# '): story.append(p(line[2:], title))
         elif line.startswith('## '): story.append(p(line[3:], heading))
+        elif line.startswith('!['):
+            match = re.fullmatch(r'!\[(.*?)\]\((.*?)\)',line)
+            if not match: raise ValueError('Malformed image reference')
+            caption, relative = match.groups()
+            asset = (SOURCE.parent / relative).resolve()
+            if not asset.is_relative_to(SOURCE.parent.resolve()): raise ValueError('Image outside design owner directory')
+            picture = Image(str(asset))
+            ratio = min(499/picture.imageWidth, 350/picture.imageHeight)
+            picture.drawWidth = picture.imageWidth*ratio
+            picture.drawHeight = picture.imageHeight*ratio
+            story.extend([picture,Spacer(1,8),p(caption,small),Spacer(1,10)])
         elif line.startswith('```'):
             kind = line[3:]; block=[]; i += 1
             while i < len(lines) and not lines[i].startswith('```'):
