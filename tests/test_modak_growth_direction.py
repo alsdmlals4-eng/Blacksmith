@@ -8,6 +8,20 @@ FOLDER = ROOT / "docs/design/candidates/modak-human-20260911"
 
 
 class ModakGrowthDirection(unittest.TestCase):
+    def test_calendar_review_is_not_runtime_or_final_balance(self):
+        path = ROOT / "docs/planning/BLACKSMITH_MODAK_CALENDAR_REVIEW_20260912.json"
+        review = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(review["status"], "RECOMMENDED_TEST_ONLY")
+        self.assertFalse(review["runtime_implemented"])
+        self.assertFalse(review["final_user_approved"])
+        self.assertEqual(review["clock"], "COMMITTED_GAME_DAY_ONLY")
+        self.assertEqual(review["campaign_scope"], "SAME_SAVE_CAMPAIGN_NO_ANNUAL_RESET")
+        for case in review["boundary_cases"]:
+            elapsed = case["current_day"] - case["joined_day"]
+            year = elapsed // review["recommended_days_per_year"] + 1
+            self.assertEqual(year, case["expected_companion_year"])
+            self.assertEqual("LATER" if year >= review["later_from_year"] else "EARLY", case["expected_appearance"])
+
     def test_growth_preparation_keeps_calendar_dependency_and_runtime_gate(self):
         owner = (ROOT / "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md").read_text(encoding="utf-8")
         for contract in ["MODAK_GROWTH_PREPARATION", "CALENDAR_INTEGRATION_REQUIRED",

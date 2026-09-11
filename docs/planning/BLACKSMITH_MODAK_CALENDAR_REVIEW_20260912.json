@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "status": "RECOMMENDED_TEST_ONLY",
+  "final_user_approved": false,
+  "runtime_implemented": false,
+  "owner": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md#remaining-work-audit-20260912",
+  "clock": "COMMITTED_GAME_DAY_ONLY",
+  "campaign_scope": "SAME_SAVE_CAMPAIGN_NO_ANNUAL_RESET",
+  "recommended_days_per_year": 120,
+  "comparison_days_per_year": [30, 120, 365],
+  "later_from_year": 3,
+  "formula": "companion_year = floor((current_day - joined_day) / days_per_year) + 1",
+  "validation": "Require integer current_day >= joined_day >= 1 and days_per_year > 0; missing joining record means NOT_JOINED; invalid inputs must not be silently clamped.",
+  "day_advance": "UNSPECIFIED_DEPENDENCY_NO_NEW_FATIGUE_OR_REALTIME_RULE",
+  "calendar_policy_migration": "Persist policy version per campaign; balance changes do not retroactively accelerate growth in existing saves.",
+  "boundary_cases": [
+    {"joined_day": 1, "current_day": 1, "expected_companion_year": 1, "expected_appearance": "EARLY"},
+    {"joined_day": 1, "current_day": 120, "expected_companion_year": 1, "expected_appearance": "EARLY"},
+    {"joined_day": 1, "current_day": 121, "expected_companion_year": 2, "expected_appearance": "EARLY"},
+    {"joined_day": 1, "current_day": 240, "expected_companion_year": 2, "expected_appearance": "EARLY"},
+    {"joined_day": 1, "current_day": 241, "expected_companion_year": 3, "expected_appearance": "LATER"},
+    {"joined_day": 61, "current_day": 300, "expected_companion_year": 2, "expected_appearance": "EARLY"},
+    {"joined_day": 61, "current_day": 301, "expected_companion_year": 3, "expected_appearance": "LATER"},
+    {"joined_day": 61, "current_day": 661, "expected_companion_year": 6, "expected_appearance": "LATER"}
+  ],
+  "invalid_cases_required_before_implementation": ["missing_joined_day", "negative_elapsed_days", "zero_days_per_year", "fractional_day", "unknown_policy_version", "growth_event_without_join_record"],
+  "forbidden_implicit_changes": ["wall_clock_aging", "annual_save_reset", "new_game_overwrites_existing_slot", "automatic_stat_bonus", "forced_resource_loss", "legacy_fatigue_reactivation"],
+  "evidence_ceiling": "Fixture arithmetic and document checks only; no runtime migration, economy simulation or human playtest."
+}
