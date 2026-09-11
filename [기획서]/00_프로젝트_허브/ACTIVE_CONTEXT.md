@@ -1,6 +1,6 @@
 # [현재 정본] Active Context
 
-> 최신 그림체 선택 대기: 청년 대장장이3안·모닥1안은 `docs/design/candidates/young-smith-spirit-20260911/record.json`의 비교 후보다. 배경/픽셀 정리·모션·최종 승인 전이며 기존 게임과41쪽 PDF는 유지한다.
+> 최신 외형 선택: 대장장이1번 방향은 사용자 선택 완료. 모닥10안은 `docs/design/candidates/modak-ten-20260911/record.json`의 선택 대기 후보다. 단색 배경 비교용이며 투명화/픽셀 정리·모션·게임 적용 전이다. 기존 게임과41쪽 PDF는 유지한다.
 
 > CURRENT_PRIORITY_OVERLAY: 최신 사용자 요청과 아래 통합 검토본이 현재 작업 경계를 소유한다. 기존 확정 규칙의 provenance와 부분 대체 비교는 `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`를 함께 읽는다. 이 역사 원장이 최신 픽셀 재기획·최종 승인 대기를 덮어쓰지는 않는다.
 

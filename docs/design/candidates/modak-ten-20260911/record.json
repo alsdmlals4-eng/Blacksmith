@@ -1,0 +1,168 @@
+{
+  "status": "USER_REVIEW_PENDING",
+  "consumer": "BP11-MODAK-STYLE / planned workshop companion sprite",
+  "purpose": "Ten explicitly user-requested appearance alternatives; not new gameplay powers.",
+  "generation": "built-in image_gen",
+  "background": "INTENTIONAL_OPAQUE_STYLE_REVIEW_BACKDROP",
+  "runtime_changed": false,
+  "missing": [
+    "user selection",
+    "true alpha",
+    "native32or64grid",
+    "idle/joy/concern/focus animation",
+    "runtime verification"
+  ],
+  "candidates": [
+    {
+      "file": "modak-01.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "36129cc14d12bb010c2cf1ad1a45838d2541ada24cc23f946a17dbee0a82fd8b",
+      "number": 1,
+      "label": "둥근 불씨",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Round hearth ember: squat pear-shaped living flame, one big curved flame tuft, no neck, face on round body, tiny mitten flame hands and two little feet, quiet friendly smile. Simple iconic compact silhouette.",
+      "source": "exec-a02b12a3-e7df-4604-93e5-74518d2b6683.png",
+      "user_approved": false,
+      "runtime_verified": false
+    },
+    {
+      "file": "modak-02.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "a0b62011fa990f134d74c82b74207c11b29290d5225dbfb02cf1fe7cbcd2190b",
+      "number": 2,
+      "label": "혜성꼬리",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Floating comet wisp: elegant teardrop flame head integrated into long curved tapering flame tail curling underneath, NO legs, two small floating flame hands, gentle narrow expressive eyes, buoyant poised S-shaped silhouette, cute but slightly mystical.",
+      "source": "exec-fd115761-4d0a-4e7b-a821-2b1c9cf9d27e.png",
+      "user_approved": false,
+      "runtime_verified": false
+    },
+    {
+      "file": "modak-03.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "33e5763d45da9844bf54c395d3b53216e15854ecd89bbe7e5918ffe5516094e8",
+      "number": 3,
+      "label": "작은 인간형",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Little flame apprentice: clearly separate large flame head, tiny torso, short arms and short legs, 2.5heads tall, asymmetric three-prong flame hairstyle, large thoughtful anime eyes, small assured smile, upright humanlike sprite. No costume, all body is luminous fire.",
+      "source": "exec-0fed3b6a-19ac-418a-bcbd-8bbc668a5527.png",
+      "user_approved": false,
+      "runtime_verified": false
+    },
+    {
+      "file": "modak-04.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "0663fcb10085c037d4de8b17ef98bc96edd9f40382440e0e0a85236e1c89a2a8",
+      "number": 4,
+      "label": "느긋한 납작형",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Sleepy flame dumpling: very wide soft rounded body like a warm ember cushion, three small flame tongues on top, half-lidded relaxed kind eyes, tiny mouth, very short stubby arms, no distinct legs just two rounded lower lobes. Broad low silhouette, charming calm companion.",
+      "source": "exec-932f1d45-e170-474a-924b-20e61dd5e548.png",
+      "user_approved": false,
+      "runtime_verified": false
+    },
+    {
+      "file": "modak-05.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "3d5c8a4fe37dd5ec8892d5c3063f9d70697dc5a4ae1517c26ffff3da7a724f03",
+      "number": 5,
+      "label": "여우형",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Foxlike flame sprite: animal-inspired living FIRE not furry animal, two tall pointed flame ear tufts, small muzzle, large amber eyes, four short flame paws, seated compact body with one large curling flame tail wrapping beside it. No fur, no white fox markings, no jewelry, entirely golden fire.",
+      "source": "exec-efacceb4-654b-47d5-af4c-4e7532863124.png",
+      "user_approved": false,
+      "runtime_verified": false
+    },
+    {
+      "file": "modak-06.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "4839d643dd2c164fc76153cf06dc7c789e1f8c728c1a63239c51e0cde97158e0",
+      "number": 6,
+      "label": "토끼형",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Bunnylike flame sprite: living fire with TWO long soft bent flame ear tongues, round cheeky face, compact upright pear body, tiny flame hands together and two large oval ember feet, attentive sweet eyes, no fur or costume, all luminous golden flame. Strong tall twin-tuft silhouette.",
+      "source": "exec-216e37d9-7f48-4b11-a575-bdd69461d5ca.png",
+      "user_approved": false,
+      "runtime_verified": false
+    },
+    {
+      "file": "modak-07.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "97deca2a5987f749154011086cc28b329c9d3f115ffe34c9010e2d91a618b7dc",
+      "number": 7,
+      "label": "불꽃 꽃잎",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Floating flame blossom: round bright ivory face-core surrounded by five broad asymmetric orange flame petals like a dancing small sun, two very small side flame arms, no feet or tail, calm expressive amber eyes. Flame petals flowing naturally, not a flower plant and no green leaves. Distinct radial rounded silhouette.",
+      "source": "exec-2ff7f7b5-4005-447b-bd86-f2211302a0be.png",
+      "user_approved": false,
+      "runtime_verified": false
+    },
+    {
+      "file": "modak-08.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "91f360b404496ce5f1bd5fb5751d1dfa9d418ad4681edfe2df2985bd5f7e892c",
+      "number": 8,
+      "label": "소용돌이",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Spiraling forge flame: small upright elongated living flame with sculptural inward curl on top like a curled forelock, narrow pear torso, long drooping flame sleeves that are actually its arms, tiny feet, quietly wise soft eyes. Delicate elegant asymmetric silhouette without looking elderly. No clothes, no wand.",
+      "source": "exec-f1493d26-8500-4dfc-9751-477605d9092f.png",
+      "user_approved": false,
+      "runtime_verified": false
+    },
+    {
+      "file": "modak-09.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "62a16af3655107c915036b03915fcb9e0b9d0207bcb610cceb46de1a54eef385",
+      "number": 9,
+      "label": "튼튼한 장갑손",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Sturdy little furnace flame: short broad-shouldered square-rounded flame body, large soft mittenlike flame fists held gently at sides, tiny legs, expressive friendly confident eyebrows, three short jagged flame crest tips, bright golden body with ivory center. Strong cute dependable helper silhouette, NOT muscular man, NO rock or metal shell.",
+      "source": "exec-8f48657e-fed8-43dc-8ff3-746b7b28def0.png",
+      "user_approved": false,
+      "runtime_verified": false
+    },
+    {
+      "file": "modak-10.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "sha256": "aff1b4420def5a44f8e9fbe032afdce33fc54903e1130c3a314067967e36298f",
+      "number": 10,
+      "label": "긴 꼬리",
+      "prompt": "Create ONE original Modak fire spirit mascot candidate for Anvil Oath, fantasy pixel-art smithing game. 1024x1024 square. Full body centered with generous empty margin. Bright yellow/orange living flame with warm ivory core and tiny dark amber eyes; NO charcoal shell, no black torso, no rocks, no clothes, no tools, no text, no watermark. High quality crisp anime-inspired PIXEL ART with deliberately large square clusters, limited warm palette, clean readable silhouette for a future32-64px workshop companion. Isolated character on plain SOLID pale blue-gray background #DCE5EB, flat uniform color, no checkerboard, no scenery, no ground or shadow. This background is intentionally a STYLE REVIEW backdrop, not a final game sprite. Original personality warm and gently curious, not permanent exaggerated grin. Single design only, not a contact sheet. DESIGN: Long-tailed flame sprite: round small head with short windswept flame crest, large soft eyes, little separate body, two tiny arms, short legs, and an oversized elegant ribbonlike fire tail looping up behind without obscuring face. Playful curious but calm pose, distinctive circular tail silhouette. Entirely fire, not dragon, no wings/scales/horns.",
+      "source": "exec-6e4679c9-383e-4dc8-9394-167789ad1cb0.png",
+      "user_approved": false,
+      "runtime_verified": false
+    }
+  ],
+  "qa": "All ten reviewed visually; distinct silhouettes, bright flame bodies, no charcoal shell. Background has slight model texture rather than exact uniform requested color. No transparency or native pixel-grid completion claimed."
+}

@@ -28,7 +28,7 @@ class YoungSmithCandidateContract(unittest.TestCase):
         self.assertEqual(sum(c["role"] == "young_smith" for c in record["candidates"]), 3)
         self.assertEqual(sum(c["role"] == "fire_spirit" for c in record["candidates"]), 1)
         for candidate in record["candidates"]:
-            self.assertFalse(candidate["user_approved"])
+            self.assertEqual(candidate["user_approved"], candidate["file"] == "smith-01.png")
             self.assertFalse(candidate["runtime_verified"])
             self.assertTrue(candidate["consumer"])
             self.assertTrue(candidate["prompt"])
