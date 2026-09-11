@@ -1,6 +1,25 @@
 {
   "status": "USER_REVIEW_PENDING",
   "runtime_changed": false,
+  "refinements": [
+  {
+    "parent": "modak-01.png",
+    "file": null,
+    "source_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-d7ef5de0-910f-47a4-a0e8-c6f4eab79f1e.png",
+    "sha256": "917c23934cad25c3877a5f8ba17c93be963488eff50af040405f65a38a0d7c2e",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "alpha_status": "FAILED_NO_ALPHA",
+    "user_approved": false,
+    "runtime_verified": false,
+    "prompt": "Edit target: attached Modak fire spirit. Background-extraction correction only. Preserve the exact young cute flame character, its flame shape, large amber eyes, calm smile, colors, pose, pixel-art rendering and tiny sparks. REMOVE all gray/white checkerboard pixels and background haze. Output a real transparent PNG with actual alpha zero everywhere outside character and sparks. Character interior should be fully opaque. Do not illustrate a transparency checkerboard; do not add any background color, shadows, glow halo, floor, new objects or text. No style redesign, no new poses. Isolated crisp pixel-art game character cutout with empty transparent margin. Square source composition retained. Needed for planned workshop companion sprite BP11-MODAK-STYLE; candidate correction, no new art approval.",
+    "qa": "Image model reproduced distorted checkerboard instead of extracting background. Rejected as runtime input; no duplicate repository binary. Original style candidate preserved.",
+    "next": "Do not repeat identical extraction indefinitely. Resolve supported background-processing path before sprite packaging; smith selection remains pending."
+  }
+],
   "production_status": "STYLE_REVIEW_ONLY_NOT_ASSET_READY",
   "generator": "built-in image_gen",
   "visual_reference": "docs/design/candidates/blueprint-20260911/forge.png",
