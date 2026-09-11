@@ -10,6 +10,24 @@ RECORD = ROOT / 'docs/design/candidates/blueprint-20260911/record.json'
 
 
 class IntegratedHumanBlueprint(unittest.TestCase):
+    def test_atlas_contains_state_comparisons_not_repeated_backdrops(self):
+        content = SOURCE.read_text(encoding='utf-8')
+        self.assertEqual(content.count('```stateatlas'), 5)
+        for section in ['## 46.', '## 47.', '## 48.', '## 49.', '## 50.', '## 51.']:
+            self.assertIn(section, content, section)
+        self.assertIn('4/4/5', content)
+        self.assertIn('WORLD_EXPANDED', content)
+        import re
+        states = [row.split('|') for block in re.findall(r'```stateatlas\n(.*?)\n```', content, re.S) for row in block.splitlines()]
+        self.assertEqual(len(states), 15)
+        for state in states:
+            self.assertEqual(len(state), 9)
+            current, maximum, base = map(int, state[3].split('/'))
+            self.assertTrue(0 <= current <= maximum <= base)
+        repair = next(state for state in states if state[0] == '수리 전')
+        result = next(state for state in states if state[0] == '수리 후 / 흉터 예')
+        self.assertGreater(int(result[3].split('/')[0]), int(repair[3].split('/')[0]))
+
     def test_approved_character_growth_is_in_human_reader(self):
         content = SOURCE.read_text(encoding='utf-8')
         for expected in ['## 42.', '## 43.', '## 44.', '## 45.',

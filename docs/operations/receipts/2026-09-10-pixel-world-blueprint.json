@@ -13,12 +13,12 @@
   "scope": "2026-09-11 user-authorized integrated human blueprint preparation and actual-consumer candidate images.41sections/pages, detailed SWOT strategies, atlas, rules, data, trial economy, events, save contracts. Final user review pending. No product mutation, asset promotion, save migration or unrelated PR takeover.",
   "artifact": {
     "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
-    "sha256": "8dfaadff3b8d101cb1e5fa732a055468743d48ffd8f95ede60c6ebf94b3ce5c6",
-    "page_count": 45,
+    "sha256": "87b4a89e18cccb9f172bb7b765e70d94eec23cec4113475d1beac0c7892d4bf6",
+    "page_count": 51,
     "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
-    "source_sha256": "ea378b0aa55dbff753b2fb3f7de8d8fc9186c3a5b091a5df8f08b36f5c5a1b2c",
+    "source_sha256": "9e656341edbcae69f1f17d5e90fd3044d5a64526a3e1d165aaaec9c5bef24526",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "2026-09-12: all45pages rendered locally at72dpi; new42-45pages visually inspected, no observed clipping. Previous41-page review retained as historical evidence, old smith caption/disposition updated. Approved young smith and two Modak appearances embedded; growth year3 remains recommended, calendar/save/motion/runtime not implemented. No runtime screenshots.",
+    "visual_review": "2026-09-12: 51-page PDF; changed1/2 and new46-51 rendered and visually inspected at86.4dpi. 15 state panels compare enhancement branches, tag alternatives, ownership, repair and world layout. Disabled-button contrast corrected. Remaining pages retain prior review. No runtime screenshots; physical engraving/crack assets still not ready.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {

@@ -23,12 +23,65 @@ class AtlasCard(Flowable):
         self.title,self.detail,self.number=title,detail,number
     def draw(self):
         c=self.canv;c.setFillColor(colors.HexColor('#172d32'));c.rect(0,0,240,101,fill=1,stroke=0)
-        bg=ASSETS/('adventure.png' if self.number in (5,6) else 'forge.png')
-        c.drawImage(str(bg),3,28,111,70,mask='auto',preserveAspectRatio=True,anchor='c')
-        c.setFillColor(colors.HexColor('#eee7d8'));c.rect(120,30,114,65,fill=1,stroke=0)
-        c.setFillColor(colors.HexColor('#20333a'));c.setFont('KRB',8)
-        for i,s in enumerate(self.detail.split(' / ')): c.drawString(125,80-i*15,s)
-        c.setFillColor(colors.HexColor('#f4e5bf'));c.setFont('KRB',10);c.drawString(7,10,f'{self.number+1:02}  {self.title}')
+        c.setFillColor(colors.HexColor('#f4e5bf'));c.setFont('KRB',11);c.drawString(10,79,f'{self.number+1:02}  {self.title}')
+        c.setFont('KR',9)
+        for i,s in enumerate(self.detail.split(' / ')): c.drawString(10,56-i*18,s)
+
+
+class StatePanel(Flowable):
+    """Text-native UI state diagram with unchanged existing candidate images."""
+    def __init__(self, row):
+        Flowable.__init__(self)
+        self.width, self.height = 240, 312
+        fields = row.split('|')
+        if len(fields) != 9:
+            raise ValueError('State atlas requires nine fields')
+        self.title,self.mode,self.level,self.durability,self.tag,self.owner,self.notice,self.button,self.delta = fields
+
+    def draw(self):
+        c=self.canv
+        def box(x,y,w,h,color):
+            c.setFillColor(colors.HexColor(color));c.rect(x,y,w,h,fill=1,stroke=0)
+        def text(x,y,value,size=9,color='#20383c',bold=False):
+            c.setFillColor(colors.HexColor(color));c.setFont('KRB' if bold else 'KR',size);c.drawString(x,y,value)
+        box(0,0,240,307,'#d7d3c8');box(3,3,234,301,'#fcfaf4')
+        box(3,277,234,27,'#20383c');text(12,286,self.title,11,'#f4e5bf',True)
+        text(12,261,'철방패 / 동일 작품 UID S-001',9,bold=True)
+        expanded=self.mode in ('WORLD_EXPANDED','WORLD_FOCUS')
+        if expanded:
+            bh=118 if self.mode=='WORLD_FOCUS' else 69
+            c.drawImage(str(ASSETS/'adventure.png'),12,242-bh,216,bh,mask='auto')
+            box(12,242-bh,216,17,'#20383c');text(17,247-bh,'세계 기록 재현 / 결과 조작 불가',8,'#ffffff')
+            text(12,249,'세계창 '+('확대' if bh==118 else '펼침'),8)
+            if bh==118:
+                text(12,108,'목표 달성 / 방패 손상',11,bold=True)
+                text(12,90,'닫아도 결과·보상 동일',9)
+            else:
+                text(12,155,'+%s  |  %s'%(self.level,self.tag),11,bold=True)
+                text(12,137,'작품 편집: '+self.owner,9)
+                text(12,119,'관람 화면과 작업 영역 분리',9)
+                text(12,101,'결정창을 열면 관람 일시정지',9)
+        else:
+            box(12,167,72,77,'#e6e0d4')
+            # Clip the existing 128x128 shield cell; no new art or file mutation.
+            c.saveState();clip=c.beginPath();clip.rect(15,171,64,64);c.clipPath(clip,stroke=0,fill=0)
+            c.drawImage(str(ASSETS/'items.png'),15-64,171-128,192,192,mask='auto');c.restoreState()
+            text(94,226,'+%s 철방패'%self.level,15,bold=True)
+            text(94,207,self.tag,10,'#765316',True)
+            text(94,188,self.owner,9)
+            current,maximum,base=map(int,self.durability.split('/'))
+            text(12,151,'현재 / 한계 / 출생  '+self.durability,9,bold=True)
+            for y,label,ratio in [(130,'현재 상태',current/maximum),(110,'구조 상태',maximum/base)]:
+                text(12,y,label,8);box(70,y-1,100,8,'#dedbd3');box(70,y-1,100*ratio,8,'#45837e' if ratio==1 else '#b8773b')
+                text(180,y,f'{ratio:.0%}',8)
+            if self.mode=='CHRONICLE':
+                text(12,88,'연대기: 손상 → 수리·흉터',9,bold=True)
+            else:
+                text(12,88,self.notice,9,bold=True)
+        box(12,47,216,27,'#c8ccc7' if self.button.startswith('불가') else '#275f60')
+        text(21,57,self.button,10,'#34443f' if self.button.startswith('불가') else '#ffffff',True)
+        text(12,29,self.delta,8,'#7d4825',True)
+        text(12,12,'설계 상태 비교 / 인게임 촬영 아님',7,'#67716c')
 
 def build():
     pdfmetrics.registerFont(TTFont('KR','C:/Windows/Fonts/malgun.ttf'))
@@ -63,6 +116,9 @@ def build():
             if kind=='atlas':
                 cards=[AtlasCard(*s.split('|'),n) for n,s in enumerate(block)]
                 story.append(Table([cards[k:k+3] for k in range(0,len(cards),3)],colWidths=[254]*3))
+            elif kind=='stateatlas':
+                if len(block)!=3: raise ValueError('State atlas must compare three states')
+                story.append(Table([[StatePanel(row) for row in block]],colWidths=[254]*3))
             elif kind=='wireframe':
                 first=Phone(block);j=i+1
                 while j<len(lines) and not lines[j].strip(): j+=1
