@@ -1,0 +1,50 @@
+{
+  "consumer_id": "BP12-SHIELD-STATES",
+  "path": "docs/design/candidates/shield-states-20260912/shield-states-01.png",
+  "sha256": "82d32b8091393de087e152f25a632a6c7478806bd13d3bceb3e95ba2f55dd488",
+  "states": [
+    "BASE",
+    "ENHANCED_FINISH",
+    "AGILITY_I",
+    "AGILITY_II",
+    "DAMAGED_AGILITY_II",
+    "REPAIRED_AGILITY_II"
+  ],
+  "status": "REVIEWED_CANDIDATE_REQUIRES_REFINEMENT",
+  "user_approved": false,
+  "runtime_promoted": false,
+  "alpha_verified": false,
+  "mode": "RGB",
+  "size": [
+    1536,
+    1024
+  ],
+  "tool_route": "builtin image_gen.imagegen",
+  "prompt": "Use case: precise-object-edit. Create ONE production-candidate state sprite sheet of the SAME iron round shield from the TOP CENTER cell of the attached project equipment atlas. Ignore all other items. Intended actual consumer: fantasy pixel-art blacksmith game equipment display/inventory/chronicle. Output 1536x1024 PNG with a genuinely transparent alpha background. Exactly 3 columns x 2 rows of equal 512-square cells. Each cell contains one centered full shield, identical 340px diameter, front-facing camera with the same slight perspective, same position, same round silhouette, bronze rim, central boss, rivet count/locations and cool steel panel segmentation as reference. Keep detailed tasteful fantasy pixel art, not photoreal/3D render or smooth anime. No text, labels, numbers, arrows, grid lines, UI, background, scenery, cast shadow, checkerboard or white backdrop. SIX STATES in reading order: top-left original plain worn iron shield; top-middle the identical intact shield with more refined polished edge and carefully finished metal but NO new shape, NO extra ornament and NO tag; top-right polished shield with ONE small flowing wind-like engraved groove on the upper-right steel quadrant, subtle pale cyan inlay, representing agility tag I. Bottom-left same polished shield with TWO parallel nested flowing engraved grooves in exactly that upper-right quadrant representing agility tag II, small controlled cyan inlay, not a giant glowing logo; bottom-middle identical tag-II shield but a visible narrow diagonal crack and slight rim nick in LOWER LEFT quadrant (do not break silhouette or remove large chunks); bottom-right the very SAME previous damage repaired with a narrow understated dark seam and tiny metal staple at the SAME lower-left location, crack CLOSED but recognizable permanent repair scar. Both damaged and repaired keep paired upper-right tag engraving. Differences must be legible at game-icon scale without replacing shield identity. Absolutely no grade/color rarity variants. All six are the same item at different enhancement/tag/damage states, not six different shields. Keep equal scale, padding, registration. Preserve true alpha around each shield; never draw checkerboard pixels.",
+  "source": {
+    "path": "docs/design/candidates/blueprint-20260911/items.png",
+    "sha256": "b258e76d8797386d805a3e91c080e9f4ed668b3ff00d0b3dbcb79f1a18078b4f",
+    "rect": [
+      128,
+      0,
+      128,
+      128
+    ],
+    "approval": "CANDIDATE_NOT_FINAL"
+  },
+  "inspection": {
+    "visible_state_changes": "Single/paired engraving and lower-left crack/repair staple distinguishable at full size.",
+    "failures": [
+      "RGB image has baked checkerboard; no alpha channel.",
+      "Generated shield segmentation differs from source candidate.",
+      "Cell-to-cell registration not pixel-exact; 128px pixel-grid readiness unverified."
+    ],
+    "runtime": "NOT_RUN",
+    "aseprite": "NOT_PACKAGED_SOURCE_FAILED_ALPHA_GATE",
+    "pdf": "Existing 51-page PDF unchanged; this is a separate candidate, not a published PDF update."
+  },
+  "research": [
+    "https://www.aseprite.org/docs/sprite-sheet/",
+    "https://www.aseprite.org/docs/color-mode/"
+  ]
+}

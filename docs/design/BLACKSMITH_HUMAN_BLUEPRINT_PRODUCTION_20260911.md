@@ -14,6 +14,17 @@
 
 ## 신규 후보 Visual Requirement
 
+### BP12-SHIELD-STATES / 2026-09-12
+
+- 검수 결과: `candidates/shield-states-20260912/record.json`에 6상태 후보·원본 hash·생성 전문·검수 기록. 기본→마감→각인I→II→균열→수리 흔적은 구분되지만 RGB 바둑판이 구워져 alpha gate FAIL. 원본 후보와 판 분할도 달라졌고 셀별 정합·128px 판독은 미검증. 외형 비교 후보로만 보존하며 ASSET_READY/사용자 승인/runtime 적용은 아니다. 51쪽 PDF는 이번 후보를 포함하지 않은 기존 검증본 그대로다. 후속은 실제 투명 배경 재생성과 동일 피벗·실루엣 정렬, 이후 Aseprite 패키징이다.
+
+- consumer_id: BP12-SHIELD-STATES; consumer_surface: workshop item display / inventory / chronicle / planned world equipped shield; runtime_asset_role: same iron_shield appearance states; primary_use: PLANNED_GAME_SURFACE.
+- implementation_owner_or_path: `scripts/vertical_slice/ui/vs_workshop_screen.gd`의 장비 표현 후속, 세계 장착은 planned consumer. 현재 runtime에 자동 연결하지 않는다.
+- target_aspect_resolution: 3열2행,1536×1024 요청,512셀 생성 소스→선택 후128셀 pixel-grid 검수. 한 asset family 상태 시트이며 설명용 글자·화살표·가짜 UI 없음.
+- state_family_requirement: plain base / enhanced finish / 기민I single flowing groove / 기민II paired groove / damaged 기민II / repaired scar 기민II. 강화는 마감만, 태그는각인만, 손상·수리 흔적은 같은 위치에서 연속. 등급별 외형 변경 금지. 동일 원형·구리테두리·중심돌기·리벳·카메라·스케일 유지.
+- source: `candidates/blueprint-20260911/items.png` 상단중앙 iron_shield 후보. 다른8종은 이번 대상 아님. 기존 후보는 불변. 모델은 기존 픽셀 계열을 유지하며 모닥의 비픽셀 예외를 장비로 확대하지 않는다.
+- fallback_if_unconsumed: generated candidate로 보존; 기존51쪽 도식/원본 유지. 실제 알파·셀 정렬·128px판독·각인 위치·runtime은 별도 확인. native 원본 패키징은 파일검수 후, 사용자 외형 승인 전 정본 승격 금지.
+
 공통 스타일: 중간 밀도 판타지 픽셀, 강철 청회색/청동/갈색 가죽/청록 직물, 명확한 실루엣, 원작 캐릭터·로고 복제 금지. 그림 안 글자·UI·설명문 금지. 원본은 보존하며 최종 표시 크기에서 검수한다. 실제 게임에서 소비할 영역을 문서가 미리 보여 주는 것이며 장식 전용 출력이 아니다.
 
 | consumer_id | surface / implementation owner | 역할 / primary_use | 목표 규격 | 상태군 / fallback |
