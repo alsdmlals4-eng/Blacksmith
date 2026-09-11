@@ -11,7 +11,36 @@
   "later_from_year": 3,
   "formula": "companion_year = floor((current_day - joined_day) / days_per_year) + 1",
   "validation": "Require integer current_day >= joined_day >= 1 and days_per_year > 0; missing joining record means NOT_JOINED; invalid inputs must not be silently clamped.",
-  "day_advance": "UNSPECIFIED_DEPENDENCY_NO_NEW_FATIGUE_OR_REALTIME_RULE",
+  "day_advance": "MANUAL_CLOSE_RECOMMENDED_NOT_APPROVED",
+  "day_close_review": {
+    "status": "RECOMMENDED_TEST_ONLY",
+    "trigger": "EXPLICIT_PLAYER_DAY_CLOSE",
+    "day_delta": 1,
+    "free_reward": 0,
+    "enhancement_advances_day": false,
+    "unaccepted_offer_auto_reroll": false,
+    "transaction_key": "campaign_id + source_day",
+    "eligible_state": "WORKSHOP_IDLE_NO_UNRESOLVED_TRANSACTION",
+    "accepted_order_policy": "PERSIST_UNTIL_TERMINAL_STATE_NO_IMPLICIT_DEADLINE",
+    "offer_refill_policy": "ONLY_EMPTY_COMPLETED_SLOTS_NEXT_DAY_PERSISTED_DEFINITION_SEQUENCE",
+    "decline_policy": "DEFERRED_NO_FREE_REPLACEMENT_BY_REPEATED_CLOSE",
+    "world_due_policy": "RESOLVE_ON_COMMITTED_DAY_TRANSITION_ONCE_PER_EVENT_NOT_ON_VIEW",
+    "required_cases": [
+      "SAVE_FAILURE_NO_STATE_CHANGE",
+      "DUPLICATE_SOURCE_DAY_NO_SECOND_ADVANCE",
+      "STILL_RUNNING_ENHANCEMENT_NO_CLOSE",
+      "NO_EXPIRY_WITHOUT_EXPLICIT_ORDER_CONTRACT",
+      "EMPTY_DAY_NO_RESOURCES_OR_OFFER_REROLL",
+      "ACCEPTED_ORDER_SURVIVES_CLOSE",
+      "WORLD_PANEL_CLOSED_SAME_RESULT",
+      "UNKNOWN_SCHEDULE_PROFILE_BLOCK_NO_GUESSED_REWARD"
+    ],
+    "unresolved_for_playtest": [
+      "EMPTY_DAY_SKIPPING_MAY_TRIVIALIZE_GROWTH",
+      "UNLIMITED_SAME_DAY_WORK_MAY_STALL_CALENDAR",
+      "ORDER_SLOT_COUNT_AND_REPORT_DELAY_NOT_YET_LOCKED"
+    ]
+  },
   "calendar_policy_migration": "Persist policy version per campaign; balance changes do not retroactively accelerate growth in existing saves.",
   "boundary_cases": [
     {"joined_day": 1, "current_day": 1, "expected_companion_year": 1, "expected_appearance": "EARLY"},

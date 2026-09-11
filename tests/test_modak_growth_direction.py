@@ -8,6 +8,19 @@ FOLDER = ROOT / "docs/design/candidates/modak-human-20260911"
 
 
 class ModakGrowthDirection(unittest.TestCase):
+    def test_day_close_review_preserves_core_and_pending_orders(self):
+        review = json.loads((ROOT / "docs/planning/BLACKSMITH_MODAK_CALENDAR_REVIEW_20260912.json").read_text(encoding="utf-8"))
+        policy = review["day_close_review"]
+        self.assertEqual(policy["status"], "RECOMMENDED_TEST_ONLY")
+        self.assertEqual(policy["trigger"], "EXPLICIT_PLAYER_DAY_CLOSE")
+        self.assertEqual(policy["day_delta"], 1)
+        self.assertEqual(policy["free_reward"], 0)
+        self.assertFalse(policy["enhancement_advances_day"])
+        self.assertFalse(policy["unaccepted_offer_auto_reroll"])
+        self.assertEqual(policy["transaction_key"], "campaign_id + source_day")
+        self.assertIn("SAVE_FAILURE_NO_STATE_CHANGE", policy["required_cases"])
+        self.assertIn("NO_EXPIRY_WITHOUT_EXPLICIT_ORDER_CONTRACT", policy["required_cases"])
+
     def test_calendar_review_is_not_runtime_or_final_balance(self):
         path = ROOT / "docs/planning/BLACKSMITH_MODAK_CALENDAR_REVIEW_20260912.json"
         review = json.loads(path.read_text(encoding="utf-8"))
