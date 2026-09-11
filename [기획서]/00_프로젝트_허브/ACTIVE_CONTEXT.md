@@ -2,7 +2,7 @@
 
 > 모닥 최신: 비픽셀 인간형 불의 정령의 EARLY/LATER 두 외형과 연차 성장 방향은 사용자 승인. `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`의 MODAK_GROWTH_PREPARATION이 상세 권장안 책임 원본이다. 합류3년 차 전환은 미잠금 권장값; 현재 달력 연결·저장 마이그레이션·모션은 미구현. 아래10안은 역사 탐색이며 대장장이1번 선택 유지. 전체 게임 그림체 변경·제품 구현 승인으로 확대하지 않는다.
 
-> 2026-09-12 현재: PDF45쪽에 승인 캐릭터·성장 체크 수록. 후속 감사·시간·수동 영업 마감 권장안은 제작 계약의 Remaining work audit 20260912 및 `docs/planning/BLACKSMITH_MODAK_CALENDAR_REVIEW_20260912.json` 참조.120일/년·수동 마감은 미승인 시험값. 무보상 마감·주문 유지·중복 방지 명세 준비, 다음은 주문 수·보고 지연·빈 날 넘기기 검토. 후속안 PDF 미반영, 게임·기존 저장 불변. 아래41쪽/모닥10안은 역사 상태다.
+> 2026-09-12 현재: PDF45쪽 유지. 후속 감사/시간/주문은 제작 계약 Remaining work audit 20260912 및 `docs/planning/BLACKSMITH_MODAK_CALENDAR_REVIEW_20260912.json` 참조. 수동 마감 권장안으로 준비 계속 승인. 재기1+선택2칸·보고1/2/3일은 시험값; 오프라인 모형7검사 완료. 빈 날240회로 성장 가능 반례가 남아120일/년 최종 잠금 HOLD. 다음은 대표1일 화면·플레이 과제와 PDF 통합. 후속안 PDF 미반영, 게임·기존 저장 불변. 아래41쪽/모닥10안은 역사 상태다.
 
 > CURRENT_PRIORITY_OVERLAY: 최신 사용자 요청과 아래 통합 검토본이 현재 작업 경계를 소유한다. 기존 확정 규칙의 provenance와 부분 대체 비교는 `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`를 함께 읽는다. 이 역사 원장이 최신 픽셀 재기획·최종 승인 대기를 덮어쓰지는 않는다.
 
