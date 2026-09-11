@@ -86,7 +86,7 @@ def build():
         c.setFillColor(colors.HexColor('#20383c'));c.rect(0,H-33,W,33,fill=1,stroke=0)
         c.setFillColor(colors.HexColor('#e0bd70'));c.setFont('KRB',9);c.drawString(40,H-22,'모루의 서약 / ANVIL OATH / 사람용 통합 블루프린트')
         c.setStrokeColor(colors.HexColor('#b59b68'));c.line(40,32,W-40,32)
-        c.setFont('KR',8);c.setFillColor(colors.HexColor('#5f6d6a'));c.drawString(40,19,'2026.09.11 · 최종 검토용 · 후보/기획/구현/검증 상태 분리 · 인게임 촬영 아님')
+        c.setFont('KR',8);c.setFillColor(colors.HexColor('#5f6d6a'));c.drawString(40,19,'2026.09.12 갱신 · 최종 검토용 · 외형 승인/기획/구현/검증 상태 분리 · 인게임 촬영 아님')
         c.drawRightString(W-40,19,str(doc.page))
     SimpleDocTemplate(str(OUTPUT),pagesize=(W,H),leftMargin=40,rightMargin=40,topMargin=48,bottomMargin=43,title='모루의 서약 사람용 통합 블루프린트',author='Blacksmith project').build(story,onFirstPage=page,onLaterPages=page)
     print(OUTPUT)

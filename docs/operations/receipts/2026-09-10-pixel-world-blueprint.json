@@ -13,12 +13,12 @@
   "scope": "2026-09-11 user-authorized integrated human blueprint preparation and actual-consumer candidate images.41sections/pages, detailed SWOT strategies, atlas, rules, data, trial economy, events, save contracts. Final user review pending. No product mutation, asset promotion, save migration or unrelated PR takeover.",
   "artifact": {
     "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
-    "sha256": "b69f1b622a52ded16ead4b960141d15aa5e123eed2f0b26ef268478b18a6c88d",
-    "page_count": 41,
+    "sha256": "8dfaadff3b8d101cb1e5fa732a055468743d48ffd8f95ede60c6ebf94b3ce5c6",
+    "page_count": 45,
     "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
-    "source_sha256": "a528e41b80f1a6ee54c4fdf33f928d7482565db24f1c2e6aa66490bdfc811521",
+    "source_sha256": "ea378b0aa55dbff753b2fb3f7de8d8fc9186c3a5b091a5df8f08b36f5c5a1b2c",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "All41pages rendered at85dpi and individually inspected after table header contrast correction. One section per page, no observed text/table clipping. Seven candidate families embedded, world actor explicitly rejected as runtime input because RGB checkerboard persisted after correction. Original21-page PDF unchanged. No runtime screenshots.",
+    "visual_review": "2026-09-12: all45pages rendered locally at72dpi; new42-45pages visually inspected, no observed clipping. Previous41-page review retained as historical evidence, old smith caption/disposition updated. Approved young smith and two Modak appearances embedded; growth year3 remains recommended, calendar/save/motion/runtime not implemented. No runtime screenshots.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {

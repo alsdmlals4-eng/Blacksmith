@@ -10,6 +10,13 @@ RECORD = ROOT / 'docs/design/candidates/blueprint-20260911/record.json'
 
 
 class IntegratedHumanBlueprint(unittest.TestCase):
+    def test_approved_character_growth_is_in_human_reader(self):
+        content = SOURCE.read_text(encoding='utf-8')
+        for expected in ['## 42.', '## 43.', '## 44.', '## 45.',
+                         'modak-human-02-younger.png', 'modak-human-01.png',
+                         'smith-01.png', '3년 차', '게임 1년의 길이']:
+            self.assertIn(expected, content, expected)
+
     def test_receipt_binds_source_and_pdf(self):
         receipt=json.loads((ROOT/'docs/operations/receipts/2026-09-10-pixel-world-blueprint.json').read_text(encoding='utf-8'))['artifact']
         self.assertEqual(receipt['source_sha256'],hashlib.sha256(SOURCE.read_bytes().replace(b'\r\n',b'\n')).hexdigest())

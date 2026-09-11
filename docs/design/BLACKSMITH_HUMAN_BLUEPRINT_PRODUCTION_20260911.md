@@ -72,6 +72,8 @@
 
 ## 제작·검수 체크포인트
 
+- 2026-09-12 통합 PDF 갱신: 기존41절 유지,42~45절에 선택한 청년 대장장이·승인 모닥 EARLY/LATER·성장 체크리스트를 수록해45쪽으로 재발행했다. 아래 PDF 미반영 문구는 이 갱신으로 대체된다. 전45쪽 렌더 생성, 변경28/41절 및 신규42~45절 화면 검수, 절당1쪽·source/PDF 해시 검증. 새 이미지 생성·게임 구현·달력/세이브 변경 없음. 문서 번들에는 PyMuPDF가 없어 기존 시스템 Python에서 렌더했다. 추가 설치 없음.
+
 ### MODAK_GROWTH_PREPARATION — 연차 성장 상세 권장안
 
 2026-09-11 후속 기획. 두 외형과 함께 성장하는 방향은 USER_APPROVED. 아래 시점·저장·연출 규칙은 RECOMMENDED / FINAL_USER_REVIEW_PENDING이며 제품 구현 승인이 아니다. 이미지 record의 `growth_schedule=UNSPECIFIED_REVIEW_REQUIRED`는 **최종 잠금 미완료**를 뜻하며 이 권장안을 승인값으로 오인하지 않는다.
