@@ -1,5 +1,17 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## 2026-09-13 고객 선택·실제 강화 트랜잭션 연결 후속
+
+- 사용자 `그래 진행해`로 이전 권장안의 연속 실행. 계획: 고객 적합도 비교 모델 RED→GREEN → 기존 강화 resolver의 명시적 ruleset 분기 → 기존 비용/저장 서비스 재사용 → 성공·실패·저장 실패·5종 자격·중복 성공 재시도 검증. 신규 화면이나 별도 게임을 만들지 않는다.
+- 조사: 아래 Weapon Shop Fantasy/Anvil Saga/Shop Titans 공식 페이지를 다시 확인. 제작 선택과 실제 용도 연결은 ADAPT, 독립 이름의 촉매는 ADAPT, 인력/건물 확장·타작품 수치 복제는 REJECT. 재료 부족 선택지도 성공했을 때의 효과를 비교하되 실행 권한과 분리하는 것은 우리 UX 설계 판단이며 타작품의 실측 UI라고 주장하지 않는다.
+- 구현: `customer_choices`가 현재 적합도·4태그 선택의 성공 시 적합도/증분·촉매 요구/재고·차단 이유를 반환한다. 부족한 촉매는 비교만 허용; IV·4번째 태그는 불가능한 성장 수치를 제시하지 않는다. 실제 UI 연결은 아직 미완료.
+- 실제 consumer 연결: 기존 EnhancementResolver가 새 저장의 ruleset을 명시 판별하고 신규 precision adapter를 사용한다. 성공만 태그/이정표 성장, 기존 ActionService가 성공/판정 실패 모두 촉매1개와 기존 비용을 저장 후보에 적용한다. 저장 성공 이후에만 live 자원을 공개한다. 구형 schema1과 기존 강화/손상 확률은 유지한다. 새 태그는 기존 role_stat/weight에 구형 효과를 더하지 않는다.
+- 자원 이름 드리프트 해결: 새 규칙의 의미 ID `fire_heart`는 실제 자원 consumer의 기존 `heart_of_flame`에 명시 매핑한다. 둘 다 불의 심장이며 새 재고통·무료 재고·사용자 save 변환을 만들지 않는다. `earth_crystal`은 동일. 고객 비교 모델에 재고를 전달할 UI도 이 매핑을 지켜야 한다.
+- exact 보호 범위는 기존4경로 + `vs_enhancement_resolver.gd` + `vs_enhancement_action_service.gd`의6경로. 새 성공 연대기의 근거는 BS-REPLAN-20260913-02로 기록하고 과거 Decision40으로 오인시키지 않는다. 일반 보호 계약·Basev9.4.4·기준 SHA는 변경하지 않는다.
+- 검증 중 테스트가 원장 키를 `decision_id`로 잘못 가정해 debugger 중단. 실제 `source_decision_id`를 읽고 시험 수정; 해당 headless PID28472/30036만 종료. 제품 세이브·다른 편집기는 건드리지 않았다. HiGodot은 이 작업의 기존 class_name 스크립트에 fallback reload43을 보고하므로 실제 플레이 증거와 구분한다.
+- 남은 범위: 새 캠페인의 명시적 ruleset 시작, 고객 요구/태그 선택 UI, 동일UID 세계 사용 적합도, 실제 실행 캡처. 현재는 서비스까지 연결된 자동 시험 단계이며 사용자가 공방에서 이 새 선택을 누를 수 있다는 뜻은 아니다. PDF51쪽·이미지 불변.
+- 완료 증거: 선택 비교 RED3→GREEN9/399, 신규 트랜잭션 RED2→GREEN 및 추가 경계 검증10/65. 전체 debug GUT273/273·2380asserts PASS, 관련 Python14 PASS,6경로 approval gate PASS. 트랜잭션 시험은 실제 도메인/자원/서비스와 JSON readback을 사용하되 저장 성공·실패 반환은 시험 대역이다. 실제 파일 I/O는 이전 SaveService 시험으로 별도 커버되며 이 조합의 사용자 플레이/Android 검증은 NOT_RUN. 최신 Base 원격d830c0f6·프로젝트 main ff1c935d·타PR359/196 읽기전용 확인; adoptedv9.4.4 유지.
+
 ## 제품 완성 개선 루프 / BS-REPLAN-20260913-02
 
 - 최신 사용자 정의: 루프는 기술검사 반복이 아니라 유사 강화게임 조사→기획 구체화/시스템 연결→실제 구현→플레이 검토→개선이다. 테스트는 안전성 증거이지 제품 완성의 대체물이 아니다. 각 묶음은 플레이어에게 생기는 선택과 전후 경험을 먼저 정한다.

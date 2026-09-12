@@ -41,6 +41,81 @@ func preview(equipment_id: String, level: int, tags: Dictionary, tag_id: String,
 		"action": "ADD_TAG" if stage_before == 0 else "UPGRADE_TAG",
 		"catalyst_id": catalyst_id, "catalyst_cost": 1}
 
+# Adapter into the existing enhancement transaction; stock is checked by its owner.
+func selection_preview(item, target_level: int, selection: Dictionary) -> Dictionary:
+	if item == null:
+		return {"allowed": false, "reason": "MISSING_ITEM"}
+	var decoded := decode_saved_affix(item.catalyst_affix, item.enhancement_level, item.used_precision_milestones)
+	if not decoded.ok:
+		return {"allowed": false, "reason": decoded.reason}
+	if str(selection.get("ruleset_id", "")) != RULESET_ID:
+		return {"allowed": false, "reason": "INVALID_REPLAN_SELECTION"}
+	if target_level != int(item.enhancement_level) + 1:
+		return {"allowed": false, "reason": "TARGET_LEVEL_MISMATCH"}
+	if str(item.physical_state) == "DESTROYED":
+		return {"allowed": false, "reason": "ITEM_DESTROYED"}
+	var identity: Dictionary = load("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd").by_item(item)
+	var tag_id := str(selection.get("tag_id", ""))
+	var checked := preview(str(identity.get("equipment_id", "")), int(item.enhancement_level),
+		decoded.affix.tags, tag_id, {"fire_heart":1, "earth_crystal":1})
+	if not checked.ok:
+		return {"allowed": false, "reason": checked.reason}
+	var fire: bool = checked.catalyst_id == "fire_heart"
+	return {"allowed": true, "reason": "OK", "ruleset_id": RULESET_ID,
+		"action": checked.action, "tag_id": tag_id, "tags_after": checked.tags_after,
+		"stage_before": int(decoded.affix.tags.get(tag_id, 0)),
+		"stage_after": int(checked.tags_after[tag_id]),
+		"effect_axis": "EVENT_SUITABILITY", "effect_delta": 0,
+		"precision_catalyst_id": checked.catalyst_id,
+		"precision_catalyst_stock_key": "heart_of_flame" if fire else "earth_crystal",
+		"precision_catalyst_display_name_ko": "불의 심장" if fire else "대지의 결정",
+		"precision_catalyst_units": 1}
+
+func apply_selection_success(item, target_level: int, selection: Dictionary) -> Dictionary:
+	var result := selection_preview(item, target_level, selection)
+	if not result.allowed:
+		result["applied"] = false
+		return result
+	item.catalyst_affix["tags"] = result.tags_after.duplicate(true)
+	item.used_precision_milestones.append(target_level)
+	result["applied"] = true
+	return result
+
+# Read model for the workshop: hypothetical success is distinct from permission.
+# No resources, item state or event probabilities are changed here.
+func customer_choices(equipment_id: String, level: int, tags: Dictionary, inventory: Dictionary, axis: String, rhythm: String) -> Dictionary:
+	var before := support(tags, axis, rhythm)
+	if not before.ok:
+		return before
+	for catalyst in ["fire_heart", "earth_crystal"]:
+		var stock: Variant = inventory.get(catalyst, 0)
+		if typeof(stock) != TYPE_INT or stock < 0:
+			return {"ok": false, "reason": "INVALID_CATALYST_STOCK"}
+	var choices: Array = []
+	for tag_id in TAGS:
+		var available := preview(equipment_id, level, tags, tag_id, inventory)
+		if available.reason in ["UNKNOWN_EQUIPMENT", "INVALID_PRECISION_ENTRY", "MILESTONE_STATE_MISMATCH"]:
+			return available
+		var catalyst_id := "fire_heart" if TAGS[tag_id][1] == "BURST" else "earth_crystal"
+		var row := {"tag_id": tag_id, "allowed": available.ok, "reason": available.reason,
+			"catalyst_id": catalyst_id, "catalyst_cost": 1,
+			"catalyst_stock": int(inventory.get(catalyst_id, 0))}
+		var hypothetical := available
+		if available.reason == "INSUFFICIENT_CATALYST":
+			var comparison_stock := inventory.duplicate(true)
+			comparison_stock[catalyst_id] = 1
+			hypothetical = preview(equipment_id, level, tags, tag_id, comparison_stock)
+		if hypothetical.ok:
+			var after := support(hypothetical.tags_after, axis, rhythm)
+			row["points_after"] = after.points
+			row["points_delta"] = int(after.points) - int(before.points)
+			row["action"] = hypothetical.action
+			row["stage_before"] = int(tags.get(tag_id, 0))
+			row["stage_after"] = int(hypothetical.tags_after[tag_id])
+		choices.append(row)
+	return {"ok": true, "reason": "OK", "points_before": before.points,
+		"axis": axis, "rhythm": rhythm, "choices": choices}
+
 # Nested save version keeps legacy tag effects separate. JSON whole-number floats
 # are accepted only at this boundary, never booleans or fractional stages.
 func decode_saved_affix(value: Dictionary, level: Variant, milestones: Array) -> Dictionary:

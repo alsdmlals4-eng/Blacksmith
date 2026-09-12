@@ -232,7 +232,7 @@ func _append_precision_tag_growth_ledger(item, result: Dictionary, game_day: int
 		item.ledger.size() + 1,
 		"precision-tag-growth:%s:%d" % [str(item.uid), target_level],
 		PRECISION_TAG_GROWTH_EVENT_TYPE,
-		PRECISION_TAG_GROWTH_DECISION_ID,
+		"BS-REPLAN-20260913-02" if not str(result.get("precision_ruleset_id", "")).is_empty() else PRECISION_TAG_GROWTH_DECISION_ID,
 		"%s:%d" % [tag_id, stage_before],
 		"%s:%d" % [tag_id, stage_after],
 		game_day,

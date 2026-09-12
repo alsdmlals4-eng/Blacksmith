@@ -1,5 +1,7 @@
 # [현재 정본] Active Context
 
+> 2026-09-13 연속 구현: 고객 적합도 선택 read model과 신규 태그→기존 강화/비용/저장 서비스를 연결했다. 불의 심장 의미 ID fire_heart는 실제 기존 재고 heart_of_flame에 매핑한다. 성공만 성장·실패도촉매1·저장실패0, 5종 자격을 시험. 정확한 보호6경로·계획·검증 결과는 생산계약 최상단 소유. 새 캠페인/선택 UI/세계 적합도/실제 캡처는 아직 미완료; 아래 저장 경계만 완료·4경로 표현은 이전 증거다.
+
 > 최신 루프 정의: 벤치마킹→기획 구체화/연결→구현→플레이 검토→개선. BS-REPLAN-20260913-02에서 새 태그 nested schema2를 실제 Item/Envelope/SaveService에 연결했다. schema1 자동변환 없음; 잘못된 파일 덮어쓰기 차단. 전체 debug GUT267/2310, 관련 Python14, exact approval gate PASS. 고객 적합도 선택 UI·실소비·새 규칙 실제 플레이는 미완료. 생산계약 상단이 현 상세계획/증거 소유.
 
 > 2026-09-13 후속 루프: 원격 INTEGER_DIVISION/debug 차이와 과거 승인파일 영구부재 테스트 충돌을 재현·교정. 테스트 임시 화면2군 정리 후 전체 debug GUT259/2285 PASS, 관련 Python14 PASS, 승인 gate PASS. 원격 exact-head CI는 PR metadata 확인. 저장·비용 연결 상세계획은 생산계약 상단이며 아직 미구현; 게임 화면 검증 완료로 읽지 않는다.

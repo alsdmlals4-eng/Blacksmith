@@ -12,6 +12,8 @@ PATHS = [
     "scripts/vertical_slice/domain/vs_replan_tag_rules.gd.uid",
     "scripts/vertical_slice/domain/vs_item.gd",
     "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
+    "scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd",
+    "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
 ]
 
 

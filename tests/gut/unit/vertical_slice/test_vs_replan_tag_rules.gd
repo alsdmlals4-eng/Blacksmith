@@ -2,6 +2,49 @@ extends "res://addons/gut/test.gd"
 
 const PATH := "res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd"
 
+func test_customer_choices_compare_benefit_even_when_catalyst_is_missing() -> void:
+	var rules = load(PATH).new()
+	assert_true(rules.has_method("customer_choices"), "Customer comparison is not connected to tag rules")
+	if not rules.has_method("customer_choices"):
+		return
+	var tags := {"BURST_HANDLING": 1}
+	var stock := {"fire_heart": 0, "earth_crystal": 2}
+	var result = rules.customer_choices("iron_shield", 19, tags, stock, "HANDLING", "BURST")
+	assert_true(result.ok)
+	assert_eq(result.points_before, 3)
+	assert_eq(result.choices.size(), 4)
+	var upgrade: Dictionary = result.choices[2]
+	assert_eq(upgrade.tag_id, "BURST_HANDLING")
+	assert_false(upgrade.allowed)
+	assert_eq(upgrade.reason, "INSUFFICIENT_CATALYST")
+	assert_eq(upgrade.points_after, 6)
+	assert_eq(upgrade.points_delta, 3)
+	assert_eq(upgrade.catalyst_stock, 0)
+	assert_eq(upgrade.catalyst_cost, 1)
+	assert_true(result.choices[3].allowed)
+	assert_eq(result.choices[3].points_after, 4)
+	assert_eq(tags, {"BURST_HANDLING": 1})
+	assert_eq(stock, {"fire_heart": 0, "earth_crystal": 2})
+
+func test_customer_choices_do_not_offer_impossible_growth_or_invent_unknown_requirements() -> void:
+	var rules = load(PATH).new()
+	if not rules.has_method("customer_choices"):
+		assert_true(false, "Customer comparison missing")
+		return
+	var result = rules.customer_choices("iron_shield", 49, {"BURST_OUTPUT": 4}, {"fire_heart": 1}, "OUTPUT", "BURST")
+	assert_eq(result.choices[0].reason, "TAG_MASTERED")
+	assert_false(result.choices[0].has("points_after"))
+	assert_false(rules.customer_choices("iron_shield", 19, {}, {}, "UNKNOWN", "BURST").ok)
+	assert_false(rules.customer_choices("iron_shield", 18, {}, {}, "OUTPUT", "BURST").ok)
+
+func test_customer_choices_reject_malformed_stock_instead_of_claiming_it_is_spendable() -> void:
+	var rules = load(PATH).new()
+	if not rules.has_method("customer_choices"):
+		assert_true(false, "Customer comparison missing")
+		return
+	for bad in [true, 1.5, -1, "1"]:
+		assert_false(rules.customer_choices("iron_shield", 9, {}, {"fire_heart": bad}, "OUTPUT", "BURST").ok)
+
 func test_precision_preview_adds_and_upgrades_without_spending_or_mutating() -> void:
 	var rules = load(PATH).new()
 	assert_true(rules.has_method("preview"), "Selection transaction preview missing")

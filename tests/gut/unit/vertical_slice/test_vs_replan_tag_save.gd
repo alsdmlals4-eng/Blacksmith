@@ -4,6 +4,86 @@ const Item = preload("res://scripts/vertical_slice/domain/vs_item.gd")
 const Envelope = preload("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
 const Initializer = preload("res://scripts/vertical_slice/services/vs_run_initializer_service.gd")
 const Precision = preload("res://scripts/vertical_slice/resolvers/vs_precision_resolver.gd")
+const Action = preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
+const Resources = preload("res://scripts/economy/workshop_resources.gd")
+
+class SaveBoundary:
+	extends RefCounted
+	var error: Error = OK
+	var calls := 0
+	func save_envelope(candidate) -> Error:
+		calls += 1
+		var restored = Envelope.from_dict(JSON.parse_string(JSON.stringify(candidate.to_dict())))
+		return error if restored.validation_errors.is_empty() else ERR_INVALID_DATA
+
+func test_new_precision_transaction_commits_growth_and_one_existing_catalyst_stock_unit():
+	for success in [true, false]:
+		var envelope = Initializer.new().create_candidate_envelope()
+		var item = _item()
+		envelope.items_by_uid[item.uid] = item
+		var resources = Resources.new(20000, {"common_reinforcement_material":10, "heart_of_flame":2, "earth_crystal":2})
+		envelope.workshop_resources = resources.snapshot()
+		var save = SaveBoundary.new()
+		var result = Action.new().resolve_and_save_with_rolls(envelope, item.uid, 20,
+			{"success_roll_percent":0.0 if success else 99.9, "damage_roll_percent":100.0},
+			1, resources, save, {"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912", "tag_id":"BURST_HANDLING"})
+		assert_eq(result.outcome, "SUCCESS" if success else "FAILED_HOLD")
+		assert_eq(save.calls, 1)
+		assert_eq(resources.get_material_count("heart_of_flame"), 1)
+		assert_eq(item.enhancement_level, 19, "Source envelope stays unchanged until caller adopts result")
+		if result.has("envelope"):
+			var saved = result.envelope.get_item(item.uid)
+			assert_eq(saved.enhancement_level, 20 if success else 19)
+			assert_eq(saved.catalyst_affix.tags.BURST_HANDLING, 2 if success else 1)
+			assert_eq(saved.raw_role_stat, item.raw_role_stat)
+			assert_eq(saved.weight_point, item.weight_point)
+			var repeated = Action.new().resolve_and_save_with_rolls(result.envelope, item.uid, 20,
+				{"success_roll_percent":0.0}, 1, resources, save,
+				{"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912", "tag_id":"BURST_HANDLING"}) if success else {}
+			if success:
+				assert_eq(repeated.outcome, "BLOCKED")
+				assert_eq(save.calls, 1)
+				assert_eq(saved.ledger[-1].get("source_decision_id"), "BS-REPLAN-20260913-02")
+
+func test_new_precision_accepts_all_five_equipment_identities_and_requires_real_stock():
+	var catalog = load("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
+	for entry in catalog.all():
+		var envelope = Initializer.new().create_candidate_envelope()
+		var item = _item()
+		item.equipment_group = entry.equipment_group
+		item.role_profile = entry.role_profile
+		envelope.items_by_uid[item.uid] = item
+		var resources = Resources.new(20000, {"common_reinforcement_material":10, "heart_of_flame":0, "earth_crystal":2})
+		envelope.workshop_resources = resources.snapshot()
+		var save = SaveBoundary.new()
+		var blocked = Action.new().resolve_and_save_with_rolls(envelope, item.uid, 20,
+			{"success_roll_percent":0.0}, 1, resources, save,
+			{"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912", "tag_id":"BURST_HANDLING"})
+		assert_eq(blocked.reason, "INSUFFICIENT_PRECISION_CATALYST")
+		assert_eq(save.calls, 0)
+		var result = Action.new().resolve_and_save_with_rolls(envelope, item.uid, 20,
+			{"success_roll_percent":0.0}, 1, resources, save,
+			{"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912", "tag_id":"SUSTAIN_HANDLING"})
+		assert_eq(result.outcome, "SUCCESS", str(entry.equipment_id))
+		assert_eq(resources.get_material_count("earth_crystal"), 1)
+
+func test_new_precision_save_failure_and_empty_selection_do_not_spend_or_mutate():
+	for empty in [true, false]:
+		var envelope = Initializer.new().create_candidate_envelope()
+		var item = _item()
+		envelope.items_by_uid[item.uid] = item
+		var resources = Resources.new(20000, {"common_reinforcement_material":10, "heart_of_flame":2, "earth_crystal":2})
+		envelope.workshop_resources = resources.snapshot()
+		var before: Dictionary = envelope.to_dict()
+		var save = SaveBoundary.new()
+		save.error = ERR_CANT_CREATE
+		var selection := {} if empty else {"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912", "tag_id":"BURST_HANDLING"}
+		var result = Action.new().resolve_and_save_with_rolls(envelope, item.uid, 20,
+			{"success_roll_percent":0.0}, 1, resources, save, selection)
+		assert_eq(result.outcome, "BLOCKED")
+		assert_eq(save.calls, 0 if empty else 1)
+		assert_eq(envelope.to_dict(), before)
+		assert_eq(resources.snapshot(), envelope.resource_snapshot())
 
 func _item():
 	var item = Item.new()
