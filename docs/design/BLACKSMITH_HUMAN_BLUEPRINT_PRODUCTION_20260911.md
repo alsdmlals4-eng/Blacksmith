@@ -1,5 +1,29 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## 2026-09-13 보호 경로 복구 계획 — BS-OPS-20260913-01
+
+- 사용자 승인: 이번 불일치에 한해 실패 후 읽기 전용 조사와 승인 범위의 검증 계약 교정을 허용. 일반적인 실패 시 중단 규칙을 삭제하거나 확대하지 않는다.
+- 원인: 일반 검사만 실행했고, 이미 main CI가 채택한 `check_approved_project_operating_contract.py`와 외부 승인 표시를 사용하지 않았다. 아래 09-12의 일반 검사 PASS는 신규 규칙 파일 추가 전 기록이며 현재 상태를 뜻하지 않는다.
+- 계획: 누락 승인 manifest RED → 기존 `docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json` 표준 경로에 정확한 2파일 등록 → 외부 PR 승인 표시 대조 → CI-pinned 검사 및 미승인 추가 파일/누락/승인 없음/기준 불일치/다른 오류 보존 시험 → 상태 갱신.
+- 책임 원본: 승인 경로/기준은 위 JSON, 승인 근거와 작업계획은 이 절. BS-OPS-20260913-01은 신규 규칙 모듈과 UID에만 적용한다. UI/저장 연결 파일을 자동 허용하지 않는다.
+- ADOPT: Base DEC-BASE-20260806-002의 exact approval gate와 main workflow의 검증기 pin `43b3ffb2c5b026e3d4a38dab2338585894d36f61`. GitHub 공식 label/event 문서와 실제 workflow를 대조했다. REJECT: protected_paths 제거, 기준 SHA 이동, self-attested approval만으로 통과, Base 버전 교체.
+- 외부 근거: https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request ; https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels . 게임 벤치마킹은 이번 승인 기록 복구에는 무관하며 새로운 게임 규칙을 추가하지 않는다.
+- 구현 재개 전 순서: 승인 검사 통과 → 현재 작업 경로 fresh-read → I1 저장 분리 및 I2 원자적 비용/저장의 별도 세부계획. 파일 등록과 단위 시험은 플레이 가능 완성을 의미하지 않는다.
+- 복구 증거: manifest 누락 회귀 RED 1건 관측 후 GREEN. CI pin checkout에서 승인 gate PASS, PR371 `approved-protected-change` 실제 readback 확인. 승인/문서 회귀 11 tests PASS; 신규 태그 GUT 6 tests / 376 asserts PASS (Godot4.7.1/GUT9.7.1). 태그 모듈은 계산/미리보기만 구현됐으며 촉매 실소비·저장·화면 연결은 미완료. 전체 GUT/실제 플레이/Android/UX는 이번 범위 NOT_RUN. 원격 CI 결과는 exact-head PR metadata로 별도 확인한다.
+- 재사용 교훈: 일반 보호 오류를 보고 baseline을 이동하거나 승인 질문을 반복하기 전에, main workflow의 기존 승인 검사 및 실제 metadata를 확인한다. 이 복구는 기존 Base 기능 재사용이므로 공용 Base 코드 변경은 필요 없다. 이번 예외 외 오류는 계속 중단한다.
+
+## 2026-09-12 구현·개선 연속작업 승인
+
+최신 사용자 지시: Base를 fresh-read하고 조사·벤치마킹·개선·구현 루프를 별도 반복 승인 없이 계속 진행. `REPLAN_IMPLEMENTATION_AND_IMPROVEMENT_AUTHORIZED`. 아래 준비전용/최종 승인 전 구현금지는 이번 범위에서 역사 상태다. 새 비용·삭제·정본 파괴·보호 도구 우회는 승인으로 추정하지 않는다. 상세 시험값은 플레이 검증으로 교정하며 개별 후보를 사용자 승인했다고 표시하지 않는다.
+
+- 현재 main ff1c935d, 작업 PR371/head3f4ecca9 직접 후속; 타PR359/196 read-only.
+- Base current d830c0f6967678eed3c208ac6b24f9cd1b262ec3의 승인→사용자 시험가능 전달·연속작업 지침 적용; adoptedv9.4.4 변경 없음. 로컬 operating contract PASS.
+- 구현 큐: I1 신규 네 태그 ruleset/5종 자격/구형 저장 분리 → I2 정밀강화 선택·원자적 비용/저장 → I3 고객 사건 적합도/결과 → I4 선택형 세계창 → I5 하루/주문·모닥 성장 → I6 자산·모션 연결 → I7 실제 플레이·Android·PDF 증거 갱신.
+- 첫 점검: 현행 장비 catalog는 갑옷/투구 제외, resolver는 구형 촉매 효과를 소비한다. 자격 boolean만 바꾸면 새 기획과 다른 효과가 방어구에 적용될 수 있다. 따라서 새 ruleset의 순수 판정과 경계 시험부터 만든 뒤 UI/저장과 연결한다. 구형 저장에 신규 ID 자동 치환 금지.
+- 대안: 기존 catalog 일괄치환(REJECT: 구형 save/effect 오염), UI만 임시 개방(REJECT: 판정 불일치), 신규 ruleset 경계부터 연결(ADOPT: 독립 검증 후 전환). I1 분리 모듈은 통합 완료 전 플레이 가능 완성이라고 보고하지 않는다.
+- 조사: Weapon Shop Fantasy 공식 Steam599460의 제작/마법부여/모험 순환은 ADAPT, Anvil Saga1587540의 주문-세계 결과는 ADAPT, Gladiator Guild Manager1043260의 장비 준비-관전은 ADAPT. 직원급여/방확장/새 전투조작 복제는 REJECT. 공식 소개 desk research이며 실제 플레이나 비공개 구현을 조사했다고 주장하지 않는다. Godot Scene organization과 GUT command-line 책임 분리를 ADOPT.
+- 검증: 각 작업 RED→GREEN, 두 차례 범위 검토/회귀, exact-head 보호 감사·CI·실제 Godot. 세이브·이미지·UX·출시 증거는 독립 상태. 이미지 품질 교정은 미완료로 큐 유지.
+
 최신 사용자 요청(2026-09-11): 타 프로젝트의 사람용 PDF는 구조만 참고하고, 상세 기획·조사·SWOT 보완·실제 게임용 후보 자산·아틀라스·데이터·구현 인수인계를 완성해 최종 검토로 제출한다. IMAGE_PRODUCTION_RESUMED_BY_USER. 제품 구현은 최종 승인 전 금지한다.
 
 ## 범위와 책임

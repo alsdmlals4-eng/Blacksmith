@@ -1,5 +1,9 @@
 # [현재 정본] Active Context
 
+> 2026-09-13 보호 경로 복구: BS-OPS-20260913-01 / 생산계약 상단 및 PROJECT_PROTECTED_CHANGE_APPROVAL.json 참조. 정확한 신규 규칙 2파일과 실제 PR 승인 표시를 사용하는 CI-pinned 검사로 로컬 진입 PASS. 일반 검사 실패를 무시하는 것이 아니며 다른 오류·파일은 차단 유지. 향후 작업은 계획·영향·완료 기준 먼저 제시. UI·저장 통합/실제 플레이는 아직 미완료.
+
+> REPLAN_IMPLEMENTATION_AND_IMPROVEMENT_AUTHORIZED: 최신 사용자(2026-09-12)가 Base·조사 기반 구현/개선 루프를 재승인 없이 지시. 준비전용 차단은 이번 범위에서 대체됨. 큐/증거는 생산계약 상단 소유. 시험값/후보는 검증완료 아님; Base잠금·타PR·기존save 보호 유지.
+
 > 방패6상태 교정02: `docs/design/candidates/shield-states-20260912/record.json`. 실제 투명827,038픽셀 확보·Aseprite1프레임 왕복 동일. 내부 반투명/halo·셀 정렬은 미완료. source01의RGB 실패 이력 보존, PDF51쪽·게임 불변. 승인·ASSET_READY·runtime 완료 아님.
 
 > 모닥 최신: 비픽셀 인간형 불의 정령의 EARLY/LATER 두 외형과 연차 성장 방향은 사용자 승인. `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`의 MODAK_GROWTH_PREPARATION이 상세 권장안 책임 원본이다. 합류3년 차 전환은 미잠금 권장값; 현재 달력 연결·저장 마이그레이션·모션은 미구현. 아래10안은 역사 탐색이며 대장장이1번 선택 유지. 전체 게임 그림체 변경·제품 구현 승인으로 확대하지 않는다.

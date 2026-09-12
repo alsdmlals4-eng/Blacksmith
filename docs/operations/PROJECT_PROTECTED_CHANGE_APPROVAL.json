@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "c31e550fc8d5b27d4377aeb542fde3cbfe228c06",
+  "decision_ids": ["BS-OPS-20260913-01"],
+  "approved_paths": [
+    "scripts/vertical_slice/domain/vs_replan_tag_rules.gd",
+    "scripts/vertical_slice/domain/vs_replan_tag_rules.gd.uid"
+  ],
+  "approval_source": "Current user conversation: approval of the bounded protected-path recovery exception, followed by 승인,진행해. BS-OPS-20260913-01 is recorded in the current production contract. External PR metadata is required independently.",
+  "approval_time": "2026-09-13T00:11:29+09:00",
+  "scope_summary": "Register only the isolated replan tag-rule module and UID. No production UI/save integration, blanket path allowance, baseline change, Base version change, or validation bypass. Requires the existing CI-pinned exact approval validator and external approved-protected-change metadata."
+}
