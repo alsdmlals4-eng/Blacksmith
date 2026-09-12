@@ -1,5 +1,18 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## 제품 완성 개선 루프 / BS-REPLAN-20260913-02
+
+- 최신 사용자 정의: 루프는 기술검사 반복이 아니라 유사 강화게임 조사→기획 구체화/시스템 연결→실제 구현→플레이 검토→개선이다. 테스트는 안전성 증거이지 제품 완성의 대체물이 아니다. 각 묶음은 플레이어에게 생기는 선택과 전후 경험을 먼저 정한다.
+- 이번 질문: 고객의 용도에 맞춰 태그를 선택한 작품이 저장 후에도 같은 정체성으로 세계 결과와 연대기에 연결되는가?
+- ADAPT: Weapon Shop Fantasy 공식 소개의 제작/마법부여→모험→재료 순환(https://store.steampowered.com/app/599460/Weapon_Shop_Fantasy/). Anvil Saga 공식 소개의 주문·결정과 이야기 연결(https://store.steampowered.com/app/1587540/Anvil_Saga/). Shop Titans 공식 Ember Element의 독립 enchantment 아이템 표현(https://playshoptitans.com/en/blueprints/enchantments/z/ember). 직원관리/방확장/수치·미술 복제는 REJECT. 공식 공개자료 조사이며 직접 플레이했다는 주장은 하지 않는다.
+- 연결 설계: 현/예정 고객의 용도와 태그 전후 기여를 보여주기→불의 심장/대지의 결정 소비→같은 UID 인계→실사용 결과/흉터→연대기. 확률과 손상은 기존 독립축을 유지한다. 구체적인 실제 소비처 연결 전 임시 태그 화면이나 독립 게임을 추가하지 않는다.
+- 첫 구현 계획: 기존 item schema4 내부 `catalyst_affix`에 별도 schema2(`ruleset_id`, `tags`)를 허용한다. schema1은 그대로 읽고 쓰며 자동변환하지 않는다. 구버전 reader는 이미 알 수 없는 catalyst schema를 차단하므로 기존 item/envelope 전체 버전을 불필요하게 올리지 않는다. 구형 precision resolver는 schema2에 효과를 적용하지 못하게 명시 차단한다.
+- exact 변경: `vs_replan_tag_rules.gd` 검증, `vs_item.gd` 직렬화 소비, `vs_precision_resolver.gd` 경계, 관련 GUT. 최신 사용자의 저장 연결 권장안 실행 승인에 따라 보호 manifest는 이 네 경로(기존 UID 포함)만 기록한다. BS-OPS-20260913-01의 과거2파일 복구 범위를 소급 확대하는 것이 아닌 별도 승인 범위다.
+- 완료 기준: 실제 Envelope→JSON→Envelope 왕복, schema1 불변, 알 수 없는 규칙/혼합ID/소수·bool단계/단계와 이정표 불일치 차단. 소비·선택 UI는 후속이며 이 단계만으로 플레이 루프 완성이라고 표시하지 않는다. 사용자 save 파일 변경 없음.
+- 구현 결과: Item/Envelope JSON 왕복 및 기존 SaveService의 시험 파일 쓰기/읽기에 schema2가 보존된다. 잘못된 태그 저장은 임시파일 검증에서 거절되고 기존 정상 primary는 유지된다. 구형 resolver는 새 규칙에 명시 차단. mixed schema1/2·소수단계·중복/소수/bool이정표·알 수 없는ID를 차단. 소수 강화 단계19.5가19로 잘려 허용되는 반례도 RED→GREEN으로 교정했다.
+- 검증: 첫 저장/guard RED2, 단계 소수 반례 RED1 → 전체 debug GUT267/267·2310asserts PASS, Python14 PASS, 정확한4파일 approval gate PASS. 전체 회귀 중 문자열 schema 비교가 debugger 중단을 일으켜 소유한 headless 시험20332/27428만 종료하고 타입 확인 후 비교하도록 수정; 재실행 정상종료. 실제 편집기 파일 수정 도구는 기존 class_name 파일에 fallback reload43을 보고하므로 라이브 편집기 검증 완료라고 주장하지 않는다. headless 실파일 파싱/시험은 통과했다. 사용자 게임 save·이미지 불변.
+- 다음 플레이 묶음: 고객 요구→현재/선택후 태그 적합도→필요 촉매/보유량→강화 결과→저장된 동일UID 고객사용. 저장 경계만 완성한 현재 상태와 UI/소비/세계 결과 미연결을 구분한다.
+
 ## 2026-09-13 연속 교정 루프 / 저장 연결 준비
 
 - 계획 우선: 원격 실패 재현 → 원인별 최소 수정 → 전체 debug GUT/관련 Python → 원격 exact-head 재검사 → 다음 저장 경계 작업. 검사 약화·새 게임 수치·구형 저장 변경은 제외한다.

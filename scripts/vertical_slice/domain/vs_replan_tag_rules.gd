@@ -41,6 +41,39 @@ func preview(equipment_id: String, level: int, tags: Dictionary, tag_id: String,
 		"action": "ADD_TAG" if stage_before == 0 else "UPGRADE_TAG",
 		"catalyst_id": catalyst_id, "catalyst_cost": 1}
 
+# Nested save version keeps legacy tag effects separate. JSON whole-number floats
+# are accepted only at this boundary, never booleans or fractional stages.
+func decode_saved_affix(value: Dictionary, level: Variant, milestones: Array) -> Dictionary:
+	if not (level is int or level is float) or not is_finite(float(level)) or float(level) != floor(float(level)):
+		return {"ok": false, "reason": "INVALID_REPLAN_LEVEL"}
+	if not (value.get("schema_version") is int or value.get("schema_version") is float) or value.get("schema_version") != 2:
+		return {"ok": false, "reason": "INVALID_REPLAN_SCHEMA"}
+	if not value.get("ruleset_id") is String or value.get("ruleset_id") != RULESET_ID:
+		return {"ok": false, "reason": "UNKNOWN_REPLAN_RULESET"}
+	if value.size() != 3 or not value.get("tags") is Dictionary:
+		return {"ok": false, "reason": "INVALID_REPLAN_FIELDS"}
+	var tags: Dictionary = {}
+	var spent := 0
+	for tag_id in value.tags:
+		var stage: Variant = value.tags[tag_id]
+		if not (stage is int or stage is float) or not is_finite(float(stage)) or float(stage) != floor(float(stage)) or stage < 1 or stage > 4:
+			return {"ok": false, "reason": "INVALID_REPLAN_STAGE"}
+		tags[tag_id] = int(stage)
+		spent += int(stage)
+	var checked := support(tags, "OUTPUT", "BURST")
+	if not checked.ok:
+		return checked
+	if level < 0 or level > 100:
+		return {"ok": false, "reason": "INVALID_REPLAN_LEVEL"}
+	var count := floori(float(level) / 10.0)
+	if spent != count or milestones.size() != count:
+		return {"ok": false, "reason": "REPLAN_MILESTONE_MISMATCH"}
+	for index in range(count):
+		var milestone: Variant = milestones[index]
+		if not (milestone is int or milestone is float) or milestone != (index + 1) * 10:
+			return {"ok": false, "reason": "REPLAN_MILESTONE_MISMATCH"}
+	return {"ok": true, "affix": {"schema_version": 2, "ruleset_id": RULESET_ID, "tags": tags}}
+
 # Read-only suitability; does not change enhancement, damage, weight or repair.
 func support(tags: Dictionary, axis: String, rhythm: String) -> Dictionary:
 	if axis not in ["OUTPUT", "HANDLING"] or rhythm not in ["BURST", "SUSTAIN"]:

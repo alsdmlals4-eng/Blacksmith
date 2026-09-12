@@ -10,6 +10,8 @@ APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
 PATHS = [
     "scripts/vertical_slice/domain/vs_replan_tag_rules.gd",
     "scripts/vertical_slice/domain/vs_replan_tag_rules.gd.uid",
+    "scripts/vertical_slice/domain/vs_item.gd",
+    "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
 ]
 
 

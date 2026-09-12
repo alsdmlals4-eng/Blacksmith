@@ -1,5 +1,7 @@
 # [현재 정본] Active Context
 
+> 최신 루프 정의: 벤치마킹→기획 구체화/연결→구현→플레이 검토→개선. BS-REPLAN-20260913-02에서 새 태그 nested schema2를 실제 Item/Envelope/SaveService에 연결했다. schema1 자동변환 없음; 잘못된 파일 덮어쓰기 차단. 전체 debug GUT267/2310, 관련 Python14, exact approval gate PASS. 고객 적합도 선택 UI·실소비·새 규칙 실제 플레이는 미완료. 생산계약 상단이 현 상세계획/증거 소유.
+
 > 2026-09-13 후속 루프: 원격 INTEGER_DIVISION/debug 차이와 과거 승인파일 영구부재 테스트 충돌을 재현·교정. 테스트 임시 화면2군 정리 후 전체 debug GUT259/2285 PASS, 관련 Python14 PASS, 승인 gate PASS. 원격 exact-head CI는 PR metadata 확인. 저장·비용 연결 상세계획은 생산계약 상단이며 아직 미구현; 게임 화면 검증 완료로 읽지 않는다.
 
 > 2026-09-13 보호 경로 복구: BS-OPS-20260913-01 / 생산계약 상단 및 PROJECT_PROTECTED_CHANGE_APPROVAL.json 참조. 정확한 신규 규칙 2파일과 실제 PR 승인 표시를 사용하는 CI-pinned 검사로 로컬 진입 PASS. 일반 검사 실패를 무시하는 것이 아니며 다른 오류·파일은 차단 유지. 향후 작업은 계획·영향·완료 기준 먼저 제시. UI·저장 통합/실제 플레이는 아직 미완료.

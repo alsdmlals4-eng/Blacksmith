@@ -116,6 +116,22 @@ func test_uid_format_and_collision_avoidance() -> void:
 		existing[uid] = true
 
 
+func test_replan_tags_survive_disk_save_and_invalid_replacement_preserves_primary() -> void:
+	var service = SaveServiceScript.new(TEST_SAVE_PATH)
+	var envelope = _make_envelope()
+	var item = envelope.get_item(ITEM_UID)
+	item.catalyst_affix = {"schema_version":2,"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tags":{"BURST_HANDLING":1}}
+	assert_eq(service.save_envelope(envelope), OK)
+	var restored = service.load_envelope()
+	assert_eq(restored.validation_errors, [])
+	assert_eq(restored.get_item(ITEM_UID).catalyst_affix, item.catalyst_affix)
+	item.catalyst_affix["tags"]["BURST_HANDLING"] = 1.5
+	assert_eq(service.save_envelope(envelope), ERR_INVALID_DATA)
+	var preserved = service.load_envelope()
+	assert_eq(preserved.validation_errors, [])
+	assert_eq(preserved.get_item(ITEM_UID).catalyst_affix["tags"], {"BURST_HANDLING":1})
+
+
 func test_save_load_preserves_resolved_state() -> void:
 	var service = SaveServiceScript.new(TEST_SAVE_PATH)
 	var envelope = _make_envelope()
