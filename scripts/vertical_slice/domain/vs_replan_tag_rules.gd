@@ -116,6 +116,26 @@ func customer_choices(equipment_id: String, level: int, tags: Dictionary, invent
 	return {"ok": true, "reason": "OK", "points_before": before.points,
 		"axis": axis, "rhythm": rhythm, "choices": choices}
 
+# Blueprint section21/22 trial estimate; no roll, reward, damage or save mutation.
+func aqueduct_preview(equipment_id: String, level: Variant, tags: Dictionary, axis: String, rhythm: String) -> Dictionary:
+	if equipment_id != "iron_shield":
+		return {"ok": false, "reason": "REQUIRES_SHIELD"}
+	if typeof(level) != TYPE_INT or level < 10 or level > 100:
+		return {"ok": false, "reason": "INVALID_MISSION_LEVEL"}
+	var checked := support(tags, axis, rhythm)
+	if not checked.ok:
+		return checked
+	var stages := 0
+	for stage in tags.values():
+		stages += int(stage)
+	if stages != floori(float(level) / 10.0):
+		return {"ok": false, "reason": "MILESTONE_STATE_MISMATCH"}
+	var base := clampf(60.0 + 0.5 * (float(level) - 10.0), 40.0, 80.0)
+	var final := clampf(base + float(checked.points), 5.0, 95.0)
+	return {"ok": true, "base_percent": base, "support_points": checked.points,
+		"applied_support_percent": final - base, "success_percent": final,
+		"trial_only": true, "reward": "NONE"}
+
 # Nested save version keeps legacy tag effects separate. JSON whole-number floats
 # are accepted only at this boundary, never booleans or fractional stages.
 func decode_saved_affix(value: Dictionary, level: Variant, milestones: Array) -> Dictionary:

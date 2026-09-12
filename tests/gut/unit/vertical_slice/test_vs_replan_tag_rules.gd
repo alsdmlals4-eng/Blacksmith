@@ -1,5 +1,26 @@
 extends "res://addons/gut/test.gd"
 
+func test_aqueduct_preview_separates_level_readiness_tag_support_and_cap():
+	var rules = load(PATH).new()
+	assert_true(rules.has_method("aqueduct_preview"), "Blueprint mission estimate must have a runtime consumer")
+	if not rules.has_method("aqueduct_preview"):
+		return
+	var first = rules.aqueduct_preview("iron_shield", 10, {"BURST_HANDLING":1}, "HANDLING", "BURST")
+	assert_true(first.ok)
+	assert_eq(first.base_percent, 60.0)
+	assert_eq(first.support_points, 3)
+	assert_eq(first.success_percent, 63.0)
+	assert_eq(rules.aqueduct_preview("iron_shield", 11, {"BURST_HANDLING":1}, "HANDLING", "BURST").success_percent, 63.5)
+	var capped = rules.aqueduct_preview("iron_shield", 100, {"BURST_HANDLING":4,"SUSTAIN_HANDLING":4,"BURST_OUTPUT":2}, "HANDLING", "BURST")
+	assert_eq(capped.base_percent, 80.0)
+	assert_eq(capped.support_points, 16)
+	assert_eq(capped.applied_support_percent, 15.0)
+	assert_eq(capped.success_percent, 95.0)
+	for level in [9, 10.5, true, 101]:
+		assert_false(rules.aqueduct_preview("iron_shield", level, {}, "HANDLING", "BURST").ok)
+	assert_false(rules.aqueduct_preview("iron_sword", 10, {"BURST_HANDLING":1}, "HANDLING", "BURST").ok)
+	assert_false(rules.aqueduct_preview("iron_shield", 10, {"BURST_HANDLING":2}, "HANDLING", "BURST").ok)
+
 const PATH := "res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd"
 
 func test_customer_choices_compare_benefit_even_when_catalyst_is_missing() -> void:

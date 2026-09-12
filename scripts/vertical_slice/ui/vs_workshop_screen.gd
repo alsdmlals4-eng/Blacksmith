@@ -268,7 +268,7 @@ func view_state() -> Dictionary:
 		"enhancement_allowed": enhancement_allowed,
 		"enhancement_reason": enhancement_reason,
 		"enhancement_target_level": int(enhancement.get("target_level", int(_item.enhancement_level) + 1)),
-		"enhancement_cost_summary": "비용: %d Gold · 보강재 %d개" % [int(enhancement.get("gold_cost", 0)), int(enhancement.get("reinforcement_units", 0))],
+		"enhancement_cost_summary": ("비용: 태그 선택 후 확인" if _is_replan_item() and not enhancement.has("gold_cost") else "비용: %d Gold · 보강재 %d개" % [int(enhancement.get("gold_cost", 0)), int(enhancement.get("reinforcement_units", 0))]),
 		"enhancement_outcomes_summary": _enhancement_outcomes_summary(enhancement),
 		"precision_visible": not precision_mode.is_empty(),
 		"precision_target": _precision_target_text(precision_target),
@@ -701,6 +701,12 @@ func _refresh_replan_choices() -> void:
 		var effect := "최대 단계 도달" if row.reason == "TAG_MASTERED" else "태그 3종 한도"
 		if row.has("points_after"):
 			effect = "%s → %s · 적합도 %d → %d" % ["없음" if int(row.stage_before) == 0 else _stage_roman(int(row.stage_before)), _stage_roman(int(row.stage_after)), int(result.points_before), int(row.points_after)]
+		if row.has("points_after") and str(EquipmentCatalogScript.by_item(_item).get("equipment_id", "")) == "iron_shield":
+			var future_tags: Dictionary = _item.catalyst_affix.tags.duplicate(true)
+			future_tags[row.tag_id] = int(row.stage_after)
+			var mission: Dictionary = rules.aqueduct_preview("iron_shield", int(_item.enhancement_level) + 1, future_tags, axis, rhythm)
+			if mission.ok:
+				effect += "\n수로 모험 시험 예상 %.1f%% (기본 %.1f + 태그 %.1f%%p)" % [mission.success_percent, mission.base_percent, mission.applied_support_percent]
 		button.text = "%s%s · %s\n%s 1개 / 보유 %d%s" % ["선택됨 · " if selected else "", names[row.tag_id], effect, catalyst, int(row.catalyst_stock), " · 재료 부족" if row.reason == "INSUFFICIENT_CATALYST" else ""]
 
 

@@ -1,5 +1,14 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## 2026-09-13 연속 개선 — 수로 모험 예상치 consumer
+
+- 계획/범위: 기존 신규 태그 rule module과 공방의 4요구 비교를 확장한다. Blueprint21/22의 철방패·권장10·최저10·보상NONE 시험식을 그대로 소비한다. 실제 사건 확정/보상/손상/저장 변경은 이 묶음에 포함하지 않는다. 보호10경로·Basev9.4.4 유지, PR371 실제 승인 label 확인 후 exact gate 사용.
+- 조사 비교: Weapon Shop Fantasy 공식 소개(https://store.steampowered.com/app/599460/Weapon_Shop_Fantasy/)의 제작/마법부여/모험 연계 ADAPT, Anvil Saga 공식 소개(https://store.steampowered.com/app/1587540/Anvil_Saga/)의 주문과 결정 영향 ADAPT, Shop Titans 공식1.0.12(https://playshoptitans.com/zh-tw/news/version-1-0-12-release-notes)의 장비 enchantment와 착용자 효과 연결 ADAPT. 공개 원문 조사이며 직접 플레이 증거 아님. 수치/미술/직원 확장 복제 REJECT.
+- 대안: 점수만 유지(사용 가치 불명확), 구형 고객 결과에 새 규칙 강제 주입(서로 다른 사건 정본 혼합), 기존 시험 모험의 예상 성공률을 먼저 연결(채택). 실제 구형 ContentResult와 App의 Nadia 사건은 고정된 별도 결과축을 가지므로 다음 사건 구현 때 신규 snapshot/result contract를 명시해야 한다.
+- 구현: `aqueduct_preview`는 단계 준비도·raw 태그점수·cap 적용 기여·최종 예상치를 분리한다. +10 기민I 취급순간63%, +11은63.5%, +100 해당 축 두태그IV는 raw16이나 실제15%p·최종95%. 잘못된 종류/단계/태그 누적을 거부한다. 공방에서 성공 후 상태를 입력하며 '수로 모험 시험 예상'으로만 표시한다. 태그 선택 전 미산출 비용의0Gold 표시는 '태그 선택 후 확인'으로 교정했다.
+- 검증: 계산 missing-method RED→GREEN, native 버튼 예상치 누락 RED→GREEN, 미선택0Gold RED→GREEN. 전체 debug GUT279/279·2433asserts PASS. 실제360×640 게임에서 줄바꿈 확인; +9는 격리 저장을 메모리에만 복제한 QA 사전조건이며 파일 저장/실제 모험 판정은 하지 않았다. 에디터reload43 fallback은 headless/실행 검증과 구분한다.
+- 현재 main ff1c935d, Base 원격d830c0f6, 타PR359/196 read-only 유지. 생성된 import 파일은 UNKNOWN_UNVERIFIED로 보존, 신규 자산/도구/의존성 없음. 동일 소비처에는 기존 코드/시험/승인 이미지를 재사용했다. 다음: 신규AQ snapshot/결과 저장 계약→실제 사용/연대기 연결. 예상치 구현은 세계 사건 전체 구현이나 Human/Android/출시 PASS가 아니다. PDF 미재출력.
+
 ## 2026-09-13 공방 선택·저장 재실행 검수 결과
 
 - 아래 서비스 연결 시점의 UI 미완료 기록은 역사 상태다. 현재 새 캠페인 시작/첫 제작 schema2/공방 4태그 선택/기존 강화 저장 트랜잭션까지 구현했다. 실제 고객 요구 및 세계 결과의 신규 적합도 소비는 다음 미완료 작업이다.

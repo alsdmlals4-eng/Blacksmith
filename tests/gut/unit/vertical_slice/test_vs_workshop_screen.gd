@@ -24,6 +24,9 @@ func test_replan_native_choice_button_drives_saved_precision_without_legacy_cont
 	var envelope = _enhancement_envelope()
 	var item = envelope.get_item(envelope.active_run.selected_item_uid)
 	item.enhancement_level = 9
+	var shield = EquipmentCatalogScript.by_id("iron_shield")
+	item.equipment_group = shield.equipment_group
+	item.role_profile = shield.role_profile
 	item.highest_checkpoint = 0
 	item.used_precision_milestones.clear()
 	item.catalyst_affix = {"schema_version":2, "ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912", "tags":{}}
@@ -37,10 +40,16 @@ func test_replan_native_choice_button_drives_saved_precision_without_legacy_cont
 	if button == null:
 		return
 	assert_true(button.visible)
+	assert_false(screen.view_state().enhancement_cost_summary.contains("0 Gold"), "Unquoted cost is not free")
 	assert_false(button.disabled)
 	assert_gte(button.custom_minimum_size.y, 48.0)
 	assert_gte(button.get_theme_font_size("font_size"), 28, "Logical720px UI must stay readable at360px")
 	assert_true(button.text.contains("없음 → I"))
+	var requirement = screen.get_node("WorkshopScroll/WorkshopLayout/ReplanChoices/Requirement")
+	requirement.select(2)
+	requirement.item_selected.emit(2)
+	assert_true(button.text.contains("63.0%"), "Matching tag must expose the hand-calculated mission estimate")
+	assert_true(button.text.contains("시험"), "An estimate must not claim a resolved mission")
 	assert_false(screen.get_node("WorkshopScroll/WorkshopLayout/PrecisionLineageOption").visible)
 	button.pressed.emit()
 	assert_true(screen.view_state().enhancement_allowed)
