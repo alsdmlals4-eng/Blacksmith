@@ -43,6 +43,50 @@
     "aseprite": "NOT_PACKAGED_SOURCE_FAILED_ALPHA_GATE",
     "pdf": "Existing 51-page PDF unchanged; this is a separate candidate, not a published PDF update."
   },
+  "refinements": [
+  {
+    "path": "docs/design/candidates/shield-states-20260912/shield-states-02.png",
+    "source_sha256": "82d32b8091393de087e152f25a632a6c7478806bd13d3bceb3e95ba2f55dd488",
+    "sha256": "8a27919cc902f7a4b4dcad01663656275c4acaa0589bda52a595012e52fcec35",
+    "prompt": "Use case: background-extraction. Image 1 is the EDIT TARGET, a six-state shield sprite sheet for a fantasy game. Remove ONLY the grey-and-white checkerboard background, replacing it with genuinely transparent pixels (PNG alpha=0), including the space between the six shields. Keep all six shields and their existing artwork, exact positions, sizes, colors, engraved single and paired cyan marks, cracks and repair staple unchanged. Keep original 1536x1024 canvas and 3x2 arrangement. Do not redraw or restyle the shields. Do not add a solid background, pattern, checkerboard, glow, shadow, text or labels. Clean cutout edges. This is a transparent game sprite-sheet deliverable, not an illustration of transparency.",
+    "tool_route": "builtin image_gen.imagegen",
+    "user_approved": false,
+    "runtime_promoted": false,
+    "asset_ready": false,
+    "alpha_status": "PASS",
+    "alpha_status_scope": "Real transparent pixels exist; NOT clean-cutout or opaque-interior approval.",
+    "mode": "RGBA",
+    "size": [
+      1536,
+      1024
+    ],
+    "alpha_zero": 827038,
+    "alpha_opaque": 0,
+    "alpha_partial": 745826,
+    "alpha_extrema": [
+      0,
+      254
+    ],
+    "qa_remaining": [
+      "All shield interiors retain partial alpha (sampled boss centers253); no fully opaque pixel.",
+      "Faint residual background/halo increases per-cell bounds; some alpha reaches row boundary.",
+      "Generated pixels are not source-exact; positions and native128px readability need refinement.",
+      "Six semantic states on one image, not a six-frame animation or production sprite sheet."
+    ],
+    "native": {
+      "path": "docs/design/candidates/shield-states-20260912/shield-states-02.aseprite",
+      "sha256": "6160b7b1e86208068d3803f63e3600a0c7c9ba99dac2385db45ca0545575f30c",
+      "tool": "aseprite-candidates restricted copy_sprite/get_sprite_info/export_frame",
+      "frames": 1,
+      "layers": 1,
+      "tags": [],
+      "decoded_rgba_roundtrip_equal": true,
+      "roundtrip_sha256": "2d57a62782049aa836564055b4b3084181c7c9cfea8bd995960d4e043b41c56b"
+    },
+    "runtime": "NOT_RUN",
+    "pdf": "NOT_ADDED; existing51page PDF unchanged"
+  }
+],
   "research": [
     "https://www.aseprite.org/docs/sprite-sheet/",
     "https://www.aseprite.org/docs/color-mode/"

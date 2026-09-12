@@ -16,6 +16,9 @@
 
 ### BP12-SHIELD-STATES / 2026-09-12
 
+- 재개 교정02: 이미지 모델의 배경 전용 편집으로 `shield-states-02.png` RGBA/1536×1024, 완전 투명827,038픽셀 확보. 다만 완전 불투명0픽셀, 반투명745,826픽셀로 방패 내부도 alpha253 수준이고 주변 잔여 halo·셀 경계 침범이 있다. `alpha_status=PASS`는 실제 투명 픽셀 존재만 뜻하며 clean-cutout/ASSET_READY는 아니다. 제한된 Aseprite MCP에서1프레임·1레이어 native 후보와 PNG 왕복의 decoded RGBA 동일을 확인했다. 6칸은 상태 비교 이미지이지6프레임 모션이 아니다. source01은 불변, 후속은 불투명 내부/가장자리 정리와128px 정렬·판독 검사. 최종 외형/제품 승격 미승인, PDF51쪽·게임 불변.
+- 이번 조사·비교: Aseprite 공식 Color Mode/Sprite Sheet 문서의 실제 알파와 offset/cell 규격을 ADOPT. 이미지 모델 배경 전용 편집은 ADAPT(형태 유지 및 파일 측정 필수). RGB에 불투명 alpha를 붙이는 가짜 교정·임의 배경제거 코드·미지원 Aseprite CLI 우회는 REJECT. Base 최신 원격 관찰 `d830c0f6967678eed3c208ac6b24f9cd1b262ec3`은 참고이며 채택v9.4.4와 기존 보호 경계를 바꾸지 않는다. 전체 기획 최종 승인은 여전히 대기다.
+
 - 검수 결과: `candidates/shield-states-20260912/record.json`에 6상태 후보·원본 hash·생성 전문·검수 기록. 기본→마감→각인I→II→균열→수리 흔적은 구분되지만 RGB 바둑판이 구워져 alpha gate FAIL. 원본 후보와 판 분할도 달라졌고 셀별 정합·128px 판독은 미검증. 외형 비교 후보로만 보존하며 ASSET_READY/사용자 승인/runtime 적용은 아니다. 51쪽 PDF는 이번 후보를 포함하지 않은 기존 검증본 그대로다. 후속은 실제 투명 배경 재생성과 동일 피벗·실루엣 정렬, 이후 Aseprite 패키징이다.
 
 - consumer_id: BP12-SHIELD-STATES; consumer_surface: workshop item display / inventory / chronicle / planned world equipped shield; runtime_asset_role: same iron_shield appearance states; primary_use: PLANNED_GAME_SURFACE.

@@ -1,6 +1,6 @@
 # [현재 정본] Active Context
 
-> 방패6상태 후보 추가: `docs/design/candidates/shield-states-20260912/record.json`. 각인·손상·수리 변화 확인, RGB 바둑판으로 투명 배경 검사 FAIL. 후보만 보존, PDF51쪽·게임 불변; 알파 재생성/정렬 후속. 승인·ASSET_READY·runtime 완료 아님.
+> 방패6상태 교정02: `docs/design/candidates/shield-states-20260912/record.json`. 실제 투명827,038픽셀 확보·Aseprite1프레임 왕복 동일. 내부 반투명/halo·셀 정렬은 미완료. source01의RGB 실패 이력 보존, PDF51쪽·게임 불변. 승인·ASSET_READY·runtime 완료 아님.
 
 > 모닥 최신: 비픽셀 인간형 불의 정령의 EARLY/LATER 두 외형과 연차 성장 방향은 사용자 승인. `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`의 MODAK_GROWTH_PREPARATION이 상세 권장안 책임 원본이다. 합류3년 차 전환은 미잠금 권장값; 현재 달력 연결·저장 마이그레이션·모션은 미구현. 아래10안은 역사 탐색이며 대장장이1번 선택 유지. 전체 게임 그림체 변경·제품 구현 승인으로 확대하지 않는다.
 
