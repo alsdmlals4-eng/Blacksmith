@@ -1,5 +1,12 @@
 # Skill Learning Log
 
+## 2026-09-13 — CI와 같은 debug 검증 및 일회 승인 수명
+
+- 신규 태그 계산은 일반 headless GUT6개를 통과했지만 CI의 `-d`에서 INTEGER_DIVISION으로 실패했다. debug로 RED 재현, 명시적 floor 계산 뒤 전체259/2285 통과. 앞으로 현 CI 인수를 먼저 읽고 동일 실행한다.
+- 일회 승인 retirement는 과거 승인 identity/baseline의 소진을 검증해야 한다. 재사용 manifest 경로의 영구 부재는 후속 승인 작업까지 막는다. 현재 승인 유효성은 Base exact gate와 외부 PR metadata가 소유한다.
+- QA 임시 씬을 비교식 안에서 instantiate한 뒤 해제하지 않아12개 orphan이 남았다. 테스트 생성 인스턴스 두 군을 autofree에 등록한 뒤 전체 GUT 출력의 orphan/leak 경고가 사라졌다. 제품 코드 변경 없음.
+- 공용 환류 후보: debug-command parity와 approval retirement identity. 이번은 Blacksmith 증거만 확보했으며 Base 공용 규칙 승격은 미실행.
+
 ## 2026-07-21 — 프로젝트 초기 설치
 
 - 결과: 프로젝트 전용 게임 디자인·엔지니어링·QA 진입 스킬 골격 생성

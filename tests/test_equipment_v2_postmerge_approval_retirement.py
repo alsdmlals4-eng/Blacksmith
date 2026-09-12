@@ -36,7 +36,16 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
         self.assertEqual(CURRENT_PRODUCT_MERGE, adapter["protected_baseline"]["commit"])
-        self.assertFalse(APPROVAL.exists())
+        # Retirement belongs to the consumed approval, not this reusable path.
+        # A later approved task may publish a new manifest against the merged base.
+        if APPROVAL.exists():
+            current = json.loads(APPROVAL.read_text(encoding="utf-8"))
+            self.assertNotEqual(
+                "1686f8f164cba2abf0678d7b768f00699a3414dd",
+                current["protected_base_commit"],
+                "The consumed independent-forge approval must not be resurrected",
+            )
+            self.assertEqual(adapter["protected_baseline"]["commit"], current["protected_base_commit"])
 
     def test_independent_loop_receipt_records_merged_delivery_and_retirement(self) -> None:
         receipt = json.loads(INDEPENDENT_LOOP_RECEIPT.read_text(encoding="utf-8"))

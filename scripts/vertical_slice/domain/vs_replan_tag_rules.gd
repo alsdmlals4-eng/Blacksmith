@@ -21,7 +21,7 @@ func preview(equipment_id: String, level: int, tags: Dictionary, tag_id: String,
 	var spent_stages := 0
 	for stage in tags.values():
 		spent_stages += int(stage)
-	if spent_stages != int(level / 10):
+	if spent_stages != floori(float(level) / 10.0):
 		return {"ok": false, "reason": "MILESTONE_STATE_MISMATCH"}
 	if not TAGS.has(tag_id):
 		return {"ok": false, "reason": "INVALID_SELECTION"}

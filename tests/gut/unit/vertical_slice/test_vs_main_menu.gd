@@ -76,7 +76,8 @@ func test_main_menu_binds_the_approved_dawn_background_without_serializing_it_in
 	assert_eq(background.z_index, -1)
 	assert_eq(background.expand_mode, TextureRect.EXPAND_IGNORE_SIZE)
 	assert_eq(background.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_COVERED)
-	assert_false(MAIN_MENU_SCENE.instantiate().get_node("MenuIllustratedBackground").texture.resource_path == APPROVED_MAIN_MENU_BACKGROUND_PATH, "the old serialized scene texture remains an unpromoted fallback")
+	var serialized_menu = autofree(MAIN_MENU_SCENE.instantiate())
+	assert_false(serialized_menu.get_node("MenuIllustratedBackground").texture.resource_path == APPROVED_MAIN_MENU_BACKGROUND_PATH, "the old serialized scene texture remains an unpromoted fallback")
 
 
 func test_main_menu_binds_the_user_locked_ao_logo_before_its_text_fallback() -> void:

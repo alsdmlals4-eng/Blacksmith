@@ -98,7 +98,7 @@ func test_screen_exposes_current_durability_and_repair_quote() -> void:
 	assert_true(ResourceLoader.exists(SCREEN_PATH), "Workshop screen controller must exist")
 	if not ResourceLoader.exists(SCREEN_PATH):
 		return
-	var screen = load(SCREEN_PATH).new()
+	var screen = autofree(load(SCREEN_PATH).new())
 	screen.configure_context(_item(), ResourcesScript.new(100, {"common_reinforcement_material": 1}))
 	var state: Dictionary = screen.view_state()
 	assert_eq(state["durability_text"], "3 / 5 / 5")

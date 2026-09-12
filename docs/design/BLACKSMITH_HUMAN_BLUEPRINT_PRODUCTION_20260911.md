@@ -1,5 +1,21 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## 2026-09-13 연속 교정 루프 / 저장 연결 준비
+
+- 계획 우선: 원격 실패 재현 → 원인별 최소 수정 → 전체 debug GUT/관련 Python → 원격 exact-head 재검사 → 다음 저장 경계 작업. 검사 약화·새 게임 수치·구형 저장 변경은 제외한다.
+- 발견1: 원격 GUT는 `-d`를 사용하지만 이전 로컬 실행은 생략했다. 신규 규칙의 정수 나눗셈 경고가 첫 시험에서 실패했다. 같은 명령으로 RED 재현 후 HiGodot `blacksmith@c857`/editor2352에서 명시적 `floori(float(level) / 10.0)`로 수정; 경고 억제나 GUT 오류 추적 비활성화는 하지 않았다.
+- 발견2: 과거 승인 소진 시험이 재사용 가능한 승인 파일 경로의 영구 부재를 요구했다. c31e550f에 담겼던 소비된 승인 baseline1686f8f...의 재등장과 현 adapter 기준 불일치를 차단하도록 교정. 과거 병합 receipt와 호환 뷰 hash 검증 유지. 새 manifest 승인 유효성은 별도의 기존 Base gate가 계속 소유한다.
+- 발견3: 전체 GUT에서 화면 임시 인스턴스12개가 남았다. 테스트가 생성한 미등록 main-menu 비교 인스턴스와 workshop 인스턴스를 `autofree`로 등록했다. 제품 화면 코드는 변경하지 않았다.
+- 증거: 두 CI 실패 로컬 RED 재현 → 관련 Python14 PASS → debug GUT259/259,2285asserts PASS → 임시 객체 정리 후 같은259/2285 PASS 및 이번 출력의 orphan/종료 resource leak 경고 없음. 원격 CI는 PR exact-head 결과가 별도 책임 원본이다.
+- 조사: Godot 공식 warning system과 GUT CLI 공식 예시의 debug 옵션을 확인. 웹 GUT 페이지는9.6.1 표기여서 실제9.7.1 vendor 및 현 CI 명령으로 호환 확인. https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/warning_system.html ; https://gut.readthedocs.io/en/latest/Command-Line.html . ADOPT: CI와 동일 debug 실행. REJECT: warning 무시/테스트 실패 추적 끄기.
+
+### 다음 저장·비용 연결 계획 (미구현)
+
+1. `vs_item.gd`의 현 item-schema4/catalyst-schema1과 `vs_save_envelope.gd` schema5를 기준으로 새 ruleset 식별/태그 저장 계약을 명세한다. 구형 TAG_*를 새 네 태그로 자동 치환하지 않는다. 구형 저장 보존 및 새 규칙의 명시적 선택 경계를 먼저 시험한다.
+2. 현 `vs_enhancement_action_service.gd`의 copy→preview→candidate cost→save→live adopt 구조와 `vs_save_service.gd`의 temp 검증/backup/promote 복구를 재사용한다. 독립된 임시 게임·저장 시스템을 추가하지 않는다.
+3. 필요한 실제 변경 파일과 보호 승인 목록을 대조한 뒤 RED 작성: save round-trip, 불명 ruleset 차단, 실패시 비용1회·태그불변, 저장실패 비용0·원본불변, 빈 선택/재료부족0회, 동일 확정 요청의 중복 반영 방지.
+4. 위 경계가 통과하면 공방 선택 UI와 결과를 연결하고 격리된 시험 저장으로 +9→+10/실패/재접속을 확인한다. 현재 사용자 save 파일을 실험에 사용하지 않는다. UI·모션·이미지 상태는 실제 캡처 전 NOT_RUN 유지.
+
 ## 2026-09-13 보호 경로 복구 계획 — BS-OPS-20260913-01
 
 - 사용자 승인: 이번 불일치에 한해 실패 후 읽기 전용 조사와 승인 범위의 검증 계약 교정을 허용. 일반적인 실패 시 중단 규칙을 삭제하거나 확대하지 않는다.

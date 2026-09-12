@@ -1,5 +1,7 @@
 # [현재 정본] Active Context
 
+> 2026-09-13 후속 루프: 원격 INTEGER_DIVISION/debug 차이와 과거 승인파일 영구부재 테스트 충돌을 재현·교정. 테스트 임시 화면2군 정리 후 전체 debug GUT259/2285 PASS, 관련 Python14 PASS, 승인 gate PASS. 원격 exact-head CI는 PR metadata 확인. 저장·비용 연결 상세계획은 생산계약 상단이며 아직 미구현; 게임 화면 검증 완료로 읽지 않는다.
+
 > 2026-09-13 보호 경로 복구: BS-OPS-20260913-01 / 생산계약 상단 및 PROJECT_PROTECTED_CHANGE_APPROVAL.json 참조. 정확한 신규 규칙 2파일과 실제 PR 승인 표시를 사용하는 CI-pinned 검사로 로컬 진입 PASS. 일반 검사 실패를 무시하는 것이 아니며 다른 오류·파일은 차단 유지. 향후 작업은 계획·영향·완료 기준 먼저 제시. UI·저장 통합/실제 플레이는 아직 미완료.
 
 > REPLAN_IMPLEMENTATION_AND_IMPROVEMENT_AUTHORIZED: 최신 사용자(2026-09-12)가 Base·조사 기반 구현/개선 루프를 재승인 없이 지시. 준비전용 차단은 이번 범위에서 대체됨. 큐/증거는 생산계약 상단 소유. 시험값/후보는 검증완료 아님; Base잠금·타PR·기존save 보호 유지.
