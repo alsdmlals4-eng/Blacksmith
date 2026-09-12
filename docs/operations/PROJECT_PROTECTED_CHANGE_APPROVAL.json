@@ -10,9 +10,13 @@
     "scripts/vertical_slice/domain/vs_item.gd",
     "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
     "scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd",
-    "scripts/vertical_slice/services/vs_enhancement_action_service.gd"
+    "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
+    "scripts/vertical_slice/services/vs_run_initializer_service.gd",
+    "scripts/vertical_slice/services/vs_item_birth_service.gd",
+    "scripts/vertical_slice/ui/vs_main_menu.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
   ],
   "approval_source": "Current user conversation: approval of the bounded protected-path recovery exception, followed by 승인,진행해. BS-OPS-20260913-01 is recorded in the current production contract. External PR metadata is required independently.",
   "approval_time": "2026-09-13T00:11:29+09:00",
-  "scope_summary": "BS-REPLAN-20260913-02: user said 그래 진행해 to the recommended customer-choice and catalyst transaction continuation. Exact six-path scope adds enhancement ruleset dispatch and the correct new-rule ledger provenance to the prior four paths. Reuse the existing cost/save transaction and heart_of_flame stock; no live save migration, new scene/assets, economy rebalance, blanket allowance or Base/baseline change. External PR metadata remains required."
+  "scope_summary": "BS-REPLAN-20260913-02: latest user explicitly requests continued scoped implementation and improvement without routine reapproval. Exact ten-path continuation adds RunInitializer, ItemBirthService, MainMenu and WorkshopScreen to the prior six paths for isolated new-rule campaign entry, native tag selection and save-slot protection. Reuse existing cost/save transactions and heart_of_flame stock; no live save migration, new scene/assets, economy rebalance, blanket allowance or Base/baseline change. External PR metadata remains required."
 }

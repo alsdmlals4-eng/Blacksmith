@@ -5,6 +5,13 @@ const SaveEnvelopeScript = preload("res://scripts/vertical_slice/domain/vs_save_
 const TOKEN_SIZE_BYTES := 16
 
 
+func create_replan_candidate_envelope():
+	var envelope = create_candidate_envelope()
+	if envelope != null:
+		envelope.active_run["tag_ruleset_id"] = "BLACKSMITH_REPLAN_TAGS_20260912"
+	return envelope
+
+
 func create_candidate_envelope():
 	var crypto := Crypto.new()
 	var token := crypto.generate_random_bytes(TOKEN_SIZE_BYTES)

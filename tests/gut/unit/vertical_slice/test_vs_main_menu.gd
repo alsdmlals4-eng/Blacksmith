@@ -5,6 +5,17 @@ const MAIN_MENU_SCENE := preload("res://scenes/vertical_slice/main_menu.tscn")
 const APPROVED_MAIN_MENU_BACKGROUND_PATH := "res://assets/ui/workshop/main_menu_dawn_background_v1.png"
 const APPROVED_MAIN_MENU_LOGO_PATH := "res://assets/ui/identity/anvil_oath_logo_ao02_v1.png"
 
+func test_default_menu_uses_isolated_new_rules_slot_and_preserves_legacy_route():
+	var menu = autofree(MAIN_MENU_SCENE.instantiate())
+	menu._ensure_flow_services()
+	assert_ne(menu._save_service.save_path, "user://blacksmith_vertical_slice_v5.json", "New rules must not overwrite legacy slot")
+	var saving = FakeSaveService.new()
+	menu.configure_services(saving, load("res://scripts/vertical_slice/services/vs_run_initializer_service.gd").new())
+	assert_eq(menu.start_new_game_after_confirmation(), OK)
+	assert_eq(menu._campaign_envelope.active_run.get("tag_ruleset_id"), "BLACKSMITH_REPLAN_TAGS_20260912")
+	add_child(menu)
+	assert_not_null(menu.get_node_or_null("MenuLayout/LegacyContinueButton"), "Legacy save must remain reachable without conversion")
+
 
 class FakeEnvelope:
 	extends RefCounted
@@ -224,3 +235,16 @@ func test_settings_toggle_is_inline_state_only() -> void:
 	menu.set_settings_open(false)
 	assert_false(menu.settings_open, "settings closes inline")
 	menu.free()
+
+
+func test_new_campaign_restores_its_slot_after_legacy_continue() -> void:
+	var menu = autofree(_new_menu())
+	var new_slot := FakeSaveService.new()
+	var legacy_slot := FakeSaveService.new()
+	var initializer := FakeInitializerService.new()
+	initializer.candidate = _valid_envelope()
+	menu.configure_services(legacy_slot, initializer)
+	menu.set("_new_campaign_save_service", new_slot)
+	assert_eq(menu.start_new_game_after_confirmation(), OK)
+	assert_eq(new_slot.replacement_calls, 1)
+	assert_eq(legacy_slot.replacement_calls, 0, "new rules must never replace the old save slot")

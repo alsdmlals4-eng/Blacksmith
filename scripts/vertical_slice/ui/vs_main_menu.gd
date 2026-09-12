@@ -22,6 +22,7 @@ var campaign_ready := false
 var settings_open := false
 
 var _save_service = null
+var _new_campaign_save_service = null
 var _initializer_service = null
 var _resources = null
 var _completion_service = null
@@ -72,6 +73,7 @@ func new_game_requires_confirmation() -> bool:
 
 
 func start_new_game_after_confirmation():
+	_restore_new_campaign_slot()
 	campaign_ready = false
 	if _save_service == null or _initializer_service == null:
 		return ERR_INVALID_PARAMETER
@@ -80,7 +82,7 @@ func start_new_game_after_confirmation():
 	if not _save_service.has_method("replace_envelope_after_confirmation"):
 		return ERR_INVALID_PARAMETER
 
-	var candidate = _initializer_service.create_candidate_envelope()
+	var candidate = _initializer_service.create_replan_candidate_envelope() if _initializer_service.has_method("create_replan_candidate_envelope") else _initializer_service.create_candidate_envelope()
 	if candidate == null or not candidate.validation_errors.is_empty():
 		return ERR_INVALID_DATA
 
@@ -163,7 +165,7 @@ func current_selected_item_uid() -> String:
 
 func _ensure_flow_services() -> void:
 	if _save_service == null:
-		_save_service = SaveServiceScript.new()
+		_save_service = SaveServiceScript.new("user://blacksmith_replan_20260912.json")
 	if _initializer_service == null:
 		_initializer_service = RunInitializerScript.new()
 	if _resources == null:
@@ -189,6 +191,15 @@ func _restore_resources_from_envelope(envelope) -> bool:
 
 
 func _connect_menu_actions() -> void:
+	var layout := get_node_or_null("MenuLayout")
+	if layout != null and layout.get_node_or_null("LegacyContinueButton") == null:
+		var legacy := Button.new()
+		legacy.name = "LegacyContinueButton"
+		legacy.text = "이전 규칙 저장 이어하기"
+		legacy.custom_minimum_size.y = 96
+		legacy.add_theme_font_size_override("font_size", 28)
+		legacy.pressed.connect(_on_legacy_continue_pressed)
+		layout.add_child(legacy)
 	var new_game_button := get_node_or_null("MenuLayout/NewGameButton")
 	if new_game_button != null and not new_game_button.pressed.is_connected(_on_new_game_pressed):
 		new_game_button.pressed.connect(_on_new_game_pressed)
@@ -198,6 +209,7 @@ func _connect_menu_actions() -> void:
 
 
 func _on_new_game_pressed() -> void:
+	_restore_new_campaign_slot()
 	if new_game_requires_confirmation():
 		_show_menu_message("기존 저장이 있어 새 게임 시작 전 확인이 필요합니다.")
 		return
@@ -205,6 +217,25 @@ func _on_new_game_pressed() -> void:
 		_show_menu_message("새 게임을 시작하지 못했습니다.")
 		return
 	begin_first_forge(_campaign_envelope)
+
+
+func _restore_new_campaign_slot() -> void:
+	if _new_campaign_save_service != null:
+		_save_service = _new_campaign_save_service
+		_new_campaign_save_service = null
+		refresh_save_state()
+
+
+func _on_legacy_continue_pressed() -> void:
+	var legacy = SaveServiceScript.new()
+	var envelope = legacy.load_envelope()
+	if envelope == null or not envelope.validation_errors.is_empty():
+		_show_menu_message("이전 규칙 저장이 없거나 읽을 수 없습니다. 새 규칙 저장은 그대로 유지됩니다.")
+		return
+	if _new_campaign_save_service == null:
+		_new_campaign_save_service = _save_service
+	_save_service = legacy
+	_on_continue_pressed()
 
 
 func _on_continue_pressed() -> void:

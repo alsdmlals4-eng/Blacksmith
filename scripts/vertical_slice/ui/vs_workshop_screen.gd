@@ -444,7 +444,19 @@ func _on_enhancement_pressed() -> void:
 	var result := request_enhancement()
 	var message := get_node_or_null("WorkshopScroll/WorkshopLayout/EnhancementMessageLabel") as Label
 	if message != null:
-		message.text = "강화 결과: %s" % str(result.get("outcome", "BLOCKED"))
+		message.text = _enhancement_result_copy(result)
+
+
+func _enhancement_result_copy(result: Dictionary) -> String:
+	match str(result.get("outcome", "")):
+		"SUCCESS":
+			return "강화 성공 · +%d" % int(result.get("target_level", 0))
+		"FAILED_HOLD":
+			return "강화 실패 · 단계 유지"
+		"FAILED_DAMAGE":
+			return "강화 실패 · 작품 손상"
+		_:
+			return "강화 불가 · " + _player_facing_enhancement_reason(str(result.get("reason", "")))
 
 
 func _on_precision_catalyst_selected(_index: int) -> void:
@@ -606,6 +618,97 @@ func _refresh_controls() -> void:
 		precision_backfill_button.visible = str(state.get("precision_mode", "")) == "BACKFILL"
 		precision_backfill_button.disabled = not bool(state.get("precision_backfill_allowed", false))
 	_refresh_wireframe_cards(state)
+	_refresh_replan_choices()
+
+
+func _is_replan_item() -> bool:
+	return _item != null and str(_item.catalyst_affix.get("ruleset_id", "")) == "BLACKSMITH_REPLAN_TAGS_20260912"
+
+
+func _refresh_replan_choices() -> void:
+	var layout := get_node_or_null("WorkshopScroll/WorkshopLayout")
+	if layout == null:
+		return
+	var box := layout.get_node_or_null("ReplanChoices") as VBoxContainer
+	if box == null and _is_replan_item():
+		box = VBoxContainer.new()
+		box.name = "ReplanChoices"
+		box.add_theme_constant_override("separation", 8)
+		layout.add_child(box)
+		var anchor := layout.get_node_or_null("EnhancementButton")
+		if anchor != null:
+			layout.move_child(box, anchor.get_index())
+		var title := Label.new()
+		title.name = "Title"
+		title.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+		title.add_theme_color_override("font_color", Color("2d211a"))
+		title.add_theme_stylebox_override("normal", _wireframe_card_style())
+		title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		box.add_child(title)
+		var requirement := OptionButton.new()
+		requirement.name = "Requirement"
+		requirement.custom_minimum_size.y = 96
+		requirement.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+		for label in ["용도 비교: 성능 · 순간", "용도 비교: 성능 · 지속", "용도 비교: 취급 · 순간", "용도 비교: 취급 · 지속"]:
+			requirement.add_item(label)
+		requirement.item_selected.connect(func(_index): _refresh_replan_choices())
+		box.add_child(requirement)
+		for tag_id in ["BURST_OUTPUT", "SUSTAIN_OUTPUT", "BURST_HANDLING", "SUSTAIN_HANDLING"]:
+			var button := Button.new()
+			button.name = tag_id
+			button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+			for state in ["normal", "hover", "pressed", "disabled", "focus"]:
+				var style := _wireframe_card_style()
+				style.bg_color = Color("ead4aaff") if state != "pressed" else Color("d4ae72ff")
+				button.add_theme_stylebox_override(state, style)
+			for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+				button.add_theme_color_override(state, Color("2d211a"))
+			button.add_theme_color_override("font_disabled_color", Color("665a4c"))
+			button.custom_minimum_size.y = 112
+			button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			button.pressed.connect(_on_replan_tag_pressed.bind(tag_id))
+			box.add_child(button)
+	if box == null:
+		return
+	box.visible = _is_replan_item() and PrecisionResolverScript.PRECISION_TARGETS.has(int(_item.enhancement_level) + 1)
+	if not box.visible:
+		return
+	var chosen_requirement := box.get_node("Requirement") as OptionButton
+	var axis := "OUTPUT" if chosen_requirement.selected < 2 else "HANDLING"
+	var rhythm := "BURST" if chosen_requirement.selected % 2 == 0 else "SUSTAIN"
+	var stock := {"fire_heart": 0, "earth_crystal": 0}
+	if _resources != null:
+		stock.fire_heart = int(_resources.get_material_count("heart_of_flame"))
+		stock.earth_crystal = int(_resources.get_material_count("earth_crystal"))
+	var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").new()
+	var result: Dictionary = rules.customer_choices(str(EquipmentCatalogScript.by_item(_item).get("equipment_id", "")),
+		int(_item.enhancement_level), _item.catalyst_affix.get("tags", {}), stock, axis, rhythm)
+	var replan_title := box.get_node("Title") as Label
+	replan_title.text = "정밀 강화 +%d → +%d\n용도별 적합도 비교 · 강화 성공률 보너스 아님\n성공 시 태그 성장 · 성공/실패 촉매 1개" % [int(_item.enhancement_level), int(_item.enhancement_level) + 1]
+	var names := {"BURST_OUTPUT":"격발", "SUSTAIN_OUTPUT":"견실", "BURST_HANDLING":"기민", "SUSTAIN_HANDLING":"균형"}
+	for tag_id in names:
+		var button := box.get_node(tag_id) as Button
+		button.disabled = true
+		button.text = names[tag_id] + " · 상태 확인 필요"
+	if not result.ok:
+		replan_title.text += "\n현재 작품 상태를 확인할 수 없습니다."
+		return
+	for row in result.choices:
+		var button := box.get_node(str(row.tag_id)) as Button
+		var selected := str(_precision_selection_data.get("tag_id", "")) == str(row.tag_id)
+		var catalyst := "불의 심장" if row.catalyst_id == "fire_heart" else "대지의 결정"
+		button.disabled = not bool(row.allowed) or str(_item.physical_state) == "DESTROYED"
+		var effect := "최대 단계 도달" if row.reason == "TAG_MASTERED" else "태그 3종 한도"
+		if row.has("points_after"):
+			effect = "%s → %s · 적합도 %d → %d" % ["없음" if int(row.stage_before) == 0 else _stage_roman(int(row.stage_before)), _stage_roman(int(row.stage_after)), int(result.points_before), int(row.points_after)]
+		button.text = "%s%s · %s\n%s 1개 / 보유 %d%s" % ["선택됨 · " if selected else "", names[row.tag_id], effect, catalyst, int(row.catalyst_stock), " · 재료 부족" if row.reason == "INSUFFICIENT_CATALYST" else ""]
+
+
+func _on_replan_tag_pressed(tag_id: String) -> void:
+	if not _is_replan_item():
+		return
+	_precision_selection_data = {"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912", "tag_id":tag_id}
+	_refresh_controls()
 
 
 func _has_enhancement_context() -> bool:
@@ -635,6 +738,8 @@ func _phase1_handoff_reason() -> String:
 
 
 func _precision_mode() -> String:
+	if _is_replan_item():
+		return ""
 	if _item == null:
 		return ""
 	if _item.has_initial_tag_backfill_pending():
@@ -905,6 +1010,12 @@ func _precision_catalyst_resource_reason(enhancement: Dictionary) -> String:
 
 
 func _precision_tag_entries_summary(entries: Array) -> String:
+	if _is_replan_item():
+		var names := {"BURST_OUTPUT":"격발", "SUSTAIN_OUTPUT":"견실", "BURST_HANDLING":"기민", "SUSTAIN_HANDLING":"균형"}
+		var summaries: PackedStringArray = []
+		for tag_id in _item.catalyst_affix.get("tags", {}):
+			summaries.append("%s %s" % [str(names.get(tag_id, "미확인")), _stage_roman(int(_item.catalyst_affix.tags[tag_id]))])
+		return "활성 태그 없음" if summaries.is_empty() else "태그: " + " · ".join(summaries)
 	if entries.is_empty():
 		return "활성 태그 없음"
 	var lines: PackedStringArray = []
@@ -1300,6 +1411,7 @@ func _ensure_workpiece_durability_hero() -> void:
 		return
 	var state := str(_item.effective_durability_state())
 	hero.visible = true
+	hero.visible = str(EquipmentCatalogScript.by_item(_item).get("equipment_id", "")) == "iron_sword"
 	hero.texture = _workpiece_texture_for_durability_state(state)
 	hero.tooltip_text = "작품 상태: %s" % _player_facing_durability_state(state)
 

@@ -14,6 +14,10 @@ PATHS = [
     "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
     "scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd",
     "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
+    "scripts/vertical_slice/services/vs_run_initializer_service.gd",
+    "scripts/vertical_slice/services/vs_item_birth_service.gd",
+    "scripts/vertical_slice/ui/vs_main_menu.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd",
 ]
 
 

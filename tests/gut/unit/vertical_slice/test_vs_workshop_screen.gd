@@ -11,6 +11,46 @@ const EquipmentCatalogScript := preload("res://scripts/vertical_slice/domain/vs_
 const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 const WorkpieceDurabilityStateAtlasTexture := preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
+func test_enhancement_result_copy_distinguishes_success_hold_and_damage():
+	var screen = autofree(load(SCREEN_PATH).new())
+	assert_true(screen.has_method("_enhancement_result_copy"))
+	if not screen.has_method("_enhancement_result_copy"):
+		return
+	assert_true(screen._enhancement_result_copy({"outcome":"SUCCESS","target_level":10}).contains("+10"))
+	assert_true(screen._enhancement_result_copy({"outcome":"FAILED_HOLD"}).contains("단계 유지"))
+	assert_true(screen._enhancement_result_copy({"outcome":"FAILED_DAMAGE"}).contains("손상"))
+
+func test_replan_native_choice_button_drives_saved_precision_without_legacy_controls():
+	var envelope = _enhancement_envelope()
+	var item = envelope.get_item(envelope.active_run.selected_item_uid)
+	item.enhancement_level = 9
+	item.highest_checkpoint = 0
+	item.used_precision_milestones.clear()
+	item.catalyst_affix = {"schema_version":2, "ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912", "tags":{}}
+	var resources = ResourcesScript.new(20000, {"common_reinforcement_material":10,"heart_of_flame":2,"earth_crystal":2})
+	envelope.workshop_resources = resources.snapshot()
+	var screen = autofree(SCREEN_SCENE.instantiate())
+	add_child(screen)
+	screen.configure_context(item, resources, null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
+	var button = screen.get_node_or_null("WorkshopScroll/WorkshopLayout/ReplanChoices/BURST_HANDLING")
+	assert_not_null(button, "New rules need actual native selection controls")
+	if button == null:
+		return
+	assert_true(button.visible)
+	assert_false(button.disabled)
+	assert_gte(button.custom_minimum_size.y, 48.0)
+	assert_gte(button.get_theme_font_size("font_size"), 28, "Logical720px UI must stay readable at360px")
+	assert_true(button.text.contains("없음 → I"))
+	assert_false(screen.get_node("WorkshopScroll/WorkshopLayout/PrecisionLineageOption").visible)
+	button.pressed.emit()
+	assert_true(screen.view_state().enhancement_allowed)
+	var result = screen.request_enhancement_with_rolls({"success_roll_percent":0.0})
+	assert_eq(result.outcome, "SUCCESS")
+	assert_eq(result.envelope.get_item(item.uid).catalyst_affix.tags.BURST_HANDLING, 1)
+	assert_eq(resources.get_material_count("heart_of_flame"), 1)
+	assert_false(screen.get_node("WorkshopScroll/WorkshopLayout/ReplanChoices").visible)
+	assert_true(screen.view_state().workpiece_summary.contains("기민 I"), "Earned tag must remain visible outside precision levels")
+
 
 class TrackingMaintenanceService extends RefCounted:
 	var random_repair_calls := 0
@@ -297,6 +337,8 @@ func test_workshop_binds_the_selected_equipment_identity_separately_from_the_dur
 		assert_eq(identity_hero.mouse_filter, Control.MOUSE_FILTER_IGNORE, str(entry.get("equipment_id", "")))
 		assert_eq(identity_hero.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, str(entry.get("equipment_id", "")))
 		assert_ne(identity_hero, screen.get_node_or_null("WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero"), "identity and durability visuals must remain distinct")
+		if str(entry.get("equipment_id")) != "iron_sword":
+			assert_false(screen.get_node("WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero").visible, "Sword atlas cannot depict another equipment kind")
 
 
 func test_workshop_uses_a_readability_veil_over_the_illustrated_background() -> void:
