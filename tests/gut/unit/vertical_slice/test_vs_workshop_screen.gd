@@ -11,6 +11,174 @@ const EquipmentCatalogScript := preload("res://scripts/vertical_slice/domain/vs_
 const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 const WorkpieceDurabilityStateAtlasTexture := preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
+func test_optional_world_report_modes_preserve_campaign_and_keep_return_reachable():
+	var envelope = _enhancement_envelope()
+	envelope.active_run.tag_ruleset_id = "BLACKSMITH_REPLAN_TAGS_20260912"
+	var item = envelope.get_item(envelope.active_run.selected_item_uid)
+	item.enhancement_level = 9
+	item.highest_checkpoint = 0
+	item.used_precision_milestones.clear()
+	item.catalyst_affix = {"schema_version":2,"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tags":{}}
+	var screen = autofree(SCREEN_SCENE.instantiate())
+	add_child(screen)
+	var saving = FakeSaveService.new()
+	screen.configure_context(item, ResourcesScript.new(), null, null, saving, envelope)
+	assert_true(screen.has_method("set_world_view_mode"))
+	if not screen.has_method("set_world_view_mode"):
+		return
+	var before = envelope.to_dict()
+	var calls_before: int = saving.calls
+	var scroll = screen.get_node("WorkshopScroll")
+	for mode in ["SPLIT","FOCUS","COLLAPSED","SPLIT","COLLAPSED"]:
+		assert_true(screen.set_world_view_mode(mode))
+		await get_tree().process_frame
+		await get_tree().process_frame
+		assert_eq(scroll.visible, mode != "FOCUS")
+		assert_eq(screen.get_node("WorldReportPanel").visible, mode != "COLLAPSED")
+		assert_true(screen.get_node("WorldViewBar/Close").is_visible_in_tree() if mode != "COLLAPSED" else true)
+		if mode == "SPLIT":
+			assert_lte(screen.get_node("WorldReportPanel").get_global_rect().end.y, scroll.get_global_rect().position.y)
+	assert_false(screen.set_world_view_mode("UNKNOWN"))
+	assert_eq(envelope.to_dict(), before)
+	assert_eq(saving.calls, calls_before, "Observation never commits gameplay")
+	assert_true(screen.get_node("WorldReportPanel/ReportScroll/ReportText").text.contains("아직"))
+	assert_true(screen.set_world_view_mode("FOCUS"))
+	screen.configure_context(_item(), ResourcesScript.new())
+	assert_false(screen.get_node("WorldViewBar").visible)
+	assert_false(screen.get_node("WorldReportPanel").visible)
+	assert_true(scroll.visible)
+	assert_eq(scroll.offset_top, 24.0)
+
+func test_enhancement_result_copy_distinguishes_success_hold_and_damage():
+	var screen = autofree(load(SCREEN_PATH).new())
+	assert_true(screen.has_method("_enhancement_result_copy"))
+	if not screen.has_method("_enhancement_result_copy"):
+		return
+	assert_true(screen._enhancement_result_copy({"outcome":"SUCCESS","target_level":10}).contains("+10"))
+	assert_true(screen._enhancement_result_copy({"outcome":"FAILED_HOLD"}).contains("단계 유지"))
+	assert_true(screen._enhancement_result_copy({"outcome":"FAILED_DAMAGE"}).contains("손상"))
+
+func test_replan_native_choice_button_drives_saved_precision_without_legacy_controls():
+	var envelope = _enhancement_envelope()
+	var item = envelope.get_item(envelope.active_run.selected_item_uid)
+	item.enhancement_level = 9
+	var shield = EquipmentCatalogScript.by_id("iron_shield")
+	item.equipment_group = shield.equipment_group
+	item.role_profile = shield.role_profile
+	item.highest_checkpoint = 0
+	item.used_precision_milestones.clear()
+	item.catalyst_affix = {"schema_version":2, "ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912", "tags":{}}
+	var resources = ResourcesScript.new(20000, {"common_reinforcement_material":10,"heart_of_flame":2,"earth_crystal":2})
+	envelope.workshop_resources = resources.snapshot()
+	var screen = autofree(SCREEN_SCENE.instantiate())
+	add_child(screen)
+	screen.configure_context(item, resources, null, EnhancementActionServiceScript.new(), FakeSaveService.new(), envelope)
+	var button = screen.get_node_or_null("WorkshopScroll/WorkshopLayout/ReplanChoices/BURST_HANDLING")
+	assert_not_null(button, "New rules need actual native selection controls")
+	if button == null:
+		return
+	assert_true(button.visible)
+	assert_false(screen.view_state().enhancement_cost_summary.contains("0 Gold"), "Unquoted cost is not free")
+	assert_false(button.disabled)
+	assert_gte(button.custom_minimum_size.y, 48.0)
+	assert_gte(button.get_theme_font_size("font_size"), 28, "Logical720px UI must stay readable at360px")
+	assert_true(button.text.contains("없음 → I"))
+	var requirement = screen.get_node("WorkshopScroll/WorkshopLayout/ReplanChoices/Requirement")
+	requirement.select(2)
+	requirement.item_selected.emit(2)
+	assert_true(button.text.contains("63.0%"), "Matching tag must expose the hand-calculated mission estimate")
+	assert_true(button.text.contains("시험"), "An estimate must not claim a resolved mission")
+	assert_false(screen.get_node("WorkshopScroll/WorkshopLayout/PrecisionLineageOption").visible)
+	button.pressed.emit()
+	assert_true(screen.view_state().enhancement_allowed)
+	var result = screen.request_enhancement_with_rolls({"success_roll_percent":0.0})
+	assert_eq(result.outcome, "SUCCESS")
+	assert_eq(result.envelope.get_item(item.uid).catalyst_affix.tags.BURST_HANDLING, 1)
+	assert_eq(resources.get_material_count("heart_of_flame"), 1)
+	assert_false(screen.get_node("WorkshopScroll/WorkshopLayout/ReplanChoices").visible)
+	assert_true(screen.view_state().workpiece_summary.contains("기민 I"), "Earned tag must remain visible outside precision levels")
+
+
+func test_aqueduct_native_controls_prepare_resume_and_show_separate_results():
+	var envelope = _enhancement_envelope()
+	envelope.active_run.tag_ruleset_id = "BLACKSMITH_REPLAN_TAGS_20260912"
+	var item = envelope.get_item(envelope.active_run.selected_item_uid)
+	var shield = EquipmentCatalogScript.by_id("iron_shield")
+	item.equipment_group = shield.equipment_group
+	item.role_profile = shield.role_profile
+	item.enhancement_level = 10
+	item.highest_checkpoint = 10
+	item.used_precision_milestones.assign([10])
+	item.catalyst_affix = {"schema_version":2,"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tags":{"BURST_HANDLING":1}}
+	var screen = autofree(SCREEN_SCENE.instantiate())
+	add_child(screen)
+	screen.configure_context(item, ResourcesScript.new(), null, null, FakeSaveService.new(), envelope)
+	var button = screen.get_node_or_null("WorkshopScroll/WorkshopLayout/AqueductTrial/Action")
+	assert_not_null(button)
+	if button == null:
+		return
+	assert_false(button.disabled)
+	button.pressed.emit()
+	assert_true(button.text.contains("결과 확인"))
+	assert_true(screen.get_node("WorldReportPanel/ReportScroll/ReportText").text.contains("대여 중"))
+	assert_false(screen.view_state().destination_summary.contains("인계 가능"))
+	assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton").disabled)
+	assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/RepairButton").disabled)
+	button.pressed.emit()
+	var summary = screen.get_node("WorkshopScroll/WorkshopLayout/AqueductTrial/Summary")
+	assert_true(summary.text.contains("임무"))
+	assert_true(summary.text.contains("손상"))
+	assert_true(summary.text.contains("보상 없음"))
+	assert_true(screen.get_node("WorldReportPanel/ReportScroll/ReportText").text.contains(summary.text))
+	assert_true(button.disabled)
+	var chronicle = autofree(load("res://scripts/vertical_slice/ui/vs_item_chronicle_screen.gd").new())
+	assert_true(chronicle.has_method("configure_aqueduct"))
+	if chronicle.has_method("configure_aqueduct"):
+		chronicle.configure_item(screen._item, {})
+		chronicle.configure_aqueduct(screen._aqueduct_record())
+		assert_true(str(chronicle.view_state().entries).contains("수로 모험"))
+
+func test_repair_save_failure_is_atomic_and_saved_repair_reaches_aqueduct_snapshot():
+	for fail_save in [true, false]:
+		var envelope = _enhancement_envelope()
+		envelope.active_run.tag_ruleset_id = "BLACKSMITH_REPLAN_TAGS_20260912"
+		var item = envelope.get_item(envelope.active_run.selected_item_uid)
+		var identity = EquipmentCatalogScript.by_id("iron_shield")
+		item.equipment_group = identity.equipment_group
+		item.role_profile = identity.role_profile
+		item.enhancement_level = 10
+		item.highest_checkpoint = 10
+		item.used_precision_milestones.assign([10])
+		item.catalyst_affix = {"schema_version":2,"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tags":{"BURST_HANDLING":1}}
+		item.current_durability = 3
+		item.repair_job_available = true
+		var resources = ResourcesScript.new(20000, {"common_reinforcement_material":10,"heart_of_flame":2,"earth_crystal":2})
+		envelope.workshop_resources = resources.snapshot()
+		var before = resources.snapshot()
+		var save = FakeSaveService.new() if fail_save else load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/aqueduct-after-repair.json")
+		if fail_save:
+			save.next_save_error = ERR_CANT_CREATE
+		else:
+			assert_eq(save.save_envelope(envelope), OK)
+		var screen = autofree(SCREEN_SCENE.instantiate())
+		add_child(screen)
+		screen.configure_context(item, resources, null, null, save, envelope)
+		var result = screen.request_repair_with_rolls({"quality_roll_percent":0.0,"scar_roll_percent":99.0})
+		if fail_save:
+			assert_eq(result.status, "BLOCKED")
+			assert_eq(resources.snapshot(), before)
+			assert_eq(item.current_durability, 3)
+		else:
+			assert_eq(result.status, "APPLIED")
+			var restored = save.load_envelope()
+			assert_eq(restored.get_item(item.uid).current_durability, 5)
+			assert_eq(restored.resource_snapshot(), resources.snapshot())
+			var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+			var prepared = service.prepare_aqueduct_with_rolls(screen._campaign_envelope, item.uid, "HANDLING", "BURST", [0, 99], save)
+			assert_eq(prepared.status, "PREPARED")
+			if prepared.has("record"):
+				assert_eq(int(prepared.record.item_snapshot.current_durability), 5)
+				assert_eq(prepared.envelope.resource_snapshot(), resources.snapshot())
 
 class TrackingMaintenanceService extends RefCounted:
 	var random_repair_calls := 0
@@ -29,9 +197,11 @@ class TrackingMaintenanceService extends RefCounted:
 
 class FakeSaveService extends RefCounted:
 	var saved_envelope = null
+	var calls := 0
 	var next_save_error: Error = OK
 
 	func save_envelope(envelope) -> Error:
+		calls += 1
 		if next_save_error != OK:
 			return next_save_error
 		saved_envelope = envelope
@@ -98,7 +268,7 @@ func test_screen_exposes_current_durability_and_repair_quote() -> void:
 	assert_true(ResourceLoader.exists(SCREEN_PATH), "Workshop screen controller must exist")
 	if not ResourceLoader.exists(SCREEN_PATH):
 		return
-	var screen = load(SCREEN_PATH).new()
+	var screen = autofree(load(SCREEN_PATH).new())
 	screen.configure_context(_item(), ResourcesScript.new(100, {"common_reinforcement_material": 1}))
 	var state: Dictionary = screen.view_state()
 	assert_eq(state["durability_text"], "3 / 5 / 5")
@@ -297,6 +467,8 @@ func test_workshop_binds_the_selected_equipment_identity_separately_from_the_dur
 		assert_eq(identity_hero.mouse_filter, Control.MOUSE_FILTER_IGNORE, str(entry.get("equipment_id", "")))
 		assert_eq(identity_hero.stretch_mode, TextureRect.STRETCH_KEEP_ASPECT_CENTERED, str(entry.get("equipment_id", "")))
 		assert_ne(identity_hero, screen.get_node_or_null("WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero"), "identity and durability visuals must remain distinct")
+		if str(entry.get("equipment_id")) != "iron_sword":
+			assert_false(screen.get_node("WorkshopScroll/WorkshopLayout/WorkpieceDurabilityHero").visible, "Sword atlas cannot depict another equipment kind")
 
 
 func test_workshop_uses_a_readability_veil_over_the_illustrated_background() -> void:

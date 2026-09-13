@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "c31e550fc8d5b27d4377aeb542fde3cbfe228c06",
+  "decision_ids": ["BS-OPS-20260913-01", "BS-REPLAN-20260913-02"],
+  "approved_paths": [
+    "scripts/vertical_slice/domain/vs_replan_tag_rules.gd",
+    "scripts/vertical_slice/domain/vs_replan_tag_rules.gd.uid",
+    "scripts/vertical_slice/domain/vs_item.gd",
+    "scripts/vertical_slice/resolvers/vs_precision_resolver.gd",
+    "scripts/vertical_slice/resolvers/vs_enhancement_resolver.gd",
+    "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
+    "scripts/vertical_slice/services/vs_run_initializer_service.gd",
+    "scripts/vertical_slice/services/vs_item_birth_service.gd",
+    "scripts/vertical_slice/ui/vs_main_menu.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd",
+    "scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd",
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/ui/vs_app.gd",
+    "scripts/vertical_slice/ui/vs_item_chronicle_screen.gd",
+    "scripts/vertical_slice/services/vs_workshop_maintenance_service.gd",
+    "scripts/ui/forging_screen.gd"
+  ],
+  "approval_source": "Current user conversation: approval of the bounded protected-path recovery exception, followed by 승인,진행해. BS-OPS-20260913-01 is recorded in the current production contract. External PR metadata is required independently.",
+  "approval_time": "2026-09-13T00:11:29+09:00",
+  "scope_summary": "BS-REPLAN-20260913-02: latest user explicitly requests continued implementation through the complete approved game. Exact sixteen-path continuation includes AQ persistence, atomic repairs and their consumers plus ForgingScreen correction discovered in actual first-play: no auto-start before the first hammer, selected equipment reaches result, portrait controls remain scrollable. No live save migration, new scene/assets, economy rebalance, blanket allowance or Base/baseline change. External PR metadata remains required."
+}

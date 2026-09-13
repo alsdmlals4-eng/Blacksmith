@@ -1,5 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
+- 2026-09-10 재기획 변경 owner: `docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md`. 전체 픽셀·기존 그림 참고자료화·5종 태그 확장 방향·선택형 세계창은 최신 사용자 요구다. 세부 명세는 검토안이며 구형 runtime을 구현 완료로 판정하지 않는다.
+
 - current amendment: `BS-ENHANCE-20260830-38` is the exclusive owner for recurring Precision targets, up-to-three I~IV tags in `CATALYST_AFFIX`, item migration disposition, and effect timing. `BS-ENHANCE-20260901-40` owns the consumable catalyst input, catalog V3, resource migration, and atomic charge. [대체됨] Decision34/37 cadence/cardinality claims remain historical evidence only.
 
 - 상태: `CURRENT_AUTHORITY_INDEX / CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`

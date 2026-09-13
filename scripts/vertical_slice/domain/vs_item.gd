@@ -3,6 +3,7 @@ extends RefCounted
 
 const SCHEMA_VERSION := 4
 const BASE_MAX_DURABILITY := 5
+const ReplanTagRules = preload("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd")
 const LedgerEntryScript = preload("res://scripts/vertical_slice/domain/vs_ledger_entry.gd")
 const EquipmentCatalogScript = preload("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
 const REQUIRED_FIELDS := [
@@ -143,8 +144,16 @@ static func from_dict(value: Dictionary) -> VSItem:
 	var raw_catalyst_affix: Variant = value.get("catalyst_affix", "")
 	if source_schema_version >= SCHEMA_VERSION:
 		if raw_catalyst_affix is Dictionary:
-			_validate_raw_catalyst_scalars(raw_catalyst_affix, item.validation_errors)
-			item.catalyst_affix = _normalize_catalyst_affix(raw_catalyst_affix)
+			if _is_valid_catalyst_schema_version(raw_catalyst_affix.get("schema_version")) and raw_catalyst_affix.get("schema_version") == 2:
+				var decoded := ReplanTagRules.new().decode_saved_affix(raw_catalyst_affix, value.get("enhancement_level"), raw_milestones if raw_milestones is Array else [])
+				item.catalyst_affix = decoded.get("affix", raw_catalyst_affix).duplicate(true)
+				if not decoded.ok:
+					item.validation_errors.append(str(decoded.reason))
+			else:
+				_validate_raw_catalyst_scalars(raw_catalyst_affix, item.validation_errors)
+				if raw_catalyst_affix.has("ruleset_id") or raw_catalyst_affix.has("tags"):
+					item.validation_errors.append("MIXED_CATALYST_RULESET")
+				item.catalyst_affix = _normalize_catalyst_affix(raw_catalyst_affix)
 		else:
 			item.validation_errors.append("INVALID_FIELD_TYPE:catalyst_affix")
 			item.catalyst_affix = _unreadable_catalyst_affix(str(raw_catalyst_affix))
@@ -447,6 +456,11 @@ static func _migrate_legacy_catalyst_affix(raw_value: Variant, item: VSItem) -> 
 
 
 func _validate_catalyst_affix() -> void:
+	if _is_valid_catalyst_schema_version(catalyst_affix.get("schema_version")) and catalyst_affix.get("schema_version") == 2:
+		var checked := ReplanTagRules.new().decode_saved_affix(catalyst_affix, enhancement_level, used_precision_milestones)
+		if not checked.ok:
+			validation_errors.append(str(checked.reason))
+		return
 	if int(catalyst_affix.get("schema_version", 0)) != CATALYST_SCHEMA_VERSION:
 		validation_errors.append("INVALID_CATALYST_SCHEMA_VERSION")
 	var raw_entries: Variant = catalyst_affix.get("tag_entries", null)

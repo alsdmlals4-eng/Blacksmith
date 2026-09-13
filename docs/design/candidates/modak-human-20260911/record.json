@@ -1,0 +1,23 @@
+{
+  "status": "USER_APPROVED_APPEARANCE_NOT_RUNTIME_READY",
+  "file": "modak-human-01.png",
+  "sha256": "9d51f36068e0aeb6979057d87aebbc906f5c777318bdab172bb735740d6f2d48",
+  "consumer": "BP11-MODAK-STYLE / planned workshop companion",
+  "style": "NON_PIXEL_ANIME_ILLUSTRATION",
+  "direction": "Human personification of a weakened fire spirit staying at the forge as smith assistant",
+  "user_approved": true,
+  "growth_stage": "LATER",
+  "growth_schedule": "UNSPECIFIED_REVIEW_REQUIRED",
+  "runtime_verified": false,
+  "background": "INTENTIONAL_OPAQUE_REVIEW_BACKDROP",
+  "prompt": "Use case stylized-concept. Create ONE original full-body anime illustrated character candidate, Modak, for fantasy blacksmith game Anvil Oath. NOT PIXEL ART. Portrait1024x1536. Human personification of a fire spirit who has lost most of their power and now lives at a young blacksmith's workshop as a helpful apprentice companion. Petite youthful androgynous humanoid, expressive honey-amber eyes, warm light skin, short layered pale gold hair with asymmetric amber-tipped ends and one small ember wisp hovering near a side lock. Gentle intelligent face, slightly shy proud smile, a hint of vulnerability but not sad. Entirely human-shaped face and body, NOT a flame blob or animal. Wear original medieval workshop clothing: loose warm cream long-sleeved tunic with rolled practical cuffs, ochre short side-slit leather apron with small bronze fastening, dark umber work trousers, modest sturdy lace-up ankle boots; full coverage, no modern oversized T-shirt, no logo, no heart chest emblem, no crown or flame antlers. One hand gently cups a SINGLE tiny weak orange flame, other holds a small pair of practical smith tongs down at side. Feet fully visible, natural upright3/4pose with negative space around limbs suitable for future separated animation layers. Crisp elegant anime line art, nuanced cel shading and restrained soft brush highlights, high quality fantasy game character illustration, expressive face and clear silhouette, warm gold cream brown color harmony. Flame is small because power is depleted; NO full-body inferno, no giant magic particles. Both attached images are MOOD REFERENCES ONLY: transfer gold warmth, human fire spirit idea, gentle mysterious expression; design a new face/hair/outfit/pose, do not copy exact character. Omit screenshot UI and reference watermarks. Plain light warm gray background, no scene, no ground shadow, no text, no frames, no checkerboard. Single full body illustration, not contact sheet. This is visual-review source for planned workshop companion; not final production sprite.",
+  "source": "exec-b30cc90b-718d-4fd2-93df-ca9517f85da1.png",
+  "qa": "Human anatomy, golden hair, amber eyes, small fire, apron/tongs/boots match brief. Face and outfit differ from references. Review needed: looks mostly human apprentice; spirit distinction may need strengthening. Full-body artwork is not separated animation layers or transparent sprite.",
+  "missing": [
+    "alpha extraction",
+    "separated animation layers",
+    "motion",
+    "runtime"
+  ],
+  "supersedes": "Earlier flame-blob ten-option family as current design direction, not deletion of provenance."
+}

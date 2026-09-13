@@ -4,6 +4,22 @@ const SERVICE_PATH := "res://scripts/vertical_slice/services/vs_item_birth_servi
 const INITIALIZER_PATH := "res://scripts/vertical_slice/services/vs_run_initializer_service.gd"
 const ItemScript := preload("res://scripts/vertical_slice/domain/vs_item.gd")
 
+func test_explicit_replan_campaign_birth_keeps_ruleset_while_legacy_birth_stays_legacy():
+	var initializer = load(INITIALIZER_PATH).new()
+	assert_true(initializer.has_method("create_replan_candidate_envelope"))
+	if not initializer.has_method("create_replan_candidate_envelope"):
+		return
+	var fresh = initializer.create_replan_candidate_envelope()
+	var result = load(SERVICE_PATH).new().commit_first_forge(fresh, _forge_result())
+	assert_eq(result.status, "APPLIED")
+	assert_eq(result.item.catalyst_affix.get("ruleset_id"), "BLACKSMITH_REPLAN_TAGS_20260912")
+	assert_eq(result.item.catalyst_affix.get("tags"), {})
+	var legacy = load(SERVICE_PATH).new().commit_first_forge(_new_envelope(), _forge_result())
+	assert_eq(legacy.item.catalyst_affix.schema_version, 1)
+	var invalid = _new_envelope()
+	invalid.active_run["tag_ruleset_id"] = "UNKNOWN"
+	assert_eq(load(SERVICE_PATH).new().commit_first_forge(invalid, _forge_result()).status, "BLOCKED")
+
 
 func _forge_result(crafting_grade: String = "CRAFT_SUPERIOR") -> Dictionary:
 	return {

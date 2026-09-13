@@ -34,6 +34,20 @@ func configure_item(item, resolved_events: Dictionary, customer_profile = null) 
 	return {"status": "APPLIED"}
 
 
+func _tag_name(tag_id: String) -> String:
+	var names: Dictionary = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").DISPLAY_NAMES_KO
+	return str(names.get(tag_id, tag_id))
+
+
+func configure_aqueduct(record: Dictionary) -> void:
+	_view_state.entries = _view_state.entries.filter(func(entry): return entry.get("kind", "") != "AQUEDUCT")
+	var envelope_script = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
+	if envelope_script.validate_aqueduct_trial(record, str(_view_state.item_uid)).is_empty() and record.phase == "RESOLVED":
+		var report: Dictionary = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new().aqueduct_report(record)
+		_view_state.entries.append({"kind": "AQUEDUCT", "text": "수로 모험 보고\n" + str(report.body)})
+	_refresh_controls()
+
+
 func view_state() -> Dictionary:
 	return _view_state.duplicate(true)
 
@@ -56,7 +70,7 @@ func _entries_from_existing_facts(item, resolved_events: Dictionary, customer_pr
 				entries.append({
 					"kind": "PRECISION_TAG",
 					"text": "정밀 태그 · %s 단계 %d → %d" % [
-						str(payload.get("tag_id", "")),
+						_tag_name(str(payload.get("tag_id", ""))),
 						int(payload.get("stage_before", 0)),
 						int(payload.get("stage_after", 0)),
 					],
@@ -123,33 +137,38 @@ func _ensure_controls() -> void:
 		background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		add_child(background)
 		move_child(background, 0)
-	var margin := get_node_or_null("ChronicleMargin") as MarginContainer
+	var margin := get_node_or_null("ChronicleMargin") as ScrollContainer
 	if margin == null:
-		margin = MarginContainer.new()
+		margin = ScrollContainer.new()
 		margin.name = "ChronicleMargin"
 		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		margin.add_theme_constant_override("margin_left", 32)
-		margin.add_theme_constant_override("margin_top", 48)
-		margin.add_theme_constant_override("margin_right", 32)
-		margin.add_theme_constant_override("margin_bottom", 48)
+		margin.offset_left = 32
+		margin.offset_top = 48
+		margin.offset_right = -32
+		margin.offset_bottom = -48
+		margin.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		margin.follow_focus = true
+		margin.scroll_hint_mode = ScrollContainer.SCROLL_HINT_MODE_ALL
 		add_child(margin)
 	var layout := margin.get_node_or_null("ChronicleLayout") as VBoxContainer
 	if layout == null:
 		layout = VBoxContainer.new()
 		layout.name = "ChronicleLayout"
+		layout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		layout.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 		layout.add_theme_constant_override("separation", 16)
 		margin.add_child(layout)
-	_ensure_label(layout, "TitleLabel", 32, Color(0.94, 0.84, 0.66, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
-	_ensure_label(layout, "UidLabel", 18, Color(0.82, 0.72, 0.55, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
-	_ensure_label(layout, "SummaryLabel", 20, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
-	_ensure_label(layout, "EntriesLabel", 20, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
+	_ensure_label(layout, "TitleLabel", 44, Color(0.94, 0.84, 0.66, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
+	_ensure_label(layout, "UidLabel", 28, Color(0.82, 0.72, 0.55, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
+	_ensure_label(layout, "SummaryLabel", 28, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
+	_ensure_label(layout, "EntriesLabel", 28, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
 	var return_button := layout.get_node_or_null("WorkshopReturnButton") as Button
 	if return_button == null:
 		return_button = Button.new()
 		return_button.name = "WorkshopReturnButton"
 		return_button.text = "작업대로 돌아가기"
-		return_button.custom_minimum_size = Vector2(0, 48)
-		return_button.add_theme_font_size_override("font_size", 20)
+		return_button.custom_minimum_size = Vector2(0, 96)
+		return_button.add_theme_font_size_override("font_size", 28)
 		layout.add_child(return_button)
 	if not return_button.pressed.is_connected(_on_workshop_return_pressed):
 		return_button.pressed.connect(_on_workshop_return_pressed)

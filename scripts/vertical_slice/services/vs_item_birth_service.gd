@@ -23,6 +23,9 @@ func commit_first_forge(envelope, forging_result: Dictionary) -> Dictionary:
 		return _blocked("FIRST_ITEM_ALREADY_CREATED")
 	if not _is_valid_forging_result(forging_result):
 		return _blocked("INVALID_FORGE_RESULT")
+	var tag_ruleset := str(envelope.active_run.get("tag_ruleset_id", ""))
+	if tag_ruleset not in ["", "BLACKSMITH_REPLAN_TAGS_20260912"]:
+		return _blocked("UNKNOWN_TAG_RULESET")
 	var equipment: Dictionary = _equipment_from_forging_result(forging_result)
 
 	var item_uid := str(_uid_service.create_uid(envelope.items_by_uid))
@@ -43,6 +46,8 @@ func commit_first_forge(envelope, forging_result: Dictionary) -> Dictionary:
 	item.functions.clear()
 	item.grade_affix = ""
 	item.catalyst_affix = ItemScript.empty_catalyst_affix()
+	if not tag_ruleset.is_empty():
+		item.catalyst_affix = {"schema_version":2, "ruleset_id":tag_ruleset, "tags":{}}
 	item.chronicle_affix = ""
 	item.owner_id = "PLAYER"
 	var birth_entry = LedgerEntryScript.create(

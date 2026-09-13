@@ -1,0 +1,149 @@
+{
+  "status": "USER_REVIEW_PENDING",
+  "runtime_changed": false,
+  "refinements": [
+  {
+    "parent": "modak-01.png",
+    "file": null,
+    "source_path": "C:/Users/user/.codex/generated_images/01a04af3-ae3c-72d1-9b40-af4364f584e8/exec-d7ef5de0-910f-47a4-a0e8-c6f4eab79f1e.png",
+    "sha256": "917c23934cad25c3877a5f8ba17c93be963488eff50af040405f65a38a0d7c2e",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "alpha_status": "FAILED_NO_ALPHA",
+    "user_approved": false,
+    "runtime_verified": false,
+    "prompt": "Edit target: attached Modak fire spirit. Background-extraction correction only. Preserve the exact young cute flame character, its flame shape, large amber eyes, calm smile, colors, pose, pixel-art rendering and tiny sparks. REMOVE all gray/white checkerboard pixels and background haze. Output a real transparent PNG with actual alpha zero everywhere outside character and sparks. Character interior should be fully opaque. Do not illustrate a transparency checkerboard; do not add any background color, shadows, glow halo, floor, new objects or text. No style redesign, no new poses. Isolated crisp pixel-art game character cutout with empty transparent margin. Square source composition retained. Needed for planned workshop companion sprite BP11-MODAK-STYLE; candidate correction, no new art approval.",
+    "qa": "Image model reproduced distorted checkerboard instead of extracting background. Rejected as runtime input; no duplicate repository binary. Original style candidate preserved.",
+    "next": "Do not repeat identical extraction indefinitely. Resolve supported background-processing path before sprite packaging; smith selection remains pending."
+  }
+],
+  "production_status": "STYLE_REVIEW_ONLY_NOT_ASSET_READY",
+  "generator": "built-in image_gen",
+  "visual_reference": "docs/design/candidates/blueprint-20260911/forge.png",
+  "display_order": [
+    "smith-01.png",
+    "smith-02.png",
+    "smith-03.png",
+    "modak-01.png"
+  ],
+  "candidates": [
+    {
+      "file": "smith-01.png",
+      "role": "young_smith",
+      "style": "Luminous JRPG artisan",
+      "sha256": "970ea84a3db8d03227e4c408c4fd7a7b8155acb3d8d14fe00274fcc324ba60e3",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "prompt": "Use case: stylized-concept. Create a single original game character candidate for Anvil Oath, a portrait mobile fantasy blacksmith game. Direction name: Luminous JRPG artisan. Target 1024x1536 portrait. ONE full body handsome young adult male blacksmith aged 22, clean-shaven, lively teal eyes, tousled chestnut hair, youthful elegant face, slim athletic shoulders and working forearms, gentle confident half-smile. Ivory shirt rolled sleeves, fitted chestnut leather apron with bronze fasteners, muted teal neck cloth, charcoal trousers, brown practical boots; a modest smithing hammer held naturally down beside thigh, other hand relaxed. Three-quarter front standing, entire boots visible, centered with generous margin, no anvil. ART: highly polished anime-inspired PIXEL ART, approximately 5.5 heads tall, readable expressive anime eyes, sculpted large pixel clusters, deliberate square pixel steps, warm highlights with cool teal shadows, restrained 32-color appearance, elegant 1990s fantasy JRPG portrait-sprite aesthetic. NOT smooth illustration, NOT realistic, NOT elderly, NOT beard, NOT huge muscles, NOT tiny chibi. Attached workshop is PALETTE AND WORLD reference ONLY, do not reproduce background or any architecture. Subject alone on genuinely transparent alpha background, no checkerboard painted into image, no ground or cast shadow, no text, no labels, no UI, no watermark. This is a style-selection character source, not an animation sheet.",
+      "source": "exec-568055bb-a338-4607-b122-17e5ead06db7.png",
+      "qa": "Youthful anime face; pixel-art appearance. Alpha exists but halo/semitransparent body needs cleanup; not clean production cutout.",
+      "user_approved": true,
+      "approval_scope": "VISUAL_DIRECTION_ONLY: latest user selected smith option1; cleanup, motion and runtime remain pending",
+      "runtime_verified": false,
+      "consumer": "BP11-SMITH-STYLE -> planned workshop smith AnimatedSprite2D",
+      "missing_states": [
+        "native128grid",
+        "clean_alpha",
+        "idle",
+        "hammer_prepare",
+        "hammer_contact",
+        "hammer_recovery"
+      ],
+      "fallback": "No runtime replacement; preserve current game until approval and production verification."
+    },
+    {
+      "file": "smith-02.png",
+      "role": "young_smith",
+      "style": "Sharp cel-anime artisan",
+      "sha256": "75870b3cf9e982ff9ed18f2fe200d72a3c74dd1bb66a01a35b92cf51cf27961e",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "prompt": "Use case: stylized-concept. Single original game character for Anvil Oath fantasy smithing game. Direction name: Sharp cel-anime artisan. Target 1024x1536 portrait. ONE full-body handsome young adult male blacksmith aged 22, clean-shaven, bright teal eyes and chestnut swept spiky hair, sharp beautiful youthful anime face, lean athletic proportions six heads tall. Relaxed self-assured expression. Ivory rolled-sleeve shirt, fitted brown leather smith apron with brass fasteners, muted teal neck cloth, dark charcoal trousers, brown boots, modest practical steel hammer held down beside thigh in one hand, other relaxed. Standing three-quarter front view, complete feet with margin, no anvil. ART STYLE must be distinctive: crisp high-contrast CEL-ANIME translated into deliberate square PIXEL ART clusters, angular expressive anime eyes, strong tapering jaw, bold dark colored contour, only two shadow tones per material, graphic sharp shapes, dynamic hair silhouette. No painterly gradients or dithering; use broad clean shade planes. Visibly pixel-art, not smooth vector or standard digital illustration. Attach reference workshop only for warm/cool color harmony and craft fantasy setting, DO NOT put workshop in output. Transparent alpha background with character only, no painted checkerboard, no labels/text/watermark, no floor or shadow. NOT middle aged, NO beard, NO bulky bodybuilder, NO armor, NO child. This is a style-comparison source, not a sprite animation sheet.",
+      "source": "exec-6c9d9c31-6297-4950-9bab-78168eb4ed82.png",
+      "qa": "Sharper flatter anime style. Baked checkerboard; no alpha. REJECTED_AS_RUNTIME_INPUT, retained only for user style choice.",
+      "user_approved": false,
+      "runtime_verified": false,
+      "consumer": "BP11-SMITH-STYLE -> planned workshop smith AnimatedSprite2D",
+      "missing_states": [
+        "native128grid",
+        "clean_alpha",
+        "idle",
+        "hammer_prepare",
+        "hammer_contact",
+        "hammer_recovery"
+      ],
+      "fallback": "No runtime replacement; preserve current game until approval and production verification."
+    },
+    {
+      "file": "smith-03.png",
+      "role": "young_smith",
+      "style": "Gentle youth anime artisan",
+      "sha256": "27faef2b12b42ed23d89f6c470b69a403fde11d068624c1a8f79c36592ad242d",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "prompt": "Use case: stylized-concept. Create ONE original handsome young male blacksmith style candidate for Anvil Oath, a fantasy crafting game. Direction name: Gentle youth anime artisan. Target1024x1536 portrait. Full body, three-quarter front relaxed standing, complete boots with empty margin. Age22 clearly young ADULT, no beard, softly swept chestnut hair, big appealing teal anime eyes, friendly thoughtful smile, pretty youthful masculine face and compact slim artisan build, 4.5 heads tall (NOT baby or superdeformed toddler). Ivory rolled-sleeve work shirt, fitted chestnut brown leather apron with bronze buckles, subdued teal neck cloth, charcoal trousers, brown boots. Plain smith hammer held down at one thigh, other arm relaxed. STYLE: warm charming storybook-anime PIXEL ART, rounded silhouettes, expressive face, chunky readable pixel clusters, softer lower-contrast caramel and muted teal color ramps, thin selective colored outlines, luminous cream accents; distinctly gentler and rounder than sharp action anime. Intentional visible square pixels and clean edges, no smooth painting, no photorealism, no texture noise. Workshop reference is only world/palette inspiration, do not draw background. Isolated character only with actual transparent alpha background, never paint a checkerboard. No anvil, props beyond hammer, floor/shadow, text, logo or panels. Single style candidate not a sprite sheet.",
+      "source": "exec-c82ac04c-6299-4c04-b7c2-f03a1d3e7379.png",
+      "qa": "Softer younger face than01, but silhouette/proportions closer than requested4.5heads. Alpha exists with halo; clean grid and opacity refinement required.",
+      "user_approved": false,
+      "runtime_verified": false,
+      "consumer": "BP11-SMITH-STYLE -> planned workshop smith AnimatedSprite2D",
+      "missing_states": [
+        "native128grid",
+        "clean_alpha",
+        "idle",
+        "hammer_prepare",
+        "hammer_contact",
+        "hammer_recovery"
+      ],
+      "fallback": "No runtime replacement; preserve current game until approval and production verification."
+    },
+    {
+      "file": "modak-01.png",
+      "role": "fire_spirit",
+      "style": "Bright gentle pixel flame",
+      "sha256": "b82f08b564670c655d97f9eea8392a9b1a70dda6ccc4e23e1b790a1ae0e1a114",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "prompt": "Use case: stylized-concept. ONE original PIXEL ART fire-spirit mascot character named Modak for Anvil Oath, a young blacksmith fantasy game. Target1024x1024 square. Isolated full-body spirit, centered with generous margin, front three-quarter pose. Small warmly glowing living flame, round golden-yellow body blending to ivory-hot center, orange three-lobed flame crest sweeping slightly to one side, two tiny flame arms and little ember feet integrated in fiery silhouette. Large gentle dark amber expressive eyes, calm kind closed-mouth smile, slight curious head tilt. Appealing anime mascot, memorable simple silhouette, cozy but not babyish. Bright yellow-orange fire body ONLY: NO charcoal shell, NO black coal torso, NO rock armor, no costume, no weapon, no horns or wings. Restrained orange/cream/amber palette, small colored crisp pixel outlines and large clean clusters, visible square pixel edges, premium handcrafted medium-density fantasy PIXEL ART. No smooth airbrushed glow outside body; rim light uses controlled pixel clusters. Reference workshop is color and setting context ONLY; do not reproduce workshop. Real alpha transparent background, NO painted checkerboard, NO background scene, NO floor or cast shadow, NO text/labels/watermark, no character sheet. Proposed actual use: tiny idle companion next to workshop forge and future reaction sprite; this output is single neutral character source, not final motion or implemented gameplay.",
+      "source": "exec-f0ef117b-1855-4ae7-bf24-74ebf31d25da.png",
+      "qa": "Bright orange/yellow body, calm expression, no charcoal shell. Baked checkerboard; no alpha. REJECTED_AS_RUNTIME_INPUT, retained for visual review.",
+      "user_approved": false,
+      "runtime_verified": false,
+      "consumer": "BP11-MODAK-STYLE -> planned workshop companion sprite",
+      "missing_states": [
+        "clean_alpha",
+        "native32or64grid",
+        "idle",
+        "joy",
+        "concern",
+        "focus"
+      ],
+      "fallback": "No runtime replacement; preserve current game until approval and production verification."
+    }
+  ]
+}

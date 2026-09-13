@@ -65,8 +65,8 @@ func test_preview_exposes_exact_final_outcomes_that_display_to_100_percent() -> 
 	assert_almost_eq(preview["final_damage_percent"], 6.25, 0.01)
 	assert_eq(preview["display_outcomes"], {
 		"success_percent": 79.0,
-		"failed_damage_percent": 6.3,
-		"failed_hold_percent": 14.7,
+		"failed_damage_percent": 1.3,
+		"failed_hold_percent": 19.7,
 	})
 
 

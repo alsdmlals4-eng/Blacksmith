@@ -20,6 +20,8 @@ func catalog() -> Dictionary:
 func selection_preview(item, target_level: int, selection: Dictionary) -> Dictionary:
 	if item == null:
 		return _blocked("MISSING_ITEM")
+	if not (item.catalyst_affix.get("schema_version") is int or item.catalyst_affix.get("schema_version") is float) or item.catalyst_affix.get("schema_version") != 1:
+		return _blocked("PRECISION_RULESET_REQUIRES_NEW_RESOLVER")
 	if str(item.physical_state) == "DESTROYED":
 		return _blocked("ITEM_DESTROYED")
 	if not EquipmentCatalogScript.is_precision_tag_eligible(item):

@@ -1,5 +1,9 @@
 # [현재 정본] Blacksmith Core Simplification Canon · 2026-08-25
 
+> 2026-09-11 상세 검토 뷰: `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md`가 현재 코어 유지 규칙과 신규 픽셀 재기획 권장안을 구분해서 통합한다. 정밀 태그·사건 준비도·초반 시험경제는 최종 승인 대기이며 역사 runtime 숫자를 자동 교체하지 않는다. 최신 요청은 실제 사용처 이미지 제작 재개와 기획 준비까지다. 새 게임 구현은 최종 기획 승인 후 진행한다.
+
+> 2026-09-10 변경 경계: `docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md`가 최신 픽셀 재기획과 선택형 세계창 설계를 소유한다. 기존 코어를 바탕으로 한 5종 장비 태그 확장은 승인된 방향이며 방어구 상세 카탈로그·저장 이행·runtime은 아직 미완료다. 관람 자체는 보상·손상·재굴림을 발생시키지 않는다. 기존 수치·경제를 벤치마크에서 자동 역수입하지 않는다.
+
 - Decisions: `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04 / BS-ENHANCE-20260828-34 / BS-ENHANCE-20260829-37`
 - Status: `USER_APPROVED / CURRENT_CANON_MVP_IMPLEMENTATION_AUTHORIZED`
 - Work Mode: `IMPLEMENTATION_AND_REVIEW`

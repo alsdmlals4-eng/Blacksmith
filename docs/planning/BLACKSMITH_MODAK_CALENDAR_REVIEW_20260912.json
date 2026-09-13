@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "status": "RECOMMENDED_TEST_ONLY",
+  "final_user_approved": false,
+  "runtime_implemented": false,
+  "continuation_approval": "User approved continuing with the manual-close recommendation; detailed balance and product implementation remain pending final review.",
+  "order_schedule_trial": {
+    "status": "RECOMMENDED_TEST_ONLY",
+    "total_slots": 3,
+    "reserved_recovery_slots": 1,
+    "world_slots": 2,
+    "recovery_gold": 400,
+    "recovery_material": 2,
+    "recovery_reward_source": "Human blueprint section39 trial; assumes dedicated material and completed +0 item consumed. Model does not simulate crafting.",
+    "report_delay_days": {"DUEL": 1, "ADVENTURE": 2, "ARMY": 3},
+    "delay_anchor": "COMMITTED_HANDOFF_DAY",
+    "slot_release": "RECOVERY_COMPLETION_OR_WORLD_RESULT_COMMITTED",
+    "model_limit": "Scheduling abstract model only. Crafting, requirements, inventory consumption, damage, random results, files and UI are not simulated."
+  },
+  "owner": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md#remaining-work-audit-20260912",
+  "clock": "COMMITTED_GAME_DAY_ONLY",
+  "campaign_scope": "SAME_SAVE_CAMPAIGN_NO_ANNUAL_RESET",
+  "recommended_days_per_year": 120,
+  "comparison_days_per_year": [30, 120, 365],
+  "later_from_year": 3,
+  "formula": "companion_year = floor((current_day - joined_day) / days_per_year) + 1",
+  "validation": "Require integer current_day >= joined_day >= 1 and days_per_year > 0; missing joining record means NOT_JOINED; invalid inputs must not be silently clamped.",
+  "day_advance": "MANUAL_CLOSE_RECOMMENDED_NOT_APPROVED",
+  "day_close_review": {
+    "status": "RECOMMENDED_TEST_ONLY",
+    "trigger": "EXPLICIT_PLAYER_DAY_CLOSE",
+    "day_delta": 1,
+    "free_reward": 0,
+    "enhancement_advances_day": false,
+    "unaccepted_offer_auto_reroll": false,
+    "transaction_key": "campaign_id + source_day",
+    "eligible_state": "WORKSHOP_IDLE_NO_UNRESOLVED_TRANSACTION",
+    "accepted_order_policy": "PERSIST_UNTIL_TERMINAL_STATE_NO_IMPLICIT_DEADLINE",
+    "offer_refill_policy": "ONLY_EMPTY_COMPLETED_SLOTS_NEXT_DAY_PERSISTED_DEFINITION_SEQUENCE",
+    "decline_policy": "DEFERRED_NO_FREE_REPLACEMENT_BY_REPEATED_CLOSE",
+    "world_due_policy": "RESOLVE_ON_COMMITTED_DAY_TRANSITION_ONCE_PER_EVENT_NOT_ON_VIEW",
+    "required_cases": [
+      "SAVE_FAILURE_NO_STATE_CHANGE",
+      "DUPLICATE_SOURCE_DAY_NO_SECOND_ADVANCE",
+      "STILL_RUNNING_ENHANCEMENT_NO_CLOSE",
+      "NO_EXPIRY_WITHOUT_EXPLICIT_ORDER_CONTRACT",
+      "EMPTY_DAY_NO_RESOURCES_OR_OFFER_REROLL",
+      "ACCEPTED_ORDER_SURVIVES_CLOSE",
+      "WORLD_PANEL_CLOSED_SAME_RESULT",
+      "UNKNOWN_SCHEDULE_PROFILE_BLOCK_NO_GUESSED_REWARD"
+    ],
+    "unresolved_for_playtest": [
+      "EMPTY_DAY_SKIPPING_MAY_TRIVIALIZE_GROWTH",
+      "UNLIMITED_SAME_DAY_WORK_MAY_STALL_CALENDAR",
+      "ORDER_SLOT_COUNT_AND_REPORT_DELAY_NOT_YET_LOCKED"
+    ]
+  },
+  "calendar_policy_migration": "Persist policy version per campaign; balance changes do not retroactively accelerate growth in existing saves.",
+  "boundary_cases": [
+    {"joined_day": 1, "current_day": 1, "expected_companion_year": 1, "expected_appearance": "EARLY"},
+    {"joined_day": 1, "current_day": 120, "expected_companion_year": 1, "expected_appearance": "EARLY"},
+    {"joined_day": 1, "current_day": 121, "expected_companion_year": 2, "expected_appearance": "EARLY"},
+    {"joined_day": 1, "current_day": 240, "expected_companion_year": 2, "expected_appearance": "EARLY"},
+    {"joined_day": 1, "current_day": 241, "expected_companion_year": 3, "expected_appearance": "LATER"},
+    {"joined_day": 61, "current_day": 300, "expected_companion_year": 2, "expected_appearance": "EARLY"},
+    {"joined_day": 61, "current_day": 301, "expected_companion_year": 3, "expected_appearance": "LATER"},
+    {"joined_day": 61, "current_day": 661, "expected_companion_year": 6, "expected_appearance": "LATER"}
+  ],
+  "invalid_cases_required_before_implementation": ["missing_joined_day", "negative_elapsed_days", "zero_days_per_year", "fractional_day", "unknown_policy_version", "growth_event_without_join_record"],
+  "forbidden_implicit_changes": ["wall_clock_aging", "annual_save_reset", "new_game_overwrites_existing_slot", "automatic_stat_bonus", "forced_resource_loss", "legacy_fatigue_reactivation"],
+  "evidence_ceiling": "Fixture arithmetic and document checks only; no runtime migration, economy simulation or human playtest."
+}
