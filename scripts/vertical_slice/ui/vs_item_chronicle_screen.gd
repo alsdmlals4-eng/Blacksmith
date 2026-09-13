@@ -43,8 +43,8 @@ func configure_aqueduct(record: Dictionary) -> void:
 	_view_state.entries = _view_state.entries.filter(func(entry): return entry.get("kind", "") != "AQUEDUCT")
 	var envelope_script = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
 	if envelope_script.validate_aqueduct_trial(record, str(_view_state.item_uid)).is_empty() and record.phase == "RESOLVED":
-		_view_state.entries.append({"kind": "AQUEDUCT", "text": "수로 모험 · 임무 %s / %s · 보상 없음" % [
-			"성공" if record.mission_success else "실패", "장비 손상" if record.damage_applied else "손상 없음"]})
+		var report: Dictionary = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new().aqueduct_report(record)
+		_view_state.entries.append({"kind": "AQUEDUCT", "text": "수로 모험 보고\n" + str(report.body)})
 	_refresh_controls()
 
 
@@ -137,20 +137,25 @@ func _ensure_controls() -> void:
 		background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		add_child(background)
 		move_child(background, 0)
-	var margin := get_node_or_null("ChronicleMargin") as MarginContainer
+	var margin := get_node_or_null("ChronicleMargin") as ScrollContainer
 	if margin == null:
-		margin = MarginContainer.new()
+		margin = ScrollContainer.new()
 		margin.name = "ChronicleMargin"
 		margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		margin.add_theme_constant_override("margin_left", 32)
-		margin.add_theme_constant_override("margin_top", 48)
-		margin.add_theme_constant_override("margin_right", 32)
-		margin.add_theme_constant_override("margin_bottom", 48)
+		margin.offset_left = 32
+		margin.offset_top = 48
+		margin.offset_right = -32
+		margin.offset_bottom = -48
+		margin.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		margin.follow_focus = true
+		margin.scroll_hint_mode = ScrollContainer.SCROLL_HINT_MODE_ALL
 		add_child(margin)
 	var layout := margin.get_node_or_null("ChronicleLayout") as VBoxContainer
 	if layout == null:
 		layout = VBoxContainer.new()
 		layout.name = "ChronicleLayout"
+		layout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		layout.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 		layout.add_theme_constant_override("separation", 16)
 		margin.add_child(layout)
 	_ensure_label(layout, "TitleLabel", 44, Color(0.94, 0.84, 0.66, 1.0), HORIZONTAL_ALIGNMENT_CENTER)

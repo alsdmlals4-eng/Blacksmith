@@ -3,6 +3,12 @@ extends RefCounted
 
 const RULESET_ID := "BLACKSMITH_REPLAN_TAGS_20260912"
 const DISPLAY_NAMES_KO := {"BURST_OUTPUT":"격발", "SUSTAIN_OUTPUT":"견실", "BURST_HANDLING":"기민", "SUSTAIN_HANDLING":"균형"}
+const AQUEDUCT_REQUIREMENTS := {
+	"OUTPUT:BURST": {"content_id":"AQ01", "purpose":"파편을 막아 표식 회수", "success":"표식 회수", "failure":"접근 중단"},
+	"HANDLING:BURST": {"content_id":"AQ02", "purpose":"바뀌는 방향을 엄호", "success":"표식 회수", "failure":"철수"},
+	"OUTPUT:SUSTAIN": {"content_id":"AQ03", "purpose":"측량 동안 엄호", "success":"측량 완료", "failure":"엄호 중단"},
+	"HANDLING:SUSTAIN": {"content_id":"AQ04", "purpose":"여러 지점 이동 엄호", "success":"측량 기록", "failure":"일부 철수"},
+}
 const TAGS := {
 	"BURST_OUTPUT": ["OUTPUT", "BURST"],
 	"SUSTAIN_OUTPUT": ["OUTPUT", "SUSTAIN"],

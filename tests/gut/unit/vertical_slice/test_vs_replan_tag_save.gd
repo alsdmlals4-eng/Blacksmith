@@ -136,6 +136,32 @@ func test_aqueduct_commit_readback_rejects_previous_prepared_backup():
 	assert_eq(missing_record.status, "BLOCKED")
 	assert_eq(missing_record.get("reason", ""), "AQUEDUCT_READBACK_FAILED")
 
+func test_aqueduct_report_uses_saved_work_purpose_and_contribution_without_mutation():
+	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	assert_true(service.has_method("aqueduct_report"))
+	if not service.has_method("aqueduct_report"):
+		return
+	for case in [["OUTPUT","BURST","AQ01"],["HANDLING","BURST","AQ02"],["OUTPUT","SUSTAIN","AQ03"],["HANDLING","SUSTAIN","AQ04"]]:
+		var source = _aqueduct_envelope()
+		var uid = source.active_run.selected_item_uid
+		var save = SaveBoundary.new()
+		var prepared = service.prepare_aqueduct_with_rolls(source, uid, case[0], case[1], [0, 99], save)
+		var report = service.aqueduct_report(prepared.record)
+		assert_eq(report.content_id, case[2])
+		assert_true(report.body.contains("대여"))
+		var resolved = service.resolve_prepared_aqueduct(prepared.envelope, uid, save)
+		var record_before = resolved.record.duplicate(true)
+		var calls_before = save.calls
+		resolved.envelope.get_item(uid).enhancement_level = 99
+		var final_report = service.aqueduct_report(resolved.record)
+		assert_true(final_report.body.contains("+19"))
+		assert_true(final_report.body.contains("기민 I"))
+		assert_true(final_report.body.contains("기본"))
+		assert_true(final_report.body.contains("태그 기여"))
+		assert_true(final_report.body.contains("반환"))
+		assert_eq(resolved.record, record_before)
+		assert_eq(save.calls, calls_before)
+
 func test_new_precision_transaction_commits_growth_and_one_existing_catalyst_stock_unit():
 	for success in [true, false]:
 		var envelope = Initializer.new().create_candidate_envelope()

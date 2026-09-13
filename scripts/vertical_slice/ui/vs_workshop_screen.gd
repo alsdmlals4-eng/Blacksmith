@@ -681,7 +681,7 @@ func _refresh_aqueduct_trial() -> void:
 		option.name = "Requirement"
 		option.custom_minimum_size.y = MOBILE_TOUCH_TARGET_HEIGHT
 		option.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
-		for label in ["수로 · 성능 순간", "수로 · 성능 지속", "수로 · 취급 순간", "수로 · 취급 지속"]:
+		for label in ["AQ01 파편 차단 · 성능 순간", "AQ03 측량 엄호 · 성능 지속", "AQ02 방향 엄호 · 취급 순간", "AQ04 이동 엄호 · 취급 지속"]:
 			option.add_item(label)
 		option.item_selected.connect(func(_index): _refresh_aqueduct_trial())
 		box.add_child(option)
@@ -735,6 +735,9 @@ func _refresh_aqueduct_trial() -> void:
 			summary.text += "손상으로 파괴되지 않은 +10 철방패를 준비하세요."
 		button.text = "이 용도로 수로 시험 출발"
 		button.disabled = not eligible or _campaign_envelope == null or _save_service == null
+	if not record.is_empty():
+		var report: Dictionary = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new().aqueduct_report(record)
+		summary.text = str(report.body)
 
 
 func _on_aqueduct_pressed() -> void:

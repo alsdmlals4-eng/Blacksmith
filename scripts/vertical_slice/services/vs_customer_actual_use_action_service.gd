@@ -102,6 +102,37 @@ func resolve_prepared_aqueduct(envelope, item_uid: String, save_service) -> Dict
 	return _commit_aqueduct(candidate, record, "APPLIED", save_service)
 
 
+# The report reads the immutable departure snapshot, never the current item.
+func aqueduct_report(record: Dictionary) -> Dictionary:
+	if not SaveEnvelopeScript.validate_aqueduct_trial(record, str(record.get("item_uid", ""))).is_empty():
+		return {"ok": false, "body": "수로 모험 기록을 확인할 수 없습니다."}
+	var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").new()
+	var definition: Dictionary = rules.AQUEDUCT_REQUIREMENTS[record.axis + ":" + record.rhythm]
+	var snapshot = SaveEnvelopeScript.ItemScript.from_dict(record.item_snapshot)
+	var estimate: Dictionary = rules.aqueduct_preview("iron_shield", int(snapshot.enhancement_level), snapshot.catalyst_affix.tags, record.axis, record.rhythm)
+	var tags: PackedStringArray = []
+	for tag_id in snapshot.catalyst_affix.tags:
+		tags.append("%s %s" % [rules.DISPLAY_NAMES_KO[tag_id], ["I","II","III","IV"][int(snapshot.catalyst_affix.tags[tag_id]) - 1]])
+	var lines: PackedStringArray = [
+		"무너진 수로의 측량대 · " + str(definition.content_id),
+		"임무: " + str(definition.purpose),
+		"출발 작품: 철방패 +%d · %s" % [int(snapshot.enhancement_level), " / ".join(tags)],
+		"기본 %.1f%% + 태그 기여 %.1f%%p = %.1f%%" % [float(estimate.base_percent), float(estimate.applied_support_percent), float(estimate.success_percent)],
+		"장비 손상 위험 %.1f%% · 임무와 독립 판정" % float(record.damage_percent),
+	]
+	if record.phase == "PREPARED":
+		lines.append("측량대에 대여 중 · 강화/수리 잠금")
+		lines.append("판정 저장 완료 · 아래에서 결과 확인")
+	else:
+		lines.append("임무 %s · %s" % ["성공" if record.mission_success else "실패", definition.success if record.mission_success else definition.failure])
+		var after_current := int(snapshot.current_durability) - (1 if record.damage_applied else 0)
+		lines.append("장비 %s · 내구도 %d → %d / 한계 %d" % [
+			"손상 발생" if record.damage_applied else "손상 없음", int(snapshot.current_durability), after_current, int(snapshot.max_durability)])
+		lines.append("공방 반환 · 편집 가능" if after_current > 0 else "파괴 · 작품 기록 보존 / 편집 불가")
+	lines.append("보상 없음 · 시험 판정 / 재열람은 결과를 바꾸지 않음")
+	return {"ok": true, "content_id": definition.content_id, "body": "\n".join(lines)}
+
+
 func _aqueduct_candidate(envelope, save_service):
 	if envelope == null or not envelope.has_method("to_dict") or save_service == null or not save_service.has_method("save_envelope"):
 		return null

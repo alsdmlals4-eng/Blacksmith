@@ -18,6 +18,25 @@ func test_chronicle_body_and_return_action_use_existing_mobile_tokens():
 	if screen.has_method("_tag_name"):
 		assert_eq(screen._tag_name("SUSTAIN_HANDLING"), "균형")
 
+func test_long_chronicle_can_scroll_to_the_return_action():
+	var screen = autofree(load(SCREEN_PATH).new())
+	screen.size = Vector2(720, 1280)
+	add_child(screen)
+	var scroll = screen.get_node("ChronicleMargin")
+	assert_true(scroll is ScrollContainer, "Long histories must not push the return action outside the screen")
+	if not scroll is ScrollContainer:
+		return
+	for index in range(40):
+		screen._view_state.entries.append({"kind":"QA", "text":"긴 연대기 기록 %d · 성공과 장비 손상은 별개의 결과입니다." % index})
+	screen._refresh_controls()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var button = screen.get_node("ChronicleMargin/ChronicleLayout/WorkshopReturnButton")
+	scroll.ensure_control_visible(button)
+	await get_tree().process_frame
+	assert_gt(scroll.scroll_vertical, 0)
+	assert_lte(button.get_global_rect().end.y, scroll.get_global_rect().end.y + 1.0)
+
 
 func _item():
 	var envelope = RunInitializerScript.new().create_candidate_envelope()
