@@ -1,0 +1,98 @@
+{
+  "work_level": "L1",
+  "approval_reference": "BS-REPLAN-20260913-07; latest user whole-game continuation and production queue; latest 2026-09-14 BS-REPLAN-20260914-08 explicit researched implementation/improvement continuation",
+  "continuous_work_state": "CONTINUOUS_WORK_ACTIVE",
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "source_and_evidence": "main f30baaa6 actual rules/save/service/workshop; Base origin d830c0f handoff/profile/registry; official Anvil Saga1587540, Weapon Shop Fantasy599460, Sandrock1084600 and Godot Saving games read 2026-09-13",
+        "observed_pattern": "craft-to-purpose connection with persisted consequences",
+        "project_fit_and_difference": "AR existing transaction reuse; no imported art/economy, no generic framework",
+        "disposition": "ADAPT"
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "world eligibility and direct consumers only",
+    "inventory": [
+      {
+        "path": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "latest AGENTS production queue",
+        "references_and_consumers": "rules/world save/workshop and Blueprint21/40 read",
+        "removal_proposed": false
+      }
+    ]
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "BS-REPLAN-20260913-07",
+    "source_main_sha": "f30baaa60e1fb95905c47d5a8303cd069895ce96",
+    "work_item_refs": [
+      "WORLD5"
+    ],
+    "active_work_item_ref": "WORLD5",
+    "next_action": "Validate updated PDF and exact-head CI, normal PR delivery, then R02-R04 commission implementation",
+    "work_items": [
+      {
+        "work_item_id": "WORLD5",
+        "title": "Five equipment types have real AR world use",
+        "status": "IN_PROGRESS",
+        "canon_owner": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
+        "actual_consumers": [
+          "scripts/vertical_slice/domain/vs_replan_tag_rules.gd",
+          "scripts/vertical_slice/domain/vs_save_envelope.gd",
+          "scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd",
+          "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+        ],
+        "depends_on": [],
+        "acceptance_criteria": [
+          "AC1",
+          "AC2",
+          "AC3"
+        ],
+        "required_evidence": [
+          "E2_TEST",
+          "E3_RUNTIME"
+        ],
+        "checklist": [
+          {
+            "id": "AC1",
+            "text": "AR all five, AQ/DU unchanged; persisted resolve independent damage and once-only result",
+            "status": "PASS",
+            "evidence": [
+              "d73e391e product implementation: GUT315/3278; same product diff at998647ed; repeat exact-head regression before delivery"
+            ]
+          },
+          {
+            "id": "AC2",
+            "text": "Actual workshop labels and native world-use flow with restart",
+            "status": "PASS",
+            "evidence": ["2026-09-14 native bow from-zero +10, prepared restart resolve and post-result restart; armor/helmet fixture +19 actual controls prepared restart resolve; PDF73-74 captures. Not Android or fixture-free armor/helmet crafting."]
+          },
+          {
+            "id": "AC3",
+            "text": "Regression, two reviews, PDF, exact protected CI and normal delivery",
+            "status": "NOT_RUN"
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "d73e391e7f81c3f0e349d92505cdeb80fe7063a9: full GUT315/3278 and Python511/3skip observed; exact approved2-path validator PASS"
+            ]
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "PASS",
+            "evidence": ["Godot4.7.1 Blacksmith exact session blacksmith@4199: bow BSI-fed03de98a88f266f381e6ab828dd2f7 success/no damage, immutable result save SHA f3560b07b28737820ac5a483808947c012c037ffb364b67ad61eb46879613d87", "Armor fixture BSI-9486317693c922449afdf9d98277ede4 failure/no damage; helmet fixture BSI-4aedb0cff8b7f6ff2482c3d8fb634a34 success/no damage; each prepared then process restart and real UI resolve. No RNG injection; unchanged resources and durability5/5/5."]
+          }
+        ],
+        "next_action": "Updated PDF/exact CI/normal delivery then R02-R04"
+      }
+    ]
+  },
+  "evidence_ceiling": "2026-09-14 branch GUT315/3278 and Python515/3skip re-run PASS. First GUT run could not export JUnit; directory creation and rerun produced validated315/0fail/0error JUnit. Two full WORLD5 code reviews found no actionable P1/P2 at998647ed, separate from SPEC reviews. Native bow from-zero/restart/result and armor/helmet fixture-native restart/results verified. PDF73-74 pending visual/binding validation; exact updated-head CI/main pending. Whole game, Android, human balance, final motion/art and release incomplete."
+}

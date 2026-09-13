@@ -16,8 +16,13 @@ func test_world_preview_uses_equipment_gate_and_shared_tag_contribution():
 			assert_true(result.ok)
 			assert_eq(result.success_percent, 63.0)
 			assert_eq(result.content_id, family + "02")
-		for equipment in ["iron_bow", "iron_armor", "iron_helmet", "unknown"]:
-			assert_false(rules.world_preview(family, equipment, 10, {"BURST_HANDLING":1}, "HANDLING", "BURST").ok)
+		for equipment in ["iron_bow", "iron_armor", "iron_helmet"]:
+			var extra = rules.world_preview(family, equipment, 10, {"BURST_HANDLING":1}, "HANDLING", "BURST")
+			assert_eq(extra.ok, family == "AR")
+			if extra.ok:
+				assert_eq(extra.success_percent, 63.0)
+				assert_eq(extra.content_id, "AR02")
+		assert_false(rules.world_preview(family, "unknown", 10, {"BURST_HANDLING":1}, "HANDLING", "BURST").ok)
 	assert_false(rules.world_preview("UNKNOWN", "iron_shield", 10, {"BURST_HANDLING":1}, "HANDLING", "BURST").ok)
 
 func test_aqueduct_preview_separates_level_readiness_tag_support_and_cap():

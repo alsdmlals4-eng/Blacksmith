@@ -1,0 +1,11 @@
+{
+  "schema_version":1,
+  "artifact_role":"PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status":"APPROVED",
+  "protected_base_commit":"d50c24de07e68cbcefbc94a9cce0f715095efde0",
+  "decision_ids":["BS-REPLAN-20260913-07"],
+  "approved_paths":["scripts/vertical_slice/domain/vs_replan_tag_rules.gd","scripts/vertical_slice/ui/vs_workshop_screen.gd"],
+  "approval_source":"Latest user whole-game implementation continuation; current production queue remaining equipment world-use. Exact plan BS-REPLAN-20260913-07; fresh current-task PR approved-protected-change metadata required before authoring. Historical approvals not reused.",
+  "approval_time":"2026-09-13T19:32:14+09:00",
+  "scope_summary":"AR five-equipment eligibility and matching workshop labels only; preserve AQ/DU restrictions, probabilities, rewards, save schema, assets and Base pins."
+}
