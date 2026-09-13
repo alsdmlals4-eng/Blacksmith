@@ -74,12 +74,12 @@
   "scope": "2026-09-13 authorized implementation checkpoint: 60-page integrated PDF preserves the prior58-page design, state atlas and world runtime captures; adds actual recovery crafting/delivery and next-loop checklist. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. No asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban is historical evidence, not current execution authority.",
   "artifact": {
     "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
-    "sha256": "de74f27fb0b27075740069ebdcb8f3c8c6e3a43ee9084fc5434fa3a7d80a3b16",
-    "page_count": 72,
+      "sha256": "0cbe23b3dd046bd355da87afd3f9a853a1fccf808a0f41ab466e76cd3ab228f5",
+      "page_count": 74,
     "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
-    "source_sha256": "a634815b1f974ba953b3cd2b101fce0f1e168ce9c74a789ba8aa60453445796b",
+      "source_sha256": "4da3f43afa2ec9e78796313d085d376d20cd401de09288d66502733f30ab832d",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "2026-09-14: pages65-72 rendered1400px and individually inspected; tables and text fit after section66 overflow correction. Previous64 source sections preserved unchanged. Appendix is remaining-work specification, not new runtime evidence. Android/human/final art remain unverified.",
+      "visual_review": "2026-09-14: previous72 source sections preserved. New73-74 rendered1347px and inspected; section74 overflow corrected to fit74pages. Actual bow from-zero/restart/result and armor/helmet fixture-native results explicitly distinguished. Android/human/final art remain unverified.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {
