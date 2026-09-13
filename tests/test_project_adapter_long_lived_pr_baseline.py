@@ -66,7 +66,7 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
 
     def test_adapter_uses_the_released_reuse_first_base_contract(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
-        delivery = json.loads(CURRENT_DELIVERY_RECEIPT.read_text(encoding="utf-8"))["remote_delivery"]
+        delivery = json.loads(CURRENT_DELIVERY_RECEIPT.read_text(encoding="utf-8"))["world_trials_delivery"]
         self.assertEqual(BASE_RELEASE_VERSION, adapter["base_release"]["version"])
         self.assertEqual(
             delivery["adapter_baseline_advanced_to"],
