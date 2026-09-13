@@ -71,6 +71,9 @@ func test_manual_close_repeats_real_crafting_and_keeps_delivered_item_history():
 		delivered_uids.append(ready_uid)
 		var ready_day = service.close_day(ready.envelope,ready.envelope.active_run.current_day,save)
 		assert_eq(ready_day.status,"APPLIED")
+		var invalid_birth_order = ready_day.envelope.to_dict()
+		invalid_birth_order.active_run.recovery_order.accepted_day = ready_day.envelope.active_run.current_day
+		assert_false(Envelope.from_dict(invalid_birth_order).validation_errors.is_empty(),"Order cannot be accepted after its item was forged")
 		assert_eq(ready_day.envelope.active_run.recovery_order.item_uid,ready_uid)
 		var delivered = service.deliver(save.load_envelope(),save)
 		assert_eq(delivered.status,"APPLIED")
@@ -106,6 +109,21 @@ func test_manual_close_repeats_real_crafting_and_keeps_delivered_item_history():
 	corrupt = final_save.to_dict()
 	corrupt.active_run.recovery_calendar.last_closed_day = 1
 	assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(),"Calendar mismatch")
+	corrupt = final_save.to_dict()
+	corrupt.active_run.recovery_order_history[0].accepted_day = 6
+	assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(),"Acceptance cannot follow its own delivery")
+
+func test_manual_close_rejects_malformed_persisted_day():
+	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new()
+	for value in [1.5,"1",true]:
+		var envelope = _aqueduct_envelope()
+		envelope.active_run.current_day = value
+		var save = RecoveryFailSave.new("user://gut/recovery-invalid-day.json")
+		var written = save.save_envelope(envelope)
+		if written == OK:
+			assert_eq(service.close_day(envelope,1,save).status,"BLOCKED",str(value))
+		else:
+			assert_ne(written,OK,"Malformed time may be rejected before day-close")
 
 func test_manual_close_blocks_pending_world_transactions_and_unknown_schedule():
 	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new()
@@ -140,6 +158,10 @@ func test_manual_close_native_confirmation_cancel_retry_and_app_save():
 	button.pressed.emit()
 	var dialog = screen.get_node("DayCloseConfirmation")
 	assert_true(dialog.visible)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	assert_gte(dialog.get_ok_button().size.y,96.0,"Laid-out confirmation must keep the mobile touch target")
+	assert_gte(dialog.get_cancel_button().size.y,96.0,"Laid-out cancel must keep the mobile touch target")
 	assert_eq(save.load_envelope().active_run.current_day,1)
 	dialog.canceled.emit()
 	dialog.hide()

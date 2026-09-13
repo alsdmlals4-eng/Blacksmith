@@ -630,8 +630,10 @@ func _on_day_close_pressed() -> void:
 		dialog.cancel_button_text = "계속 작업하기"
 		add_child(dialog)
 		dialog.get_label().add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+		# AcceptDialog reapplies these theme minima during its internal layout.
+		dialog.add_theme_constant_override("buttons_min_width",272)
+		dialog.add_theme_constant_override("buttons_min_height",MOBILE_TOUCH_TARGET_HEIGHT)
 		for button in [dialog.get_ok_button(),dialog.get_cancel_button()]:
-			button.custom_minimum_size = Vector2(272,MOBILE_TOUCH_TARGET_HEIGHT)
 			button.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
 		dialog.confirmed.connect(_on_day_close_confirmed)
 		dialog.canceled.connect(_on_day_close_canceled)

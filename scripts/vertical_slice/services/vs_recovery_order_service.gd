@@ -5,6 +5,8 @@ const KEYS = ["schema_version","order_id","phase","material_units","item_uid","g
 
 static func validate(envelope) -> String:
 	var run = envelope.active_run
+	if not _whole(run.get("current_day",null)) or run.current_day < 1:
+		return "INVALID_RECOVERY_CURRENT_DAY"
 	if run.has("recovery_calendar"):
 		var calendar = run.recovery_calendar
 		if not calendar is Dictionary or calendar.size() != 3 or not calendar.has_all(["schema_version","policy_id","last_closed_day"]):
@@ -66,8 +68,13 @@ static func _validate_record(envelope,record,number: int) -> String:
 	var expected_owner = "CUSTOMER_RECOVERY_RESERVED" if record.phase == "READY" else "CUSTOMER_RECOVERY"
 	if item.owner_id != expected_owner or item.ledger.size() != (1 if record.phase == "READY" else 2):
 		return "INVALID_RECOVERY_OWNERSHIP"
+	var birth_day = item.ledger[0].occurred_at_game_day
+	if not _whole(birth_day) or birth_day < record.accepted_day or birth_day > envelope.active_run.current_day:
+		return "INVALID_RECOVERY_BIRTH_DAY"
 	if record.phase == "DELIVERED":
 		var entry = item.ledger[-1]
+		if not _whole(entry.occurred_at_game_day) or entry.occurred_at_game_day < birth_day or entry.occurred_at_game_day > envelope.active_run.current_day:
+			return "INVALID_RECOVERY_DELIVERY_DAY"
 		if entry.event_id != record.order_id + "-delivery" or entry.event_type != "RECOVERY_DELIVERED" or JSON.parse_string(JSON.stringify(entry.payload)) != JSON.parse_string('{"gold":400,"common_reinforcement_material":2}'):
 			return "INVALID_RECOVERY_SETTLEMENT"
 	return ""
@@ -138,6 +145,8 @@ func close_day(envelope,source_day,save) -> Dictionary:
 		return _blocked("INVALID_SOURCE_DAY")
 	var current = _current(envelope,save)
 	if current == null: return _blocked("INVALID_OR_UNAVAILABLE_SAVE")
+	if not _whole(current.active_run.current_day) or current.active_run.current_day < 1:
+		return _blocked("INVALID_CURRENT_DAY")
 	var day = int(current.active_run.current_day)
 	if int(source_day) == day - 1 and current.active_run.get("recovery_calendar",{}).get("last_closed_day",0) == source_day:
 		return _already(current)

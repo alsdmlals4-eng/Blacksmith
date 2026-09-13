@@ -2,6 +2,10 @@
 
 ## Manual Day / Repeated Recovery Implementation Plan — BS-REPLAN-20260913-05
 
+Current implementation evidence (2026-09-13): PR377 exact2-path implementation is locally verified, final CI/merge pending. GUT309/3088 PASS after missing-service/native-control RED, actual48px touch-size RED, and malformed chronology/time RED. Actual day1 cancel preserved save SHA56365d15…; confirm advanced only to day2, no resources changed. Restart restored fresh order; pointer forging created distinct UID BSI-3ae976b62ae264fe9889fcd45a5b8206; restart READY→pointer delivery→restart DELIVERED. Gold17070→17470, reinforcement22→24, flame63/earth64 unchanged; original shield UID/level10/3-of-5 durability retained. Slot selection and scroll visibility were QA assists; no gameplay state or RNG injection. Native dialog96 logical pixels verified after layout. PDF61/62 adds actual captures/checklist; prior60 pages preserved. Whole-game, Android, human, final economy/art/motion remain incomplete.
+
+Round1 adversarial findings and learning: invalid current_day1.5/string/bool was truncated, and acceptance after birth/delivery was accepted. Both reproduced RED then strict integer/time-order validation added within the same approved service path. No save migration or schema expansion. AcceptDialog internal layout resets custom minimum size from theme constants (https://raw.githubusercontent.com/godotengine/godot/master/scene/gui/dialogs.cpp); use buttons_min_height/width, confirmed in current4.7.1 runtime and 2-frame geometry regression. Project-local lesson only, no unproven Base promotion. Exact approval checker correctly rejects an approval with no protected diff; ordinary gate used before changes, exact approved checker passed after both paths changed. Transient MCP reload43 was not counted as PASS; fresh game runs and full GUT passed without startup errors.
+
 Direction / Goal: 첫 재기 주문에서 끊긴 제작·납품 순환을, 직접 마감→다음 주문→다시 제작·납품으로 연결한다. 전체게임 구현의 다음 단계이며 이 묶음만으로 전체완료를 선언하지 않는다.
 
 Architecture: 기존 recovery service가 원자 저장/readback과 주문 기록을 계속 소유한다. 기존 공방 VBox에 마감 버튼과 native 확인창을 연결하고 app의 campaign_saved 신호를 재사용한다. 새 Scene/자산/툴/전역 manager 없이 기존 두 script만 수정한다. Tech: Godot4.7.1 / GUT9.7.1 / HiGodot3.2.0; Base v9.4.4·validator43b3 유지.
@@ -22,9 +26,9 @@ Risk / rollback: 대량 주문기록 비용·빈날 성장 악용·고정 재기
 
 Execution uses TDD and inline execution per current user continuation; plan/spec remain in this existing owner instead of another dashboard.
 
-- [ ] DAY-01 RED: 기존 GUT 파일에서 close_day 부재/빈날 보상0·중복마감·미완성보존·3회 실제파일 제작납품·위조history/calendar/저장실패/PREPARED 차단을 검증한다. 예: close_day(original,1,save) 뒤 day=2, 같은 source1 재호출은 ALREADY_APPLIED/day2.
-- [ ] DAY-01 GREEN: scripts/vertical_slice/services/vs_recovery_order_service.gd의 validate/accept 확장과 close_day/close_block_reason. SaveEnvelope 기존 validate consumer 재사용; 승인 exact2경로 PR label readback 뒤 HiGodot 저작.
-- [ ] DAY-02 RED→GREEN: scripts/vertical_slice/ui/vs_workshop_screen.gd에 DayClose/DayCloseConfirmation. 확인 때 포착한 source_day 사용, 미표시/구형/진행중이면 호출 차단. 공방 화면 hidden 중 직접 handler 호출도 거절. tests/gut/unit/vertical_slice/test_vs_replan_tag_save.gd에서 native 버튼 취소/확인·실패 재시도·app 저장갱신 검증.
+- [x] DAY-01 RED: 기존 GUT 파일에서 close_day 부재/빈날 보상0·중복마감·미완성보존·3회 실제파일 제작납품·위조history/calendar/저장실패/PREPARED 차단을 검증한다. 예: close_day(original,1,save) 뒤 day=2, 같은 source1 재호출은 ALREADY_APPLIED/day2.
+- [x] DAY-01 GREEN: scripts/vertical_slice/services/vs_recovery_order_service.gd의 validate/accept 확장과 close_day/close_block_reason. SaveEnvelope 기존 validate consumer 재사용; 승인 exact2경로 PR label readback 뒤 HiGodot 저작.
+- [x] DAY-02 RED→GREEN: scripts/vertical_slice/ui/vs_workshop_screen.gd에 DayClose/DayCloseConfirmation. 확인 때 포착한 source_day 사용, 미표시/구형/진행중이면 호출 차단. 공방 화면 hidden 중 직접 handler 호출도 거절. tests/gut/unit/vertical_slice/test_vs_replan_tag_save.gd에서 native 버튼 취소/확인·실패 재시도·app 저장갱신 검증.
 - [ ] DAY-03: 전체 GUT·Python·계약검사, 실제포인터 마감/재시작/두 번째 제작납품/캡처. Blueprint 기존60쪽 보존 및 반복플레이 화면/체크리스트 추가. 두 차례 전체 적대검토→필요 수정→exact CI·정상병합·main readback. Android/사람/최종경제/성장/모션은 NOT_RUN.
 
 Fresh-read reconciliation: PR376은 eb3a47cb로 병합되어 consumed PR375 승인 회수와 baseline 교정까지 완료됐다. 아래 ‘정합화 진행’, ‘최종 검토 진행’, 기존 미체크 목록은 PR375 작업 중의 역사기록이며 현재 미완료는 위 DAY 항목과 전체게임 후속 큐다.

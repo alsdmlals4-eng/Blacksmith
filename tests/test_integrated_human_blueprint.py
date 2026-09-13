@@ -10,6 +10,12 @@ RECORD = ROOT / 'docs/design/candidates/blueprint-20260911/record.json'
 
 
 class IntegratedHumanBlueprint(unittest.TestCase):
+    def test_manual_day_checkpoint_shows_repeat_play_and_remaining_limits(self):
+        content = SOURCE.read_text(encoding='utf-8')
+        for text in ['## 61.', '## 62.', '17470', 'recovery-day-confirm-20260913.png',
+                     'recovery-day-repeat-delivered-20260913.png', 'MANUAL_CLOSE_V1']:
+            self.assertIn(text, content)
+
     def test_recovery_checkpoint_preserves_prior_atlas_and_shows_real_delivery(self):
         content = SOURCE.read_text(encoding='utf-8')
         self.assertIn('## 59.', content)
