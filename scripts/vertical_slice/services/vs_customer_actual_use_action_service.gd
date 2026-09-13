@@ -92,7 +92,7 @@ func resolve_prepared_aqueduct(envelope, item_uid: String, save_service) -> Dict
 		return {"status": "ALREADY_RESOLVED", "record": record.duplicate(true), "envelope": candidate}
 	var item = candidate.get_item(item_uid)
 	var snapshot = SaveEnvelopeScript.ItemScript.from_dict(record.item_snapshot)
-	if item == null or item.to_dict() != snapshot.to_dict():
+	if item == null or not SaveEnvelopeScript.serialized_equal(item.to_dict(), snapshot.to_dict()):
 		return _blocked("AQUEDUCT_ITEM_CHANGED")
 	record.mission_success = record.rolls[0] < record.success_percent
 	record.damage_applied = record.rolls[1] < record.damage_percent
@@ -144,7 +144,7 @@ func _aqueduct_candidate(envelope, save_service):
 				return null
 			var uid := str(candidate.active_run.get("selected_item_uid", ""))
 			if not committed.active_run.get("aqueduct_trials", {}).has(uid):
-				if candidate.to_dict().items_by_uid != committed.to_dict().items_by_uid or candidate.resource_snapshot() != committed.resource_snapshot():
+				if not SaveEnvelopeScript.serialized_equal([candidate.to_dict().items_by_uid, candidate.resource_snapshot()], [committed.to_dict().items_by_uid, committed.resource_snapshot()]):
 					return null
 			candidate = committed
 		elif committed == null or committed.validation_errors != ["SAVE_NOT_FOUND"]:
@@ -165,7 +165,7 @@ func _commit_aqueduct(candidate, record: Dictionary, status: String, save_servic
 		var actual: Variant = committed.active_run.get("aqueduct_trials", {}).get(record.item_uid)
 		if committed.active_run.get("run_id", "") != candidate.active_run.get("run_id", "") or not actual is Dictionary:
 			return _blocked("AQUEDUCT_READBACK_FAILED")
-		if JSON.parse_string(JSON.stringify(actual)) != JSON.parse_string(JSON.stringify(record)):
+		if not SaveEnvelopeScript.serialized_equal(actual, record):
 			return _blocked("AQUEDUCT_READBACK_FAILED")
 		candidate = committed
 		record = actual

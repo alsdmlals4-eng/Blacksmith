@@ -23,6 +23,7 @@ PATHS = [
     "scripts/vertical_slice/ui/vs_app.gd",
     "scripts/vertical_slice/ui/vs_item_chronicle_screen.gd",
     "scripts/vertical_slice/services/vs_workshop_maintenance_service.gd",
+    "scripts/ui/forging_screen.gd",
 ]
 
 

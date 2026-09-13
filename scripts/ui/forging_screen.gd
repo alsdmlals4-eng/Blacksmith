@@ -39,6 +39,7 @@ var equipment_choice_grid: GridContainer
 var _selected_equipment_id := "iron_sword"
 var _completed_result: Dictionary = {}
 var _result_confirmation_emitted := false
+var _forge_started := false
 
 
 func _ready() -> void:
@@ -50,6 +51,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if session == null:
+		return
+	if not _forge_started:
 		return
 	session.advance(delta)
 	_refresh(session.snapshot())
@@ -93,7 +96,13 @@ func _build_interface() -> void:
 
 	var layout := VBoxContainer.new()
 	layout.add_theme_constant_override("separation", 18)
-	margin.add_child(layout)
+	var scroll := ScrollContainer.new()
+	scroll.name = "ForgeScroll"
+	scroll.follow_focus = true
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	margin.add_child(scroll)
+	layout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(layout)
 
 	var header := HBoxContainer.new()
 	header.add_theme_constant_override("separation", 12)
@@ -264,6 +273,7 @@ func _start_new_session() -> void:
 	session.completed.connect(_on_session_completed)
 	_completed_result.clear()
 	_result_confirmation_emitted = false
+	_forge_started = false
 	last_state = -1
 	_refresh(session.snapshot())
 
@@ -290,6 +300,8 @@ func select_equipment(equipment_id: String) -> bool:
 	if EquipmentCatalogScript.by_id(equipment_id).is_empty():
 		return false
 	_selected_equipment_id = equipment_id
+	if session != null:
+		session.config["equipment_id"] = equipment_id
 	_refresh_equipment_controls()
 	return true
 
@@ -351,6 +363,10 @@ func _load_session_config() -> Dictionary:
 func _on_hammer_pressed() -> void:
 	if session == null or not session.register_tap():
 		return
+	_forge_started = true
+	state_label.text = "제작 중"
+	hammer_button.text = "망치질\n빠르게 연타!"
+	helper_label.text = "작업이 시작되었습니다. 터치하지 않아도 천천히 진행됩니다."
 	hammer_button.pivot_offset = hammer_button.size * 0.5
 	var tween := create_tween()
 	tween.tween_property(hammer_button, "scale", Vector2(0.97, 0.97), 0.04)
@@ -403,13 +419,14 @@ func _refresh(snapshot: Dictionary) -> void:
 func _apply_state(new_state: int, snapshot: Dictionary) -> void:
 	match new_state:
 		ForgingSessionScript.State.FORGING:
-			state_label.text = "제작 중"
+			state_label.text = "제작 준비"
+			hammer_button.text = "선택한 장비 제작 시작"
 			hammer_button.visible = true
 			hammer_button.disabled = false
 			precision_toggle.visible = true
 			precision_panel.visible = false
 			result_panel.visible = false
-			helper_label.text = "터치하지 않아도 천천히 진행됩니다. 빠르게 두드리면 피버가 발동합니다."
+			helper_label.text = "첫 망치질 전에는 장비를 자유롭게 고를 수 있습니다."
 		ForgingSessionScript.State.FINISHING:
 			state_label.text = "마무리"
 			hammer_button.visible = false
@@ -429,7 +446,7 @@ func _apply_state(new_state: int, snapshot: Dictionary) -> void:
 			precision_panel.visible = false
 			result_panel.visible = true
 			var finished: Dictionary = snapshot["result"]
-			result_name_label.text = "%s 완성!" % finished.get("weapon_name", "철검")
+			result_name_label.text = "%s 완성!" % finished.get("equipment_name", "철검")
 			result_quality_label.text = str(finished.get("quality_label", "보통 마감"))
 			result_stats_label.text = "원본 공격력 %d → 제작 공격력 %d · 제작 가치 ×%.2f\n마감 공격력 ×%.2f · 피버 공격력 ×%.2f\n망치질 %d회 · 피버 %d회 · 결과 보너스 %s" % [
 				int(finished.get("raw_base_attack", 20)), int(finished.get("base_attack", 20)), float(finished.get("crafting_value_multiplier", 1.0)),

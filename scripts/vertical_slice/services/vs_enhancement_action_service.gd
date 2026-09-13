@@ -42,7 +42,7 @@ func resolve_and_save_with_rolls(
 		var source = SaveEnvelopeScript.from_dict(envelope.to_dict())
 		if disk == null or not disk.validation_errors.is_empty() or not source.validation_errors.is_empty():
 			return _blocked("ENHANCEMENT_SAVE_DIVERGED")
-		if disk.active_run != source.active_run or disk.to_dict().items_by_uid != source.to_dict().items_by_uid or disk.resource_snapshot() != source.resource_snapshot():
+		if not SaveEnvelopeScript.serialized_equal([disk.active_run, disk.to_dict().items_by_uid, disk.resource_snapshot()], [source.active_run, source.to_dict().items_by_uid, source.resource_snapshot()]):
 			return _blocked("ENHANCEMENT_SAVE_DIVERGED")
 	if envelope.active_run.get("aqueduct_trials", {}).get(item_uid, {}).get("phase", "") == "PREPARED":
 		return _blocked("AQUEDUCT_PENDING")

@@ -64,9 +64,28 @@ func test_preview_displays_only_success_damage_and_hold_that_sum_to_100() -> voi
 	var preview = _resolver().preview(_item(10, 4, 5), 11)
 	assert_eq(preview["display_outcomes"], {
 		"success_percent": 79.0,
-		"failed_damage_percent": 6.3,
-		"failed_hold_percent": 14.7,
+		"failed_damage_percent": 1.3,
+		"failed_hold_percent": 19.7,
 	})
+
+
+func test_display_uses_final_attempt_probability_without_changing_failure_conditional_roll() -> void:
+	var resolver = _resolver()
+	var preview = resolver.preview(_item(), 11)
+	assert_eq(preview.display_outcomes, {"success_percent":82.0,"failed_damage_percent":0.9,"failed_hold_percent":17.1})
+	assert_almost_eq(float(preview.get("conditional_damage_percent", -1)), 5.0, 0.00001)
+	assert_almost_eq(float(preview.get("per_attempt_damage_percent", -1)), 0.9, 0.00001)
+	# Failure followed by a 4% damage draw still damages; comparing that draw with0.9 would change gameplay.
+	assert_eq(resolver.resolve_with_rolls(_item(), 11, {"success_roll_percent":99.0,"damage_roll_percent":4.0}).outcome, "FAILED_DAMAGE")
+	assert_eq(resolver.resolve_with_rolls(_item(), 11, {"success_roll_percent":99.0,"damage_roll_percent":5.0}).outcome, "FAILED_HOLD")
+	for durability in [5,4,2]:
+		for failures in range(5):
+			var item = _item(10, durability, 5)
+			item.enhancement_recovery_by_target = {"11":failures}
+			var result = resolver.preview(item, 11)
+			var expected: float = (100.0-result.final_success_percent)*result.final_damage_percent/100.0
+			assert_almost_eq(float(result.get("per_attempt_damage_percent", -1)), expected, 0.00001)
+			assert_almost_eq(result.display_outcomes.success_percent+result.display_outcomes.failed_damage_percent+result.display_outcomes.failed_hold_percent,100.0,0.00001)
 
 
 func test_same_target_recovery_is_plus_six_pp_soft_capped_and_hard_guaranteed() -> void:

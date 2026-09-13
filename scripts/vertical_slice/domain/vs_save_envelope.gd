@@ -68,6 +68,12 @@ var validation_errors: Array[String] = []
 var recovered_from_backup: bool = false
 
 
+# Compare persisted JSON values, not transient int/float types in nested ledger payloads.
+# Callers must validate envelopes first; this does not validate or repair malformed data.
+static func serialized_equal(left: Variant, right: Variant) -> bool:
+	return JSON.parse_string(JSON.stringify(left)) == JSON.parse_string(JSON.stringify(right))
+
+
 static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 	var envelope := VSSaveEnvelope.new()
 	var source_schema_version := int(value.get("schema_version", 0))
@@ -180,7 +186,7 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 			elif trials[trial_uid].phase == "PREPARED":
 				var reserved = envelope.get_item(str(trial_uid))
 				var original = ItemScript.from_dict(trials[trial_uid].item_snapshot)
-				if reserved == null or reserved.to_dict() != original.to_dict():
+				if reserved == null or not serialized_equal(reserved.to_dict(), original.to_dict()):
 					envelope.validation_errors.append("AQUEDUCT_RESERVED_ITEM_CHANGED")
 			if str(envelope.active_run.get("tag_ruleset_id", "")) != "BLACKSMITH_REPLAN_TAGS_20260912":
 				envelope.validation_errors.append("AQUEDUCT_REQUIRES_REPLAN_CAMPAIGN")

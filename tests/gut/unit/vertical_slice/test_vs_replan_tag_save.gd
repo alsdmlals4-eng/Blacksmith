@@ -7,6 +7,42 @@ const Precision = preload("res://scripts/vertical_slice/resolvers/vs_precision_r
 const Action = preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const Resources = preload("res://scripts/economy/workshop_resources.gd")
 
+func test_serialized_comparison_preserves_value_and_type_boundaries_other_than_json_numbers():
+	assert_true(Envelope.serialized_equal({"payload":{"stage":1}}, {"payload":{"stage":1.0}}))
+	for changed in [true, "1", 1.5, null]:
+		assert_false(Envelope.serialized_equal({"payload":{"stage":1}}, {"payload":{"stage":changed}}))
+	assert_false(Envelope.serialized_equal([1,2], [2,1]))
+	assert_false(Envelope.serialized_equal({"phase":"PREPARED"}, {"phase":"RESOLVED"}))
+
+func test_live_precision_result_can_continue_to_aqueduct_repair_and_enhancement_after_json_save():
+	for next_action in ["AQUEDUCT", "REPAIR", "ENHANCEMENT"]:
+		var envelope = _aqueduct_envelope()
+		var uid = envelope.active_run.selected_item_uid
+		envelope.get_item(uid).apply_damage_event()
+		var stock = envelope.resource_snapshot()
+		var resources = Resources.new(stock.gold, stock.material_stock)
+		var save = load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/precision-live-chain-%s.json" % next_action)
+		assert_eq(save.save_envelope(envelope), OK)
+		var precision = Action.new().resolve_and_save_with_rolls(envelope, uid, 20,
+			{"success_roll_percent":0.0,"damage_roll_percent":99.0}, 1, resources, save,
+			{"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tag_id":"BURST_HANDLING"})
+		assert_eq(precision.outcome, "SUCCESS")
+		if precision.outcome != "SUCCESS":
+			continue
+		# Keep the live integer payload, rather than concealing the boundary by reloading first.
+		var live = precision.envelope
+		if next_action == "AQUEDUCT":
+			var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+			var prepared = service.prepare_aqueduct_with_rolls(live, uid, "HANDLING", "BURST", [0,99], save)
+			assert_eq(prepared.status, "PREPARED")
+			if prepared.status == "PREPARED":
+				assert_eq(service.resolve_prepared_aqueduct(prepared.envelope, uid, save).status, "APPLIED")
+		elif next_action == "REPAIR":
+			var maintenance = load("res://scripts/vertical_slice/services/vs_workshop_maintenance_service.gd").new()
+			assert_eq(maintenance.repair_and_save(live, uid, resources, save, {"quality_roll_percent":0.0,"scar_roll_percent":99.0}).status, "APPLIED")
+		else:
+			assert_eq(Action.new().resolve_and_save_with_rolls(live, uid, 21, {"success_roll_percent":0.0}, 1, resources, save).outcome, "SUCCESS")
+
 func test_aqueduct_prepared_save_resumes_with_independent_fixed_rolls_and_no_repeat_damage():
 	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
 	assert_true(service.has_method("prepare_aqueduct_with_rolls"))

@@ -1,5 +1,22 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## 2026-09-13 화면 확률 정본 교정 계획
+
+- 실제+10 결과 화면에서 다음+11이 성공82/실패유지13/실패손상5로 표시됨을 관측했다. Decision32 JSON `FINAL_PER_ATTEMPT_SUCCESS_FAILED_HOLD_FAILED_DAMAGE`와 충돌한다. 실제 resolver는 실패 뒤5%로 손상 판정하므로 화면 손상은18%×5%=0.9%, 유지는17.1%여야 한다.
+- 책임 원본은 `BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` failure_resolution/UI 정책이며, 오래된 GUT의79/6.3/14.7 기대값도 동일 오해였다. 정본 수치를 바꾸지 않고 표시 기대값을79/1.3/19.7로 교정하는 RED를 먼저 관측한다.
+- 범위: 기존 exact16경로의 EnhancementResolver 안에서 조건부 손상/시도당 손상을 명시 분리. 기존 `final_damage_percent`는 호환용 조건부 alias로 유지하고 신규 명시 필드를 제공한다. 실제 손상 branch는 조건부 확률을 계속 사용한다. 신규 저장필드·경제·Base잠금 변경 없음. 정상/경상/중상·회복보너스·확정보장 및 경계4%/5% 판정으로 화면만 바뀌는지 검증한다.
+- 결과:3실패 RED→GUT295/295·2653asserts PASS. 정밀 직후3연결, 첫 제작 읽기/선택/스크롤, 표시 확률을 함께 회귀했다. 실제+0 철방패를 +10격발I까지 올린 같은 슬롯에서 AQ01 PREPARED→RESOLVED 확인: 성공 draw46.0290874408245, 손상 draw10.6037638021102, 성공/무손상, 보상없음·자원불변. 재실행 후 동일 기록과82.0/17.1/0.9 표시 확인. `docs/testing/replan-from-zero-correct-risk-20260913.png`가 교정 후 실제 캡처, `replan-from-zero-aqueduct-result-20260913.png`는 교정 전 손상5% 표시의 결함 증거다. PDF53의 기존 캡처 역시 이전 checkpoint로 현재 확률 표시 증거가 아니다.
+- 독립 코드 검토: 첫제작/JSON 비교 교정 추가 P1/P2 없음; 경미한 첫 망치 뒤 '제작 준비' 잔류는 RED→'제작 중'으로 교정했다. 신규 시도당 확률은 현재 정본과 손계산/실제화면에 대조했으며 전체 게임·Android·사람 재미 PASS는 아니다.
+
+## 2026-09-13 실제 첫 제작 막힘 교정 계획
+
+- 실제 새 슬롯 포인터 시작 후 아무 망치질 없이 진행39.3%, 방패 선택 거절/기본 검 고정을 관측했다. `_process`가 첫 입력 전 session.advance를 호출하고 select_equipment는 세션 config에 선택을 전달하지 않았다. 기존 검사는 같은 프레임 선택만 검사해 실제 읽기 시간을 놓쳤다.
+- 수정 범위: ForgingScreen1경로를 exact manifest에 추가(총16). 첫 망치질 전 idle은 선택 대기, 이후 기존 자동작업/마감 수치는 유지. 선택한5종 identity는 세션 config와 결과 명칭에 그대로 전달. 기존 세로 레이아웃에 native ScrollContainer를 넣어 작업/마감/확정에 도달 가능하게 한다. 신규 장면·자산·저장필드·게임 수치 없음.
+- 조사: Godot 공식 Idle and Physics Processing(https://docs.godotengine.org/en/stable/tutorials/scripting/idle_and_physics_processing.html)의 매프레임 자동호출 설명과 ScrollContainer 공식 책임 원본을 확인했다. ADOPT 명시적 사용자 시작 경계·follow_focus 세로 스크롤; REJECT 자동 진행 숫자0 조정으로 원인을 숨기기. 기존 제작 세션 단위 API의 자동진행 계약은 유지한다.
+- RED: 읽기30초 자동진행/선택거부, 비검4종이 모두 검으로 완성, 스크롤 부재를 실제 GUT 실패로 관측. GREEN 기준은 동일 실패 제거 및 전체 회귀, 별도슬롯의 실제 방패 선택→제작→공방+0 연결이다. UI 동작 수정이며 최종 제작 재미/미술 교체의 증거는 아니다.
+- 첫 실제 결과: 선택 대기0% 유지→실제 방패 선택→망치질27회→마감→공방+0, 실제 강화10회 모두 성공해+10격발I. UID BSI-0d9808a2520ef5e96a8beb2c4d4f0423, Gold20000→16670, 보강재30→20, 불의심장64→63. 단계/재화/판정 주입 없음. 화면 스크롤만 가시성 보조 API를 사용했고 버튼은 포인터 입력했다. 검사 eval의 잘못된 들여쓰기/존재하지 않는 멤버 조회로 디버거가 중단된 경우는 도구 실수로 분리해 수정·재시작했고 사용자 저장은 건드리지 않았다.
+- 이어진 실제 결함: 정밀 생성 ledger payload는 int, JSON readback은 float여서 같은 값이 Dictionary 비교에서 불일치. 실제 typeof2→3, 내용 동일·JSON 비교 true 확인. AQ 출발/다음 강화/수리가 모두 `SAVE_DIVERGED`로 막힐 수 있다. SaveEnvelope의 저장 의미 비교 한 함수를3서비스 및 예약 snapshot/readback에 공유하고 schema/type 검증을 선행 유지한다. 명시적 run/phase/자원/변경값 차이는 계속 거절한다. 실제 정밀 저장→live envelope 유지→3후속 분기 RED→GREEN, GUT293/2610 PASS. 입력 숫자·bool·문자열 차이 보존도 추가 검사한다.
+
 ## 2026-09-13 PDF 구현 증거 동기화
 
 - 기존 상세 설계와15개 상태 아틀라스를 보존하고52~54절을 추가해54쪽으로 갱신했다. 현재 구현 체크리스트, 실제 게임 캡처2장, 게임 전체 완성까지 남은 순서를 구분했다. 준비전용 승인 문구는02/36절에서 역사 상태로 명시했다.

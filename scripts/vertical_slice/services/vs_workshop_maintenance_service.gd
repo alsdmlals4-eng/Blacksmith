@@ -64,7 +64,7 @@ func repair_and_save(envelope, item_uid: String, resources, save_service, rolls:
 		var disk = save_service.load_envelope()
 		if disk == null or not disk.validation_errors.is_empty() or disk.active_run.run_id != candidate.active_run.run_id:
 			return _blocked("REPAIR_SAVE_DIVERGED")
-		if disk.active_run != candidate.active_run or disk.to_dict().items_by_uid != candidate.to_dict().items_by_uid or disk.resource_snapshot() != candidate.resource_snapshot():
+		if not envelope_script.serialized_equal([disk.active_run, disk.to_dict().items_by_uid, disk.resource_snapshot()], [candidate.active_run, candidate.to_dict().items_by_uid, candidate.resource_snapshot()]):
 			return _blocked("REPAIR_SAVE_DIVERGED")
 	var snapshot: Dictionary = candidate.resource_snapshot()
 	var staged_resources = load("res://scripts/economy/workshop_resources.gd").new(int(snapshot.gold), snapshot.material_stock)

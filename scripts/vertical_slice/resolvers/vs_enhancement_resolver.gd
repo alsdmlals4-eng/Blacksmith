@@ -74,8 +74,10 @@ func preview(item, target_level: int, precision_selection: Dictionary = {}) -> D
 	var final_success := 100.0 if guaranteed else minf(recovery_soft_cap, base_success + float(modifier["success_delta_pp"]) + recovery_failures * 6)
 	var final_damage := 0.0 if guaranteed else _damage_percent(target_level, state)
 	var display_success := _round_half_up_one_decimal(final_success)
-	var display_damage := _round_half_up_one_decimal(final_damage)
-	return {"allowed": true, "reason": "", "target_level": target_level, "band": band, "effective_durability_state": state, "base_success_percent": base_success_percent(target_level), "recovery_failures": recovery_failures, "recovery_bonus_pp": recovery_failures * 6, "guaranteed": guaranteed, "final_success_percent": final_success, "final_damage_percent": final_damage, "display_outcomes": {"success_percent": display_success, "failed_damage_percent": display_damage, "failed_hold_percent": maxf(0.0, 100.0 - display_success - display_damage)}, "gold_cost": gold_attempt_cost(target_level), "reinforcement_units": reinforcement_units(target_level), "checkpoint_floor": checkpoint_floor_for_level(int(item.enhancement_level)), "next_checkpoint": next_checkpoint_after(int(item.enhancement_level)), "precision_tag_preview": precision_tag_preview, "precision_catalyst_id": str(precision_tag_preview.get("precision_catalyst_id", "")), "precision_catalyst_stock_key": str(precision_tag_preview.get("precision_catalyst_stock_key", "")), "precision_catalyst_display_name_ko": str(precision_tag_preview.get("precision_catalyst_display_name_ko", "")), "precision_catalyst_units": int(precision_tag_preview.get("precision_catalyst_units", 0))}
+	# final_damage_percent is the historical conditional alias, not per-attempt risk.
+	var per_attempt_damage := (100.0 - final_success) * final_damage / 100.0
+	var display_damage := _round_half_up_one_decimal(per_attempt_damage)
+	return {"allowed": true, "reason": "", "target_level": target_level, "band": band, "effective_durability_state": state, "base_success_percent": base_success_percent(target_level), "recovery_failures": recovery_failures, "recovery_bonus_pp": recovery_failures * 6, "guaranteed": guaranteed, "final_success_percent": final_success, "final_damage_percent": final_damage, "conditional_damage_percent": final_damage, "per_attempt_damage_percent": per_attempt_damage, "display_outcomes": {"success_percent": display_success, "failed_damage_percent": display_damage, "failed_hold_percent": maxf(0.0, 100.0 - display_success - display_damage)}, "gold_cost": gold_attempt_cost(target_level), "reinforcement_units": reinforcement_units(target_level), "checkpoint_floor": checkpoint_floor_for_level(int(item.enhancement_level)), "next_checkpoint": next_checkpoint_after(int(item.enhancement_level)), "precision_tag_preview": precision_tag_preview, "precision_catalyst_id": str(precision_tag_preview.get("precision_catalyst_id", "")), "precision_catalyst_stock_key": str(precision_tag_preview.get("precision_catalyst_stock_key", "")), "precision_catalyst_display_name_ko": str(precision_tag_preview.get("precision_catalyst_display_name_ko", "")), "precision_catalyst_units": int(precision_tag_preview.get("precision_catalyst_units", 0))}
 
 
 func resolve_with_rolls(item, target_level: int, rolls: Dictionary, precision_selection: Dictionary = {}) -> Dictionary:
@@ -100,7 +102,7 @@ func resolve_with_rolls(item, target_level: int, rolls: Dictionary, precision_se
 		return success
 	var recovery_key := str(target_level)
 	item.enhancement_recovery_by_target[recovery_key] = int(item.enhancement_recovery_by_target.get(recovery_key, 0)) + 1
-	if target_level > 10 and float(rolls.get("damage_roll_percent", 100.0)) < float(attempt["final_damage_percent"]):
+	if target_level > 10 and float(rolls.get("damage_roll_percent", 100.0)) < float(attempt["conditional_damage_percent"]):
 		item.apply_damage_event()
 		return {"outcome": "FAILED_DAMAGE", "target_level": target_level, "recovery_failures": int(item.enhancement_recovery_by_target[recovery_key]), "physical_state": str(item.physical_state)}
 	return {"outcome": "FAILED_HOLD", "target_level": target_level, "recovery_failures": int(item.enhancement_recovery_by_target[recovery_key]), "physical_state": str(item.physical_state)}
