@@ -116,6 +116,19 @@ def build():
             if kind=='atlas':
                 cards=[AtlasCard(*s.split('|'),n) for n,s in enumerate(block)]
                 story.append(Table([cards[k:k+3] for k in range(0,len(cards),3)],colWidths=[254]*3))
+            elif kind=='runtimecaptures':
+                cells=[]
+                for row in block:
+                    rel,caption=row.split('|',1)
+                    path=(SOURCE.parent/rel).resolve()
+                    if not path.is_relative_to((ROOT/'docs/testing').resolve()):
+                        raise ValueError('Runtime capture path escapes testing evidence')
+                    img=Image(str(path))
+                    scale=min(330/img.imageWidth,290/img.imageHeight)
+                    img.drawWidth=img.imageWidth*scale;img.drawHeight=img.imageHeight*scale
+                    cells.append([img,Spacer(1,5),p(caption,small)])
+                if len(cells)!=2: raise ValueError('Runtime evidence requires two captured states')
+                story.append(Table([cells],colWidths=[(W-80)/2]*2))
             elif kind=='stateatlas':
                 if len(block)!=3: raise ValueError('State atlas must compare three states')
                 story.append(Table([[StatePanel(row) for row in block]],colWidths=[254]*3))
@@ -142,7 +155,7 @@ def build():
         c.setFillColor(colors.HexColor('#20383c'));c.rect(0,H-33,W,33,fill=1,stroke=0)
         c.setFillColor(colors.HexColor('#e0bd70'));c.setFont('KRB',9);c.drawString(40,H-22,'모루의 서약 / ANVIL OATH / 사람용 통합 블루프린트')
         c.setStrokeColor(colors.HexColor('#b59b68'));c.line(40,32,W-40,32)
-        c.setFont('KR',8);c.setFillColor(colors.HexColor('#5f6d6a'));c.drawString(40,19,'2026.09.12 갱신 · 최종 검토용 · 외형 승인/기획/구현/검증 상태 분리 · 인게임 촬영 아님')
+        c.setFont('KR',8);c.setFillColor(colors.HexColor('#5f6d6a'));c.drawString(40,19,'2026.09.13 갱신 · 설계도/후보/실행 촬영은 각 페이지 표기 · 최종 미술·Android·사람 검수는 별도')
         c.drawRightString(W-40,19,str(doc.page))
     SimpleDocTemplate(str(OUTPUT),pagesize=(W,H),leftMargin=40,rightMargin=40,topMargin=48,bottomMargin=43,title='모루의 서약 사람용 통합 블루프린트',author='Blacksmith project').build(story,onFirstPage=page,onLaterPages=page)
     print(OUTPUT)

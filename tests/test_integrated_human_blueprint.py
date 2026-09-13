@@ -10,6 +10,15 @@ RECORD = ROOT / 'docs/design/candidates/blueprint-20260911/record.json'
 
 
 class IntegratedHumanBlueprint(unittest.TestCase):
+    def test_current_runtime_checkpoint_is_distinct_from_design_candidates(self):
+        content = SOURCE.read_text(encoding='utf-8')
+        for section in ['## 52.', '## 53.', '## 54.']:
+            self.assertIn(section, content)
+        for capture in ['replan-aqueduct-detailed-report-20260913.png', 'replan-aqueduct-readable-chronicle-20260913.png']:
+            self.assertIn(capture, content)
+            self.assertTrue((ROOT/'docs/testing'/capture).is_file())
+        self.assertIn('Android / 사람 플레이', content)
+
     def test_atlas_contains_state_comparisons_not_repeated_backdrops(self):
         content = SOURCE.read_text(encoding='utf-8')
         self.assertEqual(content.count('```stateatlas'), 5)

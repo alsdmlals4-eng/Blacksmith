@@ -5,20 +5,20 @@
   "status": "DESIGN_PDF_RENDER_REVIEWED_DRAFT_PR_OPEN",
   "remote_delivery": {
     "pull_request": "https://github.com/alsdmlals4-eng/Blacksmith/pull/371",
-    "reviewed_product_head": "a187e9043c0b2fdff157f4ccd6654c404075b97f",
+    "reviewed_product_head": "a447cfebfb38e929f777799d2dcdfe461309f414",
     "branch_readback": "PREVIOUS_CHECKPOINT_ONLY_CURRENT_HEAD_RECORDED_IN_PR_COMMENT",
     "main": "UNCHANGED_NOT_MERGED",
-    "ci": "PREVIOUS_CHECKPOINT_15_SUCCESS_1_SKIPPED_CURRENT_HEAD_REQUIRES_READBACK"
+    "ci": "a447cfeb: 16_SUCCESS_1_CONDITIONAL_SKIPPED; later document head requires fresh readback"
   },
-  "scope": "User-authorized integrated human blueprint preparation: current51-page PDF plus separately recorded actual-consumer candidates. Shield correction02 now has real alpha and single-frame Aseprite roundtrip evidence, but halo/interior-opacity/registration remain unresolved. Final user review pending. No product mutation, asset promotion, save migration or unrelated PR takeover.",
+  "scope": "2026-09-13 authorized implementation checkpoint: 54-page integrated PDF preserves detailed design and state atlas, adds current implementation checklist, two actual Godot captures and remaining game queue. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. Candidate art remains distinct; no asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban below is historical evidence, not current execution authority.",
   "artifact": {
     "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
-    "sha256": "87b4a89e18cccb9f172bb7b765e70d94eec23cec4113475d1beac0c7892d4bf6",
-    "page_count": 51,
+    "sha256": "c909dbe205cc4d9c1f5c8071e314af4ec9a5ae2be7b2f7bc17d33578902e789b",
+    "page_count": 54,
     "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
-    "source_sha256": "9e656341edbcae69f1f17d5e90fd3044d5a64526a3e1d165aaaec9c5bef24526",
+    "source_sha256": "8e7b5856159495f8b549f6185db10ad6022c9f957dccb145306d8370eec8cdf1",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "2026-09-12: 51-page PDF; changed1/2 and new46-51 rendered and visually inspected at86.4dpi. 15 state panels compare enhancement branches, tag alternatives, ownership, repair and world layout. Disabled-button contrast corrected. Remaining pages retain prior review. No runtime screenshots; physical engraving/crack assets still not ready.",
+    "visual_review": "2026-09-13: new52-54 and changed2/36 rendered at1300px and visually inspected: implementation checklist, two actual game captures, remaining queue and current-authority annotations; no clipped text or overlapping table cells observed. Existing state atlas retained. Android, human play and final art remain unverified.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {
@@ -50,6 +50,7 @@
     ]
   },
   "project_work_kanban": {
+    "historical_scope_notice":"Preparation-only snapshot retained for provenance. Current execution queue and implementation evidence are owned by the production contract and integrated blueprint52-54; NOT_RUN below must not overwrite their bounded runtime evidence.",
     "goal_or_slice_issue_ref":"BS-REPLAN-20260910-41",
     "source_main_sha":"ff1c935d9ada60607bace782f1f21f1adac59ba9",
     "next_action":"Final reader review of integrated41-page draft; remaining production preparation: transparent world actor, motion alignment, equipment attachments and state overlays. Trial values are specified, product economy still unverified. No product start before final approval.",
