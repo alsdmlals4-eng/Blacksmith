@@ -1,7 +1,18 @@
 {
   "work_level": "L1",
   "approval_reference": "BS-REPLAN-20260913-07; latest user whole-game continuation and production queue; latest 2026-09-14 BS-REPLAN-20260914-08 explicit researched implementation/improvement continuation",
-  "continuous_work_state": "CONTINUOUS_WORK_ACTIVE",
+  "continuous_work_state": "DELIVERED_NEXT_APPROVED_WORK_REMAINS",
+  "remote_delivery": {
+    "pull_request": 381,
+    "reviewed_product_head": "d7f337a9765fd4c097de5ebfa5bef3b374cf7e4c",
+    "merge_commit": "5a84c4b2f2e972262b66f34845d625fda736eb31",
+    "adapter_baseline_advanced_to": "5a84c4b2f2e972262b66f34845d625fda736eb31",
+    "main_readback": "PASS_LOCAL_EQUALS_ORIGIN",
+    "checks": "11 SUCCESS / 1 conditional SKIPPED, exact head verified before normal merge",
+    "approval_archive": "docs/archive/protected-approvals/world5-pr381-20260914.json",
+    "one_shot_approval_status": "RETIRED_ARCHIVED_NOT_DELETED",
+    "review": "Two WORLD5 code reviews with no unresolved P1/P2; later docs/CI-filter fix targeted verified"
+  },
   "benchmark_preflight_receipt": {
     "state": "PASS",
     "entries": [
@@ -31,13 +42,13 @@
     "work_item_refs": [
       "WORLD5"
     ],
-    "active_work_item_ref": "WORLD5",
-    "next_action": "Validate updated PDF and exact-head CI, normal PR delivery, then R02-R04 commission implementation",
+    "active_work_item_ref": null,
+    "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
     "work_items": [
       {
         "work_item_id": "WORLD5",
         "title": "Five equipment types have real AR world use",
-        "status": "IN_PROGRESS",
+        "status": "DONE",
         "canon_owner": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
         "actual_consumers": [
           "scripts/vertical_slice/domain/vs_replan_tag_rules.gd",
@@ -73,7 +84,8 @@
           {
             "id": "AC3",
             "text": "Regression, two reviews, PDF, exact protected CI and normal delivery",
-            "status": "NOT_RUN"
+            "status": "PASS",
+            "evidence": ["PR381 d7f337a9 exact11SUCCESS/1conditionalSKIP normally merged5a84c4b2; local/origin readback equal; PDF74 visual/binding20 tests PASS"]
           }
         ],
         "verification": [
@@ -90,9 +102,17 @@
             "evidence": ["Godot4.7.1 Blacksmith exact session blacksmith@4199: bow BSI-fed03de98a88f266f381e6ab828dd2f7 success/no damage, immutable result save SHA f3560b07b28737820ac5a483808947c012c037ffb364b67ad61eb46879613d87", "Armor fixture BSI-9486317693c922449afdf9d98277ede4 failure/no damage; helmet fixture BSI-4aedb0cff8b7f6ff2482c3d8fb634a34 success/no damage; each prepared then process restart and real UI resolve. No RNG injection; unchanged resources and durability5/5/5."]
           }
         ],
-        "next_action": "Updated PDF/exact CI/normal delivery then R02-R04"
+        "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
+        "verified_head_sha": "d7f337a9765fd4c097de5ebfa5bef3b374cf7e4c",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": ["PR381 MERGED5a84c4b2f2e972262b66f34845d625fda736eb31; local main/origin main equal after fetch and ff-only pull"],
+        "rollback": "Normal protected revert; preserve user/QA saves and never load new AR snapshots in an older unsupported build. Zero counters apply only to WORLD5 slice, not full game."
       }
     ]
   },
-  "evidence_ceiling": "2026-09-14 branch GUT315/3278 and Python515/3skip re-run PASS. First GUT run could not export JUnit; directory creation and rerun produced validated315/0fail/0error JUnit. Two full WORLD5 code reviews found no actionable P1/P2 at998647ed, separate from SPEC reviews. Native bow from-zero/restart/result and armor/helmet fixture-native restart/results verified. PDF73-74 pending visual/binding validation; exact updated-head CI/main pending. Whole game, Android, human balance, final motion/art and release incomplete."
+  "evidence_ceiling": "WORLD5 delivered with native bow from-zero and armor/helmet fixture-native evidence, PDF74, GUT315/3278, Python515/3skip and exact CI/main readback. Whole game, Android, human balance, final motion/art and release incomplete.",
+  "next_whole_game_work": "Continue approved R02-R04 commissions/material escrow/settlement, then R05-R12. This receipt closes only WORLD5, not continuous whole-game authorization."
 }
