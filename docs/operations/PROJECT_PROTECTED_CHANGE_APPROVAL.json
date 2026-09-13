@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "df48dd06bffa1df11287029d2c7f43815f84ad23",
+  "decision_ids": ["BS-REPLAN-20260913-03"],
+  "approved_paths": [
+    "scripts/vertical_slice/domain/vs_replan_tag_rules.gd",
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd",
+    "scripts/vertical_slice/services/vs_enhancement_action_service.gd",
+    "scripts/vertical_slice/services/vs_workshop_maintenance_service.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd",
+    "scripts/vertical_slice/ui/vs_item_chronicle_screen.gd",
+    "scripts/vertical_slice/ui/vs_app.gd"
+  ],
+  "approval_source": "Latest user direction: continue implementation of the complete approved game without routine reapproval. BS-REPLAN-20260913-03 records the exact Blueprint21-24 continuation. Current-task PR373 approved-protected-change metadata read back independently. Consumed PR371 archive is not reused.",
+  "approval_time": "2026-09-13T12:50:00+09:00",
+  "scope_summary": "Eight existing scripts: shared AQ/DU/AR trial preparation, saved resolution, independent damage, reservation locks and report consumers. Preserve AQ storage, old saves, resources and Base locks. No new assets/scenes, release or core economy changes."
+}

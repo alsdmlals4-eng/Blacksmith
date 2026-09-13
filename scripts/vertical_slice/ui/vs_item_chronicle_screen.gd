@@ -39,12 +39,13 @@ func _tag_name(tag_id: String) -> String:
 	return str(names.get(tag_id, tag_id))
 
 
-func configure_aqueduct(record: Dictionary) -> void:
-	_view_state.entries = _view_state.entries.filter(func(entry): return entry.get("kind", "") != "AQUEDUCT")
+func configure_aqueduct(record: Dictionary, family: String = "AQ") -> void:
+	var kind := "AQUEDUCT" if family == "AQ" else family
+	_view_state.entries = _view_state.entries.filter(func(entry): return entry.get("kind", "") != kind)
 	var envelope_script = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
-	if envelope_script.validate_aqueduct_trial(record, str(_view_state.item_uid)).is_empty() and record.phase == "RESOLVED":
-		var report: Dictionary = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new().aqueduct_report(record)
-		_view_state.entries.append({"kind": "AQUEDUCT", "text": "수로 모험 보고\n" + str(report.body)})
+	if envelope_script.validate_world_trial(record, str(_view_state.item_uid), family).is_empty() and record.phase == "RESOLVED":
+		var report: Dictionary = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new().world_report(record, family)
+		_view_state.entries.append({"kind": kind, "text": ("수로 모험 보고\n" if family == "AQ" else "저장된 사건 보고\n") + str(report.body)})
 	_refresh_controls()
 
 

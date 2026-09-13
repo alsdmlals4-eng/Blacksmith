@@ -58,7 +58,7 @@ func repair_and_save(envelope, item_uid: String, resources, save_service, rolls:
 	var candidate = envelope_script.from_dict(envelope.to_dict())
 	if not candidate.validation_errors.is_empty() or resources.snapshot() != candidate.resource_snapshot():
 		return _blocked("REPAIR_SAVE_DIVERGED")
-	if candidate.active_run.get("aqueduct_trials", {}).get(item_uid, {}).get("phase", "") == "PREPARED":
+	if envelope_script.pending_trial(candidate, item_uid):
 		return _blocked("AQUEDUCT_PENDING")
 	if save_service.has_method("load_envelope"):
 		var disk = save_service.load_envelope()

@@ -77,6 +77,7 @@ var _customer_handoff_label := "고객에게 인계 · 인계 손상 없음"
 var _precision_action := ""
 var _precision_selection_data: Dictionary = {}
 var _world_view_mode := "COLLAPSED"
+var _trial_family := "AQ"
 
 
 func _ready() -> void:
@@ -345,11 +346,12 @@ func _precision_summary(state: Dictionary) -> String:
 
 func _destination_summary(state: Dictionary) -> String:
 	if _is_replan_item():
+		var title: String = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").WORLD_TRIALS[_trial_family].title
 		if _aqueduct_pending():
-			return "수로 모험 결과 확인 대기\n강화·수리는 결과 확인 후 가능\n연대기는 저장된 사건만 표시"
-		if _aqueduct_record().get("phase", "") == "RESOLVED":
-			return "수로 모험 완료 · 연대기에서 다시 보기\n다음 판단: 강화 계속 또는 손상 수리"
-		return "수로 시험: 철방패 +10부터 출발 가능\n태그의 용도별 효과를 비교하세요"
+			return title + " 결과 확인 대기\n강화·수리는 결과 확인 후 가능\n연대기는 저장된 사건만 표시"
+		if _selected_trial_record().get("phase", "") == "RESOLVED":
+			return title + " 완료 · 연대기에서 다시 보기\n다음 판단: 다른 시험 또는 강화·손상 수리"
+		return title + " 시험: 조건에 맞는 +10 장비 준비\n태그의 용도별 효과를 비교하세요"
 	var repair_text := "수리 가능" if bool(state.get("repair_allowed", false)) else "수리: %s" % _player_facing_repair_reason(str(state.get("repair_reason", "")))
 	var handoff_text := "인계 가능" if bool(state.get("handoff_allowed", false)) else "인계: %s" % _phase1_handoff_reason()
 	var chronicle_text := "연대기 보기 가능" if bool(state.get("chronicle_allowed", false)) else "연대기: 캠페인 정보 필요"
@@ -644,6 +646,7 @@ func _refresh_controls() -> void:
 		precision_backfill_button.visible = str(state.get("precision_mode", "")) == "BACKFILL"
 		precision_backfill_button.disabled = not bool(state.get("precision_backfill_allowed", false))
 	_refresh_aqueduct_trial()
+	state["destination_summary"] = _destination_summary(state)
 	_refresh_wireframe_cards(state)
 	_refresh_replan_choices()
 	_refresh_world_viewer()
@@ -719,11 +722,17 @@ func _refresh_world_viewer() -> void:
 	bar.get_node("Focus").visible = _world_view_mode != "COLLAPSED"
 	bar.get_node("Focus").disabled = _world_view_mode == "FOCUS"
 	bar.get_node("Close").visible = _world_view_mode != "COLLAPSED"
-	var record := _aqueduct_record()
-	var body := "아직 저장된 세계 사건이 없습니다.\n공방에서 철방패를 준비하고 수로 시험에 참여해 보세요."
-	if not record.is_empty():
+	var body := "아직 저장된 세계 사건이 없습니다.\n공방에서 장비를 준비하고 시험에 참여해 보세요."
+	if enabled and _campaign_envelope != null and _item != null:
+		var reports: PackedStringArray = []
+		var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd")
 		var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
-		body = str(service.aqueduct_report(record).body)
+		for family in ["AQ", "DU", "AR"]:
+			var record: Dictionary = _campaign_envelope.active_run.get(rules.WORLD_TRIALS[family].bucket, {}).get(str(_item.uid), {})
+			if not record.is_empty():
+				reports.append(str(service.world_report(record, family).body))
+		if not reports.is_empty():
+			body = "\n\n".join(reports)
 	panel.get_node("ReportScroll/ReportText").text = "저장된 사건 보고 · 읽기 전용\n" + body + "\n\n전투 모션 미연결 · 열람은 시간/결과/자원을 바꾸지 않습니다."
 
 
@@ -734,7 +743,22 @@ func _aqueduct_record() -> Dictionary:
 
 
 func _aqueduct_pending() -> bool:
-	return _aqueduct_record().get("phase", "") == "PREPARED"
+	return _campaign_envelope != null and _item != null and load("res://scripts/vertical_slice/domain/vs_save_envelope.gd").pending_trial(_campaign_envelope, str(_item.uid))
+
+
+func _selected_trial_record() -> Dictionary:
+	if _campaign_envelope == null or _item == null:
+		return {}
+	var definition: Dictionary = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").WORLD_TRIALS[_trial_family]
+	return _campaign_envelope.active_run.get(definition.bucket, {}).get(str(_item.uid), {})
+
+
+func _on_trial_family_selected(index: int) -> void:
+	if index < 0 or index > 2 or _aqueduct_pending():
+		return
+	_trial_family = ["AQ", "DU", "AR"][index]
+	get_node("WorkshopScroll/WorkshopLayout/AqueductTrial/Requirement").select(0)
+	_refresh_controls()
 
 
 func _refresh_aqueduct_trial() -> void:
@@ -745,6 +769,14 @@ func _refresh_aqueduct_trial() -> void:
 	if box == null and _is_replan_item():
 		box = VBoxContainer.new()
 		box.name = "AqueductTrial"
+		var family_option := OptionButton.new()
+		family_option.name = "Family"
+		family_option.custom_minimum_size.y = MOBILE_TOUCH_TARGET_HEIGHT
+		family_option.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+		for label in ["수로 모험", "콜로세움 결투", "전선 엄호"]:
+			family_option.add_item(label)
+		family_option.item_selected.connect(_on_trial_family_selected)
+		box.add_child(family_option)
 		box.add_theme_constant_override("separation", 8)
 		layout.add_child(box)
 		var anchor = layout.get_node_or_null("HandoffButton")
@@ -783,7 +815,20 @@ func _refresh_aqueduct_trial() -> void:
 	var summary := box.get_node("Summary") as Label
 	var option := box.get_node("Requirement") as OptionButton
 	var button := box.get_node("Action") as Button
-	var record := _aqueduct_record()
+	var family_option := box.get_node("Family") as OptionButton
+	var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").new()
+	if _aqueduct_pending():
+		for family in ["AQ", "DU", "AR"]:
+			if _campaign_envelope.active_run.get(rules.WORLD_TRIALS[family].bucket, {}).get(str(_item.uid), {}).get("phase", "") == "PREPARED":
+				_trial_family = family
+	family_option.select(["AQ", "DU", "AR"].find(_trial_family))
+	family_option.disabled = _aqueduct_pending()
+	var definitions: Dictionary = rules.AQUEDUCT_REQUIREMENTS if _trial_family == "AQ" else rules.WORLD_PURPOSES[_trial_family]
+	for index in range(4):
+		var key: String = ("HANDLING" if index >= 2 else "OUTPUT") + ":" + ("SUSTAIN" if index % 2 else "BURST")
+		var definition: Dictionary = definitions[key]
+		option.set_item_text(index, str(definition.content_id) + " " + str(definition.purpose))
+	var record := _selected_trial_record()
 	option.disabled = not record.is_empty()
 	if not record.is_empty():
 		option.select((2 if record.axis == "HANDLING" else 0) + (1 if record.rhythm == "SUSTAIN" else 0))
@@ -791,11 +836,11 @@ func _refresh_aqueduct_trial() -> void:
 		summary.text = "수로 모험 기록\n임무 %s · 장비 %s\n내구도 %d → %d · 보상 없음\n시험 결과는 작품 연대기에도 남습니다." % [
 			"성공" if record.mission_success else "실패", "손상 발생" if record.damage_applied else "손상 없음",
 			int(record.item_snapshot.current_durability), int(record.item_snapshot.current_durability) - (1 if record.damage_applied else 0)]
-		button.text = "수로 시험 완료 · 기록 보존"
+		button.text = "시험 완료 · 기록 보존"
 		button.disabled = true
 	elif record.get("phase", "") == "PREPARED":
 		summary.text = "수로 모험 진행 중\n출발 상태와 판정이 저장되었습니다.\n결과 확인 전에는 강화·수리를 할 수 없습니다."
-		button.text = "저장된 모험 결과 확인"
+		button.text = "저장된 사건 결과 확인"
 		button.disabled = false
 		for path in ["EnhancementButton", "RepairButton"]:
 			var blocked_button := layout.get_node_or_null(path) as Button
@@ -803,20 +848,19 @@ func _refresh_aqueduct_trial() -> void:
 				blocked_button.disabled = true
 	else:
 		var index := option.selected
-		var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").new()
-		var preview: Dictionary = rules.aqueduct_preview(str(EquipmentCatalogScript.by_item(_item).get("equipment_id", "")),
+		var preview: Dictionary = rules.world_preview(_trial_family, str(EquipmentCatalogScript.by_item(_item).get("equipment_id", "")),
 			int(_item.enhancement_level), _item.catalyst_affix.get("tags", {}), "HANDLING" if index >= 2 else "OUTPUT", "SUSTAIN" if index % 2 else "BURST")
 		var eligible: bool = bool(preview.get("ok", false)) and _item.current_durability > 0
-		summary.text = "수로 모험 시험 · 철방패 +10 이상\n보상 없음 · 작품마다 1회\n"
+		summary.text = str(rules.WORLD_TRIALS[_trial_family].title) + " 시험 · " + ("철방패" if _trial_family == "AQ" else "철검/철방패") + " +10 이상\n보상 없음 · 종류별 작품마다 1회\n"
 		if eligible:
 			var damage_rules = load("res://scripts/vertical_slice/resolvers/vs_customer_world_event_resolver.gd").new()
-			summary.text += "임무 성공 예상 %.1f%% · 손상 %.1f%%\n성공과 손상은 별개로 판정합니다." % [float(preview.success_percent), damage_rules._damage_percent(_item, "LOW")]
+			summary.text += "임무 성공 예상 %.1f%% · 손상 %.1f%%\n성공과 손상은 별개로 판정합니다." % [float(preview.success_percent), damage_rules._damage_percent(_item, rules.WORLD_TRIALS[_trial_family].profile)]
 		else:
-			summary.text += "손상으로 파괴되지 않은 +10 철방패를 준비하세요."
-		button.text = "이 용도로 수로 시험 출발"
+			summary.text += "조건에 맞는 +10 이상 장비를 준비하세요. 파괴된 작품은 참여할 수 없습니다."
+		button.text = "이 용도로 " + str(rules.WORLD_TRIALS[_trial_family].title) + " 출발"
 		button.disabled = not eligible or _campaign_envelope == null or _save_service == null
 	if not record.is_empty():
-		var report: Dictionary = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new().aqueduct_report(record)
+		var report: Dictionary = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new().world_report(record, _trial_family)
 		summary.text = str(report.body)
 
 
@@ -825,13 +869,13 @@ func _on_aqueduct_pressed() -> void:
 		return
 	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
 	var result: Dictionary
-	if _aqueduct_pending():
-		result = service.resolve_prepared_aqueduct(_campaign_envelope, str(_item.uid), _save_service)
+	if _selected_trial_record().get("phase", "") == "PREPARED":
+		result = service.resolve_prepared_aqueduct(_campaign_envelope, str(_item.uid), _save_service, _trial_family)
 	else:
 		var option := get_node("WorkshopScroll/WorkshopLayout/AqueductTrial/Requirement") as OptionButton
 		var index := option.selected
 		result = service.prepare_aqueduct(_campaign_envelope, str(_item.uid),
-			"HANDLING" if index >= 2 else "OUTPUT", "SUSTAIN" if index % 2 else "BURST", _save_service)
+			"HANDLING" if index >= 2 else "OUTPUT", "SUSTAIN" if index % 2 else "BURST", _save_service, _trial_family)
 	if result.has("envelope"):
 		var uid := str(_item.uid)
 		_campaign_envelope = result.envelope

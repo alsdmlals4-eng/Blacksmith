@@ -9,6 +9,41 @@ const AQUEDUCT_REQUIREMENTS := {
 	"OUTPUT:SUSTAIN": {"content_id":"AQ03", "purpose":"측량 동안 엄호", "success":"측량 완료", "failure":"엄호 중단"},
 	"HANDLING:SUSTAIN": {"content_id":"AQ04", "purpose":"여러 지점 이동 엄호", "success":"측량 기록", "failure":"일부 철수"},
 }
+const WORLD_TRIALS := {
+	"AQ": {"bucket":"aqueduct_trials", "record_type":"AQUEDUCT_TRIAL_V1", "title":"무너진 수로의 측량대", "profile":"LOW"},
+	"DU": {"bucket":"duel_trials", "record_type":"DUEL_TRIAL_V1", "title":"콜로세움 결투", "profile":"MEDIUM"},
+	"AR": {"bucket":"army_trials", "record_type":"ARMY_TRIAL_V1", "title":"전선 엄호", "profile":"HIGH"},
+}
+const WORLD_PURPOSES := {
+	"DU": {
+		"OUTPUT:BURST":{"content_id":"DU01","purpose":"결정적 검격·막기","success":"결투 승리","failure":"패배 인정"},
+		"HANDLING:BURST":{"content_id":"DU02","purpose":"빠른 대응·방향 조절","success":"결투 승리","failure":"패배 인정"},
+		"OUTPUT:SUSTAIN":{"content_id":"DU03","purpose":"반복 공방의 성능","success":"결투 승리","failure":"패배 인정"},
+		"HANDLING:SUSTAIN":{"content_id":"DU04","purpose":"안정적인 반복 취급","success":"결투 승리","failure":"패배 인정"},
+	},
+	"AR": {
+		"OUTPUT:BURST":{"content_id":"AR01","purpose":"짧은 돌파·급박한 엄호","success":"목표 확보","failure":"철수"},
+		"HANDLING:BURST":{"content_id":"AR02","purpose":"진형 변화에 빠른 대응","success":"목표 확보","failure":"철수"},
+		"OUTPUT:SUSTAIN":{"content_id":"AR03","purpose":"통로·보급대 지속 엄호","success":"통로 유지","failure":"철수"},
+		"HANDLING:SUSTAIN":{"content_id":"AR04","purpose":"긴 행군과 반복 진형 유지","success":"목적지 도착","failure":"행군 중단"},
+	},
+}
+
+func world_preview(family: String, equipment_id: String, level: Variant, tags: Dictionary, axis: String, rhythm: String) -> Dictionary:
+	if not WORLD_TRIALS.has(family):
+		return {"ok":false, "reason":"UNKNOWN_WORLD_TRIAL"}
+	if family == "AQ" and equipment_id != "iron_shield":
+		return {"ok":false, "reason":"REQUIRES_SHIELD"}
+	if family != "AQ" and equipment_id not in ["iron_sword", "iron_shield"]:
+		return {"ok":false, "reason":"REQUIRES_SWORD_OR_SHIELD"}
+	# Reuse the established readiness calculation after checking actual equipment.
+	var result := aqueduct_preview("iron_shield", level, tags, axis, rhythm)
+	if result.ok:
+		var definitions: Dictionary = AQUEDUCT_REQUIREMENTS if family == "AQ" else WORLD_PURPOSES[family]
+		result.merge(definitions[axis + ":" + rhythm])
+		result["profile"] = WORLD_TRIALS[family].profile
+	return result
+
 const TAGS := {
 	"BURST_OUTPUT": ["OUTPUT", "BURST"],
 	"SUSTAIN_OUTPUT": ["OUTPUT", "SUSTAIN"],

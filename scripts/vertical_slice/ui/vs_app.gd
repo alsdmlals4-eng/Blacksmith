@@ -453,6 +453,9 @@ func _show_item_chronicle(item_uid: String) -> String:
 		_customer_profile_or_null(PHASE1_CUSTOMER_ID)
 	)
 	chronicle_screen.call("configure_aqueduct", _campaign_envelope.active_run.get("aqueduct_trials", {}).get(item_uid, {}))
+	for family in ["DU", "AR"]:
+		var bucket: String = "duel_trials" if family == "DU" else "army_trials"
+		chronicle_screen.call("configure_aqueduct", _campaign_envelope.active_run.get(bucket, {}).get(item_uid, {}), family)
 	if str(configured.get("status", "")) != "APPLIED":
 		return INVALID_PAYLOAD
 	var workshop_screen := get_node_or_null("ScreenHost/WorkshopScreen")

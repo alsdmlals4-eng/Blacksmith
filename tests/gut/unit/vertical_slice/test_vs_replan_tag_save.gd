@@ -7,6 +7,128 @@ const Precision = preload("res://scripts/vertical_slice/resolvers/vs_precision_r
 const Action = preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const Resources = preload("res://scripts/economy/workshop_resources.gd")
 
+func test_world_trials_keep_independent_damage_and_resume_without_reapplying():
+	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	assert_true(service.has_method("prepare_world_with_rolls"), "DU/AR must commit before showing results")
+	if not service.has_method("prepare_world_with_rolls"):
+		return
+	for family in ["DU", "AR"]:
+		for success in [true, false]:
+			for damage in [true, false]:
+				var envelope = _aqueduct_envelope()
+				var uid = envelope.active_run.selected_item_uid
+				var save = load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/world-%s-%s-%s.json" % [family,success,damage])
+				assert_eq(save.save_envelope(envelope), OK)
+				var before = envelope.resource_snapshot()
+				var prepared = service.prepare_world_with_rolls(envelope, uid, family, "HANDLING", "BURST", [0 if success else 99, 0 if damage else 99], save)
+				assert_eq(prepared.status, "PREPARED")
+				if prepared.status != "PREPARED":
+					continue
+				assert_eq(prepared.record.damage_percent, 20.0 if family == "DU" else 40.0)
+				assert_eq(envelope.get_item(uid).current_durability, 5)
+				var other = "AR" if family == "DU" else "DU"
+				assert_eq(service.prepare_world_with_rolls(prepared.envelope, uid, other, "OUTPUT", "BURST", [0,0], save).status, "BLOCKED")
+				assert_eq(service.prepare_aqueduct_with_rolls(prepared.envelope, uid, "OUTPUT", "BURST", [0,0], save).status, "BLOCKED")
+				var resources = Resources.new(before.gold, before.material_stock)
+				assert_eq(Action.new().resolve_and_save_with_rolls(prepared.envelope, uid, 20, {"success_roll_percent":0}, 1, resources, save, {"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tag_id":"BURST_HANDLING"}).outcome, "BLOCKED")
+				var repair = load("res://scripts/vertical_slice/services/vs_workshop_maintenance_service.gd").new()
+				assert_eq(repair.repair_and_save(prepared.envelope, uid, resources, save, {"quality_roll_percent":0,"scar_roll_percent":99}).status, "BLOCKED")
+				var resolved = service.resolve_prepared_world(save.load_envelope(), uid, family, save)
+				assert_eq(resolved.status, "APPLIED")
+				assert_eq(resolved.record.mission_success, success)
+				assert_eq(resolved.record.damage_applied, damage)
+				assert_eq(save.load_envelope().get_item(uid).current_durability, 4 if damage else 5)
+				assert_eq(save.load_envelope().resource_snapshot(), before)
+				assert_eq(service.resolve_prepared_world(envelope, uid, family, save).status, "ALREADY_RESOLVED")
+				assert_eq(save.load_envelope().get_item(uid).current_durability, 4 if damage else 5)
+				assert_true(service.world_report(resolved.record, family).ok)
+
+func test_world_trials_reject_corrupt_payloads_and_preserve_aqueduct():
+	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	if not service.has_method("prepare_world_with_rolls"):
+		assert_true(false, "World transaction not implemented")
+		return
+	var envelope = _aqueduct_envelope()
+	var uid = envelope.active_run.selected_item_uid
+	var save = SaveBoundary.new()
+	var aq = service.prepare_aqueduct_with_rolls(envelope, uid, "OUTPUT", "BURST", [99,99], save)
+	assert_eq(service.prepare_world_with_rolls(aq.envelope, uid, "DU", "OUTPUT", "BURST", [0,0], save).status, "BLOCKED")
+	var finished = service.resolve_prepared_aqueduct(aq.envelope, uid, save)
+	var du = service.prepare_world_with_rolls(finished.envelope, uid, "DU", "OUTPUT", "BURST", [0,0], save)
+	assert_eq(du.status, "PREPARED")
+	assert_eq(du.envelope.active_run.aqueduct_trials, finished.envelope.active_run.aqueduct_trials)
+	for field in ["record_type", "event_id", "phase", "damage_percent", "rolls"]:
+		var corrupt = du.envelope.to_dict()
+		corrupt.active_run.duel_trials[uid][field] = null
+		assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(), field)
+	var corrupt = du.envelope.to_dict()
+	corrupt.active_run.duel_trials[uid].damage_percent = 10.0
+	assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(), "DU cannot borrow AQ low risk")
+	var dual_booking = du.envelope.to_dict()
+	dual_booking.active_run["army_trials"] = {uid:du.record.duplicate(true)}
+	dual_booking.active_run.army_trials[uid].record_type = "ARMY_TRIAL_V1"
+	dual_booking.active_run.army_trials[uid].event_id = "ar-trial-" + uid
+	dual_booking.active_run.army_trials[uid].damage_percent = 40.0
+	assert_false(Envelope.from_dict(dual_booking).validation_errors.is_empty(), "Two individually valid reservations must not share one item")
+	save.error = ERR_CANT_CREATE
+	assert_eq(service.resolve_prepared_world(du.envelope, uid, "DU", save).status, "BLOCKED")
+	assert_eq(du.envelope.get_item(uid).current_durability, 5)
+	assert_eq(du.envelope.active_run.duel_trials[uid].phase, "PREPARED")
+	for family in ["", "AQ", "UNKNOWN"]:
+		assert_eq(service.prepare_world_with_rolls(envelope, uid, family, "OUTPUT", "BURST", [0,0], SaveBoundary.new()).status, "BLOCKED")
+	for rolls in [[true,0],[0,100],[0],[-1,0],[NAN,0]]:
+		assert_eq(service.prepare_world_with_rolls(envelope, uid, "DU", "OUTPUT", "BURST", rolls, SaveBoundary.new()).status, "BLOCKED")
+
+func test_workshop_family_selection_prepares_resolves_and_reports_both_new_trials():
+	var envelope = _aqueduct_envelope()
+	var uid = envelope.active_run.selected_item_uid
+	var stock = envelope.resource_snapshot()
+	var save = load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/world-native-controls.json")
+	assert_eq(save.save_envelope(envelope), OK)
+	var screen = autofree(load("res://scenes/vertical_slice/screens/vs_workshop_screen.tscn").instantiate())
+	add_child(screen)
+	screen.configure_context(envelope.get_item(uid), Resources.new(stock.gold, stock.material_stock), null, null, save, envelope)
+	var box = screen.get_node("WorkshopScroll/WorkshopLayout/AqueductTrial")
+	var selector = box.get_node_or_null("Family")
+	assert_not_null(selector, "DU/AR must be reachable from native workshop controls")
+	if selector == null:
+		return
+	for index in [1,2]:
+		selector.select(index)
+		selector.item_selected.emit(index)
+		assert_true(screen._destination_summary({}).contains("콜로세움") if index == 1 else screen._destination_summary({}).contains("전선"), "Next destination must describe the selected family")
+		var expected_risk = "20.0%" if index == 1 else ("40.0%" if screen._item.current_durability == 5 else "50.0%")
+		assert_true(box.get_node("Summary").text.contains(expected_risk), "Independent first-trial damage changes second-trial risk")
+		box.get_node("Action").pressed.emit()
+		assert_true(selector.disabled)
+		assert_true(screen._destination_summary({}).contains("콜로세움") if index == 1 else screen._destination_summary({}).contains("전선"), "Pending destination cannot claim a different family")
+		assert_true(box.get_node("Requirement").disabled)
+		assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton").disabled)
+		assert_false(box.get_node("Action").disabled)
+		var resumed_envelope = save.load_envelope()
+		var resumed = autofree(load("res://scenes/vertical_slice/screens/vs_workshop_screen.tscn").instantiate())
+		add_child(resumed)
+		resumed.configure_context(resumed_envelope.get_item(uid), Resources.new(stock.gold, stock.material_stock), null, null, save, resumed_envelope)
+		var destination_text = resumed.get_node("WorkshopScroll/WorkshopLayout/WireframeDestinationCard/CardContent/CardBody").text
+		assert_true(destination_text.contains("콜로세움") if index == 1 else destination_text.contains("전선"), "First restored native destination card must match pending family")
+		box.get_node("Action").pressed.emit()
+		assert_false(selector.disabled)
+		assert_true(box.get_node("Action").disabled)
+		assert_true(screen.set_world_view_mode("FOCUS"))
+		var report = screen.get_node("WorldReportPanel/ReportScroll/ReportText").text
+		assert_true(report.contains("DU01") if index == 1 else report.contains("AR01"))
+		assert_true(screen.set_world_view_mode("COLLAPSED"))
+	var final_envelope = save.load_envelope()
+	assert_true(final_envelope.validation_errors.is_empty())
+	assert_eq(final_envelope.resource_snapshot(), stock)
+	var chronicle = autofree(load("res://scripts/vertical_slice/ui/vs_item_chronicle_screen.gd").new())
+	add_child(chronicle)
+	chronicle.configure_item(final_envelope.get_item(uid), {})
+	for family in ["DU", "AR"]:
+		var bucket = "duel_trials" if family == "DU" else "army_trials"
+		chronicle.configure_aqueduct(final_envelope.active_run[bucket][uid], family)
+	assert_eq(chronicle.view_state().entries.filter(func(entry): return entry.kind in ["DU", "AR"]).size(), 2)
+
 func test_serialized_comparison_preserves_value_and_type_boundaries_other_than_json_numbers():
 	assert_true(Envelope.serialized_equal({"payload":{"stage":1}}, {"payload":{"stage":1.0}}))
 	for changed in [true, "1", 1.5, null]:

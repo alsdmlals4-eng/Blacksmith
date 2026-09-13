@@ -190,6 +190,28 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 					envelope.validation_errors.append("AQUEDUCT_RESERVED_ITEM_CHANGED")
 			if str(envelope.active_run.get("tag_ruleset_id", "")) != "BLACKSMITH_REPLAN_TAGS_20260912":
 				envelope.validation_errors.append("AQUEDUCT_REQUIRES_REPLAN_CAMPAIGN")
+	for family in ["DU", "AR"]:
+		var bucket: String = "duel_trials" if family == "DU" else "army_trials"
+		var world_trials: Variant = envelope.active_run.get(bucket, {})
+		if not world_trials is Dictionary:
+			envelope.validation_errors.append("INVALID_WORLD_TRIALS")
+			continue
+		for uid in world_trials:
+			var error := validate_world_trial(world_trials[uid], str(uid), family)
+			if not error.is_empty():
+				envelope.validation_errors.append(error)
+				continue
+			if envelope.active_run.get("tag_ruleset_id", "") != "BLACKSMITH_REPLAN_TAGS_20260912":
+				envelope.validation_errors.append("WORLD_REQUIRES_REPLAN_CAMPAIGN")
+			if world_trials[uid].phase == "PREPARED":
+				var reserved = envelope.get_item(str(uid))
+				var original = ItemScript.from_dict(world_trials[uid].item_snapshot)
+				if reserved == null or not serialized_equal(reserved.to_dict(), original.to_dict()):
+					envelope.validation_errors.append("WORLD_RESERVED_ITEM_CHANGED")
+				for other_bucket in ["aqueduct_trials", "duel_trials", "army_trials"]:
+					var other: Variant = envelope.active_run.get(other_bucket, {})
+					if other_bucket != bucket and other is Dictionary and other.get(uid, {}) is Dictionary and other.get(uid, {}).get("phase", "") == "PREPARED":
+						envelope.validation_errors.append("DUPLICATE_WORLD_RESERVATION")
 	envelope._validate_values()
 	return envelope
 
@@ -220,6 +242,20 @@ static func _validate_typed_resolved_events(envelope: VSSaveEnvelope) -> void:
 
 # Separate trial payload: never reinterpret legacy customer ContentResult records.
 static func validate_aqueduct_trial(raw: Variant, item_uid: String) -> String:
+	return validate_world_trial(raw, item_uid, "AQ")
+
+
+static func pending_trial(envelope, item_uid: String) -> bool:
+	for bucket in ["aqueduct_trials", "duel_trials", "army_trials"]:
+		if envelope.active_run.get(bucket, {}).get(item_uid, {}).get("phase", "") == "PREPARED":
+			return true
+	return false
+
+
+static func validate_world_trial(raw: Variant, item_uid: String, family: String) -> String:
+	var definition: Dictionary = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").WORLD_TRIALS.get(family, {})
+	if definition.is_empty():
+		return "UNKNOWN_WORLD_TRIAL"
 	if not raw is Dictionary:
 		return "INVALID_AQUEDUCT_RECORD"
 	var fields := ["record_type", "schema_version", "ruleset_id", "event_id", "item_uid",
@@ -235,9 +271,9 @@ static func validate_aqueduct_trial(raw: Variant, item_uid: String) -> String:
 			return "INVALID_AQUEDUCT_FIELD_TYPE"
 	if not _trial_number(raw.schema_version) or raw.schema_version != 1:
 		return "INVALID_AQUEDUCT_SCHEMA"
-	if raw.record_type != "AQUEDUCT_TRIAL_V1" or raw.ruleset_id != "BLACKSMITH_REPLAN_TAGS_20260912":
+	if raw.record_type != definition.record_type or raw.ruleset_id != "BLACKSMITH_REPLAN_TAGS_20260912":
 		return "INVALID_AQUEDUCT_RULESET"
-	if raw.item_uid != item_uid or raw.event_id != "aq-trial-" + item_uid:
+	if raw.item_uid != item_uid or raw.event_id != family.to_lower() + "-trial-" + item_uid:
 		return "INVALID_AQUEDUCT_ID"
 	if raw.phase not in ["PREPARED", "RESOLVED"] or raw.reward != "NONE":
 		return "INVALID_AQUEDUCT_PHASE"
@@ -255,12 +291,12 @@ static func validate_aqueduct_trial(raw: Variant, item_uid: String) -> String:
 	var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").new()
 	if not raw.axis is String or not raw.rhythm is String:
 		return "INVALID_AQUEDUCT_REQUIREMENT"
-	var preview: Dictionary = rules.aqueduct_preview(str(catalog.by_item(snapshot).get("equipment_id", "")),
+	var preview: Dictionary = rules.world_preview(family, str(catalog.by_item(snapshot).get("equipment_id", "")),
 		int(snapshot.enhancement_level), snapshot.catalyst_affix.get("tags", {}), raw.axis, raw.rhythm)
 	if not preview.get("ok", false):
 		return "INVALID_AQUEDUCT_PREVIEW"
 	var damage_rules = load("res://scripts/vertical_slice/resolvers/vs_customer_world_event_resolver.gd").new()
-	var damage_chance: float = damage_rules._damage_percent(snapshot, "LOW")
+	var damage_chance: float = damage_rules._damage_percent(snapshot, definition.profile)
 	if not _trial_number(raw.success_percent) or not _trial_number(raw.damage_percent):
 		return "INVALID_AQUEDUCT_PROBABILITY"
 	if not is_equal_approx(float(raw.success_percent), float(preview.success_percent)) or not is_equal_approx(float(raw.damage_percent), damage_chance):

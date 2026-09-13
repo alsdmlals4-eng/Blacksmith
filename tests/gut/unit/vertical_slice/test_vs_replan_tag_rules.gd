@@ -1,5 +1,25 @@
 extends "res://addons/gut/test.gd"
 
+func test_world_preview_uses_equipment_gate_and_shared_tag_contribution():
+	var rules = load(PATH).new()
+	assert_true(rules.has_method("world_preview"), "World purposes must share actual suitability logic")
+	if not rules.has_method("world_preview"):
+		return
+	for family in ["DU", "AR"]:
+		for row in [["OUTPUT","BURST","01",63.0],["HANDLING","BURST","02",60.0],["OUTPUT","SUSTAIN","03",61.0],["HANDLING","SUSTAIN","04",60.0]]:
+			var variant = rules.world_preview(family, "iron_shield", 10, {"BURST_OUTPUT":1}, row[0], row[1])
+			assert_true(variant.ok)
+			assert_eq(variant.content_id, family + row[2])
+			assert_eq(variant.success_percent, row[3])
+		for equipment in ["iron_sword", "iron_shield"]:
+			var result = rules.world_preview(family, equipment, 10, {"BURST_HANDLING":1}, "HANDLING", "BURST")
+			assert_true(result.ok)
+			assert_eq(result.success_percent, 63.0)
+			assert_eq(result.content_id, family + "02")
+		for equipment in ["iron_bow", "iron_armor", "iron_helmet", "unknown"]:
+			assert_false(rules.world_preview(family, equipment, 10, {"BURST_HANDLING":1}, "HANDLING", "BURST").ok)
+	assert_false(rules.world_preview("UNKNOWN", "iron_shield", 10, {"BURST_HANDLING":1}, "HANDLING", "BURST").ok)
+
 func test_aqueduct_preview_separates_level_readiness_tag_support_and_cap():
 	var rules = load(PATH).new()
 	assert_true(rules.has_method("aqueduct_preview"), "Blueprint mission estimate must have a runtime consumer")
