@@ -120,8 +120,49 @@ func configure_workshop_context(item, resources, maintenance_service = null, enh
 	if workshop_screen.has_signal("enhancement_saved") and not workshop_screen.enhancement_saved.is_connected(_on_workshop_enhancement_saved):
 		workshop_screen.enhancement_saved.connect(_on_workshop_enhancement_saved)
 	_connect_workshop_handoff()
+	if not workshop_screen.recovery_forge_requested.is_connected(_on_recovery_forge_requested):
+		workshop_screen.recovery_forge_requested.connect(_on_recovery_forge_requested)
 	return true
 
+
+func _on_recovery_forge_requested() -> void:
+	if get_node_or_null("RecoveryForge") != null or _campaign_envelope == null:
+		return
+	if _campaign_envelope.active_run.get("recovery_order",{}).get("phase","") != "ACCEPTED":
+		return
+	var forge = load("res://scripts/ui/forging_screen.gd").new()
+	forge.name = "RecoveryForge"
+	add_child(forge)
+	forge.find_child("ForgeScroll",true,false).get_parent().add_theme_constant_override("margin_bottom",128)
+	forge.forge_result_confirmed.connect(_on_recovery_forge_completed)
+	get_node("ScreenHost/WorkshopScreen").hide()
+	var back = Button.new()
+	back.name = "RecoveryBack"
+	back.text = "주문 보관하고 공방으로"
+	back.position = Vector2(24,1180)
+	back.size = Vector2(672,76)
+	back.add_theme_font_size_override("font_size",28)
+	back.pressed.connect(_close_recovery_forge)
+	forge.add_child(back)
+
+func _on_recovery_forge_completed(completion: Dictionary) -> void:
+	var result = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new().forge(_campaign_envelope,completion,_save_service)
+	if result.has("envelope"):
+		configure_campaign(result.envelope,_workshop_resources,null,null,_save_service)
+		_close_recovery_forge()
+	else:
+		var forge = get_node_or_null("RecoveryForge")
+		if forge != null:
+			forge.result_commit_button.text = "저장 확인 실패 · 같은 결과 저장 재시도"
+			forge._result_confirmation_emitted = false
+			forge.result_commit_button.disabled = false
+
+func _close_recovery_forge() -> void:
+	var forge = get_node_or_null("RecoveryForge")
+	if forge != null:
+		remove_child(forge)
+		forge.queue_free()
+	get_node("ScreenHost/WorkshopScreen").show()
 
 func _on_workshop_enhancement_saved(envelope, _result: Dictionary) -> void:
 	_campaign_envelope = envelope

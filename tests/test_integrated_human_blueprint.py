@@ -10,6 +10,16 @@ RECORD = ROOT / 'docs/design/candidates/blueprint-20260911/record.json'
 
 
 class IntegratedHumanBlueprint(unittest.TestCase):
+    def test_recovery_checkpoint_preserves_prior_atlas_and_shows_real_delivery(self):
+        content = SOURCE.read_text(encoding='utf-8')
+        self.assertIn('## 59.', content)
+        self.assertIn('17070', content)
+        for capture in ['recovery-order-forged-20260913.png', 'recovery-order-delivered-20260913.png']:
+            self.assertIn(capture, content)
+            self.assertTrue((ROOT/'docs/testing'/capture).is_file())
+        receipt=json.loads((ROOT/'docs/operations/receipts/2026-09-10-pixel-world-blueprint.json').read_text(encoding='utf-8'))
+        self.assertEqual(receipt['recovery_delivery']['decision'], 'BS-REPLAN-20260913-04')
+
     def test_current_runtime_checkpoint_is_distinct_from_design_candidates(self):
         content = SOURCE.read_text(encoding='utf-8')
         for section in ['## 52.', '## 53.', '## 54.', '## 55.', '## 56.']:

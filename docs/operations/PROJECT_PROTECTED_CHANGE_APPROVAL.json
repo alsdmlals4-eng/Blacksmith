@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "76ad0bb02af9e03e76f6accca8bf56d7d92945ad",
+  "decision_ids": ["BS-REPLAN-20260913-04"],
+  "approved_paths": [
+    "scripts/vertical_slice/services/vs_recovery_order_service.gd",
+    "scripts/vertical_slice/services/vs_recovery_order_service.gd.uid",
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd",
+    "scripts/vertical_slice/ui/vs_app.gd"
+  ],
+  "approval_source": "Latest user whole-game implementation continuation without routine reapproval; existing Blueprint17/39/51 recovery order scope detailed in BS-REPLAN-20260913-04. Current-task PR375 metadata independently required. Prior PR373 approval is consumed archive only.",
+  "approval_time": "2026-09-13T14:48:00+09:00",
+  "scope_summary": "First recovery order: existing forge consumer, dedicated new item, atomic one-time delivery reward and save validation. No legacy migration, final economic balance, calendar, new assets or Scene authoring."
+}

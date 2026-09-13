@@ -213,6 +213,10 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 					if other_bucket != bucket and other is Dictionary and other.get(uid, {}) is Dictionary and other.get(uid, {}).get("phase", "") == "PREPARED":
 						envelope.validation_errors.append("DUPLICATE_WORLD_RESERVATION")
 	envelope._validate_values()
+	if envelope.validation_errors.is_empty():
+		var recovery_error: String = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").validate(envelope)
+		if not recovery_error.is_empty():
+			envelope.validation_errors.append(recovery_error)
 	return envelope
 
 
