@@ -44,7 +44,7 @@ func resolve_and_save_with_rolls(
 			return _blocked("ENHANCEMENT_SAVE_DIVERGED")
 		if not SaveEnvelopeScript.serialized_equal([disk.active_run, disk.to_dict().items_by_uid, disk.resource_snapshot()], [source.active_run, source.to_dict().items_by_uid, source.resource_snapshot()]):
 			return _blocked("ENHANCEMENT_SAVE_DIVERGED")
-	if envelope.active_run.get("aqueduct_trials", {}).get(item_uid, {}).get("phase", "") == "PREPARED":
+	if SaveEnvelopeScript.pending_trial(envelope, item_uid):
 		return _blocked("AQUEDUCT_PENDING")
 	var source_item = envelope.get_item(item_uid) if envelope.has_method("get_item") else null
 	var preview := EnhancementResolverScript.new().preview(source_item, target_level, precision_selection)
