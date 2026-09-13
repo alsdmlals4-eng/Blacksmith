@@ -646,6 +646,7 @@ func _refresh_controls() -> void:
 		precision_backfill_button.visible = str(state.get("precision_mode", "")) == "BACKFILL"
 		precision_backfill_button.disabled = not bool(state.get("precision_backfill_allowed", false))
 	_refresh_aqueduct_trial()
+	state["destination_summary"] = _destination_summary(state)
 	_refresh_wireframe_cards(state)
 	_refresh_replan_choices()
 	_refresh_world_viewer()

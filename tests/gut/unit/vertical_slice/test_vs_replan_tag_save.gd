@@ -105,6 +105,12 @@ func test_workshop_family_selection_prepares_resolves_and_reports_both_new_trial
 		assert_true(box.get_node("Requirement").disabled)
 		assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton").disabled)
 		assert_false(box.get_node("Action").disabled)
+		var resumed_envelope = save.load_envelope()
+		var resumed = autofree(load("res://scenes/vertical_slice/screens/vs_workshop_screen.tscn").instantiate())
+		add_child(resumed)
+		resumed.configure_context(resumed_envelope.get_item(uid), Resources.new(stock.gold, stock.material_stock), null, null, save, resumed_envelope)
+		var destination_text = resumed.get_node("WorkshopScroll/WorkshopLayout/WireframeDestinationCard/CardContent/CardBody").text
+		assert_true(destination_text.contains("콜로세움") if index == 1 else destination_text.contains("전선"), "First restored native destination card must match pending family")
 		box.get_node("Action").pressed.emit()
 		assert_false(selector.disabled)
 		assert_true(box.get_node("Action").disabled)
