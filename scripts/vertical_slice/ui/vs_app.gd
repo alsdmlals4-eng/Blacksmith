@@ -133,6 +133,7 @@ func _on_recovery_forge_requested() -> void:
 	var forge = load("res://scripts/ui/forging_screen.gd").new()
 	forge.name = "RecoveryForge"
 	add_child(forge)
+	forge.find_child("ForgeScroll",true,false).get_parent().add_theme_constant_override("margin_bottom",128)
 	forge.forge_result_confirmed.connect(_on_recovery_forge_completed)
 	get_node("ScreenHost/WorkshopScreen").hide()
 	var back = Button.new()

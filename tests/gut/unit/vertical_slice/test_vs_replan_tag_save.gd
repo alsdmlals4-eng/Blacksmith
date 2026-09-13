@@ -13,6 +13,16 @@ class RecoveryFailSave:
 	func save_envelope(envelope) -> Error:
 		return ERR_CANT_CREATE if fail_write else super.save_envelope(envelope)
 
+func test_recovery_order_missing_campaign_fields_returns_validation_errors():
+	var original = _aqueduct_envelope()
+	original.active_run.recovery_order = {"schema_version":1,"order_id":str(original.active_run.run_id)+"-recovery-1","phase":"ACCEPTED","material_units":1,"item_uid":"","gold_reward":400,"material_reward":2,"accepted_day":1}
+	for field in ["run_id","current_day"]:
+		var corrupt = original.to_dict()
+		corrupt.active_run.erase(field)
+		var loaded = Envelope.from_dict(corrupt)
+		assert_not_null(loaded)
+		assert_false(loaded.validation_errors.is_empty(),field)
+
 func test_recovery_order_creates_dedicated_item_and_settles_once_from_zero_resources():
 	var path = "res://scripts/vertical_slice/services/vs_recovery_order_service.gd"
 	assert_true(ResourceLoader.exists(path), "Recovery order must connect real crafting and settlement")
@@ -102,6 +112,10 @@ func test_recovery_order_native_controls_open_existing_forge_return_and_deliver(
 	var forge = app.get_node_or_null("RecoveryForge")
 	assert_not_null(forge)
 	if forge == null: return
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var forge_scroll = forge.find_child("ForgeScroll",true,false)
+	assert_lte(forge_scroll.get_global_rect().end.y + 16,forge.get_node("RecoveryBack").get_global_rect().position.y,"Return control must not cover the crafting scroll")
 	forge.get_node("RecoveryBack").pressed.emit()
 	assert_true(screen.visible)
 	assert_eq(save.load_envelope().active_run.recovery_order.phase,"ACCEPTED")
