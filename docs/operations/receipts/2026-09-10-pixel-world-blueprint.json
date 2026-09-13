@@ -2,6 +2,24 @@
   "schema_version": 1,
   "receipt_id": "BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910",
   "work_level": "L1",
+  "recovery_delivery": {
+    "decision": "BS-REPLAN-20260913-04",
+    "pull_request": "https://github.com/alsdmlals4-eng/Blacksmith/pull/375",
+    "status": "IMPLEMENTED_DESKTOP_VERIFIED_FINAL_DELIVERY_IN_PROGRESS",
+    "protected_paths": 5,
+    "gut": "304_TESTS_2973_ASSERTIONS_PASS",
+    "red": "Missing service/UI; actual JSON numeric mismatch; save retry latch; return button overlap; corrupt active_run missing key debugger break, then validated rejection",
+    "review": "First independent review P2 missing run_id/current_day guard reproduced and fixed; final review pending",
+    "runtime": "POINTER_ACCEPT_CRAFT28_FINISH_COMMIT_RESTART_READY_DELIVER_PASS",
+    "delivered_restart_reclick_sha256_unchanged": "56365d1503992b6615ebc59f4eed9eceafe3e7b147d62e6db208eb7d3f2d60e7",
+    "runtime_slot": "user://gut/blacksmith_from_zero_20260913.json",
+    "original_item_uid": "BSI-0d9808a2520ef5e96a8beb2c4d4f0423",
+    "order_item_uid": "BSI-f7eee01aec63e19f5c1981c20ed62ed0",
+    "outcome": "Gold16670_TO17070_REINFORCEMENT20_TO22; ORIGINAL_SHIELD_LEVEL10_CURRENT3_MAX5_BASE5_UNCHANGED; ORDER_SWORD_LEVEL0_CUSTOMER_RECOVERY_LEDGER2",
+    "qa_assistance": "Separate save slot selector and scroll visibility only. No item/resource/level/result/random injection. Two QA eval mistakes interrupted unsaved crafting; restarted from persisted ACCEPTED. Final successful run uses native pointer crafting and settlement.",
+    "evidence_ceiling": "FIRST_ORDER_ONLY; NO_REPEAT_DAY_FINAL_ECONOMY_ART_MOTION_ANDROID_HUMAN_RELEASE_PASS",
+    "adopted_base": "9.4.4_UNCHANGED"
+  },
   "world_trials_delivery": {
     "decision": "BS-REPLAN-20260913-03",
     "pull_request": "https://github.com/alsdmlals4-eng/Blacksmith/pull/373",
@@ -45,15 +63,15 @@
     "closure_delivery": "PENDING_SEPARATE_NORMAL_PR_READBACK",
     "evidence_ceiling": "MACHINE_AND_BOUNDED_DESKTOP_RUNTIME_ONLY; FULL_GAME_ART_MOTION_ANDROID_HUMAN_RELEASE_INCOMPLETE"
   },
-  "scope": "2026-09-13 authorized implementation checkpoint: 58-page integrated PDF preserves the prior56-page design and state atlas, adds actual DU/AR Godot result captures and connected-world checklist. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. Candidate art remains distinct; no asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban below is historical evidence, not current execution authority.",
+  "scope": "2026-09-13 authorized implementation checkpoint: 60-page integrated PDF preserves the prior58-page design, state atlas and world runtime captures; adds actual recovery crafting/delivery and next-loop checklist. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. No asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban is historical evidence, not current execution authority.",
   "artifact": {
     "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
-    "sha256": "29d1492d8c0d8020513121dd2fa0d6de60f45162d44f588ab845856f7be5bafa",
-    "page_count": 58,
+    "sha256": "98fb120d03322c67fe50bd95c35e827a88e68a287450b1240eb36b4bb90efc3d",
+    "page_count": 60,
     "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
-    "source_sha256": "684027a877a92b76c2192d68a94d711705b0a15bba94f55191ef3885706a3c9b",
+    "source_sha256": "0ba2f1acb8be44e8aac62f7dccc9880e3cddeb6f7187fa1cb47ee5f44c83cd30",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "2026-09-13: final57/58 rendered at1300px and individually inspected: two actual result captures, captions, body and checklist fit without visible clipping. Prior52-56 and changed2/36/53 review retained; old53 risk is historical and corrected55 owns0.9% evidence. Prior state atlas retained. Android, human play and final art remain unverified.",
+    "visual_review": "2026-09-13: final59/60 rendered1300px and individually inspected; actual two screenshots and captions on59, full checklist on60. Initial overflow split was corrected by explicit60 section/page break. Prior1-58 preserved. Android/human/final art remain unverified.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {
