@@ -31,13 +31,13 @@
     "work_item_refs": [
       "SPEC12"
     ],
-    "active_work_item_ref": "SPEC12",
-    "next_action": "User-readable specification handoff; future product R01-R12 remain incomplete",
+    "active_work_item_ref": null,
+    "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
     "work_items": [
       {
         "work_item_id": "SPEC12",
         "title": "Remaining-work design and implementation preparation",
-        "status": "VERIFY_REVIEW",
+        "status": "DONE",
         "canon_owner": "docs/design/BLACKSMITH_REMAINING_IMPLEMENTATION_SPEC_20260914.md",
         "actual_consumers": [
           "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
@@ -78,7 +78,16 @@
             ]
           }
         ],
-        "next_action": "User-readable specification handoff; future product R01-R12 remain incomplete"
+        "next_action": "User-readable specification handoff; future product R01-R12 remain incomplete",
+        "verified_head_sha": "ecefe7296022d27b72929ae598ef7829cf702a50",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": [
+          "git ls-remote origin refs/heads/codex/five-equipment-world-use-20260913 matched local ecefe7296022d27b72929ae598ef7829cf702a50; main remains f30baaa6; PR381 draft"
+        ],
+        "rollback": "Normal revert of specification commit only; preserve prior product branch, source candidates and saves. No destructive reset."
       }
     ]
   },
@@ -90,5 +99,6 @@
     "second_review": "P2 scheduled event snapshots/draws and P3 escrow types corrected",
     "targeted_readback": "Reviewer confirmed zero residual P1/P2/P3; no third full review"
   },
-  "preparation_result": "SPECIFICATION_AND_PDF_VERIFIED_GIT_READBACK_PENDING"
+  "preparation_result": "SPECIFICATION_DELIVERED_ON_WORK_BRANCH_NOT_PRODUCT_OR_MAIN_COMPLETION",
+  "completion_scope": "Counters apply only to latest user specification preparation; R01-R12 product work and final policy/art/device/human/release gates remain open."
 }
