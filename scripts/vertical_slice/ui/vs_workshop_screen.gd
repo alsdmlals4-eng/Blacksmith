@@ -1055,7 +1055,10 @@ func _refresh_aqueduct_trial() -> void:
 		var preview: Dictionary = rules.world_preview(_trial_family, str(EquipmentCatalogScript.by_item(_item).get("equipment_id", "")),
 			int(_item.enhancement_level), _item.catalyst_affix.get("tags", {}), "HANDLING" if index >= 2 else "OUTPUT", "SUSTAIN" if index % 2 else "BURST")
 		var eligible: bool = bool(preview.get("ok", false)) and _item.current_durability > 0
-		summary.text = str(rules.WORLD_TRIALS[_trial_family].title) + " 시험 · " + ("철방패" if _trial_family == "AQ" else "철검/철방패") + " +10 이상\n보상 없음 · 종류별 작품마다 1회\n"
+		var equipment_names: PackedStringArray = []
+		for equipment_id in rules.WORLD_EQUIPMENT[_trial_family]:
+			equipment_names.append(str(EquipmentCatalogScript.by_id(equipment_id).display_name_ko))
+		summary.text = str(rules.WORLD_TRIALS[_trial_family].title) + " 시험 · " + "/".join(equipment_names) + " +10 이상\n보상 없음 · 종류별 작품마다 1회\n"
 		if eligible:
 			var damage_rules = load("res://scripts/vertical_slice/resolvers/vs_customer_world_event_resolver.gd").new()
 			summary.text += "임무 성공 예상 %.1f%% · 손상 %.1f%%\n성공과 손상은 별개로 판정합니다." % [float(preview.success_percent), damage_rules._damage_percent(_item, rules.WORLD_TRIALS[_trial_family].profile)]

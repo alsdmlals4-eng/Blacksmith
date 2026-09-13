@@ -14,6 +14,11 @@ const WORLD_TRIALS := {
 	"DU": {"bucket":"duel_trials", "record_type":"DUEL_TRIAL_V1", "title":"콜로세움 결투", "profile":"MEDIUM"},
 	"AR": {"bucket":"army_trials", "record_type":"ARMY_TRIAL_V1", "title":"전선 엄호", "profile":"HIGH"},
 }
+const WORLD_EQUIPMENT := {
+	"AQ": ["iron_shield"],
+	"DU": ["iron_sword", "iron_shield"],
+	"AR": ["iron_sword", "iron_shield", "iron_bow", "iron_armor", "iron_helmet"],
+}
 const WORLD_PURPOSES := {
 	"DU": {
 		"OUTPUT:BURST":{"content_id":"DU01","purpose":"결정적 검격·막기","success":"결투 승리","failure":"패배 인정"},
@@ -34,8 +39,8 @@ func world_preview(family: String, equipment_id: String, level: Variant, tags: D
 		return {"ok":false, "reason":"UNKNOWN_WORLD_TRIAL"}
 	if family == "AQ" and equipment_id != "iron_shield":
 		return {"ok":false, "reason":"REQUIRES_SHIELD"}
-	if family != "AQ" and equipment_id not in ["iron_sword", "iron_shield"]:
-		return {"ok":false, "reason":"REQUIRES_SWORD_OR_SHIELD"}
+	if equipment_id not in WORLD_EQUIPMENT[family]:
+		return {"ok":false, "reason":"REQUIRES_SWORD_OR_SHIELD" if family == "DU" else "UNSUPPORTED_WORLD_EQUIPMENT"}
 	# Reuse the established readiness calculation after checking actual equipment.
 	var result := aqueduct_preview("iron_shield", level, tags, axis, rhythm)
 	if result.ok:
