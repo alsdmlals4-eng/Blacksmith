@@ -2,6 +2,8 @@
 
 > CURRENT_PRIORITY_OVERLAY — 최신 사용자 지시와 `AGENTS.md` → `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`가 현재 작업 범위/증거를 소유한다. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`는 기존 결정 추적 진입점이며 최신 replan override를 덮어쓰지 않는다. 이 고정 진입점 아래 날짜별 기록은 해당 시점의 증거다.
 
+> 2026-09-14 최신 요청은 남은 작업과 설계·구현 명세 준비다. owner는 `docs/design/BLACKSMITH_REMAINING_IMPLEMENTATION_SPEC_20260914.md`, 사람용 파생뷰는 통합 블루프린트65~72절. R01~R12의 의존관계·상태·원장·모션/자산·복구·완료증거를 분리한다. main f30baaa6, own PR381/d73e391e Draft 보존: AR5종 branch GUT315/3278·Python511/3skip PASS지만 새 native 재시작→결과·2차코드리뷰·CI·main 전달은 미완료. 이번 문서 준비는 제품구현/병합이 아니며 Base v9.4.4와 기존 저장/후보를 유지한다. 상세 범위와 최신 증거는 생산계약 최상단 참조.
+
 > 2026-09-13 최신 전달: PR379/a7158cf9→d50c24de 정상병합·local/origin main 일치. 촉매 교환→정밀소비 연결, 실제2종교환/재시작·PDF64쪽, final313GUT/3180 assertions·510Python/3skip·2차검토·exact CI 통과. consumed4경로 승인은 archive 보존·종료, baseline d50c24de만 갱신하며 Base v9.4.4 불변. 아래 PR379 pending은 역사 상태. 현재 owner는 생산계약 최상단과 catalyst-exchange receipt. 전체게임 미완료: 다음은 다양한 의뢰/일반재료→나머지 장비 실제세계사용→모닥 성장/모션→기기/사람검수.
 
 > 2026-09-13 현재 PR379: 촉매 보충의 실제 교환·재시작·정밀강화 자원 소비까지 연결했다. PDF64쪽(기존62쪽 보존), 실제 2종 교환 후15470골드/불의 심장64/대지의 결정65·영업일2·기존 작품 유지. 상세 계획/검증 owner는 생산계약 최상단 BS-REPLAN-20260913-06 및 receipts/2026-09-13-catalyst-exchange.json. 최종2차검토/CI/병합은 아직 진행 중이며 전체게임·Android·사람 재미·최종미술은 미완료. 아래 PR377 전달은 이전 체크포인트이며 Base v9.4.4는 유지한다.

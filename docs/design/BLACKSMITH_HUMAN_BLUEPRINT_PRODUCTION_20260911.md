@@ -1,5 +1,13 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## Current remaining-work specification — BS-SPEC-20260914-01
+
+Latest user request is preparation of remaining work and design/implementation specifications. Detailed owner: `docs/design/BLACKSMITH_REMAINING_IMPLEMENTATION_SPEC_20260914.md`; derived Human Blueprint sections65–72 preserve the previous64 sections. R01–R12 define dependencies, actual/proposed consumers, states/data, failure recovery, assets and evidence gates. This preparation does not include new product implementation or merging the unfinished branch.
+
+Current main f30baaa60e1fb95905c47d5a8303cd069895ce96; own PR381 draft HEAD d73e391e7f81c3f0e349d92505cdeb80fe7063a9 is preserved. WORLD5 reached branch GUT315/3278 and Python511/3skip PASS and approved2-path validation PASS. Native bow crafting/+10/AR PREPARED capture exists, but restart-to-result was interrupted by the user's new request; do not infer success from the aborted call. Second full code review/CI/main delivery remain open. Earlier WORLD5 NOT_RUN/new-behavior-not-implemented statements below are preimplementation history. Its active exact approval is not retired by document preparation.
+
+Drift: actual initializer30/64/64 versus Blueprint39 test60/5/5. Preserve existing saves and use separate recommended trial profiles. Modak120days/year and year3 appearance are review values, not implemented growth. Base v9.4.4/validator43b3 unchanged; PR359/196 read-only; existing imports/candidates/saves preserved. Receipt: `docs/operations/receipts/2026-09-14-remaining-implementation-spec.json`.
+
 ## Five-equipment World-use Plan — BS-REPLAN-20260913-07
 
 Direction: connect the three craftable but unusable equipment types to a real world-use transaction. Expand AR (army escort) to sword, shield, bow, armor and helmet; preserve AQ shield-only and DU sword/shield-only. Whole-game work remains incomplete and authorized; this is the next bounded implementation, not a replacement for general commissions.
