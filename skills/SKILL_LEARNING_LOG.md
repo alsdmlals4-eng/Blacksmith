@@ -129,3 +129,9 @@
 - stale 정리: PR #16·#24에 대체된 구형 PR #15·#22와 불완전 Draft PR #28을 닫아 폐기된 운영 구조와 수치가 다시 유입되는 경로를 차단했다.
 - 교훈: Skill Mode 추가는 Skill 본문과 Registry 두 파일로 끝나지 않는다. 자동 라우팅 문서, Base 기능 매핑, 책임 원본, 현재 맥락, Roadmap, Gate, Learning Log까지 동일 Mode와 상태로 연결해야 실제 재사용 가능하다.
 - 미검증: 시뮬레이터 구현·기준선 분포·수치 조정·실제 +100 체감·Android·장시간 자동 단조 성능
+# 2026-09-13 수로 시험 저장·복구 교훈
+
+- 실제 소비처: 신규 캠페인 공방→수로 시험→연대기. 저장 전에 두 독립 판정값을 확정하고 PREPARED/RESOLVED를 구분한다. seed만 저장해 엔진 구현에 의존하지 않는다.
+- 반례: 정상 current envelope만 검사하면 오래된 화면이 같은 사건을 새 roll로 덮어쓸 수 있었다. 동일 run의 정상 저장본 우선 및 저장 후 readback으로 교정, 실제 파일 회귀로 보호했다.
+- pending 작품은 UI 잠금뿐 아니라 SaveEnvelope의 snapshot 일치 검증으로 예약한다. 결과 저장 실패는 원본 CURRENT/자원/phase를 변경하지 않는다. UI 오류와 게임 결과를 구분한다.
+- 범위: 프로젝트 고유 trial contract이며 Base 자동 승격 없음. 실패 기록으로 확인되지 않은 공용 대량 규칙/새 도구를 만들지 않았다. HiGodot 기존 class_name reload43 fallback과 실제 headless/새 게임 실행 검증은 별도다.

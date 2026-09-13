@@ -7,6 +7,106 @@ const Precision = preload("res://scripts/vertical_slice/resolvers/vs_precision_r
 const Action = preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const Resources = preload("res://scripts/economy/workshop_resources.gd")
 
+func test_aqueduct_prepared_save_resumes_with_independent_fixed_rolls_and_no_repeat_damage():
+	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	assert_true(service.has_method("prepare_aqueduct_with_rolls"))
+	if not service.has_method("prepare_aqueduct_with_rolls"):
+		return
+	for success in [true, false]:
+		for damage in [true, false]:
+			var envelope = Initializer.new().create_replan_candidate_envelope()
+			var item = _item()
+			var identity = load("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd").by_id("iron_shield")
+			item.equipment_group = identity.equipment_group
+			item.role_profile = identity.role_profile
+			envelope.items_by_uid[item.uid] = item
+			var save = load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/aqueduct-transaction-%s-%s.json" % [success, damage])
+			assert_eq(save.save_envelope(envelope), OK, "Explicitly initialize the isolated test run")
+			var prepared = service.prepare_aqueduct_with_rolls(envelope, item.uid, "HANDLING", "BURST", [0.0 if success else 99.9, 0.0 if damage else 99.9], save)
+			assert_eq(prepared.status, "PREPARED")
+			assert_eq(item.current_durability, 5)
+			var restored = save.load_envelope()
+			var resolved = service.resolve_prepared_aqueduct(restored, item.uid, save)
+			assert_eq(resolved.status, "APPLIED")
+			assert_eq(resolved.record.mission_success, success)
+			assert_eq(resolved.record.damage_applied, damage)
+			var final_save = save.load_envelope()
+			assert_eq(final_save.get_item(item.uid).current_durability, 4 if damage else 5)
+			var repeated = service.resolve_prepared_aqueduct(final_save, item.uid, save)
+			assert_eq(repeated.status, "ALREADY_RESOLVED")
+			assert_eq(repeated.record, resolved.record)
+			assert_eq(save.load_envelope().get_item(item.uid).current_durability, 4 if damage else 5)
+
+func test_aqueduct_invalid_rolls_and_failed_commit_preserve_source():
+	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	var envelope = _aqueduct_envelope()
+	var uid = envelope.active_run.selected_item_uid
+	var before = envelope.to_dict()
+	var save = SaveBoundary.new()
+	for rolls in [[true, 0], [-1, 0], [100, 0], [0], [NAN, 0]]:
+		assert_eq(service.prepare_aqueduct_with_rolls(envelope, uid, "HANDLING", "BURST", rolls, save).status, "BLOCKED")
+	assert_eq(save.calls, 0)
+	var prepared = service.prepare_aqueduct_with_rolls(envelope, uid, "HANDLING", "BURST", [0, 0], save)
+	save.error = ERR_CANT_CREATE
+	assert_eq(service.resolve_prepared_aqueduct(prepared.envelope, uid, save).status, "BLOCKED")
+	assert_eq(prepared.envelope.get_item(uid).current_durability, 5)
+	assert_eq(prepared.envelope.active_run.aqueduct_trials[uid].phase, "PREPARED")
+	assert_eq(envelope.to_dict(), before)
+	var changed = Envelope.from_dict(prepared.envelope.to_dict())
+	changed.get_item(uid).current_durability = 4
+	assert_false(Envelope.from_dict(changed.to_dict()).validation_errors.is_empty(), "Pending item is reserved at the save boundary")
+	assert_eq(service.resolve_prepared_aqueduct(changed, uid, SaveBoundary.new()).status, "BLOCKED")
+	for field in ["schema_version", "ruleset_id", "rolls", "phase", "damage_percent"]:
+		var corrupt = prepared.envelope.to_dict()
+		corrupt.active_run.aqueduct_trials[uid][field] = null
+		assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(), field)
+
+func test_aqueduct_old_screen_cannot_reroll_an_already_saved_preparation():
+	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	var envelope = _aqueduct_envelope()
+	var uid = envelope.active_run.selected_item_uid
+	var save = load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/aqueduct-stale-screen.json")
+	assert_eq(save.save_envelope(envelope), OK)
+	var first = service.prepare_aqueduct_with_rolls(envelope, uid, "HANDLING", "BURST", [0, 0], save)
+	var repeated = service.prepare_aqueduct_with_rolls(envelope, uid, "OUTPUT", "SUSTAIN", [99, 99], save)
+	assert_eq(repeated.record, first.record, "Old in-memory screen must reuse the committed draw")
+	var replacement = _aqueduct_envelope()
+	assert_eq(save.save_envelope(replacement), OK, "Explicit new-game replacement")
+	assert_eq(service.prepare_aqueduct_with_rolls(envelope, uid, "HANDLING", "BURST", [0, 0], save).status, "BLOCKED")
+	assert_eq(save.load_envelope().active_run.run_id, replacement.active_run.run_id)
+
+func _aqueduct_envelope():
+	var envelope = Initializer.new().create_replan_candidate_envelope()
+	var item = _item()
+	var identity = load("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd").by_id("iron_shield")
+	item.equipment_group = identity.equipment_group
+	item.role_profile = identity.role_profile
+	envelope.items_by_uid[item.uid] = item
+	envelope.active_run.selected_item_uid = item.uid
+	return envelope
+
+func test_stale_repair_cannot_erase_pending_or_resolved_aqueduct_record():
+	for resolved in [false, true]:
+		var envelope = _aqueduct_envelope()
+		var uid = envelope.active_run.selected_item_uid
+		envelope.get_item(uid).apply_damage_event()
+		var save = load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/aqueduct-stale-repair-%s.json" % resolved)
+		assert_eq(save.save_envelope(envelope), OK)
+		var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+		var prepared = service.prepare_aqueduct_with_rolls(envelope, uid, "HANDLING", "BURST", [0, 99], save)
+		if resolved:
+			service.resolve_prepared_aqueduct(prepared.envelope, uid, save)
+		var before = save.load_envelope().to_dict()
+		var stock = envelope.resource_snapshot()
+		var resources = Resources.new(stock.gold, stock.material_stock)
+		var maintenance = load("res://scripts/vertical_slice/services/vs_workshop_maintenance_service.gd").new()
+		var result = maintenance.repair_and_save(envelope, uid, resources, save, {"quality_roll_percent":0.0,"scar_roll_percent":99.0})
+		assert_eq(result.status, "BLOCKED")
+		assert_eq(save.load_envelope().to_dict(), before)
+		var enhanced = Action.new().resolve_and_save_with_rolls(envelope, uid, 20, {"success_roll_percent":0.0}, 1, resources, save, {"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tag_id":"BURST_HANDLING"})
+		assert_eq(enhanced.outcome, "BLOCKED", "Stale enhancement also preserves event facts")
+		assert_eq(save.load_envelope().to_dict(), before)
+
 class SaveBoundary:
 	extends RefCounted
 	var error: Error = OK
@@ -15,6 +115,26 @@ class SaveBoundary:
 		calls += 1
 		var restored = Envelope.from_dict(JSON.parse_string(JSON.stringify(candidate.to_dict())))
 		return error if restored.validation_errors.is_empty() else ERR_INVALID_DATA
+
+class OldBackupReadback extends SaveBoundary:
+	var old_envelope
+	func load_envelope():
+		return Envelope.from_dict(old_envelope.to_dict())
+
+func test_aqueduct_commit_readback_rejects_previous_prepared_backup():
+	var source = _aqueduct_envelope()
+	var uid = source.active_run.selected_item_uid
+	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	var prepared = service.prepare_aqueduct_with_rolls(source, uid, "HANDLING", "BURST", [0, 0], SaveBoundary.new())
+	var backup = OldBackupReadback.new()
+	backup.old_envelope = prepared.envelope
+	var result = service.resolve_prepared_aqueduct(prepared.envelope, uid, backup)
+	assert_eq(result.status, "BLOCKED")
+	assert_eq(result.get("reason", ""), "AQUEDUCT_READBACK_FAILED")
+	backup.old_envelope = source
+	var missing_record = service.prepare_aqueduct_with_rolls(source, uid, "HANDLING", "BURST", [0, 0], backup)
+	assert_eq(missing_record.status, "BLOCKED")
+	assert_eq(missing_record.get("reason", ""), "AQUEDUCT_READBACK_FAILED")
 
 func test_new_precision_transaction_commits_growth_and_one_existing_catalyst_stock_unit():
 	for success in [true, false]:

@@ -61,6 +61,85 @@ func test_replan_native_choice_button_drives_saved_precision_without_legacy_cont
 	assert_true(screen.view_state().workpiece_summary.contains("기민 I"), "Earned tag must remain visible outside precision levels")
 
 
+func test_aqueduct_native_controls_prepare_resume_and_show_separate_results():
+	var envelope = _enhancement_envelope()
+	envelope.active_run.tag_ruleset_id = "BLACKSMITH_REPLAN_TAGS_20260912"
+	var item = envelope.get_item(envelope.active_run.selected_item_uid)
+	var shield = EquipmentCatalogScript.by_id("iron_shield")
+	item.equipment_group = shield.equipment_group
+	item.role_profile = shield.role_profile
+	item.enhancement_level = 10
+	item.highest_checkpoint = 10
+	item.used_precision_milestones.assign([10])
+	item.catalyst_affix = {"schema_version":2,"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tags":{"BURST_HANDLING":1}}
+	var screen = autofree(SCREEN_SCENE.instantiate())
+	add_child(screen)
+	screen.configure_context(item, ResourcesScript.new(), null, null, FakeSaveService.new(), envelope)
+	var button = screen.get_node_or_null("WorkshopScroll/WorkshopLayout/AqueductTrial/Action")
+	assert_not_null(button)
+	if button == null:
+		return
+	assert_false(button.disabled)
+	button.pressed.emit()
+	assert_true(button.text.contains("결과 확인"))
+	assert_false(screen.view_state().destination_summary.contains("인계 가능"))
+	assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton").disabled)
+	assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/RepairButton").disabled)
+	button.pressed.emit()
+	var summary = screen.get_node("WorkshopScroll/WorkshopLayout/AqueductTrial/Summary")
+	assert_true(summary.text.contains("임무"))
+	assert_true(summary.text.contains("손상"))
+	assert_true(summary.text.contains("보상 없음"))
+	assert_true(button.disabled)
+	var chronicle = autofree(load("res://scripts/vertical_slice/ui/vs_item_chronicle_screen.gd").new())
+	assert_true(chronicle.has_method("configure_aqueduct"))
+	if chronicle.has_method("configure_aqueduct"):
+		chronicle.configure_item(screen._item, {})
+		chronicle.configure_aqueduct(screen._aqueduct_record())
+		assert_true(str(chronicle.view_state().entries).contains("수로 모험"))
+
+func test_repair_save_failure_is_atomic_and_saved_repair_reaches_aqueduct_snapshot():
+	for fail_save in [true, false]:
+		var envelope = _enhancement_envelope()
+		envelope.active_run.tag_ruleset_id = "BLACKSMITH_REPLAN_TAGS_20260912"
+		var item = envelope.get_item(envelope.active_run.selected_item_uid)
+		var identity = EquipmentCatalogScript.by_id("iron_shield")
+		item.equipment_group = identity.equipment_group
+		item.role_profile = identity.role_profile
+		item.enhancement_level = 10
+		item.highest_checkpoint = 10
+		item.used_precision_milestones.assign([10])
+		item.catalyst_affix = {"schema_version":2,"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tags":{"BURST_HANDLING":1}}
+		item.current_durability = 3
+		item.repair_job_available = true
+		var resources = ResourcesScript.new(20000, {"common_reinforcement_material":10,"heart_of_flame":2,"earth_crystal":2})
+		envelope.workshop_resources = resources.snapshot()
+		var before = resources.snapshot()
+		var save = FakeSaveService.new() if fail_save else load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/aqueduct-after-repair.json")
+		if fail_save:
+			save.next_save_error = ERR_CANT_CREATE
+		else:
+			assert_eq(save.save_envelope(envelope), OK)
+		var screen = autofree(SCREEN_SCENE.instantiate())
+		add_child(screen)
+		screen.configure_context(item, resources, null, null, save, envelope)
+		var result = screen.request_repair_with_rolls({"quality_roll_percent":0.0,"scar_roll_percent":99.0})
+		if fail_save:
+			assert_eq(result.status, "BLOCKED")
+			assert_eq(resources.snapshot(), before)
+			assert_eq(item.current_durability, 3)
+		else:
+			assert_eq(result.status, "APPLIED")
+			var restored = save.load_envelope()
+			assert_eq(restored.get_item(item.uid).current_durability, 5)
+			assert_eq(restored.resource_snapshot(), resources.snapshot())
+			var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+			var prepared = service.prepare_aqueduct_with_rolls(screen._campaign_envelope, item.uid, "HANDLING", "BURST", [0, 99], save)
+			assert_eq(prepared.status, "PREPARED")
+			if prepared.has("record"):
+				assert_eq(int(prepared.record.item_snapshot.current_durability), 5)
+				assert_eq(prepared.envelope.resource_snapshot(), resources.snapshot())
+
 class TrackingMaintenanceService extends RefCounted:
 	var random_repair_calls := 0
 	var deterministic_repair_calls := 0

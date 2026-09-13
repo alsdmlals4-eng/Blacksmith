@@ -115,6 +115,8 @@ func configure_workshop_context(item, resources, maintenance_service = null, enh
 		campaign_envelope,
 		_customer_profile_or_null(PHASE1_CUSTOMER_ID)
 	)
+	if workshop_screen.has_signal("campaign_saved") and not workshop_screen.campaign_saved.is_connected(_on_workshop_enhancement_saved):
+		workshop_screen.campaign_saved.connect(_on_workshop_enhancement_saved)
 	if workshop_screen.has_signal("enhancement_saved") and not workshop_screen.enhancement_saved.is_connected(_on_workshop_enhancement_saved):
 		workshop_screen.enhancement_saved.connect(_on_workshop_enhancement_saved)
 	_connect_workshop_handoff()
@@ -450,6 +452,7 @@ func _show_item_chronicle(item_uid: String) -> String:
 		raw_events,
 		_customer_profile_or_null(PHASE1_CUSTOMER_ID)
 	)
+	chronicle_screen.call("configure_aqueduct", _campaign_envelope.active_run.get("aqueduct_trials", {}).get(item_uid, {}))
 	if str(configured.get("status", "")) != "APPLIED":
 		return INVALID_PAYLOAD
 	var workshop_screen := get_node_or_null("ScreenHost/WorkshopScreen")

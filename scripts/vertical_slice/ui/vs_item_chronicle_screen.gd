@@ -34,6 +34,20 @@ func configure_item(item, resolved_events: Dictionary, customer_profile = null) 
 	return {"status": "APPLIED"}
 
 
+func _tag_name(tag_id: String) -> String:
+	var names: Dictionary = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").DISPLAY_NAMES_KO
+	return str(names.get(tag_id, tag_id))
+
+
+func configure_aqueduct(record: Dictionary) -> void:
+	_view_state.entries = _view_state.entries.filter(func(entry): return entry.get("kind", "") != "AQUEDUCT")
+	var envelope_script = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
+	if envelope_script.validate_aqueduct_trial(record, str(_view_state.item_uid)).is_empty() and record.phase == "RESOLVED":
+		_view_state.entries.append({"kind": "AQUEDUCT", "text": "수로 모험 · 임무 %s / %s · 보상 없음" % [
+			"성공" if record.mission_success else "실패", "장비 손상" if record.damage_applied else "손상 없음"]})
+	_refresh_controls()
+
+
 func view_state() -> Dictionary:
 	return _view_state.duplicate(true)
 
@@ -56,7 +70,7 @@ func _entries_from_existing_facts(item, resolved_events: Dictionary, customer_pr
 				entries.append({
 					"kind": "PRECISION_TAG",
 					"text": "정밀 태그 · %s 단계 %d → %d" % [
-						str(payload.get("tag_id", "")),
+						_tag_name(str(payload.get("tag_id", ""))),
 						int(payload.get("stage_before", 0)),
 						int(payload.get("stage_after", 0)),
 					],
@@ -139,17 +153,17 @@ func _ensure_controls() -> void:
 		layout.name = "ChronicleLayout"
 		layout.add_theme_constant_override("separation", 16)
 		margin.add_child(layout)
-	_ensure_label(layout, "TitleLabel", 32, Color(0.94, 0.84, 0.66, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
-	_ensure_label(layout, "UidLabel", 18, Color(0.82, 0.72, 0.55, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
-	_ensure_label(layout, "SummaryLabel", 20, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
-	_ensure_label(layout, "EntriesLabel", 20, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
+	_ensure_label(layout, "TitleLabel", 44, Color(0.94, 0.84, 0.66, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
+	_ensure_label(layout, "UidLabel", 28, Color(0.82, 0.72, 0.55, 1.0), HORIZONTAL_ALIGNMENT_CENTER)
+	_ensure_label(layout, "SummaryLabel", 28, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
+	_ensure_label(layout, "EntriesLabel", 28, Color(0.96, 0.92, 0.83, 1.0), HORIZONTAL_ALIGNMENT_LEFT)
 	var return_button := layout.get_node_or_null("WorkshopReturnButton") as Button
 	if return_button == null:
 		return_button = Button.new()
 		return_button.name = "WorkshopReturnButton"
 		return_button.text = "작업대로 돌아가기"
-		return_button.custom_minimum_size = Vector2(0, 48)
-		return_button.add_theme_font_size_override("font_size", 20)
+		return_button.custom_minimum_size = Vector2(0, 96)
+		return_button.add_theme_font_size_override("font_size", 28)
 		layout.add_child(return_button)
 	if not return_button.pressed.is_connected(_on_workshop_return_pressed):
 		return_button.pressed.connect(_on_workshop_return_pressed)

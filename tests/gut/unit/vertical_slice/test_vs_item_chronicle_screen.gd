@@ -6,6 +6,18 @@ const RunInitializerScript := preload("res://scripts/vertical_slice/services/vs_
 const CustomerProfileScript := preload("res://scripts/vertical_slice/domain/vs_customer_profile.gd")
 const NADIA_DATA_PATH := "res://data/vertical_slice/customers/nadia_venn.json"
 
+func test_chronicle_body_and_return_action_use_existing_mobile_tokens():
+	var screen = autofree(load(SCREEN_PATH).new())
+	add_child(screen)
+	var body = screen.get_node("ChronicleMargin/ChronicleLayout/EntriesLabel")
+	var button = screen.get_node("ChronicleMargin/ChronicleLayout/WorkshopReturnButton")
+	assert_gte(body.get_theme_font_size("font_size"), 28)
+	assert_gte(button.custom_minimum_size.y, 96.0)
+	assert_gte(button.get_theme_font_size("font_size"), 28)
+	assert_true(screen.has_method("_tag_name"))
+	if screen.has_method("_tag_name"):
+		assert_eq(screen._tag_name("SUSTAIN_HANDLING"), "균형")
+
 
 func _item():
 	var envelope = RunInitializerScript.new().create_candidate_envelope()

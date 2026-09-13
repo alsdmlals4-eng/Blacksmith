@@ -18,6 +18,11 @@ PATHS = [
     "scripts/vertical_slice/services/vs_item_birth_service.gd",
     "scripts/vertical_slice/ui/vs_main_menu.gd",
     "scripts/vertical_slice/ui/vs_workshop_screen.gd",
+    "scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd",
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/ui/vs_app.gd",
+    "scripts/vertical_slice/ui/vs_item_chronicle_screen.gd",
+    "scripts/vertical_slice/services/vs_workshop_maintenance_service.gd",
 ]
 
 

@@ -1,5 +1,24 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## 2026-09-13 연속 구현 — 수로 모험 저장 트랜잭션
+
+- 최신 사용자: '게임 전체 완성,구현까지 계속진행'. 같은 Blueprint 구현 범위의 일상 승인을 반복하지 않고 실제 소비처까지 연결한다. 새 핵심 규칙/위험한 마이그레이션/최종 미술 승인과는 구분한다.
+- 구현 계획: 신규 캠페인 철방패 AQ 시험의 PREPARED→RESOLVED를 기존 저장 서비스로 두 번 확정한다. 준비 단계에서 UID·규칙·장비 snapshot·성공/손상 독립 추첨값을 저장한다. 복구 시 저장값만 사용하고 동일 사건을 재추첨하거나 중복 손상하지 않는다. 보상NONE·LOW 손상·시험 성공식은 기존 Blueprint 유지.
+- exact 영향: CustomerActualUseActionService와 SaveEnvelope 두 경로 추가(총12). 새 사건을 구형 Nadia ContentResult로 위장하지 않고 별도 typed payload로 검증한다. 기존 장비/자원/세이브는 준비·결과 저장 성공 전 수정하지 않는다.
+- 조사: Godot 공식 RandomNumberGenerator 문서(https://docs.godotengine.org/en/stable/classes/class_randomnumbergenerator.html)는 내부 알고리즘을 구현 세부사항으로 명시한다. seed만 재생하지 않고 실제 두 판정값을 저장하는 방식을 ADOPT. 앞 절의 Weapon Shop Fantasy/Anvil Saga 제작→모험 연결 ADAPT, 경쟁작 수치 복사 REJECT.
+- 증거 기준: 성공/실패 × 손상/무손상 4조합의 실제 파일 저장/재접속, 반복 확정 무변화, 저장 실패·잘못된 입력·snapshot 변경 거부, 전체 GUT와 실제 UI 연결. 현재 missing-method RED 1개 관측; 이후 결과를 별도 기록한다.
+- 화면 연결 계획: 기존 공방에 AQ 용도 선택/시험 출발/저장된 결과 확인을 native control로 연결한다. 대기 중 강화/수리는 잠그고 결과 뒤 같은 UID 상태로 복귀한다. App의 campaign 저장 신호와 기존 연대기의 별도 AQ read model 두 경로 추가(총14); 기존 Nadia 사건은 유지하되 신규 캠페인 화면에서 구형 인계와 혼동하지 않게 분리한다. 배경·이미지 신규 저작 없음.
+- 구현/검증: 실제 SaveService의 네 조합 저장/복구, 저장 실패 무변화, 비정상 roll/schema/probability 차단, 오래된 화면의 재추첨 반례, 대기 장비의 저장 경계 예약 RED→GREEN. 전체 debug GUT283/283·2500asserts PASS. 준비 중 UI 강화/수리 차단과 결과/연대기 native consumer를 연결했고 구형 '인계 가능' 문구도 신규 캠페인에서 교정했다.
+- 런타임: 별도 `user://gut/blacksmith_aqueduct_runtime_20260913.json`에 이전 QA +10 균형I 철방패를 복제했다. 실제 게임 포인터로 출발→프로세스 재시작→동일 저장 판정값2.916994289/89.300411046 확인→포인터 결과 확정. 예상63%에서 성공·손상없음, CURRENT5유지, App/파일 RESOLVED 일치. 연대기 수로 기록 확인. +0부터 자연 진행/Android/플레이 재미 검증은 NOT_RUN.
+- 캡처: `docs/testing/replan-aqueduct-prepared-20260913.png`, `replan-aqueduct-result-20260913.png`, `replan-aqueduct-chronicle-20260913.png`는 실제 game framebuffer. 준비/결과 캡처의 구형 다음목적지 문구는 이후 코드로 교정했으므로 최종 미술 증거가 아니다. PDF51쪽은 이 구현 증거를 아직 포함하지 않는다.
+- 다음 개선: 연대기 태그명 한국어와 모바일 글자/버튼 크기, 결과 후 실제 수리의 저장 연결, 신규 캠페인의 첫 제작부터 연속 플레이 자원 흐름 점검. UI/코드 조각 완료를 게임 전체 완료로 축소하지 않는다.
+- 독립 리뷰 P1 두 건: 다른 run의 유효 저장본을 오래된 AQ 요청으로 덮어쓰는 경계, 메모리 전용 수리 뒤 AQ 준비 시 디스크 상태로 되돌아가는 경계. 모두 현 묶음에서 수정한다. 수리는 기존 WorkshopScreen·MaintenanceService의 판정을 후보 envelope/자원에 적용→기존 SaveService 성공→live 채택으로 연결하며 기존 비용·확률·scar 규칙은 변경하지 않는다. 저장 실패는 비용/내구도 모두 무변화. 보호 경로 추가 없이 기존 공방14경로 범위.
+- 위 구현 배치 조정: 저장 트랜잭션을 비대해진 화면에 넣지 않고 기존 MaintenanceService가 소유하도록 exact 경로1개 추가(총15). 화면은 서비스 호출/성공본 채택만 한다. 같은 승인된 수리 구현 범위이며 수리 비용·확률·회복/흉터 정본은 불변.
+- 후속 검증: 다른 run 덮어쓰기 RED→차단, 실제 수리 저장 실패/재시작/AQ snapshot RED→GREEN. 독립 재검토에서 사건만 바뀐 stale envelope의 수리 기록삭제 P1을 추가 발견했다. disk active_run 비교로 교정하고 같은 반례를 강화에도 확대해 RED→GREEN. 최종 로컬 debug GUT286/286·2533asserts PASS. 수리/강화가 PREPARED와 무손상 RESOLVED 사건을 모두 보존한다.
+- 실제 수리: 별도 `user://gut/blacksmith_repair_aqueduct_runtime_20260913.json`에서 +10 철방패 CURRENT3 QA 사전조건을 저장한 후 native 포인터 수리. CURRENT3→4, Gold19170→19131, 보강재9→8, 수리 job 소진, live/파일 자원 일치 확인. 손상 사전조건은 시험 주입이며 자연 모험 손상으로 주장하지 않는다.
+- 화면 후속: 공방 기존 mobile body28/title44/최소터치96 규격을 연대기에 적용하고 신규 태그 한국어 이름은 rule module의 한 사전으로 공방·연대기가 공유한다. RED 글자20/터치48→GREEN. 구형 태그 의미/저장 ID는 바꾸지 않는다.
+- 최종 리뷰 교정: 오래된 backup readback이 RESOLVED 저장을 PREPARED로 되돌려도 APPLIED를 보고하던 P2를 RED로 재현했다. readback의 run_id·record 존재·전체 사건 내용 일치를 요구하고 미일치/키없음은 `AQUEDUCT_READBACK_FAILED`로 차단한다. 최종 전체 debug GUT287/287·2537asserts PASS, 관련 Python7 PASS, exact15경로 gate PASS. 실제 새 검증 없이 Android/UX/밸런스/출시 PASS로 승격하지 않는다.
+
 ## 2026-09-13 연속 개선 — 수로 모험 예상치 consumer
 
 - 계획/범위: 기존 신규 태그 rule module과 공방의 4요구 비교를 확장한다. Blueprint21/22의 철방패·권장10·최저10·보상NONE 시험식을 그대로 소비한다. 실제 사건 확정/보상/손상/저장 변경은 이 묶음에 포함하지 않는다. 보호10경로·Basev9.4.4 유지, PR371 실제 승인 label 확인 후 exact gate 사용.

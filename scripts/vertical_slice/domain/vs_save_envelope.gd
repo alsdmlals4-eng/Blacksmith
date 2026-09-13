@@ -169,6 +169,21 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 	):
 		envelope.schema_version = SCHEMA_VERSION
 		envelope.preset_version = PRESET_VERSION
+	var trials: Variant = envelope.active_run.get("aqueduct_trials", {})
+	if not trials is Dictionary:
+		envelope.validation_errors.append("INVALID_AQUEDUCT_TRIALS")
+	else:
+		for trial_uid in trials:
+			var trial_error := validate_aqueduct_trial(trials[trial_uid], str(trial_uid))
+			if not trial_error.is_empty():
+				envelope.validation_errors.append(trial_error)
+			elif trials[trial_uid].phase == "PREPARED":
+				var reserved = envelope.get_item(str(trial_uid))
+				var original = ItemScript.from_dict(trials[trial_uid].item_snapshot)
+				if reserved == null or reserved.to_dict() != original.to_dict():
+					envelope.validation_errors.append("AQUEDUCT_RESERVED_ITEM_CHANGED")
+			if str(envelope.active_run.get("tag_ruleset_id", "")) != "BLACKSMITH_REPLAN_TAGS_20260912":
+				envelope.validation_errors.append("AQUEDUCT_REQUIRES_REPLAN_CAMPAIGN")
 	envelope._validate_values()
 	return envelope
 
@@ -195,6 +210,68 @@ static func _validate_typed_resolved_events(envelope: VSSaveEnvelope) -> void:
 			)
 		if record.validation_errors.is_empty():
 			envelope.active_run["resolved_events"][raw_event_key] = record.to_dict()
+
+
+# Separate trial payload: never reinterpret legacy customer ContentResult records.
+static func validate_aqueduct_trial(raw: Variant, item_uid: String) -> String:
+	if not raw is Dictionary:
+		return "INVALID_AQUEDUCT_RECORD"
+	var fields := ["record_type", "schema_version", "ruleset_id", "event_id", "item_uid",
+		"phase", "axis", "rhythm", "item_snapshot", "rolls", "success_percent",
+		"damage_percent", "reward", "mission_success", "damage_applied"]
+	if raw.size() != fields.size():
+		return "INVALID_AQUEDUCT_FIELDS"
+	for field in fields:
+		if not raw.has(field):
+			return "INVALID_AQUEDUCT_FIELDS"
+	for field in ["record_type", "ruleset_id", "event_id", "item_uid", "phase", "axis", "rhythm", "reward"]:
+		if not raw[field] is String:
+			return "INVALID_AQUEDUCT_FIELD_TYPE"
+	if not _trial_number(raw.schema_version) or raw.schema_version != 1:
+		return "INVALID_AQUEDUCT_SCHEMA"
+	if raw.record_type != "AQUEDUCT_TRIAL_V1" or raw.ruleset_id != "BLACKSMITH_REPLAN_TAGS_20260912":
+		return "INVALID_AQUEDUCT_RULESET"
+	if raw.item_uid != item_uid or raw.event_id != "aq-trial-" + item_uid:
+		return "INVALID_AQUEDUCT_ID"
+	if raw.phase not in ["PREPARED", "RESOLVED"] or raw.reward != "NONE":
+		return "INVALID_AQUEDUCT_PHASE"
+	if not raw.item_snapshot is Dictionary or not raw.rolls is Array or raw.rolls.size() != 2:
+		return "INVALID_AQUEDUCT_SNAPSHOT"
+	for roll in raw.rolls:
+		if not _trial_number(roll) or roll < 0 or roll >= 100:
+			return "INVALID_AQUEDUCT_ROLL"
+	var snapshot = ItemScript.from_dict(raw.item_snapshot)
+	if not snapshot.validation_errors.is_empty() or snapshot.uid != item_uid or snapshot.current_durability <= 0:
+		return "INVALID_AQUEDUCT_ITEM"
+	if snapshot.catalyst_affix.get("ruleset_id", "") != raw.ruleset_id:
+		return "INVALID_AQUEDUCT_ITEM_RULESET"
+	var catalog = load("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
+	var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").new()
+	if not raw.axis is String or not raw.rhythm is String:
+		return "INVALID_AQUEDUCT_REQUIREMENT"
+	var preview: Dictionary = rules.aqueduct_preview(str(catalog.by_item(snapshot).get("equipment_id", "")),
+		int(snapshot.enhancement_level), snapshot.catalyst_affix.get("tags", {}), raw.axis, raw.rhythm)
+	if not preview.get("ok", false):
+		return "INVALID_AQUEDUCT_PREVIEW"
+	var damage_rules = load("res://scripts/vertical_slice/resolvers/vs_customer_world_event_resolver.gd").new()
+	var damage_chance: float = damage_rules._damage_percent(snapshot, "LOW")
+	if not _trial_number(raw.success_percent) or not _trial_number(raw.damage_percent):
+		return "INVALID_AQUEDUCT_PROBABILITY"
+	if not is_equal_approx(float(raw.success_percent), float(preview.success_percent)) or not is_equal_approx(float(raw.damage_percent), damage_chance):
+		return "AQUEDUCT_PROBABILITY_MISMATCH"
+	if raw.phase == "PREPARED":
+		if raw.mission_success != null or raw.damage_applied != null:
+			return "INVALID_AQUEDUCT_PENDING_RESULT"
+	else:
+		if not raw.mission_success is bool or not raw.damage_applied is bool:
+			return "INVALID_AQUEDUCT_RESULT"
+		if raw.mission_success != (raw.rolls[0] < raw.success_percent) or raw.damage_applied != (raw.rolls[1] < raw.damage_percent):
+			return "AQUEDUCT_RESULT_MISMATCH"
+	return ""
+
+
+static func _trial_number(value: Variant) -> bool:
+	return typeof(value) in [TYPE_INT, TYPE_FLOAT] and is_finite(float(value))
 
 
 static func _normalize_dictionary(value: Dictionary) -> Dictionary:

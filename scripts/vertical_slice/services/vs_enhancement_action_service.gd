@@ -37,6 +37,15 @@ func resolve_and_save_with_rolls(
 	if resources.snapshot() != envelope.resource_snapshot():
 		return _blocked("RESOURCE_SAVE_DIVERGED")
 
+	if save_service.has_method("load_envelope"):
+		var disk = save_service.load_envelope()
+		var source = SaveEnvelopeScript.from_dict(envelope.to_dict())
+		if disk == null or not disk.validation_errors.is_empty() or not source.validation_errors.is_empty():
+			return _blocked("ENHANCEMENT_SAVE_DIVERGED")
+		if disk.active_run != source.active_run or disk.to_dict().items_by_uid != source.to_dict().items_by_uid or disk.resource_snapshot() != source.resource_snapshot():
+			return _blocked("ENHANCEMENT_SAVE_DIVERGED")
+	if envelope.active_run.get("aqueduct_trials", {}).get(item_uid, {}).get("phase", "") == "PREPARED":
+		return _blocked("AQUEDUCT_PENDING")
 	var source_item = envelope.get_item(item_uid) if envelope.has_method("get_item") else null
 	var preview := EnhancementResolverScript.new().preview(source_item, target_level, precision_selection)
 	if not bool(preview.get("allowed", false)):

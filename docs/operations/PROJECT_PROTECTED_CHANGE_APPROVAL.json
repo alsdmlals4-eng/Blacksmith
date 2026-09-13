@@ -14,9 +14,14 @@
     "scripts/vertical_slice/services/vs_run_initializer_service.gd",
     "scripts/vertical_slice/services/vs_item_birth_service.gd",
     "scripts/vertical_slice/ui/vs_main_menu.gd",
-    "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+    "scripts/vertical_slice/ui/vs_workshop_screen.gd",
+    "scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd",
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/ui/vs_app.gd",
+    "scripts/vertical_slice/ui/vs_item_chronicle_screen.gd",
+    "scripts/vertical_slice/services/vs_workshop_maintenance_service.gd"
   ],
   "approval_source": "Current user conversation: approval of the bounded protected-path recovery exception, followed by 승인,진행해. BS-OPS-20260913-01 is recorded in the current production contract. External PR metadata is required independently.",
   "approval_time": "2026-09-13T00:11:29+09:00",
-  "scope_summary": "BS-REPLAN-20260913-02: latest user explicitly requests continued scoped implementation and improvement without routine reapproval. Exact ten-path continuation adds RunInitializer, ItemBirthService, MainMenu and WorkshopScreen to the prior six paths for isolated new-rule campaign entry, native tag selection and save-slot protection. Reuse existing cost/save transactions and heart_of_flame stock; no live save migration, new scene/assets, economy rebalance, blanket allowance or Base/baseline change. External PR metadata remains required."
+  "scope_summary": "BS-REPLAN-20260913-02: latest user explicitly requests continued implementation through the complete approved game. Exact fifteen-path continuation adds CustomerActualUseActionService, SaveEnvelope, App, ItemChronicleScreen and WorkshopMaintenanceService for prepared AQ trial persistence, native result/chronicle consumers and atomic repair persistence. Enhancement and repair reject stale event state. No live save migration, new scene/assets, economy rebalance, blanket allowance or Base/baseline change. External PR metadata remains required."
 }

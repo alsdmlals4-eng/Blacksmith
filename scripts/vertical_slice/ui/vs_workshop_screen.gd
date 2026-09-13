@@ -62,6 +62,7 @@ const MOBILE_PRIMARY_ACTION_CONTROL_PATHS := [
 	"WorkshopScroll/WorkshopLayout/EnhancementButton",
 ]
 
+signal campaign_saved(envelope, result: Dictionary)
 signal enhancement_saved(envelope, result: Dictionary)
 signal handoff_requested
 signal chronicle_requested
@@ -342,6 +343,12 @@ func _precision_summary(state: Dictionary) -> String:
 
 
 func _destination_summary(state: Dictionary) -> String:
+	if _is_replan_item():
+		if _aqueduct_pending():
+			return "수로 모험 결과 확인 대기\n강화·수리는 결과 확인 후 가능\n연대기는 저장된 사건만 표시"
+		if _aqueduct_record().get("phase", "") == "RESOLVED":
+			return "수로 모험 완료 · 연대기에서 다시 보기\n다음 판단: 강화 계속 또는 손상 수리"
+		return "수로 시험: 철방패 +10부터 출발 가능\n태그의 용도별 효과를 비교하세요"
 	var repair_text := "수리 가능" if bool(state.get("repair_allowed", false)) else "수리: %s" % _player_facing_repair_reason(str(state.get("repair_reason", "")))
 	var handoff_text := "인계 가능" if bool(state.get("handoff_allowed", false)) else "인계: %s" % _phase1_handoff_reason()
 	var chronicle_text := "연대기 보기 가능" if bool(state.get("chronicle_allowed", false)) else "연대기: 캠페인 정보 필요"
@@ -349,26 +356,44 @@ func _destination_summary(state: Dictionary) -> String:
 
 
 func request_repair_with_rolls(rolls: Dictionary) -> Dictionary:
+	if _aqueduct_pending():
+		return {"status": "BLOCKED", "reason": "AQUEDUCT_PENDING"}
 	if _item == null or _resources == null:
 		return {"status": "BLOCKED", "reason": "MISSING_WORKSHOP_CONTEXT"}
 	if _maintenance_service == null:
 		_maintenance_service = MaintenanceServiceScript.new()
-	var result: Dictionary = _maintenance_service.try_repair_with_rolls(_item, _resources, rolls)
+	var result: Dictionary = _request_campaign_repair(rolls, false) if _campaign_envelope != null else _maintenance_service.try_repair_with_rolls(_item, _resources, rolls)
 	_refresh_controls()
 	return result
 
 
 func request_repair() -> Dictionary:
+	if _aqueduct_pending():
+		return {"status": "BLOCKED", "reason": "AQUEDUCT_PENDING"}
 	if _item == null or _resources == null:
 		return {"status": "BLOCKED", "reason": "MISSING_WORKSHOP_CONTEXT"}
 	if _maintenance_service == null:
 		_maintenance_service = MaintenanceServiceScript.new()
-	var result: Dictionary = _maintenance_service.try_repair(_item, _resources)
+	var result: Dictionary = _request_campaign_repair({}, true) if _campaign_envelope != null else _maintenance_service.try_repair(_item, _resources)
 	_refresh_controls()
 	return result
 
 
+func _request_campaign_repair(rolls: Dictionary, random_rolls: bool) -> Dictionary:
+	if not _maintenance_service.has_method("repair_and_save"):
+		return {"status": "BLOCKED", "reason": "MISSING_REPAIR_SAVE_SERVICE"}
+	var uid := str(_item.uid)
+	var result: Dictionary = _maintenance_service.repair_and_save(_campaign_envelope, uid, _resources, _save_service, rolls, random_rolls)
+	if result.get("status", "") == "APPLIED":
+		_campaign_envelope = result.envelope
+		_item = _campaign_envelope.get_item(uid)
+		campaign_saved.emit(_campaign_envelope, result)
+	return result
+
+
 func request_enhancement_with_rolls(rolls: Dictionary) -> Dictionary:
+	if _aqueduct_pending():
+		return {"outcome": "BLOCKED", "reason": "AQUEDUCT_PENDING"}
 	if not _has_enhancement_context():
 		return {"outcome": "BLOCKED", "reason": "MISSING_ENHANCEMENT_CONTEXT"}
 	var target_level := int(_item.enhancement_level) + 1
@@ -617,8 +642,122 @@ func _refresh_controls() -> void:
 	if precision_backfill_button != null:
 		precision_backfill_button.visible = str(state.get("precision_mode", "")) == "BACKFILL"
 		precision_backfill_button.disabled = not bool(state.get("precision_backfill_allowed", false))
+	_refresh_aqueduct_trial()
 	_refresh_wireframe_cards(state)
 	_refresh_replan_choices()
+
+
+func _aqueduct_record() -> Dictionary:
+	if _campaign_envelope == null or _item == null:
+		return {}
+	return _campaign_envelope.active_run.get("aqueduct_trials", {}).get(str(_item.uid), {})
+
+
+func _aqueduct_pending() -> bool:
+	return _aqueduct_record().get("phase", "") == "PREPARED"
+
+
+func _refresh_aqueduct_trial() -> void:
+	var layout := get_node_or_null("WorkshopScroll/WorkshopLayout") as VBoxContainer
+	if layout == null:
+		return
+	var box := layout.get_node_or_null("AqueductTrial") as VBoxContainer
+	if box == null and _is_replan_item():
+		box = VBoxContainer.new()
+		box.name = "AqueductTrial"
+		box.add_theme_constant_override("separation", 8)
+		layout.add_child(box)
+		var anchor = layout.get_node_or_null("HandoffButton")
+		if anchor != null:
+			layout.move_child(box, anchor.get_index())
+		var summary := Label.new()
+		summary.name = "Summary"
+		summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		summary.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+		summary.add_theme_color_override("font_color", Color("2d211a"))
+		summary.add_theme_stylebox_override("normal", _wireframe_card_style())
+		box.add_child(summary)
+		var option := OptionButton.new()
+		option.name = "Requirement"
+		option.custom_minimum_size.y = MOBILE_TOUCH_TARGET_HEIGHT
+		option.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+		for label in ["수로 · 성능 순간", "수로 · 성능 지속", "수로 · 취급 순간", "수로 · 취급 지속"]:
+			option.add_item(label)
+		option.item_selected.connect(func(_index): _refresh_aqueduct_trial())
+		box.add_child(option)
+		var button := Button.new()
+		button.name = "Action"
+		button.custom_minimum_size.y = MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT
+		button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		button.pressed.connect(_on_aqueduct_pressed)
+		box.add_child(button)
+	if box == null:
+		return
+	box.visible = _is_replan_item()
+	if not box.visible:
+		return
+	var legacy_handoff := layout.get_node_or_null("HandoffButton") as Button
+	if legacy_handoff != null:
+		legacy_handoff.visible = false
+	var summary := box.get_node("Summary") as Label
+	var option := box.get_node("Requirement") as OptionButton
+	var button := box.get_node("Action") as Button
+	var record := _aqueduct_record()
+	option.disabled = not record.is_empty()
+	if not record.is_empty():
+		option.select((2 if record.axis == "HANDLING" else 0) + (1 if record.rhythm == "SUSTAIN" else 0))
+	if record.get("phase", "") == "RESOLVED":
+		summary.text = "수로 모험 기록\n임무 %s · 장비 %s\n내구도 %d → %d · 보상 없음\n시험 결과는 작품 연대기에도 남습니다." % [
+			"성공" if record.mission_success else "실패", "손상 발생" if record.damage_applied else "손상 없음",
+			int(record.item_snapshot.current_durability), int(record.item_snapshot.current_durability) - (1 if record.damage_applied else 0)]
+		button.text = "수로 시험 완료 · 기록 보존"
+		button.disabled = true
+	elif record.get("phase", "") == "PREPARED":
+		summary.text = "수로 모험 진행 중\n출발 상태와 판정이 저장되었습니다.\n결과 확인 전에는 강화·수리를 할 수 없습니다."
+		button.text = "저장된 모험 결과 확인"
+		button.disabled = false
+		for path in ["EnhancementButton", "RepairButton"]:
+			var blocked_button := layout.get_node_or_null(path) as Button
+			if blocked_button != null:
+				blocked_button.disabled = true
+	else:
+		var index := option.selected
+		var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").new()
+		var preview: Dictionary = rules.aqueduct_preview(str(EquipmentCatalogScript.by_item(_item).get("equipment_id", "")),
+			int(_item.enhancement_level), _item.catalyst_affix.get("tags", {}), "HANDLING" if index >= 2 else "OUTPUT", "SUSTAIN" if index % 2 else "BURST")
+		var eligible: bool = bool(preview.get("ok", false)) and _item.current_durability > 0
+		summary.text = "수로 모험 시험 · 철방패 +10 이상\n보상 없음 · 작품마다 1회\n"
+		if eligible:
+			var damage_rules = load("res://scripts/vertical_slice/resolvers/vs_customer_world_event_resolver.gd").new()
+			summary.text += "임무 성공 예상 %.1f%% · 손상 %.1f%%\n성공과 손상은 별개로 판정합니다." % [float(preview.success_percent), damage_rules._damage_percent(_item, "LOW")]
+		else:
+			summary.text += "손상으로 파괴되지 않은 +10 철방패를 준비하세요."
+		button.text = "이 용도로 수로 시험 출발"
+		button.disabled = not eligible or _campaign_envelope == null or _save_service == null
+
+
+func _on_aqueduct_pressed() -> void:
+	if not _is_replan_item() or _campaign_envelope == null:
+		return
+	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	var result: Dictionary
+	if _aqueduct_pending():
+		result = service.resolve_prepared_aqueduct(_campaign_envelope, str(_item.uid), _save_service)
+	else:
+		var option := get_node("WorkshopScroll/WorkshopLayout/AqueductTrial/Requirement") as OptionButton
+		var index := option.selected
+		result = service.prepare_aqueduct(_campaign_envelope, str(_item.uid),
+			"HANDLING" if index >= 2 else "OUTPUT", "SUSTAIN" if index % 2 else "BURST", _save_service)
+	if result.has("envelope"):
+		var uid := str(_item.uid)
+		_campaign_envelope = result.envelope
+		_item = _campaign_envelope.get_item(uid)
+		campaign_saved.emit(_campaign_envelope, result)
+	_refresh_controls()
+	if result.get("status", "") == "BLOCKED":
+		var summary := get_node("WorkshopScroll/WorkshopLayout/AqueductTrial/Summary") as Label
+		summary.text += "\n저장/상태 확인 실패 · 결과는 적용되지 않았습니다. 다시 확인해 주세요."
 
 
 func _is_replan_item() -> bool:
@@ -685,7 +824,7 @@ func _refresh_replan_choices() -> void:
 		int(_item.enhancement_level), _item.catalyst_affix.get("tags", {}), stock, axis, rhythm)
 	var replan_title := box.get_node("Title") as Label
 	replan_title.text = "정밀 강화 +%d → +%d\n용도별 적합도 비교 · 강화 성공률 보너스 아님\n성공 시 태그 성장 · 성공/실패 촉매 1개" % [int(_item.enhancement_level), int(_item.enhancement_level) + 1]
-	var names := {"BURST_OUTPUT":"격발", "SUSTAIN_OUTPUT":"견실", "BURST_HANDLING":"기민", "SUSTAIN_HANDLING":"균형"}
+	var names: Dictionary = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").DISPLAY_NAMES_KO
 	for tag_id in names:
 		var button := box.get_node(tag_id) as Button
 		button.disabled = true
@@ -1017,7 +1156,7 @@ func _precision_catalyst_resource_reason(enhancement: Dictionary) -> String:
 
 func _precision_tag_entries_summary(entries: Array) -> String:
 	if _is_replan_item():
-		var names := {"BURST_OUTPUT":"격발", "SUSTAIN_OUTPUT":"견실", "BURST_HANDLING":"기민", "SUSTAIN_HANDLING":"균형"}
+		var names: Dictionary = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").DISPLAY_NAMES_KO
 		var summaries: PackedStringArray = []
 		for tag_id in _item.catalyst_affix.get("tags", {}):
 			summaries.append("%s %s" % [str(names.get(tag_id, "미확인")), _stage_roman(int(_item.catalyst_affix.tags[tag_id]))])
