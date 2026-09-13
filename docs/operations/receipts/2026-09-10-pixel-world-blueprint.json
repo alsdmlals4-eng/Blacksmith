@@ -5,20 +5,20 @@
   "status": "DESIGN_PDF_RENDER_REVIEWED_DRAFT_PR_OPEN",
   "remote_delivery": {
     "pull_request": "https://github.com/alsdmlals4-eng/Blacksmith/pull/371",
-    "reviewed_product_head": "a447cfebfb38e929f777799d2dcdfe461309f414",
+    "reviewed_product_head": "29d6d23ac43983bfb81f1cb6b95e2e3bcc3c7cbf",
     "branch_readback": "PREVIOUS_CHECKPOINT_ONLY_CURRENT_HEAD_RECORDED_IN_PR_COMMENT",
     "main": "UNCHANGED_NOT_MERGED",
-    "ci": "a447cfeb: 16_SUCCESS_1_CONDITIONAL_SKIPPED; later document head requires fresh readback"
+    "ci": "29d6d23a: 16_SUCCESS_1_CONDITIONAL_SKIPPED; later world-viewer/document head requires fresh readback"
   },
-  "scope": "2026-09-13 authorized implementation checkpoint: 54-page integrated PDF preserves detailed design and state atlas, adds current implementation checklist, two actual Godot captures and remaining game queue. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. Candidate art remains distinct; no asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban below is historical evidence, not current execution authority.",
+  "scope": "2026-09-13 authorized implementation checkpoint: 56-page integrated PDF preserves detailed design and state atlas, adds current checklist, actual Godot captures, first-forge/+0-to-aqueduct corrections, optional saved-report split/focus views and remaining game queue. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. Candidate art remains distinct; no asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban below is historical evidence, not current execution authority.",
   "artifact": {
     "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
-    "sha256": "c909dbe205cc4d9c1f5c8071e314af4ec9a5ae2be7b2f7bc17d33578902e789b",
-    "page_count": 54,
+    "sha256": "2a7a6042eaed75516f56a30cf7982d8a0bd2264462b677bc6e39b9454c66045e",
+    "page_count": 56,
     "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
-    "source_sha256": "8e7b5856159495f8b549f6185db10ad6022c9f957dccb145306d8370eec8cdf1",
+    "source_sha256": "f8e06a749159ac0e78d9143c1a13d77454b5d43dad59bcb503e0c39da51909ea",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "2026-09-13: new52-54 and changed2/36 rendered at1300px and visually inspected: implementation checklist, two actual game captures, remaining queue and current-authority annotations; no clipped text or overlapping table cells observed. Existing state atlas retained. Android, human play and final art remain unverified.",
+    "visual_review": "2026-09-13: new52-56 and changed2/36/53 rendered at1300px and visually inspected. Missing page separators before55/56 reproduced by page-title contract and corrected; final55/56 rerendered with their headings, captions and body intact. Prior state atlas retained. Old53 risk display is explicitly historical, corrected55 owns actual0.9% display evidence. Android, human play and final art remain unverified.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {

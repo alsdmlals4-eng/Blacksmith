@@ -76,6 +76,7 @@ var _campaign_envelope = null
 var _customer_handoff_label := "고객에게 인계 · 인계 손상 없음"
 var _precision_action := ""
 var _precision_selection_data: Dictionary = {}
+var _world_view_mode := "COLLAPSED"
 
 
 func _ready() -> void:
@@ -645,6 +646,85 @@ func _refresh_controls() -> void:
 	_refresh_aqueduct_trial()
 	_refresh_wireframe_cards(state)
 	_refresh_replan_choices()
+	_refresh_world_viewer()
+
+
+func set_world_view_mode(mode: String) -> bool:
+	if not mode in ["COLLAPSED", "SPLIT", "FOCUS"] or not _is_replan_item():
+		return false
+	_world_view_mode = mode
+	_refresh_world_viewer()
+	return true
+
+
+func _refresh_world_viewer() -> void:
+	var workshop := get_node_or_null("WorkshopScroll") as ScrollContainer
+	if workshop == null:
+		return
+	var bar := get_node_or_null("WorldViewBar") as HBoxContainer
+	if bar == null and _is_replan_item():
+		bar = HBoxContainer.new()
+		bar.name = "WorldViewBar"
+		bar.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+		bar.offset_left = 32
+		bar.offset_right = -32
+		bar.offset_top = 24
+		bar.offset_bottom = 120
+		bar.add_theme_constant_override("separation", 8)
+		add_child(bar)
+		for entry in [["Split", "세계 보고", "SPLIT"], ["Focus", "확대", "FOCUS"], ["Close", "접기", "COLLAPSED"]]:
+			var button := Button.new()
+			button.name = entry[0]
+			button.text = entry[1]
+			button.custom_minimum_size.y = MOBILE_TOUCH_TARGET_HEIGHT
+			button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			button.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+			button.pressed.connect(set_world_view_mode.bind(entry[2]))
+			bar.add_child(button)
+		var panel := PanelContainer.new()
+		panel.name = "WorldReportPanel"
+		panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		panel.offset_left = 32
+		panel.offset_right = -32
+		panel.offset_top = 136
+		panel.add_theme_stylebox_override("panel", _wireframe_card_style())
+		add_child(panel)
+		var report_scroll := ScrollContainer.new()
+		report_scroll.name = "ReportScroll"
+		report_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		report_scroll.follow_focus = true
+		panel.add_child(report_scroll)
+		var label := Label.new()
+		label.name = "ReportText"
+		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		label.add_theme_font_size_override("font_size", MOBILE_BODY_FONT_SIZE)
+		label.add_theme_color_override("font_color", Color("2d211a"))
+		report_scroll.add_child(label)
+	if bar == null:
+		return
+	var panel := get_node("WorldReportPanel") as PanelContainer
+	var enabled := _is_replan_item()
+	bar.visible = enabled
+	panel.visible = enabled and _world_view_mode != "COLLAPSED"
+	if not enabled:
+		_world_view_mode = "COLLAPSED"
+	workshop.visible = _world_view_mode != "FOCUS"
+	workshop.anchor_top = 0.45 if enabled and _world_view_mode == "SPLIT" else 0.0
+	workshop.offset_top = 16 if enabled and _world_view_mode == "SPLIT" else (136 if enabled else 24)
+	panel.anchor_bottom = 1.0 if _world_view_mode == "FOCUS" else 0.45
+	panel.offset_bottom = -24 if _world_view_mode == "FOCUS" else -16
+	bar.get_node("Split").text = "세계 보고 열기" if _world_view_mode == "COLLAPSED" else "분할 보기"
+	bar.get_node("Split").disabled = _world_view_mode == "SPLIT"
+	bar.get_node("Focus").visible = _world_view_mode != "COLLAPSED"
+	bar.get_node("Focus").disabled = _world_view_mode == "FOCUS"
+	bar.get_node("Close").visible = _world_view_mode != "COLLAPSED"
+	var record := _aqueduct_record()
+	var body := "아직 저장된 세계 사건이 없습니다.\n공방에서 철방패를 준비하고 수로 시험에 참여해 보세요."
+	if not record.is_empty():
+		var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+		body = str(service.aqueduct_report(record).body)
+	panel.get_node("ReportScroll/ReportText").text = "저장된 사건 보고 · 읽기 전용\n" + body + "\n\n전투 모션 미연결 · 열람은 시간/결과/자원을 바꾸지 않습니다."
 
 
 func _aqueduct_record() -> Dictionary:

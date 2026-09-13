@@ -11,6 +11,44 @@ const EquipmentCatalogScript := preload("res://scripts/vertical_slice/domain/vs_
 const WorkshopBackgroundTexture := preload("res://assets/ui/workshop/workshop_enhancement_background_v2.png")
 const WorkpieceDurabilityStateAtlasTexture := preload("res://assets/ui/workshop/workpiece_durability_state_atlas_v1.png")
 
+func test_optional_world_report_modes_preserve_campaign_and_keep_return_reachable():
+	var envelope = _enhancement_envelope()
+	envelope.active_run.tag_ruleset_id = "BLACKSMITH_REPLAN_TAGS_20260912"
+	var item = envelope.get_item(envelope.active_run.selected_item_uid)
+	item.enhancement_level = 9
+	item.highest_checkpoint = 0
+	item.used_precision_milestones.clear()
+	item.catalyst_affix = {"schema_version":2,"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tags":{}}
+	var screen = autofree(SCREEN_SCENE.instantiate())
+	add_child(screen)
+	var saving = FakeSaveService.new()
+	screen.configure_context(item, ResourcesScript.new(), null, null, saving, envelope)
+	assert_true(screen.has_method("set_world_view_mode"))
+	if not screen.has_method("set_world_view_mode"):
+		return
+	var before = envelope.to_dict()
+	var calls_before: int = saving.calls
+	var scroll = screen.get_node("WorkshopScroll")
+	for mode in ["SPLIT","FOCUS","COLLAPSED","SPLIT","COLLAPSED"]:
+		assert_true(screen.set_world_view_mode(mode))
+		await get_tree().process_frame
+		await get_tree().process_frame
+		assert_eq(scroll.visible, mode != "FOCUS")
+		assert_eq(screen.get_node("WorldReportPanel").visible, mode != "COLLAPSED")
+		assert_true(screen.get_node("WorldViewBar/Close").is_visible_in_tree() if mode != "COLLAPSED" else true)
+		if mode == "SPLIT":
+			assert_lte(screen.get_node("WorldReportPanel").get_global_rect().end.y, scroll.get_global_rect().position.y)
+	assert_false(screen.set_world_view_mode("UNKNOWN"))
+	assert_eq(envelope.to_dict(), before)
+	assert_eq(saving.calls, calls_before, "Observation never commits gameplay")
+	assert_true(screen.get_node("WorldReportPanel/ReportScroll/ReportText").text.contains("아직"))
+	assert_true(screen.set_world_view_mode("FOCUS"))
+	screen.configure_context(_item(), ResourcesScript.new())
+	assert_false(screen.get_node("WorldViewBar").visible)
+	assert_false(screen.get_node("WorldReportPanel").visible)
+	assert_true(scroll.visible)
+	assert_eq(scroll.offset_top, 24.0)
+
 func test_enhancement_result_copy_distinguishes_success_hold_and_damage():
 	var screen = autofree(load(SCREEN_PATH).new())
 	assert_true(screen.has_method("_enhancement_result_copy"))
@@ -82,6 +120,7 @@ func test_aqueduct_native_controls_prepare_resume_and_show_separate_results():
 	assert_false(button.disabled)
 	button.pressed.emit()
 	assert_true(button.text.contains("결과 확인"))
+	assert_true(screen.get_node("WorldReportPanel/ReportScroll/ReportText").text.contains("대여 중"))
 	assert_false(screen.view_state().destination_summary.contains("인계 가능"))
 	assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton").disabled)
 	assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/RepairButton").disabled)
@@ -90,6 +129,7 @@ func test_aqueduct_native_controls_prepare_resume_and_show_separate_results():
 	assert_true(summary.text.contains("임무"))
 	assert_true(summary.text.contains("손상"))
 	assert_true(summary.text.contains("보상 없음"))
+	assert_true(screen.get_node("WorldReportPanel/ReportScroll/ReportText").text.contains(summary.text))
 	assert_true(button.disabled)
 	var chronicle = autofree(load("res://scripts/vertical_slice/ui/vs_item_chronicle_screen.gd").new())
 	assert_true(chronicle.has_method("configure_aqueduct"))
@@ -157,9 +197,11 @@ class TrackingMaintenanceService extends RefCounted:
 
 class FakeSaveService extends RefCounted:
 	var saved_envelope = null
+	var calls := 0
 	var next_save_error: Error = OK
 
 	func save_envelope(envelope) -> Error:
+		calls += 1
 		if next_save_error != OK:
 			return next_save_error
 		saved_envelope = envelope
