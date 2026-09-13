@@ -1,0 +1,11 @@
+{
+  "schema_version":1,
+  "artifact_role":"PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status":"APPROVED",
+  "protected_base_commit":"4976ae2ca9d1eae11a5fc8fc44f1f8e9c23a047d",
+  "decision_ids":["BS-REPLAN-20260913-05"],
+  "approved_paths":["scripts/vertical_slice/services/vs_recovery_order_service.gd","scripts/vertical_slice/ui/vs_workshop_screen.gd"],
+  "approval_source":"Latest user whole-game implementation continuation without routine reapproval; manual-close recommendation and exact plan BS-REPLAN-20260913-05. Current task PR377 approved-protected-change metadata separately verified before authoring. Prior approvals consumed, not reused.",
+  "approval_time":"2026-09-13T16:51:12+09:00",
+  "scope_summary":"Manual day close, completed-order history/refill, repeated dedicated crafting and native confirmation. Existing save validation hook reused. No legacy conversion, final calendar/growth balance, new asset/Scene, tool or Base lock change."
+}

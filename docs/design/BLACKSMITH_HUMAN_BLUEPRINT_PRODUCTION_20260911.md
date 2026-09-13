@@ -1,5 +1,38 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## Manual Day / Repeated Recovery Implementation Plan — BS-REPLAN-20260913-05
+
+Current implementation evidence (2026-09-13): PR377 exact2-path implementation is locally verified, final CI/merge pending. GUT309/3088 PASS after missing-service/native-control RED, actual48px touch-size RED, and malformed chronology/time RED. Actual day1 cancel preserved save SHA56365d15…; confirm advanced only to day2, no resources changed. Restart restored fresh order; pointer forging created distinct UID BSI-3ae976b62ae264fe9889fcd45a5b8206; restart READY→pointer delivery→restart DELIVERED. Gold17070→17470, reinforcement22→24, flame63/earth64 unchanged; original shield UID/level10/3-of-5 durability retained. Slot selection and scroll visibility were QA assists; no gameplay state or RNG injection. Native dialog96 logical pixels verified after layout. PDF61/62 adds actual captures/checklist; prior60 pages preserved. Whole-game, Android, human, final economy/art/motion remain incomplete.
+
+Round1 adversarial findings and learning: invalid current_day1.5/string/bool was truncated, and acceptance after birth/delivery was accepted. Both reproduced RED then strict integer/time-order validation added within the same approved service path. No save migration or schema expansion. AcceptDialog internal layout resets custom minimum size from theme constants (https://raw.githubusercontent.com/godotengine/godot/master/scene/gui/dialogs.cpp); use buttons_min_height/width, confirmed in current4.7.1 runtime and 2-frame geometry regression. Project-local lesson only, no unproven Base promotion. Exact approval checker correctly rejects an approval with no protected diff; ordinary gate used before changes, exact approved checker passed after both paths changed. Transient MCP reload43 was not counted as PASS; fresh game runs and full GUT passed without startup errors.
+
+Direction / Goal: 첫 재기 주문에서 끊긴 제작·납품 순환을, 직접 마감→다음 주문→다시 제작·납품으로 연결한다. 전체게임 구현의 다음 단계이며 이 묶음만으로 전체완료를 선언하지 않는다.
+
+Architecture: 기존 recovery service가 원자 저장/readback과 주문 기록을 계속 소유한다. 기존 공방 VBox에 마감 버튼과 native 확인창을 연결하고 app의 campaign_saved 신호를 재사용한다. 새 Scene/자산/툴/전역 manager 없이 기존 두 script만 수정한다. Tech: Godot4.7.1 / GUT9.7.1 / HiGodot3.2.0; Base v9.4.4·validator43b3 유지.
+
+Spec / approval: Blueprint17/39/51, BLACKSMITH_MODAK_CALENDAR_REVIEW_20260912.json의 manual-close recommendation, 최신 사용자 ‘게임 전체 완성,구현까지 계속진행’ 및 routine 재승인 생략. 상세 수치는 시험값; 성장/세계보고 지연/출시 승인으로 확장하지 않는다. 현재 main eb3a47cb1d33f5f942786de42acfbe15b46db1d0, 보호baseline4976ae2ca9d1eae11a5fc8fc44f1f8e9c23a047d. PR196/359 고유 변경과 경로 중첩 없음·read-only. 기존 import/후보/저장 보존. HiGodot 연결된 checkout의 codex branch에서 순차 저작하며 프로젝트 복사본을 추가하지 않는다.
+
+Before→After: DELIVERED에서 후속 없음→명시 마감 확인 뒤 하루만 증가·완료기록 보존·새 주문 가능. 무료 마감으로 자원/보상/난수/주문 종류 재굴림 없음. 미수락 또는 ACCEPTED/READY는 그대로 유지. PREPARED 세계시험 또는 알 수 없는 nonempty schedule_state는 마감 차단. 뒤늦은 동일 source_day 요청은 추가 진행하지 않는다. 오래된 저장을 자동변환하거나 삭제하지 않는다.
+
+Preflight (2026-09-13): 현 service/SaveEnvelope/UI/app/GUT와 공식 Anvil Saga(https://store.steampowered.com/app/1587540/), Weapon Shop Fantasy(https://store.steampowered.com/app/599460/), My Time at Sandrock(https://store.steampowered.com/app/1084600/) 설명을 재조회했다. 주문→공방 활동→재료/보상 재투자 ADAPT. Godot Saving games(https://docs.godotengine.org/en/stable/tutorials/io/saving_games.html)·ConfirmationDialog(https://docs.godotengine.org/en/stable/classes/class_confirmationdialog.html) 직렬화 및 확인/취소 경계 ADOPT. 직원경제·외부 수치·단순 날짜클릭 보상 REJECT. 직접 경쟁작 플레이나 균형 검증 증거 아님.
+
+Alternatives: (1) 기존 권장 명시마감 REUSE—선택 속도 유지·저장 경계 명확, 빈날 넘김 성장 악용은 성장 구현 전 별도 검토. (2) 실시간 자동날짜 REJECT—휴식/접속시간이 의뢰를 바꿈. (3) 강화횟수 자동날짜 REJECT—강화 코어와 달력을 불필요하게 결합. Base reuse handoff/profile의 공용 저장·지연엔진은 구현완료가 아닌 패턴/계획이므로 새 의존성으로 채택하지 않고 현 save service 재사용. No Base promotion now.
+
+State / interface: service.close_day(envelope, source_day, save)→{status:APPLIED|ALREADY_APPLIED|BLOCKED,envelope? ,reason?}. 같은 campaign·정수 source_day·현재 저장 일치·미처리 거래 없음 검사→원본복제→current_day+1→DELIVERED만 recovery_order_history에 보존하고 active 제거→원자 저장→readback. optional recovery_calendar={schema_version:1,policy_id:MANUAL_CLOSE_V1,last_closed_day:N}; current_day=N+1. history는 순서대로 완료된 기존8필드 기록이며 UID 유일·아이템/원장 보존. 새 ID는 run_id-recovery-(history.size+1); 기록 부재인 기존 슬롯은 그대로 유효. 초기 정책 의미는 고정 호환경계이며 새 정책은 별도 이관 없이는 추측하지 않는다.
+
+Compact flow: 오늘마감 버튼→확인창(취소는 무변경)→현재 source_day/저장/거래 검사→날짜 저장(+1, 완료주문만 보충)→공방 날짜·누적 납품 갱신→주문 수락/제작. 미완성은 같은 UID·재료·상태로 다음 날 계속. 날짜만 넘긴 결과는 Chronicle 보상 사건이 아니다.
+
+Risk / rollback: 대량 주문기록 비용·빈날 성장 악용·고정 재기주문 반복의 지루함은 후속 플레이 검토 대상. 임의 cap/가격 변경 없음. 잘못된 기록은 저장을 거절하고 원본 유지. 정상 revert 가능하지만 새 calendar/history 저장은 구버전에서 열지 않으며 QA 전용 슬롯에서 먼저 검증; 사용자 파일을 구형으로 덮어쓰지 않는다. 이미 저장된 world trial 난수/결과/UID는 불변이다.
+
+Execution uses TDD and inline execution per current user continuation; plan/spec remain in this existing owner instead of another dashboard.
+
+- [x] DAY-01 RED: 기존 GUT 파일에서 close_day 부재/빈날 보상0·중복마감·미완성보존·3회 실제파일 제작납품·위조history/calendar/저장실패/PREPARED 차단을 검증한다. 예: close_day(original,1,save) 뒤 day=2, 같은 source1 재호출은 ALREADY_APPLIED/day2.
+- [x] DAY-01 GREEN: scripts/vertical_slice/services/vs_recovery_order_service.gd의 validate/accept 확장과 close_day/close_block_reason. SaveEnvelope 기존 validate consumer 재사용; 승인 exact2경로 PR label readback 뒤 HiGodot 저작.
+- [x] DAY-02 RED→GREEN: scripts/vertical_slice/ui/vs_workshop_screen.gd에 DayClose/DayCloseConfirmation. 확인 때 포착한 source_day 사용, 미표시/구형/진행중이면 호출 차단. 공방 화면 hidden 중 직접 handler 호출도 거절. tests/gut/unit/vertical_slice/test_vs_replan_tag_save.gd에서 native 버튼 취소/확인·실패 재시도·app 저장갱신 검증.
+- [ ] DAY-03: 전체 GUT·Python·계약검사, 실제포인터 마감/재시작/두 번째 제작납품/캡처. Blueprint 기존60쪽 보존 및 반복플레이 화면/체크리스트 추가. 두 차례 전체 적대검토→필요 수정→exact CI·정상병합·main readback. Android/사람/최종경제/성장/모션은 NOT_RUN.
+
+Fresh-read reconciliation: PR376은 eb3a47cb로 병합되어 consumed PR375 승인 회수와 baseline 교정까지 완료됐다. 아래 ‘정합화 진행’, ‘최종 검토 진행’, 기존 미체크 목록은 PR375 작업 중의 역사기록이며 현재 미완료는 위 DAY 항목과 전체게임 후속 큐다.
+
 ## Recovery Order Implementation Plan — BS-REPLAN-20260913-04
 
 최신 전달: PR375/fbfde8f2 두 차례 전체 검토 후 추가 P1/P2없음, exact11SUCCESS/1조건부SKIPPED를 확인하고4976ae2c 정상병합. 로컬main=origin/main readback. CI 초기 외부 TLS/import 실패는 동일 head 실패작업 재실행으로 통과했고 gate는 완화하지 않았다. Python 전체506PASS/3SKIP, PDF9PASS, GUT304/2973PASS. 납품 뒤 재시작·완료버튼 재클릭은 저장SHA56365d15 불변. 아래 진행중 기록은 이전 checkpoint이다.

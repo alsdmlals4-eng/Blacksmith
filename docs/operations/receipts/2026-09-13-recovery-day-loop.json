@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "work_level": "L1",
+  "receipt_id": "BS-REPLAN-20260913-05",
+  "status": "IMPLEMENTED_MACHINE_AND_DESKTOP_VERIFIED_DELIVERY_PENDING",
+  "approval_reference": "Latest whole-game implementation continuation; production contract BS-REPLAN-20260913-05; exact protected manifest and fresh current-task PR label required separately",
+  "base_current_observed": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
+  "adopted_base": "9.4.4_UNCHANGED",
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "source_and_evidence": "Current eb3a47cb recovery service/SaveEnvelope/workshop/app/GUT; official Anvil Saga, Weapon Shop Fantasy, My Time at Sandrock, Godot Saving games/ConfirmationDialog on 2026-09-13; URLs and comparison in production contract BS-REPLAN-20260913-05",
+        "observed_pattern": "Craft and commission loop; explicit commit and confirmation boundary",
+        "project_fit_and_difference": "Reuse atomic save, preserve UID and unfinished order; no copied economic values or automatic aging",
+        "disposition": "ADAPT"
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "Existing recovery service and workshop UI, direct tests and current human blueprint; no removal",
+    "inventory": [
+      {
+        "path": "scripts/vertical_slice/services/vs_recovery_order_service.gd",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "PR375 merged current service",
+        "references_and_consumers": "SaveEnvelope validation, workshop and app forge; actual GUT baseline304/2973",
+        "removal_proposed": false
+      },
+      {
+        "path": "docs/archive/protected-approvals/recovery-order-pr375-20260913.json",
+        "classification": "ARCHIVE",
+        "owner_or_provenance": "Consumed exact approval preserved by PR376",
+        "references_and_consumers": "Historical regression only; never reused as current authorization",
+        "removal_proposed": false
+      }
+    ]
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "BS-REPLAN-20260913-05",
+    "source_main_sha": "eb3a47cb1d33f5f942786de42acfbe15b46db1d0",
+    "work_item_refs": [
+      "DAY-LOOP"
+    ],
+    "active_work_item_ref": "DAY-LOOP",
+    "next_action": "Final round2 review, exact-head CI and protected merge/readback",
+    "work_items": [
+      {
+        "work_item_id": "DAY-LOOP",
+        "title": "Manual day close and repeated recovery crafting",
+        "status": "IN_PROGRESS",
+        "canon_owner": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
+        "actual_consumers": [
+          "scripts/vertical_slice/services/vs_recovery_order_service.gd",
+          "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+        ],
+        "depends_on": [],
+        "acceptance_criteria": [
+          "day-save",
+          "repeat-craft",
+          "delivery"
+        ],
+        "required_evidence": [
+          "E2_TEST",
+          "E3_RUNTIME"
+        ],
+        "checklist": [
+          {
+            "id": "day-save",
+            "text": "Cancel/failure/duplicate cannot double advance or reward; unfinished order preserved",
+            "evidence": ["tests/gut/unit/vertical_slice/test_vs_replan_tag_save.gd: manual-close tests, full309/3088 PASS; actual cancel save hash unchanged and day2 restart"],
+            "status": "PASS"
+          },
+          {
+            "id": "repeat-craft",
+            "text": "New day refills completed order, distinct item crafted and paid once after restart",
+            "evidence": ["docs/testing/recovery-day-repeat-delivered-20260913.png; run35 day2 DELIVERED, three distinct items, gold17470/reinforcement24"],
+            "status": "PASS"
+          },
+          {
+            "id": "delivery",
+            "text": "Current PDF visual/checklist, protected exact CI and main readback",
+            "status": "NOT_RUN"
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "GUT309 tests/3088 assertions exit0; malformed integer/chronology and actual-layout RED observed then GREEN",
+              "Approved exact2-path operating contract PASS"
+            ]
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "PASS",
+            "evidence": [
+              "docs/testing/recovery-day-confirm-20260913.png",
+              "docs/testing/recovery-day-repeat-delivered-20260913.png",
+              "HiGodot blacksmith@c857 run35: day2 history1+active DELIVERED, items3, gold17470/reinforcement24/flame63/earth64 after restart; native pointer craft/commit/delivery; original shield remains selected"
+            ]
+          }
+        ],
+        "next_action": "Final round2 review, exact-head CI and protected merge/readback"
+      }
+    ]
+  },
+  "evidence_ceiling": "Desktop and automated proof only; final CI/merge pending; whole game/Android/human/balance/art/motion/release incomplete"
+}
