@@ -12,7 +12,7 @@ ADAPTER = ROOT / "skills/PROJECT_BASE_ADAPTER.json"
 HEALTH = ROOT / "docs/PROJECT_OPERATING_HEALTH.json"
 CURRENT = ROOT / "CURRENT_CONFIRMED_DECISIONS.md"
 HANDOFF = ROOT / "docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md"
-OPERATING_CONTRACT_BASELINE = "c31e550fc8d5b27d4377aeb542fde3cbfe228c06"
+CURRENT_DELIVERY_RECEIPT = ROOT / "docs/operations/receipts/2026-09-10-pixel-world-blueprint.json"
 BASE_RELEASE_VERSION = "9.4.4"
 HEALTH_EVIDENCE_HASHES = {
     "BS-ADAPTER-MIGRATION-20260806": "f074e5c72cb7e8da2d89c5893daa2439db4111d97d92ca9a9a97bed5cfa85e65",
@@ -66,9 +66,10 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
 
     def test_adapter_uses_the_released_reuse_first_base_contract(self) -> None:
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
+        delivery = json.loads(CURRENT_DELIVERY_RECEIPT.read_text(encoding="utf-8"))["remote_delivery"]
         self.assertEqual(BASE_RELEASE_VERSION, adapter["base_release"]["version"])
         self.assertEqual(
-            OPERATING_CONTRACT_BASELINE,
+            delivery["adapter_baseline_advanced_to"],
             adapter["protected_baseline"]["commit"],
         )
 

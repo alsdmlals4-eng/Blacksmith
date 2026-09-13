@@ -6,7 +6,7 @@ from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-APPROVAL = ROOT / "docs/operations/PROJECT_PROTECTED_CHANGE_APPROVAL.json"
+APPROVAL = ROOT / "docs/archive/protected-approvals/replan-pr371-20260913.json"
 PATHS = [
     "scripts/vertical_slice/domain/vs_replan_tag_rules.gd",
     "scripts/vertical_slice/domain/vs_replan_tag_rules.gd.uid",
@@ -29,7 +29,7 @@ PATHS = [
 
 class ReplanProtectedApprovalTests(unittest.TestCase):
     def test_approved_scope_and_fail_closed_boundaries(self):
-        self.assertTrue(APPROVAL.is_file(), "Approved replan scope has no machine-readable manifest")
+        self.assertTrue(APPROVAL.is_file(), "Consumed replan approval must remain preserved as historical evidence")
         configured = os.environ.get("BASE_VALIDATOR_ROOT")
         validator_root = Path(configured) if configured else ROOT / ".base-contract"
         if not (validator_root / "tools/check_approved_project_operating_contract.py").is_file():
@@ -40,8 +40,7 @@ class ReplanProtectedApprovalTests(unittest.TestCase):
         gate = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(gate)
         approval = json.loads(APPROVAL.read_text(encoding="utf-8"))
-        adapter = json.loads((ROOT / "skills/PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
-        baseline = adapter["protected_baseline"]["commit"]
+        baseline = "c31e550fc8d5b27d4377aeb542fde3cbfe228c06"
         self.assertEqual([], gate.validate_approval_document(
             approval, protected_base=baseline, changed_paths=PATHS, externally_approved=True))
         for paths, base, external in [
