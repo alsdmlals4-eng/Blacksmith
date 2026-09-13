@@ -1,5 +1,7 @@
 # [현재 정본] Active Context
 
+> 2026-09-13 최신 병합: PR373/278caffc exact10SUCCESS·1조건부SKIPPED 후76ad0bb0 정상병합, 로컬main=origin/main 확인. 결투·군대+실제 결과 PDF58쪽은 main 반영 완료. 소진8경로 승인 보존/회수 및 baseline76ad0bb0 교정은 별도 후속PR로 전달한다. 일반gate와 파생뷰 검사, 관련23검사 통과; Base v9.4.4 불변. 다음 제품은 재기 주문→작품 소비→1회 정산→재료순환, 생산계약 최상단이 상세범위 owner. 아래 PR373미병합/활성승인 상태는 역사기록이다.
+
 > 2026-09-13 현재 PR373 / BS-REPLAN-20260913-03: 결투DU·군대AR를 기존AQ와 연결했다. 자연성장 QA슬롯에서 결투 출발→재시작→패배/손상5→4, 군대 성공/손상4→3을 실제 입력으로 확인했다. 저장된 세 사건의 반복 보고 열람은 저장SHA 불변. GUT300/2912, PDF58쪽(실제 결과 캡처57·체크리스트58) 로컬 검증; 최종 검토·exact-head CI·병합은 진행 중. 현재8경로 승인만 적용하고 Base v9.4.4/baseline df48은 유지한다. 상세 책임 원본은 생산계약 최상단. 다음은 주문·인계·정산·재제작/재료순환이며 전체 게임은 미완료다.
 
 > CURRENT_PRIORITY_OVERLAY — 최신 사용자 지시와 `AGENTS.md` → `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`가 현재 작업 범위/증거를 소유한다. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`는 기존 결정 추적 진입점이며 최신 replan override를 덮어쓰지 않는다. 이 고정 진입점 아래 날짜별 기록은 해당 시점의 증거다.
