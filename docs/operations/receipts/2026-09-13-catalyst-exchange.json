@@ -38,13 +38,13 @@
     "work_item_refs": [
       "EXCHANGE"
     ],
-    "active_work_item_ref": "EXCHANGE",
-    "next_action": "Final exact-head review, CI, protected merge/readback and consumed approval retirement; whole-game continues",
+    "active_work_item_ref": null,
+    "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
     "work_items": [
       {
         "work_item_id": "EXCHANGE",
         "title": "Persisted choice catalyst reinvestment from workshop",
-        "status": "IN_PROGRESS",
+        "status": "DONE",
         "canon_owner": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
         "actual_consumers": [
           "scripts/vertical_slice/domain/vs_save_envelope.gd",
@@ -80,7 +80,10 @@
           {
             "id": "AC3",
             "text": "Restart/capture/PDF bindings, two reviews and exact protected delivery readback",
-            "status": "NOT_RUN"
+            "status": "PASS",
+            "evidence": [
+              "Native restart/captures; source-bound PDF64/11tests and render63/64 PASS; two full reviews no unresolved P1/P2; PR379 exact-head CI11SUCCESS/1conditionalSKIP including ready-event rerun; merge d50c24de local=origin/main; approval Git blob220e21bef16a1b129c718518c928fbd08fd067b4 preserved verbatim"
+            ]
           }
         ],
         "verification": [
@@ -88,7 +91,7 @@
             "level": "E2_TEST",
             "status": "PASS",
             "evidence": [
-              "Full GUT313/3175 before final5assertions; focused34/643 after; Python510passed3skipped; final full rerun pending"
+              "Final full GUT313tests/3180assertions exit0; focused34/643; Python510passed3skipped exit0; exact four-path approved contract PASS"
             ]
           },
           {
@@ -101,14 +104,34 @@
             ]
           }
         ],
-        "next_action": "Final exact-head review, CI, protected merge/readback and consumed approval retirement; whole-game continues"
+        "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": ["PR379 MERGED d50c24de07e68cbcefbc94a9cce0f715095efde0; local main/origin main equal after fresh fetch and ff-only pull"],
+        "rollback": "Normal protected revert only; preserve user/QA saves and do not reopen exchange-bearing slots in older builds. Four-path approval retained verbatim. Zero remaining counters belong only to delivered exchange slice, never the whole game.",
+        "verified_head_sha": "a7158cf9804a4fdbc0ed2ffc76b4906e19fa3afb"
       }
     ]
   },
-  "evidence_ceiling": "BOUNDED_DESKTOP_RUNTIME; final CI/merge pending; whole-game/Android/human/final art/release NOT_COMPLETE",
+  "evidence_ceiling": "This catalyst exchange slice delivered; whole-game, Android, human balance/accessibility, final art/motion and release incomplete",
   "lessons": [
     "Round1 mandatory coverage gaps closed without product changes; no new shared framework",
     "Windows receipt stdout requires python -X utf8; partial output with exit1 not PASS",
     "Diagnostic field typo paused own game; corrected _campaign_envelope and clean run39/40; no product code workaround"
-  ]
+  ],
+  "status": "DELIVERED_DESKTOP_VERIFIED",
+  "remote_delivery": {
+    "pull_request": 379,
+    "reviewed_product_head": "a7158cf9804a4fdbc0ed2ffc76b4906e19fa3afb",
+    "merge_commit": "d50c24de07e68cbcefbc94a9cce0f715095efde0",
+    "main_readback": "PASS_LOCAL_EQUALS_ORIGIN",
+    "checks": "11 SUCCESS / 1 conditional SKIPPED including ready-event validator rerun verified before normal merge",
+    "approval_archive": "docs/archive/protected-approvals/catalyst-exchange-pr379-20260913.json",
+    "one_shot_approval_status": "RETIRED_ARCHIVED_NOT_DELETED",
+    "adapter_baseline_advanced_to": "d50c24de07e68cbcefbc94a9cce0f715095efde0",
+    "review": "Exactly two full rounds, no unresolved P1/P2"
+  },
+  "next_whole_game_work": "Next fresh-read Blueprint16/20/39 and producer/consumers to specify varied commissions and general materials separately from zero-resource recovery; then remaining equipment world-use, Modak growth/motion and platform/human gates. Reused authorization continues."
 }

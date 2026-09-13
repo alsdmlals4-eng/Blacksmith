@@ -1,5 +1,9 @@
 # [현재 정본] Active Context
 
+> CURRENT_PRIORITY_OVERLAY — 최신 사용자 지시와 `AGENTS.md` → `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`가 현재 작업 범위/증거를 소유한다. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`는 기존 결정 추적 진입점이며 최신 replan override를 덮어쓰지 않는다. 이 고정 진입점 아래 날짜별 기록은 해당 시점의 증거다.
+
+> 2026-09-13 최신 전달: PR379/a7158cf9→d50c24de 정상병합·local/origin main 일치. 촉매 교환→정밀소비 연결, 실제2종교환/재시작·PDF64쪽, final313GUT/3180 assertions·510Python/3skip·2차검토·exact CI 통과. consumed4경로 승인은 archive 보존·종료, baseline d50c24de만 갱신하며 Base v9.4.4 불변. 아래 PR379 pending은 역사 상태. 현재 owner는 생산계약 최상단과 catalyst-exchange receipt. 전체게임 미완료: 다음은 다양한 의뢰/일반재료→나머지 장비 실제세계사용→모닥 성장/모션→기기/사람검수.
+
 > 2026-09-13 현재 PR379: 촉매 보충의 실제 교환·재시작·정밀강화 자원 소비까지 연결했다. PDF64쪽(기존62쪽 보존), 실제 2종 교환 후15470골드/불의 심장64/대지의 결정65·영업일2·기존 작품 유지. 상세 계획/검증 owner는 생산계약 최상단 BS-REPLAN-20260913-06 및 receipts/2026-09-13-catalyst-exchange.json. 최종2차검토/CI/병합은 아직 진행 중이며 전체게임·Android·사람 재미·최종미술은 미완료. 아래 PR377 전달은 이전 체크포인트이며 Base v9.4.4는 유지한다.
 
 > 2026-09-13 최신 전달: PR377/6e4976cb→1abd89ee 정상병합 및 local/origin main 일치. 실제 마감1→2일·재시작·다음 주문 단조/납품·재시작 검증, PDF62쪽. 승인 exact2경로는 archive 보존/회수, Base v9.4.4 유지. 아래 PR375·day pending은 역사 상태. 현재 owner는 생산계약 최상단과 receipts/2026-09-13-recovery-day-loop.json. 전체게임은 미완료이며 다음은 다양한 주문·재료/촉매 재투자→장비별 세계 사용→모닥 성장·배우/모션·기기/사람 검수.
@@ -11,8 +15,6 @@
 > 2026-09-13 최신 병합: PR373/278caffc exact10SUCCESS·1조건부SKIPPED 후76ad0bb0 정상병합, 로컬main=origin/main 확인. 결투·군대+실제 결과 PDF58쪽은 main 반영 완료. 소진8경로 승인 보존/회수 및 baseline76ad0bb0 교정은 별도 후속PR로 전달한다. 일반gate와 파생뷰 검사, 관련23검사 통과; Base v9.4.4 불변. 다음 제품은 재기 주문→작품 소비→1회 정산→재료순환, 생산계약 최상단이 상세범위 owner. 아래 PR373미병합/활성승인 상태는 역사기록이다.
 
 > 2026-09-13 현재 PR373 / BS-REPLAN-20260913-03: 결투DU·군대AR를 기존AQ와 연결했다. 자연성장 QA슬롯에서 결투 출발→재시작→패배/손상5→4, 군대 성공/손상4→3을 실제 입력으로 확인했다. 저장된 세 사건의 반복 보고 열람은 저장SHA 불변. GUT300/2912, PDF58쪽(실제 결과 캡처57·체크리스트58) 로컬 검증; 최종 검토·exact-head CI·병합은 진행 중. 현재8경로 승인만 적용하고 Base v9.4.4/baseline df48은 유지한다. 상세 책임 원본은 생산계약 최상단. 다음은 주문·인계·정산·재제작/재료순환이며 전체 게임은 미완료다.
-
-> CURRENT_PRIORITY_OVERLAY — 최신 사용자 지시와 `AGENTS.md` → `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`가 현재 작업 범위/증거를 소유한다. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`는 기존 결정 추적 진입점이며 최신 replan override를 덮어쓰지 않는다. 이 고정 진입점 아래 날짜별 기록은 해당 시점의 증거다.
 
 > 2026-09-13 병합 후: PR371/dc2c8bbc를16SUCCESS/1조건부SKIPPED 후 정상 병합(df48dd06). 로컬main·원격main 동일 확인. 소진16경로 승인은 archive로 내용그대로 보존, 프로젝트 보호baseline만 병합점에 맞추고 Base v9.4.4/보호목록/CI잠금 유지. 일반 gate·회수회귀 통과 후 후속PR readback 대상. 전체게임은 미완료; 다음 결투/군대 사건→주문·재제작·자원순환→달력/모닥·자산모션 연결. 아래 PR371미병합/활성manifest는 역사 상태다.
 
