@@ -1,5 +1,7 @@
 # [현재 정본] Active Context
 
+> 2026-09-14 WORLD5 전달: PR381/d7f337a9→5a84c4b2 정상 병합, local/origin main 일치. 활 직접제작·재시작과 갑옷/투구 시험 장비 native 검증, PDF74(기존72 보존),315GUT/3278·515Python/3skip·exact11SUCCESS/1조건부생략 확인. consumed2경로 승인은 world5-pr381-20260914 archive에 원문 보존. Base v9.4.4 유지/기준선만 검증된 병합으로 갱신. 다음은 R02~R04 일반 의뢰·전용재료·정산이며 전체게임 완성이 아니다. 아래 pending/준비전용 문장은 역사 상태다.
+
 > 2026-09-14 BS-REPLAN-20260914-08: 사용자가 R01~R12 명세 순서의 조사·구현·개선 연속 진행을 승인했다. 아래 명세 준비 전용 경계는 역사 상태다. 현재 생산계약 최상단과 WORLD5 receipt가 실행/증거를 소유한다. R01은 활 직접 제작→저장→재시작→결과와 갑옷·투구 시험 장비 native 흐름을 검증 중이며, 전체게임·main 전달 완료는 아직 아니다. 기존 Base v9.4.4, 보호 경로 gate, 사용자 저장과 승인 자산을 유지한다.
 
 > CURRENT_PRIORITY_OVERLAY — 최신 사용자 지시와 `AGENTS.md` → `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`가 현재 작업 범위/증거를 소유한다. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`는 기존 결정 추적 진입점이며 최신 replan override를 덮어쓰지 않는다. 이 고정 진입점 아래 날짜별 기록은 해당 시점의 증거다.
