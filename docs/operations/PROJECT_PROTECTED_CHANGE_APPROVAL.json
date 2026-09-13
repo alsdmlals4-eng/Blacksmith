@@ -6,6 +6,6 @@
   "decision_ids":["BS-REPLAN-20260913-06"],
   "approved_paths":["scripts/vertical_slice/services/vs_catalyst_exchange_service.gd","scripts/vertical_slice/services/vs_catalyst_exchange_service.gd.uid","scripts/vertical_slice/domain/vs_save_envelope.gd","scripts/vertical_slice/ui/vs_workshop_screen.gd"],
   "approval_source":"Latest user whole-game implementation continuation without routine reapproval; Blueprint39 trial exchange and exact production plan BS-REPLAN-20260913-06. Fresh current-task PR approved-protected-change metadata must be independently read before product authoring; archive approvals not reused.",
-  "approval_time":"2026-09-13T19:00:00+09:00",
+  "approval_time":"2026-09-13T18:48:25+09:00",
   "scope_summary":"Versioned trial catalyst exchange, receipt validation, native workshop quote/confirm/cancel and existing campaign resource integration. No initial grants, recovery price change, legacy conversion, new Scene/asset/tool or Base lock change."
 }

@@ -61,6 +61,42 @@ func test_catalyst_exchange_persists_choice_once_and_preserves_items():
 	var legacy = Initializer.new().create_candidate_envelope()
 	assert_eq(service.purchase(legacy,"heart_of_flame",1,save).status,"BLOCKED")
 
+func test_catalyst_exchange_native_confirmation_updates_shared_resources_once():
+	var envelope = _aqueduct_envelope()
+	var save = RecoveryFailSave.new("user://gut/catalyst-exchange-ui.json")
+	assert_eq(save.save_envelope(envelope),OK)
+	var before = envelope.resource_snapshot()
+	var app = autofree(load("res://scenes/vertical_slice/vertical_slice_app.tscn").instantiate())
+	add_child(app)
+	var resources = Resources.new(before.gold,before.material_stock)
+	assert_true(app.configure_campaign(envelope,resources,null,null,save))
+	var screen = app.get_node("ScreenHost/WorkshopScreen")
+	var button = screen.get_node_or_null("WorkshopScroll/WorkshopLayout/CatalystExchange/heart_of_flame")
+	assert_not_null(button,"Earned gold must reach exchange through native workshop controls")
+	if button == null: return
+	button.pressed.emit()
+	var dialog = screen.get_node("CatalystExchangeConfirmation")
+	assert_true(dialog.visible)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	assert_gte(dialog.get_ok_button().size.y,96.0)
+	assert_gte(dialog.get_cancel_button().size.y,96.0)
+	dialog.canceled.emit()
+	dialog.hide()
+	dialog.confirmed.emit()
+	assert_eq(save.load_envelope().resource_snapshot(),before,"Cancel clears pending request")
+	button.pressed.emit()
+	dialog.confirmed.emit()
+	dialog.hide()
+	assert_eq(save.load_envelope().resource_snapshot().gold,before.gold-1000)
+	assert_eq(resources.snapshot().gold,before.gold-1000)
+	assert_eq(app._campaign_envelope.resource_snapshot().material_stock.heart_of_flame,before.material_stock.heart_of_flame+1)
+	dialog.confirmed.emit()
+	assert_eq(save.load_envelope().resource_snapshot().gold,before.gold-1000)
+	screen.hide()
+	button.pressed.emit()
+	assert_false(dialog.visible)
+
 func test_manual_close_persists_day_without_rewards_or_duplicate_advance():
 	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new()
 	assert_true(service.has_method("close_day"), "Manual close must persist once per campaign/source day")

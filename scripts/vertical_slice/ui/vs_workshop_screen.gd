@@ -80,6 +80,7 @@ var _precision_selection_data: Dictionary = {}
 var _world_view_mode := "COLLAPSED"
 var _trial_family := "AQ"
 var _day_close_source := -1
+var _exchange_pending: Dictionary = {}
 
 
 func _ready() -> void:
@@ -537,6 +538,86 @@ func _on_precision_backfill_pressed() -> void:
 		message.text = "정밀 태그 정정 완료" if str(result.get("outcome", "")) == "APPLIED" else "정밀 태그 정정 불가"
 
 
+func _refresh_catalyst_exchange() -> void:
+	var layout = get_node_or_null("WorkshopScroll/WorkshopLayout")
+	if layout == null: return
+	var service = load("res://scripts/vertical_slice/services/vs_catalyst_exchange_service.gd")
+	var enabled = _campaign_envelope != null and _campaign_envelope.active_run.get("tag_ruleset_id","") == service.RULESET
+	var box = layout.get_node_or_null("CatalystExchange")
+	if box == null and enabled:
+		box = VBoxContainer.new()
+		box.name = "CatalystExchange"
+		box.add_theme_constant_override("separation",8)
+		layout.add_child(box)
+		layout.move_child(box,2)
+		var summary = Label.new()
+		summary.name = "Summary"
+		summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		summary.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+		summary.add_theme_color_override("font_color",Color("2d211a"))
+		summary.add_theme_stylebox_override("normal",_wireframe_card_style())
+		box.add_child(summary)
+		for catalyst in service.CATALYSTS:
+			var button = Button.new()
+			button.name = catalyst
+			button.custom_minimum_size.y = MOBILE_TOUCH_TARGET_HEIGHT
+			button.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+			button.pressed.connect(_on_catalyst_exchange_pressed.bind(catalyst))
+			box.add_child(button)
+	if box == null: return
+	box.visible = enabled
+	if not enabled: return
+	var stock = _campaign_envelope.resource_snapshot()
+	box.get_node("Summary").text = "촉매 보충 · 정밀강화에 재투자\n보유 골드 %d · 불의 심장 %d / 대지의 결정 %d\n%d골드 → 선택 촉매 1개 (경제 시험값)\n골드가 부족하면 재기 주문을 납품하세요." % [stock.gold,stock.material_stock.get("heart_of_flame",0),stock.material_stock.get("earth_crystal",0),service.COST]
+	for catalyst in service.CATALYSTS:
+		var offer = service.quote(_campaign_envelope,catalyst)
+		var button = box.get_node(catalyst)
+		button.text = "%s 1개 보충 · %d골드" % [service.CATALYSTS[catalyst],service.COST]
+		button.disabled = _save_service == null or offer.status != "READY"
+
+func _on_catalyst_exchange_pressed(catalyst: String) -> void:
+	if not is_visible_in_tree() or _save_service == null: return
+	var service = load("res://scripts/vertical_slice/services/vs_catalyst_exchange_service.gd")
+	var offer = service.quote(_campaign_envelope,catalyst)
+	if offer.status != "READY": return
+	var dialog = get_node_or_null("CatalystExchangeConfirmation")
+	if dialog == null:
+		dialog = ConfirmationDialog.new()
+		dialog.name = "CatalystExchangeConfirmation"
+		dialog.title = "촉매를 보충할까요?"
+		dialog.ok_button_text = "교환하기"
+		dialog.cancel_button_text = "취소"
+		add_child(dialog)
+		dialog.get_label().add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+		dialog.add_theme_constant_override("buttons_min_width",272)
+		dialog.add_theme_constant_override("buttons_min_height",MOBILE_TOUCH_TARGET_HEIGHT)
+		for button in [dialog.get_ok_button(),dialog.get_cancel_button()]:
+			button.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+		dialog.confirmed.connect(_on_catalyst_exchange_confirmed)
+		dialog.canceled.connect(_on_catalyst_exchange_canceled)
+	_exchange_pending = {"source":load("res://scripts/vertical_slice/domain/vs_save_envelope.gd").from_dict(_campaign_envelope.to_dict()),"catalyst":catalyst,"sequence":offer.sequence}
+	dialog.dialog_text = "%s 1개\n골드 %d → %d\n보유 수량 %d → %d\n확인하면 저장되며 골드를 소비합니다." % [service.CATALYSTS[catalyst],_campaign_envelope.workshop_resources.gold,_campaign_envelope.workshop_resources.gold-offer.cost,offer.stock,offer.stock+1]
+	dialog.popup_centered(Vector2i(640,360))
+
+func _on_catalyst_exchange_canceled() -> void:
+	_exchange_pending.clear()
+
+func _on_catalyst_exchange_confirmed() -> void:
+	if _exchange_pending.is_empty() or not is_visible_in_tree(): return
+	var request = _exchange_pending.duplicate()
+	_exchange_pending.clear()
+	var result = load("res://scripts/vertical_slice/services/vs_catalyst_exchange_service.gd").new().purchase(request.source,request.catalyst,request.sequence,_save_service)
+	if result.has("envelope"):
+		_campaign_envelope = result.envelope
+		var stock = _campaign_envelope.resource_snapshot()
+		_resources.gold = stock.gold
+		_resources.material_stock = stock.material_stock.duplicate(true)
+		_resources.changed.emit(_resources.snapshot())
+		campaign_saved.emit(_campaign_envelope,result)
+		_refresh_controls()
+	else:
+		get_node("WorkshopScroll/WorkshopLayout/CatalystExchange/Summary").text += "\n교환 결과 확인 필요 · 다시 불러와 재고를 확인하세요."
+
 func _refresh_recovery_order() -> void:
 	var layout = get_node_or_null("WorkshopScroll/WorkshopLayout")
 	if layout == null: return
@@ -772,6 +853,7 @@ func _refresh_controls() -> void:
 	_refresh_replan_choices()
 	_refresh_world_viewer()
 	_refresh_recovery_order()
+	_refresh_catalyst_exchange()
 
 
 func set_world_view_mode(mode: String) -> bool:
