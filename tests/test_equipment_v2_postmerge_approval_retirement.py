@@ -35,7 +35,8 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
     def test_postmerge_contract_retires_the_consumed_protected_change_approval(self) -> None:
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
-        self.assertEqual(CURRENT_PRODUCT_MERGE, adapter["protected_baseline"]["commit"])
+        current_delivery = json.loads((ROOT / "docs/operations/receipts/2026-09-10-pixel-world-blueprint.json").read_text(encoding="utf-8"))["remote_delivery"]
+        self.assertEqual(current_delivery["adapter_baseline_advanced_to"], adapter["protected_baseline"]["commit"])
         # Retirement belongs to the consumed approval, not this reusable path.
         # A later approved task may publish a new manifest against the merged base.
         if APPROVAL.exists():
@@ -45,7 +46,17 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
                 current["protected_base_commit"],
                 "The consumed independent-forge approval must not be resurrected",
             )
+            self.assertNotEqual("c31e550fc8d5b27d4377aeb542fde3cbfe228c06", current["protected_base_commit"], "The consumed PR371 approval must not be resurrected")
             self.assertEqual(adapter["protected_baseline"]["commit"], current["protected_base_commit"])
+
+    def test_replan_checkpoint_is_bound_to_the_merged_source_and_preserved_approval(self):
+        receipt = json.loads((ROOT / "docs/operations/receipts/2026-09-10-pixel-world-blueprint.json").read_text(encoding="utf-8"))["remote_delivery"]
+        self.assertEqual("df48dd06bffa1df11287029d2c7f43815f84ad23", receipt["merge_commit"])
+        self.assertEqual("dc2c8bbc974d4ea1248361abe15bd0298d487632", receipt["reviewed_product_head"])
+        self.assertEqual("RETIRED_ARCHIVED_NOT_DELETED", receipt["one_shot_approval_status"])
+        archive = ROOT / receipt["approval_archive"]
+        self.assertTrue(archive.is_file())
+        self.assertEqual("c31e550fc8d5b27d4377aeb542fde3cbfe228c06", json.loads(archive.read_text(encoding="utf-8"))["protected_base_commit"])
 
     def test_independent_loop_receipt_records_merged_delivery_and_retirement(self) -> None:
         receipt = json.loads(INDEPENDENT_LOOP_RECEIPT.read_text(encoding="utf-8"))

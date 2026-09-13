@@ -2,13 +2,20 @@
   "schema_version": 1,
   "receipt_id": "BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910",
   "work_level": "L1",
-  "status": "DESIGN_PDF_RENDER_REVIEWED_DRAFT_PR_OPEN",
+  "status": "IMPLEMENTATION_CHECKPOINT_MERGED_FULL_GAME_IN_PROGRESS",
   "remote_delivery": {
     "pull_request": "https://github.com/alsdmlals4-eng/Blacksmith/pull/371",
-    "reviewed_product_head": "29d6d23ac43983bfb81f1cb6b95e2e3bcc3c7cbf",
-    "branch_readback": "PREVIOUS_CHECKPOINT_ONLY_CURRENT_HEAD_RECORDED_IN_PR_COMMENT",
-    "main": "UNCHANGED_NOT_MERGED",
-    "ci": "29d6d23a: 16_SUCCESS_1_CONDITIONAL_SKIPPED; later world-viewer/document head requires fresh readback"
+    "reviewed_product_head": "dc2c8bbc974d4ea1248361abe15bd0298d487632",
+    "branch_readback": "EXACT_HEAD_CONFIRMED_BEFORE_NORMAL_PROTECTED_MERGE",
+    "main": "LOCAL_AND_ORIGIN_MAIN_READBACK_PASS",
+    "ci": "dc2c8bbc: 16_SUCCESS_1_CONDITIONAL_SKIPPED",
+    "merge_commit": "df48dd06bffa1df11287029d2c7f43815f84ad23",
+    "merged_at": "2026-09-13T01:26:50Z",
+    "one_shot_approval_status": "RETIRED_ARCHIVED_NOT_DELETED",
+    "approval_archive": "docs/archive/protected-approvals/replan-pr371-20260913.json",
+    "adapter_baseline_advanced_to": "df48dd06bffa1df11287029d2c7f43815f84ad23",
+    "closure_delivery": "PENDING_SEPARATE_NORMAL_PR_READBACK",
+    "evidence_ceiling": "MACHINE_AND_BOUNDED_DESKTOP_RUNTIME_ONLY; FULL_GAME_ART_MOTION_ANDROID_HUMAN_RELEASE_INCOMPLETE"
   },
   "scope": "2026-09-13 authorized implementation checkpoint: 56-page integrated PDF preserves detailed design and state atlas, adds current checklist, actual Godot captures, first-forge/+0-to-aqueduct corrections, optional saved-report split/focus views and remaining game queue. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. Candidate art remains distinct; no asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban below is historical evidence, not current execution authority.",
   "artifact": {
