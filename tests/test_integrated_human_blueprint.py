@@ -10,6 +10,13 @@ RECORD = ROOT / 'docs/design/candidates/blueprint-20260911/record.json'
 
 
 class IntegratedHumanBlueprint(unittest.TestCase):
+    def test_exchange_checkpoint_shows_reinvestment_and_evidence_limits(self):
+        content = SOURCE.read_text(encoding='utf-8')
+        for text in ['## 63.', '## 64.', '15470', 'CATALYST_EXCHANGE_TRIAL_V1',
+                     'catalyst-exchange-confirm-20260913.png',
+                     'catalyst-exchange-restored-20260913.png']:
+            self.assertIn(text, content)
+
     def test_manual_day_checkpoint_shows_repeat_play_and_remaining_limits(self):
         content = SOURCE.read_text(encoding='utf-8')
         for text in ['## 61.', '## 62.', '17470', 'recovery-day-confirm-20260913.png',
