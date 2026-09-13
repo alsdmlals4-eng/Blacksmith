@@ -2,6 +2,10 @@
 
 ## Recovery Order Implementation Plan — BS-REPLAN-20260913-04
 
+최신 전달: PR375/fbfde8f2 두 차례 전체 검토 후 추가 P1/P2없음, exact11SUCCESS/1조건부SKIPPED를 확인하고4976ae2c 정상병합. 로컬main=origin/main readback. CI 초기 외부 TLS/import 실패는 동일 head 실패작업 재실행으로 통과했고 gate는 완화하지 않았다. Python 전체506PASS/3SKIP, PDF9PASS, GUT304/2973PASS. 납품 뒤 재시작·완료버튼 재클릭은 저장SHA56365d15 불변. 아래 진행중 기록은 이전 checkpoint이다.
+
+승인 회수 교정: consumed5경로 manifest를 내용그대로 archive에 보존하고 baseline만4976ae2c로 정합화. RED3→일반 gate/파생뷰/역사승인 회귀로 검증한다. Base v9.4.4·validator·보호경로/기존 사용자 import와 후보는 불변. 신규 실행범위는 다음 작업의 fresh PR metadata+exact 승인으로 등록한다. 운영 정리 자체를 제품 기능 향상으로 세지 않는다.
+
 현재 결과: PR375의 exact5보호경로에 첫 재기 주문 수락→전용 재료 단조→예약 UID→납품 정산을 연결했다. 기존 작품/선택 UID 보존. 실제 파일 왕복에서 JSON 정수/소수 동일값 비교, 실패 후 단조 결과 재시도 latch, 복귀 버튼/스크롤 겹침, 필수 campaign 키 누락의 debugger break를 각각 RED로 재현·교정했다. GUT304/2973 PASS. HiGodot patch의 fallback43은 검사 PASS로 세지 않고 전체 엔진 실행과 재시작으로 확인했다.
 
 실제 QA: 기존 자연성장 슬롯에서 포인터 수락→망치질28회→마감→새 철검 저장→게임 재시작 READY→납품. Gold16670→17070/보강20→22, 불63/대지64와 기존 철방패+10/3·5·5 불변. 슬롯 선택과 스크롤 가시성만 보조했고 결과/재화/단계/RNG 주입 없음. 중간 QA eval의 잘못된 변수/컴파일 오류로 미저장 단조가 중단돼 저장된 ACCEPTED에서 재시작했다. 이는 최종 게임 오류 없음 주장과 구분한다. 실제 캡처/PDF59절 추가; 최종 독립검토·exact-head CI·병합/readback은 진행 중이다.
