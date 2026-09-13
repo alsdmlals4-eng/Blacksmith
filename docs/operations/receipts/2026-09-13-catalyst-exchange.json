@@ -1,0 +1,114 @@
+{
+  "work_level": "L2",
+  "approval_reference": "BS-REPLAN-20260913-06; latest user whole-game implementation continuation; Blueprint39",
+  "continuous_work_state": "CONTINUOUS_WORK_ACTIVE",
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "source_and_evidence": "main aa6a339d; current recovery/save/workshop; Base d830c0f reuse handoff/profile/registry; official Steam Anvil Saga1587540, Weapon Shop Fantasy599460, Sandrock1084600; Godot stable Saving games/ConfirmationDialog read 2026-09-13",
+        "observed_pattern": "orders/materials reinvested in crafting, explicit confirmation and persisted state",
+        "project_fit_and_difference": "Reuse project atomic save; Blueprint39 trial1000Gold choice, no imported rewards or shared framework",
+        "disposition": "ADAPT"
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "exchange owner and direct save/UI consumers only",
+    "inventory": [
+      {
+        "path": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "latest AGENTS production queue",
+        "references_and_consumers": "Blueprint39 and actual save/workshop checked",
+        "removal_proposed": false
+      },
+      {
+        "path": "docs/design/candidates",
+        "classification": "UNKNOWN_UNVERIFIED",
+        "owner_or_provenance": "pre-existing candidate/import files",
+        "references_and_consumers": "not exchange consumers; preserve",
+        "removal_proposed": false
+      }
+    ]
+  },
+  "project_work_kanban": {
+    "goal_or_slice_issue_ref": "BS-REPLAN-20260913-06",
+    "source_main_sha": "aa6a339d2e061d7bca67af4012db5d00bfe628f6",
+    "work_item_refs": [
+      "EXCHANGE"
+    ],
+    "active_work_item_ref": "EXCHANGE",
+    "next_action": "Final exact-head review, CI, protected merge/readback and consumed approval retirement; whole-game continues",
+    "work_items": [
+      {
+        "work_item_id": "EXCHANGE",
+        "title": "Persisted choice catalyst reinvestment from workshop",
+        "status": "IN_PROGRESS",
+        "canon_owner": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
+        "actual_consumers": [
+          "scripts/vertical_slice/domain/vs_save_envelope.gd",
+          "scripts/vertical_slice/ui/vs_workshop_screen.gd"
+        ],
+        "depends_on": [],
+        "acceptance_criteria": [
+          "AC1",
+          "AC2",
+          "AC3"
+        ],
+        "required_evidence": [
+          "E2_TEST",
+          "E3_RUNTIME"
+        ],
+        "checklist": [
+          {
+            "id": "AC1",
+            "text": "Real persisted exchange rejects duplicate, stale, invalid and insufficient requests without extra charge",
+            "status": "PASS",
+            "evidence": [
+              "GUT focused34/643; service and native-control RED then implementation; readback/overflow/cross-run and zero-stock precision consumption"
+            ]
+          },
+          {
+            "id": "AC2",
+            "text": "Native workshop confirm/cancel updates shared precision stocks and preserves other systems",
+            "status": "PASS",
+            "evidence": [
+              "Actual pointer cancel SHA unchanged, fire purchase/restart, earth purchase/restart; shared resource and precision consumer GUT"
+            ]
+          },
+          {
+            "id": "AC3",
+            "text": "Restart/capture/PDF bindings, two reviews and exact protected delivery readback",
+            "status": "NOT_RUN"
+          }
+        ],
+        "verification": [
+          {
+            "level": "E2_TEST",
+            "status": "PASS",
+            "evidence": [
+              "Full GUT313/3175 before final5assertions; focused34/643 after; Python510passed3skipped; final full rerun pending"
+            ]
+          },
+          {
+            "level": "E3_RUNTIME",
+            "status": "PASS",
+            "evidence": [
+              "Run40 fresh current_run_errors empty; QA slot final Gold15470 reinforce24 fire64 earth65 day2 receipt.sequence2; original selected shield and2deliveryUIDs retained",
+              "docs/testing/catalyst-exchange-confirm-20260913.png",
+              "docs/testing/catalyst-exchange-restored-20260913.png"
+            ]
+          }
+        ],
+        "next_action": "Final exact-head review, CI, protected merge/readback and consumed approval retirement; whole-game continues"
+      }
+    ]
+  },
+  "evidence_ceiling": "BOUNDED_DESKTOP_RUNTIME; final CI/merge pending; whole-game/Android/human/final art/release NOT_COMPLETE",
+  "lessons": [
+    "Round1 mandatory coverage gaps closed without product changes; no new shared framework",
+    "Windows receipt stdout requires python -X utf8; partial output with exit1 not PASS",
+    "Diagnostic field typo paused own game; corrected _campaign_envelope and clean run39/40; no product code workaround"
+  ]
+}

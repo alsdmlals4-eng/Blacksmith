@@ -74,12 +74,12 @@
   "scope": "2026-09-13 authorized implementation checkpoint: 60-page integrated PDF preserves the prior58-page design, state atlas and world runtime captures; adds actual recovery crafting/delivery and next-loop checklist. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. No asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban is historical evidence, not current execution authority.",
   "artifact": {
     "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
-    "sha256": "f4e1fe666b4b01b82a33547a0d4d741f4dabaa2ad9234c3ae8cf2afb1673bd97",
-    "page_count": 62,
+    "sha256": "693b48e13f599985b22a8eba5aebcaae76c696e9141ebdb8787799dc09645b3b",
+    "page_count": 64,
     "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
-    "source_sha256": "0bff7f6350b58860f6b7d973be00d61f99f8f0aeaaf3182a208121f35d27b22c",
+    "source_sha256": "eb8c8bae6b5131bba16c0657be9d8ccc72aed0d59ed8a1ae2b0e34f474f795cd",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "2026-09-13: pages61/62 rendered1300px and individually inspected; actual day-close and second-delivery captures on61; checklist and save boundary on62. Prior1-60 preserved. Android/human/final art remain unverified.",
+    "visual_review": "2026-09-13: pages63/64 rendered1300px and individually inspected: actual catalyst confirmation/restart captures and reinvestment checklist fit without clipping. Prior1-62 source preserved. Android/human/final art remain unverified.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {

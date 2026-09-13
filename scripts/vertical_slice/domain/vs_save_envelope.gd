@@ -217,6 +217,10 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 		var recovery_error: String = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").validate(envelope)
 		if not recovery_error.is_empty():
 			envelope.validation_errors.append(recovery_error)
+	if envelope.validation_errors.is_empty():
+		var exchange_error: String = load("res://scripts/vertical_slice/services/vs_catalyst_exchange_service.gd").validate(envelope)
+		if not exchange_error.is_empty():
+			envelope.validation_errors.append(exchange_error)
 	return envelope
 
 

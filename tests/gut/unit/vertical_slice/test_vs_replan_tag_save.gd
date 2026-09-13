@@ -13,6 +13,161 @@ class RecoveryFailSave:
 	func save_envelope(envelope) -> Error:
 		return ERR_CANT_CREATE if fail_write else super.save_envelope(envelope)
 
+class ExchangeReadbackSave:
+	extends RefCounted
+	var source: Dictionary
+	var written: Dictionary = {}
+	var mode = "stale"
+	var writes = 0
+	func load_envelope():
+		if writes > 0 and mode == "missing": return null
+		var result = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd").from_dict(source if writes == 0 or mode == "stale" else written)
+		result.recovered_from_backup = mode == "initial_backup" or (writes > 0 and mode == "backup")
+		return result
+	func save_envelope(envelope) -> Error:
+		writes += 1
+		written = envelope.to_dict()
+		return OK
+
+func test_catalyst_exchange_uncertain_readback_and_campaign_isolation():
+	var service = load("res://scripts/vertical_slice/services/vs_catalyst_exchange_service.gd").new()
+	var original = _aqueduct_envelope()
+	var before = original.to_dict()
+	for mode in ["stale", "missing", "backup"]:
+		var save = ExchangeReadbackSave.new()
+		save.source = before.duplicate(true)
+		save.mode = mode
+		var result = service.purchase(original,"heart_of_flame",1,save)
+		assert_eq(result.reason,"READBACK_FAILED",mode)
+		assert_false(result.has("envelope"))
+		assert_eq(save.writes,1,"Write can succeed even when confirmation fails")
+		assert_eq(save.written.workshop_resources.gold,before.workshop_resources.gold-1000)
+		assert_true(Envelope.serialized_equal(original.to_dict(),before))
+	var save = ExchangeReadbackSave.new()
+	save.source = before.duplicate(true)
+	save.mode = "initial_backup"
+	assert_eq(service.purchase(original,"heart_of_flame",1,save).reason,"INVALID_OR_UNAVAILABLE_SAVE")
+	assert_eq(save.writes,0)
+	save.mode = "stale"
+	save.source.active_run.run_id += "-other"
+	assert_true(save.load_envelope().validation_errors.is_empty())
+	assert_eq(service.purchase(original,"heart_of_flame",1,save).reason,"INVALID_CAMPAIGN")
+	assert_eq(save.writes,0)
+
+func test_catalyst_exchange_exact_integer_boundaries():
+	var service = load("res://scripts/vertical_slice/services/vs_catalyst_exchange_service.gd").new()
+	var original = _aqueduct_envelope()
+	var maximum = service.MAX_EXACT
+	original.workshop_resources.material_stock.heart_of_flame = maximum-1
+	original.active_run.catalyst_exchange = {"schema_version":1,"policy_id":service.POLICY,"sequence":maximum-1,"catalyst":"heart_of_flame","day":1}
+	var save = RecoveryFailSave.new("user://gut/catalyst-exchange-boundary.json")
+	assert_eq(save.save_envelope(original),OK)
+	var result = service.purchase(original,"heart_of_flame",maximum,save)
+	assert_eq(result.status,"APPLIED")
+	if result.status != "APPLIED": return
+	assert_eq(int(result.envelope.active_run.catalyst_exchange.sequence),maximum)
+	assert_eq(int(result.envelope.resource_snapshot().material_stock.heart_of_flame),maximum)
+	assert_eq(service.quote(result.envelope,"earth_crystal").reason,"UNSAFE_RESOURCE_OR_SEQUENCE")
+	for value in [maximum, maximum+1, INF, NAN]:
+		var candidate = _aqueduct_envelope()
+		candidate.workshop_resources.material_stock.heart_of_flame = value
+		assert_eq(service.quote(candidate,"heart_of_flame").status,"BLOCKED")
+	for value in [maximum+1, INF, NAN]:
+		assert_eq(service.purchase(original,"heart_of_flame",value,save).status,"BLOCKED")
+
+func test_catalyst_exchange_persists_choice_once_and_preserves_items():
+	var path = "res://scripts/vertical_slice/services/vs_catalyst_exchange_service.gd"
+	assert_true(ResourceLoader.exists(path), "Exchange must connect earned gold to precision catalyst stock")
+	if not ResourceLoader.exists(path): return
+	var service = load(path).new()
+	var original = _aqueduct_envelope()
+	original.workshop_resources = {"gold":2000,"material_stock":{"common_reinforcement_material":2,"heart_of_flame":0,"earth_crystal":0}}
+	var before = original.to_dict()
+	var save = RecoveryFailSave.new("user://gut/catalyst-exchange.json")
+	assert_eq(save.save_envelope(original),OK)
+	assert_eq(service.quote(original,"heart_of_flame").sequence,1)
+	for choice in ["", "flame", "common_reinforcement_material"]:
+		assert_eq(service.purchase(original,choice,1,save).status,"BLOCKED")
+	for sequence in [0,-1,1.5,true,"1",2]:
+		assert_eq(service.purchase(original,"heart_of_flame",sequence,save).status,"BLOCKED")
+	save.fail_write = true
+	assert_eq(service.purchase(original,"heart_of_flame",1,save).reason,"SAVE_FAILED")
+	assert_true(Envelope.serialized_equal(before,save.load_envelope().to_dict()))
+	save.fail_write = false
+	var bought = service.purchase(original,"heart_of_flame",1,save)
+	assert_eq(bought.status,"APPLIED")
+	if bought.status != "APPLIED": return
+	assert_eq(bought.envelope.resource_snapshot(),{"gold":1000,"material_stock":{"common_reinforcement_material":2,"heart_of_flame":1,"earth_crystal":0}})
+	assert_true(Envelope.serialized_equal(before.items_by_uid,bought.envelope.to_dict().items_by_uid))
+	assert_true(Envelope.serialized_equal(before,original.to_dict()),"Caller snapshot must not mutate")
+	assert_eq(service.purchase(original,"heart_of_flame",1,save).status,"ALREADY_APPLIED")
+	assert_eq(service.purchase(original,"earth_crystal",1,save).status,"BLOCKED")
+	assert_eq(service.purchase(original,"earth_crystal",2,save).status,"BLOCKED","Stale source cannot buy again")
+	var earth = service.purchase(save.load_envelope(),"earth_crystal",2,save)
+	assert_eq(earth.status,"APPLIED")
+	if earth.status != "APPLIED": return
+	assert_eq(earth.envelope.resource_snapshot(),{"gold":0,"material_stock":{"common_reinforcement_material":2,"heart_of_flame":1,"earth_crystal":1}})
+	assert_eq(service.purchase(original,"heart_of_flame",1,save).status,"BLOCKED")
+	assert_eq(service.purchase(save.load_envelope(),"earth_crystal",2,save).status,"ALREADY_APPLIED")
+	assert_eq(service.purchase(save.load_envelope(),"earth_crystal",3,save).reason,"INSUFFICIENT_GOLD")
+	var valid = save.load_envelope().to_dict()
+	for field in ["schema_version","sequence","day"]:
+		for bad in [0,1.5,true,"1"]:
+			var invalid = valid.duplicate(true)
+			invalid.active_run.catalyst_exchange[field] = bad
+			assert_false(Envelope.from_dict(invalid).validation_errors.is_empty(),"Malformed receipt " + field)
+	for change in [{"policy_id":"UNKNOWN"},{"catalyst":"UNKNOWN"},{"day":999},{"extra":1}]:
+		var invalid = valid.duplicate(true)
+		invalid.active_run.catalyst_exchange.merge(change,true)
+		assert_false(Envelope.from_dict(invalid).validation_errors.is_empty())
+	var legacy = Initializer.new().create_candidate_envelope()
+	assert_eq(service.purchase(legacy,"heart_of_flame",1,save).status,"BLOCKED")
+
+func test_catalyst_exchange_native_confirmation_updates_shared_resources_once():
+	var envelope = _aqueduct_envelope()
+	envelope.workshop_resources.material_stock.heart_of_flame = 0
+	var save = RecoveryFailSave.new("user://gut/catalyst-exchange-ui.json")
+	assert_eq(save.save_envelope(envelope),OK)
+	var before = envelope.resource_snapshot()
+	var app = autofree(load("res://scenes/vertical_slice/vertical_slice_app.tscn").instantiate())
+	add_child(app)
+	var resources = Resources.new(before.gold,before.material_stock)
+	assert_true(app.configure_campaign(envelope,resources,null,Action.new(),save))
+	var screen = app.get_node("ScreenHost/WorkshopScreen")
+	screen._on_replan_tag_pressed("BURST_HANDLING")
+	assert_false(screen.view_state().enhancement_allowed,"No selected catalyst before purchase")
+	var button = screen.get_node_or_null("WorkshopScroll/WorkshopLayout/CatalystExchange/heart_of_flame")
+	assert_not_null(button,"Earned gold must reach exchange through native workshop controls")
+	if button == null: return
+	button.pressed.emit()
+	var dialog = screen.get_node("CatalystExchangeConfirmation")
+	assert_true(dialog.visible)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	assert_gte(dialog.get_ok_button().size.y,96.0)
+	assert_gte(dialog.get_cancel_button().size.y,96.0)
+	dialog.canceled.emit()
+	dialog.hide()
+	dialog.confirmed.emit()
+	assert_eq(save.load_envelope().resource_snapshot(),before,"Cancel clears pending request")
+	button.pressed.emit()
+	dialog.confirmed.emit()
+	dialog.hide()
+	assert_eq(save.load_envelope().resource_snapshot().gold,before.gold-1000)
+	assert_eq(resources.snapshot().gold,before.gold-1000)
+	assert_eq(app._campaign_envelope.resource_snapshot().material_stock.heart_of_flame,before.material_stock.heart_of_flame+1)
+	dialog.confirmed.emit()
+	assert_eq(save.load_envelope().resource_snapshot().gold,before.gold-1000)
+	screen._on_replan_tag_pressed("BURST_HANDLING")
+	assert_true(screen.view_state().enhancement_allowed,"Purchased stock unlocks real precision consumer")
+	var precision_result = screen.request_enhancement_with_rolls({"success_roll_percent":0.0})
+	assert_eq(precision_result.outcome,"SUCCESS")
+	assert_eq(resources.get_material_count("heart_of_flame"),0,"Purchased unit is consumed by precision")
+	assert_eq(save.load_envelope().get_item(envelope.active_run.selected_item_uid).enhancement_level,20)
+	screen.hide()
+	button.pressed.emit()
+	assert_false(dialog.visible)
+
 func test_manual_close_persists_day_without_rewards_or_duplicate_advance():
 	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new()
 	assert_true(service.has_method("close_day"), "Manual close must persist once per campaign/source day")
