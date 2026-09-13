@@ -68,11 +68,13 @@
           {
             "id": "day-save",
             "text": "Cancel/failure/duplicate cannot double advance or reward; unfinished order preserved",
+            "evidence": ["tests/gut/unit/vertical_slice/test_vs_replan_tag_save.gd: manual-close tests, full309/3088 PASS; actual cancel save hash unchanged and day2 restart"],
             "status": "PASS"
           },
           {
             "id": "repeat-craft",
             "text": "New day refills completed order, distinct item crafted and paid once after restart",
+            "evidence": ["docs/testing/recovery-day-repeat-delivered-20260913.png; run35 day2 DELIVERED, three distinct items, gold17470/reinforcement24"],
             "status": "PASS"
           },
           {
