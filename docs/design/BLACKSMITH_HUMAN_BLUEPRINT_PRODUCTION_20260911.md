@@ -5,6 +5,7 @@
 - PR371 exact head dc2c8bbc974d4ea1248361abe15bd0298d487632의16SUCCESS/1조건부SKIPPED 확인 후 정상 보호 병합. merge df48dd06bffa1df11287029d2c7f43815f84ad23, 로컬main/origin/main 동일 readback. 사용자 import 변경·구형작업tree·후보원본 보존, direct main/force/admin 우회 없음.
 - 소진 승인은 `docs/archive/protected-approvals/replan-pr371-20260913.json`에 내용 그대로 보존한다. 활성 승인 경로에서 제거하고 프로젝트 보호 baseline만 실제 병합점으로 정합화한다. 채택 Base v9.4.4/release SHA/보호목록/CI validator pin은 불변. 기존PR366 기록은 역사상태로 그대로 유지하고 현재 승인회수 증거는 기존pixel-world receipt의 remote_delivery가 소유한다.
 - closure RED: archive부재/병합receipt누락3반례. 기준정합화와 공식 생성기로 파생뷰를 다시 만든 뒤 일반검사(외부 승인 false·manifest없음)로 통과해야 다음 제품 경로를 연다. 이 운영 정리는 새 제품 변경 승인을 대신하지 않으며 다음 구현은 별도 exact 범위/현재PR metadata로 검증한다.
+- 후속 CI에서 장기PR 검사 한 곳의 c31e550f 고정 기대값 잔류를 확인하고 로컬 동일 RED를 재현했다. 현재 baseline 기대값은 기존 병합receipt의 책임 필드로 일원화하되, PR366/PR371의 역사 exact merge/source·보존 승인·소진 baseline 재사용 거부 시험은 유지한다. 실패 검사 제외/약화와 Base 업그레이드는 하지 않는다.
 - 다음 제품 계획: Blueprint21~24의 공통 판정에 결투DU01~04·군대AR01~04를 연결한다. 기존AQ1회/UID 기록·구형저장 불변을 우선하며 종류/요구/공개위험을 출발 전에 선택·고정한다. 새 사건은 먼저 준비 저장→동일결과 확정→보고/연대기·세계창을 함께 소비하게 한다. 모션이 없는 동안 텍스트 보고라고 표시한다. 이후 주문·재제작·재료순환과 달력/모닥을 연결한다.
 - 최신공식3작품 Weapon Shop Fantasy/Anvil Saga/Gladiator Guild Manager를 다시 읽었다(2026-09-13). 제작→실사용, 주문/선택→결과, 준비→관전 역할분리를 ADAPT; 미술/경제수치 복제와 새 실시간 전투게임 추가는 REJECT. 기존 Blueprint URL과 적용범위를 유지한다. 이것은 공개 소개 조사이며 직접 경쟁작 플레이/시장 검증이 아니다.
 
