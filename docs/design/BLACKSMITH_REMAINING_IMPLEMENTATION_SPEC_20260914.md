@@ -316,9 +316,10 @@ Interfaces: `validate(envelope) -> String`, `accept(envelope,definition_id:Strin
 
 ```gdscript
 var before = save.load_envelope().resource_snapshot()
+var original = save.load_envelope()
 var accepted = service.accept(save.load_envelope(), "IRON_SWORD_BASIC_V1", save)
 assert_eq(accepted.status, "APPLIED")
-var order_id = accepted.order.order_id
+var order_id = accepted.envelope.active_run.commission.active_order.order_id
 assert_eq(service.accept(original, "IRON_SWORD_BASIC_V1", save).status, "ALREADY_APPLIED")
 assert_eq(service.cancel(save.load_envelope(), order_id, save).status, "APPLIED")
 assert_eq(save.load_envelope().resource_snapshot(), before)
