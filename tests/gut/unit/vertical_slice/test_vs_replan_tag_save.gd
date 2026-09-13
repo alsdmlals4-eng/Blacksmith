@@ -13,6 +13,156 @@ class RecoveryFailSave:
 	func save_envelope(envelope) -> Error:
 		return ERR_CANT_CREATE if fail_write else super.save_envelope(envelope)
 
+func test_manual_close_persists_day_without_rewards_or_duplicate_advance():
+	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new()
+	assert_true(service.has_method("close_day"), "Manual close must persist once per campaign/source day")
+	if not service.has_method("close_day"): return
+	var original = _aqueduct_envelope()
+	var before = original.to_dict()
+	var save = RecoveryFailSave.new("user://gut/recovery-days.json")
+	assert_eq(save.save_envelope(original), OK)
+	save.fail_write = true
+	assert_eq(service.close_day(original,1,save).reason,"SAVE_FAILED")
+	assert_true(Envelope.serialized_equal(before,save.load_envelope().to_dict()))
+	save.fail_write = false
+	assert_eq(service.close_day(original,1.5,save).status,"BLOCKED")
+	assert_eq(service.close_day(original,true,save).status,"BLOCKED")
+	var closed = service.close_day(original,1,save)
+	assert_eq(closed.status,"APPLIED")
+	if closed.status != "APPLIED": return
+	assert_eq(closed.envelope.active_run.current_day,2)
+	assert_eq(closed.envelope.resource_snapshot(),original.resource_snapshot())
+	assert_false(closed.envelope.active_run.has("recovery_order"))
+	assert_eq(service.close_day(original,1,save).status,"ALREADY_APPLIED")
+	assert_eq(save.load_envelope().active_run.current_day,2)
+	assert_eq(service.close_day(original,2,save).status,"BLOCKED")
+	var accepted = service.accept(save.load_envelope(),save).envelope
+	var record = accepted.active_run.recovery_order.duplicate(true)
+	var next = service.close_day(accepted,2,save)
+	assert_eq(next.status,"APPLIED")
+	assert_eq(next.envelope.active_run.current_day,3)
+	assert_true(Envelope.serialized_equal(next.envelope.active_run.recovery_order,record))
+	assert_eq(service.close_day(original,1,save).status,"BLOCKED")
+	var legacy = Initializer.new().create_candidate_envelope()
+	assert_eq(service.close_day(legacy,1,save).status,"BLOCKED")
+
+func test_manual_close_repeats_real_crafting_and_keeps_delivered_item_history():
+	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new()
+	assert_true(service.has_method("close_day"), "Completed order must refill after manual close")
+	if not service.has_method("close_day"): return
+	var original = _aqueduct_envelope()
+	original.workshop_resources = {"gold":0,"material_stock":{"common_reinforcement_material":0,"heart_of_flame":0,"earth_crystal":0}}
+	var uid = original.active_run.selected_item_uid
+	var item_before = original.get_item(uid).to_dict()
+	var save = RecoveryFailSave.new("user://gut/recovery-repeat.json")
+	assert_eq(save.save_envelope(original),OK)
+	var delivered_uids = []
+	for number in range(1,4):
+		var current = save.load_envelope()
+		var accepted = service.accept(current,save)
+		assert_eq(accepted.status,"APPLIED")
+		if accepted.status != "APPLIED": return
+		assert_eq(accepted.envelope.active_run.recovery_order.order_id,str(original.active_run.run_id)+"-recovery-"+str(number))
+		var ready = service.forge(save.load_envelope(),{"equipment_id":"iron_sword","base_attack":22,"quality_id":"GOOD","tap_count":27},save)
+		assert_eq(ready.status,"APPLIED")
+		if ready.status != "APPLIED": return
+		var ready_uid = ready.envelope.active_run.recovery_order.item_uid
+		assert_false(ready_uid in delivered_uids)
+		delivered_uids.append(ready_uid)
+		var ready_day = service.close_day(ready.envelope,ready.envelope.active_run.current_day,save)
+		assert_eq(ready_day.status,"APPLIED")
+		assert_eq(ready_day.envelope.active_run.recovery_order.item_uid,ready_uid)
+		var delivered = service.deliver(save.load_envelope(),save)
+		assert_eq(delivered.status,"APPLIED")
+		if delivered.status != "APPLIED": return
+		assert_eq(service.deliver(ready_day.envelope,save).status,"ALREADY_APPLIED")
+		assert_eq(delivered.envelope.resource_snapshot().gold,number*400)
+		assert_eq(delivered.envelope.resource_snapshot().material_stock.common_reinforcement_material,number*2)
+		var source_day = int(delivered.envelope.active_run.current_day)
+		save.fail_write = true
+		assert_eq(service.close_day(delivered.envelope,source_day,save).reason,"SAVE_FAILED")
+		assert_eq(save.load_envelope().active_run.recovery_order.phase,"DELIVERED")
+		save.fail_write = false
+		var next = service.close_day(save.load_envelope(),source_day,save)
+		assert_eq(next.status,"APPLIED")
+		if next.status != "APPLIED": return
+		assert_eq(next.envelope.active_run.recovery_order_history.size(),number)
+		assert_false(next.envelope.active_run.has("recovery_order"))
+		assert_eq(next.envelope.get_item(uid).to_dict(),item_before)
+		assert_eq(next.envelope.active_run.selected_item_uid,uid)
+		assert_eq(next.envelope.items_by_uid.size(),number+1)
+	var final_save = save.load_envelope()
+	assert_eq(final_save.active_run.current_day,7)
+	for delivered_uid in delivered_uids:
+		assert_eq(final_save.get_item(delivered_uid).owner_id,"CUSTOMER_RECOVERY")
+		assert_eq(final_save.get_item(delivered_uid).ledger.size(),2)
+	for field in ["policy_id","last_closed_day","schema_version"]:
+		var corrupt = final_save.to_dict()
+		corrupt.active_run.recovery_calendar[field] = null
+		assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(),field)
+	var corrupt = final_save.to_dict()
+	corrupt.active_run.recovery_order_history[1].item_uid = corrupt.active_run.recovery_order_history[0].item_uid
+	assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(),"Duplicate history UID")
+	corrupt = final_save.to_dict()
+	corrupt.active_run.recovery_calendar.last_closed_day = 1
+	assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(),"Calendar mismatch")
+
+func test_manual_close_blocks_pending_world_transactions_and_unknown_schedule():
+	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new()
+	assert_true(service.has_method("close_day"), "A pending world trial must be resolved before day close")
+	if not service.has_method("close_day"): return
+	var original = _aqueduct_envelope()
+	var save = RecoveryFailSave.new("user://gut/recovery-world-pending.json")
+	assert_eq(save.save_envelope(original),OK)
+	var world = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	var prepared = world.prepare_world_with_rolls(original,original.active_run.selected_item_uid,"DU","OUTPUT","BURST",[1.0,99.0],save)
+	assert_eq(prepared.status,"PREPARED")
+	var pending = save.load_envelope()
+	var snapshot = pending.to_dict()
+	assert_eq(service.close_day(pending,1,save).status,"BLOCKED")
+	assert_true(Envelope.serialized_equal(save.load_envelope().to_dict(),snapshot))
+	original.schedule_state = {"unknown_profile":1}
+	assert_eq(save.save_envelope(original),OK)
+	assert_eq(service.close_day(original,1,save).status,"BLOCKED")
+
+func test_manual_close_native_confirmation_cancel_retry_and_app_save():
+	var envelope = _aqueduct_envelope()
+	var save = RecoveryFailSave.new("user://gut/recovery-day-ui.json")
+	assert_eq(save.save_envelope(envelope),OK)
+	var app = autofree(load("res://scenes/vertical_slice/vertical_slice_app.tscn").instantiate())
+	add_child(app)
+	var stock = envelope.resource_snapshot()
+	assert_true(app.configure_campaign(envelope,Resources.new(stock.gold,stock.material_stock),null,null,save))
+	var screen = app.get_node("ScreenHost/WorkshopScreen")
+	var button = screen.get_node_or_null("WorkshopScroll/WorkshopLayout/RecoveryOrder/DayClose")
+	assert_not_null(button,"Manual close must be reachable through native controls")
+	if button == null: return
+	button.pressed.emit()
+	var dialog = screen.get_node("DayCloseConfirmation")
+	assert_true(dialog.visible)
+	assert_eq(save.load_envelope().active_run.current_day,1)
+	dialog.canceled.emit()
+	dialog.hide()
+	assert_eq(save.load_envelope().active_run.current_day,1)
+	button.pressed.emit()
+	save.fail_write = true
+	dialog.confirmed.emit()
+	dialog.hide()
+	assert_eq(save.load_envelope().active_run.current_day,1)
+	save.fail_write = false
+	button.pressed.emit()
+	dialog.confirmed.emit()
+	dialog.hide()
+	assert_eq(save.load_envelope().active_run.current_day,2)
+	assert_eq(app._campaign_envelope.active_run.current_day,2)
+	assert_eq(screen._campaign_envelope.active_run.current_day,2)
+	assert_eq(save.load_envelope().resource_snapshot(),stock)
+	dialog.confirmed.emit()
+	assert_eq(save.load_envelope().active_run.current_day,2,"Repeated confirmation cannot advance another day")
+	screen.hide()
+	button.pressed.emit()
+	assert_false(dialog.visible,"Hidden forge/workshop must not open day-close dialogue")
+
 func test_recovery_order_missing_campaign_fields_returns_validation_errors():
 	var original = _aqueduct_envelope()
 	original.active_run.recovery_order = {"schema_version":1,"order_id":str(original.active_run.run_id)+"-recovery-1","phase":"ACCEPTED","material_units":1,"item_uid":"","gold_reward":400,"material_reward":2,"accepted_day":1}

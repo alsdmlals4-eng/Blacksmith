@@ -79,6 +79,7 @@ var _precision_action := ""
 var _precision_selection_data: Dictionary = {}
 var _world_view_mode := "COLLAPSED"
 var _trial_family := "AQ"
+var _day_close_source := -1
 
 
 func _ready() -> void:
@@ -560,6 +561,12 @@ func _refresh_recovery_order() -> void:
 		action.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
 		action.pressed.connect(_on_recovery_order_pressed)
 		box.add_child(action)
+		var close = Button.new()
+		close.name = "DayClose"
+		close.custom_minimum_size.y = MOBILE_TOUCH_TARGET_HEIGHT
+		close.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+		close.pressed.connect(_on_day_close_pressed)
+		box.add_child(close)
 	if box == null: return
 	box.visible = enabled
 	if not enabled: return
@@ -568,6 +575,12 @@ func _refresh_recovery_order() -> void:
 	var summary = box.get_node("Summary")
 	var action = box.get_node("Action")
 	summary.text = "재기 주문 · 마을의 새 장비\n전용 재료로 새 장비 1개 제작 · 강화 불필요\n납품 보상: 400골드 + 보강재 2개 (시험값)\n기존 작품은 보존 · 납품 작품은 반환 없음"
+	var completed = _campaign_envelope.active_run.get("recovery_order_history",[]).size() + (1 if phase == "DELIVERED" else 0)
+	summary.text = "영업 %d일 · 누적 납품 %d건\n" % [int(_campaign_envelope.active_run.current_day),completed] + summary.text
+	var close = box.get_node("DayClose")
+	var reason = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").close_block_reason(_campaign_envelope)
+	close.text = "오늘 마감 · 다음 날로" if reason.is_empty() else ("세계 사건 결과를 먼저 확인하세요" if reason == "PENDING_WORLD_RESULT" else "일정 확인 필요 · 마감 불가")
+	close.disabled = _save_service == null or not reason.is_empty()
 	action.disabled = _save_service == null
 	match phase:
 		"ACCEPTED":
@@ -578,7 +591,7 @@ func _refresh_recovery_order() -> void:
 			summary.text += "\n제작 완료: " + str(EquipmentCatalogScript.by_item(item).get("display_name_ko","장비")) + " +0\n아래에서 납품하면 보상을 한 번 받습니다."
 			action.text = "완성품 납품 · 400골드 + 보강재 2"
 		"DELIVERED":
-			summary.text += "\n납품·정산 완료 · 주문 기록 보존\n다음 주문 보충은 영업일 시스템 연결 예정"
+			summary.text += "\n납품·정산 완료 · 주문 기록 보존\n오늘 마감 후 다음 주문을 받을 수 있습니다."
 			action.text = "정산 완료"
 			action.disabled = true
 		_:
@@ -602,6 +615,44 @@ func _on_recovery_order_pressed() -> void:
 		_refresh_controls()
 	else:
 		get_node("WorkshopScroll/WorkshopLayout/RecoveryOrder/Summary").text += "\n저장 확인 실패 · 적용하지 않았습니다. 다시 확인해 주세요."
+
+func _on_day_close_pressed() -> void:
+	if not is_visible_in_tree() or _save_service == null:
+		return
+	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd")
+	if not service.close_block_reason(_campaign_envelope).is_empty(): return
+	var dialog = get_node_or_null("DayCloseConfirmation")
+	if dialog == null:
+		dialog = ConfirmationDialog.new()
+		dialog.name = "DayCloseConfirmation"
+		dialog.title = "오늘 영업을 마칠까요?"
+		dialog.ok_button_text = "마감하고 다음 날"
+		dialog.cancel_button_text = "계속 작업하기"
+		add_child(dialog)
+		dialog.get_label().add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+		for button in [dialog.get_ok_button(),dialog.get_cancel_button()]:
+			button.custom_minimum_size = Vector2(272,MOBILE_TOUCH_TARGET_HEIGHT)
+			button.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+		dialog.confirmed.connect(_on_day_close_confirmed)
+		dialog.canceled.connect(_on_day_close_canceled)
+	_day_close_source = int(_campaign_envelope.active_run.current_day)
+	dialog.dialog_text = "영업 %d일 → %d일\n미완성 주문과 장비는 그대로 보존됩니다.\n완료한 주문만 다음 주문으로 보충됩니다.\n마감 자체에는 보상이 없습니다." % [_day_close_source,_day_close_source+1]
+	dialog.popup_centered(Vector2i(640,360))
+
+func _on_day_close_canceled() -> void:
+	_day_close_source = -1
+
+func _on_day_close_confirmed() -> void:
+	if _day_close_source < 1 or not is_visible_in_tree(): return
+	var source_day = _day_close_source
+	_day_close_source = -1
+	var result = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new().close_day(_campaign_envelope,source_day,_save_service)
+	if result.has("envelope"):
+		_campaign_envelope = result.envelope
+		campaign_saved.emit(_campaign_envelope,result)
+		_refresh_controls()
+	else:
+		get_node("WorkshopScroll/WorkshopLayout/RecoveryOrder/Summary").text += "\n마감 저장 확인 실패 · 날짜를 다시 확인해 주세요."
 
 func _refresh_controls() -> void:
 	_ensure_workpiece_durability_hero()
