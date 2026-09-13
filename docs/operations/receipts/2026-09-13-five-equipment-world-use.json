@@ -1,0 +1,14 @@
+{
+  "work_level":"L1",
+  "approval_reference":"BS-REPLAN-20260913-07; latest user whole-game continuation and production queue",
+  "continuous_work_state":"CONTINUOUS_WORK_ACTIVE",
+  "benchmark_preflight_receipt":{"state":"PASS","entries":[{"source_and_evidence":"main f30baaa6 actual rules/save/service/workshop; Base origin d830c0f handoff/profile/registry; official Anvil Saga1587540, Weapon Shop Fantasy599460, Sandrock1084600 and Godot Saving games read 2026-09-13","observed_pattern":"craft-to-purpose connection with persisted consequences","project_fit_and_difference":"AR existing transaction reuse; no imported art/economy, no generic framework","disposition":"ADAPT"}]},
+  "context_configuration_hygiene":{"scope":"world eligibility and direct consumers only","inventory":[{"path":"docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md","classification":"ACTIVE_OWNER","owner_or_provenance":"latest AGENTS production queue","references_and_consumers":"rules/world save/workshop and Blueprint21/40 read","removal_proposed":false}]},
+  "project_work_kanban":{
+    "goal_or_slice_issue_ref":"BS-REPLAN-20260913-07",
+    "source_main_sha":"f30baaa60e1fb95905c47d5a8303cd069895ce96",
+    "work_item_refs":["WORLD5"],"active_work_item_ref":"WORLD5","next_action":"RED then exact protected HiGodot implementation",
+    "work_items":[{"work_item_id":"WORLD5","title":"Five equipment types have real AR world use","status":"IN_PROGRESS","canon_owner":"docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md","actual_consumers":["scripts/vertical_slice/domain/vs_replan_tag_rules.gd","scripts/vertical_slice/domain/vs_save_envelope.gd","scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd","scripts/vertical_slice/ui/vs_workshop_screen.gd"],"depends_on":[],"acceptance_criteria":["AC1","AC2","AC3"],"required_evidence":["E2_TEST","E3_RUNTIME"],"checklist":[{"id":"AC1","text":"AR all five, AQ/DU unchanged; persisted resolve independent damage and once-only result","status":"NOT_RUN"},{"id":"AC2","text":"Actual workshop labels and native world-use flow with restart","status":"NOT_RUN"},{"id":"AC3","text":"Regression, two reviews, PDF, exact protected CI and normal delivery","status":"NOT_RUN"}],"verification":[{"level":"E2_TEST","status":"NOT_RUN","evidence":[]},{"level":"E3_RUNTIME","status":"NOT_RUN","evidence":[]}],"next_action":"Write behavior tests and observe RED"}]
+  },
+  "evidence_ceiling":"New behavior not yet implemented; prior catalyst slice complete does not imply whole-game completion"
+}

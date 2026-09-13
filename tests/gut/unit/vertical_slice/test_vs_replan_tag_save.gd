@@ -462,6 +462,69 @@ func test_recovery_order_native_controls_open_existing_forge_return_and_deliver(
 	assert_eq(save.load_envelope().resource_snapshot().gold,stock.gold+400)
 	assert_true(button.disabled)
 
+func test_army_all_five_equipment_persist_and_resolve_without_changing_other_families():
+	var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").new()
+	var catalog = load("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd")
+	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
+	for equipment_id in ["iron_sword", "iron_shield", "iron_bow", "iron_armor", "iron_helmet"]:
+		var envelope = _aqueduct_envelope()
+		var uid = envelope.active_run.selected_item_uid
+		var item = envelope.get_item(uid)
+		var identity = catalog.by_id(equipment_id)
+		item.equipment_group = identity.equipment_group
+		item.role_profile = identity.role_profile
+		var save = load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/world-five-%s.json" % equipment_id)
+		assert_eq(save.save_envelope(envelope), OK)
+		var before = envelope.resource_snapshot()
+		assert_eq(rules.world_preview("AQ",equipment_id,19,item.catalyst_affix.tags,"HANDLING","BURST").ok,equipment_id == "iron_shield")
+		assert_eq(rules.world_preview("DU",equipment_id,19,item.catalyst_affix.tags,"HANDLING","BURST").ok,equipment_id in ["iron_sword","iron_shield"])
+		var prepared = service.prepare_world_with_rolls(envelope,uid,"AR","HANDLING","BURST",[99,0],save)
+		assert_eq(prepared.status,"PREPARED",equipment_id + " must have an actual use")
+		if prepared.status != "PREPARED": continue
+		assert_eq(prepared.record.damage_percent,40.0)
+		assert_eq(prepared.record.success_percent,67.5)
+		assert_true(Envelope.pending_trial(save.load_envelope(),uid))
+		var resolved = service.resolve_prepared_world(save.load_envelope(),uid,"AR",save)
+		assert_eq(resolved.status,"APPLIED")
+		assert_false(resolved.record.mission_success)
+		assert_true(resolved.record.damage_applied)
+		assert_eq(save.load_envelope().get_item(uid).current_durability,4)
+		assert_eq(save.load_envelope().resource_snapshot(),before)
+		assert_false(Envelope.pending_trial(save.load_envelope(),uid))
+		assert_eq(service.resolve_prepared_world(envelope,uid,"AR",save).status,"ALREADY_RESOLVED")
+		assert_eq(save.load_envelope().get_item(uid).current_durability,4)
+		assert_true(service.world_report(resolved.record,"AR").body.contains(identity.display_name_ko))
+	assert_false(rules.world_preview("AR","unknown",19,{"BURST_HANDLING":1},"HANDLING","BURST").ok)
+	assert_false(rules.world_preview("AR","iron_bow",9,{},"HANDLING","BURST").ok)
+
+func test_workshop_army_accepts_bow_and_displays_all_eligible_equipment():
+	var envelope = _aqueduct_envelope()
+	var item = envelope.get_item(envelope.active_run.selected_item_uid)
+	var identity = load("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd").by_id("iron_bow")
+	item.equipment_group = identity.equipment_group
+	item.role_profile = identity.role_profile
+	var save = load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/world-five-controls.json")
+	assert_eq(save.save_envelope(envelope),OK)
+	var stock = envelope.resource_snapshot()
+	var screen = autofree(load("res://scenes/vertical_slice/screens/vs_workshop_screen.tscn").instantiate())
+	add_child(screen)
+	screen.configure_context(item,Resources.new(stock.gold,stock.material_stock),null,null,save,envelope)
+	var box = screen.get_node("WorkshopScroll/WorkshopLayout/AqueductTrial")
+	var selector = box.get_node("Family")
+	selector.select(2)
+	selector.item_selected.emit(2)
+	for equipment_id in ["iron_sword","iron_shield","iron_bow","iron_armor","iron_helmet"]:
+		var label = load("res://scripts/vertical_slice/domain/vs_equipment_catalog.gd").by_id(equipment_id).display_name_ko
+		assert_true(box.get_node("Summary").text.contains(label),label + " eligibility must be visible")
+	var action = box.get_node("Action")
+	assert_false(action.disabled,"Bow must reach real army departure")
+	if action.disabled: return
+	action.pressed.emit()
+	assert_true(Envelope.pending_trial(save.load_envelope(),item.uid))
+	action.pressed.emit()
+	assert_false(Envelope.pending_trial(save.load_envelope(),item.uid))
+	assert_true(action.disabled)
+
 func test_world_trials_keep_independent_damage_and_resume_without_reapplying():
 	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
 	assert_true(service.has_method("prepare_world_with_rolls"), "DU/AR must commit before showing results")
