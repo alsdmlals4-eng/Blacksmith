@@ -32,6 +32,17 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
 
 
 class ProductApprovalPostmergeClosureTests(unittest.TestCase):
+    def test_day_loop_delivery_retires_exact_two_path_approval(self):
+        receipt = json.loads((ROOT / 'docs/operations/receipts/2026-09-13-recovery-day-loop.json').read_text(encoding='utf-8'))['remote_delivery']
+        self.assertEqual('1abd89ee6a46a31913f1ec05d466b3b8f6783979', receipt['merge_commit'])
+        self.assertEqual('6e4976cb0c50d1418aabd5cfc7be3503e55742d0', receipt['reviewed_product_head'])
+        archive = ROOT / receipt['approval_archive']
+        self.assertTrue(archive.is_file())
+        approved = json.loads(archive.read_text(encoding='utf-8'))
+        self.assertEqual(2, len(approved['approved_paths']))
+        self.assertEqual('4976ae2ca9d1eae11a5fc8fc44f1f8e9c23a047d', approved['protected_base_commit'])
+        self.assertEqual(receipt['merge_commit'], json.loads(CANONICAL_ADAPTER.read_text(encoding='utf-8'))['protected_baseline']['commit'])
+
     def test_recovery_delivery_retires_five_path_approval_after_verified_merge(self):
         receipt = json.loads((ROOT / "docs/operations/receipts/2026-09-10-pixel-world-blueprint.json").read_text(encoding="utf-8"))["recovery_delivery"]
         self.assertEqual("4976ae2ca9d1eae11a5fc8fc44f1f8e9c23a047d", receipt.get("merge_commit"))
@@ -42,7 +53,7 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
         self.assertEqual(5, len(approved["approved_paths"]))
         self.assertEqual("76ad0bb02af9e03e76f6accca8bf56d7d92945ad", approved["protected_base_commit"])
         self.assertEqual("RETIRED_ARCHIVED_NOT_DELETED", receipt.get("one_shot_approval_status"))
-        self.assertEqual(receipt["merge_commit"], json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))["protected_baseline"]["commit"])
+        self.assertEqual(receipt["merge_commit"], receipt["adapter_baseline_advanced_to"])
 
     def test_world_trials_delivery_retires_exact_approval_and_advances_only_baseline(self):
         receipt = json.loads((ROOT / "docs/operations/receipts/2026-09-10-pixel-world-blueprint.json").read_text(encoding="utf-8"))["world_trials_delivery"]
@@ -63,7 +74,7 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
     def test_postmerge_contract_retires_the_consumed_protected_change_approval(self) -> None:
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
-        current_delivery = json.loads((ROOT / "docs/operations/receipts/2026-09-10-pixel-world-blueprint.json").read_text(encoding="utf-8"))["recovery_delivery"]
+        current_delivery = json.loads((ROOT / "docs/operations/receipts/2026-09-13-recovery-day-loop.json").read_text(encoding="utf-8"))["remote_delivery"]
         self.assertEqual(current_delivery["adapter_baseline_advanced_to"], adapter["protected_baseline"]["commit"])
         # Retirement belongs to the consumed approval, not this reusable path.
         # A later approved task may publish a new manifest against the merged base.
@@ -77,6 +88,7 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
             self.assertNotEqual("c31e550fc8d5b27d4377aeb542fde3cbfe228c06", current["protected_base_commit"], "The consumed PR371 approval must not be resurrected")
             self.assertNotEqual("df48dd06bffa1df11287029d2c7f43815f84ad23", current["protected_base_commit"], "The consumed PR373 approval must not be resurrected")
             self.assertNotEqual("76ad0bb02af9e03e76f6accca8bf56d7d92945ad", current["protected_base_commit"], "The consumed PR375 approval must not be resurrected")
+            self.assertNotEqual("4976ae2ca9d1eae11a5fc8fc44f1f8e9c23a047d", current["protected_base_commit"], "The consumed PR377 approval must not be resurrected")
             self.assertEqual(adapter["protected_baseline"]["commit"], current["protected_base_commit"])
 
     def test_replan_checkpoint_is_bound_to_the_merged_source_and_preserved_approval(self):

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "work_level": "L1",
   "receipt_id": "BS-REPLAN-20260913-05",
-  "status": "IMPLEMENTED_MACHINE_AND_DESKTOP_VERIFIED_DELIVERY_PENDING",
+  "status": "DELIVERED_DESKTOP_VERIFIED",
   "approval_reference": "Latest whole-game implementation continuation; production contract BS-REPLAN-20260913-05; exact protected manifest and fresh current-task PR label required separately",
   "base_current_observed": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
   "adopted_base": "9.4.4_UNCHANGED",
@@ -42,13 +42,19 @@
     "work_item_refs": [
       "DAY-LOOP"
     ],
-    "active_work_item_ref": "DAY-LOOP",
-    "next_action": "Final round2 review, exact-head CI and protected merge/readback",
+    "active_work_item_ref": null,
+    "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
     "work_items": [
       {
         "work_item_id": "DAY-LOOP",
         "title": "Manual day close and repeated recovery crafting",
-        "status": "IN_PROGRESS",
+        "status": "DONE",
+        "must_fix_remaining": 0,
+        "blocked_unverified_remaining": 0,
+        "user_decision_required_remaining": 0,
+        "repository_readback": "PASS",
+        "readback_evidence": ["PR377 MERGED 1abd89ee6a46a31913f1ec05d466b3b8f6783979; local main and origin/main equal after fetch and ff-only pull"],
+        "rollback": "Preserve user saves and revert via normal protected PR; do not load calendar/history slots in older builds. Original approval retained verbatim. These zero counters apply only to manual-day slice, not the whole game.",
         "canon_owner": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
         "actual_consumers": [
           "scripts/vertical_slice/services/vs_recovery_order_service.gd",
@@ -68,19 +74,26 @@
           {
             "id": "day-save",
             "text": "Cancel/failure/duplicate cannot double advance or reward; unfinished order preserved",
-            "evidence": ["tests/gut/unit/vertical_slice/test_vs_replan_tag_save.gd: manual-close tests, full309/3088 PASS; actual cancel save hash unchanged and day2 restart"],
+            "evidence": [
+              "tests/gut/unit/vertical_slice/test_vs_replan_tag_save.gd: manual-close tests, full309/3088 PASS; actual cancel save hash unchanged and day2 restart"
+            ],
             "status": "PASS"
           },
           {
             "id": "repeat-craft",
             "text": "New day refills completed order, distinct item crafted and paid once after restart",
-            "evidence": ["docs/testing/recovery-day-repeat-delivered-20260913.png; run35 day2 DELIVERED, three distinct items, gold17470/reinforcement24"],
+            "evidence": [
+              "docs/testing/recovery-day-repeat-delivered-20260913.png; run35 day2 DELIVERED, three distinct items, gold17470/reinforcement24"
+            ],
             "status": "PASS"
           },
           {
             "id": "delivery",
             "text": "Current PDF visual/checklist, protected exact CI and main readback",
-            "status": "NOT_RUN"
+            "status": "PASS",
+            "evidence": [
+              "PDF62 pages / bundled10 PASS / page61-62 rendered and inspected; PR377 exact-head CI and merged1abd89ee local=origin/main readback"
+            ]
           }
         ],
         "verification": [
@@ -102,9 +115,22 @@
             ]
           }
         ],
-        "next_action": "Final round2 review, exact-head CI and protected merge/readback"
+        "next_action": "STOP_APPROVED_SCOPE_COMPLETE",
+        "verified_head_sha": "6e4976cb0c50d1418aabd5cfc7be3503e55742d0"
       }
     ]
   },
-  "evidence_ceiling": "Desktop and automated proof only; final CI/merge pending; whole game/Android/human/balance/art/motion/release incomplete"
+  "evidence_ceiling": "This manual-day/recovery slice delivered. Whole game, Android/human/balance/final-art/motion/release incomplete.",
+  "remote_delivery": {
+    "pull_request": 377,
+    "reviewed_product_head": "6e4976cb0c50d1418aabd5cfc7be3503e55742d0",
+    "merge_commit": "1abd89ee6a46a31913f1ec05d466b3b8f6783979",
+    "main_readback": "PASS_LOCAL_EQUALS_ORIGIN",
+    "checks": "10 SUCCESS / 1 conditional SKIPPED including ready-event validator rerun; earlier exact-head suite passed before normal merge",
+    "approval_archive": "docs/archive/protected-approvals/day-loop-pr377-20260913.json",
+    "one_shot_approval_status": "RETIRED_ARCHIVED_NOT_DELETED",
+    "adapter_baseline_advanced_to": "1abd89ee6a46a31913f1ec05d466b3b8f6783979",
+    "review": "Two full rounds; integer/day-order findings RED then fixed; no residual P1/P2"
+  },
+  "next_whole_game_work": "Next separately registered implementation slice: varied orders and catalyst/material reinvestment, then remaining equipment world-use, Modak growth and motion; whole-game authorization continues"
 }
