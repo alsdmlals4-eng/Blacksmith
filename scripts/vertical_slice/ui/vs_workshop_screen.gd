@@ -66,6 +66,7 @@ signal campaign_saved(envelope, result: Dictionary)
 signal enhancement_saved(envelope, result: Dictionary)
 signal handoff_requested
 signal chronicle_requested
+signal recovery_forge_requested
 
 var _item = null
 var _resources = null
@@ -535,6 +536,73 @@ func _on_precision_backfill_pressed() -> void:
 		message.text = "정밀 태그 정정 완료" if str(result.get("outcome", "")) == "APPLIED" else "정밀 태그 정정 불가"
 
 
+func _refresh_recovery_order() -> void:
+	var layout = get_node_or_null("WorkshopScroll/WorkshopLayout")
+	if layout == null: return
+	var box = layout.get_node_or_null("RecoveryOrder")
+	var enabled = _campaign_envelope != null and _campaign_envelope.active_run.get("tag_ruleset_id","") == "BLACKSMITH_REPLAN_TAGS_20260912"
+	if box == null and enabled:
+		box = VBoxContainer.new()
+		box.name = "RecoveryOrder"
+		box.add_theme_constant_override("separation",8)
+		layout.add_child(box)
+		layout.move_child(box,1)
+		var summary = Label.new()
+		summary.name = "Summary"
+		summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		summary.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+		summary.add_theme_color_override("font_color",Color("2d211a"))
+		summary.add_theme_stylebox_override("normal",_wireframe_card_style())
+		box.add_child(summary)
+		var action = Button.new()
+		action.name = "Action"
+		action.custom_minimum_size.y = MOBILE_PRIMARY_TOUCH_TARGET_HEIGHT
+		action.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
+		action.pressed.connect(_on_recovery_order_pressed)
+		box.add_child(action)
+	if box == null: return
+	box.visible = enabled
+	if not enabled: return
+	var record = _campaign_envelope.active_run.get("recovery_order",{})
+	var phase = record.get("phase","OFFER")
+	var summary = box.get_node("Summary")
+	var action = box.get_node("Action")
+	summary.text = "재기 주문 · 마을의 새 장비\n전용 재료로 새 장비 1개 제작 · 강화 불필요\n납품 보상: 400골드 + 보강재 2개 (시험값)\n기존 작품은 보존 · 납품 작품은 반환 없음"
+	action.disabled = _save_service == null
+	match phase:
+		"ACCEPTED":
+			summary.text += "\n수락됨 · 전용 재료 1회분 보관 / 제작비 0"
+			action.text = "주문용 장비 제작하기"
+		"READY":
+			var item = _campaign_envelope.get_item(record.item_uid)
+			summary.text += "\n제작 완료: " + str(EquipmentCatalogScript.by_item(item).get("display_name_ko","장비")) + " +0\n아래에서 납품하면 보상을 한 번 받습니다."
+			action.text = "완성품 납품 · 400골드 + 보강재 2"
+		"DELIVERED":
+			summary.text += "\n납품·정산 완료 · 주문 기록 보존\n다음 주문 보충은 영업일 시스템 연결 예정"
+			action.text = "정산 완료"
+			action.disabled = true
+		_:
+			action.text = "재기 주문 수락 · 비용 없음"
+
+func _on_recovery_order_pressed() -> void:
+	if _campaign_envelope == null: return
+	var phase = _campaign_envelope.active_run.get("recovery_order",{}).get("phase","OFFER")
+	if phase == "ACCEPTED":
+		recovery_forge_requested.emit()
+		return
+	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new()
+	var result = service.deliver(_campaign_envelope,_save_service) if phase == "READY" else service.accept(_campaign_envelope,_save_service)
+	if result.has("envelope"):
+		_campaign_envelope = result.envelope
+		var stock = _campaign_envelope.resource_snapshot()
+		_resources.gold = stock.gold
+		_resources.material_stock = stock.material_stock.duplicate(true)
+		_resources.changed.emit(_resources.snapshot())
+		campaign_saved.emit(_campaign_envelope,result)
+		_refresh_controls()
+	else:
+		get_node("WorkshopScroll/WorkshopLayout/RecoveryOrder/Summary").text += "\n저장 확인 실패 · 적용하지 않았습니다. 다시 확인해 주세요."
+
 func _refresh_controls() -> void:
 	_ensure_workpiece_durability_hero()
 	_ensure_equipment_identity_hero()
@@ -650,6 +718,7 @@ func _refresh_controls() -> void:
 	_refresh_wireframe_cards(state)
 	_refresh_replan_choices()
 	_refresh_world_viewer()
+	_refresh_recovery_order()
 
 
 func set_world_view_mode(mode: String) -> bool:

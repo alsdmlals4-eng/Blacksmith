@@ -7,6 +7,120 @@ const Precision = preload("res://scripts/vertical_slice/resolvers/vs_precision_r
 const Action = preload("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd")
 const Resources = preload("res://scripts/economy/workshop_resources.gd")
 
+class RecoveryFailSave:
+	extends "res://scripts/vertical_slice/services/vs_save_service.gd"
+	var fail_write = false
+	func save_envelope(envelope) -> Error:
+		return ERR_CANT_CREATE if fail_write else super.save_envelope(envelope)
+
+func test_recovery_order_creates_dedicated_item_and_settles_once_from_zero_resources():
+	var path = "res://scripts/vertical_slice/services/vs_recovery_order_service.gd"
+	assert_true(ResourceLoader.exists(path), "Recovery order must connect real crafting and settlement")
+	if not ResourceLoader.exists(path): return
+	var service = load(path).new()
+	var original = _aqueduct_envelope()
+	original.workshop_resources = {"gold":0,"material_stock":{"common_reinforcement_material":0,"heart_of_flame":0,"earth_crystal":0}}
+	var uid = original.active_run.selected_item_uid
+	var item_before = original.get_item(uid).to_dict()
+	var save = load("res://scripts/vertical_slice/services/vs_save_service.gd").new("user://gut/recovery-real.json")
+	assert_eq(save.save_envelope(original), OK)
+	var accepted = service.accept(original, save)
+	assert_eq(accepted.status, "APPLIED")
+	if accepted.status != "APPLIED": return
+	assert_eq(accepted.envelope.resource_snapshot().gold, 0)
+	assert_false(original.active_run.has("recovery_order"))
+	var ready = service.forge(save.load_envelope(), {"equipment_id":"iron_shield","base_attack":22,"quality_id":"GOOD","tap_count":27}, save)
+	assert_eq(ready.status, "APPLIED")
+	if ready.status != "APPLIED": return
+	var order_uid = ready.envelope.active_run.recovery_order.item_uid
+	assert_ne(order_uid, uid)
+	assert_eq(ready.envelope.get_item(order_uid).owner_id, "CUSTOMER_RECOVERY_RESERVED")
+	assert_eq(ready.envelope.active_run.selected_item_uid, uid)
+	assert_eq(ready.envelope.items_by_uid.size(), 2)
+	assert_eq(service.forge(accepted.envelope, {}, save).status, "ALREADY_APPLIED")
+	assert_eq(service.deliver(original, save).status, "BLOCKED", "Stale pre-accept input cannot settle")
+	var delivered = service.deliver(save.load_envelope(), save)
+	assert_eq(delivered.status, "APPLIED", str(delivered.get("reason", "")))
+	if delivered.status != "APPLIED": return
+	assert_eq(delivered.envelope.resource_snapshot().gold, 400)
+	assert_eq(delivered.envelope.resource_snapshot().material_stock.common_reinforcement_material, 2)
+	assert_eq(delivered.envelope.get_item(order_uid).owner_id, "CUSTOMER_RECOVERY")
+	assert_eq(delivered.envelope.get_item(order_uid).ledger.size(), 2)
+	assert_eq(delivered.envelope.get_item(uid).to_dict(), item_before)
+	assert_eq(service.deliver(ready.envelope, save).status, "ALREADY_APPLIED")
+	assert_eq(service.accept(original, save).status, "ALREADY_APPLIED")
+	assert_eq(save.load_envelope().resource_snapshot().gold, 400)
+	for field in ["phase","item_uid","gold_reward","material_units","schema_version"]:
+		var corrupt = delivered.envelope.to_dict()
+		corrupt.active_run.recovery_order[field] = null
+		assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(), field)
+	var legacy = Initializer.new().create_candidate_envelope()
+	assert_eq(service.accept(legacy, save).status, "BLOCKED")
+
+func test_recovery_order_save_failure_preserves_source_and_no_free_reward():
+	var path = "res://scripts/vertical_slice/services/vs_recovery_order_service.gd"
+	assert_true(ResourceLoader.exists(path), "Recovery transaction must reject failed writes")
+	if not ResourceLoader.exists(path): return
+	var service = load(path).new()
+	var original = _aqueduct_envelope()
+	var save = RecoveryFailSave.new("user://gut/recovery-failure.json")
+	assert_eq(save.save_envelope(original), OK)
+	save.fail_write = true
+	assert_eq(service.accept(original, save).reason, "SAVE_FAILED")
+	assert_false(original.active_run.has("recovery_order"))
+	assert_true(Envelope.serialized_equal(original.to_dict(),save.load_envelope().to_dict()))
+	save.fail_write = false
+	var accepted = service.accept(original,save)
+	assert_eq(accepted.status,"APPLIED")
+	var ready = service.forge(accepted.envelope,{"equipment_id":"iron_sword","base_attack":22,"quality_id":"GOOD","tap_count":27},save)
+	assert_eq(ready.status,"APPLIED")
+	if ready.status != "APPLIED": return
+	save.fail_write = true
+	assert_eq(service.deliver(ready.envelope,save).reason,"SAVE_FAILED")
+	assert_true(Envelope.serialized_equal(ready.envelope.to_dict(),save.load_envelope().to_dict()))
+	save.fail_write = false
+	assert_eq(service.deliver(ready.envelope,save).status,"APPLIED")
+	assert_eq(service.deliver(ready.envelope,save).status,"ALREADY_APPLIED")
+	assert_eq(save.load_envelope().resource_snapshot().gold,original.resource_snapshot().gold+400)
+
+func test_recovery_order_native_controls_open_existing_forge_return_and_deliver():
+	var envelope = _aqueduct_envelope()
+	var save = RecoveryFailSave.new("user://gut/recovery-ui.json")
+	assert_eq(save.save_envelope(envelope), OK)
+	var app = autofree(load("res://scenes/vertical_slice/vertical_slice_app.tscn").instantiate())
+	add_child(app)
+	var stock = envelope.resource_snapshot()
+	assert_true(app.configure_campaign(envelope, Resources.new(stock.gold,stock.material_stock),null,null,save))
+	var screen = app.get_node("ScreenHost/WorkshopScreen")
+	var button = screen.get_node_or_null("WorkshopScroll/WorkshopLayout/RecoveryOrder/Action")
+	assert_not_null(button, "Recovery order must be reachable without debug calls")
+	if button == null: return
+	button.pressed.emit()
+	assert_eq(save.load_envelope().active_run.recovery_order.phase,"ACCEPTED")
+	button.pressed.emit()
+	assert_false(screen.visible)
+	var forge = app.get_node_or_null("RecoveryForge")
+	assert_not_null(forge)
+	if forge == null: return
+	forge.get_node("RecoveryBack").pressed.emit()
+	assert_true(screen.visible)
+	assert_eq(save.load_envelope().active_run.recovery_order.phase,"ACCEPTED")
+	button.pressed.emit()
+	forge = app.get_node("RecoveryForge")
+	forge._completed_result = {"equipment_id":"iron_sword","base_attack":22,"quality_id":"GOOD","tap_count":27}
+	save.fail_write = true
+	forge.result_commit_button.pressed.emit()
+	assert_eq(save.load_envelope().active_run.recovery_order.phase,"ACCEPTED")
+	assert_false(forge._result_confirmation_emitted, "Failed save must allow the same completed result to be retried")
+	save.fail_write = false
+	forge.result_commit_button.pressed.emit()
+	assert_true(screen.visible)
+	assert_eq(save.load_envelope().active_run.recovery_order.phase,"READY")
+	button.pressed.emit()
+	assert_eq(save.load_envelope().active_run.recovery_order.phase,"DELIVERED")
+	assert_eq(save.load_envelope().resource_snapshot().gold,stock.gold+400)
+	assert_true(button.disabled)
+
 func test_world_trials_keep_independent_damage_and_resume_without_reapplying():
 	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
 	assert_true(service.has_method("prepare_world_with_rolls"), "DU/AR must commit before showing results")
