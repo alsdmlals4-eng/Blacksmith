@@ -1,5 +1,20 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## Recovery Order Implementation Plan — BS-REPLAN-20260913-04
+
+Goal: Blueprint17/39/51의 첫 재기 주문을 실제 단조→납품→400골드/보강재2 정산으로 연결한다. Architecture: 기존 SaveEnvelope에 optional recovery_order 단일 기록, 전용 서비스가 원본 복제·현재 저장 일치·원자 저장/readback을 소유한다. 기존 단조 화면/출생 변환기를 재사용하고 원래 선택 작품은 변경하지 않는다. Tech: Godot4.7.1/GUT9.7.1/HiGodot3.2.0, Base v9.4.4 유지. 이 기존 production owner에 계획을 통합하며 별도 dashboard/spec를 증식하지 않는다. 최신 사용자 routine 재승인 생략 지시로 inline 실행한다.
+
+범위: 현재 main c5a81189·baseline76ad0bb0, 다른PR196/359 read-only. optional 기록 부재는 구형/기존 새 캠페인과 호환되며 legacy에 기능 노출 금지. 수락은 자원0에서도 가능, 주문 전용 제작권1회만 부여한다. 새 단조 결과의 UID를 주문에 고정하고 처음부터 CUSTOMER_RECOVERY_RESERVED 소유로 두어 다른 사용/강화로 유출하지 않는다. 납품은 CUSTOMER_RECOVERY로 이전하고 원장/정산을1회 저장한다. UID/원장 보존, 실제 파일 삭제 없음. 첫 주문만; 다음 날 보충/달력·촉매교환·대여 보상·경제최종확정은 이번 묶음 제외.
+
+비교(2026-09-13 공식 소개 재조회): Weapon Shop Fantasy(https://store.steampowered.com/app/599460/) 제작·재료순환 ADAPT, Anvil Saga(https://store.steampowered.com/app/1587540/) 주문/공방 맥락 ADAPT, My Time at Sandrock(https://store.steampowered.com/app/1084600/) 의뢰 제작의 명확한 납품 목표 ADAPT. 직원경제/경쟁작가격/무료 클릭보상 REJECT. Godot Saving games 및 FileAccess 공식 문서의 직렬화 경계를 ADOPT하되 기존 save_service 재사용. 공개 소개/문서 조사이며 직접 경쟁작 플레이나 시장 밸런스 증거 아님.
+
+파일: 신규 scripts/vertical_slice/services/vs_recovery_order_service.gd와 UID; 기존 domain/vs_save_envelope.gd(기록검증), ui/vs_workshop_screen.gd(주문카드/행동), ui/vs_app.gd(단조화면 왕복). tests/gut/unit/vertical_slice/test_vs_replan_tag_save.gd에 실제저장/실패/중복/UI 회귀 추가. 보호 exact5경로·신규 currentPR metadata 등록 후 제품저작. 새 이미지/씬/외부도구 없음. 기존 실제 단조·공방 소비처와 승인배경 재사용.
+
+- [ ] RED: 서비스 부재 실패, accept(envelope,save)→forge(envelope,completed_result,save)→deliver(envelope,save)의 실제파일 왕복; 금0→400/보강0→2, 원작품불변, 중복납품0, 새UID/원장/선택유지. 잘못된기록·legacy·stale·저장실패 반례.
+- [ ] GREEN: 서비스 validate(envelope)→오류문자열, accept/forge/deliver→{status,envelope,reason}; 수락ACCEPTED/item_uid빈값, 제작READY/전용UID, 납품DELIVERED/고정정산. JSON 검증은 exact key/type/phase/소유/작품존재를 확인한다. 재접속은 파일의 동일상태만 재사용한다.
+- [ ] UI RED→GREEN: native RecoveryOrder/Action 수락→단조 열기→완료저장→납품→완료표시. 단조 중 공방 숨김, 저장실패는 결과를 보존해 재시도, 취소는 수락상태로 복귀. 최초·완료·legacy·연결오류 구분, 터치/스크롤은 기존 규격 유지.
+- [ ] 전체 GUT/운영계약/실제포인터 제작·납품·재실행/캡처, 두 검토·수정, PDF 체크리스트와 receipt, exact CI/정상병합/main readback. Android/사람/최종밸런스는 별도.
+
 ## 2026-09-13 세계 시험 병합 후 다음 구현
 
 PR373/278caffc는10SUCCESS·1조건부SKIPPED 및 미해결 검토스레드0 확인 뒤 정상 병합76ad0bb0. 로컬main/origin/main 동일 readback. 소진8경로 승인은 world-trials-pr373-20260913.json에 보존하고 활성경로에서 회수한다. Base v9.4.4와 보호목록/CI pin은 그대로 두고 프로젝트 baseline만 검증된 병합점으로 교정한다. 회수 계약 RED→일반 gate·파생뷰·역사PR 보존 회귀 GREEN을 요구한다. BENCHMARK_NOT_APPLICABLE: 제품 의미 변경 없는 기존 승인회수 절차이며 현재 병합/공식 Base 생성기와 검증기를 기준으로 한다.
