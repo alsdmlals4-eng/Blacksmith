@@ -31,6 +31,8 @@ func test_world_trials_keep_independent_damage_and_resume_without_reapplying():
 				assert_eq(service.prepare_aqueduct_with_rolls(prepared.envelope, uid, "OUTPUT", "BURST", [0,0], save).status, "BLOCKED")
 				var resources = Resources.new(before.gold, before.material_stock)
 				assert_eq(Action.new().resolve_and_save_with_rolls(prepared.envelope, uid, 20, {"success_roll_percent":0}, 1, resources, save, {"ruleset_id":"BLACKSMITH_REPLAN_TAGS_20260912","tag_id":"BURST_HANDLING"}).outcome, "BLOCKED")
+				var repair = load("res://scripts/vertical_slice/services/vs_workshop_maintenance_service.gd").new()
+				assert_eq(repair.repair_and_save(prepared.envelope, uid, resources, save, {"quality_roll_percent":0,"scar_roll_percent":99}).status, "BLOCKED")
 				var resolved = service.resolve_prepared_world(save.load_envelope(), uid, family, save)
 				assert_eq(resolved.status, "APPLIED")
 				assert_eq(resolved.record.mission_success, success)
@@ -62,6 +64,16 @@ func test_world_trials_reject_corrupt_payloads_and_preserve_aqueduct():
 	var corrupt = du.envelope.to_dict()
 	corrupt.active_run.duel_trials[uid].damage_percent = 10.0
 	assert_false(Envelope.from_dict(corrupt).validation_errors.is_empty(), "DU cannot borrow AQ low risk")
+	var dual_booking = du.envelope.to_dict()
+	dual_booking.active_run["army_trials"] = {uid:du.record.duplicate(true)}
+	dual_booking.active_run.army_trials[uid].record_type = "ARMY_TRIAL_V1"
+	dual_booking.active_run.army_trials[uid].event_id = "ar-trial-" + uid
+	dual_booking.active_run.army_trials[uid].damage_percent = 40.0
+	assert_false(Envelope.from_dict(dual_booking).validation_errors.is_empty(), "Two individually valid reservations must not share one item")
+	save.error = ERR_CANT_CREATE
+	assert_eq(service.resolve_prepared_world(du.envelope, uid, "DU", save).status, "BLOCKED")
+	assert_eq(du.envelope.get_item(uid).current_durability, 5)
+	assert_eq(du.envelope.active_run.duel_trials[uid].phase, "PREPARED")
 	for family in ["", "AQ", "UNKNOWN"]:
 		assert_eq(service.prepare_world_with_rolls(envelope, uid, family, "OUTPUT", "BURST", [0,0], SaveBoundary.new()).status, "BLOCKED")
 	for rolls in [[true,0],[0,100],[0],[-1,0],[NAN,0]]:
@@ -84,9 +96,12 @@ func test_workshop_family_selection_prepares_resolves_and_reports_both_new_trial
 	for index in [1,2]:
 		selector.select(index)
 		selector.item_selected.emit(index)
-		assert_true(box.get_node("Summary").text.contains("20.0%") if index == 1 else box.get_node("Summary").text.contains("40.0%"))
+		assert_true(screen._destination_summary({}).contains("콜로세움") if index == 1 else screen._destination_summary({}).contains("전선"), "Next destination must describe the selected family")
+		var expected_risk = "20.0%" if index == 1 else ("40.0%" if screen._item.current_durability == 5 else "50.0%")
+		assert_true(box.get_node("Summary").text.contains(expected_risk), "Independent first-trial damage changes second-trial risk")
 		box.get_node("Action").pressed.emit()
 		assert_true(selector.disabled)
+		assert_true(screen._destination_summary({}).contains("콜로세움") if index == 1 else screen._destination_summary({}).contains("전선"), "Pending destination cannot claim a different family")
 		assert_true(box.get_node("Requirement").disabled)
 		assert_true(screen.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton").disabled)
 		assert_false(box.get_node("Action").disabled)

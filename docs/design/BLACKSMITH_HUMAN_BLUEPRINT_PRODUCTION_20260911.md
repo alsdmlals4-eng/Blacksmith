@@ -2,6 +2,8 @@
 
 ## 2026-09-13 세계 시험 연결 실행 계획 — BS-REPLAN-20260913-03
 
+현재 결과: PR373의8경로 구현, domain RED3→GREEN299, native 선택 부재RED1→GREEN300. 실제 자연성장 QA슬롯(철방패+10격발I)의 결투 출발→재시작→같은draw(83.754556533594/19.398580297557)→패배/손상5→4, 군대draw31.9656994722513/34.1941383041844→성공/손상4→3, 이후 재시작3종기록 복원. 재화16670/보강20/불63/대지64 불변. 입력은 포인터와 native 선택창 키보드; 슬롯 선택/스크롤 가시성만 QA 보조, 단계/재화/난수 주입 없음. 실제 다음목적지의 수로 고정 누락RED를 교정했고, 군대위험은 앞선 손상 여부에 따라40/50%여서 UI회귀도 해당 상태를 반영하도록 교정했다. 최종 GUT300/2912 PASS. 독립 코드검토1회 P1/P2없음, 최종diff/CI/readback 진행 중. PDF58쪽에 실제 결과2장/체크리스트 추가, 후보미술·모션·Android/사람/출시 완료 아님.
+
 승인 근거: 최신 사용자의 전체 게임 구현 계속 지시와 Blueprint21~24. 이 절은 현재 작업 계획/체크리스트 owner이며 기존 상세 기획을 대체하지 않는다. main aaea8dd1, 보호 baseline df48dd06, Base v9.4.4와 현재 Base 관측 d830c0f6 유지. 다른 열린 PR196/359는 read-only, 사용자 import/후보 원본 보존. 연결된 HiGodot 작업 경로를 유지하기 위해 현재 checkout의 새 codex branch에서 작업하고 별도 프로젝트 복사본은 만들지 않는다.
 
 - 설계: 기존 AQ API/저장 bucket/15필드 유지. DU/AR는 각각 duel_trials/army_trials에 동일 15필드 계약을 적용하되 record_type·event_id·검증 profile을 가족별 고정한다. 가족별 UID당 1회, 모든 가족을 통틀어 UID당 PREPARED 최대1개. 준비 저장→독립2draw 확정→손상/반환→readback→읽기전용 보고. 기존 슬롯 자동 전환/삭제, 보상/날짜 변경 없음.
@@ -10,9 +12,9 @@
 - 출처(2026-09-13 재조회): https://store.steampowered.com/app/599460/Weapon_Shop_Fantasy/ ; https://store.steampowered.com/app/1587540/Anvil_Saga/ ; https://store.steampowered.com/app/1043260/Gladiator_Guild_Manager/ ; https://docs.godotengine.org/en/stable/classes/class_randomnumbergenerator.html ; https://docs.godotengine.org/en/stable/tutorials/io/saving_games.html
 - 구현 책임: vs_replan_tag_rules.gd(12요구/미리보기), vs_save_envelope.gd(가족별기록/중복예약검증), vs_customer_actual_use_action_service.gd(공통거래/보고), vs_enhancement_action_service.gd·vs_workshop_maintenance_service.gd(예약잠금), vs_workshop_screen.gd(가족선택/보고), vs_item_chronicle_screen.gd·vs_app.gd(3기록 읽기 연결). 신규 Scene/자산/Base pin 변경 없음. 별도 exact8경로 승인과 현재PR metadata 필요, 소진PR371승인 재사용 금지.
 
-- [ ] RED: GUT 실파일 저장에서 DU/AR 준비→재시작→확정/재열람, 성공·손상 독립4조합, 잘못된종류/roll/중복예약/손상profile 위조 거절, AQ 원본 유지.
-- [ ] GREEN: 위8파일을 HiGodot로 수정. 기존 AQ API optional family 기본값 AQ 유지; 다른 family는 명시값만 허용. prepared는 저장된 item snapshot과 일치해야 한다.
-- [ ] UI: 공방 family+요구 선택, 준비 후 선택잠금, 세계창·연대기에서 저장된 기록 읽기. 화면은 저장된 사건 보고, 모션없는 상태를 LIVE로 표시하지 않는다.
+- [x] RED: GUT 실파일 저장에서 DU/AR 준비→재시작→확정/재열람, 성공·손상 독립4조합, 잘못된종류/roll/중복예약/손상profile 위조 거절, AQ 원본 유지.
+- [x] GREEN: 위8파일을 HiGodot로 수정. 기존 AQ API optional family 기본값 AQ 유지; 다른 family는 명시값만 허용. prepared는 저장된 item snapshot과 일치해야 한다.
+- [x] UI: 공방 family+요구 선택, 준비 후 선택잠금, 세계창·연대기에서 저장된 기록 읽기. 화면은 저장된 사건 보고, 모션없는 상태를 LIVE로 표시하지 않는다.
 - [ ] 검증: 전체 GUT·운영계약·exact경로·CI, 실제 격리 슬롯의 포인터 결투/군대→재실행→보고 캡처; 저장 실패·stale 재시도·보상/자원불변 회귀.
 - [ ] 문서/PDF 체크리스트·readback·정상보호병합. 전체게임/Android/사람재미/최종미술/출시 완료 아님. 이후 주문·재제작·재료순환 이어가기.
 

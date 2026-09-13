@@ -2,6 +2,26 @@
   "schema_version": 1,
   "receipt_id": "BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910",
   "work_level": "L1",
+  "world_trials_delivery": {
+    "decision": "BS-REPLAN-20260913-03",
+    "pull_request": "https://github.com/alsdmlals4-eng/Blacksmith/pull/373",
+    "status": "IMPLEMENTED_LOCAL_VERIFIED_FINAL_REVIEW_PENDING",
+    "protected_paths": 8,
+    "base_current_observed": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
+    "adopted_base": "9.4.4_UNCHANGED",
+    "gut": "300_TESTS_2912_ASSERTIONS_PASS",
+    "red": "3_missing_world_contract_tests_then_1_missing_native_control_test_then_destination_family_mismatch",
+    "runtime": "DESKTOP_GAMEPLAY_CONTINUATION_DU01_AR01_PASS; AQ_PRESERVED; RESTART_RESUME_PASS",
+    "runtime_slot": "user://gut/blacksmith_from_zero_20260913.json",
+    "report_replay_save_sha256_before_and_after": "3ac9d51b3b059a5cf2e54d9ad32946880dec6eb7ae51feec109d79f27fe3c96b",
+    "item_uid": "BSI-0d9808a2520ef5e96a8beb2c4d4f0423",
+    "duel_draws": [83.754556533594, 19.398580297557],
+    "army_draws": [31.9656994722513, 34.1941383041844],
+    "outcomes": "DU_FAILURE_DAMAGE_5_TO_4; AR_SUCCESS_DAMAGE_4_TO_3; RESOURCES_UNCHANGED",
+    "evidence_ceiling": "NO_FINAL_ART_MOTION_ANDROID_HUMAN_BALANCE_OR_RELEASE_PASS",
+    "benchmark_preflight_receipt": "Production contract BS-REPLAN-20260913-03: 3 official game descriptions and 2 Godot primary documents, ADOPT/ADAPT/REJECT recorded",
+    "context_configuration_hygiene": "Existing eight consumers, shared Godot session, original import noise and candidates preserved; no addon/install/Base adoption/new tracking dashboard"
+  },
   "status": "IMPLEMENTATION_CHECKPOINT_MERGED_FULL_GAME_IN_PROGRESS",
   "remote_delivery": {
     "pull_request": "https://github.com/alsdmlals4-eng/Blacksmith/pull/371",
@@ -17,15 +37,15 @@
     "closure_delivery": "PENDING_SEPARATE_NORMAL_PR_READBACK",
     "evidence_ceiling": "MACHINE_AND_BOUNDED_DESKTOP_RUNTIME_ONLY; FULL_GAME_ART_MOTION_ANDROID_HUMAN_RELEASE_INCOMPLETE"
   },
-  "scope": "2026-09-13 authorized implementation checkpoint: 56-page integrated PDF preserves detailed design and state atlas, adds current checklist, actual Godot captures, first-forge/+0-to-aqueduct corrections, optional saved-report split/focus views and remaining game queue. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. Candidate art remains distinct; no asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban below is historical evidence, not current execution authority.",
+  "scope": "2026-09-13 authorized implementation checkpoint: 58-page integrated PDF preserves the prior56-page design and state atlas, adds actual DU/AR Godot result captures and connected-world checklist. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. Candidate art remains distinct; no asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban below is historical evidence, not current execution authority.",
   "artifact": {
     "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
-    "sha256": "2a7a6042eaed75516f56a30cf7982d8a0bd2264462b677bc6e39b9454c66045e",
-    "page_count": 56,
+    "sha256": "29d1492d8c0d8020513121dd2fa0d6de60f45162d44f588ab845856f7be5bafa",
+    "page_count": 58,
     "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
-    "source_sha256": "f8e06a749159ac0e78d9143c1a13d77454b5d43dad59bcb503e0c39da51909ea",
+    "source_sha256": "684027a877a92b76c2192d68a94d711705b0a15bba94f55191ef3885706a3c9b",
     "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-    "visual_review": "2026-09-13: new52-56 and changed2/36/53 rendered at1300px and visually inspected. Missing page separators before55/56 reproduced by page-title contract and corrected; final55/56 rerendered with their headings, captions and body intact. Prior state atlas retained. Old53 risk display is explicitly historical, corrected55 owns actual0.9% display evidence. Android, human play and final art remain unverified.",
+    "visual_review": "2026-09-13: final57/58 rendered at1300px and individually inspected: two actual result captures, captions, body and checklist fit without visible clipping. Prior52-56 and changed2/36/53 review retained; old53 risk is historical and corrected55 owns0.9% evidence. Prior state atlas retained. Android, human play and final art remain unverified.",
     "human_review": "NOT_RUN"
   },
   "benchmark_preflight_receipt": {

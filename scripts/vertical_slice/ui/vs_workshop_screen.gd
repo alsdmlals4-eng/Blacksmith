@@ -346,11 +346,12 @@ func _precision_summary(state: Dictionary) -> String:
 
 func _destination_summary(state: Dictionary) -> String:
 	if _is_replan_item():
+		var title: String = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd").WORLD_TRIALS[_trial_family].title
 		if _aqueduct_pending():
-			return "수로 모험 결과 확인 대기\n강화·수리는 결과 확인 후 가능\n연대기는 저장된 사건만 표시"
-		if _aqueduct_record().get("phase", "") == "RESOLVED":
-			return "수로 모험 완료 · 연대기에서 다시 보기\n다음 판단: 강화 계속 또는 손상 수리"
-		return "수로 시험: 철방패 +10부터 출발 가능\n태그의 용도별 효과를 비교하세요"
+			return title + " 결과 확인 대기\n강화·수리는 결과 확인 후 가능\n연대기는 저장된 사건만 표시"
+		if _selected_trial_record().get("phase", "") == "RESOLVED":
+			return title + " 완료 · 연대기에서 다시 보기\n다음 판단: 다른 시험 또는 강화·손상 수리"
+		return title + " 시험: 조건에 맞는 +10 장비 준비\n태그의 용도별 효과를 비교하세요"
 	var repair_text := "수리 가능" if bool(state.get("repair_allowed", false)) else "수리: %s" % _player_facing_repair_reason(str(state.get("repair_reason", "")))
 	var handoff_text := "인계 가능" if bool(state.get("handoff_allowed", false)) else "인계: %s" % _phase1_handoff_reason()
 	var chronicle_text := "연대기 보기 가능" if bool(state.get("chronicle_allowed", false)) else "연대기: 캠페인 정보 필요"
@@ -756,8 +757,7 @@ func _on_trial_family_selected(index: int) -> void:
 		return
 	_trial_family = ["AQ", "DU", "AR"][index]
 	get_node("WorkshopScroll/WorkshopLayout/AqueductTrial/Requirement").select(0)
-	_refresh_aqueduct_trial()
-	_refresh_world_viewer()
+	_refresh_controls()
 
 
 func _refresh_aqueduct_trial() -> void:
