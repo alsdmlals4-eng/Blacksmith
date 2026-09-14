@@ -221,6 +221,10 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 		var exchange_error: String = load("res://scripts/vertical_slice/services/vs_catalyst_exchange_service.gd").validate(envelope)
 		if not exchange_error.is_empty():
 			envelope.validation_errors.append(exchange_error)
+	if envelope.validation_errors.is_empty():
+		var commission_error: String = load("res://scripts/vertical_slice/services/vs_commission_service.gd").validate(envelope)
+		if not commission_error.is_empty():
+			envelope.validation_errors.append(commission_error)
 	return envelope
 
 

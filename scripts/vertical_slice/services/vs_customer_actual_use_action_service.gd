@@ -19,6 +19,12 @@ func resolve_and_save_with_roll(
 		return _blocked("INVALID_SAVE_SERVICE")
 	if envelope == null or not envelope.has_method("to_dict"):
 		return _blocked("INVALID_SAVE_ENVELOPE")
+	if not load("res://scripts/vertical_slice/services/vs_commission_service.gd").item_action_allowed(envelope, item_uid, "INDEPENDENT_WORLD"):
+		return _blocked("COMMISSION_ACTION_NOT_ALLOWED")
+	if save_service.has_method("load_envelope"):
+		var disk = save_service.load_envelope()
+		if disk == null or disk.recovered_from_backup or not disk.validation_errors.is_empty() or not SaveEnvelopeScript.serialized_equal(disk.to_dict(), envelope.to_dict()):
+			return _blocked("ACTUAL_USE_SAVE_DIVERGED")
 
 	var candidate = SaveEnvelopeScript.from_dict(envelope.to_dict())
 	if candidate == null or not candidate.validation_errors.is_empty():
@@ -52,6 +58,8 @@ func prepare_aqueduct(envelope, item_uid: String, axis: String, rhythm: String, 
 func prepare_aqueduct_with_rolls(envelope, item_uid: String, axis: String, rhythm: String, rolls: Array, save_service, family: String = "AQ") -> Dictionary:
 	if family not in ["AQ", "DU", "AR"]:
 		return _blocked("UNKNOWN_WORLD_TRIAL")
+	if not load("res://scripts/vertical_slice/services/vs_commission_service.gd").item_action_allowed(envelope, item_uid, "INDEPENDENT_WORLD"):
+		return _blocked("COMMISSION_ACTION_NOT_ALLOWED")
 	var candidate = _aqueduct_candidate(envelope, save_service, family)
 	if candidate == null:
 		return _blocked("INVALID_AQUEDUCT_CONTEXT")
