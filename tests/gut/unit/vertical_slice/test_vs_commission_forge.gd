@@ -216,3 +216,72 @@ func test_customer_commission_reaches_precision_with_personal_resources_then_rep
 	assert_true(app.configure_campaign(current, _resources(current), null, null, save))
 	assert_eq(app.begin_phase1_customer_handoff(), "COMMISSION_ACTION_NOT_ALLOWED")
 	assert_false(app.get_node("ScreenHost/WorkshopScreen").view_state().handoff_allowed)
+
+func _add_personal_item(envelope):
+	var isolated = Init.new().create_replan_candidate_envelope()
+	var born = load("res://scripts/vertical_slice/services/vs_item_birth_service.gd").new().commit_first_forge(isolated,
+		{"equipment_id":"iron_sword", "crafting_grade":"CRAFT_SUPERIOR", "base_attack":21, "artistry":3})
+	assert_eq(born.status, "APPLIED")
+	assert_eq(envelope.add_item(born.item), OK)
+	return born.item
+
+func _set_precision_item(item):
+	item.enhancement_level = 10
+	item.highest_checkpoint = 10
+	item.used_precision_milestones.append(10)
+	item.catalyst_affix.tags = {"BURST_OUTPUT":1}
+
+func test_cancel_restores_pending_personal_item_for_result_review_without_unlocking_edits():
+	var initial = save.load_envelope()
+	var personal = _add_personal_item(initial)
+	_set_precision_item(personal)
+	initial.active_run.selected_item_uid = personal.uid
+	assert_eq(save.save_envelope(initial), OK)
+	var prepared = World.new().prepare_world_with_rolls(initial, personal.uid, "AR", "OUTPUT", "BURST", [0,99], save)
+	assert_eq(prepared.status, "PREPARED")
+	if not prepared.has("envelope"): return
+	var accepted = _accepted()
+	var id = accepted.active_run.commission.active_order.order_id
+	var forged = service.forge(accepted, id, _completion(), save)
+	assert_eq(forged.status, "APPLIED")
+	var cancelled = service.cancel(forged.envelope, id, save)
+	assert_eq(cancelled.status, "APPLIED")
+	var restored = save.load_envelope()
+	assert_eq(restored.active_run.selected_item_uid, personal.uid, "Pending personal item must remain reachable for result review")
+	var app = AppScene.instantiate()
+	add_child_autofree(app)
+	var configured = app.configure_campaign(restored, _resources(restored), null, null, save)
+	assert_true(configured)
+	if not configured: return
+	var workshop = app.get_node("ScreenHost/WorkshopScreen")
+	assert_true(workshop.get_node("WorkshopScroll/WorkshopLayout/EnhancementButton").disabled)
+	assert_true(workshop.get_node("WorkshopScroll/WorkshopLayout/RepairButton").disabled)
+	workshop._on_aqueduct_pressed()
+	var completed = save.load_envelope()
+	assert_false(Envelope.pending_trial(completed, personal.uid))
+	assert_eq(completed.active_run.army_trials[personal.uid].phase, "RESOLVED")
+	assert_eq(completed.get_item(personal.uid).owner_id, "PLAYER")
+
+func test_cancel_destroyed_previous_selection_falls_back_to_other_living_personal_item():
+	var initial = save.load_envelope()
+	var previous = _add_personal_item(initial)
+	_set_precision_item(previous)
+	previous.current_durability = 1
+	var fallback = _add_personal_item(initial)
+	initial.active_run.selected_item_uid = previous.uid
+	assert_eq(save.save_envelope(initial), OK)
+	var accepted = _accepted()
+	var id = accepted.active_run.commission.active_order.order_id
+	var forged = service.forge(accepted, id, _completion(), save).envelope
+	var destruction = Enhancement.new().resolve_and_save_with_rolls(forged, previous.uid, 11,
+		{"success_roll_percent":99.999, "damage_roll_percent":0.0}, 1, _resources(forged), save)
+	assert_eq(destruction.outcome, "FAILED_DAMAGE")
+	if not destruction.has("envelope"): return
+	assert_eq(save.load_envelope().get_item(previous.uid).current_durability, 0)
+	assert_eq(service.cancel(save.load_envelope(), id, save).status, "APPLIED")
+	var restored = save.load_envelope()
+	assert_eq(restored.active_run.selected_item_uid, fallback.uid)
+	var app = AppScene.instantiate()
+	add_child_autofree(app)
+	assert_true(app.configure_campaign(restored, _resources(restored), null, null, save))
+	assert_eq(restored.get_item(fallback.uid).owner_id, "PLAYER")

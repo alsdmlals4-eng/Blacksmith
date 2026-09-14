@@ -212,6 +212,19 @@ static func item_action_allowed(envelope, item_uid: String, action: String) -> b
 		return record.get("phase", "") == "READY" and action in ["ENHANCE", "REPAIR", "HANDOFF"] and not _pending(envelope, item_uid)
 	return item.owner_id == "PLAYER"
 
+static func personal_selection_uid(envelope, preferred_uid: String = "") -> String:
+	# Selection includes pending personal items so their saved result remains reachable.
+	# Editing eligibility is still enforced by each action's pending-trial gate.
+	var preferred = envelope.get_item(preferred_uid)
+	if preferred != null and preferred.owner_id == "PLAYER" and preferred.current_durability > 0:
+		return preferred_uid
+	var uids = envelope.items_by_uid.keys()
+	uids.sort()
+	for uid in uids:
+		var item = envelope.get_item(uid)
+		if item.owner_id == "PLAYER" and item.current_durability > 0: return str(uid)
+	return ""
+
 func cancel(envelope, order_id: String, save) -> Dictionary:
 	if order_id.is_empty(): return _blocked("INVALID_ORDER_ID")
 	var current = _current(envelope, save)
@@ -228,8 +241,7 @@ func cancel(envelope, order_id: String, save) -> Dictionary:
 	if not record.item_uid.is_empty():
 		current.get_item(record.item_uid).owner_id = "CUSTOMER" if record.funding_origin == "COMMISSION_ESCROW" else "PLAYER"
 		if current.active_run.get("selected_item_uid", "") == record.item_uid:
-			var previous = current.get_item(record.previous_selected_item_uid)
-			current.active_run.selected_item_uid = previous.uid if previous != null and previous.owner_id == "PLAYER" and previous.current_durability > 0 and not _pending(current, previous.uid) else ""
+			current.active_run.selected_item_uid = personal_selection_uid(current, record.previous_selected_item_uid)
 	record.phase = "CANCELLED"
 	record.closed_day = current.active_run.current_day
 	record.escrow.reclaimed = true
