@@ -346,6 +346,10 @@ Files: service와 workshop/app 확장, 신규 `scripts/vertical_slice/ui/vs_comm
 
 Interfaces: `handoff(envelope,order_id:String,catalyst_id:String,save) -> Dictionary`, `settle_due(candidate,day:int) -> Dictionary`, `panel.configure_context(envelope,save)`. settle_due는 candidate만 변경하며 저장/재굴림을 하지 않고 day-close 소유 command가 하루 증가와 함께 commit한다.
 
+실행 상세 보완: `COMMISSION_SCHEDULE_TRIAL_V1`은 기본 의뢰의 비전투 고객 검수/반환 보고를 인계 다음날(+1), 목적 의뢰의 기존 AR 전선 엄호 보고를 +3일로 구분한다. 기본은 `BASIC_CUSTOMER_CHECK`로 표기하고 성공100%/손상0%이며 전투 성공으로 포장하지 않는다. 목적은 당시 기존 `world_preview("AR", ...)`와 HIGH 내구도 위험 계산을 재사용한다. 두 경우 모두 인계 시 독립 draw 두 개를 저장하되 기본 보고는 해당 확정확률로만 판정한다. 창 재열람/마감은 난수를 소비하지 않는다. 이는 +0 경로를 +10 전투 최소조건으로 막지 않기 위한 버전별 시험 일정이며 기존 DU/AQ/AR 즉시 trial을 바꾸지 않는다. PLAYER 기본 대여도 다음날 같은 UID를 반환한다.
+
+연결 경계: `personal_selection_uid`를 취소/판매/대여 인계 후 재사용한다. 대기 중인 개인 trial UID는 결과 열람용으로 선택할 수 있으나 기존 편집 잠금은 유지한다. 개인 작품 선택이 비어 있어도 의뢰 목록·운송 일정·고객 결과는 campaign 기록에서 항상 접근 가능해야 한다. 기존 무보상/무조건 공방반환 보고 문구를 유료 SALE에 재사용하지 않는다. 보상 촉매 inventory key는 `heart_of_flame` 또는 `earth_crystal`이다. due-day 원자 저장은 기존 commission readback/COMMIT_UNCERTAIN 경계를 재사용하고 과거 회복 거래 전체를 새 엔진으로 바꾸지 않는다.
+
 - [ ] 촉매 선택없음 비용0, 납품 연타 지급1회, 판매 고객소유 유지, 대여 같은 UID 귀환, 세계결과와 보수 독립, 지급 후 readback실패 재시도의 중복지급0 RED를 만든다.
 - [ ] 납품 시 고정 보수·선택촉매·소유 전이와 지연 사건 snapshot/두 draw/기한을 같은 저장에 확정한다. IN_TRANSIT는 마감 가능하지만 작품 편집은 잠긴다. 기존 trial PREPARED는 계속 마감을 막는다.
 - [ ] 목록→목적/보수/반환 상세→수락→제작→강화→납품→일정→결과→다음 촉매 소비를 실제 공방에서 연결한다. 새 panel이 표현만 맡고 저장 판단은 service가 소유한다.
