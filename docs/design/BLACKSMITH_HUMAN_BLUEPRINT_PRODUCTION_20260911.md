@@ -1,5 +1,11 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## General commissions execution — BS-REPLAN-20260914-10
+
+Latest user resumes implementation. Fresh main e0852621463d6f579d0f23451f43703af8632699 and ordinary gate PASS; PR359/196 remain read-only. Execute existing remaining specification Tasks1-5, not a new game scope. Start exact Task1 catalog/data/UID, expand the same approved technical manifest only as subsequent consumer paths are actually implemented. Dedicated branch in the existing connected checkout preserves unrelated imports/saves and avoids another duplicated game/editor worktree. Current Base d830c0f is reference only; adopted v9.4.4/pins/baseline5a84c4b2 unchanged.
+
+Preflight research 2026-09-14 reread official Anvil Saga1587540, Weapon Shop Fantasy599460, Sandrock1084600 and Godot saving_games/FileAccess. ADAPT fixed commission purpose and craft/use/reinvestment; ADOPT existing envelope/save transaction, catalog and native forge consumers; REJECT imported art/economy, a new generic transaction engine, and mutable requirements based on current tags. Economic values remain versioned trial defaults. Plan deliverable:10 definitions → escrow/save/ownership → forge and action guards → handoff/due results/panel → interruption/native/PDF/evidence and exact reviewed delivery. SDD task reviews support two final code reviews; no routine approval pauses.
+
 ## Image extraction and monthly evidence — BS-OPS-20260914-09
 
 Latest user directs future image generation on a chroma-key background followed by background removal. Apply to verified consumer briefs: choose a flat key color absent from the subject; preserve opaque source and model-edited transparent derivative; inspect actual alpha, chroma spill, hair/fire/soft edges, pivots and state consistency. Do not regenerate existing approved assets automatically. Full-frame background consumers retain their intended background content; extraction margins follow the brief. Generation, alpha QA, final approval and runtime verification remain separate. No new image generated in this reporting task.

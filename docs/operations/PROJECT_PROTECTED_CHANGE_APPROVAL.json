@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "5a84c4b2f2e972262b66f34845d625fda736eb31",
+  "decision_ids": ["BS-REPLAN-20260914-08", "BS-REPLAN-20260914-10"],
+  "approved_paths": ["data/vertical_slice/commission_catalog_v1.json", "scripts/vertical_slice/domain/vs_commission_catalog.gd", "scripts/vertical_slice/domain/vs_commission_catalog.gd.uid"],
+  "approval_source": "Latest user 작업진행해 continues approved R02-R04 implementation, current production BS-REPLAN-20260914-10 and remaining specification Task1. Fresh current-task PR approved-protected-change metadata must be verified before authoring; archived approvals not reused.",
+  "approval_time": "2026-09-14T22:20:00+09:00",
+  "scope_summary": "Task1 fixed ten-commission definitions and pure validation/preview consumer only. No existing saves, economy, assets, scenes or toolchain change. Subsequent transaction/UI exact paths require updated technical registration under the same current approved plan."
+}

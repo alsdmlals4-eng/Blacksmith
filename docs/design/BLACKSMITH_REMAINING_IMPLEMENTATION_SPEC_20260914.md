@@ -290,7 +290,7 @@
 - 의뢰 지원 제작은 SALE만, PLAYER 작품은 SALE/LOAN. 취소로 기존 개인 작품을 몰수하지 않는다. 임무와 손상 독립, 인계 자체 손상0, 기존 즉시 trial/회복 보상 불변.
 - 수락 후 정의·보상·일정·의미를 바꾸지 않는다. 미상 version은 원본 보존과 차단. 시험 보수400Gold/보강재2/선택촉매1은 일반 거래의 별도 policy이며 회복 보상에 더하지 않는다.
 
-### 작업 1 - 고정 의뢰 정의와 실제 목록·비교
+### Task 1 - 고정 의뢰 정의와 실제 목록·비교
 
 Files: 신규 `data/vertical_slice/commission_catalog_v1.json`, 신규 `scripts/vertical_slice/domain/vs_commission_catalog.gd`, 신규 `tests/gut/unit/vertical_slice/test_vs_commission_catalog.gd`. 화면 소비는 작업4에서 연결한다.
 
@@ -301,7 +301,7 @@ Interfaces: `all() -> Array[Dictionary]`, `by_id(definition_id: String) -> Dicti
 - [ ] 기본 의뢰에는 태그를 필수 요구하지 않는다. 목적 의뢰의 추천태그는 이유를 설명하되 이미 가진 태그를 보고 요구를 재생성하지 않는다.
 - [ ] preview 전후 `item.to_dict()`가 동일함과 같은 정의를 재조회해도 값이 같은지 GUT로 확인한다. 장비 mismatch/단계 부족 이유가 실제 control에 표시되는 것은 작업4 시험에 포함한다.
 
-### 작업 2 - 수락·전용 재료·취소의 원자 저장
+### Task 2 - 수락·전용 재료·취소의 원자 저장
 
 Files: 신규 `scripts/vertical_slice/services/vs_commission_service.gd`, 수정 `scripts/vertical_slice/domain/vs_save_envelope.gd`, 신규 `tests/gut/unit/vertical_slice/test_vs_commission_service.gd`.
 
@@ -325,7 +325,7 @@ assert_eq(service.cancel(save.load_envelope(), order_id, save).status, "APPLIED"
 assert_eq(save.load_envelope().resource_snapshot(), before)
 ```
 
-### 작업 3 - 기존 제작·강화·수리와 의뢰 소유권 연결
+### Task 3 - 기존 제작·강화·수리와 의뢰 소유권 연결
 
 Files: service 확장, 수정 `scripts/vertical_slice/ui/vs_app.gd`, `scripts/vertical_slice/ui/vs_workshop_screen.gd`, `scripts/vertical_slice/services/vs_enhancement_action_service.gd`, `scripts/vertical_slice/services/vs_workshop_maintenance_service.gd`, `scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd`; 기존 item birth/input adapter는 검증 후 재사용한다.
 
@@ -336,7 +336,7 @@ Interfaces: `forge(envelope,order_id:String,completion:Dictionary,save) -> Dicti
 - [ ] 제작 후 고객 예약 작품을 해당 의뢰 작업 대상으로 선택하고 이전 개인 selected UID를 기록한다. +0→+9→+10을 개인 골드/보강재/촉매로 수행한다. 타 의뢰·독립세계·판매로 전용 작품이 유출되는 모든 service 진입점에 공통 허용 검사를 연결한다.
 - [ ] 취소·판매 후 개인 selected UID를 복원하고 없으면 안전한 공방 선택 상태로 간다. 고객 소유 작품의 직접 service 호출도 차단되는지 검사한다.
 
-### 작업 4 - 납품·지연 결과·세계창·재투자
+### Task 4 - 납품·지연 결과·세계창·재투자
 
 Files: service와 workshop/app 확장, 신규 `scripts/vertical_slice/ui/vs_commission_panel.gd`, 필요 범위만 `vs_recovery_order_service.gd`의 close_day와 기존 실제사용 연결, 신규 `tests/gut/integration/test_vs_commission_loop.gd`.
 
@@ -347,7 +347,7 @@ Interfaces: `handoff(envelope,order_id:String,catalyst_id:String,save) -> Dictio
 - [ ] 목록→목적/보수/반환 상세→수락→제작→강화→납품→일정→결과→다음 촉매 소비를 실제 공방에서 연결한다. 새 panel이 표현만 맡고 저장 판단은 service가 소유한다.
 - [ ] due-day 직전/쓰기 전/쓰기 후/readback 후 중단에 대해 하루·결과·보수·UID를 대조한다. 세계창 접기/펼치기/재열람은 지급과 난수를 소비하지 않는다.
 
-### 작업 5 - 연결 품질과 전달
+### Task 5 - 연결 품질과 전달
 
 - [ ] 전체 GUT·Python, unknown/legacy save 회귀, 자원0 회복 경로, 일반의뢰30회 장부, 의미사건 연대기 및 3순환 실제 플레이를 검증한다.
 - [ ] 실제 5종 목록·예약·제작·납품/반환·재시작 캡처를 블루프린트에 추가한다. fixture·직접제작·데스크톱·Android 증거를 구분한다.
