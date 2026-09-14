@@ -40,6 +40,8 @@ var _campaign_envelope = null
 var _workshop_resources = null
 var _save_service = null
 var _phase1_handoff_item_uid := ""
+var _commission_forge_source = null
+var _commission_forge_order_id := ""
 
 
 func _ready() -> void:
@@ -61,8 +63,10 @@ func configure_campaign(envelope, resources, maintenance_service = null, enhance
 	_save_service = save_service
 	var selected_item_uid := str(envelope.active_run.get("selected_item_uid", ""))
 	if selected_item_uid.is_empty():
-		if not envelope.items_by_uid.is_empty():
-			return false
+		for uid in envelope.items_by_uid:
+			var candidate = envelope.get_item(uid)
+			if candidate.current_durability > 0 and load("res://scripts/vertical_slice/services/vs_commission_service.gd").item_action_allowed(envelope, uid, "ENHANCE"):
+				return false
 		_campaign_envelope = envelope
 		_workshop_resources = resources
 		return configure_workshop_context(null, resources, maintenance_service, enhancement_action_service, save_service, envelope)
@@ -122,8 +126,62 @@ func configure_workshop_context(item, resources, maintenance_service = null, enh
 	_connect_workshop_handoff()
 	if not workshop_screen.recovery_forge_requested.is_connected(_on_recovery_forge_requested):
 		workshop_screen.recovery_forge_requested.connect(_on_recovery_forge_requested)
+	if not workshop_screen.commission_forge_requested.is_connected(_on_commission_forge_requested):
+		workshop_screen.commission_forge_requested.connect(_on_commission_forge_requested)
 	return true
 
+
+func _on_commission_forge_requested(order_id: String) -> void:
+	if _campaign_envelope == null or get_node_or_null("GeneralCommissionForge") != null or get_node_or_null("RecoveryForge") != null:
+		return
+	var workshop = get_node("ScreenHost/WorkshopScreen")
+	if not workshop.visible or current_state != "WORKSHOP": return
+	var record = _campaign_envelope.active_run.get("commission", {}).get("active_order", {})
+	if record.get("order_id", "") != order_id or record.get("phase", "") != "ACCEPTED" or record.get("funding_origin", "") != "COMMISSION_ESCROW":
+		return
+	_commission_forge_source = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd").from_dict(_campaign_envelope.to_dict())
+	_commission_forge_order_id = order_id
+	var forge = load("res://scripts/ui/forging_screen.gd").new()
+	forge.name = "GeneralCommissionForge"
+	add_child(forge)
+	forge.select_equipment(record.definition_snapshot.equipment_id)
+	forge.find_child("EquipmentChoicePanel", true, false).hide()
+	forge.find_child("ForgeScroll", true, false).get_parent().add_theme_constant_override("margin_bottom", 128)
+	forge.forge_result_confirmed.connect(_on_commission_forge_completed)
+	var back = Button.new()
+	back.name = "CommissionBack"
+	back.text = "의뢰 보관하고 공방으로"
+	back.position = Vector2(24, 1180)
+	back.size = Vector2(672, 96)
+	back.add_theme_font_size_override("font_size", 28)
+	back.pressed.connect(_close_commission_forge)
+	forge.add_child(back)
+	workshop.hide()
+
+func _on_commission_forge_completed(completion: Dictionary) -> void:
+	var forge = get_node_or_null("GeneralCommissionForge")
+	if forge == null or _commission_forge_source == null: return
+	var result = load("res://scripts/vertical_slice/services/vs_commission_service.gd").new().forge(_commission_forge_source, _commission_forge_order_id, completion, _save_service)
+	if result.get("status", "") in ["APPLIED", "ALREADY_APPLIED"] and result.has("envelope"):
+		if configure_campaign(result.envelope, _workshop_resources, null, null, _save_service):
+			forge.get_node("CommissionBack").disabled = false
+			_close_commission_forge()
+			return
+	forge.result_commit_button.text = "저장 확인 실패 · 같은 결과 저장 재시도"
+	forge._result_confirmation_emitted = false
+	forge.result_commit_button.disabled = false
+	# An uncertain write must be resolved with this same completion, not a new forge session.
+	forge.get_node("CommissionBack").disabled = forge.get_node("CommissionBack").disabled or result.get("status", "") == "COMMIT_UNCERTAIN"
+
+func _close_commission_forge() -> void:
+	var forge = get_node_or_null("GeneralCommissionForge")
+	if forge != null:
+		if forge.get_node("CommissionBack").disabled: return
+		remove_child(forge)
+		forge.queue_free()
+	_commission_forge_source = null
+	_commission_forge_order_id = ""
+	get_node("ScreenHost/WorkshopScreen").show()
 
 func _on_recovery_forge_requested() -> void:
 	if get_node_or_null("RecoveryForge") != null or _campaign_envelope == null:
@@ -312,6 +370,8 @@ func begin_phase1_customer_handoff() -> String:
 	var handoff_item = _phase1_handoff_item()
 	if handoff_item == null:
 		return INVALID_PAYLOAD
+	if not load("res://scripts/vertical_slice/services/vs_commission_service.gd").item_action_allowed(_campaign_envelope, str(handoff_item.uid), "INDEPENDENT_WORLD"):
+		return "COMMISSION_ACTION_NOT_ALLOWED"
 	if int(handoff_item.enhancement_level) < PHASE1_HANDOFF_MINIMUM_LEVEL:
 		return "HANDOFF_REQUIRES_LEVEL_10"
 	if int(handoff_item.current_durability) <= 0 or str(handoff_item.physical_state) == "DESTROYED":

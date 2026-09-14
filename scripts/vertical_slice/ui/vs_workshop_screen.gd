@@ -67,6 +67,7 @@ signal enhancement_saved(envelope, result: Dictionary)
 signal handoff_requested
 signal chronicle_requested
 signal recovery_forge_requested
+signal commission_forge_requested(order_id: String)
 
 var _item = null
 var _resources = null
@@ -255,7 +256,10 @@ func view_state() -> Dictionary:
 		enhancement_allowed = false
 		enhancement_reason = "PRECISION_PLACEHOLDER_REQUIRES_BACKFILL"
 	var recovery: Dictionary = quote.get("quality_recovery_percent", {})
-	var repair_allowed := bool(quote.get("allowed", false))
+	var repair_allowed := bool(quote.get("allowed", false)) and _commission_action_allowed("REPAIR")
+	if not _commission_action_allowed("ENHANCE"):
+		enhancement_allowed = false
+		enhancement_reason = "COMMISSION_ACTION_NOT_ALLOWED"
 	var candidates := _precision_candidates_for_action(_precision_action, precision_mode)
 	var add_available := not _precision_candidates_for_action("ADD_TAG", precision_mode).is_empty()
 	var upgrade_available := precision_mode == "ATTEMPT" and precision_target > 10 and not _precision_candidates_for_action("UPGRADE_TAG", precision_mode).is_empty()
@@ -1054,7 +1058,7 @@ func _refresh_aqueduct_trial() -> void:
 		var index := option.selected
 		var preview: Dictionary = rules.world_preview(_trial_family, str(EquipmentCatalogScript.by_item(_item).get("equipment_id", "")),
 			int(_item.enhancement_level), _item.catalyst_affix.get("tags", {}), "HANDLING" if index >= 2 else "OUTPUT", "SUSTAIN" if index % 2 else "BURST")
-		var eligible: bool = bool(preview.get("ok", false)) and _item.current_durability > 0
+		var eligible: bool = bool(preview.get("ok", false)) and _item.current_durability > 0 and _commission_action_allowed("INDEPENDENT_WORLD")
 		var equipment_names: PackedStringArray = []
 		for equipment_id in rules.WORLD_EQUIPMENT[_trial_family]:
 			equipment_names.append(str(EquipmentCatalogScript.by_id(equipment_id).display_name_ko))
@@ -1191,7 +1195,11 @@ func _on_replan_tag_pressed(tag_id: String) -> void:
 
 
 func _has_enhancement_context() -> bool:
-	return _item != null and _resources != null and _campaign_envelope != null and _save_service != null and _enhancement_action_service != null
+	return _item != null and _resources != null and _campaign_envelope != null and _save_service != null and _enhancement_action_service != null and _commission_action_allowed("ENHANCE")
+
+func _commission_action_allowed(action: String) -> bool:
+	if _campaign_envelope == null: return true
+	return _item != null and load("res://scripts/vertical_slice/services/vs_commission_service.gd").item_action_allowed(_campaign_envelope, str(_item.uid), action)
 
 
 func _phase1_handoff_allowed() -> bool:
@@ -1201,6 +1209,8 @@ func _phase1_handoff_allowed() -> bool:
 func _phase1_handoff_reason() -> String:
 	if _item == null:
 		return "MISSING_ITEM"
+	if not _commission_action_allowed("INDEPENDENT_WORLD"):
+		return "COMMISSION_ACTION_NOT_ALLOWED"
 	if int(_item.enhancement_level) < 10:
 		return "HANDOFF_REQUIRES_LEVEL_10"
 	if int(_item.current_durability) <= 0 or str(_item.physical_state) == "DESTROYED":

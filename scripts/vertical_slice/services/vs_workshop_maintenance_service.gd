@@ -54,6 +54,8 @@ func try_repair_with_rolls(item, resources, rolls: Dictionary) -> Dictionary:
 func repair_and_save(envelope, item_uid: String, resources, save_service, rolls: Dictionary = {}, random_rolls: bool = false) -> Dictionary:
 	if envelope == null or resources == null or save_service == null or not save_service.has_method("save_envelope"):
 		return _blocked("MISSING_REPAIR_SAVE_CONTEXT")
+	if not load("res://scripts/vertical_slice/services/vs_commission_service.gd").item_action_allowed(envelope, item_uid, "REPAIR"):
+		return _blocked("COMMISSION_ACTION_NOT_ALLOWED")
 	var envelope_script = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
 	var candidate = envelope_script.from_dict(envelope.to_dict())
 	if not candidate.validation_errors.is_empty() or resources.snapshot() != candidate.resource_snapshot():

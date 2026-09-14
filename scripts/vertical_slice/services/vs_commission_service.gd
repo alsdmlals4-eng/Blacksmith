@@ -151,6 +151,67 @@ func reserve_item(envelope, order_id: String, item_uid: String, save) -> Diction
 	current.active_run.selected_item_uid = item_uid
 	return _commit(current, save, envelope)
 
+func forge(envelope, order_id: String, completion: Dictionary, save) -> Dictionary:
+	if order_id.is_empty(): return _blocked("INVALID_ORDER_ID")
+	var current = _current(envelope, save)
+	if current == null: return _blocked("INVALID_OR_UNAVAILABLE_SAVE")
+	var bucket = current.active_run.get("commission", _empty_bucket())
+	var record = bucket.active_order
+	if record.get("order_id", "") != order_id or record.get("funding_origin", "") != "COMMISSION_ESCROW":
+		return _blocked("INVALID_CUSTOMER_ORDER")
+	# The legacy adapter intentionally coerces inputs; validate the transaction boundary first.
+	if not _whole(completion.get("base_attack")) or completion.base_attack < 1:
+		return _blocked("INVALID_FORGE_RESULT")
+	for key in ["tap_count", "fever_activation_count"]:
+		if not _whole(completion.get(key, 0)) or completion.get(key, 0) < 0:
+			return _blocked("INVALID_FORGE_RESULT")
+	if not completion.get("fever_bonus_applied", false) is bool: return _blocked("INVALID_FORGE_RESULT")
+	var input = load("res://scripts/forging/canonical_first_item_input_adapter.gd").new().to_canonical_input_from_completion(completion)
+	if input.get("status", "") != "READY": return _blocked("INVALID_FORGE_RESULT")
+	if input.equipment_id != record.definition_snapshot.equipment_id: return _blocked("EQUIPMENT_MISMATCH")
+	input.erase("status")
+	var input_hash = JSON.stringify(JSON.parse_string(JSON.stringify(input))).sha256_text()
+	if record.phase == "READY":
+		var item = current.get_item(record.item_uid)
+		if (_same(envelope, current) or record.reserve_source_hash == _fingerprint(envelope)) and item.ledger[0].payload.get("commission_forge_input_hash", "") == input_hash:
+			return _already(current)
+		return _blocked("FORGE_ALREADY_CONSUMED_OR_STALE")
+	if record.phase != "ACCEPTED" or not _same(envelope, current): return _blocked("ORDER_NOT_ACCEPTED_OR_STALE")
+	if record.escrow.consumed_qty != 0 or record.escrow.reclaimed: return _blocked("ESCROW_UNAVAILABLE")
+	if bucket.command_sequence >= MAX_SAFE_INTEGER: return _blocked("SEQUENCE_EXHAUSTED")
+	var isolated = load("res://scripts/vertical_slice/services/vs_run_initializer_service.gd").new().create_replan_candidate_envelope()
+	isolated.active_run.current_day = current.active_run.current_day
+	var born = load("res://scripts/vertical_slice/services/vs_item_birth_service.gd").new().commit_first_forge(isolated, input)
+	if born.status != "APPLIED": return _blocked("INVALID_BORN_ITEM")
+	if current.items_by_uid.has(born.item_uid): return _blocked("UID_COLLISION")
+	born.item.owner_id = "CUSTOMER_COMMISSION_RESERVED"
+	born.item.ledger[0].payload.commission_forge_input_hash = input_hash
+	if current.add_item(born.item) != OK: return _blocked("INVALID_BORN_ITEM")
+	record.reserve_source_hash = _fingerprint(envelope)
+	record.previous_selected_item_uid = current.active_run.get("selected_item_uid", "")
+	record.item_uid = born.item_uid
+	record.phase = "READY"
+	record.escrow.consumed_qty = 1
+	record.escrow.produced_item_uid = born.item_uid
+	bucket.command_sequence += 1
+	record.command_sequence = bucket.command_sequence
+	current.active_run.selected_item_uid = born.item_uid
+	return _commit(current, save, envelope)
+
+static func item_action_allowed(envelope, item_uid: String, action: String) -> bool:
+	if action not in ["ENHANCE", "REPAIR", "INDEPENDENT_WORLD", "HANDOFF", "RESERVE"]: return false
+	if envelope == null or not envelope.has_method("get_item"): return false
+	var item = envelope.get_item(item_uid)
+	if item == null: return false
+	# Preserve the original untagged standalone service contract.
+	if not envelope.active_run.has("commission") and envelope.active_run.get("tag_ruleset_id", "") != RULESET:
+		return true
+	if not validate(envelope).is_empty(): return false
+	var record = envelope.active_run.get("commission", {}).get("active_order", {})
+	if record.get("item_uid", "") == item_uid:
+		return record.get("phase", "") == "READY" and action in ["ENHANCE", "REPAIR", "HANDOFF"] and not _pending(envelope, item_uid)
+	return item.owner_id == "PLAYER"
+
 func cancel(envelope, order_id: String, save) -> Dictionary:
 	if order_id.is_empty(): return _blocked("INVALID_ORDER_ID")
 	var current = _current(envelope, save)
@@ -168,7 +229,7 @@ func cancel(envelope, order_id: String, save) -> Dictionary:
 		current.get_item(record.item_uid).owner_id = "CUSTOMER" if record.funding_origin == "COMMISSION_ESCROW" else "PLAYER"
 		if current.active_run.get("selected_item_uid", "") == record.item_uid:
 			var previous = current.get_item(record.previous_selected_item_uid)
-			current.active_run.selected_item_uid = previous.uid if previous != null and previous.owner_id == "PLAYER" else ""
+			current.active_run.selected_item_uid = previous.uid if previous != null and previous.owner_id == "PLAYER" and previous.current_durability > 0 and not _pending(current, previous.uid) else ""
 	record.phase = "CANCELLED"
 	record.closed_day = current.active_run.current_day
 	record.escrow.reclaimed = true
