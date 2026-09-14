@@ -1,0 +1,54 @@
+{
+  "work_level": "L1",
+  "approval_reference": "Latest user: resume; future chroma-key generation then background removal; monthly project-named evidence PDF in designated folder",
+  "mode": "NONCODING_BUILD",
+  "source_head": "30e1a8744692e869798ee9428389d1c673d93153",
+  "source_main": "82a537440830b0d93fefbdf8f7942c0db93b2413",
+  "base_current_reference": "d830c0f6967678eed3c208ac6b24f9cd1b262ec3",
+  "adopted_base": "v9.4.4 unchanged",
+  "benchmark_preflight_receipt": {
+    "state": "PASS",
+    "entries": [
+      {
+        "source_and_evidence": "Existing Blueprint publisher; Base current DISCIPLINE_PDF_PUBLICATION_METHOD; Python hashlib and Godot importing_images official docs read 2026-09-14",
+        "observed_pattern": "Derived publication, source identity, independent review states and alpha handling",
+        "project_fit_and_difference": "Separate monthly evidence view; no duplicated game canon, legal certification, timestamp inference or private receipt copying",
+        "disposition": "ADAPT"
+      }
+    ]
+  },
+  "context_configuration_hygiene": {
+    "scope": "Monthly evidence and future extraction policy only",
+    "inventory": [
+      {
+        "path": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
+        "classification": "ACTIVE_OWNER",
+        "owner_or_provenance": "Latest user and AGENTS",
+        "references_and_consumers": "Report source/publisher and future Visual Requirements; no runtime mutation",
+        "removal_proposed": false
+      }
+    ]
+  },
+  "artifact": {
+    "source": "docs/operations/evidence/2026-09-ai-work-journal.json",
+    "output": "C:/Users/user/Documents/증빙서류/9월 증빙서류/모루의_서약_2026-09_AI활용_작업일지_증빙집_v1.0.pdf",
+    "sha256": "a4e7aad5e6c3c3cd8085de8bc9d8de2b48ca39fc38782edc8618c60824f314c8",
+    "bytes": 2062810,
+    "pages": 6,
+    "native_images": 4,
+    "status": "PRE_SUBMISSION_REVIEW_COPY",
+    "render_review": "PASS_6_OF_6",
+    "codex_visual_review": "PASS_6_OF_6",
+    "human_review": "NOT_RUN",
+    "submission": "NOT_SENT"
+  },
+  "validation": {
+    "red": "3 expected failures: missing publisher",
+    "green": "3 tests passed: never overwrite existing output, real 6-page/4-image evidence-limited report, reject missing source",
+    "protected_contract": "PASS before and after work; no protected product files authored",
+    "python_regression": "519 passed, 3 skipped on Windows publication host; PDF render integration explicitly skips on hosts without ReportLab/Korean Windows fonts, not claimed PASS there"
+  },
+  "limitations": ["September coverage limited to selected verified September14 records", "Historical runtime evidence reused, not rerun in this task", "Individual prompt screenshots/model/account/payment unverified", "Agreement/email originals not reviewed; no signing or submission", "No new generated image or background removal performed"],
+  "learning": "Project publisher refuses overwrites and missing sources; source hashes do not prove execution time. Base promotion not performed: local first consumer only.",
+  "next_product_work": "R02-R04 current execution specification, with fresh exact protected scope before product authoring"
+}
