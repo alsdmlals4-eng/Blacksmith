@@ -309,6 +309,8 @@ Interfaces: `validate(envelope) -> String`, `accept(envelope,definition_id:Strin
 
 실행 시 명세 보완: `accept`에 선택 인수 `funding_origin:String = "COMMISSION_ESCROW", ownership_mode:String = "SALE"`을 추가해 R04의 개인 작품 판매/대여를 실제로 선택할 수 있게 한다. 카탈로그의 funding/ownership은 기본 제안이며 definition_snapshot은 바꾸지 않는다. 수락된 instance에 선택한 두 값을 별도로 고정하고 알려진 시험 policy에서만 COMMISSION_ESCROW+SALE / PLAYER+SALE / PLAYER+LOAN을 허용한다. PLAYER 수락에는 고객 재료/크레딧을 지급하지 않고 후속 reserve_item이 실제 본인 UID를 검사한다. 수락 재시도는 definition_id뿐 아니라 선택 모드까지 동일할 때만 동일 명령이다.
 
+초기 escrow 시험값: R03 필드 `order_id, allocated_credit, consumed_credit, material_id, allocated_qty, consumed_qty, produced_item_uid, reclaimed`을 사용한다. 기본 제작의 별도 골드 비용이 없으므로 credit 두 값은0, 고객 지원은 material_id=`iron`/allocated_qty=1/consumed_qty=0, PLAYER는 allocated_qty=0이다. produced_item_uid는 제작 전 null, reclaimed는 false. 강화용 credit은 만들지 않는다. 고객 예약 소유자는 `CUSTOMER_COMMISSION_RESERVED`, 개인 예약은 `PLAYER_COMMISSION_RESERVED`; 고객 작품 취소 반납은 `CUSTOMER`, 개인 예약 취소는 `PLAYER`로 복귀한다. 이는 R04 소유권 계약의 초기 실행값이며 자유 재료 창고에 철을 지급하지 않는다.
+
 - [ ] 현재 실제파일 SaveService로 미수락→수락→재읽기→같은 수락 재호출의 비용0·동일order_id를 검증하는 RED를 만든다. 다른 run/stale source/backup 복원/중복 ID/다른 의뢰 예약은 차단한다.
 - [ ] active_run에 versioned commission bucket을 추가하고 SaveEnvelope.from_dict의 정수·형식·참조·소유권 검증을 연결한다. 인스턴스의 definition_snapshot/escrow/command_sequence는 동일 저장에 기록한다.
 - [ ] command는 disk 재읽기→동일run/원본 일치→복제본 전이→전체Envelope 검증→save→readback 동일성 순으로 수행한다. save 이전 실패만 무변경이고 write 성공/readback 실패는 COMMIT_UNCERTAIN이다.
