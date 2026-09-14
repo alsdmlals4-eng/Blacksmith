@@ -28,7 +28,7 @@ func _available() -> bool:
 
 func _item(envelope, equipment = "iron_sword"):
 	var born = Birth.new().commit_first_forge(envelope, {"equipment_id":equipment,
-		"crafting_grade":"CRAFT_SUPERIOR", "base_attack":10, "artistry":3})
+		"crafting_grade":"CRAFT_SUPERIOR", "base_attack":21, "artistry":3})
 	assert_eq(born.status, "APPLIED")
 	return born.item
 
