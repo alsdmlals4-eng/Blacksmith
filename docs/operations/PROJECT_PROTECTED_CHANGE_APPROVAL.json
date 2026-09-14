@@ -4,8 +4,8 @@
   "status": "APPROVED",
   "protected_base_commit": "5a84c4b2f2e972262b66f34845d625fda736eb31",
   "decision_ids": ["BS-REPLAN-20260914-08", "BS-REPLAN-20260914-10"],
-  "approved_paths": ["data/vertical_slice/commission_catalog_v1.json", "scripts/vertical_slice/domain/vs_commission_catalog.gd", "scripts/vertical_slice/domain/vs_commission_catalog.gd.uid"],
+  "approved_paths": ["data/vertical_slice/commission_catalog_v1.json", "scripts/vertical_slice/domain/vs_commission_catalog.gd", "scripts/vertical_slice/domain/vs_commission_catalog.gd.uid", "scripts/vertical_slice/services/vs_commission_service.gd", "scripts/vertical_slice/services/vs_commission_service.gd.uid", "scripts/vertical_slice/domain/vs_save_envelope.gd"],
   "approval_source": "Latest user 작업진행해 continues approved R02-R04 implementation, current production BS-REPLAN-20260914-10 and remaining specification Task1. Fresh current-task PR approved-protected-change metadata must be verified before authoring; archived approvals not reused.",
   "approval_time": "2026-09-14T22:22:24+09:00",
-  "scope_summary": "Task1 fixed ten-commission definitions and pure validation/preview consumer only. No existing saves, economy, assets, scenes or toolchain change. Subsequent transaction/UI exact paths require updated technical registration under the same current approved plan."
+  "scope_summary": "Tasks1-2: reviewed fixed catalog plus commission accept/cancel/reserve transaction and nested save validation. Existing campaign data is preserved; no old save migration, scene, asset or toolchain replacement. Same approved BS-REPLAN-20260914-10 plan; later forge/action/UI paths require exact registration before authoring."
 }
