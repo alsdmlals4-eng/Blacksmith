@@ -66,9 +66,9 @@
 
 ## R01 — 5종 장비 세계 사용 전달 마감
 
-**현재 상태:** BRANCH_MACHINE_VERIFIED. 기존 변경은 rules의 WORLD_EQUIPMENT와 workshop 목록 소비. AR검/방패/활/갑옷/투구, AQ방패, DU검/방패. PR381은 Draft이며 runtime 일부만 확인했다.
+**현재 상태:** MAIN_DELIVERED_WITH_BOUNDED_DESKTOP_EVIDENCE. PR381 exact d7f337a9765fd4c097de5ebfa5bef3b374cf7e4c→5a84c4b2f2e972262b66f34845d625fda736eb31 정상 병합. PR382 closure→82a537440830b0d93fefbdf8f7942c0db93b2413 local/origin main 일치. AR검/방패/활/갑옷/투구, AQ방패, DU검/방패. 활 직접 제작/재시작/결과 및 갑옷·투구 시험 장비 native 검증, PDF73~74를 전달했다. Android·갑옷/투구 직접 제작 전체 플레이·최종 모션은 별도다.
 
-**선행 조건:** branch exactHEAD 및 활성2경로 승인/PR metadata 재확인. 진행 중 QA 저장과 unrelated imports 보존.
+**선행 조건:** 이 범위는 전달 완료다. consumed2경로 승인은 `docs/archive/protected-approvals/world5-pr381-20260914.json`에 원문 보존했고 재사용하지 않는다. 다음 구현은 현재 main·새 exact scope를 검증한다. QA 저장과 unrelated imports 보존.
 
 **설계·흐름:** 장비 선택 → AR 목적 선택 → +10·태그·내구도·예약 상태 검사 → PREPARED 저장 → 재시작 → 결과 확정 → 동일UID 귀환·독립 손상·연대기. UI에서 허용5종이 잘리지 않게 표시한다.
 
@@ -76,7 +76,7 @@
 
 **실패·복구:** PREPARED 이후 닫아도 같은 두 난수로 복원. 잘못된 장비/낡은 저장 거부 시 원본 보존. 기존 버전으로 되돌릴 때 신규 AR 장비 snapshot이 들어 있는 저장을 옛 빌드에 열지 않는다.
 
-**완료 증거:** 활·갑옷·투구의 실제 준비/확정 저장 회귀, 활부터 신규게임·재시작·결과 캡처 완주, 남은 두 장비 native 흐름, AQ/DU 제한 회귀, 두 번째 전체 리뷰, exact CI/main readback. 현재315/3278 통과만으로 완료 체크하지 않는다.
+**완료 증거:** 활 신규게임·재시작·결과·재열람, 갑옷/투구 fixture native 출발·재시작·결과, AQ/DU 제한 회귀, 두 코드검토, exact11SUCCESS/1조건부SKIP, 정상 병합/main readback. GUT315/3278,Python515/3skip 및 closure516/3skip. 상세 증거는 WORLD5 receipt 한 곳이 소유한다. 시험 장비/데스크톱 증거를 Android·전체게임 완료로 확대하지 않는다.
 
 **제외:** 새 전투 모션·보상·확률 조정·새 세계 family.
 
@@ -262,10 +262,95 @@
 
 ## 4. 착수 가능한 부분과 남은 결정
 
-즉시 기술 착수 가능: R01 남은 검증; R02/03 순수 schema·상태·중복차단 테스트; R06/07 consumer brief·기존 승인 자산 점검; R10 실패행렬. 실제 product authoring 전 exact경로/정본 Gate는 여전히 필요하다.
+즉시 기술 착수 가능: R01 전달 이후 R02/03 순수 schema·상태·중복차단 테스트; R06/07 consumer brief·기존 승인 자산 점검; R10 실패행렬. 실제 product authoring 전 exact경로/정본 Gate는 여전히 필요하다.
 
 시험안으로 구현 가능: R04 분리된 경제 profile, R05 비교 계산기, R07 milestone 표, R11 테스트 콘텐츠. 이는 최종 게임값 확정이 아니다. 최종 성장을 발동하려면 달력/실작업 조건, 최종 경제라 부르려면 플레이 균형 검수, 새로운 자산 runtime 승격에는 외형 lock이 필요하다. 본 문서는 그 승인을 얻었다고 기록하지 않는다.
 
 권장 폐기/정리: 중복 HTML PM 만들지 않음; 체크보드 RGB 후보는 runtime 사용 금지; routine 강화 로그의 연대기 확대 금지; old표를 새 경제에 fallback하지 않음. 기존 파일은 이번 작업에서 삭제/이동하지 않았다. unused consumer·hash·복구목록을 확인한 파일만 추후 사용자 삭제용 폴더로 옮긴다.
 
 공용화 판단: transaction별 검증·기계/실행/사람 상태 분리는 기존 Base 규칙 재사용. 이번12개 게임 명세나 후보 밸런스는 Base에 승격하지 않는다. 실제 반복 실패와 재사용 소비처가 확인된 자동 검사만 후속 공용 후보로 기록한다.
+
+## 5. R02~R04 실행 묶음 - 일반 의뢰의 첫 완주
+
+> **For agentic workers:** Use superpowers:executing-plans to implement task-by-task. Existing user BS-REPLAN-20260914-08 authorizes routine implementation; no repeated approval menu. A new exact protected scope and fresh current-task PR metadata are still mandatory.
+
+**Goal:** 일반 의뢰를 고르고 전용 재료로 제작한 다음, 필요하면 개인 비용으로 정밀강화하고 납품해 다음 작품에 재투자한다.
+
+**Architecture:** 기존 SaveEnvelope/SaveService와 실제 forging_screen을 재사용한다. 의뢰 정의·거래 service와 화면 presentation을 분리하며 공방 스크립트 안에 새로운 원장을 중복 구현하지 않는다. 범용 이벤트 엔진을 도입하지 않고 기존 실제사용의 snapshot/draw 방식만 재사용한다.
+
+**Tech Stack:** 채택 Godot4.7.1/GUT9.7.1, 기존 JSON 저장·Python 계약, HiGodot 생산 저작 권위. 새 패키지나 유료 도구 없음.
+
+**Spec:** 이 문서 R02/R03/R04/R10. 아래 경로 중 신규 표시는 구현 제안이지 이미 존재하는 파일이 아니다.
+
+### 공통 경계와 사전 비교
+
+- R01 main/closure82a53744 확인. Base v9.4.4 유지, protected baseline5a84c4b2. 새로운 구현은 그 이후 exact scope로 검증한다.
+- Base profile/matrix의 `DEFERRED_PRODUCT_GATE`는 과거 관찰이며 최신 프로젝트 승인보다 우선하지 않는다. RM-SYS-004/006은 공용 구현 없음,019는 프로젝트 seed다. 현재 회복/실제사용/제작 저장 소비처를 재사용하며 다른 게임의 원장을 복사하지 않는다.
+- Anvil Saga의 의뢰→세계 결과, Weapon Shop Fantasy의 제작→재료 순환, Sandrock의 제작→공동체 요청을 ADAPT한다. Godot Saving games/FileAccess의 영속 경계는 참고하되 예제 저장기로 기존 백업/검증을 교체하지 않는다. 공식 소개·문서 조사이며 실제 플레이/현업 인터뷰라고 주장하지 않는다.
+- 의뢰 지원 제작은 SALE만, PLAYER 작품은 SALE/LOAN. 취소로 기존 개인 작품을 몰수하지 않는다. 임무와 손상 독립, 인계 자체 손상0, 기존 즉시 trial/회복 보상 불변.
+- 수락 후 정의·보상·일정·의미를 바꾸지 않는다. 미상 version은 원본 보존과 차단. 시험 보수400Gold/보강재2/선택촉매1은 일반 거래의 별도 policy이며 회복 보상에 더하지 않는다.
+
+### 작업 1 - 고정 의뢰 정의와 실제 목록·비교
+
+Files: 신규 `data/vertical_slice/commission_catalog_v1.json`, 신규 `scripts/vertical_slice/domain/vs_commission_catalog.gd`, 신규 `tests/gut/unit/vertical_slice/test_vs_commission_catalog.gd`. 화면 소비는 작업4에서 연결한다.
+
+Interfaces: `all() -> Array[Dictionary]`, `by_id(definition_id: String) -> Dictionary`, `validate_definition(definition: Dictionary) -> Array[String]`, `preview(definition: Dictionary,item) -> Dictionary`. preview는 `allowed/reasons/equipment_name/min_level/recommended_level/purpose/reward/ownership`을 반환하고 저장·난수·자원을 변경하지 않는다.
+
+- [ ] 5종×기본(+0)/목적(+10) 정의10개에 대해 ID중복·알 수 없는 장비·빈 목적·음수/소수 단계·미상 보상/소유 정책이 거부되는 RED를 관측한다.
+- [ ] 정의마다 버전1, 장비, 최소/권장단계, 목적axis/rhythm, 위험profile, funding_origin, ownership_mode, reward_policy_id, return_policy를 명시한다. 현재 장비 catalog의 한국어 이름을 소비하고 또 다른 장비명 표를 만들지 않는다.
+- [ ] 기본 의뢰에는 태그를 필수 요구하지 않는다. 목적 의뢰의 추천태그는 이유를 설명하되 이미 가진 태그를 보고 요구를 재생성하지 않는다.
+- [ ] preview 전후 `item.to_dict()`가 동일함과 같은 정의를 재조회해도 값이 같은지 GUT로 확인한다. 장비 mismatch/단계 부족 이유가 실제 control에 표시되는 것은 작업4 시험에 포함한다.
+
+### 작업 2 - 수락·전용 재료·취소의 원자 저장
+
+Files: 신규 `scripts/vertical_slice/services/vs_commission_service.gd`, 수정 `scripts/vertical_slice/domain/vs_save_envelope.gd`, 신규 `tests/gut/unit/vertical_slice/test_vs_commission_service.gd`.
+
+Interfaces: `validate(envelope) -> String`, `accept(envelope,definition_id:String,save) -> Dictionary`, `cancel(envelope,order_id:String,save) -> Dictionary`, `reserve_item(envelope,order_id:String,item_uid:String,save) -> Dictionary`. 반환은 APPLIED/ALREADY_APPLIED/BLOCKED/COMMIT_UNCERTAIN이며 성공한 readback만 envelope를 제공한다.
+
+- [ ] 현재 실제파일 SaveService로 미수락→수락→재읽기→같은 수락 재호출의 비용0·동일order_id를 검증하는 RED를 만든다. 다른 run/stale source/backup 복원/중복 ID/다른 의뢰 예약은 차단한다.
+- [ ] active_run에 versioned commission bucket을 추가하고 SaveEnvelope.from_dict의 정수·형식·참조·소유권 검증을 연결한다. 인스턴스의 definition_snapshot/escrow/command_sequence는 동일 저장에 기록한다.
+- [ ] command는 disk 재읽기→동일run/원본 일치→복제본 전이→전체Envelope 검증→save→readback 동일성 순으로 수행한다. save 이전 실패만 무변경이고 write 성공/readback 실패는 COMMIT_UNCERTAIN이다.
+- [ ] 제작 전 취소는 escrow 회수, 제작 후 취소는 고객재료 작품 반환+개인 환급0, PLAYER 취소는 예약 해제만 실행한다. 수락/취소30회에 개인 자원 순증0을 확인한다.
+
+검증 예(실제 service와 파일 save 사용; 기대값을 service 출력에서 계산하지 않음):
+
+```gdscript
+var before = save.load_envelope().resource_snapshot()
+var original = save.load_envelope()
+var accepted = service.accept(save.load_envelope(), "IRON_SWORD_BASIC_V1", save)
+assert_eq(accepted.status, "APPLIED")
+var order_id = accepted.envelope.active_run.commission.active_order.order_id
+assert_eq(service.accept(original, "IRON_SWORD_BASIC_V1", save).status, "ALREADY_APPLIED")
+assert_eq(service.cancel(save.load_envelope(), order_id, save).status, "APPLIED")
+assert_eq(save.load_envelope().resource_snapshot(), before)
+```
+
+### 작업 3 - 기존 제작·강화·수리와 의뢰 소유권 연결
+
+Files: service 확장, 수정 `scripts/vertical_slice/ui/vs_app.gd`, `scripts/vertical_slice/ui/vs_workshop_screen.gd`, `scripts/vertical_slice/services/vs_enhancement_action_service.gd`, `scripts/vertical_slice/services/vs_workshop_maintenance_service.gd`, `scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd`; 기존 item birth/input adapter는 검증 후 재사용한다.
+
+Interfaces: `forge(envelope,order_id:String,completion:Dictionary,save) -> Dictionary`, `item_action_allowed(envelope,item_uid:String,action:String) -> bool`. actions는 ENHANCE/REPAIR/INDEPENDENT_WORLD/HANDOFF/RESERVE의 명시 목록이며 unknown은 false다. 준비 중 의뢰 작품만 ENHANCE/REPAIR 허용, 납품/운송 중은 편집 불가다.
+
+- [ ] 주문 장비와 다른 forge completion, 이미 소비된 전용재료, stale completion, 저장 실패 재확인에서 새 UID/재료가 중복 생성되는 것을 막는 RED를 만든다.
+- [ ] 기존 `_on_recovery_forge_requested` 흐름을 참고하되 별도 일반의뢰 signal/context로 기존 forging_screen을 연다. 해당 장비만 선택되며 뒤로가기에서 주문/재료는 남는다. 성공한 commit 뒤에만 제작 화면을 닫는다.
+- [ ] 제작 후 고객 예약 작품을 해당 의뢰 작업 대상으로 선택하고 이전 개인 selected UID를 기록한다. +0→+9→+10을 개인 골드/보강재/촉매로 수행한다. 타 의뢰·독립세계·판매로 전용 작품이 유출되는 모든 service 진입점에 공통 허용 검사를 연결한다.
+- [ ] 취소·판매 후 개인 selected UID를 복원하고 없으면 안전한 공방 선택 상태로 간다. 고객 소유 작품의 직접 service 호출도 차단되는지 검사한다.
+
+### 작업 4 - 납품·지연 결과·세계창·재투자
+
+Files: service와 workshop/app 확장, 신규 `scripts/vertical_slice/ui/vs_commission_panel.gd`, 필요 범위만 `vs_recovery_order_service.gd`의 close_day와 기존 실제사용 연결, 신규 `tests/gut/integration/test_vs_commission_loop.gd`.
+
+Interfaces: `handoff(envelope,order_id:String,catalyst_id:String,save) -> Dictionary`, `settle_due(candidate,day:int) -> Dictionary`, `panel.configure_context(envelope,save)`. settle_due는 candidate만 변경하며 저장/재굴림을 하지 않고 day-close 소유 command가 하루 증가와 함께 commit한다.
+
+- [ ] 촉매 선택없음 비용0, 납품 연타 지급1회, 판매 고객소유 유지, 대여 같은 UID 귀환, 세계결과와 보수 독립, 지급 후 readback실패 재시도의 중복지급0 RED를 만든다.
+- [ ] 납품 시 고정 보수·선택촉매·소유 전이와 지연 사건 snapshot/두 draw/기한을 같은 저장에 확정한다. IN_TRANSIT는 마감 가능하지만 작품 편집은 잠긴다. 기존 trial PREPARED는 계속 마감을 막는다.
+- [ ] 목록→목적/보수/반환 상세→수락→제작→강화→납품→일정→결과→다음 촉매 소비를 실제 공방에서 연결한다. 새 panel이 표현만 맡고 저장 판단은 service가 소유한다.
+- [ ] due-day 직전/쓰기 전/쓰기 후/readback 후 중단에 대해 하루·결과·보수·UID를 대조한다. 세계창 접기/펼치기/재열람은 지급과 난수를 소비하지 않는다.
+
+### 작업 5 - 연결 품질과 전달
+
+- [ ] 전체 GUT·Python, unknown/legacy save 회귀, 자원0 회복 경로, 일반의뢰30회 장부, 의미사건 연대기 및 3순환 실제 플레이를 검증한다.
+- [ ] 실제 5종 목록·예약·제작·납품/반환·재시작 캡처를 블루프린트에 추가한다. fixture·직접제작·데스크톱·Android 증거를 구분한다.
+- [ ] 정확히 두 전체 코드검토 후 수정은 targeted 재검증한다. exact protected CI/main readback과 consumed 승인 보관을 끝낸다.
+
+이 묶음의 완료는 일반 의뢰 순환의 완료다. 모닥 성장·최종미술/모션·Android·사람 재미·출시를 완료로 바꾸지 않는다. 첫 회차 보수/요일/동시슬롯 수는 시험 정책이며 R11의 플레이 결과로 조정한다.
