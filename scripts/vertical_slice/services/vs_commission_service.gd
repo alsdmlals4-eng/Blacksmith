@@ -88,7 +88,8 @@ static func _validate_record(envelope, record, number: int, active: bool) -> Str
 		var owner = "CUSTOMER_COMMISSION_RESERVED" if customer else "PLAYER_COMMISSION_RESERVED"
 		if item.owner_id != owner or Equipment.by_item(item).get("equipment_id", "") != record.definition_snapshot.equipment_id:
 			return "INVALID_COMMISSION_RESERVED_OWNER_EQUIPMENT"
-		if item.current_durability <= 0 or _pending(envelope, record.item_uid): return "INVALID_COMMISSION_RESERVED_ITEM"
+		# Reservation requires a living item, but later enhancement may legitimately destroy it.
+		if _pending(envelope, record.item_uid): return "INVALID_COMMISSION_RESERVED_ITEM"
 		if not record.previous_selected_item_uid.is_empty() and envelope.get_item(record.previous_selected_item_uid) == null:
 			return "INVALID_COMMISSION_PREVIOUS_SELECTION"
 	elif customer and item.owner_id != "CUSTOMER":
@@ -151,6 +152,7 @@ func reserve_item(envelope, order_id: String, item_uid: String, save) -> Diction
 	return _commit(current, save, envelope)
 
 func cancel(envelope, order_id: String, save) -> Dictionary:
+	if order_id.is_empty(): return _blocked("INVALID_ORDER_ID")
 	var current = _current(envelope, save)
 	if current == null: return _blocked("INVALID_OR_UNAVAILABLE_SAVE")
 	var bucket = current.active_run.get("commission", _empty_bucket())
@@ -160,7 +162,7 @@ func cancel(envelope, order_id: String, save) -> Dictionary:
 			if _same(envelope, current) or source_record.get("order_id", "") == order_id: return _already(current)
 			return _blocked("STALE_CANCEL_SOURCE")
 	var record = bucket.active_order
-	if record.get("order_id", "") != order_id or not _same(envelope, current): return _blocked("ORDER_NOT_FOUND_OR_STALE")
+	if record.is_empty() or record.get("order_id", "") != order_id or not _same(envelope, current): return _blocked("ORDER_NOT_FOUND_OR_STALE")
 	if bucket.command_sequence >= MAX_SAFE_INTEGER: return _blocked("SEQUENCE_EXHAUSTED")
 	if not record.item_uid.is_empty():
 		current.get_item(record.item_uid).owner_id = "CUSTOMER" if record.funding_origin == "COMMISSION_ESCROW" else "PLAYER"

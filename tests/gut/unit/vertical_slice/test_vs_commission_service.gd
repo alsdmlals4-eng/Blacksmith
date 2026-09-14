@@ -245,3 +245,65 @@ func test_pending_actual_world_use_cannot_be_reserved_for_commission():
 	assert_eq(accepted.status, "APPLIED")
 	var order_id = accepted.envelope.active_run.commission.active_order.order_id
 	assert_eq(service.reserve_item(accepted.envelope, order_id, item.uid, save).status, "BLOCKED")
+
+func test_empty_cancel_and_reserve_ids_are_safe_before_acceptance_and_after_cancel():
+	for after_cancel in [false, true]:
+		if after_cancel:
+			var accepted = service.accept(save.load_envelope(), "IRON_SWORD_BASIC_V1", save)
+			assert_eq(service.cancel(accepted.envelope, accepted.envelope.active_run.commission.active_order.order_id, save).status, "APPLIED")
+		var source = save.load_envelope()
+		var before = source.to_dict()
+		var result = service.cancel(source, "", save)
+		assert_eq(result.get("status"), "BLOCKED")
+		assert_false(result.has("envelope"))
+		assert_eq(service.reserve_item(source, "", "", save).status, "BLOCKED")
+		assert_true(Envelope.serialized_equal(source.to_dict(), before))
+		assert_true(Envelope.serialized_equal(save.load_envelope().to_dict(), before))
+
+func test_reserved_player_and_customer_enhancement_destruction_saves_then_cancels_without_refund():
+	for funding in ["PLAYER", "COMMISSION_ESCROW"]:
+		var initial = Initializer.new().create_replan_candidate_envelope()
+		var item = _item(initial)
+		item.enhancement_level = 10
+		item.highest_checkpoint = 10
+		item.used_precision_milestones.assign([10])
+		item.catalyst_affix.tags = {"BURST_OUTPUT":1}
+		item.current_durability = 1
+		assert_eq(save.save_envelope(initial), OK)
+		var accepted = service.accept(save.load_envelope(), "IRON_SWORD_BASIC_V1", save, funding, "SALE")
+		var order_id = accepted.envelope.active_run.commission.active_order.order_id
+		var ready
+		if funding == "PLAYER":
+			ready = service.reserve_item(accepted.envelope, order_id, item.uid, save).envelope
+		else:
+			ready = accepted.envelope
+			var record = ready.active_run.commission.active_order
+			record.phase = "READY"
+			record.item_uid = item.uid
+			record.reserve_source_hash = "a".repeat(64)
+			record.command_sequence = 2
+			record.escrow.consumed_qty = 1
+			record.escrow.produced_item_uid = item.uid
+			ready.active_run.commission.command_sequence = 2
+			ready.get_item(item.uid).owner_id = "CUSTOMER_COMMISSION_RESERVED"
+			assert_eq(save.save_envelope(ready), OK)
+		var before = ready.resource_snapshot()
+		var action = load("res://scripts/vertical_slice/services/vs_enhancement_action_service.gd").new()
+		var resources = load("res://scripts/economy/workshop_resources.gd").new(before.gold, before.material_stock)
+		var result = action.resolve_and_save_with_rolls(ready, item.uid, 11,
+			{"success_roll_percent":99.0, "damage_roll_percent":0.0}, 1, resources, save)
+		assert_eq(result.outcome, "FAILED_DAMAGE")
+		if result.outcome != "FAILED_DAMAGE": continue
+		assert_true(result.destroyed_history_archived)
+		var restored = save.load_envelope()
+		assert_eq(restored.get_item(item.uid).current_durability, 0)
+		assert_eq(restored.get_item(item.uid).physical_state, "DESTROYED")
+		assert_true(restored.destroyed_history_by_uid.has(item.uid))
+		assert_lt(restored.workshop_resources.gold, before.gold)
+		assert_lt(restored.workshop_resources.material_stock.common_reinforcement_material, before.material_stock.common_reinforcement_material)
+		assert_eq(restored.resource_snapshot(), resources.snapshot())
+		var paid = restored.resource_snapshot()
+		var cancelled = service.cancel(restored, order_id, save)
+		assert_eq(cancelled.status, "APPLIED")
+		assert_eq(cancelled.envelope.get_item(item.uid).owner_id, "PLAYER" if funding == "PLAYER" else "CUSTOMER")
+		assert_eq(cancelled.envelope.resource_snapshot(), paid)
