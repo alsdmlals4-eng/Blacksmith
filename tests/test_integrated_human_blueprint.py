@@ -7,6 +7,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md'
 RECORD = ROOT / 'docs/design/candidates/blueprint-20260911/record.json'
+RECEIPT = ROOT / 'docs/operations/receipts/2026-09-10-pixel-world-blueprint.json'
+PUBLISHER = ROOT / 'tools/publish_integrated_human_blueprint_pdf.py'
 
 
 class IntegratedHumanBlueprint(unittest.TestCase):
@@ -70,9 +72,26 @@ class IntegratedHumanBlueprint(unittest.TestCase):
             self.assertIn(expected, content, expected)
 
     def test_receipt_binds_source_and_pdf(self):
-        receipt=json.loads((ROOT/'docs/operations/receipts/2026-09-10-pixel-world-blueprint.json').read_text(encoding='utf-8'))['artifact']
-        self.assertEqual(receipt['source_sha256'],hashlib.sha256(SOURCE.read_bytes().replace(b'\r\n',b'\n')).hexdigest())
-        self.assertEqual(receipt['sha256'],hashlib.sha256((ROOT/receipt['path']).read_bytes()).hexdigest())
+        receipt=json.loads(RECEIPT.read_text(encoding='utf-8'))
+        artifact=receipt['artifact']
+        preparation=receipt['commission_cumulative_preparation']
+        self.assertEqual(artifact['sha256'],hashlib.sha256((ROOT/artifact['path']).read_bytes()).hexdigest())
+        self.assertEqual(artifact['page_count'],77)
+        self.assertEqual(
+            artifact['source_sha256'],
+            hashlib.sha256(SOURCE.read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
+        )
+        self.assertEqual(
+            preparation['source_sha256_normalized_lf'],
+            hashlib.sha256(SOURCE.read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
+        )
+        self.assertEqual(preparation['candidate_sha256'],artifact['sha256'])
+        self.assertEqual(preparation['replaced_artifact']['page_count'],74)
+        self.assertEqual(
+            preparation['replaced_artifact']['sha256'],
+            '0cbe23b3dd046bd355da87afd3f9a853a1fccf808a0f41ab466e76cd3ab228f5',
+        )
+        self.assertEqual(preparation['publication_status'],'PUBLISHED_AFTER_VERIFIED_PRODUCT_MERGE')
 
     def test_trial_budget_and_probability_fixture(self):
         import math
@@ -84,7 +103,30 @@ class IntegratedHumanBlueprint(unittest.TestCase):
         self.assertAlmostEqual((1-.82)*.05,.009)
         self.assertAlmostEqual(.82+(1-.82)*.05+(1-.82)*.95,1)
 
-    def test_pdf_has_one_page_per_section(self):
+    def test_pdf_candidate_has_one_page_per_section(self):
+        import importlib.util
+        import re
+        import tempfile
+        try:
+            import reportlab  # noqa: F401
+        except ImportError:
+            self.skipTest('candidate build requires ReportLab')
+        if not Path('C:/Windows/Fonts/malgun.ttf').exists():
+            self.skipTest('candidate build is verified on the Windows publication host')
+        from pypdf import PdfReader
+        count=len(re.findall(r'^## ',SOURCE.read_text(encoding='utf-8'),re.M))
+        spec=importlib.util.spec_from_file_location('integrated_blueprint_publisher',PUBLISHER)
+        publisher=importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(publisher)
+        with tempfile.TemporaryDirectory() as directory:
+            candidate=Path(directory)/'blueprint-candidate.pdf'
+            publisher.build(candidate)
+            reader=PdfReader(candidate)
+            self.assertEqual(len(reader.pages),count)
+            for index,page in enumerate(reader.pages,1):
+                self.assertIn(f'{index:02}.',page.extract_text())
+
+    def test_published_pdf_has_one_page_per_section(self):
         import re
         from pypdf import PdfReader
         count=len(re.findall(r'^## ',SOURCE.read_text(encoding='utf-8'),re.M))
@@ -92,6 +134,36 @@ class IntegratedHumanBlueprint(unittest.TestCase):
         self.assertEqual(len(reader.pages),count)
         for index,page in enumerate(reader.pages,1):
             self.assertIn(f'{index:02}.',page.extract_text())
+
+    def test_commission_runtime_append_preserves_74_sections_and_adds_three_pairs(self):
+        import re
+        content=SOURCE.read_text(encoding='utf-8')
+        headings=re.findall(r'^## (\d+)\.',content,re.M)
+        self.assertEqual(headings[:74],[f'{number:02}' for number in range(1,75)])
+        self.assertEqual(headings[74:],['75','76','77'])
+        captures=[
+            'commission-offers-native-20260916.png',
+            'commission-transit-native-20260916.png',
+            'commission-sale-restored-native-20260916.png',
+            'commission-loan-chronicle-native-20260916.png',
+            'commission-purpose-preview-native-20260916.png',
+            'commission-purpose-result-native-20260916.png',
+        ]
+        appended=content[content.index('## 75.'):]
+        self.assertEqual(appended.count('```runtimecaptures'),3)
+        for capture in captures:
+            self.assertEqual(appended.count(capture),1)
+            self.assertTrue((ROOT/'docs/testing'/capture).is_file())
+        for required in [
+            '세 번의 제한된 desktop 의뢰 순환',
+            'BSI-743d42640b103aebcb6747b615915999',
+            'BSI-7174f11179a8006541685c300c20b541',
+            '5→4',
+            'Android',
+            '사람 밸런스',
+            'remote CI11 SUCCESS/1 conditional SKIP',
+        ]:
+            self.assertIn(required,appended)
 
     def test_deliverable_covers_requested_sections(self):
         self.assertTrue(SOURCE.is_file(), 'Integrated blueprint not yet authored')

@@ -19,6 +19,12 @@ def source_digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def source_text_digest(path):
+    text = Path(path).read_bytes().decode('utf-8')
+    normalized = text.replace('\r\n', '\n').replace('\r', '\n')
+    return hashlib.sha256(normalized.encode('utf-8')).hexdigest()
+
+
 def fit_dimensions(width, height, max_width, max_height):
     if min(width, height, max_width, max_height) <= 0:
         raise ValueError('Image dimensions must be positive')
@@ -134,7 +140,7 @@ def build(output):
             for path, digest in hashes:
                 story.append(p(f'{path} | SHA-256 {digest[:16]}', small))
             story.append(p(source_reference(record), small))
-            story.append(p(f'이 보고서 입력 JSON SHA-256: {source_digest(SOURCE)}', small))
+            story.append(p(f'이 보고서 입력 JSON LF-정규화 SHA-256: {source_text_digest(SOURCE)}', small))
     def decoration(canvas, doc):
         canvas.setStrokeColor(colors.HexColor('#bac6c9'))
         canvas.line(42, 39, A4[0]-42, 39)

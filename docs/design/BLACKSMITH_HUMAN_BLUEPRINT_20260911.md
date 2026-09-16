@@ -1249,3 +1249,44 @@ UID BSI-fed03de98a88f266f381e6ab828dd2f7 유지. 성공63%, 손상40%는 독립 
 확인: 5종 AR 저장/결과 소비처, 활 직접 제작 경로, 갑옷·투구 시험 장비 출발/재시작/결과. 회귀는 315 GUT/3278 assertions·515 Python/3skip, 두 코드검토 완료. 남음: 문서 갱신 HEAD 검증·exact CI·main 전달, 갑옷·투구 직접 제작 전체 플레이와 Android·사람 검수.
 
 전체게임은 미완료다. 다음은 R02~R04 일반 의뢰→전용 재료→납품/반환·재투자이며 R05~R12 성장·모션·사용성·기기 검수가 이어진다. 결과 보고 패널을 움직이는 세계 전투나 완성 미술로 표시하지 않는다.
+
+---
+
+## 75. 일반 의뢰 첫 순환 - 제안에서 고객 활 인계까지
+
+2026.09.16 격리 저장 `commission_native_20260916.json`에서 일반 의뢰를 실제 화면으로 세 번 순환했다. 첫 순환은 새 게임의 제안 10건 중 철활 BASIC을 선택하고, +0 새 철활을 실제 단조해 보상 자원을 불의 심장으로 선택한 뒤 고객에게 판매 인계한 경로다. 장비·레벨·자원·결과 난수는 주입하지 않았다.
+
+```runtimecaptures
+../testing/commission-offers-native-20260916.png|실제 제안 목록: 5종 장비의 BASIC·PURPOSE 10건과 기본 의뢰의 보수·소유 규칙.
+../testing/commission-transit-native-20260916.png|UID BSI-743d42640b103aebcb6747b615915999 인계: day 1→day 2 보고 예정, 고객 소유 판매 운송 중.
+```
+
+운송 저장은 프로세스 재시작 전후 SHA-256 `488a127f…`가 같았다. day 2 정산은 고객 검수 성공·손상 없음·CUSTOMER 소유 유지이며 Gold 20000→20400, 보강재30→32, 불의 심장64→65, 대지의 결정64 유지다. 이 화면은 제안과 운송 중 상태이며 정산 증거와 구분한다.
+
+---
+
+## 76. 판매 복원과 개인 대여 - 같은 UID 반환
+
+첫 판매 결과를 다시 열어 거짓 빈 placeholder가 사라지고 고객 활의 검수 성공·손상 없음·내구도5/5/5가 유지됨을 확인했다. 이어 실제 제작된 개인 철검 `BSI-7174f11179a8006541685c300c20b541`을 BASIC 대여하고 day 2→3 보고 뒤 같은 UID PLAYER 반환과 연대기 기록을 확인했다.
+
+```runtimecaptures
+../testing/commission-sale-restored-native-20260916.png|재시작 뒤 고객 활 판매 결과: 성공·손상 없음·고객 소유, 재열람은 결과와 자원을 바꾸지 않는다.
+../testing/commission-loan-chronicle-native-20260916.png|개인 철검 연대기: day 2 인계→day 3 성공·손상 없음→같은 UID PLAYER 반환.
+```
+
+두 번째 정산 뒤 자원은 Gold20800·보강재34·불의 심장65·대지의 결정65다. 판매는 CUSTOMER 소유, 대여는 같은 UID PLAYER 반환이라는 경계를 UI와 저장 결과에서 따로 읽을 수 있다. 연대기 열람 자체는 저장을 쓰지 않는다.
+
+---
+
+## 77. 목적 의뢰와 마감 체크리스트 - 손상은 한 번만
+
+같은 개인 철검을 실제 UI에서 강화할 때 +4 일반 강화가 1회 실패했고, BURST_OUTPUT 첫 정밀 시도는 +10에 성공했다. PURPOSE 사전 화면은 성공63.0%·손상40.0%를 독립 판정으로 보인다. day 3→6 결과는 임무 실패·손상 발생, 같은 UID PLAYER 반환, 내구도5/5/5→4/5/5다.
+
+```runtimecaptures
+../testing/commission-purpose-preview-native-20260916.png|목적 의뢰 인계 전: +10 태그, 성공63.0%와 손상40.0% 독립 표시, 불의 심장 선택.
+../testing/commission-purpose-result-native-20260916.png|3일 뒤 결과: 임무 실패·손상 1회 5→4·같은 UID 반환·추가 보수 없음.
+```
+
+체크리스트: 판매/대여 소유 분리, 재시작 SHA 동일, 같은 UID 반환, 손상 최대1회, 추가 보수0, 빈 선택 재개 시 새 작품 생성0을 확인했다. 제품 head `f9301e82`는 GUT369/369·4820 assertions, Python524/3skip, exact16, remote CI11 SUCCESS/1 conditional SKIP 뒤 `ed6f8af3`으로 정상 병합됐고 local/main·origin/main readback도 PASS다.
+
+이는 세 번의 제한된 desktop 의뢰 순환이며 Windows 증거다. Android, 전적으로 물리 입력만 사용한 사람 검수, 사람 밸런스, 최종 미술·모션·출시는 남아 있다.
