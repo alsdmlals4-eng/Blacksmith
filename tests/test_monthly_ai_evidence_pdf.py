@@ -89,6 +89,48 @@ def test_historical_world5_image_paths_remain_in_cumulative_source():
     assert historical_images <= page_images
 
 
+def test_three_verified_commission_cycles_and_six_captures_are_appended():
+    record = json.loads(SOURCE.read_text(encoding='utf-8'))
+    commission_images = {
+        'docs/testing/commission-offers-native-20260916.png',
+        'docs/testing/commission-transit-native-20260916.png',
+        'docs/testing/commission-sale-restored-native-20260916.png',
+        'docs/testing/commission-loan-chronicle-native-20260916.png',
+        'docs/testing/commission-purpose-preview-native-20260916.png',
+        'docs/testing/commission-purpose-result-native-20260916.png',
+    }
+    page_images = {
+        path
+        for page in record['pages']
+        for path, _caption in page.get('images', [])
+    }
+    text = json.dumps(record, ensure_ascii=False)
+
+    assert 'docs/operations/receipts/2026-09-16-general-commissions.json' in record['sources']
+    assert commission_images <= set(record['sources'])
+    assert commission_images <= page_images
+    assert '세 번의 제한된 desktop 의뢰 순환' in text
+    assert 'BSI-743d42640b103aebcb6747b615915999' in text
+    assert 'BSI-7174f11179a8006541685c300c20b541' in text
+    assert '5→4' in text
+    assert '11 SUCCESS/1 conditional SKIP' in text
+
+
+def test_monthly_receipt_records_published_final_candidate_binding():
+    receipt = json.loads(RECEIPT.read_text(encoding='utf-8'))
+    preparation = receipt['append_update_history'][-1]
+    candidate = preparation['candidate']
+
+    assert preparation['state'] == 'CUMULATIVE_REFRESH_PUBLISHED_AFTER_VERIFIED_PRODUCT_MERGE'
+    assert candidate['pages'] >= 11
+    assert candidate['native_images'] >= 10
+    assert candidate['source_sha256'] == hashlib.sha256(SOURCE.read_bytes()).hexdigest()
+    assert preparation['replaced_output']['sha256'] == (
+        'a4e7aad5e6c3c3cd8085de8bc9d8de2b48ca39fc38782edc8618c60824f314c8'
+    )
+    assert preparation['current_output_readback']['sha256'] == candidate['sha256']
+
+
 def test_explicit_expected_hash_replaces_current_review_copy(tmp_path):
     target = tmp_path / 'current.pdf'
     candidate = tmp_path / 'candidate.pdf'

@@ -71,16 +71,40 @@
     "closure_delivery": "PENDING_SEPARATE_NORMAL_PR_READBACK",
     "evidence_ceiling": "MACHINE_AND_BOUNDED_DESKTOP_RUNTIME_ONLY; FULL_GAME_ART_MOTION_ANDROID_HUMAN_RELEASE_INCOMPLETE"
   },
-  "scope": "2026-09-13 authorized implementation checkpoint: 60-page integrated PDF preserves the prior58-page design, state atlas and world runtime captures; adds actual recovery crafting/delivery and next-loop checklist. Product scope is owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. No asset promotion, risky migration or unrelated PR takeover. Earlier preparation-only kanban is historical evidence, not current execution authority.",
+  "scope": "Cumulative integrated Blueprint: the 77-page current PDF preserves sections1-74 and appends sections75-77 for three verified general-commission desktop cycles. Product scope remains owned by BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md. No new feature, asset promotion or risky migration is introduced by this derived publication.",
   "artifact": {
     "path": "exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf",
+      "sha256": "e89f1721e9ec0057b4db69b66d52cc369d904891ea6bbfbca5ad1e223f616877",
+      "page_count": 77,
+    "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
+      "source_sha256": "4020c81fbf853d4b14f8768587fbc7bfef6f414c8e2665f615c2c86008305f5b",
+    "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
+      "visual_review": "2026-09-16: sections1-74 preserved. New75-77 rendered at180dpi and inspected; section76 title overflow was observed, corrected and rechecked. Six native captures remain readable in three pairs. Android/human/final art remain unverified.",
+    "human_review": "NOT_RUN"
+  },
+  "commission_cumulative_preparation": {
+    "recorded_on": "2026-09-16",
+    "source_revision": "f9301e82f0464780188a1ffc615ebc1fc53a4c12",
+    "product_merge": "ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b",
+    "product_delivery": "PR384_11_SUCCESS_1_CONDITIONAL_SKIP_LOCAL_ORIGIN_MAIN_READBACK_PASS",
+    "source_sha256_normalized_lf": "4020c81fbf853d4b14f8768587fbc7bfef6f414c8e2665f615c2c86008305f5b",
+    "candidate_path": "tmp/pdfs/blacksmith-human-blueprint-commission-20260916-candidate.pdf",
+    "candidate_sha256": "e89f1721e9ec0057b4db69b66d52cc369d904891ea6bbfbca5ad1e223f616877",
+    "candidate_bytes": 43522989,
+    "candidate_pages": 77,
+    "preserved_sections": "1-74",
+    "appended_sections": "75-77",
+    "native_capture_pairs": 3,
+    "render_review": "PASS_75_76_77; SECTION76_OVERFLOW_OBSERVED_CORRECTED_AND_RECHECKED",
+    "root_spotcheck": "PASS_75_76_77",
+    "publication_status": "PUBLISHED_AFTER_VERIFIED_PRODUCT_MERGE",
+    "pdf_marker": "PASS_EXACTLY_ONCE_EDIT_EXPECTED_OUTPUT_COUNT_1; ONE_INITIAL_PATH_LOOKUP_FAILURE_BEFORE_SUCCESS_NOT_COUNTED",
+    "replaced_artifact": {
       "sha256": "0cbe23b3dd046bd355da87afd3f9a853a1fccf808a0f41ab466e76cd3ab228f5",
       "page_count": 74,
-    "source": "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md",
-      "source_sha256": "4da3f43afa2ec9e78796313d085d376d20cd401de09288d66502733f30ab832d",
-    "hash_basis": "PDF_FILE_BYTES; SOURCE_UTF8_CRLF_TO_LF_NORMALIZED",
-      "visual_review": "2026-09-14: previous72 source sections preserved. New73-74 rendered1347px and inspected; section74 overflow corrected to fit74pages. Actual bow from-zero/restart/result and armor/helmet fixture-native results explicitly distinguished. Android/human/final art remain unverified.",
-    "human_review": "NOT_RUN"
+      "source_sha256_normalized_lf": "4da3f43afa2ec9e78796313d085d376d20cd401de09288d66502733f30ab832d"
+    },
+    "evidence_ceiling": "THREE_BOUNDED_WINDOWS_DESKTOP_CYCLES; NOT_ANDROID_HUMAN_BALANCE_FINAL_ART_MOTION_OR_RELEASE"
   },
   "benchmark_preflight_receipt": {
     "state": "PASS",

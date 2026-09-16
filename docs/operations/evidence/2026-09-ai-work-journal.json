@@ -14,7 +14,14 @@
     "docs/testing/world5-bow-result-20260914.png",
     "docs/testing/world5-bow-restored-20260914.png",
     "docs/testing/world5-armor-result-fixture-20260914.png",
-    "docs/testing/world5-helmet-result-fixture-20260914.png"
+    "docs/testing/world5-helmet-result-fixture-20260914.png",
+    "docs/operations/receipts/2026-09-16-general-commissions.json",
+    "docs/testing/commission-offers-native-20260916.png",
+    "docs/testing/commission-transit-native-20260916.png",
+    "docs/testing/commission-sale-restored-native-20260916.png",
+    "docs/testing/commission-loan-chronicle-native-20260916.png",
+    "docs/testing/commission-purpose-preview-native-20260916.png",
+    "docs/testing/commission-purpose-result-native-20260916.png"
   ],
   "commits": [
     "3d4c1c37f1a862a261099fcf4b56c36ae54e4070",
@@ -26,7 +33,12 @@
     "91d69ff0746a881863ab27a36076f6a24eaa2e5a",
     "961532a7030f892f9355540e3af037c11dfc1c1e",
     "e35d92fec4384e635a170de71039bb354d59f027",
-    "cfacad5537d76430c30b233edabd2abd59e115ee"
+    "cfacad5537d76430c30b233edabd2abd59e115ee",
+    "e252d9427b1afec8e4221b2f3735c203ee268eb4",
+    "c517fb84eed008d30d8a03eb114a1887599abcb2",
+    "d0f9c9eb3c0164f023147e9f05cd0a70820c8fb1",
+    "f9301e82f0464780188a1ffc615ebc1fc53a4c12",
+    "ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b"
   ],
   "pages": [
     {
@@ -113,12 +125,52 @@
       "heading": "08 / 2026-09-16 누적: 정산·UI 재개와 현재 마감 상태",
       "paragraphs": [
         "BS-09016-01 / 정산과 화면: 중단됐던 작업을 재개해 유료 인계, 다음 날 또는 목적별 기한의 지연 정산, 같은 UID 대여 반환, 고객 영구 소유 판매, 의뢰 패널과 캠페인 보고서 연결을 구현했다. Git 기록 cfacad55, 2026-09-16 15:52:28 KST. 9월 14일 작업을 16일 작업으로 소급 표기하지 않는다.",
-        "기계 검증: Task4 집중 11/11 테스트·222 assertions, 전체 GUT 358/358·4235 assertions, 프로젝트 Python 519 passed/3 skipped, 승인된 exact 14-path 계약 검사가 기록됐다. 이 수치는 서로 다른 검증 층이며 문서 PASS를 native·Android·사람 검수 PASS로 바꾸지 않는다.",
-        "제한된 desktop 실행: 격리 저장 commission_native_20260916.json에서 고객 BASIC 활을 실제 단조·불의 심장 선택·인계하고, 프로세스 재시작 뒤 day 2 정산과 CUSTOMER 소유 유지, Gold 20000→20400·보강재 30→32·불의 심장 64→65를 확인했다. 한 사이클 desktop 증거이며 세 번의 반복, 사람 밸런스, Android 증거가 아니다.",
-        "현재 경계: 최종 리뷰에서 보고서의 빈 placeholder와 불확실한 저장 뒤 UI 잠금 교정이 남아 결합 수정 및 새 native 결과 캡처가 PENDING이다. 따라서 이번 누적 원본에는 기존 WORLD5 화면 4장만 유지하고 새 commission 화면은 아직 싣지 않는다. 전체 브랜치 재검토·main 병합·원격 readback·사용자 승인·출시는 완료로 주장하지 않는다.",
+        "기계 검증: 제품 head f9301e82는 Windows GUT 369/369·4820 assertions, 집중 재개 4/4·61 assertions, 프로젝트 Python 524 passed/3 skipped, 승인된 exact 16-path 계약 PASS를 기록했다. exact remote CI는 11 SUCCESS/1 conditional SKIP 뒤 정상 병합됐다. 이 수치는 서로 다른 검증 층이며 문서 PASS를 native·Android·사람 검수 PASS로 바꾸지 않는다.",
+        "제한된 desktop 실행: 격리 저장 commission_native_20260916.json에서 세 번의 제한된 desktop 의뢰 순환을 실제 게임 조작으로 확인했다. 고객 BASIC 활 판매, 개인 BASIC 검 대여·반환, 같은 검의 PURPOSE +10 대여·3일 뒤 결과를 연결했다. 장비·강화단계·자원·결과 난수는 주입하지 않았다.",
+        "현재 전달: PR384는 2026-09-16 16:52:59 KST에 merge ed6f8af3으로 정상 병합됐고 local/main·origin/main·제품 merge readback이 일치했다. Android·사람 밸런스·최종 미술/모션·출시는 완료로 주장하지 않는다.",
         "AI·비용 경계: 작업 기록은 Codex와 저장소 증거를 연결한 사후 정리다. 개별 프롬프트 전체 화면, 정확한 모델·계정·호출 시간·사용량·결제 귀속은 계속 미확인이다. 기존 결제 PDF와 금융 자료는 읽거나 복제하지 않았고 제출·서명도 하지 않았다."
       ],
-      "footer": "상태: READY_TO_PUBLISH_AFTER_FINAL_NATIVE_FIX. 기존 v1.0 검토본은 expected-old-hash 검증 전까지 그대로 보존한다."
+      "footer": "상태: PRODUCT_MERGE_AND_REMOTE_READBACK_PASS. 기존 v1.0 검토본은 임시 후보 전체 검수와 expected-old-hash 검증 뒤에만 갱신한다."
+    },
+    {
+      "heading": "09 / 2026-09-16 실행 1: 고객 활 판매",
+      "paragraphs": [
+        "실제 제안 목록에는 장비 5종의 BASIC·PURPOSE 의뢰 10건이 보였다. 그중 철활 BASIC을 선택해 +0 새 철활을 실제 단조하고, 보상 자원을 불의 심장으로 선택한 뒤 고객 의뢰에 인계했다. 첫 화면은 제안·보수·소유 규칙, 둘째 화면은 day 1 인계 뒤 day 2 보고 예정과 CUSTOMER 판매 상태를 보여 준다.",
+        "UID BSI-743d42640b103aebcb6747b615915999. 프로세스 재시작 전후 운송 저장 SHA-256 488a127f…가 같았고, day 2 정산 뒤에도 재시작 저장 SHA-256 833565cd…가 같았다. 결과는 고객 검수 성공·손상 없음·고객 소유 유지다.",
+        "자원은 Gold 20000→20400, 보강재 30→32, 불의 심장 64→65, 대지의 결정 64 유지다. 이는 한 판매 사례의 실제 실행 기록이며 보수·재료 정책의 최종 밸런스 승인이 아니다."
+      ],
+      "images": [
+        ["docs/testing/commission-offers-native-20260916.png", "15:58:37 KST / 실제 10개 제안 목록과 기본 의뢰의 보수·소유 규칙"],
+        ["docs/testing/commission-transit-native-20260916.png", "16:01:10 KST / day 1 인계·day 2 보고 예정"]
+      ],
+      "footer": "격리 저장·Windows desktop 360×640 framebuffer. 첫 캡처는 제안, 둘째는 운송 중 상태이며 정산 결과 자체는 다음 쪽에서 구분한다."
+    },
+    {
+      "heading": "10 / 2026-09-16 실행 2: 판매 복원과 개인 검 반환",
+      "paragraphs": [
+        "판매 결과를 재시작 뒤 다시 열어 고객 활의 검수 성공·손상 없음·내구도 5/5/5를 확인했다. 이전의 거짓 빈 결과 문구는 e252d942에서 교정됐다. 재열람은 시간·결과·자원을 다시 바꾸지 않는다.",
+        "다음 순환에서는 실제 제작된 개인 철검 UID BSI-7174f11179a8006541685c300c20b541을 BASIC 대여했다. day 2→3 보고 뒤 성공·손상 없음으로 같은 UID가 PLAYER에게 반환됐고 연대기에 인계와 반환이 함께 남았다.",
+        "두 번째 정산 뒤 누적 자원은 Gold 20800, 보강재 34, 불의 심장 65, 대지의 결정 65다. 연대기 열람은 저장을 쓰지 않았다. 판매와 대여의 소유권 경계는 서로 다른 실행 사례로 기록한다."
+      ],
+      "images": [
+        ["docs/testing/commission-sale-restored-native-20260916.png", "16:25:04 KST / 재시작 뒤 고객 활 판매 결과"],
+        ["docs/testing/commission-loan-chronicle-native-20260916.png", "16:27:34 KST / 같은 UID 개인 검의 대여·반환 연대기"]
+      ],
+      "footer": "판매는 CUSTOMER 소유, 대여는 같은 UID PLAYER 반환이다. 화면 읽기 검수는 했지만 사람 플레이·Android 검수는 아니다."
+    },
+    {
+      "heading": "11 / 2026-09-16 실행 3: 목적 의뢰와 손상 1회",
+      "paragraphs": [
+        "같은 개인 철검을 실제 UI에서 +0→+9까지 강화하는 동안 +4에서 일반 강화 1회가 실패했고, 이후 BURST_OUTPUT을 선택한 첫 정밀 시도에서 +10에 성공했다. 불의 심장 1개가 소비됐다. PURPOSE 대여 사전 화면은 성공 63.0%와 손상 40.0%를 독립 확률로 표시한다.",
+        "day 3 인계 뒤 day 6 결과는 임무 실패·손상 발생이다. 같은 UID가 PLAYER에게 돌아왔고 내구도는 5/5/5→4/5/5로 정확히 한 번 감소했다. 결과 뒤 자원은 인계 시점 Gold 17640·보강재 25·불의 심장 65·대지의 결정 65와 같아 추가 보수가 없었다.",
+        "재개 교정 c517fb84는 개인 선택이 빈 IN_TRANSIT 저장에서도 새 장비를 만들거나 이관하지 않고 기존 의뢰를 계속 열게 한다. d0f9c9eb은 CI debug 경고를 억제하지 않고 지역 변수 충돌을 제거했다. f9301e82 exact remote CI 통과 뒤 PR384는 ed6f8af3으로 정상 병합됐다.",
+        "증거 한계: 세 번의 제한된 desktop 의뢰 순환이며 포인터·키와 선택 signal을 함께 사용했다. 전적으로 물리 입력만 사용한 사람 검수, Android, 사람 밸런스, 최종 미술·모션, 출시 증거가 아니다."
+      ],
+      "images": [
+        ["docs/testing/commission-purpose-preview-native-20260916.png", "16:30:54 KST / +10 태그·성공63%·손상40% 사전 표시"],
+        ["docs/testing/commission-purpose-result-native-20260916.png", "16:40:22 KST / day 6 실패·손상 5→4·같은 UID 반환"]
+      ],
+      "footer": "제품 merge와 local/origin main readback PASS. Android·사람 검수·최종 미술/모션·출시는 별도다."
     }
   ]
 }

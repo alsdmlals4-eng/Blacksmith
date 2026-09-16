@@ -1,6 +1,8 @@
 """Project-owned human reading view; illustrations remain referenced candidate PNGs."""
 from pathlib import Path
+import argparse
 import re
+import sys
 from html import escape
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle, Flowable, Image
 from reportlab.lib.styles import ParagraphStyle
@@ -8,6 +10,7 @@ from reportlab.lib import colors
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.pagesizes import A4, landscape
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 from publish_pixel_world_blueprint_pdf import Phone
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -83,7 +86,10 @@ class StatePanel(Flowable):
         text(12,29,self.delta,8,'#7d4825',True)
         text(12,12,'설계 상태 비교 / 인게임 촬영 아님',7,'#67716c')
 
-def build():
+def build(output):
+    output=Path(output)
+    if output.exists():
+        raise FileExistsError(f'Preserve published blueprint; choose an explicit candidate path: {output}')
     pdfmetrics.registerFont(TTFont('KR','C:/Windows/Fonts/malgun.ttf'))
     pdfmetrics.registerFont(TTFont('KRB','C:/Windows/Fonts/malgunbd.ttf'))
     body=ParagraphStyle('body',fontName='KR',fontSize=10,leading=15,spaceAfter=9,wordWrap='CJK')
@@ -124,7 +130,8 @@ def build():
                     if not path.is_relative_to((ROOT/'docs/testing').resolve()):
                         raise ValueError('Runtime capture path escapes testing evidence')
                     img=Image(str(path))
-                    scale=min(330/img.imageWidth,290/img.imageHeight)
+                    max_height=260 if 'commission-' in rel else 290
+                    scale=min(330/img.imageWidth,max_height/img.imageHeight)
                     img.drawWidth=img.imageWidth*scale;img.drawHeight=img.imageHeight*scale
                     cells.append([img,Spacer(1,5),p(caption,small)])
                 if len(cells)!=2: raise ValueError('Runtime evidence requires two captured states')
@@ -155,9 +162,13 @@ def build():
         c.setFillColor(colors.HexColor('#20383c'));c.rect(0,H-33,W,33,fill=1,stroke=0)
         c.setFillColor(colors.HexColor('#e0bd70'));c.setFont('KRB',9);c.drawString(40,H-22,'모루의 서약 / ANVIL OATH / 사람용 통합 블루프린트')
         c.setStrokeColor(colors.HexColor('#b59b68'));c.line(40,32,W-40,32)
-        c.setFont('KR',8);c.setFillColor(colors.HexColor('#5f6d6a'));c.drawString(40,19,'2026.09.14 갱신 · 설계도/후보/실행 촬영은 각 페이지 표기 · 최종 미술·Android·사람 검수는 별도')
+        c.setFont('KR',8);c.setFillColor(colors.HexColor('#5f6d6a'));c.drawString(40,19,'2026.09.16 갱신 · 설계도/후보/실행 촬영은 각 페이지 표기 · 최종 미술·Android·사람 검수는 별도')
         c.drawRightString(W-40,19,str(doc.page))
-    SimpleDocTemplate(str(OUTPUT),pagesize=(W,H),leftMargin=40,rightMargin=40,topMargin=48,bottomMargin=43,title='모루의 서약 사람용 통합 블루프린트',author='Blacksmith project').build(story,onFirstPage=page,onLaterPages=page)
-    print(OUTPUT)
+    output.parent.mkdir(parents=True,exist_ok=True)
+    SimpleDocTemplate(str(output),pagesize=(W,H),leftMargin=40,rightMargin=40,topMargin=48,bottomMargin=43,title='모루의 서약 사람용 통합 블루프린트',author='Blacksmith project').build(story,onFirstPage=page,onLaterPages=page)
+    print(output)
 
-if __name__=='__main__':build()
+if __name__=='__main__':
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--output',type=Path,required=True)
+    build(parser.parse_args().output)

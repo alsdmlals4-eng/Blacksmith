@@ -32,13 +32,13 @@
   "artifact": {
     "source": "docs/operations/evidence/2026-09-ai-work-journal.json",
     "output": "C:/Users/user/Documents/증빙서류/9월 증빙서류/모루의_서약_2026-09_AI활용_작업일지_증빙집_v1.0.pdf",
-    "sha256": "a4e7aad5e6c3c3cd8085de8bc9d8de2b48ca39fc38782edc8618c60824f314c8",
-    "bytes": 2062810,
-    "pages": 6,
-    "native_images": 4,
-    "status": "PRE_SUBMISSION_REVIEW_COPY",
-    "render_review": "PASS_6_OF_6",
-    "codex_visual_review": "PASS_6_OF_6",
+    "sha256": "c3ba491f34773fc9cf9f558c9fa9dc2136c204af60afd681cc33fb9e461c472b",
+    "bytes": 3868243,
+    "pages": 11,
+    "native_images": 10,
+    "status": "CUMULATIVE_PRE_SUBMISSION_REVIEW_COPY",
+    "render_review": "PASS_11_OF_11",
+    "codex_visual_review": "PASS_11_OF_11",
     "human_review": "NOT_RUN",
     "submission": "NOT_SENT"
   },
@@ -73,6 +73,39 @@
       },
       "pdf_marker": "PASS_EXACTLY_ONCE_EDIT_EXPECTED_OUTPUT_COUNT_1",
       "native_commission_evidence": "ONE_BOUNDED_DESKTOP_CYCLE_RECORDED_IN_TEXT; FINAL_CORRECTIVE_CAPTURE_PENDING; NO_NEW_COMMISSION_IMAGE_EMBEDDED"
+    },
+    {
+      "recorded_on": "2026-09-16",
+      "state": "CUMULATIVE_REFRESH_PUBLISHED_AFTER_VERIFIED_PRODUCT_MERGE",
+      "policy": "SAME_PATH_CUMULATIVE_REFRESH_WITH_EXPECTED_OLD_SHA256",
+      "source_history": "FIRST_6_PAGES_PRESERVED; SEP14_AND_SEP16_SUMMARIES_RETAINED; THREE_VERIFIED_COMMISSION_CYCLES_AND_SIX_NATIVE_CAPTURES_APPENDED",
+      "product_delivery": "PR384_REVIEWED_F9301E82_11_SUCCESS_1_CONDITIONAL_SKIP_MERGED_ED6F8AF3_LOCAL_ORIGIN_MAIN_READBACK_PASS",
+      "replaced_output": {
+        "sha256": "a4e7aad5e6c3c3cd8085de8bc9d8de2b48ca39fc38782edc8618c60824f314c8",
+        "bytes": 2062810,
+        "pages": 6,
+        "native_images": 4
+      },
+      "candidate": {
+        "path": "tmp/pdfs/monthly-ai-journal-final-20260916-candidate.pdf",
+        "sha256": "c3ba491f34773fc9cf9f558c9fa9dc2136c204af60afd681cc33fb9e461c472b",
+        "source_sha256": "a2c9f00c6383a50c5bb5819d686e3ca968e881c3e6701d7e7abe2a26ddbe84ec",
+        "bytes": 3868243,
+        "pages": 11,
+        "native_images": 10,
+        "render_review": "PASS_11_OF_11",
+        "codex_visual_review": "PASS_11_OF_11",
+        "root_spotcheck": "PASS_PAGES_09_AND_11",
+        "publication_status": "BYTE_IDENTICAL_TO_CURRENT_OUTPUT_AFTER_GUARDED_REPLACEMENT"
+      },
+      "current_output_readback": {
+        "sha256": "c3ba491f34773fc9cf9f558c9fa9dc2136c204af60afd681cc33fb9e461c472b",
+        "bytes": 3868243,
+        "pages": 11,
+        "status": "GUARDED_SAME_PATH_REFRESH_PASS"
+      },
+      "pdf_marker": "NOT_REPEATED; ORIGINAL_OPERATION_MARKER_REMAINS_EXACTLY_ONCE",
+      "native_commission_evidence": "THREE_BOUNDED_WINDOWS_DESKTOP_CYCLES; SIX_READABLE_NATIVE_CAPTURES; NOT_ANDROID_OR_HUMAN_BALANCE"
     }
   ],
   "validation": {
@@ -84,16 +117,23 @@
       "red": "Focused pytest exit1: 3 expected failures for missing guarded replacement and aspect-fit APIs; an earlier bundled-Python missing-pytest environment error is not counted as RED",
       "green": "Bundled document Python focused: 6 passed; full repository: 522 passed, 3 skipped, 18 subtests passed; cumulative prior content and Sep14/Sep16 dates, JSON-derived PR/commit references, overwrite refusal, expected-hash replacement, failure preservation and aspect ratio covered",
       "visual": "Temporary 8-page candidate rendered with Poppler; pages1-8 inspected, with page8 rechecked at 220dpi; no clipping, overlap, broken glyph or image distortion found",
-      "current_pdf_replacement": "NOT_RUN_PENDING_FINAL_NATIVE_FIX",
+      "current_pdf_replacement": "SUPERSEDED_BY_FINAL_PUBLICATION_RECORD_AFTER_VERIFIED_PRODUCT_MERGE",
       "protected_contract": {
         "prework": "EXACT14_PASS",
         "end": "FAIL_UNVERIFIED_DUE_TO_ROOT_SCOPE15_STAGING_MISMATCH",
         "scope_registration_commit": "ebf0ceee",
         "retention": "RETAIN_INTERMEDIATE_FAILURE_EVEN_AFTER_LATER_EXACT15_PASS"
       }
+    },
+    "final_cumulative_publication": {
+      "red": "Monthly final receipt/capture contract: 2 expected failures; Blueprint sections75-77 contract: 1 expected failure; Blueprint binding receipt: 1 expected missing-key failure",
+      "green": "Focused publication contracts: 23 passed; full project Python: 531 passed, 3 skipped, 18 subtests passed",
+      "visual": "Monthly pages1-11 inspected; Blueprint pages75-77 inspected. Blueprint76 overflow was observed, corrected and rechecked. Root spotcheck passed monthly09/11 and Blueprint75/76/77.",
+      "protected_contract": "Ordinary pinned project operating contract PASS at protected base ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b",
+      "product_delivery": "PR384 reviewed head f9301e82f0464780188a1ffc615ebc1fc53a4c12; exact remote CI 11 SUCCESS/1 conditional SKIP; merge ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b; local/main and origin/main readback PASS"
     }
   },
-  "limitations": ["September coverage is limited to selected verified September14 and September16 records", "Historical WORLD5 runtime evidence was reused; one bounded commission desktop cycle is text-only pending final corrective capture", "Individual prompt screenshots/model/account/payment unverified", "Agreement/email originals not reviewed; no signing or submission", "No new generated image or background removal performed", "Whole-branch final fix/review, merge/main readback, Android, Human QA, balance, final art/motion and release remain incomplete"],
+  "limitations": ["September coverage is limited to selected verified September14 and September16 records", "Historical WORLD5 evidence and three bounded commission desktop cycles are distinct; neither is Android or Human QA", "Individual prompt screenshots/model/account/payment unverified", "Agreement/email originals not reviewed; no signing or submission", "No new generated image or background removal performed", "Android, Human QA, balance, final art/motion and release remain incomplete"],
   "learning": "Project publisher refuses ordinary overwrites and missing sources; one known review copy may be refreshed only after exact old-hash verification and inspected-candidate preparation. Source hashes and Git timestamps do not prove individual AI call duration. Base promotion not performed: local first consumer only.",
-  "next_product_work": "Apply and verify the combined final gameplay fixes, capture the corrected native result, then rebuild and guarded-refresh the same current PDF path"
+  "next_product_work": "No R05 work is part of this closeout; future R05-R12 may resume only under current product authority. Android, Human QA, balance, final art/motion and release remain separate gates"
 }
