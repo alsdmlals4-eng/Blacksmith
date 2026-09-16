@@ -2,7 +2,7 @@
   "artifact_role": "GENERAL_COMMISSION_DELIVERY_EVIDENCE",
   "recorded_on": "2026-09-16",
   "timezone": "Asia/Seoul",
-  "state": "THREE_DESKTOP_CYCLES_VERIFIED_FINAL_REMOTE_CI_PENDING",
+  "state": "PRODUCT_MERGED_THREE_DESKTOP_CYCLES_VERIFIED_DOCUMENT_CLOSEOUT_IN_PROGRESS",
   "source_revision": "d0f9c9eb3c0164f023147e9f05cd0a70820c8fb1",
   "pull_request": 384,
   "scope": "R02-R04 general commissions; current bundle closeout, not whole-game or release completion",
@@ -142,10 +142,30 @@
     "native_resume_review": "APPROVED_NO_FINDINGS_PURPOSE_HELPER_CONFIRMED",
     "debug_mode_ci_reproduction": "RED_8_OF_9_THEN_GREEN_9_OF_9_FULL_369_OF_369",
     "debug_mode_correction": "d0f9c9eb renames nested item local to candidate_item. Full Windows GUT with workflow -d and both test directories:369/369,4820 assertions,46.276s. No warning suppression; pre-existing discovery warnings remain. Native captures predate this behavior-neutral rename.",
-    "ci": "Historical run35069604670 GUT368/369,4820/4821 FAIL unexpected CONFUSABLE_LOCAL_DECLARATION preserved. Corrected d0f9c9eb pushed; exact remote rerun pending."
+    "ci": "Exact final publication head f9301e82:11SUCCESS/1conditionalSKIP. Historical run35069604670 GUT368/369,4820/4821 FAIL unexpected CONFUSABLE_LOCAL_DECLARATION preserved. Run35070292015 import failed on external TLS handshake; later exact f930 run35070537516 passed without gate/settings suppression. GUT run35070537333 passed."
+  },
+  "remote_delivery": {
+    "pull_request": 384,
+    "reviewed_product_head": "f9301e82f0464780188a1ffc615ebc1fc53a4c12",
+    "merge_commit": "ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b",
+    "merged_at": "2026-09-16T07:52:59Z",
+    "checks": "11_SUCCESS_1_CONDITIONAL_SKIP_EXACT_HEAD",
+    "merge_method": "NORMAL_MERGE_NO_ADMIN_OR_FORCE",
+    "origin_main_and_working_head_readback": "PASS",
+    "local_main_checkout": "FINAL_CLOSEOUT_PENDING_UNRELATED_AND_ACTIVE_DOCUMENT_EDITS_PRESERVED",
+    "approval_archive": "docs/archive/protected-approvals/commissions-pr384-20260916.json",
+    "approval_sha256": "ae1c6a00002cc26ffbcdf2814395f670d902d3d7311748bfef7a33bd1b5153e4",
+    "one_shot_approval_status": "RETIRED_ARCHIVED_NOT_DELETED",
+    "adapter_baseline_advanced_to": "ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b",
+    "base_release": "9.4.4_UNCHANGED"
+  },
+  "cleanup": {
+    "policy": "USER_MANUAL_DELETE_ONLY",
+    "directory": "C:/Users/user/Documents/삭제대기/모루의서약_현재작업마무리_20260916",
+    "moved": "One untracked superseded sale-result screenshot, original path and SHA256 in directory README; no active docs/tests/tools reference. No player saves/assets/unrelated imports removed."
   },
   "not_verified": [
-    "Final exact-head CI and normal main integration",
+    "Final document closeout and local main checkout",
     "Android",
     "Human balance",
     "Final art/motion",
