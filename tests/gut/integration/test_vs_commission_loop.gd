@@ -174,6 +174,85 @@ func _app_for(source):
 	assert_true(app.configure_campaign(source, load("res://scripts/economy/workshop_resources.gd").new(stock.gold, stock.material_stock), null, null, save))
 	return app
 
+func _continued_menu():
+	var menu = load("res://scenes/vertical_slice/main_menu.tscn").instantiate()
+	menu.configure_services(save, Init.new())
+	add_child_autofree(menu)
+	assert_false(menu.get_node("MenuLayout/ContinueButton").disabled)
+	menu.get_node("MenuLayout/ContinueButton").pressed.emit()
+	return menu
+
+func test_continue_true_new_current_and_legacy_runs_still_open_first_forge():
+	for source in [Init.new().create_replan_candidate_envelope(), Init.new().create_candidate_envelope()]:
+		assert_eq(save.save_envelope(source), OK)
+		var before = FileAccess.get_file_as_string(save.save_path)
+		var menu = _continued_menu()
+		assert_true(menu.has_active_first_forge())
+		assert_false(menu.has_active_workshop())
+		assert_eq(FileAccess.get_file_as_string(save.save_path), before)
+
+func test_continue_sole_loan_resumes_empty_workshop_and_same_uid_due_return():
+	for purpose in [false, true]:
+		assert_eq(save.save_envelope(Init.new().create_replan_candidate_envelope()), OK)
+		# Purpose +10 and tag are explicit fixture preparation in _ready_order.
+		var source = _ready_order(purpose, "PLAYER", "LOAN")
+		var order = source.active_run.commission.active_order
+		var paid = service.handoff_with_rolls(source, order.order_id, "earth_crystal", [0,99], save).envelope
+		assert_eq(paid.active_run.selected_item_uid, "")
+		var before = FileAccess.get_file_as_string(save.save_path)
+		var menu = _continued_menu()
+		assert_true(menu.has_active_workshop(), "Existing loan must resume schedule, not first forge")
+		assert_false(menu.has_active_first_forge())
+		assert_eq(FileAccess.get_file_as_string(save.save_path), before)
+		if not menu.has_active_workshop(): continue
+		var workshop = menu._active_app.get_node("ScreenHost/WorkshopScreen")
+		assert_null(workshop._item)
+		var due = paid.active_run.commission.active_order.settlement.due_day
+		while save.load_envelope().active_run.current_day < due:
+			workshop.get_node("WorkshopScroll/WorkshopLayout/RecoveryOrder/DayClose").pressed.emit()
+			workshop.get_node("DayCloseConfirmation").confirmed.emit()
+			workshop.get_node("DayCloseConfirmation").hide()
+		var returned = save.load_envelope()
+		assert_eq(returned.items_by_uid.size(), 1)
+		assert_eq(returned.get_item(order.item_uid).owner_id, "PLAYER")
+		assert_eq(workshop._item.uid, order.item_uid)
+		assert_eq(returned.resource_snapshot(), paid.resource_snapshot())
+		assert_eq(returned.active_run.commission.history[0].settlement.rolls, [0.0,99.0])
+
+func test_continue_customer_sale_and_unforged_commission_open_safe_workshop():
+	var source = service.accept(save.load_envelope(), "IRON_SWORD_BASIC_V1", save).envelope
+	var before = FileAccess.get_file_as_string(save.save_path)
+	var accepted_menu = _continued_menu()
+	assert_true(accepted_menu.has_active_workshop(), "Accepted commission with no UID resumes its dedicated forge path")
+	assert_false(accepted_menu.has_active_first_forge())
+	assert_eq(FileAccess.get_file_as_string(save.save_path), before)
+	var id = source.active_run.commission.active_order.order_id
+	source = service.forge(source, id, {"equipment_id":"iron_sword", "quality_id":"GOOD", "base_attack":21}, save).envelope
+	source = service.handoff_with_rolls(source, id, "heart_of_flame", [0,99], save).envelope
+	for settled in [false, true]:
+		if settled: source = Day.new().close_day(source, 1, save).envelope
+		before = FileAccess.get_file_as_string(save.save_path)
+		var menu = _continued_menu()
+		assert_true(menu.has_active_workshop(), "Customer-only campaign remains playable before/after settlement")
+		assert_false(menu.has_active_first_forge())
+		assert_eq(FileAccess.get_file_as_string(save.save_path), before)
+
+func test_continue_archived_destroyed_item_does_not_restart_first_birth():
+	var source = save.load_envelope()
+	var born = load("res://scripts/vertical_slice/services/vs_item_birth_service.gd").new().commit_first_forge(source,
+		{"equipment_id":"iron_sword", "crafting_grade":"CRAFT_SUPERIOR", "base_attack":21, "artistry":3})
+	for hit in range(5): born.item.apply_damage_event()
+	var record = load("res://scripts/vertical_slice/domain/vs_destroyed_history_record.gd").from_item(born.item, 1, "ENHANCEMENT_DAMAGE", 1, 5)
+	assert_eq(source.archive_destroyed_record(record), OK)
+	source.items_by_uid.erase(born.item_uid)
+	source.active_run.selected_item_uid = ""
+	assert_eq(save.save_envelope(source), OK)
+	var before = FileAccess.get_file_as_string(save.save_path)
+	var menu = _continued_menu()
+	assert_true(menu.has_active_workshop(), "Destroyed-history-only campaign resumes existing recovery flow")
+	assert_false(menu.has_active_first_forge())
+	assert_eq(FileAccess.get_file_as_string(save.save_path), before)
+
 func test_panel_handoff_uncertain_retry_latches_inputs_and_result_view_survives_empty_selection():
 	if not _available(): return
 	var source = _ready_order()
