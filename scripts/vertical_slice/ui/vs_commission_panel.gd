@@ -105,9 +105,9 @@ func _refresh() -> void:
 	var uids = _envelope.items_by_uid.keys()
 	uids.sort()
 	for uid in uids:
-		var item = _envelope.get_item(uid)
-		if item.owner_id != "PLAYER" or item.current_durability <= 0: continue
-		choice.add_item("%s +%d · %s" % [Equipment.by_item(item).display_name_ko, item.enhancement_level, str(uid).right(8)])
+		var candidate_item = _envelope.get_item(uid)
+		if candidate_item.owner_id != "PLAYER" or candidate_item.current_durability <= 0: continue
+		choice.add_item("%s +%d · %s" % [Equipment.by_item(candidate_item).display_name_ko, candidate_item.enhancement_level, str(uid).right(8)])
 		choice.set_item_metadata(choice.item_count - 1, uid)
 		if uid == previous: choice.select(choice.item_count - 1)
 	var selected_uid = str(choice.get_item_metadata(choice.selected))
