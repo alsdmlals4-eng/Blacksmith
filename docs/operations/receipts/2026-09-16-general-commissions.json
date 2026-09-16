@@ -2,7 +2,7 @@
   "artifact_role": "GENERAL_COMMISSION_DELIVERY_EVIDENCE",
   "recorded_on": "2026-09-16",
   "timezone": "Asia/Seoul",
-  "state": "PRODUCT_MERGED_THREE_DESKTOP_CYCLES_VERIFIED_DOCUMENT_CLOSEOUT_IN_PROGRESS",
+  "state": "PRODUCT_MERGED_THREE_DESKTOP_CYCLES_VERIFIED_DOCUMENT_PUBLICATION_SEPARATE_RECEIPTS",
   "source_revision": "d0f9c9eb3c0164f023147e9f05cd0a70820c8fb1",
   "pull_request": 384,
   "scope": "R02-R04 general commissions; current bundle closeout, not whole-game or release completion",
@@ -152,7 +152,7 @@
     "checks": "11_SUCCESS_1_CONDITIONAL_SKIP_EXACT_HEAD",
     "merge_method": "NORMAL_MERGE_NO_ADMIN_OR_FORCE",
     "origin_main_and_working_head_readback": "PASS",
-    "local_main_checkout": "FINAL_CLOSEOUT_PENDING_UNRELATED_AND_ACTIVE_DOCUMENT_EDITS_PRESERVED",
+    "local_main_reference_readback": "PASS_LOCAL_MAIN_EQUALS_ORIGIN_MAIN_AT_PRODUCT_MERGE; ancestry checked and compare-and-swap fast-forward; final documentary checkout is separate",
     "approval_archive": "docs/archive/protected-approvals/commissions-pr384-20260916.json",
     "approval_sha256": "ae1c6a00002cc26ffbcdf2814395f670d902d3d7311748bfef7a33bd1b5153e4",
     "one_shot_approval_status": "RETIRED_ARCHIVED_NOT_DELETED",
@@ -165,7 +165,6 @@
     "moved": "One untracked superseded sale-result screenshot, original path and SHA256 in directory README; no active docs/tests/tools reference. No player saves/assets/unrelated imports removed."
   },
   "not_verified": [
-    "Final document closeout and local main checkout",
     "Android",
     "Human balance",
     "Final art/motion",
