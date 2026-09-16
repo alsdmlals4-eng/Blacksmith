@@ -1,5 +1,11 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## Current closeout and cumulative journal — 2026-09-16
+
+Latest user requests finishing the current work and GitHub synchronization, not starting another feature cycle. Keep the existing monthly work journal and append summaries by actual work date; do not issue a new journal/PDF filename or edition for every work unit. The existing JSON remains the single report source and the existing user-facing PDF is refreshed after validation. Previously recorded dates and evidence limits remain intact. Generate and inspect a temporary replacement first; only then replace the specifically designated current PDF. Submitted/signed records still require a separate explicit correction process; the present PDF is an unsubmitted review copy. This instruction supersedes the routine new-edition suggestion below.
+
+Current resume: main/origin main e0852621 matched; own PR384 is OPEN at fa89f8b3 with approved-protected-change. Tasks1–3 are committed and task-reviewed; Task4 has uncommitted interrupted implementation and must finish verification/review before integration. Retain the active exact14-path approval, Base v9.4.4 and unrelated files. Runtime, full-code reviews, final CI and normal main integration are not inferred from earlier focused test reports.
+
 ## General commissions execution — BS-REPLAN-20260914-10
 
 Latest user resumes implementation. Fresh main e0852621463d6f579d0f23451f43703af8632699 and ordinary gate PASS; PR359/196 remain read-only. Execute existing remaining specification Tasks1-5, not a new game scope. Start exact Task1 catalog/data/UID, expand the same approved technical manifest only as subsequent consumer paths are actually implemented. Dedicated branch in the existing connected checkout preserves unrelated imports/saves and avoids another duplicated game/editor worktree. Current Base d830c0f is reference only; adopted v9.4.4/pins/baseline5a84c4b2 unchanged.
