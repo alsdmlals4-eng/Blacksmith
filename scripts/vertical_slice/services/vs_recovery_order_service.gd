@@ -154,6 +154,11 @@ func close_day(envelope,source_day,save) -> Dictionary:
 		return _blocked("STALE_SOURCE_DAY")
 	var reason = close_block_reason(current)
 	if not reason.is_empty(): return _blocked(reason)
+	var commission = load("res://scripts/vertical_slice/services/vs_commission_service.gd").new()
+	if current.active_run.has("commission"):
+		if day >= commission.MAX_SAFE_INTEGER: return _blocked("DAY_EXHAUSTED")
+		var settlement = commission.settle_due(current, day + 1)
+		if settlement.status == "BLOCKED": return settlement
 	var record = current.active_run.get("recovery_order",{})
 	if record.get("phase","") == "DELIVERED":
 		var history = current.active_run.get("recovery_order_history",[]).duplicate(true)
@@ -162,6 +167,7 @@ func close_day(envelope,source_day,save) -> Dictionary:
 		current.active_run.erase("recovery_order")
 	current.active_run.current_day = day + 1
 	current.active_run["recovery_calendar"] = {"schema_version":1,"policy_id":"MANUAL_CLOSE_V1","last_closed_day":day}
+	if current.active_run.has("commission"): return commission._commit(current, save, envelope)
 	return _commit(current,save)
 
 func _current(envelope,save):

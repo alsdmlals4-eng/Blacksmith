@@ -67,6 +67,7 @@ signal enhancement_saved(envelope, result: Dictionary)
 signal handoff_requested
 signal chronicle_requested
 signal recovery_forge_requested
+signal commission_forge_requested(order_id: String)
 
 var _item = null
 var _resources = null
@@ -80,6 +81,8 @@ var _precision_selection_data: Dictionary = {}
 var _world_view_mode := "COLLAPSED"
 var _trial_family := "AQ"
 var _day_close_source := -1
+var _day_close_envelope = null
+var _day_close_uncertain := false
 var _exchange_pending: Dictionary = {}
 
 
@@ -255,7 +258,10 @@ func view_state() -> Dictionary:
 		enhancement_allowed = false
 		enhancement_reason = "PRECISION_PLACEHOLDER_REQUIRES_BACKFILL"
 	var recovery: Dictionary = quote.get("quality_recovery_percent", {})
-	var repair_allowed := bool(quote.get("allowed", false))
+	var repair_allowed := bool(quote.get("allowed", false)) and _commission_action_allowed("REPAIR")
+	if not _commission_action_allowed("ENHANCE"):
+		enhancement_allowed = false
+		enhancement_reason = "COMMISSION_ACTION_NOT_ALLOWED"
 	var candidates := _precision_candidates_for_action(_precision_action, precision_mode)
 	var add_available := not _precision_candidates_for_action("ADD_TAG", precision_mode).is_empty()
 	var upgrade_available := precision_mode == "ATTEMPT" and precision_target > 10 and not _precision_candidates_for_action("UPGRADE_TAG", precision_mode).is_empty()
@@ -362,6 +368,7 @@ func _destination_summary(state: Dictionary) -> String:
 
 
 func request_repair_with_rolls(rolls: Dictionary) -> Dictionary:
+	if campaign_write_blocked(): return {"status":"BLOCKED", "reason":"CAMPAIGN_WRITE_UNCERTAIN"}
 	if _aqueduct_pending():
 		return {"status": "BLOCKED", "reason": "AQUEDUCT_PENDING"}
 	if _item == null or _resources == null:
@@ -374,6 +381,7 @@ func request_repair_with_rolls(rolls: Dictionary) -> Dictionary:
 
 
 func request_repair() -> Dictionary:
+	if campaign_write_blocked(): return {"status":"BLOCKED", "reason":"CAMPAIGN_WRITE_UNCERTAIN"}
 	if _aqueduct_pending():
 		return {"status": "BLOCKED", "reason": "AQUEDUCT_PENDING"}
 	if _item == null or _resources == null:
@@ -443,6 +451,7 @@ func request_precision_backfill() -> Dictionary:
 
 
 func request_enhancement() -> Dictionary:
+	if campaign_write_blocked(): return {"outcome":"BLOCKED", "reason":"CAMPAIGN_WRITE_UNCERTAIN"}
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
 	return request_enhancement_with_rolls({
@@ -573,9 +582,10 @@ func _refresh_catalyst_exchange() -> void:
 		var offer = service.quote(_campaign_envelope,catalyst)
 		var button = box.get_node(catalyst)
 		button.text = "%s 1개 보충 · %d골드" % [service.CATALYSTS[catalyst],service.COST]
-		button.disabled = _save_service == null or offer.status != "READY"
+		button.disabled = campaign_write_blocked() or _save_service == null or offer.status != "READY"
 
 func _on_catalyst_exchange_pressed(catalyst: String) -> void:
+	if campaign_write_blocked(): return
 	if not is_visible_in_tree() or _save_service == null: return
 	var service = load("res://scripts/vertical_slice/services/vs_catalyst_exchange_service.gd")
 	var offer = service.quote(_campaign_envelope,catalyst)
@@ -603,6 +613,7 @@ func _on_catalyst_exchange_canceled() -> void:
 	_exchange_pending.clear()
 
 func _on_catalyst_exchange_confirmed() -> void:
+	if campaign_write_blocked(): return
 	if _exchange_pending.is_empty() or not is_visible_in_tree(): return
 	var request = _exchange_pending.duplicate()
 	_exchange_pending.clear()
@@ -661,8 +672,9 @@ func _refresh_recovery_order() -> void:
 	var close = box.get_node("DayClose")
 	var reason = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").close_block_reason(_campaign_envelope)
 	close.text = "오늘 마감 · 다음 날로" if reason.is_empty() else ("세계 사건 결과를 먼저 확인하세요" if reason == "PENDING_WORLD_RESULT" else "일정 확인 필요 · 마감 불가")
-	close.disabled = _save_service == null or not reason.is_empty()
-	action.disabled = _save_service == null
+	close.disabled = _save_service == null or not reason.is_empty() or _commission_write_uncertain()
+	if _day_close_uncertain: close.text = "같은 마감 저장 결과 다시 확인"
+	action.disabled = _save_service == null or campaign_write_blocked()
 	match phase:
 		"ACCEPTED":
 			summary.text += "\n수락됨 · 전용 재료 1회분 보관 / 제작비 0"
@@ -679,6 +691,7 @@ func _refresh_recovery_order() -> void:
 			action.text = "재기 주문 수락 · 비용 없음"
 
 func _on_recovery_order_pressed() -> void:
+	if campaign_write_blocked() or not is_visible_in_tree(): return
 	if _campaign_envelope == null: return
 	var phase = _campaign_envelope.active_run.get("recovery_order",{}).get("phase","OFFER")
 	if phase == "ACCEPTED":
@@ -698,6 +711,7 @@ func _on_recovery_order_pressed() -> void:
 		get_node("WorkshopScroll/WorkshopLayout/RecoveryOrder/Summary").text += "\n저장 확인 실패 · 적용하지 않았습니다. 다시 확인해 주세요."
 
 func _on_day_close_pressed() -> void:
+	if _commission_write_uncertain(): return
 	if not is_visible_in_tree() or _save_service == null:
 		return
 	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd")
@@ -718,23 +732,33 @@ func _on_day_close_pressed() -> void:
 			button.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
 		dialog.confirmed.connect(_on_day_close_confirmed)
 		dialog.canceled.connect(_on_day_close_canceled)
-	_day_close_source = int(_campaign_envelope.active_run.current_day)
+	if not _day_close_uncertain:
+		_day_close_source = int(_campaign_envelope.active_run.current_day)
+		_day_close_envelope = _campaign_envelope
 	dialog.dialog_text = "영업 %d일 → %d일\n미완성 주문과 장비는 그대로 보존됩니다.\n완료한 주문만 다음 주문으로 보충됩니다.\n마감 자체에는 보상이 없습니다." % [_day_close_source,_day_close_source+1]
 	dialog.popup_centered(Vector2i(640,360))
 
 func _on_day_close_canceled() -> void:
-	_day_close_source = -1
+	if not _day_close_uncertain:
+		_day_close_source = -1
+		_day_close_envelope = null
 
 func _on_day_close_confirmed() -> void:
+	if _commission_write_uncertain(): return
 	if _day_close_source < 1 or not is_visible_in_tree(): return
 	var source_day = _day_close_source
-	_day_close_source = -1
-	var result = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new().close_day(_campaign_envelope,source_day,_save_service)
+	var result = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new().close_day(_day_close_envelope,source_day,_save_service)
 	if result.has("envelope"):
+		_day_close_source = -1
+		_day_close_envelope = null
+		_day_close_uncertain = false
 		_campaign_envelope = result.envelope
+		if _campaign_envelope.active_run.has("commission"): result["commission_refresh"] = true
 		campaign_saved.emit(_campaign_envelope,result)
 		_refresh_controls()
 	else:
+		_day_close_uncertain = _day_close_uncertain or result.status == "COMMIT_UNCERTAIN"
+		_refresh_controls()
 		get_node("WorkshopScroll/WorkshopLayout/RecoveryOrder/Summary").text += "\n마감 저장 확인 실패 · 날짜를 다시 확인해 주세요."
 
 func _refresh_controls() -> void:
@@ -854,10 +878,40 @@ func _refresh_controls() -> void:
 	_refresh_world_viewer()
 	_refresh_recovery_order()
 	_refresh_catalyst_exchange()
+	_refresh_commission_panel()
+
+func _refresh_commission_panel() -> void:
+	var layout = get_node_or_null("WorkshopScroll/WorkshopLayout")
+	if layout == null: return
+	var enabled = _campaign_envelope != null and _campaign_envelope.active_run.get("tag_ruleset_id", "") == "BLACKSMITH_REPLAN_TAGS_20260912"
+	var panel = layout.get_node_or_null("CommissionPanel")
+	if panel == null and enabled:
+		panel = load("res://scripts/vertical_slice/ui/vs_commission_panel.gd").new()
+		panel.name = "CommissionPanel"
+		layout.add_child(panel)
+		layout.move_child(panel, 1)
+		panel.forge_requested.connect(func(order_id): commission_forge_requested.emit(order_id))
+		panel.campaign_saved.connect(func(envelope, result): campaign_saved.emit(envelope, result))
+		panel.uncertainty_changed.connect(_refresh_controls)
+	if panel == null: return
+	panel.visible = enabled
+	if enabled:
+		panel.configure_context(_campaign_envelope, _save_service)
+		panel.set_external_write_blocked(_day_close_uncertain)
+
+func _commission_write_uncertain() -> bool:
+	var panel = get_node_or_null("WorkshopScroll/WorkshopLayout/CommissionPanel")
+	return panel != null and panel._uncertain
+
+func campaign_write_blocked() -> bool:
+	return _day_close_uncertain or _commission_write_uncertain()
+
+func _world_campaign_available() -> bool:
+	return _campaign_envelope != null and _campaign_envelope.active_run.get("tag_ruleset_id", "") == "BLACKSMITH_REPLAN_TAGS_20260912"
 
 
 func set_world_view_mode(mode: String) -> bool:
-	if not mode in ["COLLAPSED", "SPLIT", "FOCUS"] or not _is_replan_item():
+	if not mode in ["COLLAPSED", "SPLIT", "FOCUS"] or not _world_campaign_available():
 		return false
 	_world_view_mode = mode
 	_refresh_world_viewer()
@@ -869,7 +923,7 @@ func _refresh_world_viewer() -> void:
 	if workshop == null:
 		return
 	var bar := get_node_or_null("WorldViewBar") as HBoxContainer
-	if bar == null and _is_replan_item():
+	if bar == null and _world_campaign_available():
 		bar = HBoxContainer.new()
 		bar.name = "WorldViewBar"
 		bar.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
@@ -911,7 +965,7 @@ func _refresh_world_viewer() -> void:
 	if bar == null:
 		return
 	var panel := get_node("WorldReportPanel") as PanelContainer
-	var enabled := _is_replan_item()
+	var enabled := _world_campaign_available()
 	bar.visible = enabled
 	panel.visible = enabled and _world_view_mode != "COLLAPSED"
 	if not enabled:
@@ -926,17 +980,23 @@ func _refresh_world_viewer() -> void:
 	bar.get_node("Focus").visible = _world_view_mode != "COLLAPSED"
 	bar.get_node("Focus").disabled = _world_view_mode == "FOCUS"
 	bar.get_node("Close").visible = _world_view_mode != "COLLAPSED"
-	var body := "아직 저장된 세계 사건이 없습니다.\n공방에서 장비를 준비하고 시험에 참여해 보세요."
+	var reports: PackedStringArray = []
 	if enabled and _campaign_envelope != null and _item != null:
-		var reports: PackedStringArray = []
 		var rules = load("res://scripts/vertical_slice/domain/vs_replan_tag_rules.gd")
 		var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
 		for family in ["AQ", "DU", "AR"]:
 			var record: Dictionary = _campaign_envelope.active_run.get(rules.WORLD_TRIALS[family].bucket, {}).get(str(_item.uid), {})
 			if not record.is_empty():
 				reports.append(str(service.world_report(record, family).body))
-		if not reports.is_empty():
-			body = "\n\n".join(reports)
+	if enabled:
+		var commission = load("res://scripts/vertical_slice/services/vs_commission_service.gd")
+		var bucket = _campaign_envelope.active_run.get("commission", {})
+		var records = bucket.get("history", []).duplicate()
+		records.append(bucket.get("active_order", {}))
+		for record in records:
+			var report_text = commission.report(record)
+			if not report_text.is_empty(): reports.append(report_text)
+	var body = "\n\n".join(reports) if not reports.is_empty() else "아직 저장된 세계 사건이 없습니다.\n공방에서 장비를 준비하고 시험에 참여해 보세요."
 	panel.get_node("ReportScroll/ReportText").text = "저장된 사건 보고 · 읽기 전용\n" + body + "\n\n전투 모션 미연결 · 열람은 시간/결과/자원을 바꾸지 않습니다."
 
 
@@ -1054,7 +1114,7 @@ func _refresh_aqueduct_trial() -> void:
 		var index := option.selected
 		var preview: Dictionary = rules.world_preview(_trial_family, str(EquipmentCatalogScript.by_item(_item).get("equipment_id", "")),
 			int(_item.enhancement_level), _item.catalyst_affix.get("tags", {}), "HANDLING" if index >= 2 else "OUTPUT", "SUSTAIN" if index % 2 else "BURST")
-		var eligible: bool = bool(preview.get("ok", false)) and _item.current_durability > 0
+		var eligible: bool = bool(preview.get("ok", false)) and _item.current_durability > 0 and _commission_action_allowed("INDEPENDENT_WORLD")
 		var equipment_names: PackedStringArray = []
 		for equipment_id in rules.WORLD_EQUIPMENT[_trial_family]:
 			equipment_names.append(str(EquipmentCatalogScript.by_id(equipment_id).display_name_ko))
@@ -1072,6 +1132,7 @@ func _refresh_aqueduct_trial() -> void:
 
 
 func _on_aqueduct_pressed() -> void:
+	if campaign_write_blocked(): return
 	if not _is_replan_item() or _campaign_envelope == null:
 		return
 	var service = load("res://scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd").new()
@@ -1191,7 +1252,12 @@ func _on_replan_tag_pressed(tag_id: String) -> void:
 
 
 func _has_enhancement_context() -> bool:
-	return _item != null and _resources != null and _campaign_envelope != null and _save_service != null and _enhancement_action_service != null
+	return _item != null and _resources != null and _campaign_envelope != null and _save_service != null and _enhancement_action_service != null and _commission_action_allowed("ENHANCE")
+
+func _commission_action_allowed(action: String) -> bool:
+	if campaign_write_blocked(): return false
+	if _campaign_envelope == null: return true
+	return _item != null and load("res://scripts/vertical_slice/services/vs_commission_service.gd").item_action_allowed(_campaign_envelope, str(_item.uid), action)
 
 
 func _phase1_handoff_allowed() -> bool:
@@ -1201,6 +1267,8 @@ func _phase1_handoff_allowed() -> bool:
 func _phase1_handoff_reason() -> String:
 	if _item == null:
 		return "MISSING_ITEM"
+	if not _commission_action_allowed("INDEPENDENT_WORLD"):
+		return "COMMISSION_ACTION_NOT_ALLOWED"
 	if int(_item.enhancement_level) < 10:
 		return "HANDOFF_REQUIRES_LEVEL_10"
 	if int(_item.current_durability) <= 0 or str(_item.physical_state) == "DESTROYED":

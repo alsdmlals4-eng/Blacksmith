@@ -36,6 +36,8 @@ func resolve_and_save_with_rolls(
 		return _blocked("INVALID_SAVE_ENVELOPE")
 	if resources.snapshot() != envelope.resource_snapshot():
 		return _blocked("RESOURCE_SAVE_DIVERGED")
+	if not load("res://scripts/vertical_slice/services/vs_commission_service.gd").item_action_allowed(envelope, item_uid, "ENHANCE"):
+		return _blocked("COMMISSION_ACTION_NOT_ALLOWED")
 
 	if save_service.has_method("load_envelope"):
 		var disk = save_service.load_envelope()
@@ -190,6 +192,12 @@ func backfill_precision_tag_and_save(envelope, item_uid: String, precision_selec
 	if envelope == null or not envelope.has_method("to_dict") or not envelope.has_method("get_item"):
 		return _blocked("INVALID_SAVE_ENVELOPE")
 	var source_item = envelope.get_item(item_uid)
+	if not load("res://scripts/vertical_slice/services/vs_commission_service.gd").item_action_allowed(envelope, item_uid, "ENHANCE"):
+		return _blocked("COMMISSION_ACTION_NOT_ALLOWED")
+	if save_service.has_method("load_envelope"):
+		var disk = save_service.load_envelope()
+		if disk == null or disk.recovered_from_backup or not disk.validation_errors.is_empty() or not SaveEnvelopeScript.serialized_equal(disk.to_dict(), envelope.to_dict()):
+			return _blocked("ENHANCEMENT_SAVE_DIVERGED")
 	if source_item == null:
 		return _blocked("ITEM_NOT_FOUND")
 	if source_item.has_unreadable_catalyst_affix():

@@ -4,6 +4,8 @@
 
 ## 0. 범위·읽는 법·현재 증거
 
+2026-09-16 상태 보정: R01은 PR381로 전달되었다. R02~R04는 PR384 제품 d0f9c9eb에서 의뢰10종·예치·실제 제작·인계·기한 정산·반환·연대기가 연결되고 GUT369/4820 및 실제 데스크톱3순환까지 확인되었다. 정확한 원격 CI/병합/문서 전달 상태는 생산계약 최상단과 일반 의뢰 receipt를 따른다. 최신 사용자는 현 작업 마무리와 동기화를 요청했으므로 이 종료 작업에서 R05는 시작하지 않는다. 아래 최초 조사 표의 '일반 의뢰 미구현/AR branch'는 최초 준비 시점의 역사 비교이며 현재 구현 부재 주장이 아니다. 성장·모션·세계 시각 연출·기기/사람/출시 검수는 남아 있다.
+
 최신 사용자 요청 BS-REPLAN-20260914-08은 이 명세 순서대로 조사·구체화·구현·검증·개선을 계속 진행하는 것이다. 아래 최초 준비 시점의 수치와 증거는 역사 기준선이며 현재 실행 경계는 제작 계약 최상단을 따른다. 기존 승인 방향을 실행 가능한 작업으로 분해하는 책임 원본이며, 새 경제·달력의 시험값을 최종 균형이나 제품 구현 완료로 선언하지 않는다. 사람용 블루프린트65~72절은 이 명세의 요약·체크리스트다. 별도 HTML PM은 만들지 않는다.
 
 - 현재 main: `f30baaa60e1fb95905c47d5a8303cd069895ce96` (local/origin 일치 확인).
@@ -290,7 +292,7 @@
 - 의뢰 지원 제작은 SALE만, PLAYER 작품은 SALE/LOAN. 취소로 기존 개인 작품을 몰수하지 않는다. 임무와 손상 독립, 인계 자체 손상0, 기존 즉시 trial/회복 보상 불변.
 - 수락 후 정의·보상·일정·의미를 바꾸지 않는다. 미상 version은 원본 보존과 차단. 시험 보수400Gold/보강재2/선택촉매1은 일반 거래의 별도 policy이며 회복 보상에 더하지 않는다.
 
-### 작업 1 - 고정 의뢰 정의와 실제 목록·비교
+### Task 1 - 고정 의뢰 정의와 실제 목록·비교
 
 Files: 신규 `data/vertical_slice/commission_catalog_v1.json`, 신규 `scripts/vertical_slice/domain/vs_commission_catalog.gd`, 신규 `tests/gut/unit/vertical_slice/test_vs_commission_catalog.gd`. 화면 소비는 작업4에서 연결한다.
 
@@ -301,11 +303,15 @@ Interfaces: `all() -> Array[Dictionary]`, `by_id(definition_id: String) -> Dicti
 - [ ] 기본 의뢰에는 태그를 필수 요구하지 않는다. 목적 의뢰의 추천태그는 이유를 설명하되 이미 가진 태그를 보고 요구를 재생성하지 않는다.
 - [ ] preview 전후 `item.to_dict()`가 동일함과 같은 정의를 재조회해도 값이 같은지 GUT로 확인한다. 장비 mismatch/단계 부족 이유가 실제 control에 표시되는 것은 작업4 시험에 포함한다.
 
-### 작업 2 - 수락·전용 재료·취소의 원자 저장
+### Task 2 - 수락·전용 재료·취소의 원자 저장
 
 Files: 신규 `scripts/vertical_slice/services/vs_commission_service.gd`, 수정 `scripts/vertical_slice/domain/vs_save_envelope.gd`, 신규 `tests/gut/unit/vertical_slice/test_vs_commission_service.gd`.
 
 Interfaces: `validate(envelope) -> String`, `accept(envelope,definition_id:String,save) -> Dictionary`, `cancel(envelope,order_id:String,save) -> Dictionary`, `reserve_item(envelope,order_id:String,item_uid:String,save) -> Dictionary`. 반환은 APPLIED/ALREADY_APPLIED/BLOCKED/COMMIT_UNCERTAIN이며 성공한 readback만 envelope를 제공한다.
+
+실행 시 명세 보완: `accept`에 선택 인수 `funding_origin:String = "COMMISSION_ESCROW", ownership_mode:String = "SALE"`을 추가해 R04의 개인 작품 판매/대여를 실제로 선택할 수 있게 한다. 카탈로그의 funding/ownership은 기본 제안이며 definition_snapshot은 바꾸지 않는다. 수락된 instance에 선택한 두 값을 별도로 고정하고 알려진 시험 policy에서만 COMMISSION_ESCROW+SALE / PLAYER+SALE / PLAYER+LOAN을 허용한다. PLAYER 수락에는 고객 재료/크레딧을 지급하지 않고 후속 reserve_item이 실제 본인 UID를 검사한다. 수락 재시도는 definition_id뿐 아니라 선택 모드까지 동일할 때만 동일 명령이다.
+
+초기 escrow 시험값: R03 필드 `order_id, allocated_credit, consumed_credit, material_id, allocated_qty, consumed_qty, produced_item_uid, reclaimed`을 사용한다. 기본 제작의 별도 골드 비용이 없으므로 credit 두 값은0, 고객 지원은 material_id=`iron`/allocated_qty=1/consumed_qty=0, PLAYER는 allocated_qty=0이다. produced_item_uid는 제작 전 null, reclaimed는 false. 강화용 credit은 만들지 않는다. 고객 예약 소유자는 `CUSTOMER_COMMISSION_RESERVED`, 개인 예약은 `PLAYER_COMMISSION_RESERVED`; 고객 작품 취소 반납은 `CUSTOMER`, 개인 예약 취소는 `PLAYER`로 복귀한다. 이는 R04 소유권 계약의 초기 실행값이며 자유 재료 창고에 철을 지급하지 않는다.
 
 - [ ] 현재 실제파일 SaveService로 미수락→수락→재읽기→같은 수락 재호출의 비용0·동일order_id를 검증하는 RED를 만든다. 다른 run/stale source/backup 복원/중복 ID/다른 의뢰 예약은 차단한다.
 - [ ] active_run에 versioned commission bucket을 추가하고 SaveEnvelope.from_dict의 정수·형식·참조·소유권 검증을 연결한다. 인스턴스의 definition_snapshot/escrow/command_sequence는 동일 저장에 기록한다.
@@ -325,7 +331,7 @@ assert_eq(service.cancel(save.load_envelope(), order_id, save).status, "APPLIED"
 assert_eq(save.load_envelope().resource_snapshot(), before)
 ```
 
-### 작업 3 - 기존 제작·강화·수리와 의뢰 소유권 연결
+### Task 3 - 기존 제작·강화·수리와 의뢰 소유권 연결
 
 Files: service 확장, 수정 `scripts/vertical_slice/ui/vs_app.gd`, `scripts/vertical_slice/ui/vs_workshop_screen.gd`, `scripts/vertical_slice/services/vs_enhancement_action_service.gd`, `scripts/vertical_slice/services/vs_workshop_maintenance_service.gd`, `scripts/vertical_slice/services/vs_customer_actual_use_action_service.gd`; 기존 item birth/input adapter는 검증 후 재사용한다.
 
@@ -336,18 +342,22 @@ Interfaces: `forge(envelope,order_id:String,completion:Dictionary,save) -> Dicti
 - [ ] 제작 후 고객 예약 작품을 해당 의뢰 작업 대상으로 선택하고 이전 개인 selected UID를 기록한다. +0→+9→+10을 개인 골드/보강재/촉매로 수행한다. 타 의뢰·독립세계·판매로 전용 작품이 유출되는 모든 service 진입점에 공통 허용 검사를 연결한다.
 - [ ] 취소·판매 후 개인 selected UID를 복원하고 없으면 안전한 공방 선택 상태로 간다. 고객 소유 작품의 직접 service 호출도 차단되는지 검사한다.
 
-### 작업 4 - 납품·지연 결과·세계창·재투자
+### Task 4 - 납품·지연 결과·세계창·재투자
 
 Files: service와 workshop/app 확장, 신규 `scripts/vertical_slice/ui/vs_commission_panel.gd`, 필요 범위만 `vs_recovery_order_service.gd`의 close_day와 기존 실제사용 연결, 신규 `tests/gut/integration/test_vs_commission_loop.gd`.
 
 Interfaces: `handoff(envelope,order_id:String,catalyst_id:String,save) -> Dictionary`, `settle_due(candidate,day:int) -> Dictionary`, `panel.configure_context(envelope,save)`. settle_due는 candidate만 변경하며 저장/재굴림을 하지 않고 day-close 소유 command가 하루 증가와 함께 commit한다.
+
+실행 상세 보완: `COMMISSION_SCHEDULE_TRIAL_V1`은 기본 의뢰의 비전투 고객 검수/반환 보고를 인계 다음날(+1), 목적 의뢰의 기존 AR 전선 엄호 보고를 +3일로 구분한다. 기본은 `BASIC_CUSTOMER_CHECK`로 표기하고 성공100%/손상0%이며 전투 성공으로 포장하지 않는다. 목적은 당시 기존 `world_preview("AR", ...)`와 HIGH 내구도 위험 계산을 재사용한다. 두 경우 모두 인계 시 독립 draw 두 개를 저장하되 기본 보고는 해당 확정확률로만 판정한다. 창 재열람/마감은 난수를 소비하지 않는다. 이는 +0 경로를 +10 전투 최소조건으로 막지 않기 위한 버전별 시험 일정이며 기존 DU/AQ/AR 즉시 trial을 바꾸지 않는다. PLAYER 기본 대여도 다음날 같은 UID를 반환한다.
+
+연결 경계: `personal_selection_uid`를 취소/판매/대여 인계 후 재사용한다. 대기 중인 개인 trial UID는 결과 열람용으로 선택할 수 있으나 기존 편집 잠금은 유지한다. 개인 작품 선택이 비어 있어도 의뢰 목록·운송 일정·고객 결과는 campaign 기록에서 항상 접근 가능해야 한다. 기존 무보상/무조건 공방반환 보고 문구를 유료 SALE에 재사용하지 않는다. 보상 촉매 inventory key는 `heart_of_flame` 또는 `earth_crystal`이다. due-day 원자 저장은 기존 commission readback/COMMIT_UNCERTAIN 경계를 재사용하고 과거 회복 거래 전체를 새 엔진으로 바꾸지 않는다.
 
 - [ ] 촉매 선택없음 비용0, 납품 연타 지급1회, 판매 고객소유 유지, 대여 같은 UID 귀환, 세계결과와 보수 독립, 지급 후 readback실패 재시도의 중복지급0 RED를 만든다.
 - [ ] 납품 시 고정 보수·선택촉매·소유 전이와 지연 사건 snapshot/두 draw/기한을 같은 저장에 확정한다. IN_TRANSIT는 마감 가능하지만 작품 편집은 잠긴다. 기존 trial PREPARED는 계속 마감을 막는다.
 - [ ] 목록→목적/보수/반환 상세→수락→제작→강화→납품→일정→결과→다음 촉매 소비를 실제 공방에서 연결한다. 새 panel이 표현만 맡고 저장 판단은 service가 소유한다.
 - [ ] due-day 직전/쓰기 전/쓰기 후/readback 후 중단에 대해 하루·결과·보수·UID를 대조한다. 세계창 접기/펼치기/재열람은 지급과 난수를 소비하지 않는다.
 
-### 작업 5 - 연결 품질과 전달
+### Task 5 - 연결 품질과 전달
 
 - [ ] 전체 GUT·Python, unknown/legacy save 회귀, 자원0 회복 경로, 일반의뢰30회 장부, 의미사건 연대기 및 3순환 실제 플레이를 검증한다.
 - [ ] 실제 5종 목록·예약·제작·납품/반환·재시작 캡처를 블루프린트에 추가한다. fixture·직접제작·데스크톱·Android 증거를 구분한다.

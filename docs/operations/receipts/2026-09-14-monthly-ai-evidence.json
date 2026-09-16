@@ -42,13 +42,58 @@
     "human_review": "NOT_RUN",
     "submission": "NOT_SENT"
   },
+  "append_update_history": [
+    {
+      "recorded_on": "2026-09-14",
+      "state": "INITIAL_PRE_SUBMISSION_REVIEW_COPY",
+      "sha256": "a4e7aad5e6c3c3cd8085de8bc9d8de2b48ca39fc38782edc8618c60824f314c8",
+      "pages": 6,
+      "native_images": 4
+    },
+    {
+      "recorded_on": "2026-09-16",
+      "state": "READY_TO_PUBLISH_AFTER_FINAL_NATIVE_FIX",
+      "policy": "SAME_PATH_CUMULATIVE_REFRESH_WITH_EXPECTED_OLD_SHA256",
+      "source_history": "FIRST_6_PAGES_PRESERVED_WITH_SUPERSEDED_NEW_EDITION_POLICY_CORRECTED_AND_2_DATED_SUMMARY_PAGES_APPENDED",
+      "candidate": {
+        "path": "tmp/pdfs/monthly-ai-journal-cumulative-20260916-candidate.pdf",
+        "sha256": "5605f75d8c1ccb2e8f4b649f56aee301caab62fdc13aea49cbe2e2e79d9eaea2",
+        "bytes": 2074526,
+        "pages": 8,
+        "native_images": 4,
+        "render_review": "PASS_8_OF_8",
+        "codex_visual_review": "PASS_8_OF_8",
+        "publication_status": "TEMPORARY_INSPECTED_CANDIDATE_NOT_CURRENT_OUTPUT"
+      },
+      "current_output_readback": {
+        "sha256": "a4e7aad5e6c3c3cd8085de8bc9d8de2b48ca39fc38782edc8618c60824f314c8",
+        "bytes": 2062810,
+        "pages": 6,
+        "status": "UNCHANGED_PENDING_FINAL_NATIVE_FIX_AND_GUARDED_REFRESH"
+      },
+      "pdf_marker": "PASS_EXACTLY_ONCE_EDIT_EXPECTED_OUTPUT_COUNT_1",
+      "native_commission_evidence": "ONE_BOUNDED_DESKTOP_CYCLE_RECORDED_IN_TEXT; FINAL_CORRECTIVE_CAPTURE_PENDING; NO_NEW_COMMISSION_IMAGE_EMBEDDED"
+    }
+  ],
   "validation": {
     "red": "3 expected failures: missing publisher",
     "green": "3 tests passed: never overwrite existing output, real 6-page/4-image evidence-limited report, reject missing source",
-    "protected_contract": "PASS before and after work; no protected product files authored",
-    "python_regression": "519 passed, 3 skipped on Windows publication host; PDF render integration explicitly skips on hosts without ReportLab/Korean Windows fonts, not claimed PASS there"
+    "protected_contract": "INITIAL_SEP14_HISTORICAL: PASS before and after original monthly evidence work; no protected product files authored",
+    "python_regression": "519 passed, 3 skipped on Windows publication host; PDF render integration explicitly skips on hosts without ReportLab/Korean Windows fonts, not claimed PASS there",
+    "cumulative_refresh_preparation": {
+      "red": "Focused pytest exit1: 3 expected failures for missing guarded replacement and aspect-fit APIs; an earlier bundled-Python missing-pytest environment error is not counted as RED",
+      "green": "Bundled document Python focused: 6 passed; full repository: 522 passed, 3 skipped, 18 subtests passed; cumulative prior content and Sep14/Sep16 dates, JSON-derived PR/commit references, overwrite refusal, expected-hash replacement, failure preservation and aspect ratio covered",
+      "visual": "Temporary 8-page candidate rendered with Poppler; pages1-8 inspected, with page8 rechecked at 220dpi; no clipping, overlap, broken glyph or image distortion found",
+      "current_pdf_replacement": "NOT_RUN_PENDING_FINAL_NATIVE_FIX",
+      "protected_contract": {
+        "prework": "EXACT14_PASS",
+        "end": "FAIL_UNVERIFIED_DUE_TO_ROOT_SCOPE15_STAGING_MISMATCH",
+        "scope_registration_commit": "ebf0ceee",
+        "retention": "RETAIN_INTERMEDIATE_FAILURE_EVEN_AFTER_LATER_EXACT15_PASS"
+      }
+    }
   },
-  "limitations": ["September coverage limited to selected verified September14 records", "Historical runtime evidence reused, not rerun in this task", "Individual prompt screenshots/model/account/payment unverified", "Agreement/email originals not reviewed; no signing or submission", "No new generated image or background removal performed"],
-  "learning": "Project publisher refuses overwrites and missing sources; source hashes do not prove execution time. Base promotion not performed: local first consumer only.",
-  "next_product_work": "R02-R04 current execution specification, with fresh exact protected scope before product authoring"
+  "limitations": ["September coverage is limited to selected verified September14 and September16 records", "Historical WORLD5 runtime evidence was reused; one bounded commission desktop cycle is text-only pending final corrective capture", "Individual prompt screenshots/model/account/payment unverified", "Agreement/email originals not reviewed; no signing or submission", "No new generated image or background removal performed", "Whole-branch final fix/review, merge/main readback, Android, Human QA, balance, final art/motion and release remain incomplete"],
+  "learning": "Project publisher refuses ordinary overwrites and missing sources; one known review copy may be refreshed only after exact old-hash verification and inspected-candidate preparation. Source hashes and Git timestamps do not prove individual AI call duration. Base promotion not performed: local first consumer only.",
+  "next_product_work": "Apply and verify the combined final gameplay fixes, capture the corrected native result, then rebuild and guarded-refresh the same current PDF path"
 }

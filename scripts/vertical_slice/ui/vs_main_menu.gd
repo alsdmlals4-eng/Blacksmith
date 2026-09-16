@@ -247,7 +247,11 @@ func _on_continue_pressed() -> void:
 	if not _restore_resources_from_envelope(envelope):
 		_show_menu_message("공방 재화 정보를 불러올 수 없습니다.")
 		return
-	if str(envelope.active_run.get("selected_item_uid", "")).is_empty():
+	# No selected personal item also occurs after sale, loan or destruction.
+	# Only a campaign without item/history/order progress needs its first forge.
+	if (str(envelope.active_run.get("selected_item_uid", "")).is_empty()
+			and envelope.items_by_uid.is_empty() and envelope.destroyed_history_by_uid.is_empty()
+			and not envelope.active_run.has("commission") and not envelope.active_run.has("recovery_order")):
 		begin_first_forge(envelope)
 		return
 	_clear_active_surface()
