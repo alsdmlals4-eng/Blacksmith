@@ -1,0 +1,155 @@
+{
+  "artifact_role": "GENERAL_COMMISSION_DELIVERY_EVIDENCE",
+  "recorded_on": "2026-09-16",
+  "timezone": "Asia/Seoul",
+  "state": "THREE_DESKTOP_CYCLES_VERIFIED_FINAL_REMOTE_CI_PENDING",
+  "source_revision": "d0f9c9eb3c0164f023147e9f05cd0a70820c8fb1",
+  "pull_request": 384,
+  "scope": "R02-R04 general commissions; current bundle closeout, not whole-game or release completion",
+  "native": {
+    "platform": "WINDOWS_DESKTOP_360x640_FRAMEBUFFER_720x1280_LOGICAL",
+    "engine": "Godot 4.7.1",
+    "qa_save": "user://commission_native_20260916.json",
+    "default_player_save_modified": false,
+    "cycles": [
+      {
+        "mode": "COMMISSION_ESCROW_SALE",
+        "definition": "IRON_BOW_BASIC_V1",
+        "source": "NEW_QA_GAME_ACTUAL_FORGE_AND_UI_INPUT_NO_ITEM_OR_ROLL_FIXTURE",
+        "item_uid": "BSI-743d42640b103aebcb6747b615915999",
+        "order_id": "RUN-6603eeac579f0eb1dd958e707fccf4c7-commission-1",
+        "handoff_day": 1,
+        "due_day": 2,
+        "result": "SETTLED_BASIC_CUSTOMER_CHECK_SUCCESS_NO_DAMAGE_CUSTOMER_OWNERSHIP",
+        "resource_before": {
+          "gold": 20000,
+          "common_reinforcement_material": 30,
+          "heart_of_flame": 64,
+          "earth_crystal": 64
+        },
+        "resource_after": {
+          "gold": 20400,
+          "common_reinforcement_material": 32,
+          "heart_of_flame": 65,
+          "earth_crystal": 64
+        },
+        "stored_draws": [
+          18.6091585086525,
+          17.2018317648179
+        ],
+        "transit_process_restart_sha256": "488a127fbdd31b372b484220c0e487e09d415cb7078138b95c5751f4a08a5361",
+        "settled_process_restart_sha256": "833565cdb99c45c17cde5062b977037abb6f711ba374fb13cc3139ab6aa7b156",
+        "restart_readback": "EXACT_BYTES_EQUAL_BEFORE_AND_AFTER_EACH_ACTUAL_GAME_PROCESS_RESTART",
+        "limits": "One desktop cycle, not balance approval. False empty-world text corrected at e252d942; restored result captured 2026-09-16 16:25:04 KST."
+      },
+      {
+        "mode": "PLAYER_LOAN",
+        "definition": "IRON_SWORD_BASIC_V1",
+        "source": "EXISTING_ACTUALLY_FORGED_PERSONAL_SWORD_REAL_UI_SIGNALS_AND_POINTER_INPUT_NO_ITEM_OR_ROLL_FIXTURE",
+        "item_uid": "BSI-7174f11179a8006541685c300c20b541",
+        "order_id": "RUN-6603eeac579f0eb1dd958e707fccf4c7-commission-2",
+        "handoff_day": 2,
+        "due_day": 3,
+        "result": "SETTLED_BASIC_CUSTOMER_CHECK_SUCCESS_NO_DAMAGE_SAME_UID_PLAYER_RETURN",
+        "resource_after": {
+          "gold": 20800,
+          "common_reinforcement_material": 34,
+          "heart_of_flame": 65,
+          "earth_crystal": 65
+        },
+        "stored_draws": [
+          80.2287987792397,
+          71.049772982587
+        ],
+        "settled_and_chronicle_read_sha256": "ae513603b5e460fda55025143d13cab91566d5d7cd6d6badd1db3b04b5e46776",
+        "chronicle_capture": "docs/testing/commission-loan-chronicle-native-20260916.png",
+        "captured_at": "2026-09-16T16:27:34+09:00",
+        "limits": "Desktop mixed actual control selection signals and pointer buttons, not exclusively physical input or Android. Chronicle view did not write save."
+      },
+      {
+        "definition": "IRON_SWORD_PURPOSE_V1",
+        "mode": "PLAYER_LOAN",
+        "item_uid": "BSI-7174f11179a8006541685c300c20b541",
+        "preparation": "Actual UI ordinary0->9 (one failed attempt at4), BURST_OUTPUT choice and successful+10 consumed one heart_of_flame. No level/roll fixture.",
+        "handoff_day": 3,
+        "due_day": 6,
+        "stored_draws": [
+          72.2438626217539,
+          3.54044173097685
+        ],
+        "success_percent": 63,
+        "damage_percent": 40,
+        "resource_after_handoff": {
+          "gold": 17640,
+          "common_reinforcement_material": 25,
+          "heart_of_flame": 65,
+          "earth_crystal": 65
+        },
+        "transit_restart_sha256": "af77ee22e4289aaf2d6023d832acff5a7a5b69fdc7b460671d04c19b391d3e74",
+        "result": "SETTLED_DAY6_MISSION_FAILED_DAMAGE_ONCE_5_TO4_SAME_UID_PLAYER_RETURN",
+        "settled_process_restart_sha256": "c51879f08449b4f83594351fd2fd570ad623e07d169f4fd56b3f584a29b47b79",
+        "post_result_resources_equal_handoff": true,
+        "resume_correction": "c517fb84 corrected empty personal selection MainMenu route; same saved transit SHA before/after actual restart+Continue; no replacement item or migration"
+      }
+    ],
+    "captures": [
+      {
+        "path": "docs/testing/commission-offers-native-20260916.png",
+        "captured_at": "2026-09-16T15:58:37+09:00",
+        "sha256": "f10dcc3b5316c60df032aca399960e2de533fda9c159ff618617804580be9024",
+        "meaning": "Actual ten offers dropdown, five equipment types, BASIC and PURPOSE"
+      },
+      {
+        "path": "docs/testing/commission-transit-native-20260916.png",
+        "captured_at": "2026-09-16T16:01:10+09:00",
+        "sha256": "05f9b34246135d32647bbd8da4f63d0f06ddde3179deb90bc3f494315fb88edb",
+        "meaning": "Actual bow order transit and due-day report, not settlement proof"
+      },
+      {
+        "path": "docs/testing/commission-sale-restored-native-20260916.png",
+        "captured_at": "2026-09-16T16:25:04+09:00",
+        "sha256": "b19e1b0b671e91a92407f6c54a16a2c3b8ab72675af6a2e8f48ab274f03af9a7",
+        "meaning": "Restored customer bow sale, false empty placeholder corrected"
+      },
+      {
+        "path": "docs/testing/commission-loan-chronicle-native-20260916.png",
+        "captured_at": "2026-09-16T16:27:34+09:00",
+        "sha256": "ab658a42bf3f4189a00d787d9d371de82483ac3e770c49fcbaefc474191283d9",
+        "meaning": "Actual returned personal sword Chronicle; handoff/result and same UID"
+      },
+      {
+        "path": "docs/testing/commission-purpose-preview-native-20260916.png",
+        "captured_at": "2026-09-16T16:30:54+09:00",
+        "sha256": "c3fe8ad0ca8c14c6d54806fac640e09a44ef7ea844d0b4b00f36e2d838d332f7",
+        "meaning": "Before handoff actual +10 tag prep success63/damage40 independent preview"
+      },
+      {
+        "path": "docs/testing/commission-purpose-result-native-20260916.png",
+        "captured_at": "2026-09-16T16:40:22+09:00",
+        "sha256": "d22df8418a989591254c57789b48fc5fb13ad14fd8097e662419249826b71124",
+        "meaning": "Three days later failed mission and once-only damage5to4; sameUID returned, no extra payout"
+      }
+    ],
+    "input_limits": "Three bounded desktop commission cycles with actual game controls: pointer/key actions plus option item_selected signals and read-only presentation scroll. Not human, Android or exclusively physical-input testing. No gear/level/resource/roll injection in native QA.",
+    "diagnostic_errors": "Root malformed mixed-indent inspection eval and absent-app dereference paused helper; these failed diagnostic attempts are not product crash evidence. Final actual run9 helper live; game stopped after readback. Original player save untouched."
+  },
+  "verification_at_source_revision": {
+    "gut": "369/369 tests, 4820 assertions on Windows",
+    "focused": "4/4,61 assertions actual MainMenu resume; previous18/746 incl30 machine cycles",
+    "python": "524 passed, 3 skipped",
+    "protected_paths": "EXACT16_PASS",
+    "full_code_reviews": "TWO_COMPLETED; FIVE_COMBINED_FINDINGS_ADDRESSED; ONE_SCOPED_REREVIEW_CLEAN",
+    "native_resume_review": "APPROVED_NO_FINDINGS_PURPOSE_HELPER_CONFIRMED",
+    "debug_mode_ci_reproduction": "RED_8_OF_9_THEN_GREEN_9_OF_9_FULL_369_OF_369",
+    "debug_mode_correction": "d0f9c9eb renames nested item local to candidate_item. Full Windows GUT with workflow -d and both test directories:369/369,4820 assertions,46.276s. No warning suppression; pre-existing discovery warnings remain. Native captures predate this behavior-neutral rename.",
+    "ci": "Historical run35069604670 GUT368/369,4820/4821 FAIL unexpected CONFUSABLE_LOCAL_DECLARATION preserved. Corrected d0f9c9eb pushed; exact remote rerun pending."
+  },
+  "not_verified": [
+    "Final exact-head CI and normal main integration",
+    "Android",
+    "Human balance",
+    "Final art/motion",
+    "Release"
+  ],
+  "record_limit": "Execution and capture times are local observations, not certified timestamps. No prompt/account/payment attribution inferred."
+}
