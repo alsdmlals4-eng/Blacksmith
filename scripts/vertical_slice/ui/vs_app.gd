@@ -224,6 +224,8 @@ func _close_recovery_forge() -> void:
 
 func _on_workshop_enhancement_saved(envelope, _result: Dictionary) -> void:
 	_campaign_envelope = envelope
+	if _result.get("commission_refresh", false):
+		configure_campaign(envelope, _workshop_resources, null, null, _save_service)
 
 
 func _on_workshop_handoff_requested() -> void:

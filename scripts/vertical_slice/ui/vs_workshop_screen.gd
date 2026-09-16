@@ -81,6 +81,8 @@ var _precision_selection_data: Dictionary = {}
 var _world_view_mode := "COLLAPSED"
 var _trial_family := "AQ"
 var _day_close_source := -1
+var _day_close_envelope = null
+var _day_close_uncertain := false
 var _exchange_pending: Dictionary = {}
 
 
@@ -722,23 +724,31 @@ func _on_day_close_pressed() -> void:
 			button.add_theme_font_size_override("font_size",MOBILE_BODY_FONT_SIZE)
 		dialog.confirmed.connect(_on_day_close_confirmed)
 		dialog.canceled.connect(_on_day_close_canceled)
-	_day_close_source = int(_campaign_envelope.active_run.current_day)
+	if not _day_close_uncertain:
+		_day_close_source = int(_campaign_envelope.active_run.current_day)
+		_day_close_envelope = _campaign_envelope
 	dialog.dialog_text = "영업 %d일 → %d일\n미완성 주문과 장비는 그대로 보존됩니다.\n완료한 주문만 다음 주문으로 보충됩니다.\n마감 자체에는 보상이 없습니다." % [_day_close_source,_day_close_source+1]
 	dialog.popup_centered(Vector2i(640,360))
 
 func _on_day_close_canceled() -> void:
-	_day_close_source = -1
+	if not _day_close_uncertain:
+		_day_close_source = -1
+		_day_close_envelope = null
 
 func _on_day_close_confirmed() -> void:
 	if _day_close_source < 1 or not is_visible_in_tree(): return
 	var source_day = _day_close_source
-	_day_close_source = -1
-	var result = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new().close_day(_campaign_envelope,source_day,_save_service)
+	var result = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new().close_day(_day_close_envelope,source_day,_save_service)
 	if result.has("envelope"):
+		_day_close_source = -1
+		_day_close_envelope = null
+		_day_close_uncertain = false
 		_campaign_envelope = result.envelope
+		if _campaign_envelope.active_run.has("commission"): result["commission_refresh"] = true
 		campaign_saved.emit(_campaign_envelope,result)
 		_refresh_controls()
 	else:
+		_day_close_uncertain = _day_close_uncertain or result.status == "COMMIT_UNCERTAIN"
 		get_node("WorkshopScroll/WorkshopLayout/RecoveryOrder/Summary").text += "\n마감 저장 확인 실패 · 날짜를 다시 확인해 주세요."
 
 func _refresh_controls() -> void:
@@ -858,10 +868,30 @@ func _refresh_controls() -> void:
 	_refresh_world_viewer()
 	_refresh_recovery_order()
 	_refresh_catalyst_exchange()
+	_refresh_commission_panel()
+
+func _refresh_commission_panel() -> void:
+	var layout = get_node_or_null("WorkshopScroll/WorkshopLayout")
+	if layout == null: return
+	var enabled = _campaign_envelope != null and _campaign_envelope.active_run.get("tag_ruleset_id", "") == "BLACKSMITH_REPLAN_TAGS_20260912"
+	var panel = layout.get_node_or_null("CommissionPanel")
+	if panel == null and enabled:
+		panel = load("res://scripts/vertical_slice/ui/vs_commission_panel.gd").new()
+		panel.name = "CommissionPanel"
+		layout.add_child(panel)
+		layout.move_child(panel, 1)
+		panel.forge_requested.connect(func(order_id): commission_forge_requested.emit(order_id))
+		panel.campaign_saved.connect(func(envelope, result): campaign_saved.emit(envelope, result))
+	if panel == null: return
+	panel.visible = enabled
+	if enabled: panel.configure_context(_campaign_envelope, _save_service)
+
+func _world_campaign_available() -> bool:
+	return _campaign_envelope != null and _campaign_envelope.active_run.get("tag_ruleset_id", "") == "BLACKSMITH_REPLAN_TAGS_20260912"
 
 
 func set_world_view_mode(mode: String) -> bool:
-	if not mode in ["COLLAPSED", "SPLIT", "FOCUS"] or not _is_replan_item():
+	if not mode in ["COLLAPSED", "SPLIT", "FOCUS"] or not _world_campaign_available():
 		return false
 	_world_view_mode = mode
 	_refresh_world_viewer()
@@ -873,7 +903,7 @@ func _refresh_world_viewer() -> void:
 	if workshop == null:
 		return
 	var bar := get_node_or_null("WorldViewBar") as HBoxContainer
-	if bar == null and _is_replan_item():
+	if bar == null and _world_campaign_available():
 		bar = HBoxContainer.new()
 		bar.name = "WorldViewBar"
 		bar.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
@@ -915,7 +945,7 @@ func _refresh_world_viewer() -> void:
 	if bar == null:
 		return
 	var panel := get_node("WorldReportPanel") as PanelContainer
-	var enabled := _is_replan_item()
+	var enabled := _world_campaign_available()
 	bar.visible = enabled
 	panel.visible = enabled and _world_view_mode != "COLLAPSED"
 	if not enabled:
@@ -941,6 +971,16 @@ func _refresh_world_viewer() -> void:
 				reports.append(str(service.world_report(record, family).body))
 		if not reports.is_empty():
 			body = "\n\n".join(reports)
+	if enabled:
+		var commission = load("res://scripts/vertical_slice/services/vs_commission_service.gd")
+		var bucket = _campaign_envelope.active_run.get("commission", {})
+		var commission_reports = PackedStringArray()
+		var records = bucket.get("history", []).duplicate()
+		records.append(bucket.get("active_order", {}))
+		for record in records:
+			var report_text = commission.report(record)
+			if not report_text.is_empty(): commission_reports.append(report_text)
+		if not commission_reports.is_empty(): body = "\n\n".join(commission_reports) + "\n\n" + body
 	panel.get_node("ReportScroll/ReportText").text = "저장된 사건 보고 · 읽기 전용\n" + body + "\n\n전투 모션 미연결 · 열람은 시간/결과/자원을 바꾸지 않습니다."
 
 
