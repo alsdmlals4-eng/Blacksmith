@@ -78,13 +78,19 @@
   "validation": {
     "red": "3 expected failures: missing publisher",
     "green": "3 tests passed: never overwrite existing output, real 6-page/4-image evidence-limited report, reject missing source",
-    "protected_contract": "PASS before and after work; no protected product files authored",
+    "protected_contract": "INITIAL_SEP14_HISTORICAL: PASS before and after original monthly evidence work; no protected product files authored",
     "python_regression": "519 passed, 3 skipped on Windows publication host; PDF render integration explicitly skips on hosts without ReportLab/Korean Windows fonts, not claimed PASS there",
     "cumulative_refresh_preparation": {
       "red": "Focused pytest exit1: 3 expected failures for missing guarded replacement and aspect-fit APIs; an earlier bundled-Python missing-pytest environment error is not counted as RED",
       "green": "Bundled document Python focused: 6 passed; full repository: 522 passed, 3 skipped, 18 subtests passed; cumulative prior content and Sep14/Sep16 dates, JSON-derived PR/commit references, overwrite refusal, expected-hash replacement, failure preservation and aspect ratio covered",
       "visual": "Temporary 8-page candidate rendered with Poppler; pages1-8 inspected, with page8 rechecked at 220dpi; no clipping, overlap, broken glyph or image distortion found",
-      "current_pdf_replacement": "NOT_RUN_PENDING_FINAL_NATIVE_FIX"
+      "current_pdf_replacement": "NOT_RUN_PENDING_FINAL_NATIVE_FIX",
+      "protected_contract": {
+        "prework": "EXACT14_PASS",
+        "end": "FAIL_UNVERIFIED_DUE_TO_ROOT_SCOPE15_STAGING_MISMATCH",
+        "scope_registration_commit": "ebf0ceee",
+        "retention": "RETAIN_INTERMEDIATE_FAILURE_EVEN_AFTER_LATER_EXACT15_PASS"
+      }
     }
   },
   "limitations": ["September coverage is limited to selected verified September14 and September16 records", "Historical WORLD5 runtime evidence was reused; one bounded commission desktop cycle is text-only pending final corrective capture", "Individual prompt screenshots/model/account/payment unverified", "Agreement/email originals not reviewed; no signing or submission", "No new generated image or background removal performed", "Whole-branch final fix/review, merge/main readback, Android, Human QA, balance, final art/motion and release remain incomplete"],

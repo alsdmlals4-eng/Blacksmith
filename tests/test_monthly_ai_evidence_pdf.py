@@ -9,6 +9,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / 'tools/publish_monthly_ai_evidence_pdf.py'
 SOURCE = ROOT / 'docs/operations/evidence/2026-09-ai-work-journal.json'
+RECEIPT = ROOT / 'docs/operations/receipts/2026-09-14-monthly-ai-evidence.json'
 
 
 def publisher():
@@ -54,6 +55,38 @@ def test_published_report_is_cumulative_and_uses_record_references(tmp_path):
     assert len(record['pages']) > 6
     assert len(reader.pages) >= len(record['pages'])
     assert sum(len(page.images) for page in reader.pages) >= 4
+
+
+def test_receipt_separates_historical_and_cumulative_gate_evidence():
+    receipt = json.loads(RECEIPT.read_text(encoding='utf-8'))
+    historical = receipt['validation']['protected_contract']
+    cumulative = receipt['validation']['cumulative_refresh_preparation'].get('protected_contract')
+
+    assert historical.startswith('INITIAL_SEP14_HISTORICAL:')
+    assert cumulative == {
+        'prework': 'EXACT14_PASS',
+        'end': 'FAIL_UNVERIFIED_DUE_TO_ROOT_SCOPE15_STAGING_MISMATCH',
+        'scope_registration_commit': 'ebf0ceee',
+        'retention': 'RETAIN_INTERMEDIATE_FAILURE_EVEN_AFTER_LATER_EXACT15_PASS',
+    }
+
+
+def test_historical_world5_image_paths_remain_in_cumulative_source():
+    record = json.loads(SOURCE.read_text(encoding='utf-8'))
+    historical_images = {
+        'docs/testing/world5-bow-result-20260914.png',
+        'docs/testing/world5-bow-restored-20260914.png',
+        'docs/testing/world5-armor-result-fixture-20260914.png',
+        'docs/testing/world5-helmet-result-fixture-20260914.png',
+    }
+    page_images = {
+        path
+        for page in record['pages']
+        for path, _caption in page.get('images', [])
+    }
+
+    assert historical_images <= set(record['sources'])
+    assert historical_images <= page_images
 
 
 def test_explicit_expected_hash_replaces_current_review_copy(tmp_path):
