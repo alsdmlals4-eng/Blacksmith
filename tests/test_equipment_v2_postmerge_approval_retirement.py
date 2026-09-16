@@ -38,6 +38,7 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
         self.assertEqual('ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b', delivery['merge_commit'])
         self.assertEqual('f9301e82f0464780188a1ffc615ebc1fc53a4c12', delivery['reviewed_product_head'])
         archive = ROOT / delivery['approval_archive']
+        self.assertIn(delivery['approval_archive'] + ' text eol=lf', (ROOT / '.gitattributes').read_text(encoding='utf-8').splitlines())
         self.assertEqual(delivery['approval_sha256'], raw_sha256(archive))
         approved = json.loads(archive.read_text(encoding='utf-8'))
         self.assertEqual(16, len(approved['approved_paths']))
