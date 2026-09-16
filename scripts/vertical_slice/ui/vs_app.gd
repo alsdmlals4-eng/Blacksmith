@@ -132,6 +132,7 @@ func configure_workshop_context(item, resources, maintenance_service = null, enh
 
 
 func _on_commission_forge_requested(order_id: String) -> void:
+	if _campaign_write_blocked(): return
 	if _campaign_envelope == null or get_node_or_null("GeneralCommissionForge") != null or get_node_or_null("RecoveryForge") != null:
 		return
 	var workshop = get_node("ScreenHost/WorkshopScreen")
@@ -184,6 +185,7 @@ func _close_commission_forge() -> void:
 	get_node("ScreenHost/WorkshopScreen").show()
 
 func _on_recovery_forge_requested() -> void:
+	if _campaign_write_blocked(): return
 	if get_node_or_null("RecoveryForge") != null or _campaign_envelope == null:
 		return
 	if _campaign_envelope.active_run.get("recovery_order",{}).get("phase","") != "ACCEPTED":
@@ -341,6 +343,7 @@ func present_resolved_customer_result(event_id: String) -> String:
 
 
 func resolve_customer_actual_use_with_roll(event: Dictionary, damage_roll_percent: float) -> String:
+	if _campaign_write_blocked(): return INVALID_TRANSITION
 	if current_state != "CUSTOMER":
 		return INVALID_TRANSITION
 	if _campaign_envelope == null or _save_service == null:
@@ -367,6 +370,7 @@ func resolve_customer_actual_use_with_roll(event: Dictionary, damage_roll_percen
 
 
 func begin_phase1_customer_handoff() -> String:
+	if _campaign_write_blocked(): return INVALID_TRANSITION
 	if not current_state in ["WORKSHOP", "ENHANCEMENT", "PRECISION"]:
 		return INVALID_TRANSITION
 	var handoff_item = _phase1_handoff_item()
@@ -638,6 +642,7 @@ func register_destination(state: String, destination: Resource) -> void:
 
 
 func transition_to(next_state: String, payload: Dictionary = {}) -> String:
+	if _campaign_write_blocked() and next_state not in ["WORKSHOP", "ITEM_DETAIL"]: return INVALID_TRANSITION
 	if not can_transition(current_state, next_state):
 		return INVALID_TRANSITION
 	if not _destinations.has(next_state):
@@ -655,3 +660,7 @@ func _is_payload_valid(payload: Dictionary) -> bool:
 	if payload.has("item_uid") and not payload["item_uid"] is String:
 		return false
 	return true
+
+func _campaign_write_blocked() -> bool:
+	var workshop = get_node_or_null("ScreenHost/WorkshopScreen")
+	return workshop != null and workshop.campaign_write_blocked()

@@ -172,6 +172,12 @@ static func _chances(definition: Dictionary, item) -> Dictionary:
 	if not preview.get("ok", false): return {}
 	return {"success_percent":preview.success_percent, "damage_percent":load("res://scripts/vertical_slice/resolvers/vs_customer_world_event_resolver.gd").new()._damage_percent(item, "HIGH")}
 
+static func handoff_preview(definition: Dictionary, item) -> Dictionary:
+	# The same pure departure calculation; no save, RNG or reservation changes.
+	if not Catalog.validate_definition(definition).is_empty(): return {}
+	if definition.min_level > 0 and (item == null or Equipment.by_item(item).get("equipment_id", "") != definition.equipment_id): return {}
+	return _chances(definition, item)
+
 static func _append_event(item, id: String, kind: String, day: int, before: String, after: String, payload: Dictionary) -> void:
 	var entry = load("res://scripts/vertical_slice/domain/vs_ledger_entry.gd").create(item.ledger.size() + 1,
 		id, kind, "BS-REPLAN-20260914-10", before, after, day, payload)

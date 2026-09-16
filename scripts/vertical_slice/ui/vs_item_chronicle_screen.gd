@@ -76,6 +76,21 @@ func _entries_from_existing_facts(item, resolved_events: Dictionary, customer_pr
 						int(payload.get("stage_after", 0)),
 					],
 				})
+			elif event_type == "COMMISSION_HANDOFF":
+				var payload: Dictionary = raw_entry.get("payload", {})
+				entries.append({"kind": "COMMISSION_HANDOFF", "text": "%d일 일반 의뢰 인계 · %s\n%d일 보고 예정 · 인계 보수 지급 완료" % [
+					int(raw_entry.get("occurred_at_game_day", 0)),
+					"대여 · 고객이 빌려 사용 후 같은 UID 반환" if payload.get("ownership_mode", "") == "LOAN" else "판매 · 고객 소유로 이전",
+					int(payload.get("due_day", 0))]})
+			elif event_type == "COMMISSION_WORLD_RESULT":
+				var payload: Dictionary = raw_entry.get("payload", {})
+				entries.append({"kind": "COMMISSION_WORLD_RESULT", "text": "%d일 의뢰 보고 · %s %s · 손상 %s\n%s · 추가 보수 %d" % [
+					int(raw_entry.get("occurred_at_game_day", 0)),
+					"비전투 검수" if payload.get("report_kind", "") == "BASIC_CUSTOMER_CHECK" else "실제 사용 임무",
+					"성공" if payload.get("mission_success", false) else "실패",
+					"발생" if payload.get("damage_applied", false) else "없음",
+					"같은 UID 반환 · 개인 소유" if payload.get("owner_id", "") == "PLAYER" else "고객 소유 유지 · 반환 없음",
+					int(payload.get("bonus", 0))]})
 	for raw_result in resolved_events.values():
 		if not _is_matching_actual_use_result(raw_result, str(item.uid)):
 			continue
