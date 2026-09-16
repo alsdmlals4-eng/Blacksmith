@@ -89,7 +89,10 @@
       "candidate": {
         "path": "tmp/pdfs/monthly-ai-journal-final-20260916-candidate.pdf",
         "sha256": "c3ba491f34773fc9cf9f558c9fa9dc2136c204af60afd681cc33fb9e461c472b",
-        "source_sha256": "a2c9f00c6383a50c5bb5819d686e3ca968e881c3e6701d7e7abe2a26ddbe84ec",
+        "source_hash_definition": "UTF8_TEXT_LF_NORMALIZED_SHA256",
+        "source_sha256": "c7afb87cd6526c8f7ad344b05e788773908c36f3ac1d0e889f5326630abbd5a2",
+        "source_generation_raw_hash_definition": "ORIGINAL_WINDOWS_INPUT_BYTES_SHA256",
+        "source_generation_raw_sha256": "a2c9f00c6383a50c5bb5819d686e3ca968e881c3e6701d7e7abe2a26ddbe84ec",
         "bytes": 3868243,
         "pages": 11,
         "native_images": 10,

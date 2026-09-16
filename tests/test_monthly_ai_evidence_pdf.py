@@ -120,11 +120,18 @@ def test_monthly_receipt_records_published_final_candidate_binding():
     receipt = json.loads(RECEIPT.read_text(encoding='utf-8'))
     preparation = receipt['append_update_history'][-1]
     candidate = preparation['candidate']
+    source_text = SOURCE.read_bytes().decode('utf-8')
+    normalized_source = source_text.replace('\r\n', '\n').replace('\r', '\n').encode('utf-8')
 
     assert preparation['state'] == 'CUMULATIVE_REFRESH_PUBLISHED_AFTER_VERIFIED_PRODUCT_MERGE'
     assert candidate['pages'] >= 11
     assert candidate['native_images'] >= 10
-    assert candidate['source_sha256'] == hashlib.sha256(SOURCE.read_bytes()).hexdigest()
+    assert candidate['source_hash_definition'] == 'UTF8_TEXT_LF_NORMALIZED_SHA256'
+    assert candidate['source_sha256'] == hashlib.sha256(normalized_source).hexdigest()
+    assert candidate['source_generation_raw_hash_definition'] == 'ORIGINAL_WINDOWS_INPUT_BYTES_SHA256'
+    assert candidate['source_generation_raw_sha256'] == (
+        'a2c9f00c6383a50c5bb5819d686e3ca968e881c3e6701d7e7abe2a26ddbe84ec'
+    )
     assert preparation['replaced_output']['sha256'] == (
         'a4e7aad5e6c3c3cd8085de8bc9d8de2b48ca39fc38782edc8618c60824f314c8'
     )
@@ -168,6 +175,17 @@ def test_image_dimensions_preserve_aspect_ratio():
     assert width / height == pytest.approx(360 / 640)
     assert width <= 151.875
     assert height <= 270
+
+
+def test_source_text_digest_is_stable_across_lf_and_crlf(tmp_path):
+    lf_source = tmp_path / 'lf.json'
+    crlf_source = tmp_path / 'crlf.json'
+    lf_source.write_bytes(b'{"line": 1}\n{"line": 2}\n')
+    crlf_source.write_bytes(b'{"line": 1}\r\n{"line": 2}\r\n')
+    expected = 'ecd93c40eb0593978eee0166474432b677a2a925b36f981f43dadd2806e117e7'
+
+    assert publisher().source_text_digest(lf_source) == expected
+    assert publisher().source_text_digest(crlf_source) == expected
 
 
 def test_missing_source_is_rejected_without_publishing(tmp_path):
