@@ -93,7 +93,7 @@ def main() -> None:
         assert screen["notion_destination"] is None, screen["screen_id"]
         assert screen["repository_destination"], screen["screen_id"]
 
-    for path in (ART_OWNER, VISUAL_APPROVAL, CORE, AUTHORITY, HANDOFF, AGENTS):
+    for path in (ART_OWNER, VISUAL_APPROVAL, CORE, AUTHORITY, HANDOFF):
         text = path.read_text(encoding="utf-8")
         require_tokens(text, [DECISION_ID], path.name)
 
@@ -121,16 +121,9 @@ def main() -> None:
         "GPT Work handoff",
     )
 
-    agents = AGENTS.read_text(encoding="utf-8")
-    require_tokens(
-        agents,
-        [
-            "ACTUAL_GAME_CONSUMER_REQUIRED",
-            "NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE",
-            "PRIMARY_USE_GATE_REQUIRED",
-        ],
-        "AGENTS visual gate",
-    )
+    from check_current_authority_entrypoint_contract import validate
+    failures = validate(ROOT)
+    assert not failures, failures
 
     print("actual game visual consumer gate current contract: PASS")
 

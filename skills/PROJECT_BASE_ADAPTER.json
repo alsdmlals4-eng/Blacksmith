@@ -191,6 +191,7 @@
     },
     "managing-project-intake-and-work-contract": {
       "first_prompt_governance": {
+        "role": "HISTORICAL_ADOPTION_METADATA_USE_PROJECT_OPERATIONAL_OWNER",
         "actual_project_instruction_execution": "NOT_RUN",
         "approval_reuse": "REUSE_EXACT_APPROVAL_REFERENCE",
         "base_contract_source": "skills/managing-project-intake-and-work-contract/SKILL.md",
@@ -211,6 +212,7 @@
         "unconfirmed_state": "AWAITING_USER_CONFIRMATION"
       },
       "planning_first_governance": {
+        "role": "HISTORICAL_ADOPTION_METADATA_USE_PROJECT_OPERATIONAL_OWNER",
         "actual_project_batch_execution": "EXECUTED_R2_CHECKPOINT_001",
         "base_contract_source": "docs/PLANNING_FIRST_GRILL_ME_BATCH_POLICY.md",
         "base_release_finalization_commit": "0b7c94f38d959efc0fc9442274c60b2e268a3c97",

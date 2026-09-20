@@ -105,4 +105,5 @@ Godot/Android/사람 검수/최종 아트/출시는 NOT_RUN. 정상 revert가 �
 2026-09-20 baseline: 독립 행동 감사에서 문서 교정에 전체 이미지/Sheet 요구, 구형 광클/정밀 규칙 충돌, 보호 실패와 읽기 전용 감사 혼동을 확인했다. 참조 검사7개는 실제 owner 검증 부재로 RED. 원래 checkout의 실패를 보존하고 isolated main의 동일 gate는 PASS.
 2026-09-20 교정 후보: 5가지 행동 시나리오의 직접 충돌 해소. 생성 router 수동 수정은 재생성으로 소실됨을 확인해 철회하고 상위 AGENTS/운영 계약과 adapter 연결로 처리했다. 저장소별 pin 검증 PASS, unittest403 대상/3skip, pytest539PASS/3skip. 현재 경로·코어·내구·수리경제·세계손상·Notion 이관·GDD 개별 검사 PASS. 이는 문서/자동 계약 증거이며 제품 실행·재미 검증이 아니다.
 Windows Registry 경로의 대괄호가 Git 속성 패턴으로 해석되어 LF 고정이 적용되지 않던 결함을 실제 `git check-attr`로 확인·교정했다. 생성된 해시/승인 원문 바이트 검사는 유지했다. 로컬 임의 Base import를 제거하고 전체 스키마 검증은 CI 채택 pin이 소유한다.
+전체 독립 검토1/2: 후보3e938dd7의42파일 검토, P1 1건(조상 검사의 CI shallow checkout)을 발견했다. 해당 workflow의 전체 이력을 확보하도록 교정하며 실제 원격 재검증 전 해소 PASS로 올리지 않는다. 독립 관련27검사 PASS. 원격에서는 구형 AGENTS 이미지 문구를 강제하던2검사도 실패해 상세 승인/consumer 검사와 현재 경로 검사를 유지하는 방식으로 교정했다. 기존 intake 중첩 메타데이터는 역사 role을 명시하고 원문 값·pin은 유지했다.
 이전 AGENTS·운영 계약의 역사 내용은 Git 이력으로 조회한다. 상시 지시로 재로드하지 않는다.
