@@ -32,13 +32,13 @@
   "artifact": {
     "source": "docs/operations/evidence/2026-09-ai-work-journal.json",
     "output": "C:/Users/user/Documents/증빙서류/9월 증빙서류/모루의_서약_2026-09_AI활용_작업일지_증빙집_v1.0.pdf",
-    "sha256": "c3ba491f34773fc9cf9f558c9fa9dc2136c204af60afd681cc33fb9e461c472b",
-    "bytes": 3868243,
-    "pages": 11,
-    "native_images": 10,
+    "sha256": "766cfdb695861b08915e3c5f21e5fca0563c2e97f415a9a29396236db9030396",
+    "bytes": 4907256,
+    "pages": 13,
+    "native_images": 13,
     "status": "CUMULATIVE_PRE_SUBMISSION_REVIEW_COPY",
-    "render_review": "PASS_11_OF_11",
-    "codex_visual_review": "PASS_11_OF_11",
+    "render_review": "RENDER13; VISUAL_CHANGED_PAGES1_6_12_13_PASS",
+    "codex_visual_review": "PASS_CHANGED_PAGES1_6_12_13; HISTORICAL_CONTENT_RETAINED",
     "human_review": "NOT_RUN",
     "submission": "NOT_SENT"
   },
@@ -109,6 +109,31 @@
       },
       "pdf_marker": "NOT_REPEATED; ORIGINAL_OPERATION_MARKER_REMAINS_EXACTLY_ONCE",
       "native_commission_evidence": "THREE_BOUNDED_WINDOWS_DESKTOP_CYCLES; SIX_READABLE_NATIVE_CAPTURES; NOT_ANDROID_OR_HUMAN_BALANCE"
+    },
+    {
+      "recorded_on": "2026-09-20",
+      "state": "CUMULATIVE_PRE_SUBMISSION_REVIEW_COPY_MODAK_PARTIAL",
+      "policy": "SAME_PATH_CUMULATIVE_REFRESH_WITH_EXPECTED_OLD_SHA256",
+      "replaced_output": {
+        "sha256": "c3ba491f34773fc9cf9f558c9fa9dc2136c204af60afd681cc33fb9e461c472b",
+        "bytes": 3868243,
+        "pages": 11,
+        "native_images": 10
+      },
+      "candidate": {
+        "sha256": "766cfdb695861b08915e3c5f21e5fca0563c2e97f415a9a29396236db9030396",
+        "bytes": 4907256,
+        "pages": 13,
+        "native_images": 13,
+        "source_hash_definition": "UTF8_TEXT_LF_NORMALIZED_SHA256",
+        "source_sha256": "e1cbd1cf216187dbccb0b92e67c2daa1a2cd2c6d744adbbf3836582ce384f5c5"
+      },
+      "current_output_readback": {
+        "sha256": "766cfdb695861b08915e3c5f21e5fca0563c2e97f415a9a29396236db9030396",
+        "status": "GUARDED_SAME_PATH_REFRESH_PASS"
+      },
+      "evidence_ceiling": "M1_M3_PARTIAL_DESKTOP; FORGE_COMPLETION_FIXTURE; ART_ALPHA_REJECTED; NOT_SUBMITTED",
+      "pdf_marker": "PASS_ONCE_EDIT_EXPECTED_OUTPUT_COUNT2"
     }
   ],
   "validation": {
@@ -136,7 +161,21 @@
       "product_delivery": "PR384 reviewed head f9301e82f0464780188a1ffc615ebc1fc53a4c12; exact remote CI 11 SUCCESS/1 conditional SKIP; merge ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b; local/main and origin/main readback PASS"
     }
   },
-  "limitations": ["September coverage is limited to selected verified September14 and September16 records", "Historical WORLD5 evidence and three bounded commission desktop cycles are distinct; neither is Android or Human QA", "Individual prompt screenshots/model/account/payment unverified", "Agreement/email originals not reviewed; no signing or submission", "No new generated image or background removal performed", "Android, Human QA, balance, final art/motion and release remain incomplete"],
+  "limitations": [
+    "September coverage is limited to selected verified September14 and September16 records",
+    "Historical WORLD5 evidence and three bounded commission desktop cycles are distinct; neither is Android or Human QA",
+    "Individual prompt screenshots/model/account/payment unverified",
+    "Agreement/email originals not reviewed; no signing or submission",
+    "No new generated image or background removal performed",
+    "Android, Human QA, balance, final art/motion and release remain incomplete"
+  ],
   "learning": "Project publisher refuses ordinary overwrites and missing sources; one known review copy may be refreshed only after exact old-hash verification and inspected-candidate preparation. Source hashes and Git timestamps do not prove individual AI call duration. Base promotion not performed: local first consumer only.",
-  "next_product_work": "No R05 work is part of this closeout; future R05-R12 may resume only under current product authority. Android, Human QA, balance, final art/motion and release remain separate gates"
+  "next_product_work": "M1-M3 partial delivery tracked in PR388 and production contract; M4 remains pending usable alpha/frame assets and actual motion.",
+  "current_limitations": [
+    "Selected Sep14/Sep16/Sep20 records only; not complete month usage/cost proof",
+    "Sep14 no-image statement retained as historical scope; Sep20 actual chroma/alpha generation documented separately",
+    "M4 alpha FAIL, no new runtime portrait or hand-tool motion",
+    "No original agreement/email verification/signature/submission this turn",
+    "Android/HUMAN/balance/finalart/release incomplete"
+  ]
 }

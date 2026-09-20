@@ -138,7 +138,9 @@
 
 ### 승인된 첫 실행 묶음 — BS-MODAK-20260920-01
 
-**목표:** 기존 제작·강화·납품에 모닥의 합류와 반응을 연결한 짧은 플레이 구간. 제품 범위 승인과 구현 route/정확한 보호 파일 허가는 분리한다. 현재 상태는 `PLAN_READY / PRODUCT_EXECUTION_ROUTE_HOLD`이며 아래 경로·함수는 명시적으로 **구현 예정**이다.
+**목표:** 기존 제작·강화·납품에 모닥의 합류와 반응을 연결한 짧은 플레이 구간. 현재 상태는 `M1_M3_IMPLEMENTED / M4_CANDIDATE_NOT_PROMOTED`다. 같은 범위의 route·정확한 보호 파일 등록은 사용자 승인으로 완료했으며 재질문하지 않는다. 아래 생성/수정 예정 표기는 최초 설계 표기이고 실제 구현 대응은 다음 문단이 소유한다.
+
+**구현 대응:** M1 service/Envelope, M2 commission `_handoff`, M3 companion/workshop/commission panel이 실제 존재한다. M2 통합 검사는 최종 파일 `tests/gut/integration/test_vs_modak_commission.gd`를 쓴다. 기존 강화에는 영속 attempt ID가 없으므로 검증된 저장 snapshot의 SHA-256을 반응 중복 식별자로 사용하고 새 저장 필드를 만들지 않았다. 의뢰는 저장된 event_id를 사용한다. 실제 FAILED_DAMAGE+DESTROYED는 표현에서만 파괴로 정규화한다. 변경 없는 불확실 합류 재읽기는 성공으로 속이지 않고 안전하게 재시도를 열며, BLOCKED/불일치는 오래된 축하를 중립으로 교정한다. M3는 현재 텍스트 반응·스킵/저동작이며 손·도구 모션은 아직 아니다.
 
 **보호:** Base9.4.4, 엔진·addon·전역 설정, 기존 저장/UID·재화·확률·촉매·태그 규칙, smith01/모닥 EARLY·LATER 승인 외형. 성장 정책은 `GROWTH_LOCKED_V1`로 두며 120일/3년차/30납품일을 런타임 확정값으로 넣지 않는다. NOT_JOINED는 기존 저장에 모닥 필드가 없는 상태로 표현하고 자동 합류·자동 성장을 하지 않는다.
 
@@ -182,8 +184,9 @@
 - [x] 사용자 범위 승인, 현재 main/PR·실제 저장·의뢰·화면 consumer 확인.
 - [x] 기존 clean worktree의 채택 운영 계약 baseline PASS; 원래 미커밋 변경 보존.
 - [x] M1~M4 구현/보호·실패·검증 인터페이스 구체화.
-- [ ] engineering HOLD 해소의 승인·정본 교정 및 생성 route 재검증, 정확한 제품 보호 manifest.
-- [ ] M1~M3 RED/GREEN·회귀, M4 자산·실제 플레이·캡처.
+- [x] engineering ACTIVE 승인·원본 교정·pin 생성 route 재검증, exact8 제품 보호 manifest.
+- [x] M1~M3 RED/GREEN, 실제 합류·납품·재시작 캡처(단조 완료는 fixture).
+- [ ] M4 후보 alpha/frame 검수·최종 자산 lock·실제 Portrait/손·도구 모션 연결. 성장 최종 달력은 별도 결정.
 - [ ] 독립 검토2회·교정·필수 CI·병합/main·기존 PDF/일지 갱신.
 
 **실행 준비 발견:** 2026-09-20 최초 HiGodot 연결 목록0, 기본 Hera status는 다른 프로젝트를 가리켰다. 이를 Blacksmith 증거로 사용하지 않는다. clean checkout의 채택 addon3.2.0/설치 Godot4.7.1로 작업 소유 일반 편집기와 로컬 서버 연결을 확인했지만 현재 Codex HiGodot session 목록에는 노출되지 않았다. 원래 폴더의 미검증4.1.0 변경은 이관하지 않았다. 상세 시도는 생산계약의 동일 작업 절을 따른다. 새 제품 테스트·실행 결과가 없는 위 설계를 구현 완료로 표시하지 않는다.
