@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "artifact_role": "PROJECT_PROTECTED_CHANGE_APPROVAL",
+  "status": "APPROVED",
+  "protected_base_commit": "18491f98f8dde3526f5d15a5801860372f2bdc27",
+  "decision_ids": ["BS-MODAK-20260920-01"],
+  "approved_paths": [
+    "scripts/vertical_slice/domain/vs_save_envelope.gd",
+    "scripts/vertical_slice/services/vs_modak_growth_service.gd",
+    "scripts/vertical_slice/services/vs_modak_growth_service.gd.uid"
+  ],
+  "approval_source": "Latest user 진행해 그리고 앞으로는 이런 권한 묻지말고 진행해 authorizes the existing BS-MODAK-20260920-01 playable slice and its exact protected-file registration. Current-task PR approved-protected-change label is checked before protected authoring.",
+  "approval_time": "2026-09-20T19:50:00+09:00",
+  "scope_summary": "M1 voluntary Modak join, backward-compatible optional save bucket, no growth-calendar or resource changes. Extend exact paths only for the remaining same-scope M2-M4 consumers before their authoring. No engine, addon, global configuration or approved asset replacement."
+}
