@@ -2,7 +2,7 @@
 
 > CURRENT_PRIORITY_OVERLAY — 최신 사용자 지시와 `AGENTS.md` → `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`가 현재 작업 범위/증거를 소유한다. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`는 기존 결정 추적 진입점이며 최신 replan override를 덮어쓰지 않는다. 이 고정 진입점 아래 날짜별 기록은 해당 시점의 증거다.
 
-> 현재 구현 체크포인트 · 2026-09-20: BS-MODAK-20260920-01 / PR388. engineering ACTIVE·exact8 승인 경로 검증 뒤 M1 합류 저장·M2 handoff 납품일·M3 결과 반응을 구현했다. 실제 격리 desktop 합류/납품/재시작 캡처 확보(제작 완료는 fixture). 독립 검토2회의 네 결함을 재현·교정하고 표적 재확인 완료. GUT385/4959·Python539/3skip·exact8 PASS. PDF79/일지13 같은 파일 누적 완료. 원격CI·정상병합은 진행 중. M4 새 그림은 후보이며 Portrait/배우 모션·최종 자산 승인·HUMAN/Android/출시는 미완료. 상세/다음 작업 owner는 생산계약 최상단과 remaining 명세의 동명 절. 같은 범위 기술 준비는 재승인하지 않는다. 아래 HOLD/구현 NOT_RUN은 착수 전 이력이다.
+> 현재 구현 체크포인트 · 2026-09-20: BS-MODAK-20260920-01 / PR388. engineering ACTIVE·exact8 승인 경로 검증 뒤 M1 합류 저장·M2 handoff 납품일·M3 결과 반응을 구현했다. 실제 격리 desktop 합류/납품/재시작 캡처 확보(제작 완료는 fixture). 독립 검토2회의 네 결함을 재현·교정하고 표적 재확인 완료. GUT385/4959·Python539/3skip·exact8 PASS. PDF79/일지13 같은 파일 누적 완료. PR388 exact19SUCCESS/1조건부SKIP→8ce020cf 정상병합·local/origin main 일치·사용자 diff 보존. consumed8 승인 보관/기준선 교정 후 M4 계속. M4 새 그림은 후보이며 Portrait/배우 모션·최종 자산 승인·HUMAN/Android/출시는 미완료. 상세/다음 작업 owner는 생산계약 최상단과 remaining 명세의 동명 절. 같은 범위 기술 준비는 재승인하지 않는다. 아래 HOLD/구현 NOT_RUN은 착수 전 이력이다.
 
 > 현재 제품 작업 · 2026-09-20: 사용자가 제안한 첫 묶음(모닥 합류·저장 기반 + 핵심 공방 동작 + 기존 의뢰 순환)을 `작업진행해`로 승인했다. 범위·진행 owner는 생산계약 `BS-MODAK-20260920-01`, 인터페이스/체크리스트는 기존 remaining 명세의 동명 절이다. clean baseline PASS, 구현 명세 구체화; engineering route는 여전히 HOLD이며 제품 코드·신규 자산·게임 실행 증거는 NOT_RUN이다. 원래 plugin 미커밋 변경/저장과 다른 PR은 보호한다. 아래 과거 NO_R05_START·운영 변경의 제품 제외는 이번 제품 승인을 취소하지 않는다.
 

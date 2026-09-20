@@ -2,6 +2,8 @@
 
 ## 모닥 첫 공방 순환 — BS-MODAK-20260920-01
 
+인도 체크포인트: PR388 exact `b6f7e8d5` 19SUCCESS/1조건부SKIP 후 `8ce020cfeefacc7cb37ffb9d8d192a157451028a` 정상병합. 검토한 제품 tree와 merge 일치, 로컬 main/origin main 일치, 원래 사용자 diff 해시 `b7c1c1077fdd6db858983de5532e31b451e642ba` 전후 동일. consumed8경로 승인은 `docs/archive/protected-approvals/modak-first-forge-pr388-20260920.json`에 원래 바이트로 보존/회수한다. Base v9.4.4는 그대로, 보호 기준선만 검증된 merge로 갱신하고 pin 생성기·일반 검증으로 재확인한다. PDF79/월간13은 같은 파일의 제출 전 검토본이며 새 판본을 만들지 않았다. M4는 alpha 불합격 후보를 보존하고 실제 그림/모션 연결이 남아 있다. 다음은 M4 alpha/프레임 교정→Portrait·손/도구 동작이며 성장 수치·HUMAN/Android/출시는 별도다. 아래 CI/병합 pending은 이전 체크포인트다.
+
 2026-09-20 구현 체크포인트: engineering ACTIVE·생성 route·exact8 보호 manifest를 검증하고, 채택 HiGodot3.2.0 SDK에서 정확한 작업 폴더의 편집기 세션을 확인해 M1 합류/선택 저장 bucket, M2 실제 handoff의 납품일 원자 기록, M3 비차단 조수 패널/저장 결과 반응을 구현했다. 기존 plugin·전역 설정·확률·보상·성장 달력·승인 미술은 바꾸지 않았다. 작업 PR은 #388이며 다른 PR은 읽기 전용이다.
 
 최종 제품 검토 체크포인트 `5a06e589`: 전체 독립 검토2회 소진, 총 P2 네 건을 재현·교정하고 검토자의 표적 재확인까지 완료(미해결0). 마지막 의뢰 BLOCKED 반응은 실패 신호를 별도로 전달하며 저장 성공을 위조하지 않는다. 최종 debug GUT385/4959 PASS·경고52, exact8 보호 검증 PASS. 아래381/384는 이전 검사 이력이다. M1~M3 부분 인도는 가능하지만 M4/전체 게임 완성은 아니다. 최종 원격 CI·병합/main은 확인 후 기록한다.
