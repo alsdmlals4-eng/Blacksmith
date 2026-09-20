@@ -11,8 +11,8 @@
 - [x] 현재 정본·실제 소비처·main·Base #883/#885·열린 PR 확인과 사용자 승인.
 - [x] 보호 gate baseline PASS, 실제 owner 검사7개 RED, 독립 스킬 행동 baseline.
 - [x] AGENTS·스킬·Registry·경로 교정, 생성물 재생성.
-- [ ] 영향/전체 관련 검사, 독립 행동 검증, 전체 검토2회.
-- [ ] 현재 작업 PR exact HEAD 검증·정상 병합·main 확인.
+- [x] 영향/전체 관련 검사, 독립 행동 검증, 전체 검토2회와 지적 교정.
+- 인도 상태는 [현재 작업 PR #387](https://github.com/alsdmlals4-eng/Blacksmith/pull/387)의 exact HEAD 검사·병합 메타데이터·병합 후 readback 댓글에서 확인한다. 문서 작성 시점과 실제 병합 시점을 혼동하지 않는다.
 
 계획·체크리스트·메모는 이 기존 owner에 통합한다. 설치 스킬의 계획/검토 단계를 같은 계약에서 중복 초기화하지 않는다. 승인·필수 검사·독립 검토는 생략하지 않는다.
 작업일지/PDF는 기존 날짜별 누적 정책을 유지한다. 이 운영 교정으로 새 월간 판본·게임 Blueprint·HTML PM을 만들지 않는다.
@@ -106,4 +106,9 @@ Godot/Android/사람 검수/최종 아트/출시는 NOT_RUN. 정상 revert가 �
 2026-09-20 교정 후보: 5가지 행동 시나리오의 직접 충돌 해소. 생성 router 수동 수정은 재생성으로 소실됨을 확인해 철회하고 상위 AGENTS/운영 계약과 adapter 연결로 처리했다. 저장소별 pin 검증 PASS, unittest403 대상/3skip, pytest539PASS/3skip. 현재 경로·코어·내구·수리경제·세계손상·Notion 이관·GDD 개별 검사 PASS. 이는 문서/자동 계약 증거이며 제품 실행·재미 검증이 아니다.
 Windows Registry 경로의 대괄호가 Git 속성 패턴으로 해석되어 LF 고정이 적용되지 않던 결함을 실제 `git check-attr`로 확인·교정했다. 생성된 해시/승인 원문 바이트 검사는 유지했다. 로컬 임의 Base import를 제거하고 전체 스키마 검증은 CI 채택 pin이 소유한다.
 전체 독립 검토1/2: 후보3e938dd7의42파일 검토, P1 1건(조상 검사의 CI shallow checkout)을 발견했다. 해당 workflow의 전체 이력을 확보하도록 교정하며 실제 원격 재검증 전 해소 PASS로 올리지 않는다. 독립 관련27검사 PASS. 원격에서는 구형 AGENTS 이미지 문구를 강제하던2검사도 실패해 상세 승인/consumer 검사와 현재 경로 검사를 유지하는 방식으로 교정했다. 기존 intake 중첩 메타데이터는 역사 role을 명시하고 원문 값·pin은 유지했다.
+전체 독립 검토2/2: 후보6f910655의45파일 검토, 독립28검사 PASS. 1차 P1은 실제 workflow35478046426 SUCCESS로 해소했다. 2차 P1은 Actions 경로 패턴 오류로 workflow 자체가 생성되지 않은 결함이었다. Git 속성 패턴과 [Actions 공식 경로 패턴](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#filter-pattern-cheat-sheet)을 구분해 2줄만 교정했다. 교정92f314a0의 workflow35478138533에서 현재 경로/반례와 역사 receipt 검사 단계가 모두 실행·SUCCESS였으며 독립 표적 검토로 RESOLVED를 확인했다. 전체 검토 예산은2/2 소진, 이후 결함별 표적 교정만 한다.
+생성 router를 복원한 최종 경계에서도 읽기 전용 감사와 HUMAN NOT_RUN 구분을 표적 재확인했다. engineering route HOLD는 기존 채택 상태를 보존한 것이며 이번 문서 교정으로 실행 권위를 활성화하지 않았다.
+원격92f314a0의 Godot import는 한 번 TLS handshake 오류(-27648)로 실패했다. 실패 run35478138664와 artifact를 보존하고 같은 HEAD의 실패 job만 재실행해 attempt2 SUCCESS를 확인했다. 오류 필터/제품/플러그인은 변경하지 않았다. 이는 영구 TLS 교정이나 사람 실행 증거가 아니다. 최종 문서 기록 이후 exact HEAD 검사는 다시 확인한다.
+임시 초기 실패 로그1개는 `C:/Users/user/Documents/삭제대기/모루의서약_지침정리_20260920/artifacts-lean-unittest.log`로 이동했다(삭제 없음, SHA25634171d435c81f2d64621b0218dafd86359781c37e7617335e881fa849892594d). 원래 checkout의 미커밋/미추적 파일과 이번45파일은 겹침0, 사용자 파일·다른 작업 폴더는 보존한다.
+후속 읽기: AGENTS → 이 current-authority 표 → Active Context/production → 해당 분야 owner → 실제 구현·최신 main/열린 PR → 채택 Base와 현재 원격 drift → 최소 스킬. 다음 제품 작업은 기존 remaining owner에서 선택하되 이번 범위로 R05·게임 완성·기기/사람/출시를 완료 처리하지 않는다.
 이전 AGENTS·운영 계약의 역사 내용은 Git 이력으로 조회한다. 상시 지시로 재로드하지 않는다.

@@ -1,6 +1,6 @@
 # [현재 정본] Active Context
 
-> 현재 운영 경로 · 2026-09-20: `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`가 승인된 Base #883 경량화와 #885 재미 검증 적용·진행을 소유한다. 제품 구현/저장/자산 변경은 이번 범위 밖이다. 최신 제품 범위·증거는 통합 Blueprint 생산계약과 연결 receipt를 따른다. 아래 날짜별 상태는 해당 시점의 역사이며, 과거 승인 대기·PR·SHA를 현재 실행 권한으로 쓰지 않는다.
+> 현재 운영 경로 · 2026-09-20: `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`가 승인된 Base #883 경량화와 #885 재미 검증 적용·진행을 소유한다. 지침/연결 교정·전체 독립 검토2회 및 지적 해소 완료; 현재 작업 PR #387의 실제 검사·병합·main readback은 해당 PR과 운영 계약의 링크에서 확인한다. 제품 구현/저장/자산 변경은 이번 범위 밖이다. 최신 제품 범위·증거는 통합 Blueprint 생산계약과 연결 receipt를 따른다. 아래 날짜별 상태는 해당 시점의 역사이며, 과거 승인 대기·PR·SHA를 현재 실행 권한으로 쓰지 않는다.
 
 > 2026-09-16 현재 마무리: 최신 사용자는 새 기능 루프가 아니라 현재 의뢰 작업을 마무리하고 GitHub 동기화하도록 지시했다. 월간 작업일지는 기존 JSON/PDF에 날짜별 누적하며 파일/판본을 매번 늘리지 않는다. PR384 최종 f9301e82→ed6f8af3 정상병합(11SUCCESS/1조건부생략), 기본/목적 의뢰10종과 재료 예치·제작·인계·정산·연대기 연결, 실제 데스크톱3순환과 재시작 확인. consumed16경로 승인 원문보관/기준선만 갱신, Base v9.4.4 유지. 마지막 문서 전달과 local main 복귀는 별도 확인 중이다. 상세 증거와 이후 상태는 생산계약 최상단 및 `docs/operations/receipts/2026-09-16-general-commissions.json`이 소유한다. R05를 새로 시작하지 않는다. 아래 기록은 날짜별 역사 상태다.
 
