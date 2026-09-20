@@ -5,6 +5,7 @@ const Init = preload("res://scripts/vertical_slice/services/vs_run_initializer_s
 const Modak = preload("res://scripts/vertical_slice/services/vs_modak_growth_service.gd")
 const Commission = preload("res://scripts/vertical_slice/services/vs_commission_service.gd")
 const Day = preload("res://scripts/vertical_slice/services/vs_recovery_order_service.gd")
+const App = preload("res://scenes/vertical_slice/vertical_slice_app.tscn")
 var save
 
 func before_each():
@@ -62,3 +63,48 @@ func test_unjoined_handoff_and_join_afterwards_never_grant_retroactive_days():
 	assert_false(delivered.active_run.has("modak"))
 	var joined = Modak.new().join(delivered, save).envelope
 	assert_eq(joined.active_run.modak.productive_day_ids, [])
+
+func _app(source, backend = null):
+	var app = App.instantiate()
+	add_child_autofree(app)
+	var stock = source.resource_snapshot()
+	var resources = load("res://scripts/economy/workshop_resources.gd").new(stock.gold, stock.material_stock)
+	assert_true(app.configure_campaign(source, resources, null, null, save if backend == null else backend))
+	return app
+
+func test_real_enhancement_destruction_and_blocked_write_show_correct_companion_reaction():
+	var source = _ready_order()
+	assert_eq(Modak.new().join(source, save).status, "APPLIED")
+	source = save.load_envelope()
+	var uid = source.active_run.commission.active_order.item_uid
+	var item = source.get_item(uid)
+	item.enhancement_level = 10
+	item.highest_checkpoint = 10
+	item.used_precision_milestones.append(10)
+	item.catalyst_affix.tags = {"BURST_OUTPUT":1}
+	item.current_durability = 1
+	assert_eq(save.save_envelope(source), OK)
+	var app = _app(save.load_envelope())
+	var workshop = app.get_node("ScreenHost/WorkshopScreen")
+	var panel = workshop.get_node("WorkshopScroll/WorkshopLayout/ForgeCompanion")
+	var result = workshop.request_enhancement_with_rolls({"success_roll_percent":99.0, "damage_roll_percent":0.0})
+	assert_eq(result.outcome, "FAILED_DAMAGE")
+	assert_eq(result.physical_state, "DESTROYED")
+	assert_true(save.load_envelope().destroyed_history_by_uid.has(uid))
+	assert_true(panel.get_node("Reaction").text.contains("다음 작품"), "destruction is not merely a crack")
+	panel.present_committed_result("prior", "SUCCESS")
+	workshop.request_enhancement_with_rolls({"success_roll_percent":0.0, "damage_roll_percent":99.0})
+	assert_false(panel.get_node("Reaction").text.contains("더 튼튼"), "blocked next action clears stale celebration")
+
+func test_workshop_uncertain_join_guard_unlocks_on_unchanged_readback():
+	var fault = load("res://tests/gut/unit/vertical_slice/test_vs_forge_companion_panel.gd").MissingImmediateReadback.new()
+	fault.real = save
+	var app = _app(save.load_envelope(), fault)
+	var workshop = app.get_node("ScreenHost/WorkshopScreen")
+	var panel = workshop.get_node("WorkshopScroll/WorkshopLayout/ForgeCompanion")
+	panel.request_join()
+	assert_true(workshop.campaign_write_blocked())
+	assert_true(workshop.get_node("WorkshopScroll/WorkshopLayout/CommissionPanel/Accept").disabled)
+	panel.confirm_saved_join()
+	assert_false(workshop.campaign_write_blocked())
+	assert_false(workshop.get_node("WorkshopScroll/WorkshopLayout/CommissionPanel/Accept").disabled)

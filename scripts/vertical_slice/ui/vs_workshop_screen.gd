@@ -428,7 +428,7 @@ func request_enhancement_with_rolls(rolls: Dictionary) -> Dictionary:
 		_item = _campaign_envelope.get_item(item_uid) if _campaign_envelope != null else null
 		_clear_precision_selection()
 		enhancement_saved.emit(_campaign_envelope, result)
-		_present_companion_result(_campaign_envelope, result)
+	_present_companion_result(_campaign_envelope, result)
 	_refresh_controls()
 	return result
 
@@ -917,9 +917,12 @@ func _present_companion_result(envelope, result: Dictionary) -> void:
 	if panel == null or envelope == null or _save_service == null: return
 	var disk = _save_service.load_envelope()
 	var parser = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
-	if disk == null or disk.recovered_from_backup or not disk.validation_errors.is_empty() or not parser.serialized_equal(disk.to_dict(), envelope.to_dict()): return
+	if result.get("outcome", "") == "BLOCKED" or disk == null or disk.recovered_from_backup or not disk.validation_errors.is_empty() or not parser.serialized_equal(disk.to_dict(), envelope.to_dict()):
+		panel.show_neutral("이번 작업의 확정 결과를 확인하지 못했어요. 상태를 확인해 주세요.")
+		return
 	panel.configure_context(disk, _save_service)
 	var outcome = str(result.get("outcome", ""))
+	if outcome == "FAILED_DAMAGE" and result.get("physical_state", "") == "DESTROYED": outcome = "DESTROYED"
 	var result_id = ""
 	if result.get("companion_action", "") == "HANDOFF":
 		var order = disk.active_run.get("commission", {}).get("active_order", {})
@@ -945,7 +948,7 @@ func _refresh_commission_panel() -> void:
 		panel = load("res://scripts/vertical_slice/ui/vs_commission_panel.gd").new()
 		panel.name = "CommissionPanel"
 		layout.add_child(panel)
-		layout.move_child(panel, 1)
+		layout.move_child(panel, 2 if layout.has_node("ForgeCompanion") else 1)
 		panel.forge_requested.connect(func(order_id): commission_forge_requested.emit(order_id))
 		panel.campaign_saved.connect(_on_commission_saved)
 		panel.uncertainty_changed.connect(_refresh_controls)

@@ -89,3 +89,28 @@ func test_external_guard_hidden_panel_and_scene_exit_do_not_write():
 	panel.present_committed_result("exit", "SUCCESS")
 	remove_child(panel)
 	assert_eq(save.load_envelope().to_dict(), before)
+
+class MissingImmediateReadback extends RefCounted:
+	var real
+	var miss_next = false
+	func load_envelope():
+		if miss_next:
+			miss_next = false
+			return null
+		return real.load_envelope()
+	func save_envelope(_value):
+		miss_next = true
+		return ERR_CANT_CREATE
+
+func test_uncertain_prewrite_recovers_unchanged_unjoined_save_and_allows_retry():
+	if not _available(): return
+	var fault = MissingImmediateReadback.new()
+	fault.real = save
+	panel.configure_context(save.load_envelope(), fault)
+	var original = save.load_envelope().to_dict()
+	panel.request_join()
+	assert_true(panel.write_uncertain())
+	panel.confirm_saved_join()
+	assert_false(panel.write_uncertain())
+	assert_eq(save.load_envelope().to_dict(), original)
+	assert_true(panel.get_node("Join").visible)

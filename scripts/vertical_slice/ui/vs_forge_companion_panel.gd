@@ -7,6 +7,7 @@ const Service = preload("res://scripts/vertical_slice/services/vs_modak_growth_s
 var _envelope
 var _save
 var _uncertain = false
+var _join_source = {}
 var _external_write_blocked = false
 var _seen: Dictionary = {}
 var _run_id = ""
@@ -79,6 +80,7 @@ func _refresh() -> void:
 
 func request_join() -> void:
 	if not is_visible_in_tree() or _uncertain or _external_write_blocked: return
+	_join_source = _envelope.to_dict() if _envelope != null else {}
 	var result = Service.new().join(_envelope, _save)
 	if result.has("envelope"):
 		_envelope = result.envelope
@@ -95,8 +97,20 @@ func confirm_saved_join() -> void:
 	var current = _save.load_envelope()
 	if current == null or current.recovered_from_backup or not current.validation_errors.is_empty(): return
 	if current.active_run.get("run_id", "") != _run_id: return
-	var result = Service.new().join(current, _save) if current.active_run.has("modak") else {}
-	if result.get("status", "") != "ALREADY_APPLIED": return
+	var parser = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
+	current = parser.from_dict(current.to_dict())
+	if not current.validation_errors.is_empty() or _join_source.is_empty(): return
+	if not current.active_run.has("modak"):
+		if not parser.serialized_equal(current.to_dict(), _join_source): return
+		_uncertain = false
+		_envelope = current
+		show_neutral("합류가 적용되지 않았음을 확인했어요. 다시 시도할 수 있습니다.")
+		uncertainty_changed.emit()
+		return
+	var expected = _join_source.duplicate(true)
+	expected.active_run.modak = {"schema_version":1, "policy_id":Service.POLICY, "joined_day":int(expected.active_run.current_day), "productive_day_ids":[], "committed_stage":"EARLY"}
+	if not parser.serialized_equal(current.to_dict(), expected): return
+	var result = {"status":"ALREADY_APPLIED", "envelope":current}
 	_uncertain = false
 	_envelope = result.envelope
 	get_node("Reaction").text = "합류 저장을 다시 확인했어요. 이어서 작업할 수 있습니다."
@@ -105,7 +119,9 @@ func confirm_saved_join() -> void:
 	uncertainty_changed.emit()
 
 func set_external_write_blocked(blocked: bool) -> void:
+	var newly_blocked = blocked and not _external_write_blocked
 	_external_write_blocked = blocked
+	if newly_blocked: show_neutral("다른 작업의 저장 결과를 확인하고 있어요.")
 	_refresh()
 
 func write_uncertain() -> bool:
@@ -127,6 +143,11 @@ func present_committed_result(result_id: String, outcome: String) -> bool:
 		_tween.tween_callback(skip_presentation)
 	_refresh()
 	return true
+
+func show_neutral(message: String) -> void:
+	skip_presentation()
+	if has_node("Reaction"): get_node("Reaction").text = message
+	_refresh()
 
 func presentation_state() -> String:
 	return _phase
