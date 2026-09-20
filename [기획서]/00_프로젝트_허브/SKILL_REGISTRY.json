@@ -172,7 +172,7 @@
     {
       "skill_id": "blacksmith-engineering",
       "layer": "specialist",
-      "status": "HOLD",
+      "status": "ACTIVE",
       "load_by_default": false,
       "discipline": "개발·엔지니어링",
       "path": "../../skills/engineering/SKILL.md",

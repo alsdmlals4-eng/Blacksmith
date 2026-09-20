@@ -225,6 +225,10 @@ static func from_dict(value: Dictionary) -> VSSaveEnvelope:
 		var commission_error: String = load("res://scripts/vertical_slice/services/vs_commission_service.gd").validate(envelope)
 		if not commission_error.is_empty():
 			envelope.validation_errors.append(commission_error)
+	if envelope.validation_errors.is_empty():
+		var modak_error: String = load("res://scripts/vertical_slice/services/vs_modak_growth_service.gd").validate(envelope)
+		if not modak_error.is_empty():
+			envelope.validation_errors.append(modak_error)
 	return envelope
 
 

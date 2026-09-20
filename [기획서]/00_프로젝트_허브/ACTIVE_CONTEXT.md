@@ -1,5 +1,11 @@
 # [현재 정본] Active Context
 
+> CURRENT_PRIORITY_OVERLAY — 최신 사용자 지시와 `AGENTS.md` → `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`가 현재 작업 범위/증거를 소유한다. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`는 기존 결정 추적 진입점이며 최신 replan override를 덮어쓰지 않는다. 이 고정 진입점 아래 날짜별 기록은 해당 시점의 증거다.
+
+> 현재 구현 체크포인트 · 2026-09-20: BS-MODAK-20260920-01 / PR388. engineering ACTIVE·exact8 승인 경로 검증 뒤 M1 합류 저장·M2 handoff 납품일·M3 결과 반응을 구현했다. 실제 격리 desktop 합류/납품/재시작 캡처 확보(제작 완료는 fixture). 독립 검토2회의 네 결함을 재현·교정하고 표적 재확인 완료. GUT385/4959·Python539/3skip·exact8 PASS. PDF79/일지13 같은 파일 누적 완료. 원격CI·정상병합은 진행 중. M4 새 그림은 후보이며 Portrait/배우 모션·최종 자산 승인·HUMAN/Android/출시는 미완료. 상세/다음 작업 owner는 생산계약 최상단과 remaining 명세의 동명 절. 같은 범위 기술 준비는 재승인하지 않는다. 아래 HOLD/구현 NOT_RUN은 착수 전 이력이다.
+
+> 현재 제품 작업 · 2026-09-20: 사용자가 제안한 첫 묶음(모닥 합류·저장 기반 + 핵심 공방 동작 + 기존 의뢰 순환)을 `작업진행해`로 승인했다. 범위·진행 owner는 생산계약 `BS-MODAK-20260920-01`, 인터페이스/체크리스트는 기존 remaining 명세의 동명 절이다. clean baseline PASS, 구현 명세 구체화; engineering route는 여전히 HOLD이며 제품 코드·신규 자산·게임 실행 증거는 NOT_RUN이다. 원래 plugin 미커밋 변경/저장과 다른 PR은 보호한다. 아래 과거 NO_R05_START·운영 변경의 제품 제외는 이번 제품 승인을 취소하지 않는다.
+
 > 현재 운영 경로 · 2026-09-20: `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`가 승인된 Base #883 경량화와 #885 재미 검증 적용·진행을 소유한다. 지침/연결 교정·전체 독립 검토2회 및 지적 해소 완료; 현재 작업 PR #387의 실제 검사·병합·main readback은 해당 PR과 운영 계약의 링크에서 확인한다. 제품 구현/저장/자산 변경은 이번 범위 밖이다. 최신 제품 범위·증거는 통합 Blueprint 생산계약과 연결 receipt를 따른다. 아래 날짜별 상태는 해당 시점의 역사이며, 과거 승인 대기·PR·SHA를 현재 실행 권한으로 쓰지 않는다.
 
 > 2026-09-16 현재 마무리: 최신 사용자는 새 기능 루프가 아니라 현재 의뢰 작업을 마무리하고 GitHub 동기화하도록 지시했다. 월간 작업일지는 기존 JSON/PDF에 날짜별 누적하며 파일/판본을 매번 늘리지 않는다. PR384 최종 f9301e82→ed6f8af3 정상병합(11SUCCESS/1조건부생략), 기본/목적 의뢰10종과 재료 예치·제작·인계·정산·연대기 연결, 실제 데스크톱3순환과 재시작 확인. consumed16경로 승인 원문보관/기준선만 갱신, Base v9.4.4 유지. 마지막 문서 전달과 local main 복귀는 별도 확인 중이다. 상세 증거와 이후 상태는 생산계약 최상단 및 `docs/operations/receipts/2026-09-16-general-commissions.json`이 소유한다. R05를 새로 시작하지 않는다. 아래 기록은 날짜별 역사 상태다.
@@ -9,8 +15,6 @@
 > 2026-09-14 WORLD5 전달: PR381/d7f337a9→5a84c4b2 정상 병합, local/origin main 일치. 활 직접제작·재시작과 갑옷/투구 시험 장비 native 검증, PDF74(기존72 보존),315GUT/3278·515Python/3skip·exact11SUCCESS/1조건부생략 확인. consumed2경로 승인은 world5-pr381-20260914 archive에 원문 보존. Base v9.4.4 유지/기준선만 검증된 병합으로 갱신. 다음은 R02~R04 일반 의뢰·전용재료·정산이며 전체게임 완성이 아니다. 아래 pending/준비전용 문장은 역사 상태다.
 
 > 2026-09-14 BS-REPLAN-20260914-08: 사용자가 R01~R12 명세 순서의 조사·구현·개선 연속 진행을 승인했다. 아래 명세 준비 전용 경계는 역사 상태다. 현재 생산계약 최상단과 WORLD5 receipt가 실행/증거를 소유한다. R01은 활 직접 제작→저장→재시작→결과와 갑옷·투구 시험 장비 native 흐름을 검증 중이며, 전체게임·main 전달 완료는 아직 아니다. 기존 Base v9.4.4, 보호 경로 gate, 사용자 저장과 승인 자산을 유지한다.
-
-> CURRENT_PRIORITY_OVERLAY — 최신 사용자 지시와 `AGENTS.md` → `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`가 현재 작업 범위/증거를 소유한다. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`는 기존 결정 추적 진입점이며 최신 replan override를 덮어쓰지 않는다. 이 고정 진입점 아래 날짜별 기록은 해당 시점의 증거다.
 
 > 2026-09-14 최신 요청은 남은 작업과 설계·구현 명세 준비다. owner는 `docs/design/BLACKSMITH_REMAINING_IMPLEMENTATION_SPEC_20260914.md`, 사람용 파생뷰는 통합 블루프린트65~72절. R01~R12의 의존관계·상태·원장·모션/자산·복구·완료증거를 분리한다. main f30baaa6, own PR381/d73e391e Draft 보존: AR5종 branch GUT315/3278·Python511/3skip PASS지만 새 native 재시작→결과·2차코드리뷰·CI·main 전달은 미완료. 이번 문서 준비는 제품구현/병합이 아니며 Base v9.4.4와 기존 저장/후보를 유지한다. 상세 범위와 최신 증거는 생산계약 최상단 참조.
 

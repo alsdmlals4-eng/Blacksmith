@@ -74,9 +74,9 @@ class IntegratedHumanBlueprint(unittest.TestCase):
     def test_receipt_binds_source_and_pdf(self):
         receipt=json.loads(RECEIPT.read_text(encoding='utf-8'))
         artifact=receipt['artifact']
-        preparation=receipt['commission_cumulative_preparation']
+        preparation=receipt['modak_cumulative_preparation']
         self.assertEqual(artifact['sha256'],hashlib.sha256((ROOT/artifact['path']).read_bytes()).hexdigest())
-        self.assertEqual(artifact['page_count'],77)
+        self.assertEqual(artifact['page_count'],79)
         self.assertEqual(
             artifact['source_sha256'],
             hashlib.sha256(SOURCE.read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
@@ -86,12 +86,14 @@ class IntegratedHumanBlueprint(unittest.TestCase):
             hashlib.sha256(SOURCE.read_bytes().replace(b'\r\n',b'\n')).hexdigest(),
         )
         self.assertEqual(preparation['candidate_sha256'],artifact['sha256'])
-        self.assertEqual(preparation['replaced_artifact']['page_count'],74)
+        self.assertEqual(preparation['replaced_artifact']['page_count'],77)
         self.assertEqual(
             preparation['replaced_artifact']['sha256'],
-            '0cbe23b3dd046bd355da87afd3f9a853a1fccf808a0f41ab466e76cd3ab228f5',
+            'e89f1721e9ec0057b4db69b66d52cc369d904891ea6bbfbca5ad1e223f616877',
         )
-        self.assertEqual(preparation['publication_status'],'PUBLISHED_AFTER_VERIFIED_PRODUCT_MERGE')
+        self.assertEqual(preparation['publication_status'],'PUBLISHED_REVIEW_COPY_M1_M3_PARTIAL_M4_PENDING')
+        self.assertEqual(receipt['commission_cumulative_preparation']['candidate_pages'],77)
+        self.assertEqual(receipt['commission_cumulative_preparation']['replaced_artifact']['page_count'],74)
 
     def test_trial_budget_and_probability_fixture(self):
         import math
@@ -140,7 +142,7 @@ class IntegratedHumanBlueprint(unittest.TestCase):
         content=SOURCE.read_text(encoding='utf-8')
         headings=re.findall(r'^## (\d+)\.',content,re.M)
         self.assertEqual(headings[:74],[f'{number:02}' for number in range(1,75)])
-        self.assertEqual(headings[74:],['75','76','77'])
+        self.assertEqual(headings[74:77],['75','76','77'])
         captures=[
             'commission-offers-native-20260916.png',
             'commission-transit-native-20260916.png',
@@ -149,7 +151,7 @@ class IntegratedHumanBlueprint(unittest.TestCase):
             'commission-purpose-preview-native-20260916.png',
             'commission-purpose-result-native-20260916.png',
         ]
-        appended=content[content.index('## 75.'):]
+        appended=content[content.index('## 75.'):content.index('## 78.')]
         self.assertEqual(appended.count('```runtimecaptures'),3)
         for capture in captures:
             self.assertEqual(appended.count(capture),1)

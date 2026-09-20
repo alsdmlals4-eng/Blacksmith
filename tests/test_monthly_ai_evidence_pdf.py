@@ -123,19 +123,21 @@ def test_monthly_receipt_records_published_final_candidate_binding():
     source_text = SOURCE.read_bytes().decode('utf-8')
     normalized_source = source_text.replace('\r\n', '\n').replace('\r', '\n').encode('utf-8')
 
-    assert preparation['state'] == 'CUMULATIVE_REFRESH_PUBLISHED_AFTER_VERIFIED_PRODUCT_MERGE'
-    assert candidate['pages'] >= 11
-    assert candidate['native_images'] >= 10
+    assert preparation['state'] == 'CUMULATIVE_PRE_SUBMISSION_REVIEW_COPY_MODAK_PARTIAL'
+    assert candidate['pages'] == 13
+    assert candidate['native_images'] == 13
     assert candidate['source_hash_definition'] == 'UTF8_TEXT_LF_NORMALIZED_SHA256'
     assert candidate['source_sha256'] == hashlib.sha256(normalized_source).hexdigest()
-    assert candidate['source_generation_raw_hash_definition'] == 'ORIGINAL_WINDOWS_INPUT_BYTES_SHA256'
-    assert candidate['source_generation_raw_sha256'] == (
+    historical = receipt['append_update_history'][-2]
+    assert historical['candidate']['source_generation_raw_hash_definition'] == 'ORIGINAL_WINDOWS_INPUT_BYTES_SHA256'
+    assert historical['candidate']['source_generation_raw_sha256'] == (
         'a2c9f00c6383a50c5bb5819d686e3ca968e881c3e6701d7e7abe2a26ddbe84ec'
     )
-    assert preparation['replaced_output']['sha256'] == (
+    assert historical['replaced_output']['sha256'] == (
         'a4e7aad5e6c3c3cd8085de8bc9d8de2b48ca39fc38782edc8618c60824f314c8'
     )
     assert preparation['current_output_readback']['sha256'] == candidate['sha256']
+    assert preparation['replaced_output']['sha256'] == historical['candidate']['sha256']
 
 
 def test_explicit_expected_hash_replaces_current_review_copy(tmp_path):

@@ -17,7 +17,7 @@ class BaseV94BlacksmithAdoptionTests(unittest.TestCase):
         self.assertEqual('bb61e68dc3028421b60c11b87ba2abd297ee6f78', adapter['base_release']['release_evidence_commit'])
         self.assertEqual('08f882d0c77339e8f7ff187c35b79501e0a2958ab1ff1c7aaa1c0ef8dbee45d6', adapter['skill_registry']['base']['sha256'])
         self.assertIn('optimizing-ai-model-and-prompt-costs', {item['route_id'] for item in adapter['routing']['base_routes']})
-        self.assertEqual({'blacksmith-game-design', 'blacksmith-qa'}, {item['route_id'] for item in adapter['routing']['project_routes']})
+        self.assertEqual({'blacksmith-game-design', 'blacksmith-engineering', 'blacksmith-qa'}, {item['route_id'] for item in adapter['routing']['project_routes']})
         self.assertEqual('BASE_SHARED', snapshot['effective_routes']['optimizing-ai-model-and-prompt-costs']['source'])
         self.assertEqual(['data/', 'scripts/', 'scenes/', 'assets/', 'addons/', 'project.godot'], adapter['protected_paths'])
 

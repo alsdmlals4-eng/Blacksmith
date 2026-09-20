@@ -47,6 +47,13 @@
       "status": "ACTIVE",
       "target_route_id": "auditing-and-refining-ui-art"
     },
+    "blacksmith-engineering": {
+      "route_id": "blacksmith-engineering",
+      "skill_id": "blacksmith-engineering",
+      "source": "PROJECT_LOCAL",
+      "status": "ACTIVE",
+      "target_route_id": "blacksmith-engineering"
+    },
     "blacksmith-game-design": {
       "route_id": "blacksmith-game-design",
       "skill_id": "blacksmith-game-design",
@@ -98,19 +105,18 @@
     }
   },
   "generated": true,
-  "inactive_routes": [
-    {
-      "route_id": "blacksmith-engineering",
-      "skill_id": "blacksmith-engineering",
-      "status": "HOLD"
-    }
-  ],
+  "inactive_routes": [],
   "project_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
-    "sha256": "c34b0a3f2d5d803db7df2e87d946f26d497d53b2e7ad51637e052f02c4190216"
+    "sha256": "9c2a9d0cbc5517c2c266a29e46bdaed4a6e3b4ad1a799805e3ec5c07150754af"
   },
   "project_routes": [
+    {
+      "route_id": "blacksmith-engineering",
+      "skill_id": "blacksmith-engineering",
+      "status": "ACTIVE"
+    },
     {
       "route_id": "blacksmith-game-design",
       "skill_id": "blacksmith-game-design",
@@ -126,6 +132,6 @@
   "source_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "skills/PROJECT_BASE_ADAPTER.json",
-    "sha256": "d4852754acc3d62eb99bd042033843c7be9deb7e6da4595572aa00fe5423edd0"
+    "sha256": "81d9dd1c8320dfe025842b3fea20a5c9a230e009d5fab467bb3f8afa09d359f5"
   }
 }

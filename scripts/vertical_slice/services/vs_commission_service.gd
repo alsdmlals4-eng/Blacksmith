@@ -411,6 +411,8 @@ func _handoff(envelope, order_id: String, catalyst_id: String, rolls, save) -> D
 	stock["common_reinforcement_material"] = int(stock.get("common_reinforcement_material", 0)) + 2
 	stock[catalyst_id] = int(stock.get(catalyst_id, 0)) + 1
 	current.active_run.selected_item_uid = personal_selection_uid(current, record.previous_selected_item_uid)
+	var modak_error: String = load("res://scripts/vertical_slice/services/vs_modak_growth_service.gd").new().record_productive_day(current)
+	if not modak_error.is_empty(): return _blocked(modak_error)
 	var result = _commit(current, save, envelope)
 	# The caller retains these inputs when even the absence of a write is unverified.
 	if result.status == "COMMIT_UNCERTAIN": result["retry_rolls"] = rolls.duplicate()

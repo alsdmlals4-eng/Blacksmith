@@ -136,6 +136,61 @@
 
 ## R05 — 모닥 합류·게임 연차·성장 이벤트
 
+### 승인된 첫 실행 묶음 — BS-MODAK-20260920-01
+
+**목표:** 기존 제작·강화·납품에 모닥의 합류와 반응을 연결한 짧은 플레이 구간. 현재 상태는 `M1_M3_IMPLEMENTED / M4_CANDIDATE_NOT_PROMOTED`다. 같은 범위의 route·정확한 보호 파일 등록은 사용자 승인으로 완료했으며 재질문하지 않는다. 아래 생성/수정 예정 표기는 최초 설계 표기이고 실제 구현 대응은 다음 문단이 소유한다.
+
+**구현 대응:** M1 service/Envelope, M2 commission `_handoff`, M3 companion/workshop/commission panel이 실제 존재한다. M2 통합 검사는 최종 파일 `tests/gut/integration/test_vs_modak_commission.gd`를 쓴다. 기존 강화에는 영속 attempt ID가 없으므로 검증된 저장 snapshot의 SHA-256을 반응 중복 식별자로 사용하고 새 저장 필드를 만들지 않았다. 의뢰는 저장된 event_id를 사용한다. 실제 FAILED_DAMAGE+DESTROYED는 표현에서만 파괴로 정규화한다. 변경 없는 불확실 합류 재읽기는 성공으로 속이지 않고 안전하게 재시도를 열며, BLOCKED/불일치는 오래된 축하를 중립으로 교정한다. M3는 현재 텍스트 반응·스킵/저동작이며 손·도구 모션은 아직 아니다.
+
+**보호:** Base9.4.4, 엔진·addon·전역 설정, 기존 저장/UID·재화·확률·촉매·태그 규칙, smith01/모닥 EARLY·LATER 승인 외형. 성장 정책은 `GROWTH_LOCKED_V1`로 두며 120일/3년차/30납품일을 런타임 확정값으로 넣지 않는다. NOT_JOINED는 기존 저장에 모닥 필드가 없는 상태로 표현하고 자동 합류·자동 성장을 하지 않는다.
+
+**경험 가설:** 내 작업의 성공·실패와 조수의 반응이 연결되면 모닥을 함께 일하는 존재로 이해할 수 있다. 반례는 결과와 다른 반응, 매번 닫아야 하는 대화, 스킵할 때만 원활한 제작이다. 대표 검수는 합류→기본 의뢰 제작/납품→기한 정산→다음 작업, 강화 성공/실패의 별도 분기다. 기계 정확성과 HUMAN 애착/반복 피로는 별도 판정한다.
+
+**구현 순서와 인터페이스**
+
+1. **M1 — 합류와 저장 경계**
+   - 생성 예정: `scripts/vertical_slice/services/vs_modak_growth_service.gd`.
+   - 수정 예정: `scripts/vertical_slice/domain/vs_save_envelope.gd`의 `from_dict` 검증 연결. 기존 `active_run` 직렬화를 재사용하고 별도 저장 파일/전역 schema 변경을 기본 해법으로 삼지 않는다.
+   - 계약: `join(envelope, save) -> Dictionary`, `validate(envelope) -> String`, `view(envelope) -> Dictionary`. 결과는 기존 거래의 `APPLIED / ALREADY_APPLIED / BLOCKED / COMMIT_UNCERTAIN`을 따른다.
+   - `active_run.modak` 예정 필드: `schema_version=1`, `policy_id=GROWTH_LOCKED_V1`, `joined_day`, `productive_day_ids`, `committed_stage=EARLY`. 날짜는 유한한 정수·1이상·현재일 이하, 작업일은 중복 없는 오름차순·합류일 이상. 알려지지 않은 정책/단계/필드와 잘못된 타입은 명시적으로 거부한다.
+   - 과거 정상 저장에서 필드 없음은 유효하다. 필드가 있으나 null/빈 사전/형식 오류이면 미합류로 덮지 않는다. 기존 저장을 읽기만 해도 저장이 발생하는 구현은 금지한다.
+   - 동일 run의 최신 저장을 재조회·전체 비교한 뒤 복사본만 바꾸고 재읽기 성공 뒤 UI에 반영한다. stale·다른 run·backup 복구·쓰기 불확실은 기존 안전 경계대로 차단한다. 정상 재접속의 재합류 요청은 날짜 변경/보상 없이 ALREADY_APPLIED, stale 요청을 최신 상태로 오인하지 않는다.
+   - 테스트 예정: `tests/gut/unit/vertical_slice/test_vs_modak_growth_service.gd`. 미합류/합류/디스크 재시작/늦은 합류/중복/다른 run/소수·음수·미래 날짜/unknown policy/쓰기 실패와 재읽기 불확실을 검증한다. 실제 SaveService의 분리 시험 슬롯을 우선하고 fault injection은 쓰기 실패 지점에만 쓴다.
+
+2. **M2 — 실제 납품일 연결**
+   - 수정 예정: `scripts/vertical_slice/services/vs_commission_service.gd`의 `_handoff`, M1 service.
+   - 계약: `record_productive_day(candidate) -> String`은 **기존 handoff transaction의 복사본**에만 현재 영업일을 추가한다. 추가 저장/재화/보상/난수 호출은 없다. 호출은 의뢰 성공 인계 검증 후 기존 `_commit` 전 한 곳이다.
+   - 합류 전/수락/취소/제작만 완료/날짜 넘김/결과 재생은 납품일로 세지 않는다. 합류 전 납품 이력을 나중에 소급 계산하지 않는다. 같은 날 여러 납품과 재시도는 한 날짜다. 인계 저장 실패 시 납품일도 추가되지 않아야 한다.
+   - 테스트 예정: 위 단위 검사와 `tests/gut/integration/test_vs_modak_first_loop.gd`. 기존 commission fixture/실제 forge·handoff·day-close 경로로 합류일 이전/이후, 같은 날 중복, 빈날 진행, 저장실패의 재화·장비·의뢰·모닥 상태 원자성을 확인한다.
+
+3. **M3 — 조수 패널과 결과 반응**
+   - 생성 예정: `scripts/vertical_slice/ui/vs_forge_companion_panel.gd`. 수정 예정: `scripts/vertical_slice/ui/vs_workshop_screen.gd`, 필요시 `scripts/vertical_slice/ui/vs_commission_panel.gd`의 기존 `campaign_saved` 결과 payload만 확장한다.
+   - 계약: `configure_context(envelope, save)`, `present_committed_result(result_id, outcome)`, `skip_presentation()`. 패널은 `campaign_saved(envelope, result)`로 검증된 합류 상태만 상위 화면에 전달한다.
+   - 미합류는 자발적 합류 버튼, 합류 후에는 조수 상태/함께 납품한 일수와 짧은 반응을 보여 준다. 필수 제작 입력을 가로막는 모달은 만들지 않는다. 저장 불확실 상태에서는 합류·제작 등 다른 write를 기존 공방 guard와 공유해 차단한다.
+   - 결과 ID는 실제 저장된 강화 attempt/의뢰 event에서 가져온다. 새 무작위 ID로 중복을 감추지 않는다. 입력 press나 애니메이션 종료만으로 성공을 추정하지 않는다. BLOCKED/불확실은 성공·실패 표정 대신 중립 안내, 저장된 성공은 기쁨, 저장된 실패는 걱정/수습이다.
+   - 모션은 준비→접촉→복귀의 읽기 전용 표현이다. 같은 결과의 재통지로 효과를 중복 실행하지 않고, 스킵/장면 이탈/저동작/재시작은 게임 규칙·저장 결과에 영향0이어야 한다. 결과 없는 이전 장면을 재접속 시 성공으로 재생하지 않는다.
+   - 테스트 예정: `tests/gut/unit/vertical_slice/test_vs_forge_companion_panel.gd`에서 실제 Control 인스턴스·signal·스킵·중복·해제·불확실 guard와 저장/재화 무변경을 검증한다.
+
+4. **M4 — 승인 외형의 실제 자산·화면 검증**
+   - 원본: `docs/design/candidates/young-smith-spirit-20260911/smith-01.png`, `docs/design/candidates/modak-human-20260911/modak-human-02-younger.png`. LATER는 이번 성장 발동 대상이 아니다.
+   - M3에서 실제 표시 크기/위치/피벗/필요 상태를 확정한 뒤 필요한 자산만 제작한다. 예정 상태는 smith 대기/준비/접촉/복귀, 모닥 대기/도움/기쁨/걱정·수습이다. 후보 이미지의 통째 평행이동을 완성된 손·도구 동작으로 보고하지 않는다.
+   - 신규 분리 이미지: 이미지 도구의 크로마키 원본→배경 제거→alpha/edge 검사. 승인 얼굴·의상 유지, Aseprite는 현행 자동 선택 지침에 따라 포장/프레임에 적용한다. 보호 asset exact path·manifest는 실제 소비 규격 확정 뒤 등록한다. 임의 guessed path를 지금 허가 목록으로 만들지 않는다.
+   - 밝음/어두움 배경·실사용 축소·접점·프레임 연속성 검사 후 채택 저작 경로로 리소스를 연결한다. 미승인 후보 자동 승격 금지. 실제 화면을 캡처하고 기존 블루프린트 아틀라스/체크리스트와 기존 월간 기록에 반영한다.
+
+**통합 검증·마감:** M1~M3는 실패 테스트→최소 교정→관련 GUT→전체 CI와 동일 debug GUT 옵션으로 회귀한다. M4는 실제 게임·사용자 저장과 분리한 슬롯·스킵/중단/재접속을 확인한다. 전체 독립 검토는 계약당2회, 이후 결함별 교정이다. exact HEAD CI·미해결 스레드·정상 PR 병합·main 재확인을 완료해야 인도다. HUMAN/Android/최종 자산 승인은 실행/확보한 범위만 표시한다.
+
+**현재 체크리스트**
+
+- [x] 사용자 범위 승인, 현재 main/PR·실제 저장·의뢰·화면 consumer 확인.
+- [x] 기존 clean worktree의 채택 운영 계약 baseline PASS; 원래 미커밋 변경 보존.
+- [x] M1~M4 구현/보호·실패·검증 인터페이스 구체화.
+- [x] engineering ACTIVE 승인·원본 교정·pin 생성 route 재검증, exact8 제품 보호 manifest.
+- [x] M1~M3 RED/GREEN, 실제 합류·납품·재시작 캡처(단조 완료는 fixture).
+- [ ] M4 후보 alpha/frame 검수·최종 자산 lock·실제 Portrait/손·도구 모션 연결. 성장 최종 달력은 별도 결정.
+- [ ] 독립 검토2회·교정·필수 CI·병합/main·기존 PDF/일지 갱신.
+
+**실행 준비 발견:** 2026-09-20 최초 HiGodot 연결 목록0, 기본 Hera status는 다른 프로젝트를 가리켰다. 이를 Blacksmith 증거로 사용하지 않는다. clean checkout의 채택 addon3.2.0/설치 Godot4.7.1로 작업 소유 일반 편집기와 로컬 서버 연결을 확인했지만 현재 Codex HiGodot session 목록에는 노출되지 않았다. 원래 폴더의 미검증4.1.0 변경은 이관하지 않았다. 상세 시도는 생산계약의 동일 작업 절을 따른다. 새 제품 테스트·실행 결과가 없는 위 설계를 구현 완료로 표시하지 않는다.
+
 **현재 상태:** EARLY/LATER 외형 승인, 달력 JSON의 계산 fixture만 있음. 120일/년·3년 차 전환은 RECOMMENDED_NOT_LOCKED; 빈날240회로 즉시 성장 가능성이 있다.
 
 **선행 조건:** 수동 날짜 commit owner 유지, R02~04 의미 있는 하루/작업 기록, 최종 달력 정책을 기존 저장에 소급하지 않는 버전 설계.

@@ -1,0 +1,42 @@
+{
+  "requirement_id": "BS-MODAK-20260920-01-M4",
+  "project": "Blacksmith / 모루의 서약",
+  "consumer_kind": "PLANNED_GAME_SURFACE",
+  "consumer": "scripts/vertical_slice/ui/vs_forge_companion_panel.gd / ForgeCompanion / planned Portrait state slot",
+  "primary_use": "EARLY companion idle, assisting, happy and worried result poses; not a documentation illustration",
+  "coverage_status": "REQUIREMENT_LINKED",
+  "state_family_status": "FOUR_POSES_GENERATED_NOT_ANIMATION",
+  "appearance_anchor": "docs/design/candidates/modak-human-20260911/modak-human-02-younger.png",
+  "keep": "Approved young humanoid fire spirit; pale-gold bob and ahoge, amber eyes, soot cheeks, cream sleeves, ochre apron, trousers and boots, small weak ember",
+  "avoid": "Age-up, pixel conversion, flame-blob regression, costume redesign, adult proportions, giant fire, text baked into artwork",
+  "target_spec": "One 2048x1024 atlas candidate, four equal 512x1024 cells left-to-right IDLE/HELP/JOY/WORRY. Common feet baseline and camera. Planned display 160x320 maximum at source720-wide canvas. Alpha cutout over existing workshop; frame selection only, not complete hand-tool animation.",
+  "method": "Image model creates chromakey source, then background-only image-model edit to true alpha. Restricted Aseprite for candidate packaging only; no enforced pixel conversion for approved nonpixel Modak.",
+  "approval_scope": "Existing BS-MODAK implementation approval and latest no-repeat technical permission cover bounded candidate preparation and alpha QA. They do not automatically lock new artwork.",
+  "status": "CANDIDATE_REQUIRES_ALPHA_AND_FRAME_CORRECTION",
+  "runtime_promoted": false,
+  "final_asset_approval": "PENDING_USER_REVIEW",
+  "promotion_gate": "Preserve approved source; candidate identity/alpha/frame QA then user asset lock before production texture promotion. Independent implementation may continue.",
+  "base_application": "Current IMAGE_CONVERSATION_APPROVAL_GATE supersedes older two-turn markers in its reference. Project repository-only owners supersede legacy Notion/Figma placement instructions. No plugins/global settings changed.",
+  "actual_spec": {
+    "width": 1774,
+    "height": 887,
+    "grid_warning": "1774 is not divisible by 4; not safe equal-cell runtime atlas",
+    "alpha_qa": "FAIL: colored fringe and semiopaque interiors visible; do not promote"
+  },
+  "assets": [
+    {
+      "path": "docs/design/candidates/modak-first-forge-20260920/modak-states-chroma.png",
+      "sha256": "88d480889f3fa9af0b192219d59e56426787e03861f427723d9455dcde834816",
+      "role": "OPAQUE_RGB_CHROMA_SOURCE",
+      "origin": "exec-1b6aaf42-de43-42cc-bfd2-b728ea265e66.png"
+    },
+    {
+      "path": "docs/design/candidates/modak-first-forge-20260920/modak-states-alpha-rejected.png",
+      "sha256": "abd642d17669b5ef38048a9adb9036194b3ac32c6eb3e6ca3960ef38985a8848",
+      "role": "REJECTED_ALPHA_QA_WITNESS",
+      "origin": "exec-1c93d025-09cc-4cbc-a0ce-b33adafbd988.png"
+    }
+  ],
+  "processing": "Image model background-only chromakey correction -> image model alpha extraction. 917643 alpha-zero pixels, dominant body alpha253; visual red/yellow fringe FAIL. Candidate-only Aseprite copy packaging succeeded; no editing or runtime export/promotion.",
+  "next": "Use original opaque chroma source for deterministic matte extraction and equal frame/pivot authoring after tool capability verification; preserve face and costume. Do not ask user to approve defective alpha."
+}

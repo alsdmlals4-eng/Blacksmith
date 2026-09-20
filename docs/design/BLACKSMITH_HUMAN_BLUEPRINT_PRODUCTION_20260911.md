@@ -1,5 +1,35 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## 모닥 첫 공방 순환 — BS-MODAK-20260920-01
+
+2026-09-20 구현 체크포인트: engineering ACTIVE·생성 route·exact8 보호 manifest를 검증하고, 채택 HiGodot3.2.0 SDK에서 정확한 작업 폴더의 편집기 세션을 확인해 M1 합류/선택 저장 bucket, M2 실제 handoff의 납품일 원자 기록, M3 비차단 조수 패널/저장 결과 반응을 구현했다. 기존 plugin·전역 설정·확률·보상·성장 달력·승인 미술은 바꾸지 않았다. 작업 PR은 #388이며 다른 PR은 읽기 전용이다.
+
+최종 제품 검토 체크포인트 `5a06e589`: 전체 독립 검토2회 소진, 총 P2 네 건을 재현·교정하고 검토자의 표적 재확인까지 완료(미해결0). 마지막 의뢰 BLOCKED 반응은 실패 신호를 별도로 전달하며 저장 성공을 위조하지 않는다. 최종 debug GUT385/4959 PASS·경고52, exact8 보호 검증 PASS. 아래381/384는 이전 검사 이력이다. M1~M3 부분 인도는 가능하지만 M4/전체 게임 완성은 아니다. 최종 원격 CI·병합/main은 확인 후 기록한다.
+
+실제 실행: 격리 저장 `modak-native-20260920-first-forge.json`에서 실제 포인터 합류→의뢰 납품→프로세스 재시작을 확인했다. 의뢰 수락/제작 완료값은 실제 service에 시험 fixture로 입력했으므로 단조 미니게임 직접 완주라고 주장하지 않는다. EARLY·합류 영업일1·함께 납품한 날[1] 복원, 재시작 시 축하 재생 없음. 캡처는 `docs/testing/modak-{joined,delivered,restarted}-native-20260920.png`. 첫 포인터 좌표 시도는 버튼을 누르지 못했고 실제 물리 좌표로 바로잡은 후의 joined 캡처만 증거로 사용한다.
+
+기계/검토: M1~M3 RED→GREEN과 첫 전체 GUT381/4930 PASS 후 독립 검토1에서 발견한 재읽기 불확실 해제·파괴 반응·실패 후 오래된 축하3건을 재현/교정했다. 최종 회귀와 두 번째 독립 검토·정확 HEAD CI/병합은 별도 갱신 대상이다. 후보 네 상태는 실제 이미지 도구로 생성했으며 크로마키/alpha 품질을 분리 검수한다. M4 실제 Portrait/손·도구 동작 연결, 최종 자산 승인, HUMAN 애착/반복 피로, Android/출시는 미완료다. 텍스트 반응 타이머를 배우 모션 완성으로 세지 않는다.
+
+다음 읽기: 이 절 → remaining 명세의 같은 작업 체크리스트 → 실제 8개 보호 경로/3개 GUT 파일 → PR388 정확 HEAD. 아래 preflight/HOLD/제품 mutation0 문장은 모두 교정 전 이력이며 현재 실행을 재차 차단하는 권한이 아니다.
+
+현재 실행 갱신: 사용자가 `진행해 그리고 앞으로는 이런 권한 묻지말고 진행해`로 구현 route·보호 파일 등록·작업별 연결 교정을 승인했다. 아래 HOLD 확인은 이전 preflight 이력이다. engineering route를 편집 가능한 adapter/Registry에서 ACTIVE로 교정하고 pin 생성기로 재생성·검증한다. route ACTIVE는 모든 제품 변경 승인이 아니라 현재 승인 범위와 exact manifest를 실행할 수 있는 경로다. 이후 같은 범위 기술 준비에 재승인을 요구하지 않는다. 새 방향·비용·보안·파괴적 변경 경계는 유지한다.
+
+사용자 승인: 다음 작업 제안의 **모닥 합류·저장 기반 + 핵심 공방 동작 + 기존 의뢰 한 바퀴 연결**에 `작업진행해`. 기존 R05/R06/R09/R10 중 이 대표 구간만 실행한다. 아래 9월16일 `NO_R05_START`와 9월20일 운영 정리의 제품 제외는 해당 과거 작업의 경계이며 이번 제품 승인을 취소하지 않는다. 성장 달력·자격의 최종 수치, 성공률 버프, 강제 실수 손실, 전체 장비/세계 재현 확대는 제외다.
+
+실행 명세와 작업 체크리스트는 `docs/design/BLACKSMITH_REMAINING_IMPLEMENTATION_SPEC_20260914.md`의 `BS-MODAK-20260920-01` 절을 사용한다. 계획 문서·별도 PM·감독 스킬을 추가하지 않는다. 구현은 직접 진행하고 독립 검토는 이 계약 전체에서 2회 공유한다. 기존 운영 교정 PR387의 검토를 새 제품 구현 검토로 계산하지 않는다.
+
+2026-09-20 preflight: project HEAD/origin main `18491f98f8dde3526f5d15a5801860372f2bdc27`, Base origin main `23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef`를 재조회했다. Base v9.4.4/pin은 유지한다. 기존 clean worktree에서 채택 검증기와 protected baseline17fa1919의 운영 계약 검사 PASS. PR359/196은 여전히 다른 Draft이며 read-only다. 원래 checkout의 Godot AI4.1.0 관련 미커밋 변경·사용자 저장은 보존한다. 이번 branch는 기존 clean worktree의 `codex/modak-first-forge-20260920`이며 제품 수정 전 상태다.
+
+실행 경로의 별도 제한: adapter·generated snapshot·Registry가 모두 `blacksmith-engineering=HOLD`이고 해당 Skill은 HOLD 상태의 실행을 금지한다. 이 기록은 route 활성화 또는 보호 gate 우회가 아니다. 현재 제품 승인은 유효하지만 route를 활성화해도 되는지는 별도 운영 변경으로 판정해야 한다. 원래 checkout의 미검증 plugin을 복사하거나 설치/전역 설정을 변경하지 않는다. 기획·실제 consumer 확인은 진행 가능하며, 제품 코드/자산 반영은 검증된 실행 경로와 exact 보호 변경 계약을 갖춘 후 시작한다.
+
+이번 재사용 판정: ADOPT 기존 SaveEnvelope/SaveService의 복사→검증→저장→재읽기, 일반 의뢰의 handoff·campaign_saved; ADAPT 모닥 합류/함께한 납품일과 결과 읽기 전용 반응; REJECT 별도 저장 엔진, 모션 callback의 보상/난수 재계산, 과거 납품의 소급 성장, 승인 얼굴 재선정. 기존 R02~04 벤치마크는 의뢰 흐름 근거로 재사용하되 모닥 애착·재미의 검증 근거로 올리지 않는다.
+
+현재 증거 상한: 계획·consumer 조사와 clean baseline 검증. 모닥 제품 코드, 새 이미지/모션, 신규 GUT, 실제 게임 구간, HUMAN/Android/최종 아트/출시는 NOT_RUN. 기존 의뢰의 과거 실행 증거와 이번 실행을 구분한다.
+
+복구 시도: 작업 소유 headless 편집기는 import 완료 후 MCP가 headless에서 비활성이라는 실제 로그를 확인했다. 창/정상 MCP 종료 경로가 없어 exact PID22208·실행 경로를 확인해 종료했다. 이어 일반 편집기 PID26716을 hidden으로 실행했고 채택 addon3.2.0이 로컬 서버8004/9504에 연결됨을 확인했다. Hera 목록에서도 해당 worktree identity를 확인했으나 현재 Codex의 HiGodot session 목록에는 노출되지 않았다. 다른 편집기/서버를 변경하거나 전역 연결 설정을 바꾸지 않았다. 제품 mutation은0이며 편집기에 정상 종료를 요청했다. 경로 검사 PASS와 지침 회귀7/7 PASS는 모닥 구현/플레이 증거가 아니다.
+
+정리 readback: 작업 소유 PID22208/26716과 시작된 서버 PID4900 종료를 확인했다. 최초 import가 clean checkout에 생성한 미추적 `.import`64개와 `.uid`7개는 각 이동 전후 SHA-256을 확인하고 `C:/Users/user/Documents/삭제대기/모루의서약_모닥착수_20260920`으로 이동했다(물리 삭제0, 상대경로·복구안내 보존). 추적 제품의 의미 diff는0이며 자동 import의 줄바꿈/stat 차이를 기능 변경으로 보고하지 않는다. 후속 protected validator PASS. 이번 체크포인트는 제품 구현 완료/PR 병합이 아니다.
+
 > 현재 운영 경로 · 2026-09-20: `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`가 승인된 Base #883 경량화와 #885 재미 검증 적용·진행을 소유한다. 제품 구현/저장/자산 변경은 이번 범위 밖이다. 최신 제품 범위·증거는 통합 Blueprint 생산계약과 연결 receipt를 따른다. 아래 날짜별 상태는 해당 시점의 역사이며, 과거 승인 대기·PR·SHA를 현재 실행 권한으로 쓰지 않는다.
 
 ## Current closeout and cumulative journal — 2026-09-16
