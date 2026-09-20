@@ -188,6 +188,7 @@ func _retry() -> void:
 				result = service.handoff(_pending.source, _pending.order_id, _pending.catalyst, _save)
 		_: return
 	if result.has("envelope"):
+		result["companion_action"] = _pending.action
 		_uncertain = false
 		_pending = {}
 		_envelope = result.envelope

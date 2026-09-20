@@ -406,6 +406,7 @@ func _request_campaign_repair(rolls: Dictionary, random_rolls: bool) -> Dictiona
 
 
 func request_enhancement_with_rolls(rolls: Dictionary) -> Dictionary:
+	if campaign_write_blocked(): return {"outcome":"BLOCKED", "reason":"CAMPAIGN_WRITE_UNCERTAIN"}
 	if _aqueduct_pending():
 		return {"outcome": "BLOCKED", "reason": "AQUEDUCT_PENDING"}
 	if not _has_enhancement_context():
@@ -427,11 +428,13 @@ func request_enhancement_with_rolls(rolls: Dictionary) -> Dictionary:
 		_item = _campaign_envelope.get_item(item_uid) if _campaign_envelope != null else null
 		_clear_precision_selection()
 		enhancement_saved.emit(_campaign_envelope, result)
+		_present_companion_result(_campaign_envelope, result)
 	_refresh_controls()
 	return result
 
 
 func request_precision_backfill() -> Dictionary:
+	if campaign_write_blocked(): return {"outcome":"BLOCKED", "reason":"CAMPAIGN_WRITE_UNCERTAIN"}
 	if not _has_enhancement_context():
 		return {"outcome": "BLOCKED", "reason": "MISSING_ENHANCEMENT_CONTEXT"}
 	var item_uid := str(_item.uid)
@@ -711,7 +714,7 @@ func _on_recovery_order_pressed() -> void:
 		get_node("WorkshopScroll/WorkshopLayout/RecoveryOrder/Summary").text += "\n저장 확인 실패 · 적용하지 않았습니다. 다시 확인해 주세요."
 
 func _on_day_close_pressed() -> void:
-	if _commission_write_uncertain(): return
+	if _commission_write_uncertain() or _companion_write_uncertain(): return
 	if not is_visible_in_tree() or _save_service == null:
 		return
 	var service = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd")
@@ -744,7 +747,7 @@ func _on_day_close_canceled() -> void:
 		_day_close_envelope = null
 
 func _on_day_close_confirmed() -> void:
-	if _commission_write_uncertain(): return
+	if _commission_write_uncertain() or _companion_write_uncertain(): return
 	if _day_close_source < 1 or not is_visible_in_tree(): return
 	var source_day = _day_close_source
 	var result = load("res://scripts/vertical_slice/services/vs_recovery_order_service.gd").new().close_day(_day_close_envelope,source_day,_save_service)
@@ -878,7 +881,60 @@ func _refresh_controls() -> void:
 	_refresh_world_viewer()
 	_refresh_recovery_order()
 	_refresh_catalyst_exchange()
+	_refresh_companion_panel()
 	_refresh_commission_panel()
+
+func _refresh_companion_panel() -> void:
+	var layout = get_node_or_null("WorkshopScroll/WorkshopLayout")
+	if layout == null: return
+	var panel = layout.get_node_or_null("ForgeCompanion")
+	var enabled = _world_campaign_available()
+	if panel == null and enabled:
+		panel = load("res://scripts/vertical_slice/ui/vs_forge_companion_panel.gd").new()
+		panel.name = "ForgeCompanion"
+		layout.add_child(panel)
+		layout.move_child(panel, 1)
+		panel.campaign_saved.connect(_on_companion_saved)
+		panel.uncertainty_changed.connect(_refresh_controls)
+	if panel == null: return
+	panel.visible = enabled
+	if enabled:
+		panel.configure_context(_campaign_envelope, _save_service)
+		panel.set_external_write_blocked(_day_close_uncertain or _commission_write_uncertain())
+
+func _on_companion_saved(envelope, result: Dictionary) -> void:
+	_campaign_envelope = envelope
+	if _item != null: _item = envelope.get_item(str(_item.uid))
+	campaign_saved.emit(envelope, result)
+	_refresh_controls()
+
+func _companion_write_uncertain() -> bool:
+	var panel = get_node_or_null("WorkshopScroll/WorkshopLayout/ForgeCompanion")
+	return panel != null and panel.write_uncertain()
+
+func _present_companion_result(envelope, result: Dictionary) -> void:
+	var panel = get_node_or_null("WorkshopScroll/WorkshopLayout/ForgeCompanion")
+	if panel == null or envelope == null or _save_service == null: return
+	var disk = _save_service.load_envelope()
+	var parser = load("res://scripts/vertical_slice/domain/vs_save_envelope.gd")
+	if disk == null or disk.recovered_from_backup or not disk.validation_errors.is_empty() or not parser.serialized_equal(disk.to_dict(), envelope.to_dict()): return
+	panel.configure_context(disk, _save_service)
+	var outcome = str(result.get("outcome", ""))
+	var result_id = ""
+	if result.get("companion_action", "") == "HANDOFF":
+		var order = disk.active_run.get("commission", {}).get("active_order", {})
+		if order.get("phase", "") != "IN_TRANSIT": return
+		result_id = str(order.settlement.event_id)
+		outcome = "HANDOFF"
+	elif outcome in ["SUCCESS", "FAILED_HOLD", "FAILED_DAMAGE", "DESTROYED"]:
+		# Existing saves have no generic attempt ID; fingerprint the verified committed snapshot.
+		result_id = "enhance:" + JSON.stringify(JSON.parse_string(JSON.stringify(disk.to_dict()))).sha256_text()
+	panel.present_committed_result(result_id, outcome)
+
+func _on_commission_saved(envelope, result: Dictionary) -> void:
+	_campaign_envelope = envelope
+	campaign_saved.emit(envelope, result)
+	_present_companion_result(envelope, result)
 
 func _refresh_commission_panel() -> void:
 	var layout = get_node_or_null("WorkshopScroll/WorkshopLayout")
@@ -891,20 +947,20 @@ func _refresh_commission_panel() -> void:
 		layout.add_child(panel)
 		layout.move_child(panel, 1)
 		panel.forge_requested.connect(func(order_id): commission_forge_requested.emit(order_id))
-		panel.campaign_saved.connect(func(envelope, result): campaign_saved.emit(envelope, result))
+		panel.campaign_saved.connect(_on_commission_saved)
 		panel.uncertainty_changed.connect(_refresh_controls)
 	if panel == null: return
 	panel.visible = enabled
 	if enabled:
 		panel.configure_context(_campaign_envelope, _save_service)
-		panel.set_external_write_blocked(_day_close_uncertain)
+		panel.set_external_write_blocked(_day_close_uncertain or _companion_write_uncertain())
 
 func _commission_write_uncertain() -> bool:
 	var panel = get_node_or_null("WorkshopScroll/WorkshopLayout/CommissionPanel")
 	return panel != null and panel._uncertain
 
 func campaign_write_blocked() -> bool:
-	return _day_close_uncertain or _commission_write_uncertain()
+	return _day_close_uncertain or _commission_write_uncertain() or _companion_write_uncertain()
 
 func _world_campaign_available() -> bool:
 	return _campaign_envelope != null and _campaign_envelope.active_run.get("tag_ruleset_id", "") == "BLACKSMITH_REPLAN_TAGS_20260912"
