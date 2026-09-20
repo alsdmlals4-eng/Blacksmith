@@ -64,7 +64,7 @@
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "17fa19195fbb78faaef0bdde88b986e3e1d9100d",
+    "commit": "18491f98f8dde3526f5d15a5801860372f2bdc27",
     "policy_sha256": "1c36c4180b85d6bd97f4e7cdba908cc73298f529d368aa07e0dffde6e1e8ec52",
     "policy_source_path": "skills/PROJECT_BASE_ADAPTER.json",
     "policy_source_type": "CANONICAL_ADAPTER_SOURCE",
@@ -112,15 +112,14 @@
         "status": "ACTIVE"
       }
     ],
-    "inactive_routes": [
+    "inactive_routes": [],
+    "precedence": "PROJECT_LOCAL_THEN_BASE_SHARED",
+    "project_routes": [
       {
         "route_id": "blacksmith-engineering",
         "skill_id": "blacksmith-engineering",
-        "status": "HOLD"
-      }
-    ],
-    "precedence": "PROJECT_LOCAL_THEN_BASE_SHARED",
-    "project_routes": [
+        "status": "ACTIVE"
+      },
       {
         "route_id": "blacksmith-game-design",
         "skill_id": "blacksmith-game-design",
@@ -267,7 +266,7 @@
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
-      "sha256": "c34b0a3f2d5d803db7df2e87d946f26d497d53b2e7ad51637e052f02c4190216"
+      "sha256": "9c2a9d0cbc5517c2c266a29e46bdaed4a6e3b4ad1a799805e3ec5c07150754af"
     }
   },
   "validators": [
