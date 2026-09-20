@@ -1,5 +1,23 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+## 모닥 첫 공방 순환 — BS-MODAK-20260920-01
+
+사용자 승인: 다음 작업 제안의 **모닥 합류·저장 기반 + 핵심 공방 동작 + 기존 의뢰 한 바퀴 연결**에 `작업진행해`. 기존 R05/R06/R09/R10 중 이 대표 구간만 실행한다. 아래 9월16일 `NO_R05_START`와 9월20일 운영 정리의 제품 제외는 해당 과거 작업의 경계이며 이번 제품 승인을 취소하지 않는다. 성장 달력·자격의 최종 수치, 성공률 버프, 강제 실수 손실, 전체 장비/세계 재현 확대는 제외다.
+
+실행 명세와 작업 체크리스트는 `docs/design/BLACKSMITH_REMAINING_IMPLEMENTATION_SPEC_20260914.md`의 `BS-MODAK-20260920-01` 절을 사용한다. 계획 문서·별도 PM·감독 스킬을 추가하지 않는다. 구현은 직접 진행하고 독립 검토는 이 계약 전체에서 2회 공유한다. 기존 운영 교정 PR387의 검토를 새 제품 구현 검토로 계산하지 않는다.
+
+2026-09-20 preflight: project HEAD/origin main `18491f98f8dde3526f5d15a5801860372f2bdc27`, Base origin main `23ecad5a3084f97c4e5d1e39a9a6d70d1eeb37ef`를 재조회했다. Base v9.4.4/pin은 유지한다. 기존 clean worktree에서 채택 검증기와 protected baseline17fa1919의 운영 계약 검사 PASS. PR359/196은 여전히 다른 Draft이며 read-only다. 원래 checkout의 Godot AI4.1.0 관련 미커밋 변경·사용자 저장은 보존한다. 이번 branch는 기존 clean worktree의 `codex/modak-first-forge-20260920`이며 제품 수정 전 상태다.
+
+실행 경로의 별도 제한: adapter·generated snapshot·Registry가 모두 `blacksmith-engineering=HOLD`이고 해당 Skill은 HOLD 상태의 실행을 금지한다. 이 기록은 route 활성화 또는 보호 gate 우회가 아니다. 현재 제품 승인은 유효하지만 route를 활성화해도 되는지는 별도 운영 변경으로 판정해야 한다. 원래 checkout의 미검증 plugin을 복사하거나 설치/전역 설정을 변경하지 않는다. 기획·실제 consumer 확인은 진행 가능하며, 제품 코드/자산 반영은 검증된 실행 경로와 exact 보호 변경 계약을 갖춘 후 시작한다.
+
+이번 재사용 판정: ADOPT 기존 SaveEnvelope/SaveService의 복사→검증→저장→재읽기, 일반 의뢰의 handoff·campaign_saved; ADAPT 모닥 합류/함께한 납품일과 결과 읽기 전용 반응; REJECT 별도 저장 엔진, 모션 callback의 보상/난수 재계산, 과거 납품의 소급 성장, 승인 얼굴 재선정. 기존 R02~04 벤치마크는 의뢰 흐름 근거로 재사용하되 모닥 애착·재미의 검증 근거로 올리지 않는다.
+
+현재 증거 상한: 계획·consumer 조사와 clean baseline 검증. 모닥 제품 코드, 새 이미지/모션, 신규 GUT, 실제 게임 구간, HUMAN/Android/최종 아트/출시는 NOT_RUN. 기존 의뢰의 과거 실행 증거와 이번 실행을 구분한다.
+
+복구 시도: 작업 소유 headless 편집기는 import 완료 후 MCP가 headless에서 비활성이라는 실제 로그를 확인했다. 창/정상 MCP 종료 경로가 없어 exact PID22208·실행 경로를 확인해 종료했다. 이어 일반 편집기 PID26716을 hidden으로 실행했고 채택 addon3.2.0이 로컬 서버8004/9504에 연결됨을 확인했다. Hera 목록에서도 해당 worktree identity를 확인했으나 현재 Codex의 HiGodot session 목록에는 노출되지 않았다. 다른 편집기/서버를 변경하거나 전역 연결 설정을 바꾸지 않았다. 제품 mutation은0이며 편집기에 정상 종료를 요청했다. 경로 검사 PASS와 지침 회귀7/7 PASS는 모닥 구현/플레이 증거가 아니다.
+
+정리 readback: 작업 소유 PID22208/26716과 시작된 서버 PID4900 종료를 확인했다. 최초 import가 clean checkout에 생성한 미추적 `.import`64개와 `.uid`7개는 각 이동 전후 SHA-256을 확인하고 `C:/Users/user/Documents/삭제대기/모루의서약_모닥착수_20260920`으로 이동했다(물리 삭제0, 상대경로·복구안내 보존). 추적 제품의 의미 diff는0이며 자동 import의 줄바꿈/stat 차이를 기능 변경으로 보고하지 않는다. 후속 protected validator PASS. 이번 체크포인트는 제품 구현 완료/PR 병합이 아니다.
+
 > 현재 운영 경로 · 2026-09-20: `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`가 승인된 Base #883 경량화와 #885 재미 검증 적용·진행을 소유한다. 제품 구현/저장/자산 변경은 이번 범위 밖이다. 최신 제품 범위·증거는 통합 Blueprint 생산계약과 연결 receipt를 따른다. 아래 날짜별 상태는 해당 시점의 역사이며, 과거 승인 대기·PR·SHA를 현재 실행 권한으로 쓰지 않는다.
 
 ## Current closeout and cumulative journal — 2026-09-16
