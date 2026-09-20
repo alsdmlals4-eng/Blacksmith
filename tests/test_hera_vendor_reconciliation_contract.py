@@ -38,7 +38,7 @@ def test_historical_reconciliation_and_current_activation_decisions_are_both_pre
     reconciliation = _text(RECONCILIATION)
     assert DECISION_ID in reconciliation
     assert HISTORICAL_HERA_STATE in reconciliation
-    for current_surface in (_text(AGENTS), _text(DECISIONS), _text(DEVELOPMENT_GATES)):
+    for current_surface in (_text(DECISIONS), _text(DEVELOPMENT_GATES)):
         assert DECISION_ID in current_surface
         assert TOOLCHAIN_DECISION_ID in current_surface
 
@@ -131,11 +131,7 @@ def test_hera_vendor_identity_is_pinned_to_observed_main_content() -> None:
 
 def test_active_agent_rules_record_current_activation_without_expanding_hera_authority() -> None:
     agents = _text(AGENTS)
-    assert "GUT 9.7.1" in agents
-    assert "FORMALLY_ADOPTED_ACTIVE" in agents
-    assert "VENDORED_PRESENT_FORMAL_ADOPTION_PENDING" not in agents
-    assert HIGODOT_DECISION_ID in agents
-    assert DECISION_ID in agents
-    assert TOOLCHAIN_DECISION_ID in agents
-    assert CURRENT_HERA_STATE in agents
-    assert "Hera" in agents and "NONE" in agents
+    assert POLICY.relative_to(ROOT).as_posix() in agents
+    policy = _json(POLICY)
+    assert policy["hera"]["authoring_authority"] == "NONE"
+    assert policy["higodot"]["policy_role"] == "SOLE_GODOT_AUTHORING_AUTHORITY"

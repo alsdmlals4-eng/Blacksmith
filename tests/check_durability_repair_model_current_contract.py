@@ -119,7 +119,7 @@ def main() -> None:
     for band in bands:
         assert scar["MAJOR"][band] > scar["MINOR"][band], f"MAJOR must be riskier than MINOR at {band}"
 
-    for path in (CORE, AUTHORITY, AGENTS, HANDOFF):
+    for path in (CORE, AUTHORITY, HANDOFF):
         text = path.read_text(encoding="utf-8")
         require_tokens(text, [DECISION_ID], path.name)
 

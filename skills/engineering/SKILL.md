@@ -1,78 +1,29 @@
 ---
 name: blacksmith-engineering
-description: Blacksmith의 Godot·GDScript·데이터·Android·저장·자동화 구현과 계약 보존 리팩터링·런타임 진단을 안전하게 계획하고 검증한다.
+description: Use when a verified Blacksmith engineering route authorizes Godot code, data, save compatibility, or runtime diagnosis.
 ---
 
-# Blacksmith Engineering Skill
+# Blacksmith Engineering
 
-## Skill Modes
+## 상태·진입
 
-- `plan-change`: 책임 경계·영향 파일·호환성·롤백을 설계한다.
-- `implement`: 승인된 Scene·Script·데이터 변경을 구현한다.
-- `data-migration`: JSON Schema·ID·기본값 변경을 소비자와 함께 이전한다.
-- `runtime-check`: Godot 파싱·Scene·입력·상태 전환·Android 동작을 확인한다.
-- `contract-preserving-refactor`: 동작·인터페이스·데이터 호환성을 고정한 뒤 구조 중복과 복잡성만 줄인다.
-- `reproduce-runtime-failure`: 엔진 버전·진입 Scene·입력·로그·상태를 고정해 원래 실패를 재현한다.
-- `isolate-cause`: 연쇄 오류와 근본 원인을 분리하고 최소 반례를 만든다.
-- `minimal-fix`: 재현된 원인만 수정하며 기능 확대나 무관한 정리를 섞지 않는다.
-- `rerun-engine-checks`: 원래 반례·관련 Scene·회귀·목표 플랫폼 검증을 다시 실행한다.
+이 패키지의 존재는 실행 권한이 아니다. `skills/PROJECT_SKILL_SNAPSHOT.json`의 route가 HOLD이면 활성화하지 않는다.
+AGENTS.md → `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md` → 승인된 product owner와 실제 대상·consumer·tests를 읽는다.
+엔진/툴 pin은 프로젝트 채택 기록·project.godot·CI에서 확인한다. 이 스킬에 버전을 중복 고정하지 않는다.
 
-## Technical baseline
+## 승인 실행의 원칙
 
-- Godot 4.7.1 stable / GDScript
-- Android portrait / 720×1280 기준
-- `canvas_items` + `expand`
-- Google Play AAB / API 36 준비
+- 코드·기계 계약은 실제 실패 반례부터 확인하고 최소 구현 후 회귀를 검증한다.
+- 규칙과 거래는 domain/data가 소유하고 UI·모션은 확정 결과를 표현한다. 표시 callback에서 비용·보상·저장을 재계산하지 않는다.
+- 저장·UID·schema·id·기본값 변경은 기존 호환 계약과 원자성·복구·재시작을 함께 검증한다. legacy 저장을 새 규칙으로 재해석하지 않는다.
+- Scene·Resource·project 설정과 제품 저작은 채택된 HiGodot 경계, GDScript 테스트는 GUT 경계를 지킨다. Hera를 persistent writer로 쓰지 않는다.
+- 새 기능/리팩터링을 섞지 않는다. 반복·취소·중단·대상 소멸과 실패 복구는 실제 consumer가 요구하는 범위에서 확인한다.
+- 플레이어-facing 효과/UI 변경이면 기획·QA의 재미 가설과 요구 ID를 소비한다. 미구현 연결은 PLANNED, 사람 증거는 별도다.
+- 원인 불명 runtime 문제는 실제 로그·재현·버전·프로젝트 경로를 먼저 확인한다.
+- 기존 저장·사용자 작업·승인 자산·다른 프로세스·secret은 보호한다. 새 비용·보안·기획 의미는 사용자 결정이다.
 
-## Read first
+## 검증·산출물
 
-- `AGENTS.md`
-- `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`
-- 관련 책임 원본과 `data/`, `scripts/`, `scenes/`, `tests/`
-- `project.godot`과 관련 Workflow
-
-## Rules
-
-- 게임 규칙은 UI 애니메이션이 아니라 도메인 코드가 소유한다.
-- JSON ID·수치·기본값을 코드에 불필요하게 중복 하드코딩하지 않는다.
-- 경로·ID·Schema 변경 시 Registry·문서·테스트·untouched 소비자를 검색한다.
-- 리팩터링은 제품 기능·정책 변경과 분리하고 baseline·호환 계약·롤백 지점을 먼저 기록한다.
-- 런타임 오류는 재현·로그·엔진 버전 없이 추측 수정하지 않는다.
-- 자동 단조는 비용·재료·목표·보관함·파괴·중지 조건을 유한 상태로 처리한다.
-- 특수 강화 재료가 없을 때의 fallback은 명시적으로 처리하고 이전 선택이 누출되지 않게 한다.
-- 서명키·export credentials·개인 SDK 경로를 커밋하지 않는다.
-- 실제 기기에서 확인하지 않은 모바일 동작은 미검증으로 기록한다.
-- 새 Scene을 불필요하게 늘리지 않고 기존 진입점과 사용자 실행 경로를 유지한다.
-
-## Output
-
-- 영향 파일·데이터 계약·상태 전이
-- 재현 절차·근본 원인·최소 반례
-- 구현 또는 리팩터링 diff와 롤백 지점
-- 정상·실패·경계 처리
-- 실행한 검증과 미검증
-
-## Validation
-
-- `python tools/validate_game_data.py`
-- Godot headless 프로젝트 import·parse
-- 관련 Scene 스모크 테스트
-- 제작·강화 모델 테스트
-- 리팩터링 전후 동일 계약·출력·저장 호환성 비교
-- 저장 변경 시 저장·불러오기·구버전 호환성
-- Android debug/AAB와 실제 기기 터치·화면 비율은 환경이 있을 때만 실행
-
-## Failure conditions
-
-- 문서만 갱신하고 실제 소비자 코드를 놓친다.
-- 원래 실패를 재현하지 않고 대규모 추측 수정을 한다.
-- 리팩터링과 제품 기능 변경을 한 diff에 섞는다.
-- 테스트 삭제나 기대값 완화로 구조 변경을 통과시킨다.
-- 자동 단조가 골드·재료 부족 또는 보관함 가득 참에서 무한 반복한다.
-- 폭주 도약이 특수 강화 이정표를 건너뛴다.
-- Godot 파싱 없이 구현 완료를 주장한다.
-- Android 미실행을 PASS로 표시한다.
-
-## Learning
-
-실제 실패·회귀·성능 병목·호환성 교훈이 생기면 `skills/SKILL_LEARNING_LOG.md`에 증거와 함께 기록한다.
+관련 데이터 검사·GUT·실제 Godot 실행과 필요한 화면/기기 검사를 수행한다. 문서만 수정할 때 엔진 실행을 강제하지 않는다.
+CI의 실제 debug/디렉터리 옵션을 맞추고 경고를 숨기지 않는다. 미실행은 NOT_RUN이며 machine PASS는 사람/출시 승인이 아니다.
+기존 작업 계약에 영향 파일·입출력·상태·실패 복구·검증·롤백을 남긴다. 새 추적 문서를 만들지 않는다.

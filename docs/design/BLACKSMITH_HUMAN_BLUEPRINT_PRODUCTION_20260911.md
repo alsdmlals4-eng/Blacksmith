@@ -1,5 +1,7 @@
 # 모루의 서약 통합 블루프린트 제작 계약
 
+> 현재 운영 경로 · 2026-09-20: `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`가 승인된 Base #883 경량화와 #885 재미 검증 적용·진행을 소유한다. 제품 구현/저장/자산 변경은 이번 범위 밖이다. 최신 제품 범위·증거는 통합 Blueprint 생산계약과 연결 receipt를 따른다. 아래 날짜별 상태는 해당 시점의 역사이며, 과거 승인 대기·PR·SHA를 현재 실행 권한으로 쓰지 않는다.
+
 ## Current closeout and cumulative journal — 2026-09-16
 
 Latest user requests finishing the current work and GitHub synchronization, not starting another feature cycle. Keep the existing monthly work journal and append summaries by actual work date; do not issue a new journal/PDF filename or edition for every work unit. The existing JSON remains the single report source and the existing user-facing PDF is refreshed after validation. Previously recorded dates and evidence limits remain intact. Generate and inspect a temporary replacement first; only then replace the specifically designated current PDF. Submitted/signed records still require a separate explicit correction process; the present PDF is an unsubmitted review copy. This instruction supersedes the routine new-edition suggestion below.

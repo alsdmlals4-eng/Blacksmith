@@ -1,363 +1,78 @@
 # Blacksmith AI 작업 규칙
 
-> 2026-09-16 current-bundle closeout: latest user requests finishing current work and GitHub synchronization; do not start R05 during this closeout. Monthly AI journal is cumulative in the same existing JSON/PDF, summarized by actual work date, not a new edition per task. PR384 exact f9301e82f0464780188a1ffc615ebc1fc53a4c12 normally merged as ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b after11SUCCESS/1conditionalSKIP, two full code reviews/combined rereview and three bounded native commission cycles. Customer bow sale, player basic loan and +10 tagged purpose loan include restart, due settlement, same UID and Chronicle evidence. Receipt docs/operations/receipts/2026-09-16-general-commissions.json owns delivery limits. Consumed16-path approval archived verbatim at docs/archive/protected-approvals/commissions-pr384-20260916.json; baseline advances only to verified merge, Base v9.4.4/pins unchanged. Premerge GUT must mirror CI debug flag `-d`; do not suppress warnings. Whole game, Android, human balance, final art/motion and release remain incomplete. Final documentary closeout is not another product scope.
-
-> 2026-09-14 image/evidence direction: latest user requires future consumer-bound image generation on a chroma-key background followed by background removal and real alpha/edge QA; preserve final approval/runtime gates. Monthly AI work evidence is a separate derived PDF in the user-designated September evidence folder, not another Blueprint or planning owner. Operational details and source/publisher are at production contract `BS-OPS-20260914-09`. Existing approved images, Blueprint and private financial records are not automatically replaced or copied to Git. Dates, retrospective records, AI/account attribution and missing evidence must stay explicit.
-
-> 2026-09-14 WORLD5 delivery: PR381 exact reviewed d7f337a9765fd4c097de5ebfa5bef3b374cf7e4c normally merged as5a84c4b2f2e972262b66f34845d625fda736eb31 after11SUCCESS/1conditionalSKIP, two code reviews and native bow from-zero/restart/result plus armor/helmet fixture-native restart evidence. PDF74 preserves previous72 sections. Local/origin main matched. Consumed2-path approval archived verbatim at docs/archive/protected-approvals/world5-pr381-20260914.json; baseline advances only to verified merge, Base v9.4.4/pins unchanged. Latest BS-REPLAN-20260914-08 authorizes continued R01-R12 researched implementation/improvement, not routine reapproval. Next R02-R04 general commissions/material escrow/settlement, then growth/motion/world presentation. Whole game, Android, human balance, final art and release remain incomplete. Production contract top owns current scope; older pending statements are historical.
-
-> 2026-09-13 catalyst checkpoint: PR379 reviewed a7158cf9804a4fdbc0ed2ffc76b4906e19fa3afb normally merged as d50c24de07e68cbcefbc94a9cce0f715095efde0 after two reviews, final313/3180 GUT,510 Python/3skip, exact-head CI including ready-event validator and native exchange/restart evidence. Local/origin main matched. Consumed four-path approval is preserved at docs/archive/protected-approvals/catalyst-exchange-pr379-20260913.json, not reusable authority; baseline advances only to this verified merge. Adopted Base v9.4.4, validator pin and protected paths unchanged. PDF64 retains prior62 sections and adds real exchange captures/checklist. Whole game is incomplete: next varied commissions/material flow, remaining equipment world-use, Modak growth and actor/equipment motion. Production contract owns current queue; earlier pending/active approvals below are historical.
-
-> 2026-09-13 manual-day delivery: PR377 reviewed head6e4976cb0c50d1418aabd5cfc7be3503e55742d0 normally merged as1abd89ee6a46a31913f1ec05d466b3b8f6783979; local/origin main matched. Manual close, repeated recovery crafting and desktop restart evidence/PDF62 delivered, not whole-game completion. Consumed exact2-path approval is preserved verbatim at docs/archive/protected-approvals/day-loop-pr377-20260913.json; baseline alone advances to verified merge, adopted Base v9.4.4/pins/protected paths unchanged. Current production contract owns remaining order/material/catalyst/world-use/growth/motion work. Archived approvals are never reusable execution authority.
-
-> 2026-09-13 recovery checkpoint: PR375 exact head `fbfde8f218341b052db0aa62b61f04b7e61df1fb` merged normally as `4976ae2ca9d1eae11a5fc8fc44f1f8e9c23a047d`; local/origin main readback matched. First recovery-order craft/restart/delivery desktop evidence and PDF59-60 are delivered, not whole-game completion. Consumed exact5-path approval is preserved verbatim at `docs/archive/protected-approvals/recovery-order-pr375-20260913.json`; baseline advances to that verified merge, adopted Base v9.4.4/pins/protected paths unchanged. Ordinary gate with no active manifest resumes after closure. Production contract top owns next day/refill/repeated economy queue; archived PR371/373/375 approvals are not reusable authority.
-
-> 2026-09-13 world-trials delivery: PR373 exact head `278caffc972d9bae9b0306bd56c97edda850d946` passed10 checks (1 conditional skip) and merged normally as `76ad0bb02af9e03e76f6accca8bf56d7d92945ad`; local/main remote readback matched. Its consumed8-path approval is preserved at `docs/archive/protected-approvals/world-trials-pr373-20260913.json`, not reusable authority. Baseline alone advances to this verified merge; Base v9.4.4, protected paths and validator pin remain unchanged. Current production contract owns the next order/settlement/recraft queue. Earlier baseline/active-manifest statements describe their historical scope.
-
-> 2026-09-13 checkpoint delivery: PR371 merged as `df48dd06bffa1df11287029d2c7f43815f84ad23` after exact-head CI and bounded desktop runtime review. Its consumed 16-path approval is preserved verbatim at `docs/archive/protected-approvals/replan-pr371-20260913.json`, not reusable execution authority. Project protected baseline is aligned to that verified merge; adopted Base v9.4.4, release locks, validator pin and protected paths are unchanged. Use the ordinary gate with no active manifest until the next exact approved implementation scope is registered against fresh current-task PR metadata. Whole-game implementation remains authorized and incomplete; next queue/evidence is at the top of the production contract. Earlier active PR371/manifest/baseline statements below are historical for that consumed scope.
-
-> 2026-09-13 product-loop clarification / `BS-REPLAN-20260913-02`: improvement means benchmark research → concrete connected design → implementation → play review → refinement toward a complete game, not test/tool maintenance alone. Current production contract owns the save-separation implementation scope; the exact approval manifest now includes item persistence and the legacy precision guard as well as the rule module/UID. Use the unchanged exact approval gate with fresh PR metadata. Report player value, actual consumer integration and remaining experience gaps before test counts. Routine approved details proceed without repeated approval; core changes and risky migration still require a decision.
-
-> 2026-09-13 scoped recovery approval (historical consumed PR371 scope): `BS-OPS-20260913-01` in the current production contract. The exact replan-rule module and UID were listed in the approval now preserved at `docs/archive/protected-approvals/replan-pr371-20260913.json`. The user permitted read-only diagnosis and bounded recovery after the ordinary validator failed. This consumed archive is not current execution authority. The unchanged main CI-pinned exact approval gate still requires a newly registered exact scope and freshly verified current-task PR `approved-protected-change` metadata for a later protected change. Any other error or path mismatch remains fatal. Do not set external approval true without verifying that metadata. This is not a blanket router exception or authorization to weaken checks. Before each further implementation, state its plan, impact and evidence criteria first.
-
-> 2026-09-12 latest user authorization: `REPLAN_IMPLEMENTATION_AND_IMPROVEMENT_AUTHORIZED`. The user explicitly requested Base fresh-read, benchmark/practice research and continued implementation/improvement without routine reapproval. The existing integrated blueprint is the implementation basis; earlier preparation-only/product-blocked statements below are historical for this scope. Preserve uncertain assets/saves, HiGodot/GUT authoring boundaries, adopted Base v9.4.4, protected-path validation and other PR read-only boundaries. Trial numbers remain test defaults, not proven balance; this permission is not runtime/UX/release evidence. Current queue and implementation evidence are owned by the production contract.
-
-> 2026-09-11 current human-blueprint request: `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md` + `exports/blacksmith_HUMAN_BLUEPRINT_20260911.pdf` own the integrated final-review reading view; `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md` owns this task's production boundary. User resumed actual-consumer image production, superseding the earlier image pause. New rules and candidate assets remain FINAL_USER_REVIEW_PENDING; no new product implementation is authorized by this preparation request. Previous pixel blueprint/PDF remain preserved provenance. Candidate manifest distinguishes real alpha, refinement gaps, approval and runtime. All-state ASSET_READY is not claimed; adopted Base lock is unchanged.
-
-> 2026-09-10 current replan amendment: `docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md` owns the newly user-approved full-pixel direction, reference-only disposition of previous images, five-equipment tag expansion direction, and optional split world-event viewer. Detailed layout/data remain review specifications, not implemented or final asset approval. Historical illustrated direction below is superseded for new art; existing runtime remains unchanged until replacement verification. Adopted Base lock is unchanged.
-
-Blacksmith는 Android 세로형 Godot 제작 게임 프로젝트다. `BS-OPS-20260825-08 / POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_AND_VISUAL_REQUIREMENT_NEXT / LIVING_GDD_HOME / ILLUSTRATED_WORKSHOP_BOOK / WORK_MODE: PLAN / PRODUCT_IMPLEMENTATION: BLOCKED_UNTIL_CURRENT_PLANNING_COMPLETE_DECLARATION`은 2026-08-25 역사 상태다. 이후 사용자가 `현재 기획 완료 선언, 정본 기준 Godot 구현 진행`을 명시 승인했다. 따라서 현재 상태는 `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826 / WORK_MODE: IMPLEMENTATION_AND_REVIEW`이며, 승인된 current-canon MVP의 구현·검수·교정만 허용된다. 기획·문서·인수인계 작업은 새 제품 범위나 보호 경로 변경 Gate를 자동으로 열지 않는다.
-
-현재 핵심 Decision은 `BS-ENHANCE-20260825-25 / BS-DAMAGE-20260825-26 / BS-DAMAGE-20260826-28 / BS-REPAIR-20260826-29 / BS-REPAIR-20260826-31 / BS-DAMAGE-20260826-30 / BS-ENHANCE-20260826-32 / BS-ENHANCE-20260828-34 / BS-ENHANCE-20260829-37 / BS-OPS-20260828-35 / BS-OPS-20260828-36 / BS-CHRONICLE-20260825-27 / BS-ART-20260825-03 / BS-ART-20260826-04`이다. current product owner는 `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`, Decision28 exact curve and Decision32 failure-resolution owner는 `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json`, Decision29 durability/repair owner는 `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`, Decision31 repair-economy owner는 `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`, Decision30 customer/world damage owner는 `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`, Decision37 first Tag content/empty selection owner는 `docs/decisions/BS-ENHANCE-20260829-37_PRECISION_TAG_CATALOG_AND_SELECTION_GATE.md` + `docs/planning/BLACKSMITH_PRECISION_TAG_CATALOG_20260829.json`, Decision04 visual consumer owner는 `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`, Decision35 GitHub-only/image-execution owner는 `docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md`, Decision36 evidence/research/adversarial-review owner는 `docs/decisions/BS-OPS-20260828-36_EVIDENCE_RESEARCH_AND_ADVERSARIAL_REVIEW_LOOP.md`이다. 새 채팅 resume locator는 `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md`다.
-
-## 1. 권위 순서
-
-1. 사용자의 최신 지시와 승인
-2. `AGENTS.md`
-3. `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md` — current Base observation, project-adapted work-mode, L1+ receipt, legacy hygiene, and validation routing; Base current `main`은 reference이며 `skills/PROJECT_BASE_ADAPTER.json`의 adopted release lock을 자동 교체하지 않음
-4. `docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md` — fresh-read cold-start locator
-5. `docs/planning/BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md`
-6. `docs/decisions/BS-DAMAGE-20260826-30_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY.md` + `docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json`
-7. `docs/decisions/BS-REPAIR-20260826-29_DURABILITY_REPAIR_SCAR_MODEL.md` + `docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json`
-8. `docs/decisions/BS-REPAIR-20260826-31_REPAIR_ECONOMY_REBASE_AND_SENSITIVITY.md` + `docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json`
-9. `docs/decisions/BS-DAMAGE-20260826-28_DAMAGE_PROBABILITY_CURVE.md` + `docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json` — Decision28 exact curve + Decision32 failure-resolution/display owner
-10. `docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md` + `docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json`
-11. `CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md`
-12. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`
-13. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER`; 최신 override와 충돌하는 상단 역사 snapshot은 current authority가 아님
-14. 2026-08-20/24 분야별 Canon·current registry — Decisions25~32/Art03~04와 같은 필드가 충돌하면 역사·부분대체 evidence
-15. 실제 `code/data/Scene/Resource/tests`와 runtime evidence — 구현 사실은 증명하지만 PLAN Gate의 implementation drift가 최신 승인 기획을 덮어쓰지 않음
-16. `GITHUB_HUMAN_FACING_GDD_OWNER`: `docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md` + `exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`; `PROJECT_AI_PRODUCTION_SPEC.md`는 기술·정본 추적용이며 repository Visual/Flow·비교표·에셋/Reference와 연결한다.
-17. `docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md` + `docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json` — one-time Notion structure/work-product migration and non-runtime historical visual archive; current owner가 아님
-18. `CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장
-19. R2/R3 Game Bible·과거 PoC·구형 data/runtime
-20. Google Sheet 등 `MIGRATION_ONLY_UNTIL_REMOVAL` compatibility 자료
-21. 외부 벤치마크·과거 대화·AI 추론
-
-현재 workspace routing (Decision `BS-OPS-20260828-35`):
-
-- `GITHUB_REPOSITORY_ONLY_CURRENT_CANON = TRUE`
-- `GITHUB_HUMAN_FACING_GDD_OWNER = docs/design/BLACKSMITH_HUMAN_FACING_GDD_20260828.md + exports/blacksmith_MASTER_PRODUCTION_GDD_20260828.pdf`
-- `NOTION_STATUS = HISTORICAL_REFERENCE_ONLY / NO_FUTURE_READ_WRITE_REQUIRED`
-- `NOTION_DESTINATION_READBACK = NOT_APPLICABLE`
-- `NOTION_MIGRATION_RECEIPT = docs/migration/BLACKSMITH_NOTION_TO_GITHUB_MIGRATION_20260828.md + docs/migration/BLACKSMITH_NOTION_MIGRATION_MANIFEST_20260828.json`
-- `HISTORICAL_NOTION_VISUAL_ARCHIVE = docs/migration/historical_notion_gdd / NOT_RUNTIME / NOT_FINAL_STYLE_CANON`
-- `IMAGE_GENERATION_EXECUTION = USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT`
-- `POST_GENERATION_USER_LOCK = REQUIRED_FOR_FINAL_DIRECTION_OR_RUNTIME_PROMOTION`
-- `EXPLANATORY_VISUAL_GDD_BEFORE_DECORATIVE_ART = HISTORICAL_PRE_DECISION04`
-- `ACTUAL_GAME_CONSUMER_REQUIRED`
-- `NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE`
-- `PRIMARY_USE_GATE_REQUIRED`
-- `REPOSITORY_STRUCTURED_CANON` / `REPOSITORY_RUNTIME_TRUTH` = Markdown·JSON·game data·code·Scene/Resource·tests·CI/runtime truth
-- Google Sheet = historical migration compatibility evidence only; future write는 요구하지 않는다.
-
-현재 실질 작업 운영 규칙(Decision `BS-OPS-20260828-36`):
-
-- `FRESH_CANONICAL_READ = REQUIRED`
-- `CURRENT_EXTERNAL_RESEARCH = REQUIRED_FOR_EVERY_SUBSTANTIVE_TASK`
-- `ADVERSARIAL_REVIEW_LOOP = REQUIRED`
-- `IMPLEMENTATION_FEASIBILITY_GATE = REQUIRED`
-- `EVIDENCE_CEILING = NO_AUTO_PASS`
-
-`BS-OPS-20260825-03`의 Notion Home 정의는 역사 기록이다. 같은 사람용 정보 구조는 GitHub GDD와 repository Visual/Flow owner에서 유지한다.
-
-### 1.1 Human Home · Visual 규칙
-
-- current art-direction Decision은 `BS-ART-20260825-03`.
-- current image-delivery Decision은 `BS-ART-20260826-04`.
-- `ART_DIRECTION = ILLUSTRATED_WORKSHOP_BOOK`.
-- `ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION`.
-- 손그림 공방 노트, 종이·가죽·철·목재 물성, 따뜻한 공방 분위기, 현대적 판독 가능한 상호작용 계층을 사용한다.
-- `ACTUAL_GAME_CONSUMER_REQUIRED = TRUE`: 신규 생성 이미지는 실제 게임 UI/flow/runtime slot이라는 consumer가 있어야 한다.
-- `NEW_EXPLANATORY_GDD_SHEET_IMAGE_TARGET = FALSE`: GitHub 문서 설명은 Mermaid/표/텍스트 등 구조화 표현을 우선하며 신규 설명용 raster sheet를 생산하지 않는다.
-- `GENERATED_UI_SCREENSHOT_MOCKUP_AS_PRODUCT_ASSET = FALSE`: generated fake screenshot은 layout discussion reference일 수 있으나 제품 asset이 아니다.
-- `FULL_FRAME_IMAGE_ALLOWED_ONLY_IF_RUNTIME_CONSUMES_FULL_FRAME = TRUE`.
-- `NO_CONSUMER = CUT_OR_DEFER`: consumer가 사라진 후보를 설명 자료로 자동 전용하지 않는다.
-- 기존 `STYLIZED_DARK_FORGE`/검정·금색 생성형 보드는 `LEGACY_VISUAL_REFERENCE_NOT_FINAL_STYLE_CANON`; 정보구조 참고 외 자동 재사용하지 않는다.
-- 기존 8개 Visual GDD는 `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`이며 final style/runtime/release asset 승인이 아니다. old CURRENT/MAX 값·old MAX penalty·구형 precision·날짜별 강화 로그는 `SYSTEM_SEMANTICS_STALE`이다.
-- 사용자가 제공한 예시 이미지는 `REFERENCE_ONLY_LAYOUT_DENSITY`이며 승인 Asset으로 승격하지 않는다.
-- 사람에게 필요한 핵심 수치·규칙·밸런스 표를 AI Workspace에만 숨기지 않는다.
-- Historical Notion Asset Library/Preview는 현재 binary·consumer·승인 증거가 아니다.
-- 실제 이미지 생성 전 `consumer_id / consumer_surface / runtime_asset_role / primary_use / implementation_owner_or_path / target_aspect_resolution / state_family_requirement / fallback_if_unconsumed`를 가진 Visual Requirement를 만든다. 이 요건 뒤 생성은 user-preauthorized이며, 최종 확정·runtime 승격만 사후 사용자 lock을 요구한다.
-- `MAIN_MENU / ENHANCEMENT_MAIN / PRECISION_+9_TO_+10 / DURABILITY_REPAIR / CUSTOMER_WORLD_RESULT / ITEM_CHRONICLE`는 consumer 후보 locator일 뿐 자동 이미지 생성 목록이 아니다.
-
-## 2. 필수 작업 순서
-
-```text
-현재 권위·변경 경계 확인
-→ PRE_WORK_RESEARCH_GATE: 벤치마킹·현업 비교·조사
-→ ADOPT / ADAPT / REJECT / DIFFERENTIATOR + 정본 충돌 + 적대 pre-check
-→ brainstorming·적대적 검토
-→ RED: 실패 계약 테스트 작성·의도한 실패 관측
-→ GREEN: 최소 정본·구현 변경
-→ REFACTOR: 중복·구형 참조 정리
-→ exact-head 전체 검증
-→ GitHub remote/repository destination readback
-→ 같은 승인 범위는 재승인 없이 병합 / 새 planning conflict·scope expansion만 사용자 Decision
-```
-
-### PRE_WORK_RESEARCH_GATE — 벤치마킹·현업 비교
-
-Decision `BS-OPS-20260811-02`.
-
-- 게임 기획·콘텐츠·UX·경제·시장 포지셔닝: 직접/인접 유사작 2개 이상 + 현업/공식/1차 자료 2개 이상. 핵심 시스템·경제·출시·권리·접근성은 유사 사례 3개 이상 + 공식/1차 자료 2개 이상을 기본으로 한다.
-- 기술·Godot·Android·GitHub·CI·tooling·performance: current 공식/1차 자료 1개 이상 + 유사 구현/추가 공식 자료 1개 이상과 버전 호환성을 확인한다.
-- 저위험 maintenance는 현재 정본·최근 PR·공식 책임 원본을 다시 읽고 외부 비교가 무관하면 `BENCHMARK_NOT_APPLICABLE` 사유를 남긴다.
-- 벤치마크의 수치·확률·경제·보상을 Blacksmith 정본으로 자동 역수입하지 않는다.
-
-### 작업마다 TDD
-
-```text
-RED → GREEN → REFACTOR
-```
-
-테스트를 먼저 작성하고 의도한 RED를 실제 관측한다. 최소 변경으로 GREEN을 만든 뒤에만 정리한다. 문서·기획 변경도 기계 판독 계약 테스트로 보호한다.
-
-## 3. 승인 배치와 조기 체크포인트
-
-- 승인 10건은 최대 배치 크기다.
-- `HIGH_RISK_CONFLICT / SESSION_END / LARGE_CANON_IMPACT`에서는 조기 체크포인트를 허용한다.
-- 같은 승인 범위는 exact technical validation 뒤 병합 재승인을 요구하지 않는다. 새 기획 충돌·범위 확장만 별도 사용자 Decision이 필요하다.
-- 병합 뒤 main SHA와 필요한 repository destination을 다시 읽는다. Historical Sheet는 migration evidence로만 보존한다.
-
-## 4. 현재 코어 보호
-
-- PRIMARY CORE는 `강화의 긴장감 + DDD`; player question은 `STOP OR PUSH`.
-- 작품은 UID·소유·손상·복원·사건·연대기를 유지한다.
-- 일반 강화 성공은 항상 `SUCCESS_LEVEL_DELTA = +1`.
-- `+9 -> +10 = PRECISION_ENHANCEMENT` 하나뿐이며 성공 시 무기 귀속 `WEAPON_ITEM_KEYWORD` 하나를 위한 machine owner는 `CATALYST_AFFIX`다. `ITEM_KEYWORD_RECIPIENT = WEAPON_ITEM_ONLY`; 플레이어 칭호는 `+10` 보상이 아니며 네 번째 affix 슬롯은 금지한다. Decision37의 첫 2×2 표는 불씨/모루 계보와 날 세우기/경량 담금으로 구성되고, 빈 선택은 비용·굴림 전에 막히며 새 stored field는 만들지 않는다.
-- machine slots는 `GRADE_AFFIX / CATALYST_AFFIX / CHRONICLE_AFFIX`.
-
-### 4.1 Decision29 current durability authority
-
-```text
-BS-REPAIR-20260826-29
-DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC
-DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW
-BASE_MAX_DURABILITY = immutable birth durability
-0 <= CURRENT_DURABILITY <= MAX_DURABILITY <= BASE_MAX_DURABILITY
-MAX_DURABILITY_FLOOR = 1
-CURRENT_CONDITION_RATIO = CURRENT_DURABILITY / MAX_DURABILITY
-STRUCTURAL_CONDITION_RATIO = MAX_DURABILITY / BASE_MAX_DURABILITY
-EFFECTIVE_DURABILITY_RATIO = min(CURRENT_CONDITION_RATIO, STRUCTURAL_CONDITION_RATIO)
-DESTROYED = CURRENT_DURABILITY == 0
-NORMAL = EFFECTIVE_DURABILITY_RATIO == 1.00
-MINOR = 0.50 < EFFECTIVE_DURABILITY_RATIO < 1.00
-MAJOR = 0 < EFFECTIVE_DURABILITY_RATIO <= 0.50
-CURRENT_MAX_AUTHORITY = SUPERSEDED = HISTORICAL_DECISION26_ONLY
-ONE_DAMAGE_EVENT_ADVANCES_ONE_STATE = SUPERSEDED_BY_DECISION29
-```
-
-숫자 CURRENT/MAX/BASE_MAX는 숨은 보조축이 아니라 **보이는 유일한 gameplay durability authority**다. CURRENT 손상과 MAX 흉터를 별도 패널티로 중첩하지 않고 둘 중 더 나쁜 비율 하나가 effective state를 소유한다.
-
-```text
-5/5/5 -> NORMAL
-4/4/5 -> MINOR
-2/2/5 -> MAJOR
-1/1/5 -> MAJOR
-```
-
-`DAMAGE_EVENT_CURRENT_LOSS = 1`은 `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`다.
-
-### 4.2 Decision28 target risk + Decision29 effective durability modifier
-
-```text
-TARGET <= +10: ENHANCEMENT_DAMAGE = 0
-TARGET >= +11: ENHANCEMENT_DAMAGE = POSSIBLE
-P(BASE_DAMAGE_EVENT | ENHANCEMENT_FAILURE, TARGET_LEVEL)
-+11 5% / +30 6% / +60 7% / +90 8% / +100 10%
-DAMAGE_CURVE_INTERPOLATION = PIECEWISE_LINEAR_EXACT_BETWEEN_ANCHORS
-```
-
-Decision28 anchors are 유지된다. Decision29 temporary effective-state modifiers:
-
-```text
-NORMAL: success 0pp / new effect ×1.00 / damage risk ×1.00
-MINOR:  success -3pp / new effect ×0.90 / damage risk ×1.25
-MAJOR:  success -7pp / new effect ×0.75 / damage risk ×1.75
-DURABILITY_MODIFIERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
-```
-
-Hard guarantee는 실제 100% 성공을 유지한다. 효과 배율은 새 ordinary enhancement effect에만 적용하고 기존 스탯·+1 레벨·+10 keyword cardinality를 줄이지 않는다.
-
-```text
-P(FINAL_DAMAGE_EVENT | FAILURE, TARGET, EFFECTIVE_STATE)
-= Decision28_base_probability(TARGET) * Decision29_state_multiplier(EFFECTIVE_STATE)
-```
-
-모든 확률은 여전히 enhancement failure에 조건부다. `BS-ENHANCE-20260826-32`에 따라 실패 결과는 `FAILED_HOLD` 또는 `FAILED_DAMAGE` 하나이며 단계 하락·별도 CRITICAL은 금지한다. 화면은 성공/실패·유지/실패·손상의 최종 시도 확률을 소수 첫째 자리 반올림으로 표시하고, 실제 판정은 정확값을 유지한다.
-
-### 4.3 Repair / MAX scar
-
-```text
-REPAIR_JOB_AVAILABLE = boolean per item UID; true only after resolved actual damage lowers CURRENT
-REPAIR_ELIGIBLE = 0 < CURRENT_DURABILITY < MAX_DURABILITY AND REPAIR_JOB_AVAILABLE
-REPAIR_JOB_CONSUMED_ON_REPAIR_START = TRUE
-DESTROYED_REPAIR_ALLOWED = FALSE
-FULL_DURABILITY_REPAIR_ALLOWED = FALSE
-MAJOR_ENHANCEMENT_ELIGIBILITY = ALLOWED_WITH_DURABILITY_PENALTIES
-MAX_DURABILITY_RECOVERY = NOT_APPROVED
-```
-
-임시 repair quality:
-
-```text
-EXCELLENT 20% -> post-scar MAX 100%
-STANDARD  60% -> post-scar MAX 75%
-POOR      20% -> post-scar MAX 50%
-REPAIR_MINIMUM_CURRENT_GAIN_WHEN_POSSIBLE = 1
-```
-
-임시 MAX -1 scar chance는 **수리 전 effective state + 강화 구간**으로 정한다.
-
-```text
-            +0~10  +11~30  +31~60  +61~90  +91~100
-MINOR         10%      15%      20%      25%       30%
-MAJOR         25%      30%      35%      40%       45%
-MAX_SCAR_AMOUNT_ON_TRIGGER = -1
-MAX_DURABILITY_FLOOR = 1
-```
-
-모든 상세 수치는 `TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE`. `4/4/5`처럼 CURRENT가 MAX까지 회복돼도 MAX/BASE_MAX가 0.8이므로 MINOR가 남고 구조 흉터는 실제 강화 패널티로 유지된다. Decision31은 수리비를 `ceil(R_BAND * (0.05 + 0.65 * ((MAX-CURRENT)/BASE_MAX))) + 보강재 1개`의 초기 테스트 곡선으로 잠그고, 실제 손상 뒤 1회 수리 job만 허용한다. positive CURRENT gain을 막는 scar는 reroll 없이 skip한다. final price table은 아직 없다; `b=0.50/0.65/0.80` 감도분석이 다음 Gate다. 구형 CURRENT→MAX 수리비 공식과 `MAX +15 / cap60` 대수선은 fallback이 아니다.
-
-### 4.4 Decision30 customer/world event damage
-
-```text
-BS-DAMAGE-20260826-30
-PURCHASE_OR_HANDOFF_ITSELF_CAUSES_DAMAGE = FALSE
-ACTUAL_ITEM_USE_REQUIRED = TRUE
-MAX_DAMAGE_ROLLS_PER_EVENT_PER_UID = 1
-MISSION_OUTCOME_AND_ITEM_DAMAGE = INDEPENDENT_AXES
-WORLD_EVENT_MAX_DURABILITY_DAMAGE = FALSE
-NO_UNIVERSAL_CUSTOMER_DAMAGE_PERCENT
-```
-
-임시 event profile:
-
-```text
-NONE = 0%
-LOW = 10%
-MEDIUM = 20%
-HIGH = 40%
-DIRECT = 100%
-PROBABILISTIC_DAMAGE_CAP = 95%
-EVENT_DAMAGE_PROFILE_NUMBERS = TEMP_TEST_BUDGET / NOT_FINAL_PRODUCT_BALANCE
-```
-
-`NONE/LOW/MEDIUM/HIGH`는 Decision29 effective-state damage-risk multiplier를 재사용한다. `DIRECT`는 확률형 cap/multiplier를 거치지 않고 Decision29 damage event 1회를 확정한다. world/customer event는 MAX를 직접 깎지 않으며 실제 damage가 발생하면 Decision29이 CURRENT와 derived state를 소유한다.
-
-명시적으로 관련된 item keyword/function은 event가 causal relevance를 선언한 경우에만 probabilistic profile을 최대 1단계 낮출 수 있다. universal keyword damage bonus는 금지하고 generic keyword로 DIRECT를 완화하지 않는다.
-
-### 4.5 Other current rules
-
-- `ROUTINE_ENHANCEMENT_HISTORY = NOT_PLAYER_CHRONICLE`; 제작·키워드·손상·MAX scar 수리·인계·세계 결과·파괴 등 의미 사건만 player Chronicle.
-- 제작 등급은 `보통 / 우수 / 명품 / 걸작 / 전설`.
-- 예술성은 단계명 없는 `1~10`, 전투력을 기본적으로 올리지 않는다.
-- 보조재료 슬롯과 일반 수식어 A·B는 재도입하지 않는다.
-
-## 5. 보호 경로
-
-새 `기획 완료` 사용자 선언 전 변경 금지:
-
-```text
-data/
-scripts/
-scenes/
-assets/
-addons/
-project.godot
-```
-
-새 제품 범위의 일반 구현은 별도 승인 전 차단한다. 다만 `CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826` 범위의 구현·검수·교정은 허용된다. 현재 V2 runtime의 `current_durability/max_durability` 필드명이 Decision29와 유사해도 구현 증거가 아니다. 기존 resolver semantics는 여전히 `IMPLEMENTATION_DRIFT / HISTORICAL_RUNTIME_TRUTH`다.
-
-## 6. 정본·구형 문서
-
-- 한 질문에는 활성 책임 원본 하나만 둔다.
-- `[대체됨] / [부분 대체됨] / [보류] / [폐기] / [역사 증거]`를 직접 표시한다.
-- Decision26의 `CURRENT_MAX_AUTHORITY = SUPERSEDED`와 one-state-per-event는 Decision29에 의해 같은 필드에서 부분대체됐다.
-- Decision26의 customer/world-event damage hook은 Decision30이 eligibility/profile/probability composition을 refine한다.
-- 구형 CURRENT/MAX 수치·MAX penalty·repair price·overhaul 공식은 Decision29이 아니다.
-- 구형 `HOLD / DOWNGRADE / DAMAGE / CRITICAL` 비율은 Decision28/29 확률 또는 failure composition fallback이 아니다.
-- 기존 Visual GDD 8은 `HISTORICAL_INFORMATION_ARCHITECTURE_REFERENCE_ONLY`; 신규 설명용 이미지 batch template이 아니다.
-- `CURRENT_CONFIRMED_DECISIONS.md`는 역사 원장이다.
-- PR #81은 `REFERENCE_ONLY / DO_NOT_MERGE_AS_UNIT`.
-- pre-existing PR #196은 `OPEN_DRAFT_READ_ONLY_DO_NOT_TAKE_OVER`; 현재 PR과 흡수·수정·병합하지 않는다.
-
-## 7. 완료 증거
-
-- expected/exact HEAD 고정
-- Base current owner/main 확인
-- Python contracts + 관련 CI
-- changed files·보호 경로 감사
-- PR 댓글·인라인 스레드
-- 필요한 GitHub repository destination readback
-- Historical Sheet/Notion은 provenance-only이며 future readback/write 대상이 아니다.
-- 미실행 runtime·Android·접근성·성능·사람 플레이는 `NOT_RUN`
-
-## 8. 플랫폼 출시·에셋 권리
-
-출시·외부 자산·AI·외주 작업은 다음 프로젝트 증거를 읽는다.
-
-- `docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md`
-- `docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md`
-- `docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md`
-
-필수 권리·계약·약관·플랫폼 답변이 미확인이면 `RELEASE_BLOCKED_UNVERIFIED`. 제품 구현 BLOCKED 상태와 실제 제출·법률 검토·최종 등급 미실행 상태를 바꾸지 않는다.
-
-## 9. Godot·Godot AI·GUT·Hera 권위와 진입 Gate
-
-### 9.1 Current host/runtime routing
-
-현재 runtime/toolchain 선택은 사용자 제공 v4.8 r5.4와 최신 Base owner를 따른다.
-
-- 프로젝트별 동일 Godot binary 복사본·전용 포트를 기본적으로 증식하지 않는다.
-- shared approved exact Godot pin + shared approved Godot AI exact pin + provider fixed/default ports가 기본.
-- 프로젝트 격리는 exact repository/worktree/project path + editor/session identity로 보장.
-- 과거 Blacksmith 전용 `8006/9506`은 `HISTORICAL_ONLY / DO_NOT_REUSE_AS_DEFAULT`.
-- current official version은 작업 시 upstream fresh-read와 safe-update/rollback/canary Gate를 거친다.
-
-### 9.2 Historical authority / adoption records
-
-- `HIGODOT_SOLE_AUTHORING_AUTHORITY`: `BS-HIGODOT-20260808-01` 사용자 승인으로 HiGodot은 Production Scene·Node·Resource·`project.godot` 설정의 단일 저작 권위로 활성화됐다.
-- `GUT_SOLE_TEST_AUTHORITY`: GUT 9.7.1은 `BS-TEST-20260806-01` 및 postmerge closure에 따라 `FORMALLY_ADOPTED_ACTIVE`, GDScript 단위·통합 테스트 프레임워크 단일 권위다.
-- `ENTRY_GATE_FAIL_CLOSED`: 결정 원장·미확정/감사·이미지 목록/검수·열린 PR exact HEAD 중 하나라도 누락/stale/schema drift이면 작업 진입을 차단한다.
-- HiGodot current authority는 `FORMALLY_ACTIVATED_PRODUCTION_AUTHORING_AUTHORITY / USER_APPROVED_ACTIVE`; 당시 범위는 `TASK2_SCOPED_AUTHORING_ONLY`였으며 일반 제품 Gate를 열지 않는다.
-- `.tscn`/Resource/`project.godot` 변경은 승인 production-authoring provenance가 있어야 하며 GitHub Contents API/직접 텍스트 치환으로 Godot 직렬화 surface를 우회하지 않는다.
-- `BS-HERA-20260808-01`: `VENDORED_PRESENT_DISABLED_NON_AUTHORITATIVE` 역사 record.
-- `BS-TOOLCHAIN-20260809-01`: Godot AI 3.1.3 역사 baseline, GUT editor plugin enabled, Hera enabled non-authoritative.
-- current Hera state = `VENDORED_PRESENT_ENABLED_NON_AUTHORITATIVE`; Hera authoring/mutation authority remains `NONE`.
-- `BS-TOOLCHAIN-20260811-02`: Godot AI 3.1.4 역사 current-version record.
-- `BS-TOOLCHAIN-20260826-33`: Godot AI 3.2.0 current vendor identity; 새 작업의 최신 pin을 자동 결정하지 않는다.
-- GUT runtime은 Git 추적 파일을 수정할 수 없고 HiGodot은 `tests/gut/**`, `.gutconfig.json`, `addons/gut/**`, JUnit 성공 결과를 수정할 수 없다. Hera authoring/mutation authority는 별도 승인 전 `NONE`.
-
-## 10. 현재 프로젝트 총 작업지시문
-
-- current task execution contract: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r5.4_SUPERSET_FINAL_20260826.md`
-- `CURRENT_EXECUTION_CONTRACT_STATE: USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT`
-- previous `v4.8-r4` is `HISTORICAL_SUPERSEDED_BY_R5_4`.
-- repository-tracked `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` v4.5 r2는 `TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE`.
-- historical compatibility anchor: `PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md` (`v4.5 r2`) — historical only.
-- current operational override Decisions: `BS-OPS-20260828-36`, `BS-OPS-20260828-35`, `BS-OPS-20260825-08`, `BS-OPS-20260825-07`, `BS-ENHANCE-20260825-25`, `BS-DAMAGE-20260825-26`, `BS-DAMAGE-20260826-28`, `BS-REPAIR-20260826-29`, `BS-DAMAGE-20260826-30`, `BS-CHRONICLE-20260825-27`, `BS-ART-20260825-03`, `BS-ART-20260826-04`, `BS-OPS-20260825-03`, `BS-OPS-20260825-02`, `BS-TOOLCHAIN-20260826-33`.
-- 프로젝트 바인딩 historical Decision: `BS-OPS-20260811-01`.
-- 선행 조사 Gate: `BS-OPS-20260811-02 / PRE_WORK_RESEARCH_GATE`.
-- current override: `PRODUCT_IMPLEMENTATION: CURRENT_CANON_MVP_ACTIVE_BY_USER_DECLARATION_20260826`; 새 Task3 또는 범위 확장은 `NOT_SEPARATELY_APPROVED` 유지.
+모루의 서약은 Android 세로형 Godot 게임이다. 한국어로 결과·바꾼 이유·직접 확인 방법을 설명한다.
+이 파일은 항상 필요한 안전 원칙과 진입 경로만 소유한다. 게임 규칙·수치·과거 작업 상태를 복제하지 않는다.
+
+## 현재 권위와 읽기 순서
+
+1. 사용자의 최신 요청·승인·금지 범위.
+2. 이 파일과 `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`의 current-authority 표.
+3. `[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md`와 `docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md`의 현재 작업 경계.
+4. `docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md`에서 이번 질문의 최신 Decision·기획·구조화 원본만 선택.
+5. 최신 main, 작업 브랜치와 미커밋 변경, 실제 대상·사용처·테스트, 같은 작업 및 겹치는 열린 PR.
+6. `skills/PROJECT_BASE_ADAPTER.json`의 채택 계약과 이번 작업에 관련된 Base 최신 main의 차이.
+7. `.agents/skills/blacksmith-workflow-router/SKILL.md`로 필요한 최소 스킬·참조 선택.
+
+Base 원격은 https://github.com/alsdmlals4-eng/Base 다. 매 새 작업에서 최신 main을 발견하되 관찰 SHA를 영구 실행 기준으로 쓰지 않는다.
+채택 릴리스·검증기·저장 계약의 exact pin은 재현성과 안전을 위한 별도 고정이다. 관찰만으로 바꾸지 않는다.
+날짜별 과거 상태·PR 번호·대화·memory·PDF·Notion은 현재 실행 승인을 대신하지 않는다.
+현재 기획과 코드가 다르면 승인 의미와 구현 사실을 구분하고 해당 책임 원본과 검증 증거로 판정한다.
+
+## 계획·승인·계속 작업
+
+- 새 변경은 의도, 현재 상태, 변경/보호 범위, 구현 순서, 완료·검증 기준을 보여주고 승인받는다.
+- 같은 승인 범위의 `진행해`는 기존 승인·계획을 재사용한다. 수정·검사·정상 병합 단계마다 재승인하지 않는다.
+- 저장소에서 확인할 수 있는 사실은 직접 확인한다. 새 방향·코어 경험·비용·보안·파괴적 변경만 사용자 결정으로 올린다.
+- 계획·체크리스트·진행 메모는 기존 작업 계약과 Active Context에 통합한다. 같은 내용을 별도 세 문서로 만들지 않는다.
+- 읽기 전용 질문에는 파일 수정·새 receipt·구현 승인 절차를 만들지 않는다.
+- 승인한 작업의 끝은 그 범위의 사용 가능한 결과와 검증이다. 계획 소진만으로 게임 전체 완성을 주장하지 않는다.
+
+## 조사·구현·검토
+
+- 현재 구현·승인 자산 → 관련 Base 재사용 근거 → 판단에 필요한 공식/1차 자료 순으로 조사한다.
+- 같은 범위의 유효한 조사는 재사용한다. 새 판단·버전 변경·실패로 근거가 부족할 때 추가 조사한다.
+- 중요한 새 설계·정책 선택만 실질 대안을 비교한다. 단일 정답 교정에 허수 대안을 만들지 않는다.
+- 코드·기계 계약 변경은 실패를 잡는 검사부터 작성하고 실제 실패 → 최소 교정 → 회귀 확인을 수행한다.
+- 순수 문장 수정은 사실·참조·diff 검사로 확인한다. 문구 존재만 검사하는 테스트를 늘리지 않는다.
+- 중간에는 영향 검사, 통합 경계에는 관련 회귀, 병합 전에는 해당 repository 필수 검사를 실행한다.
+- 전체 적대 검토는 승인 계약 전체에서 정확히 2회를 공유한다. 이후는 결함별 교정·표적 재검증이며 blocker를 숨기지 않는다.
+- 필요한 스킬을 완전히 읽되 관련 없는 분야·모든 reference를 일괄 로드하지 않는다. 설치 스킬·전역 설정은 임의 수정하지 않는다.
+- 원본 미확인·검사 실패는 해당 의존 작업을 차단한다. 별도 근거·승인이 있는 독립 작업은 가능하지만 실패한 gate를 통과로 바꾸지 않는다.
+- 자동 생성 router의 stop은 검증되지 않은 route 실행에 적용한다. 원인·현재 권위의 읽기 전용 감사는 허용하며, 생성 파일은 직접 고치지 않는다. 운영 계약 → 채택 adapter와 CI 검증 경로를 먼저 읽는다.
+
+## 게임·엔진·사용자 자료 보호
+
+- `data/`, `scripts/`, `scenes/`, `assets/`, `addons/`, `project.godot`은 보호 경로다. 현재 승인된 제품 범위와 exact 보호 변경 계약 없이 수정하지 않는다.
+- 기획 규칙·밸런스·저장 호환성·UID·승인 자산·엔진 버전은 운영 지침 정리의 변경 대상이 아니다.
+- Godot 작업에만 실제 `project.godot`, 정확한 프로젝트/편집기 세션, 채택된 엔진·저작 권위를 확인한다.
+- 엔진·저작·GUT 상세는 `docs/testing/HIGODOT_GUT_AUTHORITY_POLICY.json`에서 확인한다. 버전·당시 활성화 증거를 이 파일에 복제하지 않는다.
+- HiGodot은 채택된 persistent Godot 저작 권위, GUT은 채택된 GDScript 테스트 권위다. Hera는 승인된 관찰/QA 범위만 사용하며 persistent 저작에 쓰지 않는다.
+- Scene·Resource·project 설정은 승인 저작 경로를 사용한다. 테스트 도구로 제품을 수정하거나 제품 저작 도구로 테스트 성공 결과를 만들지 않는다.
+- 로컬 GUT 검증은 CI의 `-d`와 대상 디렉터리 등 실제 옵션을 맞춘다. 경고를 숨겨 통과시키지 않는다.
+- 사용자 기존 변경·저장·다른 작업 폴더·프로세스는 보호한다. 실패 원인을 모른 채 reset·되돌리기·대량 종료하지 않는다.
+- 불필요 파일은 참조·실제 사용처·복구 가능성을 확인하고 사용자 삭제 대기 폴더로 정리할 범위만 제안한다. 이름·나이만으로 삭제하지 않는다.
+- 비밀키·개인정보·결제 원문을 Git에 넣지 않는다. 필요한 권리·플랫폼 증거가 없으면 출시는 미검증 상태로 둔다.
+- 출시·외부 자산 작업에만 `docs/PLATFORM_RELEASE_AND_ASSET_RIGHTS_PROFILE.md`, `docs/ASSET_RIGHTS_AND_PROVENANCE_RECORD.md`, `docs/GAME_RELEASE_COMPLIANCE_EVIDENCE_PACK.md`를 읽는다.
+
+## 이미지·블루프린트·작업일지
+
+- 플레이어-facing 변경은 기존 운영 계약의 재미 검증 절을 적용한다. 경험 가설·반례 → 상태/선택/정보/표현 → 실제 consumer → 검증/교정을 같은 요구에 연결한다.
+- 자동 검사는 재미 PASS가 아니다. DOC/MACHINE/RUNTIME/HUMAN/승인/출시를 구분하며 사람 미검증이 승인 구현 전체를 차단하지 않는다. 새 감독·보편 점수·별도 보고서는 만들지 않는다.
+
+- 실제 이미지 도구를 쓰기 전에 consumer·용도·크기·상태군·구현 경로를 확인한다. 그림체는 현재 승인 원본에서 읽는다.
+- 신규 분리형 이미지는 크로마키 원본 → 배경 제거 → 실제 alpha/edge 검수로 처리한다. 배경 자체를 쓰는 consumer는 해당 브리프를 따른다.
+- 생성·후보 선정·최종 승인·런타임 적용·실제 인게임 캡처는 서로 다른 증거다. 승인 자산을 자동 교체하지 않는다.
+- 기획·구조화 데이터·코드·자산·증거는 GitHub repository가 정본이다. 블루프린트 PDF는 사람용 파생본이며 체크리스트를 포함한다.
+- 새 HTML PM, Notion/Google Sheets 동기화를 기본 완료 조건으로 추가하지 않는다. 고유 legacy 자료의 명시적 이관만 별도 처리한다.
+- 월간 AI 작업일지는 기존 JSON/PDF에 실제 작업일별로 누적한다. 작업마다 새 판본을 만들지 않는다.
+- 작업일·기록일·캡처일·PDF 발행일과 미확보 증거를 구분한다. 전체 PDF는 의미 있는 검토·마일스톤·인도 시 갱신한다.
+
+## GitHub와 마감
+
+- 다른 open/draft/ready PR은 읽기 전용이다. 겹침은 확인하되 사용자의 명시적 흡수 승인 없이 변경분을 가져오거나 수정·종료·병합하지 않는다.
+- 현재 승인 작업 PR만 정확한 HEAD·관련 CI·독립 검토·미해결 스레드·실제 repository 규칙 확인 후 정상 병합한다.
+- direct main push, force push, admin 또는 ruleset 우회는 하지 않는다. 보호 설정이 있다는 추정도 하지 않는다.
+- 병합 뒤 원격 main과 로컬 main을 확인한다. 미커밋 사용자 변경은 동기화 대상에서 제외하고 보존한다.
+- 자동 검사·Godot 실행·화면·기기·사용자 검수·최종 자산·출시를 분리한다. 미실행은 `NOT_RUN`, 실패는 `FAIL`이다.
+- 기존 운영 원본에 결과·근거·다음 작업을 짧게 갱신한다. 새 교훈이 없으면 학습 문서나 Base 제안을 늘리지 않는다.
+- 완료보고는 결과 → 이유·작동 방식 → 확인 방법 → 검증·남은 위험 순으로 전달한다.

@@ -46,7 +46,7 @@ class BCAAdoptionTests(unittest.TestCase):
 
         sheet = self.registry["bca_visual_sheet"]
         self.assertEqual(SHEET_ID, sheet["spreadsheet_id"])
-        self.assertEqual("USER_FACING_GDD_WORKSPACE", sheet["workbook_role"])
+        self.assertEqual("HISTORICAL_REFERENCE", sheet["workbook_role"])
         self.assertIn("05_GDD_요약", sheet["required_tabs"])
         self.assertIn("15_조작_게임규칙", sheet["required_tabs"])
 

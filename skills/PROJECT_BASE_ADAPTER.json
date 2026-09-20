@@ -25,7 +25,7 @@
     "last_synced_main_commit": "534ac05596573ae4055fa97a4e6888f4e8966b05",
     "last_synced_pr": 99,
     "readback_status": "MAIN_CANON_READBACK_PASS",
-    "role": "USER_FACING_GDD_WORKSPACE",
+    "role": "GOOGLE_SHEETS_LEGACY_MIGRATION_SOURCE",
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
     "sync_decision_ids": [
       "BS-OPS-20260802-01",
@@ -41,7 +41,7 @@
       "BS-WORLD-20260803-02",
       "BS-OPS-20260803-06"
     ],
-    "sync_status": "CURRENT",
+    "sync_status": "STALE",
     "target_tabs": [
       "00_프로젝트_허브",
       "01_작업순서",
@@ -64,7 +64,7 @@
   "protected_baseline": {
     "authority_kind": "REMOTE_TRACKING_REF",
     "authority_ref": "refs/remotes/origin/main",
-    "commit": "ed6f8af37bb134288118a2d9bc7ce0e0fb0a997b",
+    "commit": "17fa19195fbb78faaef0bdde88b986e3e1d9100d",
     "policy_sha256": "1c36c4180b85d6bd97f4e7cdba908cc73298f529d368aa07e0dffde6e1e8ec52",
     "policy_source_path": "skills/PROJECT_BASE_ADAPTER.json",
     "policy_source_type": "CANONICAL_ADAPTER_SOURCE",
@@ -182,11 +182,9 @@
     "governing-legacy-retention-and-archives": {
       "adapter": "docs/archive/ARCHIVE_RETENTION_ADAPTER.json",
       "current_canon_priority": [
-        "CURRENT_CONFIRMED_DECISIONS.md",
-        "docs/planning/CURRENT_R1_CANON_REGISTRY.json",
-        "[기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md",
-        "[기획서]/00_프로젝트_허브/DOCUMENTATION_MAP.md",
-        "[기획서]/01_통합_게임_기획/BLACKSMITH_GAME_BIBLE.md"
+        "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
+        "docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md",
+        "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md"
       ],
       "existing_legacy_migration": "NOT_IN_THIS_CHECKPOINT",
       "pr81_status": "REFERENCE_ONLY_SUPERSEDED_AS_MERGE_UNIT"
@@ -227,7 +225,8 @@
         "planning_conflict_state": "GRILL_ME_REQUIRED",
         "post_merge_sheet_state": "SYNCED_TO_MAIN",
         "pre_merge_sheet_state": "APPROVED_PENDING_MERGE"
-      }
+      },
+      "project_operational_owner": "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md"
     },
     "optimizing-ai-model-and-prompt-costs": {
       "modes": [
@@ -266,7 +265,7 @@
     "project": {
       "hash_definition": "RAW_FILE_BYTES_SHA256",
       "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
-      "sha256": "0074d2814b8034860ca6d4684eaaa59245546b313b21eb245ec88fb16d4c75e6"
+      "sha256": "c34b0a3f2d5d803db7df2e87d946f26d497d53b2e7ad51637e052f02c4190216"
     }
   },
   "validators": [
@@ -275,7 +274,7 @@
     "python tools/audit_project_operating_system.py",
     "python tests/test_base_shared_external_ai_adapter.py",
     "python tests/test_base_v942_planning_first_adoption.py",
-    "manual: GitHub PR and Sheet premerge adversarial audit",
+    "manual: current-task GitHub PR exact-head audit; Sheet only for explicit legacy migration",
     "manual: Godot project parse/runtime check",
     "manual: Android device and safe-area check when applicable",
     "manual: UX UI human understanding and accessibility review",

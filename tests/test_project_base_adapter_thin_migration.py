@@ -29,7 +29,8 @@ class BlacksmithThinAdapterMigrationTests(unittest.TestCase):
         self.assertTrue(all(isinstance(command, str) and command for command in adapter["validators"]))
         self.assertIn(adapter["protected_baseline"]["authority_kind"], {"REMOTE_TRACKING_REF", "GITHUB_PR_BASE"})
         self.assertIn(adapter["protected_baseline"]["policy_source_type"], {"FIRST_MIGRATION_LEGACY_SOURCE", "CANONICAL_ADAPTER_SOURCE"})
-        self.assertEqual("CURRENT", adapter["gdd_sheet"]["sync_status"])
+        self.assertEqual("STALE", adapter["gdd_sheet"]["sync_status"])
+        self.assertEqual("GOOGLE_SHEETS_LEGACY_MIGRATION_SOURCE", adapter["gdd_sheet"]["role"])
 
     def test_operating_health_is_the_strict_base_view_with_migration_evidence(self) -> None:
         health = json.loads(HEALTH.read_text(encoding="utf-8"))

@@ -9,7 +9,16 @@ on:
       - 'docs/operations/receipts/2026-09-03-recurring-precision-runtime-qa.json'
       - 'docs/operations/BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md'
       - 'docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md'
-      - 'skills/PROJECT_BASE_ADAPTER.json'
+      - 'skills/**'
+      - '.agents/skills/**'
+      - '[[]기획서]/00_프로젝트_허브/ACTIVE_CONTEXT.md'
+      - '[[]기획서]/00_프로젝트_허브/SKILL_REGISTRY.json'
+      - 'CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md'
+      - 'docs/design/BLACKSMITH_HUMAN_BLUEPRINT_PRODUCTION_20260911.md'
+      - 'docs/design/BLACKSMITH_HUMAN_BLUEPRINT_20260911.md'
+      - 'docs/design/BLACKSMITH_REMAINING_IMPLEMENTATION_SPEC_20260914.md'
+      - 'tests/check_current_authority_entrypoint_contract.py'
+      - 'tests/test_lean_authority_routing.py'
       - 'tests/check_base_current_adaptation_work_contract.py'
       - '.github/workflows/validate-current-base-adaptation-work-contract.yml'
   workflow_dispatch:
@@ -24,8 +33,10 @@ jobs:
     steps:
       - name: Check out Blacksmith PR head
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
-      - name: Check out observed Base receipt validator
+      - name: Check out historical receipt validator (not latest Base authority)
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           repository: alsdmlals4-eng/Base
@@ -38,7 +49,12 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Validate current Base adaptation contract and receipt
+      - name: Validate live authority routes and rejection cases
+        run: |
+          python tests/check_current_authority_entrypoint_contract.py
+          python -m unittest discover -s tests -p 'test_lean_authority_routing.py' -v
+
+      - name: Validate retained September 3 receipt and current safety boundaries
         env:
           BLACKSMITH_BASE_ROOT: ${{ github.workspace }}/.base-current
         run: python tests/check_base_current_adaptation_work_contract.py

@@ -108,7 +108,7 @@
   "project_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "[기획서]/00_프로젝트_허브/SKILL_REGISTRY.json",
-    "sha256": "0074d2814b8034860ca6d4684eaaa59245546b313b21eb245ec88fb16d4c75e6"
+    "sha256": "c34b0a3f2d5d803db7df2e87d946f26d497d53b2e7ad51637e052f02c4190216"
   },
   "project_routes": [
     {
@@ -126,6 +126,6 @@
   "source_registry": {
     "hash_definition": "RAW_FILE_BYTES_SHA256",
     "path": "skills/PROJECT_BASE_ADAPTER.json",
-    "sha256": "2c10a6b5a7ceb15df4c9307647c421eb1116405481856db1c6ec534dcfd61df0"
+    "sha256": "afd537c3248de561f960828f368db0a5788e0701ea7968a83715ee7626eae49e"
   }
 }

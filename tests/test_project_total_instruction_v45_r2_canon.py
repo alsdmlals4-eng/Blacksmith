@@ -46,8 +46,8 @@ class ProjectTotalInstructionV45R2CanonTests(unittest.TestCase):
             self.assertIn(token, decision)
 
     def test_historical_instruction_stays_reachable_without_overriding_current_overlay(self) -> None:
-        # AGENTS/Documentation Map retain the immutable v4.5-r2 compatibility route.
-        for path in (AGENTS, DOCMAP):
+        # The historical map, not the always-loaded bootstrap, retains provenance.
+        for path in (DOCMAP,):
             text = path.read_text(encoding="utf-8")
             self.assertIn("PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION.md", text, str(path))
             self.assertIn("BS-OPS-20260811-01", text, str(path))

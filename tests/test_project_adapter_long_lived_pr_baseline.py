@@ -68,10 +68,10 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
         adapter = json.loads(ADAPTER.read_text(encoding="utf-8"))
         delivery = json.loads(CURRENT_DELIVERY_RECEIPT.read_text(encoding="utf-8"))["remote_delivery"]
         self.assertEqual(BASE_RELEASE_VERSION, adapter["base_release"]["version"])
-        self.assertEqual(
-            delivery["adapter_baseline_advanced_to"],
-            adapter["protected_baseline"]["commit"],
-        )
+        result = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", delivery["adapter_baseline_advanced_to"],
+             adapter["protected_baseline"]["commit"]], cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(0, result.returncode, result.stderr)
 
     def test_health_evidence_hashes_use_canonical_git_bytes(self) -> None:
         health = json.loads(HEALTH.read_text(encoding="utf-8"))
@@ -103,9 +103,11 @@ class LongLivedPrAdapterBaselineContractTests(unittest.TestCase):
             self.assertIn(f"{source} text eol=lf", lines)
 
     def test_generated_view_source_inputs_are_checked_out_with_lf(self) -> None:
-        lines = set((ROOT / ".gitattributes").read_text(encoding="utf-8").splitlines())
+        # Check Git's interpretation: brackets in a filename are glob metacharacters.
         for source in GENERATED_VIEW_SOURCE_INPUTS:
-            self.assertIn(f"{source} text eol=lf", lines)
+            result = subprocess.run(["git", "check-attr", "-z", "eol", "--", source],
+                                    cwd=ROOT, capture_output=True, check=True)
+            self.assertEqual(b"lf", result.stdout.split(b"\0")[2], source)
 
     def test_operating_maturity_has_three_valid_operating_records(self) -> None:
         health = json.loads(HEALTH.read_text(encoding="utf-8"))

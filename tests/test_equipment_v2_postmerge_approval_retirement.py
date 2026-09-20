@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -32,6 +33,12 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
 
 
 class ProductApprovalPostmergeClosureTests(unittest.TestCase):
+    def assert_baseline_descends_from(self, historical_merge: str) -> None:
+        baseline = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))["protected_baseline"]["commit"]
+        result = subprocess.run(["git", "merge-base", "--is-ancestor", historical_merge, baseline],
+                                cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(0, result.returncode, result.stderr)
+
     def test_commission_delivery_retires_exact_sixteen_path_approval(self):
         receipt = json.loads((ROOT / 'docs/operations/receipts/2026-09-16-general-commissions.json').read_text(encoding='utf-8'))
         delivery = receipt['remote_delivery']
@@ -43,7 +50,7 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
         approved = json.loads(archive.read_text(encoding='utf-8'))
         self.assertEqual(16, len(approved['approved_paths']))
         self.assertEqual('5a84c4b2f2e972262b66f34845d625fda736eb31', approved['protected_base_commit'])
-        self.assertEqual(delivery['merge_commit'], json.loads(CANONICAL_ADAPTER.read_text(encoding='utf-8'))['protected_baseline']['commit'])
+        self.assert_baseline_descends_from(delivery['merge_commit'])
         self.assertEqual('RETIRED_ARCHIVED_NOT_DELETED', delivery['one_shot_approval_status'])
 
     def test_world5_delivery_retires_exact_scope_and_advances_verified_baseline(self):
@@ -115,7 +122,7 @@ class ProductApprovalPostmergeClosureTests(unittest.TestCase):
         adapter = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))
 
         current_delivery = json.loads((ROOT / "docs/operations/receipts/2026-09-16-general-commissions.json").read_text(encoding="utf-8"))["remote_delivery"]
-        self.assertEqual(current_delivery["adapter_baseline_advanced_to"], adapter["protected_baseline"]["commit"])
+        self.assert_baseline_descends_from(current_delivery["adapter_baseline_advanced_to"])
         # Retirement belongs to the consumed approval, not this reusable path.
         # A later approved task may publish a new manifest against the merged base.
         if APPROVAL.exists():

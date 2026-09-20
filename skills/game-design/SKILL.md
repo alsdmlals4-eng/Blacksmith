@@ -1,82 +1,42 @@
 ---
 name: blacksmith-game-design
-description: Blacksmith의 코어·제작·강화·경제·연구·플레이테스트·PoC·Vertical Slice를 하나의 게임 디자인 책임으로 다룬다.
+description: Use when reviewing Blacksmith player experience, game rules, balance, feature design, visual intent, or playtest evidence.
 ---
 
 # Blacksmith Game Design
 
-## Modes
+## 읽기와 범위
 
-- `frame`: 핵심 행동·감정·제약·결정 질문을 고정한다.
-- `identify-project-core`: 기존 정본·구현·증거로 정체성·코어 루프·중심 시스템을 읽기 전용 판정한다.
-- `classify-core-support`: 기능을 프로젝트 코어·코어 지원·MVP 지원·콘텐츠 변형·외피·도구로 구분한다.
-- `propose-core-contract`: 방향 재정의 시 코어 경험·불변 조건·변경 가능한 외피를 제안한다.
-- `confirm-core-with-user`: 스트레스 테스트한 코어 계약을 사용자 승인으로만 확정한다.
-- `reopen-core`: PoC 반증이나 방향 변경 근거가 있을 때 확정 코어를 명시적으로 재검토한다.
-- `update-system`: 승인된 제작·강화·판매 규칙을 정본과 데이터 계약에 반영한다.
-- `balance-review`: 성장·성공률·위험·가격·재료 선택과 악용 가능성을 검토한다.
-- `balance-simulation`: 강화·제작·판매의 확률·비용·재료·파괴·복원 곡선을 재현 가능한 가설과 시뮬레이션으로 검증한다.
-- `benchmark-and-player-research`: 제품 사실·플레이어 반응·행동 근거를 분리하고 `ADOPT / ADAPT / AVOID / TEST / IGNORE`로 판정한다.
-- `gur-coverage-audit`: 시장·경쟁·사용자·플레이테스트·튜토리얼·UX·텔레메트리·밸런스·가설·개선 결정의 근거 누락을 감사한다.
-- `research-evidence-map`: 표본·버전·관찰·자기보고·행동 지표를 채택 결정과 연결한다.
-- `playtest-and-experiment`: 빌드·대상·과제·행동 이벤트·성공 기준을 고정한다.
-- `poc-check`: 가장 위험한 가설과 최소 검증·중단 기준을 정한다.
-- `vertical-slice-gate`: 대표 플레이 구간의 목표 품질·접근성·성능·제작 파이프라인·실제 플레이 증거를 판정한다.
-- `art-brief`: 승인된 아트 방향을 생성·편집 프롬프트와 기술 제약으로 변환한다.
-- `visual-brief`: 프로젝트 정본·화면 목적·정보 위계·해상도·유지/금지 요소를 이미지 기획 브리프로 연결한다.
-- `planning-visualization`: 기획 중 단조·강화·장비 생애주기·세로 UI 목업으로 구조와 모순을 비교한다.
-- `final-visual-candidate`: 기획 종료 후 Demo·Google Play·UI·캐릭터·장비 후보를 만든다.
-- `visual-qa-and-approval`: 실제 모바일 화면·구현·권리·오류·승인 상태를 검수한다.
+Repository AGENTS.md → `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`의 current-authority → production/fields → 해당 기능의 승인 원본·JSON·실제 사용처를 읽는다.
+장르명·구형 Game Bible·스킬 본문으로 코어·그림체·강화 규칙을 정하지 않는다.
+읽기 전용 설명은 사실과 미확인을 답하고 제품 수정·새 승인·새 보고서를 만들지 않는다.
 
-## Read
+## 필요한 작업만 선택
 
-`ACTIVE_CONTEXT.md` → `BLACKSMITH_GAME_BIBLE.md` → 관련 MVP Scope 또는 `docs/BALANCE_SIMULATION_SCOPE.md` → 관련 JSON → 실제 구현·테스트.
+- frame / identify-project-core / classify-core-support: 현재 승인 경험과 실제 구현을 구분하고 핵심·지원·외피를 판단한다.
+- update-system / balance-review / balance-simulation: 해당 Decision·데이터·판정 순서·저장 영향을 확인한다. 핵심/경제/저장 의미 변화는 새 결정이다.
+- benchmark-and-player-research / playtest-and-experiment: 기존 유효 근거부터 사용하고 부족한 질문만 조사한다. 제품 사실·관찰·자기보고·해석을 구분한다.
+- visual-brief / art-brief / visual-qa-and-approval: 현재 승인 방향과 실제 consumer·상태군·규격을 연결한다. 이미지 도구·크로마키/alpha·사후 승인·런타임 증거는 AGENTS의 경계를 따른다.
+- 나머지 Registry mode는 위 같은 책임 안에서 필요한 경우만 적용한다. 자동 전체 체크리스트가 아니다.
 
-## Rules
+## 재미 가설에서 구현까지
 
-- 광클→즉시 피드백→피버→성장 선택이 핵심이다.
-- 코어 판정과 코어 확정을 분리한다. 기존 사실 판정은 읽기 전용이며, 불변 계약 확정은 사용자 승인이 필요하다.
-- 중요한 기능을 모두 코어로 올리지 않는다. 제거·대체 시 정체성, 반복 선택, 보상 감정이 무너지는지 확인한다.
-- Base의 `DDD`는 `Digital Dopamine Design`이다. 첫 의미 있는 보상, 피드백 지연, Micro→Session→Meta 보상, 다음 행동, 피로·인플레이션을 검토한다.
-- 일반 강화와 +10 단위 특수 강화를 분리한다.
-- 보조재료·촉매·정밀 강화는 특수 강화에서만 적용한다.
-- 고단계 보상은 위험·비용·복구 선택과 함께 증가시킨다.
-- 직원·무기 수리는 승인 없이 추가하지 않는다.
-- 수치의 정본은 JSON, 구현 사실은 Script·Scene·Test다.
-- 벤치마크와 리뷰는 요구사항 정본이 아니라 개선 가설의 근거다.
-- 자기보고와 실제 행동을 구분하고, 표본·빌드·버전을 기록한다.
-- 승인 이미지가 있으면 임의로 교체하지 않는다. 이미지 생성은 승인된 BCA workflow·브리프 안에서 실행하며 생성 결과를 자동 최종 자산으로 사용하지 않는다.
+플레이어-facing 변경은 운영 계약의 재미 검증 절을 사용한다. Base #885의 방법을 현재 프로젝트에 맞추되 새 감독 스킬/점수표를 만들지 않는다.
+기존 기능 원본에 요구 ID, 승인된 경험, 가설·반례, 대표 구간, 상태·선택·정보·피드백, 실제 consumer, 검증/다음 결정을 연결한다.
+L1은 짧은 연결, 주요 기능은 기존 상세 명세를 사용한다. 미구현은 PLANNED다. 단순 내부/기계 수정은 영향이 없다는 이유를 기록하거나 기존 비퇴행 근거를 재사용한다.
 
-## Balance simulation
+- 강화: 위험·비용·태그 선택의 이해와 STOP OR PUSH 판단을 관찰한다. 오래 고민했다는 이유로 재미라고 단정하지 않는다.
+- 의뢰/세계 결과: 같은 장비와 결과의 인과를 이해하는지 확인한다. 보상 수령률만으로 애착을 확정하지 않는다.
+- 효과/비주얼/UI: 목적·필요 상태·정보 공개·시점/반복·중단/복귀·자산·consumer·확인 방법을 구체화한다. 규칙 효과와 표현 효과의 책임을 분리한다.
 
-- 먼저 결정 질문을 하나로 고정한다. 예: 특정 목표 강화까지의 기대 비용, 파괴 뒤 회복 가능성, 피버 보상이 정상 제작 선택을 압도하는지, 판매 보상이 재료·골드 순환을 무너뜨리는지.
-- JSON 정본, 코드의 실제 판정 순서, 초기 자원, 반복 정책, 중지 조건을 입력으로 기록한다. 문서 수치나 임시 화면 문구를 입력값으로 쓰지 않는다.
-- 평균만 보고 결론내리지 않는다. 중앙값, 하위·상위 분위, 실패·하락·파괴 빈도, 재료 병목, 보관함·자동 중지, 선택별 분산을 함께 본다.
-- 성공률·비용·보정·피버·판매가를 한 실험에서 동시에 바꾸지 않는다. 변경 전 가설·가드레일·중단 조건을 선언한다.
-- 결과는 `KEEP / TUNE / REJECT / TEST_IN_PLAY`로 판정하고, 실제 플레이 체감이 필요한 결론은 시뮬레이션 PASS로 확정하지 않는다.
-- 범위·입력·지표·산출물·완료 기준은 `docs/BALANCE_SIMULATION_SCOPE.md`를 따른다.
+위 질문은 기존 경험을 검증하는 가설이지 새 게임 규칙이나 합격 수치가 아니다.
+DOC/MACHINE/RUNTIME/HUMAN/USER_APPROVAL/RELEASE는 별개다. 자동 테스트·AI 평가는 HUMAN/FUN_PASS가 아니다.
+첫 이해와 반복 피로, 행동과 자기보고, 반대 근거를 비교한다. 사람 미검증은 승인 구현을 순환 차단하지 않는다.
+실패는 이해/선택·규칙/연출/리듬·콘텐츠/빌드 문제로 나누고 KEEP/CHANGE/DEFER/RETEST를 기존 Decision에 연결한다.
 
-## Output
+## 수치·산출물
 
-- 유지·변경·제외 범위와 코어 분류
-- 책임 원본과 데이터 필드
-- 정상·실패·경계 플레이 결과
-- 검증 가능한 가설·지표·게이트
-- 시뮬레이션 입력 스냅샷·시드·분포·판정
-- 연구 근거의 표본·버전·행동/자기보고 구분
-- 미확정과 다음 결정
-
-## Failure
-
-- 부가 시스템이 광클 핵심 경험을 가린다.
-- 승인 없이 코어를 확정하거나 MVP 지원 기능을 코어로 과대 분류한다.
-- 특수 강화 경계나 재료 효과가 일반 강화로 누출된다.
-- 외부 인기 기능을 검증 없이 복사한다.
-- 평균만 보고 고위험 곡선을 확정한다.
-- 여러 실험 변수를 동시에 바꾸거나 결과 후 성공 기준을 바꾼다.
-- 실제 플레이 증거 없이 Production·Vertical Slice 통과를 선언한다.
-- 이미지 단계·브리프·검수·승인 원장 없이 생성하거나 자동 최종 자산으로 사용한다.
-
-## Learning
-
-실패·중요 결정·반복 가능한 교훈·실제 플레이 증거만 `skills/SKILL_LEARNING_LOG.md`에 기록한다.
+수치는 해당 JSON과 실제 판정 순서가 소유한다. 임시값은 가설이며 평균뿐 아니라 분포·실패·병목·선택별 차이를 본다.
+변수·가드레일·중단 기준을 먼저 정한다. 범위가 실제 밸런스 시뮬레이션이면 `docs/BALANCE_SIMULATION_SCOPE.md`의 해당 계약만 읽는다.
+산출물은 기존 원본의 변경/보호·가설·consumer·검증·미확인·다음 판단이다. 승인 이미지와 저장 의미는 임의 교체하지 않는다.
+재사용할 실패/교정 근거가 생겼을 때만 기존 `skills/SKILL_LEARNING_LOG.md`를 갱신한다. 일반 작업일지는 기존 날짜별 source에 누적한다.

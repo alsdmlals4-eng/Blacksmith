@@ -136,12 +136,8 @@ def main() -> int:
     ):
         require(review_loop, token, failures, "evidence and adversarial review decision")
 
-    for token in (
-        "BS-OPS-20260828-36",
-        "ADVERSARIAL_REVIEW_LOOP = REQUIRED",
-        "GITHUB_HUMAN_FACING_GDD_OWNER",
-    ):
-        require(agents, token, failures, "AGENTS.md")
+    from check_current_authority_entrypoint_contract import validate
+    failures.extend(validate(ROOT))
 
     for token in (
         "기술·정본 추적용",
