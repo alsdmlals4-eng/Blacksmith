@@ -187,7 +187,7 @@
 - [x] engineering ACTIVE 승인·원본 교정·pin 생성 route 재검증, exact8 제품 보호 manifest.
 - [x] M1~M3 RED/GREEN, 실제 합류·납품·재시작 캡처(단조 완료는 fixture).
 - [ ] M4 후보 alpha/frame 검수·최종 자산 lock·실제 Portrait/손·도구 모션 연결. 성장 최종 달력은 별도 결정.
-- [ ] 독립 검토2회·교정·필수 CI·병합/main·기존 PDF/일지 갱신.
+- [x] M1~M3 독립 검토2회·네 결함 교정·필수 CI19/1skip·PR388 병합/main·기존 PDF79/일지13 갱신. exact8 승인 회수는 기록된 archive 경로, M4 미완료와 분리한다.
 
 **실행 준비 발견:** 2026-09-20 최초 HiGodot 연결 목록0, 기본 Hera status는 다른 프로젝트를 가리켰다. 이를 Blacksmith 증거로 사용하지 않는다. clean checkout의 채택 addon3.2.0/설치 Godot4.7.1로 작업 소유 일반 편집기와 로컬 서버 연결을 확인했지만 현재 Codex HiGodot session 목록에는 노출되지 않았다. 원래 폴더의 미검증4.1.0 변경은 이관하지 않았다. 상세 시도는 생산계약의 동일 작업 절을 따른다. 새 제품 테스트·실행 결과가 없는 위 설계를 구현 완료로 표시하지 않는다.
 

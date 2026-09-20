@@ -299,6 +299,21 @@
     "art": "docs/design/candidates/modak-first-forge-20260920/record.json",
     "remaining": "M4_ALPHA_FRAME_PORTRAIT_HAND_TOOL_MOTION; GROWTH_CALENDAR; HUMAN_ANDROID_RELEASE",
     "pr": 388,
-    "remote_status": "PENDING_EXACT_HEAD_CI_AND_MERGE"
+    "remote_status": "PR388_MERGED_EXACT19_SUCCESS_1_CONDITIONAL_SKIP_LOCAL_MAIN_MATCH_USER_DIFF_PRESERVED",
+    "delivery": {
+      "merge_commit": "8ce020cfeefacc7cb37ffb9d8d192a157451028a",
+      "reviewed_product_head": "5a06e589282767f25ec08f782e3fcfe6459cccc8",
+      "final_pr_head": "b6f7e8d5099c6eca6004329967dd2962ea07d03a",
+      "ci": "19_SUCCESS_1_CONDITIONAL_SKIP",
+      "pr": 388,
+      "one_shot_approval_status": "RETIRED_ARCHIVED_NOT_DELETED",
+      "approval_archive": "docs/archive/protected-approvals/modak-first-forge-pr388-20260920.json",
+      "approval_sha256": "735f90012d25a761f8a068baf5987e3b1574bca0b1efef1d18db1370e5629fed",
+      "archive_bytes": "ORIGINAL_CRLF_BYTES_PRESERVED_WITH_GIT_MINUS_TEXT",
+      "main_readback": "LOCAL_MAIN_ORIGIN_MAIN8ce020cf; REVIEWED_TREE_EQUALS_MERGE",
+      "original_user_diff_before_after": "b7c1c1077fdd6db858983de5532e31b451e642ba",
+      "cleanup": "C:/Users/user/Documents/삭제대기/모루의서약_모닥구현_20260920",
+      "cleanup_scope": "6_TASK_GENERATED_FILES_195289170_BYTES_MOVED_WITH_HASH_CHECK_NO_DELETION"
+    }
   }
 }

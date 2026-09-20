@@ -33,6 +33,20 @@ def nested_value(payload: dict[str, object], dotted_key: str) -> object:
 
 
 class ProductApprovalPostmergeClosureTests(unittest.TestCase):
+    def test_modak_partial_delivery_retires_exact_scope_without_reapproving_art(self):
+        receipt = json.loads((ROOT / 'docs/operations/receipts/2026-09-10-pixel-world-blueprint.json').read_text(encoding='utf-8'))
+        delivery = receipt['modak_execution']['delivery']
+        archive = ROOT / delivery['approval_archive']
+        self.assertEqual(delivery['approval_sha256'], raw_sha256(archive))
+        self.assertEqual(8, len(json.loads(archive.read_text(encoding='utf-8'))['approved_paths']))
+        self.assert_baseline_descends_from(delivery['merge_commit'])
+        self.assertEqual('RETIRED_ARCHIVED_NOT_DELETED', delivery['one_shot_approval_status'])
+        if APPROVAL.exists():
+            self.assertNotEqual(delivery['approval_sha256'], raw_sha256(APPROVAL))
+        art = json.loads((ROOT / receipt['modak_execution']['art']).read_text(encoding='utf-8'))
+        self.assertFalse(art['runtime_promoted'])
+        self.assertEqual('PENDING_USER_REVIEW', art['final_asset_approval'])
+
     def assert_baseline_descends_from(self, historical_merge: str) -> None:
         baseline = json.loads(CANONICAL_ADAPTER.read_text(encoding="utf-8"))["protected_baseline"]["commit"]
         result = subprocess.run(["git", "merge-base", "--is-ancestor", historical_merge, baseline],
