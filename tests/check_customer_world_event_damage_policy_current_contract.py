@@ -86,7 +86,7 @@ def main() -> None:
     assert mitigation["universal_keyword_damage_bonus_allowed"] is False
     assert mitigation["direct_profile_mitigated_by_generic_keyword"] is False
 
-    for path in (CORE, AUTHORITY, HANDOFF, AGENTS):
+    for path in (CORE, AUTHORITY, HANDOFF):
         text = path.read_text(encoding="utf-8")
         require_tokens(text, [DECISION_ID], path.name)
 

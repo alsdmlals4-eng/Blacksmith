@@ -57,11 +57,7 @@ ACTIVE_DOCS = (
 REQUIRED_ASSERTIONS = {
     "README.md": ("장비의 출생·성장·소유·사건 기록", "Godot AI"),
     "AGENTS.md": (
-        "벤치마킹·현업 비교",
-        "최대 배치 크기",
-        "조기 체크포인트",
-        "작업마다 TDD",
-        "RED → GREEN → REFACTOR",
+        "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
     ),
     "CURRENT_CONFIRMED_DECISIONS.md": (
         "[현재 정본]",

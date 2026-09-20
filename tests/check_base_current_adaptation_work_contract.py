@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-"""Fail closed unless the current Base adaptation contract is consumable."""
+"""Check current routing plus the immutable September 3 receipt separately."""
 
 import json
 import os
@@ -24,6 +24,7 @@ BASE_RULES = ROOT / "docs/BASE_RULES_VERSION.md"
 WORKFLOW = ROOT / ".github/workflows/validate-current-base-adaptation-work-contract.yml"
 EXPECTED_RELEASE = "9.4.4"
 EXPECTED_RELEASE_COMMIT = "210ec78292fa12ed7563ba743b322dd36103ae4a"
+# Historical validation dependency, never the discovered latest Base authority.
 EXPECTED_BASE_CURRENT = "850204b3e5de81a4045111b4a050c46c5a292b59"
 EXPECTED_SOURCE_MAIN = "181d40422c0b8cacd4bfa15e73f88032af0f4846"
 EXPECTED_VERIFIED_HEAD = "1de75729b0457b0463228bd53a6bb6f5c23a9a26"
@@ -36,7 +37,8 @@ def require_file(path: Path, failures: list[str]) -> None:
 
 
 def main() -> int:
-    failures: list[str] = []
+    from check_current_authority_entrypoint_contract import validate
+    failures: list[str] = validate(ROOT)
     for path in (CONTRACT, RECEIPT, WORKFLOW):
         require_file(path, failures)
 
@@ -95,11 +97,13 @@ def main() -> int:
         if CONTRACT.relative_to(ROOT).as_posix() not in path.read_text(encoding="utf-8"):
             failures.append(f"current entrypoint does not route to the Base adaptation contract: {path.relative_to(ROOT)}")
 
-    base_root = Path(
-        os.environ.get("BLACKSMITH_BASE_ROOT", r"C:\Users\user\Documents\GitHub\Base")
-    )
+    base_root = Path(os.environ.get("BLACKSMITH_BASE_ROOT", str(ROOT / ".base-current")))
+    identity = subprocess.run(["git", "-C", str(base_root), "rev-parse", "HEAD"],
+                              capture_output=True, text=True, check=False)
     validator = base_root / "tools/validate_work_contract_receipt.py"
-    if not validator.exists():
+    if identity.returncode != 0 or identity.stdout.strip() != EXPECTED_BASE_CURRENT:
+        failures.append("Historical receipt requires the verified September 3 validator checkout")
+    elif not validator.exists():
         failures.append(f"Base receipt validator unavailable: {validator}")
     else:
         completed = subprocess.run(

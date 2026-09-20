@@ -2,8 +2,8 @@
   "schema_version": 2,
   "registry_role": "blacksmith-project-skill-router",
   "project": "Blacksmith",
-  "current_operating_decision": "BS-OPS-20260802-01",
-  "current_work_mode": "TOTAL_PLANNING",
+  "current_operating_decision": "USER_APPROVED_OPERATIONAL_ADAPTATION_20260920",
+  "current_work_mode": "RESOLVE_FROM_CURRENT_TASK",
   "routing_policy": {
     "load_all_skills": false,
     "default_selection": "automatic-trigger-match",
@@ -119,14 +119,15 @@
         "poc",
         "vertical-slice",
         "art-brief",
-        "planning-visualization"
+        "planning-visualization",
+        "fun-hypothesis",
+        "experience-to-presentation"
       ],
       "use_when": [
         "프로젝트 코어·플레이어 약속·제작·강화·작품 정체성·고객·세계 환류·경제·연구·플레이테스트·Vertical Slice 기획을 작성하거나 검토한다."
       ],
       "do_not_use_when": [
-        "기획 결정에 영향 없는 경로·상태·포맷 교정만 수행한다.",
-        "제품 코드·Scene 구현은 현재 BS-OPS-20260802-01 범위에서 금지된다."
+        "기획/플레이어 경험에 영향 없는 운영·경로·포맷 교정이다."
       ],
       "skill_modes": [
         "frame",
@@ -147,6 +148,7 @@
         "planning-visualization"
       ],
       "source_documents": [
+        "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
         "current-confirmed-decisions",
         "blacksmith-game-bible",
         "project-core-contract",
@@ -170,7 +172,7 @@
     {
       "skill_id": "blacksmith-engineering",
       "layer": "specialist",
-      "status": "ACTIVE",
+      "status": "HOLD",
       "load_by_default": false,
       "discipline": "개발·엔지니어링",
       "path": "../../skills/engineering/SKILL.md",
@@ -191,8 +193,7 @@
         "승인된 기획 이후 Godot Scene·GDScript·데이터·Android·저장·migration·자동화 구현 계약을 설계하거나 실행한다."
       ],
       "do_not_use_when": [
-        "현재 작업이 기획 문서·정본·Sheet 복구에 한정된다.",
-        "PLANNING_AND_REVIEW_COMPLETE_GATE 또는 CODEX_IMPLEMENTATION_GATE가 BLOCKED다."
+        "adopted snapshot의 engineering route가 HOLD이거나 제품 변경 승인이 없다."
       ],
       "skill_modes": [
         "plan-change",
@@ -206,6 +207,7 @@
         "rerun-engine-checks"
       ],
       "source_documents": [
+        "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
         "current-confirmed-decisions",
         "blacksmith-game-bible"
       ],
@@ -241,13 +243,13 @@
         "regression",
         "pr-review",
         "evidence-report",
-        "sheet-structure",
         "decision-sync",
         "cold-start",
-        "repository-wide-audit"
+        "repository-wide-audit",
+        "fun-evidence"
       ],
       "use_when": [
-        "변경 계약·정본·Sheet·참조·적대적 검토·정적·런타임·접근성·성능·회귀 증거를 검증하고 판정한다."
+        "변경 계약·현재 원본·실제 사용처·자동/실행/사람 증거를 검증한다."
       ],
       "do_not_use_when": [
         "검증 대상 변경이나 판정 질문이 없는 순수 아이디어 탐색만 수행한다."
@@ -270,6 +272,7 @@
         "cold-start-validation"
       ],
       "source_documents": [
+        "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md",
         "current-confirmed-decisions",
         "bs-ops-20260802-01-baseline",
         "blacksmith-game-bible",
@@ -298,19 +301,20 @@
     "evidence_commit": "ef1fba11167e4da0b298123b0c85ebd268191a42",
     "source_registry": "skills/SKILL_REGISTRY.json",
     "routing_policy": "SELECTIVE_AUTOMATIC_TRIGGER_MATCH",
-    "project_sheet_status": "SYNC_IN_PROGRESS_BS-OPS-20260802-01",
+    "project_sheet_status": "HISTORICAL_MIGRATION_ONLY",
     "project_sheet_url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit",
     "project_sheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
-    "project_sheet_role": "USER_FACING_GDD_WORKSPACE",
-    "project_sheet_edit_policy": "APPROVED_DECISION_AND_SAFE_PLANNING_FIXES",
-    "project_sheet_last_verified_at": "2026-08-02"
+    "project_sheet_role": "HISTORICAL_REFERENCE",
+    "project_sheet_edit_policy": "NO_FUTURE_WRITE_REQUIRED",
+    "project_sheet_last_verified_at": "2026-08-02",
+    "role": "HISTORICAL_ADOPTION_METADATA_USE_CANONICAL_ADAPTER"
   },
   "bca_visual_sheet": {
-    "sheet_status": "SYNC_IN_PROGRESS_BS-OPS-20260802-01",
+    "sheet_status": "HISTORICAL_MIGRATION_ONLY",
     "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg/edit",
     "spreadsheet_id": "1DGNgLmn6nV3BwK795Y_GjS4wu8pbnIVdkLa8xzQRNWg",
-    "workbook_role": "USER_FACING_GDD_WORKSPACE",
-    "sheet_edit_policy": "APPROVED_DECISION_AND_SAFE_PLANNING_FIXES",
+    "workbook_role": "HISTORICAL_REFERENCE",
+    "sheet_edit_policy": "NO_FUTURE_WRITE_REQUIRED",
     "last_verified_at": "2026-08-02",
     "required_tabs": [
       "00_프로젝트_허브",
@@ -339,5 +343,6 @@
       "98_Base_반영후보",
       "99_변경이력"
     ]
-  }
+  },
+  "operational_owner": "docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md"
 }

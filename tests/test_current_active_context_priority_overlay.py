@@ -21,9 +21,11 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         authority = AUTHORITY_INDEX.read_text(encoding="utf-8")
         current_owner = CURRENT_OWNER.read_text(encoding="utf-8")
 
-        self.assertIn("BS-OPS-20260825-08", agents)
-        self.assertIn("SESSION_HANDOFF", agents)
-        self.assertIn("LEGACY_COMPATIBILITY_ROUTER", agents)
+        from tests.check_current_authority_entrypoint_contract import CONTRACT, read_authority_record, validate
+        self.assertEqual([], validate(ROOT))
+        owners = read_authority_record((ROOT / CONTRACT).read_text(encoding="utf-8"))["owners"]
+        self.assertEqual(HANDOFF, ROOT / owners["handoff"])
+        self.assertEqual(ACTIVE_CONTEXT, ROOT / owners["context"])
         self.assertIn("BS-OPS-20260825-08", handoff)
         self.assertIn("BLACKSMITH_CORE_SIMPLIFICATION_CANON_20260825.md", handoff)
         self.assertIn(
@@ -74,10 +76,7 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
         self.assertIn("BS-ART-20260826-04", current_owner)
         self.assertIn("DAMAGE_STATE = DERIVED_PLAYER_FACING_VIEW", current_owner)
 
-        self.assertLess(
-            agents.index("BS-OPS-20260825-08_SESSION_HANDOFF_CORE_SIMPLIFICATION.md"),
-            agents.index("ACTIVE_CONTEXT.md"),
-        )
+        self.assertNotEqual(owners["production"], owners["history"])
 
     def test_legacy_active_context_and_20260811_phase_c_records_are_preserved_as_history(self) -> None:
         active = ACTIVE_CONTEXT.read_text(encoding="utf-8")
@@ -100,9 +99,8 @@ class CurrentActiveContextPriorityOverlayTests(unittest.TestCase):
             active,
         )
 
-        self.assertIn("ACTIVE_CONTEXT.md` — `LEGACY_COMPATIBILITY_ROUTER", agents)
-        self.assertIn("Decisions25~32/Art03~04", agents)
-        self.assertNotIn("25~27/Art03", agents)
+        from tests.check_current_authority_entrypoint_contract import validate
+        self.assertEqual([], validate(ROOT))
 
     def test_current_canon_implementation_declaration_supersedes_old_planning_gate_text(self) -> None:
         current_owner = CURRENT_OWNER.read_text(encoding="utf-8")

@@ -107,9 +107,11 @@ def main() -> None:
     human_gdd = HUMAN_GDD.read_text(encoding="utf-8")
     assert "사람용 게임 기획서" in human_gdd
 
-    agents = AGENTS.read_text(encoding="utf-8")
-    assert "NOTION_MIGRATION_RECEIPT" in agents
-    assert "HISTORICAL_NOTION_VISUAL_ARCHIVE" in agents
+    # Archive paths/hashes are verified above; the current bootstrap routes to
+    # current owners without copying historical migration labels.
+    from check_current_authority_entrypoint_contract import validate
+    failures = validate(ROOT)
+    assert not failures, failures
 
     visual_approval = VISUAL_APPROVAL.read_text(encoding="utf-8")
     assert "GITHUB_MIGRATION_RECEIPT" in visual_approval

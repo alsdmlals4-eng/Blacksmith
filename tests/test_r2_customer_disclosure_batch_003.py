@@ -108,10 +108,8 @@ class R2Checkpoint004ClosureTests(unittest.TestCase):
         contract = self.decisions["BS-OPS-20260805-01"]["contract"]
         self.assertEqual(10, contract["maximum_approved_decisions_per_batch"])
         self.assertEqual(["RED", "GREEN", "REFACTOR"], contract["tdd_cycle"])
-        agents = AGENTS.read_text(encoding="utf-8")
-        self.assertIn("벤치마킹·현업 비교", agents)
-        self.assertIn("조기 체크포인트", agents)
-        self.assertIn("작업마다 TDD", agents)
+        from tests.check_current_authority_entrypoint_contract import validate
+        self.assertEqual([], validate(ROOT))
         self.assertEqual("BLOCKED", self.registry["product_implementation"])
         self.assertEqual("NOT_STARTED_BLOCKED", self.registry["implementation_alignment"]["five_grade_product_implementation"])
         self.assertEqual("NOT_STARTED_BLOCKED", self.registry["implementation_alignment"]["artistry_product_implementation"])

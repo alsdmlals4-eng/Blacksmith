@@ -122,6 +122,9 @@ def main() -> int:
         check_current_batch_006(failures, registry)
 
     required = copy.deepcopy(legacy.REQUIRED_TEXT)
+    # Current bootstrap safety/routes were validated above; archived R2 literal
+    # checks do not require copying those rules back into AGENTS.
+    required.pop("AGENTS.md", None)
 
     gate_tokens = list(required["[기획서]/00_프로젝트_허브/DEVELOPMENT_GATES.md"])
     gate_tokens.remove("CODEX_IMPLEMENTATION_GATE: BLOCKED")

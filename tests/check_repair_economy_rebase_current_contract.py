@@ -136,7 +136,7 @@ def main() -> None:
     assert "no_eligible_repair_zero_current_gain" in sensitivity["required_invariants"]
     assert "no_repeat_repair_without_later_actual_damage" in sensitivity["required_invariants"]
 
-    for path in (OVERLAY, CORE, AUTHORITY, AGENTS, HANDOFF):
+    for path in (OVERLAY, CORE, AUTHORITY, HANDOFF):
         require_tokens(path.read_text(encoding="utf-8"), [DECISION_ID], path.name)
     require_tokens(
         HANDOFF.read_text(encoding="utf-8"),

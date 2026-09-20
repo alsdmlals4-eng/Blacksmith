@@ -37,7 +37,8 @@ def test_activation_is_scoped_and_recorded_in_current_canon() -> None:
     gates = _text(GATES)
     agents = _text(AGENTS)
 
-    for text in (decision, current, gates, agents):
+    assert POLICY.relative_to(ROOT).as_posix() in agents
+    for text in (decision, current, gates):
         assert DECISION_ID in text
 
     for marker in (

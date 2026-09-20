@@ -1,5 +1,7 @@
 # [현재 정본] Blacksmith 기획 권위 색인
 
+> 현재 운영 경로 · 2026-09-20: `docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md`가 승인된 Base #883 경량화와 #885 재미 검증 적용·진행을 소유한다. 제품 구현/저장/자산 변경은 이번 범위 밖이다. 최신 제품 범위·증거는 통합 Blueprint 생산계약과 연결 receipt를 따른다. 아래 날짜별 상태는 해당 시점의 역사이며, 과거 승인 대기·PR·SHA를 현재 실행 권한으로 쓰지 않는다.
+
 - 2026-09-10 재기획 변경 owner: `docs/design/BLACKSMITH_PIXEL_WORLD_BLUEPRINT_20260910.md`. 전체 픽셀·기존 그림 참고자료화·5종 태그 확장 방향·선택형 세계창은 최신 사용자 요구다. 세부 명세는 검토안이며 구형 runtime을 구현 완료로 판정하지 않는다.
 
 - current amendment: `BS-ENHANCE-20260830-38` is the exclusive owner for recurring Precision targets, up-to-three I~IV tags in `CATALYST_AFFIX`, item migration disposition, and effect timing. `BS-ENHANCE-20260901-40` owns the consumable catalyst input, catalog V3, resource migration, and atomic charge. [대체됨] Decision34/37 cadence/cardinality claims remain historical evidence only.

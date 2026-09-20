@@ -22,7 +22,6 @@ CURRENT_STATUS_DECISIONS = [
     ROOT / "docs/decisions/BS-ART-20260826-04_ACTUAL_GAME_IMAGE_CONSUMER_GATE.md",
 ]
 ENTRYPOINTS = [
-    ROOT / "AGENTS.md",
     ROOT / "CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md",
     AUTHORITY_INDEX,
 ]
@@ -123,14 +122,9 @@ def main() -> None:
         stale = [token for token in FORBIDDEN_CURRENT if token in text]
         assert not stale, f"{path.name} keeps forbidden current tokens: {stale}"
 
-    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
-    assert "ART_DIRECTION_STATUS = USER_APPROVED_DIRECTION" in agents
-    assert "POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_AND_VISUAL_REQUIREMENT_NEXT" in agents
-    assert "BS-REPAIR-20260826-31" in agents
-    assert "ACTUAL_GAME_CONSUMER_REQUIRED" in agents
-    assert "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT" in agents
-    assert "성공 시 플레이어용 `ITEM_KEYWORD` 하나" not in agents
-    assert "WEAPON_ITEM_KEYWORD" in agents
+    from check_current_authority_entrypoint_contract import validate
+    failures = validate(ROOT)
+    assert not failures, failures
 
     handoff_text = HANDOFF.read_text(encoding="utf-8")
     assert "PR #207 = MERGED_TO_MAIN" in handoff_text

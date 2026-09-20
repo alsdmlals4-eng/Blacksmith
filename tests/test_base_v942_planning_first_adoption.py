@@ -155,9 +155,9 @@ class PlanningFirstCompatibilityTests(unittest.TestCase):
         self.assertEqual(10, contract["maximum_approved_decisions_per_batch"])
         self.assertTrue(contract["tdd_required_for_every_change"])
         self.assertEqual(["RED", "GREEN", "REFACTOR"], contract["tdd_cycle"])
-        agents = AGENTS.read_text(encoding="utf-8")
-        for token in ("벤치마킹·현업 비교", "최대 배치 크기", "조기 체크포인트", "작업마다 TDD"):
-            self.assertIn(token, agents)
+        # Historical decision stays intact; current instructions are reached by role.
+        from tests.check_current_authority_entrypoint_contract import validate
+        self.assertEqual([], validate(ROOT))
         benchmark = BENCHMARK_CANON.read_text(encoding="utf-8")
         self.assertIn("Diablo IV", benchmark)
         self.assertIn("Dwarf Fortress", benchmark)

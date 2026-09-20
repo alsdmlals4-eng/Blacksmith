@@ -153,7 +153,6 @@ def test_spec_and_top_level_gates_include_required_markers() -> None:
         "GUT_SOLE_TEST_AUTHORITY",
         "ENTRY_GATE_FAIL_CLOSED",
     ):
-        assert marker in agents
         assert marker in gates
 
     for preserved_marker in (

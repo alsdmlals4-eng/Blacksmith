@@ -1,102 +1,104 @@
 #!/usr/bin/env python3
+# 현재 운영 원본의 실제 경로와 보호 경계를 검사한다.
 from __future__ import annotations
 
-import sys
+import argparse
+import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-AGENTS = ROOT / "AGENTS.md"
-ROUTING = ROOT / "docs/decisions/BS-OPS-20260828-35_GITHUB_ONLY_CANON_AND_IMAGE_EXECUTION_ROUTING.md"
-FLOW = ROOT / "docs/planning/BLACKSMITH_HUMAN_GAME_FLOW_MAP_2026.md"
+CONTRACT = Path("docs/operations/BLACKSMITH_BASE_CURRENT_ADAPTATION_WORK_CONTRACT_20260901.md")
+REQUIRED_OWNERS = {
+    "context", "production", "decisions", "fields", "blueprint", "remaining",
+    "handoff", "history", "design_skill", "qa_skill", "engineering_skill",
+}
+PROTECTED = {"data/", "scripts/", "scenes/", "assets/", "addons/", "project.godot"}
 
 
-def require(text: str, token: str, failures: list[str], label: str) -> None:
-    if token not in text:
-        failures.append(f"{label} missing required token: {token}")
+def read_authority_record(text: str) -> dict:
+    matches = re.findall(
+        r"<!-- current-authority -->\s*```json\s*(.*?)\s*```\s*<!-- /current-authority -->",
+        text, re.S)
+    if len(matches) != 1:
+        raise ValueError("expected one current-authority record")
+    record = json.loads(matches[0])
+    if not isinstance(record, dict) or record.get("schema_version") != 1:
+        raise ValueError("unsupported current-authority record")
+    return record
+
+
+def validate(root: Path) -> list[str]:
+    root = root.resolve()
+    failures = []
+    try:
+        record = read_authority_record((root / CONTRACT).read_text(encoding="utf-8"))
+        owners = record["owners"]
+        observation = record["base_observation"]
+        if not isinstance(owners, dict) or set(owners) != REQUIRED_OWNERS:
+            failures.append("current owner roles incomplete or unknown")
+        for role, relative in owners.items():
+            if not isinstance(relative, str):
+                failures.append(f"{role}: invalid owner path")
+                continue
+            path = (root / relative).resolve()
+            if not path.is_relative_to(root) or Path(relative).is_absolute():
+                failures.append(f"{role}: owner outside repository")
+            elif not path.is_file():
+                failures.append(f"{role}: missing owner {relative}")
+        if owners.get("production") == owners.get("history"):
+            failures.append("history cannot own current production")
+        if len(set(owners.values())) != len(owners):
+            failures.append("distinct owner roles must not collapse")
+        if (observation.get("repository") != "alsdmlals4-eng/Base"
+                or observation.get("ref") != "refs/heads/main"
+                or observation.get("role") != "OBSERVATION_NOT_RELEASE_LOCK"
+                or not re.fullmatch(r"[0-9a-f]{40}", str(observation.get("commit", "")))
+                or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(observation.get("observed_at", "")))):
+            failures.append("invalid Base observation; not an execution pin")
+        for name in ("AGENTS.md",
+                     owners.get("context", ""), owners.get("fields", ""),
+                     owners.get("handoff", ""), owners.get("design_skill", ""),
+                     owners.get("qa_skill", ""), owners.get("engineering_skill", "")):
+            path = (root / name).resolve()
+            if not path.is_relative_to(root) or not path.is_file():
+                failures.append(f"missing bootstrap {name}")
+            elif CONTRACT.as_posix() not in path.read_text(encoding="utf-8"):
+                failures.append(f"{name}: missing operational owner link")
+        adapter = json.loads((root / "skills/PROJECT_BASE_ADAPTER.json").read_text(encoding="utf-8"))
+        # The adopted generator owns the router bytes. Follow its real adapter
+        # edge instead of hand-editing a generated Skill to duplicate this owner.
+        router = (root / ".agents/skills/blacksmith-workflow-router/SKILL.md").read_text(encoding="utf-8")
+        for target in ("skills/PROJECT_BASE_ADAPTER.json", "skills/PROJECT_SKILL_SNAPSHOT.json"):
+            if target not in router:
+                failures.append(f"generated router: missing {target}")
+        overrides = adapter.get("shared_overrides", {})
+        if CONTRACT.as_posix() not in json.dumps(overrides, ensure_ascii=False):
+            failures.append("adapter: missing operational owner link")
+        if set(adapter["protected_paths"]) != PROTECTED:
+            failures.append("protected product paths changed")
+        release = adapter["base_release"]
+        if (release["version"] != "9.4.4"
+                or release["release_commit"] != "210ec78292fa12ed7563ba743b322dd36103ae4a"):
+            failures.append("adopted release changed without release-adoption scope")
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
+        failures.append(f"invalid authority input: {exc}")
+    return failures
 
 
 def main() -> int:
-    failures: list[str] = []
-    agents = AGENTS.read_text(encoding="utf-8")
-
-    required_agents = [
-        "CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md",
-        "docs/planning/BLACKSMITH_PLANNING_AUTHORITY_INDEX.md",
-        "CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장",
-        "BS-OPS-20260828-35",
-        "BS-DAMAGE-20260826-28",
-        "docs/planning/BLACKSMITH_DAMAGE_PROBABILITY_CURVE_20260826.json",
-        "BS-REPAIR-20260826-29",
-        "docs/planning/BLACKSMITH_DURABILITY_REPAIR_MODEL_20260826.json",
-        "BS-REPAIR-20260826-31",
-        "docs/planning/BLACKSMITH_REPAIR_ECONOMY_REBASE_20260826.json",
-        "BS-DAMAGE-20260826-30",
-        "docs/planning/BLACKSMITH_CUSTOMER_WORLD_EVENT_DAMAGE_POLICY_20260826.json",
-        "BS-ART-20260826-04",
-        "docs/planning/BLACKSMITH_ACTUAL_GAME_IMAGE_CONSUMER_GATE_20260826.json",
-        "DURABILITY_AUTHORITY = CURRENT_MAX_BASE_MAX_NUMERIC",
-        "POSTMERGE_PLANNING / REPAIR_ECONOMY_HUMAN_PLAYTEST_AND_VISUAL_REQUIREMENT_NEXT",
-        "BS-ENHANCE-20260826-32",
-        "ACTUAL_GAME_CONSUMER_REQUIRED",
-        "NO_NEW_EXPLANATORY_GDD_SHEET_IMAGE",
-        "USER_SUPPLIED_V4_8_R5_4_SUPERSET_FINAL_CURRENT",
-        "TRACKED_V4_5_R2_STALE_SUPERSEDED_DO_NOT_USE",
-        "PROJECT_TOTAL_PLANNING_IMPLEMENTATION_AND_DELIVERY_INSTRUCTION_v4.8-r5.4_SUPERSET_FINAL_20260826.md",
-        "GITHUB_REPOSITORY_ONLY_CURRENT_CANON = TRUE",
-        "NOTION_STATUS = HISTORICAL_REFERENCE_ONLY / NO_FUTURE_READ_WRITE_REQUIRED",
-        "IMAGE_GENERATION_EXECUTION = USER_PREAUTHORIZED_AFTER_CONSUMER_REQUIREMENT",
-        "Google Sheet = historical migration compatibility evidence only; future write는 요구하지 않는다.",
-    ]
-    for token in required_agents:
-        require(agents, token, failures, "AGENTS.md")
-
-    for stale in (
-        "USER_SUPPLIED_V4_8_R4_CURRENT",
-        "POSTMERGE_PLANNING / DAMAGE_PROBABILITY_CURVE_NEXT",
-        "POSTMERGE_PLANNING / FOUR_STATE_REPAIR_MODEL_NEXT",
-        "POSTMERGE_PLANNING / CUSTOMER_EVENT_DAMAGE_POLICY_NEXT",
-    ):
-        if stale in agents:
-            failures.append(f"AGENTS.md keeps stale current route: {stale}")
-
-    overlay_pos = agents.find("CURRENT_CONFIRMED_DECISIONS_20260820_OVERLAY.md")
-    legacy_pos = agents.find("CURRENT_CONFIRMED_DECISIONS.md` — 2026-08-11 이전 역사 원장")
-    if overlay_pos < 0 or legacy_pos < 0 or overlay_pos >= legacy_pos:
-        failures.append("current overlay must precede the historical decision ledger in AGENTS authority order")
-
-    if not ROUTING.exists():
-        failures.append("missing BS-OPS-20260828-35 GitHub-only routing decision")
-    else:
-        routing = ROUTING.read_text(encoding="utf-8")
-        for token in (
-            "GITHUB_REPOSITORY_ONLY_CURRENT_CANON = TRUE",
-            "NOTION_STATUS = HISTORICAL_REFERENCE_ONLY / NO_FUTURE_READ_WRITE_REQUIRED",
-            "PRE_GENERATION_USER_APPROVAL = NOT_REQUIRED",
-            "POST_GENERATION_USER_LOCK = REQUIRED_FOR_FINAL_DIRECTION_OR_RUNTIME_PROMOTION",
-        ):
-            require(routing, token, failures, str(ROUTING.relative_to(ROOT)))
-
-    if not FLOW.exists():
-        failures.append("missing structured human game flow map")
-    else:
-        flow = FLOW.read_text(encoding="utf-8")
-        for token in (
-            "reinforcement tension + decision-driven design (DDD)",
-            "STOP or PUSH?",
-            "GitHub human-facing GDD contract",
-            "human usability / player experience: `NOT_RUN`",
-        ):
-            require(flow, token, failures, str(FLOW.relative_to(ROOT)))
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--project-root", type=Path, default=ROOT)
+    args = parser.parse_args()
+    failures = validate(args.project_root)
     if failures:
         print("Current authority entrypoint contract FAILED")
         for failure in failures:
             print(f"- {failure}")
         return 1
-
-    print("Current authority entrypoint contract PASSED")
+    print("Current authority entrypoint contract PASSED (paths and boundaries, not agent/runtime proof)")
     return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())
