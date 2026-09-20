@@ -3,6 +3,7 @@ extends VBoxContainer
 signal campaign_saved(envelope, result: Dictionary)
 signal forge_requested(order_id: String)
 signal uncertainty_changed
+signal transaction_failed(result: Dictionary)
 
 const Service = preload("res://scripts/vertical_slice/services/vs_commission_service.gd")
 const Catalog = preload("res://scripts/vertical_slice/domain/vs_commission_catalog.gd")
@@ -196,6 +197,7 @@ func _retry() -> void:
 		result["commission_refresh"] = true
 		campaign_saved.emit(_envelope, result)
 	else:
+		transaction_failed.emit(result)
 		if result.has("retry_rolls"): _pending["rolls"] = result.retry_rolls.duplicate()
 		_uncertain = _uncertain or result.status == "COMMIT_UNCERTAIN"
 		get_node("Message").text = ("저장 결과 확인 필요 · 같은 거래로 재확인하세요. " if _uncertain else "처리하지 못했습니다. ") + str(result.get("reason", ""))

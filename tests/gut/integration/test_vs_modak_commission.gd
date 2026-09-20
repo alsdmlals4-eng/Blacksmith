@@ -108,3 +108,22 @@ func test_workshop_uncertain_join_guard_unlocks_on_unchanged_readback():
 	panel.confirm_saved_join()
 	assert_false(workshop.campaign_write_blocked())
 	assert_false(workshop.get_node("WorkshopScroll/WorkshopLayout/CommissionPanel/Accept").disabled)
+
+func test_blocked_handoff_clears_prior_celebration_without_claiming_a_save():
+	assert_eq(Modak.new().join(save.load_envelope(), save).status, "APPLIED")
+	var source = _ready_order()
+	var fault = FaultSave.new()
+	fault.real = save
+	var app = _app(source, fault)
+	var workshop = app.get_node("ScreenHost/WorkshopScreen")
+	var companion = workshop.get_node("WorkshopScroll/WorkshopLayout/ForgeCompanion")
+	var commission = workshop.get_node("WorkshopScroll/WorkshopLayout/CommissionPanel")
+	companion.present_committed_result("previous-success", "SUCCESS")
+	commission.get_node("Catalyst").select(1)
+	watch_signals(commission)
+	commission._execute("HANDOFF")
+	assert_true(commission.get_node("Message").text.contains("처리하지 못했습니다"))
+	assert_false(companion.get_node("Reaction").text.contains("더 튼튼"))
+	assert_signal_not_emitted(commission, "campaign_saved")
+	assert_eq(save.load_envelope().to_dict(), source.to_dict())
+	assert_false(workshop.campaign_write_blocked())

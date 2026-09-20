@@ -934,6 +934,10 @@ func _present_companion_result(envelope, result: Dictionary) -> void:
 		result_id = "enhance:" + JSON.stringify(JSON.parse_string(JSON.stringify(disk.to_dict()))).sha256_text()
 	panel.present_committed_result(result_id, outcome)
 
+func _on_commission_failed(_result: Dictionary) -> void:
+	var companion = get_node_or_null("WorkshopScroll/WorkshopLayout/ForgeCompanion")
+	if companion != null: companion.show_neutral("이번 의뢰 작업이 확정되지 않았어요. 처리 안내를 확인해 주세요.")
+
 func _on_commission_saved(envelope, result: Dictionary) -> void:
 	_campaign_envelope = envelope
 	campaign_saved.emit(envelope, result)
@@ -951,6 +955,7 @@ func _refresh_commission_panel() -> void:
 		layout.move_child(panel, 2 if layout.has_node("ForgeCompanion") else 1)
 		panel.forge_requested.connect(func(order_id): commission_forge_requested.emit(order_id))
 		panel.campaign_saved.connect(_on_commission_saved)
+		panel.transaction_failed.connect(_on_commission_failed)
 		panel.uncertainty_changed.connect(_refresh_controls)
 	if panel == null: return
 	panel.visible = enabled
